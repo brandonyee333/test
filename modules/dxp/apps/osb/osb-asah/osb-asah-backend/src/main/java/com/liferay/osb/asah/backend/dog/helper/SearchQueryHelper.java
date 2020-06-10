@@ -332,11 +332,11 @@ public class SearchQueryHelper {
 	}
 
 	private void _addCanonicalUrlFilter(
-		BoolQueryBuilder boolQueryBuilder, URL canonicalUrl) {
+		BoolQueryBuilder boolQueryBuilder, String canonicalUrl) {
 
-		if (!canonicalUrl.equals(URL.any())) {
+		if (canonicalUrl != null) {
 			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("canonicalUrl", canonicalUrl.getURL()));
+				QueryBuilders.termQuery("canonicalUrl", canonicalUrl));
 		}
 	}
 
