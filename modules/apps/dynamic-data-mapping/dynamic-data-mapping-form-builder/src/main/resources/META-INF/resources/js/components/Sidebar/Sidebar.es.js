@@ -344,7 +344,7 @@ class Sidebar extends Component {
 
 		if (evaluableForm) {
 			evaluableForm
-				.evaluate()
+				.reactComponentRef.current.evaluate()
 				.then((pages) => {
 					dispatch('focusedFieldEvaluationEnded', {
 						...focusedField,
@@ -735,7 +735,7 @@ class Sidebar extends Component {
 	}
 
 	_handleSettingsFormAttached() {
-		this.refs.evaluableForm.evaluate();
+		this.refs.evaluableForm.reactComponentRef.current.evaluate();
 	}
 
 	_handleTabItemClicked(event) {
