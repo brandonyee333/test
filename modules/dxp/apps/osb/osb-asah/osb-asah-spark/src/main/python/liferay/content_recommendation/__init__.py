@@ -26,6 +26,10 @@ class ContentRecommendationApplication(BaseSparkApplication):
 
 		self.elasticsearch_bridge = ElasticsearchBridge(self)
 
+		self.job_run = self._get_job_run()
+
+		self.job = self._get_job()
+
 	def _create_argument_parser(self):
 		argument_parser = argparse.ArgumentParser(
 		    usage='{} liferay.hello_world.ContentRecommendationApplication '
@@ -87,7 +91,6 @@ class ContentRecommendationApplication(BaseSparkApplication):
 
 	def _get_job(self):
 		elasticsearch_bridge = self.elasticsearch_bridge
-
 		job = self.job_run.get('job')
 
 		return elasticsearch_bridge.get_document(
@@ -115,10 +118,6 @@ class ContentRecommendationApplication(BaseSparkApplication):
 		)
 
 	def start(self):
-		self.job_run = self._get_job_run()
-
-		self.job = self._get_job()
-
 		spark_job_pipeline = self._create_spark_job_pipeline()
 
 		try:
