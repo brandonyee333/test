@@ -45,7 +45,12 @@ definition {
 	}
 
 	macro enableSetting {
-		Check(locator1 = "SystemSettings#${checkboxSetting}");
+		if ("${enableSetting}" == "false") {
+			Uncheck(locator1 = "SystemSettings#${checkboxSetting}");
+		}
+		else {
+			Check(locator1 = "SystemSettings#${checkboxSetting}");
+		}
 	}
 
 	macro exitEditConfiguration {
