@@ -300,11 +300,14 @@ public class HistogramDog {
 			}
 		}
 
-		if (Interval.WEEK.equals(interval)) {
-			localDateTime.with(DayOfWeek.SUNDAY);
+		if (Interval.WEEK.equals(interval) &&
+			(localDateTime.getDayOfWeek() != DayOfWeek.SUNDAY)) {
+
+			localDateTime = localDateTime.minusWeeks(1);
+			localDateTime = localDateTime.with(DayOfWeek.SUNDAY);
 		}
 		else if (Interval.MONTH.equals(interval)) {
-			localDateTime.withDayOfMonth(1);
+			localDateTime = localDateTime.withDayOfMonth(1);
 		}
 
 		return localDateTime.toString();
