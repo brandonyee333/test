@@ -91,7 +91,7 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 
 		job = job_run.get('job')
 
-		expressions = []
+		expressions = ['(eventId = "pageUnloaded")']
 
 		for parameter in job.get('parameters'):
 			if parameter.get('name') == 'excludeFilter':
@@ -102,9 +102,6 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 				expressions.append(
 				    self._get_expression(parameter.get('value'), False)
 				)
-
-		if len(expressions) == 0:
-			return expressions
 
 		return " AND ".join(expressions)
 
@@ -122,8 +119,6 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 
 		analytics_events_data_frame = data_frame_reader.json(
 		    analytics_events_storage_path
-		).filter(
-		    '(eventId = "pageUnloaded")'
 		).filter(self._get_filter_expresssions()).filter(
 		    col('eventProperties.viewDuration') >=
 		    self._minimum_view_duration_threshold
