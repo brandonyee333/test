@@ -601,20 +601,17 @@ public class JournalArticleServiceTest {
 			JournalArticle article, DDMStructure ddmStructure)
 		throws PortalException {
 
-		JournalArticleLocalServiceImpl journalArticleLocalServiceImpl =
-			new JournalArticleLocalServiceImpl() {
+		new JournalArticleLocalServiceImpl() {
 
-				@Override
-				public void checkStructure(
-						JournalArticle article, DDMStructure structure)
-					throws PortalException {
+			@Override
+			public void checkStructure(
+					JournalArticle article, DDMStructure structure)
+				throws PortalException {
 
-					super.checkStructure(article, structure);
-				}
+				super.checkStructure(article, structure);
+			}
 
-			};
-
-		journalArticleLocalServiceImpl.checkStructure(article, ddmStructure);
+		}.checkStructure(article, ddmStructure);
 	}
 
 	protected int countArticlesByKeyword(String keyword, int status)
