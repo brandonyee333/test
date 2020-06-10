@@ -122,9 +122,7 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 
 		analytics_events_data_frame = data_frame_reader.json(
 		    analytics_events_storage_path
-		).withColumn('article_section', col('context.article:section')).filter(
-		    'article_section IS NOT NULL AND'
-		    '(context.contentLanguageId = "en-US") AND '
+		).filter(
 		    '(eventId = "pageUnloaded")'
 		).filter(self._get_filter_expresssions()).filter(
 		    col('eventProperties.viewDuration') >=
