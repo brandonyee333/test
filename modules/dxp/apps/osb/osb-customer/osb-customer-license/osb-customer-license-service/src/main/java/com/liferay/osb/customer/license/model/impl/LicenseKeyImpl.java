@@ -16,8 +16,8 @@ package com.liferay.osb.customer.license.model.impl;
 
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.model.LicenseEntry;
-import com.liferay.osb.customer.admin.service.LicenseEntryLocalServiceUtil;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalServiceUtil;
+import com.liferay.osb.customer.admin.service.LicenseEntryLocalServiceUtil;
 import com.liferay.osb.customer.license.model.LicenseKeySet;
 import com.liferay.osb.customer.license.service.LicenseKeySetLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -31,10 +31,6 @@ import java.util.Date;
 public class LicenseKeyImpl extends LicenseKeyBaseImpl {
 
 	public LicenseKeyImpl() {
-	}
-
-	public AccountEntry getAccountEntry() throws PortalException {
-		return AccountEntryLocalServiceUtil.getAccountEntry(getAccountEntryId());
 	}
 
 	public boolean canRenew() throws PortalException {
@@ -56,6 +52,11 @@ public class LicenseKeyImpl extends LicenseKeyBaseImpl {
 		*/
 
 		return true;
+	}
+
+	public AccountEntry getAccountEntry() throws PortalException {
+		return AccountEntryLocalServiceUtil.getAccountEntry(
+			getAccountEntryId());
 	}
 
 	public LicenseEntry getLicenseEntry() throws PortalException {

@@ -15,6 +15,9 @@
 package com.liferay.osb.customer.admin.model.impl;
 
 import com.liferay.osb.customer.admin.constants.LicenseEntryConstants;
+import com.liferay.osb.customer.admin.model.ProductEntry;
+import com.liferay.osb.customer.admin.service.ProductEntryLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author Brian Wing Shun Chan
@@ -28,6 +31,11 @@ public class LicenseEntryImpl extends LicenseEntryBaseImpl {
 	public String getPortalVersionLabel() {
 		return LicenseEntryConstants.getPortalVersionLabel(
 			getPortalVersionMin(), getPortalVersionMax());
+	}
+
+	public ProductEntry getProductEntry() throws PortalException {
+		return ProductEntryLocalServiceUtil.getProductEntry(
+			getProductEntryId());
 	}
 
 }

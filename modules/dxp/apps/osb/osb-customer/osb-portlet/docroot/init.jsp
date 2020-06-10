@@ -23,138 +23,33 @@ taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
-<%@ page import="com.liferay.expando.kernel.service.ExpandoValueLocalServiceUtil" %><%@
-page import="com.liferay.osb.admin.search.AccountEntryDisplayTerms" %><%@
-page import="com.liferay.osb.admin.search.AccountEntrySearch" %><%@
-page import="com.liferay.osb.admin.search.AccountEntrySearchTerms" %><%@
-page import="com.liferay.osb.admin.search.UserDisplayTerms" %><%@
-page import="com.liferay.osb.admin.search.UserSearch" %><%@
-page import="com.liferay.osb.exception.DuplicateHostNameException" %><%@
-page import="com.liferay.osb.exception.DuplicateIPAddressException" %><%@
-page import="com.liferay.osb.exception.DuplicateMACAddressException" %><%@
-page import="com.liferay.osb.exception.LicenseKeyDescriptionException" %><%@
-page import="com.liferay.osb.exception.LicenseKeyHostNameException" %><%@
-page import="com.liferay.osb.exception.LicenseKeyIPAddressException" %><%@
-page import="com.liferay.osb.exception.LicenseKeyMACAddressException" %><%@
-page import="com.liferay.osb.exception.LicenseKeyMaxServersException" %><%@
-page import="com.liferay.osb.exception.LicenseKeyOwnerException" %><%@
-page import="com.liferay.osb.exception.LicenseKeyProductVersionException" %><%@
-page import="com.liferay.osb.exception.LicenseKeyRegistrationException" %><%@
-page import="com.liferay.osb.exception.LicenseKeyServerIdException" %><%@
-page import="com.liferay.osb.exception.LicenseKeySetNameException" %><%@
-page import="com.liferay.osb.exception.MaximumLicenseKeyException" %><%@
-page import="com.liferay.osb.exception.NoSuchAccountEntryException" %><%@
-page import="com.liferay.osb.exception.NoSuchLicenseEntryException" %><%@
-page import="com.liferay.osb.exception.NoSuchLicenseKeySetException" %><%@
-page import="com.liferay.osb.exception.NoSuchOfferingEntryException" %><%@
-page import="com.liferay.osb.exception.NoSuchProductEntryException" %><%@
-page import="com.liferay.osb.exception.OfferingEntryStatusException" %><%@
-page import="com.liferay.osb.license.search.LicenseKeyDisplayTerms" %><%@
-page import="com.liferay.osb.license.search.LicenseKeySearch" %><%@
-page import="com.liferay.osb.license.search.LicenseKeySearchTerms" %><%@
-page import="com.liferay.osb.license.util.LicenseUtil" %><%@
-page import="com.liferay.osb.model.AccountEntry" %><%@
-page import="com.liferay.osb.model.AccountEntryConstants" %><%@
-page import="com.liferay.osb.model.AccountWorkerConstants" %><%@
-page import="com.liferay.osb.model.LicenseEntry" %><%@
-page import="com.liferay.osb.model.LicenseEntryConstants" %><%@
-page import="com.liferay.osb.model.LicenseKey" %><%@
-page import="com.liferay.osb.model.LicenseKeyConstants" %><%@
-page import="com.liferay.osb.model.LicenseKeySet" %><%@
-page import="com.liferay.osb.model.OfferingDefinition" %><%@
-page import="com.liferay.osb.model.OfferingDefinitionConstants" %><%@
-page import="com.liferay.osb.model.OfferingEntry" %><%@
+<%@ page import="com.liferay.osb.model.AccountEntry" %><%@
 page import="com.liferay.osb.model.OfferingEntryConstants" %><%@
-page import="com.liferay.osb.model.OfferingEntryGroup" %><%@
-page import="com.liferay.osb.model.OfferingEntryGroupFactoryUtil" %><%@
-page import="com.liferay.osb.model.OrderEntry" %><%@
-page import="com.liferay.osb.model.ProductEntry" %><%@
 page import="com.liferay.osb.model.ProductEntryConstants" %><%@
-page import="com.liferay.osb.model.SupportRegion" %><%@
-page import="com.liferay.osb.model.SupportResponse" %><%@
 page import="com.liferay.osb.service.AccountEntryLocalServiceUtil" %><%@
-page import="com.liferay.osb.service.AccountEntryServiceUtil" %><%@
-page import="com.liferay.osb.service.AccountWorkerLocalServiceUtil" %><%@
-page import="com.liferay.osb.service.LicenseEntryLocalServiceUtil" %><%@
-page import="com.liferay.osb.service.LicenseKeyLocalServiceUtil" %><%@
-page import="com.liferay.osb.service.LicenseKeyServiceUtil" %><%@
-page import="com.liferay.osb.service.LicenseKeySetLocalServiceUtil" %><%@
-page import="com.liferay.osb.service.LicenseKeySetServiceUtil" %><%@
-page import="com.liferay.osb.service.OfferingEntryLocalServiceUtil" %><%@
-page import="com.liferay.osb.service.ProductEntryLocalServiceUtil" %><%@
-page import="com.liferay.osb.service.SupportRegionLocalServiceUtil" %><%@
-page import="com.liferay.osb.service.SupportResponseLocalServiceUtil" %><%@
-page import="com.liferay.osb.service.permission.OSBAccountEntryPermission" %><%@
-page import="com.liferay.osb.service.permission.OSBLicenseKeyPermission" %><%@
-page import="com.liferay.osb.service.permission.OSBLicenseKeySetPermission" %><%@
 page import="com.liferay.osb.support.util.SupportUtil" %><%@
 page import="com.liferay.osb.util.OSBActionKeys" %><%@
-page import="com.liferay.osb.util.OSBConstants" %><%@
 page import="com.liferay.osb.util.OSBPortletKeys" %><%@
-page import="com.liferay.osb.util.WorkflowConstants" %><%@
-page import="com.liferay.osb.util.comparator.LicenseKeyExpirationDateComparator" %><%@
-page import="com.liferay.portal.kernel.bean.BeanParamUtil" %><%@
-page import="com.liferay.portal.kernel.dao.orm.CustomSQLParam" %><%@
 page import="com.liferay.portal.kernel.dao.orm.QueryUtil" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
-page import="com.liferay.portal.kernel.language.UnicodeLanguageUtil" %><%@
-page import="com.liferay.portal.kernel.model.Address" %><%@
 page import="com.liferay.portal.kernel.model.ListType" %><%@
-page import="com.liferay.portal.kernel.model.User" %><%@
-page import="com.liferay.portal.kernel.portlet.LiferayWindowState" %><%@
 page import="com.liferay.portal.kernel.service.ListTypeServiceUtil" %><%@
-page import="com.liferay.portal.kernel.service.OrganizationLocalServiceUtil" %><%@
-page import="com.liferay.portal.kernel.service.RoleLocalServiceUtil" %><%@
-page import="com.liferay.portal.kernel.service.UserLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.service.permission.PortletPermissionUtil" %><%@
-page import="com.liferay.portal.kernel.servlet.SessionMessages" %><%@
 page import="com.liferay.portal.kernel.util.ArrayUtil" %><%@
-page import="com.liferay.portal.kernel.util.CalendarFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.util.Constants" %><%@
-page import="com.liferay.portal.kernel.util.FastDateFormatFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
-page import="com.liferay.portal.kernel.util.HttpUtil" %><%@
-page import="com.liferay.portal.kernel.util.ListUtil" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
 page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
 page import="com.liferay.portal.kernel.util.PrefsParamUtil" %><%@
-page import="com.liferay.portal.kernel.util.StringBundler" %><%@
-page import="com.liferay.portal.kernel.util.StringPool" %><%@
 page import="com.liferay.portal.kernel.util.StringUtil" %><%@
-page import="com.liferay.portal.kernel.util.Time" %><%@
-page import="com.liferay.portal.kernel.util.TimeZoneUtil" %><%@
-page import="com.liferay.portal.kernel.util.UnicodeFormatter" %><%@
-page import="com.liferay.portal.kernel.util.Validator" %><%@
-page import="com.liferay.portal.kernel.util.WebKeys" %><%@
-page import="com.liferay.portal.kernel.util.comparator.UserFirstNameComparator" %><%@
-page import="com.liferay.util.dao.orm.CustomSQLUtil" %>
+page import="com.liferay.portal.kernel.util.WebKeys" %>
 
-<%@ page import="java.text.DateFormat" %><%@
-page import="java.text.Format" %>
-
-<%@ page import="java.util.ArrayList" %><%@
-page import="java.util.Arrays" %><%@
-page import="java.util.Calendar" %><%@
-page import="java.util.Date" %><%@
-page import="java.util.LinkedHashMap" %><%@
+<%@ page import="java.util.LinkedHashMap" %><%@
 page import="java.util.List" %><%@
 page import="java.util.Set" %>
 
-<%@ page import="javax.portlet.PortletURL" %><%@
-page import="javax.portlet.WindowState" %>
+<%@ page import="javax.portlet.WindowState" %>
 
 <liferay-theme:defineObjects />
 
 <portlet:defineObjects />
-
-<%
-WindowState windowState = renderRequest.getWindowState();
-
-String currentURL = PortalUtil.getCurrentURL(request);
-
-Format longDateFormatDate = FastDateFormatFactoryUtil.getDate(DateFormat.LONG, locale, timeZone);
-
-Format longDateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(DateFormat.LONG, DateFormat.LONG, locale, timeZone);
-
-Format longDateFormatTime = FastDateFormatFactoryUtil.getTime(DateFormat.LONG, locale, timeZone);
-%>

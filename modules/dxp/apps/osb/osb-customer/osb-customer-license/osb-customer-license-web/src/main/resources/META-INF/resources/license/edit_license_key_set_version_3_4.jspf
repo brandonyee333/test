@@ -136,13 +136,13 @@
 		<aui:col md="4">
 			<span class="bold uppercase"><liferay-ui:message key="maximum-concurrent-users" />:</span>
 
-			<%= LanguageUtil.get(request, OfferingDefinitionConstants.getMaxConcurrentUsersLabel(licenseKey.getMaxConcurrentUsers())) %>
+			<%= LanguageUtil.get(request, LicenseKeyConstants.getMaxConcurrentUsersLabel(licenseKey.getMaxConcurrentUsers())) %>
 		</aui:col>
 
 		<aui:col md="4">
 			<span class="bold uppercase"><liferay-ui:message key="maximum-users" />:</span>
 
-			<%= LanguageUtil.get(request, OfferingDefinitionConstants.getMaxUsersLabel(licenseKey.getMaxUsers())) %>
+			<%= LanguageUtil.get(request, LicenseKeyConstants.getMaxUsersLabel(licenseKey.getMaxUsers())) %>
 		</aui:col>
 	</c:if>
 

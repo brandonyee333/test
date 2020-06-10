@@ -7,4 +7,5 @@ Export-Package:\
 	com.liferay.osb.customer.license.model,\
 	com.liferay.osb.customer.license.service,\
 	com.liferay.osb.customer.license.service.persistence,\
+	com.liferay.osb.customer.license.util,\
 	com.liferay.osb.customer.license.util.comparator

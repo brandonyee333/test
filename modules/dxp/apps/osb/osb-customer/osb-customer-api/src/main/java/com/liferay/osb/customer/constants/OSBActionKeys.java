@@ -22,11 +22,10 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
  */
 public class OSBActionKeys extends ActionKeys {
 
-	public static final String ADD_LICENSE =
-		"ADD_LICENSE";
-
 	public static final String ADD_ACCOUNT_ENVIRONMENT =
 		"ADD_ACCOUNT_ENVIRONMENT";
+
+	public static final String ADD_LICENSE = "ADD_LICENSE";
 
 	public static final String ADD_LICENSE_KEY_SET = "ADD_LICENSE_KEY_SET";
 

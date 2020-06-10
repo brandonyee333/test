@@ -35,6 +35,18 @@
 							</div>
 						</td>
 					</tr>
+					<tr>
+						<td>
+							<div id="<portlet:namespace />dosiseraAccountKeyContainer">
+								<aui:input label="dossiera-account-key" name="<%= displayTerms.DOSSIERA_ACCOUNT_KEY %>" size="20" type="text" value="<%= displayTerms.getDossieraAccountKey() %>" />
+							</div>
+						</td>
+						<td>
+							<div id="<portlet:namespace />koroniekiAccountKeyContainer">
+								<aui:input label="koroneiki-account-key" name="<%= displayTerms.KORONEIKI_ACCOUNT_KEY %>" size="20" type="text" value="<%= displayTerms.getKoroneikiAccountKey() %>" />
+							</div>
+						</td>
+					</tr>
 				</table>
 			</td>
 		</tr>

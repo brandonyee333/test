@@ -357,9 +357,10 @@
 
 		<!-- Other fields -->
 
-		<column name="koroneikiProductKey" type="String" />
+		<column accessor="true" name="koroneikiProductKey" type="String" />
 		<column name="name" type="String" />
 		<column name="environment" type="int" />
+		<column name="licenses" type="boolean" />
 		<column name="versionsListType" type="String" />
 
 		<!-- Order -->
@@ -378,6 +379,9 @@
 		</finder>
 		<finder name="Environment" return-type="Collection">
 			<finder-column name="environment" />
+		</finder>
+		<finder name="Licenses" return-type="Collection">
+			<finder-column name="licenses" />
 		</finder>
 	</entity>
 	<entity local-service="true" name="SupportRegion" remote-service="true">

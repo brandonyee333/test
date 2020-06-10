@@ -1,4 +1,7 @@
 Bundle-Name: Liferay OSB Customer Koroneiki API
 Bundle-SymbolicName: com.liferay.osb.customer.koroneiki.api
 Bundle-Version: 1.0.0
-Export-Package: com.liferay.osb.customer.koroneiki.constants
+Export-Package:\
+	com.liferay.osb.customer.koroneiki.constants,\
+	com.liferay.osb.customer.koroneiki.service,\
+	com.liferay.osb.customer.koroneiki.service.permission

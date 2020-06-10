@@ -22,6 +22,8 @@
 
 		<column name="licenseKeySetId" type="long" />
 		<column name="assetReceiptLicenseUuid" type="String" />
+		<column name="koroneikiAccountKey" type="String" />
+		<column name="koroneikiProductPurchaseKey" type="String" />
 		<column name="accountEntryId" type="long" />
 		<column name="orderEntryId" type="long" />
 		<column name="offeringEntryId" type="long" />
@@ -66,6 +68,9 @@
 
 		<finder name="LicenseKeySetId" return-type="Collection">
 			<finder-column name="licenseKeySetId" />
+		</finder>
+		<finder name="KoroneikiProductPurchaseKey" return-type="Collection">
+			<finder-column name="koroneikiProductPurchaseKey" />
 		</finder>
 		<finder name="AccountEntryId" return-type="Collection">
 			<finder-column name="accountEntryId" />
@@ -154,6 +159,7 @@
 
 		<!-- Other fields -->
 
+		<column name="koroneikiAccountKey" type="String" />
 		<column name="accountEntryId" type="long" />
 		<column name="name" type="String" />
 

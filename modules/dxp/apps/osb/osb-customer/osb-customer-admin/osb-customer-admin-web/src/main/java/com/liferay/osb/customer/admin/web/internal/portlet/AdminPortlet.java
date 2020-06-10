@@ -406,6 +406,7 @@ public class AdminPortlet extends MVCPortlet {
 		String koroneikiProductKey = ParamUtil.getString(
 			actionRequest, "koroneikiProductKey");
 		int environment = ParamUtil.getInteger(actionRequest, "environment");
+		boolean licenses = ParamUtil.getBoolean(actionRequest, "licenses");
 		String versionsListType = ParamUtil.getString(
 			actionRequest, "versionsListType");
 		String zendeskTag = ParamUtil.getString(actionRequest, "zendeskTag");
@@ -415,7 +416,7 @@ public class AdminPortlet extends MVCPortlet {
 		if (productEntryId <= 0) {
 			productEntry = _productEntryLocalService.addProductEntry(
 				themeDisplay.getUserId(), koroneikiProductKey, null,
-				environment, versionsListType, zendeskTag);
+				environment, licenses, versionsListType, zendeskTag);
 		}
 		else {
 			productEntry = _productEntryLocalService.getProductEntry(
@@ -423,7 +424,7 @@ public class AdminPortlet extends MVCPortlet {
 
 			_productEntryLocalService.updateProductEntry(
 				productEntryId, koroneikiProductKey, productEntry.getName(),
-				environment, versionsListType, zendeskTag);
+				environment, licenses, versionsListType, zendeskTag);
 		}
 
 		Product product = _productWebService.fetchProduct(koroneikiProductKey);

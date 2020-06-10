@@ -54,6 +54,30 @@ public class LicenseKeySetLocalServiceImpl
 		return licenseKeySetPersistence.update(licenseKeySet);
 	}
 
+	public LicenseKeySet addLicenseKeySet(
+			long userId, String koroneikiAccountKey, String name)
+		throws PortalException {
+
+		User user = userLocalService.getUser(userId);
+		Date now = new Date();
+
+		validate(name);
+
+		long licenseKeySetId = counterLocalService.increment();
+
+		LicenseKeySet licenseKeySet = licenseKeySetPersistence.create(
+			licenseKeySetId);
+
+		licenseKeySet.setUserId(user.getUserId());
+		licenseKeySet.setUserName(user.getFullName());
+		licenseKeySet.setCreateDate(now);
+		licenseKeySet.setModifiedDate(now);
+		licenseKeySet.setKoroneikiAccountKey(koroneikiAccountKey);
+		licenseKeySet.setName(name);
+
+		return licenseKeySetPersistence.update(licenseKeySet);
+	}
+
 	@Override
 	public LicenseKeySet deleteLicenseKeySet(LicenseKeySet licenseKeySet)
 		throws PortalException {

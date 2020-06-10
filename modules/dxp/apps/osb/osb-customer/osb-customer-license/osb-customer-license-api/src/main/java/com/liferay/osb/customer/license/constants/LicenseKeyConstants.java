@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.license.constants;
 
 import com.liferay.osb.customer.admin.constants.LicenseEntryConstants;
+import com.liferay.osb.customer.admin.constants.ProductEntryConstants;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.service.ListTypeServiceUtil;
@@ -36,6 +37,14 @@ public class LicenseKeyConstants {
 
 	public static final String SERVER_ID_TRIAL = "TRIAL";
 
+	public static final int SIZING_1 = 1;
+
+	public static final int SIZING_2 = 2;
+
+	public static final int SIZING_3 = 3;
+
+	public static final int SIZING_4 = 4;
+
 	public static final int STATE_ABSENT = 1;
 
 	public static final int STATE_EXPIRED = 2;
@@ -54,9 +63,6 @@ public class LicenseKeyConstants {
 
 	public static int getLicenseVersion(
 		ProductEntry productEntry, int productVersion) {
-
-		/*
-		TODO
 
 		if (productEntry.isCommerce()) {
 			return getAppLicenseVersion();
@@ -88,7 +94,6 @@ public class LicenseKeyConstants {
 
 			return 2;
 		}
-		*/
 
 		return 1;
 	}
@@ -101,6 +106,22 @@ public class LicenseKeyConstants {
 		}
 
 		return 0;
+	}
+
+	public static String getMaxConcurrentUsersLabel(long maxConcurrentUsers) {
+		if (maxConcurrentUsers <= 0) {
+			return "unlimited";
+		}
+
+		return String.valueOf(maxConcurrentUsers);
+	}
+
+	public static String getMaxUsersLabel(long maxUsers) {
+		if (maxUsers <= 0) {
+			return "unlimited";
+		}
+
+		return String.valueOf(maxUsers);
 	}
 
 	public static String getProductVersionLabel(int productVersion) {
@@ -143,6 +164,23 @@ public class LicenseKeyConstants {
 		else {
 			return StringPool.BLANK;
 		}
+	}
+
+	public static String getSizingLabel(int sizing) {
+		if (sizing == SIZING_1) {
+			return "sizing-1";
+		}
+		else if (sizing == SIZING_2) {
+			return "sizing-2";
+		}
+		else if (sizing == SIZING_3) {
+			return "sizing-3";
+		}
+		else if (sizing == SIZING_4) {
+			return "sizing-4";
+		}
+
+		return StringPool.BLANK;
 	}
 
 }

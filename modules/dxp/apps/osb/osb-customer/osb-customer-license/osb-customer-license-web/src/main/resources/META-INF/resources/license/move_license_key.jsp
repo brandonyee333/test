@@ -25,9 +25,9 @@ long licenseKeyId = ParamUtil.getLong(request, "licenseKeyId");
 
 LicenseKey licenseKey = LicenseKeyServiceUtil.getLicenseKey(licenseKeyId);
 
-OfferingEntry offeringEntry = licenseKey.getOfferingEntry();
+//OfferingEntry offeringEntry = licenseKey.getOfferingEntry();
 
-ProductEntry productEntry = ProductEntryLocalServiceUtil.fetchProductEntry(offeringEntry.getProductEntryId());
+//ProductEntry productEntry = ProductEntryLocalServiceUtil.fetchProductEntry(offeringEntry.getProductEntryId());
 
 PortletURL portletURL = renderResponse.createRenderURL();
 
@@ -41,6 +41,7 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 		document.<portlet:namespace />fm.<portlet:namespace />offeringEntryId.value = offeringEntryId;
 		submitForm(document.<portlet:namespace />fm);
 	}
+
 </script>
 
 <portlet:actionURL name="updateLicenseKey" var="updateLicenseKeyURL">
@@ -74,9 +75,10 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 
 			params.put("validLicense", new Long[] {0L, 0L});
 
-			List<OfferingEntryGroup> offeringEntryGroups = OfferingEntryGroupFactoryUtil.createOfferingEntryGroups(0, licenseKey.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+			//List<OfferingEntryGroup> offeringEntryGroups = OfferingEntryGroupFactoryUtil.createOfferingEntryGroups(0, licenseKey.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 			%>
 
+			<%--
 			<liferay-ui:search-container
 				delta="<%= 10 %>"
 				headerNames="name,type,start-date,lifetime,license-keys-available"
@@ -162,6 +164,8 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 					markupView="lexicon"
 				/>
 			</liferay-ui:search-container>
+			--%>
+
 		</aui:form>
 	</aui:row>
 </div>

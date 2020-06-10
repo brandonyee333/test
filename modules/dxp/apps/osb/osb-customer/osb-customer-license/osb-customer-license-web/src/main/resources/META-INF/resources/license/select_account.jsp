@@ -21,35 +21,35 @@ String callback = ParamUtil.getString(request, "callback");
 
 PortletURL portletURL = renderResponse.createRenderURL();
 
-portletURL.setParameter("mvcPath", "/license/select_account_entry.jsp");
+portletURL.setParameter("mvcPath", "/license/select_account.jsp");
 portletURL.setParameter("callback", callback);
 %>
 
 <aui:form action="<%= portletURL.toString() %>" method="post" name="fm">
 	<liferay-ui:tabs
-		names="projects"
+		names="accounts"
 	/>
 
 	<liferay-ui:search-container
 		headerNames="name,code"
-		searchContainer="<%= new AccountEntrySearch(renderRequest, portletURL) %>"
+		searchContainer="<%= new AccountSearch(renderRequest, portletURL) %>"
 	>
 
 		<%
-		AccountEntryDisplayTerms displayTerms = (AccountEntryDisplayTerms)searchContainer.getDisplayTerms();
-		AccountEntrySearchTerms searchTerms = (AccountEntrySearchTerms)searchContainer.getSearchTerms();
+		AccountDisplayTerms displayTerms = (AccountDisplayTerms)searchContainer.getDisplayTerms();
+		AccountSearchTerms searchTerms = (AccountSearchTerms)searchContainer.getSearchTerms();
 		%>
 
-		<%@ include file="/license/account_entry_search.jspf" %>
+		<%@ include file="/license/account_search.jspf" %>
 
 		<liferay-ui:search-container-results>
-			<%@ include file="/license/account_entry_search_results.jspf" %>
+			<%@ include file="/license/account_search_results.jspf" %>
 		</liferay-ui:search-container-results>
 
 		<liferay-ui:search-container-row
-			className="com.liferay.osb.customer.admin.model.AccountEntry"
-			keyProperty="accountEntryId"
-			modelVar="accountEntry"
+			className="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account"
+			keyProperty="key"
+			modelVar="koroneikiAccount"
 		>
 
 			<%
@@ -59,11 +59,11 @@ portletURL.setParameter("callback", callback);
 			sb.append(renderResponse.getNamespace());
 			sb.append(callback);
 			sb.append("('");
-			sb.append(accountEntry.getAccountEntryId());
+			sb.append(koroneikiAccount.getKey());
 			sb.append("', '");
-			sb.append(UnicodeFormatter.toString(accountEntry.getName()));
+			sb.append(UnicodeFormatter.toString(koroneikiAccount.getName()));
 			sb.append("', '");
-			sb.append(UnicodeFormatter.toString(accountEntry.getCode()));
+			sb.append(UnicodeFormatter.toString(koroneikiAccount.getCode()));
 			sb.append("'); window.close();");
 
 			String rowHREF = sb.toString();
@@ -71,8 +71,8 @@ portletURL.setParameter("callback", callback);
 
 			<liferay-ui:search-container-column-text
 				href="<%= rowHREF %>"
-				name="project"
-				value="<%= HtmlUtil.escape(accountEntry.getName()) %>"
+				name="account"
+				value="<%= HtmlUtil.escape(koroneikiAccount.getName()) %>"
 			/>
 
 			<liferay-ui:search-container-column-text

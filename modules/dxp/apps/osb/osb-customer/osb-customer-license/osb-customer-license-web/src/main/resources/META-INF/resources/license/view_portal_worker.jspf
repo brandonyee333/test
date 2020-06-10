@@ -39,6 +39,7 @@ pageContext.setAttribute("searchURL", searchURL);
 
 	<aui:button cssClass="btn-generate-new-license btn-sm" onClick="<%= addLicenseKeyURL %>" primary="<%= true %>" value="generate-new-license" />
 
+<%--
 	<div class="license-worker">
 		<liferay-ui:search-container
 			searchContainer="<%= new LicenseKeySearch(renderRequest, portletURL) %>"
@@ -154,4 +155,6 @@ pageContext.setAttribute("searchURL", searchURL);
 			/>
 		</liferay-ui:search-container>
 	</div>
+--%>
+
 </aui:form>

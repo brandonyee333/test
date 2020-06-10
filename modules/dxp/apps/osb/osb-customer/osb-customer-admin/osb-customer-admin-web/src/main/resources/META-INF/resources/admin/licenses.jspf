@@ -53,8 +53,14 @@
 		<liferay-ui:search-container-column-text
 			href="<%= rowURL %>"
 			name="product"
-			property="productEntry.name"
-		/>
+		>
+
+			<%
+			ProductEntry productEntry = ProductEntryLocalServiceUtil.getProductEntry(licenseEntry.getProductEntryId());
+			%>
+
+			<%= productEntry.getName() %>
+		</liferay-ui:search-container-column-text>
 
 		<liferay-ui:search-container-column-text
 			href="<%= rowURL %>"

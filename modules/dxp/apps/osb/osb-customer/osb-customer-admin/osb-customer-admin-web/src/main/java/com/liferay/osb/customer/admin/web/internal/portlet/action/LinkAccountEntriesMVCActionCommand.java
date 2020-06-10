@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.List;
 
@@ -56,7 +57,8 @@ public class LinkAccountEntriesMVCActionCommand extends BaseMVCActionCommand {
 
 		for (AccountEntry accountEntry : accountEntries) {
 			List<Account> accounts = _accountWebService.search(
-				"code eq '" + accountEntry.getCode() + "'", 1, 1000, null);
+				StringPool.BLANK, "code eq '" + accountEntry.getCode() + "'", 1,
+				1000, null);
 
 			if (accounts.isEmpty()) {
 				_log.error(

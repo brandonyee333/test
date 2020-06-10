@@ -15,7 +15,7 @@
 --%>
 
 <%
-boolean licenseAdmin = AccountWorkerLocalServiceUtil.hasAccountWorkerRole(user.getUserId(), AccountWorkerConstants.ROLE_SALES) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE_OSB_ACCOUNT_ADMIN_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE_OSB_TRIAL_LICENSE_ADMIN_ID);
+boolean licenseAdmin = true;//AccountWorkerLocalServiceUtil.hasAccountWorkerRole(user.getUserId(), AccountWorkerConstants.ROLE_SALES) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE_OSB_ACCOUNT_ADMIN_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE_OSB_TRIAL_LICENSE_ADMIN_ID);
 
 int rowLength = 4;
 

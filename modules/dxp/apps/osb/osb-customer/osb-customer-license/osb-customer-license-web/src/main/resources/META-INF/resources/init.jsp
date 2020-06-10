@@ -23,24 +23,23 @@ taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
-<%@ page import="com.liferay.osb.customer.admin.constants.AccountEntryConstants" %><%@
-page import="com.liferay.osb.customer.admin.constants.LicenseEntryConstants" %><%@
+<%@ page import="com.liferay.osb.customer.admin.constants.LicenseEntryConstants" %><%@
 page import="com.liferay.osb.customer.admin.constants.ProductEntryConstants" %><%@
 page import="com.liferay.osb.customer.admin.constants.WorkflowConstants" %><%@
-page import="com.liferay.osb.customer.admin.exception.NoSuchAccountEntryException" %><%@
-page import="com.liferay.osb.customer.admin.exception.NoSuchLicenseEntryException" %><%@
-page import="com.liferay.osb.customer.admin.exception.NoSuchProductEntryException" %><%@
 page import="com.liferay.osb.customer.admin.model.AccountEntry" %><%@
 page import="com.liferay.osb.customer.admin.model.LicenseEntry" %><%@
 page import="com.liferay.osb.customer.admin.model.ProductEntry" %><%@
 page import="com.liferay.osb.customer.admin.service.AccountEntryLocalServiceUtil" %><%@
-page import="com.liferay.osb.customer.admin.service.AccountEntryServiceUtil" %><%@
 page import="com.liferay.osb.customer.admin.service.LicenseEntryLocalServiceUtil" %><%@
 page import="com.liferay.osb.customer.admin.service.ProductEntryLocalServiceUtil" %><%@
 page import="com.liferay.osb.customer.admin.service.permission.AccountEntryPermission" %><%@
-page import="com.liferay.osb.customer.admin.util.comparator.AccountEntryNameComparator" %><%@
 page import="com.liferay.osb.customer.constants.OSBActionKeys" %><%@
 page import="com.liferay.osb.customer.constants.OSBCustomerConstants" %><%@
+page import="com.liferay.osb.customer.koroneiki.service.permission.AccountPermission" %><%@
+page import="com.liferay.osb.customer.koroneiki.web.service.AccountWebService" %><%@
+page import="com.liferay.osb.customer.koroneiki.web.service.ProductConsumptionWebService" %><%@
+page import="com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseViewWebService" %><%@
+page import="com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService" %><%@
 page import="com.liferay.osb.customer.license.constants.LicenseKeyConstants" %><%@
 page import="com.liferay.osb.customer.license.exception.DuplicateHostNameException" %><%@
 page import="com.liferay.osb.customer.license.exception.DuplicateIPAddressException" %><%@
@@ -55,7 +54,6 @@ page import="com.liferay.osb.customer.license.exception.LicenseKeyProductVersion
 page import="com.liferay.osb.customer.license.exception.LicenseKeyServerIdException" %><%@
 page import="com.liferay.osb.customer.license.exception.LicenseKeySetNameException" %><%@
 page import="com.liferay.osb.customer.license.exception.MaximumLicenseKeyException" %><%@
-page import="com.liferay.osb.customer.license.exception.NoSuchLicenseKeySetException" %><%@
 page import="com.liferay.osb.customer.license.model.LicenseKey" %><%@
 page import="com.liferay.osb.customer.license.model.LicenseKeySet" %><%@
 page import="com.liferay.osb.customer.license.service.LicenseKeyLocalServiceUtil" %><%@
@@ -65,16 +63,21 @@ page import="com.liferay.osb.customer.license.service.LicenseKeySetServiceUtil" 
 page import="com.liferay.osb.customer.license.service.permission.LicenseKeyPermission" %><%@
 page import="com.liferay.osb.customer.license.service.permission.LicenseKeySetPermission" %><%@
 page import="com.liferay.osb.customer.license.util.LicenseUtil" %><%@
-page import="com.liferay.osb.customer.license.web.internal.search.AccountEntryDisplayTerms" %><%@
-page import="com.liferay.osb.customer.license.web.internal.search.AccountEntrySearch" %><%@
-page import="com.liferay.osb.customer.license.web.internal.search.AccountEntrySearchTerms" %><%@
+page import="com.liferay.osb.customer.license.web.internal.display.context.ProductPurchaseDisplay" %><%@
+page import="com.liferay.osb.customer.license.web.internal.search.AccountDisplayTerms" %><%@
+page import="com.liferay.osb.customer.license.web.internal.search.AccountSearch" %><%@
+page import="com.liferay.osb.customer.license.web.internal.search.AccountSearchTerms" %><%@
 page import="com.liferay.osb.customer.license.web.internal.search.LicenseKeyDisplayTerms" %><%@
 page import="com.liferay.osb.customer.license.web.internal.search.LicenseKeySearch" %><%@
 page import="com.liferay.osb.customer.license.web.internal.search.LicenseKeySearchTerms" %><%@
 page import="com.liferay.osb.customer.license.web.internal.search.UserDisplayTerms" %><%@
 page import="com.liferay.osb.customer.license.web.internal.search.UserSearch" %><%@
+page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account" %><%@
+page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product" %><%@
+page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductConsumption" %><%@
+page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase" %><%@
+page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView" %><%@
 page import="com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil" %><%@
-page import="com.liferay.portal.kernel.bean.BeanParamUtil" %><%@
 page import="com.liferay.portal.kernel.dao.orm.CustomSQLParam" %><%@
 page import="com.liferay.portal.kernel.dao.orm.QueryUtil" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
@@ -108,8 +111,10 @@ page import="java.text.Format" %>
 <%@ page import="java.util.ArrayList" %><%@
 page import="java.util.Calendar" %><%@
 page import="java.util.Date" %><%@
+page import="java.util.HashMap" %><%@
 page import="java.util.LinkedHashMap" %><%@
-page import="java.util.List" %>
+page import="java.util.List" %><%@
+page import="java.util.Map" %>
 
 <%@ page import="javax.portlet.PortletURL" %><%@
 page import="javax.portlet.WindowState" %>
@@ -119,6 +124,12 @@ page import="javax.portlet.WindowState" %>
 <portlet:defineObjects />
 
 <%
+AccountPermission accountPermission = (AccountPermission)request.getAttribute(AccountPermission.class.getName());
+AccountWebService accountWebService = (AccountWebService)request.getAttribute(AccountWebService.class.getName());
+ProductConsumptionWebService productConsumptionWebService = (ProductConsumptionWebService)request.getAttribute(ProductConsumptionWebService.class.getName());
+ProductPurchaseViewWebService productPurchaseViewWebService = (ProductPurchaseViewWebService)request.getAttribute(ProductPurchaseViewWebService.class.getName());
+ProductPurchaseWebService productPurchaseWebService = (ProductPurchaseWebService)request.getAttribute(ProductPurchaseWebService.class.getName());
+
 String currentURL = PortalUtil.getCurrentURL(request);
 
 Format longDateFormatDate = FastDateFormatFactoryUtil.getDate(DateFormat.LONG, locale, timeZone);

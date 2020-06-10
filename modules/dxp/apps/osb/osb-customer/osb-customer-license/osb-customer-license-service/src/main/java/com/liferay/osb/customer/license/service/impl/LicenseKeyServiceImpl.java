@@ -75,10 +75,12 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	}
 
 	public LicenseKey addLicenseKey(
-			long userId, long licenseKeySetId, String name,
-			long offeringEntryId, long licenseEntryId, long productEntryId,
+			long userId, long licenseKeySetId, String name, long licenseEntryId,
+			long productEntryId, String koroneikiAccountKey,
+			String koroneikiProductPurchaseKey, String accountEntryName,
 			int productVersion, long clusterId, String owner, int maxServers,
-			int maxHttpSessions, String description, String[] hostNames,
+			int maxHttpSessions, int maxConcurrentUsers, int maxUsers,
+			int sizing, String description, String[] hostNames,
 			String[] ipAddresses, String[] macAddresses, String[] serverIds,
 			Date startDate, Date expirationDate, boolean complimentary,
 			boolean active)
@@ -86,7 +88,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 		/*
 		TODO
-		OfferingEntry offeringEntry =
+		AccountEntry offeringEntry =
 			offeringEntryLocalService.getOfferingEntry(offeringEntryId);
 
 		OSBAccountEntryPermission.check(
@@ -135,7 +137,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 		return licenseKeyLocalService.addLicenseKey(
 			userId, licenseKeySetId, name, offeringEntryId, licenseEntryId,
-			productEntryId, productVersion, clusterId, owner, maxServers,
+			productEntryId, koroneikiAccountKey, koroneikiProductPurchaseKey, accountEntryName,
+			productVersion, clusterId, owner, maxServers,
 			maxHttpSessions, description, hostNames, ipAddresses, macAddresses,
 			serverIds, startDate, expirationDate, false, true);
 	}
@@ -744,7 +747,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 				TODO
 				sizing = LanguageUtil.get(
 					LocaleUtil.US,
-					OfferingEntryConstants.getSizingLabel(
+					LicenseKeyConstants.getSizingLabel(
 						licenseKey.getSizing()));
 				*/
 			}
@@ -894,7 +897,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		}
 	}
 
-	@ServiceReference
+	@ServiceReference(type = LicenseEntryLocalService.class)
 	private LicenseEntryLocalService _licenseEntryLocalService;
 
 }

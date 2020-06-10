@@ -73,7 +73,7 @@ public class OSBCustomSQLUtil {
 		}
 
 		if (valuesLength == 0) {
-			return StringUtil.replace(joinSQL, whereSQL, StringPool.BLANK);
+			return StringUtil.removeSubstring(joinSQL, whereSQL);
 		}
 
 		StringBundler newSqlSB = new StringBundler((valuesLength * 4) + 1);
@@ -116,8 +116,7 @@ public class OSBCustomSQLUtil {
 		}
 
 		if ((values == null) || (values.length == 0)) {
-			return StringUtil.replace(
-				sql, oldSqlSB.toString(), StringPool.BLANK);
+			return StringUtil.removeSubstring(sql, oldSqlSB.toString());
 		}
 
 		StringBundler newSqlSB = new StringBundler((values.length * 4) + 3);

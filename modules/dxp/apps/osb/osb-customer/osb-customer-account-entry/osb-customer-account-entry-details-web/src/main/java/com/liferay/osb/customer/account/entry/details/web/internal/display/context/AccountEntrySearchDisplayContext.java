@@ -82,7 +82,8 @@ public class AccountEntrySearchDisplayContext {
 			sb.append("')");
 		}
 
-		int total = (int)_accountWebService.searchCount(sb.toString());
+		int total = (int)_accountWebService.searchCount(
+			StringPool.BLANK, sb.toString());
 
 		searchContainer.setTotal(total);
 
@@ -93,7 +94,7 @@ public class AccountEntrySearchDisplayContext {
 		}
 
 		List<Account> accounts = _accountWebService.search(
-			sb.toString(), searchContainer.getCur(),
+			StringPool.BLANK, sb.toString(), searchContainer.getCur(),
 			searchContainer.getEnd() - searchContainer.getStart(), sort);
 
 		searchContainer.setResults(accounts);

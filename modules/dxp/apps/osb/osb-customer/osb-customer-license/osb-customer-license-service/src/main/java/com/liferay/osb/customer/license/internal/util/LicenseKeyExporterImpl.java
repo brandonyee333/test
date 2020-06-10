@@ -15,10 +15,10 @@
 package com.liferay.osb.customer.license.internal.util;
 
 import com.liferay.osb.customer.admin.constants.LicenseEntryConstants;
+import com.liferay.osb.customer.license.generator.KeyGenerator;
 import com.liferay.osb.customer.license.model.LicenseKey;
 import com.liferay.osb.customer.license.model.LicenseKeySet;
 import com.liferay.osb.customer.license.service.LicenseKeyLocalService;
-import com.liferay.osb.customer.license.util.KeyGenerator;
 import com.liferay.osb.customer.license.util.LicenseKeyExporter;
 import com.liferay.osb.customer.license.util.LicenseUtil;
 import com.liferay.petra.string.CharPool;
@@ -56,7 +56,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Amos Fong
  */
-@Component(service = LicenseKeyExporter.class)
+@Component(immediate = true, service = LicenseKeyExporter.class)
 public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 
 	public static String trimText(String text) {

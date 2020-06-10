@@ -23,6 +23,9 @@ import java.util.List;
  */
 public interface ProductPurchaseWebService {
 
+	public ProductPurchase getProductPurchase(String productPurchaseKey)
+		throws Exception;
+
 	public List<ProductPurchase> search(
 			String filterString, int page, int pageSize)
 		throws Exception;

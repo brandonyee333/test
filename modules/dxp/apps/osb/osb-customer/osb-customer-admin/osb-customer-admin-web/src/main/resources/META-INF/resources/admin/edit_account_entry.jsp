@@ -22,7 +22,7 @@ AccountEntry accountEntry = (AccountEntry)request.getAttribute(CustomerAdminWebK
 Account koroneikiAccount = null;
 
 if ((accountEntry != null) && Validator.isNotNull(accountEntry.getKoroneikiAccountKey())) {
-	koroneikiAccount = accountWebService.getAccount(accountEntry.getKoroneikiAccountKey());
+	koroneikiAccount = accountWebService.fetchAccount(accountEntry.getKoroneikiAccountKey());
 }
 
 String detailTab = ParamUtil.getString(request, "detailTab");

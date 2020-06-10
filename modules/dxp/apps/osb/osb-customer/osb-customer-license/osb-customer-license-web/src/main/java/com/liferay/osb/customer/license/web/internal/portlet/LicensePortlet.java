@@ -15,6 +15,11 @@
 package com.liferay.osb.customer.license.web.internal.portlet;
 
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.koroneiki.service.permission.AccountPermission;
+import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ProductConsumptionWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseViewWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.customer.license.exception.DuplicateHostNameException;
 import com.liferay.osb.customer.license.exception.DuplicateIPAddressException;
 import com.liferay.osb.customer.license.exception.DuplicateMACAddressException;
@@ -26,7 +31,6 @@ import com.liferay.osb.customer.license.exception.LicenseKeyMaxServersException;
 import com.liferay.osb.customer.license.exception.LicenseKeyOwnerException;
 import com.liferay.osb.customer.license.exception.LicenseKeyProductVersionException;
 import com.liferay.osb.customer.license.exception.LicenseKeyRegistrationException;
-import com.liferay.osb.customer.license.exception.LicenseKeyRenewException;
 import com.liferay.osb.customer.license.exception.LicenseKeyServerIdException;
 import com.liferay.osb.customer.license.exception.LicenseKeySetNameException;
 import com.liferay.osb.customer.license.exception.MaximumLicenseKeyException;
@@ -36,18 +40,15 @@ import com.liferay.osb.customer.license.service.LicenseKeyLocalService;
 import com.liferay.osb.customer.license.service.LicenseKeyService;
 import com.liferay.osb.customer.license.service.LicenseKeySetService;
 import com.liferay.osb.customer.license.util.LicenseKeyExporter;
-import com.liferay.osb.customer.license.util.LicenseUtil;
 import com.liferay.osb.customer.license.web.internal.constants.CustomerLicensePortletKeys;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
-import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
@@ -60,10 +61,8 @@ import com.liferay.portal.kernel.util.WebKeys;
 import java.io.IOException;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -103,91 +102,26 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class LicensePortlet extends MVCPortlet {
 
-	public void buyLicenseKey(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
+	@Override
+	public void render(
+			RenderRequest renderRequest, RenderResponse renderResponse)
+		throws IOException, PortletException {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
+		renderRequest.setAttribute(
+			AccountPermission.class.getName(), _accountPermission);
+		renderRequest.setAttribute(
+			AccountWebService.class.getName(), _accountWebService);
+		renderRequest.setAttribute(
+			ProductConsumptionWebService.class.getName(),
+			_productConsumptionWebService);
+		renderRequest.setAttribute(
+			ProductPurchaseViewWebService.class.getName(),
+			_productPurchaseViewWebService);
+		renderRequest.setAttribute(
+			ProductPurchaseWebService.class.getName(),
+			_productPurchaseWebService);
 
-		_licenseKeyLocalService.buyLicenseKey(
-			themeDisplay.getCompanyId(), themeDisplay.getUserId());
-
-		SessionMessages.add(actionRequest, "purchased");
-
-		addSuccessMessage(actionRequest, actionResponse);
-
-		sendRedirect(actionRequest, actionResponse);
-	}
-
-	public void renewLicenseKey(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		User user = themeDisplay.getUser();
-
-		long licenseKeyId = ParamUtil.getLong(actionRequest, "licenseKeyId");
-
-		LicenseKey licenseKey = null;
-
-		if (licenseKeyId > 0) {
-			int renewTime = ParamUtil.getInteger(
-				actionRequest, "renewTime_" + licenseKeyId);
-
-			int startDay = ParamUtil.getInteger(
-				actionRequest, "startDay_" + licenseKeyId);
-			int startMonth = ParamUtil.getInteger(
-				actionRequest, "startMonth_" + licenseKeyId);
-			int startYear = ParamUtil.getInteger(
-				actionRequest, "startYear_" + licenseKeyId);
-
-			Calendar cal = Calendar.getInstance(
-				TimeZone.getTimeZone(user.getTimeZoneId()));
-
-			cal.set(startYear, startMonth, startDay);
-
-			licenseKey = _licenseKeyService.renewLicenseKey(
-				licenseKeyId, cal.getTime(), renewTime);
-		}
-		else {
-			long licenseKeySetId = ParamUtil.getLong(
-				actionRequest, "licenseKeySetId");
-
-			if (!LicenseUtil.isRenewAggregate(licenseKeySetId)) {
-				throw new LicenseKeyRenewException();
-			}
-
-			int renewTime = ParamUtil.getInteger(
-				actionRequest, "aggregateRenewTime");
-
-			int startDay = ParamUtil.getInteger(
-				actionRequest, "aggregateStartDay");
-			int startMonth = ParamUtil.getInteger(
-				actionRequest, "aggregateStartMonth");
-			int startYear = ParamUtil.getInteger(
-				actionRequest, "aggregateStartYear");
-
-			Calendar cal = Calendar.getInstance(
-				TimeZone.getTimeZone(user.getTimeZoneId()));
-
-			cal.set(startYear, startMonth, startDay);
-
-			List<LicenseKey> licenseKeys =
-				_licenseKeyLocalService.getLicenseKeySetLicenseKeys(
-					licenseKeySetId);
-
-			for (LicenseKey curLicenseKey : licenseKeys) {
-				if (!curLicenseKey.isActive()) {
-					continue;
-				}
-
-				licenseKey = _licenseKeyService.renewLicenseKey(
-					curLicenseKey.getLicenseKeyId(), cal.getTime(), renewTime);
-			}
-		}
+		super.render(renderRequest, renderResponse);
 	}
 
 	@Override
@@ -226,10 +160,16 @@ public class LicensePortlet extends MVCPortlet {
 		long licenseKeySetId = ParamUtil.getLong(
 			actionRequest, "licenseKeySetId");
 		String name = ParamUtil.getString(actionRequest, "name");
-		long offeringEntryId = ParamUtil.getLong(
-			actionRequest, "offeringEntryId");
 		long licenseEntryId = ParamUtil.getLong(
 			actionRequest, "licenseEntryId");
+		long productEntryId = ParamUtil.getLong(
+			actionRequest, "productEntryId");
+		String koroneikiAccountKey = ParamUtil.getString(
+			actionRequest, "koroneikiAccountKey");
+		String koroneikiProductPurchaseKey = ParamUtil.getString(
+			actionRequest, "koroneikiProductPurchaseKey");
+		String accountEntryName = ParamUtil.getString(
+			actionRequest, "accountEntryName");
 		long clusterId = ParamUtil.getLong(actionRequest, "clusterId");
 		int productVersion = ParamUtil.getInteger(
 			actionRequest, "productVersion");
@@ -237,6 +177,10 @@ public class LicensePortlet extends MVCPortlet {
 		int maxServers = ParamUtil.getInteger(actionRequest, "maxServers");
 		int maxHttpSessions = ParamUtil.getInteger(
 			actionRequest, "maxHttpSessions");
+		int maxConcurrentUsers = ParamUtil.getInteger(
+			actionRequest, "maxConcurrentUsers");
+		int maxUsers = ParamUtil.getInteger(actionRequest, "maxUsers");
+		int sizing = ParamUtil.getInteger(actionRequest, "sizing");
 		String description = ParamUtil.getString(actionRequest, "description");
 		String[] serverIds = StringUtil.split(
 			ParamUtil.getString(actionRequest, "serverIds"), "\n");
@@ -245,10 +189,19 @@ public class LicensePortlet extends MVCPortlet {
 		int startDateDay = ParamUtil.getInteger(actionRequest, "startDateDay");
 		int startDateYear = ParamUtil.getInteger(
 			actionRequest, "startDateYear");
+		int expirationDateMonth = ParamUtil.getInteger(
+			actionRequest, "expirationDateMonth");
+		int expirationDateDay = ParamUtil.getInteger(
+			actionRequest, "expirationDateDay");
+		int expirationDateYear = ParamUtil.getInteger(
+			actionRequest, "expirationDateYear");
 		boolean active = ParamUtil.getBoolean(actionRequest, "active");
 
 		Date startDate = _portal.getDate(
 			startDateMonth, startDateDay, startDateYear,
+			themeDisplay.getTimeZone(), (Class<? extends PortalException>)null);
+		Date expirationDate = _portal.getDate(
+			expirationDateMonth, expirationDateDay, expirationDateYear,
 			themeDisplay.getTimeZone(), (Class<? extends PortalException>)null);
 
 		List<String> hostNames = new ArrayList<>();
@@ -309,9 +262,11 @@ public class LicensePortlet extends MVCPortlet {
 			}
 
 			licenseKey = _licenseKeyService.addLicenseKey(
-				themeDisplay.getUserId(), licenseKeySetId, name,
-				offeringEntryId, licenseEntryId, 0, productVersion, clusterId,
-				owner, maxServers, maxHttpSessions, description,
+				themeDisplay.getUserId(), licenseKeySetId, name, licenseEntryId,
+				productEntryId, koroneikiAccountKey,
+				koroneikiProductPurchaseKey, accountEntryName, productVersion,
+				clusterId, owner, maxServers, maxHttpSessions,
+				maxConcurrentUsers, maxUsers, sizing, description,
 				hostNames.toArray(new String[0]),
 				ipAddresses.toArray(new String[0]),
 				macAddresses.toArray(new String[0]), serverIds, startDate,
@@ -320,13 +275,11 @@ public class LicensePortlet extends MVCPortlet {
 			actionRequest.setAttribute("clusterId", licenseKey.getClusterId());
 			actionRequest.setAttribute(
 				"licenseKeySetId", licenseKey.getLicenseKeySetId());
-			actionRequest.setAttribute(
-				"offeringEntryId", licenseKey.getOfferingEntryId());
 		}
 		else {
-			licenseKey = _licenseKeyService.updateLicenseKey(
-				themeDisplay.getUserId(), licenseKeyId, licenseKeySetId,
-				offeringEntryId, name, active);
+			//licenseKey = _licenseKeyService.updateLicenseKey(
+			//	themeDisplay.getUserId(), licenseKeyId, licenseKeySetId,
+			//	offeringEntryId, name, active);
 		}
 	}
 
@@ -538,6 +491,12 @@ public class LicensePortlet extends MVCPortlet {
 	private static final Log _log = LogFactoryUtil.getLog(LicensePortlet.class);
 
 	@Reference
+	private AccountPermission _accountPermission;
+
+	@Reference
+	private AccountWebService _accountWebService;
+
+	@Reference
 	private LicenseKeyExporter _licenseKeyExporter;
 
 	@Reference
@@ -554,5 +513,14 @@ public class LicensePortlet extends MVCPortlet {
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private ProductConsumptionWebService _productConsumptionWebService;
+
+	@Reference
+	private ProductPurchaseViewWebService _productPurchaseViewWebService;
+
+	@Reference
+	private ProductPurchaseWebService _productPurchaseWebService;
 
 }

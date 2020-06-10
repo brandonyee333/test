@@ -12,12 +12,12 @@
  *
  */
 
-package com.liferay.osb.customer.license.internal.util;
+package com.liferay.osb.customer.license.generator.internal;
 
 import com.liferay.osb.customer.admin.constants.LicenseEntryConstants;
+import com.liferay.osb.customer.admin.constants.ProductEntryConstants;
+import com.liferay.osb.customer.license.generator.KeyGenerator;
 import com.liferay.osb.customer.license.model.LicenseKey;
-import com.liferay.osb.customer.license.service.LicenseKeyLocalService;
-import com.liferay.osb.customer.license.util.KeyGenerator;
 import com.liferay.petra.encryptor.Encryptor;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
@@ -34,6 +34,7 @@ import java.security.MessageDigest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,13 +45,12 @@ import java.util.UUID;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
  * @author Amos Fong
  */
-@Component(service = KeyGenerator.class)
+@Component(immediate = true, service = KeyGenerator.class)
 public class KeyGeneratorImpl implements KeyGenerator {
 
 	public Properties decryptServerId(byte[] bytes) throws Exception {
@@ -95,17 +95,18 @@ public class KeyGeneratorImpl implements KeyGenerator {
 			serverIds[0] = licenseKey.getServerId();
 		}
 		else {
-			List<LicenseKey> clusterLicenseKeys =
-				_licenseKeyLocalService.getOfferingEntryLicenseKeys(
-					licenseKey.getOfferingEntryId(), licenseKey.getClusterId());
+			/*			List<LicenseKey> clusterLicenseKeys =
+							_licenseKeyLocalService.getOfferingEntryLicenseKeys(
+								licenseKey.getOfferingEntryId(), licenseKey.getClusterId());
 
-			serverIds = new String[clusterLicenseKeys.size()];
+						serverIds = new String[clusterLicenseKeys.size()];
 
-			for (int i = 0; i < clusterLicenseKeys.size(); i++) {
-				LicenseKey clusterLicenseKey = clusterLicenseKeys.get(i);
+						for (int i = 0; i < clusterLicenseKeys.size(); i++) {
+							LicenseKey clusterLicenseKey = clusterLicenseKeys.get(i);
 
-				serverIds[i] = clusterLicenseKey.getServerId();
-			}
+							serverIds[i] = clusterLicenseKey.getServerId();
+						}
+			*/
 		}
 
 		Map<String, String> properties = getProperties(
@@ -122,9 +123,6 @@ public class KeyGeneratorImpl implements KeyGenerator {
 
 		// See LRDCOM-2568
 
-		/*
-		TODO
-
 		if (licenseKey.getProductVersion() ==
 				ProductEntryConstants.PORTAL_VERSION_6_1_10) {
 
@@ -140,7 +138,6 @@ public class KeyGeneratorImpl implements KeyGenerator {
 				properties.put("productVersion", "6.1");
 			}
 		}
-		*/
 
 		return properties;
 	}
@@ -236,9 +233,6 @@ public class KeyGeneratorImpl implements KeyGenerator {
 			}
 		}
 		else if (licenseVersion >= 3) {
-			/*
-			TODO
-
 			if (productId.equals(ProductEntryConstants.PRODUCT_ID_PORTAL)) {
 				properties.put("accountEntryName", accountEntryName);
 				properties.put("licenseEntryName", licenseEntryName);
@@ -248,7 +242,6 @@ public class KeyGeneratorImpl implements KeyGenerator {
 				properties.put("productId", productId);
 				properties.put("productVersion", productVersionLabel);
 			}
-			*/
 
 			properties.put(
 				"expirationDate", String.valueOf(expirationDate.getTime()));
@@ -284,14 +277,11 @@ public class KeyGeneratorImpl implements KeyGenerator {
 			}
 
 			if ((licenseVersion >= 6) && (sizing > 0)) {
-				/*
-				TODO
 				properties.put(
 					"instanceSize",
 					LanguageUtil.get(
 						LocaleUtil.US,
-						OfferingEntryConstants.getSizingLabel(sizing)));
-				*/
+						LicenseKeyConstants.getSizingLabel(sizing)));
 			}
 
 			if (licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) ||
@@ -361,7 +351,7 @@ public class KeyGeneratorImpl implements KeyGenerator {
 			String[] keys = StringUtil.split(
 				StringUtil.read(
 					classLoader,
-					"com/liferay/osb/customer/license/internal/util/keys.txt"),
+					"com/liferay/osb/customer/license/generator/internal/keys.txt"),
 				StringPool.NEW_LINE);
 
 			_keys[0] = (Key)Base64.stringToObject(keys[175]);
@@ -476,29 +466,21 @@ public class KeyGeneratorImpl implements KeyGenerator {
 			digests.set(i, digest);
 		}
 
-		/*
-		TODO
-
 		if (Validator.isNull(productId) ||
 			productId.equals(ProductEntryConstants.PRODUCT_ID_PORTAL)) {
 
 			return _interweaveDigest(digests);
 		}
-		*/
 
 		return _digestsToString(digests);
 	}
 
 	private String _getAlgorithm(String productId, int i) {
-		/*
-		TODO
-
 		if (Validator.isNull(productId) ||
 			productId.equals(ProductEntryConstants.PRODUCT_ID_PORTAL)) {
 
 			return _ALGORITHMS[i % _ALGORITHMS.length];
 		}
-		*/
 
 		return _ALGORITHMS[2];
 	}
@@ -585,8 +567,5 @@ public class KeyGeneratorImpl implements KeyGenerator {
 		KeyGeneratorImpl.class);
 
 	private final Key[] _keys = new Key[3];
-
-	@Reference
-	private LicenseKeyLocalService _licenseKeyLocalService;
 
 }

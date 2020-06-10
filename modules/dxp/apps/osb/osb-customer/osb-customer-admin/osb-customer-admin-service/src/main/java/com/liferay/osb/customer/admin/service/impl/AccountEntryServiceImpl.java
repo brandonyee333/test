@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.LinkedHashMap;
@@ -101,7 +102,7 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 
 		try {
 			List<Account> accounts = _accountWebService.search(
-				"code eq '" + code + "'", 1, 10, null);
+				StringPool.BLANK, "code eq '" + code + "'", 1, 10, null);
 
 			for (Account account : accounts) {
 				AccountEntry accountEntry =
