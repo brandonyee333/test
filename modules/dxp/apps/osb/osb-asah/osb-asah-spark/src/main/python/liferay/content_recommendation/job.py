@@ -12,7 +12,7 @@
 from ..common.spark import BaseSparkJob
 
 from pyspark.sql import Window
-from pyspark.sql.functions import col, count, unix_timestamp
+from pyspark.sql.functions import col, count, current_date, datediff, expr, unix_timestamp
 
 import datetime
 
@@ -70,6 +70,12 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 
 		self._minimum_interactions_threshold = 3
 		self._minimum_view_duration_threshold = 5000
+		self._training_periods = {
+		    'LAST_7_DAYS': 7,
+		    'LAST_30_DAYS': 30,
+		    'LAST_180_DAYS': 180,
+		    'LAST_365_DAYS': 365
+		}
 
 	def _get_expression(self, filter_string, negate):
 		tokens = [token for token in filter_string.split(' ') if len(token) > 0]
@@ -105,6 +111,13 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 
 		return " AND ".join(expressions)
 
+	def _get_max_event_date_delta(self):
+		job_run = self.spark_application.job_run
+
+		job = job_run.get('job')
+
+		return self._training_periods.get(job.get('trainingPeriod'))
+
 	def run(self):
 		spark_application = self.spark_application
 
@@ -119,7 +132,11 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 
 		analytics_events_data_frame = data_frame_reader.json(
 		    analytics_events_storage_path
-		).filter(self._get_filter_expresssions()).filter(
+		).withColumn(
+		    'delta_days', datediff(current_date(), expr("to_date(eventDate)"))
+		).filter(col('delta_days') <= self._get_max_event_date_delta()).filter(
+		    self._get_filter_expresssions()
+		).filter(
 		    col('eventProperties.viewDuration') >=
 		    self._minimum_view_duration_threshold
 		).withColumn(
