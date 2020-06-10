@@ -38,6 +38,11 @@
 	<td>//input[contains(@id,'articleViewPermissionsCheckEnabled') and @type='checkbox']</td>
 	<td></td>
 </tr>
+<tr>
+	<td>VALIDATE_MISSING_REFERENCES_CHECKBOX</td>
+	<td>//input[contains(@id,'validateMissingReferences') and @type='checkbox']</td>
+	<td></td>
+</tr>
 </tbody>
 </table>
 </body>
