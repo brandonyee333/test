@@ -70,7 +70,7 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 
 		self._minimum_interactions_threshold = 3
 		self._minimum_view_duration_threshold = 5000
-		self._training_periods = {
+		self._training_periods_days_delta = {
 		    'LAST_7_DAYS': 7,
 		    'LAST_30_DAYS': 30,
 		    'LAST_180_DAYS': 180,
@@ -111,12 +111,12 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 
 		return " AND ".join(expressions)
 
-	def _get_max_event_date_delta(self):
+	def _get_maximum_days_delta(self):
 		job_run = self.spark_application.job_run
 
 		job = job_run.get('job')
 
-		return self._training_periods.get(job.get('trainingPeriod'))
+		return self._training_periods_days_delta.get(job.get('trainingPeriod'))
 
 	def run(self):
 		spark_application = self.spark_application
@@ -131,7 +131,7 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		        spark_application.args.lcp_project_id
 		    )
 		).withColumn(
-		    'delta_days', datediff(current_date(), expr("to_date(eventDate)"))
+		    'days_delta', datediff(current_date(), expr("to_date(eventDate)"))
 		).withColumn(
 		    'interactions',
 		    count('userId').over(Window.partitionBy('userId'))
@@ -142,7 +142,7 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		)
 
 		analytics_events_data_frame = analytics_events_data_frame.filter(
-		    col('delta_days') <= self._get_max_event_date_delta()
+		    col('days_delta') <= self._get_maximum_days_delta()
 		)
 
 		analytics_events_data_frame = analytics_events_data_frame.filter(
