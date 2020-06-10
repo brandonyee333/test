@@ -125,24 +125,34 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 
 		data_frame_reader = spark_session.read
 
-		analytics_events_storage_path = '{}/{}/*'.format(
-		    spark_application.configuration.get('google.storage.path'),
-		    spark_application.args.lcp_project_id
-		)
-
 		analytics_events_data_frame = data_frame_reader.json(
-		    analytics_events_storage_path
+		    '{}/{}/*'.format(
+		        spark_application.configuration.get('google.storage.path'),
+		        spark_application.args.lcp_project_id
+		    )
 		).withColumn(
 		    'delta_days', datediff(current_date(), expr("to_date(eventDate)"))
-		).filter(col('delta_days') <= self._get_max_event_date_delta()).filter(
-		    self._get_filter_expresssions()
-		).filter(
-		    col('eventProperties.viewDuration') >=
-		    self._minimum_view_duration_threshold
 		).withColumn(
 		    'interactions',
 		    count('userId').over(Window.partitionBy('userId'))
-		).filter(col('interactions') >= self._minimum_interactions_threshold)
+		)
+
+		analytics_events_data_frame = analytics_events_data_frame.filter(
+		    self._get_filter_expresssions()
+		)
+
+		analytics_events_data_frame = analytics_events_data_frame.filter(
+		    col('delta_days') <= self._get_max_event_date_delta()
+		)
+
+		analytics_events_data_frame = analytics_events_data_frame.filter(
+		    col('eventProperties.viewDuration') >=
+		    self._minimum_view_duration_threshold
+		)
+
+		analytics_events_data_frame = analytics_events_data_frame.filter(
+		    col('interactions') >= self._minimum_interactions_threshold
+		)
 
 		analytics_events_data_frame.createOrReplaceTempView('analytics_events')
 
