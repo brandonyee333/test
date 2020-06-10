@@ -71,6 +71,43 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		self._minimum_interactions_threshold = 3
 		self._minimum_view_duration_threshold = 5000
 
+	def _get_expression(self, filter_string, negate):
+		tokens = [token for token in filter_string.split(' ') if len(token) > 0]
+
+		if tokens[1] == '=':
+			expression = '(context.`{}` = "{}")'.format(tokens[0], tokens[2])
+		else:
+			expression = '(rlike(context.`{}`, "{}"))'.format(
+			    tokens[0], tokens[2]
+			)
+
+		if negate:
+			return '({} == False)'.format(expression)
+		else:
+			return expression
+
+	def _get_filter_expresssions(self):
+		job_run = self.spark_application.job_run
+
+		job = job_run.get('job')
+
+		expressions = []
+
+		for parameter in job.get('parameters'):
+			if parameter.get('name') == 'excludeFilter':
+				expressions.append(
+				    self._get_expression(parameter.get('value'), True)
+				)
+			elif parameter.get('name') == 'includeFilter':
+				expressions.append(
+				    self._get_expression(parameter.get('value'), False)
+				)
+
+		if len(expressions) == 0:
+			return expressions
+
+		return " AND ".join(expressions)
+
 	def run(self):
 		spark_application = self.spark_application
 
@@ -89,7 +126,7 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		    'article_section IS NOT NULL AND'
 		    '(context.contentLanguageId = "en-US") AND '
 		    '(eventId = "pageUnloaded")'
-		).filter(
+		).filter(self._get_filter_expresssions()).filter(
 		    col('eventProperties.viewDuration') >=
 		    self._minimum_view_duration_threshold
 		).withColumn(
