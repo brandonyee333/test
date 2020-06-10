@@ -36,6 +36,7 @@ public class LicenseKeySetSoap implements Serializable {
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
+		soapModel.setKoroneikiAccountKey(model.getKoroneikiAccountKey());
 		soapModel.setAccountEntryId(model.getAccountEntryId());
 		soapModel.setName(model.getName());
 
@@ -131,6 +132,14 @@ public class LicenseKeySetSoap implements Serializable {
 		_modifiedDate = modifiedDate;
 	}
 
+	public String getKoroneikiAccountKey() {
+		return _koroneikiAccountKey;
+	}
+
+	public void setKoroneikiAccountKey(String koroneikiAccountKey) {
+		_koroneikiAccountKey = koroneikiAccountKey;
+	}
+
 	public long getAccountEntryId() {
 		return _accountEntryId;
 	}
@@ -152,6 +161,7 @@ public class LicenseKeySetSoap implements Serializable {
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
+	private String _koroneikiAccountKey;
 	private long _accountEntryId;
 	private String _name;
 

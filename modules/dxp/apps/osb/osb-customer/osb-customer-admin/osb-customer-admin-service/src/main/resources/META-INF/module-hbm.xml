@@ -147,6 +147,7 @@
 		<property name="koroneikiProductKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="environment" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="licenses" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="versionsListType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.osb.customer.admin.model.impl.SupportRegionImpl" table="OSB_SupportRegion">

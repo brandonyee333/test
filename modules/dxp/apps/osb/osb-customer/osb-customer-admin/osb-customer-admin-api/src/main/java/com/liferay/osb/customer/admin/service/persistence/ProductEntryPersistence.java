@@ -281,6 +281,149 @@ public interface ProductEntryPersistence extends BasePersistence<ProductEntry> {
 	public int countByEnvironment(int environment);
 
 	/**
+	 * Returns all the product entries where licenses = &#63;.
+	 *
+	 * @param licenses the licenses
+	 * @return the matching product entries
+	 */
+	public java.util.List<ProductEntry> findByLicenses(boolean licenses);
+
+	/**
+	 * Returns a range of all the product entries where licenses = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ProductEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param licenses the licenses
+	 * @param start the lower bound of the range of product entries
+	 * @param end the upper bound of the range of product entries (not inclusive)
+	 * @return the range of matching product entries
+	 */
+	public java.util.List<ProductEntry> findByLicenses(
+		boolean licenses, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the product entries where licenses = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ProductEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param licenses the licenses
+	 * @param start the lower bound of the range of product entries
+	 * @param end the upper bound of the range of product entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching product entries
+	 */
+	public java.util.List<ProductEntry> findByLicenses(
+		boolean licenses, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<ProductEntry>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the product entries where licenses = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ProductEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param licenses the licenses
+	 * @param start the lower bound of the range of product entries
+	 * @param end the upper bound of the range of product entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching product entries
+	 */
+	public java.util.List<ProductEntry> findByLicenses(
+		boolean licenses, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<ProductEntry>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first product entry in the ordered set where licenses = &#63;.
+	 *
+	 * @param licenses the licenses
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching product entry
+	 * @throws NoSuchProductEntryException if a matching product entry could not be found
+	 */
+	public ProductEntry findByLicenses_First(
+			boolean licenses,
+			com.liferay.portal.kernel.util.OrderByComparator<ProductEntry>
+				orderByComparator)
+		throws NoSuchProductEntryException;
+
+	/**
+	 * Returns the first product entry in the ordered set where licenses = &#63;.
+	 *
+	 * @param licenses the licenses
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching product entry, or <code>null</code> if a matching product entry could not be found
+	 */
+	public ProductEntry fetchByLicenses_First(
+		boolean licenses,
+		com.liferay.portal.kernel.util.OrderByComparator<ProductEntry>
+			orderByComparator);
+
+	/**
+	 * Returns the last product entry in the ordered set where licenses = &#63;.
+	 *
+	 * @param licenses the licenses
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching product entry
+	 * @throws NoSuchProductEntryException if a matching product entry could not be found
+	 */
+	public ProductEntry findByLicenses_Last(
+			boolean licenses,
+			com.liferay.portal.kernel.util.OrderByComparator<ProductEntry>
+				orderByComparator)
+		throws NoSuchProductEntryException;
+
+	/**
+	 * Returns the last product entry in the ordered set where licenses = &#63;.
+	 *
+	 * @param licenses the licenses
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching product entry, or <code>null</code> if a matching product entry could not be found
+	 */
+	public ProductEntry fetchByLicenses_Last(
+		boolean licenses,
+		com.liferay.portal.kernel.util.OrderByComparator<ProductEntry>
+			orderByComparator);
+
+	/**
+	 * Returns the product entries before and after the current product entry in the ordered set where licenses = &#63;.
+	 *
+	 * @param productEntryId the primary key of the current product entry
+	 * @param licenses the licenses
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next product entry
+	 * @throws NoSuchProductEntryException if a product entry with the primary key could not be found
+	 */
+	public ProductEntry[] findByLicenses_PrevAndNext(
+			long productEntryId, boolean licenses,
+			com.liferay.portal.kernel.util.OrderByComparator<ProductEntry>
+				orderByComparator)
+		throws NoSuchProductEntryException;
+
+	/**
+	 * Removes all the product entries where licenses = &#63; from the database.
+	 *
+	 * @param licenses the licenses
+	 */
+	public void removeByLicenses(boolean licenses);
+
+	/**
+	 * Returns the number of product entries where licenses = &#63;.
+	 *
+	 * @param licenses the licenses
+	 * @return the number of matching product entries
+	 */
+	public int countByLicenses(boolean licenses);
+
+	/**
 	 * Caches the product entry in the entity cache if it is enabled.
 	 *
 	 * @param productEntry the product entry

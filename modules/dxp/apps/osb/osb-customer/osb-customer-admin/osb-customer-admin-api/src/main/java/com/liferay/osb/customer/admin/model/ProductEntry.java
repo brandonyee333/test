@@ -57,6 +57,25 @@ public interface ProductEntry extends PersistedModel, ProductEntryModel {
 			}
 
 		};
+	public static final Accessor<ProductEntry, String>
+		KORONEIKI_PRODUCT_KEY_ACCESSOR = new Accessor<ProductEntry, String>() {
+
+			@Override
+			public String get(ProductEntry productEntry) {
+				return productEntry.getKoroneikiProductKey();
+			}
+
+			@Override
+			public Class<String> getAttributeClass() {
+				return String.class;
+			}
+
+			@Override
+			public Class<ProductEntry> getTypeClass() {
+				return ProductEntry.class;
+			}
+
+		};
 
 	public java.util.List<com.liferay.portal.kernel.model.ListType>
 		getAllVersionsListTypes();

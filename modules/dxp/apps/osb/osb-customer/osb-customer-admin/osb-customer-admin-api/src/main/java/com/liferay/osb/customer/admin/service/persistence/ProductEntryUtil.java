@@ -422,6 +422,178 @@ public class ProductEntryUtil {
 	}
 
 	/**
+	 * Returns all the product entries where licenses = &#63;.
+	 *
+	 * @param licenses the licenses
+	 * @return the matching product entries
+	 */
+	public static List<ProductEntry> findByLicenses(boolean licenses) {
+		return getPersistence().findByLicenses(licenses);
+	}
+
+	/**
+	 * Returns a range of all the product entries where licenses = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ProductEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param licenses the licenses
+	 * @param start the lower bound of the range of product entries
+	 * @param end the upper bound of the range of product entries (not inclusive)
+	 * @return the range of matching product entries
+	 */
+	public static List<ProductEntry> findByLicenses(
+		boolean licenses, int start, int end) {
+
+		return getPersistence().findByLicenses(licenses, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the product entries where licenses = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ProductEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param licenses the licenses
+	 * @param start the lower bound of the range of product entries
+	 * @param end the upper bound of the range of product entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching product entries
+	 */
+	public static List<ProductEntry> findByLicenses(
+		boolean licenses, int start, int end,
+		OrderByComparator<ProductEntry> orderByComparator) {
+
+		return getPersistence().findByLicenses(
+			licenses, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the product entries where licenses = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ProductEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param licenses the licenses
+	 * @param start the lower bound of the range of product entries
+	 * @param end the upper bound of the range of product entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching product entries
+	 */
+	public static List<ProductEntry> findByLicenses(
+		boolean licenses, int start, int end,
+		OrderByComparator<ProductEntry> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByLicenses(
+			licenses, start, end, orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first product entry in the ordered set where licenses = &#63;.
+	 *
+	 * @param licenses the licenses
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching product entry
+	 * @throws NoSuchProductEntryException if a matching product entry could not be found
+	 */
+	public static ProductEntry findByLicenses_First(
+			boolean licenses, OrderByComparator<ProductEntry> orderByComparator)
+		throws com.liferay.osb.customer.admin.exception.
+			NoSuchProductEntryException {
+
+		return getPersistence().findByLicenses_First(
+			licenses, orderByComparator);
+	}
+
+	/**
+	 * Returns the first product entry in the ordered set where licenses = &#63;.
+	 *
+	 * @param licenses the licenses
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching product entry, or <code>null</code> if a matching product entry could not be found
+	 */
+	public static ProductEntry fetchByLicenses_First(
+		boolean licenses, OrderByComparator<ProductEntry> orderByComparator) {
+
+		return getPersistence().fetchByLicenses_First(
+			licenses, orderByComparator);
+	}
+
+	/**
+	 * Returns the last product entry in the ordered set where licenses = &#63;.
+	 *
+	 * @param licenses the licenses
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching product entry
+	 * @throws NoSuchProductEntryException if a matching product entry could not be found
+	 */
+	public static ProductEntry findByLicenses_Last(
+			boolean licenses, OrderByComparator<ProductEntry> orderByComparator)
+		throws com.liferay.osb.customer.admin.exception.
+			NoSuchProductEntryException {
+
+		return getPersistence().findByLicenses_Last(
+			licenses, orderByComparator);
+	}
+
+	/**
+	 * Returns the last product entry in the ordered set where licenses = &#63;.
+	 *
+	 * @param licenses the licenses
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching product entry, or <code>null</code> if a matching product entry could not be found
+	 */
+	public static ProductEntry fetchByLicenses_Last(
+		boolean licenses, OrderByComparator<ProductEntry> orderByComparator) {
+
+		return getPersistence().fetchByLicenses_Last(
+			licenses, orderByComparator);
+	}
+
+	/**
+	 * Returns the product entries before and after the current product entry in the ordered set where licenses = &#63;.
+	 *
+	 * @param productEntryId the primary key of the current product entry
+	 * @param licenses the licenses
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next product entry
+	 * @throws NoSuchProductEntryException if a product entry with the primary key could not be found
+	 */
+	public static ProductEntry[] findByLicenses_PrevAndNext(
+			long productEntryId, boolean licenses,
+			OrderByComparator<ProductEntry> orderByComparator)
+		throws com.liferay.osb.customer.admin.exception.
+			NoSuchProductEntryException {
+
+		return getPersistence().findByLicenses_PrevAndNext(
+			productEntryId, licenses, orderByComparator);
+	}
+
+	/**
+	 * Removes all the product entries where licenses = &#63; from the database.
+	 *
+	 * @param licenses the licenses
+	 */
+	public static void removeByLicenses(boolean licenses) {
+		getPersistence().removeByLicenses(licenses);
+	}
+
+	/**
+	 * Returns the number of product entries where licenses = &#63;.
+	 *
+	 * @param licenses the licenses
+	 * @return the number of matching product entries
+	 */
+	public static int countByLicenses(boolean licenses) {
+		return getPersistence().countByLicenses(licenses);
+	}
+
+	/**
 	 * Caches the product entry in the entity cache if it is enabled.
 	 *
 	 * @param productEntry the product entry

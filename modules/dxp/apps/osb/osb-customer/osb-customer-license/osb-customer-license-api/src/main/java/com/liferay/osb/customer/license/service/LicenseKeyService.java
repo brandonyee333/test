@@ -68,12 +68,15 @@ public interface LicenseKeyService extends BaseService {
 		throws PortalException;
 
 	public LicenseKey addLicenseKey(
-			long userId, long licenseKeySetId, String name,
-			long offeringEntryId, long licenseEntryId, long productEntryId,
+			long userId, long licenseKeySetId, String name, long licenseEntryId,
+			long productEntryId, String koroneikiAccountKey,
+			String koroneikiProductPurchaseKey, String accountEntryName,
 			int productVersion, long clusterId, String owner, int maxServers,
-			int maxHttpSessions, String description, String[] hostNames,
+			int maxHttpSessions, int maxConcurrentUsers, int maxUsers,
+			int sizing, String description, String[] hostNames,
 			String[] ipAddresses, String[] macAddresses, String[] serverIds,
-			Date startDate, boolean complimentary, boolean active)
+			Date startDate, Date expirationDate, boolean complimentary,
+			boolean active)
 		throws PortalException;
 
 	@JSONWebService

@@ -146,6 +146,21 @@ public interface LicenseKeySetModel extends BaseModel<LicenseKeySet> {
 	public void setModifiedDate(Date modifiedDate);
 
 	/**
+	 * Returns the koroneiki account key of this license key set.
+	 *
+	 * @return the koroneiki account key of this license key set
+	 */
+	@AutoEscape
+	public String getKoroneikiAccountKey();
+
+	/**
+	 * Sets the koroneiki account key of this license key set.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key of this license key set
+	 */
+	public void setKoroneikiAccountKey(String koroneikiAccountKey);
+
+	/**
 	 * Returns the account entry ID of this license key set.
 	 *
 	 * @return the account entry ID of this license key set

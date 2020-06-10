@@ -61,7 +61,7 @@ public class LicenseKeyCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(85);
+		StringBundler sb = new StringBundler(89);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -83,6 +83,10 @@ public class LicenseKeyCacheModel
 		sb.append(licenseKeySetId);
 		sb.append(", assetReceiptLicenseUuid=");
 		sb.append(assetReceiptLicenseUuid);
+		sb.append(", koroneikiAccountKey=");
+		sb.append(koroneikiAccountKey);
+		sb.append(", koroneikiProductPurchaseKey=");
+		sb.append(koroneikiProductPurchaseKey);
 		sb.append(", accountEntryId=");
 		sb.append(accountEntryId);
 		sb.append(", orderEntryId=");
@@ -203,6 +207,21 @@ public class LicenseKeyCacheModel
 		}
 		else {
 			licenseKeyImpl.setAssetReceiptLicenseUuid(assetReceiptLicenseUuid);
+		}
+
+		if (koroneikiAccountKey == null) {
+			licenseKeyImpl.setKoroneikiAccountKey("");
+		}
+		else {
+			licenseKeyImpl.setKoroneikiAccountKey(koroneikiAccountKey);
+		}
+
+		if (koroneikiProductPurchaseKey == null) {
+			licenseKeyImpl.setKoroneikiProductPurchaseKey("");
+		}
+		else {
+			licenseKeyImpl.setKoroneikiProductPurchaseKey(
+				koroneikiProductPurchaseKey);
 		}
 
 		licenseKeyImpl.setAccountEntryId(accountEntryId);
@@ -360,6 +379,8 @@ public class LicenseKeyCacheModel
 
 		licenseKeySetId = objectInput.readLong();
 		assetReceiptLicenseUuid = objectInput.readUTF();
+		koroneikiAccountKey = objectInput.readUTF();
+		koroneikiProductPurchaseKey = objectInput.readUTF();
 
 		accountEntryId = objectInput.readLong();
 
@@ -450,6 +471,20 @@ public class LicenseKeyCacheModel
 		}
 		else {
 			objectOutput.writeUTF(assetReceiptLicenseUuid);
+		}
+
+		if (koroneikiAccountKey == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(koroneikiAccountKey);
+		}
+
+		if (koroneikiProductPurchaseKey == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(koroneikiProductPurchaseKey);
 		}
 
 		objectOutput.writeLong(accountEntryId);
@@ -596,6 +631,8 @@ public class LicenseKeyCacheModel
 	public long modifiedDate;
 	public long licenseKeySetId;
 	public String assetReceiptLicenseUuid;
+	public String koroneikiAccountKey;
+	public String koroneikiProductPurchaseKey;
 	public long accountEntryId;
 	public long orderEntryId;
 	public long offeringEntryId;

@@ -58,19 +58,50 @@ public class LicenseKeyLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.customer.license.model.LicenseKey addLicenseKey(
-			long userId, long licenseKeySetId, String name,
-			long offeringEntryId, long licenseEntryId, long productEntryId,
-			int productVersion, long clusterId, String owner, int maxServers,
-			int maxHttpSessions, String description, String[] hostNames,
-			String[] ipAddresses, String[] macAddresses, String[] serverIds,
-			java.util.Date startDate, boolean complimentary, boolean active)
+			long userId,
+			com.liferay.osb.customer.license.model.LicenseKeySet licenseKeySet,
+			String name,
+			com.liferay.osb.customer.admin.model.LicenseEntry licenseEntry,
+			com.liferay.osb.customer.admin.model.ProductEntry productEntry,
+			String koroneikiAccountKey, String koroneikiProductPurchaseKey,
+			String accountEntryName, int productVersion, long clusterId,
+			String owner, int maxServers, int maxHttpSessions,
+			int maxConcurrentUsers, int maxUsers, int sizing,
+			String description, String[] hostNames, String[] ipAddresses,
+			String[] macAddresses, String[] serverIds, java.util.Date startDate,
+			java.util.Date expirationDate, String additionalInfo,
+			boolean complimentary, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _licenseKeyLocalService.addLicenseKey(
-			userId, licenseKeySetId, name, offeringEntryId, licenseEntryId,
-			productEntryId, productVersion, clusterId, owner, maxServers,
-			maxHttpSessions, description, hostNames, ipAddresses, macAddresses,
-			serverIds, startDate, complimentary, active);
+			userId, licenseKeySet, name, licenseEntry, productEntry,
+			koroneikiAccountKey, koroneikiProductPurchaseKey, accountEntryName,
+			productVersion, clusterId, owner, maxServers, maxHttpSessions,
+			maxConcurrentUsers, maxUsers, sizing, description, hostNames,
+			ipAddresses, macAddresses, serverIds, startDate, expirationDate,
+			additionalInfo, complimentary, active);
+	}
+
+	@Override
+	public com.liferay.osb.customer.license.model.LicenseKey addLicenseKey(
+			long userId, long licenseKeySetId, String name, long licenseEntryId,
+			long productEntryId, String koroneikiAccountKey,
+			String koroneikiProductPurchaseKey, String accountEntryName,
+			int productVersion, long clusterId, String owner, int maxServers,
+			int maxHttpSessions, int maxConcurrentUsers, int maxUsers,
+			int sizing, String description, String[] hostNames,
+			String[] ipAddresses, String[] macAddresses, String[] serverIds,
+			java.util.Date startDate, java.util.Date expirationDate,
+			boolean complimentary, boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _licenseKeyLocalService.addLicenseKey(
+			userId, licenseKeySetId, name, licenseEntryId, productEntryId,
+			koroneikiAccountKey, koroneikiProductPurchaseKey, accountEntryName,
+			productVersion, clusterId, owner, maxServers, maxHttpSessions,
+			maxConcurrentUsers, maxUsers, sizing, description, hostNames,
+			ipAddresses, macAddresses, serverIds, startDate, expirationDate,
+			complimentary, active);
 	}
 
 	@Override
@@ -87,13 +118,6 @@ public class LicenseKeyLocalServiceWrapper
 			userId, assetReceiptLicenseUuid, licenseEntryType, productEntryName,
 			productId, productVersion, owner, maxUsers, description, hostName,
 			ipAddresses, macAddresses, serverId, startDate, expirationDate);
-	}
-
-	@Override
-	public void buyLicenseKey(long companyId, long userId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		_licenseKeyLocalService.buyLicenseKey(companyId, userId);
 	}
 
 	/**
@@ -355,6 +379,12 @@ public class LicenseKeyLocalServiceWrapper
 	}
 
 	@Override
+	public int getLicenseKeyCount(String koroneikiProductPurchaseKey) {
+		return _licenseKeyLocalService.getLicenseKeyCount(
+			koroneikiProductPurchaseKey);
+	}
+
+	@Override
 	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
 		getLicenseKeys(long userId, long accountEntryId) {
 
@@ -366,6 +396,14 @@ public class LicenseKeyLocalServiceWrapper
 		getLicenseKeys(long userId, String productId) {
 
 		return _licenseKeyLocalService.getLicenseKeys(userId, productId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
+		getLicenseKeys(String koroneikiProductPurchaseKey) {
+
+		return _licenseKeyLocalService.getLicenseKeys(
+			koroneikiProductPurchaseKey);
 	}
 
 	@Override

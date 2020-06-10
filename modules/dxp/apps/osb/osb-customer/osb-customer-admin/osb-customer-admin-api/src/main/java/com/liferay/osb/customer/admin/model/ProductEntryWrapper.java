@@ -63,6 +63,7 @@ public class ProductEntryWrapper
 		attributes.put("koroneikiProductKey", getKoroneikiProductKey());
 		attributes.put("name", getName());
 		attributes.put("environment", getEnvironment());
+		attributes.put("licenses", isLicenses());
 		attributes.put("versionsListType", getVersionsListType());
 
 		return attributes;
@@ -117,6 +118,12 @@ public class ProductEntryWrapper
 
 		if (environment != null) {
 			setEnvironment(environment);
+		}
+
+		Boolean licenses = (Boolean)attributes.get("licenses");
+
+		if (licenses != null) {
+			setLicenses(licenses);
 		}
 
 		String versionsListType = (String)attributes.get("versionsListType");
@@ -186,6 +193,16 @@ public class ProductEntryWrapper
 	@Override
 	public String getKoroneikiProductKey() {
 		return _productEntry.getKoroneikiProductKey();
+	}
+
+	/**
+	 * Returns the licenses of this product entry.
+	 *
+	 * @return the licenses of this product entry
+	 */
+	@Override
+	public boolean getLicenses() {
+		return _productEntry.getLicenses();
 	}
 
 	/**
@@ -350,6 +367,16 @@ public class ProductEntryWrapper
 		return _productEntry.isExtendedPremiumSupport();
 	}
 
+	/**
+	 * Returns <code>true</code> if this product entry is licenses.
+	 *
+	 * @return <code>true</code> if this product entry is licenses; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isLicenses() {
+		return _productEntry.isLicenses();
+	}
+
 	@Override
 	public boolean isManagementTools() {
 		return _productEntry.isManagementTools();
@@ -440,6 +467,16 @@ public class ProductEntryWrapper
 	@Override
 	public void setKoroneikiProductKey(String koroneikiProductKey) {
 		_productEntry.setKoroneikiProductKey(koroneikiProductKey);
+	}
+
+	/**
+	 * Sets whether this product entry is licenses.
+	 *
+	 * @param licenses the licenses of this product entry
+	 */
+	@Override
+	public void setLicenses(boolean licenses) {
+		_productEntry.setLicenses(licenses);
 	}
 
 	/**

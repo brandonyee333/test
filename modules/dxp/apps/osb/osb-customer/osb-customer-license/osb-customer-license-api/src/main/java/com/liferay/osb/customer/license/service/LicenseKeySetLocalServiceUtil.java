@@ -59,6 +59,14 @@ public class LicenseKeySetLocalServiceUtil {
 		return getService().addLicenseKeySet(userId, accountEntryId, name);
 	}
 
+	public static com.liferay.osb.customer.license.model.LicenseKeySet
+			addLicenseKeySet(
+				long userId, String koroneikiAccountKey, String name)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().addLicenseKeySet(userId, koroneikiAccountKey, name);
+	}
+
 	/**
 	 * Creates a new license key set with the primary key. Does not add the license key set to the database.
 	 *

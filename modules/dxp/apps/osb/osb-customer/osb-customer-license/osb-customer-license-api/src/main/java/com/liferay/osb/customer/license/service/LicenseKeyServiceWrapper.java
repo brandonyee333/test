@@ -43,19 +43,24 @@ public class LicenseKeyServiceWrapper
 
 	@Override
 	public com.liferay.osb.customer.license.model.LicenseKey addLicenseKey(
-			long userId, long licenseKeySetId, String name,
-			long offeringEntryId, long licenseEntryId, long productEntryId,
+			long userId, long licenseKeySetId, String name, long licenseEntryId,
+			long productEntryId, String koroneikiAccountKey,
+			String koroneikiProductPurchaseKey, String accountEntryName,
 			int productVersion, long clusterId, String owner, int maxServers,
-			int maxHttpSessions, String description, String[] hostNames,
+			int maxHttpSessions, int maxConcurrentUsers, int maxUsers,
+			int sizing, String description, String[] hostNames,
 			String[] ipAddresses, String[] macAddresses, String[] serverIds,
-			java.util.Date startDate, boolean complimentary, boolean active)
+			java.util.Date startDate, java.util.Date expirationDate,
+			boolean complimentary, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _licenseKeyService.addLicenseKey(
-			userId, licenseKeySetId, name, offeringEntryId, licenseEntryId,
-			productEntryId, productVersion, clusterId, owner, maxServers,
-			maxHttpSessions, description, hostNames, ipAddresses, macAddresses,
-			serverIds, startDate, complimentary, active);
+			userId, licenseKeySetId, name, licenseEntryId, productEntryId,
+			koroneikiAccountKey, koroneikiProductPurchaseKey, accountEntryName,
+			productVersion, clusterId, owner, maxServers, maxHttpSessions,
+			maxConcurrentUsers, maxUsers, sizing, description, hostNames,
+			ipAddresses, macAddresses, serverIds, startDate, expirationDate,
+			complimentary, active);
 	}
 
 	@Override

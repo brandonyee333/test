@@ -233,6 +233,37 @@ public interface LicenseKeyModel extends BaseModel<LicenseKey> {
 	public void setAssetReceiptLicenseUuid(String assetReceiptLicenseUuid);
 
 	/**
+	 * Returns the koroneiki account key of this license key.
+	 *
+	 * @return the koroneiki account key of this license key
+	 */
+	@AutoEscape
+	public String getKoroneikiAccountKey();
+
+	/**
+	 * Sets the koroneiki account key of this license key.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key of this license key
+	 */
+	public void setKoroneikiAccountKey(String koroneikiAccountKey);
+
+	/**
+	 * Returns the koroneiki product purchase key of this license key.
+	 *
+	 * @return the koroneiki product purchase key of this license key
+	 */
+	@AutoEscape
+	public String getKoroneikiProductPurchaseKey();
+
+	/**
+	 * Sets the koroneiki product purchase key of this license key.
+	 *
+	 * @param koroneikiProductPurchaseKey the koroneiki product purchase key of this license key
+	 */
+	public void setKoroneikiProductPurchaseKey(
+		String koroneikiProductPurchaseKey);
+
+	/**
 	 * Returns the account entry ID of this license key.
 	 *
 	 * @return the account entry ID of this license key

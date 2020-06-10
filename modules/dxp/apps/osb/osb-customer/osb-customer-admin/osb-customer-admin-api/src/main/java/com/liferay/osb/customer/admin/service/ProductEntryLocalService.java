@@ -63,7 +63,8 @@ public interface ProductEntryLocalService
 	 */
 	public ProductEntry addProductEntry(
 			long userId, String koroneikiProductKey, String name,
-			int environment, String versionsListType, String zendeskTag)
+			int environment, boolean licenses, String versionsListType,
+			String zendeskTag)
 		throws PortalException;
 
 	/**
@@ -211,6 +212,9 @@ public interface ProductEntryLocalService
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ProductEntry> getProductEntries(boolean licenses);
+
 	/**
 	 * Returns a range of all the product entries.
 	 *
@@ -268,7 +272,8 @@ public interface ProductEntryLocalService
 
 	public ProductEntry updateProductEntry(
 			long productEntryId, String koroneikiProductKey, String name,
-			int environment, String versionsListType, String zendeskTag)
+			int environment, boolean licenses, String versionsListType,
+			String zendeskTag)
 		throws PortalException;
 
 	/**

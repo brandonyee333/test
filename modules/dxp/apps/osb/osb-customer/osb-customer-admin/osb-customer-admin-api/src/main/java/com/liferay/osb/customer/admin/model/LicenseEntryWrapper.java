@@ -227,6 +227,13 @@ public class LicenseEntryWrapper
 		return _licenseEntry.getPrimaryKeyObj();
 	}
 
+	@Override
+	public ProductEntry getProductEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _licenseEntry.getProductEntry();
+	}
+
 	/**
 	 * Returns the product entry ID of this license entry.
 	 *

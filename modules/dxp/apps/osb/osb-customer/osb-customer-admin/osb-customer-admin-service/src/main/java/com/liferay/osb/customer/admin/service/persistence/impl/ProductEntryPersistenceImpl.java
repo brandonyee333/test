@@ -1062,6 +1062,506 @@ public class ProductEntryPersistenceImpl
 	private static final String _FINDER_COLUMN_ENVIRONMENT_ENVIRONMENT_2 =
 		"productEntry.environment = ?";
 
+	private FinderPath _finderPathWithPaginationFindByLicenses;
+	private FinderPath _finderPathWithoutPaginationFindByLicenses;
+	private FinderPath _finderPathCountByLicenses;
+
+	/**
+	 * Returns all the product entries where licenses = &#63;.
+	 *
+	 * @param licenses the licenses
+	 * @return the matching product entries
+	 */
+	@Override
+	public List<ProductEntry> findByLicenses(boolean licenses) {
+		return findByLicenses(
+			licenses, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the product entries where licenses = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ProductEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param licenses the licenses
+	 * @param start the lower bound of the range of product entries
+	 * @param end the upper bound of the range of product entries (not inclusive)
+	 * @return the range of matching product entries
+	 */
+	@Override
+	public List<ProductEntry> findByLicenses(
+		boolean licenses, int start, int end) {
+
+		return findByLicenses(licenses, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the product entries where licenses = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ProductEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param licenses the licenses
+	 * @param start the lower bound of the range of product entries
+	 * @param end the upper bound of the range of product entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching product entries
+	 */
+	@Override
+	public List<ProductEntry> findByLicenses(
+		boolean licenses, int start, int end,
+		OrderByComparator<ProductEntry> orderByComparator) {
+
+		return findByLicenses(licenses, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the product entries where licenses = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ProductEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param licenses the licenses
+	 * @param start the lower bound of the range of product entries
+	 * @param end the upper bound of the range of product entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching product entries
+	 */
+	@Override
+	public List<ProductEntry> findByLicenses(
+		boolean licenses, int start, int end,
+		OrderByComparator<ProductEntry> orderByComparator,
+		boolean useFinderCache) {
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByLicenses;
+				finderArgs = new Object[] {licenses};
+			}
+		}
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByLicenses;
+			finderArgs = new Object[] {licenses, start, end, orderByComparator};
+		}
+
+		List<ProductEntry> list = null;
+
+		if (useFinderCache) {
+			list = (List<ProductEntry>)finderCache.getResult(
+				finderPath, finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (ProductEntry productEntry : list) {
+					if (licenses != productEntry.isLicenses()) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(3);
+			}
+
+			sb.append(_SQL_SELECT_PRODUCTENTRY_WHERE);
+
+			sb.append(_FINDER_COLUMN_LICENSES_LICENSES_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(ProductEntryModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(licenses);
+
+				list = (List<ProductEntry>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first product entry in the ordered set where licenses = &#63;.
+	 *
+	 * @param licenses the licenses
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching product entry
+	 * @throws NoSuchProductEntryException if a matching product entry could not be found
+	 */
+	@Override
+	public ProductEntry findByLicenses_First(
+			boolean licenses, OrderByComparator<ProductEntry> orderByComparator)
+		throws NoSuchProductEntryException {
+
+		ProductEntry productEntry = fetchByLicenses_First(
+			licenses, orderByComparator);
+
+		if (productEntry != null) {
+			return productEntry;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("licenses=");
+		sb.append(licenses);
+
+		sb.append("}");
+
+		throw new NoSuchProductEntryException(sb.toString());
+	}
+
+	/**
+	 * Returns the first product entry in the ordered set where licenses = &#63;.
+	 *
+	 * @param licenses the licenses
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching product entry, or <code>null</code> if a matching product entry could not be found
+	 */
+	@Override
+	public ProductEntry fetchByLicenses_First(
+		boolean licenses, OrderByComparator<ProductEntry> orderByComparator) {
+
+		List<ProductEntry> list = findByLicenses(
+			licenses, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last product entry in the ordered set where licenses = &#63;.
+	 *
+	 * @param licenses the licenses
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching product entry
+	 * @throws NoSuchProductEntryException if a matching product entry could not be found
+	 */
+	@Override
+	public ProductEntry findByLicenses_Last(
+			boolean licenses, OrderByComparator<ProductEntry> orderByComparator)
+		throws NoSuchProductEntryException {
+
+		ProductEntry productEntry = fetchByLicenses_Last(
+			licenses, orderByComparator);
+
+		if (productEntry != null) {
+			return productEntry;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("licenses=");
+		sb.append(licenses);
+
+		sb.append("}");
+
+		throw new NoSuchProductEntryException(sb.toString());
+	}
+
+	/**
+	 * Returns the last product entry in the ordered set where licenses = &#63;.
+	 *
+	 * @param licenses the licenses
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching product entry, or <code>null</code> if a matching product entry could not be found
+	 */
+	@Override
+	public ProductEntry fetchByLicenses_Last(
+		boolean licenses, OrderByComparator<ProductEntry> orderByComparator) {
+
+		int count = countByLicenses(licenses);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<ProductEntry> list = findByLicenses(
+			licenses, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the product entries before and after the current product entry in the ordered set where licenses = &#63;.
+	 *
+	 * @param productEntryId the primary key of the current product entry
+	 * @param licenses the licenses
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next product entry
+	 * @throws NoSuchProductEntryException if a product entry with the primary key could not be found
+	 */
+	@Override
+	public ProductEntry[] findByLicenses_PrevAndNext(
+			long productEntryId, boolean licenses,
+			OrderByComparator<ProductEntry> orderByComparator)
+		throws NoSuchProductEntryException {
+
+		ProductEntry productEntry = findByPrimaryKey(productEntryId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			ProductEntry[] array = new ProductEntryImpl[3];
+
+			array[0] = getByLicenses_PrevAndNext(
+				session, productEntry, licenses, orderByComparator, true);
+
+			array[1] = productEntry;
+
+			array[2] = getByLicenses_PrevAndNext(
+				session, productEntry, licenses, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected ProductEntry getByLicenses_PrevAndNext(
+		Session session, ProductEntry productEntry, boolean licenses,
+		OrderByComparator<ProductEntry> orderByComparator, boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(3);
+		}
+
+		sb.append(_SQL_SELECT_PRODUCTENTRY_WHERE);
+
+		sb.append(_FINDER_COLUMN_LICENSES_LICENSES_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(ProductEntryModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		queryPos.add(licenses);
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(productEntry)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<ProductEntry> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the product entries where licenses = &#63; from the database.
+	 *
+	 * @param licenses the licenses
+	 */
+	@Override
+	public void removeByLicenses(boolean licenses) {
+		for (ProductEntry productEntry :
+				findByLicenses(
+					licenses, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+
+			remove(productEntry);
+		}
+	}
+
+	/**
+	 * Returns the number of product entries where licenses = &#63;.
+	 *
+	 * @param licenses the licenses
+	 * @return the number of matching product entries
+	 */
+	@Override
+	public int countByLicenses(boolean licenses) {
+		FinderPath finderPath = _finderPathCountByLicenses;
+
+		Object[] finderArgs = new Object[] {licenses};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(2);
+
+			sb.append(_SQL_COUNT_PRODUCTENTRY_WHERE);
+
+			sb.append(_FINDER_COLUMN_LICENSES_LICENSES_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(licenses);
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_LICENSES_LICENSES_2 =
+		"productEntry.licenses = ?";
+
 	public ProductEntryPersistenceImpl() {
 		setModelClass(ProductEntry.class);
 	}
@@ -1422,6 +1922,12 @@ public class ProductEntryPersistenceImpl
 			finderCache.removeResult(
 				_finderPathWithoutPaginationFindByEnvironment, args);
 
+			args = new Object[] {productEntryModelImpl.isLicenses()};
+
+			finderCache.removeResult(_finderPathCountByLicenses, args);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindByLicenses, args);
+
 			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
 			finderCache.removeResult(
 				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
@@ -1444,6 +1950,25 @@ public class ProductEntryPersistenceImpl
 				finderCache.removeResult(_finderPathCountByEnvironment, args);
 				finderCache.removeResult(
 					_finderPathWithoutPaginationFindByEnvironment, args);
+			}
+
+			if ((productEntryModelImpl.getColumnBitmask() &
+				 _finderPathWithoutPaginationFindByLicenses.
+					 getColumnBitmask()) != 0) {
+
+				Object[] args = new Object[] {
+					productEntryModelImpl.getOriginalLicenses()
+				};
+
+				finderCache.removeResult(_finderPathCountByLicenses, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByLicenses, args);
+
+				args = new Object[] {productEntryModelImpl.isLicenses()};
+
+				finderCache.removeResult(_finderPathCountByLicenses, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByLicenses, args);
 			}
 		}
 
@@ -1919,6 +2444,29 @@ public class ProductEntryPersistenceImpl
 			ProductEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByEnvironment",
 			new String[] {Integer.class.getName()});
+
+		_finderPathWithPaginationFindByLicenses = new FinderPath(
+			ProductEntryModelImpl.ENTITY_CACHE_ENABLED,
+			ProductEntryModelImpl.FINDER_CACHE_ENABLED, ProductEntryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByLicenses",
+			new String[] {
+				Boolean.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			});
+
+		_finderPathWithoutPaginationFindByLicenses = new FinderPath(
+			ProductEntryModelImpl.ENTITY_CACHE_ENABLED,
+			ProductEntryModelImpl.FINDER_CACHE_ENABLED, ProductEntryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByLicenses",
+			new String[] {Boolean.class.getName()},
+			ProductEntryModelImpl.LICENSES_COLUMN_BITMASK |
+			ProductEntryModelImpl.NAME_COLUMN_BITMASK);
+
+		_finderPathCountByLicenses = new FinderPath(
+			ProductEntryModelImpl.ENTITY_CACHE_ENABLED,
+			ProductEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByLicenses",
+			new String[] {Boolean.class.getName()});
 	}
 
 	public void destroy() {

@@ -22,6 +22,8 @@ create table OSB_LicenseKey (
 	modifiedDate DATE null,
 	licenseKeySetId LONG,
 	assetReceiptLicenseUuid VARCHAR(75) null,
+	koroneikiAccountKey VARCHAR(75) null,
+	koroneikiProductPurchaseKey VARCHAR(75) null,
 	accountEntryId LONG,
 	orderEntryId LONG,
 	offeringEntryId LONG,
@@ -62,6 +64,7 @@ create table OSB_LicenseKeySet (
 	userName VARCHAR(75) null,
 	createDate DATE null,
 	modifiedDate DATE null,
+	koroneikiAccountKey VARCHAR(75) null,
 	accountEntryId LONG,
 	name VARCHAR(75) null
 );

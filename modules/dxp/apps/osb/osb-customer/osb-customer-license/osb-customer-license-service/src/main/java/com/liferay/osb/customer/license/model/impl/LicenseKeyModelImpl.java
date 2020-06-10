@@ -78,6 +78,8 @@ public class LicenseKeyModelImpl
 		{"modifiedUserName", Types.VARCHAR}, {"modifiedDate", Types.TIMESTAMP},
 		{"licenseKeySetId", Types.BIGINT},
 		{"assetReceiptLicenseUuid", Types.VARCHAR},
+		{"koroneikiAccountKey", Types.VARCHAR},
+		{"koroneikiProductPurchaseKey", Types.VARCHAR},
 		{"accountEntryId", Types.BIGINT}, {"orderEntryId", Types.BIGINT},
 		{"offeringEntryId", Types.BIGINT}, {"licenseEntryId", Types.BIGINT},
 		{"productEntryId", Types.BIGINT}, {"supportResponseId", Types.BIGINT},
@@ -112,6 +114,8 @@ public class LicenseKeyModelImpl
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("licenseKeySetId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("assetReceiptLicenseUuid", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("koroneikiAccountKey", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("koroneikiProductPurchaseKey", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("accountEntryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("orderEntryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("offeringEntryId", Types.BIGINT);
@@ -147,7 +151,7 @@ public class LicenseKeyModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table OSB_LicenseKey (uuid_ VARCHAR(75) null,licenseKeyId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,licenseKeySetId LONG,assetReceiptLicenseUuid VARCHAR(75) null,accountEntryId LONG,orderEntryId LONG,offeringEntryId LONG,licenseEntryId LONG,productEntryId LONG,supportResponseId LONG,accountEntryName VARCHAR(500) null,licenseEntryName VARCHAR(75) null,licenseEntryType VARCHAR(75) null,licenseVersion INTEGER,productEntryName VARCHAR(75) null,productId VARCHAR(75) null,productVersion INTEGER,productVersionLabel VARCHAR(75) null,clusterId LONG,owner VARCHAR(75) null,maxServers INTEGER,maxConcurrentUsers LONG,maxUsers LONG,maxHttpSessions INTEGER,sizing INTEGER,description VARCHAR(255) null,hostName VARCHAR(75) null,ipAddresses STRING null,macAddresses STRING null,serverId STRING null,key_ STRING null,startDate DATE null,expirationDate DATE null,additionalInfo STRING null,complimentary BOOLEAN,active_ BOOLEAN)";
+		"create table OSB_LicenseKey (uuid_ VARCHAR(75) null,licenseKeyId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,licenseKeySetId LONG,assetReceiptLicenseUuid VARCHAR(75) null,koroneikiAccountKey VARCHAR(75) null,koroneikiProductPurchaseKey VARCHAR(75) null,accountEntryId LONG,orderEntryId LONG,offeringEntryId LONG,licenseEntryId LONG,productEntryId LONG,supportResponseId LONG,accountEntryName VARCHAR(500) null,licenseEntryName VARCHAR(75) null,licenseEntryType VARCHAR(75) null,licenseVersion INTEGER,productEntryName VARCHAR(75) null,productId VARCHAR(75) null,productVersion INTEGER,productVersionLabel VARCHAR(75) null,clusterId LONG,owner VARCHAR(75) null,maxServers INTEGER,maxConcurrentUsers LONG,maxUsers LONG,maxHttpSessions INTEGER,sizing INTEGER,description VARCHAR(255) null,hostName VARCHAR(75) null,ipAddresses STRING null,macAddresses STRING null,serverId STRING null,key_ STRING null,startDate DATE null,expirationDate DATE null,additionalInfo STRING null,complimentary BOOLEAN,active_ BOOLEAN)";
 
 	public static final String TABLE_SQL_DROP = "drop table OSB_LicenseKey";
 
@@ -188,23 +192,25 @@ public class LicenseKeyModelImpl
 
 	public static final long COMPLIMENTARY_COLUMN_BITMASK = 16L;
 
-	public static final long LICENSEENTRYTYPE_COLUMN_BITMASK = 32L;
+	public static final long KORONEIKIPRODUCTPURCHASEKEY_COLUMN_BITMASK = 32L;
 
-	public static final long LICENSEKEYSETID_COLUMN_BITMASK = 64L;
+	public static final long LICENSEENTRYTYPE_COLUMN_BITMASK = 64L;
 
-	public static final long OFFERINGENTRYID_COLUMN_BITMASK = 128L;
+	public static final long LICENSEKEYSETID_COLUMN_BITMASK = 128L;
 
-	public static final long PRODUCTENTRYNAME_COLUMN_BITMASK = 256L;
+	public static final long OFFERINGENTRYID_COLUMN_BITMASK = 256L;
 
-	public static final long PRODUCTID_COLUMN_BITMASK = 512L;
+	public static final long PRODUCTENTRYNAME_COLUMN_BITMASK = 512L;
 
-	public static final long SERVERID_COLUMN_BITMASK = 1024L;
+	public static final long PRODUCTID_COLUMN_BITMASK = 1024L;
 
-	public static final long USERID_COLUMN_BITMASK = 2048L;
+	public static final long SERVERID_COLUMN_BITMASK = 2048L;
 
-	public static final long UUID_COLUMN_BITMASK = 4096L;
+	public static final long USERID_COLUMN_BITMASK = 4096L;
 
-	public static final long LICENSEKEYID_COLUMN_BITMASK = 8192L;
+	public static final long UUID_COLUMN_BITMASK = 8192L;
+
+	public static final long LICENSEKEYID_COLUMN_BITMASK = 16384L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -230,6 +236,9 @@ public class LicenseKeyModelImpl
 		model.setLicenseKeySetId(soapModel.getLicenseKeySetId());
 		model.setAssetReceiptLicenseUuid(
 			soapModel.getAssetReceiptLicenseUuid());
+		model.setKoroneikiAccountKey(soapModel.getKoroneikiAccountKey());
+		model.setKoroneikiProductPurchaseKey(
+			soapModel.getKoroneikiProductPurchaseKey());
 		model.setAccountEntryId(soapModel.getAccountEntryId());
 		model.setOrderEntryId(soapModel.getOrderEntryId());
 		model.setOfferingEntryId(soapModel.getOfferingEntryId());
@@ -632,6 +641,53 @@ public class LicenseKeyModelImpl
 
 					licenseKey.setAssetReceiptLicenseUuid(
 						(String)assetReceiptLicenseUuidObject);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"koroneikiAccountKey",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getKoroneikiAccountKey();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"koroneikiAccountKey",
+			new BiConsumer<LicenseKey, Object>() {
+
+				@Override
+				public void accept(
+					LicenseKey licenseKey, Object koroneikiAccountKeyObject) {
+
+					licenseKey.setKoroneikiAccountKey(
+						(String)koroneikiAccountKeyObject);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"koroneikiProductPurchaseKey",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getKoroneikiProductPurchaseKey();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"koroneikiProductPurchaseKey",
+			new BiConsumer<LicenseKey, Object>() {
+
+				@Override
+				public void accept(
+					LicenseKey licenseKey,
+					Object koroneikiProductPurchaseKeyObject) {
+
+					licenseKey.setKoroneikiProductPurchaseKey(
+						(String)koroneikiProductPurchaseKeyObject);
 				}
 
 			});
@@ -1562,6 +1618,50 @@ public class LicenseKeyModelImpl
 
 	@JSON
 	@Override
+	public String getKoroneikiAccountKey() {
+		if (_koroneikiAccountKey == null) {
+			return "";
+		}
+		else {
+			return _koroneikiAccountKey;
+		}
+	}
+
+	@Override
+	public void setKoroneikiAccountKey(String koroneikiAccountKey) {
+		_koroneikiAccountKey = koroneikiAccountKey;
+	}
+
+	@JSON
+	@Override
+	public String getKoroneikiProductPurchaseKey() {
+		if (_koroneikiProductPurchaseKey == null) {
+			return "";
+		}
+		else {
+			return _koroneikiProductPurchaseKey;
+		}
+	}
+
+	@Override
+	public void setKoroneikiProductPurchaseKey(
+		String koroneikiProductPurchaseKey) {
+
+		_columnBitmask |= KORONEIKIPRODUCTPURCHASEKEY_COLUMN_BITMASK;
+
+		if (_originalKoroneikiProductPurchaseKey == null) {
+			_originalKoroneikiProductPurchaseKey = _koroneikiProductPurchaseKey;
+		}
+
+		_koroneikiProductPurchaseKey = koroneikiProductPurchaseKey;
+	}
+
+	public String getOriginalKoroneikiProductPurchaseKey() {
+		return GetterUtil.getString(_originalKoroneikiProductPurchaseKey);
+	}
+
+	@JSON
+	@Override
 	public long getAccountEntryId() {
 		return _accountEntryId;
 	}
@@ -2140,6 +2240,9 @@ public class LicenseKeyModelImpl
 		licenseKeyImpl.setModifiedDate(getModifiedDate());
 		licenseKeyImpl.setLicenseKeySetId(getLicenseKeySetId());
 		licenseKeyImpl.setAssetReceiptLicenseUuid(getAssetReceiptLicenseUuid());
+		licenseKeyImpl.setKoroneikiAccountKey(getKoroneikiAccountKey());
+		licenseKeyImpl.setKoroneikiProductPurchaseKey(
+			getKoroneikiProductPurchaseKey());
 		licenseKeyImpl.setAccountEntryId(getAccountEntryId());
 		licenseKeyImpl.setOrderEntryId(getOrderEntryId());
 		licenseKeyImpl.setOfferingEntryId(getOfferingEntryId());
@@ -2264,6 +2367,9 @@ public class LicenseKeyModelImpl
 		licenseKeyModelImpl._originalAssetReceiptLicenseUuid =
 			licenseKeyModelImpl._assetReceiptLicenseUuid;
 
+		licenseKeyModelImpl._originalKoroneikiProductPurchaseKey =
+			licenseKeyModelImpl._koroneikiProductPurchaseKey;
+
 		licenseKeyModelImpl._originalAccountEntryId =
 			licenseKeyModelImpl._accountEntryId;
 
@@ -2364,6 +2470,28 @@ public class LicenseKeyModelImpl
 			(assetReceiptLicenseUuid.length() == 0)) {
 
 			licenseKeyCacheModel.assetReceiptLicenseUuid = null;
+		}
+
+		licenseKeyCacheModel.koroneikiAccountKey = getKoroneikiAccountKey();
+
+		String koroneikiAccountKey = licenseKeyCacheModel.koroneikiAccountKey;
+
+		if ((koroneikiAccountKey != null) &&
+			(koroneikiAccountKey.length() == 0)) {
+
+			licenseKeyCacheModel.koroneikiAccountKey = null;
+		}
+
+		licenseKeyCacheModel.koroneikiProductPurchaseKey =
+			getKoroneikiProductPurchaseKey();
+
+		String koroneikiProductPurchaseKey =
+			licenseKeyCacheModel.koroneikiProductPurchaseKey;
+
+		if ((koroneikiProductPurchaseKey != null) &&
+			(koroneikiProductPurchaseKey.length() == 0)) {
+
+			licenseKeyCacheModel.koroneikiProductPurchaseKey = null;
 		}
 
 		licenseKeyCacheModel.accountEntryId = getAccountEntryId();
@@ -2620,6 +2748,9 @@ public class LicenseKeyModelImpl
 	private boolean _setOriginalLicenseKeySetId;
 	private String _assetReceiptLicenseUuid;
 	private String _originalAssetReceiptLicenseUuid;
+	private String _koroneikiAccountKey;
+	private String _koroneikiProductPurchaseKey;
+	private String _originalKoroneikiProductPurchaseKey;
 	private long _accountEntryId;
 	private long _originalAccountEntryId;
 	private boolean _setOriginalAccountEntryId;

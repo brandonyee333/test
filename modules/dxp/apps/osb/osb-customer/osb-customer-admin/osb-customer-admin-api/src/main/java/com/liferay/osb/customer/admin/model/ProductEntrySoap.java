@@ -39,6 +39,7 @@ public class ProductEntrySoap implements Serializable {
 		soapModel.setKoroneikiProductKey(model.getKoroneikiProductKey());
 		soapModel.setName(model.getName());
 		soapModel.setEnvironment(model.getEnvironment());
+		soapModel.setLicenses(model.isLicenses());
 		soapModel.setVersionsListType(model.getVersionsListType());
 
 		return soapModel;
@@ -157,6 +158,18 @@ public class ProductEntrySoap implements Serializable {
 		_environment = environment;
 	}
 
+	public boolean getLicenses() {
+		return _licenses;
+	}
+
+	public boolean isLicenses() {
+		return _licenses;
+	}
+
+	public void setLicenses(boolean licenses) {
+		_licenses = licenses;
+	}
+
 	public String getVersionsListType() {
 		return _versionsListType;
 	}
@@ -173,6 +186,7 @@ public class ProductEntrySoap implements Serializable {
 	private String _koroneikiProductKey;
 	private String _name;
 	private int _environment;
+	private boolean _licenses;
 	private String _versionsListType;
 
 }

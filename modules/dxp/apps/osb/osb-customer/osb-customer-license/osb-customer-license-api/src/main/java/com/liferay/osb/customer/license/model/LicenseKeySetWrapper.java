@@ -60,6 +60,7 @@ public class LicenseKeySetWrapper
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
+		attributes.put("koroneikiAccountKey", getKoroneikiAccountKey());
 		attributes.put("accountEntryId", getAccountEntryId());
 		attributes.put("name", getName());
 
@@ -96,6 +97,13 @@ public class LicenseKeySetWrapper
 
 		if (modifiedDate != null) {
 			setModifiedDate(modifiedDate);
+		}
+
+		String koroneikiAccountKey = (String)attributes.get(
+			"koroneikiAccountKey");
+
+		if (koroneikiAccountKey != null) {
+			setKoroneikiAccountKey(koroneikiAccountKey);
 		}
 
 		Long accountEntryId = (Long)attributes.get("accountEntryId");
@@ -144,6 +152,16 @@ public class LicenseKeySetWrapper
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _licenseKeySet.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the koroneiki account key of this license key set.
+	 *
+	 * @return the koroneiki account key of this license key set
+	 */
+	@Override
+	public String getKoroneikiAccountKey() {
+		return _licenseKeySet.getKoroneikiAccountKey();
 	}
 
 	/**
@@ -286,6 +304,16 @@ public class LicenseKeySetWrapper
 	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_licenseKeySet.setExpandoBridgeAttributes(serviceContext);
+	}
+
+	/**
+	 * Sets the koroneiki account key of this license key set.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key of this license key set
+	 */
+	@Override
+	public void setKoroneikiAccountKey(String koroneikiAccountKey) {
+		_licenseKeySet.setKoroneikiAccountKey(koroneikiAccountKey);
 	}
 
 	/**

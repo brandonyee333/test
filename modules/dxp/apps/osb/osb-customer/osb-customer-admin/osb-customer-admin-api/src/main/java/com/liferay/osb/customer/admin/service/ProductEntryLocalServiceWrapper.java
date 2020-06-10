@@ -36,12 +36,13 @@ public class ProductEntryLocalServiceWrapper
 	@Override
 	public com.liferay.osb.customer.admin.model.ProductEntry addProductEntry(
 			long userId, String koroneikiProductKey, String name,
-			int environment, String versionsListType, String zendeskTag)
+			int environment, boolean licenses, String versionsListType,
+			String zendeskTag)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _productEntryLocalService.addProductEntry(
-			userId, koroneikiProductKey, name, environment, versionsListType,
-			zendeskTag);
+			userId, koroneikiProductKey, name, environment, licenses,
+			versionsListType, zendeskTag);
 	}
 
 	/**
@@ -265,6 +266,13 @@ public class ProductEntryLocalServiceWrapper
 		return _productEntryLocalService.getPersistedModel(primaryKeyObj);
 	}
 
+	@Override
+	public java.util.List<com.liferay.osb.customer.admin.model.ProductEntry>
+		getProductEntries(boolean licenses) {
+
+		return _productEntryLocalService.getProductEntries(licenses);
+	}
+
 	/**
 	 * Returns a range of all the product entries.
 	 *
@@ -359,11 +367,12 @@ public class ProductEntryLocalServiceWrapper
 	@Override
 	public com.liferay.osb.customer.admin.model.ProductEntry updateProductEntry(
 			long productEntryId, String koroneikiProductKey, String name,
-			int environment, String versionsListType, String zendeskTag)
+			int environment, boolean licenses, String versionsListType,
+			String zendeskTag)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _productEntryLocalService.updateProductEntry(
-			productEntryId, koroneikiProductKey, name, environment,
+			productEntryId, koroneikiProductKey, name, environment, licenses,
 			versionsListType, zendeskTag);
 	}
 

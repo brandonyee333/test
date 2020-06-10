@@ -62,7 +62,7 @@ public class LicenseKeySetCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(15);
+		StringBundler sb = new StringBundler(17);
 
 		sb.append("{licenseKeySetId=");
 		sb.append(licenseKeySetId);
@@ -74,6 +74,8 @@ public class LicenseKeySetCacheModel
 		sb.append(createDate);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
+		sb.append(", koroneikiAccountKey=");
+		sb.append(koroneikiAccountKey);
 		sb.append(", accountEntryId=");
 		sb.append(accountEntryId);
 		sb.append(", name=");
@@ -111,6 +113,13 @@ public class LicenseKeySetCacheModel
 			licenseKeySetImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
+		if (koroneikiAccountKey == null) {
+			licenseKeySetImpl.setKoroneikiAccountKey("");
+		}
+		else {
+			licenseKeySetImpl.setKoroneikiAccountKey(koroneikiAccountKey);
+		}
+
 		licenseKeySetImpl.setAccountEntryId(accountEntryId);
 
 		if (name == null) {
@@ -133,6 +142,7 @@ public class LicenseKeySetCacheModel
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+		koroneikiAccountKey = objectInput.readUTF();
 
 		accountEntryId = objectInput.readLong();
 		name = objectInput.readUTF();
@@ -154,6 +164,13 @@ public class LicenseKeySetCacheModel
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
 
+		if (koroneikiAccountKey == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(koroneikiAccountKey);
+		}
+
 		objectOutput.writeLong(accountEntryId);
 
 		if (name == null) {
@@ -169,6 +186,7 @@ public class LicenseKeySetCacheModel
 	public String userName;
 	public long createDate;
 	public long modifiedDate;
+	public String koroneikiAccountKey;
 	public long accountEntryId;
 	public String name;
 

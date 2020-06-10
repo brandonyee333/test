@@ -58,10 +58,10 @@ public interface LicenseKey extends LicenseKeyModel, PersistedModel {
 
 		};
 
-	public com.liferay.osb.customer.admin.model.AccountEntry getAccountEntry()
+	public boolean canRenew()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public boolean canRenew()
+	public com.liferay.osb.customer.admin.model.AccountEntry getAccountEntry()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public com.liferay.osb.customer.admin.model.LicenseEntry getLicenseEntry()

@@ -76,7 +76,8 @@ public class ProductEntryModelImpl
 		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
 		{"modifiedDate", Types.TIMESTAMP},
 		{"koroneikiProductKey", Types.VARCHAR}, {"name", Types.VARCHAR},
-		{"environment", Types.INTEGER}, {"versionsListType", Types.VARCHAR}
+		{"environment", Types.INTEGER}, {"licenses", Types.BOOLEAN},
+		{"versionsListType", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -91,11 +92,12 @@ public class ProductEntryModelImpl
 		TABLE_COLUMNS_MAP.put("koroneikiProductKey", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("environment", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("licenses", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("versionsListType", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table OSB_ProductEntry (productEntryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,koroneikiProductKey VARCHAR(75) null,name VARCHAR(75) null,environment INTEGER,versionsListType VARCHAR(75) null)";
+		"create table OSB_ProductEntry (productEntryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,koroneikiProductKey VARCHAR(75) null,name VARCHAR(75) null,environment INTEGER,licenses BOOLEAN,versionsListType VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table OSB_ProductEntry";
 
@@ -130,7 +132,9 @@ public class ProductEntryModelImpl
 
 	public static final long KORONEIKIPRODUCTKEY_COLUMN_BITMASK = 2L;
 
-	public static final long NAME_COLUMN_BITMASK = 4L;
+	public static final long LICENSES_COLUMN_BITMASK = 4L;
+
+	public static final long NAME_COLUMN_BITMASK = 8L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -153,6 +157,7 @@ public class ProductEntryModelImpl
 		model.setKoroneikiProductKey(soapModel.getKoroneikiProductKey());
 		model.setName(soapModel.getName());
 		model.setEnvironment(soapModel.getEnvironment());
+		model.setLicenses(soapModel.isLicenses());
 		model.setVersionsListType(soapModel.getVersionsListType());
 
 		return model;
@@ -489,6 +494,28 @@ public class ProductEntryModelImpl
 
 			});
 		attributeGetterFunctions.put(
+			"licenses",
+			new Function<ProductEntry, Object>() {
+
+				@Override
+				public Object apply(ProductEntry productEntry) {
+					return productEntry.getLicenses();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"licenses",
+			new BiConsumer<ProductEntry, Object>() {
+
+				@Override
+				public void accept(
+					ProductEntry productEntry, Object licensesObject) {
+
+					productEntry.setLicenses((Boolean)licensesObject);
+				}
+
+			});
+		attributeGetterFunctions.put(
 			"versionsListType",
 			new Function<ProductEntry, Object>() {
 
@@ -677,6 +704,35 @@ public class ProductEntryModelImpl
 
 	@JSON
 	@Override
+	public boolean getLicenses() {
+		return _licenses;
+	}
+
+	@JSON
+	@Override
+	public boolean isLicenses() {
+		return _licenses;
+	}
+
+	@Override
+	public void setLicenses(boolean licenses) {
+		_columnBitmask |= LICENSES_COLUMN_BITMASK;
+
+		if (!_setOriginalLicenses) {
+			_setOriginalLicenses = true;
+
+			_originalLicenses = _licenses;
+		}
+
+		_licenses = licenses;
+	}
+
+	public boolean getOriginalLicenses() {
+		return _originalLicenses;
+	}
+
+	@JSON
+	@Override
 	public String getVersionsListType() {
 		if (_versionsListType == null) {
 			return "";
@@ -735,6 +791,7 @@ public class ProductEntryModelImpl
 		productEntryImpl.setKoroneikiProductKey(getKoroneikiProductKey());
 		productEntryImpl.setName(getName());
 		productEntryImpl.setEnvironment(getEnvironment());
+		productEntryImpl.setLicenses(isLicenses());
 		productEntryImpl.setVersionsListType(getVersionsListType());
 
 		productEntryImpl.resetOriginalValues();
@@ -808,6 +865,11 @@ public class ProductEntryModelImpl
 
 		productEntryModelImpl._setOriginalEnvironment = false;
 
+		productEntryModelImpl._originalLicenses =
+			productEntryModelImpl._licenses;
+
+		productEntryModelImpl._setOriginalLicenses = false;
+
 		productEntryModelImpl._columnBitmask = 0;
 	}
 
@@ -865,6 +927,8 @@ public class ProductEntryModelImpl
 		}
 
 		productEntryCacheModel.environment = getEnvironment();
+
+		productEntryCacheModel.licenses = isLicenses();
 
 		productEntryCacheModel.versionsListType = getVersionsListType();
 
@@ -960,6 +1024,9 @@ public class ProductEntryModelImpl
 	private int _environment;
 	private int _originalEnvironment;
 	private boolean _setOriginalEnvironment;
+	private boolean _licenses;
+	private boolean _originalLicenses;
+	private boolean _setOriginalLicenses;
 	private String _versionsListType;
 	private long _columnBitmask;
 	private ProductEntry _escapedModel;

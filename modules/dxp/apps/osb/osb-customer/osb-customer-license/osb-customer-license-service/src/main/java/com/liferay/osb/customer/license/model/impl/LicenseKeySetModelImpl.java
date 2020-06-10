@@ -74,8 +74,9 @@ public class LicenseKeySetModelImpl
 	public static final Object[][] TABLE_COLUMNS = {
 		{"licenseKeySetId", Types.BIGINT}, {"userId", Types.BIGINT},
 		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
-		{"modifiedDate", Types.TIMESTAMP}, {"accountEntryId", Types.BIGINT},
-		{"name", Types.VARCHAR}
+		{"modifiedDate", Types.TIMESTAMP},
+		{"koroneikiAccountKey", Types.VARCHAR},
+		{"accountEntryId", Types.BIGINT}, {"name", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -87,12 +88,13 @@ public class LicenseKeySetModelImpl
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("koroneikiAccountKey", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("accountEntryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table OSB_LicenseKeySet (licenseKeySetId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,accountEntryId LONG,name VARCHAR(75) null)";
+		"create table OSB_LicenseKeySet (licenseKeySetId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,koroneikiAccountKey VARCHAR(75) null,accountEntryId LONG,name VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table OSB_LicenseKeySet";
 
@@ -147,6 +149,7 @@ public class LicenseKeySetModelImpl
 		model.setUserName(soapModel.getUserName());
 		model.setCreateDate(soapModel.getCreateDate());
 		model.setModifiedDate(soapModel.getModifiedDate());
+		model.setKoroneikiAccountKey(soapModel.getKoroneikiAccountKey());
 		model.setAccountEntryId(soapModel.getAccountEntryId());
 		model.setName(soapModel.getName());
 
@@ -417,6 +420,30 @@ public class LicenseKeySetModelImpl
 
 			});
 		attributeGetterFunctions.put(
+			"koroneikiAccountKey",
+			new Function<LicenseKeySet, Object>() {
+
+				@Override
+				public Object apply(LicenseKeySet licenseKeySet) {
+					return licenseKeySet.getKoroneikiAccountKey();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"koroneikiAccountKey",
+			new BiConsumer<LicenseKeySet, Object>() {
+
+				@Override
+				public void accept(
+					LicenseKeySet licenseKeySet,
+					Object koroneikiAccountKeyObject) {
+
+					licenseKeySet.setKoroneikiAccountKey(
+						(String)koroneikiAccountKeyObject);
+				}
+
+			});
+		attributeGetterFunctions.put(
 			"accountEntryId",
 			new Function<LicenseKeySet, Object>() {
 
@@ -563,6 +590,22 @@ public class LicenseKeySetModelImpl
 
 	@JSON
 	@Override
+	public String getKoroneikiAccountKey() {
+		if (_koroneikiAccountKey == null) {
+			return "";
+		}
+		else {
+			return _koroneikiAccountKey;
+		}
+	}
+
+	@Override
+	public void setKoroneikiAccountKey(String koroneikiAccountKey) {
+		_koroneikiAccountKey = koroneikiAccountKey;
+	}
+
+	@JSON
+	@Override
 	public long getAccountEntryId() {
 		return _accountEntryId;
 	}
@@ -651,6 +694,7 @@ public class LicenseKeySetModelImpl
 		licenseKeySetImpl.setUserName(getUserName());
 		licenseKeySetImpl.setCreateDate(getCreateDate());
 		licenseKeySetImpl.setModifiedDate(getModifiedDate());
+		licenseKeySetImpl.setKoroneikiAccountKey(getKoroneikiAccountKey());
 		licenseKeySetImpl.setAccountEntryId(getAccountEntryId());
 		licenseKeySetImpl.setName(getName());
 
@@ -764,6 +808,17 @@ public class LicenseKeySetModelImpl
 			licenseKeySetCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
+		licenseKeySetCacheModel.koroneikiAccountKey = getKoroneikiAccountKey();
+
+		String koroneikiAccountKey =
+			licenseKeySetCacheModel.koroneikiAccountKey;
+
+		if ((koroneikiAccountKey != null) &&
+			(koroneikiAccountKey.length() == 0)) {
+
+			licenseKeySetCacheModel.koroneikiAccountKey = null;
+		}
+
 		licenseKeySetCacheModel.accountEntryId = getAccountEntryId();
 
 		licenseKeySetCacheModel.name = getName();
@@ -855,6 +910,7 @@ public class LicenseKeySetModelImpl
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
+	private String _koroneikiAccountKey;
 	private long _accountEntryId;
 	private long _originalAccountEntryId;
 	private boolean _setOriginalAccountEntryId;

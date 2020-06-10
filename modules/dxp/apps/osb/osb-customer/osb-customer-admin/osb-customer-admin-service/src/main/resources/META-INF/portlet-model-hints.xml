@@ -134,6 +134,7 @@
 		<field name="koroneikiProductKey" type="String" />
 		<field name="name" type="String" />
 		<field name="environment" type="int" />
+		<field name="licenses" type="boolean" />
 		<field name="versionsListType" type="String" />
 	</model>
 	<model name="com.liferay.osb.customer.admin.model.SupportRegion">

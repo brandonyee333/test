@@ -64,6 +64,9 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("licenseKeySetId", getLicenseKeySetId());
 		attributes.put("assetReceiptLicenseUuid", getAssetReceiptLicenseUuid());
+		attributes.put("koroneikiAccountKey", getKoroneikiAccountKey());
+		attributes.put(
+			"koroneikiProductPurchaseKey", getKoroneikiProductPurchaseKey());
 		attributes.put("accountEntryId", getAccountEntryId());
 		attributes.put("orderEntryId", getOrderEntryId());
 		attributes.put("offeringEntryId", getOfferingEntryId());
@@ -161,6 +164,20 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 
 		if (assetReceiptLicenseUuid != null) {
 			setAssetReceiptLicenseUuid(assetReceiptLicenseUuid);
+		}
+
+		String koroneikiAccountKey = (String)attributes.get(
+			"koroneikiAccountKey");
+
+		if (koroneikiAccountKey != null) {
+			setKoroneikiAccountKey(koroneikiAccountKey);
+		}
+
+		String koroneikiProductPurchaseKey = (String)attributes.get(
+			"koroneikiProductPurchaseKey");
+
+		if (koroneikiProductPurchaseKey != null) {
+			setKoroneikiProductPurchaseKey(koroneikiProductPurchaseKey);
 		}
 
 		Long accountEntryId = (Long)attributes.get("accountEntryId");
@@ -514,6 +531,26 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	@Override
 	public String getKey() {
 		return _licenseKey.getKey();
+	}
+
+	/**
+	 * Returns the koroneiki account key of this license key.
+	 *
+	 * @return the koroneiki account key of this license key
+	 */
+	@Override
+	public String getKoroneikiAccountKey() {
+		return _licenseKey.getKoroneikiAccountKey();
+	}
+
+	/**
+	 * Returns the koroneiki product purchase key of this license key.
+	 *
+	 * @return the koroneiki product purchase key of this license key
+	 */
+	@Override
+	public String getKoroneikiProductPurchaseKey() {
+		return _licenseKey.getKoroneikiProductPurchaseKey();
 	}
 
 	@Override
@@ -1055,6 +1092,28 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	@Override
 	public void setKey(String key) {
 		_licenseKey.setKey(key);
+	}
+
+	/**
+	 * Sets the koroneiki account key of this license key.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key of this license key
+	 */
+	@Override
+	public void setKoroneikiAccountKey(String koroneikiAccountKey) {
+		_licenseKey.setKoroneikiAccountKey(koroneikiAccountKey);
+	}
+
+	/**
+	 * Sets the koroneiki product purchase key of this license key.
+	 *
+	 * @param koroneikiProductPurchaseKey the koroneiki product purchase key of this license key
+	 */
+	@Override
+	public void setKoroneikiProductPurchaseKey(
+		String koroneikiProductPurchaseKey) {
+
+		_licenseKey.setKoroneikiProductPurchaseKey(koroneikiProductPurchaseKey);
 	}
 
 	/**

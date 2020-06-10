@@ -74,6 +74,10 @@ public interface LicenseKeySetLocalService
 			long userId, long accountEntryId, String name)
 		throws PortalException;
 
+	public LicenseKeySet addLicenseKeySet(
+			long userId, String koroneikiAccountKey, String name)
+		throws PortalException;
+
 	/**
 	 * Creates a new license key set with the primary key. Does not add the license key set to the database.
 	 *

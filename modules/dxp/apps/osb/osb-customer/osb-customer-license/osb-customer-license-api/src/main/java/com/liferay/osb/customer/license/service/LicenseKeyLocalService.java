@@ -16,7 +16,10 @@ package com.liferay.osb.customer.license.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.customer.admin.model.LicenseEntry;
+import com.liferay.osb.customer.admin.model.ProductEntry;
 import com.liferay.osb.customer.license.model.LicenseKey;
+import com.liferay.osb.customer.license.model.LicenseKeySet;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
@@ -77,12 +80,28 @@ public interface LicenseKeyLocalService
 	public LicenseKey addLicenseKey(LicenseKey licenseKey);
 
 	public LicenseKey addLicenseKey(
-			long userId, long licenseKeySetId, String name,
-			long offeringEntryId, long licenseEntryId, long productEntryId,
+			long userId, LicenseKeySet licenseKeySet, String name,
+			LicenseEntry licenseEntry, ProductEntry productEntry,
+			String koroneikiAccountKey, String koroneikiProductPurchaseKey,
+			String accountEntryName, int productVersion, long clusterId,
+			String owner, int maxServers, int maxHttpSessions,
+			int maxConcurrentUsers, int maxUsers, int sizing,
+			String description, String[] hostNames, String[] ipAddresses,
+			String[] macAddresses, String[] serverIds, Date startDate,
+			Date expirationDate, String additionalInfo, boolean complimentary,
+			boolean active)
+		throws PortalException;
+
+	public LicenseKey addLicenseKey(
+			long userId, long licenseKeySetId, String name, long licenseEntryId,
+			long productEntryId, String koroneikiAccountKey,
+			String koroneikiProductPurchaseKey, String accountEntryName,
 			int productVersion, long clusterId, String owner, int maxServers,
-			int maxHttpSessions, String description, String[] hostNames,
+			int maxHttpSessions, int maxConcurrentUsers, int maxUsers,
+			int sizing, String description, String[] hostNames,
 			String[] ipAddresses, String[] macAddresses, String[] serverIds,
-			Date startDate, boolean complimentary, boolean active)
+			Date startDate, Date expirationDate, boolean complimentary,
+			boolean active)
 		throws PortalException;
 
 	public LicenseKey addLicenseKey(
@@ -91,9 +110,6 @@ public interface LicenseKeyLocalService
 			int productVersion, String owner, long maxUsers, String description,
 			String hostName, String ipAddresses, String macAddresses,
 			String serverId, Date startDate, Date expirationDate)
-		throws PortalException;
-
-	public void buyLicenseKey(long companyId, long userId)
 		throws PortalException;
 
 	/**
@@ -263,10 +279,16 @@ public interface LicenseKeyLocalService
 	public LicenseKey getLicenseKeyByUuid(String uuid) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getLicenseKeyCount(String koroneikiProductPurchaseKey);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeys(long userId, long accountEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeys(long userId, String productId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<LicenseKey> getLicenseKeys(String koroneikiProductPurchaseKey);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeys(String productId, String serverId);

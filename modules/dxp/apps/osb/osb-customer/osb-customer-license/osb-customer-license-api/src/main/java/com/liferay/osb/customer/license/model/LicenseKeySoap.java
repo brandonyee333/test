@@ -42,6 +42,9 @@ public class LicenseKeySoap implements Serializable {
 		soapModel.setLicenseKeySetId(model.getLicenseKeySetId());
 		soapModel.setAssetReceiptLicenseUuid(
 			model.getAssetReceiptLicenseUuid());
+		soapModel.setKoroneikiAccountKey(model.getKoroneikiAccountKey());
+		soapModel.setKoroneikiProductPurchaseKey(
+			model.getKoroneikiProductPurchaseKey());
 		soapModel.setAccountEntryId(model.getAccountEntryId());
 		soapModel.setOrderEntryId(model.getOrderEntryId());
 		soapModel.setOfferingEntryId(model.getOfferingEntryId());
@@ -205,6 +208,24 @@ public class LicenseKeySoap implements Serializable {
 
 	public void setAssetReceiptLicenseUuid(String assetReceiptLicenseUuid) {
 		_assetReceiptLicenseUuid = assetReceiptLicenseUuid;
+	}
+
+	public String getKoroneikiAccountKey() {
+		return _koroneikiAccountKey;
+	}
+
+	public void setKoroneikiAccountKey(String koroneikiAccountKey) {
+		_koroneikiAccountKey = koroneikiAccountKey;
+	}
+
+	public String getKoroneikiProductPurchaseKey() {
+		return _koroneikiProductPurchaseKey;
+	}
+
+	public void setKoroneikiProductPurchaseKey(
+		String koroneikiProductPurchaseKey) {
+
+		_koroneikiProductPurchaseKey = koroneikiProductPurchaseKey;
 	}
 
 	public long getAccountEntryId() {
@@ -481,6 +502,8 @@ public class LicenseKeySoap implements Serializable {
 	private Date _modifiedDate;
 	private long _licenseKeySetId;
 	private String _assetReceiptLicenseUuid;
+	private String _koroneikiAccountKey;
+	private String _koroneikiProductPurchaseKey;
 	private long _accountEntryId;
 	private long _orderEntryId;
 	private long _offeringEntryId;

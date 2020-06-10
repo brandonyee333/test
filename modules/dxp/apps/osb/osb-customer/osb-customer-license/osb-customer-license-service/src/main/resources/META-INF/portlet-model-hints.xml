@@ -12,6 +12,8 @@
 		<field name="modifiedDate" type="Date" />
 		<field name="licenseKeySetId" type="long" />
 		<field name="assetReceiptLicenseUuid" type="String" />
+		<field name="koroneikiAccountKey" type="String" />
+		<field name="koroneikiProductPurchaseKey" type="String" />
 		<field name="accountEntryId" type="long" />
 		<field name="orderEntryId" type="long" />
 		<field name="offeringEntryId" type="long" />
@@ -65,6 +67,7 @@
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
+		<field name="koroneikiAccountKey" type="String" />
 		<field name="accountEntryId" type="long" />
 		<field name="name" type="String" />
 	</model>

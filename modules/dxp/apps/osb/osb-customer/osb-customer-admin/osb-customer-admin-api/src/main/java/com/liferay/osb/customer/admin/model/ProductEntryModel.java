@@ -190,6 +190,27 @@ public interface ProductEntryModel extends BaseModel<ProductEntry> {
 	public void setEnvironment(int environment);
 
 	/**
+	 * Returns the licenses of this product entry.
+	 *
+	 * @return the licenses of this product entry
+	 */
+	public boolean getLicenses();
+
+	/**
+	 * Returns <code>true</code> if this product entry is licenses.
+	 *
+	 * @return <code>true</code> if this product entry is licenses; <code>false</code> otherwise
+	 */
+	public boolean isLicenses();
+
+	/**
+	 * Sets whether this product entry is licenses.
+	 *
+	 * @param licenses the licenses of this product entry
+	 */
+	public void setLicenses(boolean licenses);
+
+	/**
 	 * Returns the versions list type of this product entry.
 	 *
 	 * @return the versions list type of this product entry
