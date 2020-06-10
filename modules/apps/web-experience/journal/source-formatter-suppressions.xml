@@ -2,7 +2,6 @@
 
 <suppressions>
 	<checkstyle>
-		<suppress checks="ChainingCheck" files="journal-test/src/testIntegration/java/com/liferay/journal/service/test/JournalArticleServiceTest\.java" />
 		<suppress checks="StaticVariableNameCheck" files="journal-service/src/main/java/com/liferay/journal/configuration/JournalServiceConfigurationValues\.java" />
 		<suppress checks="UnnecessaryAssignCheck" files="journal-web/src/main/java/com/liferay/journal/web/util/JournalRSSUtil\.java" />
 	</checkstyle>
