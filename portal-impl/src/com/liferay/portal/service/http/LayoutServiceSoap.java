@@ -534,6 +534,24 @@ public class LayoutServiceSoap {
 		}
 	}
 
+	public static com.liferay.portal.kernel.model.LayoutSoap[] getLayouts(
+			long groupId, boolean privateLayout, String type)
+		throws RemoteException {
+
+		try {
+			java.util.List<com.liferay.portal.kernel.model.Layout> returnValue =
+				LayoutServiceUtil.getLayouts(groupId, privateLayout, type);
+
+			return com.liferay.portal.kernel.model.LayoutSoap.toSoapModels(
+				returnValue);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			throw new RemoteException(exception.getMessage());
+		}
+	}
+
 	public static int getLayoutsCount(
 			long groupId, boolean privateLayout, long parentLayoutId)
 		throws RemoteException {

@@ -581,6 +581,13 @@ public class LayoutServiceUtil {
 			groupId, privateLayout, parentLayoutId, incomplete, start, end);
 	}
 
+	public static java.util.List<com.liferay.portal.kernel.model.Layout>
+			getLayouts(long groupId, boolean privateLayout, String type)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().getLayouts(groupId, privateLayout, type);
+	}
+
 	public static int getLayoutsCount(
 		long groupId, boolean privateLayout, long parentLayoutId) {
 
