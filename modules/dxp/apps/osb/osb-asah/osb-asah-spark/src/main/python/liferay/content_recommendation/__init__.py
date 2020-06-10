@@ -90,31 +90,25 @@ class ContentRecommendationApplication(BaseSparkApplication):
 		return SparkJobPipeline(jobs)
 
 	def _get_job(self):
-		elasticsearch_bridge = self.elasticsearch_bridge
 		job = self.job_run.get('job')
 
-		return elasticsearch_bridge.get_document(
+		return self.elasticsearch_bridge.get_document(
 		    'jobs', job.get('id'), 'osbasahfaroinfo'
 		)
 
 	def _get_job_run(self):
-		elasticsearch_bridge = self.elasticsearch_bridge
-
-		return elasticsearch_bridge.get_document(
+		return self.elasticsearch_bridge.get_document(
 		    'job-runs', self.args.job_run_id, 'osbasahfaroinfo'
 		)
 
 	def _update_job_run_status(self, status):
-		elasticsearch_bridge = self.elasticsearch_bridge
-		job_run = self.job_run
-
 		now = datetime.datetime.utcnow()
 
-		elasticsearch_bridge.update_document(
+		self.elasticsearch_bridge.update_document(
 		    'job-runs', {
 		        'lastUpdatedDate': now,
 		        'status': status
-		    }, job_run.get('id'), 'osbasahfaroinfo'
+		    }, self.job_run.get('id'), 'osbasahfaroinfo'
 		)
 
 	def start(self):

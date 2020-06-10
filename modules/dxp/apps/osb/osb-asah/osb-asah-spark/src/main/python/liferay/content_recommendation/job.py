@@ -18,10 +18,7 @@ import datetime
 
 class CompleteJobRunSparkJob(BaseSparkJob):
 	def run(self):
-		spark_application = self.spark_application
-
-		args = self.spark_application.args
-		elasticsearch_bridge = spark_application.elasticsearch_bridge
+		elasticsearch_bridge = self.spark_application.elasticsearch_bridge
 
 		now = datetime.datetime.utcnow()
 
@@ -30,24 +27,20 @@ class CompleteJobRunSparkJob(BaseSparkJob):
 		        'completedDate': now,
 		        'lastUpdatedDate': now,
 		        'status': 'COMPLETED'
-		    }, args.job_run_id, 'osbasahfaroinfo'
+		    }, self.spark_application_args.job_run_id, 'osbasahfaroinfo'
 		)
 
 class GenerateItemsSparkJob(BaseSparkJob):
 	def run(self):
-		spark_session = self.spark_session()
-
-		items_data_frame = spark_session.table('user_item_interactions').select(
-		    col('ITEM_ID').alias("itemId")
-		).distinct()
+		items_data_frame = self.spark_session.table(
+		    'user_item_interactions'
+		).select(col('ITEM_ID').alias("itemId")).distinct()
 
 		items_data_frame.createOrReplaceTempView('items')
 
 class GenerateUserItemInteractionsSparkJob(BaseSparkJob):
 	def run(self):
-		spark_session = self.spark_session()
-
-		user_item_interactions_data_frame = spark_session.table(
+		user_item_interactions_data_frame = self.spark_session.table(
 		    'analytics_events'
 		).withColumn(
 		    'event_timestamp',
@@ -93,9 +86,9 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 			return expression
 
 	def _get_filter_expresssions(self):
-		job = self.spark_application.job
-
 		expressions = ['(eventId = "pageUnloaded")']
+
+		job = self.spark_application.job
 
 		for parameter in job.get('parameters'):
 			if parameter.get('name') == 'excludeFilter':
@@ -115,16 +108,12 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		return self._training_periods_days_delta.get(job.get('trainingPeriod'))
 
 	def run(self):
-		spark_application = self.spark_application
-
-		spark_session = spark_application.spark_session
-
-		data_frame_reader = spark_session.read
+		data_frame_reader = self.spark_session.read
 
 		analytics_events_data_frame = data_frame_reader.json(
 		    '{}/{}/*'.format(
-		        spark_application.configuration.get('google.storage.path'),
-		        spark_application.args.lcp_project_id
+		        self.spark_application_configuration.get('google.storage.path'),
+		        self.spark_application_args.lcp_project_id
 		    )
 		).withColumn(
 		    'days_delta', datediff(current_date(), expr("to_date(eventDate)"))
@@ -154,18 +143,14 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 
 class ReadRecommendedItemsSparkJob(BaseSparkJob):
 	def run(self):
-		spark_application = self.spark_application
+		data_frame_reader = self.spark_session.read
 
-		spark_session = spark_application.spark_session
-
-		data_frame_reader = spark_session.read
-
-		job = spark_application.job
+		job = self.spark_application.job
 
 		recommended_items_data_frame = data_frame_reader.json(
 		    '{}/{}/{}/inference_result/*.json.out'.format(
-		        spark_application.configuration.get('aws.storage.path'),
-		        spark_application.args.lcp_project_id, job.get('id')
+		        self.spark_application_configuration.get('aws.storage.path'),
+		        self.spark_application_args.lcp_project_id, job.get('id')
 		    )
 		).filter('error is null').selectExpr(
 		    'sha1(input.itemId) as id', 'input.itemId as item',
@@ -178,16 +163,13 @@ class ReadRecommendedItemsSparkJob(BaseSparkJob):
 
 class UpdateJobExecutionStepSparkJob(BaseSparkJob):
 	def run(self):
-		spark_application = self.spark_application
-
-		args = self.spark_application.args
-		elasticsearch_bridge = spark_application.elasticsearch_bridge
+		elasticsearch_bridge = self.spark_application.elasticsearch_bridge
 
 		elasticsearch_bridge.update_document(
 		    'job-runs', {
 		        'lastUpdatedDate': datetime.datetime.utcnow(),
 		        'step': 'DATA_SOLUTION'
-		    }, args.job_run_id, 'osbasahfaroinfo'
+		    }, self.spark_application_args.job_run_id, 'osbasahfaroinfo'
 		)
 
 class WriteDataframeSparkJob(BaseSparkJob):
@@ -198,22 +180,19 @@ class WriteDataframeSparkJob(BaseSparkJob):
 		self._output_format = output_format
 
 	def run(self):
-		spark_session = self.spark_session()
-
-		data_frame = spark_session.table(self._data_frame_name)
+		data_frame = self.spark_session.table(self._data_frame_name)
 
 		data_frame_writer = data_frame.write
 
-		args = self.spark_application.args
-		configuration = self.spark_application.configuration
 		job = self.spark_application.job
 
 		data_frame_writer.format(
 		    self._output_format
 		).mode('overwrite').option("header", "True").save(
 		    '{}/{}/{}/{}'.format(
-		        configuration.get('aws.storage.path'), args.lcp_project_id,
-		        job.get('id'), self._data_frame_name
+		        self.spark_application_configuration.get('aws.storage.path'),
+		        self.spark_application_args.lcp_project_id, job.get('id'),
+		        self._data_frame_name
 		    )
 		)
 
@@ -230,12 +209,9 @@ class WriteUserItemInteractionsSparkJob(WriteDataframeSparkJob):
 
 class WriteRecommendedItemsSparkJob(BaseSparkJob):
 	def run(self):
-		spark_application = self.spark_application
-		spark_session = self.spark_session()
-
-		elasticsearch_bridge = spark_application.elasticsearch_bridge
+		elasticsearch_bridge = self.spark_application.elasticsearch_bridge
 
 		elasticsearch_bridge.write(
-		    'recommended-items', spark_session.table('recommended_items'),
+		    'recommended-items', self.spark_session.table('recommended_items'),
 		    'overwrite', 'osbasahfaroinfo'
 		)
