@@ -27,10 +27,10 @@ boolean osbTrialPurchased = ExpandoValueLocalServiceUtil.getData(themeDisplay.ge
 </c:if>
 
 <%
-String message = LanguageUtil.format(request, "a-sales-representative-will-contact-you-shortly-if-you-are-not-contacted-in-a-few-days-please-contact-sales", new String[] {"<a href=\"mailto:sales@liferay.com\">", "</a>"});
+String taglibMessage = LanguageUtil.format(request, "a-sales-representative-will-contact-you-shortly-if-you-are-not-contacted-in-a-few-days-please-contact-sales", new String[] {"<a href=\"mailto:sales@liferay.com\">", "</a>"});
 %>
 
-<liferay-ui:success key="purchased" message="<%= message %>" translateMessage="<%= false %>" />
+<liferay-ui:success key="purchased" message="<%= taglibMessage %>" translateMessage="<%= false %>" />
 
 <liferay-ui:error exception="<%= LicenseKeyRegistrationException.class %>" message='<%= LanguageUtil.format(request, "you-must-agree-to-allow-liferay-to-contact-you-regarding-your-ee-trial-key", themeDisplay.getURLMyAccount() + "#_LFR_FN__2_notifications") %>' />
 <liferay-ui:error exception="<%= OfferingEntryStatusException.class %>" message="you-have-reached-the-maximum-allowed-number-of-trial-keys" />
