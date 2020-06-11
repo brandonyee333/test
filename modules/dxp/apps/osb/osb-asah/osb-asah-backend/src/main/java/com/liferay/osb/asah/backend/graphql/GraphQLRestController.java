@@ -248,6 +248,8 @@ public class GraphQLRestController {
 		_defineCustomPropertyName(
 			builder, "modifiedDate", "modifiedDateISO", "Experiment");
 		_defineCustomPropertyName(
+			builder, "pageAssets", "results", "PageAssetBag");
+		_defineCustomPropertyName(
 			builder, "parameters", "jobParameters", "Job");
 		_defineCustomPropertyName(
 			builder, "startedDate", "startedDateISO", "Experiment");
@@ -267,6 +269,7 @@ public class GraphQLRestController {
 		_defineCustomPropertyName(
 			builder, "type", "experimentType", "Experiment");
 		_defineCustomPropertyName(builder, "type", "jobType", "Job");
+		_defineCustomPropertyName(builder, "url", "URL", "PageAsset");
 		_defineCustomPropertyName(
 			builder, "variantMetrics", "variantMetricsList",
 			"ExperimentMetrics");

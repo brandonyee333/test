@@ -358,6 +358,11 @@ type IndividualMetric {
 	totalIndividualsMetric: Metric
 }
 
+type Keyword {
+	type: String
+	value: String
+}
+
 type Job {
 	id: String
 	name: String
@@ -480,6 +485,20 @@ type Organization implements DXPEntity{
 	name: String
 	parentName: String
 	type: String
+}
+
+type PageAsset {
+	canonicalURL: String
+	description: String
+	keywords: [Keyword]
+	id: String
+	title: String
+	url: String
+}
+
+type PageAssetBag {
+	pageAssets: [PageAsset]
+	total: Int
 }
 
 type PageMetric implements AssetMetric {
@@ -775,6 +794,14 @@ type QueryType {
 		title: String,
 		url: String!
 	): PageMetric
+
+	pageAssets(
+		keywords: String
+		propertyFilter: String
+		size: Int!
+		sort: Sort!
+		start: Int!
+	): PageAssetBag
 
 	pages(
 		channelId: String,
