@@ -17,6 +17,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.page;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoPreferenceDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
+import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.Preference;
@@ -74,6 +75,10 @@ public class PageNanite extends BaseNanite<Page> {
 		super.init();
 
 		_cacheSearchQueryStrings();
+
+		_messageBus.registerMessageListener(
+			Channel.SEARCH_QUERY_STRINGS,
+			message -> _cacheSearchQueryStrings());
 	}
 
 	@Override
@@ -211,6 +216,8 @@ public class PageNanite extends BaseNanite<Page> {
 			"search-query-strings");
 
 		String value = preference.getValue();
+
+		_searchQueryStrings.clear();
 
 		_searchQueryStrings.add("q");
 
@@ -427,6 +434,9 @@ public class PageNanite extends BaseNanite<Page> {
 
 	@Autowired
 	private FaroInfoPreferenceDog _faroInfoPreferenceDog;
+
+	@Autowired
+	private MessageBus _messageBus;
 
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_PAGE)
 	private MessageSubscriber _messageSubscriber;
