@@ -26,6 +26,8 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -66,6 +68,17 @@ public class PreferenceMutationDataFetcher implements DataFetcher<Preference> {
 						if ((longValue <= 0) ||
 							(longValue > TimeUnit.DAYS.toMillis(30 * 13))) {
 
+							return false;
+						}
+
+						return true;
+					});
+				put(
+					"search-query-strings",
+					value -> {
+						try{
+							new JSONArray(value);
+						}catch(JSONException ex){
 							return false;
 						}
 
