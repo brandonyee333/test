@@ -1197,10 +1197,6 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			workflowServiceContext = (ServiceContext)serviceContext.clone();
 		}
 
-		workflowServiceContext.setAttribute("autoPassword", autoPassword);
-		workflowServiceContext.setAttribute("passwordUnencrypted", password1);
-		workflowServiceContext.setAttribute("sendEmail", sendEmail);
-
 		Map<String, Serializable> workflowContext =
 			(Map<String, Serializable>)workflowServiceContext.removeAttribute(
 				"workflowContext");
@@ -1208,6 +1204,12 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		if (workflowContext == null) {
 			workflowContext = Collections.emptyMap();
 		}
+
+		workflowServiceContext.setAttributes(
+			new HashMap<String, Serializable>());
+
+		workflowServiceContext.setAttribute("autoPassword", autoPassword);
+		workflowServiceContext.setAttribute("sendEmail", sendEmail);
 
 		user = WorkflowHandlerRegistryUtil.startWorkflowInstance(
 			companyId, WorkflowConstants.DEFAULT_GROUP_ID, workflowUserId,
@@ -1700,8 +1702,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		boolean autoPassword = ParamUtil.getBoolean(
 			serviceContext, "autoPassword");
 
-		String password = (String)serviceContext.getAttribute(
-			"passwordUnencrypted");
+		String password = StringPool.BLANK;
 
 		if (autoPassword) {
 			if (LDAPSettingsUtil.isPasswordPolicyEnabled(user.getCompanyId())) {
