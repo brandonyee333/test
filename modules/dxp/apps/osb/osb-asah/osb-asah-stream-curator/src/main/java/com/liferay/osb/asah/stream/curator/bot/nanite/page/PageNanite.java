@@ -14,9 +14,12 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.page;
 
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoPreferenceDog;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
+import com.liferay.osb.asah.common.model.Preference;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.stream.curator.model.page.Page;
@@ -29,6 +32,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableSet;
@@ -41,12 +45,17 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 
+import org.json.JSONArray;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -58,6 +67,13 @@ public class PageNanite extends BaseNanite<Page> {
 	@Override
 	public String getCollectionName() {
 		return "pages";
+	}
+
+	@PostConstruct
+	public void init() {
+		super.init();
+
+		_cacheSearchQueryStrings();
 	}
 
 	@Override
@@ -188,6 +204,20 @@ public class PageNanite extends BaseNanite<Page> {
 		_setPageEngagementScore(page);
 		_setPageSearchTerm(page);
 		_setPageTitle(analyticsEvent, page);
+	}
+
+	private void _cacheSearchQueryStrings() {
+		Preference preference = _faroInfoPreferenceDog.getPreference(
+			"search-query-strings");
+
+		String value = preference.getValue();
+
+		_searchQueryStrings.add("q");
+
+		if (value != null) {
+			JSONUtil.addToStringCollection(
+				_searchQueryStrings, new JSONArray(value));
+		}
 	}
 
 	private double _computeEngagementScore(Page page) {
@@ -359,7 +389,7 @@ public class PageNanite extends BaseNanite<Page> {
 			for (NameValuePair nameValuePair : nameValuePairs) {
 				String name = nameValuePair.getName();
 
-				if (name.equals("q")) {
+				if (_searchQueryStrings.contains(name)) {
 					page.setSearchTerm(nameValuePair.getValue());
 				}
 			}
@@ -395,7 +425,12 @@ public class PageNanite extends BaseNanite<Page> {
 			}
 		};
 
+	@Autowired
+	private FaroInfoPreferenceDog _faroInfoPreferenceDog;
+
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_PAGE)
 	private MessageSubscriber _messageSubscriber;
+
+	private final Set<String> _searchQueryStrings = new HashSet<>();
 
 }
