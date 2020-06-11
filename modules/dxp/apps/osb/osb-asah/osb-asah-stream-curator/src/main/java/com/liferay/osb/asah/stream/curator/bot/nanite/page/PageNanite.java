@@ -212,18 +212,16 @@ public class PageNanite extends BaseNanite<Page> {
 	}
 
 	private void _cacheSearchQueryStrings() {
-		Preference preference = _faroInfoPreferenceDog.getPreference(
-			"search-query-strings");
-
-		String value = preference.getValue();
-
 		_searchQueryStrings.clear();
 
 		_searchQueryStrings.add("q");
 
-		if (value != null) {
+		Preference preference = _faroInfoPreferenceDog.getPreference(
+			"search-query-strings");
+
+		if (preference.getValue() != null) {
 			JSONUtil.addToStringCollection(
-				_searchQueryStrings, new JSONArray(value));
+				_searchQueryStrings, new JSONArray(preference.getValue()));
 		}
 	}
 
@@ -394,9 +392,7 @@ public class PageNanite extends BaseNanite<Page> {
 				new URI(url), StandardCharsets.UTF_8);
 
 			for (NameValuePair nameValuePair : nameValuePairs) {
-				String name = nameValuePair.getName();
-
-				if (_searchQueryStrings.contains(name)) {
+				if (_searchQueryStrings.contains(nameValuePair.getName())) {
 					page.setSearchTerm(nameValuePair.getValue());
 				}
 			}
