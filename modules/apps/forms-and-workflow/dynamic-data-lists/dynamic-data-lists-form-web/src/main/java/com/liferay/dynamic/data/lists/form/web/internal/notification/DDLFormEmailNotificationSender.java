@@ -356,12 +356,14 @@ public class DDLFormEmailNotificationSender {
 		return pages;
 	}
 
-	protected String getSiteName(PortletRequest portletRequest, Locale locale) {
+	protected String getSiteName(PortletRequest portletRequest, Locale locale)
+		throws PortalException {
+
 		ThemeDisplay themeDisplay = getThemeDisplay(portletRequest);
 
 		Group siteGroup = themeDisplay.getSiteGroup();
 
-		return siteGroup.getName(locale);
+		return siteGroup.getDescriptiveName(locale);
 	}
 
 	protected TemplateResource getTemplateResource(String templatePath) {
