@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.publisher.cache.impl;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import com.liferay.osb.asah.publisher.cache.AnalyticsEventsMessageCache;
 
@@ -38,7 +39,7 @@ public class AnalyticsEventsMessageCacheImpl
 		}
 
 		try (Jedis jedis = _jedisPool.getResource()) {
-			jedis.set(id, "", "nx", "ex", 86400);
+			jedis.set(id, "", "nx", "px", DateUtil.WEEK);
 		}
 	}
 
