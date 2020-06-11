@@ -22,10 +22,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import javax.annotation.PostConstruct;
 
@@ -60,21 +57,6 @@ public class AssetDog {
 		return DogUtil.createResultBag(PageAsset.class, searchHits);
 	}
 
-	private QueryBuilder _buildQueryBuilder(String propertyFilterString) {
-		List<String> tokens = _getFilterTokens(propertyFilterString);
-
-		if (tokens.size() != 3) {
-			throw new IllegalArgumentException(
-				"Invalid filter " + propertyFilterString);
-		}
-
-		if (Objects.equals(tokens.get(1), "~")) {
-			return QueryBuilders.regexpQuery(tokens.get(0), tokens.get(2));
-		}
-
-		return QueryBuilders.termQuery(tokens.get(0), tokens.get(2));
-	}
-
 	private QueryBuilder _buildQueryBuilder(
 		String assetType, String keywords, String propertyFilterString) {
 
@@ -100,22 +82,11 @@ public class AssetDog {
 		}
 
 		if (StringUtils.isNotBlank(propertyFilterString)) {
-			boolQueryBuilder.filter(_buildQueryBuilder(propertyFilterString));
+			boolQueryBuilder.filter(
+				DogUtil.buildPropertyQueryBuilder(propertyFilterString));
 		}
 
 		return boolQueryBuilder;
-	}
-
-	private List<String> _getFilterTokens(String eventContextFilterString) {
-		List<String> tokens = new ArrayList<>();
-
-		for (String token : eventContextFilterString.split(" ")) {
-			if (!StringUtils.isBlank(token)) {
-				tokens.add(token);
-			}
-		}
-
-		return tokens;
 	}
 
 	@PostConstruct

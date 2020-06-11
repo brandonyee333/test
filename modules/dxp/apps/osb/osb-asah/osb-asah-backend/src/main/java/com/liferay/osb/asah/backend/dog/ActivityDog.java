@@ -109,23 +109,6 @@ public class ActivityDog {
 		return eventContextKeys;
 	}
 
-	private QueryBuilder _buildQueryBuilder(String eventContextFilterString) {
-		List<String> tokens = _getFilterTokens(eventContextFilterString);
-
-		if (tokens.size() != 3) {
-			throw new IllegalArgumentException(
-				"Invalid filter " + eventContextFilterString);
-		}
-
-		if (Objects.equals(tokens.get(1), "~")) {
-			return QueryBuilders.regexpQuery(
-				"eventContext." + tokens.get(0), tokens.get(2));
-		}
-
-		return QueryBuilders.termQuery(
-			"eventContext." + tokens.get(0), tokens.get(2));
-	}
-
 	private QueryBuilder _buildQueryBuilder(
 		String applicationId, String eventContextFilterString, String eventId) {
 
@@ -137,22 +120,11 @@ public class ActivityDog {
 
 		if (StringUtils.isNotBlank(eventContextFilterString)) {
 			boolQueryBuilder.filter(
-				_buildQueryBuilder(eventContextFilterString));
+				DogUtil.buildPropertyQueryBuilder(
+					"eventContext.", eventContextFilterString));
 		}
 
 		return boolQueryBuilder;
-	}
-
-	private List<String> _getFilterTokens(String eventContextFilterString) {
-		List<String> tokens = new ArrayList<>();
-
-		for (String token : eventContextFilterString.split(" ")) {
-			if (!StringUtils.isBlank(token)) {
-				tokens.add(token);
-			}
-		}
-
-		return tokens;
 	}
 
 	@PostConstruct

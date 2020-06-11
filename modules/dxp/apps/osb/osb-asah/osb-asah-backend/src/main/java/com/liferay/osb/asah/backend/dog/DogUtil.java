@@ -33,16 +33,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.ShardSearchFailure;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.Aggregation;
@@ -90,6 +93,31 @@ public class DogUtil {
 
 		pipelineAggregationBuilders.forEach(
 			termsAggregationBuilder::subAggregation);
+	}
+
+	public static QueryBuilder buildPropertyQueryBuilder(
+		String propertyFilterString) {
+
+		return buildPropertyQueryBuilder("", propertyFilterString);
+	}
+
+	public static QueryBuilder buildPropertyQueryBuilder(
+		String propertyFieldPrefix, String propertyFilterString) {
+
+		List<String> tokens = _getFilterTokens(propertyFilterString);
+
+		if (tokens.size() != 3) {
+			throw new IllegalArgumentException(
+				"Invalid filter " + propertyFilterString);
+		}
+
+		if (Objects.equals(tokens.get(1), "~")) {
+			return QueryBuilders.regexpQuery(
+				propertyFieldPrefix + tokens.get(0), tokens.get(2));
+		}
+
+		return QueryBuilders.termQuery(
+			propertyFieldPrefix + tokens.get(0), tokens.get(2));
 	}
 
 	public static SearchSourceBuilder buildSearchSourceBuilder(
@@ -249,6 +277,18 @@ public class DogUtil {
 					"Unable to process search request", ioe);
 			}
 		};
+	}
+
+	private static List<String> _getFilterTokens(String propertyFilterString) {
+		List<String> tokens = new ArrayList<>();
+
+		for (String token : propertyFilterString.split(" ")) {
+			if (!StringUtils.isBlank(token)) {
+				tokens.add(token);
+			}
+		}
+
+		return tokens;
 	}
 
 	private static boolean _isValid(
