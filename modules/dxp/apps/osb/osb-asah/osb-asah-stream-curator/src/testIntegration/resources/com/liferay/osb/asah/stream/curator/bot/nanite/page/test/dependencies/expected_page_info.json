@@ -294,5 +294,33 @@
 		"url": "http://liferay.com/our-story",
 		"userId": "4",
 		"views": 2
+	},
+	{
+		"browserName": "Firefox",
+		"channelId": "1",
+		"country": "Brazil",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"eventDate": "2018-01-04T11:00:00.000Z",
+		"firstEventDate": "2018-01-04T11:43:00.000Z",
+		"indirectAccess": 0,
+		"indirectAccessDates": [
+		],
+		"pageScrolls": [
+			{
+				"depth": 25,
+				"eventDate": "2018-01-04T11:43:00.000Z"
+			}
+		],
+		"platformName": "Linux",
+		"primaryKey": "809e370108283571bb88d72dc8c9934ceb76b91929459c9935f09bec29ee000e",
+		"region": "Pernambuco",
+		"searchTerm": "laptop",
+		"timeOnPage": 0,
+		"title": "About Us",
+		"url": "http://liferay.com/our-story?search=laptop",
+		"userId": "4",
+		"views": 0
 	}
 ]

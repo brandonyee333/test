@@ -32,6 +32,7 @@ import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.util.ReflectionTestUtils;
 
 /**
  * @author Marcellus Tavares
@@ -44,12 +45,19 @@ public class PageNaniteTest {
 		name = "pages", resourcePath = "page_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
+	@ElasticsearchIndex(
+		name = "preferences", resourcePath = "preferences_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
 	@MessageBusChannel(
 		channel = Channel.ANALYTICS_EVENTS_PAGE,
 		resourcePath = "analytics_events_page_channel.json"
 	)
 	@Test
 	public void testPageMetrics() throws Exception {
+		ReflectionTestUtils.invokeMethod(
+			_pageNanite, "_cacheSearchQueryStrings");
+
 		_pageNanite.run();
 
 		ElasticsearchInvoker elasticsearchInvoker =
