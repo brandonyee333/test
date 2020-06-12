@@ -40,7 +40,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 
 import org.elasticsearch.action.search.SearchResponse;
@@ -75,15 +74,15 @@ public class DogUtil {
 		}
 
 		for (PropertyFilter propertyFilter : propertyFilters) {
+			QueryBuilder propertyQueryBuilder = buildPropertyQueryBuilder(
+				propertyFilter.getOperator(), propertyFilter.getPropertyName(),
+				propertyFilter.getPropertyValue());
+
 			if (propertyFilter.isNegate()) {
-				boolQueryBuilder.mustNot(
-					buildPropertyQueryBuilder(
-						propertyFilter.getFilterString()));
+				boolQueryBuilder.mustNot(propertyQueryBuilder);
 			}
 			else {
-				boolQueryBuilder.filter(
-					buildPropertyQueryBuilder(
-						propertyFilter.getFilterString()));
+				boolQueryBuilder.filter(propertyQueryBuilder);
 			}
 		}
 	}
@@ -120,20 +119,13 @@ public class DogUtil {
 	}
 
 	public static QueryBuilder buildPropertyQueryBuilder(
-		String propertyFilterString) {
+		String operator, String propertyName, String propertyValue) {
 
-		List<String> tokens = _getFilterTokens(propertyFilterString);
-
-		if (tokens.size() != 3) {
-			throw new IllegalArgumentException(
-				"Invalid filter " + propertyFilterString);
+		if (Objects.equals(operator, "~")) {
+			return QueryBuilders.regexpQuery(propertyName, propertyValue);
 		}
 
-		if (Objects.equals(tokens.get(1), "~")) {
-			return QueryBuilders.regexpQuery(tokens.get(0), tokens.get(2));
-		}
-
-		return QueryBuilders.termQuery(tokens.get(0), tokens.get(2));
+		return QueryBuilders.termQuery(propertyName, propertyValue);
 	}
 
 	public static SearchSourceBuilder buildSearchSourceBuilder(
@@ -293,18 +285,6 @@ public class DogUtil {
 					"Unable to process search request", ioe);
 			}
 		};
-	}
-
-	private static List<String> _getFilterTokens(String propertyFilterString) {
-		List<String> tokens = new ArrayList<>();
-
-		for (String token : propertyFilterString.split(" ")) {
-			if (!StringUtils.isBlank(token)) {
-				tokens.add(token);
-			}
-		}
-
-		return tokens;
 	}
 
 	private static boolean _isValid(

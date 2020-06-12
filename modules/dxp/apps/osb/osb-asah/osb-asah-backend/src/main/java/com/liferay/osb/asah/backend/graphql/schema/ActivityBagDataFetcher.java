@@ -25,6 +25,8 @@ import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -41,9 +43,19 @@ public class ActivityBagDataFetcher
 	public ResultBag<Activity> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
+		Function<Map<String, Object>, PropertyFilter> mapperFunction =
+			propertyFilterMap -> {
+				PropertyFilter propertyFilter = PropertyFilter.of(
+					propertyFilterMap);
+
+				propertyFilter.setPropertyNamespace("eventContext.");
+
+				return propertyFilter;
+			};
+
 		List<PropertyFilter> eventContextPropertyFilters = ListUtil.map(
 			dataFetchingEnvironment.getArgument("eventContextPropertyFilters"),
-			PropertyFilter::of);
+			mapperFunction);
 
 		return _activityDog.getActivityResultBag(
 			dataFetchingEnvironment.getArgument("applicationId"),
