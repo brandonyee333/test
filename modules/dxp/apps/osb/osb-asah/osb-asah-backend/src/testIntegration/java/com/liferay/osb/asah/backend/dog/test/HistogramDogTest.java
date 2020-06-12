@@ -57,6 +57,10 @@ public class HistogramDogTest {
 	)
 	@Test
 	public void testHistogramMetricsCustomRange() {
+		double[] expectedValues = {
+			0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+		};
+
 		LocalDate localDate = LocalDate.now(ZoneId.of("UTC"));
 
 		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
@@ -64,10 +68,6 @@ public class HistogramDogTest {
 			TimeRange.of(localDate.minusDays(85), localDate.minusDays(105)));
 
 		double[] actualValues = _getActualValues(histogramMetrics);
-
-		double[] expectedValues = {
-			0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-		};
 
 		Assert.assertArrayEquals(expectedValues, actualValues, 0);
 	}
