@@ -104,6 +104,10 @@ public abstract class BaseTranslator<T extends TranslatableModel> {
 				continue;
 			}
 
+			if (isManualTranslation(model, zendeskLocale)) {
+				continue;
+			}
+
 			zendeskTranslationWebService.addZendeskTranslation(
 				model.getSourceType(), model.getSourceId(), zendeskLocale,
 				model.getTitle(), model.getBody());

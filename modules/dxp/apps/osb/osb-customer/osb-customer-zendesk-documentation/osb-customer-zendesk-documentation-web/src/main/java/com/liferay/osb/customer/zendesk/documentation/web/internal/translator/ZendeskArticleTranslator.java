@@ -57,7 +57,24 @@ public class ZendeskArticleTranslator extends BaseTranslator<ZendeskArticle> {
 			return false;
 		}
 
-		return super.isAdd(zendeskArticle);
+		List<ZendeskTranslation> zendeskTranslations =
+			zendeskArticle.getZendeskTranslations();
+
+		String[] zendeskLocales = ZendeskLocales.ZENDESK_LOCALES_ENABLED;
+
+		if (zendeskTranslations.size() >= zendeskLocales.length) {
+			return false;
+		}
+
+		for (ZendeskTranslation zendeskTranslation : zendeskTranslations) {
+			String zendeskLocale = zendeskTranslation.getLocale();
+
+			if (zendeskLocale.equals(ZendeskLocales.US)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	protected boolean isManualTranslation(
