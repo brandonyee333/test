@@ -31,14 +31,44 @@ class CompleteJobRunSparkJob(BaseSparkJob):
 		)
 
 class GenerateItemsSparkJob(BaseSparkJob):
+	def _update_job_run_items_dataset_count(self, items_data_frame):
+		elasticsearch_bridge = self.spark_application.elasticsearch_bridge
+
+		elasticsearch_bridge.update_document(
+		    'job-runs', {
+		        'context': {
+		            'itemsDatasetCount': items_data_frame.count()
+		        },
+		        'lastUpdatedDate': datetime.datetime.utcnow(),
+		    }, self.spark_application_args.job_run_id, 'osbasahfaroinfo'
+		)
+
 	def run(self):
 		items_data_frame = self.spark_session.table(
 		    'user_item_interactions'
 		).select(col('ITEM_ID').alias("itemId")).distinct()
 
+		self._update_job_run_items_dataset_count(items_data_frame)
+
 		items_data_frame.createOrReplaceTempView('items')
 
 class GenerateUserItemInteractionsSparkJob(BaseSparkJob):
+	def _update_job_run_user_item_interactions_dataset_count(
+	    self, user_item_interactions_data_frame
+	):
+		elasticsearch_bridge = self.spark_application.elasticsearch_bridge
+
+		elasticsearch_bridge.update_document(
+		    'job-runs', {
+		        'context':
+		            {
+		                'userItemInteractionsDatasetCount':
+		                    user_item_interactions_data_frame.count()
+		            },
+		        'lastUpdatedDate': datetime.datetime.utcnow(),
+		    }, self.spark_application_args.job_run_id, 'osbasahfaroinfo'
+		)
+
 	def run(self):
 		user_item_interactions_data_frame = self.spark_session.table(
 		    'analytics_events'
@@ -51,6 +81,10 @@ class GenerateUserItemInteractionsSparkJob(BaseSparkJob):
 		    col('event_timestamp').alias('TIMESTAMP'),
 		    col('eventId').alias('EVENT_TYPE'),
 		    col('eventProperties.viewDuration').alias('EVENT_VALUE')
+		)
+
+		self._update_job_run_user_item_interactions_dataset_count(
+		    user_item_interactions_data_frame
 		)
 
 		user_item_interactions_data_frame.createOrReplaceTempView(
