@@ -21,14 +21,10 @@ import com.liferay.osb.asah.backend.model.JobParameter;
 import com.liferay.osb.asah.backend.model.JobTrainingFrequency;
 import com.liferay.osb.asah.backend.model.JobTrainingPeriod;
 import com.liferay.osb.asah.backend.model.JobType;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
-
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -43,28 +39,15 @@ public class CreateJobMutationDataFetcher implements DataFetcher<Job> {
 	@Override
 	public Job get(DataFetchingEnvironment dataFetchingEnvironment) {
 		return _jobDog.addJob(
-			_createJobParameters(dataFetchingEnvironment),
+			ListUtil.map(
+				dataFetchingEnvironment.getArgument("parameters"),
+				JobParameter::of),
 			JobTrainingFrequency.valueOf(
 				dataFetchingEnvironment.getArgument("trainingFrequency")),
 			JobTrainingPeriod.valueOf(
 				dataFetchingEnvironment.getArgument("trainingPeriod")),
 			JobType.valueOf(dataFetchingEnvironment.getArgument("type")),
 			dataFetchingEnvironment.getArgument("name"));
-	}
-
-	private List<JobParameter> _createJobParameters(
-		DataFetchingEnvironment dataFetchingEnvironment) {
-
-		List<Map<String, String>> parameters =
-			dataFetchingEnvironment.getArgument("parameters");
-
-		Stream<Map<String, String>> stream = parameters.stream();
-
-		return stream.map(
-			map -> new JobParameter(map.get("name"), map.get("value"))
-		).collect(
-			Collectors.toList()
-		);
 	}
 
 	@Autowired
