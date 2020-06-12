@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.liferay.osb.asah.common.date.DateUtil;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -71,6 +72,10 @@ public class JobRun {
 		return DateUtil.toUTCString(_completedDate);
 	}
 
+	public Map<String, Object> getContext() {
+		return _context;
+	}
+
 	public String getId() {
 		return _id;
 	}
@@ -91,6 +96,10 @@ public class JobRun {
 		}
 	}
 
+	public void setContext(Map<String, Object> context) {
+		_context = context;
+	}
+
 	public void setId(String id) {
 		_id = id;
 	}
@@ -100,6 +109,7 @@ public class JobRun {
 	}
 
 	private Date _completedDate;
+	private Map<String, Object> _context;
 	private String _id;
 	private JobRunStatus _jobRunStatus;
 

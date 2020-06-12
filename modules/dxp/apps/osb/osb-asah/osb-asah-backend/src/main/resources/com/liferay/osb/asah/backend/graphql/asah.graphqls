@@ -363,6 +363,11 @@ type IndividualMetric {
 	totalIndividualsMetric: Metric
 }
 
+type KeyValuePair {
+	key: String
+	value: String
+}
+
 type Keyword {
 	type: String
 	value: String
@@ -392,6 +397,7 @@ type JobParameter {
 type JobRun {
 	id: String
 	completedDate: String
+	context: [KeyValuePair]
 	status: JobRunStatus
 }
 
