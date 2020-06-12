@@ -30,6 +30,9 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+
 import java.util.List;
 
 import org.junit.Assert;
@@ -46,6 +49,28 @@ import org.springframework.boot.test.context.SpringBootTest;
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
 public class HistogramDogTest {
+
+	@ElasticsearchIndex(
+		name = "journals",
+		resourcePath = "histogram-journal-last-90-days-info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testHistogramMetricsCustomRange() {
+		LocalDate localDate = LocalDate.now(ZoneId.of("UTC"));
+
+		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
+			Interval.DAY,
+			TimeRange.of(localDate.minusDays(85), localDate.minusDays(105)));
+
+		double[] actualValues = _getActualValues(histogramMetrics);
+
+		double[] expectedValues = {
+			0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+		};
+
+		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+	}
 
 	@ElasticsearchIndex(
 		name = "journals",
