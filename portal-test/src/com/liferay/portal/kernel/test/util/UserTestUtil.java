@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.test.util;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Organization;
@@ -315,10 +316,15 @@ public class UserTestUtil {
 
 		PrincipalThreadLocal.setName(user.getUserId());
 
-		PermissionChecker permissionChecker =
-			PermissionCheckerFactoryUtil.create(user);
+		try {
+			PermissionChecker permissionChecker =
+				PermissionCheckerFactoryUtil.create(user);
 
-		PermissionThreadLocal.setPermissionChecker(permissionChecker);
+			PermissionThreadLocal.setPermissionChecker(permissionChecker);
+		}
+		catch (Exception exception) {
+			throw new SystemException(exception);
+		}
 	}
 
 	public static User updateUser(User user) throws Exception {
