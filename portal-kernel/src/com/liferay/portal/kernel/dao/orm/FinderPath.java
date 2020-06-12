@@ -268,7 +268,6 @@ public class FinderPath {
 		_finderCacheEnabled = finderCacheEnabled;
 		_resultClass = resultClass;
 		_cacheName = cacheName;
-		_params = params;
 		_columnBitmask = columnBitmask;
 		_argumentsFunction = argumentsFunction;
 		_originalArgumentsFunction = originalArgumentsFunction;
@@ -341,7 +340,6 @@ public class FinderPath {
 	private final boolean _entityCacheEnabled;
 	private final boolean _finderCacheEnabled;
 	private final Function<BaseModel<?>, Object[]> _originalArgumentsFunction;
-	private final String[] _params;
 	private final Class<?> _resultClass;
 
 }
