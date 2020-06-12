@@ -52,12 +52,12 @@ public class MetricHelperTest {
 			"2018-12-08T00:00", "2018-12-09T00:00", "2018-12-10T00:00",
 			"2018-12-11T00:00", "2018-12-12T00:00");
 
-		Map<String, Metric> metrics = _createMetrics(
+		List<String> actualKeys = _createMetricsKeys(
 			Interval.DAY, LocalDateTime.of(2018, 12, 14, 10, 30),
 			TimeRange.of(
 				LocalDate.parse("2018-12-12"), LocalDate.parse("2018-12-02")));
 
-		Assert.assertEquals(expectedKeys, new ArrayList<>(metrics.keySet()));
+		Assert.assertEquals(expectedKeys, actualKeys);
 	}
 
 	@Test
