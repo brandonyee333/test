@@ -129,57 +129,6 @@ definition {
 		AssertConsoleTextNotPresent(value1 = "javax.portlet.PortletException: java.lang.NullPointerException");
 	}
 
-	macro addEventRepeatDaily {
-		Click(locator1 = "Staging#STAGING_PUBLISH_TO_LIVE_BUTTON");
-
-		IFrame.selectDialogFrame();
-
-		Click(locator1 = "StagingPublishToLive#SWITCH_TO_ADVANCED_PUBLICATION");
-
-		Check(locator1 = "StagingPublishToLive#DATE_SCHEDULE_RADIO");
-
-		Type(
-			locator1 = "StagingPublishToLive#DATE_SCHEDULE_TITLE_FIELD",
-			value1 = "${scheduleTitleName}");
-
-		Check(locator1 = "StagingPublishToLive#DATE_SCHEDULE_END_DATE_NO_END_DATE_RADIO");
-
-		Check(
-			key_frequency = "Daily",
-			locator1 = "StagingPublishToLive#DATE_SCHEDULE_REPEAT_RADIO");
-
-		Check(locator1 = "Select#CONTENT_ALL_CONTENT");
-
-		AssertClick(
-			locator1 = "StagingPublishToLive#ADD_EVENT_BUTTON",
-			value1 = "Add Event");
-
-		Alert.viewSuccessMessage();
-
-		SelectFrame(value1 = "relative=top");
-
-		Click(locator1 = "Icon#CLOSE");
-
-		ProductMenu.gotoPortlet(
-			category = "Publishing",
-			panel = "Site Administration",
-			portlet = "Staging");
-
-		AssertClick(
-			locator1 = "Staging#SCHEDULED",
-			value1 = "Scheduled");
-
-		var key_scheduleTitleName = "${scheduleTitleName}";
-
-		AssertTextEquals(
-			locator1 = "StagingPublishToLive#SCHEDULED_TABLE_TITLE",
-			value1 = "${scheduleTitleName}");
-
-		AssertTextEquals(
-			locator1 = "StagingPublishToLive#SCHEDULED_TABLE_END_DATE",
-			value1 = "No End Date");
-	}
-
 	macro addPageVariationPG {
 		Click(locator1 = "Icon#STAGING_BAR_VERTICAL_ELLIPSIS");
 
@@ -1395,6 +1344,24 @@ definition {
 					locator1 = "PagesConfiguration#CONTENT_CHOOSE_CONTENT_CONTENT_CHECKBOX");
 			}
 		}
+	}
+
+	macro viewRepeatingEventDetails {
+		Staging.openStagingAdmin(siteURLKey = "${siteName}");
+
+		AssertClick(
+			locator1 = "Staging#SCHEDULED",
+			value1 = "Scheduled");
+
+		var key_scheduleTitleName = "${scheduleTitleName}";
+
+		AssertTextPresent(
+			locator1 = "StagingPublishToLive#SCHEDULED_TABLE_TITLE",
+			value1 = "${scheduleTitleName}");
+
+		AssertTextEquals(
+			locator1 = "StagingPublishToLive#SCHEDULED_TABLE_END_DATE",
+			value1 = "${endDate}");
 	}
 
 	macro viewSitePagesVariationCP {
