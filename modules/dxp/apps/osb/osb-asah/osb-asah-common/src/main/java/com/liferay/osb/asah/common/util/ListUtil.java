@@ -25,12 +25,13 @@ import java.util.stream.Stream;
 public class ListUtil {
 
 	public static <T, R> List<R> map(
-		List<? extends T> list, Function<? super T, ? extends R> mapper) {
+		List<? extends T> list,
+		Function<? super T, ? extends R> mapperFunction) {
 
 		Stream<? extends T> stream = list.stream();
 
 		return stream.map(
-			mapper
+			mapperFunction
 		).collect(
 			Collectors.toList()
 		);
