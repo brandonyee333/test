@@ -17,10 +17,16 @@ package com.liferay.osb.asah.backend.graphql.schema;
 import com.liferay.osb.asah.backend.dog.ActivityDog;
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.backend.model.Activity;
+import com.liferay.osb.asah.backend.model.PropertyFilter;
 import com.liferay.osb.asah.backend.model.ResultBag;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,9 +43,21 @@ public class ActivityBagDataFetcher
 	public ResultBag<Activity> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
+		List<Map<String, Object>> eventContextPropertyFiltersMap =
+			dataFetchingEnvironment.getArgument("eventContextPropertyFilters");
+
+		Stream<Map<String, Object>> stream =
+			eventContextPropertyFiltersMap.stream();
+
+		List<PropertyFilter> eventContextPropertyFilters = stream.map(
+			PropertyFilter::of
+		).collect(
+			Collectors.toList()
+		);
+
 		return _activityDog.getActivityResultBag(
 			dataFetchingEnvironment.getArgument("applicationId"),
-			dataFetchingEnvironment.getArgument("eventContextFilter"),
+			eventContextPropertyFilters,
 			dataFetchingEnvironment.getArgument("eventId"),
 			dataFetchingEnvironment.getArgument("size"),
 			dataFetchingEnvironment.getArgument("start"));

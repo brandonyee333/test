@@ -17,10 +17,16 @@ package com.liferay.osb.asah.backend.graphql.schema;
 import com.liferay.osb.asah.backend.dog.AssetDog;
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.backend.model.PageAsset;
+import com.liferay.osb.asah.backend.model.PropertyFilter;
 import com.liferay.osb.asah.backend.model.ResultBag;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,9 +43,19 @@ public class PageAssetBagDataFetcher
 	public ResultBag<PageAsset> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
+		List<Map<String, Object>> propertyFiltersMap =
+			dataFetchingEnvironment.getArgument("propertyFilters");
+
+		Stream<Map<String, Object>> stream = propertyFiltersMap.stream();
+
+		List<PropertyFilter> propertyFilters = stream.map(
+			PropertyFilter::of
+		).collect(
+			Collectors.toList()
+		);
+
 		return _assetDog.getPageAssetResultBag(
-			dataFetchingEnvironment.getArgument("keywords"),
-			dataFetchingEnvironment.getArgument("propertyFilter"),
+			dataFetchingEnvironment.getArgument("keywords"), propertyFilters,
 			dataFetchingEnvironment.getArgument("size"),
 			dataFetchingEnvironment.getArgument("sort"),
 			dataFetchingEnvironment.getArgument("start"));
