@@ -488,6 +488,14 @@ type MutationType {
 	runJob(
 		jobId: String!
 	): Job
+
+	updateJob(
+		jobId: String!
+		name: String!
+		parameters: [JobParameterInput]
+		trainingFrequency: JobTrainingFrequency
+		trainingPeriod: JobTrainingPeriod
+	): Job
 }
 
 type Organization implements DXPEntity{
