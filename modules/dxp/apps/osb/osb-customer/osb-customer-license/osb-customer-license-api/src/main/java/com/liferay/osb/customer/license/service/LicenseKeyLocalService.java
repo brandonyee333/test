@@ -378,6 +378,7 @@ public interface LicenseKeyLocalService
 		int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
 		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
 		int modifiedDateLTMonth, int modifiedDateLTYear,
+		String koroneikiAccountKey, String koroneikiProductPurchaseKey,
 		String accountEntryName, String licenseKeySetName, int startDateGTDay,
 		int startDateGTMonth, int startDateGTYear, int startDateLTDay,
 		int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
@@ -402,6 +403,7 @@ public interface LicenseKeyLocalService
 		int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
 		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
 		int modifiedDateLTMonth, int modifiedDateLTYear,
+		String koroneikiAccountKey, String koroneikiProductPurchaseKey,
 		String accountEntryName, String licenseKeySetName, int startDateGTDay,
 		int startDateGTMonth, int startDateGTYear, int startDateLTDay,
 		int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
@@ -436,7 +438,7 @@ public interface LicenseKeyLocalService
 
 	public LicenseKey updateLicenseKey(
 			long userId, long licenseKeyId, long licenseKeySetId,
-			long offeringEntryId, String name, boolean active)
+			String koroneikiProductPurchaseKey, String name, boolean active)
 		throws PortalException;
 
 }

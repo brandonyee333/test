@@ -198,7 +198,8 @@ public interface LicenseKeyService extends BaseService {
 			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
 			int modifiedDateGTMonth, int modifiedDateGTYear,
 			int modifiedDateLTDay, int modifiedDateLTMonth,
-			int modifiedDateLTYear, String accountEntryName,
+			int modifiedDateLTYear, String koroneikiAccountKey,
+			String koroneikiProductPurchaseKey, String accountEntryName,
 			String licenseKeySetName, int startDateGTDay, int startDateGTMonth,
 			int startDateGTYear, int startDateLTDay, int startDateLTMonth,
 			int startDateLTYear, long[] licenseEntryIds, long[] productEntryIds,
@@ -225,7 +226,8 @@ public interface LicenseKeyService extends BaseService {
 			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
 			int modifiedDateGTMonth, int modifiedDateGTYear,
 			int modifiedDateLTDay, int modifiedDateLTMonth,
-			int modifiedDateLTYear, String accountEntryName,
+			int modifiedDateLTYear, String koroneikiAccountKey,
+			String koroneikiProductPurchaseKey, String accountEntryName,
 			String licenseKeySetName, int startDateGTDay, int startDateGTMonth,
 			int startDateGTYear, int startDateLTDay, int startDateLTMonth,
 			int startDateLTYear, long[] licenseEntryIds, long[] productEntryIds,
@@ -247,8 +249,8 @@ public interface LicenseKeyService extends BaseService {
 		throws PortalException;
 
 	public LicenseKey updateLicenseKey(
-			long userId, long licenseKeyId, long licenseKeySetId,
-			long offeringEntryId, String name, boolean active)
+			long licenseKeyId, long licenseKeySetId,
+			String koroneikiProductPurchaseKey, String name, boolean active)
 		throws PortalException;
 
 	@JSONWebService

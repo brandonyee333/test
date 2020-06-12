@@ -559,7 +559,8 @@ public class LicenseKeyLocalServiceUtil {
 			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
 			int modifiedDateGTMonth, int modifiedDateGTYear,
 			int modifiedDateLTDay, int modifiedDateLTMonth,
-			int modifiedDateLTYear, String accountEntryName,
+			int modifiedDateLTYear, String koroneikiAccountKey,
+			String koroneikiProductPurchaseKey, String accountEntryName,
 			String licenseKeySetName, int startDateGTDay, int startDateGTMonth,
 			int startDateGTYear, int startDateLTDay, int startDateLTMonth,
 			int startDateLTYear, long[] licenseEntryIds, long[] productEntryIds,
@@ -578,7 +579,8 @@ public class LicenseKeyLocalServiceUtil {
 			createDateLTDay, createDateLTMonth, createDateLTYear,
 			modifiedUserId, modifiedDateGTDay, modifiedDateGTMonth,
 			modifiedDateGTYear, modifiedDateLTDay, modifiedDateLTMonth,
-			modifiedDateLTYear, accountEntryName, licenseKeySetName,
+			modifiedDateLTYear, koroneikiAccountKey,
+			koroneikiProductPurchaseKey, accountEntryName, licenseKeySetName,
 			startDateGTDay, startDateGTMonth, startDateGTYear, startDateLTDay,
 			startDateLTMonth, startDateLTYear, licenseEntryIds, productEntryIds,
 			productEntryName, productId, productVersions, owner, description,
@@ -603,6 +605,7 @@ public class LicenseKeyLocalServiceUtil {
 		int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
 		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
 		int modifiedDateLTMonth, int modifiedDateLTYear,
+		String koroneikiAccountKey, String koroneikiProductPurchaseKey,
 		String accountEntryName, String licenseKeySetName, int startDateGTDay,
 		int startDateGTMonth, int startDateGTYear, int startDateLTDay,
 		int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
@@ -619,7 +622,8 @@ public class LicenseKeyLocalServiceUtil {
 			createDateLTDay, createDateLTMonth, createDateLTYear,
 			modifiedUserId, modifiedDateGTDay, modifiedDateGTMonth,
 			modifiedDateGTYear, modifiedDateLTDay, modifiedDateLTMonth,
-			modifiedDateLTYear, accountEntryName, licenseKeySetName,
+			modifiedDateLTYear, koroneikiAccountKey,
+			koroneikiProductPurchaseKey, accountEntryName, licenseKeySetName,
 			startDateGTDay, startDateGTMonth, startDateGTYear, startDateLTDay,
 			startDateLTMonth, startDateLTYear, licenseEntryIds, productEntryIds,
 			productEntryName, productId, productVersions, owner, description,
@@ -667,12 +671,12 @@ public class LicenseKeyLocalServiceUtil {
 	public static com.liferay.osb.customer.license.model.LicenseKey
 			updateLicenseKey(
 				long userId, long licenseKeyId, long licenseKeySetId,
-				long offeringEntryId, String name, boolean active)
+				String koroneikiProductPurchaseKey, String name, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateLicenseKey(
-			userId, licenseKeyId, licenseKeySetId, offeringEntryId, name,
-			active);
+			userId, licenseKeyId, licenseKeySetId, koroneikiProductPurchaseKey,
+			name, active);
 	}
 
 	public static LicenseKeyLocalService getService() {

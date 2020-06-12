@@ -964,7 +964,8 @@ public class LicenseKeyServiceHttp {
 				Long modifiedUserId, int modifiedDateGTDay,
 				int modifiedDateGTMonth, int modifiedDateGTYear,
 				int modifiedDateLTDay, int modifiedDateLTMonth,
-				int modifiedDateLTYear, String accountEntryName,
+				int modifiedDateLTYear, String koroneikiAccountKey,
+				String koroneikiProductPurchaseKey, String accountEntryName,
 				String licenseKeySetName, int startDateGTDay,
 				int startDateGTMonth, int startDateGTYear, int startDateLTDay,
 				int startDateLTMonth, int startDateLTYear,
@@ -990,7 +991,8 @@ public class LicenseKeyServiceHttp {
 				createDateGTYear, createDateLTDay, createDateLTMonth,
 				createDateLTYear, modifiedUserId, modifiedDateGTDay,
 				modifiedDateGTMonth, modifiedDateGTYear, modifiedDateLTDay,
-				modifiedDateLTMonth, modifiedDateLTYear, accountEntryName,
+				modifiedDateLTMonth, modifiedDateLTYear, koroneikiAccountKey,
+				koroneikiProductPurchaseKey, accountEntryName,
 				licenseKeySetName, startDateGTDay, startDateGTMonth,
 				startDateGTYear, startDateLTDay, startDateLTMonth,
 				startDateLTYear, licenseEntryIds, productEntryIds,
@@ -1080,6 +1082,7 @@ public class LicenseKeyServiceHttp {
 			int modifiedDateGTDay, int modifiedDateGTMonth,
 			int modifiedDateGTYear, int modifiedDateLTDay,
 			int modifiedDateLTMonth, int modifiedDateLTYear,
+			String koroneikiAccountKey, String koroneikiProductPurchaseKey,
 			String accountEntryName, String licenseKeySetName,
 			int startDateGTDay, int startDateGTMonth, int startDateGTYear,
 			int startDateLTDay, int startDateLTMonth, int startDateLTYear,
@@ -1103,7 +1106,8 @@ public class LicenseKeyServiceHttp {
 				createDateGTYear, createDateLTDay, createDateLTMonth,
 				createDateLTYear, modifiedUserId, modifiedDateGTDay,
 				modifiedDateGTMonth, modifiedDateGTYear, modifiedDateLTDay,
-				modifiedDateLTMonth, modifiedDateLTYear, accountEntryName,
+				modifiedDateLTMonth, modifiedDateLTYear, koroneikiAccountKey,
+				koroneikiProductPurchaseKey, accountEntryName,
 				licenseKeySetName, startDateGTDay, startDateGTMonth,
 				startDateGTYear, startDateLTDay, startDateLTMonth,
 				startDateLTYear, licenseEntryIds, productEntryIds,
@@ -1221,9 +1225,9 @@ public class LicenseKeyServiceHttp {
 
 	public static com.liferay.osb.customer.license.model.LicenseKey
 			updateLicenseKey(
-				HttpPrincipal httpPrincipal, long userId, long licenseKeyId,
-				long licenseKeySetId, long offeringEntryId, String name,
-				boolean active)
+				HttpPrincipal httpPrincipal, long licenseKeyId,
+				long licenseKeySetId, String koroneikiProductPurchaseKey,
+				String name, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		try {
@@ -1232,8 +1236,8 @@ public class LicenseKeyServiceHttp {
 				_updateLicenseKeyParameterTypes26);
 
 			MethodHandler methodHandler = new MethodHandler(
-				methodKey, userId, licenseKeyId, licenseKeySetId,
-				offeringEntryId, name, active);
+				methodKey, licenseKeyId, licenseKeySetId,
+				koroneikiProductPurchaseKey, name, active);
 
 			Object returnObj = null;
 
@@ -1418,11 +1422,12 @@ public class LicenseKeyServiceHttp {
 	private static final Class<?>[] _searchParameterTypes21 = new Class[] {
 		Long.class, int.class, int.class, int.class, int.class, int.class,
 		int.class, Long.class, int.class, int.class, int.class, int.class,
-		int.class, int.class, String.class, String.class, int.class, int.class,
-		int.class, int.class, int.class, int.class, long[].class, long[].class,
-		String.class, String.class, int[].class, String.class, String.class,
-		String.class, String.class, String.class, String.class, String.class,
-		int.class, int.class, int.class, int.class, int.class, int.class,
+		int.class, int.class, String.class, String.class, String.class,
+		String.class, int.class, int.class, int.class, int.class, int.class,
+		int.class, long[].class, long[].class, String.class, String.class,
+		int[].class, String.class, String.class, String.class, String.class,
+		String.class, String.class, String.class, int.class, int.class,
+		int.class, int.class, int.class, int.class,
 		java.util.LinkedHashMap.class, boolean.class, int.class, int.class,
 		com.liferay.portal.kernel.util.OrderByComparator.class
 	};
@@ -1433,11 +1438,12 @@ public class LicenseKeyServiceHttp {
 	private static final Class<?>[] _searchCountParameterTypes23 = new Class[] {
 		Long.class, int.class, int.class, int.class, int.class, int.class,
 		int.class, Long.class, int.class, int.class, int.class, int.class,
-		int.class, int.class, String.class, String.class, int.class, int.class,
-		int.class, int.class, int.class, int.class, long[].class, long[].class,
-		String.class, String.class, int[].class, String.class, String.class,
-		String.class, String.class, String.class, String.class, String.class,
-		int.class, int.class, int.class, int.class, int.class, int.class,
+		int.class, int.class, String.class, String.class, String.class,
+		String.class, int.class, int.class, int.class, int.class, int.class,
+		int.class, long[].class, long[].class, String.class, String.class,
+		int[].class, String.class, String.class, String.class, String.class,
+		String.class, String.class, String.class, int.class, int.class,
+		int.class, int.class, int.class, int.class,
 		java.util.LinkedHashMap.class, boolean.class
 	};
 	private static final Class<?>[] _searchCountParameterTypes24 = new Class[] {
@@ -1447,8 +1453,7 @@ public class LicenseKeyServiceHttp {
 		new Class[] {long.class, long.class, boolean.class};
 	private static final Class<?>[] _updateLicenseKeyParameterTypes26 =
 		new Class[] {
-			long.class, long.class, long.class, long.class, String.class,
-			boolean.class
+			long.class, long.class, String.class, String.class, boolean.class
 		};
 	private static final Class<?>[] _updateLicenseKeyParameterTypes27 =
 		new Class[] {String.class, String.class, boolean.class};
