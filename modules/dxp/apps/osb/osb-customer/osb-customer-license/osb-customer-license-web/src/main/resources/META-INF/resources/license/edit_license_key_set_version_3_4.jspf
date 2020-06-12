@@ -14,7 +14,7 @@
  */
 --%>
 
-<aui:row cssClass='<%= "cluster " + cssClass %>' id='<%= licenseKey.getOfferingEntryId() + "-" + licenseKey.getClusterId() %>'>
+<aui:row cssClass='<%= "cluster " + cssClass %>' id='<%= licenseKey.getKoroneikiProductPurchaseKey() + "-" + licenseKey.getClusterId() %>'>
 	<c:if test="<%= LicenseKeyPermission.contains(permissionChecker, licenseKey.getLicenseKeyId(), OSBActionKeys.UPDATE_ADMIN) %>">
 		<aui:col md="4">
 			<span class="bold uppercase"><liferay-ui:message key="created-by" />:</span>
@@ -273,7 +273,7 @@
 							<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
 							<portlet:param name="licenseKeySetId" value="<%= String.valueOf(licenseKeySetId) %>" />
 							<portlet:param name="licenseKeyId" value="<%= String.valueOf(clusterLicenseKey.getLicenseKeyId()) %>" />
-							<portlet:param name="offeringEntryId" value="<%= String.valueOf(clusterLicenseKey.getOfferingEntryId()) %>" />
+							<portlet:param name="productPurchaseKey" value="<%= clusterLicenseKey.getKoroneikiProductPurchaseKey() %>" />
 							<portlet:param name="active" value="<%= String.valueOf(!clusterLicenseKey.isActive()) %>" />
 						</portlet:actionURL>
 
@@ -303,13 +303,13 @@
 
 			<div class="separator"></div>
 
-			<c:if test="<%= AccountEntryPermission.contains(permissionChecker, licenseKeySet.getAccountEntryId(), OSBActionKeys.ADD_LICENSE) %>">
+			<c:if test="<%= accountPermission.contains(permissionChecker, licenseKeySet.getKoroneikiAccountKey(), OSBActionKeys.ADD_LICENSE) %>">
 				<aui:col md="12">
 					<portlet:renderURL var="addLicenseKeyURL">
 						<portlet:param name="mvcPath" value="/license/edit_license_key.jsp" />
 						<portlet:param name="redirect" value="<%= currentURL %>" />
 						<portlet:param name="licenseKeySetId" value="<%= String.valueOf(licenseKeySetId) %>" />
-						<portlet:param name="offeringEntryId" value="<%= String.valueOf(licenseKey.getOfferingEntryId()) %>" />
+						<portlet:param name="productPurchaseKey" value="<%= licenseKey.getKoroneikiProductPurchaseKey() %>" />
 						<portlet:param name="productEntryId" value="<%= String.valueOf(licenseKey.getProductEntryId()) %>" />
 						<portlet:param name="licenseEntryId" value="<%= String.valueOf(licenseKey.getLicenseEntryId()) %>" />
 						<portlet:param name="clusterId" value="<%= String.valueOf(licenseKey.getClusterId()) %>" />
@@ -401,7 +401,7 @@
 						<portlet:param name="mvcPath" value="/license/move_license_key.jsp" />
 						<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
 						<portlet:param name="licenseKeyId" value="<%= String.valueOf(licenseKey.getLicenseKeyId()) %>" />
-						<portlet:param name="offeringEntryId" value="<%= String.valueOf(licenseKey.getOfferingEntryId()) %>" />
+						<portlet:param name="productPurchaseKey" value="<%= licenseKey.getKoroneikiProductPurchaseKey() %>" />
 					</portlet:renderURL>
 
 					<liferay-ui:icon
@@ -418,7 +418,7 @@
 						<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
 						<portlet:param name="licenseKeySetId" value="<%= String.valueOf(licenseKeySetId) %>" />
 						<portlet:param name="licenseKeyId" value="<%= String.valueOf(licenseKey.getLicenseKeyId()) %>" />
-						<portlet:param name="offeringEntryId" value="<%= String.valueOf(licenseKey.getOfferingEntryId()) %>" />
+						<portlet:param name="productPurchaseKey" value="<%= licenseKey.getKoroneikiProductPurchaseKey() %>" />
 						<portlet:param name="active" value="<%= String.valueOf(!licenseKey.isActive()) %>" />
 					</portlet:actionURL>
 
@@ -441,7 +441,7 @@
 					/>
 				</c:if>
 
-				<c:if test="<%= licenseKey.canRenew() && AccountEntryPermission.contains(permissionChecker, licenseKeySet.getAccountEntryId(), OSBActionKeys.ADD_LICENSE) %>">
+				<c:if test="<%= licenseKey.canRenew() && accountPermission.contains(permissionChecker, licenseKeySet.getKoroneikiAccountKey(), OSBActionKeys.ADD_LICENSE) %>">
 					<div class="license-duration pull-right">
 						<liferay-ui:message key="start-date" />:
 

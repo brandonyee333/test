@@ -25,11 +25,11 @@ long licenseKeySetId = ParamUtil.getLong(request, "licenseKeySetId");
 
 LicenseKeySet licenseKeySet = LicenseKeySetLocalServiceUtil.fetchLicenseKeySet(licenseKeySetId);
 
-String productPurchaseKey = ParamUtil.getString(request, "productPurchaseKey");
+String koroneikiProductPurchaseKey = ParamUtil.getString(request, "koroneikiProductPurchaseKey");
 
-ProductPurchase productPurchase = productPurchaseWebService.getProductPurchase(productPurchaseKey);
+ProductPurchase productPurchase = productPurchaseWebService.getProductPurchase(koroneikiProductPurchaseKey);
 
-AccountEntry accountEntry = AccountEntryLocalServiceUtil.getKoroneikiAccountEntry(productPurchase.getAccountKey());
+Account koroneikiAccount = accountWebService.getAccount(productPurchase.getAccountKey());
 
 ProductEntry productEntry = ProductEntryLocalServiceUtil.getProductEntryByKoroneikiKey(productPurchase.getProductKey());
 
@@ -107,8 +107,9 @@ if ((serverIdsIndexes == null) || (serverIdsIndexes.length <= 0)) {
 			<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 			<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 			<aui:input name="licenseKeySetId" type="hidden" value="<%= licenseKeySetId %>" />
-			<aui:input name="koroneikiProductPurchaseKey" type="hidden" value="<%= productPurchaseKey %>" />
+			<aui:input name="koroneikiProductPurchaseKey" type="hidden" value="<%= koroneikiProductPurchaseKey %>" />
 			<aui:input name="koroneikiAccountKey" type="hidden" value="<%= productPurchase.getAccountKey() %>" />
+			<aui:input name="accountEntryName" type="hidden" value="<%= koroneikiAccount.getName() %>" />
 			<aui:input name="clusterId" type="hidden" value="<%= clusterId %>" />
 			<aui:input name="sizing" type="hidden" value="<%= sizing %>" />
 
@@ -140,7 +141,7 @@ if ((serverIdsIndexes == null) || (serverIdsIndexes.length <= 0)) {
 						<span class="semi-bold"><%= HtmlUtil.escape(licenseKeySet.getName()) %></span>
 					</c:when>
 					<c:otherwise>
-						<aui:input bean="<%= licenseKeySet %>" label="" model="<%= LicenseKeySet.class %>" name="name" value="<%= accountEntry.getName() %>" />
+						<aui:input bean="<%= licenseKeySet %>" label="" model="<%= LicenseKeySet.class %>" name="name" value="<%= koroneikiAccount.getName() %>" />
 					</c:otherwise>
 				</c:choose>
 			</aui:col>
@@ -150,7 +151,7 @@ if ((serverIdsIndexes == null) || (serverIdsIndexes.length <= 0)) {
 					<liferay-ui:message key="owner" />
 				</h2>
 
-				<aui:input label="" model="<%= LicenseKey.class %>" name="owner" value="<%= accountEntry.getName() %>" />
+				<aui:input label="" model="<%= LicenseKey.class %>" name="owner" value="<%= koroneikiAccount.getName() %>" />
 			</aui:col>
 
 			<aui:col md="6">
@@ -158,7 +159,7 @@ if ((serverIdsIndexes == null) || (serverIdsIndexes.length <= 0)) {
 					<liferay-ui:message key="description" />
 				</h2>
 
-				<aui:input label="" model="<%= LicenseKey.class %>" name="description" value="<%= accountEntry.getName() %>" />
+				<aui:input label="" model="<%= LicenseKey.class %>" name="description" value="<%= koroneikiAccount.getName() %>" />
 			</aui:col>
 
 			<aui:col md="12">

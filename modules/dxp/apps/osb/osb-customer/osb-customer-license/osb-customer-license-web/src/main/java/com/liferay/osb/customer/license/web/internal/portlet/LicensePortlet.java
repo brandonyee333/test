@@ -274,12 +274,15 @@ public class LicensePortlet extends MVCPortlet {
 
 			actionRequest.setAttribute("clusterId", licenseKey.getClusterId());
 			actionRequest.setAttribute(
+				"koroneikiProductPurchaseKey",
+				licenseKey.getKoroneikiProductPurchaseKey());
+			actionRequest.setAttribute(
 				"licenseKeySetId", licenseKey.getLicenseKeySetId());
 		}
 		else {
-			//licenseKey = _licenseKeyService.updateLicenseKey(
-			//	themeDisplay.getUserId(), licenseKeyId, licenseKeySetId,
-			//	offeringEntryId, name, active);
+			licenseKey = _licenseKeyService.updateLicenseKey(
+				licenseKeyId, licenseKeySetId, koroneikiProductPurchaseKey,
+				name, active);
 		}
 	}
 
@@ -321,8 +324,9 @@ public class LicensePortlet extends MVCPortlet {
 			HttpServletRequest request = _portal.getHttpServletRequest(
 				actionRequest);
 
-			Long offeringEntryId = (Long)actionRequest.getAttribute(
-				"offeringEntryId");
+			String koroneikiProductPurchaseKey =
+				(String)actionRequest.getAttribute(
+					"koroneikiProductPurchaseKey");
 			Long clusterId = (Long)actionRequest.getAttribute("clusterId");
 
 			PortletURL portletURL = PortletURLFactoryUtil.create(
@@ -331,14 +335,14 @@ public class LicensePortlet extends MVCPortlet {
 
 			portletURL.setParameter(
 				"scroll",
-				actionResponse.getNamespace() + offeringEntryId +
+				actionResponse.getNamespace() + koroneikiProductPurchaseKey +
 					StringPool.DASH + clusterId);
 			portletURL.setParameter(
 				"mvcPath", "/license/edit_license_key_set.jsp");
 			portletURL.setParameter(
 				"licenseKeySetId", String.valueOf(licenseKeySetId));
 			portletURL.setParameter(
-				"offeringEntryId", String.valueOf(offeringEntryId));
+				"koroneikiProductPurchaseKey", koroneikiProductPurchaseKey);
 			portletURL.setParameter("clusterId", String.valueOf(clusterId));
 
 			redirect = portletURL.toString();
@@ -368,15 +372,6 @@ public class LicensePortlet extends MVCPortlet {
 
 				return true;
 			}
-
-			/*
-
-			if (AccountEntryLocalServiceUtil.hasValidLicenseAccountEntry(
-					themeDisplay.getUserId())) {
-
-				return true;
-			}
-			*/
 		}
 		catch (Exception e) {
 			_log.error(e, e);

@@ -47,4 +47,12 @@ public class AccountPermissionImpl implements AccountPermission {
 		return true;
 	}
 
+	public boolean contains(
+			PermissionChecker permissionChecker, String koroneikiAccountKey,
+			String actionId)
+		throws PortalException {
+
+		return true;
+	}
+
 }

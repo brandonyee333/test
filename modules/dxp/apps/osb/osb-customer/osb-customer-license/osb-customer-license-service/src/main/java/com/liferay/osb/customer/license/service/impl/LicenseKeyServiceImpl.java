@@ -374,10 +374,10 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		params.put("active", true);
 
 		int activeLicensesCount = licenseKeyLocalService.searchCount(
-			null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, 0, 0, null, null, 0, 0, 0,
-			0, 0, 0, new long[0], new long[0], null, productId, new int[0],
-			null, null, null, null, null, serverId, key, 0, 0, 0, 0, 0, 0,
-			params, true);
+			null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, 0, 0, null, null, null,
+			null, 0, 0, 0, 0, 0, 0, new long[0], new long[0], null, productId,
+			new int[0], null, null, null, null, null, serverId, key, 0, 0, 0, 0,
+			0, 0, params, true);
 
 		if (activeLicensesCount > 0) {
 			return true;
@@ -497,7 +497,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
 			int modifiedDateGTMonth, int modifiedDateGTYear,
 			int modifiedDateLTDay, int modifiedDateLTMonth,
-			int modifiedDateLTYear, String accountEntryName,
+			int modifiedDateLTYear, String koroneikiAccountKey,
+			String koroneikiProductPurchaseKey, String accountEntryName,
 			String licenseKeySetName, int startDateGTDay, int startDateGTMonth,
 			int startDateGTYear, int startDateLTDay, int startDateLTMonth,
 			int startDateLTYear, long[] licenseEntryIds, long[] productEntryIds,
@@ -518,7 +519,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			createDateLTDay, createDateLTMonth, createDateLTYear,
 			modifiedUserId, modifiedDateGTDay, modifiedDateGTMonth,
 			modifiedDateGTYear, modifiedDateLTDay, modifiedDateLTMonth,
-			modifiedDateLTYear, accountEntryName, licenseKeySetName,
+			modifiedDateLTYear, koroneikiAccountKey,
+			koroneikiProductPurchaseKey, accountEntryName, licenseKeySetName,
 			startDateGTDay, startDateGTMonth, startDateGTYear, startDateLTDay,
 			startDateLTMonth, startDateLTYear, licenseEntryIds, productEntryIds,
 			productEntryName, productId, productVersions, owner, description,
@@ -544,7 +546,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
 			int modifiedDateGTMonth, int modifiedDateGTYear,
 			int modifiedDateLTDay, int modifiedDateLTMonth,
-			int modifiedDateLTYear, String accountEntryName,
+			int modifiedDateLTYear, String koroneikiAccountKey,
+			String koroneikiProductPurchaseKey, String accountEntryName,
 			String licenseKeySetName, int startDateGTDay, int startDateGTMonth,
 			int startDateGTYear, int startDateLTDay, int startDateLTMonth,
 			int startDateLTYear, long[] licenseEntryIds, long[] productEntryIds,
@@ -564,7 +567,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			createDateLTDay, createDateLTMonth, createDateLTYear,
 			modifiedUserId, modifiedDateGTDay, modifiedDateGTMonth,
 			modifiedDateGTYear, modifiedDateLTDay, modifiedDateLTMonth,
-			modifiedDateLTYear, accountEntryName, licenseKeySetName,
+			modifiedDateLTYear, koroneikiAccountKey,
+			koroneikiProductPurchaseKey, accountEntryName, licenseKeySetName,
 			startDateGTDay, startDateGTMonth, startDateGTYear, startDateLTDay,
 			startDateLTMonth, startDateLTYear, licenseEntryIds, productEntryIds,
 			productEntryName, productId, productVersions, owner, description,
@@ -608,14 +612,16 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	}
 
 	public LicenseKey updateLicenseKey(
-			long userId, long licenseKeyId, long licenseKeySetId,
-			long offeringEntryId, String name, boolean active)
+			long licenseKeyId, long licenseKeySetId,
+			String koroneikiProductPurchaseKey, String name, boolean active)
 		throws PortalException {
 
 		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
 			licenseKeyId);
 
-		if (licenseKey.getOfferingEntryId() != offeringEntryId) {
+		if (licenseKey.getKoroneikiProductPurchaseKey() !=
+				koroneikiProductPurchaseKey) {
+
 			LicenseKeyPermission.check(
 				getPermissionChecker(), licenseKey, OSBActionKeys.UPDATE_ADMIN);
 		}
@@ -630,8 +636,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		}
 
 		return licenseKeyLocalService.updateLicenseKey(
-			userId, licenseKeyId, licenseKeySetId, offeringEntryId, name,
-			active);
+			getUserId(), licenseKeyId, licenseKeySetId,
+			koroneikiProductPurchaseKey, name, active);
 	}
 
 	@JSONWebService

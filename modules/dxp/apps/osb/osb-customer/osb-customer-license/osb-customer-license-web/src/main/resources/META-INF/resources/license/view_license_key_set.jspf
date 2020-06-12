@@ -27,7 +27,7 @@ while (!displayLicenseKeys.isEmpty()) {
 
 	String cssClass = StringPool.BLANK;
 
-	if ((licenseKey.getOfferingEntryId() == offeringEntryId) && (licenseKey.getClusterId() == clusterId)) {
+	if (koroneikiProductPurchaseKey.equals(licenseKey.getKoroneikiProductPurchaseKey()) && (licenseKey.getClusterId() == clusterId)) {
 		cssClass = "highlight-cluster";
 	}
 %>
@@ -276,7 +276,7 @@ while (!displayLicenseKeys.isEmpty()) {
 							<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
 							<portlet:param name="licenseKeySetId" value="<%= String.valueOf(licenseKeySetId) %>" />
 							<portlet:param name="licenseKeyId" value="<%= String.valueOf(licenseKey.getLicenseKeyId()) %>" />
-							<portlet:param name="offeringEntryId" value="<%= String.valueOf(licenseKey.getOfferingEntryId()) %>" />
+							<portlet:param name="koroneikiProductPurchaseKey" value="<%= licenseKey.getKoroneikiProductPurchaseKey() %>" />
 							<portlet:param name="active" value="<%= String.valueOf(!licenseKey.isActive()) %>" />
 						</portlet:actionURL>
 

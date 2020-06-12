@@ -14,6 +14,8 @@
 
 package com.liferay.osb.customer.license.web.internal.search;
 
+import com.liferay.portal.kernel.util.Validator;
+
 import java.util.LinkedHashMap;
 
 import javax.portlet.PortletRequest;
@@ -33,6 +35,22 @@ public class LicenseKeySearchTerms extends LicenseKeyDisplayTerms {
 		}
 
 		return Long.valueOf(createUserId);
+	}
+
+	public String getKoroneikiAccountKeyObj() {
+		if (Validator.isNull(koroneikiAccountKey)) {
+			return null;
+		}
+
+		return koroneikiAccountKey;
+	}
+
+	public String getKoroneikiProductPurchaseKeyObj() {
+		if (Validator.isNull(koroneikiProductPurchaseKey)) {
+			return null;
+		}
+
+		return koroneikiProductPurchaseKey;
 	}
 
 	public Long getModifiedUserIdObj() {

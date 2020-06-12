@@ -50,13 +50,14 @@ public class LicenseKeyFinderImpl
 	extends LicenseKeyFinderBaseImpl implements LicenseKeyFinder {
 
 	public static final String
-		COUNT_BY_U_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A =
+		COUNT_BY_U_C_M_M_KA_KPP_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A =
 			LicenseKeyFinder.class.getName() +
-				".countByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A";
+				".countByU_C_M_M_KA_KPP_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A";
 
-	public static final String FIND_BY_U_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A =
-		LicenseKeyFinder.class.getName() +
-			".findByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A";
+	public static final String
+		FIND_BY_U_C_M_M_KA_KPP_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A =
+			LicenseKeyFinder.class.getName() +
+				".findByU_C_M_M_KA_KPP_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A";
 
 	public static final String JOIN_BY_ACCOUNT_CUSTOMER =
 		LicenseKeyFinder.class.getName() + ".joinByAccountCustomer";
@@ -112,17 +113,18 @@ public class LicenseKeyFinderImpl
 			andOperator = true;
 		}
 
-		return countByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
-			null, null, null, null, null, null, accountEntryNames,
-			licenseKeySetNames, null, null, new long[0], new long[0],
-			productEntryNames, productIds, new int[0], owners, descriptions,
-			hostNames, ipAddresses, macAddresses, serverIds, keys, null, null,
-			params, andOperator);
+		return countByU_C_M_M_KA_KPP_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
+			null, null, null, null, null, null, keywords, keywords,
+			accountEntryNames, licenseKeySetNames, null, null, new long[0],
+			new long[0], productEntryNames, productIds, new int[0], owners,
+			descriptions, hostNames, ipAddresses, macAddresses, serverIds, keys,
+			null, null, params, andOperator);
 	}
 
-	public int countByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
+	public int countByU_C_M_M_KA_KPP_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
 		Long createUserId, Date createDateGT, Date createDateLT,
 		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+		String koroneikiAccountKey, String koroneikiProductPurchaseKey,
 		String accountEntryName, String licenseKeySetName, Date startDateGT,
 		Date startDateLT, long[] licenseEntryIds, long[] productEntryIds,
 		String productEntryName, String productId, int[] productVersions,
@@ -142,14 +144,15 @@ public class LicenseKeyFinderImpl
 		String[] serverIds = CustomSQLUtil.keywords(serverId);
 		String[] keys = CustomSQLUtil.keywords(key);
 
-		return countByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
+		return countByU_C_M_M_KA_KPP_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
 			createUserId, createDateGT, createDateLT, modifiedUserId,
-			modifiedDateGT, modifiedDateLT, accountEntryNames,
-			licenseKeySetNames, createDateGT, createDateLT, licenseEntryIds,
-			productEntryIds, productEntryNames, new String[] {productId},
-			productVersions, owners, descriptions, hostNames, ipAddresses,
-			macAddresses, serverIds, keys, expirationDateGT, expirationDateLT,
-			params, andOperator);
+			modifiedDateGT, modifiedDateLT, koroneikiAccountKey,
+			koroneikiProductPurchaseKey, accountEntryNames, licenseKeySetNames,
+			createDateGT, createDateLT, licenseEntryIds, productEntryIds,
+			productEntryNames, new String[] {productId}, productVersions,
+			owners, descriptions, hostNames, ipAddresses, macAddresses,
+			serverIds, keys, expirationDateGT, expirationDateLT, params,
+			andOperator);
 	}
 
 	public List<LicenseKey> findByKeywords(
@@ -186,24 +189,27 @@ public class LicenseKeyFinderImpl
 			andOperator = true;
 		}
 
-		return findByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
-			null, null, null, null, null, null, accountEntryNames,
-			licenseKeySetNames, null, null, new long[0], new long[0],
-			productEntryNames, productIds, new int[0], owners, descriptions,
-			hostNames, ipAddresses, macAddresses, serverIds, keys, null, null,
-			params, andOperator, start, end, obc);
+		return findByU_C_M_M_KA_KPP_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
+			null, null, null, null, null, null, keywords, keywords,
+			accountEntryNames, licenseKeySetNames, null, null, new long[0],
+			new long[0], productEntryNames, productIds, new int[0], owners,
+			descriptions, hostNames, ipAddresses, macAddresses, serverIds, keys,
+			null, null, params, andOperator, start, end, obc);
 	}
 
-	public List<LicenseKey> findByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
-		Long createUserId, Date createDateGT, Date createDateLT,
-		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
-		String accountEntryName, String licenseKeySetName, Date startDateGT,
-		Date startDateLT, long[] licenseEntryIds, long[] productEntryIds,
-		String productEntryName, String productId, int[] productVersions,
-		String owner, String description, String hostName, String ipAddress,
-		String macAddress, String serverId, String key, Date expirationDateGT,
-		Date expirationDateLT, LinkedHashMap<String, Object> params,
-		boolean andOperator, int start, int end, OrderByComparator obc) {
+	public List<LicenseKey>
+		findByU_C_M_M_KA_KPP_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
+			Long createUserId, Date createDateGT, Date createDateLT,
+			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+			String koroneikiAccountKey, String koroneikiProductPurchaseKey,
+			String accountEntryName, String licenseKeySetName, Date startDateGT,
+			Date startDateLT, long[] licenseEntryIds, long[] productEntryIds,
+			String productEntryName, String productId, int[] productVersions,
+			String owner, String description, String hostName, String ipAddress,
+			String macAddress, String serverId, String key,
+			Date expirationDateGT, Date expirationDateLT,
+			LinkedHashMap<String, Object> params, boolean andOperator,
+			int start, int end, OrderByComparator obc) {
 
 		String[] accountEntryNames = _osbCustomSQL.keywords(accountEntryName);
 		String[] licenseKeySetNames = CustomSQLUtil.keywords(licenseKeySetName);
@@ -216,19 +222,21 @@ public class LicenseKeyFinderImpl
 		String[] serverIds = CustomSQLUtil.keywords(serverId);
 		String[] keys = CustomSQLUtil.keywords(key);
 
-		return findByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
+		return findByU_C_M_M_KA_KPP_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
 			createUserId, createDateGT, createDateLT, modifiedUserId,
-			modifiedDateGT, modifiedDateLT, accountEntryNames,
-			licenseKeySetNames, createDateGT, createDateLT, licenseEntryIds,
-			productEntryIds, productEntryNames, new String[] {productId},
-			productVersions, owners, descriptions, hostNames, ipAddresses,
-			macAddresses, serverIds, keys, expirationDateGT, expirationDateLT,
-			params, andOperator, start, end, obc);
+			modifiedDateGT, modifiedDateLT, koroneikiAccountKey,
+			koroneikiProductPurchaseKey, accountEntryNames, licenseKeySetNames,
+			createDateGT, createDateLT, licenseEntryIds, productEntryIds,
+			productEntryNames, new String[] {productId}, productVersions,
+			owners, descriptions, hostNames, ipAddresses, macAddresses,
+			serverIds, keys, expirationDateGT, expirationDateLT, params,
+			andOperator, start, end, obc);
 	}
 
-	protected int countByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
+	protected int countByU_C_M_M_KA_KPP_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
 		Long createUserId, Date createDateGT, Date createDateLT,
 		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+		String koroneikiAccountKey, String koroneikiProductPurchaseKey,
 		String[] accountEntryNames, String[] licenseKeySetNames,
 		Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 		long[] productEntryIds, String[] productEntryNames, String[] productIds,
@@ -285,7 +293,8 @@ public class LicenseKeyFinderImpl
 		StringBundler sb = new StringBundler(7);
 
 		String sql = CustomSQLUtil.get(
-			getClass(), COUNT_BY_U_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A);
+			getClass(),
+			COUNT_BY_U_C_M_M_KA_KPP_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A);
 
 		sb.append(
 			replaceSQL(
@@ -336,6 +345,7 @@ public class LicenseKeyFinderImpl
 			setJoin(
 				qPos, params1, createUserId, createDateGT_TS, createDateLT_TS,
 				modifiedUserId, modifiedDateGT_TS, modifiedDateLT_TS,
+				koroneikiAccountKey, koroneikiProductPurchaseKey,
 				accountEntryNames, licenseKeySetNames, startDateGT_TS,
 				startDateLT_TS, licenseEntryIds, productEntryIds,
 				productEntryNames, productIds, productVersions, owners,
@@ -346,21 +356,23 @@ public class LicenseKeyFinderImpl
 				setJoin(
 					qPos, params2, createUserId, createDateGT_TS,
 					createDateLT_TS, modifiedUserId, modifiedDateGT_TS,
-					modifiedDateLT_TS, accountEntryNames, licenseKeySetNames,
-					startDateGT_TS, startDateLT_TS, licenseEntryIds,
-					productEntryIds, productEntryNames, productIds,
-					productVersions, owners, descriptions, hostNames,
-					ipAddresses, macAddresses, serverIds, keys,
+					modifiedDateLT_TS, koroneikiAccountKey,
+					koroneikiProductPurchaseKey, accountEntryNames,
+					licenseKeySetNames, startDateGT_TS, startDateLT_TS,
+					licenseEntryIds, productEntryIds, productEntryNames,
+					productIds, productVersions, owners, descriptions,
+					hostNames, ipAddresses, macAddresses, serverIds, keys,
 					expirationDateGT_TS, expirationDateLT_TS);
 
 				setJoin(
 					qPos, params3, createUserId, createDateGT_TS,
 					createDateLT_TS, modifiedUserId, modifiedDateGT_TS,
-					modifiedDateLT_TS, accountEntryNames, licenseKeySetNames,
-					startDateGT_TS, startDateLT_TS, licenseEntryIds,
-					productEntryIds, productEntryNames, productIds,
-					productVersions, owners, descriptions, hostNames,
-					ipAddresses, macAddresses, serverIds, keys,
+					modifiedDateLT_TS, koroneikiAccountKey,
+					koroneikiProductPurchaseKey, accountEntryNames,
+					licenseKeySetNames, startDateGT_TS, startDateLT_TS,
+					licenseEntryIds, productEntryIds, productEntryNames,
+					productIds, productVersions, owners, descriptions,
+					hostNames, ipAddresses, macAddresses, serverIds, keys,
 					expirationDateGT_TS, expirationDateLT_TS);
 			}
 
@@ -384,17 +396,20 @@ public class LicenseKeyFinderImpl
 		}
 	}
 
-	protected List<LicenseKey> findByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
-		Long createUserId, Date createDateGT, Date createDateLT,
-		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
-		String[] accountEntryNames, String[] licenseKeySetNames,
-		Date startDateGT, Date startDateLT, long[] licenseEntryIds,
-		long[] productEntryIds, String[] productEntryNames, String[] productIds,
-		int[] productVersions, String[] owners, String[] descriptions,
-		String[] hostNames, String[] ipAddresses, String[] macAddresses,
-		String[] serverIds, String[] keys, Date expirationDateGT,
-		Date expirationDateLT, LinkedHashMap<String, Object> params,
-		boolean andOperator, int start, int end, OrderByComparator obc) {
+	protected List<LicenseKey>
+		findByU_C_M_M_KA_KPP_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
+			Long createUserId, Date createDateGT, Date createDateLT,
+			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+			String koroneikiAccountKey, String koroneikiProductPurchaseKey,
+			String[] accountEntryNames, String[] licenseKeySetNames,
+			Date startDateGT, Date startDateLT, long[] licenseEntryIds,
+			long[] productEntryIds, String[] productEntryNames,
+			String[] productIds, int[] productVersions, String[] owners,
+			String[] descriptions, String[] hostNames, String[] ipAddresses,
+			String[] macAddresses, String[] serverIds, String[] keys,
+			Date expirationDateGT, Date expirationDateLT,
+			LinkedHashMap<String, Object> params, boolean andOperator,
+			int start, int end, OrderByComparator obc) {
 
 		if (params == null) {
 			params = new LinkedHashMap<>();
@@ -443,7 +458,7 @@ public class LicenseKeyFinderImpl
 		StringBuilder sb = new StringBuilder();
 
 		String sql = CustomSQLUtil.get(
-			getClass(), FIND_BY_U_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A);
+			getClass(), FIND_BY_U_C_M_M_KA_KPP_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A);
 
 		sb.append(
 			replaceSQL(
@@ -493,6 +508,7 @@ public class LicenseKeyFinderImpl
 			setJoin(
 				qPos, params1, createUserId, createDateGT_TS, createDateLT_TS,
 				modifiedUserId, modifiedDateGT_TS, modifiedDateLT_TS,
+				koroneikiAccountKey, koroneikiProductPurchaseKey,
 				accountEntryNames, licenseKeySetNames, startDateGT_TS,
 				startDateLT_TS, licenseEntryIds, productEntryIds,
 				productEntryNames, productIds, productVersions, owners,
@@ -503,21 +519,23 @@ public class LicenseKeyFinderImpl
 				setJoin(
 					qPos, params2, createUserId, createDateGT_TS,
 					createDateLT_TS, modifiedUserId, modifiedDateGT_TS,
-					modifiedDateLT_TS, accountEntryNames, licenseKeySetNames,
-					startDateGT_TS, startDateLT_TS, licenseEntryIds,
-					productEntryIds, productEntryNames, productIds,
-					productVersions, owners, descriptions, hostNames,
-					ipAddresses, macAddresses, serverIds, keys,
+					modifiedDateLT_TS, koroneikiAccountKey,
+					koroneikiProductPurchaseKey, accountEntryNames,
+					licenseKeySetNames, startDateGT_TS, startDateLT_TS,
+					licenseEntryIds, productEntryIds, productEntryNames,
+					productIds, productVersions, owners, descriptions,
+					hostNames, ipAddresses, macAddresses, serverIds, keys,
 					expirationDateGT_TS, expirationDateLT_TS);
 
 				setJoin(
 					qPos, params3, createUserId, createDateGT_TS,
 					createDateLT_TS, modifiedUserId, modifiedDateGT_TS,
-					modifiedDateLT_TS, accountEntryNames, licenseKeySetNames,
-					startDateGT_TS, startDateLT_TS, licenseEntryIds,
-					productEntryIds, productEntryNames, productIds,
-					productVersions, owners, descriptions, hostNames,
-					ipAddresses, macAddresses, serverIds, keys,
+					modifiedDateLT_TS, koroneikiAccountKey,
+					koroneikiProductPurchaseKey, accountEntryNames,
+					licenseKeySetNames, startDateGT_TS, startDateLT_TS,
+					licenseEntryIds, productEntryIds, productEntryNames,
+					productIds, productVersions, owners, descriptions,
+					hostNames, ipAddresses, macAddresses, serverIds, keys,
 					expirationDateGT_TS, expirationDateLT_TS);
 			}
 
@@ -782,6 +800,7 @@ public class LicenseKeyFinderImpl
 		QueryPos qPos, LinkedHashMap<String, Object> params, Long createUserId,
 		Timestamp createDateGT, Timestamp createDateLT, Long modifiedUserId,
 		Timestamp modifiedDateGT, Timestamp modifiedDateLT,
+		String koroneikiAccountKey, String koroneikiProductPurchaseKey,
 		String[] accountEntryNames, String[] licenseKeySetNames,
 		Timestamp startDateGT, Timestamp startDateLT, long[] licenseEntryIds,
 		long[] productEntryIds, String[] productEntryNames, String[] productIds,
@@ -809,6 +828,10 @@ public class LicenseKeyFinderImpl
 		qPos.add(modifiedDateGT);
 		qPos.add(modifiedDateLT);
 		qPos.add(modifiedDateLT);
+		qPos.add(koroneikiAccountKey);
+		qPos.add(koroneikiAccountKey);
+		qPos.add(koroneikiProductPurchaseKey);
+		qPos.add(koroneikiProductPurchaseKey);
 		qPos.add(accountEntryNames, 2);
 		qPos.add(accountEntryNames, 2);
 		qPos.add(licenseKeySetNames, 2);

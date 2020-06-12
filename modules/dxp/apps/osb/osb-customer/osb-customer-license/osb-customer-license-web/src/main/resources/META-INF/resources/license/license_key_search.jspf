@@ -15,7 +15,7 @@
 --%>
 
 <%
-boolean licenseAdmin = true;//AccountWorkerLocalServiceUtil.hasAccountWorkerRole(user.getUserId(), AccountWorkerConstants.ROLE_SALES) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE_OSB_ACCOUNT_ADMIN_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE_OSB_TRIAL_LICENSE_ADMIN_ID);
+boolean licenseAdmin = true; // TODO AccountWorkerLocalServiceUtil.hasAccountWorkerRole(user.getUserId(), AccountWorkerConstants.ROLE_SALES) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE_OSB_ACCOUNT_ADMIN_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE_OSB_TRIAL_LICENSE_ADMIN_ID);
 
 int rowLength = 4;
 
@@ -36,6 +36,16 @@ Date lastEnabledDate = calendar.getTime();
 	id="toggle_id_license_key_search"
 	markupView="lexicon"
 >
+	<aui:row>
+		<aui:col md="6">
+			<aui:input label="koroneiki-account-key" name="<%= displayTerms.KORONEIKI_ACCOUNT_KEY %>" size="20" type="text" value="<%= displayTerms.getKoroneikiAccountKey() %>" />
+		</aui:col>
+
+		<aui:col md="6">
+			<aui:input label="koroneiki-product-purchase-key" name="<%= displayTerms.KORONEIKI_PRODUCT_PURCHASE_KEY %>" size="20" type="text" value="<%= displayTerms.getKoroneikiProductPurchaseKey() %>" />
+		</aui:col>
+	</aui:row>
+
 	<aui:row>
 		<aui:col md="4">
 			<aui:input label="project" name="<%= displayTerms.ACCOUNT_ENTRY_NAME %>" size="20" type="text" value="<%= displayTerms.getAccountEntryName() %>" />

@@ -35,7 +35,7 @@ LicenseKeySet licenseKeySet = LicenseKeySetServiceUtil.getLicenseKeySet(licenseK
 
 List<LicenseKey> licenseKeys = LicenseKeyServiceUtil.getLicenseKeySetLicenseKeys(licenseKeySetId);
 
-long offeringEntryId = ParamUtil.getLong(request, "offeringEntryId");
+String koroneikiProductPurchaseKey = ParamUtil.getString(request, "koroneikiProductPurchaseKey");
 long clusterId = ParamUtil.getLong(request, "clusterId");
 
 Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
@@ -57,7 +57,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 portletURL.setParameter("mvcPath", "/license/edit_license_key_set.jsp");
 portletURL.setParameter("redirect", redirect);
 portletURL.setParameter("licenseKeySetId", String.valueOf(licenseKeySetId));
-portletURL.setParameter("offeringEntryId", String.valueOf(offeringEntryId));
+portletURL.setParameter("koroneikiProductPurchaseKey", koroneikiProductPurchaseKey);
 portletURL.setParameter("clusterId", String.valueOf(clusterId));
 %>
 
@@ -84,7 +84,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 			<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 			<aui:input name="licenseKeySetId" type="hidden" value="<%= licenseKeySetId %>" />
 			<aui:input name="licenseKeyId" type="hidden" />
-			<aui:input name="offeringEntryId" type="hidden" value="<%= offeringEntryId %>" />
+			<aui:input name="koroneikiProductPurchaseKey" type="hidden" value="<%= koroneikiProductPurchaseKey %>" />
 			<aui:input name="clusterId" type="hidden" value="<%= clusterId %>" />
 
 			<div class="pull-right">
@@ -181,7 +181,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 					url="<%= downloadAggregateLicenseFileURL.toString() %>"
 				/>
 
-				<c:if test="<%= LicenseUtil.isRenewAggregate(licenseKeySetId) && AccountEntryPermission.contains(permissionChecker, licenseKeySet.getAccountEntryId(), OSBActionKeys.ADD_LICENSE) %>">
+				<c:if test="<%= LicenseUtil.isRenewAggregate(licenseKeySetId) && accountPermission.contains(permissionChecker, licenseKeySet.getKoroneikiAccountKey(), OSBActionKeys.ADD_LICENSE) %>">
 					<div class="license-duration pull-right">
 						<liferay-ui:message key="start-date" />:
 
@@ -212,7 +212,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 			</c:if>
 
 			<aui:button-row cssClass="pull-right">
-				<c:if test="<%= LicenseUtil.isAggregate(licenseKeySetId) && AccountEntryPermission.contains(permissionChecker, licenseKeySet.getAccountEntryId(), OSBActionKeys.ADD_LICENSE) %>">
+				<c:if test="<%= LicenseUtil.isAggregate(licenseKeySetId) && accountPermission.contains(permissionChecker, licenseKeySet.getAccountEntryId(), OSBActionKeys.ADD_LICENSE) %>">
 
 					<%
 					LicenseKey firstLicenseKey = licenseKeys.get(0);
@@ -233,7 +233,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 					<aui:button onClick="<%= addAggregatedLicenseKeyURL %>" primary="<%= true %>" value="add-aggregated-license-key" />
 				</c:if>
 
-				<c:if test="<%= AccountEntryPermission.contains(permissionChecker, licenseKeySet.getAccountEntryId(), OSBActionKeys.ADD_LICENSE) %>">
+				<c:if test="<%= accountPermission.contains(permissionChecker, licenseKeySet.getAccountEntryId(), OSBActionKeys.ADD_LICENSE) %>">
 					<portlet:renderURL var="addLicenseKeyURL">
 						<portlet:param name="mvcPath" value="/license/edit_license_key.jsp" />
 						<portlet:param name="redirect" value="<%= currentURL %>" />

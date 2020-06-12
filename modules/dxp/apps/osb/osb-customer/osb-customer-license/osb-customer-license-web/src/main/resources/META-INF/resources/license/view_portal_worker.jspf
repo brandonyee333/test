@@ -39,7 +39,6 @@ pageContext.setAttribute("searchURL", searchURL);
 
 	<aui:button cssClass="btn-generate-new-license btn-sm" onClick="<%= addLicenseKeyURL %>" primary="<%= true %>" value="generate-new-license" />
 
-<%--
 	<div class="license-worker">
 		<liferay-ui:search-container
 			searchContainer="<%= new LicenseKeySearch(renderRequest, portletURL) %>"
@@ -48,8 +47,6 @@ pageContext.setAttribute("searchURL", searchURL);
 			<%
 			LicenseKeyDisplayTerms displayTerms = (LicenseKeyDisplayTerms)searchContainer.getDisplayTerms();
 			LicenseKeySearchTerms searchTerms = (LicenseKeySearchTerms)searchContainer.getSearchTerms();
-
-			searchTerms.setOrderEntry(true);
 			%>
 
 			<%@ include file="/license/license_key_search.jspf" %>
@@ -66,19 +63,15 @@ pageContext.setAttribute("searchURL", searchURL);
 			>
 
 				<%
-				AccountEntry accountEntry = licenseKey.getAccountEntry();
 				LicenseKeySet licenseKeySet = licenseKey.getLicenseKeySet();
-
-				String licenseEntryType = licenseKey.getLicenseEntryType();
-				String productEntryName = licenseKey.getProductEntryName();
 
 				PortletURL rowURL = renderResponse.createRenderURL();
 
-				rowURL.setParameter("scroll", renderResponse.getNamespace() + licenseKey.getOfferingEntryId() + StringPool.DASH + licenseKey.getClusterId());
+				rowURL.setParameter("scroll", renderResponse.getNamespace() + licenseKey.getKoroneikiProductPurchaseKey() + StringPool.DASH + licenseKey.getClusterId());
 				rowURL.setParameter("mvcPath", "/license/edit_license_key_set.jsp");
 				rowURL.setParameter("redirect", currentURL);
 				rowURL.setParameter("licenseKeySetId", String.valueOf(licenseKey.getLicenseKeySetId()));
-				rowURL.setParameter("offeringEntryId", String.valueOf(licenseKey.getOfferingEntryId()));
+				rowURL.setParameter("koroneikiProductPurchaseKey", licenseKey.getKoroneikiProductPurchaseKey());
 				rowURL.setParameter("clusterId", String.valueOf(licenseKey.getClusterId()));
 				rowURL.setWindowState(WindowState.MAXIMIZED);
 				%>
@@ -100,11 +93,12 @@ pageContext.setAttribute("searchURL", searchURL);
 					%>
 
 					<div class="bold <%= cssClass %>">
-						<%= accountEntry.getName() %>
+						<%= licenseKey.getAccountEntryName() %>
 					</div>
 				</liferay-ui:search-container-column-text>
 
 				<liferay-ui:search-container-column-text
+					href="<%= rowURL %>"
 					name="Name / Description"
 				>
 					<div class="semi-bold">
@@ -117,17 +111,20 @@ pageContext.setAttribute("searchURL", searchURL);
 				</liferay-ui:search-container-column-text>
 
 				<liferay-ui:search-container-column-text
+					href="<%= rowURL %>"
 					name="product"
-					value="<%= HtmlUtil.escape(productEntryName) + StringPool.SPACE + licenseKey.getProductVersionLabel() %>"
+					value="<%= HtmlUtil.escape(licenseKey.getProductEntryName()) + StringPool.SPACE + licenseKey.getProductVersionLabel() %>"
 				/>
 
 				<liferay-ui:search-container-column-text
+					href="<%= rowURL %>"
 					name="type"
 					translate="<%= true %>"
-					value="<%= licenseEntryType %>"
+					value="<%= licenseKey.getLicenseEntryType() %>"
 				/>
 
 				<liferay-ui:search-container-column-text
+					href="<%= rowURL %>"
 					name="start-date"
 					orderable="<%= true %>"
 				>
@@ -139,6 +136,7 @@ pageContext.setAttribute("searchURL", searchURL);
 				</liferay-ui:search-container-column-text>
 
 				<liferay-ui:search-container-column-text
+					href="<%= rowURL %>"
 					name="expiration-date"
 					orderable="<%= true %>"
 				>
@@ -155,6 +153,4 @@ pageContext.setAttribute("searchURL", searchURL);
 			/>
 		</liferay-ui:search-container>
 	</div>
---%>
-
 </aui:form>

@@ -33,4 +33,9 @@ public interface AccountPermission {
 			String actionId)
 		throws PortalException;
 
+	public boolean contains(
+			PermissionChecker permissionChecker, String koroneikiAccountKey,
+			String actionId)
+		throws PortalException;
+
 }

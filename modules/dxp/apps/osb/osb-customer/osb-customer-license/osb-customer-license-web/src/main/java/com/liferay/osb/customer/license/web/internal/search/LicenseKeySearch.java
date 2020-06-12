@@ -123,6 +123,26 @@ public class LicenseKeySearch extends SearchContainer<LicenseKey> {
 			LicenseKeyDisplayTerms.EXPIRATION_DATE_LT_YEAR,
 			String.valueOf(displayTerms.getExpirationDateLTYear()));
 		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.HOST_NAME, displayTerms.getHostName());
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.IP_ADDRESS, displayTerms.getIpAddress());
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.KEY, displayTerms.getKey());
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.KORONEIKI_ACCOUNT_KEY,
+			displayTerms.getKoroneikiAccountKey());
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.KORONEIKI_PRODUCT_PURCHASE_KEY,
+			displayTerms.getKoroneikiProductPurchaseKey());
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.LICENSE_ENTRY_IDS,
+			ArrayUtil.toStringArray(displayTerms.getLicenseEntryIds()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.LICENSE_KEY_SET_NAME,
+			displayTerms.getLicenseKeySetName());
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.MAC_ADDRESS, displayTerms.getMacAddress());
+		iteratorURL.setParameter(
 			LicenseKeyDisplayTerms.MODIFIED_DATE_GT_DAY,
 			String.valueOf(displayTerms.getModifiedDateGTDay()));
 		iteratorURL.setParameter(
@@ -146,20 +166,6 @@ public class LicenseKeySearch extends SearchContainer<LicenseKey> {
 		iteratorURL.setParameter(
 			LicenseKeyDisplayTerms.MODIFIED_USER_NAME,
 			displayTerms.getModifiedUserName());
-		iteratorURL.setParameter(
-			LicenseKeyDisplayTerms.HOST_NAME, displayTerms.getHostName());
-		iteratorURL.setParameter(
-			LicenseKeyDisplayTerms.IP_ADDRESS, displayTerms.getIpAddress());
-		iteratorURL.setParameter(
-			LicenseKeyDisplayTerms.KEY, displayTerms.getKey());
-		iteratorURL.setParameter(
-			LicenseKeyDisplayTerms.LICENSE_ENTRY_IDS,
-			ArrayUtil.toStringArray(displayTerms.getLicenseEntryIds()));
-		iteratorURL.setParameter(
-			LicenseKeyDisplayTerms.LICENSE_KEY_SET_NAME,
-			displayTerms.getLicenseKeySetName());
-		iteratorURL.setParameter(
-			LicenseKeyDisplayTerms.MAC_ADDRESS, displayTerms.getMacAddress());
 		iteratorURL.setParameter(
 			LicenseKeyDisplayTerms.OWNER, displayTerms.getOwner());
 		iteratorURL.setParameter(

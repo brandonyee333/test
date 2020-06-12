@@ -529,6 +529,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
 		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
 		int modifiedDateLTMonth, int modifiedDateLTYear,
+		String koroneikiAccountKey, String koroneikiProductPurchaseKey,
 		String accountEntryName, String licenseKeySetName, int startDateGTDay,
 		int startDateGTMonth, int startDateGTYear, int startDateLTDay,
 		int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
@@ -558,13 +559,16 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		Date expirationDateLT = PortalUtil.getDate(
 			expirationDateLTMonth, expirationDateLTDay, expirationDateLTYear);
 
-		return licenseKeyFinder.findByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
-			createUserId, createDateGT, createDateLT, modifiedUserId,
-			modifiedDateGT, modifiedDateLT, accountEntryName, licenseKeySetName,
-			startDateGT, startDateLT, licenseEntryIds, productEntryIds,
-			productEntryName, productId, productVersions, owner, description,
-			hostName, ipAddress, macAddress, serverId, key, expirationDateGT,
-			expirationDateLT, params, andSearch, start, end, obc);
+		return licenseKeyFinder.
+			findByU_C_M_M_KA_KPP_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
+				createUserId, createDateGT, createDateLT, modifiedUserId,
+				modifiedDateGT, modifiedDateLT, koroneikiAccountKey,
+				koroneikiProductPurchaseKey, accountEntryName,
+				licenseKeySetName, startDateGT, startDateLT, licenseEntryIds,
+				productEntryIds, productEntryName, productId, productVersions,
+				owner, description, hostName, ipAddress, macAddress, serverId,
+				key, expirationDateGT, expirationDateLT, params, andSearch,
+				start, end, obc);
 	}
 
 	public List<LicenseKey> search(
@@ -581,6 +585,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
 		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
 		int modifiedDateLTMonth, int modifiedDateLTYear,
+		String koroneikiAccountKey, String koroneikiProductPurchaseKey,
 		String accountEntryName, String licenseKeySetName, int startDateGTDay,
 		int startDateGTMonth, int startDateGTYear, int startDateLTDay,
 		int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
@@ -609,13 +614,15 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		Date expirationDateLT = PortalUtil.getDate(
 			expirationDateLTMonth, expirationDateLTDay, expirationDateLTYear);
 
-		return licenseKeyFinder.countByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
-			createUserId, createDateGT, createDateLT, modifiedUserId,
-			modifiedDateGT, modifiedDateLT, accountEntryName, licenseKeySetName,
-			startDateGT, startDateLT, licenseEntryIds, productEntryIds,
-			productEntryName, productId, productVersions, owner, description,
-			hostName, ipAddress, macAddress, serverId, key, expirationDateGT,
-			expirationDateLT, params, andSearch);
+		return licenseKeyFinder.
+			countByU_C_M_M_KA_KPP_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
+				createUserId, createDateGT, createDateLT, modifiedUserId,
+				modifiedDateGT, modifiedDateLT, koroneikiAccountKey,
+				koroneikiProductPurchaseKey, accountEntryName,
+				licenseKeySetName, startDateGT, startDateLT, licenseEntryIds,
+				productEntryIds, productEntryName, productId, productVersions,
+				owner, description, hostName, ipAddress, macAddress, serverId,
+				key, expirationDateGT, expirationDateLT, params, andSearch);
 	}
 
 	public int searchCount(
@@ -657,16 +664,11 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 	public LicenseKey updateLicenseKey(
 			long userId, long licenseKeyId, long licenseKeySetId,
-			long offeringEntryId, String name, boolean active)
+			String koroneikiProductPurchaseKey, String name, boolean active)
 		throws PortalException {
 
 		LicenseKey licenseKey = licenseKeyPersistence.findByPrimaryKey(
 			licenseKeyId);
-
-		/*
-		TODO
-		OfferingEntry offeringEntry = offeringEntryPersistence.findByPrimaryKey(
-			offeringEntryId);
 
 		String type = licenseKey.getLicenseEntryType();
 
@@ -696,50 +698,18 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			serverCount = clusterLicenseKeys.size();
 		}
 
-		if ((!curActive && active) ||
-			((offeringEntryId != licenseKey.getOfferingEntryId()) &&
-			 (curActive || active))) {
-
-			validate(offeringEntry, serverCount);
-		}
-
-		if (licenseKey.getOfferingEntryId() != offeringEntryId) {
-			OfferingEntry oldOfferingEntry = licenseKey.getOfferingEntry();
-
-			ProductEntry oldProductEntry =
-				productEntryLocalService.fetchProductEntry(
-					oldOfferingEntry.getProductEntryId());
-
-			ProductEntry newProductEntry = offeringEntry.getProductEntry();
-
-			if ((oldProductEntry != null) &&
-				(oldProductEntry.getEnvironment() !=
-					newProductEntry.getEnvironment())) {
-
-				throw new LicenseKeyProductEntryException();
-			}
-		}
-
 		if (licenseKey.getLicenseVersion() >= 3) {
-			if (!licenseKey.isActive() && active &&
-				type.equals(LicenseEntryConstants.TYPE_CLUSTER) &&
-				(licenseKey.getMaxServers() <= activeClusterCount)) {
-
-				throw new MaximumLicenseKeyException();
-			}
-
 			doUpdateLicenseKeyVersion3(
-				new Date(), licenseKey, offeringEntry, clusterLicenseKeys,
-				userId, licenseKeyId, licenseKeySetId, offeringEntryId, name,
+				new Date(), licenseKey, koroneikiProductPurchaseKey,
+				clusterLicenseKeys, userId, licenseKeyId, licenseKeySetId, name,
 				active);
 		}
 		else {
 			doUpdateLicenseKey(
-				new Date(), licenseKey, offeringEntry, clusterLicenseKeys,
-				userId, licenseKeyId, licenseKeySetId, offeringEntryId, name,
+				new Date(), licenseKey, koroneikiProductPurchaseKey,
+				clusterLicenseKeys, userId, licenseKeyId, licenseKeySetId, name,
 				active);
 		}
-		*/
 
 		return licenseKey;
 	}
@@ -1049,99 +1019,92 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		return licenseKey;
 	}
 
-	/*
-		protected void doUpdateLicenseKey(
-				Date now, LicenseKey licenseKey, OfferingEntry offeringEntry,
-				List<LicenseKey> clusterLicenseKeys, long userId, long licenseKeyId,
-				long licenseKeySetId, long offeringEntryId, String name,
-				boolean active)
-			throws PortalException {
-			User user = userLocalService.getUser(userId);
+	protected void doUpdateLicenseKey(
+			Date now, LicenseKey licenseKey, String koroneikiProductPurchaseKey,
+			List<LicenseKey> clusterLicenseKeys, long userId, long licenseKeyId,
+			long licenseKeySetId, String name, boolean active)
+		throws PortalException {
 
-			if (licenseKeySetId <= 0) {
-				LicenseKeySet licenseKeySet =
-					licenseKeySetLocalService.addLicenseKeySet(
-						userId, licenseKey.getAccountEntryId(), name);
+		User user = userLocalService.getUser(userId);
 
-				licenseKeySetId = licenseKeySet.getLicenseKeySetId();
-			}
-			else {
-				licenseKeySetPersistence.findByPrimaryKey(licenseKeySetId);
-			}
+		if (licenseKeySetId <= 0) {
+			LicenseKeySet licenseKeySet =
+				licenseKeySetLocalService.addLicenseKeySet(
+					userId, licenseKey.getAccountEntryId(), name);
 
-			long clusterId = licenseKey.getClusterId();
+			licenseKeySetId = licenseKeySet.getLicenseKeySetId();
+		}
+		else {
+			licenseKeySetPersistence.findByPrimaryKey(licenseKeySetId);
+		}
 
-			if (offeringEntryId != licenseKey.getOfferingEntryId()) {
-				clusterId = counterLocalService.increment(
-					getCounterName(offeringEntryId));
-			}
+		long clusterId = licenseKey.getClusterId();
 
-			for (LicenseKey clusterLicenseKey : clusterLicenseKeys) {
-				clusterLicenseKey.setModifiedUserId(user.getUserId());
-				clusterLicenseKey.setModifiedUserName(user.getFullName());
-				clusterLicenseKey.setModifiedDate(now);
-				clusterLicenseKey.setLicenseKeySetId(licenseKeySetId);
-				clusterLicenseKey.setOrderEntryId(offeringEntry.getOrderEntryId());
-				clusterLicenseKey.setOfferingEntryId(offeringEntryId);
-				clusterLicenseKey.setProductEntryId(
-					offeringEntry.getProductEntryId());
-				clusterLicenseKey.setSupportResponseId(
-					offeringEntry.getSupportResponseId());
-				clusterLicenseKey.setClusterId(clusterId);
+		if (!koroneikiProductPurchaseKey.equals(
+				licenseKey.getKoroneikiProductPurchaseKey())) {
+
+			clusterId = counterLocalService.increment(
+				getCounterName(koroneikiProductPurchaseKey));
+		}
+
+		for (LicenseKey clusterLicenseKey : clusterLicenseKeys) {
+			clusterLicenseKey.setModifiedUserId(user.getUserId());
+			clusterLicenseKey.setModifiedUserName(user.getFullName());
+			clusterLicenseKey.setModifiedDate(now);
+			clusterLicenseKey.setLicenseKeySetId(licenseKeySetId);
+			clusterLicenseKey.setKoroneikiProductPurchaseKey(
+				koroneikiProductPurchaseKey);
+			clusterLicenseKey.setClusterId(clusterId);
+			clusterLicenseKey.setActive(active);
+			licenseKeyPersistence.update(clusterLicenseKey);
+		}
+	}
+
+	protected void doUpdateLicenseKeyVersion3(
+			Date now, LicenseKey licenseKey, String koroneikiProductPurchaseKey,
+			List<LicenseKey> clusterLicenseKeys, long userId, long licenseKeyId,
+			long licenseKeySetId, String name, boolean active)
+		throws PortalException {
+
+		User user = userLocalService.getUser(userId);
+
+		if (licenseKeySetId <= 0) {
+			LicenseKeySet licenseKeySet =
+				licenseKeySetLocalService.addLicenseKeySet(
+					userId, licenseKey.getAccountEntryId(), name);
+
+			licenseKeySetId = licenseKeySet.getLicenseKeySetId();
+		}
+		else {
+			licenseKeySetPersistence.findByPrimaryKey(licenseKeySetId);
+		}
+
+		long clusterId = licenseKey.getClusterId();
+
+		if (!koroneikiProductPurchaseKey.equals(
+				licenseKey.getKoroneikiProductPurchaseKey())) {
+
+			clusterId = counterLocalService.increment(
+				getCounterName(koroneikiProductPurchaseKey));
+		}
+
+		for (LicenseKey clusterLicenseKey : clusterLicenseKeys) {
+			if (clusterLicenseKey.getLicenseKeyId() ==
+					licenseKey.getLicenseKeyId()) {
+
 				clusterLicenseKey.setActive(active);
-				licenseKeyPersistence.update(clusterLicenseKey);
 			}
+
+			clusterLicenseKey.setModifiedUserId(user.getUserId());
+			clusterLicenseKey.setModifiedUserName(user.getFullName());
+			clusterLicenseKey.setModifiedDate(now);
+			clusterLicenseKey.setLicenseKeySetId(licenseKeySetId);
+			clusterLicenseKey.setKoroneikiProductPurchaseKey(
+				koroneikiProductPurchaseKey);
+			clusterLicenseKey.setClusterId(clusterId);
+			licenseKeyPersistence.update(clusterLicenseKey);
 		}
-
-		protected void doUpdateLicenseKeyVersion3(
-				Date now, LicenseKey licenseKey, OfferingEntry offeringEntry,
-				List<LicenseKey> clusterLicenseKeys, long userId, long licenseKeyId,
-				long licenseKeySetId, long offeringEntryId, String name,
-				boolean active)
-			throws PortalException {
-			User user = userLocalService.getUser(userId);
-
-			if (licenseKeySetId <= 0) {
-				LicenseKeySet licenseKeySet =
-					licenseKeySetLocalService.addLicenseKeySet(
-						userId, licenseKey.getAccountEntryId(), name);
-
-				licenseKeySetId = licenseKeySet.getLicenseKeySetId();
-			}
-			else {
-				licenseKeySetPersistence.findByPrimaryKey(licenseKeySetId);
-			}
-
-			long clusterId = licenseKey.getClusterId();
-
-			if (offeringEntryId != licenseKey.getOfferingEntryId()) {
-				clusterId = counterLocalService.increment(
-					getCounterName(offeringEntryId));
-			}
-
-			for (LicenseKey clusterLicenseKey : clusterLicenseKeys) {
-				if (clusterLicenseKey.getLicenseKeyId() ==
-						licenseKey.getLicenseKeyId()) {
-
-					clusterLicenseKey.setActive(active);
-				}
-
-				clusterLicenseKey.setModifiedUserId(user.getUserId());
-				clusterLicenseKey.setModifiedUserName(user.getFullName());
-				clusterLicenseKey.setModifiedDate(now);
-				clusterLicenseKey.setLicenseKeySetId(licenseKeySetId);
-				clusterLicenseKey.setOrderEntryId(offeringEntry.getOrderEntryId());
-				clusterLicenseKey.setOfferingEntryId(offeringEntryId);
-				clusterLicenseKey.setProductEntryId(
-					offeringEntry.getProductEntryId());
-				clusterLicenseKey.setSupportResponseId(
-					offeringEntry.getSupportResponseId());
-				clusterLicenseKey.setClusterId(clusterId);
-				licenseKeyPersistence.update(clusterLicenseKey);
-			}
-		}
-
-		*/
+	}
 
 	protected List<LicenseKey> getClusterLicenseKeys(
 		LicenseKey licenseKey, String type) {

@@ -69,6 +69,11 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 
 	public static final String KEY = "key";
 
+	public static final String KORONEIKI_ACCOUNT_KEY = "koroneikiAccountKey";
+
+	public static final String KORONEIKI_PRODUCT_PURCHASE_KEY =
+		"koroneikiProductPurchaseKey";
+
 	public static final String LICENSE_ENTRY_IDS = "licenseEntryIds";
 
 	public static final String LICENSE_KEY_SET_NAME = "licenseKeySetName";
@@ -155,6 +160,10 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 		hostName = ParamUtil.getString(portletRequest, HOST_NAME);
 		ipAddress = ParamUtil.getString(portletRequest, IP_ADDRESS);
 		key = ParamUtil.getString(portletRequest, KEY);
+		koroneikiAccountKey = ParamUtil.getString(
+			portletRequest, KORONEIKI_ACCOUNT_KEY);
+		koroneikiProductPurchaseKey = ParamUtil.getString(
+			portletRequest, KORONEIKI_PRODUCT_PURCHASE_KEY);
 		licenseEntryIds = ParamUtil.getLongValues(
 			portletRequest, LICENSE_ENTRY_IDS);
 		licenseKeySetName = ParamUtil.getString(
@@ -275,6 +284,14 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 
 	public String getKey() {
 		return key;
+	}
+
+	public String getKoroneikiAccountKey() {
+		return koroneikiAccountKey;
+	}
+
+	public String getKoroneikiProductPurchaseKey() {
+		return koroneikiProductPurchaseKey;
 	}
 
 	public long[] getLicenseEntryIds() {
@@ -422,6 +439,8 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 	protected String hostName;
 	protected String ipAddress;
 	protected String key;
+	protected String koroneikiAccountKey;
+	protected String koroneikiProductPurchaseKey;
 	protected long[] licenseEntryIds;
 	protected String licenseKeySetName;
 	protected String macAddress;

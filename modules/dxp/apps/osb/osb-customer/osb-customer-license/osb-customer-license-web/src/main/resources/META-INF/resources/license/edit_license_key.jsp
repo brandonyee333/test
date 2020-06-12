@@ -21,14 +21,18 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 String backURL = ParamUtil.getString(request, "backURL", redirect);
 
-String accountKey = ParamUtil.getString(request, "accountKey");
+long licenseKeySetId = ParamUtil.getLong(request, "licenseKeySetId");
+
+LicenseKeySet licenseKeySet = LicenseKeySetLocalServiceUtil.fetchLicenseKeySet(licenseKeySetId);
+
+String koroneikiAccountKey = BeanParamUtil.getString(licenseKeySet, request, "koroneikiAccountKey");
 
 Account koroneikiAccount = null;
 
 boolean addLicensePermission = false;
 
-if (Validator.isNotNull(accountKey)) {
-	koroneikiAccount = accountWebService.getAccount(accountKey);
+if (Validator.isNotNull(koroneikiAccountKey)) {
+	koroneikiAccount = accountWebService.getAccount(koroneikiAccountKey);
 
 	addLicensePermission = accountPermission.contains(permissionChecker, koroneikiAccount, OSBActionKeys.ADD_LICENSE);
 }
@@ -65,7 +69,8 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 		<aui:form action="<%= updateLicenseKeyURL %>" cssClass="col-md-12" method="post">
 			<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 			<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
-			<aui:input name="productPurchaseKey" type="hidden" value="" />
+			<aui:input name="licenseKeySetId" type="hidden" value="<%= licenseKeySetId %>" />
+			<aui:input name="koroneikiProductPurchaseKey" type="hidden" value="" />
 			<aui:input name="aggregateLicense" type="hidden" value="<%= aggregateLicense %>" />
 
 			<aui:button-row cssClass="pull-right">
@@ -78,12 +83,17 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 				</h2>
 
 				<c:choose>
+					<c:when test="<%= licenseKeySet != null %>">
+						<span class="semi-bold"><%= HtmlUtil.escape(koroneikiAccount.getName()) %></span>
+
+						<aui:input label="" name="koroneikiAccountKey" type="hidden" value="<%= koroneikiAccount.getKey() %>" />
+					</c:when>
 					<c:when test="<%= hasUpdateAdmin %>">
-						<span class="account-entry-name semi-bold" id="<portlet:namespace />accountName"><%= (koroneikiAccount != null) ? HtmlUtil.escape(koroneikiAccount.getName()) : "" %></span>
+						<span class="account-entry-name semi-bold" id="<portlet:namespace />koroneikiAccountName"><%= (koroneikiAccount != null) ? HtmlUtil.escape(koroneikiAccount.getName()) : "" %></span>
 
 						<input class="btn btn-default select-account-entry" onClick="var accountWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/license/select_account.jsp" /><portlet:param name="callback" value="selectAccount" /></portlet:renderURL>', 'account', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); accountWindow.focus();" type="button" value="<liferay-ui:message key="select" />" />
 
-						<aui:input name="accountKey" type="hidden" value='<%= (koroneikiAccount != null) ? koroneikiAccount.getKey() : "" %>' />
+						<aui:input name="koroneikiAccountKey" type="hidden" value='<%= (koroneikiAccount != null) ? koroneikiAccount.getKey() : "" %>' />
 					</c:when>
 					<c:otherwise>
 
@@ -105,14 +115,14 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 								<%
 								koroneikiAccount = accounts.get(0);
 
-								accountKey = koroneikiAccount.getKey();
+								koroneikiAccountKey = koroneikiAccount.getKey();
 
 								addLicensePermission = accountPermission.contains(permissionChecker, koroneikiAccount, OSBActionKeys.ADD_LICENSE);
 								%>
 
 								<span class="semi-bold"><%= HtmlUtil.escape(koroneikiAccount.getName()) %></span>
 
-								<aui:input label="" name="accountKey" type="hidden" value="<%= accountKey %>" />
+								<aui:input label="" name="koroneikiAccountKey" type="hidden" value="<%= koroneikiAccountKey %>" />
 							</c:when>
 							<c:otherwise>
 
@@ -120,14 +130,14 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 								String taglibOnChange = renderResponse.getNamespace() + "updateLicenseKey('', '', '');";
 								%>
 
-								<aui:select label="" name="accountKey" onChange="<%= taglibOnChange %>">
+								<aui:select label="" name="koroneikiAccountKey" onChange="<%= taglibOnChange %>">
 									<aui:option value="" />
 
 									<%
 									for (Account curKoroneikiAccount : accounts) {
 									%>
 
-										<aui:option label="<%= curKoroneikiAccount.getName() %>" selected="<%= accountKey.equals(curKoroneikiAccount.getKey()) %>" value="<%= curKoroneikiAccount.getKey() %>" />
+										<aui:option label="<%= curKoroneikiAccount.getName() %>" selected="<%= koroneikiAccountKey.equals(curKoroneikiAccount.getKey()) %>" value="<%= curKoroneikiAccount.getKey() %>" />
 
 									<%
 									}
@@ -321,8 +331,8 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 				<%
 				List<ProductPurchaseDisplay> productPurchaseDisplays = new ArrayList<ProductPurchaseDisplay>();
 
-				if (Validator.isNotNull(accountKey) && (productEntry != null) && (productVersion > 0) && (licenseEntry != null)) {
-					ProductPurchaseView productPurchaseView = productPurchaseViewWebService.getProductPurchaseView(accountKey, productEntry.getKoroneikiProductKey());
+				if (Validator.isNotNull(koroneikiAccountKey) && (productEntry != null) && (productVersion > 0) && (licenseEntry != null)) {
+					ProductPurchaseView productPurchaseView = productPurchaseViewWebService.getProductPurchaseView(koroneikiAccountKey, productEntry.getKoroneikiProductKey());
 
 					Map<String, List<ProductConsumption>> productConsumptionsMap = new HashMap<String, List<ProductConsumption>>();
 
@@ -525,16 +535,16 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 </div>
 
 <aui:script>
-	function <portlet:namespace />selectAccount(accountKey, accountName) {
-		document.<portlet:namespace />fm.<portlet:namespace />accountKey.value = accountKey;
+	function <portlet:namespace />selectAccount(koroneikiAccountKey, koroneikiAccountName) {
+		document.<portlet:namespace />fm.<portlet:namespace />koroneikiAccountKey.value = koroneikiAccountKey;
 
-		document.getElementById('<portlet:namespace />accountName').innerHTML = accountName;
+		document.getElementById('<portlet:namespace />koroneikiAccountName').innerHTML = koroneikiAccountName;
 
 		<portlet:namespace />updateLicenseKey('', '', '');
 	}
 
-	function <portlet:namespace />selectProductPurchase(productPurchaseKey) {
-		document.<portlet:namespace />fm.<portlet:namespace />productPurchaseKey.value = productPurchaseKey;
+	function <portlet:namespace />selectProductPurchase(koroneikiProductPurchaseKey) {
+		document.<portlet:namespace />fm.<portlet:namespace />koroneikiProductPurchaseKey.value = koroneikiProductPurchaseKey;
 
 		submitForm(document.<portlet:namespace />fm, '<portlet:renderURL><portlet:param name="mvcPath" value="/license/edit_license_key_details.jsp" /></portlet:renderURL>');
 	}
