@@ -119,7 +119,7 @@ public class Encryptor {
 	}
 
 	private Cipher _getCipher(String key, int mode) throws Exception {
-		Cipher cipher = Cipher.getInstance("AES");
+		Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 
 		MessageDigest sha = MessageDigest.getInstance("SHA-1");
 
