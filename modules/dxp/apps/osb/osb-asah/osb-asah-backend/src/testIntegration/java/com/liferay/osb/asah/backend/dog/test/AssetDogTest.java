@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.AssetDog;
 import com.liferay.osb.asah.backend.model.PageAsset;
+import com.liferay.osb.asah.backend.model.PropertyFilter;
 import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -98,7 +99,11 @@ public class AssetDogTest {
 	public void testGetPageAssetResultBagWithPropertyFilter() {
 		ResultBag<PageAsset> pageAssetResultBag =
 			_assetDog.getPageAssetResultBag(
-				null, "url = https://www.terrance-lueilwitz.biz", 20,
+				null,
+				Arrays.asList(
+					new PropertyFilter(
+						"url = https://www.terrance-lueilwitz.biz", false)),
+				20,
 				new HashMap<String, String>() {
 					{
 						put("column", "id");

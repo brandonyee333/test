@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.ActivityDog;
 import com.liferay.osb.asah.backend.model.Activity;
+import com.liferay.osb.asah.backend.model.PropertyFilter;
 import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.util.MapUtil;
@@ -91,7 +92,10 @@ public class ActivityDogTest {
 	public void testGetPageUnloadedActivityResultBagEqualsContextFilter() {
 		ResultBag<Activity> activityResultBag =
 			_activityDog.getActivityResultBag(
-				"Page", "country = Brazil", "pageUnloaded", 20, 0);
+				"Page",
+				Arrays.asList(
+					new PropertyFilter("eventContext.country = Brazil", false)),
+				"pageUnloaded", 20, 0);
 
 		Assert.assertEquals(1, activityResultBag.getTotal());
 	}
@@ -104,7 +108,10 @@ public class ActivityDogTest {
 	public void testGetPageUnloadedActivityResultBagRegexContextFilter() {
 		ResultBag<Activity> activityResultBag =
 			_activityDog.getActivityResultBag(
-				"Page", "country ~ Br.*", "pageUnloaded", 20, 0);
+				"Page",
+				Arrays.asList(
+					new PropertyFilter("eventContext.country ~ Br.*", false)),
+				"pageUnloaded", 20, 0);
 
 		Assert.assertEquals(2, activityResultBag.getTotal());
 		Assert.assertEquals(
