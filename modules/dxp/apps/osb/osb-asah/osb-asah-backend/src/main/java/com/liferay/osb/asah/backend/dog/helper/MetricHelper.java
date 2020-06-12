@@ -68,22 +68,6 @@ public class MetricHelper {
 						periodLocalDateTime, interval, metricType, timeRange));
 			}
 		}
-		else if (TimeRange.LAST_28_DAYS.equals(timeRange)) {
-			_addMetric(
-				28, interval, localDateTime, metricType, metrics, timeRange);
-		}
-		else if (TimeRange.LAST_30_DAYS.equals(timeRange)) {
-			_addMetric(
-				30, interval, localDateTime, metricType, metrics, timeRange);
-		}
-		else if (TimeRange.LAST_7_DAYS.equals(timeRange)) {
-			_addMetric(
-				7, interval, localDateTime, metricType, metrics, timeRange);
-		}
-		else if (TimeRange.LAST_90_DAYS.equals(timeRange)) {
-			_addMetric(
-				90, interval, localDateTime, metricType, metrics, timeRange);
-		}
 		else if (TimeRange.YESTERDAY.equals(timeRange)) {
 			for (int i = 0; i < 24; i++) {
 				LocalDateTime periodLocalDateTime = localDateTime.plusHours(i);
