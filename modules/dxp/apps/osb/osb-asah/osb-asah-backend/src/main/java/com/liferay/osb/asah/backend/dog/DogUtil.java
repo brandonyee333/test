@@ -25,6 +25,7 @@ import com.liferay.osb.asah.backend.dog.configuration.DogConfiguration;
 import com.liferay.osb.asah.backend.dog.resolver.AssetResolver;
 import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
 import com.liferay.osb.asah.backend.model.AssetId;
+import com.liferay.osb.asah.backend.model.PropertyFilter;
 import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 
@@ -44,6 +45,7 @@ import org.apache.commons.logging.Log;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.ShardSearchFailure;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -63,6 +65,28 @@ import org.elasticsearch.search.sort.SortBuilder;
  * @author Marcellus Tavares
  */
 public class DogUtil {
+
+	public static void addBoolQueryBuilderPropertyFilters(
+		BoolQueryBuilder boolQueryBuilder,
+		List<PropertyFilter> propertyFilters) {
+
+		if ((propertyFilters == null) || propertyFilters.isEmpty()) {
+			return;
+		}
+
+		for (PropertyFilter propertyFilter : propertyFilters) {
+			if (propertyFilter.isNegate()) {
+				boolQueryBuilder.mustNot(
+					buildPropertyQueryBuilder(
+						propertyFilter.getFilterString()));
+			}
+			else {
+				boolQueryBuilder.filter(
+					buildPropertyQueryBuilder(
+						propertyFilter.getFilterString()));
+			}
+		}
+	}
 
 	public static void addTermsAggregationBuilderOrder(
 		MetricResolver metricResolver,
@@ -98,12 +122,6 @@ public class DogUtil {
 	public static QueryBuilder buildPropertyQueryBuilder(
 		String propertyFilterString) {
 
-		return buildPropertyQueryBuilder("", propertyFilterString);
-	}
-
-	public static QueryBuilder buildPropertyQueryBuilder(
-		String propertyFieldPrefix, String propertyFilterString) {
-
 		List<String> tokens = _getFilterTokens(propertyFilterString);
 
 		if (tokens.size() != 3) {
@@ -112,12 +130,10 @@ public class DogUtil {
 		}
 
 		if (Objects.equals(tokens.get(1), "~")) {
-			return QueryBuilders.regexpQuery(
-				propertyFieldPrefix + tokens.get(0), tokens.get(2));
+			return QueryBuilders.regexpQuery(tokens.get(0), tokens.get(2));
 		}
 
-		return QueryBuilders.termQuery(
-			propertyFieldPrefix + tokens.get(0), tokens.get(2));
+		return QueryBuilders.termQuery(tokens.get(0), tokens.get(2));
 	}
 
 	public static SearchSourceBuilder buildSearchSourceBuilder(

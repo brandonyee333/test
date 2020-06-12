@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.model.Activity;
+import com.liferay.osb.asah.backend.model.PropertyFilter;
 import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
@@ -32,8 +33,6 @@ import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
-
-import org.apache.commons.lang3.StringUtils;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -62,15 +61,14 @@ public class ActivityDog {
 	}
 
 	public ResultBag<Activity> getActivityResultBag(
-		String applicationId, String eventContextFilterString, String eventId,
-		int size, int start) {
+		String applicationId, List<PropertyFilter> propertyFilters,
+		String eventId, int size, int start) {
 
 		SearchHits searchHits = _dataDog.querySearchHits(
 			"activities", _faroInfoElasticsearchInvoker,
 			DogUtil.buildSearchSourceBuilder(
 				Collections.emptyList(),
-				_buildQueryBuilder(
-					applicationId, eventContextFilterString, eventId),
+				_buildQueryBuilder(applicationId, propertyFilters, eventId),
 				size, start));
 
 		return DogUtil.createResultBag(Activity.class, searchHits);
@@ -110,7 +108,8 @@ public class ActivityDog {
 	}
 
 	private QueryBuilder _buildQueryBuilder(
-		String applicationId, String eventContextFilterString, String eventId) {
+		String applicationId, List<PropertyFilter> propertyFilters,
+		String eventId) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery("applicationId", applicationId)
@@ -118,11 +117,8 @@ public class ActivityDog {
 			QueryBuilders.termQuery("eventId", eventId)
 		);
 
-		if (StringUtils.isNotBlank(eventContextFilterString)) {
-			boolQueryBuilder.filter(
-				DogUtil.buildPropertyQueryBuilder(
-					"eventContext.", eventContextFilterString));
-		}
+		DogUtil.addBoolQueryBuilderPropertyFilters(
+			boolQueryBuilder, propertyFilters);
 
 		return boolQueryBuilder;
 	}

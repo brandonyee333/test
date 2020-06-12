@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.model.PageAsset;
+import com.liferay.osb.asah.backend.model.PropertyFilter;
 import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -22,6 +23,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -44,21 +46,22 @@ import org.springframework.stereotype.Component;
 public class AssetDog {
 
 	public ResultBag<PageAsset> getPageAssetResultBag(
-		String keywords, String propertyFilterString, int size,
+		String keywords, List<PropertyFilter> propertyFilters, int size,
 		Map<String, String> sort, int start) {
 
 		SearchHits searchHits = _dataDog.querySearchHits(
 			"assets", _faroInfoElasticsearchInvoker,
 			DogUtil.buildSearchSourceBuilder(
 				SortBuilderUtil.fieldSort(sort),
-				_buildQueryBuilder("Page", keywords, propertyFilterString),
-				size, start));
+				_buildQueryBuilder("Page", keywords, propertyFilters), size,
+				start));
 
 		return DogUtil.createResultBag(PageAsset.class, searchHits);
 	}
 
 	private QueryBuilder _buildQueryBuilder(
-		String assetType, String keywords, String propertyFilterString) {
+		String assetType, String keywords,
+		List<PropertyFilter> propertyFilters) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery("assetType", assetType));
@@ -81,10 +84,8 @@ public class AssetDog {
 				));
 		}
 
-		if (StringUtils.isNotBlank(propertyFilterString)) {
-			boolQueryBuilder.filter(
-				DogUtil.buildPropertyQueryBuilder(propertyFilterString));
-		}
+		DogUtil.addBoolQueryBuilderPropertyFilters(
+			boolQueryBuilder, propertyFilters);
 
 		return boolQueryBuilder;
 	}
