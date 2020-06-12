@@ -3249,7 +3249,7 @@ public class SiteFriendlyURLPersistenceImpl
 
 		siteFriendlyURL.resetOriginalValues();
 
-		if (isNew) {
+		if (siteFriendlyURL.isNew()) {
 			siteFriendlyURL.setNew(false);
 		}
 

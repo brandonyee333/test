@@ -10248,7 +10248,7 @@ public class TasksEntryPersistenceImpl
 
 		tasksEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (tasksEntry.isNew()) {
 			tasksEntry.setNew(false);
 		}
 

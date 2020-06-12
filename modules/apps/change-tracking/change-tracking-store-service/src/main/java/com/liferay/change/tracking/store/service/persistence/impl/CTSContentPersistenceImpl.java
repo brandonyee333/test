@@ -2894,7 +2894,7 @@ public class CTSContentPersistenceImpl
 		if (ctsContent.getCtCollectionId() != 0) {
 			ctsContent.resetOriginalValues();
 
-			if (isNew) {
+			if (ctsContent.isNew()) {
 				ctsContent.setNew(false);
 			}
 
@@ -2912,7 +2912,7 @@ public class CTSContentPersistenceImpl
 
 		ctsContent.resetOriginalValues();
 
-		if (isNew) {
+		if (ctsContent.isNew()) {
 			ctsContent.setNew(false);
 		}
 

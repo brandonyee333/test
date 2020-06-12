@@ -12880,7 +12880,7 @@ public class BookmarksEntryPersistenceImpl
 
 		bookmarksEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (bookmarksEntry.isNew()) {
 			bookmarksEntry.setNew(false);
 		}
 

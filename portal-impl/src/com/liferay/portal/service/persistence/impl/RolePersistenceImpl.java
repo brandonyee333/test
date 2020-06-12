@@ -10406,7 +10406,7 @@ public class RolePersistenceImpl
 		if (role.getCtCollectionId() != 0) {
 			role.resetOriginalValues();
 
-			if (isNew) {
+			if (role.isNew()) {
 				role.setNew(false);
 			}
 
@@ -10425,7 +10425,7 @@ public class RolePersistenceImpl
 
 		role.resetOriginalValues();
 
-		if (isNew) {
+		if (role.isNew()) {
 			role.setNew(false);
 		}
 

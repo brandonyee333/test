@@ -11837,7 +11837,7 @@ public class UserNotificationEventPersistenceImpl
 
 		userNotificationEvent.resetOriginalValues();
 
-		if (isNew) {
+		if (userNotificationEvent.isNew()) {
 			userNotificationEvent.setNew(false);
 		}
 

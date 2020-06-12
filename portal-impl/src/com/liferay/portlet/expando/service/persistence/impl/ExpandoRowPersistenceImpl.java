@@ -1650,7 +1650,7 @@ public class ExpandoRowPersistenceImpl
 		if (expandoRow.getCtCollectionId() != 0) {
 			expandoRow.resetOriginalValues();
 
-			if (isNew) {
+			if (expandoRow.isNew()) {
 				expandoRow.setNew(false);
 			}
 
@@ -1669,7 +1669,7 @@ public class ExpandoRowPersistenceImpl
 
 		expandoRow.resetOriginalValues();
 
-		if (isNew) {
+		if (expandoRow.isNew()) {
 			expandoRow.setNew(false);
 		}
 

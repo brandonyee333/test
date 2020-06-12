@@ -1175,7 +1175,7 @@ public class LazyBlobEntityPersistenceImpl
 
 		lazyBlobEntity.resetOriginalValues();
 
-		if (isNew) {
+		if (lazyBlobEntity.isNew()) {
 			lazyBlobEntity.setNew(false);
 		}
 

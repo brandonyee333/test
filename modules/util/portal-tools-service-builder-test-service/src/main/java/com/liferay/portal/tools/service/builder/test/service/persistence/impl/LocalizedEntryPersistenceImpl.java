@@ -298,7 +298,7 @@ public class LocalizedEntryPersistenceImpl
 
 		localizedEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (localizedEntry.isNew()) {
 			localizedEntry.setNew(false);
 		}
 

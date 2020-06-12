@@ -847,7 +847,7 @@ public class PasswordTrackerPersistenceImpl
 
 		passwordTracker.resetOriginalValues();
 
-		if (isNew) {
+		if (passwordTracker.isNew()) {
 			passwordTracker.setNew(false);
 		}
 

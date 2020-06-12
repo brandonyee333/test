@@ -5787,7 +5787,7 @@ public class LayoutFriendlyURLPersistenceImpl
 		if (layoutFriendlyURL.getCtCollectionId() != 0) {
 			layoutFriendlyURL.resetOriginalValues();
 
-			if (isNew) {
+			if (layoutFriendlyURL.isNew()) {
 				layoutFriendlyURL.setNew(false);
 			}
 
@@ -5808,7 +5808,7 @@ public class LayoutFriendlyURLPersistenceImpl
 
 		layoutFriendlyURL.resetOriginalValues();
 
-		if (isNew) {
+		if (layoutFriendlyURL.isNew()) {
 			layoutFriendlyURL.setNew(false);
 		}
 

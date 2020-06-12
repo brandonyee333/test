@@ -4763,7 +4763,7 @@ public class DDMStructureLayoutPersistenceImpl
 		if (ddmStructureLayout.getCtCollectionId() != 0) {
 			ddmStructureLayout.resetOriginalValues();
 
-			if (isNew) {
+			if (ddmStructureLayout.isNew()) {
 				ddmStructureLayout.setNew(false);
 			}
 
@@ -4783,7 +4783,7 @@ public class DDMStructureLayoutPersistenceImpl
 
 		ddmStructureLayout.resetOriginalValues();
 
-		if (isNew) {
+		if (ddmStructureLayout.isNew()) {
 			ddmStructureLayout.setNew(false);
 		}
 

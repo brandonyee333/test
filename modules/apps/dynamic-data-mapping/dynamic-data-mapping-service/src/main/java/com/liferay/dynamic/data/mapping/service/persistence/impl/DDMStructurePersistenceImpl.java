@@ -11301,7 +11301,7 @@ public class DDMStructurePersistenceImpl
 		if (ddmStructure.getCtCollectionId() != 0) {
 			ddmStructure.resetOriginalValues();
 
-			if (isNew) {
+			if (ddmStructure.isNew()) {
 				ddmStructure.setNew(false);
 			}
 
@@ -11319,7 +11319,7 @@ public class DDMStructurePersistenceImpl
 
 		ddmStructure.resetOriginalValues();
 
-		if (isNew) {
+		if (ddmStructure.isNew()) {
 			ddmStructure.setNew(false);
 		}
 

@@ -2903,7 +2903,7 @@ public class DLFileEntryMetadataPersistenceImpl
 		if (dlFileEntryMetadata.getCtCollectionId() != 0) {
 			dlFileEntryMetadata.resetOriginalValues();
 
-			if (isNew) {
+			if (dlFileEntryMetadata.isNew()) {
 				dlFileEntryMetadata.setNew(false);
 			}
 
@@ -2924,7 +2924,7 @@ public class DLFileEntryMetadataPersistenceImpl
 
 		dlFileEntryMetadata.resetOriginalValues();
 
-		if (isNew) {
+		if (dlFileEntryMetadata.isNew()) {
 			dlFileEntryMetadata.setNew(false);
 		}
 

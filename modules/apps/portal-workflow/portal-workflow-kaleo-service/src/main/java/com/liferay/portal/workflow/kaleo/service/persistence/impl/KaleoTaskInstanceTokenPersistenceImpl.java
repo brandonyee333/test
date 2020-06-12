@@ -2826,7 +2826,7 @@ public class KaleoTaskInstanceTokenPersistenceImpl
 
 		kaleoTaskInstanceToken.resetOriginalValues();
 
-		if (isNew) {
+		if (kaleoTaskInstanceToken.isNew()) {
 			kaleoTaskInstanceToken.setNew(false);
 		}
 

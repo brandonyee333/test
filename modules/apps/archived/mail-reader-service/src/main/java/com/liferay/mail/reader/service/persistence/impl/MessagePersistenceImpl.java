@@ -1623,7 +1623,7 @@ public class MessagePersistenceImpl
 
 		message.resetOriginalValues();
 
-		if (isNew) {
+		if (message.isNew()) {
 			message.setNew(false);
 		}
 

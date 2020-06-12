@@ -2302,7 +2302,7 @@ public class SegmentsEntryRelPersistenceImpl
 
 		segmentsEntryRel.resetOriginalValues();
 
-		if (isNew) {
+		if (segmentsEntryRel.isNew()) {
 			segmentsEntryRel.setNew(false);
 		}
 

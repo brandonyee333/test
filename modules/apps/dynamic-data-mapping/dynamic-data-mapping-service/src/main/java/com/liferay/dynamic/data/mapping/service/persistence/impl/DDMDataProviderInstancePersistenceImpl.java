@@ -3845,7 +3845,7 @@ public class DDMDataProviderInstancePersistenceImpl
 		if (ddmDataProviderInstance.getCtCollectionId() != 0) {
 			ddmDataProviderInstance.resetOriginalValues();
 
-			if (isNew) {
+			if (ddmDataProviderInstance.isNew()) {
 				ddmDataProviderInstance.setNew(false);
 			}
 
@@ -3865,7 +3865,7 @@ public class DDMDataProviderInstancePersistenceImpl
 
 		ddmDataProviderInstance.resetOriginalValues();
 
-		if (isNew) {
+		if (ddmDataProviderInstance.isNew()) {
 			ddmDataProviderInstance.setNew(false);
 		}
 

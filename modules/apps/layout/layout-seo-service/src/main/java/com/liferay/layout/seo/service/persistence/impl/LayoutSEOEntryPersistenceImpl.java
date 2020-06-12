@@ -2068,7 +2068,7 @@ public class LayoutSEOEntryPersistenceImpl
 
 		layoutSEOEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (layoutSEOEntry.isNew()) {
 			layoutSEOEntry.setNew(false);
 		}
 

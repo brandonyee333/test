@@ -8181,7 +8181,7 @@ public class LayoutRevisionPersistenceImpl
 
 		layoutRevision.resetOriginalValues();
 
-		if (isNew) {
+		if (layoutRevision.isNew()) {
 			layoutRevision.setNew(false);
 		}
 

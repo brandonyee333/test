@@ -3316,7 +3316,7 @@ public class AssetListEntryUsagePersistenceImpl
 		if (assetListEntryUsage.getCtCollectionId() != 0) {
 			assetListEntryUsage.resetOriginalValues();
 
-			if (isNew) {
+			if (assetListEntryUsage.isNew()) {
 				assetListEntryUsage.setNew(false);
 			}
 
@@ -3336,7 +3336,7 @@ public class AssetListEntryUsagePersistenceImpl
 
 		assetListEntryUsage.resetOriginalValues();
 
-		if (isNew) {
+		if (assetListEntryUsage.isNew()) {
 			assetListEntryUsage.setNew(false);
 		}
 

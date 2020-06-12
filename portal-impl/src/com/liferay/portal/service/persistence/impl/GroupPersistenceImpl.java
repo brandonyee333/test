@@ -13196,7 +13196,7 @@ public class GroupPersistenceImpl
 		if (group.getCtCollectionId() != 0) {
 			group.resetOriginalValues();
 
-			if (isNew) {
+			if (group.isNew()) {
 				group.setNew(false);
 			}
 
@@ -13215,7 +13215,7 @@ public class GroupPersistenceImpl
 
 		group.resetOriginalValues();
 
-		if (isNew) {
+		if (group.isNew()) {
 			group.setNew(false);
 		}
 

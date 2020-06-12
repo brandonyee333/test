@@ -2087,7 +2087,7 @@ public class StatusPersistenceImpl
 
 		status.resetOriginalValues();
 
-		if (isNew) {
+		if (status.isNew()) {
 			status.setNew(false);
 		}
 

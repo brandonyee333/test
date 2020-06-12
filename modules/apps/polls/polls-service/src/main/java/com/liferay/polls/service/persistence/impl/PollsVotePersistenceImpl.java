@@ -3319,7 +3319,7 @@ public class PollsVotePersistenceImpl
 
 		pollsVote.resetOriginalValues();
 
-		if (isNew) {
+		if (pollsVote.isNew()) {
 			pollsVote.setNew(false);
 		}
 

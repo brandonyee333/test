@@ -927,7 +927,7 @@ public class DLOpenerFileEntryReferencePersistenceImpl
 
 		dlOpenerFileEntryReference.resetOriginalValues();
 
-		if (isNew) {
+		if (dlOpenerFileEntryReference.isNew()) {
 			dlOpenerFileEntryReference.setNew(false);
 		}
 

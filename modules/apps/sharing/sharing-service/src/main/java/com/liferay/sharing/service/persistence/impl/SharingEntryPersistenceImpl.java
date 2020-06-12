@@ -5721,7 +5721,7 @@ public class SharingEntryPersistenceImpl
 
 		sharingEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (sharingEntry.isNew()) {
 			sharingEntry.setNew(false);
 		}
 

@@ -1839,7 +1839,7 @@ public class AccountRolePersistenceImpl
 
 		accountRole.resetOriginalValues();
 
-		if (isNew) {
+		if (accountRole.isNew()) {
 			accountRole.setNew(false);
 		}
 

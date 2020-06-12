@@ -12998,7 +12998,7 @@ public class DLFolderPersistenceImpl
 		if (dlFolder.getCtCollectionId() != 0) {
 			dlFolder.resetOriginalValues();
 
-			if (isNew) {
+			if (dlFolder.isNew()) {
 				dlFolder.setNew(false);
 			}
 
@@ -13017,7 +13017,7 @@ public class DLFolderPersistenceImpl
 
 		dlFolder.resetOriginalValues();
 
-		if (isNew) {
+		if (dlFolder.isNew()) {
 			dlFolder.setNew(false);
 		}
 

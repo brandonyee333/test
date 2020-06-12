@@ -1158,7 +1158,7 @@ public class EagerBlobEntityPersistenceImpl
 
 		eagerBlobEntity.resetOriginalValues();
 
-		if (isNew) {
+		if (eagerBlobEntity.isNew()) {
 			eagerBlobEntity.setNew(false);
 		}
 

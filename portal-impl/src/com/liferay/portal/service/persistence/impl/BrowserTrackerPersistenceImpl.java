@@ -558,7 +558,7 @@ public class BrowserTrackerPersistenceImpl
 
 		browserTracker.resetOriginalValues();
 
-		if (isNew) {
+		if (browserTracker.isNew()) {
 			browserTracker.setNew(false);
 		}
 

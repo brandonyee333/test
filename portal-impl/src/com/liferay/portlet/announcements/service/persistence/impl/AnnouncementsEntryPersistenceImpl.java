@@ -8273,7 +8273,7 @@ public class AnnouncementsEntryPersistenceImpl
 
 		announcementsEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (announcementsEntry.isNew()) {
 			announcementsEntry.setNew(false);
 		}
 

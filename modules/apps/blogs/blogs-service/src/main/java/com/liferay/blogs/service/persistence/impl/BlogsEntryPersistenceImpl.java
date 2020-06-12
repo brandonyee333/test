@@ -21499,7 +21499,7 @@ public class BlogsEntryPersistenceImpl
 
 		blogsEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (blogsEntry.isNew()) {
 			blogsEntry.setNew(false);
 		}
 

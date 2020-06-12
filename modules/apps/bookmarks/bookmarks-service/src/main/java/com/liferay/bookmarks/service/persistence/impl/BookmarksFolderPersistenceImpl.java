@@ -7137,7 +7137,7 @@ public class BookmarksFolderPersistenceImpl
 
 		bookmarksFolder.resetOriginalValues();
 
-		if (isNew) {
+		if (bookmarksFolder.isNew()) {
 			bookmarksFolder.setNew(false);
 		}
 

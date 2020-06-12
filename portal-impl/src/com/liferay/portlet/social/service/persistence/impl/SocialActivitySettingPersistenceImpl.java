@@ -3033,7 +3033,7 @@ public class SocialActivitySettingPersistenceImpl
 		if (socialActivitySetting.getCtCollectionId() != 0) {
 			socialActivitySetting.resetOriginalValues();
 
-			if (isNew) {
+			if (socialActivitySetting.isNew()) {
 				socialActivitySetting.setNew(false);
 			}
 
@@ -3054,7 +3054,7 @@ public class SocialActivitySettingPersistenceImpl
 
 		socialActivitySetting.resetOriginalValues();
 
-		if (isNew) {
+		if (socialActivitySetting.isNew()) {
 			socialActivitySetting.setNew(false);
 		}
 

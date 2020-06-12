@@ -1546,7 +1546,7 @@ public class CountryPersistenceImpl
 
 		country.resetOriginalValues();
 
-		if (isNew) {
+		if (country.isNew()) {
 			country.setNew(false);
 		}
 

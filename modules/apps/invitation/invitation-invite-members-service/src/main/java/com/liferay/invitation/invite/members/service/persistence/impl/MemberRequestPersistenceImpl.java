@@ -1986,7 +1986,7 @@ public class MemberRequestPersistenceImpl
 
 		memberRequest.resetOriginalValues();
 
-		if (isNew) {
+		if (memberRequest.isNew()) {
 			memberRequest.setNew(false);
 		}
 

@@ -1024,7 +1024,7 @@ public class WeDeployAuthTokenPersistenceImpl
 
 		weDeployAuthToken.resetOriginalValues();
 
-		if (isNew) {
+		if (weDeployAuthToken.isNew()) {
 			weDeployAuthToken.setNew(false);
 		}
 

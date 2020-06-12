@@ -1910,7 +1910,7 @@ public class PortletItemPersistenceImpl
 
 		portletItem.resetOriginalValues();
 
-		if (isNew) {
+		if (portletItem.isNew()) {
 			portletItem.setNew(false);
 		}
 

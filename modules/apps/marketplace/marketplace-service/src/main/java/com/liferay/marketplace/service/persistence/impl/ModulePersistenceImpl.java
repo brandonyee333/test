@@ -3700,7 +3700,7 @@ public class ModulePersistenceImpl
 
 		module.resetOriginalValues();
 
-		if (isNew) {
+		if (module.isNew()) {
 			module.setNew(false);
 		}
 

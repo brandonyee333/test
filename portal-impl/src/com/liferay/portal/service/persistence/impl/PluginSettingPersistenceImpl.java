@@ -1186,7 +1186,7 @@ public class PluginSettingPersistenceImpl
 
 		pluginSetting.resetOriginalValues();
 
-		if (isNew) {
+		if (pluginSetting.isNew()) {
 			pluginSetting.setNew(false);
 		}
 

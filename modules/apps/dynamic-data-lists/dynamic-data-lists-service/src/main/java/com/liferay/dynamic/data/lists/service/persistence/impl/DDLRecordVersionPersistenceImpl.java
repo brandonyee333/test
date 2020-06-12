@@ -2941,7 +2941,7 @@ public class DDLRecordVersionPersistenceImpl
 
 		ddlRecordVersion.resetOriginalValues();
 
-		if (isNew) {
+		if (ddlRecordVersion.isNew()) {
 			ddlRecordVersion.setNew(false);
 		}
 

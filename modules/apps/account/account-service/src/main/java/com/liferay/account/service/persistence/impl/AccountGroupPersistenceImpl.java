@@ -673,7 +673,7 @@ public class AccountGroupPersistenceImpl
 
 		accountGroup.resetOriginalValues();
 
-		if (isNew) {
+		if (accountGroup.isNew()) {
 			accountGroup.setNew(false);
 		}
 

@@ -836,7 +836,7 @@ public class ImagePersistenceImpl
 		if (image.getCtCollectionId() != 0) {
 			image.resetOriginalValues();
 
-			if (isNew) {
+			if (image.isNew()) {
 				image.setNew(false);
 			}
 
@@ -853,7 +853,7 @@ public class ImagePersistenceImpl
 
 		image.resetOriginalValues();
 
-		if (isNew) {
+		if (image.isNew()) {
 			image.setNew(false);
 		}
 

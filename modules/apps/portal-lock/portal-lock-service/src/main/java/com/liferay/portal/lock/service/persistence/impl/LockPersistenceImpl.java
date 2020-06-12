@@ -2831,7 +2831,7 @@ public class LockPersistenceImpl
 
 		lock.resetOriginalValues();
 
-		if (isNew) {
+		if (lock.isNew()) {
 			lock.setNew(false);
 		}
 

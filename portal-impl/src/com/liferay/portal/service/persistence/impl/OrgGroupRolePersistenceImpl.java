@@ -1333,7 +1333,7 @@ public class OrgGroupRolePersistenceImpl
 
 		orgGroupRole.resetOriginalValues();
 
-		if (isNew) {
+		if (orgGroupRole.isNew()) {
 			orgGroupRole.setNew(false);
 		}
 

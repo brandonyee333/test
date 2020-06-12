@@ -11742,7 +11742,7 @@ public class MBCategoryPersistenceImpl
 
 		mbCategory.resetOriginalValues();
 
-		if (isNew) {
+		if (mbCategory.isNew()) {
 			mbCategory.setNew(false);
 		}
 

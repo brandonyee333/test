@@ -2053,7 +2053,7 @@ public class ExpandoColumnPersistenceImpl
 		if (expandoColumn.getCtCollectionId() != 0) {
 			expandoColumn.resetOriginalValues();
 
-			if (isNew) {
+			if (expandoColumn.isNew()) {
 				expandoColumn.setNew(false);
 			}
 
@@ -2073,7 +2073,7 @@ public class ExpandoColumnPersistenceImpl
 
 		expandoColumn.resetOriginalValues();
 
-		if (isNew) {
+		if (expandoColumn.isNew()) {
 			expandoColumn.setNew(false);
 		}
 

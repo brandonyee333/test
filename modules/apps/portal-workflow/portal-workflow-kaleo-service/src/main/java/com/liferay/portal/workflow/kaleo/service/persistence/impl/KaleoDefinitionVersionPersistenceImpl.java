@@ -1829,7 +1829,7 @@ public class KaleoDefinitionVersionPersistenceImpl
 
 		kaleoDefinitionVersion.resetOriginalValues();
 
-		if (isNew) {
+		if (kaleoDefinitionVersion.isNew()) {
 			kaleoDefinitionVersion.setNew(false);
 		}
 

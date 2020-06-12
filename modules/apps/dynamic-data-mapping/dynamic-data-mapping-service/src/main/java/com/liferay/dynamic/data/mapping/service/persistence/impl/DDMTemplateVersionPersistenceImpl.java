@@ -1765,7 +1765,7 @@ public class DDMTemplateVersionPersistenceImpl
 		if (ddmTemplateVersion.getCtCollectionId() != 0) {
 			ddmTemplateVersion.resetOriginalValues();
 
-			if (isNew) {
+			if (ddmTemplateVersion.isNew()) {
 				ddmTemplateVersion.setNew(false);
 			}
 
@@ -1785,7 +1785,7 @@ public class DDMTemplateVersionPersistenceImpl
 
 		ddmTemplateVersion.resetOriginalValues();
 
-		if (isNew) {
+		if (ddmTemplateVersion.isNew()) {
 			ddmTemplateVersion.setNew(false);
 		}
 

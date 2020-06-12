@@ -2504,7 +2504,7 @@ public class AccountEntryPersistenceImpl
 
 		accountEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (accountEntry.isNew()) {
 			accountEntry.setNew(false);
 		}
 

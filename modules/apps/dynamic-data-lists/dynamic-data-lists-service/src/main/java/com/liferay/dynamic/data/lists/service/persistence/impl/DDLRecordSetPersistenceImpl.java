@@ -4168,7 +4168,7 @@ public class DDLRecordSetPersistenceImpl
 
 		ddlRecordSet.resetOriginalValues();
 
-		if (isNew) {
+		if (ddlRecordSet.isNew()) {
 			ddlRecordSet.setNew(false);
 		}
 

@@ -2613,7 +2613,7 @@ public class OAuthUserPersistenceImpl
 
 		oAuthUser.resetOriginalValues();
 
-		if (isNew) {
+		if (oAuthUser.isNew()) {
 			oAuthUser.setNew(false);
 		}
 

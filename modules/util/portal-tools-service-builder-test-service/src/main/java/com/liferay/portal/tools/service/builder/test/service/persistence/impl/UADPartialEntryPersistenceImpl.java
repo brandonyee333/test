@@ -299,7 +299,7 @@ public class UADPartialEntryPersistenceImpl
 
 		uadPartialEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (uadPartialEntry.isNew()) {
 			uadPartialEntry.setNew(false);
 		}
 

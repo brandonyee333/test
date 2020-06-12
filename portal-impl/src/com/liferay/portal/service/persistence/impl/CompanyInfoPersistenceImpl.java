@@ -561,7 +561,7 @@ public class CompanyInfoPersistenceImpl
 
 		companyInfo.resetOriginalValues();
 
-		if (isNew) {
+		if (companyInfo.isNew()) {
 			companyInfo.setNew(false);
 		}
 

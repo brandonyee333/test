@@ -4450,7 +4450,7 @@ public class SAPEntryPersistenceImpl
 
 		sapEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (sapEntry.isNew()) {
 			sapEntry.setNew(false);
 		}
 

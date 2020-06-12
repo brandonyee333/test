@@ -668,7 +668,7 @@ public class HtmlPreviewEntryPersistenceImpl
 
 		htmlPreviewEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (htmlPreviewEntry.isNew()) {
 			htmlPreviewEntry.setNew(false);
 		}
 

@@ -1740,7 +1740,7 @@ public class AssetAutoTaggerEntryPersistenceImpl
 		if (assetAutoTaggerEntry.getCtCollectionId() != 0) {
 			assetAutoTaggerEntry.resetOriginalValues();
 
-			if (isNew) {
+			if (assetAutoTaggerEntry.isNew()) {
 				assetAutoTaggerEntry.setNew(false);
 			}
 
@@ -1760,7 +1760,7 @@ public class AssetAutoTaggerEntryPersistenceImpl
 
 		assetAutoTaggerEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (assetAutoTaggerEntry.isNew()) {
 			assetAutoTaggerEntry.setNew(false);
 		}
 

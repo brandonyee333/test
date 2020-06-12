@@ -607,7 +607,7 @@ public class WebDAVPropsPersistenceImpl
 
 		webDAVProps.resetOriginalValues();
 
-		if (isNew) {
+		if (webDAVProps.isNew()) {
 			webDAVProps.setNew(false);
 		}
 

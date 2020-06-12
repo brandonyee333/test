@@ -21180,7 +21180,7 @@ public class MBMessagePersistenceImpl
 
 		mbMessage.resetOriginalValues();
 
-		if (isNew) {
+		if (mbMessage.isNew()) {
 			mbMessage.setNew(false);
 		}
 

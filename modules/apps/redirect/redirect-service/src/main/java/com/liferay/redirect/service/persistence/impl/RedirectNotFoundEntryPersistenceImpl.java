@@ -1214,7 +1214,7 @@ public class RedirectNotFoundEntryPersistenceImpl
 
 		redirectNotFoundEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (redirectNotFoundEntry.isNew()) {
 			redirectNotFoundEntry.setNew(false);
 		}
 

@@ -1200,7 +1200,7 @@ public class LocalizedEntryLocalizationPersistenceImpl
 
 		localizedEntryLocalization.resetOriginalValues();
 
-		if (isNew) {
+		if (localizedEntryLocalization.isNew()) {
 			localizedEntryLocalization.setNew(false);
 		}
 

@@ -4499,7 +4499,7 @@ public class DDLRecordPersistenceImpl
 
 		ddlRecord.resetOriginalValues();
 
-		if (isNew) {
+		if (ddlRecord.isNew()) {
 			ddlRecord.setNew(false);
 		}
 

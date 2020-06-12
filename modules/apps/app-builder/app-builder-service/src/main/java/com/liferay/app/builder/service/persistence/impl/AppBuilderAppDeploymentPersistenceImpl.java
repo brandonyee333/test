@@ -1201,7 +1201,7 @@ public class AppBuilderAppDeploymentPersistenceImpl
 
 		appBuilderAppDeployment.resetOriginalValues();
 
-		if (isNew) {
+		if (appBuilderAppDeployment.isNew()) {
 			appBuilderAppDeployment.setNew(false);
 		}
 

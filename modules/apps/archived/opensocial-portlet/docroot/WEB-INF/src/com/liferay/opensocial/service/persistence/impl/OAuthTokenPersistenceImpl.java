@@ -1415,7 +1415,7 @@ public class OAuthTokenPersistenceImpl
 
 		oAuthToken.resetOriginalValues();
 
-		if (isNew) {
+		if (oAuthToken.isNew()) {
 			oAuthToken.setNew(false);
 		}
 

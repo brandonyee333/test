@@ -3615,7 +3615,7 @@ public class SocialActivityAchievementPersistenceImpl
 		if (socialActivityAchievement.getCtCollectionId() != 0) {
 			socialActivityAchievement.resetOriginalValues();
 
-			if (isNew) {
+			if (socialActivityAchievement.isNew()) {
 				socialActivityAchievement.setNew(false);
 			}
 
@@ -3636,7 +3636,7 @@ public class SocialActivityAchievementPersistenceImpl
 
 		socialActivityAchievement.resetOriginalValues();
 
-		if (isNew) {
+		if (socialActivityAchievement.isNew()) {
 			socialActivityAchievement.setNew(false);
 		}
 

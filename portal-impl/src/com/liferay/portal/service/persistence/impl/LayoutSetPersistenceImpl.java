@@ -2633,7 +2633,7 @@ public class LayoutSetPersistenceImpl
 		if (layoutSet.getCtCollectionId() != 0) {
 			layoutSet.resetOriginalValues();
 
-			if (isNew) {
+			if (layoutSet.isNew()) {
 				layoutSet.setNew(false);
 			}
 
@@ -2652,7 +2652,7 @@ public class LayoutSetPersistenceImpl
 
 		layoutSet.resetOriginalValues();
 
-		if (isNew) {
+		if (layoutSet.isNew()) {
 			layoutSet.setNew(false);
 		}
 

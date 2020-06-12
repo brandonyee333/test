@@ -3010,7 +3010,7 @@ public class TeamPersistenceImpl
 		if (team.getCtCollectionId() != 0) {
 			team.resetOriginalValues();
 
-			if (isNew) {
+			if (team.isNew()) {
 				team.setNew(false);
 			}
 
@@ -3029,7 +3029,7 @@ public class TeamPersistenceImpl
 
 		team.resetOriginalValues();
 
-		if (isNew) {
+		if (team.isNew()) {
 			team.setNew(false);
 		}
 

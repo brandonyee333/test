@@ -2763,7 +2763,7 @@ public class CalendarNotificationTemplatePersistenceImpl
 
 		calendarNotificationTemplate.resetOriginalValues();
 
-		if (isNew) {
+		if (calendarNotificationTemplate.isNew()) {
 			calendarNotificationTemplate.setNew(false);
 		}
 

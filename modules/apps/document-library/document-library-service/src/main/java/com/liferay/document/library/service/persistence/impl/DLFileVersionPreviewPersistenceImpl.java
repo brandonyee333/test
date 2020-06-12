@@ -1921,7 +1921,7 @@ public class DLFileVersionPreviewPersistenceImpl
 
 		dlFileVersionPreview.resetOriginalValues();
 
-		if (isNew) {
+		if (dlFileVersionPreview.isNew()) {
 			dlFileVersionPreview.setNew(false);
 		}
 

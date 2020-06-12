@@ -1595,7 +1595,7 @@ public class KaleoTimerPersistenceImpl
 
 		kaleoTimer.resetOriginalValues();
 
-		if (isNew) {
+		if (kaleoTimer.isNew()) {
 			kaleoTimer.setNew(false);
 		}
 

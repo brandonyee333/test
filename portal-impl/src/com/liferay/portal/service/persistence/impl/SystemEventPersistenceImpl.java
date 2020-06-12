@@ -2684,7 +2684,7 @@ public class SystemEventPersistenceImpl
 		if (systemEvent.getCtCollectionId() != 0) {
 			systemEvent.resetOriginalValues();
 
-			if (isNew) {
+			if (systemEvent.isNew()) {
 				systemEvent.setNew(false);
 			}
 
@@ -2701,7 +2701,7 @@ public class SystemEventPersistenceImpl
 
 		systemEvent.resetOriginalValues();
 
-		if (isNew) {
+		if (systemEvent.isNew()) {
 			systemEvent.setNew(false);
 		}
 

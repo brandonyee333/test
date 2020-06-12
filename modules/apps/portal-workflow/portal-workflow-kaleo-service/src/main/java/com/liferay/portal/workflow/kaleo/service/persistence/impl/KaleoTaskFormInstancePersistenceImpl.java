@@ -3245,7 +3245,7 @@ public class KaleoTaskFormInstancePersistenceImpl
 
 		kaleoTaskFormInstance.resetOriginalValues();
 
-		if (isNew) {
+		if (kaleoTaskFormInstance.isNew()) {
 			kaleoTaskFormInstance.setNew(false);
 		}
 

@@ -6807,7 +6807,7 @@ public class SocialRequestPersistenceImpl
 		if (socialRequest.getCtCollectionId() != 0) {
 			socialRequest.resetOriginalValues();
 
-			if (isNew) {
+			if (socialRequest.isNew()) {
 				socialRequest.setNew(false);
 			}
 
@@ -6827,7 +6827,7 @@ public class SocialRequestPersistenceImpl
 
 		socialRequest.resetOriginalValues();
 
-		if (isNew) {
+		if (socialRequest.isNew()) {
 			socialRequest.setNew(false);
 		}
 

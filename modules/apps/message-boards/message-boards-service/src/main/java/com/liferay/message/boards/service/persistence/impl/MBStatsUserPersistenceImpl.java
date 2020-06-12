@@ -2148,7 +2148,7 @@ public class MBStatsUserPersistenceImpl
 
 		mbStatsUser.resetOriginalValues();
 
-		if (isNew) {
+		if (mbStatsUser.isNew()) {
 			mbStatsUser.setNew(false);
 		}
 

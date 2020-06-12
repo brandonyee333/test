@@ -2041,7 +2041,7 @@ public class WikiPageResourcePersistenceImpl
 
 		wikiPageResource.resetOriginalValues();
 
-		if (isNew) {
+		if (wikiPageResource.isNew()) {
 			wikiPageResource.setNew(false);
 		}
 

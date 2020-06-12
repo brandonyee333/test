@@ -3126,7 +3126,7 @@ public class ExportImportConfigurationPersistenceImpl
 
 		exportImportConfiguration.resetOriginalValues();
 
-		if (isNew) {
+		if (exportImportConfiguration.isNew()) {
 			exportImportConfiguration.setNew(false);
 		}
 

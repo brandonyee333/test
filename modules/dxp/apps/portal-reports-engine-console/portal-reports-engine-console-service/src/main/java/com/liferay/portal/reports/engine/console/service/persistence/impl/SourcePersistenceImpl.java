@@ -3126,7 +3126,7 @@ public class SourcePersistenceImpl
 
 		source.resetOriginalValues();
 
-		if (isNew) {
+		if (source.isNew()) {
 			source.setNew(false);
 		}
 

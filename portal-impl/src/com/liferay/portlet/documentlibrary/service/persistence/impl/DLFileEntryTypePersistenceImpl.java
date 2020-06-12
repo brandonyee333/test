@@ -3553,7 +3553,7 @@ public class DLFileEntryTypePersistenceImpl
 		if (dlFileEntryType.getCtCollectionId() != 0) {
 			dlFileEntryType.resetOriginalValues();
 
-			if (isNew) {
+			if (dlFileEntryType.isNew()) {
 				dlFileEntryType.setNew(false);
 			}
 
@@ -3573,7 +3573,7 @@ public class DLFileEntryTypePersistenceImpl
 
 		dlFileEntryType.resetOriginalValues();
 
-		if (isNew) {
+		if (dlFileEntryType.isNew()) {
 			dlFileEntryType.setNew(false);
 		}
 

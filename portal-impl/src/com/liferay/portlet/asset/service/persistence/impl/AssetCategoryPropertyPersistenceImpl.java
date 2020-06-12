@@ -2390,7 +2390,7 @@ public class AssetCategoryPropertyPersistenceImpl
 		if (assetCategoryProperty.getCtCollectionId() != 0) {
 			assetCategoryProperty.resetOriginalValues();
 
-			if (isNew) {
+			if (assetCategoryProperty.isNew()) {
 				assetCategoryProperty.setNew(false);
 			}
 
@@ -2411,7 +2411,7 @@ public class AssetCategoryPropertyPersistenceImpl
 
 		assetCategoryProperty.resetOriginalValues();
 
-		if (isNew) {
+		if (assetCategoryProperty.isNew()) {
 			assetCategoryProperty.setNew(false);
 		}
 

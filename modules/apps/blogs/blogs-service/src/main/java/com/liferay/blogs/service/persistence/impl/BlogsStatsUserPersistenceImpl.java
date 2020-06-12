@@ -3246,7 +3246,7 @@ public class BlogsStatsUserPersistenceImpl
 
 		blogsStatsUser.resetOriginalValues();
 
-		if (isNew) {
+		if (blogsStatsUser.isNew()) {
 			blogsStatsUser.setNew(false);
 		}
 

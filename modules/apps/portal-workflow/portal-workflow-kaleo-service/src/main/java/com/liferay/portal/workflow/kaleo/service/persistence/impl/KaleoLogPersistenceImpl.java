@@ -3728,7 +3728,7 @@ public class KaleoLogPersistenceImpl
 
 		kaleoLog.resetOriginalValues();
 
-		if (isNew) {
+		if (kaleoLog.isNew()) {
 			kaleoLog.setNew(false);
 		}
 

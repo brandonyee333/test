@@ -1180,7 +1180,7 @@ public class ResourceActionPersistenceImpl
 
 		resourceAction.resetOriginalValues();
 
-		if (isNew) {
+		if (resourceAction.isNew()) {
 			resourceAction.setNew(false);
 		}
 

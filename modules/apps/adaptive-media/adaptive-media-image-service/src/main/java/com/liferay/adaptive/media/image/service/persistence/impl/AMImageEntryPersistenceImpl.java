@@ -4690,7 +4690,7 @@ public class AMImageEntryPersistenceImpl
 
 		amImageEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (amImageEntry.isNew()) {
 			amImageEntry.setNew(false);
 		}
 

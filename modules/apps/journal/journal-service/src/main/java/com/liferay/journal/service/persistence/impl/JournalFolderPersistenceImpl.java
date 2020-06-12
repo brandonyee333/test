@@ -7924,7 +7924,7 @@ public class JournalFolderPersistenceImpl
 		if (journalFolder.getCtCollectionId() != 0) {
 			journalFolder.resetOriginalValues();
 
-			if (isNew) {
+			if (journalFolder.isNew()) {
 				journalFolder.setNew(false);
 			}
 
@@ -7943,7 +7943,7 @@ public class JournalFolderPersistenceImpl
 
 		journalFolder.resetOriginalValues();
 
-		if (isNew) {
+		if (journalFolder.isNew()) {
 			journalFolder.setNew(false);
 		}
 

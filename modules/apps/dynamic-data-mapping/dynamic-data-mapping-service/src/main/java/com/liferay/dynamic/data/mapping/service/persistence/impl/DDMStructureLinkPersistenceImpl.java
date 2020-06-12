@@ -2283,7 +2283,7 @@ public class DDMStructureLinkPersistenceImpl
 		if (ddmStructureLink.getCtCollectionId() != 0) {
 			ddmStructureLink.resetOriginalValues();
 
-			if (isNew) {
+			if (ddmStructureLink.isNew()) {
 				ddmStructureLink.setNew(false);
 			}
 
@@ -2303,7 +2303,7 @@ public class DDMStructureLinkPersistenceImpl
 
 		ddmStructureLink.resetOriginalValues();
 
-		if (isNew) {
+		if (ddmStructureLink.isNew()) {
 			ddmStructureLink.setNew(false);
 		}
 

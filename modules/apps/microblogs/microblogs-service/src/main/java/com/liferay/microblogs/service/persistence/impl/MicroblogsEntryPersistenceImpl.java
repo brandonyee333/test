@@ -13550,7 +13550,7 @@ public class MicroblogsEntryPersistenceImpl
 
 		microblogsEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (microblogsEntry.isNew()) {
 			microblogsEntry.setNew(false);
 		}
 

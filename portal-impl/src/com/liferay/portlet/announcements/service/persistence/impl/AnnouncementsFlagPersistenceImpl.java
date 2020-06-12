@@ -1634,7 +1634,7 @@ public class AnnouncementsFlagPersistenceImpl
 
 		announcementsFlag.resetOriginalValues();
 
-		if (isNew) {
+		if (announcementsFlag.isNew()) {
 			announcementsFlag.setNew(false);
 		}
 

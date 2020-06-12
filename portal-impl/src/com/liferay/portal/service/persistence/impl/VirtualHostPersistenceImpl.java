@@ -1501,7 +1501,7 @@ public class VirtualHostPersistenceImpl
 		if (virtualHost.getCtCollectionId() != 0) {
 			virtualHost.resetOriginalValues();
 
-			if (isNew) {
+			if (virtualHost.isNew()) {
 				virtualHost.setNew(false);
 			}
 
@@ -1520,7 +1520,7 @@ public class VirtualHostPersistenceImpl
 
 		virtualHost.resetOriginalValues();
 
-		if (isNew) {
+		if (virtualHost.isNew()) {
 			virtualHost.setNew(false);
 		}
 

@@ -2071,7 +2071,7 @@ public class ReadingTimeEntryPersistenceImpl
 
 		readingTimeEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (readingTimeEntry.isNew()) {
 			readingTimeEntry.setNew(false);
 		}
 

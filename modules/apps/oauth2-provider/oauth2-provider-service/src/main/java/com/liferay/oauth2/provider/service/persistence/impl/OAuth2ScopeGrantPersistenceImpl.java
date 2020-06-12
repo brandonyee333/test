@@ -1353,7 +1353,7 @@ public class OAuth2ScopeGrantPersistenceImpl
 
 		oAuth2ScopeGrant.resetOriginalValues();
 
-		if (isNew) {
+		if (oAuth2ScopeGrant.isNew()) {
 			oAuth2ScopeGrant.setNew(false);
 		}
 

@@ -4263,7 +4263,7 @@ public class EmailAddressPersistenceImpl
 
 		emailAddress.resetOriginalValues();
 
-		if (isNew) {
+		if (emailAddress.isNew()) {
 			emailAddress.setNew(false);
 		}
 

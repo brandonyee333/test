@@ -6358,7 +6358,7 @@ public class LVEntryPersistenceImpl
 
 		lvEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (lvEntry.isNew()) {
 			lvEntry.setNew(false);
 		}
 

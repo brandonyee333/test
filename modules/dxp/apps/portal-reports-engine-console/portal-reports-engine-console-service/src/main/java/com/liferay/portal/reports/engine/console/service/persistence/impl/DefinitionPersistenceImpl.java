@@ -3150,7 +3150,7 @@ public class DefinitionPersistenceImpl
 
 		definition.resetOriginalValues();
 
-		if (isNew) {
+		if (definition.isNew()) {
 			definition.setNew(false);
 		}
 

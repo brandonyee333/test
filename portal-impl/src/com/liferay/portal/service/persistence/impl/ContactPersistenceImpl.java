@@ -1892,7 +1892,7 @@ public class ContactPersistenceImpl
 
 		contact.resetOriginalValues();
 
-		if (isNew) {
+		if (contact.isNew()) {
 			contact.setNew(false);
 		}
 

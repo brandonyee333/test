@@ -6748,7 +6748,7 @@ public class FragmentEntryPersistenceImpl
 
 		fragmentEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (fragmentEntry.isNew()) {
 			fragmentEntry.setNew(false);
 		}
 

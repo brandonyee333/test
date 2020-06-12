@@ -1199,7 +1199,7 @@ public class SamlIdpSpConnectionPersistenceImpl
 
 		samlIdpSpConnection.resetOriginalValues();
 
-		if (isNew) {
+		if (samlIdpSpConnection.isNew()) {
 			samlIdpSpConnection.setNew(false);
 		}
 

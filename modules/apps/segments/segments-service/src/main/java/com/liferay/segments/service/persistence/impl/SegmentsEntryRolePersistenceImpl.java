@@ -1647,7 +1647,7 @@ public class SegmentsEntryRolePersistenceImpl
 
 		segmentsEntryRole.resetOriginalValues();
 
-		if (isNew) {
+		if (segmentsEntryRole.isNew()) {
 			segmentsEntryRole.setNew(false);
 		}
 

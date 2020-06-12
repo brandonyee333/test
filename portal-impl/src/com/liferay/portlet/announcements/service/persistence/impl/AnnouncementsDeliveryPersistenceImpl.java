@@ -1671,7 +1671,7 @@ public class AnnouncementsDeliveryPersistenceImpl
 
 		announcementsDelivery.resetOriginalValues();
 
-		if (isNew) {
+		if (announcementsDelivery.isNew()) {
 			announcementsDelivery.setNew(false);
 		}
 

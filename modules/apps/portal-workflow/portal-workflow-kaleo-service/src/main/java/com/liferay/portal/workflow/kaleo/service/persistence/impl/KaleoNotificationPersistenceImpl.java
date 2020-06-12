@@ -2698,7 +2698,7 @@ public class KaleoNotificationPersistenceImpl
 
 		kaleoNotification.resetOriginalValues();
 
-		if (isNew) {
+		if (kaleoNotification.isNew()) {
 			kaleoNotification.setNew(false);
 		}
 

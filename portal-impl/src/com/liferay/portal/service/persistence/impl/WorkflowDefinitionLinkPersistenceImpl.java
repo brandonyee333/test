@@ -3252,7 +3252,7 @@ public class WorkflowDefinitionLinkPersistenceImpl
 		if (workflowDefinitionLink.getCtCollectionId() != 0) {
 			workflowDefinitionLink.resetOriginalValues();
 
-			if (isNew) {
+			if (workflowDefinitionLink.isNew()) {
 				workflowDefinitionLink.setNew(false);
 			}
 
@@ -3273,7 +3273,7 @@ public class WorkflowDefinitionLinkPersistenceImpl
 
 		workflowDefinitionLink.resetOriginalValues();
 
-		if (isNew) {
+		if (workflowDefinitionLink.isNew()) {
 			workflowDefinitionLink.setNew(false);
 		}
 

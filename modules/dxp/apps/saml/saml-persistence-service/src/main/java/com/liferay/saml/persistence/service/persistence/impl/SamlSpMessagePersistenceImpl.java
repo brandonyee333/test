@@ -1221,7 +1221,7 @@ public class SamlSpMessagePersistenceImpl
 
 		samlSpMessage.resetOriginalValues();
 
-		if (isNew) {
+		if (samlSpMessage.isNew()) {
 			samlSpMessage.setNew(false);
 		}
 

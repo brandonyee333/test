@@ -3278,7 +3278,7 @@ public class ChangesetEntryPersistenceImpl
 
 		changesetEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (changesetEntry.isNew()) {
 			changesetEntry.setNew(false);
 		}
 

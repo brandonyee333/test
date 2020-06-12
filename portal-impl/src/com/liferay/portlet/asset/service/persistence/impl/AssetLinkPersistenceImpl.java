@@ -3349,7 +3349,7 @@ public class AssetLinkPersistenceImpl
 		if (assetLink.getCtCollectionId() != 0) {
 			assetLink.resetOriginalValues();
 
-			if (isNew) {
+			if (assetLink.isNew()) {
 				assetLink.setNew(false);
 			}
 
@@ -3368,7 +3368,7 @@ public class AssetLinkPersistenceImpl
 
 		assetLink.resetOriginalValues();
 
-		if (isNew) {
+		if (assetLink.isNew()) {
 			assetLink.setNew(false);
 		}
 

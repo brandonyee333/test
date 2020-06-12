@@ -1245,7 +1245,7 @@ public class UserNotificationDeliveryPersistenceImpl
 
 		userNotificationDelivery.resetOriginalValues();
 
-		if (isNew) {
+		if (userNotificationDelivery.isNew()) {
 			userNotificationDelivery.setNew(false);
 		}
 

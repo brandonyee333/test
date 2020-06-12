@@ -1416,7 +1416,7 @@ public class UserIdMapperPersistenceImpl
 
 		userIdMapper.resetOriginalValues();
 
-		if (isNew) {
+		if (userIdMapper.isNew()) {
 			userIdMapper.setNew(false);
 		}
 

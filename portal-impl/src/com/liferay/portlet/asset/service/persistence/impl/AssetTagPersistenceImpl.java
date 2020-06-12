@@ -4686,7 +4686,7 @@ public class AssetTagPersistenceImpl
 		if (assetTag.getCtCollectionId() != 0) {
 			assetTag.resetOriginalValues();
 
-			if (isNew) {
+			if (assetTag.isNew()) {
 				assetTag.setNew(false);
 			}
 
@@ -4705,7 +4705,7 @@ public class AssetTagPersistenceImpl
 
 		assetTag.resetOriginalValues();
 
-		if (isNew) {
+		if (assetTag.isNew()) {
 			assetTag.setNew(false);
 		}
 

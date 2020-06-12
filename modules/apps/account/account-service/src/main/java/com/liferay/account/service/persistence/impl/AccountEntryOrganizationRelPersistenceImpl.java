@@ -1705,7 +1705,7 @@ public class AccountEntryOrganizationRelPersistenceImpl
 
 		accountEntryOrganizationRel.resetOriginalValues();
 
-		if (isNew) {
+		if (accountEntryOrganizationRel.isNew()) {
 			accountEntryOrganizationRel.setNew(false);
 		}
 

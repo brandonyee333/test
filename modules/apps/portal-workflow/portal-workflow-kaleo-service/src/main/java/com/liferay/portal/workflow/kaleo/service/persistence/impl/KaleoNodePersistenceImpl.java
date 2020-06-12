@@ -1950,7 +1950,7 @@ public class KaleoNodePersistenceImpl
 
 		kaleoNode.resetOriginalValues();
 
-		if (isNew) {
+		if (kaleoNode.isNew()) {
 			kaleoNode.setNew(false);
 		}
 

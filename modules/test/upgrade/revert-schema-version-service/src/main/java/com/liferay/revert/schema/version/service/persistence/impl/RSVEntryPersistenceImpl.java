@@ -300,7 +300,7 @@ public class RSVEntryPersistenceImpl
 
 		rsvEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (rsvEntry.isNew()) {
 			rsvEntry.setNew(false);
 		}
 

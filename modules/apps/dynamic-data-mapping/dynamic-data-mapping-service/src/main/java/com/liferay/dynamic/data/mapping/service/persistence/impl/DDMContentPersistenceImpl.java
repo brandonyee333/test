@@ -2884,7 +2884,7 @@ public class DDMContentPersistenceImpl
 		if (ddmContent.getCtCollectionId() != 0) {
 			ddmContent.resetOriginalValues();
 
-			if (isNew) {
+			if (ddmContent.isNew()) {
 				ddmContent.setNew(false);
 			}
 
@@ -2902,7 +2902,7 @@ public class DDMContentPersistenceImpl
 
 		ddmContent.resetOriginalValues();
 
-		if (isNew) {
+		if (ddmContent.isNew()) {
 			ddmContent.setNew(false);
 		}
 

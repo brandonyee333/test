@@ -1658,7 +1658,7 @@ public class AccountEntryUserRelPersistenceImpl
 
 		accountEntryUserRel.resetOriginalValues();
 
-		if (isNew) {
+		if (accountEntryUserRel.isNew()) {
 			accountEntryUserRel.setNew(false);
 		}
 

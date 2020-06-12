@@ -2806,7 +2806,7 @@ public class TrashEntryPersistenceImpl
 		if (trashEntry.getCtCollectionId() != 0) {
 			trashEntry.resetOriginalValues();
 
-			if (isNew) {
+			if (trashEntry.isNew()) {
 				trashEntry.setNew(false);
 			}
 
@@ -2824,7 +2824,7 @@ public class TrashEntryPersistenceImpl
 
 		trashEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (trashEntry.isNew()) {
 			trashEntry.setNew(false);
 		}
 

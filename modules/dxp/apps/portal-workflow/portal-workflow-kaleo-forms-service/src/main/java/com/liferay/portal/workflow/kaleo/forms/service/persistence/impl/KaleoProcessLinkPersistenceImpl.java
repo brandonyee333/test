@@ -1146,7 +1146,7 @@ public class KaleoProcessLinkPersistenceImpl
 
 		kaleoProcessLink.resetOriginalValues();
 
-		if (isNew) {
+		if (kaleoProcessLink.isNew()) {
 			kaleoProcessLink.setNew(false);
 		}
 

@@ -6573,7 +6573,7 @@ public class SyncDLObjectPersistenceImpl
 
 		syncDLObject.resetOriginalValues();
 
-		if (isNew) {
+		if (syncDLObject.isNew()) {
 			syncDLObject.setNew(false);
 		}
 

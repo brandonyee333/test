@@ -8824,7 +8824,7 @@ public class UserPersistenceImpl
 		if (user.getCtCollectionId() != 0) {
 			user.resetOriginalValues();
 
-			if (isNew) {
+			if (user.isNew()) {
 				user.setNew(false);
 			}
 
@@ -8843,7 +8843,7 @@ public class UserPersistenceImpl
 
 		user.resetOriginalValues();
 
-		if (isNew) {
+		if (user.isNew()) {
 			user.setNew(false);
 		}
 

@@ -34102,7 +34102,7 @@ public class KBArticlePersistenceImpl
 
 		kbArticle.resetOriginalValues();
 
-		if (isNew) {
+		if (kbArticle.isNew()) {
 			kbArticle.setNew(false);
 		}
 

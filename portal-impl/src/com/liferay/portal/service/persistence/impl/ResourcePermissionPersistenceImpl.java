@@ -7041,7 +7041,7 @@ public class ResourcePermissionPersistenceImpl
 		if (resourcePermission.getCtCollectionId() != 0) {
 			resourcePermission.resetOriginalValues();
 
-			if (isNew) {
+			if (resourcePermission.isNew()) {
 				resourcePermission.setNew(false);
 			}
 
@@ -7062,7 +7062,7 @@ public class ResourcePermissionPersistenceImpl
 
 		resourcePermission.resetOriginalValues();
 
-		if (isNew) {
+		if (resourcePermission.isNew()) {
 			resourcePermission.setNew(false);
 		}
 

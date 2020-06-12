@@ -1848,7 +1848,7 @@ public class AppBuilderWorkflowTaskLinkPersistenceImpl
 
 		appBuilderWorkflowTaskLink.resetOriginalValues();
 
-		if (isNew) {
+		if (appBuilderWorkflowTaskLink.isNew()) {
 			appBuilderWorkflowTaskLink.setNew(false);
 		}
 

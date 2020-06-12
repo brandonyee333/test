@@ -3019,7 +3019,7 @@ public class MBThreadFlagPersistenceImpl
 
 		mbThreadFlag.resetOriginalValues();
 
-		if (isNew) {
+		if (mbThreadFlag.isNew()) {
 			mbThreadFlag.setNew(false);
 		}
 

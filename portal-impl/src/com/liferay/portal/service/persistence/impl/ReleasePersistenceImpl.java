@@ -619,7 +619,7 @@ public class ReleasePersistenceImpl
 
 		release.resetOriginalValues();
 
-		if (isNew) {
+		if (release.isNew()) {
 			release.setNew(false);
 		}
 

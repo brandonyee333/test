@@ -340,7 +340,7 @@ public class EntryPersistenceImpl
 
 		entry.resetOriginalValues();
 
-		if (isNew) {
+		if (entry.isNew()) {
 			entry.setNew(false);
 		}
 

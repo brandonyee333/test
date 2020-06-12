@@ -2574,7 +2574,7 @@ public class SyncDevicePersistenceImpl
 
 		syncDevice.resetOriginalValues();
 
-		if (isNew) {
+		if (syncDevice.isNew()) {
 			syncDevice.setNew(false);
 		}
 

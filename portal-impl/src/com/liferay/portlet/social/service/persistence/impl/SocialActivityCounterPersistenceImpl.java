@@ -2940,7 +2940,7 @@ public class SocialActivityCounterPersistenceImpl
 		if (socialActivityCounter.getCtCollectionId() != 0) {
 			socialActivityCounter.resetOriginalValues();
 
-			if (isNew) {
+			if (socialActivityCounter.isNew()) {
 				socialActivityCounter.setNew(false);
 			}
 
@@ -2961,7 +2961,7 @@ public class SocialActivityCounterPersistenceImpl
 
 		socialActivityCounter.resetOriginalValues();
 
-		if (isNew) {
+		if (socialActivityCounter.isNew()) {
 			socialActivityCounter.setNew(false);
 		}
 

@@ -2401,7 +2401,7 @@ public class SocialActivityLimitPersistenceImpl
 		if (socialActivityLimit.getCtCollectionId() != 0) {
 			socialActivityLimit.resetOriginalValues();
 
-			if (isNew) {
+			if (socialActivityLimit.isNew()) {
 				socialActivityLimit.setNew(false);
 			}
 
@@ -2422,7 +2422,7 @@ public class SocialActivityLimitPersistenceImpl
 
 		socialActivityLimit.resetOriginalValues();
 
-		if (isNew) {
+		if (socialActivityLimit.isNew()) {
 			socialActivityLimit.setNew(false);
 		}
 

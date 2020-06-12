@@ -5076,7 +5076,7 @@ public class MDRRuleGroupInstancePersistenceImpl
 
 		mdrRuleGroupInstance.resetOriginalValues();
 
-		if (isNew) {
+		if (mdrRuleGroupInstance.isNew()) {
 			mdrRuleGroupInstance.setNew(false);
 		}
 

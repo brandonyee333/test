@@ -2156,7 +2156,7 @@ public class RecentLayoutBranchPersistenceImpl
 
 		recentLayoutBranch.resetOriginalValues();
 
-		if (isNew) {
+		if (recentLayoutBranch.isNew()) {
 			recentLayoutBranch.setNew(false);
 		}
 

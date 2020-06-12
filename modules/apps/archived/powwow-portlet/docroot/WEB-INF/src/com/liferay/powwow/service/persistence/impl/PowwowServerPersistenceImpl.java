@@ -954,7 +954,7 @@ public class PowwowServerPersistenceImpl
 
 		powwowServer.resetOriginalValues();
 
-		if (isNew) {
+		if (powwowServer.isNew()) {
 			powwowServer.setNew(false);
 		}
 

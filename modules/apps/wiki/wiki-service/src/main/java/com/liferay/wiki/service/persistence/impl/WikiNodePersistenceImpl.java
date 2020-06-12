@@ -4871,7 +4871,7 @@ public class WikiNodePersistenceImpl
 
 		wikiNode.resetOriginalValues();
 
-		if (isNew) {
+		if (wikiNode.isNew()) {
 			wikiNode.setNew(false);
 		}
 

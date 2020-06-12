@@ -2289,7 +2289,7 @@ public class LayoutBranchPersistenceImpl
 
 		layoutBranch.resetOriginalValues();
 
-		if (isNew) {
+		if (layoutBranch.isNew()) {
 			layoutBranch.setNew(false);
 		}
 

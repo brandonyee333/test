@@ -2742,7 +2742,7 @@ public class MBDiscussionPersistenceImpl
 
 		mbDiscussion.resetOriginalValues();
 
-		if (isNew) {
+		if (mbDiscussion.isNew()) {
 			mbDiscussion.setNew(false);
 		}
 

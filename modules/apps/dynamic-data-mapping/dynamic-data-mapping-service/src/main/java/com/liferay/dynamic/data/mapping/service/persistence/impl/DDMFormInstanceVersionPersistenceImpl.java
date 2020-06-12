@@ -1802,7 +1802,7 @@ public class DDMFormInstanceVersionPersistenceImpl
 		if (ddmFormInstanceVersion.getCtCollectionId() != 0) {
 			ddmFormInstanceVersion.resetOriginalValues();
 
-			if (isNew) {
+			if (ddmFormInstanceVersion.isNew()) {
 				ddmFormInstanceVersion.setNew(false);
 			}
 
@@ -1822,7 +1822,7 @@ public class DDMFormInstanceVersionPersistenceImpl
 
 		ddmFormInstanceVersion.resetOriginalValues();
 
-		if (isNew) {
+		if (ddmFormInstanceVersion.isNew()) {
 			ddmFormInstanceVersion.setNew(false);
 		}
 

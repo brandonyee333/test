@@ -1142,7 +1142,7 @@ public class FolderPersistenceImpl
 
 		folder.resetOriginalValues();
 
-		if (isNew) {
+		if (folder.isNew()) {
 			folder.setNew(false);
 		}
 

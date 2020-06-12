@@ -2189,7 +2189,7 @@ public class CTCollectionPersistenceImpl
 
 		ctCollection.resetOriginalValues();
 
-		if (isNew) {
+		if (ctCollection.isNew()) {
 			ctCollection.setNew(false);
 		}
 

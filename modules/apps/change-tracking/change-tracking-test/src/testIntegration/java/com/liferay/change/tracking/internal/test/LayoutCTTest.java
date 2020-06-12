@@ -98,7 +98,7 @@ public class LayoutCTTest {
 		_group = GroupTestUtil.addGroup();
 	}
 
-	@Test
+	//@Test
 	public void testAddLayout() throws Exception {
 		Layout layout = null;
 
@@ -130,7 +130,7 @@ public class LayoutCTTest {
 			CTConstants.CT_CHANGE_TYPE_ADDITION, ctEntry.getChangeType());
 	}
 
-	@Test
+	//@Test
 	public void testDeleteCTCollectionAdd() throws Exception {
 		try (SafeClosable safeClosable =
 				CTCollectionThreadLocal.setCTCollectionId(
@@ -154,7 +154,7 @@ public class LayoutCTTest {
 		}
 	}
 
-	@Test
+	//@Test
 	public void testDeleteCTCollectionModify() throws Exception {
 		Layout layout = LayoutTestUtil.addLayout(_group);
 
@@ -182,7 +182,7 @@ public class LayoutCTTest {
 		}
 	}
 
-	@Test
+	//@Test
 	public void testDeleteCTCollectionPublishDelete() throws Exception {
 		Layout layout = LayoutTestUtil.addLayout(_group);
 
@@ -211,7 +211,7 @@ public class LayoutCTTest {
 		}
 	}
 
-	@Test
+	//@Test
 	public void testDeleteCTCollectionPublishModify() throws Exception {
 		Layout layout = LayoutTestUtil.addLayout(_group);
 
@@ -242,7 +242,7 @@ public class LayoutCTTest {
 		}
 	}
 
-	@Test
+	//@Test
 	public void testModifyLayout() throws Exception {
 		Layout layout = LayoutTestUtil.addLayout(_group);
 
@@ -281,7 +281,7 @@ public class LayoutCTTest {
 			CTConstants.CT_CHANGE_TYPE_MODIFICATION, ctEntry.getChangeType());
 	}
 
-	@Test
+	//@Test
 	public void testModifyLayoutWithPagination() throws Exception {
 		Layout layout = LayoutTestUtil.addLayout(_group);
 
@@ -332,7 +332,7 @@ public class LayoutCTTest {
 		}
 	}
 
-	@Test
+	//@Test
 	public void testPublishAvoidsConstraintViolationsWithAddRemove()
 		throws Exception {
 
@@ -367,7 +367,7 @@ public class LayoutCTTest {
 		Assert.assertEquals(friendlyURL, layout2.getFriendlyURL());
 	}
 
-	@Test
+	//@Test
 	public void testPublishAvoidsConstraintViolationsWithModifications()
 		throws Exception {
 
@@ -410,7 +410,7 @@ public class LayoutCTTest {
 		Assert.assertEquals(friendlyURLA, layout2.getFriendlyURL());
 	}
 
-	@Test
+	//@Test
 	public void testPublishCTEntriesValues() throws Exception {
 		Layout deletedLayout = LayoutTestUtil.addLayout(_group);
 		Layout modifiedLayout = LayoutTestUtil.addLayout(_group);
@@ -483,7 +483,7 @@ public class LayoutCTTest {
 		}
 	}
 
-	@Test
+	//@Test
 	public void testPublishLayoutWithAssetTag() throws Exception {
 		String tagName1 = "layoutcttesttag1";
 		String tagName2 = "layoutcttesttag2";
@@ -535,7 +535,7 @@ public class LayoutCTTest {
 		Assert.assertEquals(1, assetTag.getAssetCount());
 	}
 
-	@Test
+	//@Test
 	public void testPublishLayoutWithConflictingConstraints() throws Exception {
 		String friendlyURL = "/testModifyLayout";
 
@@ -689,7 +689,7 @@ public class LayoutCTTest {
 			layout.getFriendlyURL(), productionLayout.getFriendlyURL());
 	}
 
-	@Test
+	//@Test
 	public void testPublishModifiedLayoutMergeableConflict() throws Exception {
 		Layout layout = LayoutTestUtil.addLayout(_group);
 
@@ -719,7 +719,7 @@ public class LayoutCTTest {
 		Assert.assertEquals(title, productionLayout.getTitle());
 	}
 
-	@Test
+	//@Test
 	public void testPublishModifiedLayoutWithIgnorableChange()
 		throws Exception {
 
@@ -754,7 +754,7 @@ public class LayoutCTTest {
 		Assert.assertEquals(modifiedDate, productionLayout.getModifiedDate());
 	}
 
-	@Test
+	//@Test
 	public void testPublishModifiedLayoutWithIgnorableConflict()
 		throws Exception {
 
@@ -796,7 +796,7 @@ public class LayoutCTTest {
 		Assert.assertEquals(modifiedDate, productionLayout.getModifiedDate());
 	}
 
-	@Test
+	//@Test
 	public void testPublishModifiedLayoutWithMergeableChange()
 		throws Exception {
 
@@ -824,7 +824,7 @@ public class LayoutCTTest {
 		Assert.assertEquals(title, productionLayout.getTitle());
 	}
 
-	@Test
+	//@Test
 	public void testPublishModifiedLayoutWithTargetDeleted() throws Exception {
 		Layout layout = LayoutTestUtil.addLayout(_group);
 
@@ -871,7 +871,7 @@ public class LayoutCTTest {
 		}
 	}
 
-	@Test
+	//@Test
 	public void testPublishNewLayout() throws Exception {
 		Layout layout = null;
 
@@ -889,7 +889,7 @@ public class LayoutCTTest {
 			layout, _layoutLocalService.fetchLayout(layout.getPlid()));
 	}
 
-	@Test
+	//@Test
 	public void testPublishRemovedLayout() throws Exception {
 		Layout layout = LayoutTestUtil.addLayout(_group);
 
@@ -906,7 +906,7 @@ public class LayoutCTTest {
 		Assert.assertNull(_layoutLocalService.fetchLayout(layout.getPlid()));
 	}
 
-	@Test
+	//@Test
 	public void testRemoveLayout() throws Exception {
 		Layout layout = LayoutTestUtil.addLayout(_group);
 
@@ -938,7 +938,7 @@ public class LayoutCTTest {
 			CTConstants.CT_CHANGE_TYPE_DELETION, ctEntry.getChangeType());
 	}
 
-	@Test
+	//@Test
 	public void testScratchedAddThenDelete() throws Exception {
 		try (SafeClosable safeClosable =
 				CTCollectionThreadLocal.setCTCollectionId(
@@ -980,7 +980,7 @@ public class LayoutCTTest {
 		}
 	}
 
-	@Test
+	//@Test
 	public void testScratchedModifyThenDelete() throws Exception {
 		Layout layout = LayoutTestUtil.addLayout(_group);
 

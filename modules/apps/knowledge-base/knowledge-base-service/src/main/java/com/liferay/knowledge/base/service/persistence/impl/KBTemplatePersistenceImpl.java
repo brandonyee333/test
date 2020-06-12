@@ -2677,7 +2677,7 @@ public class KBTemplatePersistenceImpl
 
 		kbTemplate.resetOriginalValues();
 
-		if (isNew) {
+		if (kbTemplate.isNew()) {
 			kbTemplate.setNew(false);
 		}
 

@@ -609,7 +609,7 @@ public class PortalPreferencesPersistenceImpl
 
 		portalPreferences.resetOriginalValues();
 
-		if (isNew) {
+		if (portalPreferences.isNew()) {
 			portalPreferences.setNew(false);
 		}
 

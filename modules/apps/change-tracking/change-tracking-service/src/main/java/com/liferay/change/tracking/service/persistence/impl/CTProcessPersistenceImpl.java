@@ -1338,7 +1338,7 @@ public class CTProcessPersistenceImpl
 
 		ctProcess.resetOriginalValues();
 
-		if (isNew) {
+		if (ctProcess.isNew()) {
 			ctProcess.setNew(false);
 		}
 

@@ -2476,7 +2476,7 @@ public class FriendlyURLEntryPersistenceImpl
 		if (friendlyURLEntry.getCtCollectionId() != 0) {
 			friendlyURLEntry.resetOriginalValues();
 
-			if (isNew) {
+			if (friendlyURLEntry.isNew()) {
 				friendlyURLEntry.setNew(false);
 			}
 
@@ -2496,7 +2496,7 @@ public class FriendlyURLEntryPersistenceImpl
 
 		friendlyURLEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (friendlyURLEntry.isNew()) {
 			friendlyURLEntry.setNew(false);
 		}
 

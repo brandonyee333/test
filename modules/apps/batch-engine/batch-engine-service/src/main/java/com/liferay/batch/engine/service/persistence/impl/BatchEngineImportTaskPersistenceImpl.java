@@ -2112,7 +2112,7 @@ public class BatchEngineImportTaskPersistenceImpl
 
 		batchEngineImportTask.resetOriginalValues();
 
-		if (isNew) {
+		if (batchEngineImportTask.isNew()) {
 			batchEngineImportTask.setNew(false);
 		}
 

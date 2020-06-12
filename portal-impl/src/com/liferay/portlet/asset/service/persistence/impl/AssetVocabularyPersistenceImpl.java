@@ -5421,7 +5421,7 @@ public class AssetVocabularyPersistenceImpl
 		if (assetVocabulary.getCtCollectionId() != 0) {
 			assetVocabulary.resetOriginalValues();
 
-			if (isNew) {
+			if (assetVocabulary.isNew()) {
 				assetVocabulary.setNew(false);
 			}
 
@@ -5441,7 +5441,7 @@ public class AssetVocabularyPersistenceImpl
 
 		assetVocabulary.resetOriginalValues();
 
-		if (isNew) {
+		if (assetVocabulary.isNew()) {
 			assetVocabulary.setNew(false);
 		}
 

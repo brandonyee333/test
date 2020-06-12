@@ -3132,7 +3132,7 @@ public class DDMStorageLinkPersistenceImpl
 		if (ddmStorageLink.getCtCollectionId() != 0) {
 			ddmStorageLink.resetOriginalValues();
 
-			if (isNew) {
+			if (ddmStorageLink.isNew()) {
 				ddmStorageLink.setNew(false);
 			}
 
@@ -3152,7 +3152,7 @@ public class DDMStorageLinkPersistenceImpl
 
 		ddmStorageLink.resetOriginalValues();
 
-		if (isNew) {
+		if (ddmStorageLink.isNew()) {
 			ddmStorageLink.setNew(false);
 		}
 

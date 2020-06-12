@@ -3344,7 +3344,7 @@ public class RatingsEntryPersistenceImpl
 		if (ratingsEntry.getCtCollectionId() != 0) {
 			ratingsEntry.resetOriginalValues();
 
-			if (isNew) {
+			if (ratingsEntry.isNew()) {
 				ratingsEntry.setNew(false);
 			}
 
@@ -3363,7 +3363,7 @@ public class RatingsEntryPersistenceImpl
 
 		ratingsEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (ratingsEntry.isNew()) {
 			ratingsEntry.setNew(false);
 		}
 

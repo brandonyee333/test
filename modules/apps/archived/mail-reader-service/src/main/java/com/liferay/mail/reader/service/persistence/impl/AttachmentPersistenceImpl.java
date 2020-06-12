@@ -847,7 +847,7 @@ public class AttachmentPersistenceImpl
 
 		attachment.resetOriginalValues();
 
-		if (isNew) {
+		if (attachment.isNew()) {
 			attachment.setNew(false);
 		}
 

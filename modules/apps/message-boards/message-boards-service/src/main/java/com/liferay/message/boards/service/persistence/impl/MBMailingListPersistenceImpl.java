@@ -2532,7 +2532,7 @@ public class MBMailingListPersistenceImpl
 
 		mbMailingList.resetOriginalValues();
 
-		if (isNew) {
+		if (mbMailingList.isNew()) {
 			mbMailingList.setNew(false);
 		}
 

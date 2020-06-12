@@ -1575,7 +1575,7 @@ public class OAuth2ApplicationPersistenceImpl
 
 		oAuth2Application.resetOriginalValues();
 
-		if (isNew) {
+		if (oAuth2Application.isNew()) {
 			oAuth2Application.setNew(false);
 		}
 

@@ -1429,7 +1429,7 @@ public class DepotAppCustomizationPersistenceImpl
 
 		depotAppCustomization.resetOriginalValues();
 
-		if (isNew) {
+		if (depotAppCustomization.isNew()) {
 			depotAppCustomization.setNew(false);
 		}
 

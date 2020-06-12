@@ -2549,7 +2549,7 @@ public class PollsChoicePersistenceImpl
 
 		pollsChoice.resetOriginalValues();
 
-		if (isNew) {
+		if (pollsChoice.isNew()) {
 			pollsChoice.setNew(false);
 		}
 

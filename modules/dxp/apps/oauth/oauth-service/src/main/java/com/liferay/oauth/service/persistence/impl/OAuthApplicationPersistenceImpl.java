@@ -4444,7 +4444,7 @@ public class OAuthApplicationPersistenceImpl
 
 		oAuthApplication.resetOriginalValues();
 
-		if (isNew) {
+		if (oAuthApplication.isNew()) {
 			oAuthApplication.setNew(false);
 		}
 

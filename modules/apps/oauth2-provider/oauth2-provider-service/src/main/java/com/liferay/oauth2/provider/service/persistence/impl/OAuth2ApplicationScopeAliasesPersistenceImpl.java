@@ -1439,7 +1439,7 @@ public class OAuth2ApplicationScopeAliasesPersistenceImpl
 
 		oAuth2ApplicationScopeAliases.resetOriginalValues();
 
-		if (isNew) {
+		if (oAuth2ApplicationScopeAliases.isNew()) {
 			oAuth2ApplicationScopeAliases.setNew(false);
 		}
 

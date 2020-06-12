@@ -2583,7 +2583,7 @@ public class DLContentPersistenceImpl
 		if (dlContent.getCtCollectionId() != 0) {
 			dlContent.resetOriginalValues();
 
-			if (isNew) {
+			if (dlContent.isNew()) {
 				dlContent.setNew(false);
 			}
 
@@ -2601,7 +2601,7 @@ public class DLContentPersistenceImpl
 
 		dlContent.resetOriginalValues();
 
-		if (isNew) {
+		if (dlContent.isNew()) {
 			dlContent.setNew(false);
 		}
 

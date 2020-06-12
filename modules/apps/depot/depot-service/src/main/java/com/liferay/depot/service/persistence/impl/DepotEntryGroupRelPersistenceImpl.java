@@ -2177,7 +2177,7 @@ public class DepotEntryGroupRelPersistenceImpl
 
 		depotEntryGroupRel.resetOriginalValues();
 
-		if (isNew) {
+		if (depotEntryGroupRel.isNew()) {
 			depotEntryGroupRel.setNew(false);
 		}
 

@@ -1875,7 +1875,7 @@ public class UserTrackerPersistenceImpl
 
 		userTracker.resetOriginalValues();
 
-		if (isNew) {
+		if (userTracker.isNew()) {
 			userTracker.setNew(false);
 		}
 

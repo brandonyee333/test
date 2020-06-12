@@ -10109,7 +10109,7 @@ public class SegmentsEntryPersistenceImpl
 
 		segmentsEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (segmentsEntry.isNew()) {
 			segmentsEntry.setNew(false);
 		}
 

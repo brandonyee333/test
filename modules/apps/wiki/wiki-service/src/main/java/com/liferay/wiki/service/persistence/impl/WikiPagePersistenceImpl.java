@@ -22235,7 +22235,7 @@ public class WikiPagePersistenceImpl
 
 		wikiPage.resetOriginalValues();
 
-		if (isNew) {
+		if (wikiPage.isNew()) {
 			wikiPage.setNew(false);
 		}
 

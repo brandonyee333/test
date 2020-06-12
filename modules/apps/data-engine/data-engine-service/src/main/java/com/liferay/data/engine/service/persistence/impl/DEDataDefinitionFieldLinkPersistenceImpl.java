@@ -5858,7 +5858,7 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 
 		deDataDefinitionFieldLink.resetOriginalValues();
 
-		if (isNew) {
+		if (deDataDefinitionFieldLink.isNew()) {
 			deDataDefinitionFieldLink.setNew(false);
 		}
 

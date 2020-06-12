@@ -1108,7 +1108,7 @@ public class PortletPersistenceImpl
 
 		portlet.resetOriginalValues();
 
-		if (isNew) {
+		if (portlet.isNew()) {
 			portlet.setNew(false);
 		}
 

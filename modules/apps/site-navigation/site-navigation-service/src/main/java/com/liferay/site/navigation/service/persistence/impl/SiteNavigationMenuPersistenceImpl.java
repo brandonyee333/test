@@ -6927,7 +6927,7 @@ public class SiteNavigationMenuPersistenceImpl
 
 		siteNavigationMenu.resetOriginalValues();
 
-		if (isNew) {
+		if (siteNavigationMenu.isNew()) {
 			siteNavigationMenu.setNew(false);
 		}
 

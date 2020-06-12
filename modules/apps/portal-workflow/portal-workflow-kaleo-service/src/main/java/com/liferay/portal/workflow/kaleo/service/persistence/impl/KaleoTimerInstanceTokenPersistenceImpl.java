@@ -2352,7 +2352,7 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 
 		kaleoTimerInstanceToken.resetOriginalValues();
 
-		if (isNew) {
+		if (kaleoTimerInstanceToken.isNew()) {
 			kaleoTimerInstanceToken.setNew(false);
 		}
 

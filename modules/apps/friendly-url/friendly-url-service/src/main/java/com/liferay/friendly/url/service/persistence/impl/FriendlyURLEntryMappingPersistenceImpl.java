@@ -661,7 +661,7 @@ public class FriendlyURLEntryMappingPersistenceImpl
 		if (friendlyURLEntryMapping.getCtCollectionId() != 0) {
 			friendlyURLEntryMapping.resetOriginalValues();
 
-			if (isNew) {
+			if (friendlyURLEntryMapping.isNew()) {
 				friendlyURLEntryMapping.setNew(false);
 			}
 
@@ -681,7 +681,7 @@ public class FriendlyURLEntryMappingPersistenceImpl
 
 		friendlyURLEntryMapping.resetOriginalValues();
 
-		if (isNew) {
+		if (friendlyURLEntryMapping.isNew()) {
 			friendlyURLEntryMapping.setNew(false);
 		}
 

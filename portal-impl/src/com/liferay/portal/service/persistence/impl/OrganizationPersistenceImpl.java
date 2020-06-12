@@ -9649,7 +9649,7 @@ public class OrganizationPersistenceImpl
 		if (organization.getCtCollectionId() != 0) {
 			organization.resetOriginalValues();
 
-			if (isNew) {
+			if (organization.isNew()) {
 				organization.setNew(false);
 			}
 
@@ -9668,7 +9668,7 @@ public class OrganizationPersistenceImpl
 
 		organization.resetOriginalValues();
 
-		if (isNew) {
+		if (organization.isNew()) {
 			organization.setNew(false);
 		}
 

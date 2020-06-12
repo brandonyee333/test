@@ -14054,7 +14054,7 @@ public class AssetListEntryPersistenceImpl
 		if (assetListEntry.getCtCollectionId() != 0) {
 			assetListEntry.resetOriginalValues();
 
-			if (isNew) {
+			if (assetListEntry.isNew()) {
 				assetListEntry.setNew(false);
 			}
 
@@ -14074,7 +14074,7 @@ public class AssetListEntryPersistenceImpl
 
 		assetListEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (assetListEntry.isNew()) {
 			assetListEntry.setNew(false);
 		}
 

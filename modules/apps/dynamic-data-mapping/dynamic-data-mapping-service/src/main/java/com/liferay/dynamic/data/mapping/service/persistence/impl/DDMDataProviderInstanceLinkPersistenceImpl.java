@@ -1768,7 +1768,7 @@ public class DDMDataProviderInstanceLinkPersistenceImpl
 		if (ddmDataProviderInstanceLink.getCtCollectionId() != 0) {
 			ddmDataProviderInstanceLink.resetOriginalValues();
 
-			if (isNew) {
+			if (ddmDataProviderInstanceLink.isNew()) {
 				ddmDataProviderInstanceLink.setNew(false);
 			}
 
@@ -1788,7 +1788,7 @@ public class DDMDataProviderInstanceLinkPersistenceImpl
 
 		ddmDataProviderInstanceLink.resetOriginalValues();
 
-		if (isNew) {
+		if (ddmDataProviderInstanceLink.isNew()) {
 			ddmDataProviderInstanceLink.setNew(false);
 		}
 

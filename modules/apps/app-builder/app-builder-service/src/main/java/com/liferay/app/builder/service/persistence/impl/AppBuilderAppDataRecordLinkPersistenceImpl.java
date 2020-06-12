@@ -1152,7 +1152,7 @@ public class AppBuilderAppDataRecordLinkPersistenceImpl
 
 		appBuilderAppDataRecordLink.resetOriginalValues();
 
-		if (isNew) {
+		if (appBuilderAppDataRecordLink.isNew()) {
 			appBuilderAppDataRecordLink.setNew(false);
 		}
 

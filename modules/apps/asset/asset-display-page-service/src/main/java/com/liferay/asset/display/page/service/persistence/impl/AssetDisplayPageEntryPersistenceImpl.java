@@ -3279,7 +3279,7 @@ public class AssetDisplayPageEntryPersistenceImpl
 		if (assetDisplayPageEntry.getCtCollectionId() != 0) {
 			assetDisplayPageEntry.resetOriginalValues();
 
-			if (isNew) {
+			if (assetDisplayPageEntry.isNew()) {
 				assetDisplayPageEntry.setNew(false);
 			}
 
@@ -3299,7 +3299,7 @@ public class AssetDisplayPageEntryPersistenceImpl
 
 		assetDisplayPageEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (assetDisplayPageEntry.isNew()) {
 			assetDisplayPageEntry.setNew(false);
 		}
 

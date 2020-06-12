@@ -1721,7 +1721,7 @@ public class SyncDLFileVersionDiffPersistenceImpl
 
 		syncDLFileVersionDiff.resetOriginalValues();
 
-		if (isNew) {
+		if (syncDLFileVersionDiff.isNew()) {
 			syncDLFileVersionDiff.setNew(false);
 		}
 

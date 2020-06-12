@@ -2357,7 +2357,7 @@ public class KaleoDefinitionPersistenceImpl
 
 		kaleoDefinition.resetOriginalValues();
 
-		if (isNew) {
+		if (kaleoDefinition.isNew()) {
 			kaleoDefinition.setNew(false);
 		}
 

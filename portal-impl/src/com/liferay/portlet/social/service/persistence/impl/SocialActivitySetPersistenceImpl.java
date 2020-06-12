@@ -3906,7 +3906,7 @@ public class SocialActivitySetPersistenceImpl
 		if (socialActivitySet.getCtCollectionId() != 0) {
 			socialActivitySet.resetOriginalValues();
 
-			if (isNew) {
+			if (socialActivitySet.isNew()) {
 				socialActivitySet.setNew(false);
 			}
 
@@ -3925,7 +3925,7 @@ public class SocialActivitySetPersistenceImpl
 
 		socialActivitySet.resetOriginalValues();
 
-		if (isNew) {
+		if (socialActivitySet.isNew()) {
 			socialActivitySet.setNew(false);
 		}
 

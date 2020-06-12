@@ -4155,7 +4155,7 @@ public class DDMFormInstanceRecordPersistenceImpl
 		if (ddmFormInstanceRecord.getCtCollectionId() != 0) {
 			ddmFormInstanceRecord.resetOriginalValues();
 
-			if (isNew) {
+			if (ddmFormInstanceRecord.isNew()) {
 				ddmFormInstanceRecord.setNew(false);
 			}
 
@@ -4175,7 +4175,7 @@ public class DDMFormInstanceRecordPersistenceImpl
 
 		ddmFormInstanceRecord.resetOriginalValues();
 
-		if (isNew) {
+		if (ddmFormInstanceRecord.isNew()) {
 			ddmFormInstanceRecord.setNew(false);
 		}
 

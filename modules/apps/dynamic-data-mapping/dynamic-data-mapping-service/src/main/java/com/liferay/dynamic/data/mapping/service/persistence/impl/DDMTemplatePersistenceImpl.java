@@ -12640,7 +12640,7 @@ public class DDMTemplatePersistenceImpl
 		if (ddmTemplate.getCtCollectionId() != 0) {
 			ddmTemplate.resetOriginalValues();
 
-			if (isNew) {
+			if (ddmTemplate.isNew()) {
 				ddmTemplate.setNew(false);
 			}
 
@@ -12658,7 +12658,7 @@ public class DDMTemplatePersistenceImpl
 
 		ddmTemplate.resetOriginalValues();
 
-		if (isNew) {
+		if (ddmTemplate.isNew()) {
 			ddmTemplate.setNew(false);
 		}
 

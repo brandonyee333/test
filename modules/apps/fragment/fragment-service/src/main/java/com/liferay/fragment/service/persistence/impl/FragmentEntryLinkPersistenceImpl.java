@@ -8130,7 +8130,7 @@ public class FragmentEntryLinkPersistenceImpl
 
 		fragmentEntryLink.resetOriginalValues();
 
-		if (isNew) {
+		if (fragmentEntryLink.isNew()) {
 			fragmentEntryLink.setNew(false);
 		}
 

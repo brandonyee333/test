@@ -4021,7 +4021,7 @@ public class KaleoActionPersistenceImpl
 
 		kaleoAction.resetOriginalValues();
 
-		if (isNew) {
+		if (kaleoAction.isNew()) {
 			kaleoAction.setNew(false);
 		}
 

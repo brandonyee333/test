@@ -1620,7 +1620,7 @@ public class CTPreferencesPersistenceImpl
 
 		ctPreferences.resetOriginalValues();
 
-		if (isNew) {
+		if (ctPreferences.isNew()) {
 			ctPreferences.setNew(false);
 		}
 

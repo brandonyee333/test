@@ -5522,7 +5522,7 @@ public class AssetEntryPersistenceImpl
 		if (assetEntry.getCtCollectionId() != 0) {
 			assetEntry.resetOriginalValues();
 
-			if (isNew) {
+			if (assetEntry.isNew()) {
 				assetEntry.setNew(false);
 			}
 
@@ -5541,7 +5541,7 @@ public class AssetEntryPersistenceImpl
 
 		assetEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (assetEntry.isNew()) {
 			assetEntry.setNew(false);
 		}
 

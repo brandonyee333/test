@@ -1999,7 +1999,7 @@ public class BigDecimalEntryPersistenceImpl
 
 		bigDecimalEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (bigDecimalEntry.isNew()) {
 			bigDecimalEntry.setNew(false);
 		}
 

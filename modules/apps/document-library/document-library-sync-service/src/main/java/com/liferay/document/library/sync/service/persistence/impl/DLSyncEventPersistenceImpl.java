@@ -1049,7 +1049,7 @@ public class DLSyncEventPersistenceImpl
 
 		dlSyncEvent.resetOriginalValues();
 
-		if (isNew) {
+		if (dlSyncEvent.isNew()) {
 			dlSyncEvent.setNew(false);
 		}
 

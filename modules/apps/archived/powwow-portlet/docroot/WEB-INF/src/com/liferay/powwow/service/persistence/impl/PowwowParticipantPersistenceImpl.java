@@ -2005,7 +2005,7 @@ public class PowwowParticipantPersistenceImpl
 
 		powwowParticipant.resetOriginalValues();
 
-		if (isNew) {
+		if (powwowParticipant.isNew()) {
 			powwowParticipant.setNew(false);
 		}
 

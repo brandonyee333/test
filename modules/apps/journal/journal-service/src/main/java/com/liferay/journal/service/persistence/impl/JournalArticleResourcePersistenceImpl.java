@@ -2704,7 +2704,7 @@ public class JournalArticleResourcePersistenceImpl
 		if (journalArticleResource.getCtCollectionId() != 0) {
 			journalArticleResource.resetOriginalValues();
 
-			if (isNew) {
+			if (journalArticleResource.isNew()) {
 				journalArticleResource.setNew(false);
 			}
 
@@ -2724,7 +2724,7 @@ public class JournalArticleResourcePersistenceImpl
 
 		journalArticleResource.resetOriginalValues();
 
-		if (isNew) {
+		if (journalArticleResource.isNew()) {
 			journalArticleResource.setNew(false);
 		}
 

@@ -298,7 +298,7 @@ public class TestEntityPersistenceImpl
 
 		testEntity.resetOriginalValues();
 
-		if (isNew) {
+		if (testEntity.isNew()) {
 			testEntity.setNew(false);
 		}
 

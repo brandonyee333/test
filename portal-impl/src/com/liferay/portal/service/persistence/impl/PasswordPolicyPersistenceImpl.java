@@ -3810,7 +3810,7 @@ public class PasswordPolicyPersistenceImpl
 
 		passwordPolicy.resetOriginalValues();
 
-		if (isNew) {
+		if (passwordPolicy.isNew()) {
 			passwordPolicy.setNew(false);
 		}
 

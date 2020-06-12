@@ -5336,7 +5336,7 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 
 		workflowMetricsSLADefinition.resetOriginalValues();
 
-		if (isNew) {
+		if (workflowMetricsSLADefinition.isNew()) {
 			workflowMetricsSLADefinition.setNew(false);
 		}
 

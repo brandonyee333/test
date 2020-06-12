@@ -2581,7 +2581,7 @@ public class RepositoryEntryPersistenceImpl
 
 		repositoryEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (repositoryEntry.isNew()) {
 			repositoryEntry.setNew(false);
 		}
 

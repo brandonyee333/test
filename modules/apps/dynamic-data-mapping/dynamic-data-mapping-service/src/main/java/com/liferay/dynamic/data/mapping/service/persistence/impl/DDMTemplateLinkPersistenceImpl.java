@@ -1685,7 +1685,7 @@ public class DDMTemplateLinkPersistenceImpl
 		if (ddmTemplateLink.getCtCollectionId() != 0) {
 			ddmTemplateLink.resetOriginalValues();
 
-			if (isNew) {
+			if (ddmTemplateLink.isNew()) {
 				ddmTemplateLink.setNew(false);
 			}
 
@@ -1705,7 +1705,7 @@ public class DDMTemplateLinkPersistenceImpl
 
 		ddmTemplateLink.resetOriginalValues();
 
-		if (isNew) {
+		if (ddmTemplateLink.isNew()) {
 			ddmTemplateLink.setNew(false);
 		}
 

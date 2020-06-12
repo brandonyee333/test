@@ -1937,7 +1937,7 @@ public class JournalArticleLocalizationPersistenceImpl
 		if (journalArticleLocalization.getCtCollectionId() != 0) {
 			journalArticleLocalization.resetOriginalValues();
 
-			if (isNew) {
+			if (journalArticleLocalization.isNew()) {
 				journalArticleLocalization.setNew(false);
 			}
 
@@ -1957,7 +1957,7 @@ public class JournalArticleLocalizationPersistenceImpl
 
 		journalArticleLocalization.resetOriginalValues();
 
-		if (isNew) {
+		if (journalArticleLocalization.isNew()) {
 			journalArticleLocalization.setNew(false);
 		}
 

@@ -1431,7 +1431,7 @@ public class DispatchLogPersistenceImpl
 
 		dispatchLog.resetOriginalValues();
 
-		if (isNew) {
+		if (dispatchLog.isNew()) {
 			dispatchLog.setNew(false);
 		}
 

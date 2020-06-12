@@ -1710,7 +1710,7 @@ public class SamlSpSessionPersistenceImpl
 
 		samlSpSession.resetOriginalValues();
 
-		if (isNew) {
+		if (samlSpSession.isNew()) {
 			samlSpSession.setNew(false);
 		}
 

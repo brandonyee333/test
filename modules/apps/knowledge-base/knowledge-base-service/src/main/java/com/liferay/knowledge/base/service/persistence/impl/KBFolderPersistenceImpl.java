@@ -3348,7 +3348,7 @@ public class KBFolderPersistenceImpl
 
 		kbFolder.resetOriginalValues();
 
-		if (isNew) {
+		if (kbFolder.isNew()) {
 			kbFolder.setNew(false);
 		}
 

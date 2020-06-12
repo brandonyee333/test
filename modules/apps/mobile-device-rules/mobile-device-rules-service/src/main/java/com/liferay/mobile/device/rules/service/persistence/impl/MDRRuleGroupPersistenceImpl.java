@@ -3124,7 +3124,7 @@ public class MDRRuleGroupPersistenceImpl
 
 		mdrRuleGroup.resetOriginalValues();
 
-		if (isNew) {
+		if (mdrRuleGroup.isNew()) {
 			mdrRuleGroup.setNew(false);
 		}
 

@@ -2655,7 +2655,7 @@ public class LayoutPageTemplateStructurePersistenceImpl
 
 		layoutPageTemplateStructure.resetOriginalValues();
 
-		if (isNew) {
+		if (layoutPageTemplateStructure.isNew()) {
 			layoutPageTemplateStructure.setNew(false);
 		}
 

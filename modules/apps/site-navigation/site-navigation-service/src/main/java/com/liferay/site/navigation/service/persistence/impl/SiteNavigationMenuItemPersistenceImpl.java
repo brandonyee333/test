@@ -4070,7 +4070,7 @@ public class SiteNavigationMenuItemPersistenceImpl
 
 		siteNavigationMenuItem.resetOriginalValues();
 
-		if (isNew) {
+		if (siteNavigationMenuItem.isNew()) {
 			siteNavigationMenuItem.setNew(false);
 		}
 

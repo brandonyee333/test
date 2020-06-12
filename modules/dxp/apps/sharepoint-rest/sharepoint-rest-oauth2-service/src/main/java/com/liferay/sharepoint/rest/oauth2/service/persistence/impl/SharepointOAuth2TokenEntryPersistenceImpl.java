@@ -1179,7 +1179,7 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 
 		sharepointOAuth2TokenEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (sharepointOAuth2TokenEntry.isNew()) {
 			sharepointOAuth2TokenEntry.setNew(false);
 		}
 

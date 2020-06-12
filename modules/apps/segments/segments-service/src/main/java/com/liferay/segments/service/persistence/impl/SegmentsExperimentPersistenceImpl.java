@@ -6176,7 +6176,7 @@ public class SegmentsExperimentPersistenceImpl
 
 		segmentsExperiment.resetOriginalValues();
 
-		if (isNew) {
+		if (segmentsExperiment.isNew()) {
 			segmentsExperiment.setNew(false);
 		}
 

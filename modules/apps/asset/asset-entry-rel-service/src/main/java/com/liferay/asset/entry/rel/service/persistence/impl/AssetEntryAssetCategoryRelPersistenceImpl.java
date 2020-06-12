@@ -1773,7 +1773,7 @@ public class AssetEntryAssetCategoryRelPersistenceImpl
 		if (assetEntryAssetCategoryRel.getCtCollectionId() != 0) {
 			assetEntryAssetCategoryRel.resetOriginalValues();
 
-			if (isNew) {
+			if (assetEntryAssetCategoryRel.isNew()) {
 				assetEntryAssetCategoryRel.setNew(false);
 			}
 
@@ -1793,7 +1793,7 @@ public class AssetEntryAssetCategoryRelPersistenceImpl
 
 		assetEntryAssetCategoryRel.resetOriginalValues();
 
-		if (isNew) {
+		if (assetEntryAssetCategoryRel.isNew()) {
 			assetEntryAssetCategoryRel.setNew(false);
 		}
 

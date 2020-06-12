@@ -2744,7 +2744,7 @@ public class AppPersistenceImpl
 
 		app.resetOriginalValues();
 
-		if (isNew) {
+		if (app.isNew()) {
 			app.setNew(false);
 		}
 

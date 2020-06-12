@@ -6546,7 +6546,7 @@ public class DLFileShortcutPersistenceImpl
 		if (dlFileShortcut.getCtCollectionId() != 0) {
 			dlFileShortcut.resetOriginalValues();
 
-			if (isNew) {
+			if (dlFileShortcut.isNew()) {
 				dlFileShortcut.setNew(false);
 			}
 
@@ -6566,7 +6566,7 @@ public class DLFileShortcutPersistenceImpl
 
 		dlFileShortcut.resetOriginalValues();
 
-		if (isNew) {
+		if (dlFileShortcut.isNew()) {
 			dlFileShortcut.setNew(false);
 		}
 

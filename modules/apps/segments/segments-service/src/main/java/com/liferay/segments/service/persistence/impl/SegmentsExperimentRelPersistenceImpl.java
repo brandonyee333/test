@@ -1179,7 +1179,7 @@ public class SegmentsExperimentRelPersistenceImpl
 
 		segmentsExperimentRel.resetOriginalValues();
 
-		if (isNew) {
+		if (segmentsExperimentRel.isNew()) {
 			segmentsExperimentRel.setNew(false);
 		}
 

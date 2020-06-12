@@ -5581,7 +5581,7 @@ public class FragmentCompositionPersistenceImpl
 
 		fragmentComposition.resetOriginalValues();
 
-		if (isNew) {
+		if (fragmentComposition.isNew()) {
 			fragmentComposition.setNew(false);
 		}
 

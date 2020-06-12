@@ -1601,7 +1601,7 @@ public class VersionedEntryPersistenceImpl
 
 		versionedEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (versionedEntry.isNew()) {
 			versionedEntry.setNew(false);
 		}
 

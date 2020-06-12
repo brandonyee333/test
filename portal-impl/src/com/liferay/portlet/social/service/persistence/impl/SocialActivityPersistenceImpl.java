@@ -6669,7 +6669,7 @@ public class SocialActivityPersistenceImpl
 		if (socialActivity.getCtCollectionId() != 0) {
 			socialActivity.resetOriginalValues();
 
-			if (isNew) {
+			if (socialActivity.isNew()) {
 				socialActivity.setNew(false);
 			}
 
@@ -6689,7 +6689,7 @@ public class SocialActivityPersistenceImpl
 
 		socialActivity.resetOriginalValues();
 
-		if (isNew) {
+		if (socialActivity.isNew()) {
 			socialActivity.setNew(false);
 		}
 

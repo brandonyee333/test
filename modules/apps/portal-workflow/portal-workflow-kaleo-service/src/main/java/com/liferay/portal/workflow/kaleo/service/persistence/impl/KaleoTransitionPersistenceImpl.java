@@ -2479,7 +2479,7 @@ public class KaleoTransitionPersistenceImpl
 
 		kaleoTransition.resetOriginalValues();
 
-		if (isNew) {
+		if (kaleoTransition.isNew()) {
 			kaleoTransition.setNew(false);
 		}
 

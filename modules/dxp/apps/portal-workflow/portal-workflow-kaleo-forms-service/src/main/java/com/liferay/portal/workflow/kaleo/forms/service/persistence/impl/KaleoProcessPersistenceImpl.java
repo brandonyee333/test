@@ -2895,7 +2895,7 @@ public class KaleoProcessPersistenceImpl
 
 		kaleoProcess.resetOriginalValues();
 
-		if (isNew) {
+		if (kaleoProcess.isNew()) {
 			kaleoProcess.setNew(false);
 		}
 

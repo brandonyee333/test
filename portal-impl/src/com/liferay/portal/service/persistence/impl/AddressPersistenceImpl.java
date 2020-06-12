@@ -4867,7 +4867,7 @@ public class AddressPersistenceImpl
 
 		address.resetOriginalValues();
 
-		if (isNew) {
+		if (address.isNew()) {
 			address.setNew(false);
 		}
 

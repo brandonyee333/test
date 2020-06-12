@@ -2200,7 +2200,7 @@ public class VersionedEntryVersionPersistenceImpl
 
 		versionedEntryVersion.resetOriginalValues();
 
-		if (isNew) {
+		if (versionedEntryVersion.isNew()) {
 			versionedEntryVersion.setNew(false);
 		}
 

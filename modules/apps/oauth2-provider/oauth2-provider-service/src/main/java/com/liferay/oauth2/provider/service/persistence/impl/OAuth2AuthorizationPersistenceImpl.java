@@ -2536,7 +2536,7 @@ public class OAuth2AuthorizationPersistenceImpl
 
 		oAuth2Authorization.resetOriginalValues();
 
-		if (isNew) {
+		if (oAuth2Authorization.isNew()) {
 			oAuth2Authorization.setNew(false);
 		}
 

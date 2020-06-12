@@ -1015,7 +1015,7 @@ public class WeDeployAuthAppPersistenceImpl
 
 		weDeployAuthApp.resetOriginalValues();
 
-		if (isNew) {
+		if (weDeployAuthApp.isNew()) {
 			weDeployAuthApp.setNew(false);
 		}
 

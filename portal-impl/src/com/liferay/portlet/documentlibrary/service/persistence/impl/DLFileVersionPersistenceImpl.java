@@ -6198,7 +6198,7 @@ public class DLFileVersionPersistenceImpl
 		if (dlFileVersion.getCtCollectionId() != 0) {
 			dlFileVersion.resetOriginalValues();
 
-			if (isNew) {
+			if (dlFileVersion.isNew()) {
 				dlFileVersion.setNew(false);
 			}
 
@@ -6218,7 +6218,7 @@ public class DLFileVersionPersistenceImpl
 
 		dlFileVersion.resetOriginalValues();
 
-		if (isNew) {
+		if (dlFileVersion.isNew()) {
 			dlFileVersion.setNew(false);
 		}
 

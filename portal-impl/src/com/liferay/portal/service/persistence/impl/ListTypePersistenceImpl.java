@@ -1185,7 +1185,7 @@ public class ListTypePersistenceImpl
 
 		listType.resetOriginalValues();
 
-		if (isNew) {
+		if (listType.isNew()) {
 			listType.setNew(false);
 		}
 

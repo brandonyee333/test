@@ -1234,7 +1234,7 @@ public class OAuthConsumerPersistenceImpl
 
 		oAuthConsumer.resetOriginalValues();
 
-		if (isNew) {
+		if (oAuthConsumer.isNew()) {
 			oAuthConsumer.setNew(false);
 		}
 

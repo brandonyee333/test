@@ -13419,7 +13419,7 @@ public class MBThreadPersistenceImpl
 
 		mbThread.resetOriginalValues();
 
-		if (isNew) {
+		if (mbThread.isNew()) {
 			mbThread.setNew(false);
 		}
 

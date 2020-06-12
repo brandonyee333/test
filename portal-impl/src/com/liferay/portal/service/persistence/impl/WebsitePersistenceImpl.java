@@ -4239,7 +4239,7 @@ public class WebsitePersistenceImpl
 
 		website.resetOriginalValues();
 
-		if (isNew) {
+		if (website.isNew()) {
 			website.setNew(false);
 		}
 

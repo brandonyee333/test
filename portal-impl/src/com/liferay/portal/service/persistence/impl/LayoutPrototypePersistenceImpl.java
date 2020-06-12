@@ -4230,7 +4230,7 @@ public class LayoutPrototypePersistenceImpl
 
 		layoutPrototype.resetOriginalValues();
 
-		if (isNew) {
+		if (layoutPrototype.isNew()) {
 			layoutPrototype.setNew(false);
 		}
 

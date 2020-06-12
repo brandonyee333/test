@@ -1234,7 +1234,7 @@ public class SamlSpAuthRequestPersistenceImpl
 
 		samlSpAuthRequest.resetOriginalValues();
 
-		if (isNew) {
+		if (samlSpAuthRequest.isNew()) {
 			samlSpAuthRequest.setNew(false);
 		}
 

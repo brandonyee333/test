@@ -683,7 +683,7 @@ public class DDMFormInstanceReportPersistenceImpl
 		if (ddmFormInstanceReport.getCtCollectionId() != 0) {
 			ddmFormInstanceReport.resetOriginalValues();
 
-			if (isNew) {
+			if (ddmFormInstanceReport.isNew()) {
 				ddmFormInstanceReport.setNew(false);
 			}
 
@@ -703,7 +703,7 @@ public class DDMFormInstanceReportPersistenceImpl
 
 		ddmFormInstanceReport.resetOriginalValues();
 
-		if (isNew) {
+		if (ddmFormInstanceReport.isNew()) {
 			ddmFormInstanceReport.setNew(false);
 		}
 

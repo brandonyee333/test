@@ -1986,7 +1986,7 @@ public class KaleoNotificationRecipientPersistenceImpl
 
 		kaleoNotificationRecipient.resetOriginalValues();
 
-		if (isNew) {
+		if (kaleoNotificationRecipient.isNew()) {
 			kaleoNotificationRecipient.setNew(false);
 		}
 

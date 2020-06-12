@@ -2308,7 +2308,7 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 		if (friendlyURLEntryLocalization.getCtCollectionId() != 0) {
 			friendlyURLEntryLocalization.resetOriginalValues();
 
-			if (isNew) {
+			if (friendlyURLEntryLocalization.isNew()) {
 				friendlyURLEntryLocalization.setNew(false);
 			}
 
@@ -2328,7 +2328,7 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 
 		friendlyURLEntryLocalization.resetOriginalValues();
 
-		if (isNew) {
+		if (friendlyURLEntryLocalization.isNew()) {
 			friendlyURLEntryLocalization.setNew(false);
 		}
 

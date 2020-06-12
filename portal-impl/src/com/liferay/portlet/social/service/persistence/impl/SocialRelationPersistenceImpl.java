@@ -6158,7 +6158,7 @@ public class SocialRelationPersistenceImpl
 		if (socialRelation.getCtCollectionId() != 0) {
 			socialRelation.resetOriginalValues();
 
-			if (isNew) {
+			if (socialRelation.isNew()) {
 				socialRelation.setNew(false);
 			}
 
@@ -6178,7 +6178,7 @@ public class SocialRelationPersistenceImpl
 
 		socialRelation.resetOriginalValues();
 
-		if (isNew) {
+		if (socialRelation.isNew()) {
 			socialRelation.setNew(false);
 		}
 

@@ -592,7 +592,7 @@ public class MFAEmailOTPEntryPersistenceImpl
 
 		mfaEmailOTPEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (mfaEmailOTPEntry.isNew()) {
 			mfaEmailOTPEntry.setNew(false);
 		}
 

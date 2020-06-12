@@ -572,7 +572,7 @@ public class ClassNamePersistenceImpl
 
 		className.resetOriginalValues();
 
-		if (isNew) {
+		if (className.isNew()) {
 			className.setNew(false);
 		}
 

@@ -2003,7 +2003,7 @@ public class LayoutSEOSitePersistenceImpl
 
 		layoutSEOSite.resetOriginalValues();
 
-		if (isNew) {
+		if (layoutSEOSite.isNew()) {
 			layoutSEOSite.setNew(false);
 		}
 

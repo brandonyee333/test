@@ -345,7 +345,7 @@ public class AccountPersistenceImpl
 
 		account.resetOriginalValues();
 
-		if (isNew) {
+		if (account.isNew()) {
 			account.setNew(false);
 		}
 

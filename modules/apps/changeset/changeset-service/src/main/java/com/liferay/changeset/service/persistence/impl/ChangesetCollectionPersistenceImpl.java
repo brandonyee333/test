@@ -2813,7 +2813,7 @@ public class ChangesetCollectionPersistenceImpl
 
 		changesetCollection.resetOriginalValues();
 
-		if (isNew) {
+		if (changesetCollection.isNew()) {
 			changesetCollection.setNew(false);
 		}
 

@@ -3747,7 +3747,7 @@ public class FragmentCollectionPersistenceImpl
 
 		fragmentCollection.resetOriginalValues();
 
-		if (isNew) {
+		if (fragmentCollection.isNew()) {
 			fragmentCollection.setNew(false);
 		}
 

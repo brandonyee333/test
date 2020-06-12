@@ -860,7 +860,7 @@ public class UserTrackerPathPersistenceImpl
 
 		userTrackerPath.resetOriginalValues();
 
-		if (isNew) {
+		if (userTrackerPath.isNew()) {
 			userTrackerPath.setNew(false);
 		}
 

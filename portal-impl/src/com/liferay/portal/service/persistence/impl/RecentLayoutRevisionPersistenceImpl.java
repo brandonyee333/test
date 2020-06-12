@@ -2174,7 +2174,7 @@ public class RecentLayoutRevisionPersistenceImpl
 
 		recentLayoutRevision.resetOriginalValues();
 
-		if (isNew) {
+		if (recentLayoutRevision.isNew()) {
 			recentLayoutRevision.setNew(false);
 		}
 

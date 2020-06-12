@@ -5428,7 +5428,7 @@ public class JournalContentSearchPersistenceImpl
 
 		journalContentSearch.resetOriginalValues();
 
-		if (isNew) {
+		if (journalContentSearch.isNew()) {
 			journalContentSearch.setNew(false);
 		}
 

@@ -2897,7 +2897,7 @@ public class DEDataListViewPersistenceImpl
 
 		deDataListView.resetOriginalValues();
 
-		if (isNew) {
+		if (deDataListView.isNew()) {
 			deDataListView.setNew(false);
 		}
 

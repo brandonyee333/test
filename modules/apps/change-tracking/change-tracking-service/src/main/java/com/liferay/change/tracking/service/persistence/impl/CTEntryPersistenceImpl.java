@@ -2587,7 +2587,7 @@ public class CTEntryPersistenceImpl
 
 		ctEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (ctEntry.isNew()) {
 			ctEntry.setNew(false);
 		}
 

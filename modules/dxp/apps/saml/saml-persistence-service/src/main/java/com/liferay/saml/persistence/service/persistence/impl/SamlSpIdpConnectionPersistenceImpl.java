@@ -1200,7 +1200,7 @@ public class SamlSpIdpConnectionPersistenceImpl
 
 		samlSpIdpConnection.resetOriginalValues();
 
-		if (isNew) {
+		if (samlSpIdpConnection.isNew()) {
 			samlSpIdpConnection.setNew(false);
 		}
 

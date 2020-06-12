@@ -6125,7 +6125,7 @@ public class PortletPreferencesPersistenceImpl
 		if (portletPreferences.getCtCollectionId() != 0) {
 			portletPreferences.resetOriginalValues();
 
-			if (isNew) {
+			if (portletPreferences.isNew()) {
 				portletPreferences.setNew(false);
 			}
 
@@ -6146,7 +6146,7 @@ public class PortletPreferencesPersistenceImpl
 
 		portletPreferences.resetOriginalValues();
 
-		if (isNew) {
+		if (portletPreferences.isNew()) {
 			portletPreferences.setNew(false);
 		}
 

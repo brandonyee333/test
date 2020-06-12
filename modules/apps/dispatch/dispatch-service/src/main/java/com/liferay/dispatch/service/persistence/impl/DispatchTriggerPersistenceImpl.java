@@ -2579,7 +2579,7 @@ public class DispatchTriggerPersistenceImpl
 
 		dispatchTrigger.resetOriginalValues();
 
-		if (isNew) {
+		if (dispatchTrigger.isNew()) {
 			dispatchTrigger.setNew(false);
 		}
 

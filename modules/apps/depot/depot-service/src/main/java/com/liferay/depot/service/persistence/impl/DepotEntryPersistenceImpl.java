@@ -1988,7 +1988,7 @@ public class DepotEntryPersistenceImpl
 
 		depotEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (depotEntry.isNew()) {
 			depotEntry.setNew(false);
 		}
 

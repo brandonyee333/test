@@ -854,7 +854,7 @@ public class AnalyticsMessagePersistenceImpl
 
 		analyticsMessage.resetOriginalValues();
 
-		if (isNew) {
+		if (analyticsMessage.isNew()) {
 			analyticsMessage.setNew(false);
 		}
 

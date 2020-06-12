@@ -1663,7 +1663,7 @@ public class WorkflowInstanceLinkPersistenceImpl
 		if (workflowInstanceLink.getCtCollectionId() != 0) {
 			workflowInstanceLink.resetOriginalValues();
 
-			if (isNew) {
+			if (workflowInstanceLink.isNew()) {
 				workflowInstanceLink.setNew(false);
 			}
 
@@ -1682,7 +1682,7 @@ public class WorkflowInstanceLinkPersistenceImpl
 
 		workflowInstanceLink.resetOriginalValues();
 
-		if (isNew) {
+		if (workflowInstanceLink.isNew()) {
 			workflowInstanceLink.setNew(false);
 		}
 

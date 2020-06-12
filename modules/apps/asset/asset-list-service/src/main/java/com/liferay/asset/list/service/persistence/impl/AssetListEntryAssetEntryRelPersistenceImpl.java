@@ -4287,7 +4287,7 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 		if (assetListEntryAssetEntryRel.getCtCollectionId() != 0) {
 			assetListEntryAssetEntryRel.resetOriginalValues();
 
-			if (isNew) {
+			if (assetListEntryAssetEntryRel.isNew()) {
 				assetListEntryAssetEntryRel.setNew(false);
 			}
 
@@ -4307,7 +4307,7 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 
 		assetListEntryAssetEntryRel.resetOriginalValues();
 
-		if (isNew) {
+		if (assetListEntryAssetEntryRel.isNew()) {
 			assetListEntryAssetEntryRel.setNew(false);
 		}
 

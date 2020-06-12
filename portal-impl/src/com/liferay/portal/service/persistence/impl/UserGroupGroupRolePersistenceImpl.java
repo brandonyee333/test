@@ -3372,7 +3372,7 @@ public class UserGroupGroupRolePersistenceImpl
 		if (userGroupGroupRole.getCtCollectionId() != 0) {
 			userGroupGroupRole.resetOriginalValues();
 
-			if (isNew) {
+			if (userGroupGroupRole.isNew()) {
 				userGroupGroupRole.setNew(false);
 			}
 
@@ -3393,7 +3393,7 @@ public class UserGroupGroupRolePersistenceImpl
 
 		userGroupGroupRole.resetOriginalValues();
 
-		if (isNew) {
+		if (userGroupGroupRole.isNew()) {
 			userGroupGroupRole.setNew(false);
 		}
 

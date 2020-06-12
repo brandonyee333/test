@@ -1530,7 +1530,7 @@ public class PushNotificationsDevicePersistenceImpl
 
 		pushNotificationsDevice.resetOriginalValues();
 
-		if (isNew) {
+		if (pushNotificationsDevice.isNew()) {
 			pushNotificationsDevice.setNew(false);
 		}
 

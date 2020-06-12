@@ -4265,7 +4265,7 @@ public class LayoutSetPrototypePersistenceImpl
 
 		layoutSetPrototype.resetOriginalValues();
 
-		if (isNew) {
+		if (layoutSetPrototype.isNew()) {
 			layoutSetPrototype.setNew(false);
 		}
 

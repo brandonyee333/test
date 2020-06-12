@@ -4172,7 +4172,7 @@ public class SubscriptionPersistenceImpl
 
 		subscription.resetOriginalValues();
 
-		if (isNew) {
+		if (subscription.isNew()) {
 			subscription.setNew(false);
 		}
 

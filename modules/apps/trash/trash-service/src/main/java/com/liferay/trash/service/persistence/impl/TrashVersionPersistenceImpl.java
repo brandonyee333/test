@@ -1705,7 +1705,7 @@ public class TrashVersionPersistenceImpl
 		if (trashVersion.getCtCollectionId() != 0) {
 			trashVersion.resetOriginalValues();
 
-			if (isNew) {
+			if (trashVersion.isNew()) {
 				trashVersion.setNew(false);
 			}
 
@@ -1723,7 +1723,7 @@ public class TrashVersionPersistenceImpl
 
 		trashVersion.resetOriginalValues();
 
-		if (isNew) {
+		if (trashVersion.isNew()) {
 			trashVersion.setNew(false);
 		}
 

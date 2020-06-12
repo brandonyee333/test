@@ -4649,7 +4649,7 @@ public class LayoutClassedModelUsagePersistenceImpl
 		if (layoutClassedModelUsage.getCtCollectionId() != 0) {
 			layoutClassedModelUsage.resetOriginalValues();
 
-			if (isNew) {
+			if (layoutClassedModelUsage.isNew()) {
 				layoutClassedModelUsage.setNew(false);
 			}
 
@@ -4669,7 +4669,7 @@ public class LayoutClassedModelUsagePersistenceImpl
 
 		layoutClassedModelUsage.resetOriginalValues();
 
-		if (isNew) {
+		if (layoutClassedModelUsage.isNew()) {
 			layoutClassedModelUsage.setNew(false);
 		}
 

@@ -1140,7 +1140,7 @@ public class AkismetEntryPersistenceImpl
 
 		akismetEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (akismetEntry.isNew()) {
 			akismetEntry.setNew(false);
 		}
 

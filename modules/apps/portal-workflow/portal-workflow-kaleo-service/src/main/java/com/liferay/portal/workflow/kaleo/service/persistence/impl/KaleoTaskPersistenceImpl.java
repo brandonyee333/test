@@ -1624,7 +1624,7 @@ public class KaleoTaskPersistenceImpl
 
 		kaleoTask.resetOriginalValues();
 
-		if (isNew) {
+		if (kaleoTask.isNew()) {
 			kaleoTask.setNew(false);
 		}
 

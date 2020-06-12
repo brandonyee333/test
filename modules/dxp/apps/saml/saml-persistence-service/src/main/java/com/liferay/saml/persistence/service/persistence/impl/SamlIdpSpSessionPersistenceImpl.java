@@ -1746,7 +1746,7 @@ public class SamlIdpSpSessionPersistenceImpl
 
 		samlIdpSpSession.resetOriginalValues();
 
-		if (isNew) {
+		if (samlIdpSpSession.isNew()) {
 			samlIdpSpSession.setNew(false);
 		}
 

@@ -6600,7 +6600,7 @@ public class CalendarResourcePersistenceImpl
 
 		calendarResource.resetOriginalValues();
 
-		if (isNew) {
+		if (calendarResource.isNew()) {
 			calendarResource.setNew(false);
 		}
 

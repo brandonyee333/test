@@ -5788,7 +5788,7 @@ public class CalendarBookingPersistenceImpl
 
 		calendarBooking.resetOriginalValues();
 
-		if (isNew) {
+		if (calendarBooking.isNew()) {
 			calendarBooking.setNew(false);
 		}
 

@@ -3311,7 +3311,7 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 		if (assetListEntrySegmentsEntryRel.getCtCollectionId() != 0) {
 			assetListEntrySegmentsEntryRel.resetOriginalValues();
 
-			if (isNew) {
+			if (assetListEntrySegmentsEntryRel.isNew()) {
 				assetListEntrySegmentsEntryRel.setNew(false);
 			}
 
@@ -3331,7 +3331,7 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 
 		assetListEntrySegmentsEntryRel.resetOriginalValues();
 
-		if (isNew) {
+		if (assetListEntrySegmentsEntryRel.isNew()) {
 			assetListEntrySegmentsEntryRel.setNew(false);
 		}
 

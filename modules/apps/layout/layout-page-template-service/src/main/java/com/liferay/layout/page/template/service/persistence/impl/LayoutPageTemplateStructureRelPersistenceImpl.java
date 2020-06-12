@@ -3242,7 +3242,7 @@ public class LayoutPageTemplateStructureRelPersistenceImpl
 
 		layoutPageTemplateStructureRel.resetOriginalValues();
 
-		if (isNew) {
+		if (layoutPageTemplateStructureRel.isNew()) {
 			layoutPageTemplateStructureRel.setNew(false);
 		}
 

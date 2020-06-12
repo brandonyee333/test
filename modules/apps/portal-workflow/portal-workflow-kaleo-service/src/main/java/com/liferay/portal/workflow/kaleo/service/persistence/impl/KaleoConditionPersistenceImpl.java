@@ -1639,7 +1639,7 @@ public class KaleoConditionPersistenceImpl
 
 		kaleoCondition.resetOriginalValues();
 
-		if (isNew) {
+		if (kaleoCondition.isNew()) {
 			kaleoCondition.setNew(false);
 		}
 

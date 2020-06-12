@@ -5350,7 +5350,7 @@ public class ExpandoValuePersistenceImpl
 		if (expandoValue.getCtCollectionId() != 0) {
 			expandoValue.resetOriginalValues();
 
-			if (isNew) {
+			if (expandoValue.isNew()) {
 				expandoValue.setNew(false);
 			}
 
@@ -5369,7 +5369,7 @@ public class ExpandoValuePersistenceImpl
 
 		expandoValue.resetOriginalValues();
 
-		if (isNew) {
+		if (expandoValue.isNew()) {
 			expandoValue.setNew(false);
 		}
 

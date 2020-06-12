@@ -4482,7 +4482,7 @@ public class AssetEntryUsagePersistenceImpl
 		if (assetEntryUsage.getCtCollectionId() != 0) {
 			assetEntryUsage.resetOriginalValues();
 
-			if (isNew) {
+			if (assetEntryUsage.isNew()) {
 				assetEntryUsage.setNew(false);
 			}
 
@@ -4502,7 +4502,7 @@ public class AssetEntryUsagePersistenceImpl
 
 		assetEntryUsage.resetOriginalValues();
 
-		if (isNew) {
+		if (assetEntryUsage.isNew()) {
 			assetEntryUsage.setNew(false);
 		}
 

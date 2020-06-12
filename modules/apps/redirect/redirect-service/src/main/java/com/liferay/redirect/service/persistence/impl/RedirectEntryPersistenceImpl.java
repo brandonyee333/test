@@ -4012,7 +4012,7 @@ public class RedirectEntryPersistenceImpl
 
 		redirectEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (redirectEntry.isNew()) {
 			redirectEntry.setNew(false);
 		}
 

@@ -1023,7 +1023,7 @@ public class RatingsStatsPersistenceImpl
 		if (ratingsStats.getCtCollectionId() != 0) {
 			ratingsStats.resetOriginalValues();
 
-			if (isNew) {
+			if (ratingsStats.isNew()) {
 				ratingsStats.setNew(false);
 			}
 
@@ -1042,7 +1042,7 @@ public class RatingsStatsPersistenceImpl
 
 		ratingsStats.resetOriginalValues();
 
-		if (isNew) {
+		if (ratingsStats.isNew()) {
 			ratingsStats.setNew(false);
 		}
 

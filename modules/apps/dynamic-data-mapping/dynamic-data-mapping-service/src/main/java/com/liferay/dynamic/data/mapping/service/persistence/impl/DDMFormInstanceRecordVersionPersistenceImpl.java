@@ -3175,7 +3175,7 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 		if (ddmFormInstanceRecordVersion.getCtCollectionId() != 0) {
 			ddmFormInstanceRecordVersion.resetOriginalValues();
 
-			if (isNew) {
+			if (ddmFormInstanceRecordVersion.isNew()) {
 				ddmFormInstanceRecordVersion.setNew(false);
 			}
 
@@ -3195,7 +3195,7 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 
 		ddmFormInstanceRecordVersion.resetOriginalValues();
 
-		if (isNew) {
+		if (ddmFormInstanceRecordVersion.isNew()) {
 			ddmFormInstanceRecordVersion.setNew(false);
 		}
 

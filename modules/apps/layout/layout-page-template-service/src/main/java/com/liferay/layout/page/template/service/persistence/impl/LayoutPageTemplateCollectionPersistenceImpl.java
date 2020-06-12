@@ -4393,7 +4393,7 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 
 		layoutPageTemplateCollection.resetOriginalValues();
 
-		if (isNew) {
+		if (layoutPageTemplateCollection.isNew()) {
 			layoutPageTemplateCollection.setNew(false);
 		}
 

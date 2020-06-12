@@ -6289,7 +6289,7 @@ public class LVEntryVersionPersistenceImpl
 
 		lvEntryVersion.resetOriginalValues();
 
-		if (isNew) {
+		if (lvEntryVersion.isNew()) {
 			lvEntryVersion.setNew(false);
 		}
 

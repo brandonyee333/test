@@ -1210,7 +1210,7 @@ public class SamlIdpSsoSessionPersistenceImpl
 
 		samlIdpSsoSession.resetOriginalValues();
 
-		if (isNew) {
+		if (samlIdpSsoSession.isNew()) {
 			samlIdpSsoSession.setNew(false);
 		}
 

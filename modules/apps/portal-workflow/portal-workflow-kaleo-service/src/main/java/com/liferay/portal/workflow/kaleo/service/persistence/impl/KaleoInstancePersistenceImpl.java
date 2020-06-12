@@ -4128,7 +4128,7 @@ public class KaleoInstancePersistenceImpl
 
 		kaleoInstance.resetOriginalValues();
 
-		if (isNew) {
+		if (kaleoInstance.isNew()) {
 			kaleoInstance.setNew(false);
 		}
 

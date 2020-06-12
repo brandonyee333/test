@@ -308,7 +308,7 @@ public class ViewCountEntryPersistenceImpl
 
 		viewCountEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (viewCountEntry.isNew()) {
 			viewCountEntry.setNew(false);
 		}
 

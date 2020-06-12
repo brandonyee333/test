@@ -12550,7 +12550,7 @@ public class AssetCategoryPersistenceImpl
 		if (assetCategory.getCtCollectionId() != 0) {
 			assetCategory.resetOriginalValues();
 
-			if (isNew) {
+			if (assetCategory.isNew()) {
 				assetCategory.setNew(false);
 			}
 
@@ -12570,7 +12570,7 @@ public class AssetCategoryPersistenceImpl
 
 		assetCategory.resetOriginalValues();
 
-		if (isNew) {
+		if (assetCategory.isNew()) {
 			assetCategory.setNew(false);
 		}
 

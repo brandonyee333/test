@@ -7481,7 +7481,7 @@ public class AppBuilderAppPersistenceImpl
 
 		appBuilderApp.resetOriginalValues();
 
-		if (isNew) {
+		if (appBuilderApp.isNew()) {
 			appBuilderApp.setNew(false);
 		}
 

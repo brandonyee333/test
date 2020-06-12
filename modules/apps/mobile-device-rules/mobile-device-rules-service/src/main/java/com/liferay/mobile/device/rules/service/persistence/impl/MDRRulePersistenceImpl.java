@@ -2270,7 +2270,7 @@ public class MDRRulePersistenceImpl
 
 		mdrRule.resetOriginalValues();
 
-		if (isNew) {
+		if (mdrRule.isNew()) {
 			mdrRule.setNew(false);
 		}
 

@@ -15936,7 +15936,7 @@ public class LayoutPersistenceImpl
 		if (layout.getCtCollectionId() != 0) {
 			layout.resetOriginalValues();
 
-			if (isNew) {
+			if (layout.isNew()) {
 				layout.setNew(false);
 			}
 
@@ -15955,7 +15955,7 @@ public class LayoutPersistenceImpl
 
 		layout.resetOriginalValues();
 
-		if (isNew) {
+		if (layout.isNew()) {
 			layout.setNew(false);
 		}
 

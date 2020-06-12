@@ -2754,7 +2754,7 @@ public class DLFileRankPersistenceImpl
 
 		dlFileRank.resetOriginalValues();
 
-		if (isNew) {
+		if (dlFileRank.isNew()) {
 			dlFileRank.setNew(false);
 		}
 

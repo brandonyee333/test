@@ -1804,7 +1804,7 @@ public class CTAutoResolutionInfoPersistenceImpl
 
 		ctAutoResolutionInfo.resetOriginalValues();
 
-		if (isNew) {
+		if (ctAutoResolutionInfo.isNew()) {
 			ctAutoResolutionInfo.setNew(false);
 		}
 

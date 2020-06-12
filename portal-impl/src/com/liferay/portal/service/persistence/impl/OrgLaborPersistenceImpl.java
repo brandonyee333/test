@@ -830,7 +830,7 @@ public class OrgLaborPersistenceImpl
 
 		orgLabor.resetOriginalValues();
 
-		if (isNew) {
+		if (orgLabor.isNew()) {
 			orgLabor.setNew(false);
 		}
 

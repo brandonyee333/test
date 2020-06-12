@@ -2112,7 +2112,7 @@ public class BatchEngineExportTaskPersistenceImpl
 
 		batchEngineExportTask.resetOriginalValues();
 
-		if (isNew) {
+		if (batchEngineExportTask.isNew()) {
 			batchEngineExportTask.setNew(false);
 		}
 

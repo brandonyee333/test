@@ -3733,7 +3733,7 @@ public class CalendarPersistenceImpl
 
 		calendar.resetOriginalValues();
 
-		if (isNew) {
+		if (calendar.isNew()) {
 			calendar.setNew(false);
 		}
 

@@ -1373,7 +1373,7 @@ public class LVEntryLocalizationPersistenceImpl
 
 		lvEntryLocalization.resetOriginalValues();
 
-		if (isNew) {
+		if (lvEntryLocalization.isNew()) {
 			lvEntryLocalization.setNew(false);
 		}
 

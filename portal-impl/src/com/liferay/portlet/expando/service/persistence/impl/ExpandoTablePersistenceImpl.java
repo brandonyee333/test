@@ -1242,7 +1242,7 @@ public class ExpandoTablePersistenceImpl
 		if (expandoTable.getCtCollectionId() != 0) {
 			expandoTable.resetOriginalValues();
 
-			if (isNew) {
+			if (expandoTable.isNew()) {
 				expandoTable.setNew(false);
 			}
 
@@ -1261,7 +1261,7 @@ public class ExpandoTablePersistenceImpl
 
 		expandoTable.resetOriginalValues();
 
-		if (isNew) {
+		if (expandoTable.isNew()) {
 			expandoTable.setNew(false);
 		}
 

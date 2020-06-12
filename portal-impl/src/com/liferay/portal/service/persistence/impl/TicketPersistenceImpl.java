@@ -1798,7 +1798,7 @@ public class TicketPersistenceImpl
 
 		ticket.resetOriginalValues();
 
-		if (isNew) {
+		if (ticket.isNew()) {
 			ticket.setNew(false);
 		}
 

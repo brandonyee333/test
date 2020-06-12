@@ -2290,7 +2290,7 @@ public class MDRActionPersistenceImpl
 
 		mdrAction.resetOriginalValues();
 
-		if (isNew) {
+		if (mdrAction.isNew()) {
 			mdrAction.setNew(false);
 		}
 

@@ -838,7 +838,7 @@ public class CTMessagePersistenceImpl
 
 		ctMessage.resetOriginalValues();
 
-		if (isNew) {
+		if (ctMessage.isNew()) {
 			ctMessage.setNew(false);
 		}
 

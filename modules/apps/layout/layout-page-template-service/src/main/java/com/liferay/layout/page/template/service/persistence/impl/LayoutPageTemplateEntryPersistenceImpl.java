@@ -23850,7 +23850,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 
 		layoutPageTemplateEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (layoutPageTemplateEntry.isNew()) {
 			layoutPageTemplateEntry.setNew(false);
 		}
 

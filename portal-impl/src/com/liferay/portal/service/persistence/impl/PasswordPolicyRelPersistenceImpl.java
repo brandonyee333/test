@@ -1116,7 +1116,7 @@ public class PasswordPolicyRelPersistenceImpl
 
 		passwordPolicyRel.resetOriginalValues();
 
-		if (isNew) {
+		if (passwordPolicyRel.isNew()) {
 			passwordPolicyRel.setNew(false);
 		}
 

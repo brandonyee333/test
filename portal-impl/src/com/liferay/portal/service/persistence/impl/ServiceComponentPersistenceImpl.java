@@ -1192,7 +1192,7 @@ public class ServiceComponentPersistenceImpl
 
 		serviceComponent.resetOriginalValues();
 
-		if (isNew) {
+		if (serviceComponent.isNew()) {
 			serviceComponent.setNew(false);
 		}
 

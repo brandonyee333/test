@@ -3541,7 +3541,7 @@ public class LayoutSetBranchPersistenceImpl
 
 		layoutSetBranch.resetOriginalValues();
 
-		if (isNew) {
+		if (layoutSetBranch.isNew()) {
 			layoutSetBranch.setNew(false);
 		}
 

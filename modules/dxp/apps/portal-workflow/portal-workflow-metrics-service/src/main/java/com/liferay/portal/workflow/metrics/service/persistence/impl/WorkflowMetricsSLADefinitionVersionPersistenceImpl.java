@@ -2823,7 +2823,7 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 
 		workflowMetricsSLADefinitionVersion.resetOriginalValues();
 
-		if (isNew) {
+		if (workflowMetricsSLADefinitionVersion.isNew()) {
 			workflowMetricsSLADefinitionVersion.setNew(false);
 		}
 

@@ -4887,7 +4887,7 @@ public class KaleoTaskAssignmentInstancePersistenceImpl
 
 		kaleoTaskAssignmentInstance.resetOriginalValues();
 
-		if (isNew) {
+		if (kaleoTaskAssignmentInstance.isNew()) {
 			kaleoTaskAssignmentInstance.setNew(false);
 		}
 

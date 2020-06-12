@@ -837,7 +837,7 @@ public class AuditEventPersistenceImpl
 
 		auditEvent.resetOriginalValues();
 
-		if (isNew) {
+		if (auditEvent.isNew()) {
 			auditEvent.setNew(false);
 		}
 

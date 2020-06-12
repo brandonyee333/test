@@ -9824,7 +9824,7 @@ public class SegmentsExperiencePersistenceImpl
 
 		segmentsExperience.resetOriginalValues();
 
-		if (isNew) {
+		if (segmentsExperience.isNew()) {
 			segmentsExperience.setNew(false);
 		}
 

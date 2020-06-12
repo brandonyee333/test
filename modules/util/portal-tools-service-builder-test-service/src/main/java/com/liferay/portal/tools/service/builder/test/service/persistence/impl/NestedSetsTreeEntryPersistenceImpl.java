@@ -378,7 +378,7 @@ public class NestedSetsTreeEntryPersistenceImpl
 
 		nestedSetsTreeEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (nestedSetsTreeEntry.isNew()) {
 			nestedSetsTreeEntry.setNew(false);
 		}
 

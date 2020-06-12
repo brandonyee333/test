@@ -5362,7 +5362,7 @@ public class KBCommentPersistenceImpl
 
 		kbComment.resetOriginalValues();
 
-		if (isNew) {
+		if (kbComment.isNew()) {
 			kbComment.setNew(false);
 		}
 

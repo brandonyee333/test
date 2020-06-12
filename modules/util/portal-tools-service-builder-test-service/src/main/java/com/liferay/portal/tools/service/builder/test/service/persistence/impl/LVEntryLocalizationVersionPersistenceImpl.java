@@ -3178,7 +3178,7 @@ public class LVEntryLocalizationVersionPersistenceImpl
 
 		lvEntryLocalizationVersion.resetOriginalValues();
 
-		if (isNew) {
+		if (lvEntryLocalizationVersion.isNew()) {
 			lvEntryLocalizationVersion.setNew(false);
 		}
 

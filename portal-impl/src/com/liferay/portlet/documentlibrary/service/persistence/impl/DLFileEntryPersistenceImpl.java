@@ -15310,7 +15310,7 @@ public class DLFileEntryPersistenceImpl
 		if (dlFileEntry.getCtCollectionId() != 0) {
 			dlFileEntry.resetOriginalValues();
 
-			if (isNew) {
+			if (dlFileEntry.isNew()) {
 				dlFileEntry.setNew(false);
 			}
 
@@ -15329,7 +15329,7 @@ public class DLFileEntryPersistenceImpl
 
 		dlFileEntry.resetOriginalValues();
 
-		if (isNew) {
+		if (dlFileEntry.isNew()) {
 			dlFileEntry.setNew(false);
 		}
 

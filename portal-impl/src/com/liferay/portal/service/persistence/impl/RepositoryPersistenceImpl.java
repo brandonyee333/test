@@ -2593,7 +2593,7 @@ public class RepositoryPersistenceImpl
 
 		repository.resetOriginalValues();
 
-		if (isNew) {
+		if (repository.isNew()) {
 			repository.setNew(false);
 		}
 

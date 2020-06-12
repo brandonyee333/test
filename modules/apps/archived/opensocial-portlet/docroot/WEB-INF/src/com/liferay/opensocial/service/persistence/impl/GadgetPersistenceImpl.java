@@ -3474,7 +3474,7 @@ public class GadgetPersistenceImpl
 
 		gadget.resetOriginalValues();
 
-		if (isNew) {
+		if (gadget.isNew()) {
 			gadget.setNew(false);
 		}
 

@@ -9059,7 +9059,7 @@ public class BackgroundTaskPersistenceImpl
 
 		backgroundTask.resetOriginalValues();
 
-		if (isNew) {
+		if (backgroundTask.isNew()) {
 			backgroundTask.setNew(false);
 		}
 

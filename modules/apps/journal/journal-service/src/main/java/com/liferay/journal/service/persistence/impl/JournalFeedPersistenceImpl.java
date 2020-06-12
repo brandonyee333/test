@@ -2922,7 +2922,7 @@ public class JournalFeedPersistenceImpl
 
 		journalFeed.resetOriginalValues();
 
-		if (isNew) {
+		if (journalFeed.isNew()) {
 			journalFeed.setNew(false);
 		}
 

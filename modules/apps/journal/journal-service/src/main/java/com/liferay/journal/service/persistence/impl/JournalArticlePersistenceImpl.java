@@ -34616,7 +34616,7 @@ public class JournalArticlePersistenceImpl
 		if (journalArticle.getCtCollectionId() != 0) {
 			journalArticle.resetOriginalValues();
 
-			if (isNew) {
+			if (journalArticle.isNew()) {
 				journalArticle.setNew(false);
 			}
 
@@ -34636,7 +34636,7 @@ public class JournalArticlePersistenceImpl
 
 		journalArticle.resetOriginalValues();
 
-		if (isNew) {
+		if (journalArticle.isNew()) {
 			journalArticle.setNew(false);
 		}
 

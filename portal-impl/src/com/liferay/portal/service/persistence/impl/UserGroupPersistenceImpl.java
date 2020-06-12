@@ -6542,7 +6542,7 @@ public class UserGroupPersistenceImpl
 		if (userGroup.getCtCollectionId() != 0) {
 			userGroup.resetOriginalValues();
 
-			if (isNew) {
+			if (userGroup.isNew()) {
 				userGroup.setNew(false);
 			}
 
@@ -6561,7 +6561,7 @@ public class UserGroupPersistenceImpl
 
 		userGroup.resetOriginalValues();
 
-		if (isNew) {
+		if (userGroup.isNew()) {
 			userGroup.setNew(false);
 		}
 

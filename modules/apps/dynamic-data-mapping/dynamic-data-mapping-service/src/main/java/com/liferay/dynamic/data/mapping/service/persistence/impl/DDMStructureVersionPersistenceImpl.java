@@ -1777,7 +1777,7 @@ public class DDMStructureVersionPersistenceImpl
 		if (ddmStructureVersion.getCtCollectionId() != 0) {
 			ddmStructureVersion.resetOriginalValues();
 
-			if (isNew) {
+			if (ddmStructureVersion.isNew()) {
 				ddmStructureVersion.setNew(false);
 			}
 
@@ -1797,7 +1797,7 @@ public class DDMStructureVersionPersistenceImpl
 
 		ddmStructureVersion.resetOriginalValues();
 
-		if (isNew) {
+		if (ddmStructureVersion.isNew()) {
 			ddmStructureVersion.setNew(false);
 		}
 

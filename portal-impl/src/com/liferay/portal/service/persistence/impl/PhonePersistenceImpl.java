@@ -4234,7 +4234,7 @@ public class PhonePersistenceImpl
 
 		phone.resetOriginalValues();
 
-		if (isNew) {
+		if (phone.isNew()) {
 			phone.setNew(false);
 		}
 

@@ -1552,7 +1552,7 @@ public class CompanyPersistenceImpl
 
 		company.resetOriginalValues();
 
-		if (isNew) {
+		if (company.isNew()) {
 			company.setNew(false);
 		}
 

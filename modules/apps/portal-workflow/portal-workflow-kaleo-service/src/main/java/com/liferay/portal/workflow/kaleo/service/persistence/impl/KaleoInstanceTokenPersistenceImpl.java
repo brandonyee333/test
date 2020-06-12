@@ -3159,7 +3159,7 @@ public class KaleoInstanceTokenPersistenceImpl
 
 		kaleoInstanceToken.resetOriginalValues();
 
-		if (isNew) {
+		if (kaleoInstanceToken.isNew()) {
 			kaleoInstanceToken.setNew(false);
 		}
 

@@ -3481,7 +3481,7 @@ public class MBBanPersistenceImpl
 
 		mbBan.resetOriginalValues();
 
-		if (isNew) {
+		if (mbBan.isNew()) {
 			mbBan.setNew(false);
 		}
 

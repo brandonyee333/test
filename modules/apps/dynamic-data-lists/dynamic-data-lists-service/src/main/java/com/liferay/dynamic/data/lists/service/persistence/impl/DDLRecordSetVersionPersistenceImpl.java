@@ -1703,7 +1703,7 @@ public class DDLRecordSetVersionPersistenceImpl
 
 		ddlRecordSetVersion.resetOriginalValues();
 
-		if (isNew) {
+		if (ddlRecordSetVersion.isNew()) {
 			ddlRecordSetVersion.setNew(false);
 		}
 

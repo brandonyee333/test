@@ -3344,7 +3344,7 @@ public class PowwowMeetingPersistenceImpl
 
 		powwowMeeting.resetOriginalValues();
 
-		if (isNew) {
+		if (powwowMeeting.isNew()) {
 			powwowMeeting.setNew(false);
 		}
 

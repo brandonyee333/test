@@ -2487,7 +2487,7 @@ public class MembershipRequestPersistenceImpl
 
 		membershipRequest.resetOriginalValues();
 
-		if (isNew) {
+		if (membershipRequest.isNew()) {
 			membershipRequest.setNew(false);
 		}
 

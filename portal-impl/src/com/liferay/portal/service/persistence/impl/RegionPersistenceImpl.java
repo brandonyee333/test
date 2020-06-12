@@ -2134,7 +2134,7 @@ public class RegionPersistenceImpl
 
 		region.resetOriginalValues();
 
-		if (isNew) {
+		if (region.isNew()) {
 			region.setNew(false);
 		}
 
