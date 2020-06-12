@@ -52,12 +52,12 @@ public class MetricHelperTest {
 			"2018-12-08T00:00", "2018-12-09T00:00", "2018-12-10T00:00",
 			"2018-12-11T00:00", "2018-12-12T00:00");
 
-		Map<String, Metric> metricsMap = _createMetrics(
+		Map<String, Metric> metrics = _createMetrics(
 			Interval.DAY, LocalDateTime.of(2018, 12, 14, 10, 30),
 			TimeRange.of(
 				LocalDate.parse("2018-12-12"), LocalDate.parse("2018-12-02")));
 
-		Assert.assertEquals(expectedKeys, new ArrayList<>(metricsMap.keySet()));
+		Assert.assertEquals(expectedKeys, new ArrayList<>(metrics.keySet()));
 	}
 
 	@Test
@@ -144,11 +144,11 @@ public class MetricHelperTest {
 			"2018-10-28T00:00", "2018-11-04T00:00", "2018-11-11T00:00",
 			"2018-11-18T00:00");
 
-		Map<String, Metric> metricsMap = _createMetrics(
+		Map<String, Metric> metrics = _createMetrics(
 			Interval.WEEK, LocalDateTime.of(2018, 11, 24, 10, 30),
 			TimeRange.LAST_90_DAYS);
 
-		Assert.assertEquals(expectedKeys, new ArrayList<>(metricsMap.keySet()));
+		Assert.assertEquals(expectedKeys, new ArrayList<>(metrics.keySet()));
 
 		List<String> expectedPreviousValueKeys = Arrays.asList(
 			"2018-05-27/2018-06-02", "2018-06-03/2018-06-09",
@@ -160,7 +160,7 @@ public class MetricHelperTest {
 			"2018-08-19/2018-08-25");
 
 		List<String> actualPreviousValueKeys = _getMetricValueKeys(
-			metricsMap.values(), Metric::getPreviousValueKey);
+			metrics.values(), Metric::getPreviousValueKey);
 
 		Assert.assertEquals(expectedPreviousValueKeys, actualPreviousValueKeys);
 
@@ -174,7 +174,7 @@ public class MetricHelperTest {
 			"2018-11-18/2018-11-24");
 
 		List<String> actualValueKeys = _getMetricValueKeys(
-			metricsMap.values(), Metric::getValueKey);
+			metrics.values(), Metric::getValueKey);
 
 		Assert.assertEquals(expectedValueKeys, actualValueKeys);
 	}
@@ -188,11 +188,11 @@ public class MetricHelperTest {
 			"2018-10-28T00:00", "2018-11-04T00:00", "2018-11-11T00:00",
 			"2018-11-18T00:00", "2018-11-25T00:00");
 
-		Map<String, Metric> metricsMap = _createMetrics(
+		Map<String, Metric> metrics = _createMetrics(
 			Interval.WEEK, LocalDateTime.of(2018, 11, 29, 10, 30),
 			TimeRange.LAST_90_DAYS);
 
-		Assert.assertEquals(expectedKeys, new ArrayList<>(metricsMap.keySet()));
+		Assert.assertEquals(expectedKeys, new ArrayList<>(metrics.keySet()));
 
 		List<String> expectedPreviousValueKeys = Arrays.asList(
 			"2018-05-27/2018-06-02", "2018-06-03/2018-06-09",
@@ -204,7 +204,7 @@ public class MetricHelperTest {
 			"2018-08-19/2018-08-25", "2018-08-26/2018-09-01");
 
 		List<String> actualPreviousValueKeys = _getMetricValueKeys(
-			metricsMap.values(), Metric::getPreviousValueKey);
+			metrics.values(), Metric::getPreviousValueKey);
 
 		Assert.assertEquals(expectedPreviousValueKeys, actualPreviousValueKeys);
 
@@ -218,7 +218,7 @@ public class MetricHelperTest {
 			"2018-11-18/2018-11-24", "2018-11-25/2018-12-01");
 
 		List<String> actualValueKeys = _getMetricValueKeys(
-			metricsMap.values(), Metric::getValueKey);
+			metrics.values(), Metric::getValueKey);
 
 		Assert.assertEquals(expectedValueKeys, actualValueKeys);
 	}
@@ -232,11 +232,11 @@ public class MetricHelperTest {
 			"2018-11-11T00:00", "2018-11-18T00:00", "2018-11-25T00:00",
 			"2018-12-02T00:00", "2018-12-09T00:00");
 
-		Map<String, Metric> metricsMap = _createMetrics(
+		Map<String, Metric> metrics = _createMetrics(
 			Interval.WEEK, LocalDateTime.of(2018, 12, 14, 10, 30),
 			TimeRange.LAST_90_DAYS);
 
-		Assert.assertEquals(expectedKeys, new ArrayList<>(metricsMap.keySet()));
+		Assert.assertEquals(expectedKeys, new ArrayList<>(metrics.keySet()));
 
 		List<String> expectedPreviousValueKeys = Arrays.asList(
 			"2018-06-10/2018-06-16", "2018-06-17/2018-06-23",
@@ -248,7 +248,7 @@ public class MetricHelperTest {
 			"2018-09-02/2018-09-08", "2018-09-09/2018-09-15");
 
 		List<String> actualPreviousValueKeys = _getMetricValueKeys(
-			metricsMap.values(), Metric::getPreviousValueKey);
+			metrics.values(), Metric::getPreviousValueKey);
 
 		Assert.assertEquals(expectedPreviousValueKeys, actualPreviousValueKeys);
 
@@ -262,7 +262,7 @@ public class MetricHelperTest {
 			"2018-12-02/2018-12-08", "2018-12-09/2018-12-15");
 
 		List<String> actualValueKeys = _getMetricValueKeys(
-			metricsMap.values(), Metric::getValueKey);
+			metrics.values(), Metric::getValueKey);
 
 		Assert.assertEquals(expectedValueKeys, actualValueKeys);
 	}
@@ -280,11 +280,11 @@ public class MetricHelperTest {
 			"2018-11-11T00:00", "2018-11-18T00:00", "2018-11-25T00:00",
 			"2018-12-02T00:00", "2018-12-09T00:00");
 
-		Map<String, Metric> metricsMap = _createMetrics(
+		Map<String, Metric> metrics = _createMetrics(
 			Interval.WEEK, LocalDateTime.of(2018, 12, 14, 10, 30),
 			TimeRange.LAST_180_DAYS);
 
-		Assert.assertEquals(expectedKeys, new ArrayList<>(metricsMap.keySet()));
+		Assert.assertEquals(expectedKeys, new ArrayList<>(metrics.keySet()));
 
 		List<String> expectedPreviousValueKeys = Arrays.asList(
 			"2017-12-17/2017-12-23", "2017-12-24/2017-12-30",
@@ -302,7 +302,7 @@ public class MetricHelperTest {
 			"2018-06-03/2018-06-09", "2018-06-10/2018-06-16");
 
 		List<String> actualPreviousValueKeys = _getMetricValueKeys(
-			metricsMap.values(), Metric::getPreviousValueKey);
+			metrics.values(), Metric::getPreviousValueKey);
 
 		Assert.assertEquals(expectedPreviousValueKeys, actualPreviousValueKeys);
 
@@ -322,7 +322,7 @@ public class MetricHelperTest {
 			"2018-12-02/2018-12-08", "2018-12-09/2018-12-15");
 
 		List<String> actualValueKeys = _getMetricValueKeys(
-			metricsMap.values(), Metric::getValueKey);
+			metrics.values(), Metric::getValueKey);
 
 		Assert.assertEquals(expectedValueKeys, actualValueKeys);
 	}
@@ -336,11 +336,11 @@ public class MetricHelperTest {
 			"2018-09-01T00:00", "2018-10-01T00:00", "2018-11-01T00:00",
 			"2018-12-01T00:00");
 
-		Map<String, Metric> metricsMap = _createMetrics(
+		Map<String, Metric> metrics = _createMetrics(
 			Interval.MONTH, LocalDateTime.of(2018, 12, 14, 10, 30),
 			TimeRange.LAST_YEAR);
 
-		Assert.assertEquals(expectedKeys, new ArrayList<>(metricsMap.keySet()));
+		Assert.assertEquals(expectedKeys, new ArrayList<>(metrics.keySet()));
 
 		List<String> expectedPreviousValueKeys = Arrays.asList(
 			"2016-11-01/2016-11-30", "2016-12-01/2016-12-31",
@@ -352,7 +352,7 @@ public class MetricHelperTest {
 			"2017-11-01/2017-11-30");
 
 		List<String> actualPreviousValueKeys = _getMetricValueKeys(
-			metricsMap.values(), Metric::getPreviousValueKey);
+			metrics.values(), Metric::getPreviousValueKey);
 
 		Assert.assertEquals(expectedPreviousValueKeys, actualPreviousValueKeys);
 
@@ -366,7 +366,7 @@ public class MetricHelperTest {
 			"2018-12-01/2018-12-31");
 
 		List<String> actualValueKeys = _getMetricValueKeys(
-			metricsMap.values(), Metric::getValueKey);
+			metrics.values(), Metric::getValueKey);
 
 		Assert.assertEquals(expectedValueKeys, actualValueKeys);
 	}
