@@ -48,7 +48,9 @@ public class PropertyFilter {
 		PropertyFilter propertyFilter = (PropertyFilter)obj;
 
 		if (Objects.equals(_filterString, propertyFilter._filterString) &&
-			Objects.equals(_negate, propertyFilter._negate)) {
+			Objects.equals(_negate, propertyFilter._negate) &&
+			Objects.equals(
+				_propertyNamespace, propertyFilter._propertyNamespace)) {
 
 			return true;
 		}
@@ -60,16 +62,25 @@ public class PropertyFilter {
 		return _filterString;
 	}
 
+	public String getPropertyNamespace() {
+		return _propertyNamespace;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(_filterString, _negate);
+		return Objects.hash(_filterString, _negate, _propertyNamespace);
 	}
 
 	public boolean isNegate() {
 		return _negate;
 	}
 
+	public void setPropertyNamespace(String propertyNamespace) {
+		_propertyNamespace = propertyNamespace;
+	}
+
 	private final String _filterString;
 	private final boolean _negate;
+	private String _propertyNamespace = "";
 
 }
