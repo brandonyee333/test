@@ -80,6 +80,11 @@ input JobParameterInput {
 	value: String!
 }
 
+input PropertyFilter {
+	negate: Boolean!
+	filter: String!
+}
+
 input Sort {
 	column: String!
 	type: SortType!
@@ -557,7 +562,7 @@ type QueryType {
 	activities(
 		applicationId: String!
 		eventId: String!
-		eventContextFilter: String
+		eventContextPropertyFilters: [PropertyFilter]
 		size: Int!
 		start: Int!
 	): ActivityBag
@@ -797,7 +802,7 @@ type QueryType {
 
 	pageAssets(
 		keywords: String
-		propertyFilter: String
+		propertyFilters: [PropertyFilter]
 		size: Int!
 		sort: Sort!
 		start: Int!
