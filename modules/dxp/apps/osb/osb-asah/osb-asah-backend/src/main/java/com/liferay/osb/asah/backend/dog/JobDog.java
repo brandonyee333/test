@@ -244,6 +244,26 @@ public class JobDog {
 		return job;
 	}
 
+	public Job updateJob(
+		String id, List<JobParameter> jobParameters,
+		JobTrainingFrequency jobTrainingFrequency,
+		JobTrainingPeriod jobTrainingPeriod, String name) {
+
+		JSONObject jsonObject = _faroInfoElasticsearchInvoker.get("jobs", id);
+
+		jsonObject.put("name", name);
+		jsonObject.put(
+			"parameters",
+			_objectMapper.convertValue(jobParameters, JSONArray.class));
+		jsonObject.put("trainingFrequency", jobTrainingFrequency.toString());
+		jsonObject.put("trainingPeriod", jobTrainingPeriod.toString());
+
+		jsonObject = _faroInfoElasticsearchInvoker.update(
+			"jobs", id, jsonObject);
+
+		return _deserializeJob(jsonObject.toString());
+	}
+
 	private SearchSourceBuilder _buildJobSearchSourceBuilder(
 		String fieldName, String fieldValue) {
 
