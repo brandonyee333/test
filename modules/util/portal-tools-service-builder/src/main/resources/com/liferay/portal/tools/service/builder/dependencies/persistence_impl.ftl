@@ -726,7 +726,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			if (${entity.varName}.getCtCollectionId() != 0) {
 				${entity.varName}.resetOriginalValues();
 
-				if (isNew) {
+				if (${entity.varName}.isNew()) {
 					${entity.varName}.setNew(false);
 				}
 
@@ -746,7 +746,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 		${entity.varName}.resetOriginalValues();
 
-		if (isNew) {
+		if (${entity.varName}.isNew()) {
 			${entity.varName}.setNew(false);
 		}
 
