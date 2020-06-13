@@ -40,7 +40,7 @@ public class TimeRange {
 		true, "last-24-hours", 0) {
 
 		@Override
-		public long getDeltaDays() {
+		public int getDeltaDays() {
 			return 1;
 		}
 
@@ -76,7 +76,7 @@ public class TimeRange {
 		false, "last-year", 365) {
 
 		@Override
-		public long getDeltaDays() {
+		public int getDeltaDays() {
 			LocalDate currentLocalDate = LocalDate.now(getClock());
 
 			int currentMonthValue = currentLocalDate.getMonthValue();
@@ -189,7 +189,7 @@ public class TimeRange {
 		return _clock;
 	}
 
-	public long getDeltaDays() {
+	public int getDeltaDays() {
 		return _deltaDays;
 	}
 
