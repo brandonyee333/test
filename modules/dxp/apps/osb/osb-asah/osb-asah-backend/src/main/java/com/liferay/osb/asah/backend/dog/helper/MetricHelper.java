@@ -157,30 +157,22 @@ public class MetricHelper {
 
 		long deltaDays = timeRange.getDeltaDays();
 
-		LocalDate startLocalDate = timeRange.getStartLocalDate();
-
 		if (Interval.WEEK.equals(interval)) {
 			if (localDateTime.getDayOfWeek() != DayOfWeek.SUNDAY) {
 				localDateTime = localDateTime.minusWeeks(1);
 				localDateTime = localDateTime.with(DayOfWeek.SUNDAY);
 			}
 
-			int weeksInCurrentPeriod = _countWeeks(
-				deltaDays, timeRange.getEndLocalDate());
-
-			int weeksInPreviousPeriod = _countWeeks(
-				deltaDays, startLocalDate.minusDays(1));
-
-			int metricCount = Integer.max(
-				weeksInCurrentPeriod, weeksInPreviousPeriod);
+			int metricCount = _getMetricCount(interval, timeRange);
 
 			for (int i = metricCount - 1; i >= 0; i--) {
 				LocalDateTime periodLocalDateTime = localDateTime.minusWeeks(i);
 
-				Metric metric = _createMetric(
-					periodLocalDateTime, i, interval, metricType, timeRange);
-
-				metrics.put(String.valueOf(periodLocalDateTime), metric);
+				metrics.put(
+					String.valueOf(periodLocalDateTime),
+					_createMetric(
+						periodLocalDateTime, i, interval, metricType,
+						timeRange));
 			}
 		}
 		else if (Interval.MONTH.equals(interval)) {
@@ -188,23 +180,17 @@ public class MetricHelper {
 				localDateTime = localDateTime.withDayOfMonth(1);
 			}
 
-			int monthsInCurrentPeriod = _countMonths(
-				deltaDays, timeRange.getEndLocalDate());
-
-			int monthsInPreviousPeriod = _countMonths(
-				deltaDays, startLocalDate.minusDays(1));
-
-			int metricCount = Integer.max(
-				monthsInCurrentPeriod, monthsInPreviousPeriod);
+			int metricCount = _getMetricCount(interval, timeRange);
 
 			for (int i = metricCount - 1; i >= 0; i--) {
 				LocalDateTime periodLocalDateTime = localDateTime.minusMonths(
 					i);
 
-				Metric metric = _createMetric(
-					periodLocalDateTime, i, interval, metricType, timeRange);
-
-				metrics.put(String.valueOf(periodLocalDateTime), metric);
+				metrics.put(
+					String.valueOf(periodLocalDateTime),
+					_createMetric(
+						periodLocalDateTime, i, interval, metricType,
+						timeRange));
 			}
 		}
 		else {
@@ -257,6 +243,32 @@ public class MetricHelper {
 		metric.setValueKey(_getValueKey(interval, currentPeriodLocalDateTime));
 
 		return metric;
+	}
+
+	private int _getMetricCount(Interval interval, TimeRange timeRange) {
+		int deltaDays = timeRange.getDeltaDays();
+
+		int intervalsInCurrentPeriod = deltaDays;
+		int intervalsInPreviousPeriod = deltaDays;
+
+		LocalDate startLocalDate = timeRange.getStartLocalDate();
+
+		if (Interval.WEEK.equals(interval)) {
+			intervalsInCurrentPeriod = _countWeeks(
+				deltaDays, timeRange.getEndLocalDate());
+
+			intervalsInPreviousPeriod = _countWeeks(
+				deltaDays, startLocalDate.minusDays(1));
+		}
+		else if (Interval.MONTH.equals(interval)) {
+			intervalsInCurrentPeriod = _countMonths(
+				deltaDays, timeRange.getEndLocalDate());
+
+			intervalsInPreviousPeriod = _countMonths(
+				deltaDays, startLocalDate.minusDays(1));
+		}
+
+		return Integer.max(intervalsInCurrentPeriod, intervalsInPreviousPeriod);
 	}
 
 	private String _getPreviousValueKey(
