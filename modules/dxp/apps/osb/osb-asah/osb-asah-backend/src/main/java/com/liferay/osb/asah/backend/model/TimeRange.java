@@ -40,6 +40,11 @@ public class TimeRange {
 		true, "last-24-hours", 0) {
 
 		@Override
+		public long getDeltaDays() {
+			return 1;
+		}
+
+		@Override
 		public LocalDateTime getStartLocalDateTime() {
 			LocalDateTime localDateTime = getEndLocalDateTime();
 
