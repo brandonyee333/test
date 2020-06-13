@@ -79,9 +79,7 @@ public class MetricHelper {
 			}
 		}
 		else {
-			_addMetric(
-				timeRange.getDeltaDays(), interval, localDateTime, metricType,
-				metrics, timeRange);
+			_addMetric(interval, localDateTime, metricType, metrics, timeRange);
 		}
 
 		return metrics;
@@ -189,11 +187,12 @@ public class MetricHelper {
 	}
 
 	private void _addMetric(
-		long days, Interval interval, LocalDateTime localDateTime,
-		MetricType metricType, Map<String, Metric> metrics,
-		TimeRange timeRange) {
+		Interval interval, LocalDateTime localDateTime, MetricType metricType,
+		Map<String, Metric> metrics, TimeRange timeRange) {
 
-		LocalDate localDate = localDateTime.toLocalDate();
+		long deltaDays = timeRange.getDeltaDays();
+
+		LocalDate startLocalDate = timeRange.getStartLocalDate();
 
 		if (Interval.WEEK.equals(interval)) {
 			if (localDateTime.getDayOfWeek() != DayOfWeek.SUNDAY) {
@@ -201,15 +200,23 @@ public class MetricHelper {
 				localDateTime = localDateTime.with(DayOfWeek.SUNDAY);
 			}
 
-			for (int i = _countWeeks(days, localDate) - 1; i >= 0; i--) {
+			int weeksInCurrentPeriod = _countWeeks(
+				deltaDays, timeRange.getEndLocalDate());
+
+			int weeksInPreviousPeriod = _countWeeks(
+				deltaDays, startLocalDate.minusDays(1));
+
+			int metricCount = Integer.max(
+				weeksInCurrentPeriod, weeksInPreviousPeriod);
+
+			for (int i = metricCount - 1; i >= 0; i--) {
 				LocalDateTime periodLocalDateTime = localDateTime.minusWeeks(i);
 
 				Metric metric = _createMetric(
 					periodLocalDateTime, interval, metricType, timeRange);
 
 				metric.setPreviousValueKey(
-					_getWeekPreviousValueKey(
-						periodLocalDateTime.toLocalDate(), days));
+					_getWeekPreviousValueKey(i, timeRange));
 
 				metric.setValueKey(
 					_getWeekValueKey(periodLocalDateTime.toLocalDate()));
@@ -222,7 +229,16 @@ public class MetricHelper {
 				localDateTime = localDateTime.withDayOfMonth(1);
 			}
 
-			for (int i = _countMonths(days, localDate) - 1; i >= 0; i--) {
+			int monthsInCurrentPeriod = _countMonths(
+				deltaDays, timeRange.getEndLocalDate());
+
+			int monthsInPreviousPeriod = _countMonths(
+				deltaDays, startLocalDate.minusDays(1));
+
+			int metricCount = Integer.max(
+				monthsInCurrentPeriod, monthsInPreviousPeriod);
+
+			for (int i = metricCount - 1; i >= 0; i--) {
 				LocalDateTime periodLocalDateTime = localDateTime.minusMonths(
 					i);
 
@@ -230,8 +246,7 @@ public class MetricHelper {
 					periodLocalDateTime, interval, metricType, timeRange);
 
 				metric.setPreviousValueKey(
-					_getMonthPreviousValueKey(
-						days, periodLocalDateTime.toLocalDate()));
+					_getMonthPreviousValueKey(i, timeRange));
 
 				metric.setValueKey(
 					_getMonthValueKey(periodLocalDateTime.toLocalDate()));
@@ -290,13 +305,17 @@ public class MetricHelper {
 	}
 
 	private String _getMonthPreviousValueKey(
-		long days, LocalDate currentLocalDate) {
+		int deltaMonths, TimeRange timeRange) {
 
-		currentLocalDate = currentLocalDate.minusMonths(1);
+		LocalDate currentPeriodStartLocalDate = timeRange.getStartLocalDate();
 
-		currentLocalDate = currentLocalDate.minusDays(days - 1);
+		LocalDate firstMonthDayLocalDate =
+			currentPeriodStartLocalDate.minusDays(1);
 
-		LocalDate firstMonthDayLocalDate = currentLocalDate.withDayOfMonth(1);
+		firstMonthDayLocalDate = firstMonthDayLocalDate.minusMonths(
+			deltaMonths);
+
+		firstMonthDayLocalDate = firstMonthDayLocalDate.withDayOfMonth(1);
 
 		LocalDate lastMonthDayLocalDate = firstMonthDayLocalDate.withDayOfMonth(
 			firstMonthDayLocalDate.lengthOfMonth());
@@ -320,14 +339,19 @@ public class MetricHelper {
 	}
 
 	private String _getWeekPreviousValueKey(
-		LocalDate currentLocalDate, long days) {
+		int deltaWeeks, TimeRange timeRange) {
 
-		currentLocalDate = currentLocalDate.minusWeeks(1);
+		LocalDate currentPeriodStartLocalDate = timeRange.getStartLocalDate();
 
-		currentLocalDate = currentLocalDate.minusDays(days);
+		LocalDate firstWeekdayLocalDate = currentPeriodStartLocalDate.minusDays(
+			(deltaWeeks * 7) + 1);
 
-		LocalDate firstWeekdayLocalDate = currentLocalDate.with(
-			DayOfWeek.SUNDAY);
+		if (firstWeekdayLocalDate.getDayOfWeek() != DayOfWeek.SUNDAY) {
+			firstWeekdayLocalDate = firstWeekdayLocalDate.minusWeeks(1);
+
+			firstWeekdayLocalDate = firstWeekdayLocalDate.with(
+				DayOfWeek.SUNDAY);
+		}
 
 		LocalDate lastWeekdayLocalDate = firstWeekdayLocalDate.plusDays(6);
 
