@@ -176,20 +176,15 @@ public class HistogramDog {
 			for (Histogram.Bucket histogramBucket :
 					previousHistogram.getBuckets()) {
 
-				Map.Entry<String, Metric> entry =
-					_getEntryFromPreviousTimestamp(
-						interval, metrics, histogramBucket.getKeyAsString());
+				Metric metric = _getMetricFromPreviousTimestamp(
+					interval, metrics, histogramBucket.getKeyAsString());
 
-				if (entry == null) {
+				if (metric == null) {
 					continue;
 				}
 
-				Metric metric = entry.getValue();
-
 				metric.setPreviousValue(
 					mapperFunction.apply(histogramBucket.getAggregations()));
-
-				metrics.put(entry.getKey(), metric);
 			}
 
 			index = 1;
@@ -219,8 +214,6 @@ public class HistogramDog {
 
 			metric.setValue(
 				mapperFunction.apply(histogramBucket.getAggregations()));
-
-			metrics.put(timeKey, metric);
 		}
 
 		Set<Map.Entry<String, Metric>> entries = metrics.entrySet();
@@ -268,16 +261,14 @@ public class HistogramDog {
 		return dateHistogramAggregationBuilder;
 	}
 
-	private Map.Entry<String, Metric> _getEntryFromPreviousTimestamp(
+	private Metric _getMetricFromPreviousTimestamp(
 		Interval interval, Map<String, Metric> metrics, String timestamp) {
 
 		String previousValueKey = _getPreviousValueKey(interval, timestamp);
 
-		for (Map.Entry<String, Metric> entry : metrics.entrySet()) {
-			Metric metric = entry.getValue();
-
+		for (Metric metric : metrics.values()) {
 			if (previousValueKey.equals(metric.getPreviousValueKey())) {
-				return entry;
+				return metric;
 			}
 		}
 
