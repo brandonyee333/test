@@ -25,10 +25,11 @@ import com.liferay.osb.asah.backend.model.Interval;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.TimeRange;
+import com.liferay.petra.string.StringPool;
 
 import java.time.Clock;
-import java.time.DayOfWeek;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
@@ -175,19 +176,20 @@ public class HistogramDog {
 			for (Histogram.Bucket histogramBucket :
 					previousHistogram.getBuckets()) {
 
-				String timeKey = _getTimeKey(
-					interval, timeRange, histogramBucket.getKeyAsString());
+				Map.Entry<String, Metric> entry =
+					_getEntryFromPreviousTimestamp(
+						interval, metrics, histogramBucket.getKeyAsString());
 
-				Metric metric = metrics.get(timeKey);
-
-				if (metric == null) {
+				if (entry == null) {
 					continue;
 				}
+
+				Metric metric = entry.getValue();
 
 				metric.setPreviousValue(
 					mapperFunction.apply(histogramBucket.getAggregations()));
 
-				metrics.put(timeKey, metric);
+				metrics.put(entry.getKey(), metric);
 			}
 
 			index = 1;
@@ -202,8 +204,12 @@ public class HistogramDog {
 			"metric_over_time");
 
 		for (Histogram.Bucket histogramBucket : currentHistogram.getBuckets()) {
-			String timeKey = _getTimeKey(
-				interval, null, histogramBucket.getKeyAsString());
+			Instant instant = Instant.parse(histogramBucket.getKeyAsString());
+
+			LocalDateTime localDateTime = LocalDateTime.ofInstant(
+				instant, ZoneOffset.UTC);
+
+			String timeKey = localDateTime.toString();
 
 			Metric metric = metrics.get(timeKey);
 
@@ -262,52 +268,40 @@ public class HistogramDog {
 		return dateHistogramAggregationBuilder;
 	}
 
-	private String _getTimeKey(
-		Interval interval, TimeRange timeRange, String timestamp) {
+	private Map.Entry<String, Metric> _getEntryFromPreviousTimestamp(
+		Interval interval, Map<String, Metric> metrics, String timestamp) {
 
+		String previousValueKey = _getPreviousValueKey(interval, timestamp);
+
+		for (Map.Entry<String, Metric> entry : metrics.entrySet()) {
+			Metric metric = entry.getValue();
+
+			if (previousValueKey.equals(metric.getPreviousValueKey())) {
+				return entry;
+			}
+		}
+
+		return null;
+	}
+
+	private String _getPreviousValueKey(Interval interval, String timestamp) {
 		Instant instant = Instant.parse(timestamp);
 
 		LocalDateTime localDateTime = LocalDateTime.ofInstant(
 			instant, ZoneOffset.UTC);
 
-		if (timeRange != null) {
-			if (TimeRange.LAST_24_HOURS.equals(timeRange) ||
-				TimeRange.YESTERDAY.equals(timeRange)) {
+		LocalDate startLocalDate = localDateTime.toLocalDate();
 
-				localDateTime = localDateTime.plusDays(1);
-			}
-			else if (TimeRange.LAST_7_DAYS.equals(timeRange)) {
-				localDateTime = localDateTime.plusDays(7);
-			}
-			else if (TimeRange.LAST_28_DAYS.equals(timeRange)) {
-				localDateTime = localDateTime.plusDays(28);
-			}
-			else if (TimeRange.LAST_30_DAYS.equals(timeRange)) {
-				localDateTime = localDateTime.plusDays(30);
-			}
-			else if (TimeRange.LAST_90_DAYS.equals(timeRange)) {
-				localDateTime = localDateTime.plusDays(90);
-			}
-			else if (TimeRange.LAST_180_DAYS.equals(timeRange)) {
-				localDateTime = localDateTime.plusDays(180);
-			}
-			else if (TimeRange.LAST_YEAR.equals(timeRange)) {
-				localDateTime = localDateTime.plusYears(1);
-			}
-			else {
-				localDateTime = localDateTime.plusDays(
-					timeRange.getDeltaDays());
-			}
-		}
+		if (Interval.WEEK.equals(interval)) {
+			LocalDate endLocalDate = startLocalDate.plusDays(6);
 
-		if (Interval.WEEK.equals(interval) &&
-			(localDateTime.getDayOfWeek() != DayOfWeek.SUNDAY)) {
-
-			localDateTime = localDateTime.minusWeeks(1);
-			localDateTime = localDateTime.with(DayOfWeek.SUNDAY);
+			return startLocalDate + StringPool.SLASH + endLocalDate;
 		}
 		else if (Interval.MONTH.equals(interval)) {
-			localDateTime = localDateTime.withDayOfMonth(1);
+			LocalDate endLocalDate = startLocalDate.withDayOfMonth(
+				startLocalDate.lengthOfMonth());
+
+			return startLocalDate + StringPool.SLASH + endLocalDate;
 		}
 
 		return localDateTime.toString();
