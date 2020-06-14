@@ -248,40 +248,27 @@ public class MetricHelper {
 	private int _getMetricCount(Interval interval, TimeRange timeRange) {
 		int deltaDays = timeRange.getDeltaDays();
 
-		int intervalsInCurrentPeriod = deltaDays;
-		int intervalsInPreviousPeriod = deltaDays;
-
-		LocalDate startLocalDate = timeRange.getStartLocalDate();
-
 		if (Interval.WEEK.equals(interval)) {
-			intervalsInCurrentPeriod = _countWeeks(
-				deltaDays, timeRange.getEndLocalDate());
+			LocalDate startLocalDate = timeRange.getStartLocalDate();
 
-			intervalsInPreviousPeriod = _countWeeks(
-				deltaDays, startLocalDate.minusDays(1));
+			return Integer.max(
+				_countWeeks(deltaDays, timeRange.getEndLocalDate()),
+				_countWeeks(deltaDays, startLocalDate.minusDays(1)));
 		}
 		else if (Interval.MONTH.equals(interval)) {
-			intervalsInCurrentPeriod = _countMonths(
-				deltaDays, timeRange.getEndLocalDate());
+			LocalDate startLocalDate = timeRange.getStartLocalDate();
 
-			intervalsInPreviousPeriod = _countMonths(
-				deltaDays, startLocalDate.minusDays(1));
+			return Integer.max(
+				_countMonths(deltaDays, timeRange.getEndLocalDate()),
+				_countMonths(deltaDays, startLocalDate.minusDays(1)));
 		}
 
-		return Integer.max(intervalsInCurrentPeriod, intervalsInPreviousPeriod);
+		return deltaDays;
 	}
 
 	private String _getPreviousValueKey(
 		LocalDateTime currentPeriodLocalDateTime, long intervalDelta,
 		Interval interval, TimeRange timeRange) {
-
-		LocalDateTime previousPeriodLocalDateTime = LocalDateTime.from(
-			currentPeriodLocalDateTime);
-
-		previousPeriodLocalDateTime = previousPeriodLocalDateTime.minusDays(
-			timeRange.getDeltaDays());
-
-		String previousValueKey = previousPeriodLocalDateTime.toString();
 
 		if (Interval.WEEK.equals(interval)) {
 			LocalDate currentPeriodStartLocalDate =
@@ -299,8 +286,8 @@ public class MetricHelper {
 
 			LocalDate lastWeekdayLocalDate = firstWeekdayLocalDate.plusDays(6);
 
-			previousValueKey =
-				firstWeekdayLocalDate + StringPool.SLASH + lastWeekdayLocalDate;
+			return firstWeekdayLocalDate + StringPool.SLASH +
+				lastWeekdayLocalDate;
 		}
 		else if (Interval.MONTH.equals(interval)) {
 			LocalDate currentPeriodStartLocalDate =
@@ -318,38 +305,40 @@ public class MetricHelper {
 				firstMonthDayLocalDate.withDayOfMonth(
 					firstMonthDayLocalDate.lengthOfMonth());
 
-			previousValueKey =
-				firstMonthDayLocalDate + StringPool.SLASH +
-					lastMonthDayLocalDate;
+			return firstMonthDayLocalDate + StringPool.SLASH +
+				lastMonthDayLocalDate;
 		}
 
-		return previousValueKey;
+		LocalDateTime previousPeriodLocalDateTime = LocalDateTime.from(
+			currentPeriodLocalDateTime);
+
+		previousPeriodLocalDateTime = previousPeriodLocalDateTime.minusDays(
+			timeRange.getDeltaDays());
+
+		return previousPeriodLocalDateTime.toString();
 	}
 
 	private String _getValueKey(
 		Interval interval, LocalDateTime localDateTime) {
 
-		String valueKey = localDateTime.toString();
-
-		LocalDate localDate = localDateTime.toLocalDate();
-
 		if (Interval.WEEK.equals(interval)) {
-			LocalDate lastWeekdayLocalDate = localDate.plusDays(6);
+			LocalDate startLocalDate = localDateTime.toLocalDate();
 
-			valueKey = localDate + StringPool.SLASH + lastWeekdayLocalDate;
+			LocalDate endLocalDate = startLocalDate.plusDays(6);
+
+			return startLocalDate + StringPool.SLASH + endLocalDate;
 		}
 		else if (Interval.MONTH.equals(interval)) {
-			LocalDate firstMonthDayLocalDate = localDate.withDayOfMonth(1);
+			LocalDate localDate = localDateTime.toLocalDate();
 
-			LocalDate lastMonthDayLocalDate = localDate.withDayOfMonth(
-				firstMonthDayLocalDate.lengthOfMonth());
+			LocalDate startLocalDate = localDate.withDayOfMonth(1);
+			LocalDate endLocalDate = localDate.withDayOfMonth(
+				localDate.lengthOfMonth());
 
-			valueKey =
-				firstMonthDayLocalDate + StringPool.SLASH +
-					lastMonthDayLocalDate;
+			return startLocalDate + StringPool.SLASH + endLocalDate;
 		}
 
-		return valueKey;
+		return localDateTime.toString();
 	}
 
 }

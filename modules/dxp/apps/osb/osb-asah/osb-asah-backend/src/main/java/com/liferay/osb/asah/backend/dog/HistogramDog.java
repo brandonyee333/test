@@ -204,9 +204,7 @@ public class HistogramDog {
 			LocalDateTime localDateTime = LocalDateTime.ofInstant(
 				instant, ZoneOffset.UTC);
 
-			String timeKey = localDateTime.toString();
-
-			Metric metric = metrics.get(timeKey);
+			Metric metric = metrics.get(localDateTime.toString());
 
 			if (metric == null) {
 				continue;
@@ -276,19 +274,19 @@ public class HistogramDog {
 	}
 
 	private String _getPreviousValueKey(Interval interval, String timestamp) {
-		Instant instant = Instant.parse(timestamp);
-
 		LocalDateTime localDateTime = LocalDateTime.ofInstant(
-			instant, ZoneOffset.UTC);
-
-		LocalDate startLocalDate = localDateTime.toLocalDate();
+			Instant.parse(timestamp), ZoneOffset.UTC);
 
 		if (Interval.WEEK.equals(interval)) {
+			LocalDate startLocalDate = localDateTime.toLocalDate();
+
 			LocalDate endLocalDate = startLocalDate.plusDays(6);
 
 			return startLocalDate + StringPool.SLASH + endLocalDate;
 		}
 		else if (Interval.MONTH.equals(interval)) {
+			LocalDate startLocalDate = localDateTime.toLocalDate();
+
 			LocalDate endLocalDate = startLocalDate.withDayOfMonth(
 				startLocalDate.lengthOfMonth());
 
