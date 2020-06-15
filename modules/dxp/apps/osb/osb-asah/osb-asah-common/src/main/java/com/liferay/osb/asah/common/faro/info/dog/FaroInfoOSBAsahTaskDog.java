@@ -40,7 +40,7 @@ public class FaroInfoOSBAsahTaskDog extends BaseFaroInfoDog {
 		_nanitesHttp.executeOSBAsahTask(osbAsahTaskJSONObject);
 	}
 
-	public void scheduleOSBAsahTask(
+	public JSONObject scheduleOSBAsahTask(
 		String className, JSONObject contextJSONObject, String cronExpression) {
 
 		JSONObject osbAsahTaskJSONObject = elasticsearchInvoker.add(
@@ -54,6 +54,9 @@ public class FaroInfoOSBAsahTaskDog extends BaseFaroInfoDog {
 			));
 
 		_nanitesHttp.scheduleOSBAsahTask(osbAsahTaskJSONObject);
+
+		return osbAsahTaskJSONObject;
+	}
 	}
 
 	@Autowired
