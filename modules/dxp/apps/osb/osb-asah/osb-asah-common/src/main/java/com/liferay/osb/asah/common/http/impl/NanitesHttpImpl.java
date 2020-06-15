@@ -60,6 +60,13 @@ public class NanitesHttpImpl implements NanitesHttp {
 			HttpMethod.POST, jsonObject.toString());
 	}
 
+	@Override
+	public void unscheduleOSBAsahTask(JSONObject jsonObject) {
+		_http.exchangeIfUp(
+			ServiceConstants.URL_BATCH_CURATOR, "/nanites/unschedule",
+			HttpMethod.POST, jsonObject.toString());
+	}
+
 	@Autowired
 	private Http _http;
 

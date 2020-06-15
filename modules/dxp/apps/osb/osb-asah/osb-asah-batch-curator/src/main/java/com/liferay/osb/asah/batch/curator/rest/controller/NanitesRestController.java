@@ -59,6 +59,12 @@ public class NanitesRestController {
 			new JSONObject(osbAsahTaskJSON));
 	}
 
+	@PostMapping("/unschedule")
+	public void unschedule(@RequestBody String osbAsahTaskJSON) {
+		_osbAsahBatchCuratorBot.unscheduleOSBAsahTask(
+			new JSONObject(osbAsahTaskJSON));
+	}
+
 	@Autowired
 	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 

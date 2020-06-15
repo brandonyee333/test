@@ -57,6 +57,11 @@ public class FaroInfoOSBAsahTaskDog extends BaseFaroInfoDog {
 
 		return osbAsahTaskJSONObject;
 	}
+
+	public void unscheduleOSBAsahTask(String osbAsahTaskId) {
+		_nanitesHttp.unscheduleOSBAsahTask(JSONUtil.put("id", osbAsahTaskId));
+
+		elasticsearchInvoker.delete("OSBAsahTasks", osbAsahTaskId);
 	}
 
 	@Autowired

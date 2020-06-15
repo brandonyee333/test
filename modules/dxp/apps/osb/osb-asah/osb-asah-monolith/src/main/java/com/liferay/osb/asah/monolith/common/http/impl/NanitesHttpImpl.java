@@ -50,6 +50,11 @@ public class NanitesHttpImpl implements NanitesHttp {
 		_nanitesRestController.schedule(jsonObject.toString());
 	}
 
+	@Override
+	public void unscheduleOSBAsahTask(JSONObject jsonObject) {
+		_nanitesRestController.unschedule(jsonObject.toString());
+	}
+
 	@Autowired
 	private NanitesRestController _nanitesRestController;
 

@@ -29,4 +29,6 @@ public interface NanitesHttp {
 
 	public void scheduleOSBAsahTask(JSONObject jsonObject);
 
+	public void unscheduleOSBAsahTask(JSONObject jsonObject);
+
 }
