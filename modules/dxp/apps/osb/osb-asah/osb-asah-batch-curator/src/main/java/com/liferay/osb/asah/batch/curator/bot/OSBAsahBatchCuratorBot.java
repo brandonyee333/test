@@ -32,6 +32,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -220,9 +221,12 @@ public class OSBAsahBatchCuratorBot {
 					osbAsahTaskJSONObject, cronExpression));
 		}
 
-		_threadPoolTaskScheduler.schedule(
+		ScheduledFuture<?> scheduledFuture = _threadPoolTaskScheduler.schedule(
 			new OSBAsahScheduledTaskRunnable(nanite, osbAsahTaskJSONObject),
 			new CronTrigger(cronExpression));
+
+		_scheduledFuturesMap.put(
+			osbAsahTaskJSONObject.getString("id"), scheduledFuture);
 	}
 
 	private boolean _checkNanite(String className) {
@@ -299,6 +303,8 @@ public class OSBAsahBatchCuratorBot {
 	@Autowired
 	private RunLogger _runLogger;
 
+	private final Map<String, ScheduledFuture<?>> _scheduledFuturesMap =
+		new HashMap<>();
 	private final ExecutorService _threadPoolTaskExecutor =
 		Executors.newFixedThreadPool(10);
 
