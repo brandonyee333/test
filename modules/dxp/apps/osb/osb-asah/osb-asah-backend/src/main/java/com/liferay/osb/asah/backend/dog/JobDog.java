@@ -254,6 +254,8 @@ public class JobDog {
 
 		JSONObject jsonObject = _faroInfoElasticsearchInvoker.get("jobs", id);
 
+		_unscheduleOSBAsahTask(jsonObject);
+
 		jsonObject.put("name", name);
 		jsonObject.put(
 			"parameters",
@@ -347,6 +349,16 @@ public class JobDog {
 	private void _init() {
 		_faroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forFaroInfo();
+	}
+
+	private void _unscheduleOSBAsahTask(JSONObject jobJSONObject) {
+		String osbAsahTaskId = jobJSONObject.optString("osbAsahTaskId", null);
+
+		if (osbAsahTaskId != null) {
+			_faroInfoOSBAsahTaskDog.unscheduleOSBAsahTask(osbAsahTaskId);
+
+			jobJSONObject.remove("osbAsahTaskId");
+		}
 	}
 
 	private static final Log _log = LogFactory.getLog(JobDog.class);
