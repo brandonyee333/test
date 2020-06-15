@@ -79,7 +79,7 @@ public class TestrayURLAliasFilter extends BaseFilter {
 		String contentType = ContentTypes.TEXT_HTML;
 
 		if (resourcePath.endsWith(".css")) {
-			contentType = ContentTypes.TEXT_CSS;
+			contentType = ContentTypes.TEXT_CSS_UTF8;
 		}
 		else if (resourcePath.endsWith(".js")) {
 			contentType = ContentTypes.TEXT_JAVASCRIPT;
