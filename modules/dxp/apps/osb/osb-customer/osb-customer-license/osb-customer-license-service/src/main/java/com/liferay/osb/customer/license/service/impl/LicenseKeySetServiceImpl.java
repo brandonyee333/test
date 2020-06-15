@@ -28,20 +28,6 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 @JSONWebService(mode = JSONWebServiceMode.MANUAL)
 public class LicenseKeySetServiceImpl extends LicenseKeySetServiceBaseImpl {
 
-	public LicenseKeySet addLicenseKeySet(
-			long userId, long accountEntryId, String name)
-		throws PortalException {
-
-		/*
-		OSBAccountEntryPermission.check(
-			getPermissionChecker(), accountEntryId,
-			OSBActionKeys.ADD_LICENSE_KEY_SET);
-		*/
-
-		return licenseKeySetLocalService.addLicenseKeySet(
-			userId, accountEntryId, name);
-	}
-
 	public LicenseKeySet deleteLicenseKeySet(long licenseKeySetId)
 		throws PortalException {
 

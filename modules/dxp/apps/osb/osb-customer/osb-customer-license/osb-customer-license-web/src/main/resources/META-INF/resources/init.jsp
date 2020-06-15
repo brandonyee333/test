@@ -74,7 +74,6 @@ page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product" %><%
 page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductConsumption" %><%@
 page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase" %><%@
 page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView" %><%@
-page import="com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil" %><%@
 page import="com.liferay.portal.kernel.bean.BeanParamUtil" %><%@
 page import="com.liferay.portal.kernel.dao.orm.CustomSQLParam" %><%@
 page import="com.liferay.portal.kernel.dao.orm.QueryUtil" %><%@
@@ -114,8 +113,7 @@ page import="java.util.LinkedHashMap" %><%@
 page import="java.util.List" %><%@
 page import="java.util.Map" %>
 
-<%@ page import="javax.portlet.PortletURL" %><%@
-page import="javax.portlet.WindowState" %>
+<%@ page import="javax.portlet.PortletURL" %>
 
 <liferay-theme:defineObjects />
 

@@ -157,18 +157,4 @@
 				OSB_PartnerWorker.userId = ?
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByLicenseKeyCreateUser">
-		<![CDATA[
-			INNER JOIN
-				OSB_LicenseKey ON
-					OSB_LicenseKey.userId = User_.userId
-		]]>
-	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByLicenseKeyModifiedUser">
-		<![CDATA[
-			INNER JOIN
-				OSB_LicenseKey ON
-					OSB_LicenseKey.modifiedUserId = User_.userId
-		]]>
-	</sql>
 </custom-sql>

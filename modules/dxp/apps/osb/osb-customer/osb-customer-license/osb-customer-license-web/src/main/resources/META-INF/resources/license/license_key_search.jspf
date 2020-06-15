@@ -102,7 +102,7 @@ Date lastEnabledDate = calendar.getTime();
 			<aui:input name="<%= displayTerms.CREATE_USER_NAME %>" type="hidden" value="<%= displayTerms.getCreateUserName() %>" />
 
 			<portlet:renderURL var="selectCreateUserURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
-				<portlet:param name="mvcPath" value="/license/select_user.jsp" />
+				<portlet:param name="mvcRenderCommandName" value="/license/select_user" />
 				<portlet:param name="userParam" value="licenseKeyCreateUsers" />
 				<portlet:param name="callback" value="selectCreateUser" />
 			</portlet:renderURL>
@@ -127,7 +127,7 @@ Date lastEnabledDate = calendar.getTime();
 			<aui:input name="<%= displayTerms.MODIFIED_USER_NAME %>" type="hidden" value="<%= displayTerms.getModifiedUserName() %>" />
 
 			<portlet:renderURL var="selectModifiedUserURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
-				<portlet:param name="mvcPath" value="/license/select_user.jsp" />
+				<portlet:param name="mvcRenderCommandName" value="/license/select_user" />
 				<portlet:param name="userParam" value="licenseKeyModifiedUsers" />
 				<portlet:param name="callback" value="selectModifiedUser" />
 			</portlet:renderURL>

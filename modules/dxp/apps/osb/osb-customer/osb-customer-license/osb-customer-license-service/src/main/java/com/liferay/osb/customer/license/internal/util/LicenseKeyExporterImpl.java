@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.license.internal.util;
 
 import com.liferay.osb.customer.admin.constants.LicenseEntryConstants;
+import com.liferay.osb.customer.admin.constants.ProductEntryConstants;
 import com.liferay.osb.customer.license.generator.KeyGenerator;
 import com.liferay.osb.customer.license.model.LicenseKey;
 import com.liferay.osb.customer.license.model.LicenseKeySet;
@@ -42,6 +43,7 @@ import java.io.File;
 import java.text.DateFormat;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -134,8 +136,7 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 	public String toXML(LicenseKey licenseKey) throws Exception {
 		Document document = null;
 
-		Map<String, String> properties = _keyGenerator.getProperties(
-			licenseKey);
+		Map<String, String> properties = _getProperties(licenseKey);
 
 		String key = licenseKey.getKey();
 
@@ -172,8 +173,7 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 
 		LicenseKey firstLicenseKey = licenseKeys.get(0);
 
-		Map<String, String> properties = _keyGenerator.getProperties(
-			firstLicenseKey);
+		Map<String, String> properties = _getProperties(firstLicenseKey);
 
 		if (firstLicenseKey.getLicenseVersion() >= 4) {
 			String licenseEntryType = firstLicenseKey.getLicenseEntryType();
@@ -198,8 +198,7 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 		Element serversElement = rootElement.addElement("servers");
 
 		for (LicenseKey licenseKey : licenseKeys) {
-			Map<String, String> curProperties = _keyGenerator.getProperties(
-				licenseKey);
+			Map<String, String> curProperties = _getProperties(licenseKey);
 
 			Element serverElement = serversElement.addElement("server");
 
@@ -483,6 +482,60 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 		}
 
 		return document;
+	}
+
+	private Map<String, String> _getProperties(LicenseKey licenseKey) {
+		String[] serverIds = new String[1];
+
+		if (licenseKey.getLicenseVersion() >= 3) {
+			serverIds[0] = licenseKey.getServerId();
+		}
+		else {
+			List<LicenseKey> clusterLicenseKeys =
+				_licenseKeyLocalService.getLicenseKeys(
+					licenseKey.getKoroneikiProductPurchaseKey(),
+					licenseKey.getClusterId());
+
+			serverIds = new String[clusterLicenseKeys.size()];
+
+			for (int i = 0; i < clusterLicenseKeys.size(); i++) {
+				LicenseKey clusterLicenseKey = clusterLicenseKeys.get(i);
+
+				serverIds[i] = clusterLicenseKey.getServerId();
+			}
+		}
+
+		Map<String, String> properties = _keyGenerator.getProperties(
+			licenseKey.getAccountEntryName(), licenseKey.getLicenseEntryName(),
+			licenseKey.getLicenseEntryType(), licenseKey.getLicenseVersion(),
+			licenseKey.getProductEntryName(), licenseKey.getProductId(),
+			licenseKey.getProductVersionLabel(), licenseKey.getOwner(),
+			licenseKey.getMaxServers(), licenseKey.getMaxHttpSessions(),
+			licenseKey.getMaxConcurrentUsers(), licenseKey.getMaxUsers(),
+			licenseKey.getSizing(), licenseKey.getDescription(),
+			licenseKey.getHostName(), licenseKey.getIpAddresses(),
+			licenseKey.getMacAddresses(), serverIds, licenseKey.getStartDate(),
+			licenseKey.getExpirationDate());
+
+		// See LRDCOM-2568
+
+		if (licenseKey.getProductVersion() ==
+				ProductEntryConstants.PORTAL_VERSION_6_1_10) {
+
+			Calendar cal = Calendar.getInstance();
+
+			cal.set(Calendar.DAY_OF_MONTH, 31);
+			cal.set(Calendar.MONTH, 6);
+			cal.set(Calendar.YEAR, 2012);
+
+			Date createDate = licenseKey.getCreateDate();
+
+			if (createDate.before(cal.getTime())) {
+				properties.put("productVersion", "6.1");
+			}
+		}
+
+		return properties;
 	}
 
 	@Reference

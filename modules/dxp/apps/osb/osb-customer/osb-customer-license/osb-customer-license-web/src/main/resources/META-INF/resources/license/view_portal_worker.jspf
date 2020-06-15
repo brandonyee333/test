@@ -32,7 +32,7 @@ pageContext.setAttribute("searchURL", searchURL);
 <aui:form action="<%= searchURL.toString() %>" method="post" onSubmit="submitForm(this); return false;">
 	<liferay-portlet:renderURLParams varImpl="searchURL" />
 
-	<portlet:renderURL var="addLicenseKeyURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+	<portlet:renderURL var="addLicenseKeyURL">
 		<portlet:param name="mvcPath" value="/license/edit_license_key.jsp" />
 		<portlet:param name="redirect" value="<%= currentURL %>" />
 	</portlet:renderURL>
@@ -73,7 +73,6 @@ pageContext.setAttribute("searchURL", searchURL);
 				rowURL.setParameter("licenseKeySetId", String.valueOf(licenseKey.getLicenseKeySetId()));
 				rowURL.setParameter("koroneikiProductPurchaseKey", licenseKey.getKoroneikiProductPurchaseKey());
 				rowURL.setParameter("clusterId", String.valueOf(licenseKey.getClusterId()));
-				rowURL.setWindowState(WindowState.MAXIMIZED);
 				%>
 
 				<liferay-ui:search-container-column-text

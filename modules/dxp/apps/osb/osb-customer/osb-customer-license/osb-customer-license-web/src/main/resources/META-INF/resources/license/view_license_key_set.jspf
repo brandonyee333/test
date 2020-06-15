@@ -37,7 +37,7 @@ while (!displayLicenseKeys.isEmpty()) {
 			<%@ include file="/license/edit_license_key_set_version_3_4.jspf" %>
 		</c:when>
 		<c:otherwise>
-			<aui:row cssClass='<%= "cluster " + cssClass %>' id='<%= licenseKey.getOfferingEntryId() + "-" + licenseKey.getClusterId() %>'>
+			<aui:row cssClass='<%= "cluster " + cssClass %>' id='<%= licenseKey.getKoroneikiProductPurchaseKey() + "-" + licenseKey.getClusterId() %>'>
 				<c:if test="<%= LicenseKeyPermission.contains(permissionChecker, licenseKey.getLicenseKeyId(), OSBActionKeys.UPDATE_ADMIN) %>">
 					<aui:col md="4">
 						<span class="license-info-label"><liferay-ui:message key="created-by" />:</span>
@@ -258,7 +258,6 @@ while (!displayLicenseKeys.isEmpty()) {
 							<portlet:param name="mvcPath" value="/license/move_license_key.jsp" />
 							<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
 							<portlet:param name="licenseKeyId" value="<%= String.valueOf(licenseKey.getLicenseKeyId()) %>" />
-							<portlet:param name="offeringEntryId" value="<%= String.valueOf(licenseKey.getOfferingEntryId()) %>" />
 						</portlet:renderURL>
 
 						<liferay-ui:icon

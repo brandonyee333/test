@@ -16,25 +16,27 @@ package com.liferay.osb.customer.license.generator.internal;
 
 import com.liferay.osb.customer.admin.constants.LicenseEntryConstants;
 import com.liferay.osb.customer.admin.constants.ProductEntryConstants;
+import com.liferay.osb.customer.license.constants.LicenseKeyConstants;
 import com.liferay.osb.customer.license.generator.KeyGenerator;
-import com.liferay.osb.customer.license.model.LicenseKey;
 import com.liferay.petra.encryptor.Encryptor;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.security.Key;
 import java.security.MessageDigest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -86,60 +88,6 @@ public class KeyGeneratorImpl implements KeyGenerator {
 			startDate, expirationDate);
 
 		return _encrypt(properties);
-	}
-
-	public Map<String, String> getProperties(LicenseKey licenseKey) {
-		String[] serverIds = new String[1];
-
-		if (licenseKey.getLicenseVersion() >= 3) {
-			serverIds[0] = licenseKey.getServerId();
-		}
-		else {
-			/*			List<LicenseKey> clusterLicenseKeys =
-							_licenseKeyLocalService.getOfferingEntryLicenseKeys(
-								licenseKey.getOfferingEntryId(), licenseKey.getClusterId());
-
-						serverIds = new String[clusterLicenseKeys.size()];
-
-						for (int i = 0; i < clusterLicenseKeys.size(); i++) {
-							LicenseKey clusterLicenseKey = clusterLicenseKeys.get(i);
-
-							serverIds[i] = clusterLicenseKey.getServerId();
-						}
-			*/
-		}
-
-		Map<String, String> properties = getProperties(
-			licenseKey.getAccountEntryName(), licenseKey.getLicenseEntryName(),
-			licenseKey.getLicenseEntryType(), licenseKey.getLicenseVersion(),
-			licenseKey.getProductEntryName(), licenseKey.getProductId(),
-			licenseKey.getProductVersionLabel(), licenseKey.getOwner(),
-			licenseKey.getMaxServers(), licenseKey.getMaxHttpSessions(),
-			licenseKey.getMaxConcurrentUsers(), licenseKey.getMaxUsers(),
-			licenseKey.getSizing(), licenseKey.getDescription(),
-			licenseKey.getHostName(), licenseKey.getIpAddresses(),
-			licenseKey.getMacAddresses(), serverIds, licenseKey.getStartDate(),
-			licenseKey.getExpirationDate());
-
-		// See LRDCOM-2568
-
-		if (licenseKey.getProductVersion() ==
-				ProductEntryConstants.PORTAL_VERSION_6_1_10) {
-
-			Calendar cal = Calendar.getInstance();
-
-			cal.set(Calendar.DAY_OF_MONTH, 31);
-			cal.set(Calendar.MONTH, 6);
-			cal.set(Calendar.YEAR, 2012);
-
-			Date createDate = licenseKey.getCreateDate();
-
-			if (createDate.before(cal.getTime())) {
-				properties.put("productVersion", "6.1");
-			}
-		}
-
-		return properties;
 	}
 
 	public Map<String, String> getProperties(
@@ -351,7 +299,8 @@ public class KeyGeneratorImpl implements KeyGenerator {
 			String[] keys = StringUtil.split(
 				StringUtil.read(
 					classLoader,
-					"com/liferay/osb/customer/license/generator/internal/keys.txt"),
+					"com/liferay/osb/customer/license/generator/internal" +
+						"/keys.txt"),
 				StringPool.NEW_LINE);
 
 			_keys[0] = (Key)Base64.stringToObject(keys[175]);
@@ -567,5 +516,8 @@ public class KeyGeneratorImpl implements KeyGenerator {
 		KeyGeneratorImpl.class);
 
 	private final Key[] _keys = new Key[3];
+
+	//	@Reference
+	//	private LicenseKeyLocalService _licenseKeyLocalService;
 
 }

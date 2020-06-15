@@ -21,6 +21,7 @@ import com.liferay.osb.customer.admin.service.LicenseEntryLocalServiceUtil;
 import com.liferay.osb.customer.license.model.LicenseKeySet;
 import com.liferay.osb.customer.license.service.LicenseKeySetLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.util.Time;
 
 import java.util.Date;
 
@@ -42,14 +43,14 @@ public class LicenseKeyImpl extends LicenseKeyBaseImpl {
 			return false;
 		}
 
-		/*
-		TODO
-		OfferingEntry offeringEntry = getOfferingEntry();
+		Date startDate = getStartDate();
+		Date expirationDate = getExpirationDate();
 
-		if ((offeringEntry.getLicenseLifetime() / Time.DAY) > 365) {
+		if (((expirationDate.getTime() - startDate.getTime()) / Time.DAY) >
+				365) {
+
 			return false;
 		}
-		*/
 
 		return true;
 	}

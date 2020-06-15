@@ -92,7 +92,7 @@ public class AccountEnvironmentPermission {
 			List<ContactRole> contactRoles =
 				_contactRoleWebService.getAccountContactRoles(
 					accountEntry.getKoroneikiAccountKey(), user.getUuid(), 1,
-					1);
+					1000);
 
 			for (ContactRole contactRole : contactRoles) {
 				String name = contactRole.getName();

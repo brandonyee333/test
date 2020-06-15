@@ -90,6 +90,10 @@
 			<finder-column name="assetReceiptLicenseUuid" />
 			<finder-column name="active" />
 		</finder>
+		<finder name="KPP_CI" return-type="Collection">
+			<finder-column name="koroneikiProductPurchaseKey" />
+			<finder-column name="clusterId" />
+		</finder>
 		<finder name="OEI_CI" return-type="Collection">
 			<finder-column name="offeringEntryId" />
 			<finder-column name="clusterId" />

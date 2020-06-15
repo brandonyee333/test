@@ -14,14 +14,17 @@
 
 package com.liferay.osb.customer.license.util;
 
+import com.liferay.osb.customer.admin.constants.LicenseEntryConstants;
 import com.liferay.osb.customer.license.model.LicenseKey;
 import com.liferay.osb.customer.license.service.LicenseKeyLocalServiceUtil;
 import com.liferay.osb.customer.license.util.comparator.LicenseKeyExpirationDateComparator;
 import com.liferay.osb.customer.license.util.comparator.LicenseKeyStartDateComparator;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -81,9 +84,6 @@ public class LicenseUtil {
 
 		LicenseKey firstLicenseKey = licenseKeys.get(0);
 
-		/*
-		TODO
-		OfferingEntry offeringEntry = firstLicenseKey.getOfferingEntry();
 		String licenseEntryType = firstLicenseKey.getLicenseEntryType();
 		Date startDate = firstLicenseKey.getStartDate();
 		Date expirationDate = firstLicenseKey.getExpirationDate();
@@ -106,17 +106,13 @@ public class LicenseUtil {
 			if (curLicenseEntryType.equals(
 					LicenseEntryConstants.TYPE_PER_USER)) {
 
-				OfferingEntry curOfferingEntry = licenseKey.getOfferingEntry();
-
-				if (offeringEntry.getMaxConcurrentUsers() !=
-						curOfferingEntry.getMaxConcurrentUsers()) {
+				if (firstLicenseKey.getMaxConcurrentUsers() !=
+						licenseKey.getMaxConcurrentUsers()) {
 
 					return false;
 				}
 
-				if (offeringEntry.getMaxUsers() !=
-						curOfferingEntry.getMaxUsers()) {
-
+				if (firstLicenseKey.getMaxUsers() != licenseKey.getMaxUsers()) {
 					return false;
 				}
 			}
@@ -135,7 +131,6 @@ public class LicenseUtil {
 				return false;
 			}
 		}
-		*/
 
 		return true;
 	}

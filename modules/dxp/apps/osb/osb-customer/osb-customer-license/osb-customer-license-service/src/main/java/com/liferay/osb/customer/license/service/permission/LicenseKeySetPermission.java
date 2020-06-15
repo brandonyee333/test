@@ -14,17 +14,27 @@
 
 package com.liferay.osb.customer.license.service.permission;
 
+import com.liferay.osb.customer.constants.OSBActionKeys;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.customer.license.model.LicenseKeySet;
 import com.liferay.osb.customer.license.service.LicenseKeySetLocalServiceUtil;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 
+import java.util.List;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Amos Fong
  */
+@Component(immediate = true, service = {})
 public class LicenseKeySetPermission {
 
 	public static void check(
@@ -48,8 +58,9 @@ public class LicenseKeySetPermission {
 	}
 
 	public static boolean contains(
-		PermissionChecker permissionChecker, LicenseKeySet licenseKeySet,
-		String actionId) {
+			PermissionChecker permissionChecker, LicenseKeySet licenseKeySet,
+			String actionId)
+		throws PortalException {
 
 		if (RoleLocalServiceUtil.hasUserRole(
 				permissionChecker.getUserId(),
@@ -65,37 +76,41 @@ public class LicenseKeySetPermission {
 			return true;
 		}
 
-		/*
-		TODO
-		AccountWorker accountWorker = null;
-
 		try {
-			accountWorker = AccountWorkerLocalServiceUtil.getAccountWorker(
-				permissionChecker.getUserId(),
-				licenseKeySet.getAccountEntryId());
+			User user = permissionChecker.getUser();
+
+			boolean accountCustomer = false;
+			boolean accountWorker = false;
+
+			List<ContactRole> contactRoles =
+				_contactRoleWebService.getAccountContactRoles(
+					licenseKeySet.getKoroneikiAccountKey(), user.getUuid(), 1,
+					1000);
+
+			for (ContactRole contactRole : contactRoles) {
+				if (contactRole.getType() ==
+						ContactRole.Type.ACCOUNT_CUSTOMER) {
+
+					accountCustomer = true;
+				}
+				else if (contactRole.getType() ==
+							ContactRole.Type.ACCOUNT_WORKER) {
+
+					accountWorker = true;
+				}
+			}
+
+			if (accountWorker) {
+				return true;
+			}
+
+			if (actionId.equals(OSBActionKeys.VIEW) && accountCustomer) {
+				return true;
+			}
 		}
 		catch (Exception e) {
+			throw new PortalException(e);
 		}
-
-		if (accountWorker != null) {
-			return true;
-		}
-
-		AccountCustomer accountCustomer = null;
-
-		try {
-			accountCustomer =
-				AccountCustomerLocalServiceUtil.getAccountCustomer(
-					permissionChecker.getUserId(),
-					licenseKeySet.getAccountEntryId());
-		}
-		catch (Exception e) {
-		}
-
-		if (actionId.equals(OSBActionKeys.VIEW) && (accountCustomer != null)) {
-			return true;
-		}
-		*/
 
 		return false;
 	}
@@ -110,5 +125,14 @@ public class LicenseKeySetPermission {
 
 		return contains(permissionChecker, licenseKeySet, actionId);
 	}
+
+	@Reference(unbind = "-")
+	protected void setContactRoleWebService(
+		ContactRoleWebService contactRoleWebService) {
+
+		_contactRoleWebService = contactRoleWebService;
+	}
+
+	private static ContactRoleWebService _contactRoleWebService;
 
 }

@@ -17,6 +17,8 @@
 <%@ include file="/init.jsp" %>
 
 <%
+String userSQL = (String)request.getAttribute("userSQL");
+
 String userParam = ParamUtil.getString(request, "userParam");
 String firstName = ParamUtil.getString(request, "firstName");
 String middleName = ParamUtil.getString(request, "middleName");
@@ -28,7 +30,7 @@ String callback = ParamUtil.getString(request, "callback");
 
 PortletURL portletURL = renderResponse.createRenderURL();
 
-portletURL.setParameter("mvcPath", "/license/select_user.jsp");
+portletURL.setParameter("mvcRenderCommandName", "/license/select_user");
 portletURL.setParameter("userParam", userParam);
 portletURL.setParameter("callback", callback);
 %>
@@ -46,12 +48,7 @@ portletURL.setParameter("callback", callback);
 				<%
 				LinkedHashMap<String, Object> userParams = new LinkedHashMap();
 
-				if (userParam.equals("licenseKeyCreateUsers")) {
-					userParams.put(userParam, new CustomSQLParam(CustomSQLUtil.get(getClass(), "com.liferay.portal.kernel.service.persistence.UserFinder.joinByLicenseKeyCreateUser"), StringPool.BLANK));
-				}
-				else if (userParam.equals("licenseKeyModifiedUsers")) {
-					userParams.put(userParam, new CustomSQLParam(CustomSQLUtil.get(getClass(), "com.liferay.portal.kernel.service.persistence.UserFinder.joinByLicenseKeyModifiedUser"), StringPool.BLANK));
-				}
+				userParams.put(userParam, new CustomSQLParam(userSQL, StringPool.BLANK));
 				%>
 
 				<liferay-ui:search-container

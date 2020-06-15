@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.license.web.internal.display.context;
 
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductConsumption;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
@@ -77,6 +78,12 @@ public class ProductPurchaseDisplay {
 		}
 
 		return licenseKeysAvailable;
+	}
+
+	public String getProductName() {
+		Product product = _productPurchase.getProduct();
+
+		return product.getName();
 	}
 
 	public String getSizing() {

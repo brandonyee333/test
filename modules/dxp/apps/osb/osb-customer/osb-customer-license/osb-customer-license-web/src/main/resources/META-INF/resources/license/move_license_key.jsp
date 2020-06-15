@@ -25,9 +25,7 @@ long licenseKeyId = ParamUtil.getLong(request, "licenseKeyId");
 
 LicenseKey licenseKey = LicenseKeyServiceUtil.getLicenseKey(licenseKeyId);
 
-//OfferingEntry offeringEntry = licenseKey.getOfferingEntry();
-
-//ProductEntry productEntry = ProductEntryLocalServiceUtil.fetchProductEntry(offeringEntry.getProductEntryId());
+ProductPurchase productPurchase = productPurchaseWebService.getProductPurchase(licenseKey.getKoroneikiProductPurchaseKey());
 
 PortletURL portletURL = renderResponse.createRenderURL();
 
@@ -37,8 +35,8 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 %>
 
 <script type="text/javascript">
-	function <portlet:namespace />moveLicenseKey(offeringEntryId) {
-		document.<portlet:namespace />fm.<portlet:namespace />offeringEntryId.value = offeringEntryId;
+	function <portlet:namespace />moveLicenseKey(koroneikiProductPurchaseKey) {
+		document.<portlet:namespace />fm.<portlet:namespace />koroneikiProductPurchaseKey.value = koroneikiProductPurchaseKey;
 		submitForm(document.<portlet:namespace />fm);
 	}
 
@@ -56,7 +54,7 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 			<aui:input name="licenseKeyId" type="hidden" value="<%= String.valueOf(licenseKey.getLicenseKeyId()) %>" />
 			<aui:input name="licenseKeySetId" type="hidden" value="<%= String.valueOf(licenseKey.getLicenseKeySetId()) %>" />
 			<aui:input name="active" type="hidden" value="<%= String.valueOf(licenseKey.getActive()) %>" />
-			<aui:input name="offeringEntryId" type="hidden" value="" />
+			<aui:input name="koroneikiProductPurchaseKey" type="hidden" value="" />
 
 			<div class="clearfix section">
 				<div class="pull-right">
@@ -71,46 +69,67 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 			</h1>
 
 			<%
-			LinkedHashMap<String, Object> params = new LinkedHashMap();
+			List<ProductPurchaseDisplay> productPurchaseDisplays = new ArrayList<ProductPurchaseDisplay>();
 
-			params.put("validLicense", new Long[] {0L, 0L});
+			ProductPurchaseView productPurchaseView = productPurchaseViewWebService.getProductPurchaseView(licenseKey.getKoroneikiAccountKey(), productPurchase.getProductKey());
 
-			//List<OfferingEntryGroup> offeringEntryGroups = OfferingEntryGroupFactoryUtil.createOfferingEntryGroups(0, licenseKey.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+			Map<String, List<ProductConsumption>> productConsumptionsMap = new HashMap<String, List<ProductConsumption>>();
+
+			if (productPurchaseView.getProductConsumptions() != null) {
+				for (ProductConsumption productConsumption : productPurchaseView.getProductConsumptions()) {
+					List<ProductConsumption> curProductConsumptions = productConsumptionsMap.get(productConsumption.getProductPurchaseKey());
+
+					if (curProductConsumptions == null) {
+						curProductConsumptions = new ArrayList<ProductConsumption>();
+
+						productConsumptionsMap.put(productConsumption.getProductPurchaseKey(), curProductConsumptions);
+					}
+
+					curProductConsumptions.add(productConsumption);
+				}
+			}
+
+			if (productPurchaseView.getProductPurchases() != null) {
+				for (ProductPurchase curProductPurchase : productPurchaseView.getProductPurchases()) {
+					productPurchaseDisplays.add(new ProductPurchaseDisplay(request, curProductPurchase, productConsumptionsMap.get(curProductPurchase.getKey())));
+				}
+			}
 			%>
 
-			<%--
 			<liferay-ui:search-container
-				delta="<%= 10 %>"
-				headerNames="name,type,start-date,lifetime,license-keys-available"
-				iteratorURL="<%= portletURL %>"
-				total="<%= offeringEntryGroups.size() %>"
+				headerNames="start-date,lifetime,instance-size,license-keys-available"
+				total="<%= productPurchaseDisplays.size() %>"
 			>
 				<liferay-ui:search-container-results
-					results="<%= ListUtil.subList(offeringEntryGroups, searchContainer.getStart(), searchContainer.getEnd()) %>"
+					results="<%= productPurchaseDisplays %>"
 				/>
 
 				<liferay-ui:search-container-row
-					className="com.liferay.osb.model.OfferingEntryGroup"
-					modelVar="offeringEntryGroup"
+					className="com.liferay.osb.customer.license.web.internal.display.context.ProductPurchaseDisplay"
+					modelVar="productPurchaseDisplay"
 				>
 
 					<%
-					ProductEntry curProductEntry = offeringEntryGroup.getProductEntry();
+					Calendar startDateCal = Calendar.getInstance(timeZone, locale);
 
-					String key = offeringEntryGroup.getKey();
+					startDateCal.setTime(productPurchaseDisplay.getStartDate());
+
+					Calendar expirationDateCal = Calendar.getInstance(timeZone, locale);
+
+					expirationDateCal.setTime(productPurchaseDisplay.getEndDate());
 
 					String rowHREF = null;
 
-					if (!key.equals(offeringEntry.getKey()) && offeringEntryGroup.hasAvailableServers() && ((productEntry == null) || (productEntry.getEnvironment() == curProductEntry.getEnvironment()))) {
-						OfferingEntry availableOfferingEntry = offeringEntryGroup.getAvailableLicenseOfferingEntry();
+					String productPurchaseKey = productPurchaseDisplay.getKey();
 
+					if (!productPurchaseKey.equals(licenseKey.getKoroneikiProductPurchaseKey())) {
 						StringBuilder sb = new StringBuilder();
 
 						sb.append("javascript:");
 						sb.append(renderResponse.getNamespace());
-						sb.append("moveLicenseKey(");
-						sb.append(availableOfferingEntry.getOfferingEntryId());
-						sb.append(");");
+						sb.append("moveLicenseKey('");
+						sb.append(productPurchaseKey);
+						sb.append("');");
 
 						rowHREF = sb.toString();
 					}
@@ -119,43 +138,53 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 					<liferay-ui:search-container-column-text
 						href="<%= rowHREF %>"
 						name="product"
-						value="<%= curProductEntry.getName() %>"
+						value="<%= productPurchaseDisplay.getProductName() %>"
 					/>
 
 					<liferay-ui:search-container-column-text
 						href="<%= rowHREF %>"
-						name="lifetime"
-					>
-						<%= (offeringEntryGroup.getLicenseLifetime() / Time.DAY) + " Days" %>
-					</liferay-ui:search-container-column-text>
+						name="start-date"
+						value="<%= longDateFormatDate.format(startDateCal.getTime()) %>"
+					/>
+
+					<liferay-ui:search-container-column-text
+						href="<%= rowHREF %>"
+						name="expiration-date"
+						value="<%= longDateFormatDate.format(expirationDateCal.getTime()) %>"
+					/>
 
 					<liferay-ui:search-container-column-text
 						href="<%= rowHREF %>"
 						name="license-keys-available"
 					>
-						<%= offeringEntryGroup.getQuantity() - offeringEntryGroup.getLicenseKeysCount() %>
+						<c:choose>
+							<c:when test="<%= !productPurchaseDisplay.isApproved() %>">
+								<liferay-ui:icon
+									image="inactive"
+									label="<%= true %>"
+									message="inactive"
+								/>
+							</c:when>
+							<c:otherwise>
+								<%= productPurchaseDisplay.getLicenseKeysAvailable() %>
+							</c:otherwise>
+						</c:choose>
 					</liferay-ui:search-container-column-text>
-
-					<liferay-ui:search-container-column-text
-						href="<%= rowHREF %>"
-						name="type"
-						value="<%= LanguageUtil.get(request, OfferingEntryConstants.getTypeLabel(offeringEntryGroup.getType())) %>"
-					/>
 
 					<liferay-ui:search-container-column-text
 						href="<%= rowHREF %>"
 					>
 						<c:choose>
-							<c:when test="<%= key.equals(offeringEntry.getKey()) %>">
+							<c:when test="<%= productPurchaseKey.equals(licenseKey.getKoroneikiProductPurchaseKey()) %>">
 								<liferay-ui:icon
 									image="checked"
 									label="<%= true %>"
 									message="current"
 								/>
 							</c:when>
-							<c:when test="<%= offeringEntryGroup.hasAvailableServers() && ((productEntry == null) || (productEntry.getEnvironment() == curProductEntry.getEnvironment())) %>">
+							<c:otherwise>
 								<aui:button onClick="<%= rowHREF %>" value="choose" />
-							</c:when>
+							</c:otherwise>
 						</c:choose>
 					</liferay-ui:search-container-column-text>
 				</liferay-ui:search-container-row>
@@ -164,8 +193,6 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 					markupView="lexicon"
 				/>
 			</liferay-ui:search-container>
-			--%>
-
 		</aui:form>
 	</aui:row>
 </div>

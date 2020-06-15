@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.license.generator;
 
-import com.liferay.osb.customer.license.model.LicenseKey;
-
 import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
@@ -38,8 +36,6 @@ public interface KeyGenerator {
 		long maxUsers, int sizing, String description, String hostName,
 		String ipAddresses, String macAddresses, String[] serverIds,
 		Date startDate, Date expirationDate);
-
-	public Map<String, String> getProperties(LicenseKey licenseKey);
 
 	public Map<String, String> getProperties(
 		String accountEntryName, String licenseEntryName,

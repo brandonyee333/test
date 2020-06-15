@@ -31,6 +31,7 @@ import com.liferay.osb.customer.license.exception.LicenseKeyMaxServersException;
 import com.liferay.osb.customer.license.exception.LicenseKeyOwnerException;
 import com.liferay.osb.customer.license.exception.LicenseKeyProductVersionException;
 import com.liferay.osb.customer.license.exception.LicenseKeyRegistrationException;
+import com.liferay.osb.customer.license.exception.LicenseKeyRenewException;
 import com.liferay.osb.customer.license.exception.LicenseKeyServerIdException;
 import com.liferay.osb.customer.license.exception.LicenseKeySetNameException;
 import com.liferay.osb.customer.license.exception.MaximumLicenseKeyException;
@@ -40,11 +41,13 @@ import com.liferay.osb.customer.license.service.LicenseKeyLocalService;
 import com.liferay.osb.customer.license.service.LicenseKeyService;
 import com.liferay.osb.customer.license.service.LicenseKeySetService;
 import com.liferay.osb.customer.license.util.LicenseKeyExporter;
+import com.liferay.osb.customer.license.util.LicenseUtil;
 import com.liferay.osb.customer.license.web.internal.constants.CustomerLicensePortletKeys;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
@@ -61,8 +64,10 @@ import com.liferay.portal.kernel.util.WebKeys;
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -122,6 +127,76 @@ public class LicensePortlet extends MVCPortlet {
 			_productPurchaseWebService);
 
 		super.render(renderRequest, renderResponse);
+	}
+
+	public void renewLicenseKey(
+			ActionRequest actionRequest, ActionResponse actionResponse)
+		throws Exception {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		User user = themeDisplay.getUser();
+
+		long licenseKeyId = ParamUtil.getLong(actionRequest, "licenseKeyId");
+
+		LicenseKey licenseKey = null;
+
+		if (licenseKeyId > 0) {
+			int renewTime = ParamUtil.getInteger(
+				actionRequest, "renewTime_" + licenseKeyId);
+
+			int startDay = ParamUtil.getInteger(
+				actionRequest, "startDay_" + licenseKeyId);
+			int startMonth = ParamUtil.getInteger(
+				actionRequest, "startMonth_" + licenseKeyId);
+			int startYear = ParamUtil.getInteger(
+				actionRequest, "startYear_" + licenseKeyId);
+
+			Calendar cal = Calendar.getInstance(
+				TimeZone.getTimeZone(user.getTimeZoneId()));
+
+			cal.set(startYear, startMonth, startDay);
+
+			licenseKey = _licenseKeyService.renewLicenseKey(
+				licenseKeyId, cal.getTime(), renewTime);
+		}
+		else {
+			long licenseKeySetId = ParamUtil.getLong(
+				actionRequest, "licenseKeySetId");
+
+			if (!LicenseUtil.isRenewAggregate(licenseKeySetId)) {
+				throw new LicenseKeyRenewException();
+			}
+
+			int renewTime = ParamUtil.getInteger(
+				actionRequest, "aggregateRenewTime");
+
+			int startDay = ParamUtil.getInteger(
+				actionRequest, "aggregateStartDay");
+			int startMonth = ParamUtil.getInteger(
+				actionRequest, "aggregateStartMonth");
+			int startYear = ParamUtil.getInteger(
+				actionRequest, "aggregateStartYear");
+
+			Calendar cal = Calendar.getInstance(
+				TimeZone.getTimeZone(user.getTimeZoneId()));
+
+			cal.set(startYear, startMonth, startDay);
+
+			List<LicenseKey> licenseKeys =
+				_licenseKeyLocalService.getLicenseKeySetLicenseKeys(
+					licenseKeySetId);
+
+			for (LicenseKey curLicenseKey : licenseKeys) {
+				if (!curLicenseKey.isActive()) {
+					continue;
+				}
+
+				licenseKey = _licenseKeyService.renewLicenseKey(
+					curLicenseKey.getLicenseKeyId(), cal.getTime(), renewTime);
+			}
+		}
 	}
 
 	@Override
