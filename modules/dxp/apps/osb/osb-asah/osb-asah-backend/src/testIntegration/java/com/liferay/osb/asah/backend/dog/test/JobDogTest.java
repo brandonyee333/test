@@ -233,6 +233,51 @@ public class JobDogTest {
 			trainingLocalDateTime.getYear());
 	}
 
+	@Test
+	public void testUpdateJob() {
+		Job job = _jobDog.addJob(
+			new ArrayList<JobParameter>() {
+				{
+					add(new JobParameter("parameter1", "1.2"));
+				}
+			},
+			JobTrainingFrequency.MANUAL, JobTrainingPeriod.LAST_30_DAYS,
+			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY,
+			"Product Recommendation Job");
+
+		Assert.assertNotNull(job);
+		Assert.assertNotNull(job.getId());
+
+		job = _jobDog.updateJob(
+			job.getId(),
+			new ArrayList<JobParameter>() {
+				{
+					add(new JobParameter("parameter1", "1.3"));
+				}
+			},
+			JobTrainingFrequency.EVERY_7_DAYS, JobTrainingPeriod.LAST_180_DAYS,
+			"Product Recommendation Job Updated");
+
+		Assert.assertNotNull(job);
+		Assert.assertNotNull(job.getId());
+
+		List<JobParameter> jobParameters = job.getJobParameters();
+
+		JobParameter jobParameter = jobParameters.get(0);
+
+		Assert.assertEquals("parameter1", jobParameter.getName());
+		Assert.assertEquals("1.3", jobParameter.getValue());
+
+		Assert.assertEquals(
+			JobTrainingFrequency.EVERY_7_DAYS, job.getJobTrainingFrequency());
+		Assert.assertEquals(
+			JobTrainingPeriod.LAST_180_DAYS, job.getJobTrainingPeriod());
+		Assert.assertEquals(
+			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY, job.getJobType());
+		Assert.assertEquals(
+			"Product Recommendation Job Updated", job.getName());
+	}
+
 	private <R> List<R> _getJobRunsProperty(
 		List<JobRun> jobRuns, Function<JobRun, ? extends R> mapFunction) {
 
