@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-@GraphQLTypeWiring(fieldName = "createJob", typeName = "MutationType")
+@GraphQLTypeWiring(fieldName = "updateJob", typeName = "MutationType")
 public class UpdateJobMutationDataFetcher implements DataFetcher<Job> {
 
 	@Override
