@@ -89,15 +89,7 @@ public class JobDog {
 		jsonObject.put("trainingPeriod", jobTrainingPeriod.toString());
 		jsonObject.put("type", jobType.toString());
 
-		if (jobTrainingFrequency != JobTrainingFrequency.MANUAL) {
-			JSONObject osbAsahTaskJSONObject =
-				_faroInfoOSBAsahTaskDog.scheduleOSBAsahTask(
-					_jobTypeNaniteMap.get(jobType), jsonObject,
-					jobTrainingFrequency.getCronExpression());
-
-			jsonObject.put(
-				"osbAsahTaskId", osbAsahTaskJSONObject.getString("id"));
-		}
+		_scheduleOSBAsahTask(jsonObject);
 
 		jsonObject = _faroInfoElasticsearchInvoker.add("jobs", jsonObject);
 
@@ -264,16 +256,7 @@ public class JobDog {
 		jsonObject.put("trainingFrequency", jobTrainingFrequency.toString());
 		jsonObject.put("trainingPeriod", jobTrainingPeriod.toString());
 
-		if (jobTrainingFrequency != JobTrainingFrequency.MANUAL) {
-			JSONObject osbAsahTaskJSONObject =
-				_faroInfoOSBAsahTaskDog.scheduleOSBAsahTask(
-					_jobTypeNaniteMap.get(
-						JobType.valueOf(jsonObject.getString("type"))),
-					jsonObject, jobTrainingFrequency.getCronExpression());
-
-			jsonObject.put(
-				"osbAsahTaskId", osbAsahTaskJSONObject.getString("id"));
-		}
+		_scheduleOSBAsahTask(jsonObject);
 
 		jsonObject = _faroInfoElasticsearchInvoker.update(
 			"jobs", id, jsonObject);
@@ -361,6 +344,23 @@ public class JobDog {
 	private void _init() {
 		_faroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forFaroInfo();
+	}
+
+	private void _scheduleOSBAsahTask(JSONObject jobJSONObject) {
+		JobTrainingFrequency jobTrainingFrequency =
+			JobTrainingFrequency.valueOf(
+				jobJSONObject.getString("trainingFrequency"));
+
+		if (jobTrainingFrequency != JobTrainingFrequency.MANUAL) {
+			JSONObject osbAsahTaskJSONObject =
+				_faroInfoOSBAsahTaskDog.scheduleOSBAsahTask(
+					_jobTypeNaniteMap.get(
+						JobType.valueOf(jobJSONObject.getString("type"))),
+					jobJSONObject, jobTrainingFrequency.getCronExpression());
+
+			jobJSONObject.put(
+				"osbAsahTaskId", osbAsahTaskJSONObject.getString("id"));
+		}
 	}
 
 	private void _unscheduleOSBAsahTask(JSONObject jobJSONObject) {
