@@ -37,6 +37,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
+import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.io.IOException;
 
@@ -359,7 +360,8 @@ public class JobDog {
 			_faroInfoOSBAsahTaskDog.scheduleOSBAsahTask(
 				_jobTypeNaniteMap.get(
 					JobType.valueOf(jobJSONObject.getString("type"))),
-				jobJSONObject, jobTrainingFrequency.getCronExpression());
+				JSONUtil.put("job", jobJSONObject),
+				jobTrainingFrequency.getCronExpression());
 
 		jobJSONObject.put(
 			"osbAsahTaskId", osbAsahTaskJSONObject.getString("id"));
