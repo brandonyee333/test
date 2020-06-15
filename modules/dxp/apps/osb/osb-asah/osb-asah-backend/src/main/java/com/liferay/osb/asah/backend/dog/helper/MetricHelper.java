@@ -163,9 +163,9 @@ public class MetricHelper {
 				localDateTime = localDateTime.with(DayOfWeek.SUNDAY);
 			}
 
-			int metricCount = _getMetricCount(interval, timeRange);
+			int metricsCount = _getMetricsCount(interval, timeRange);
 
-			for (int i = metricCount - 1; i >= 0; i--) {
+			for (int i = metricsCount - 1; i >= 0; i--) {
 				LocalDateTime periodLocalDateTime = localDateTime.minusWeeks(i);
 
 				metrics.put(
@@ -180,9 +180,9 @@ public class MetricHelper {
 				localDateTime = localDateTime.withDayOfMonth(1);
 			}
 
-			int metricCount = _getMetricCount(interval, timeRange);
+			int metricsCount = _getMetricsCount(interval, timeRange);
 
-			for (int i = metricCount - 1; i >= 0; i--) {
+			for (int i = metricsCount - 1; i >= 0; i--) {
 				LocalDateTime periodLocalDateTime = localDateTime.minusMonths(
 					i);
 
@@ -245,7 +245,7 @@ public class MetricHelper {
 		return metric;
 	}
 
-	private int _getMetricCount(Interval interval, TimeRange timeRange) {
+	private int _getMetricsCount(Interval interval, TimeRange timeRange) {
 		int deltaDays = timeRange.getDeltaDays();
 
 		if (Interval.WEEK.equals(interval)) {
