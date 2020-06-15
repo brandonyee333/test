@@ -368,15 +368,15 @@ public class JobDog {
 	}
 
 	private void _unscheduleOSBAsahTask(JSONObject jobJSONObject) {
-		String osbAsahTaskId = jobJSONObject.optString("osbAsahTaskId", null);
+		String osbAsahTaskId = jobJSONObject.optString("osbAsahTaskId", "");
 
-		if (osbAsahTaskId == null) {
+		if (StringUtils.isBlank(osbAsahTaskId)) {
 			return;
 		}
 
 		_faroInfoOSBAsahTaskDog.unscheduleOSBAsahTask(osbAsahTaskId);
 
-		jobJSONObject.remove("osbAsahTaskId");
+		jobJSONObject.put("osbAsahTaskId", "");
 	}
 
 	private static final Log _log = LogFactory.getLog(JobDog.class);
