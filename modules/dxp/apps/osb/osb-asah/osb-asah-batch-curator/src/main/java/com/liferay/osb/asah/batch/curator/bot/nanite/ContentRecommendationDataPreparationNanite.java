@@ -52,7 +52,9 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 	}
 
 	@Override
-	public void run(JSONObject jobJSONObject) throws Exception {
+	public void run(JSONObject contextJSONObject) throws Exception {
+		JSONObject jobJSONObject = contextJSONObject.getJSONObject("job");
+
 		String jobId = jobJSONObject.getString("id");
 
 		if (_getCurrentMonthJobRunsCount(jobId) > _maxMonthlyJobRuns) {
