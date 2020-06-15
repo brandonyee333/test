@@ -229,6 +229,19 @@ public class OSBAsahBatchCuratorBot {
 			osbAsahTaskJSONObject.getString("id"), scheduledFuture);
 	}
 
+	public void unscheduleOSBAsahTask(JSONObject osbAsahTaskJSONObject) {
+		ScheduledFuture<?> scheduledFuture = _scheduledFuturesMap.remove(
+			osbAsahTaskJSONObject.getString("id"));
+
+		if (scheduledFuture == null) {
+			throw new IllegalArgumentException(
+				"Unable to unschedule OSB Asah Task with ID " +
+					osbAsahTaskJSONObject.getString("id"));
+		}
+
+		scheduledFuture.cancel(false);
+	}
+
 	private boolean _checkNanite(String className) {
 		JSONObject latestRunLogJSONObject =
 			_runLogger.fetchLatestRunLogJSONObject(
