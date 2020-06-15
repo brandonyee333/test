@@ -351,26 +351,30 @@ public class JobDog {
 			JobTrainingFrequency.valueOf(
 				jobJSONObject.getString("trainingFrequency"));
 
-		if (jobTrainingFrequency != JobTrainingFrequency.MANUAL) {
-			JSONObject osbAsahTaskJSONObject =
-				_faroInfoOSBAsahTaskDog.scheduleOSBAsahTask(
-					_jobTypeNaniteMap.get(
-						JobType.valueOf(jobJSONObject.getString("type"))),
-					jobJSONObject, jobTrainingFrequency.getCronExpression());
-
-			jobJSONObject.put(
-				"osbAsahTaskId", osbAsahTaskJSONObject.getString("id"));
+		if (jobTrainingFrequency == JobTrainingFrequency.MANUAL) {
+			return;
 		}
+
+		JSONObject osbAsahTaskJSONObject =
+			_faroInfoOSBAsahTaskDog.scheduleOSBAsahTask(
+				_jobTypeNaniteMap.get(
+					JobType.valueOf(jobJSONObject.getString("type"))),
+				jobJSONObject, jobTrainingFrequency.getCronExpression());
+
+		jobJSONObject.put(
+			"osbAsahTaskId", osbAsahTaskJSONObject.getString("id"));
 	}
 
 	private void _unscheduleOSBAsahTask(JSONObject jobJSONObject) {
 		String osbAsahTaskId = jobJSONObject.optString("osbAsahTaskId", null);
 
-		if (osbAsahTaskId != null) {
-			_faroInfoOSBAsahTaskDog.unscheduleOSBAsahTask(osbAsahTaskId);
-
-			jobJSONObject.remove("osbAsahTaskId");
+		if (osbAsahTaskId == null) {
+			return;
 		}
+
+		_faroInfoOSBAsahTaskDog.unscheduleOSBAsahTask(osbAsahTaskId);
+
+		jobJSONObject.remove("osbAsahTaskId");
 	}
 
 	private static final Log _log = LogFactory.getLog(JobDog.class);
