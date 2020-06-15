@@ -38,13 +38,6 @@ public class LicenseKeySetServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.customer.license.service.impl.LicenseKeySetServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.osb.customer.license.model.LicenseKeySet
-			addLicenseKeySet(long userId, long accountEntryId, String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return getService().addLicenseKeySet(userId, accountEntryId, name);
-	}
-
-	public static com.liferay.osb.customer.license.model.LicenseKeySet
 			deleteLicenseKeySet(long licenseKeySetId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 

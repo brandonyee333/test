@@ -291,6 +291,10 @@ public interface LicenseKeyLocalService
 	public List<LicenseKey> getLicenseKeys(String koroneikiProductPurchaseKey);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<LicenseKey> getLicenseKeys(
+		String koroneikiProductPurchaseKey, long clusterId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeys(String productId, String serverId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

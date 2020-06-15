@@ -5,7 +5,7 @@ create index IX_D9E7AC39 on OSB_LicenseKey (accountEntryId);
 create index IX_5D0EB94A on OSB_LicenseKey (assetReceiptLicenseUuid[$COLUMN_LENGTH:75$], active_);
 create index IX_F432AF3A on OSB_LicenseKey (assetReceiptLicenseUuid[$COLUMN_LENGTH:75$], complimentary, active_);
 create index IX_C31F329C on OSB_LicenseKey (assetReceiptLicenseUuid[$COLUMN_LENGTH:75$], productId[$COLUMN_LENGTH:75$], serverId[$COLUMN_LENGTH:4000$], active_);
-create index IX_172C0849 on OSB_LicenseKey (koroneikiProductPurchaseKey[$COLUMN_LENGTH:75$]);
+create index IX_6BE3F33C on OSB_LicenseKey (koroneikiProductPurchaseKey[$COLUMN_LENGTH:75$], clusterId);
 create index IX_3B9F5AEA on OSB_LicenseKey (licenseKeySetId);
 create index IX_AEC46A56 on OSB_LicenseKey (offeringEntryId, clusterId, active_);
 create index IX_34C23F6D on OSB_LicenseKey (offeringEntryId, complimentary, active_);

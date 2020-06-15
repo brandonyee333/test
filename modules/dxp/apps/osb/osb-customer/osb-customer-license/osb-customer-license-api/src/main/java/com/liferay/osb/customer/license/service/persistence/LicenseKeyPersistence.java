@@ -1233,6 +1233,164 @@ public interface LicenseKeyPersistence extends BasePersistence<LicenseKey> {
 	public int countByARLU_A(String assetReceiptLicenseUuid, boolean active);
 
 	/**
+	 * Returns all the license keies where koroneikiProductPurchaseKey = &#63; and clusterId = &#63;.
+	 *
+	 * @param koroneikiProductPurchaseKey the koroneiki product purchase key
+	 * @param clusterId the cluster ID
+	 * @return the matching license keies
+	 */
+	public java.util.List<LicenseKey> findByKPP_CI(
+		String koroneikiProductPurchaseKey, long clusterId);
+
+	/**
+	 * Returns a range of all the license keies where koroneikiProductPurchaseKey = &#63; and clusterId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseKeyModelImpl</code>.
+	 * </p>
+	 *
+	 * @param koroneikiProductPurchaseKey the koroneiki product purchase key
+	 * @param clusterId the cluster ID
+	 * @param start the lower bound of the range of license keies
+	 * @param end the upper bound of the range of license keies (not inclusive)
+	 * @return the range of matching license keies
+	 */
+	public java.util.List<LicenseKey> findByKPP_CI(
+		String koroneikiProductPurchaseKey, long clusterId, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the license keies where koroneikiProductPurchaseKey = &#63; and clusterId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseKeyModelImpl</code>.
+	 * </p>
+	 *
+	 * @param koroneikiProductPurchaseKey the koroneiki product purchase key
+	 * @param clusterId the cluster ID
+	 * @param start the lower bound of the range of license keies
+	 * @param end the upper bound of the range of license keies (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching license keies
+	 */
+	public java.util.List<LicenseKey> findByKPP_CI(
+		String koroneikiProductPurchaseKey, long clusterId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<LicenseKey>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the license keies where koroneikiProductPurchaseKey = &#63; and clusterId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseKeyModelImpl</code>.
+	 * </p>
+	 *
+	 * @param koroneikiProductPurchaseKey the koroneiki product purchase key
+	 * @param clusterId the cluster ID
+	 * @param start the lower bound of the range of license keies
+	 * @param end the upper bound of the range of license keies (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching license keies
+	 */
+	public java.util.List<LicenseKey> findByKPP_CI(
+		String koroneikiProductPurchaseKey, long clusterId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<LicenseKey>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first license key in the ordered set where koroneikiProductPurchaseKey = &#63; and clusterId = &#63;.
+	 *
+	 * @param koroneikiProductPurchaseKey the koroneiki product purchase key
+	 * @param clusterId the cluster ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching license key
+	 * @throws NoSuchLicenseKeyException if a matching license key could not be found
+	 */
+	public LicenseKey findByKPP_CI_First(
+			String koroneikiProductPurchaseKey, long clusterId,
+			com.liferay.portal.kernel.util.OrderByComparator<LicenseKey>
+				orderByComparator)
+		throws NoSuchLicenseKeyException;
+
+	/**
+	 * Returns the first license key in the ordered set where koroneikiProductPurchaseKey = &#63; and clusterId = &#63;.
+	 *
+	 * @param koroneikiProductPurchaseKey the koroneiki product purchase key
+	 * @param clusterId the cluster ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching license key, or <code>null</code> if a matching license key could not be found
+	 */
+	public LicenseKey fetchByKPP_CI_First(
+		String koroneikiProductPurchaseKey, long clusterId,
+		com.liferay.portal.kernel.util.OrderByComparator<LicenseKey>
+			orderByComparator);
+
+	/**
+	 * Returns the last license key in the ordered set where koroneikiProductPurchaseKey = &#63; and clusterId = &#63;.
+	 *
+	 * @param koroneikiProductPurchaseKey the koroneiki product purchase key
+	 * @param clusterId the cluster ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching license key
+	 * @throws NoSuchLicenseKeyException if a matching license key could not be found
+	 */
+	public LicenseKey findByKPP_CI_Last(
+			String koroneikiProductPurchaseKey, long clusterId,
+			com.liferay.portal.kernel.util.OrderByComparator<LicenseKey>
+				orderByComparator)
+		throws NoSuchLicenseKeyException;
+
+	/**
+	 * Returns the last license key in the ordered set where koroneikiProductPurchaseKey = &#63; and clusterId = &#63;.
+	 *
+	 * @param koroneikiProductPurchaseKey the koroneiki product purchase key
+	 * @param clusterId the cluster ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching license key, or <code>null</code> if a matching license key could not be found
+	 */
+	public LicenseKey fetchByKPP_CI_Last(
+		String koroneikiProductPurchaseKey, long clusterId,
+		com.liferay.portal.kernel.util.OrderByComparator<LicenseKey>
+			orderByComparator);
+
+	/**
+	 * Returns the license keies before and after the current license key in the ordered set where koroneikiProductPurchaseKey = &#63; and clusterId = &#63;.
+	 *
+	 * @param licenseKeyId the primary key of the current license key
+	 * @param koroneikiProductPurchaseKey the koroneiki product purchase key
+	 * @param clusterId the cluster ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next license key
+	 * @throws NoSuchLicenseKeyException if a license key with the primary key could not be found
+	 */
+	public LicenseKey[] findByKPP_CI_PrevAndNext(
+			long licenseKeyId, String koroneikiProductPurchaseKey,
+			long clusterId,
+			com.liferay.portal.kernel.util.OrderByComparator<LicenseKey>
+				orderByComparator)
+		throws NoSuchLicenseKeyException;
+
+	/**
+	 * Removes all the license keies where koroneikiProductPurchaseKey = &#63; and clusterId = &#63; from the database.
+	 *
+	 * @param koroneikiProductPurchaseKey the koroneiki product purchase key
+	 * @param clusterId the cluster ID
+	 */
+	public void removeByKPP_CI(
+		String koroneikiProductPurchaseKey, long clusterId);
+
+	/**
+	 * Returns the number of license keies where koroneikiProductPurchaseKey = &#63; and clusterId = &#63;.
+	 *
+	 * @param koroneikiProductPurchaseKey the koroneiki product purchase key
+	 * @param clusterId the cluster ID
+	 * @return the number of matching license keies
+	 */
+	public int countByKPP_CI(
+		String koroneikiProductPurchaseKey, long clusterId);
+
+	/**
 	 * Returns all the license keies where offeringEntryId = &#63; and clusterId = &#63;.
 	 *
 	 * @param offeringEntryId the offering entry ID

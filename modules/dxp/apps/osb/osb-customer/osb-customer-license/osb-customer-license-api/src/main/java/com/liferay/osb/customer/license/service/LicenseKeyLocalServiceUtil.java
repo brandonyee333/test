@@ -397,6 +397,14 @@ public class LicenseKeyLocalServiceUtil {
 
 	public static java.util.List
 		<com.liferay.osb.customer.license.model.LicenseKey> getLicenseKeys(
+			String koroneikiProductPurchaseKey, long clusterId) {
+
+		return getService().getLicenseKeys(
+			koroneikiProductPurchaseKey, clusterId);
+	}
+
+	public static java.util.List
+		<com.liferay.osb.customer.license.model.LicenseKey> getLicenseKeys(
 			String productId, String serverId) {
 
 		return getService().getLicenseKeys(productId, serverId);

@@ -52,49 +52,6 @@ import com.liferay.portal.kernel.util.MethodKey;
 public class LicenseKeySetServiceHttp {
 
 	public static com.liferay.osb.customer.license.model.LicenseKeySet
-			addLicenseKeySet(
-				HttpPrincipal httpPrincipal, long userId, long accountEntryId,
-				String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		try {
-			MethodKey methodKey = new MethodKey(
-				LicenseKeySetServiceUtil.class, "addLicenseKeySet",
-				_addLicenseKeySetParameterTypes0);
-
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, userId, accountEntryId, name);
-
-			Object returnObj = null;
-
-			try {
-				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
-				}
-
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
-			}
-
-			return (com.liferay.osb.customer.license.model.LicenseKeySet)
-				returnObj;
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
-
-			_log.error(systemException, systemException);
-
-			throw systemException;
-		}
-	}
-
-	public static com.liferay.osb.customer.license.model.LicenseKeySet
 			deleteLicenseKeySet(
 				HttpPrincipal httpPrincipal, long licenseKeySetId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -102,7 +59,7 @@ public class LicenseKeySetServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				LicenseKeySetServiceUtil.class, "deleteLicenseKeySet",
-				_deleteLicenseKeySetParameterTypes1);
+				_deleteLicenseKeySetParameterTypes0);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, licenseKeySetId);
@@ -143,7 +100,7 @@ public class LicenseKeySetServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				LicenseKeySetServiceUtil.class, "getLicenseKeySet",
-				_getLicenseKeySetParameterTypes2);
+				_getLicenseKeySetParameterTypes1);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, licenseKeySetId);
@@ -185,7 +142,7 @@ public class LicenseKeySetServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				LicenseKeySetServiceUtil.class, "updateLicenseKeySet",
-				_updateLicenseKeySetParameterTypes3);
+				_updateLicenseKeySetParameterTypes2);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, licenseKeySetId, name);
@@ -222,13 +179,11 @@ public class LicenseKeySetServiceHttp {
 	private static Log _log = LogFactoryUtil.getLog(
 		LicenseKeySetServiceHttp.class);
 
-	private static final Class<?>[] _addLicenseKeySetParameterTypes0 =
-		new Class[] {long.class, long.class, String.class};
-	private static final Class<?>[] _deleteLicenseKeySetParameterTypes1 =
+	private static final Class<?>[] _deleteLicenseKeySetParameterTypes0 =
 		new Class[] {long.class};
-	private static final Class<?>[] _getLicenseKeySetParameterTypes2 =
+	private static final Class<?>[] _getLicenseKeySetParameterTypes1 =
 		new Class[] {long.class};
-	private static final Class<?>[] _updateLicenseKeySetParameterTypes3 =
+	private static final Class<?>[] _updateLicenseKeySetParameterTypes2 =
 		new Class[] {long.class, String.class};
 
 }

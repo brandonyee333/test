@@ -408,6 +408,14 @@ public class LicenseKeyLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
+		getLicenseKeys(String koroneikiProductPurchaseKey, long clusterId) {
+
+		return _licenseKeyLocalService.getLicenseKeys(
+			koroneikiProductPurchaseKey, clusterId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
 		getLicenseKeys(String productId, String serverId) {
 
 		return _licenseKeyLocalService.getLicenseKeys(productId, serverId);

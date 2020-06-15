@@ -34,15 +34,6 @@ public class LicenseKeySetServiceWrapper
 
 	@Override
 	public com.liferay.osb.customer.license.model.LicenseKeySet
-			addLicenseKeySet(long userId, long accountEntryId, String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _licenseKeySetService.addLicenseKeySet(
-			userId, accountEntryId, name);
-	}
-
-	@Override
-	public com.liferay.osb.customer.license.model.LicenseKeySet
 			deleteLicenseKeySet(long licenseKeySetId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 

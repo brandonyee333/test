@@ -62,25 +62,6 @@ import java.rmi.RemoteException;
 public class LicenseKeySetServiceSoap {
 
 	public static com.liferay.osb.customer.license.model.LicenseKeySetSoap
-			addLicenseKeySet(long userId, long accountEntryId, String name)
-		throws RemoteException {
-
-		try {
-			com.liferay.osb.customer.license.model.LicenseKeySet returnValue =
-				LicenseKeySetServiceUtil.addLicenseKeySet(
-					userId, accountEntryId, name);
-
-			return com.liferay.osb.customer.license.model.LicenseKeySetSoap.
-				toSoapModel(returnValue);
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			throw new RemoteException(exception.getMessage());
-		}
-	}
-
-	public static com.liferay.osb.customer.license.model.LicenseKeySetSoap
 			deleteLicenseKeySet(long licenseKeySetId)
 		throws RemoteException {
 
