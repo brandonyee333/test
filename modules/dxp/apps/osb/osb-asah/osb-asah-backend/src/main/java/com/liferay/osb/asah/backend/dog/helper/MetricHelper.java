@@ -233,12 +233,10 @@ public class MetricHelper {
 		Metric metric = new Metric(metricType);
 
 		metric.setPreviousValue(0.0);
-
 		metric.setPreviousValueKey(
 			_getPreviousValueKey(
 				currentPeriodLocalDateTime, intervalDelta, interval,
 				timeRange));
-
 		metric.setValue(0.0);
 		metric.setValueKey(_getValueKey(interval, currentPeriodLocalDateTime));
 
