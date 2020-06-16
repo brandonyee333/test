@@ -1,10 +1,10 @@
 import {Record} from 'immutable';
 
 export const CollaboratorsRecord = Record({
+	collaboratorId: null,
 	createDate: null,
-	deleteURL: '',
+	deleteCollaboratorURL: '',
 	emailAddress: '',
 	fullName: '',
-	gitHubUserName: '',
-	id: null
+	gitHubUserName: ''
 });

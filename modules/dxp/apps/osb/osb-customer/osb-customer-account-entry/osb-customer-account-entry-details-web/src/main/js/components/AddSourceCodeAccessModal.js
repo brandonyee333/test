@@ -131,12 +131,12 @@ export default function AddSourceCodeAccessModal({
 					const addCollaborator = () =>
 						addCollaboratorToMap(
 							CollaboratorsRecord({
+								collaboratorId: data.collaboratorId,
 								createDate: data.createDate,
-								deleteURL: data.deleteCollaboratorURL,
+								deleteCollaboratorURL: data.deleteCollaboratorURL,
 								emailAddress: fields.emailAddress.value,
 								fullName: fields.fullName.value,
-								gitHubUserName: fields.gitHubUserName.value,
-								id: data.collaboratorId
+								gitHubUserName: fields.gitHubUserName.value
 							})
 						);
 
@@ -345,18 +345,7 @@ function ConfirmationDisplay({confirmationType, onClose}) {
 						{modalWarningHeader}
 
 						<div className="modal-body-text">
-							{langSub(
-								Liferay.Language.get(
-									'you-will-gain-access-within-x'
-								),
-								[
-									<span className="semi-bold">
-										{LENGTH_OF_DAYS}{' '}
-										{Liferay.Language.get('days')}
-									</span>
-								],
-								false
-							)}
+							{Liferay.Language.get('you-will-gain-access-within-a-few-days')}
 						</div>
 
 						<div className="modal-body-text">
