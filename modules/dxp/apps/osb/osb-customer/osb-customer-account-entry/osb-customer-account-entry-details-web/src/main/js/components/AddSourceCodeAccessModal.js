@@ -7,7 +7,7 @@ import Modal from './Modal';
 
 import {postData} from '../helpers/api';
 import {langSub} from '../helpers/language';
-import {CollabRecord} from '../store/sourceCodeAccessCollaborator';
+import {CollaboratorsRecord} from '../store/sourceCodeAccessCollaborator';
 
 const ERROR_VALIDATION = {
 	emailAddress: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,6}$/i,
@@ -128,7 +128,7 @@ export default function AddSourceCodeAccessModal({
 					switch (data.message) {
 						case 'success':
 							addCollaboratorToMap(
-								CollabRecord({
+								CollaboratorsRecord({
 									collaboratorId: data.collaboratorId,
 									createDate: data.createDate,
 									deleteCollaboratorURL: data.deleteCollaboratorURL,

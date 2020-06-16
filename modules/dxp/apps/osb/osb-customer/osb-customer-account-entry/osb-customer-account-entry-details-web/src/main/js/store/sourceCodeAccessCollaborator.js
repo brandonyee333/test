@@ -1,6 +1,6 @@
 import {Record} from 'immutable';
 
-export const CollabRecord = Record({
+export const CollaboratorsRecord = Record({
 	createDate: null,
 	deleteURL: '',
 	emailAddress: '',

@@ -7,7 +7,7 @@ import Accordion from './Accordion';
 import AddSourceCodeAccessModal from './AddSourceCodeAccessModal';
 import Button from './Button';
 
-import {CollabRecord} from '../store/sourceCodeAccessCollaborator';
+import {CollaboratorsRecord} from '../store/sourceCodeAccessCollaborator';
 
 const sortDateByRecency = (a, b) =>
 	new Date(a.createDate) > new Date(b.createDate) ? -1 : 1;
@@ -29,7 +29,7 @@ SourceCodeAccess.propTypes = {
 export default function SourceCodeAccess({addCollaboratorURL, collaborators}) {
 	const processedCollaborators = collaborators.map(collaborator => [
 		collaborator.collaboratorId,
-		CollabRecord({
+		CollaboratorsRecord({
 			collaboratorId: collaborator.collaboratorId,
 			createDate: collaborator.createDate,
 			deleteCollaboratorURL: collaborator.deleteCollaboratorURL,
