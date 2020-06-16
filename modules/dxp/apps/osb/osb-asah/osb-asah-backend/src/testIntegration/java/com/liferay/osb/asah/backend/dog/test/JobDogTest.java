@@ -92,11 +92,27 @@ public class JobDogTest {
 		name = "jobs", resourcePath = "jobs-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
+	@ElasticsearchIndex(
+		name = "job-runs", resourcePath = "job-runs-info-1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
 	@Test
 	public void testDeleteJob() {
 		List<Boolean> statuses = _jobDog.deleteJobs(Arrays.asList("1"));
 
 		Assert.assertTrue(statuses.get(0));
+
+		ResultBag<JobRun> jobRunResultBag = _jobDog.getJobRunResultBag(
+			"1", 20,
+			new HashMap<String, String>() {
+				{
+					put("column", "id");
+					put("type", "DESC");
+				}
+			},
+			0);
+
+		Assert.assertEquals(0, jobRunResultBag.getTotal());
 	}
 
 	@Test
