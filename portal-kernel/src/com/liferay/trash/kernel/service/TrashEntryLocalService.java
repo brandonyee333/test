@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.UnicodeProperties;
+
 import com.liferay.trash.kernel.model.TrashEntry;
 
 import java.io.Serializable;
@@ -50,343 +51,327 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see TrashEntryLocalServiceUtil
+ * @see com.liferay.portlet.trash.service.base.TrashEntryLocalServiceBaseImpl
+ * @see com.liferay.portlet.trash.service.impl.TrashEntryLocalServiceImpl
  * @generated
  */
 @ProviderType
-@Transactional(
-	isolation = Isolation.PORTAL,
-	rollbackFor = {PortalException.class, SystemException.class}
-)
-public interface TrashEntryLocalService
-	extends BaseLocalService, PersistedModelLocalService {
-
+@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
+	PortalException.class, SystemException.class})
+public interface TrashEntryLocalService extends BaseLocalService,
+	PersistedModelLocalService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link TrashEntryLocalServiceUtil} to access the trash entry local service. Add custom service methods to <code>com.liferay.portlet.trash.service.impl.TrashEntryLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link TrashEntryLocalServiceUtil} to access the trash entry local service. Add custom service methods to {@link com.liferay.portlet.trash.service.impl.TrashEntryLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-
-	/**
-	 * Moves an entry to trash.
-	 *
-	 * @param userId the primary key of the user removing the entity
-	 * @param groupId the primary key of the entry's group
-	 * @param className the class name of the entity
-	 * @param classPK the primary key of the entity
-	 * @param classUuid the UUID of the entity's class
-	 * @param referrerClassName the referrer class name used to add a deletion
-	 {@link SystemEvent}
-	 * @param status the status of the entity prior to being moved to trash
-	 * @param statusOVPs the primary keys and statuses of any of the entry's
-	 versions (e.g., {@link
-	 com.liferay.portlet.documentlibrary.model.DLFileVersion})
-	 * @param typeSettingsProperties the type settings properties
-	 * @return the trashEntry
-	 */
-	public TrashEntry addTrashEntry(
-			long userId, long groupId, String className, long classPK,
-			String classUuid, String referrerClassName, int status,
-			List<ObjectValuePair<Long, Integer>> statusOVPs,
-			UnicodeProperties typeSettingsProperties)
-		throws PortalException;
-
-	/**
-	 * Adds the trash entry to the database. Also notifies the appropriate model listeners.
-	 *
-	 * @param trashEntry the trash entry
-	 * @return the trash entry that was added
-	 */
-	@Indexable(type = IndexableType.REINDEX)
-	public TrashEntry addTrashEntry(TrashEntry trashEntry);
-
-	public void checkEntries() throws PortalException;
-
-	/**
-	 * Creates a new trash entry with the primary key. Does not add the trash entry to the database.
-	 *
-	 * @param entryId the primary key for the new trash entry
-	 * @return the new trash entry
-	 */
-	@Transactional(enabled = false)
-	public TrashEntry createTrashEntry(long entryId);
-
-	public void deleteEntries(long groupId);
-
-	public void deleteEntries(long groupId, boolean deleteTrashedModels);
-
-	/**
-	 * Deletes the trash entry with the primary key.
-	 *
-	 * @param entryId the primary key of the trash entry
-	 * @return the trash entry with the primary key
-	 */
-	public TrashEntry deleteEntry(long entryId);
-
-	/**
-	 * Deletes the trash entry with the entity class name and primary key.
-	 *
-	 * @param className the class name of entity
-	 * @param classPK the primary key of the entry
-	 * @return the trash entry with the entity class name and primary key
-	 */
-	public TrashEntry deleteEntry(String className, long classPK);
-
-	@Indexable(type = IndexableType.DELETE)
-	public TrashEntry deleteEntry(TrashEntry trashEntry);
-
-	/**
-	 * @throws PortalException
-	 */
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
-
-	/**
-	 * Deletes the trash entry with the primary key from the database. Also notifies the appropriate model listeners.
-	 *
-	 * @param entryId the primary key of the trash entry
-	 * @return the trash entry that was removed
-	 * @throws PortalException if a trash entry with the primary key could not be found
-	 */
-	@Indexable(type = IndexableType.DELETE)
-	public TrashEntry deleteTrashEntry(long entryId) throws PortalException;
-
-	/**
-	 * Deletes the trash entry from the database. Also notifies the appropriate model listeners.
-	 *
-	 * @param trashEntry the trash entry
-	 * @return the trash entry that was removed
-	 */
-	@Indexable(type = IndexableType.DELETE)
-	public TrashEntry deleteTrashEntry(TrashEntry trashEntry);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DynamicQuery dynamicQuery();
-
-	/**
-	 * Performs a dynamic query on the database and returns the matching rows.
-	 *
-	 * @param dynamicQuery the dynamic query
-	 * @return the matching rows
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery);
-
-	/**
-	 * Performs a dynamic query on the database and returns a range of the matching rows.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portlet.trash.model.impl.TrashEntryModelImpl</code>.
-	 * </p>
-	 *
-	 * @param dynamicQuery the dynamic query
-	 * @param start the lower bound of the range of model instances
-	 * @param end the upper bound of the range of model instances (not inclusive)
-	 * @return the range of matching rows
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end);
-
-	/**
-	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portlet.trash.model.impl.TrashEntryModelImpl</code>.
-	 * </p>
-	 *
-	 * @param dynamicQuery the dynamic query
-	 * @param start the lower bound of the range of model instances
-	 * @param end the upper bound of the range of model instances (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching rows
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<T> orderByComparator);
-
-	/**
-	 * Returns the number of rows matching the dynamic query.
-	 *
-	 * @param dynamicQuery the dynamic query
-	 * @return the number of rows matching the dynamic query
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
-
-	/**
-	 * Returns the number of rows matching the dynamic query.
-	 *
-	 * @param dynamicQuery the dynamic query
-	 * @param projection the projection to apply to the query
-	 * @return the number of rows matching the dynamic query
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long dynamicQueryCount(
-		DynamicQuery dynamicQuery, Projection projection);
-
-	/**
-	 * Returns the trash entry with the primary key.
-	 *
-	 * @param entryId the primary key of the entry
-	 * @return the trash entry with the primary key
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TrashEntry fetchEntry(long entryId);
-
-	/**
-	 * Returns the trash entry with the entity class name and primary key.
-	 *
-	 * @param className the class name of the entity
-	 * @param classPK the primary key of the entity
-	 * @return the trash entry with the entity class name and primary key
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TrashEntry fetchEntry(String className, long classPK);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TrashEntry fetchTrashEntry(long entryId);
-
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
-	/**
-	 * Returns the trash entries with the matching group ID.
-	 *
-	 * @param groupId the primary key of the group
-	 * @return the trash entries with the group ID
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TrashEntry> getEntries(long groupId);
-
-	/**
-	 * Returns a range of all the trash entries matching the group ID.
-	 *
-	 * @param groupId the primary key of the group
-	 * @param start the lower bound of the range of trash entries to return
-	 * @param end the upper bound of the range of trash entries to return (not
-	 inclusive)
-	 * @return the range of matching trash entries
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TrashEntry> getEntries(long groupId, int start, int end);
-
-	/**
-	 * Returns a range of all the trash entries matching the group ID.
-	 *
-	 * @param groupId the primary key of the group
-	 * @param start the lower bound of the range of trash entries to return
-	 * @param end the upper bound of the range of trash entries to return (not
-	 inclusive)
-	 * @param obc the comparator to order the trash entries (optionally
-	 <code>null</code>)
-	 * @return the range of matching trash entries ordered by comparator
-	 <code>obc</code>
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TrashEntry> getEntries(
-		long groupId, int start, int end, OrderByComparator<TrashEntry> obc);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TrashEntry> getEntries(long groupId, String className);
-
-	/**
-	 * Returns the number of trash entries with the group ID.
-	 *
-	 * @param groupId the primary key of the group
-	 * @return the number of matching trash entries
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getEntriesCount(long groupId);
-
-	/**
-	 * Returns the trash entry with the primary key.
-	 *
-	 * @param entryId the primary key of the trash entry
-	 * @return the trash entry with the primary key
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TrashEntry getEntry(long entryId) throws PortalException;
-
-	/**
-	 * Returns the entry with the entity class name and primary key.
-	 *
-	 * @param className the class name of the entity
-	 * @param classPK the primary key of the entity
-	 * @return the trash entry with the entity class name and primary key
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TrashEntry getEntry(String className, long classPK)
-		throws PortalException;
+	public DynamicQuery dynamicQuery();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
-	public String getOSGiServiceIdentifier();
+	* @throws PortalException
+	*/
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException;
 
-	/**
-	 * @throws PortalException
-	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
-	/**
-	 * Returns a range of all the trash entries.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portlet.trash.model.impl.TrashEntryModelImpl</code>.
-	 * </p>
-	 *
-	 * @param start the lower bound of the range of trash entries
-	 * @param end the upper bound of the range of trash entries (not inclusive)
-	 * @return the range of trash entries
-	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TrashEntry> getTrashEntries(int start, int end);
+	public BaseModelSearchResult<TrashEntry> searchTrashEntries(
+		long companyId, long groupId, long userId, java.lang.String keywords,
+		int start, int end, Sort sort);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Hits search(long companyId, long groupId, long userId,
+		java.lang.String keywords, int start, int end, Sort sort);
 
 	/**
-	 * Returns the number of trash entries.
-	 *
-	 * @return the number of trash entries
-	 */
+	* Adds the trash entry to the database. Also notifies the appropriate model listeners.
+	*
+	* @param trashEntry the trash entry
+	* @return the trash entry that was added
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public TrashEntry addTrashEntry(TrashEntry trashEntry);
+
+	/**
+	* Moves an entry to trash.
+	*
+	* @param userId the primary key of the user removing the entity
+	* @param groupId the primary key of the entry's group
+	* @param className the class name of the entity
+	* @param classPK the primary key of the entity
+	* @param classUuid the UUID of the entity's class
+	* @param referrerClassName the referrer class name used to add a deletion
+	{@link SystemEvent}
+	* @param status the status of the entity prior to being moved to trash
+	* @param statusOVPs the primary keys and statuses of any of the entry's
+	versions (e.g., {@link
+	com.liferay.portlet.documentlibrary.model.DLFileVersion})
+	* @param typeSettingsProperties the type settings properties
+	* @return the trashEntry
+	*/
+	public TrashEntry addTrashEntry(long userId, long groupId,
+		java.lang.String className, long classPK, java.lang.String classUuid,
+		java.lang.String referrerClassName, int status,
+		List<ObjectValuePair<java.lang.Long, java.lang.Integer>> statusOVPs,
+		UnicodeProperties typeSettingsProperties) throws PortalException;
+
+	/**
+	* Creates a new trash entry with the primary key. Does not add the trash entry to the database.
+	*
+	* @param entryId the primary key for the new trash entry
+	* @return the new trash entry
+	*/
+	public TrashEntry createTrashEntry(long entryId);
+
+	@Indexable(type = IndexableType.DELETE)
+	public TrashEntry deleteEntry(TrashEntry trashEntry);
+
+	/**
+	* Deletes the trash entry with the entity class name and primary key.
+	*
+	* @param className the class name of entity
+	* @param classPK the primary key of the entry
+	* @return the trash entry with the entity class name and primary key
+	*/
+	public TrashEntry deleteEntry(java.lang.String className, long classPK);
+
+	/**
+	* Deletes the trash entry with the primary key.
+	*
+	* @param entryId the primary key of the trash entry
+	* @return the trash entry with the primary key
+	*/
+	public TrashEntry deleteEntry(long entryId);
+
+	/**
+	* Deletes the trash entry from the database. Also notifies the appropriate model listeners.
+	*
+	* @param trashEntry the trash entry
+	* @return the trash entry that was removed
+	*/
+	@Indexable(type = IndexableType.DELETE)
+	public TrashEntry deleteTrashEntry(TrashEntry trashEntry);
+
+	/**
+	* Deletes the trash entry with the primary key from the database. Also notifies the appropriate model listeners.
+	*
+	* @param entryId the primary key of the trash entry
+	* @return the trash entry that was removed
+	* @throws PortalException if a trash entry with the primary key could not be found
+	*/
+	@Indexable(type = IndexableType.DELETE)
+	public TrashEntry deleteTrashEntry(long entryId) throws PortalException;
+
+	/**
+	* Returns the trash entry with the entity class name and primary key.
+	*
+	* @param className the class name of the entity
+	* @param classPK the primary key of the entity
+	* @return the trash entry with the entity class name and primary key
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TrashEntry fetchEntry(java.lang.String className, long classPK);
+
+	/**
+	* Returns the trash entry with the primary key.
+	*
+	* @param entryId the primary key of the entry
+	* @return the trash entry with the primary key
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TrashEntry fetchEntry(long entryId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TrashEntry fetchTrashEntry(long entryId);
+
+	/**
+	* Returns the entry with the entity class name and primary key.
+	*
+	* @param className the class name of the entity
+	* @param classPK the primary key of the entity
+	* @return the trash entry with the entity class name and primary key
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TrashEntry getEntry(java.lang.String className, long classPK)
+		throws PortalException;
+
+	/**
+	* Returns the trash entry with the primary key.
+	*
+	* @param entryId the primary key of the trash entry
+	* @return the trash entry with the primary key
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TrashEntry getEntry(long entryId) throws PortalException;
+
+	/**
+	* Returns the trash entry with the primary key.
+	*
+	* @param entryId the primary key of the trash entry
+	* @return the trash entry
+	* @throws PortalException if a trash entry with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TrashEntry getTrashEntry(long entryId) throws PortalException;
+
+	/**
+	* Updates the trash entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param trashEntry the trash entry
+	* @return the trash entry that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public TrashEntry updateTrashEntry(TrashEntry trashEntry);
+
+	/**
+	* Returns the number of trash entries with the group ID.
+	*
+	* @param groupId the primary key of the group
+	* @return the number of matching trash entries
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getEntriesCount(long groupId);
+
+	/**
+	* Returns the number of trash entries.
+	*
+	* @return the number of trash entries
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getTrashEntriesCount();
 
 	/**
-	 * Returns the trash entry with the primary key.
-	 *
-	 * @param entryId the primary key of the trash entry
-	 * @return the trash entry
-	 * @throws PortalException if a trash entry with the primary key could not be found
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TrashEntry getTrashEntry(long entryId) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Hits search(
-		long companyId, long groupId, long userId, String keywords, int start,
-		int end, Sort sort);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public BaseModelSearchResult<TrashEntry> searchTrashEntries(
-		long companyId, long groupId, long userId, String keywords, int start,
-		int end, Sort sort);
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
 
 	/**
-	 * Updates the trash entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	 *
-	 * @param trashEntry the trash entry
-	 * @return the trash entry that was updated
-	 */
-	@Indexable(type = IndexableType.REINDEX)
-	public TrashEntry updateTrashEntry(TrashEntry trashEntry);
+	* Performs a dynamic query on the database and returns the matching rows.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the matching rows
+	*/
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery);
 
+	/**
+	* Performs a dynamic query on the database and returns a range of the matching rows.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.trash.model.impl.TrashEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param dynamicQuery the dynamic query
+	* @param start the lower bound of the range of model instances
+	* @param end the upper bound of the range of model instances (not inclusive)
+	* @return the range of matching rows
+	*/
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end);
+
+	/**
+	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.trash.model.impl.TrashEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param dynamicQuery the dynamic query
+	* @param start the lower bound of the range of model instances
+	* @param end the upper bound of the range of model instances (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching rows
+	*/
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator);
+
+	/**
+	* Returns the trash entries with the matching group ID.
+	*
+	* @param groupId the primary key of the group
+	* @return the trash entries with the group ID
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TrashEntry> getEntries(long groupId);
+
+	/**
+	* Returns a range of all the trash entries matching the group ID.
+	*
+	* @param groupId the primary key of the group
+	* @param start the lower bound of the range of trash entries to return
+	* @param end the upper bound of the range of trash entries to return (not
+	inclusive)
+	* @return the range of matching trash entries
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TrashEntry> getEntries(long groupId, int start, int end);
+
+	/**
+	* Returns a range of all the trash entries matching the group ID.
+	*
+	* @param groupId the primary key of the group
+	* @param start the lower bound of the range of trash entries to return
+	* @param end the upper bound of the range of trash entries to return (not
+	inclusive)
+	* @param obc the comparator to order the trash entries (optionally
+	<code>null</code>)
+	* @return the range of matching trash entries ordered by comparator
+	<code>obc</code>
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TrashEntry> getEntries(long groupId, int start, int end,
+		OrderByComparator<TrashEntry> obc);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TrashEntry> getEntries(long groupId, java.lang.String className);
+
+	/**
+	* Returns a range of all the trash entries.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.trash.model.impl.TrashEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of trash entries
+	* @param end the upper bound of the range of trash entries (not inclusive)
+	* @return the range of trash entries
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TrashEntry> getTrashEntries(int start, int end);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	public void checkEntries() throws PortalException;
+
+	public void deleteEntries(long groupId);
+
+	public void deleteEntries(long groupId, boolean deleteTrashedModels);
 }

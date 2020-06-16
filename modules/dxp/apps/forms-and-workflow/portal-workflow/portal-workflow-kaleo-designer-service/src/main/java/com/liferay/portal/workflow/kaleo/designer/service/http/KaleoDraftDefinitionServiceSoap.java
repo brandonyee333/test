@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.portal.workflow.kaleo.designer.service.http;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -26,20 +28,19 @@ import java.util.Map;
 
 /**
  * Provides the SOAP utility for the
- * <code>KaleoDraftDefinitionServiceUtil</code> service
- * utility. The static methods of this class call the same methods of the
- * service utility. However, the signatures are different because it is
- * difficult for SOAP to support certain types.
+ * {@link KaleoDraftDefinitionServiceUtil} service utility. The
+ * static methods of this class calls the same methods of the service utility.
+ * However, the signatures are different because it is difficult for SOAP to
+ * support certain types.
  *
  * <p>
  * ServiceBuilder follows certain rules in translating the methods. For example,
- * if the method in the service utility returns a <code>java.util.List</code>,
- * that is translated to an array of
- * <code>com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap</code>. If the method in the
- * service utility returns a
- * <code>com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition</code>, that is translated to a
- * <code>com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap</code>. Methods that SOAP
- * cannot safely wire are skipped.
+ * if the method in the service utility returns a {@link java.util.List}, that
+ * is translated to an array of {@link com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap}.
+ * If the method in the service utility returns a
+ * {@link com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition}, that is translated to a
+ * {@link com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap}. Methods that SOAP cannot
+ * safely wire are skipped.
  * </p>
  *
  * <p>
@@ -61,378 +62,322 @@ import java.util.Map;
  *
  * @author Eduardo Lundgren
  * @see KaleoDraftDefinitionServiceHttp
+ * @see com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap
+ * @see KaleoDraftDefinitionServiceUtil
  * @generated
  */
+@ProviderType
 public class KaleoDraftDefinitionServiceSoap {
-
 	/**
-	 * Adds a Kaleo draft definition.
-	 *
-	 * @param userId the primary key of the Kaleo draft definition's
-	 creator/owner
-	 * @param groupId the primary key of the Kaleo draft definition's group
-	 * @param name the Kaleo draft definition's name
-	 * @param titleMap the Kaleo draft definition's locales and localized
-	 titles
-	 * @param content the content wrapped in XML
-	 * @param version the Kaleo draft definition's published version
-	 * @param draftVersion the Kaleo draft definition's draft version
-	 * @param serviceContext the service context to be applied. This can set
-	 guest permissions and group permissions for the Kaleo draft
-	 definition.
-	 * @return the Kaleo draft definition
-	 * @throws PortalException if the user did not have the required permissions
-	 to create the Kaleo draft definition or if a portal exception
-	 occurred
-	 */
-	public static
-		com.liferay.portal.workflow.kaleo.designer.model.
-			KaleoDraftDefinitionSoap addKaleoDraftDefinition(
-					long userId, long groupId, String name,
-					String[] titleMapLanguageIds, String[] titleMapValues,
-					String content, int version, int draftVersion,
-					com.liferay.portal.kernel.service.ServiceContext
-						serviceContext)
-				throws RemoteException {
-
-		try {
-			Map<Locale, String> titleMap = LocalizationUtil.getLocalizationMap(
-				titleMapLanguageIds, titleMapValues);
-
-			com.liferay.portal.workflow.kaleo.designer.model.
-				KaleoDraftDefinition returnValue =
-					KaleoDraftDefinitionServiceUtil.addKaleoDraftDefinition(
-						userId, groupId, name, titleMap, content, version,
-						draftVersion, serviceContext);
-
-			return com.liferay.portal.workflow.kaleo.designer.model.
-				KaleoDraftDefinitionSoap.toSoapModel(returnValue);
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			throw new RemoteException(exception.getMessage());
-		}
-	}
-
-	/**
-	 * Deletes the Kaleo draft definition and its resources.
-	 *
-	 * @param name the Kaleo draft definition's name
-	 * @param version the Kaleo draft definition's published version
-	 * @param serviceContext the service context to be applied. This can set
-	 guest permissions and group permissions for the Kaleo draft
-	 definition.
-	 * @throws PortalException if the user did not have the required permissions
-	 to delete the Kaleo draft definition or if a portal exception
-	 occurred
-	 */
-	public static void deleteKaleoDraftDefinitions(
-			String name, int version,
-			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	* Adds a Kaleo draft definition.
+	*
+	* @param userId the primary key of the Kaleo draft definition's
+	creator/owner
+	* @param groupId the primary key of the Kaleo draft definition's group
+	* @param name the Kaleo draft definition's name
+	* @param titleMap the Kaleo draft definition's locales and localized
+	titles
+	* @param content the content wrapped in XML
+	* @param version the Kaleo draft definition's published version
+	* @param draftVersion the Kaleo draft definition's draft version
+	* @param serviceContext the service context to be applied. This can set
+	guest permissions and group permissions for the Kaleo draft
+	definition.
+	* @return the Kaleo draft definition
+	* @throws PortalException if the user did not have the required permissions
+	to create the Kaleo draft definition or if a portal exception
+	occurred
+	*/
+	public static com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap addKaleoDraftDefinition(
+		long userId, long groupId, java.lang.String name,
+		java.lang.String[] titleMapLanguageIds,
+		java.lang.String[] titleMapValues, java.lang.String content,
+		int version, int draftVersion,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
-
 		try {
-			KaleoDraftDefinitionServiceUtil.deleteKaleoDraftDefinitions(
-				name, version, serviceContext);
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+			Map<Locale, String> titleMap = LocalizationUtil.getLocalizationMap(titleMapLanguageIds,
+					titleMapValues);
 
-			throw new RemoteException(exception.getMessage());
+			com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition returnValue =
+				KaleoDraftDefinitionServiceUtil.addKaleoDraftDefinition(userId,
+					groupId, name, titleMap, content, version, draftVersion,
+					serviceContext);
+
+			return com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	/**
-	 * Returns the Kaleo draft definition matching the name, published version,
-	 * and draft version.
-	 *
-	 * @param name the Kaleo draft definition's name
-	 * @param version the Kaleo draft definition's published version
-	 * @param draftVersion the Kaleo draft definition's draft version
-	 * @param serviceContext the service context to be applied. This can set
-	 guest permissions and group permissions for the Kaleo draft
-	 definition.
-	 * @return the matching Kaleo draft definition
-	 * @throws PortalException if the user did not have the required permissions
-	 to access the Kaleo draft definition or if a portal exception
-	 occurred
-	 */
-	public static
-		com.liferay.portal.workflow.kaleo.designer.model.
-			KaleoDraftDefinitionSoap getKaleoDraftDefinition(
-					String name, int version, int draftVersion,
-					com.liferay.portal.kernel.service.ServiceContext
-						serviceContext)
-				throws RemoteException {
-
+	* Deletes the Kaleo draft definition and its resources.
+	*
+	* @param name the Kaleo draft definition's name
+	* @param version the Kaleo draft definition's published version
+	* @param serviceContext the service context to be applied. This can set
+	guest permissions and group permissions for the Kaleo draft
+	definition.
+	* @throws PortalException if the user did not have the required permissions
+	to delete the Kaleo draft definition or if a portal exception
+	occurred
+	*/
+	public static void deleteKaleoDraftDefinitions(java.lang.String name,
+		int version,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws RemoteException {
 		try {
-			com.liferay.portal.workflow.kaleo.designer.model.
-				KaleoDraftDefinition returnValue =
-					KaleoDraftDefinitionServiceUtil.getKaleoDraftDefinition(
-						name, version, draftVersion, serviceContext);
-
-			return com.liferay.portal.workflow.kaleo.designer.model.
-				KaleoDraftDefinitionSoap.toSoapModel(returnValue);
+			KaleoDraftDefinitionServiceUtil.deleteKaleoDraftDefinitions(name,
+				version, serviceContext);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	/**
-	 * Returns the Kaleo draft definitions.
-	 *
-	 * @return the Kaleo draft definitions
-	 * @throws PortalException if a portal exception occurred
-	 */
-	public static
-		com.liferay.portal.workflow.kaleo.designer.model.
-			KaleoDraftDefinitionSoap[] getKaleoDraftDefinitions()
-				throws RemoteException {
-
+	* Returns the Kaleo draft definition matching the name, published version,
+	* and draft version.
+	*
+	* @param name the Kaleo draft definition's name
+	* @param version the Kaleo draft definition's published version
+	* @param draftVersion the Kaleo draft definition's draft version
+	* @param serviceContext the service context to be applied. This can set
+	guest permissions and group permissions for the Kaleo draft
+	definition.
+	* @return the matching Kaleo draft definition
+	* @throws PortalException if the user did not have the required permissions
+	to access the Kaleo draft definition or if a portal exception
+	occurred
+	*/
+	public static com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap getKaleoDraftDefinition(
+		java.lang.String name, int version, int draftVersion,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws RemoteException {
 		try {
-			java.util.List
-				<com.liferay.portal.workflow.kaleo.designer.model.
-					KaleoDraftDefinition> returnValue =
-						KaleoDraftDefinitionServiceUtil.
-							getKaleoDraftDefinitions();
+			com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition returnValue =
+				KaleoDraftDefinitionServiceUtil.getKaleoDraftDefinition(name,
+					version, draftVersion, serviceContext);
 
-			return com.liferay.portal.workflow.kaleo.designer.model.
-				KaleoDraftDefinitionSoap.toSoapModels(returnValue);
+			return com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	/**
-	 * Returns the latest Kaleo draft definition matching the name and version.
-	 *
-	 * @param name the Kaleo draft definition's name
-	 * @param version the Kaleo draft definition's published version
-	 * @param serviceContext the service context to be applied. This can set
-	 guest permissions and group permissions for the Kaleo draft
-	 definition.
-	 * @return the latest matching Kaleo draft definition
-	 * @throws PortalException if a matching kaleo draft definition could not be
-	 found or if the user did not have the required permissions to
-	 access the Kaleo draft definition
-	 */
-	public static
-		com.liferay.portal.workflow.kaleo.designer.model.
-			KaleoDraftDefinitionSoap getLatestKaleoDraftDefinition(
-					String name, int version,
-					com.liferay.portal.kernel.service.ServiceContext
-						serviceContext)
-				throws RemoteException {
-
+	* Returns the Kaleo draft definitions.
+	*
+	* @return the Kaleo draft definitions
+	* @throws PortalException if a portal exception occurred
+	*/
+	public static com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap[] getKaleoDraftDefinitions()
+		throws RemoteException {
 		try {
-			com.liferay.portal.workflow.kaleo.designer.model.
-				KaleoDraftDefinition returnValue =
-					KaleoDraftDefinitionServiceUtil.
-						getLatestKaleoDraftDefinition(
-							name, version, serviceContext);
+			java.util.List<com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition> returnValue =
+				KaleoDraftDefinitionServiceUtil.getKaleoDraftDefinitions();
 
-			return com.liferay.portal.workflow.kaleo.designer.model.
-				KaleoDraftDefinitionSoap.toSoapModel(returnValue);
+			return com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap.toSoapModels(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	/**
-	 * Returns an ordered range of the latest Kaleo draft definitions matching
-	 * the company and version.
-	 *
-	 * @param companyId the primary key of the Kaleo draft definition's company
-	 * @param version the Kaleo draft definition's published version
-	 * @param start the lower bound of the range of Kaleo draft definitions to
-	 return
-	 * @param end the upper bound of the range of Kkaleo draft definitions to
-	 return (not inclusive)
-	 * @param orderByComparator the comparator to order the Kaleo draft
-	 definitions
-	 * @return the range of matching Kaleo draft definitions ordered by the
-	 comparator
-	 * @throws PortalException if a portal exception occurred
-	 */
-	public static
-		com.liferay.portal.workflow.kaleo.designer.model.
-			KaleoDraftDefinitionSoap[] getLatestKaleoDraftDefinitions(
-					long companyId, int version, int start, int end,
-					com.liferay.portal.kernel.util.OrderByComparator
-						orderByComparator)
-				throws RemoteException {
-
+	* Returns the latest Kaleo draft definition matching the name and version.
+	*
+	* @param name the Kaleo draft definition's name
+	* @param version the Kaleo draft definition's published version
+	* @param serviceContext the service context to be applied. This can set
+	guest permissions and group permissions for the Kaleo draft
+	definition.
+	* @return the latest matching Kaleo draft definition
+	* @throws PortalException if a matching kaleo draft definition could not be
+	found or if the user did not have the required permissions to
+	access the Kaleo draft definition
+	*/
+	public static com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap getLatestKaleoDraftDefinition(
+		java.lang.String name, int version,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws RemoteException {
 		try {
-			java.util.List
-				<com.liferay.portal.workflow.kaleo.designer.model.
-					KaleoDraftDefinition> returnValue =
-						KaleoDraftDefinitionServiceUtil.
-							getLatestKaleoDraftDefinitions(
-								companyId, version, start, end,
-								orderByComparator);
+			com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition returnValue =
+				KaleoDraftDefinitionServiceUtil.getLatestKaleoDraftDefinition(name,
+					version, serviceContext);
 
-			return com.liferay.portal.workflow.kaleo.designer.model.
-				KaleoDraftDefinitionSoap.toSoapModels(returnValue);
+			return com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	/**
-	 * Returns an ordered range of the latest Kaleo draft definitions matching
-	 * the company, version, and keywords.
-	 *
-	 * @param companyId the primary key of the Kaleo draft definition's company
-	 * @param keywords the Kaleo draft definition's name or title
-	 * @param version the Kaleo draft definition's published version
-	 * @param start the lower bound of the range of Kaleo draft definitions to
-	 return
-	 * @param end the upper bound of the range of Kaleo draft definitions to
-	 return (not inclusive)
-	 * @param orderByComparator the comparator to order the Kaleo draft
-	 definitions
-	 * @return the range of matching Kaleo draft definitions ordered by the
-	 comparator
-	 * @throws PortalException if a portal exception occurred
-	 */
-	public static
-		com.liferay.portal.workflow.kaleo.designer.model.
-			KaleoDraftDefinitionSoap[] getLatestKaleoDraftDefinitions(
-					long companyId, String keywords, int version, int start,
-					int end,
-					com.liferay.portal.kernel.util.OrderByComparator
-						orderByComparator)
-				throws RemoteException {
-
+	* Returns an ordered range of the latest Kaleo draft definitions matching
+	* the company and version.
+	*
+	* @param companyId the primary key of the Kaleo draft definition's company
+	* @param version the Kaleo draft definition's published version
+	* @param start the lower bound of the range of Kaleo draft definitions to
+	return
+	* @param end the upper bound of the range of Kkaleo draft definitions to
+	return (not inclusive)
+	* @param orderByComparator the comparator to order the Kaleo draft
+	definitions
+	* @return the range of matching Kaleo draft definitions ordered by the
+	comparator
+	* @throws PortalException if a portal exception occurred
+	*/
+	public static com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap[] getLatestKaleoDraftDefinitions(
+		long companyId, int version, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws RemoteException {
 		try {
-			java.util.List
-				<com.liferay.portal.workflow.kaleo.designer.model.
-					KaleoDraftDefinition> returnValue =
-						KaleoDraftDefinitionServiceUtil.
-							getLatestKaleoDraftDefinitions(
-								companyId, keywords, version, start, end,
-								orderByComparator);
+			java.util.List<com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition> returnValue =
+				KaleoDraftDefinitionServiceUtil.getLatestKaleoDraftDefinitions(companyId,
+					version, start, end, orderByComparator);
 
-			return com.liferay.portal.workflow.kaleo.designer.model.
-				KaleoDraftDefinitionSoap.toSoapModels(returnValue);
+			return com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap.toSoapModels(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	/**
-	 * Publishes the Kaleo draft definition.
-	 *
-	 * @param userId the primary key of the Kaleo draft definition's
-	 creator/owner
-	 * @param groupId the primary key of the Kaleo draft definition's group
-	 * @param name the Kaleo draft definition's name
-	 * @param titleMap the Kaleo draft definition's locales and localized
-	 titles
-	 * @param content the content wrapped in XML
-	 * @param serviceContext the service context to be applied. This can set
-	 guest permissions and group permissions for the Kkaleo draft
-	 definition.
-	 * @return the published Kaleo draft definition
-	 * @throws PortalException if the user did not have the required permissions
-	 to publish the Kaleo draft definition or if a portal exception
-	 occurred
-	 */
-	public static
-		com.liferay.portal.workflow.kaleo.designer.model.
-			KaleoDraftDefinitionSoap publishKaleoDraftDefinition(
-					long userId, long groupId, String name,
-					String[] titleMapLanguageIds, String[] titleMapValues,
-					String content,
-					com.liferay.portal.kernel.service.ServiceContext
-						serviceContext)
-				throws RemoteException {
-
+	* Returns an ordered range of the latest Kaleo draft definitions matching
+	* the company, version, and keywords.
+	*
+	* @param companyId the primary key of the Kaleo draft definition's company
+	* @param keywords the Kaleo draft definition's name or title
+	* @param version the Kaleo draft definition's published version
+	* @param start the lower bound of the range of Kaleo draft definitions to
+	return
+	* @param end the upper bound of the range of Kaleo draft definitions to
+	return (not inclusive)
+	* @param orderByComparator the comparator to order the Kaleo draft
+	definitions
+	* @return the range of matching Kaleo draft definitions ordered by the
+	comparator
+	* @throws PortalException if a portal exception occurred
+	*/
+	public static com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap[] getLatestKaleoDraftDefinitions(
+		long companyId, java.lang.String keywords, int version, int start,
+		int end,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws RemoteException {
 		try {
-			Map<Locale, String> titleMap = LocalizationUtil.getLocalizationMap(
-				titleMapLanguageIds, titleMapValues);
+			java.util.List<com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition> returnValue =
+				KaleoDraftDefinitionServiceUtil.getLatestKaleoDraftDefinitions(companyId,
+					keywords, version, start, end, orderByComparator);
 
-			com.liferay.portal.workflow.kaleo.designer.model.
-				KaleoDraftDefinition returnValue =
-					KaleoDraftDefinitionServiceUtil.publishKaleoDraftDefinition(
-						userId, groupId, name, titleMap, content,
-						serviceContext);
-
-			return com.liferay.portal.workflow.kaleo.designer.model.
-				KaleoDraftDefinitionSoap.toSoapModel(returnValue);
+			return com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap.toSoapModels(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	/**
-	 * Updates the Kaleo draft definition by replacing its content and title and
-	 * incrementing the draft version.
-	 *
-	 * @param userId the primary key of the Kaleo draft definition's
-	 creator/owner
-	 * @param name the Kaleo draft definition's name
-	 * @param titleMap the Kaleo draft definition's locales and localized
-	 titles
-	 * @param content the content wrapped in XML
-	 * @param version the Kaleo draft definition's published version
-	 * @param serviceContext the service context to be applied. This can set
-	 guest permissions and group permissions for the Kaleo draft
-	 definition.
-	 * @return the updated Kaleo draft definition
-	 * @throws PortalException if the user did not have the required permissions
-	 to update the Kaleo draft definition or if a portal exception
-	 occurred
-	 */
-	public static
-		com.liferay.portal.workflow.kaleo.designer.model.
-			KaleoDraftDefinitionSoap updateKaleoDraftDefinition(
-					long userId, String name, String[] titleMapLanguageIds,
-					String[] titleMapValues, String content, int version,
-					com.liferay.portal.kernel.service.ServiceContext
-						serviceContext)
-				throws RemoteException {
-
+	* Publishes the Kaleo draft definition.
+	*
+	* @param userId the primary key of the Kaleo draft definition's
+	creator/owner
+	* @param groupId the primary key of the Kaleo draft definition's group
+	* @param name the Kaleo draft definition's name
+	* @param titleMap the Kaleo draft definition's locales and localized
+	titles
+	* @param content the content wrapped in XML
+	* @param serviceContext the service context to be applied. This can set
+	guest permissions and group permissions for the Kkaleo draft
+	definition.
+	* @return the published Kaleo draft definition
+	* @throws PortalException if the user did not have the required permissions
+	to publish the Kaleo draft definition or if a portal exception
+	occurred
+	*/
+	public static com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap publishKaleoDraftDefinition(
+		long userId, long groupId, java.lang.String name,
+		java.lang.String[] titleMapLanguageIds,
+		java.lang.String[] titleMapValues, java.lang.String content,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws RemoteException {
 		try {
-			Map<Locale, String> titleMap = LocalizationUtil.getLocalizationMap(
-				titleMapLanguageIds, titleMapValues);
+			Map<Locale, String> titleMap = LocalizationUtil.getLocalizationMap(titleMapLanguageIds,
+					titleMapValues);
 
-			com.liferay.portal.workflow.kaleo.designer.model.
-				KaleoDraftDefinition returnValue =
-					KaleoDraftDefinitionServiceUtil.updateKaleoDraftDefinition(
-						userId, name, titleMap, content, version,
-						serviceContext);
+			com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition returnValue =
+				KaleoDraftDefinitionServiceUtil.publishKaleoDraftDefinition(userId,
+					groupId, name, titleMap, content, serviceContext);
 
-			return com.liferay.portal.workflow.kaleo.designer.model.
-				KaleoDraftDefinitionSoap.toSoapModel(returnValue);
+			return com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
-		KaleoDraftDefinitionServiceSoap.class);
+	/**
+	* Updates the Kaleo draft definition by replacing its content and title and
+	* incrementing the draft version.
+	*
+	* @param userId the primary key of the Kaleo draft definition's
+	creator/owner
+	* @param name the Kaleo draft definition's name
+	* @param titleMap the Kaleo draft definition's locales and localized
+	titles
+	* @param content the content wrapped in XML
+	* @param version the Kaleo draft definition's published version
+	* @param serviceContext the service context to be applied. This can set
+	guest permissions and group permissions for the Kaleo draft
+	definition.
+	* @return the updated Kaleo draft definition
+	* @throws PortalException if the user did not have the required permissions
+	to update the Kaleo draft definition or if a portal exception
+	occurred
+	*/
+	public static com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap updateKaleoDraftDefinition(
+		long userId, java.lang.String name,
+		java.lang.String[] titleMapLanguageIds,
+		java.lang.String[] titleMapValues, java.lang.String content,
+		int version,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws RemoteException {
+		try {
+			Map<Locale, String> titleMap = LocalizationUtil.getLocalizationMap(titleMapLanguageIds,
+					titleMapValues);
 
+			com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition returnValue =
+				KaleoDraftDefinitionServiceUtil.updateKaleoDraftDefinition(userId,
+					name, titleMap, content, version, serviceContext);
+
+			return com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(KaleoDraftDefinitionServiceSoap.class);
 }

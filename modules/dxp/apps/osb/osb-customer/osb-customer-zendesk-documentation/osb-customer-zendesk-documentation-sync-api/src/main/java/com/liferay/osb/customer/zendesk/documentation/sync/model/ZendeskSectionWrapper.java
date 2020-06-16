@@ -1,20 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -34,9 +37,9 @@ import java.util.Objects;
  * @see ZendeskSection
  * @generated
  */
-public class ZendeskSectionWrapper
-	implements ModelWrapper<ZendeskSection>, ZendeskSection {
-
+@ProviderType
+public class ZendeskSectionWrapper implements ZendeskSection,
+	ModelWrapper<ZendeskSection> {
 	public ZendeskSectionWrapper(ZendeskSection zendeskSection) {
 		_zendeskSection = zendeskSection;
 	}
@@ -112,185 +115,13 @@ public class ZendeskSectionWrapper
 	}
 
 	@Override
-	public Object clone() {
-		return new ZendeskSectionWrapper(
-			(ZendeskSection)_zendeskSection.clone());
+	public ZendeskSection toEscapedModel() {
+		return new ZendeskSectionWrapper(_zendeskSection.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(ZendeskSection zendeskSection) {
-		return _zendeskSection.compareTo(zendeskSection);
-	}
-
-	@Override
-	public String[] getAvailableLanguageIds() {
-		return _zendeskSection.getAvailableLanguageIds();
-	}
-
-	@Override
-	public String getDefaultLanguageId() {
-		return _zendeskSection.getDefaultLanguageId();
-	}
-
-	/**
-	 * Returns the documentation key of this zendesk section.
-	 *
-	 * @return the documentation key of this zendesk section
-	 */
-	@Override
-	public String getDocumentationKey() {
-		return _zendeskSection.getDocumentationKey();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _zendeskSection.getExpandoBridge();
-	}
-
-	/**
-	 * Returns the modified date of this zendesk section.
-	 *
-	 * @return the modified date of this zendesk section
-	 */
-	@Override
-	public Date getModifiedDate() {
-		return _zendeskSection.getModifiedDate();
-	}
-
-	/**
-	 * Returns the primary key of this zendesk section.
-	 *
-	 * @return the primary key of this zendesk section
-	 */
-	@Override
-	public long getPrimaryKey() {
-		return _zendeskSection.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _zendeskSection.getPrimaryKeyObj();
-	}
-
-	/**
-	 * Returns the remote html url of this zendesk section.
-	 *
-	 * @return the remote html url of this zendesk section
-	 */
-	@Override
-	public String getRemoteHtmlURL() {
-		return _zendeskSection.getRemoteHtmlURL();
-	}
-
-	/**
-	 * Returns the remote ID of this zendesk section.
-	 *
-	 * @return the remote ID of this zendesk section
-	 */
-	@Override
-	public long getRemoteId() {
-		return _zendeskSection.getRemoteId();
-	}
-
-	/**
-	 * Returns the remote name of this zendesk section.
-	 *
-	 * @return the remote name of this zendesk section
-	 */
-	@Override
-	public String getRemoteName() {
-		return _zendeskSection.getRemoteName();
-	}
-
-	/**
-	 * Returns the localized remote name of this zendesk section in the language. Uses the default language if no localization exists for the requested language.
-	 *
-	 * @param locale the locale of the language
-	 * @return the localized remote name of this zendesk section
-	 */
-	@Override
-	public String getRemoteName(java.util.Locale locale) {
-		return _zendeskSection.getRemoteName(locale);
-	}
-
-	/**
-	 * Returns the localized remote name of this zendesk section in the language, optionally using the default language if no localization exists for the requested language.
-	 *
-	 * @param locale the local of the language
-	 * @param useDefault whether to use the default language if no localization exists for the requested language
-	 * @return the localized remote name of this zendesk section. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
-	 */
-	@Override
-	public String getRemoteName(java.util.Locale locale, boolean useDefault) {
-		return _zendeskSection.getRemoteName(locale, useDefault);
-	}
-
-	/**
-	 * Returns the localized remote name of this zendesk section in the language. Uses the default language if no localization exists for the requested language.
-	 *
-	 * @param languageId the ID of the language
-	 * @return the localized remote name of this zendesk section
-	 */
-	@Override
-	public String getRemoteName(String languageId) {
-		return _zendeskSection.getRemoteName(languageId);
-	}
-
-	/**
-	 * Returns the localized remote name of this zendesk section in the language, optionally using the default language if no localization exists for the requested language.
-	 *
-	 * @param languageId the ID of the language
-	 * @param useDefault whether to use the default language if no localization exists for the requested language
-	 * @return the localized remote name of this zendesk section
-	 */
-	@Override
-	public String getRemoteName(String languageId, boolean useDefault) {
-		return _zendeskSection.getRemoteName(languageId, useDefault);
-	}
-
-	@Override
-	public String getRemoteNameCurrentLanguageId() {
-		return _zendeskSection.getRemoteNameCurrentLanguageId();
-	}
-
-	@Override
-	public String getRemoteNameCurrentValue() {
-		return _zendeskSection.getRemoteNameCurrentValue();
-	}
-
-	/**
-	 * Returns a map of the locales and localized remote names of this zendesk section.
-	 *
-	 * @return the locales and localized remote names of this zendesk section
-	 */
-	@Override
-	public Map<java.util.Locale, String> getRemoteNameMap() {
-		return _zendeskSection.getRemoteNameMap();
-	}
-
-	/**
-	 * Returns the zendesk category ID of this zendesk section.
-	 *
-	 * @return the zendesk category ID of this zendesk section
-	 */
-	@Override
-	public long getZendeskCategoryId() {
-		return _zendeskSection.getZendeskCategoryId();
-	}
-
-	/**
-	 * Returns the zendesk section ID of this zendesk section.
-	 *
-	 * @return the zendesk section ID of this zendesk section
-	 */
-	@Override
-	public long getZendeskSectionId() {
-		return _zendeskSection.getZendeskSectionId();
-	}
-
-	@Override
-	public int hashCode() {
-		return _zendeskSection.hashCode();
+	public ZendeskSection toUnescapedModel() {
+		return new ZendeskSectionWrapper(_zendeskSection.toUnescapedModel());
 	}
 
 	@Override
@@ -309,6 +140,204 @@ public class ZendeskSectionWrapper
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _zendeskSection.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<ZendeskSection> toCacheModel() {
+		return _zendeskSection.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(ZendeskSection zendeskSection) {
+		return _zendeskSection.compareTo(zendeskSection);
+	}
+
+	@Override
+	public int hashCode() {
+		return _zendeskSection.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _zendeskSection.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new ZendeskSectionWrapper((ZendeskSection)_zendeskSection.clone());
+	}
+
+	@Override
+	public java.lang.String getDefaultLanguageId() {
+		return _zendeskSection.getDefaultLanguageId();
+	}
+
+	/**
+	* Returns the documentation key of this zendesk section.
+	*
+	* @return the documentation key of this zendesk section
+	*/
+	@Override
+	public java.lang.String getDocumentationKey() {
+		return _zendeskSection.getDocumentationKey();
+	}
+
+	/**
+	* Returns the remote html url of this zendesk section.
+	*
+	* @return the remote html url of this zendesk section
+	*/
+	@Override
+	public java.lang.String getRemoteHtmlURL() {
+		return _zendeskSection.getRemoteHtmlURL();
+	}
+
+	/**
+	* Returns the remote name of this zendesk section.
+	*
+	* @return the remote name of this zendesk section
+	*/
+	@Override
+	public java.lang.String getRemoteName() {
+		return _zendeskSection.getRemoteName();
+	}
+
+	/**
+	* Returns the localized remote name of this zendesk section in the language. Uses the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @return the localized remote name of this zendesk section
+	*/
+	@Override
+	public java.lang.String getRemoteName(java.lang.String languageId) {
+		return _zendeskSection.getRemoteName(languageId);
+	}
+
+	/**
+	* Returns the localized remote name of this zendesk section in the language, optionally using the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @param useDefault whether to use the default language if no localization exists for the requested language
+	* @return the localized remote name of this zendesk section
+	*/
+	@Override
+	public java.lang.String getRemoteName(java.lang.String languageId,
+		boolean useDefault) {
+		return _zendeskSection.getRemoteName(languageId, useDefault);
+	}
+
+	/**
+	* Returns the localized remote name of this zendesk section in the language. Uses the default language if no localization exists for the requested language.
+	*
+	* @param locale the locale of the language
+	* @return the localized remote name of this zendesk section
+	*/
+	@Override
+	public java.lang.String getRemoteName(java.util.Locale locale) {
+		return _zendeskSection.getRemoteName(locale);
+	}
+
+	/**
+	* Returns the localized remote name of this zendesk section in the language, optionally using the default language if no localization exists for the requested language.
+	*
+	* @param locale the local of the language
+	* @param useDefault whether to use the default language if no localization exists for the requested language
+	* @return the localized remote name of this zendesk section. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	*/
+	@Override
+	public java.lang.String getRemoteName(java.util.Locale locale,
+		boolean useDefault) {
+		return _zendeskSection.getRemoteName(locale, useDefault);
+	}
+
+	@Override
+	public java.lang.String getRemoteNameCurrentLanguageId() {
+		return _zendeskSection.getRemoteNameCurrentLanguageId();
+	}
+
+	@Override
+	public java.lang.String getRemoteNameCurrentValue() {
+		return _zendeskSection.getRemoteNameCurrentValue();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _zendeskSection.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _zendeskSection.toXmlString();
+	}
+
+	@Override
+	public java.lang.String[] getAvailableLanguageIds() {
+		return _zendeskSection.getAvailableLanguageIds();
+	}
+
+	/**
+	* Returns the modified date of this zendesk section.
+	*
+	* @return the modified date of this zendesk section
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _zendeskSection.getModifiedDate();
+	}
+
+	/**
+	* Returns a map of the locales and localized remote names of this zendesk section.
+	*
+	* @return the locales and localized remote names of this zendesk section
+	*/
+	@Override
+	public Map<java.util.Locale, java.lang.String> getRemoteNameMap() {
+		return _zendeskSection.getRemoteNameMap();
+	}
+
+	/**
+	* Returns the primary key of this zendesk section.
+	*
+	* @return the primary key of this zendesk section
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _zendeskSection.getPrimaryKey();
+	}
+
+	/**
+	* Returns the remote ID of this zendesk section.
+	*
+	* @return the remote ID of this zendesk section
+	*/
+	@Override
+	public long getRemoteId() {
+		return _zendeskSection.getRemoteId();
+	}
+
+	/**
+	* Returns the zendesk category ID of this zendesk section.
+	*
+	* @return the zendesk category ID of this zendesk section
+	*/
+	@Override
+	public long getZendeskCategoryId() {
+		return _zendeskSection.getZendeskCategoryId();
+	}
+
+	/**
+	* Returns the zendesk section ID of this zendesk section.
+	*
+	* @return the zendesk section ID of this zendesk section
+	*/
+	@Override
+	public long getZendeskSectionId() {
+		return _zendeskSection.getZendeskSectionId();
+	}
+
+	@Override
 	public void persist() {
 		_zendeskSection.persist();
 	}
@@ -316,15 +345,13 @@ public class ZendeskSectionWrapper
 	@Override
 	public void prepareLocalizedFieldsForImport()
 		throws com.liferay.portal.kernel.exception.LocaleException {
-
 		_zendeskSection.prepareLocalizedFieldsForImport();
 	}
 
 	@Override
 	public void prepareLocalizedFieldsForImport(
-			java.util.Locale defaultImportLocale)
+		java.util.Locale defaultImportLocale)
 		throws com.liferay.portal.kernel.exception.LocaleException {
-
 		_zendeskSection.prepareLocalizedFieldsForImport(defaultImportLocale);
 	}
 
@@ -334,20 +361,13 @@ public class ZendeskSectionWrapper
 	}
 
 	/**
-	 * Sets the documentation key of this zendesk section.
-	 *
-	 * @param documentationKey the documentation key of this zendesk section
-	 */
+	* Sets the documentation key of this zendesk section.
+	*
+	* @param documentationKey the documentation key of this zendesk section
+	*/
 	@Override
-	public void setDocumentationKey(String documentationKey) {
+	public void setDocumentationKey(java.lang.String documentationKey) {
 		_zendeskSection.setDocumentationKey(documentationKey);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-
-		_zendeskSection.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -356,15 +376,21 @@ public class ZendeskSectionWrapper
 	}
 
 	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_zendeskSection.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_zendeskSection.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	 * Sets the modified date of this zendesk section.
-	 *
-	 * @param modifiedDate the modified date of this zendesk section
-	 */
+	* Sets the modified date of this zendesk section.
+	*
+	* @param modifiedDate the modified date of this zendesk section
+	*/
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_zendeskSection.setModifiedDate(modifiedDate);
@@ -376,10 +402,10 @@ public class ZendeskSectionWrapper
 	}
 
 	/**
-	 * Sets the primary key of this zendesk section.
-	 *
-	 * @param primaryKey the primary key of this zendesk section
-	 */
+	* Sets the primary key of this zendesk section.
+	*
+	* @param primaryKey the primary key of this zendesk section
+	*/
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_zendeskSection.setPrimaryKey(primaryKey);
@@ -391,135 +417,107 @@ public class ZendeskSectionWrapper
 	}
 
 	/**
-	 * Sets the remote html url of this zendesk section.
-	 *
-	 * @param remoteHtmlURL the remote html url of this zendesk section
-	 */
+	* Sets the remote html url of this zendesk section.
+	*
+	* @param remoteHtmlURL the remote html url of this zendesk section
+	*/
 	@Override
-	public void setRemoteHtmlURL(String remoteHtmlURL) {
+	public void setRemoteHtmlURL(java.lang.String remoteHtmlURL) {
 		_zendeskSection.setRemoteHtmlURL(remoteHtmlURL);
 	}
 
 	/**
-	 * Sets the remote ID of this zendesk section.
-	 *
-	 * @param remoteId the remote ID of this zendesk section
-	 */
+	* Sets the remote ID of this zendesk section.
+	*
+	* @param remoteId the remote ID of this zendesk section
+	*/
 	@Override
 	public void setRemoteId(long remoteId) {
 		_zendeskSection.setRemoteId(remoteId);
 	}
 
 	/**
-	 * Sets the remote name of this zendesk section.
-	 *
-	 * @param remoteName the remote name of this zendesk section
-	 */
+	* Sets the remote name of this zendesk section.
+	*
+	* @param remoteName the remote name of this zendesk section
+	*/
 	@Override
-	public void setRemoteName(String remoteName) {
+	public void setRemoteName(java.lang.String remoteName) {
 		_zendeskSection.setRemoteName(remoteName);
 	}
 
 	/**
-	 * Sets the localized remote name of this zendesk section in the language.
-	 *
-	 * @param remoteName the localized remote name of this zendesk section
-	 * @param locale the locale of the language
-	 */
+	* Sets the localized remote name of this zendesk section in the language.
+	*
+	* @param remoteName the localized remote name of this zendesk section
+	* @param locale the locale of the language
+	*/
 	@Override
-	public void setRemoteName(String remoteName, java.util.Locale locale) {
+	public void setRemoteName(java.lang.String remoteName,
+		java.util.Locale locale) {
 		_zendeskSection.setRemoteName(remoteName, locale);
 	}
 
 	/**
-	 * Sets the localized remote name of this zendesk section in the language, and sets the default locale.
-	 *
-	 * @param remoteName the localized remote name of this zendesk section
-	 * @param locale the locale of the language
-	 * @param defaultLocale the default locale
-	 */
+	* Sets the localized remote name of this zendesk section in the language, and sets the default locale.
+	*
+	* @param remoteName the localized remote name of this zendesk section
+	* @param locale the locale of the language
+	* @param defaultLocale the default locale
+	*/
 	@Override
-	public void setRemoteName(
-		String remoteName, java.util.Locale locale,
-		java.util.Locale defaultLocale) {
-
+	public void setRemoteName(java.lang.String remoteName,
+		java.util.Locale locale, java.util.Locale defaultLocale) {
 		_zendeskSection.setRemoteName(remoteName, locale, defaultLocale);
 	}
 
 	@Override
-	public void setRemoteNameCurrentLanguageId(String languageId) {
+	public void setRemoteNameCurrentLanguageId(java.lang.String languageId) {
 		_zendeskSection.setRemoteNameCurrentLanguageId(languageId);
 	}
 
 	/**
-	 * Sets the localized remote names of this zendesk section from the map of locales and localized remote names.
-	 *
-	 * @param remoteNameMap the locales and localized remote names of this zendesk section
-	 */
+	* Sets the localized remote names of this zendesk section from the map of locales and localized remote names.
+	*
+	* @param remoteNameMap the locales and localized remote names of this zendesk section
+	*/
 	@Override
-	public void setRemoteNameMap(Map<java.util.Locale, String> remoteNameMap) {
+	public void setRemoteNameMap(
+		Map<java.util.Locale, java.lang.String> remoteNameMap) {
 		_zendeskSection.setRemoteNameMap(remoteNameMap);
 	}
 
 	/**
-	 * Sets the localized remote names of this zendesk section from the map of locales and localized remote names, and sets the default locale.
-	 *
-	 * @param remoteNameMap the locales and localized remote names of this zendesk section
-	 * @param defaultLocale the default locale
-	 */
+	* Sets the localized remote names of this zendesk section from the map of locales and localized remote names, and sets the default locale.
+	*
+	* @param remoteNameMap the locales and localized remote names of this zendesk section
+	* @param defaultLocale the default locale
+	*/
 	@Override
 	public void setRemoteNameMap(
-		Map<java.util.Locale, String> remoteNameMap,
+		Map<java.util.Locale, java.lang.String> remoteNameMap,
 		java.util.Locale defaultLocale) {
-
 		_zendeskSection.setRemoteNameMap(remoteNameMap, defaultLocale);
 	}
 
 	/**
-	 * Sets the zendesk category ID of this zendesk section.
-	 *
-	 * @param zendeskCategoryId the zendesk category ID of this zendesk section
-	 */
+	* Sets the zendesk category ID of this zendesk section.
+	*
+	* @param zendeskCategoryId the zendesk category ID of this zendesk section
+	*/
 	@Override
 	public void setZendeskCategoryId(long zendeskCategoryId) {
 		_zendeskSection.setZendeskCategoryId(zendeskCategoryId);
 	}
 
 	/**
-	 * Sets the zendesk section ID of this zendesk section.
-	 *
-	 * @param zendeskSectionId the zendesk section ID of this zendesk section
-	 */
+	* Sets the zendesk section ID of this zendesk section.
+	*
+	* @param zendeskSectionId the zendesk section ID of this zendesk section
+	*/
 	@Override
 	public void setZendeskSectionId(long zendeskSectionId) {
 		_zendeskSection.setZendeskSectionId(zendeskSectionId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<ZendeskSection>
-		toCacheModel() {
-
-		return _zendeskSection.toCacheModel();
-	}
-
-	@Override
-	public ZendeskSection toEscapedModel() {
-		return new ZendeskSectionWrapper(_zendeskSection.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return _zendeskSection.toString();
-	}
-
-	@Override
-	public ZendeskSection toUnescapedModel() {
-		return new ZendeskSectionWrapper(_zendeskSection.toUnescapedModel());
-	}
-
-	@Override
-	public String toXmlString() {
-		return _zendeskSection.toXmlString();
 	}
 
 	@Override
@@ -532,12 +530,10 @@ public class ZendeskSectionWrapper
 			return false;
 		}
 
-		ZendeskSectionWrapper zendeskSectionWrapper =
-			(ZendeskSectionWrapper)obj;
+		ZendeskSectionWrapper zendeskSectionWrapper = (ZendeskSectionWrapper)obj;
 
-		if (Objects.equals(
-				_zendeskSection, zendeskSectionWrapper._zendeskSection)) {
-
+		if (Objects.equals(_zendeskSection,
+					zendeskSectionWrapper._zendeskSection)) {
 			return true;
 		}
 
@@ -565,5 +561,4 @@ public class ZendeskSectionWrapper
 	}
 
 	private final ZendeskSection _zendeskSection;
-
 }

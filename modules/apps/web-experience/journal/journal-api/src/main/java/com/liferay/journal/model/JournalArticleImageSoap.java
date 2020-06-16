@@ -14,6 +14,8 @@
 
 package com.liferay.journal.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -25,11 +27,9 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
+@ProviderType
 public class JournalArticleImageSoap implements Serializable {
-
-	public static JournalArticleImageSoap toSoapModel(
-		JournalArticleImage model) {
-
+	public static JournalArticleImageSoap toSoapModel(JournalArticleImage model) {
 		JournalArticleImageSoap soapModel = new JournalArticleImageSoap();
 
 		soapModel.setArticleImageId(model.getArticleImageId());
@@ -40,16 +40,14 @@ public class JournalArticleImageSoap implements Serializable {
 		soapModel.setElInstanceId(model.getElInstanceId());
 		soapModel.setElName(model.getElName());
 		soapModel.setLanguageId(model.getLanguageId());
-		soapModel.setTempImage(model.isTempImage());
+		soapModel.setTempImage(model.getTempImage());
 
 		return soapModel;
 	}
 
 	public static JournalArticleImageSoap[] toSoapModels(
 		JournalArticleImage[] models) {
-
-		JournalArticleImageSoap[] soapModels =
-			new JournalArticleImageSoap[models.length];
+		JournalArticleImageSoap[] soapModels = new JournalArticleImageSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -60,12 +58,10 @@ public class JournalArticleImageSoap implements Serializable {
 
 	public static JournalArticleImageSoap[][] toSoapModels(
 		JournalArticleImage[][] models) {
-
 		JournalArticleImageSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels =
-				new JournalArticleImageSoap[models.length][models[0].length];
+			soapModels = new JournalArticleImageSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new JournalArticleImageSoap[0][0];
@@ -80,16 +76,13 @@ public class JournalArticleImageSoap implements Serializable {
 
 	public static JournalArticleImageSoap[] toSoapModels(
 		List<JournalArticleImage> models) {
-
-		List<JournalArticleImageSoap> soapModels =
-			new ArrayList<JournalArticleImageSoap>(models.size());
+		List<JournalArticleImageSoap> soapModels = new ArrayList<JournalArticleImageSoap>(models.size());
 
 		for (JournalArticleImage model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(
-			new JournalArticleImageSoap[soapModels.size()]);
+		return soapModels.toArray(new JournalArticleImageSoap[soapModels.size()]);
 	}
 
 	public JournalArticleImageSoap() {
@@ -188,5 +181,4 @@ public class JournalArticleImageSoap implements Serializable {
 	private String _elName;
 	private String _languageId;
 	private boolean _tempImage;
-
 }

@@ -14,9 +14,13 @@
 
 package com.liferay.shopping.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.shopping.model.ShoppingItem;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing ShoppingItem in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see ShoppingItem
  * @generated
  */
-public class ShoppingItemCacheModel
-	implements CacheModel<ShoppingItem>, Externalizable {
-
+@ProviderType
+public class ShoppingItemCacheModel implements CacheModel<ShoppingItem>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class ShoppingItemCacheModel
 			return false;
 		}
 
-		ShoppingItemCacheModel shoppingItemCacheModel =
-			(ShoppingItemCacheModel)obj;
+		ShoppingItemCacheModel shoppingItemCacheModel = (ShoppingItemCacheModel)obj;
 
 		if (itemId == shoppingItemCacheModel.itemId) {
 			return true;
@@ -147,7 +151,7 @@ public class ShoppingItemCacheModel
 		shoppingItemImpl.setUserId(userId);
 
 		if (userName == null) {
-			shoppingItemImpl.setUserName("");
+			shoppingItemImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			shoppingItemImpl.setUserName(userName);
@@ -170,28 +174,28 @@ public class ShoppingItemCacheModel
 		shoppingItemImpl.setCategoryId(categoryId);
 
 		if (sku == null) {
-			shoppingItemImpl.setSku("");
+			shoppingItemImpl.setSku(StringPool.BLANK);
 		}
 		else {
 			shoppingItemImpl.setSku(sku);
 		}
 
 		if (name == null) {
-			shoppingItemImpl.setName("");
+			shoppingItemImpl.setName(StringPool.BLANK);
 		}
 		else {
 			shoppingItemImpl.setName(name);
 		}
 
 		if (description == null) {
-			shoppingItemImpl.setDescription("");
+			shoppingItemImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			shoppingItemImpl.setDescription(description);
 		}
 
 		if (properties == null) {
-			shoppingItemImpl.setProperties("");
+			shoppingItemImpl.setProperties(StringPool.BLANK);
 		}
 		else {
 			shoppingItemImpl.setProperties(properties);
@@ -200,7 +204,7 @@ public class ShoppingItemCacheModel
 		shoppingItemImpl.setFields(fields);
 
 		if (fieldsQuantities == null) {
-			shoppingItemImpl.setFieldsQuantities("");
+			shoppingItemImpl.setFieldsQuantities(StringPool.BLANK);
 		}
 		else {
 			shoppingItemImpl.setFieldsQuantities(fieldsQuantities);
@@ -221,7 +225,7 @@ public class ShoppingItemCacheModel
 		shoppingItemImpl.setSmallImageId(smallImageId);
 
 		if (smallImageURL == null) {
-			shoppingItemImpl.setSmallImageURL("");
+			shoppingItemImpl.setSmallImageURL(StringPool.BLANK);
 		}
 		else {
 			shoppingItemImpl.setSmallImageURL(smallImageURL);
@@ -231,7 +235,7 @@ public class ShoppingItemCacheModel
 		shoppingItemImpl.setMediumImageId(mediumImageId);
 
 		if (mediumImageURL == null) {
-			shoppingItemImpl.setMediumImageURL("");
+			shoppingItemImpl.setMediumImageURL(StringPool.BLANK);
 		}
 		else {
 			shoppingItemImpl.setMediumImageURL(mediumImageURL);
@@ -241,7 +245,7 @@ public class ShoppingItemCacheModel
 		shoppingItemImpl.setLargeImageId(largeImageId);
 
 		if (largeImageURL == null) {
-			shoppingItemImpl.setLargeImageURL("");
+			shoppingItemImpl.setLargeImageURL(StringPool.BLANK);
 		}
 		else {
 			shoppingItemImpl.setLargeImageURL(largeImageURL);
@@ -313,7 +317,8 @@ public class ShoppingItemCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(itemId);
 
 		objectOutput.writeLong(groupId);
@@ -323,7 +328,7 @@ public class ShoppingItemCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -335,28 +340,28 @@ public class ShoppingItemCacheModel
 		objectOutput.writeLong(categoryId);
 
 		if (sku == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(sku);
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (properties == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(properties);
@@ -365,7 +370,7 @@ public class ShoppingItemCacheModel
 		objectOutput.writeBoolean(fields);
 
 		if (fieldsQuantities == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(fieldsQuantities);
@@ -398,7 +403,7 @@ public class ShoppingItemCacheModel
 		objectOutput.writeLong(smallImageId);
 
 		if (smallImageURL == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(smallImageURL);
@@ -409,7 +414,7 @@ public class ShoppingItemCacheModel
 		objectOutput.writeLong(mediumImageId);
 
 		if (mediumImageURL == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(mediumImageURL);
@@ -420,7 +425,7 @@ public class ShoppingItemCacheModel
 		objectOutput.writeLong(largeImageId);
 
 		if (largeImageURL == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(largeImageURL);
@@ -461,5 +466,4 @@ public class ShoppingItemCacheModel
 	public boolean largeImage;
 	public long largeImageId;
 	public String largeImageURL;
-
 }

@@ -1,22 +1,26 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.saml.persistence.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.saml.persistence.model.SamlSpAuthRequest;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing SamlSpAuthRequest in entity cache.
  *
  * @author Mika Koivisto
+ * @see SamlSpAuthRequest
  * @generated
  */
-public class SamlSpAuthRequestCacheModel
-	implements CacheModel<SamlSpAuthRequest>, Externalizable {
-
+@ProviderType
+public class SamlSpAuthRequestCacheModel implements CacheModel<SamlSpAuthRequest>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +50,9 @@ public class SamlSpAuthRequestCacheModel
 			return false;
 		}
 
-		SamlSpAuthRequestCacheModel samlSpAuthRequestCacheModel =
-			(SamlSpAuthRequestCacheModel)obj;
+		SamlSpAuthRequestCacheModel samlSpAuthRequestCacheModel = (SamlSpAuthRequestCacheModel)obj;
 
-		if (samlSpAuthnRequestId ==
-				samlSpAuthRequestCacheModel.samlSpAuthnRequestId) {
-
+		if (samlSpAuthnRequestId == samlSpAuthRequestCacheModel.samlSpAuthnRequestId) {
 			return true;
 		}
 
@@ -83,8 +85,7 @@ public class SamlSpAuthRequestCacheModel
 
 	@Override
 	public SamlSpAuthRequest toEntityModel() {
-		SamlSpAuthRequestImpl samlSpAuthRequestImpl =
-			new SamlSpAuthRequestImpl();
+		SamlSpAuthRequestImpl samlSpAuthRequestImpl = new SamlSpAuthRequestImpl();
 
 		samlSpAuthRequestImpl.setSamlSpAuthnRequestId(samlSpAuthnRequestId);
 		samlSpAuthRequestImpl.setCompanyId(companyId);
@@ -97,14 +98,14 @@ public class SamlSpAuthRequestCacheModel
 		}
 
 		if (samlIdpEntityId == null) {
-			samlSpAuthRequestImpl.setSamlIdpEntityId("");
+			samlSpAuthRequestImpl.setSamlIdpEntityId(StringPool.BLANK);
 		}
 		else {
 			samlSpAuthRequestImpl.setSamlIdpEntityId(samlIdpEntityId);
 		}
 
 		if (samlSpAuthRequestKey == null) {
-			samlSpAuthRequestImpl.setSamlSpAuthRequestKey("");
+			samlSpAuthRequestImpl.setSamlSpAuthRequestKey(StringPool.BLANK);
 		}
 		else {
 			samlSpAuthRequestImpl.setSamlSpAuthRequestKey(samlSpAuthRequestKey);
@@ -126,21 +127,22 @@ public class SamlSpAuthRequestCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(samlSpAuthnRequestId);
 
 		objectOutput.writeLong(companyId);
 		objectOutput.writeLong(createDate);
 
 		if (samlIdpEntityId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(samlIdpEntityId);
 		}
 
 		if (samlSpAuthRequestKey == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(samlSpAuthRequestKey);
@@ -152,5 +154,4 @@ public class SamlSpAuthRequestCacheModel
 	public long createDate;
 	public String samlIdpEntityId;
 	public String samlSpAuthRequestKey;
-
 }

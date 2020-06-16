@@ -1,22 +1,26 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.watson.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.watson.model.WatsonRelationshipAudit;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing WatsonRelationshipAudit in entity cache.
  *
  * @author Steven Smith
+ * @see WatsonRelationshipAudit
  * @generated
  */
-public class WatsonRelationshipAuditCacheModel
-	implements CacheModel<WatsonRelationshipAudit>, Externalizable {
-
+@ProviderType
+public class WatsonRelationshipAuditCacheModel implements CacheModel<WatsonRelationshipAudit>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +50,9 @@ public class WatsonRelationshipAuditCacheModel
 			return false;
 		}
 
-		WatsonRelationshipAuditCacheModel watsonRelationshipAuditCacheModel =
-			(WatsonRelationshipAuditCacheModel)obj;
+		WatsonRelationshipAuditCacheModel watsonRelationshipAuditCacheModel = (WatsonRelationshipAuditCacheModel)obj;
 
-		if (watsonRelationshipAuditId ==
-				watsonRelationshipAuditCacheModel.watsonRelationshipAuditId) {
-
+		if (watsonRelationshipAuditId == watsonRelationshipAuditCacheModel.watsonRelationshipAuditId) {
 			return true;
 		}
 
@@ -105,17 +107,15 @@ public class WatsonRelationshipAuditCacheModel
 
 	@Override
 	public WatsonRelationshipAudit toEntityModel() {
-		WatsonRelationshipAuditImpl watsonRelationshipAuditImpl =
-			new WatsonRelationshipAuditImpl();
+		WatsonRelationshipAuditImpl watsonRelationshipAuditImpl = new WatsonRelationshipAuditImpl();
 
-		watsonRelationshipAuditImpl.setWatsonRelationshipAuditId(
-			watsonRelationshipAuditId);
+		watsonRelationshipAuditImpl.setWatsonRelationshipAuditId(watsonRelationshipAuditId);
 		watsonRelationshipAuditImpl.setGroupId(groupId);
 		watsonRelationshipAuditImpl.setCompanyId(companyId);
 		watsonRelationshipAuditImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonRelationshipAuditImpl.setUserName("");
+			watsonRelationshipAuditImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			watsonRelationshipAuditImpl.setUserName(userName);
@@ -136,17 +136,15 @@ public class WatsonRelationshipAuditCacheModel
 		}
 
 		watsonRelationshipAuditImpl.setWatsonIncidentId(watsonIncidentId);
-		watsonRelationshipAuditImpl.setWatsonRelationshipId(
-			watsonRelationshipId);
-		watsonRelationshipAuditImpl.setTypeWatsonListTypeId(
-			typeWatsonListTypeId);
+		watsonRelationshipAuditImpl.setWatsonRelationshipId(watsonRelationshipId);
+		watsonRelationshipAuditImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
 		watsonRelationshipAuditImpl.setClassNameId1(classNameId1);
 		watsonRelationshipAuditImpl.setClassPK1(classPK1);
 		watsonRelationshipAuditImpl.setClassNameId2(classNameId2);
 		watsonRelationshipAuditImpl.setClassPK2(classPK2);
 
 		if (description == null) {
-			watsonRelationshipAuditImpl.setDescription("");
+			watsonRelationshipAuditImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			watsonRelationshipAuditImpl.setDescription(description);
@@ -191,7 +189,8 @@ public class WatsonRelationshipAuditCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(watsonRelationshipAuditId);
 
 		objectOutput.writeLong(groupId);
@@ -201,7 +200,7 @@ public class WatsonRelationshipAuditCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -225,7 +224,7 @@ public class WatsonRelationshipAuditCacheModel
 		objectOutput.writeLong(classPK2);
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -250,5 +249,4 @@ public class WatsonRelationshipAuditCacheModel
 	public long classPK2;
 	public String description;
 	public int status;
-
 }

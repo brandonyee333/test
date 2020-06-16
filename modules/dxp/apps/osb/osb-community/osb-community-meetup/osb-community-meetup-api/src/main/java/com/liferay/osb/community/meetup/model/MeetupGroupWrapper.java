@@ -1,20 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.community.meetup.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -34,9 +37,9 @@ import java.util.Objects;
  * @see MeetupGroup
  * @generated
  */
-public class MeetupGroupWrapper
-	implements MeetupGroup, ModelWrapper<MeetupGroup> {
-
+@ProviderType
+public class MeetupGroupWrapper implements MeetupGroup,
+	ModelWrapper<MeetupGroup> {
 	public MeetupGroupWrapper(MeetupGroup meetupGroup) {
 		_meetupGroup = meetupGroup;
 	}
@@ -133,138 +136,13 @@ public class MeetupGroupWrapper
 	}
 
 	@Override
-	public Object clone() {
-		return new MeetupGroupWrapper((MeetupGroup)_meetupGroup.clone());
+	public MeetupGroup toEscapedModel() {
+		return new MeetupGroupWrapper(_meetupGroup.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(MeetupGroup meetupGroup) {
-		return _meetupGroup.compareTo(meetupGroup);
-	}
-
-	/**
-	 * Returns the city of this meetup group.
-	 *
-	 * @return the city of this meetup group
-	 */
-	@Override
-	public String getCity() {
-		return _meetupGroup.getCity();
-	}
-
-	/**
-	 * Returns the company ID of this meetup group.
-	 *
-	 * @return the company ID of this meetup group
-	 */
-	@Override
-	public long getCompanyId() {
-		return _meetupGroup.getCompanyId();
-	}
-
-	/**
-	 * Returns the create date of this meetup group.
-	 *
-	 * @return the create date of this meetup group
-	 */
-	@Override
-	public Date getCreateDate() {
-		return _meetupGroup.getCreateDate();
-	}
-
-	/**
-	 * Returns the description of this meetup group.
-	 *
-	 * @return the description of this meetup group
-	 */
-	@Override
-	public String getDescription() {
-		return _meetupGroup.getDescription();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _meetupGroup.getExpandoBridge();
-	}
-
-	/**
-	 * Returns the group ID of this meetup group.
-	 *
-	 * @return the group ID of this meetup group
-	 */
-	@Override
-	public long getGroupId() {
-		return _meetupGroup.getGroupId();
-	}
-
-	/**
-	 * Returns the meetup group ID of this meetup group.
-	 *
-	 * @return the meetup group ID of this meetup group
-	 */
-	@Override
-	public long getMeetupGroupId() {
-		return _meetupGroup.getMeetupGroupId();
-	}
-
-	/**
-	 * Returns the member count of this meetup group.
-	 *
-	 * @return the member count of this meetup group
-	 */
-	@Override
-	public int getMemberCount() {
-		return _meetupGroup.getMemberCount();
-	}
-
-	/**
-	 * Returns the modified date of this meetup group.
-	 *
-	 * @return the modified date of this meetup group
-	 */
-	@Override
-	public Date getModifiedDate() {
-		return _meetupGroup.getModifiedDate();
-	}
-
-	/**
-	 * Returns the name of this meetup group.
-	 *
-	 * @return the name of this meetup group
-	 */
-	@Override
-	public String getName() {
-		return _meetupGroup.getName();
-	}
-
-	/**
-	 * Returns the primary key of this meetup group.
-	 *
-	 * @return the primary key of this meetup group
-	 */
-	@Override
-	public long getPrimaryKey() {
-		return _meetupGroup.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _meetupGroup.getPrimaryKeyObj();
-	}
-
-	/**
-	 * Returns the url of this meetup group.
-	 *
-	 * @return the url of this meetup group
-	 */
-	@Override
-	public String getUrl() {
-		return _meetupGroup.getUrl();
-	}
-
-	@Override
-	public int hashCode() {
-		return _meetupGroup.hashCode();
+	public MeetupGroup toUnescapedModel() {
+		return new MeetupGroupWrapper(_meetupGroup.toUnescapedModel());
 	}
 
 	@Override
@@ -283,6 +161,156 @@ public class MeetupGroupWrapper
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _meetupGroup.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<MeetupGroup> toCacheModel() {
+		return _meetupGroup.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(MeetupGroup meetupGroup) {
+		return _meetupGroup.compareTo(meetupGroup);
+	}
+
+	/**
+	* Returns the member count of this meetup group.
+	*
+	* @return the member count of this meetup group
+	*/
+	@Override
+	public int getMemberCount() {
+		return _meetupGroup.getMemberCount();
+	}
+
+	@Override
+	public int hashCode() {
+		return _meetupGroup.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _meetupGroup.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new MeetupGroupWrapper((MeetupGroup)_meetupGroup.clone());
+	}
+
+	/**
+	* Returns the city of this meetup group.
+	*
+	* @return the city of this meetup group
+	*/
+	@Override
+	public java.lang.String getCity() {
+		return _meetupGroup.getCity();
+	}
+
+	/**
+	* Returns the description of this meetup group.
+	*
+	* @return the description of this meetup group
+	*/
+	@Override
+	public java.lang.String getDescription() {
+		return _meetupGroup.getDescription();
+	}
+
+	/**
+	* Returns the name of this meetup group.
+	*
+	* @return the name of this meetup group
+	*/
+	@Override
+	public java.lang.String getName() {
+		return _meetupGroup.getName();
+	}
+
+	/**
+	* Returns the url of this meetup group.
+	*
+	* @return the url of this meetup group
+	*/
+	@Override
+	public java.lang.String getUrl() {
+		return _meetupGroup.getUrl();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _meetupGroup.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _meetupGroup.toXmlString();
+	}
+
+	/**
+	* Returns the create date of this meetup group.
+	*
+	* @return the create date of this meetup group
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _meetupGroup.getCreateDate();
+	}
+
+	/**
+	* Returns the modified date of this meetup group.
+	*
+	* @return the modified date of this meetup group
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _meetupGroup.getModifiedDate();
+	}
+
+	/**
+	* Returns the company ID of this meetup group.
+	*
+	* @return the company ID of this meetup group
+	*/
+	@Override
+	public long getCompanyId() {
+		return _meetupGroup.getCompanyId();
+	}
+
+	/**
+	* Returns the group ID of this meetup group.
+	*
+	* @return the group ID of this meetup group
+	*/
+	@Override
+	public long getGroupId() {
+		return _meetupGroup.getGroupId();
+	}
+
+	/**
+	* Returns the meetup group ID of this meetup group.
+	*
+	* @return the meetup group ID of this meetup group
+	*/
+	@Override
+	public long getMeetupGroupId() {
+		return _meetupGroup.getMeetupGroupId();
+	}
+
+	/**
+	* Returns the primary key of this meetup group.
+	*
+	* @return the primary key of this meetup group
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _meetupGroup.getPrimaryKey();
+	}
+
+	@Override
 	public void persist() {
 		_meetupGroup.persist();
 	}
@@ -293,50 +321,43 @@ public class MeetupGroupWrapper
 	}
 
 	/**
-	 * Sets the city of this meetup group.
-	 *
-	 * @param city the city of this meetup group
-	 */
+	* Sets the city of this meetup group.
+	*
+	* @param city the city of this meetup group
+	*/
 	@Override
-	public void setCity(String city) {
+	public void setCity(java.lang.String city) {
 		_meetupGroup.setCity(city);
 	}
 
 	/**
-	 * Sets the company ID of this meetup group.
-	 *
-	 * @param companyId the company ID of this meetup group
-	 */
+	* Sets the company ID of this meetup group.
+	*
+	* @param companyId the company ID of this meetup group
+	*/
 	@Override
 	public void setCompanyId(long companyId) {
 		_meetupGroup.setCompanyId(companyId);
 	}
 
 	/**
-	 * Sets the create date of this meetup group.
-	 *
-	 * @param createDate the create date of this meetup group
-	 */
+	* Sets the create date of this meetup group.
+	*
+	* @param createDate the create date of this meetup group
+	*/
 	@Override
 	public void setCreateDate(Date createDate) {
 		_meetupGroup.setCreateDate(createDate);
 	}
 
 	/**
-	 * Sets the description of this meetup group.
-	 *
-	 * @param description the description of this meetup group
-	 */
+	* Sets the description of this meetup group.
+	*
+	* @param description the description of this meetup group
+	*/
 	@Override
-	public void setDescription(String description) {
+	public void setDescription(java.lang.String description) {
 		_meetupGroup.setDescription(description);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-
-		_meetupGroup.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -345,57 +366,63 @@ public class MeetupGroupWrapper
 	}
 
 	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_meetupGroup.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_meetupGroup.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	 * Sets the group ID of this meetup group.
-	 *
-	 * @param groupId the group ID of this meetup group
-	 */
+	* Sets the group ID of this meetup group.
+	*
+	* @param groupId the group ID of this meetup group
+	*/
 	@Override
 	public void setGroupId(long groupId) {
 		_meetupGroup.setGroupId(groupId);
 	}
 
 	/**
-	 * Sets the meetup group ID of this meetup group.
-	 *
-	 * @param meetupGroupId the meetup group ID of this meetup group
-	 */
+	* Sets the meetup group ID of this meetup group.
+	*
+	* @param meetupGroupId the meetup group ID of this meetup group
+	*/
 	@Override
 	public void setMeetupGroupId(long meetupGroupId) {
 		_meetupGroup.setMeetupGroupId(meetupGroupId);
 	}
 
 	/**
-	 * Sets the member count of this meetup group.
-	 *
-	 * @param memberCount the member count of this meetup group
-	 */
+	* Sets the member count of this meetup group.
+	*
+	* @param memberCount the member count of this meetup group
+	*/
 	@Override
 	public void setMemberCount(int memberCount) {
 		_meetupGroup.setMemberCount(memberCount);
 	}
 
 	/**
-	 * Sets the modified date of this meetup group.
-	 *
-	 * @param modifiedDate the modified date of this meetup group
-	 */
+	* Sets the modified date of this meetup group.
+	*
+	* @param modifiedDate the modified date of this meetup group
+	*/
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_meetupGroup.setModifiedDate(modifiedDate);
 	}
 
 	/**
-	 * Sets the name of this meetup group.
-	 *
-	 * @param name the name of this meetup group
-	 */
+	* Sets the name of this meetup group.
+	*
+	* @param name the name of this meetup group
+	*/
 	@Override
-	public void setName(String name) {
+	public void setName(java.lang.String name) {
 		_meetupGroup.setName(name);
 	}
 
@@ -405,10 +432,10 @@ public class MeetupGroupWrapper
 	}
 
 	/**
-	 * Sets the primary key of this meetup group.
-	 *
-	 * @param primaryKey the primary key of this meetup group
-	 */
+	* Sets the primary key of this meetup group.
+	*
+	* @param primaryKey the primary key of this meetup group
+	*/
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_meetupGroup.setPrimaryKey(primaryKey);
@@ -420,40 +447,13 @@ public class MeetupGroupWrapper
 	}
 
 	/**
-	 * Sets the url of this meetup group.
-	 *
-	 * @param url the url of this meetup group
-	 */
+	* Sets the url of this meetup group.
+	*
+	* @param url the url of this meetup group
+	*/
 	@Override
-	public void setUrl(String url) {
+	public void setUrl(java.lang.String url) {
 		_meetupGroup.setUrl(url);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<MeetupGroup>
-		toCacheModel() {
-
-		return _meetupGroup.toCacheModel();
-	}
-
-	@Override
-	public MeetupGroup toEscapedModel() {
-		return new MeetupGroupWrapper(_meetupGroup.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return _meetupGroup.toString();
-	}
-
-	@Override
-	public MeetupGroup toUnescapedModel() {
-		return new MeetupGroupWrapper(_meetupGroup.toUnescapedModel());
-	}
-
-	@Override
-	public String toXmlString() {
-		return _meetupGroup.toXmlString();
 	}
 
 	@Override
@@ -496,5 +496,4 @@ public class MeetupGroupWrapper
 	}
 
 	private final MeetupGroup _meetupGroup;
-
 }

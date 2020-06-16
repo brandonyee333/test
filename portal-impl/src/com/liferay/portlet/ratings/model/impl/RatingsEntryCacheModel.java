@@ -14,9 +14,13 @@
 
 package com.liferay.portlet.ratings.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.ratings.kernel.model.RatingsEntry;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing RatingsEntry in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see RatingsEntry
  * @generated
  */
-public class RatingsEntryCacheModel
-	implements CacheModel<RatingsEntry>, Externalizable {
-
+@ProviderType
+public class RatingsEntryCacheModel implements CacheModel<RatingsEntry>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class RatingsEntryCacheModel
 			return false;
 		}
 
-		RatingsEntryCacheModel ratingsEntryCacheModel =
-			(RatingsEntryCacheModel)obj;
+		RatingsEntryCacheModel ratingsEntryCacheModel = (RatingsEntryCacheModel)obj;
 
 		if (entryId == ratingsEntryCacheModel.entryId) {
 			return true;
@@ -94,7 +98,7 @@ public class RatingsEntryCacheModel
 		RatingsEntryImpl ratingsEntryImpl = new RatingsEntryImpl();
 
 		if (uuid == null) {
-			ratingsEntryImpl.setUuid("");
+			ratingsEntryImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			ratingsEntryImpl.setUuid(uuid);
@@ -105,7 +109,7 @@ public class RatingsEntryCacheModel
 		ratingsEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			ratingsEntryImpl.setUserName("");
+			ratingsEntryImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			ratingsEntryImpl.setUserName(userName);
@@ -155,9 +159,10 @@ public class RatingsEntryCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -170,7 +175,7 @@ public class RatingsEntryCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -196,5 +201,4 @@ public class RatingsEntryCacheModel
 	public long classNameId;
 	public long classPK;
 	public double score;
-
 }

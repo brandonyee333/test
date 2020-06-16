@@ -14,6 +14,8 @@
 
 package com.liferay.microblogs.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.microblogs.model.MicroblogsEntry;
 import com.liferay.microblogs.service.MicroblogsEntryLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.microblogs.service.MicroblogsEntryLocalServiceUtil;
  * @see MicroblogsEntry
  * @generated
  */
-public abstract class MicroblogsEntryBaseImpl
-	extends MicroblogsEntryModelImpl implements MicroblogsEntry {
-
+@ProviderType
+public abstract class MicroblogsEntryBaseImpl extends MicroblogsEntryModelImpl
+	implements MicroblogsEntry {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a microblogs entry model instance should use the <code>MicroblogsEntry</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a microblogs entry model instance should use the {@link MicroblogsEntry} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class MicroblogsEntryBaseImpl
 			MicroblogsEntryLocalServiceUtil.updateMicroblogsEntry(this);
 		}
 	}
-
 }

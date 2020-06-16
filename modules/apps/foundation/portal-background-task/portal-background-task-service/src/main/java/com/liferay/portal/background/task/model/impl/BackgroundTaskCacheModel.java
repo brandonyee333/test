@@ -14,11 +14,14 @@
 
 package com.liferay.portal.background.task.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.background.task.model.BackgroundTask;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -33,11 +36,12 @@ import java.util.Map;
  * The cache model class for representing BackgroundTask in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see BackgroundTask
  * @generated
  */
-public class BackgroundTaskCacheModel
-	implements CacheModel<BackgroundTask>, Externalizable, MVCCModel {
-
+@ProviderType
+public class BackgroundTaskCacheModel implements CacheModel<BackgroundTask>,
+	Externalizable, MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,12 +52,10 @@ public class BackgroundTaskCacheModel
 			return false;
 		}
 
-		BackgroundTaskCacheModel backgroundTaskCacheModel =
-			(BackgroundTaskCacheModel)obj;
+		BackgroundTaskCacheModel backgroundTaskCacheModel = (BackgroundTaskCacheModel)obj;
 
 		if ((backgroundTaskId == backgroundTaskCacheModel.backgroundTaskId) &&
-			(mvccVersion == backgroundTaskCacheModel.mvccVersion)) {
-
+				(mvccVersion == backgroundTaskCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -129,7 +131,7 @@ public class BackgroundTaskCacheModel
 		backgroundTaskImpl.setUserId(userId);
 
 		if (userName == null) {
-			backgroundTaskImpl.setUserName("");
+			backgroundTaskImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			backgroundTaskImpl.setUserName(userName);
@@ -150,21 +152,21 @@ public class BackgroundTaskCacheModel
 		}
 
 		if (name == null) {
-			backgroundTaskImpl.setName("");
+			backgroundTaskImpl.setName(StringPool.BLANK);
 		}
 		else {
 			backgroundTaskImpl.setName(name);
 		}
 
 		if (servletContextNames == null) {
-			backgroundTaskImpl.setServletContextNames("");
+			backgroundTaskImpl.setServletContextNames(StringPool.BLANK);
 		}
 		else {
 			backgroundTaskImpl.setServletContextNames(servletContextNames);
 		}
 
 		if (taskExecutorClassName == null) {
-			backgroundTaskImpl.setTaskExecutorClassName("");
+			backgroundTaskImpl.setTaskExecutorClassName(StringPool.BLANK);
 		}
 		else {
 			backgroundTaskImpl.setTaskExecutorClassName(taskExecutorClassName);
@@ -183,7 +185,7 @@ public class BackgroundTaskCacheModel
 		backgroundTaskImpl.setStatus(status);
 
 		if (statusMessage == null) {
-			backgroundTaskImpl.setStatusMessage("");
+			backgroundTaskImpl.setStatusMessage(StringPool.BLANK);
 		}
 		else {
 			backgroundTaskImpl.setStatusMessage(statusMessage);
@@ -197,7 +199,6 @@ public class BackgroundTaskCacheModel
 	@Override
 	public void readExternal(ObjectInput objectInput)
 		throws ClassNotFoundException, IOException {
-
 		mvccVersion = objectInput.readLong();
 
 		backgroundTaskId = objectInput.readLong();
@@ -219,11 +220,12 @@ public class BackgroundTaskCacheModel
 		completionDate = objectInput.readLong();
 
 		status = objectInput.readInt();
-		statusMessage = (String)objectInput.readObject();
+		statusMessage = objectInput.readUTF();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(backgroundTaskId);
@@ -235,7 +237,7 @@ public class BackgroundTaskCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -245,21 +247,21 @@ public class BackgroundTaskCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (servletContextNames == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(servletContextNames);
 		}
 
 		if (taskExecutorClassName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(taskExecutorClassName);
@@ -273,10 +275,10 @@ public class BackgroundTaskCacheModel
 		objectOutput.writeInt(status);
 
 		if (statusMessage == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(statusMessage);
+			objectOutput.writeUTF(statusMessage);
 		}
 	}
 
@@ -296,5 +298,4 @@ public class BackgroundTaskCacheModel
 	public long completionDate;
 	public int status;
 	public String statusMessage;
-
 }

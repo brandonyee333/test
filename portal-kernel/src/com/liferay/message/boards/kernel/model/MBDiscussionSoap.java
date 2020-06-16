@@ -14,6 +14,8 @@
 
 package com.liferay.message.boards.kernel.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,8 +28,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
+@ProviderType
 public class MBDiscussionSoap implements Serializable {
-
 	public static MBDiscussionSoap toSoapModel(MBDiscussion model) {
 		MBDiscussionSoap soapModel = new MBDiscussionSoap();
 
@@ -75,8 +77,7 @@ public class MBDiscussionSoap implements Serializable {
 	}
 
 	public static MBDiscussionSoap[] toSoapModels(List<MBDiscussion> models) {
-		List<MBDiscussionSoap> soapModels = new ArrayList<MBDiscussionSoap>(
-			models.size());
+		List<MBDiscussionSoap> soapModels = new ArrayList<MBDiscussionSoap>(models.size());
 
 		for (MBDiscussion model : models) {
 			soapModels.add(toSoapModel(model));
@@ -204,5 +205,4 @@ public class MBDiscussionSoap implements Serializable {
 	private long _classPK;
 	private long _threadId;
 	private Date _lastPublishDate;
-
 }

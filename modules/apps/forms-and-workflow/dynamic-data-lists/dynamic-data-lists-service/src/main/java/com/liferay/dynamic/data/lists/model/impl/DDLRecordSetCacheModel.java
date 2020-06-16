@@ -14,10 +14,14 @@
 
 package com.liferay.dynamic.data.lists.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing DDLRecordSet in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see DDLRecordSet
  * @generated
  */
-public class DDLRecordSetCacheModel
-	implements CacheModel<DDLRecordSet>, Externalizable {
-
+@ProviderType
+public class DDLRecordSetCacheModel implements CacheModel<DDLRecordSet>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class DDLRecordSetCacheModel
 			return false;
 		}
 
-		DDLRecordSetCacheModel ddlRecordSetCacheModel =
-			(DDLRecordSetCacheModel)obj;
+		DDLRecordSetCacheModel ddlRecordSetCacheModel = (DDLRecordSetCacheModel)obj;
 
 		if (recordSetId == ddlRecordSetCacheModel.recordSetId) {
 			return true;
@@ -106,7 +110,7 @@ public class DDLRecordSetCacheModel
 		DDLRecordSetImpl ddlRecordSetImpl = new DDLRecordSetImpl();
 
 		if (uuid == null) {
-			ddlRecordSetImpl.setUuid("");
+			ddlRecordSetImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			ddlRecordSetImpl.setUuid(uuid);
@@ -118,7 +122,7 @@ public class DDLRecordSetCacheModel
 		ddlRecordSetImpl.setUserId(userId);
 
 		if (userName == null) {
-			ddlRecordSetImpl.setUserName("");
+			ddlRecordSetImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			ddlRecordSetImpl.setUserName(userName);
@@ -141,21 +145,21 @@ public class DDLRecordSetCacheModel
 		ddlRecordSetImpl.setDDMStructureId(DDMStructureId);
 
 		if (recordSetKey == null) {
-			ddlRecordSetImpl.setRecordSetKey("");
+			ddlRecordSetImpl.setRecordSetKey(StringPool.BLANK);
 		}
 		else {
 			ddlRecordSetImpl.setRecordSetKey(recordSetKey);
 		}
 
 		if (name == null) {
-			ddlRecordSetImpl.setName("");
+			ddlRecordSetImpl.setName(StringPool.BLANK);
 		}
 		else {
 			ddlRecordSetImpl.setName(name);
 		}
 
 		if (description == null) {
-			ddlRecordSetImpl.setDescription("");
+			ddlRecordSetImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			ddlRecordSetImpl.setDescription(description);
@@ -165,7 +169,7 @@ public class DDLRecordSetCacheModel
 		ddlRecordSetImpl.setScope(scope);
 
 		if (settings == null) {
-			ddlRecordSetImpl.setSettings("");
+			ddlRecordSetImpl.setSettings(StringPool.BLANK);
 		}
 		else {
 			ddlRecordSetImpl.setSettings(settings);
@@ -188,7 +192,6 @@ public class DDLRecordSetCacheModel
 	@Override
 	public void readExternal(ObjectInput objectInput)
 		throws ClassNotFoundException, IOException {
-
 		uuid = objectInput.readUTF();
 
 		recordSetId = objectInput.readLong();
@@ -210,18 +213,17 @@ public class DDLRecordSetCacheModel
 		minDisplayRows = objectInput.readInt();
 
 		scope = objectInput.readInt();
-		settings = (String)objectInput.readObject();
+		settings = objectInput.readUTF();
 		lastPublishDate = objectInput.readLong();
 
-		_ddmFormValues =
-			(com.liferay.dynamic.data.mapping.storage.DDMFormValues)
-				objectInput.readObject();
+		_ddmFormValues = (com.liferay.dynamic.data.mapping.storage.DDMFormValues)objectInput.readObject();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -236,7 +238,7 @@ public class DDLRecordSetCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -248,21 +250,21 @@ public class DDLRecordSetCacheModel
 		objectOutput.writeLong(DDMStructureId);
 
 		if (recordSetKey == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(recordSetKey);
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -273,10 +275,10 @@ public class DDLRecordSetCacheModel
 		objectOutput.writeInt(scope);
 
 		if (settings == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(settings);
+			objectOutput.writeUTF(settings);
 		}
 
 		objectOutput.writeLong(lastPublishDate);
@@ -300,7 +302,5 @@ public class DDLRecordSetCacheModel
 	public int scope;
 	public String settings;
 	public long lastPublishDate;
-	public com.liferay.dynamic.data.mapping.storage.DDMFormValues
-		_ddmFormValues;
-
+	public com.liferay.dynamic.data.mapping.storage.DDMFormValues _ddmFormValues;
 }

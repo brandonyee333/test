@@ -14,6 +14,8 @@
 
 package com.liferay.knowledge.base.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.knowledge.base.model.KBArticle;
 import com.liferay.knowledge.base.service.KBArticleLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.knowledge.base.service.KBArticleLocalServiceUtil;
  * @see KBArticle
  * @generated
  */
-public abstract class KBArticleBaseImpl
-	extends KBArticleModelImpl implements KBArticle {
-
+@ProviderType
+public abstract class KBArticleBaseImpl extends KBArticleModelImpl
+	implements KBArticle {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a kb article model instance should use the <code>KBArticle</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a kb article model instance should use the {@link KBArticle} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class KBArticleBaseImpl
 			KBArticleLocalServiceUtil.updateKBArticle(this);
 		}
 	}
-
 }

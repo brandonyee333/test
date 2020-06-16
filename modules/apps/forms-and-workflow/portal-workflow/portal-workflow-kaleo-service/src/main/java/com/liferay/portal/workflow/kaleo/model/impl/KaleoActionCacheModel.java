@@ -14,9 +14,12 @@
 
 package com.liferay.portal.workflow.kaleo.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.workflow.kaleo.model.KaleoAction;
 
 import java.io.Externalizable;
@@ -30,11 +33,12 @@ import java.util.Date;
  * The cache model class for representing KaleoAction in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see KaleoAction
  * @generated
  */
-public class KaleoActionCacheModel
-	implements CacheModel<KaleoAction>, Externalizable {
-
+@ProviderType
+public class KaleoActionCacheModel implements CacheModel<KaleoAction>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +49,7 @@ public class KaleoActionCacheModel
 			return false;
 		}
 
-		KaleoActionCacheModel kaleoActionCacheModel =
-			(KaleoActionCacheModel)obj;
+		KaleoActionCacheModel kaleoActionCacheModel = (KaleoActionCacheModel)obj;
 
 		if (kaleoActionId == kaleoActionCacheModel.kaleoActionId) {
 			return true;
@@ -115,7 +118,7 @@ public class KaleoActionCacheModel
 		kaleoActionImpl.setUserId(userId);
 
 		if (userName == null) {
-			kaleoActionImpl.setUserName("");
+			kaleoActionImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			kaleoActionImpl.setUserName(userName);
@@ -136,7 +139,7 @@ public class KaleoActionCacheModel
 		}
 
 		if (kaleoClassName == null) {
-			kaleoActionImpl.setKaleoClassName("");
+			kaleoActionImpl.setKaleoClassName(StringPool.BLANK);
 		}
 		else {
 			kaleoActionImpl.setKaleoClassName(kaleoClassName);
@@ -146,49 +149,49 @@ public class KaleoActionCacheModel
 		kaleoActionImpl.setKaleoDefinitionId(kaleoDefinitionId);
 
 		if (kaleoNodeName == null) {
-			kaleoActionImpl.setKaleoNodeName("");
+			kaleoActionImpl.setKaleoNodeName(StringPool.BLANK);
 		}
 		else {
 			kaleoActionImpl.setKaleoNodeName(kaleoNodeName);
 		}
 
 		if (name == null) {
-			kaleoActionImpl.setName("");
+			kaleoActionImpl.setName(StringPool.BLANK);
 		}
 		else {
 			kaleoActionImpl.setName(name);
 		}
 
 		if (description == null) {
-			kaleoActionImpl.setDescription("");
+			kaleoActionImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			kaleoActionImpl.setDescription(description);
 		}
 
 		if (executionType == null) {
-			kaleoActionImpl.setExecutionType("");
+			kaleoActionImpl.setExecutionType(StringPool.BLANK);
 		}
 		else {
 			kaleoActionImpl.setExecutionType(executionType);
 		}
 
 		if (script == null) {
-			kaleoActionImpl.setScript("");
+			kaleoActionImpl.setScript(StringPool.BLANK);
 		}
 		else {
 			kaleoActionImpl.setScript(script);
 		}
 
 		if (scriptLanguage == null) {
-			kaleoActionImpl.setScriptLanguage("");
+			kaleoActionImpl.setScriptLanguage(StringPool.BLANK);
 		}
 		else {
 			kaleoActionImpl.setScriptLanguage(scriptLanguage);
 		}
 
 		if (scriptRequiredContexts == null) {
-			kaleoActionImpl.setScriptRequiredContexts("");
+			kaleoActionImpl.setScriptRequiredContexts(StringPool.BLANK);
 		}
 		else {
 			kaleoActionImpl.setScriptRequiredContexts(scriptRequiredContexts);
@@ -202,9 +205,7 @@ public class KaleoActionCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		kaleoActionId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -224,7 +225,7 @@ public class KaleoActionCacheModel
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
 		executionType = objectInput.readUTF();
-		script = (String)objectInput.readObject();
+		script = objectInput.readUTF();
 		scriptLanguage = objectInput.readUTF();
 		scriptRequiredContexts = objectInput.readUTF();
 
@@ -232,7 +233,8 @@ public class KaleoActionCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(kaleoActionId);
 
 		objectOutput.writeLong(groupId);
@@ -242,7 +244,7 @@ public class KaleoActionCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -252,7 +254,7 @@ public class KaleoActionCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (kaleoClassName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(kaleoClassName);
@@ -263,49 +265,49 @@ public class KaleoActionCacheModel
 		objectOutput.writeLong(kaleoDefinitionId);
 
 		if (kaleoNodeName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(kaleoNodeName);
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (executionType == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(executionType);
 		}
 
 		if (script == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(script);
+			objectOutput.writeUTF(script);
 		}
 
 		if (scriptLanguage == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(scriptLanguage);
 		}
 
 		if (scriptRequiredContexts == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(scriptRequiredContexts);
@@ -332,5 +334,4 @@ public class KaleoActionCacheModel
 	public String scriptLanguage;
 	public String scriptRequiredContexts;
 	public int priority;
-
 }

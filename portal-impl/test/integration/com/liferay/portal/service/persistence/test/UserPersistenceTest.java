@@ -32,10 +32,18 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
 
 import java.io.Serializable;
 
@@ -47,23 +55,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-
 /**
  * @generated
  */
 public class UserPersistenceTest {
-
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
+	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
+			PersistenceTestRule.INSTANCE,
 			new TransactionalTestRule(Propagation.REQUIRED));
 
 	@Before
@@ -103,8 +102,7 @@ public class UserPersistenceTest {
 
 		_persistence.remove(newUser);
 
-		User existingUser = _persistence.fetchByPrimaryKey(
-			newUser.getPrimaryKey());
+		User existingUser = _persistence.fetchByPrimaryKey(newUser.getPrimaryKey());
 
 		Assert.assertNull(existingUser);
 	}
@@ -204,109 +202,98 @@ public class UserPersistenceTest {
 
 		_users.add(_persistence.update(newUser));
 
-		User existingUser = _persistence.findByPrimaryKey(
-			newUser.getPrimaryKey());
+		User existingUser = _persistence.findByPrimaryKey(newUser.getPrimaryKey());
 
-		Assert.assertEquals(
-			existingUser.getMvccVersion(), newUser.getMvccVersion());
+		Assert.assertEquals(existingUser.getMvccVersion(),
+			newUser.getMvccVersion());
 		Assert.assertEquals(existingUser.getUuid(), newUser.getUuid());
 		Assert.assertEquals(existingUser.getUserId(), newUser.getUserId());
-		Assert.assertEquals(
-			existingUser.getCompanyId(), newUser.getCompanyId());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingUser.getCreateDate()),
+		Assert.assertEquals(existingUser.getCompanyId(), newUser.getCompanyId());
+		Assert.assertEquals(Time.getShortTimestamp(existingUser.getCreateDate()),
 			Time.getShortTimestamp(newUser.getCreateDate()));
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingUser.getModifiedDate()),
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingUser.getModifiedDate()),
 			Time.getShortTimestamp(newUser.getModifiedDate()));
-		Assert.assertEquals(
-			existingUser.isDefaultUser(), newUser.isDefaultUser());
-		Assert.assertEquals(
-			existingUser.getContactId(), newUser.getContactId());
+		Assert.assertEquals(existingUser.getDefaultUser(),
+			newUser.getDefaultUser());
+		Assert.assertEquals(existingUser.getContactId(), newUser.getContactId());
 		Assert.assertEquals(existingUser.getPassword(), newUser.getPassword());
-		Assert.assertEquals(
-			existingUser.isPasswordEncrypted(), newUser.isPasswordEncrypted());
-		Assert.assertEquals(
-			existingUser.isPasswordReset(), newUser.isPasswordReset());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingUser.getPasswordModifiedDate()),
+		Assert.assertEquals(existingUser.getPasswordEncrypted(),
+			newUser.getPasswordEncrypted());
+		Assert.assertEquals(existingUser.getPasswordReset(),
+			newUser.getPasswordReset());
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingUser.getPasswordModifiedDate()),
 			Time.getShortTimestamp(newUser.getPasswordModifiedDate()));
 		Assert.assertEquals(existingUser.getDigest(), newUser.getDigest());
-		Assert.assertEquals(
-			existingUser.getReminderQueryQuestion(),
+		Assert.assertEquals(existingUser.getReminderQueryQuestion(),
 			newUser.getReminderQueryQuestion());
-		Assert.assertEquals(
-			existingUser.getReminderQueryAnswer(),
+		Assert.assertEquals(existingUser.getReminderQueryAnswer(),
 			newUser.getReminderQueryAnswer());
-		Assert.assertEquals(
-			existingUser.getGraceLoginCount(), newUser.getGraceLoginCount());
-		Assert.assertEquals(
-			existingUser.getScreenName(), newUser.getScreenName());
-		Assert.assertEquals(
-			existingUser.getEmailAddress(), newUser.getEmailAddress());
-		Assert.assertEquals(
-			existingUser.getFacebookId(), newUser.getFacebookId());
-		Assert.assertEquals(
-			existingUser.getGoogleUserId(), newUser.getGoogleUserId());
-		Assert.assertEquals(
-			existingUser.getLdapServerId(), newUser.getLdapServerId());
+		Assert.assertEquals(existingUser.getGraceLoginCount(),
+			newUser.getGraceLoginCount());
+		Assert.assertEquals(existingUser.getScreenName(),
+			newUser.getScreenName());
+		Assert.assertEquals(existingUser.getEmailAddress(),
+			newUser.getEmailAddress());
+		Assert.assertEquals(existingUser.getFacebookId(),
+			newUser.getFacebookId());
+		Assert.assertEquals(existingUser.getGoogleUserId(),
+			newUser.getGoogleUserId());
+		Assert.assertEquals(existingUser.getLdapServerId(),
+			newUser.getLdapServerId());
 		Assert.assertEquals(existingUser.getOpenId(), newUser.getOpenId());
-		Assert.assertEquals(
-			existingUser.getPortraitId(), newUser.getPortraitId());
-		Assert.assertEquals(
-			existingUser.getLanguageId(), newUser.getLanguageId());
-		Assert.assertEquals(
-			existingUser.getTimeZoneId(), newUser.getTimeZoneId());
+		Assert.assertEquals(existingUser.getPortraitId(),
+			newUser.getPortraitId());
+		Assert.assertEquals(existingUser.getLanguageId(),
+			newUser.getLanguageId());
+		Assert.assertEquals(existingUser.getTimeZoneId(),
+			newUser.getTimeZoneId());
 		Assert.assertEquals(existingUser.getGreeting(), newUser.getGreeting());
 		Assert.assertEquals(existingUser.getComments(), newUser.getComments());
-		Assert.assertEquals(
-			existingUser.getFirstName(), newUser.getFirstName());
-		Assert.assertEquals(
-			existingUser.getMiddleName(), newUser.getMiddleName());
+		Assert.assertEquals(existingUser.getFirstName(), newUser.getFirstName());
+		Assert.assertEquals(existingUser.getMiddleName(),
+			newUser.getMiddleName());
 		Assert.assertEquals(existingUser.getLastName(), newUser.getLastName());
 		Assert.assertEquals(existingUser.getJobTitle(), newUser.getJobTitle());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingUser.getLoginDate()),
+		Assert.assertEquals(Time.getShortTimestamp(existingUser.getLoginDate()),
 			Time.getShortTimestamp(newUser.getLoginDate()));
 		Assert.assertEquals(existingUser.getLoginIP(), newUser.getLoginIP());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingUser.getLastLoginDate()),
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingUser.getLastLoginDate()),
 			Time.getShortTimestamp(newUser.getLastLoginDate()));
-		Assert.assertEquals(
-			existingUser.getLastLoginIP(), newUser.getLastLoginIP());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingUser.getLastFailedLoginDate()),
+		Assert.assertEquals(existingUser.getLastLoginIP(),
+			newUser.getLastLoginIP());
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingUser.getLastFailedLoginDate()),
 			Time.getShortTimestamp(newUser.getLastFailedLoginDate()));
-		Assert.assertEquals(
-			existingUser.getFailedLoginAttempts(),
+		Assert.assertEquals(existingUser.getFailedLoginAttempts(),
 			newUser.getFailedLoginAttempts());
-		Assert.assertEquals(existingUser.isLockout(), newUser.isLockout());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingUser.getLockoutDate()),
+		Assert.assertEquals(existingUser.getLockout(), newUser.getLockout());
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingUser.getLockoutDate()),
 			Time.getShortTimestamp(newUser.getLockoutDate()));
-		Assert.assertEquals(
-			existingUser.isAgreedToTermsOfUse(),
-			newUser.isAgreedToTermsOfUse());
-		Assert.assertEquals(
-			existingUser.isEmailAddressVerified(),
-			newUser.isEmailAddressVerified());
+		Assert.assertEquals(existingUser.getAgreedToTermsOfUse(),
+			newUser.getAgreedToTermsOfUse());
+		Assert.assertEquals(existingUser.getEmailAddressVerified(),
+			newUser.getEmailAddressVerified());
 		Assert.assertEquals(existingUser.getStatus(), newUser.getStatus());
 	}
 
 	@Test
 	public void testCountByUuid() throws Exception {
-		_persistence.countByUuid("");
+		_persistence.countByUuid(StringPool.BLANK);
 
-		_persistence.countByUuid("null");
+		_persistence.countByUuid(StringPool.NULL);
 
 		_persistence.countByUuid((String)null);
 	}
 
 	@Test
 	public void testCountByUuid_C() throws Exception {
-		_persistence.countByUuid_C("", RandomTestUtil.nextLong());
+		_persistence.countByUuid_C(StringPool.BLANK, RandomTestUtil.nextLong());
 
-		_persistence.countByUuid_C("null", 0L);
+		_persistence.countByUuid_C(StringPool.NULL, 0L);
 
 		_persistence.countByUuid_C((String)null, 0L);
 	}
@@ -327,9 +314,9 @@ public class UserPersistenceTest {
 
 	@Test
 	public void testCountByEmailAddress() throws Exception {
-		_persistence.countByEmailAddress("");
+		_persistence.countByEmailAddress(StringPool.BLANK);
 
-		_persistence.countByEmailAddress("null");
+		_persistence.countByEmailAddress(StringPool.NULL);
 
 		_persistence.countByEmailAddress((String)null);
 	}
@@ -343,111 +330,109 @@ public class UserPersistenceTest {
 
 	@Test
 	public void testCountByU_C() throws Exception {
-		_persistence.countByU_C(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+		_persistence.countByU_C(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong());
 
 		_persistence.countByU_C(0L, 0L);
 	}
 
 	@Test
 	public void testCountByC_U() throws Exception {
-		_persistence.countByC_U(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+		_persistence.countByC_U(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong());
 
 		_persistence.countByC_U(0L, 0L);
 	}
 
 	@Test
 	public void testCountByC_CD() throws Exception {
-		_persistence.countByC_CD(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextDate());
+		_persistence.countByC_CD(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextDate());
 
 		_persistence.countByC_CD(0L, RandomTestUtil.nextDate());
 	}
 
 	@Test
 	public void testCountByC_MD() throws Exception {
-		_persistence.countByC_MD(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextDate());
+		_persistence.countByC_MD(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextDate());
 
 		_persistence.countByC_MD(0L, RandomTestUtil.nextDate());
 	}
 
 	@Test
 	public void testCountByC_DU() throws Exception {
-		_persistence.countByC_DU(
-			RandomTestUtil.nextLong(), RandomTestUtil.randomBoolean());
+		_persistence.countByC_DU(RandomTestUtil.nextLong(),
+			RandomTestUtil.randomBoolean());
 
 		_persistence.countByC_DU(0L, RandomTestUtil.randomBoolean());
 	}
 
 	@Test
 	public void testCountByC_SN() throws Exception {
-		_persistence.countByC_SN(RandomTestUtil.nextLong(), "");
+		_persistence.countByC_SN(RandomTestUtil.nextLong(), StringPool.BLANK);
 
-		_persistence.countByC_SN(0L, "null");
+		_persistence.countByC_SN(0L, StringPool.NULL);
 
 		_persistence.countByC_SN(0L, (String)null);
 	}
 
 	@Test
 	public void testCountByC_EA() throws Exception {
-		_persistence.countByC_EA(RandomTestUtil.nextLong(), "");
+		_persistence.countByC_EA(RandomTestUtil.nextLong(), StringPool.BLANK);
 
-		_persistence.countByC_EA(0L, "null");
+		_persistence.countByC_EA(0L, StringPool.NULL);
 
 		_persistence.countByC_EA(0L, (String)null);
 	}
 
 	@Test
 	public void testCountByC_FID() throws Exception {
-		_persistence.countByC_FID(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+		_persistence.countByC_FID(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong());
 
 		_persistence.countByC_FID(0L, 0L);
 	}
 
 	@Test
 	public void testCountByC_GUID() throws Exception {
-		_persistence.countByC_GUID(RandomTestUtil.nextLong(), "");
+		_persistence.countByC_GUID(RandomTestUtil.nextLong(), StringPool.BLANK);
 
-		_persistence.countByC_GUID(0L, "null");
+		_persistence.countByC_GUID(0L, StringPool.NULL);
 
 		_persistence.countByC_GUID(0L, (String)null);
 	}
 
 	@Test
 	public void testCountByC_O() throws Exception {
-		_persistence.countByC_O(RandomTestUtil.nextLong(), "");
+		_persistence.countByC_O(RandomTestUtil.nextLong(), StringPool.BLANK);
 
-		_persistence.countByC_O(0L, "null");
+		_persistence.countByC_O(0L, StringPool.NULL);
 
 		_persistence.countByC_O(0L, (String)null);
 	}
 
 	@Test
 	public void testCountByC_S() throws Exception {
-		_persistence.countByC_S(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
+		_persistence.countByC_S(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextInt());
 
 		_persistence.countByC_S(0L, 0);
 	}
 
 	@Test
 	public void testCountByC_CD_MD() throws Exception {
-		_persistence.countByC_CD_MD(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextDate(),
-			RandomTestUtil.nextDate());
+		_persistence.countByC_CD_MD(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextDate(), RandomTestUtil.nextDate());
 
-		_persistence.countByC_CD_MD(
-			0L, RandomTestUtil.nextDate(), RandomTestUtil.nextDate());
+		_persistence.countByC_CD_MD(0L, RandomTestUtil.nextDate(),
+			RandomTestUtil.nextDate());
 	}
 
 	@Test
 	public void testCountByC_DU_S() throws Exception {
-		_persistence.countByC_DU_S(
-			RandomTestUtil.nextLong(), RandomTestUtil.randomBoolean(),
-			RandomTestUtil.nextInt());
+		_persistence.countByC_DU_S(RandomTestUtil.nextLong(),
+			RandomTestUtil.randomBoolean(), RandomTestUtil.nextInt());
 
 		_persistence.countByC_DU_S(0L, RandomTestUtil.randomBoolean(), 0);
 	}
@@ -456,8 +441,7 @@ public class UserPersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		User newUser = addUser();
 
-		User existingUser = _persistence.findByPrimaryKey(
-			newUser.getPrimaryKey());
+		User existingUser = _persistence.findByPrimaryKey(newUser.getPrimaryKey());
 
 		Assert.assertEquals(existingUser, newUser);
 	}
@@ -471,36 +455,34 @@ public class UserPersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
+		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			getOrderByComparator());
 	}
 
 	protected OrderByComparator<User> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create(
-			"User_", "mvccVersion", true, "uuid", true, "userId", true,
-			"companyId", true, "createDate", true, "modifiedDate", true,
-			"defaultUser", true, "contactId", true, "password", true,
-			"passwordEncrypted", true, "passwordReset", true,
-			"passwordModifiedDate", true, "digest", true,
-			"reminderQueryQuestion", true, "reminderQueryAnswer", true,
+		return OrderByComparatorFactoryUtil.create("User_", "mvccVersion",
+			true, "uuid", true, "userId", true, "companyId", true,
+			"createDate", true, "modifiedDate", true, "defaultUser", true,
+			"contactId", true, "password", true, "passwordEncrypted", true,
+			"passwordReset", true, "passwordModifiedDate", true, "digest",
+			true, "reminderQueryQuestion", true, "reminderQueryAnswer", true,
 			"graceLoginCount", true, "screenName", true, "emailAddress", true,
 			"facebookId", true, "googleUserId", true, "ldapServerId", true,
 			"openId", true, "portraitId", true, "languageId", true,
-			"timeZoneId", true, "greeting", true, "comments", true, "firstName",
-			true, "middleName", true, "lastName", true, "jobTitle", true,
-			"loginDate", true, "loginIP", true, "lastLoginDate", true,
-			"lastLoginIP", true, "lastFailedLoginDate", true,
-			"failedLoginAttempts", true, "lockout", true, "lockoutDate", true,
-			"agreedToTermsOfUse", true, "emailAddressVerified", true, "status",
-			true);
+			"timeZoneId", true, "greeting", true, "comments", true,
+			"firstName", true, "middleName", true, "lastName", true,
+			"jobTitle", true, "loginDate", true, "loginIP", true,
+			"lastLoginDate", true, "lastLoginIP", true, "lastFailedLoginDate",
+			true, "failedLoginAttempts", true, "lockout", true, "lockoutDate",
+			true, "agreedToTermsOfUse", true, "emailAddressVerified", true,
+			"status", true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		User newUser = addUser();
 
-		User existingUser = _persistence.fetchByPrimaryKey(
-			newUser.getPrimaryKey());
+		User existingUser = _persistence.fetchByPrimaryKey(newUser.getPrimaryKey());
 
 		Assert.assertEquals(existingUser, newUser);
 	}
@@ -517,7 +499,6 @@ public class UserPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
-
 		User newUser1 = addUser();
 		User newUser2 = addUser();
 
@@ -526,8 +507,7 @@ public class UserPersistenceTest {
 		primaryKeys.add(newUser1.getPrimaryKey());
 		primaryKeys.add(newUser2.getPrimaryKey());
 
-		Map<Serializable, User> users = _persistence.fetchByPrimaryKeys(
-			primaryKeys);
+		Map<Serializable, User> users = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(2, users.size());
 		Assert.assertEquals(newUser1, users.get(newUser1.getPrimaryKey()));
@@ -537,7 +517,6 @@ public class UserPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
-
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -547,8 +526,7 @@ public class UserPersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, User> users = _persistence.fetchByPrimaryKeys(
-			primaryKeys);
+		Map<Serializable, User> users = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(users.isEmpty());
 	}
@@ -556,7 +534,6 @@ public class UserPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
-
 		User newUser = addUser();
 
 		long pk = RandomTestUtil.nextLong();
@@ -566,33 +543,32 @@ public class UserPersistenceTest {
 		primaryKeys.add(newUser.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, User> users = _persistence.fetchByPrimaryKeys(
-			primaryKeys);
+		Map<Serializable, User> users = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, users.size());
 		Assert.assertEquals(newUser, users.get(newUser.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
+		throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, User> users = _persistence.fetchByPrimaryKeys(
-			primaryKeys);
+		Map<Serializable, User> users = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(users.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey()
+		throws Exception {
 		User newUser = addUser();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newUser.getPrimaryKey());
 
-		Map<Serializable, User> users = _persistence.fetchByPrimaryKeys(
-			primaryKeys);
+		Map<Serializable, User> users = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, users.size());
 		Assert.assertEquals(newUser, users.get(newUser.getPrimaryKey()));
@@ -602,19 +578,15 @@ public class UserPersistenceTest {
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery =
-			UserLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = UserLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<User>() {
-
+		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<User>() {
 				@Override
 				public void performAction(User user) {
 					Assert.assertNotNull(user);
 
 					count.increment();
 				}
-
 			});
 
 		actionableDynamicQuery.performActions();
@@ -623,14 +595,15 @@ public class UserPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting()
+		throws Exception {
 		User newUser = addUser();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			User.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(User.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("userId", newUser.getUserId()));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("userId",
+				newUser.getUserId()));
 
 		List<User> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -643,11 +616,11 @@ public class UserPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			User.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(User.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("userId", RandomTestUtil.nextLong()));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("userId",
+				RandomTestUtil.nextLong()));
 
 		List<User> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -655,18 +628,19 @@ public class UserPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting() throws Exception {
+	public void testDynamicQueryByProjectionExisting()
+		throws Exception {
 		User newUser = addUser();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			User.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(User.class,
+				_dynamicQueryClassLoader);
 
 		dynamicQuery.setProjection(ProjectionFactoryUtil.property("userId"));
 
 		Object newUserId = newUser.getUserId();
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in("userId", new Object[] {newUserId}));
+		dynamicQuery.add(RestrictionsFactoryUtil.in("userId",
+				new Object[] { newUserId }));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -679,14 +653,13 @@ public class UserPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			User.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(User.class,
+				_dynamicQueryClassLoader);
 
 		dynamicQuery.setProjection(ProjectionFactoryUtil.property("userId"));
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in(
-				"userId", new Object[] {RandomTestUtil.nextLong()}));
+		dynamicQuery.add(RestrictionsFactoryUtil.in("userId",
+				new Object[] { RandomTestUtil.nextLong() }));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -699,85 +672,64 @@ public class UserPersistenceTest {
 
 		_persistence.clearCache();
 
-		User existingUser = _persistence.findByPrimaryKey(
-			newUser.getPrimaryKey());
+		User existingUser = _persistence.findByPrimaryKey(newUser.getPrimaryKey());
 
-		Assert.assertEquals(
-			Long.valueOf(existingUser.getContactId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingUser, "getOriginalContactId", new Class<?>[0]));
+		Assert.assertEquals(Long.valueOf(existingUser.getContactId()),
+			ReflectionTestUtil.<Long>invoke(existingUser,
+				"getOriginalContactId", new Class<?>[0]));
 
-		Assert.assertEquals(
-			Long.valueOf(existingUser.getPortraitId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingUser, "getOriginalPortraitId", new Class<?>[0]));
+		Assert.assertEquals(Long.valueOf(existingUser.getPortraitId()),
+			ReflectionTestUtil.<Long>invoke(existingUser,
+				"getOriginalPortraitId", new Class<?>[0]));
 
-		Assert.assertEquals(
-			Long.valueOf(existingUser.getCompanyId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingUser, "getOriginalCompanyId", new Class<?>[0]));
-		Assert.assertEquals(
-			Long.valueOf(existingUser.getUserId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingUser, "getOriginalUserId", new Class<?>[0]));
+		Assert.assertEquals(Long.valueOf(existingUser.getCompanyId()),
+			ReflectionTestUtil.<Long>invoke(existingUser,
+				"getOriginalCompanyId", new Class<?>[0]));
+		Assert.assertEquals(Long.valueOf(existingUser.getUserId()),
+			ReflectionTestUtil.<Long>invoke(existingUser, "getOriginalUserId",
+				new Class<?>[0]));
 
-		Assert.assertEquals(
-			Long.valueOf(existingUser.getCompanyId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingUser, "getOriginalCompanyId", new Class<?>[0]));
-		Assert.assertEquals(
-			Boolean.valueOf(existingUser.getDefaultUser()),
-			ReflectionTestUtil.<Boolean>invoke(
-				existingUser, "getOriginalDefaultUser", new Class<?>[0]));
+		Assert.assertEquals(Long.valueOf(existingUser.getCompanyId()),
+			ReflectionTestUtil.<Long>invoke(existingUser,
+				"getOriginalCompanyId", new Class<?>[0]));
+		Assert.assertEquals(Boolean.valueOf(existingUser.getDefaultUser()),
+			ReflectionTestUtil.<Boolean>invoke(existingUser,
+				"getOriginalDefaultUser", new Class<?>[0]));
 
-		Assert.assertEquals(
-			Long.valueOf(existingUser.getCompanyId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingUser, "getOriginalCompanyId", new Class<?>[0]));
-		Assert.assertTrue(
-			Objects.equals(
-				existingUser.getScreenName(),
-				ReflectionTestUtil.invoke(
-					existingUser, "getOriginalScreenName", new Class<?>[0])));
+		Assert.assertEquals(Long.valueOf(existingUser.getCompanyId()),
+			ReflectionTestUtil.<Long>invoke(existingUser,
+				"getOriginalCompanyId", new Class<?>[0]));
+		Assert.assertTrue(Objects.equals(existingUser.getScreenName(),
+				ReflectionTestUtil.invoke(existingUser,
+					"getOriginalScreenName", new Class<?>[0])));
 
-		Assert.assertEquals(
-			Long.valueOf(existingUser.getCompanyId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingUser, "getOriginalCompanyId", new Class<?>[0]));
-		Assert.assertTrue(
-			Objects.equals(
-				existingUser.getEmailAddress(),
-				ReflectionTestUtil.invoke(
-					existingUser, "getOriginalEmailAddress", new Class<?>[0])));
+		Assert.assertEquals(Long.valueOf(existingUser.getCompanyId()),
+			ReflectionTestUtil.<Long>invoke(existingUser,
+				"getOriginalCompanyId", new Class<?>[0]));
+		Assert.assertTrue(Objects.equals(existingUser.getEmailAddress(),
+				ReflectionTestUtil.invoke(existingUser,
+					"getOriginalEmailAddress", new Class<?>[0])));
 
-		Assert.assertEquals(
-			Long.valueOf(existingUser.getCompanyId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingUser, "getOriginalCompanyId", new Class<?>[0]));
-		Assert.assertEquals(
-			Long.valueOf(existingUser.getFacebookId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingUser, "getOriginalFacebookId", new Class<?>[0]));
+		Assert.assertEquals(Long.valueOf(existingUser.getCompanyId()),
+			ReflectionTestUtil.<Long>invoke(existingUser,
+				"getOriginalCompanyId", new Class<?>[0]));
+		Assert.assertEquals(Long.valueOf(existingUser.getFacebookId()),
+			ReflectionTestUtil.<Long>invoke(existingUser,
+				"getOriginalFacebookId", new Class<?>[0]));
 
-		Assert.assertEquals(
-			Long.valueOf(existingUser.getCompanyId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingUser, "getOriginalCompanyId", new Class<?>[0]));
-		Assert.assertTrue(
-			Objects.equals(
-				existingUser.getGoogleUserId(),
-				ReflectionTestUtil.invoke(
-					existingUser, "getOriginalGoogleUserId", new Class<?>[0])));
+		Assert.assertEquals(Long.valueOf(existingUser.getCompanyId()),
+			ReflectionTestUtil.<Long>invoke(existingUser,
+				"getOriginalCompanyId", new Class<?>[0]));
+		Assert.assertTrue(Objects.equals(existingUser.getGoogleUserId(),
+				ReflectionTestUtil.invoke(existingUser,
+					"getOriginalGoogleUserId", new Class<?>[0])));
 
-		Assert.assertEquals(
-			Long.valueOf(existingUser.getCompanyId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingUser, "getOriginalCompanyId", new Class<?>[0]));
-		Assert.assertTrue(
-			Objects.equals(
-				existingUser.getOpenId(),
-				ReflectionTestUtil.invoke(
-					existingUser, "getOriginalOpenId", new Class<?>[0])));
+		Assert.assertEquals(Long.valueOf(existingUser.getCompanyId()),
+			ReflectionTestUtil.<Long>invoke(existingUser,
+				"getOriginalCompanyId", new Class<?>[0]));
+		Assert.assertTrue(Objects.equals(existingUser.getOpenId(),
+				ReflectionTestUtil.invoke(existingUser, "getOriginalOpenId",
+					new Class<?>[0])));
 	}
 
 	protected User addUser() throws Exception {
@@ -875,5 +827,4 @@ public class UserPersistenceTest {
 	private List<User> _users = new ArrayList<User>();
 	private UserPersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
-
 }

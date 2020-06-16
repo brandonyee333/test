@@ -14,7 +14,10 @@
 
 package com.liferay.portal.kernel.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -32,9 +35,9 @@ import java.util.Objects;
  * @see ResourceBlock
  * @generated
  */
-public class ResourceBlockWrapper
-	implements ModelWrapper<ResourceBlock>, ResourceBlock {
-
+@ProviderType
+public class ResourceBlockWrapper implements ResourceBlock,
+	ModelWrapper<ResourceBlock> {
 	public ResourceBlockWrapper(ResourceBlock resourceBlock) {
 		_resourceBlock = resourceBlock;
 	}
@@ -110,111 +113,6 @@ public class ResourceBlockWrapper
 	}
 
 	@Override
-	public Object clone() {
-		return new ResourceBlockWrapper((ResourceBlock)_resourceBlock.clone());
-	}
-
-	@Override
-	public int compareTo(ResourceBlock resourceBlock) {
-		return _resourceBlock.compareTo(resourceBlock);
-	}
-
-	/**
-	 * Returns the company ID of this resource block.
-	 *
-	 * @return the company ID of this resource block
-	 */
-	@Override
-	public long getCompanyId() {
-		return _resourceBlock.getCompanyId();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _resourceBlock.getExpandoBridge();
-	}
-
-	/**
-	 * Returns the group ID of this resource block.
-	 *
-	 * @return the group ID of this resource block
-	 */
-	@Override
-	public long getGroupId() {
-		return _resourceBlock.getGroupId();
-	}
-
-	/**
-	 * Returns the mvcc version of this resource block.
-	 *
-	 * @return the mvcc version of this resource block
-	 */
-	@Override
-	public long getMvccVersion() {
-		return _resourceBlock.getMvccVersion();
-	}
-
-	/**
-	 * Returns the name of this resource block.
-	 *
-	 * @return the name of this resource block
-	 */
-	@Override
-	public String getName() {
-		return _resourceBlock.getName();
-	}
-
-	/**
-	 * Returns the permissions hash of this resource block.
-	 *
-	 * @return the permissions hash of this resource block
-	 */
-	@Override
-	public String getPermissionsHash() {
-		return _resourceBlock.getPermissionsHash();
-	}
-
-	/**
-	 * Returns the primary key of this resource block.
-	 *
-	 * @return the primary key of this resource block
-	 */
-	@Override
-	public long getPrimaryKey() {
-		return _resourceBlock.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _resourceBlock.getPrimaryKeyObj();
-	}
-
-	/**
-	 * Returns the reference count of this resource block.
-	 *
-	 * @return the reference count of this resource block
-	 */
-	@Override
-	public long getReferenceCount() {
-		return _resourceBlock.getReferenceCount();
-	}
-
-	/**
-	 * Returns the resource block ID of this resource block.
-	 *
-	 * @return the resource block ID of this resource block
-	 */
-	@Override
-	public long getResourceBlockId() {
-		return _resourceBlock.getResourceBlockId();
-	}
-
-	@Override
-	public int hashCode() {
-		return _resourceBlock.hashCode();
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _resourceBlock.isCachedModel();
 	}
@@ -230,118 +128,8 @@ public class ResourceBlockWrapper
 	}
 
 	@Override
-	public void persist() {
-		_resourceBlock.persist();
-	}
-
-	@Override
-	public void setCachedModel(boolean cachedModel) {
-		_resourceBlock.setCachedModel(cachedModel);
-	}
-
-	/**
-	 * Sets the company ID of this resource block.
-	 *
-	 * @param companyId the company ID of this resource block
-	 */
-	@Override
-	public void setCompanyId(long companyId) {
-		_resourceBlock.setCompanyId(companyId);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(BaseModel<?> baseModel) {
-		_resourceBlock.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_resourceBlock.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-		_resourceBlock.setExpandoBridgeAttributes(serviceContext);
-	}
-
-	/**
-	 * Sets the group ID of this resource block.
-	 *
-	 * @param groupId the group ID of this resource block
-	 */
-	@Override
-	public void setGroupId(long groupId) {
-		_resourceBlock.setGroupId(groupId);
-	}
-
-	/**
-	 * Sets the mvcc version of this resource block.
-	 *
-	 * @param mvccVersion the mvcc version of this resource block
-	 */
-	@Override
-	public void setMvccVersion(long mvccVersion) {
-		_resourceBlock.setMvccVersion(mvccVersion);
-	}
-
-	/**
-	 * Sets the name of this resource block.
-	 *
-	 * @param name the name of this resource block
-	 */
-	@Override
-	public void setName(String name) {
-		_resourceBlock.setName(name);
-	}
-
-	@Override
-	public void setNew(boolean n) {
-		_resourceBlock.setNew(n);
-	}
-
-	/**
-	 * Sets the permissions hash of this resource block.
-	 *
-	 * @param permissionsHash the permissions hash of this resource block
-	 */
-	@Override
-	public void setPermissionsHash(String permissionsHash) {
-		_resourceBlock.setPermissionsHash(permissionsHash);
-	}
-
-	/**
-	 * Sets the primary key of this resource block.
-	 *
-	 * @param primaryKey the primary key of this resource block
-	 */
-	@Override
-	public void setPrimaryKey(long primaryKey) {
-		_resourceBlock.setPrimaryKey(primaryKey);
-	}
-
-	@Override
-	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		_resourceBlock.setPrimaryKeyObj(primaryKeyObj);
-	}
-
-	/**
-	 * Sets the reference count of this resource block.
-	 *
-	 * @param referenceCount the reference count of this resource block
-	 */
-	@Override
-	public void setReferenceCount(long referenceCount) {
-		_resourceBlock.setReferenceCount(referenceCount);
-	}
-
-	/**
-	 * Sets the resource block ID of this resource block.
-	 *
-	 * @param resourceBlockId the resource block ID of this resource block
-	 */
-	@Override
-	public void setResourceBlockId(long resourceBlockId) {
-		_resourceBlock.setResourceBlockId(resourceBlockId);
+	public ExpandoBridge getExpandoBridge() {
+		return _resourceBlock.getExpandoBridge();
 	}
 
 	@Override
@@ -355,18 +143,233 @@ public class ResourceBlockWrapper
 	}
 
 	@Override
-	public String toString() {
-		return _resourceBlock.toString();
-	}
-
-	@Override
 	public ResourceBlock toUnescapedModel() {
 		return new ResourceBlockWrapper(_resourceBlock.toUnescapedModel());
 	}
 
 	@Override
-	public String toXmlString() {
+	public int compareTo(ResourceBlock resourceBlock) {
+		return _resourceBlock.compareTo(resourceBlock);
+	}
+
+	@Override
+	public int hashCode() {
+		return _resourceBlock.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _resourceBlock.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new ResourceBlockWrapper((ResourceBlock)_resourceBlock.clone());
+	}
+
+	/**
+	* Returns the name of this resource block.
+	*
+	* @return the name of this resource block
+	*/
+	@Override
+	public java.lang.String getName() {
+		return _resourceBlock.getName();
+	}
+
+	/**
+	* Returns the permissions hash of this resource block.
+	*
+	* @return the permissions hash of this resource block
+	*/
+	@Override
+	public java.lang.String getPermissionsHash() {
+		return _resourceBlock.getPermissionsHash();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _resourceBlock.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
 		return _resourceBlock.toXmlString();
+	}
+
+	/**
+	* Returns the company ID of this resource block.
+	*
+	* @return the company ID of this resource block
+	*/
+	@Override
+	public long getCompanyId() {
+		return _resourceBlock.getCompanyId();
+	}
+
+	/**
+	* Returns the group ID of this resource block.
+	*
+	* @return the group ID of this resource block
+	*/
+	@Override
+	public long getGroupId() {
+		return _resourceBlock.getGroupId();
+	}
+
+	/**
+	* Returns the mvcc version of this resource block.
+	*
+	* @return the mvcc version of this resource block
+	*/
+	@Override
+	public long getMvccVersion() {
+		return _resourceBlock.getMvccVersion();
+	}
+
+	/**
+	* Returns the primary key of this resource block.
+	*
+	* @return the primary key of this resource block
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _resourceBlock.getPrimaryKey();
+	}
+
+	/**
+	* Returns the reference count of this resource block.
+	*
+	* @return the reference count of this resource block
+	*/
+	@Override
+	public long getReferenceCount() {
+		return _resourceBlock.getReferenceCount();
+	}
+
+	/**
+	* Returns the resource block ID of this resource block.
+	*
+	* @return the resource block ID of this resource block
+	*/
+	@Override
+	public long getResourceBlockId() {
+		return _resourceBlock.getResourceBlockId();
+	}
+
+	@Override
+	public void persist() {
+		_resourceBlock.persist();
+	}
+
+	@Override
+	public void setCachedModel(boolean cachedModel) {
+		_resourceBlock.setCachedModel(cachedModel);
+	}
+
+	/**
+	* Sets the company ID of this resource block.
+	*
+	* @param companyId the company ID of this resource block
+	*/
+	@Override
+	public void setCompanyId(long companyId) {
+		_resourceBlock.setCompanyId(companyId);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_resourceBlock.setExpandoBridgeAttributes(expandoBridge);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(BaseModel<?> baseModel) {
+		_resourceBlock.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
+		_resourceBlock.setExpandoBridgeAttributes(serviceContext);
+	}
+
+	/**
+	* Sets the group ID of this resource block.
+	*
+	* @param groupId the group ID of this resource block
+	*/
+	@Override
+	public void setGroupId(long groupId) {
+		_resourceBlock.setGroupId(groupId);
+	}
+
+	/**
+	* Sets the mvcc version of this resource block.
+	*
+	* @param mvccVersion the mvcc version of this resource block
+	*/
+	@Override
+	public void setMvccVersion(long mvccVersion) {
+		_resourceBlock.setMvccVersion(mvccVersion);
+	}
+
+	/**
+	* Sets the name of this resource block.
+	*
+	* @param name the name of this resource block
+	*/
+	@Override
+	public void setName(java.lang.String name) {
+		_resourceBlock.setName(name);
+	}
+
+	@Override
+	public void setNew(boolean n) {
+		_resourceBlock.setNew(n);
+	}
+
+	/**
+	* Sets the permissions hash of this resource block.
+	*
+	* @param permissionsHash the permissions hash of this resource block
+	*/
+	@Override
+	public void setPermissionsHash(java.lang.String permissionsHash) {
+		_resourceBlock.setPermissionsHash(permissionsHash);
+	}
+
+	/**
+	* Sets the primary key of this resource block.
+	*
+	* @param primaryKey the primary key of this resource block
+	*/
+	@Override
+	public void setPrimaryKey(long primaryKey) {
+		_resourceBlock.setPrimaryKey(primaryKey);
+	}
+
+	@Override
+	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
+		_resourceBlock.setPrimaryKeyObj(primaryKeyObj);
+	}
+
+	/**
+	* Sets the reference count of this resource block.
+	*
+	* @param referenceCount the reference count of this resource block
+	*/
+	@Override
+	public void setReferenceCount(long referenceCount) {
+		_resourceBlock.setReferenceCount(referenceCount);
+	}
+
+	/**
+	* Sets the resource block ID of this resource block.
+	*
+	* @param resourceBlockId the resource block ID of this resource block
+	*/
+	@Override
+	public void setResourceBlockId(long resourceBlockId) {
+		_resourceBlock.setResourceBlockId(resourceBlockId);
 	}
 
 	@Override
@@ -381,9 +384,7 @@ public class ResourceBlockWrapper
 
 		ResourceBlockWrapper resourceBlockWrapper = (ResourceBlockWrapper)obj;
 
-		if (Objects.equals(
-				_resourceBlock, resourceBlockWrapper._resourceBlock)) {
-
+		if (Objects.equals(_resourceBlock, resourceBlockWrapper._resourceBlock)) {
 			return true;
 		}
 
@@ -411,5 +412,4 @@ public class ResourceBlockWrapper
 	}
 
 	private final ResourceBlock _resourceBlock;
-
 }

@@ -14,9 +14,13 @@
 
 package com.liferay.journal.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.asset.kernel.service.persistence.AssetEntryPersistence;
 import com.liferay.asset.kernel.service.persistence.AssetLinkPersistence;
+
 import com.liferay.expando.kernel.service.persistence.ExpandoValuePersistence;
+
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
@@ -24,12 +28,14 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerRegistryUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
+
 import com.liferay.journal.model.JournalFolder;
 import com.liferay.journal.service.JournalFolderLocalService;
 import com.liferay.journal.service.persistence.JournalArticleFinder;
 import com.liferay.journal.service.persistence.JournalArticlePersistence;
 import com.liferay.journal.service.persistence.JournalFolderFinder;
 import com.liferay.journal.service.persistence.JournalFolderPersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -56,19 +62,19 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
-import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
 import com.liferay.portal.kernel.service.persistence.SubscriptionPersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.service.persistence.WorkflowDefinitionLinkPersistence;
 import com.liferay.portal.kernel.service.persistence.WorkflowInstanceLinkPersistence;
-import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+
 import com.liferay.ratings.kernel.service.persistence.RatingsStatsPersistence;
+
 import com.liferay.trash.kernel.service.persistence.TrashEntryPersistence;
 import com.liferay.trash.kernel.service.persistence.TrashVersionPersistence;
 
@@ -87,16 +93,17 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.journal.service.impl.JournalFolderLocalServiceImpl
+ * @see com.liferay.journal.service.JournalFolderLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class JournalFolderLocalServiceBaseImpl
-	extends BaseLocalServiceImpl
-	implements IdentifiableOSGiService, JournalFolderLocalService {
-
+	extends BaseLocalServiceImpl implements JournalFolderLocalService,
+		IdentifiableOSGiService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>JournalFolderLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.journal.service.JournalFolderLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.journal.service.JournalFolderLocalServiceUtil} to access the journal folder local service.
 	 */
 
 	/**
@@ -120,7 +127,6 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 * @return the new journal folder
 	 */
 	@Override
-	@Transactional(enabled = false)
 	public JournalFolder createJournalFolder(long folderId) {
 		return journalFolderPersistence.create(folderId);
 	}
@@ -136,7 +142,6 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	@Override
 	public JournalFolder deleteJournalFolder(long folderId)
 		throws PortalException {
-
 		return journalFolderPersistence.remove(folderId);
 	}
 
@@ -156,8 +161,8 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(
-			JournalFolder.class, clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(JournalFolder.class,
+			clazz.getClassLoader());
 	}
 
 	/**
@@ -175,7 +180,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.journal.model.impl.JournalFolderModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.journal.model.impl.JournalFolderModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -184,18 +189,17 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end) {
-
-		return journalFolderPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
+		return journalFolderPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.journal.model.impl.JournalFolderModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.journal.model.impl.JournalFolderModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -205,12 +209,10 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<T> orderByComparator) {
-
-		return journalFolderPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
+		return journalFolderPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end, orderByComparator);
 	}
 
 	/**
@@ -232,11 +234,10 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(
-		DynamicQuery dynamicQuery, Projection projection) {
-
-		return journalFolderPersistence.countWithDynamicQuery(
-			dynamicQuery, projection);
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection) {
+		return journalFolderPersistence.countWithDynamicQuery(dynamicQuery,
+			projection);
 	}
 
 	@Override
@@ -252,9 +253,8 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 * @return the matching journal folder, or <code>null</code> if a matching journal folder could not be found
 	 */
 	@Override
-	public JournalFolder fetchJournalFolderByUuidAndGroupId(
-		String uuid, long groupId) {
-
+	public JournalFolder fetchJournalFolderByUuidAndGroupId(String uuid,
+		long groupId) {
 		return journalFolderPersistence.fetchByUUID_G(uuid, groupId);
 	}
 
@@ -268,14 +268,12 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	@Override
 	public JournalFolder getJournalFolder(long folderId)
 		throws PortalException {
-
 		return journalFolderPersistence.findByPrimaryKey(folderId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
 		actionableDynamicQuery.setBaseLocalService(journalFolderLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
@@ -287,14 +285,10 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
 
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
-			new IndexableActionableDynamicQuery();
-
-		indexableActionableDynamicQuery.setBaseLocalService(
-			journalFolderLocalService);
+		indexableActionableDynamicQuery.setBaseLocalService(journalFolderLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(JournalFolder.class);
 
@@ -305,7 +299,6 @@ public abstract class JournalFolderLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-
 		actionableDynamicQuery.setBaseLocalService(journalFolderLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(JournalFolder.class);
@@ -316,59 +309,48 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	@Override
 	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
 		final PortletDataContext portletDataContext) {
-
-		final ExportActionableDynamicQuery exportActionableDynamicQuery =
-			new ExportActionableDynamicQuery() {
-
+		final ExportActionableDynamicQuery exportActionableDynamicQuery = new ExportActionableDynamicQuery() {
 				@Override
 				public long performCount() throws PortalException {
-					ManifestSummary manifestSummary =
-						portletDataContext.getManifestSummary();
+					ManifestSummary manifestSummary = portletDataContext.getManifestSummary();
 
 					StagedModelType stagedModelType = getStagedModelType();
 
 					long modelAdditionCount = super.performCount();
 
-					manifestSummary.addModelAdditionCount(
-						stagedModelType, modelAdditionCount);
+					manifestSummary.addModelAdditionCount(stagedModelType,
+						modelAdditionCount);
 
-					long modelDeletionCount =
-						ExportImportHelperUtil.getModelDeletionCount(
-							portletDataContext, stagedModelType);
+					long modelDeletionCount = ExportImportHelperUtil.getModelDeletionCount(portletDataContext,
+							stagedModelType);
 
-					manifestSummary.addModelDeletionCount(
-						stagedModelType, modelDeletionCount);
+					manifestSummary.addModelDeletionCount(stagedModelType,
+						modelDeletionCount);
 
 					return modelAdditionCount;
 				}
-
 			};
 
 		initActionableDynamicQuery(exportActionableDynamicQuery);
 
-		exportActionableDynamicQuery.setAddCriteriaMethod(
-			new ActionableDynamicQuery.AddCriteriaMethod() {
-
+		exportActionableDynamicQuery.setAddCriteriaMethod(new ActionableDynamicQuery.AddCriteriaMethod() {
 				@Override
 				public void addCriteria(DynamicQuery dynamicQuery) {
-					Criterion modifiedDateCriterion =
-						portletDataContext.getDateRangeCriteria("modifiedDate");
+					Criterion modifiedDateCriterion = portletDataContext.getDateRangeCriteria(
+							"modifiedDate");
 
 					if (modifiedDateCriterion != null) {
-						Conjunction conjunction =
-							RestrictionsFactoryUtil.conjunction();
+						Conjunction conjunction = RestrictionsFactoryUtil.conjunction();
 
 						conjunction.add(modifiedDateCriterion);
 
-						Disjunction disjunction =
-							RestrictionsFactoryUtil.disjunction();
+						Disjunction disjunction = RestrictionsFactoryUtil.disjunction();
 
-						disjunction.add(
-							RestrictionsFactoryUtil.gtProperty(
+						disjunction.add(RestrictionsFactoryUtil.gtProperty(
 								"modifiedDate", "lastPublishDate"));
 
-						Property lastPublishDateProperty =
-							PropertyFactoryUtil.forName("lastPublishDate");
+						Property lastPublishDateProperty = PropertyFactoryUtil.forName(
+								"lastPublishDate");
 
 						disjunction.add(lastPublishDateProperty.isNull());
 
@@ -377,14 +359,12 @@ public abstract class JournalFolderLocalServiceBaseImpl
 						modifiedDateCriterion = conjunction;
 					}
 
-					Criterion statusDateCriterion =
-						portletDataContext.getDateRangeCriteria("statusDate");
+					Criterion statusDateCriterion = portletDataContext.getDateRangeCriteria(
+							"statusDate");
 
 					if ((modifiedDateCriterion != null) &&
-						(statusDateCriterion != null)) {
-
-						Disjunction disjunction =
-							RestrictionsFactoryUtil.disjunction();
+							(statusDateCriterion != null)) {
+						Disjunction disjunction = RestrictionsFactoryUtil.disjunction();
 
 						disjunction.add(modifiedDateCriterion);
 						disjunction.add(statusDateCriterion);
@@ -392,49 +372,35 @@ public abstract class JournalFolderLocalServiceBaseImpl
 						dynamicQuery.add(disjunction);
 					}
 
-					Property workflowStatusProperty =
-						PropertyFactoryUtil.forName("status");
+					Property workflowStatusProperty = PropertyFactoryUtil.forName(
+							"status");
 
 					if (portletDataContext.isInitialPublication()) {
-						dynamicQuery.add(
-							workflowStatusProperty.ne(
+						dynamicQuery.add(workflowStatusProperty.ne(
 								WorkflowConstants.STATUS_IN_TRASH));
 					}
 					else {
-						StagedModelDataHandler<?> stagedModelDataHandler =
-							StagedModelDataHandlerRegistryUtil.
-								getStagedModelDataHandler(
-									JournalFolder.class.getName());
+						StagedModelDataHandler<?> stagedModelDataHandler = StagedModelDataHandlerRegistryUtil.getStagedModelDataHandler(JournalFolder.class.getName());
 
-						dynamicQuery.add(
-							workflowStatusProperty.in(
-								stagedModelDataHandler.
-									getExportableStatuses()));
+						dynamicQuery.add(workflowStatusProperty.in(
+								stagedModelDataHandler.getExportableStatuses()));
 					}
 				}
-
 			});
 
-		exportActionableDynamicQuery.setCompanyId(
-			portletDataContext.getCompanyId());
+		exportActionableDynamicQuery.setCompanyId(portletDataContext.getCompanyId());
 
-		exportActionableDynamicQuery.setGroupId(
-			portletDataContext.getScopeGroupId());
+		exportActionableDynamicQuery.setGroupId(portletDataContext.getScopeGroupId());
 
-		exportActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<JournalFolder>() {
-
+		exportActionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<JournalFolder>() {
 				@Override
 				public void performAction(JournalFolder journalFolder)
 					throws PortalException {
-
-					StagedModelDataHandlerUtil.exportStagedModel(
-						portletDataContext, journalFolder);
+					StagedModelDataHandlerUtil.exportStagedModel(portletDataContext,
+						journalFolder);
 				}
-
 			});
-		exportActionableDynamicQuery.setStagedModelType(
-			new StagedModelType(
+		exportActionableDynamicQuery.setStagedModelType(new StagedModelType(
 				PortalUtil.getClassNameId(JournalFolder.class.getName())));
 
 		return exportActionableDynamicQuery;
@@ -446,22 +412,12 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-
-		return journalFolderLocalService.deleteJournalFolder(
-			(JournalFolder)persistedModel);
+		return journalFolderLocalService.deleteJournalFolder((JournalFolder)persistedModel);
 	}
 
-	public BasePersistence<JournalFolder> getBasePersistence() {
-		return journalFolderPersistence;
-	}
-
-	/**
-	 * @throws PortalException
-	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
-
 		return journalFolderPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -475,7 +431,6 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	@Override
 	public List<JournalFolder> getJournalFoldersByUuidAndCompanyId(
 		String uuid, long companyId) {
-
 		return journalFolderPersistence.findByUuid_C(uuid, companyId);
 	}
 
@@ -493,9 +448,8 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	public List<JournalFolder> getJournalFoldersByUuidAndCompanyId(
 		String uuid, long companyId, int start, int end,
 		OrderByComparator<JournalFolder> orderByComparator) {
-
-		return journalFolderPersistence.findByUuid_C(
-			uuid, companyId, start, end, orderByComparator);
+		return journalFolderPersistence.findByUuid_C(uuid, companyId, start,
+			end, orderByComparator);
 	}
 
 	/**
@@ -507,10 +461,8 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 * @throws PortalException if a matching journal folder could not be found
 	 */
 	@Override
-	public JournalFolder getJournalFolderByUuidAndGroupId(
-			String uuid, long groupId)
-		throws PortalException {
-
+	public JournalFolder getJournalFolderByUuidAndGroupId(String uuid,
+		long groupId) throws PortalException {
 		return journalFolderPersistence.findByUUID_G(uuid, groupId);
 	}
 
@@ -518,7 +470,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 * Returns a range of all the journal folders.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.journal.model.impl.JournalFolderModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.journal.model.impl.JournalFolderModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of journal folders
@@ -568,7 +520,6 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 */
 	public void setJournalFolderLocalService(
 		JournalFolderLocalService journalFolderLocalService) {
-
 		this.journalFolderLocalService = journalFolderLocalService;
 	}
 
@@ -588,7 +539,6 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 */
 	public void setJournalFolderPersistence(
 		JournalFolderPersistence journalFolderPersistence) {
-
 		this.journalFolderPersistence = journalFolderPersistence;
 	}
 
@@ -606,9 +556,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 *
 	 * @param journalFolderFinder the journal folder finder
 	 */
-	public void setJournalFolderFinder(
-		JournalFolderFinder journalFolderFinder) {
-
+	public void setJournalFolderFinder(JournalFolderFinder journalFolderFinder) {
 		this.journalFolderFinder = journalFolderFinder;
 	}
 
@@ -617,9 +565,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -629,9 +575,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -640,9 +584,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 *
 	 * @return the journal article local service
 	 */
-	public com.liferay.journal.service.JournalArticleLocalService
-		getJournalArticleLocalService() {
-
+	public com.liferay.journal.service.JournalArticleLocalService getJournalArticleLocalService() {
 		return journalArticleLocalService;
 	}
 
@@ -652,9 +594,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 * @param journalArticleLocalService the journal article local service
 	 */
 	public void setJournalArticleLocalService(
-		com.liferay.journal.service.JournalArticleLocalService
-			journalArticleLocalService) {
-
+		com.liferay.journal.service.JournalArticleLocalService journalArticleLocalService) {
 		this.journalArticleLocalService = journalArticleLocalService;
 	}
 
@@ -674,7 +614,6 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 */
 	public void setJournalArticlePersistence(
 		JournalArticlePersistence journalArticlePersistence) {
-
 		this.journalArticlePersistence = journalArticlePersistence;
 	}
 
@@ -694,7 +633,6 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 */
 	public void setJournalArticleFinder(
 		JournalArticleFinder journalArticleFinder) {
-
 		this.journalArticleFinder = journalArticleFinder;
 	}
 
@@ -703,9 +641,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService
-		getClassNameLocalService() {
-
+	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
 		return classNameLocalService;
 	}
 
@@ -715,9 +651,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService
-			classNameLocalService) {
-
+		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -737,7 +671,6 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
-
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -746,9 +679,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 *
 	 * @return the group local service
 	 */
-	public com.liferay.portal.kernel.service.GroupLocalService
-		getGroupLocalService() {
-
+	public com.liferay.portal.kernel.service.GroupLocalService getGroupLocalService() {
 		return groupLocalService;
 	}
 
@@ -759,7 +690,6 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 */
 	public void setGroupLocalService(
 		com.liferay.portal.kernel.service.GroupLocalService groupLocalService) {
-
 		this.groupLocalService = groupLocalService;
 	}
 
@@ -786,9 +716,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService
-		getResourceLocalService() {
-
+	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
 		return resourceLocalService;
 	}
 
@@ -798,9 +726,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService
-			resourceLocalService) {
-
+		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -809,9 +735,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 *
 	 * @return the subscription local service
 	 */
-	public com.liferay.portal.kernel.service.SubscriptionLocalService
-		getSubscriptionLocalService() {
-
+	public com.liferay.portal.kernel.service.SubscriptionLocalService getSubscriptionLocalService() {
 		return subscriptionLocalService;
 	}
 
@@ -821,9 +745,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 * @param subscriptionLocalService the subscription local service
 	 */
 	public void setSubscriptionLocalService(
-		com.liferay.portal.kernel.service.SubscriptionLocalService
-			subscriptionLocalService) {
-
+		com.liferay.portal.kernel.service.SubscriptionLocalService subscriptionLocalService) {
 		this.subscriptionLocalService = subscriptionLocalService;
 	}
 
@@ -843,7 +765,6 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 */
 	public void setSubscriptionPersistence(
 		SubscriptionPersistence subscriptionPersistence) {
-
 		this.subscriptionPersistence = subscriptionPersistence;
 	}
 
@@ -852,9 +773,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService
-		getUserLocalService() {
-
+	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
 		return userLocalService;
 	}
 
@@ -865,7 +784,6 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
-
 		this.userLocalService = userLocalService;
 	}
 
@@ -892,9 +810,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 *
 	 * @return the workflow definition link local service
 	 */
-	public com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService
-		getWorkflowDefinitionLinkLocalService() {
-
+	public com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService getWorkflowDefinitionLinkLocalService() {
 		return workflowDefinitionLinkLocalService;
 	}
 
@@ -904,11 +820,8 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 * @param workflowDefinitionLinkLocalService the workflow definition link local service
 	 */
 	public void setWorkflowDefinitionLinkLocalService(
-		com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService
-			workflowDefinitionLinkLocalService) {
-
-		this.workflowDefinitionLinkLocalService =
-			workflowDefinitionLinkLocalService;
+		com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService workflowDefinitionLinkLocalService) {
+		this.workflowDefinitionLinkLocalService = workflowDefinitionLinkLocalService;
 	}
 
 	/**
@@ -916,9 +829,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 *
 	 * @return the workflow definition link persistence
 	 */
-	public WorkflowDefinitionLinkPersistence
-		getWorkflowDefinitionLinkPersistence() {
-
+	public WorkflowDefinitionLinkPersistence getWorkflowDefinitionLinkPersistence() {
 		return workflowDefinitionLinkPersistence;
 	}
 
@@ -929,9 +840,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 */
 	public void setWorkflowDefinitionLinkPersistence(
 		WorkflowDefinitionLinkPersistence workflowDefinitionLinkPersistence) {
-
-		this.workflowDefinitionLinkPersistence =
-			workflowDefinitionLinkPersistence;
+		this.workflowDefinitionLinkPersistence = workflowDefinitionLinkPersistence;
 	}
 
 	/**
@@ -939,9 +848,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 *
 	 * @return the workflow instance link local service
 	 */
-	public com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService
-		getWorkflowInstanceLinkLocalService() {
-
+	public com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService getWorkflowInstanceLinkLocalService() {
 		return workflowInstanceLinkLocalService;
 	}
 
@@ -951,11 +858,8 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 * @param workflowInstanceLinkLocalService the workflow instance link local service
 	 */
 	public void setWorkflowInstanceLinkLocalService(
-		com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService
-			workflowInstanceLinkLocalService) {
-
-		this.workflowInstanceLinkLocalService =
-			workflowInstanceLinkLocalService;
+		com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService workflowInstanceLinkLocalService) {
+		this.workflowInstanceLinkLocalService = workflowInstanceLinkLocalService;
 	}
 
 	/**
@@ -963,9 +867,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 *
 	 * @return the workflow instance link persistence
 	 */
-	public WorkflowInstanceLinkPersistence
-		getWorkflowInstanceLinkPersistence() {
-
+	public WorkflowInstanceLinkPersistence getWorkflowInstanceLinkPersistence() {
 		return workflowInstanceLinkPersistence;
 	}
 
@@ -976,7 +878,6 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 */
 	public void setWorkflowInstanceLinkPersistence(
 		WorkflowInstanceLinkPersistence workflowInstanceLinkPersistence) {
-
 		this.workflowInstanceLinkPersistence = workflowInstanceLinkPersistence;
 	}
 
@@ -985,9 +886,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 *
 	 * @return the asset entry local service
 	 */
-	public com.liferay.asset.kernel.service.AssetEntryLocalService
-		getAssetEntryLocalService() {
-
+	public com.liferay.asset.kernel.service.AssetEntryLocalService getAssetEntryLocalService() {
 		return assetEntryLocalService;
 	}
 
@@ -997,9 +896,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 * @param assetEntryLocalService the asset entry local service
 	 */
 	public void setAssetEntryLocalService(
-		com.liferay.asset.kernel.service.AssetEntryLocalService
-			assetEntryLocalService) {
-
+		com.liferay.asset.kernel.service.AssetEntryLocalService assetEntryLocalService) {
 		this.assetEntryLocalService = assetEntryLocalService;
 	}
 
@@ -1019,7 +916,6 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 */
 	public void setAssetEntryPersistence(
 		AssetEntryPersistence assetEntryPersistence) {
-
 		this.assetEntryPersistence = assetEntryPersistence;
 	}
 
@@ -1028,9 +924,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 *
 	 * @return the asset link local service
 	 */
-	public com.liferay.asset.kernel.service.AssetLinkLocalService
-		getAssetLinkLocalService() {
-
+	public com.liferay.asset.kernel.service.AssetLinkLocalService getAssetLinkLocalService() {
 		return assetLinkLocalService;
 	}
 
@@ -1040,9 +934,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 * @param assetLinkLocalService the asset link local service
 	 */
 	public void setAssetLinkLocalService(
-		com.liferay.asset.kernel.service.AssetLinkLocalService
-			assetLinkLocalService) {
-
+		com.liferay.asset.kernel.service.AssetLinkLocalService assetLinkLocalService) {
 		this.assetLinkLocalService = assetLinkLocalService;
 	}
 
@@ -1062,7 +954,6 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 */
 	public void setAssetLinkPersistence(
 		AssetLinkPersistence assetLinkPersistence) {
-
 		this.assetLinkPersistence = assetLinkPersistence;
 	}
 
@@ -1071,9 +962,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 *
 	 * @return the expando value local service
 	 */
-	public com.liferay.expando.kernel.service.ExpandoValueLocalService
-		getExpandoValueLocalService() {
-
+	public com.liferay.expando.kernel.service.ExpandoValueLocalService getExpandoValueLocalService() {
 		return expandoValueLocalService;
 	}
 
@@ -1083,9 +972,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 * @param expandoValueLocalService the expando value local service
 	 */
 	public void setExpandoValueLocalService(
-		com.liferay.expando.kernel.service.ExpandoValueLocalService
-			expandoValueLocalService) {
-
+		com.liferay.expando.kernel.service.ExpandoValueLocalService expandoValueLocalService) {
 		this.expandoValueLocalService = expandoValueLocalService;
 	}
 
@@ -1105,7 +992,6 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 */
 	public void setExpandoValuePersistence(
 		ExpandoValuePersistence expandoValuePersistence) {
-
 		this.expandoValuePersistence = expandoValuePersistence;
 	}
 
@@ -1114,9 +1000,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 *
 	 * @return the ratings stats local service
 	 */
-	public com.liferay.ratings.kernel.service.RatingsStatsLocalService
-		getRatingsStatsLocalService() {
-
+	public com.liferay.ratings.kernel.service.RatingsStatsLocalService getRatingsStatsLocalService() {
 		return ratingsStatsLocalService;
 	}
 
@@ -1126,9 +1010,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 * @param ratingsStatsLocalService the ratings stats local service
 	 */
 	public void setRatingsStatsLocalService(
-		com.liferay.ratings.kernel.service.RatingsStatsLocalService
-			ratingsStatsLocalService) {
-
+		com.liferay.ratings.kernel.service.RatingsStatsLocalService ratingsStatsLocalService) {
 		this.ratingsStatsLocalService = ratingsStatsLocalService;
 	}
 
@@ -1148,7 +1030,6 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 */
 	public void setRatingsStatsPersistence(
 		RatingsStatsPersistence ratingsStatsPersistence) {
-
 		this.ratingsStatsPersistence = ratingsStatsPersistence;
 	}
 
@@ -1157,9 +1038,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 *
 	 * @return the trash entry local service
 	 */
-	public com.liferay.trash.kernel.service.TrashEntryLocalService
-		getTrashEntryLocalService() {
-
+	public com.liferay.trash.kernel.service.TrashEntryLocalService getTrashEntryLocalService() {
 		return trashEntryLocalService;
 	}
 
@@ -1169,9 +1048,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 * @param trashEntryLocalService the trash entry local service
 	 */
 	public void setTrashEntryLocalService(
-		com.liferay.trash.kernel.service.TrashEntryLocalService
-			trashEntryLocalService) {
-
+		com.liferay.trash.kernel.service.TrashEntryLocalService trashEntryLocalService) {
 		this.trashEntryLocalService = trashEntryLocalService;
 	}
 
@@ -1191,7 +1068,6 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 */
 	public void setTrashEntryPersistence(
 		TrashEntryPersistence trashEntryPersistence) {
-
 		this.trashEntryPersistence = trashEntryPersistence;
 	}
 
@@ -1200,9 +1076,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 *
 	 * @return the trash version local service
 	 */
-	public com.liferay.trash.kernel.service.TrashVersionLocalService
-		getTrashVersionLocalService() {
-
+	public com.liferay.trash.kernel.service.TrashVersionLocalService getTrashVersionLocalService() {
 		return trashVersionLocalService;
 	}
 
@@ -1212,9 +1086,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 * @param trashVersionLocalService the trash version local service
 	 */
 	public void setTrashVersionLocalService(
-		com.liferay.trash.kernel.service.TrashVersionLocalService
-			trashVersionLocalService) {
-
+		com.liferay.trash.kernel.service.TrashVersionLocalService trashVersionLocalService) {
 		this.trashVersionLocalService = trashVersionLocalService;
 	}
 
@@ -1234,13 +1106,11 @@ public abstract class JournalFolderLocalServiceBaseImpl
 	 */
 	public void setTrashVersionPersistence(
 		TrashVersionPersistence trashVersionPersistence) {
-
 		this.trashVersionPersistence = trashVersionPersistence;
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register(
-			"com.liferay.journal.model.JournalFolder",
+		persistedModelLocalServiceRegistry.register("com.liferay.journal.model.JournalFolder",
 			journalFolderLocalService);
 	}
 
@@ -1281,161 +1151,80 @@ public abstract class JournalFolderLocalServiceBaseImpl
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
 	@BeanReference(type = JournalFolderLocalService.class)
 	protected JournalFolderLocalService journalFolderLocalService;
-
 	@BeanReference(type = JournalFolderPersistence.class)
 	protected JournalFolderPersistence journalFolderPersistence;
-
 	@BeanReference(type = JournalFolderFinder.class)
 	protected JournalFolderFinder journalFolderFinder;
-
-	@ServiceReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
-	@BeanReference(
-		type = com.liferay.journal.service.JournalArticleLocalService.class
-	)
-	protected com.liferay.journal.service.JournalArticleLocalService
-		journalArticleLocalService;
-
+	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
+	@BeanReference(type = com.liferay.journal.service.JournalArticleLocalService.class)
+	protected com.liferay.journal.service.JournalArticleLocalService journalArticleLocalService;
 	@BeanReference(type = JournalArticlePersistence.class)
 	protected JournalArticlePersistence journalArticlePersistence;
-
 	@BeanReference(type = JournalArticleFinder.class)
 	protected JournalArticleFinder journalArticleFinder;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService
-		classNameLocalService;
-
+	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.GroupLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.GroupLocalService
-		groupLocalService;
-
+	@ServiceReference(type = com.liferay.portal.kernel.service.GroupLocalService.class)
+	protected com.liferay.portal.kernel.service.GroupLocalService groupLocalService;
 	@ServiceReference(type = GroupPersistence.class)
 	protected GroupPersistence groupPersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ResourceLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ResourceLocalService
-		resourceLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.SubscriptionLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.SubscriptionLocalService
-		subscriptionLocalService;
-
+	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
+	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.SubscriptionLocalService.class)
+	protected com.liferay.portal.kernel.service.SubscriptionLocalService subscriptionLocalService;
 	@ServiceReference(type = SubscriptionPersistence.class)
 	protected SubscriptionPersistence subscriptionPersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.UserLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.UserLocalService
-		userLocalService;
-
+	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
+	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService.class
-	)
-	protected
-		com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService
-			workflowDefinitionLinkLocalService;
-
+	@ServiceReference(type = com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService.class)
+	protected com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService workflowDefinitionLinkLocalService;
 	@ServiceReference(type = WorkflowDefinitionLinkPersistence.class)
-	protected WorkflowDefinitionLinkPersistence
-		workflowDefinitionLinkPersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService
-		workflowInstanceLinkLocalService;
-
+	protected WorkflowDefinitionLinkPersistence workflowDefinitionLinkPersistence;
+	@ServiceReference(type = com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService.class)
+	protected com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService workflowInstanceLinkLocalService;
 	@ServiceReference(type = WorkflowInstanceLinkPersistence.class)
 	protected WorkflowInstanceLinkPersistence workflowInstanceLinkPersistence;
-
-	@ServiceReference(
-		type = com.liferay.asset.kernel.service.AssetEntryLocalService.class
-	)
-	protected com.liferay.asset.kernel.service.AssetEntryLocalService
-		assetEntryLocalService;
-
+	@ServiceReference(type = com.liferay.asset.kernel.service.AssetEntryLocalService.class)
+	protected com.liferay.asset.kernel.service.AssetEntryLocalService assetEntryLocalService;
 	@ServiceReference(type = AssetEntryPersistence.class)
 	protected AssetEntryPersistence assetEntryPersistence;
-
-	@ServiceReference(
-		type = com.liferay.asset.kernel.service.AssetLinkLocalService.class
-	)
-	protected com.liferay.asset.kernel.service.AssetLinkLocalService
-		assetLinkLocalService;
-
+	@ServiceReference(type = com.liferay.asset.kernel.service.AssetLinkLocalService.class)
+	protected com.liferay.asset.kernel.service.AssetLinkLocalService assetLinkLocalService;
 	@ServiceReference(type = AssetLinkPersistence.class)
 	protected AssetLinkPersistence assetLinkPersistence;
-
-	@ServiceReference(
-		type = com.liferay.expando.kernel.service.ExpandoValueLocalService.class
-	)
-	protected com.liferay.expando.kernel.service.ExpandoValueLocalService
-		expandoValueLocalService;
-
+	@ServiceReference(type = com.liferay.expando.kernel.service.ExpandoValueLocalService.class)
+	protected com.liferay.expando.kernel.service.ExpandoValueLocalService expandoValueLocalService;
 	@ServiceReference(type = ExpandoValuePersistence.class)
 	protected ExpandoValuePersistence expandoValuePersistence;
-
-	@ServiceReference(
-		type = com.liferay.ratings.kernel.service.RatingsStatsLocalService.class
-	)
-	protected com.liferay.ratings.kernel.service.RatingsStatsLocalService
-		ratingsStatsLocalService;
-
+	@ServiceReference(type = com.liferay.ratings.kernel.service.RatingsStatsLocalService.class)
+	protected com.liferay.ratings.kernel.service.RatingsStatsLocalService ratingsStatsLocalService;
 	@ServiceReference(type = RatingsStatsPersistence.class)
 	protected RatingsStatsPersistence ratingsStatsPersistence;
-
-	@ServiceReference(
-		type = com.liferay.trash.kernel.service.TrashEntryLocalService.class
-	)
-	protected com.liferay.trash.kernel.service.TrashEntryLocalService
-		trashEntryLocalService;
-
+	@ServiceReference(type = com.liferay.trash.kernel.service.TrashEntryLocalService.class)
+	protected com.liferay.trash.kernel.service.TrashEntryLocalService trashEntryLocalService;
 	@ServiceReference(type = TrashEntryPersistence.class)
 	protected TrashEntryPersistence trashEntryPersistence;
-
-	@ServiceReference(
-		type = com.liferay.trash.kernel.service.TrashVersionLocalService.class
-	)
-	protected com.liferay.trash.kernel.service.TrashVersionLocalService
-		trashVersionLocalService;
-
+	@ServiceReference(type = com.liferay.trash.kernel.service.TrashVersionLocalService.class)
+	protected com.liferay.trash.kernel.service.TrashVersionLocalService trashVersionLocalService;
 	@ServiceReference(type = TrashVersionPersistence.class)
 	protected TrashVersionPersistence trashVersionPersistence;
-
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry
-		persistedModelLocalServiceRegistry;
-
+	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }

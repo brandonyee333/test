@@ -14,6 +14,8 @@
 
 package com.liferay.dynamic.data.lists.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -24,10 +26,11 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.dynamic.data.lists.service.http.DDLRecordVersionServiceSoap}.
  *
  * @author Brian Wing Shun Chan
+ * @see com.liferay.dynamic.data.lists.service.http.DDLRecordVersionServiceSoap
  * @generated
  */
+@ProviderType
 public class DDLRecordVersionSoap implements Serializable {
-
 	public static DDLRecordVersionSoap toSoapModel(DDLRecordVersion model) {
 		DDLRecordVersionSoap soapModel = new DDLRecordVersionSoap();
 
@@ -50,11 +53,8 @@ public class DDLRecordVersionSoap implements Serializable {
 		return soapModel;
 	}
 
-	public static DDLRecordVersionSoap[] toSoapModels(
-		DDLRecordVersion[] models) {
-
-		DDLRecordVersionSoap[] soapModels =
-			new DDLRecordVersionSoap[models.length];
+	public static DDLRecordVersionSoap[] toSoapModels(DDLRecordVersion[] models) {
+		DDLRecordVersionSoap[] soapModels = new DDLRecordVersionSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -65,12 +65,10 @@ public class DDLRecordVersionSoap implements Serializable {
 
 	public static DDLRecordVersionSoap[][] toSoapModels(
 		DDLRecordVersion[][] models) {
-
 		DDLRecordVersionSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels =
-				new DDLRecordVersionSoap[models.length][models[0].length];
+			soapModels = new DDLRecordVersionSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new DDLRecordVersionSoap[0][0];
@@ -85,9 +83,7 @@ public class DDLRecordVersionSoap implements Serializable {
 
 	public static DDLRecordVersionSoap[] toSoapModels(
 		List<DDLRecordVersion> models) {
-
-		List<DDLRecordVersionSoap> soapModels =
-			new ArrayList<DDLRecordVersionSoap>(models.size());
+		List<DDLRecordVersionSoap> soapModels = new ArrayList<DDLRecordVersionSoap>(models.size());
 
 		for (DDLRecordVersion model : models) {
 			soapModels.add(toSoapModel(model));
@@ -242,5 +238,4 @@ public class DDLRecordVersionSoap implements Serializable {
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
-
 }

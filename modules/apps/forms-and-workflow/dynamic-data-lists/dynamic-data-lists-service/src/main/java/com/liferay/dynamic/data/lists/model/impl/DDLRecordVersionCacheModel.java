@@ -14,10 +14,14 @@
 
 package com.liferay.dynamic.data.lists.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.dynamic.data.lists.model.DDLRecordVersion;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing DDLRecordVersion in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see DDLRecordVersion
  * @generated
  */
-public class DDLRecordVersionCacheModel
-	implements CacheModel<DDLRecordVersion>, Externalizable {
-
+@ProviderType
+public class DDLRecordVersionCacheModel implements CacheModel<DDLRecordVersion>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class DDLRecordVersionCacheModel
 			return false;
 		}
 
-		DDLRecordVersionCacheModel ddlRecordVersionCacheModel =
-			(DDLRecordVersionCacheModel)obj;
+		DDLRecordVersionCacheModel ddlRecordVersionCacheModel = (DDLRecordVersionCacheModel)obj;
 
 		if (recordVersionId == ddlRecordVersionCacheModel.recordVersionId) {
 			return true;
@@ -109,7 +113,7 @@ public class DDLRecordVersionCacheModel
 		ddlRecordVersionImpl.setUserId(userId);
 
 		if (userName == null) {
-			ddlRecordVersionImpl.setUserName("");
+			ddlRecordVersionImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			ddlRecordVersionImpl.setUserName(userName);
@@ -127,7 +131,7 @@ public class DDLRecordVersionCacheModel
 		ddlRecordVersionImpl.setRecordId(recordId);
 
 		if (version == null) {
-			ddlRecordVersionImpl.setVersion("");
+			ddlRecordVersionImpl.setVersion(StringPool.BLANK);
 		}
 		else {
 			ddlRecordVersionImpl.setVersion(version);
@@ -138,7 +142,7 @@ public class DDLRecordVersionCacheModel
 		ddlRecordVersionImpl.setStatusByUserId(statusByUserId);
 
 		if (statusByUserName == null) {
-			ddlRecordVersionImpl.setStatusByUserName("");
+			ddlRecordVersionImpl.setStatusByUserName(StringPool.BLANK);
 		}
 		else {
 			ddlRecordVersionImpl.setStatusByUserName(statusByUserName);
@@ -185,7 +189,8 @@ public class DDLRecordVersionCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(recordVersionId);
 
 		objectOutput.writeLong(groupId);
@@ -195,7 +200,7 @@ public class DDLRecordVersionCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -210,7 +215,7 @@ public class DDLRecordVersionCacheModel
 		objectOutput.writeLong(recordId);
 
 		if (version == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(version);
@@ -223,7 +228,7 @@ public class DDLRecordVersionCacheModel
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(statusByUserName);
@@ -247,5 +252,4 @@ public class DDLRecordVersionCacheModel
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
-
 }

@@ -1,22 +1,26 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.watson.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.watson.model.WatsonDocument;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing WatsonDocument in entity cache.
  *
  * @author Steven Smith
+ * @see WatsonDocument
  * @generated
  */
-public class WatsonDocumentCacheModel
-	implements CacheModel<WatsonDocument>, Externalizable {
-
+@ProviderType
+public class WatsonDocumentCacheModel implements CacheModel<WatsonDocument>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class WatsonDocumentCacheModel
 			return false;
 		}
 
-		WatsonDocumentCacheModel watsonDocumentCacheModel =
-			(WatsonDocumentCacheModel)obj;
+		WatsonDocumentCacheModel watsonDocumentCacheModel = (WatsonDocumentCacheModel)obj;
 
 		if (watsonDocumentId == watsonDocumentCacheModel.watsonDocumentId) {
 			return true;
@@ -109,7 +113,7 @@ public class WatsonDocumentCacheModel
 		watsonDocumentImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonDocumentImpl.setUserName("");
+			watsonDocumentImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			watsonDocumentImpl.setUserName(userName);
@@ -129,8 +133,7 @@ public class WatsonDocumentCacheModel
 			watsonDocumentImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		watsonDocumentImpl.setParentTypeWatsonListTypeId(
-			parentTypeWatsonListTypeId);
+		watsonDocumentImpl.setParentTypeWatsonListTypeId(parentTypeWatsonListTypeId);
 		watsonDocumentImpl.setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
 		watsonDocumentImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
 		watsonDocumentImpl.setWatsonChildId(watsonChildId);
@@ -144,7 +147,7 @@ public class WatsonDocumentCacheModel
 		}
 
 		if (imagePayload == null) {
-			watsonDocumentImpl.setImagePayload("");
+			watsonDocumentImpl.setImagePayload(StringPool.BLANK);
 		}
 		else {
 			watsonDocumentImpl.setImagePayload(imagePayload);
@@ -158,9 +161,7 @@ public class WatsonDocumentCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		watsonDocumentId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -182,13 +183,14 @@ public class WatsonDocumentCacheModel
 
 		originalDocument = objectInput.readBoolean();
 		receivedDate = objectInput.readLong();
-		imagePayload = (String)objectInput.readObject();
+		imagePayload = objectInput.readUTF();
 
 		status = objectInput.readInt();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(watsonDocumentId);
 
 		objectOutput.writeLong(groupId);
@@ -198,7 +200,7 @@ public class WatsonDocumentCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -219,10 +221,10 @@ public class WatsonDocumentCacheModel
 		objectOutput.writeLong(receivedDate);
 
 		if (imagePayload == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(imagePayload);
+			objectOutput.writeUTF(imagePayload);
 		}
 
 		objectOutput.writeInt(status);
@@ -243,5 +245,4 @@ public class WatsonDocumentCacheModel
 	public long receivedDate;
 	public String imagePayload;
 	public int status;
-
 }

@@ -14,9 +14,13 @@
 
 package com.liferay.portlet.social.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.social.kernel.model.SocialActivityCounter;
 
 import java.io.Externalizable;
@@ -28,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing SocialActivityCounter in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see SocialActivityCounter
  * @generated
  */
-public class SocialActivityCounterCacheModel
-	implements CacheModel<SocialActivityCounter>, Externalizable {
-
+@ProviderType
+public class SocialActivityCounterCacheModel implements CacheModel<SocialActivityCounter>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -43,12 +48,9 @@ public class SocialActivityCounterCacheModel
 			return false;
 		}
 
-		SocialActivityCounterCacheModel socialActivityCounterCacheModel =
-			(SocialActivityCounterCacheModel)obj;
+		SocialActivityCounterCacheModel socialActivityCounterCacheModel = (SocialActivityCounterCacheModel)obj;
 
-		if (activityCounterId ==
-				socialActivityCounterCacheModel.activityCounterId) {
-
+		if (activityCounterId == socialActivityCounterCacheModel.activityCounterId) {
 			return true;
 		}
 
@@ -97,8 +99,7 @@ public class SocialActivityCounterCacheModel
 
 	@Override
 	public SocialActivityCounter toEntityModel() {
-		SocialActivityCounterImpl socialActivityCounterImpl =
-			new SocialActivityCounterImpl();
+		SocialActivityCounterImpl socialActivityCounterImpl = new SocialActivityCounterImpl();
 
 		socialActivityCounterImpl.setActivityCounterId(activityCounterId);
 		socialActivityCounterImpl.setGroupId(groupId);
@@ -107,7 +108,7 @@ public class SocialActivityCounterCacheModel
 		socialActivityCounterImpl.setClassPK(classPK);
 
 		if (name == null) {
-			socialActivityCounterImpl.setName("");
+			socialActivityCounterImpl.setName(StringPool.BLANK);
 		}
 		else {
 			socialActivityCounterImpl.setName(name);
@@ -155,7 +156,8 @@ public class SocialActivityCounterCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(activityCounterId);
 
 		objectOutput.writeLong(groupId);
@@ -167,7 +169,7 @@ public class SocialActivityCounterCacheModel
 		objectOutput.writeLong(classPK);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
@@ -201,5 +203,4 @@ public class SocialActivityCounterCacheModel
 	public int startPeriod;
 	public int endPeriod;
 	public boolean active;
-
 }

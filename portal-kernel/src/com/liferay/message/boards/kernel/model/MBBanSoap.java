@@ -14,6 +14,8 @@
 
 package com.liferay.message.boards.kernel.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -24,10 +26,11 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.portlet.messageboards.service.http.MBBanServiceSoap}.
  *
  * @author Brian Wing Shun Chan
+ * @see com.liferay.portlet.messageboards.service.http.MBBanServiceSoap
  * @generated
  */
+@ProviderType
 public class MBBanSoap implements Serializable {
-
 	public static MBBanSoap toSoapModel(MBBan model) {
 		MBBanSoap soapModel = new MBBanSoap();
 
@@ -183,5 +186,4 @@ public class MBBanSoap implements Serializable {
 	private Date _modifiedDate;
 	private long _banUserId;
 	private Date _lastPublishDate;
-
 }

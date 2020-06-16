@@ -1,24 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.testray.service.persistence.impl;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.testray.exception.NoSuchTestrayProductVersionException;
 import com.liferay.osb.testray.model.TestrayProductVersion;
 import com.liferay.osb.testray.model.impl.TestrayProductVersionImpl;
 import com.liferay.osb.testray.model.impl.TestrayProductVersionModelImpl;
 import com.liferay.osb.testray.service.persistence.TestrayProductVersionPersistence;
+
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -28,18 +31,17 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.service.persistence.CompanyProvider;
+import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
-
-import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -59,34 +61,48 @@ import java.util.Set;
  * </p>
  *
  * @author Ethan Bustad
+ * @see TestrayProductVersionPersistence
+ * @see com.liferay.osb.testray.service.persistence.TestrayProductVersionUtil
  * @generated
  */
-public class TestrayProductVersionPersistenceImpl
-	extends BasePersistenceImpl<TestrayProductVersion>
+@ProviderType
+public class TestrayProductVersionPersistenceImpl extends BasePersistenceImpl<TestrayProductVersion>
 	implements TestrayProductVersionPersistence {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use <code>TestrayProductVersionUtil</code> to access the testray product version persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use {@link TestrayProductVersionUtil} to access the testray product version persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY =
-		TestrayProductVersionImpl.class.getName();
-
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List1";
-
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathFetchByT_N;
-	private FinderPath _finderPathCountByT_N;
+	public static final String FINDER_CLASS_NAME_ENTITY = TestrayProductVersionImpl.class.getName();
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List1";
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List2";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayProductVersionModelImpl.FINDER_CACHE_ENABLED,
+			TestrayProductVersionImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayProductVersionModelImpl.FINDER_CACHE_ENABLED,
+			TestrayProductVersionImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayProductVersionModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	public static final FinderPath FINDER_PATH_FETCH_BY_T_N = new FinderPath(TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayProductVersionModelImpl.FINDER_CACHE_ENABLED,
+			TestrayProductVersionImpl.class, FINDER_CLASS_NAME_ENTITY,
+			"fetchByT_N",
+			new String[] { Long.class.getName(), String.class.getName() },
+			TestrayProductVersionModelImpl.TESTRAYPROJECTID_COLUMN_BITMASK |
+			TestrayProductVersionModelImpl.NAME_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_T_N = new FinderPath(TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayProductVersionModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByT_N",
+			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the testray product version where testrayProjectId = &#63; and name = &#63; or throws a <code>NoSuchTestrayProductVersionException</code> if it could not be found.
+	 * Returns the testray product version where testrayProjectId = &#63; and name = &#63; or throws a {@link NoSuchTestrayProductVersionException} if it could not be found.
 	 *
 	 * @param testrayProjectId the testray project ID
 	 * @param name the name
@@ -96,28 +112,27 @@ public class TestrayProductVersionPersistenceImpl
 	@Override
 	public TestrayProductVersion findByT_N(long testrayProjectId, String name)
 		throws NoSuchTestrayProductVersionException {
-
-		TestrayProductVersion testrayProductVersion = fetchByT_N(
-			testrayProjectId, name);
+		TestrayProductVersion testrayProductVersion = fetchByT_N(testrayProjectId,
+				name);
 
 		if (testrayProductVersion == null) {
-			StringBundler sb = new StringBundler(6);
+			StringBundler msg = new StringBundler(6);
 
-			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			sb.append("testrayProjectId=");
-			sb.append(testrayProjectId);
+			msg.append("testrayProjectId=");
+			msg.append(testrayProjectId);
 
-			sb.append(", name=");
-			sb.append(name);
+			msg.append(", name=");
+			msg.append(name);
 
-			sb.append("}");
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(sb.toString());
+				_log.debug(msg.toString());
 			}
 
-			throw new NoSuchTestrayProductVersionException(sb.toString());
+			throw new NoSuchTestrayProductVersionException(msg.toString());
 		}
 
 		return testrayProductVersion;
@@ -131,9 +146,7 @@ public class TestrayProductVersionPersistenceImpl
 	 * @return the matching testray product version, or <code>null</code> if a matching testray product version could not be found
 	 */
 	@Override
-	public TestrayProductVersion fetchByT_N(
-		long testrayProjectId, String name) {
-
+	public TestrayProductVersion fetchByT_N(long testrayProjectId, String name) {
 		return fetchByT_N(testrayProjectId, name, true);
 	}
 
@@ -142,82 +155,73 @@ public class TestrayProductVersionPersistenceImpl
 	 *
 	 * @param testrayProjectId the testray project ID
 	 * @param name the name
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the matching testray product version, or <code>null</code> if a matching testray product version could not be found
 	 */
 	@Override
-	public TestrayProductVersion fetchByT_N(
-		long testrayProjectId, String name, boolean useFinderCache) {
-
-		name = Objects.toString(name, "");
-
-		Object[] finderArgs = null;
-
-		if (useFinderCache) {
-			finderArgs = new Object[] {testrayProjectId, name};
-		}
+	public TestrayProductVersion fetchByT_N(long testrayProjectId, String name,
+		boolean retrieveFromCache) {
+		Object[] finderArgs = new Object[] { testrayProjectId, name };
 
 		Object result = null;
 
-		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchByT_N, finderArgs, this);
+		if (retrieveFromCache) {
+			result = finderCache.getResult(FINDER_PATH_FETCH_BY_T_N,
+					finderArgs, this);
 		}
 
 		if (result instanceof TestrayProductVersion) {
-			TestrayProductVersion testrayProductVersion =
-				(TestrayProductVersion)result;
+			TestrayProductVersion testrayProductVersion = (TestrayProductVersion)result;
 
-			if ((testrayProjectId !=
-					testrayProductVersion.getTestrayProjectId()) ||
-				!Objects.equals(name, testrayProductVersion.getName())) {
-
+			if ((testrayProjectId != testrayProductVersion.getTestrayProjectId()) ||
+					!Objects.equals(name, testrayProductVersion.getName())) {
 				result = null;
 			}
 		}
 
 		if (result == null) {
-			StringBundler sb = new StringBundler(4);
+			StringBundler query = new StringBundler(4);
 
-			sb.append(_SQL_SELECT_TESTRAYPRODUCTVERSION_WHERE);
+			query.append(_SQL_SELECT_TESTRAYPRODUCTVERSION_WHERE);
 
-			sb.append(_FINDER_COLUMN_T_N_TESTRAYPROJECTID_2);
+			query.append(_FINDER_COLUMN_T_N_TESTRAYPROJECTID_2);
 
 			boolean bindName = false;
 
-			if (name.isEmpty()) {
-				sb.append(_FINDER_COLUMN_T_N_NAME_3);
+			if (name == null) {
+				query.append(_FINDER_COLUMN_T_N_NAME_1);
+			}
+			else if (name.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_T_N_NAME_3);
 			}
 			else {
 				bindName = true;
 
-				sb.append(_FINDER_COLUMN_T_N_NAME_2);
+				query.append(_FINDER_COLUMN_T_N_NAME_2);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(testrayProjectId);
+				qPos.add(testrayProjectId);
 
 				if (bindName) {
-					queryPos.add(name);
+					qPos.add(name);
 				}
 
-				List<TestrayProductVersion> list = query.list();
+				List<TestrayProductVersion> list = q.list();
 
 				if (list.isEmpty()) {
-					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchByT_N, finderArgs, list);
-					}
+					finderCache.putResult(FINDER_PATH_FETCH_BY_T_N, finderArgs,
+						list);
 				}
 				else {
 					TestrayProductVersion testrayProductVersion = list.get(0);
@@ -225,14 +229,19 @@ public class TestrayProductVersionPersistenceImpl
 					result = testrayProductVersion;
 
 					cacheResult(testrayProductVersion);
+
+					if ((testrayProductVersion.getTestrayProjectId() != testrayProjectId) ||
+							(testrayProductVersion.getName() == null) ||
+							!testrayProductVersion.getName().equals(name)) {
+						finderCache.putResult(FINDER_PATH_FETCH_BY_T_N,
+							finderArgs, testrayProductVersion);
+					}
 				}
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(_finderPathFetchByT_N, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_FETCH_BY_T_N, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -257,9 +266,8 @@ public class TestrayProductVersionPersistenceImpl
 	@Override
 	public TestrayProductVersion removeByT_N(long testrayProjectId, String name)
 		throws NoSuchTestrayProductVersionException {
-
-		TestrayProductVersion testrayProductVersion = findByT_N(
-			testrayProjectId, name);
+		TestrayProductVersion testrayProductVersion = findByT_N(testrayProjectId,
+				name);
 
 		return remove(testrayProductVersion);
 	}
@@ -273,57 +281,58 @@ public class TestrayProductVersionPersistenceImpl
 	 */
 	@Override
 	public int countByT_N(long testrayProjectId, String name) {
-		name = Objects.toString(name, "");
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_T_N;
 
-		FinderPath finderPath = _finderPathCountByT_N;
-
-		Object[] finderArgs = new Object[] {testrayProjectId, name};
+		Object[] finderArgs = new Object[] { testrayProjectId, name };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(3);
+			StringBundler query = new StringBundler(3);
 
-			sb.append(_SQL_COUNT_TESTRAYPRODUCTVERSION_WHERE);
+			query.append(_SQL_COUNT_TESTRAYPRODUCTVERSION_WHERE);
 
-			sb.append(_FINDER_COLUMN_T_N_TESTRAYPROJECTID_2);
+			query.append(_FINDER_COLUMN_T_N_TESTRAYPROJECTID_2);
 
 			boolean bindName = false;
 
-			if (name.isEmpty()) {
-				sb.append(_FINDER_COLUMN_T_N_NAME_3);
+			if (name == null) {
+				query.append(_FINDER_COLUMN_T_N_NAME_1);
+			}
+			else if (name.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_T_N_NAME_3);
 			}
 			else {
 				bindName = true;
 
-				sb.append(_FINDER_COLUMN_T_N_NAME_2);
+				query.append(_FINDER_COLUMN_T_N_NAME_2);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(testrayProjectId);
+				qPos.add(testrayProjectId);
 
 				if (bindName) {
-					queryPos.add(name);
+					qPos.add(name);
 				}
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
+			catch (Exception e) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -333,14 +342,10 @@ public class TestrayProductVersionPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_T_N_TESTRAYPROJECTID_2 =
-		"testrayProductVersion.testrayProjectId = ? AND ";
-
-	private static final String _FINDER_COLUMN_T_N_NAME_2 =
-		"testrayProductVersion.name = ?";
-
-	private static final String _FINDER_COLUMN_T_N_NAME_3 =
-		"(testrayProductVersion.name IS NULL OR testrayProductVersion.name = '')";
+	private static final String _FINDER_COLUMN_T_N_TESTRAYPROJECTID_2 = "testrayProductVersion.testrayProjectId = ? AND ";
+	private static final String _FINDER_COLUMN_T_N_NAME_1 = "testrayProductVersion.name IS NULL";
+	private static final String _FINDER_COLUMN_T_N_NAME_2 = "testrayProductVersion.name = ?";
+	private static final String _FINDER_COLUMN_T_N_NAME_3 = "(testrayProductVersion.name IS NULL OR testrayProductVersion.name = '')";
 
 	public TestrayProductVersionPersistenceImpl() {
 		setModelClass(TestrayProductVersion.class);
@@ -353,18 +358,15 @@ public class TestrayProductVersionPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(TestrayProductVersion testrayProductVersion) {
-		entityCache.putResult(
-			TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
 			TestrayProductVersionImpl.class,
 			testrayProductVersion.getPrimaryKey(), testrayProductVersion);
 
-		finderCache.putResult(
-			_finderPathFetchByT_N,
+		finderCache.putResult(FINDER_PATH_FETCH_BY_T_N,
 			new Object[] {
 				testrayProductVersion.getTestrayProjectId(),
 				testrayProductVersion.getName()
-			},
-			testrayProductVersion);
+			}, testrayProductVersion);
 
 		testrayProductVersion.resetOriginalValues();
 	}
@@ -375,17 +377,12 @@ public class TestrayProductVersionPersistenceImpl
 	 * @param testrayProductVersions the testray product versions
 	 */
 	@Override
-	public void cacheResult(
-		List<TestrayProductVersion> testrayProductVersions) {
-
-		for (TestrayProductVersion testrayProductVersion :
-				testrayProductVersions) {
-
+	public void cacheResult(List<TestrayProductVersion> testrayProductVersions) {
+		for (TestrayProductVersion testrayProductVersion : testrayProductVersions) {
 			if (entityCache.getResult(
-					TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
-					TestrayProductVersionImpl.class,
-					testrayProductVersion.getPrimaryKey()) == null) {
-
+						TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
+						TestrayProductVersionImpl.class,
+						testrayProductVersion.getPrimaryKey()) == null) {
 				cacheResult(testrayProductVersion);
 			}
 			else {
@@ -398,7 +395,7 @@ public class TestrayProductVersionPersistenceImpl
 	 * Clears the cache for all testray product versions.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -414,21 +411,20 @@ public class TestrayProductVersionPersistenceImpl
 	 * Clears the cache for the testray product version.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(TestrayProductVersion testrayProductVersion) {
-		entityCache.removeResult(
-			TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
 			TestrayProductVersionImpl.class,
 			testrayProductVersion.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
-		clearUniqueFindersCache(
-			(TestrayProductVersionModelImpl)testrayProductVersion, true);
+		clearUniqueFindersCache((TestrayProductVersionModelImpl)testrayProductVersion,
+			true);
 	}
 
 	@Override
@@ -436,69 +432,51 @@ public class TestrayProductVersionPersistenceImpl
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
-		for (TestrayProductVersion testrayProductVersion :
-				testrayProductVersions) {
-
-			entityCache.removeResult(
-				TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
+		for (TestrayProductVersion testrayProductVersion : testrayProductVersions) {
+			entityCache.removeResult(TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
 				TestrayProductVersionImpl.class,
 				testrayProductVersion.getPrimaryKey());
 
-			clearUniqueFindersCache(
-				(TestrayProductVersionModelImpl)testrayProductVersion, true);
-		}
-	}
-
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
-				TestrayProductVersionImpl.class, primaryKey);
+			clearUniqueFindersCache((TestrayProductVersionModelImpl)testrayProductVersion,
+				true);
 		}
 	}
 
 	protected void cacheUniqueFindersCache(
 		TestrayProductVersionModelImpl testrayProductVersionModelImpl) {
-
 		Object[] args = new Object[] {
-			testrayProductVersionModelImpl.getTestrayProjectId(),
-			testrayProductVersionModelImpl.getName()
-		};
+				testrayProductVersionModelImpl.getTestrayProjectId(),
+				testrayProductVersionModelImpl.getName()
+			};
 
-		finderCache.putResult(
-			_finderPathCountByT_N, args, Long.valueOf(1), false);
-		finderCache.putResult(
-			_finderPathFetchByT_N, args, testrayProductVersionModelImpl, false);
+		finderCache.putResult(FINDER_PATH_COUNT_BY_T_N, args, Long.valueOf(1),
+			false);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_T_N, args,
+			testrayProductVersionModelImpl, false);
 	}
 
 	protected void clearUniqueFindersCache(
 		TestrayProductVersionModelImpl testrayProductVersionModelImpl,
 		boolean clearCurrent) {
-
 		if (clearCurrent) {
 			Object[] args = new Object[] {
-				testrayProductVersionModelImpl.getTestrayProjectId(),
-				testrayProductVersionModelImpl.getName()
-			};
+					testrayProductVersionModelImpl.getTestrayProjectId(),
+					testrayProductVersionModelImpl.getName()
+				};
 
-			finderCache.removeResult(_finderPathCountByT_N, args);
-			finderCache.removeResult(_finderPathFetchByT_N, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_T_N, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_T_N, args);
 		}
 
 		if ((testrayProductVersionModelImpl.getColumnBitmask() &
-			 _finderPathFetchByT_N.getColumnBitmask()) != 0) {
-
+				FINDER_PATH_FETCH_BY_T_N.getColumnBitmask()) != 0) {
 			Object[] args = new Object[] {
-				testrayProductVersionModelImpl.getOriginalTestrayProjectId(),
-				testrayProductVersionModelImpl.getOriginalName()
-			};
+					testrayProductVersionModelImpl.getOriginalTestrayProjectId(),
+					testrayProductVersionModelImpl.getOriginalName()
+				};
 
-			finderCache.removeResult(_finderPathCountByT_N, args);
-			finderCache.removeResult(_finderPathFetchByT_N, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_T_N, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_T_N, args);
 		}
 	}
 
@@ -510,13 +488,12 @@ public class TestrayProductVersionPersistenceImpl
 	 */
 	@Override
 	public TestrayProductVersion create(long testrayProductVersionId) {
-		TestrayProductVersion testrayProductVersion =
-			new TestrayProductVersionImpl();
+		TestrayProductVersion testrayProductVersion = new TestrayProductVersionImpl();
 
 		testrayProductVersion.setNew(true);
 		testrayProductVersion.setPrimaryKey(testrayProductVersionId);
 
-		testrayProductVersion.setCompanyId(CompanyThreadLocal.getCompanyId());
+		testrayProductVersion.setCompanyId(companyProvider.getCompanyId());
 
 		return testrayProductVersion;
 	}
@@ -531,7 +508,6 @@ public class TestrayProductVersionPersistenceImpl
 	@Override
 	public TestrayProductVersion remove(long testrayProductVersionId)
 		throws NoSuchTestrayProductVersionException {
-
 		return remove((Serializable)testrayProductVersionId);
 	}
 
@@ -545,32 +521,30 @@ public class TestrayProductVersionPersistenceImpl
 	@Override
 	public TestrayProductVersion remove(Serializable primaryKey)
 		throws NoSuchTestrayProductVersionException {
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			TestrayProductVersion testrayProductVersion =
-				(TestrayProductVersion)session.get(
-					TestrayProductVersionImpl.class, primaryKey);
+			TestrayProductVersion testrayProductVersion = (TestrayProductVersion)session.get(TestrayProductVersionImpl.class,
+					primaryKey);
 
 			if (testrayProductVersion == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchTestrayProductVersionException(
-					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				throw new NoSuchTestrayProductVersionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+					primaryKey);
 			}
 
 			return remove(testrayProductVersion);
 		}
-		catch (NoSuchTestrayProductVersionException noSuchEntityException) {
-			throw noSuchEntityException;
+		catch (NoSuchTestrayProductVersionException nsee) {
+			throw nsee;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -580,6 +554,7 @@ public class TestrayProductVersionPersistenceImpl
 	@Override
 	protected TestrayProductVersion removeImpl(
 		TestrayProductVersion testrayProductVersion) {
+		testrayProductVersion = toUnwrappedModel(testrayProductVersion);
 
 		Session session = null;
 
@@ -587,17 +562,16 @@ public class TestrayProductVersionPersistenceImpl
 			session = openSession();
 
 			if (!session.contains(testrayProductVersion)) {
-				testrayProductVersion = (TestrayProductVersion)session.get(
-					TestrayProductVersionImpl.class,
-					testrayProductVersion.getPrimaryKeyObj());
+				testrayProductVersion = (TestrayProductVersion)session.get(TestrayProductVersionImpl.class,
+						testrayProductVersion.getPrimaryKeyObj());
 			}
 
 			if (testrayProductVersion != null) {
 				session.delete(testrayProductVersion);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -613,33 +587,13 @@ public class TestrayProductVersionPersistenceImpl
 	@Override
 	public TestrayProductVersion updateImpl(
 		TestrayProductVersion testrayProductVersion) {
+		testrayProductVersion = toUnwrappedModel(testrayProductVersion);
 
 		boolean isNew = testrayProductVersion.isNew();
 
-		if (!(testrayProductVersion instanceof
-				TestrayProductVersionModelImpl)) {
+		TestrayProductVersionModelImpl testrayProductVersionModelImpl = (TestrayProductVersionModelImpl)testrayProductVersion;
 
-			InvocationHandler invocationHandler = null;
-
-			if (ProxyUtil.isProxyClass(testrayProductVersion.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(
-					testrayProductVersion);
-
-				throw new IllegalArgumentException(
-					"Implement ModelWrapper in testrayProductVersion proxy " +
-						invocationHandler.getClass());
-			}
-
-			throw new IllegalArgumentException(
-				"Implement ModelWrapper in custom TestrayProductVersion implementation " +
-					testrayProductVersion.getClass());
-		}
-
-		TestrayProductVersionModelImpl testrayProductVersionModelImpl =
-			(TestrayProductVersionModelImpl)testrayProductVersion;
-
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -648,8 +602,8 @@ public class TestrayProductVersionPersistenceImpl
 				testrayProductVersion.setCreateDate(now);
 			}
 			else {
-				testrayProductVersion.setCreateDate(
-					serviceContext.getCreateDate(now));
+				testrayProductVersion.setCreateDate(serviceContext.getCreateDate(
+						now));
 			}
 		}
 
@@ -658,8 +612,8 @@ public class TestrayProductVersionPersistenceImpl
 				testrayProductVersion.setModifiedDate(now);
 			}
 			else {
-				testrayProductVersion.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+				testrayProductVersion.setModifiedDate(serviceContext.getModifiedDate(
+						now));
 			}
 		}
 
@@ -674,12 +628,11 @@ public class TestrayProductVersionPersistenceImpl
 				testrayProductVersion.setNew(false);
 			}
 			else {
-				testrayProductVersion = (TestrayProductVersion)session.merge(
-					testrayProductVersion);
+				testrayProductVersion = (TestrayProductVersion)session.merge(testrayProductVersion);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -690,17 +643,16 @@ public class TestrayProductVersionPersistenceImpl
 		if (!TestrayProductVersionModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else if (isNew) {
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+		else
+		 if (isNew) {
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(
-			TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
 			TestrayProductVersionImpl.class,
-			testrayProductVersion.getPrimaryKey(), testrayProductVersion,
-			false);
+			testrayProductVersion.getPrimaryKey(), testrayProductVersion, false);
 
 		clearUniqueFindersCache(testrayProductVersionModelImpl, false);
 		cacheUniqueFindersCache(testrayProductVersionModelImpl);
@@ -710,8 +662,32 @@ public class TestrayProductVersionPersistenceImpl
 		return testrayProductVersion;
 	}
 
+	protected TestrayProductVersion toUnwrappedModel(
+		TestrayProductVersion testrayProductVersion) {
+		if (testrayProductVersion instanceof TestrayProductVersionImpl) {
+			return testrayProductVersion;
+		}
+
+		TestrayProductVersionImpl testrayProductVersionImpl = new TestrayProductVersionImpl();
+
+		testrayProductVersionImpl.setNew(testrayProductVersion.isNew());
+		testrayProductVersionImpl.setPrimaryKey(testrayProductVersion.getPrimaryKey());
+
+		testrayProductVersionImpl.setTestrayProductVersionId(testrayProductVersion.getTestrayProductVersionId());
+		testrayProductVersionImpl.setGroupId(testrayProductVersion.getGroupId());
+		testrayProductVersionImpl.setCompanyId(testrayProductVersion.getCompanyId());
+		testrayProductVersionImpl.setUserId(testrayProductVersion.getUserId());
+		testrayProductVersionImpl.setUserName(testrayProductVersion.getUserName());
+		testrayProductVersionImpl.setCreateDate(testrayProductVersion.getCreateDate());
+		testrayProductVersionImpl.setModifiedDate(testrayProductVersion.getModifiedDate());
+		testrayProductVersionImpl.setTestrayProjectId(testrayProductVersion.getTestrayProjectId());
+		testrayProductVersionImpl.setName(testrayProductVersion.getName());
+
+		return testrayProductVersionImpl;
+	}
+
 	/**
-	 * Returns the testray product version with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
+	 * Returns the testray product version with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the testray product version
 	 * @return the testray product version
@@ -720,24 +696,22 @@ public class TestrayProductVersionPersistenceImpl
 	@Override
 	public TestrayProductVersion findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchTestrayProductVersionException {
-
-		TestrayProductVersion testrayProductVersion = fetchByPrimaryKey(
-			primaryKey);
+		TestrayProductVersion testrayProductVersion = fetchByPrimaryKey(primaryKey);
 
 		if (testrayProductVersion == null) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchTestrayProductVersionException(
-				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			throw new NoSuchTestrayProductVersionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
 		}
 
 		return testrayProductVersion;
 	}
 
 	/**
-	 * Returns the testray product version with the primary key or throws a <code>NoSuchTestrayProductVersionException</code> if it could not be found.
+	 * Returns the testray product version with the primary key or throws a {@link NoSuchTestrayProductVersionException} if it could not be found.
 	 *
 	 * @param testrayProductVersionId the primary key of the testray product version
 	 * @return the testray product version
@@ -746,7 +720,6 @@ public class TestrayProductVersionPersistenceImpl
 	@Override
 	public TestrayProductVersion findByPrimaryKey(long testrayProductVersionId)
 		throws NoSuchTestrayProductVersionException {
-
 		return findByPrimaryKey((Serializable)testrayProductVersionId);
 	}
 
@@ -758,16 +731,14 @@ public class TestrayProductVersionPersistenceImpl
 	 */
 	@Override
 	public TestrayProductVersion fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(
-			TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayProductVersionImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
+				TestrayProductVersionImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
 		}
 
-		TestrayProductVersion testrayProductVersion =
-			(TestrayProductVersion)serializable;
+		TestrayProductVersion testrayProductVersion = (TestrayProductVersion)serializable;
 
 		if (testrayProductVersion == null) {
 			Session session = null;
@@ -775,24 +746,22 @@ public class TestrayProductVersionPersistenceImpl
 			try {
 				session = openSession();
 
-				testrayProductVersion = (TestrayProductVersion)session.get(
-					TestrayProductVersionImpl.class, primaryKey);
+				testrayProductVersion = (TestrayProductVersion)session.get(TestrayProductVersionImpl.class,
+						primaryKey);
 
 				if (testrayProductVersion != null) {
 					cacheResult(testrayProductVersion);
 				}
 				else {
-					entityCache.putResult(
-						TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
 						TestrayProductVersionImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception exception) {
-				entityCache.removeResult(
-					TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception e) {
+				entityCache.removeResult(TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
 					TestrayProductVersionImpl.class, primaryKey);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -809,30 +778,25 @@ public class TestrayProductVersionPersistenceImpl
 	 * @return the testray product version, or <code>null</code> if a testray product version with the primary key could not be found
 	 */
 	@Override
-	public TestrayProductVersion fetchByPrimaryKey(
-		long testrayProductVersionId) {
-
+	public TestrayProductVersion fetchByPrimaryKey(long testrayProductVersionId) {
 		return fetchByPrimaryKey((Serializable)testrayProductVersionId);
 	}
 
 	@Override
 	public Map<Serializable, TestrayProductVersion> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
-
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, TestrayProductVersion> map =
-			new HashMap<Serializable, TestrayProductVersion>();
+		Map<Serializable, TestrayProductVersion> map = new HashMap<Serializable, TestrayProductVersion>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
 
 			Serializable primaryKey = iterator.next();
 
-			TestrayProductVersion testrayProductVersion = fetchByPrimaryKey(
-				primaryKey);
+			TestrayProductVersion testrayProductVersion = fetchByPrimaryKey(primaryKey);
 
 			if (testrayProductVersion != null) {
 				map.put(primaryKey, testrayProductVersion);
@@ -844,9 +808,8 @@ public class TestrayProductVersionPersistenceImpl
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(
-				TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
-				TestrayProductVersionImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
+					TestrayProductVersionImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -866,51 +829,46 @@ public class TestrayProductVersionPersistenceImpl
 			return map;
 		}
 
-		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
+				1);
 
-		sb.append(_SQL_SELECT_TESTRAYPRODUCTVERSION_WHERE_PKS_IN);
+		query.append(_SQL_SELECT_TESTRAYPRODUCTVERSION_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			sb.append((long)primaryKey);
+			query.append((long)primaryKey);
 
-			sb.append(",");
+			query.append(StringPool.COMMA);
 		}
 
-		sb.setIndex(sb.index() - 1);
+		query.setIndex(query.index() - 1);
 
-		sb.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query query = session.createQuery(sql);
+			Query q = session.createQuery(sql);
 
-			for (TestrayProductVersion testrayProductVersion :
-					(List<TestrayProductVersion>)query.list()) {
-
-				map.put(
-					testrayProductVersion.getPrimaryKeyObj(),
+			for (TestrayProductVersion testrayProductVersion : (List<TestrayProductVersion>)q.list()) {
+				map.put(testrayProductVersion.getPrimaryKeyObj(),
 					testrayProductVersion);
 
 				cacheResult(testrayProductVersion);
 
-				uncachedPrimaryKeys.remove(
-					testrayProductVersion.getPrimaryKeyObj());
+				uncachedPrimaryKeys.remove(testrayProductVersion.getPrimaryKeyObj());
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(
-					TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
 					TestrayProductVersionImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -933,7 +891,7 @@ public class TestrayProductVersionPersistenceImpl
 	 * Returns a range of all the testray product versions.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayProductVersionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestrayProductVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray product versions
@@ -949,7 +907,7 @@ public class TestrayProductVersionPersistenceImpl
 	 * Returns an ordered range of all the testray product versions.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayProductVersionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestrayProductVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray product versions
@@ -958,10 +916,8 @@ public class TestrayProductVersionPersistenceImpl
 	 * @return the ordered range of testray product versions
 	 */
 	@Override
-	public List<TestrayProductVersion> findAll(
-		int start, int end,
+	public List<TestrayProductVersion> findAll(int start, int end,
 		OrderByComparator<TestrayProductVersion> orderByComparator) {
-
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -969,63 +925,62 @@ public class TestrayProductVersionPersistenceImpl
 	 * Returns an ordered range of all the testray product versions.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayProductVersionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestrayProductVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray product versions
 	 * @param end the upper bound of the range of testray product versions (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of testray product versions
 	 */
 	@Override
-	public List<TestrayProductVersion> findAll(
-		int start, int end,
+	public List<TestrayProductVersion> findAll(int start, int end,
 		OrderByComparator<TestrayProductVersion> orderByComparator,
-		boolean useFinderCache) {
-
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
-				finderArgs = FINDER_ARGS_EMPTY;
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+			finderArgs = FINDER_ARGS_EMPTY;
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] {start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
 		List<TestrayProductVersion> list = null;
 
-		if (useFinderCache) {
-			list = (List<TestrayProductVersion>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<TestrayProductVersion>)finderCache.getResult(finderPath,
+					finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					2 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(2 +
+						(orderByComparator.getOrderByFields().length * 2));
 
-				sb.append(_SQL_SELECT_TESTRAYPRODUCTVERSION);
+				query.append(_SQL_SELECT_TESTRAYPRODUCTVERSION);
 
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 
-				sql = sb.toString();
+				sql = query.toString();
 			}
 			else {
 				sql = _SQL_SELECT_TESTRAYPRODUCTVERSION;
 
-				sql = sql.concat(TestrayProductVersionModelImpl.ORDER_BY_JPQL);
+				if (pagination) {
+					sql = sql.concat(TestrayProductVersionModelImpl.ORDER_BY_JPQL);
+				}
 			}
 
 			Session session = null;
@@ -1033,23 +988,29 @@ public class TestrayProductVersionPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				list = (List<TestrayProductVersion>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<TestrayProductVersion>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<TestrayProductVersion>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1077,8 +1038,8 @@ public class TestrayProductVersionPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -1086,19 +1047,18 @@ public class TestrayProductVersionPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(
-					_SQL_COUNT_TESTRAYPRODUCTVERSION);
+				Query q = session.createQuery(_SQL_COUNT_TESTRAYPRODUCTVERSION);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
+					count);
 			}
-			catch (Exception exception) {
-				finderCache.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1117,39 +1077,6 @@ public class TestrayProductVersionPersistenceImpl
 	 * Initializes the testray product version persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayProductVersionModelImpl.FINDER_CACHE_ENABLED,
-			TestrayProductVersionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayProductVersionModelImpl.FINDER_CACHE_ENABLED,
-			TestrayProductVersionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayProductVersionModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
-
-		_finderPathFetchByT_N = new FinderPath(
-			TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayProductVersionModelImpl.FINDER_CACHE_ENABLED,
-			TestrayProductVersionImpl.class, FINDER_CLASS_NAME_ENTITY,
-			"fetchByT_N",
-			new String[] {Long.class.getName(), String.class.getName()},
-			TestrayProductVersionModelImpl.TESTRAYPROJECTID_COLUMN_BITMASK |
-			TestrayProductVersionModelImpl.NAME_COLUMN_BITMASK);
-
-		_finderPathCountByT_N = new FinderPath(
-			TestrayProductVersionModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayProductVersionModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByT_N",
-			new String[] {Long.class.getName(), String.class.getName()});
 	}
 
 	public void destroy() {
@@ -1159,37 +1086,19 @@ public class TestrayProductVersionPersistenceImpl
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@ServiceReference(type = CompanyProviderWrapper.class)
+	protected CompanyProvider companyProvider;
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
-
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-
-	private static final String _SQL_SELECT_TESTRAYPRODUCTVERSION =
-		"SELECT testrayProductVersion FROM TestrayProductVersion testrayProductVersion";
-
-	private static final String _SQL_SELECT_TESTRAYPRODUCTVERSION_WHERE_PKS_IN =
-		"SELECT testrayProductVersion FROM TestrayProductVersion testrayProductVersion WHERE testrayProductVersionId IN (";
-
-	private static final String _SQL_SELECT_TESTRAYPRODUCTVERSION_WHERE =
-		"SELECT testrayProductVersion FROM TestrayProductVersion testrayProductVersion WHERE ";
-
-	private static final String _SQL_COUNT_TESTRAYPRODUCTVERSION =
-		"SELECT COUNT(testrayProductVersion) FROM TestrayProductVersion testrayProductVersion";
-
-	private static final String _SQL_COUNT_TESTRAYPRODUCTVERSION_WHERE =
-		"SELECT COUNT(testrayProductVersion) FROM TestrayProductVersion testrayProductVersion WHERE ";
-
-	private static final String _ORDER_BY_ENTITY_ALIAS =
-		"testrayProductVersion.";
-
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
-		"No TestrayProductVersion exists with the primary key ";
-
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No TestrayProductVersion exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		TestrayProductVersionPersistenceImpl.class);
-
+	private static final String _SQL_SELECT_TESTRAYPRODUCTVERSION = "SELECT testrayProductVersion FROM TestrayProductVersion testrayProductVersion";
+	private static final String _SQL_SELECT_TESTRAYPRODUCTVERSION_WHERE_PKS_IN = "SELECT testrayProductVersion FROM TestrayProductVersion testrayProductVersion WHERE testrayProductVersionId IN (";
+	private static final String _SQL_SELECT_TESTRAYPRODUCTVERSION_WHERE = "SELECT testrayProductVersion FROM TestrayProductVersion testrayProductVersion WHERE ";
+	private static final String _SQL_COUNT_TESTRAYPRODUCTVERSION = "SELECT COUNT(testrayProductVersion) FROM TestrayProductVersion testrayProductVersion";
+	private static final String _SQL_COUNT_TESTRAYPRODUCTVERSION_WHERE = "SELECT COUNT(testrayProductVersion) FROM TestrayProductVersion testrayProductVersion WHERE ";
+	private static final String _ORDER_BY_ENTITY_ALIAS = "testrayProductVersion.";
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No TestrayProductVersion exists with the primary key ";
+	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No TestrayProductVersion exists with the key {";
+	private static final Log _log = LogFactoryUtil.getLog(TestrayProductVersionPersistenceImpl.class);
 }

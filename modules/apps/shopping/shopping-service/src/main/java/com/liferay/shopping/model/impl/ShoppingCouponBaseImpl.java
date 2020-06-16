@@ -14,6 +14,8 @@
 
 package com.liferay.shopping.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.shopping.model.ShoppingCoupon;
 import com.liferay.shopping.service.ShoppingCouponLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.shopping.service.ShoppingCouponLocalServiceUtil;
  * @see ShoppingCoupon
  * @generated
  */
-public abstract class ShoppingCouponBaseImpl
-	extends ShoppingCouponModelImpl implements ShoppingCoupon {
-
+@ProviderType
+public abstract class ShoppingCouponBaseImpl extends ShoppingCouponModelImpl
+	implements ShoppingCoupon {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a shopping coupon model instance should use the <code>ShoppingCoupon</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a shopping coupon model instance should use the {@link ShoppingCoupon} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class ShoppingCouponBaseImpl
 			ShoppingCouponLocalServiceUtil.updateShoppingCoupon(this);
 		}
 	}
-
 }

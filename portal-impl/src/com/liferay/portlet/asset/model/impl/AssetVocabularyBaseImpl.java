@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.asset.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.asset.kernel.service.AssetVocabularyLocalServiceUtil;
  * @see AssetVocabulary
  * @generated
  */
-public abstract class AssetVocabularyBaseImpl
-	extends AssetVocabularyModelImpl implements AssetVocabulary {
-
+@ProviderType
+public abstract class AssetVocabularyBaseImpl extends AssetVocabularyModelImpl
+	implements AssetVocabulary {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a asset vocabulary model instance should use the <code>AssetVocabulary</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a asset vocabulary model instance should use the {@link AssetVocabulary} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class AssetVocabularyBaseImpl
 			AssetVocabularyLocalServiceUtil.updateAssetVocabulary(this);
 		}
 	}
-
 }

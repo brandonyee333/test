@@ -14,8 +14,12 @@
 
 package com.liferay.sync.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.exportimport.kernel.lar.StagedModelType;
+
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -35,8 +39,8 @@ import java.util.Objects;
  * @see SyncDevice
  * @generated
  */
-public class SyncDeviceWrapper implements ModelWrapper<SyncDevice>, SyncDevice {
-
+@ProviderType
+public class SyncDeviceWrapper implements SyncDevice, ModelWrapper<SyncDevice> {
 	public SyncDeviceWrapper(SyncDevice syncDevice) {
 		_syncDevice = syncDevice;
 	}
@@ -147,175 +151,13 @@ public class SyncDeviceWrapper implements ModelWrapper<SyncDevice>, SyncDevice {
 	}
 
 	@Override
-	public void checkStatus()
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		_syncDevice.checkStatus();
+	public SyncDevice toEscapedModel() {
+		return new SyncDeviceWrapper(_syncDevice.toEscapedModel());
 	}
 
 	@Override
-	public Object clone() {
-		return new SyncDeviceWrapper((SyncDevice)_syncDevice.clone());
-	}
-
-	@Override
-	public int compareTo(SyncDevice syncDevice) {
-		return _syncDevice.compareTo(syncDevice);
-	}
-
-	/**
-	 * Returns the build number of this sync device.
-	 *
-	 * @return the build number of this sync device
-	 */
-	@Override
-	public long getBuildNumber() {
-		return _syncDevice.getBuildNumber();
-	}
-
-	/**
-	 * Returns the company ID of this sync device.
-	 *
-	 * @return the company ID of this sync device
-	 */
-	@Override
-	public long getCompanyId() {
-		return _syncDevice.getCompanyId();
-	}
-
-	/**
-	 * Returns the create date of this sync device.
-	 *
-	 * @return the create date of this sync device
-	 */
-	@Override
-	public Date getCreateDate() {
-		return _syncDevice.getCreateDate();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _syncDevice.getExpandoBridge();
-	}
-
-	/**
-	 * Returns the feature set of this sync device.
-	 *
-	 * @return the feature set of this sync device
-	 */
-	@Override
-	public int getFeatureSet() {
-		return _syncDevice.getFeatureSet();
-	}
-
-	/**
-	 * Returns the hostname of this sync device.
-	 *
-	 * @return the hostname of this sync device
-	 */
-	@Override
-	public String getHostname() {
-		return _syncDevice.getHostname();
-	}
-
-	/**
-	 * Returns the modified date of this sync device.
-	 *
-	 * @return the modified date of this sync device
-	 */
-	@Override
-	public Date getModifiedDate() {
-		return _syncDevice.getModifiedDate();
-	}
-
-	/**
-	 * Returns the primary key of this sync device.
-	 *
-	 * @return the primary key of this sync device
-	 */
-	@Override
-	public long getPrimaryKey() {
-		return _syncDevice.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _syncDevice.getPrimaryKeyObj();
-	}
-
-	/**
-	 * Returns the status of this sync device.
-	 *
-	 * @return the status of this sync device
-	 */
-	@Override
-	public int getStatus() {
-		return _syncDevice.getStatus();
-	}
-
-	/**
-	 * Returns the sync device ID of this sync device.
-	 *
-	 * @return the sync device ID of this sync device
-	 */
-	@Override
-	public long getSyncDeviceId() {
-		return _syncDevice.getSyncDeviceId();
-	}
-
-	/**
-	 * Returns the type of this sync device.
-	 *
-	 * @return the type of this sync device
-	 */
-	@Override
-	public String getType() {
-		return _syncDevice.getType();
-	}
-
-	/**
-	 * Returns the user ID of this sync device.
-	 *
-	 * @return the user ID of this sync device
-	 */
-	@Override
-	public long getUserId() {
-		return _syncDevice.getUserId();
-	}
-
-	/**
-	 * Returns the user name of this sync device.
-	 *
-	 * @return the user name of this sync device
-	 */
-	@Override
-	public String getUserName() {
-		return _syncDevice.getUserName();
-	}
-
-	/**
-	 * Returns the user uuid of this sync device.
-	 *
-	 * @return the user uuid of this sync device
-	 */
-	@Override
-	public String getUserUuid() {
-		return _syncDevice.getUserUuid();
-	}
-
-	/**
-	 * Returns the uuid of this sync device.
-	 *
-	 * @return the uuid of this sync device
-	 */
-	@Override
-	public String getUuid() {
-		return _syncDevice.getUuid();
-	}
-
-	@Override
-	public int hashCode() {
-		return _syncDevice.hashCode();
+	public SyncDevice toUnescapedModel() {
+		return new SyncDeviceWrapper(_syncDevice.toUnescapedModel());
 	}
 
 	@Override
@@ -344,15 +186,206 @@ public class SyncDeviceWrapper implements ModelWrapper<SyncDevice>, SyncDevice {
 	}
 
 	@Override
+	public boolean supports(int featureSet) {
+		return _syncDevice.supports(featureSet);
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _syncDevice.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<SyncDevice> toCacheModel() {
+		return _syncDevice.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(SyncDevice syncDevice) {
+		return _syncDevice.compareTo(syncDevice);
+	}
+
+	/**
+	* Returns the feature set of this sync device.
+	*
+	* @return the feature set of this sync device
+	*/
+	@Override
+	public int getFeatureSet() {
+		return _syncDevice.getFeatureSet();
+	}
+
+	/**
+	* Returns the status of this sync device.
+	*
+	* @return the status of this sync device
+	*/
+	@Override
+	public int getStatus() {
+		return _syncDevice.getStatus();
+	}
+
+	@Override
+	public int hashCode() {
+		return _syncDevice.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _syncDevice.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new SyncDeviceWrapper((SyncDevice)_syncDevice.clone());
+	}
+
+	/**
+	* Returns the hostname of this sync device.
+	*
+	* @return the hostname of this sync device
+	*/
+	@Override
+	public java.lang.String getHostname() {
+		return _syncDevice.getHostname();
+	}
+
+	/**
+	* Returns the type of this sync device.
+	*
+	* @return the type of this sync device
+	*/
+	@Override
+	public java.lang.String getType() {
+		return _syncDevice.getType();
+	}
+
+	/**
+	* Returns the user name of this sync device.
+	*
+	* @return the user name of this sync device
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _syncDevice.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this sync device.
+	*
+	* @return the user uuid of this sync device
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _syncDevice.getUserUuid();
+	}
+
+	/**
+	* Returns the uuid of this sync device.
+	*
+	* @return the uuid of this sync device
+	*/
+	@Override
+	public java.lang.String getUuid() {
+		return _syncDevice.getUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _syncDevice.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _syncDevice.toXmlString();
+	}
+
+	/**
+	* Returns the create date of this sync device.
+	*
+	* @return the create date of this sync device
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _syncDevice.getCreateDate();
+	}
+
+	/**
+	* Returns the modified date of this sync device.
+	*
+	* @return the modified date of this sync device
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _syncDevice.getModifiedDate();
+	}
+
+	/**
+	* Returns the build number of this sync device.
+	*
+	* @return the build number of this sync device
+	*/
+	@Override
+	public long getBuildNumber() {
+		return _syncDevice.getBuildNumber();
+	}
+
+	/**
+	* Returns the company ID of this sync device.
+	*
+	* @return the company ID of this sync device
+	*/
+	@Override
+	public long getCompanyId() {
+		return _syncDevice.getCompanyId();
+	}
+
+	/**
+	* Returns the primary key of this sync device.
+	*
+	* @return the primary key of this sync device
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _syncDevice.getPrimaryKey();
+	}
+
+	/**
+	* Returns the sync device ID of this sync device.
+	*
+	* @return the sync device ID of this sync device
+	*/
+	@Override
+	public long getSyncDeviceId() {
+		return _syncDevice.getSyncDeviceId();
+	}
+
+	/**
+	* Returns the user ID of this sync device.
+	*
+	* @return the user ID of this sync device
+	*/
+	@Override
+	public long getUserId() {
+		return _syncDevice.getUserId();
+	}
+
+	@Override
+	public void checkStatus()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_syncDevice.checkStatus();
+	}
+
+	@Override
 	public void persist() {
 		_syncDevice.persist();
 	}
 
 	/**
-	 * Sets the build number of this sync device.
-	 *
-	 * @param buildNumber the build number of this sync device
-	 */
+	* Sets the build number of this sync device.
+	*
+	* @param buildNumber the build number of this sync device
+	*/
 	@Override
 	public void setBuildNumber(long buildNumber) {
 		_syncDevice.setBuildNumber(buildNumber);
@@ -364,30 +397,23 @@ public class SyncDeviceWrapper implements ModelWrapper<SyncDevice>, SyncDevice {
 	}
 
 	/**
-	 * Sets the company ID of this sync device.
-	 *
-	 * @param companyId the company ID of this sync device
-	 */
+	* Sets the company ID of this sync device.
+	*
+	* @param companyId the company ID of this sync device
+	*/
 	@Override
 	public void setCompanyId(long companyId) {
 		_syncDevice.setCompanyId(companyId);
 	}
 
 	/**
-	 * Sets the create date of this sync device.
-	 *
-	 * @param createDate the create date of this sync device
-	 */
+	* Sets the create date of this sync device.
+	*
+	* @param createDate the create date of this sync device
+	*/
 	@Override
 	public void setCreateDate(Date createDate) {
 		_syncDevice.setCreateDate(createDate);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-
-		_syncDevice.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -396,35 +422,41 @@ public class SyncDeviceWrapper implements ModelWrapper<SyncDevice>, SyncDevice {
 	}
 
 	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_syncDevice.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_syncDevice.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	 * Sets the feature set of this sync device.
-	 *
-	 * @param featureSet the feature set of this sync device
-	 */
+	* Sets the feature set of this sync device.
+	*
+	* @param featureSet the feature set of this sync device
+	*/
 	@Override
 	public void setFeatureSet(int featureSet) {
 		_syncDevice.setFeatureSet(featureSet);
 	}
 
 	/**
-	 * Sets the hostname of this sync device.
-	 *
-	 * @param hostname the hostname of this sync device
-	 */
+	* Sets the hostname of this sync device.
+	*
+	* @param hostname the hostname of this sync device
+	*/
 	@Override
-	public void setHostname(String hostname) {
+	public void setHostname(java.lang.String hostname) {
 		_syncDevice.setHostname(hostname);
 	}
 
 	/**
-	 * Sets the modified date of this sync device.
-	 *
-	 * @param modifiedDate the modified date of this sync device
-	 */
+	* Sets the modified date of this sync device.
+	*
+	* @param modifiedDate the modified date of this sync device
+	*/
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_syncDevice.setModifiedDate(modifiedDate);
@@ -436,10 +468,10 @@ public class SyncDeviceWrapper implements ModelWrapper<SyncDevice>, SyncDevice {
 	}
 
 	/**
-	 * Sets the primary key of this sync device.
-	 *
-	 * @param primaryKey the primary key of this sync device
-	 */
+	* Sets the primary key of this sync device.
+	*
+	* @param primaryKey the primary key of this sync device
+	*/
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_syncDevice.setPrimaryKey(primaryKey);
@@ -451,105 +483,73 @@ public class SyncDeviceWrapper implements ModelWrapper<SyncDevice>, SyncDevice {
 	}
 
 	/**
-	 * Sets the status of this sync device.
-	 *
-	 * @param status the status of this sync device
-	 */
+	* Sets the status of this sync device.
+	*
+	* @param status the status of this sync device
+	*/
 	@Override
 	public void setStatus(int status) {
 		_syncDevice.setStatus(status);
 	}
 
 	/**
-	 * Sets the sync device ID of this sync device.
-	 *
-	 * @param syncDeviceId the sync device ID of this sync device
-	 */
+	* Sets the sync device ID of this sync device.
+	*
+	* @param syncDeviceId the sync device ID of this sync device
+	*/
 	@Override
 	public void setSyncDeviceId(long syncDeviceId) {
 		_syncDevice.setSyncDeviceId(syncDeviceId);
 	}
 
 	/**
-	 * Sets the type of this sync device.
-	 *
-	 * @param type the type of this sync device
-	 */
+	* Sets the type of this sync device.
+	*
+	* @param type the type of this sync device
+	*/
 	@Override
-	public void setType(String type) {
+	public void setType(java.lang.String type) {
 		_syncDevice.setType(type);
 	}
 
 	/**
-	 * Sets the user ID of this sync device.
-	 *
-	 * @param userId the user ID of this sync device
-	 */
+	* Sets the user ID of this sync device.
+	*
+	* @param userId the user ID of this sync device
+	*/
 	@Override
 	public void setUserId(long userId) {
 		_syncDevice.setUserId(userId);
 	}
 
 	/**
-	 * Sets the user name of this sync device.
-	 *
-	 * @param userName the user name of this sync device
-	 */
+	* Sets the user name of this sync device.
+	*
+	* @param userName the user name of this sync device
+	*/
 	@Override
-	public void setUserName(String userName) {
+	public void setUserName(java.lang.String userName) {
 		_syncDevice.setUserName(userName);
 	}
 
 	/**
-	 * Sets the user uuid of this sync device.
-	 *
-	 * @param userUuid the user uuid of this sync device
-	 */
+	* Sets the user uuid of this sync device.
+	*
+	* @param userUuid the user uuid of this sync device
+	*/
 	@Override
-	public void setUserUuid(String userUuid) {
+	public void setUserUuid(java.lang.String userUuid) {
 		_syncDevice.setUserUuid(userUuid);
 	}
 
 	/**
-	 * Sets the uuid of this sync device.
-	 *
-	 * @param uuid the uuid of this sync device
-	 */
+	* Sets the uuid of this sync device.
+	*
+	* @param uuid the uuid of this sync device
+	*/
 	@Override
-	public void setUuid(String uuid) {
+	public void setUuid(java.lang.String uuid) {
 		_syncDevice.setUuid(uuid);
-	}
-
-	@Override
-	public boolean supports(int featureSet) {
-		return _syncDevice.supports(featureSet);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<SyncDevice>
-		toCacheModel() {
-
-		return _syncDevice.toCacheModel();
-	}
-
-	@Override
-	public SyncDevice toEscapedModel() {
-		return new SyncDeviceWrapper(_syncDevice.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return _syncDevice.toString();
-	}
-
-	@Override
-	public SyncDevice toUnescapedModel() {
-		return new SyncDeviceWrapper(_syncDevice.toUnescapedModel());
-	}
-
-	@Override
-	public String toXmlString() {
-		return _syncDevice.toXmlString();
 	}
 
 	@Override
@@ -597,5 +597,4 @@ public class SyncDeviceWrapper implements ModelWrapper<SyncDevice>, SyncDevice {
 	}
 
 	private final SyncDevice _syncDevice;
-
 }

@@ -14,7 +14,8 @@
 
 package com.liferay.portal.service.base;
 
-import com.liferay.counter.kernel.service.persistence.CounterPersistence;
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -36,7 +37,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.LayoutSetLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
-import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.GroupFinder;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
 import com.liferay.portal.kernel.service.persistence.ImagePersistence;
@@ -46,7 +46,6 @@ import com.liferay.portal.kernel.service.persistence.LayoutSetBranchPersistence;
 import com.liferay.portal.kernel.service.persistence.LayoutSetPersistence;
 import com.liferay.portal.kernel.service.persistence.PluginSettingPersistence;
 import com.liferay.portal.kernel.service.persistence.VirtualHostPersistence;
-import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -65,16 +64,16 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.portal.service.impl.LayoutSetLocalServiceImpl
+ * @see com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil
  * @generated
  */
-public abstract class LayoutSetLocalServiceBaseImpl
-	extends BaseLocalServiceImpl
-	implements IdentifiableOSGiService, LayoutSetLocalService {
-
+@ProviderType
+public abstract class LayoutSetLocalServiceBaseImpl extends BaseLocalServiceImpl
+	implements LayoutSetLocalService, IdentifiableOSGiService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LayoutSetLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil} to access the layout set local service.
 	 */
 
 	/**
@@ -98,7 +97,6 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 * @return the new layout set
 	 */
 	@Override
-	@Transactional(enabled = false)
 	public LayoutSet createLayoutSet(long layoutSetId) {
 		return layoutSetPersistence.create(layoutSetId);
 	}
@@ -112,7 +110,8 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public LayoutSet deleteLayoutSet(long layoutSetId) throws PortalException {
+	public LayoutSet deleteLayoutSet(long layoutSetId)
+		throws PortalException {
 		return layoutSetPersistence.remove(layoutSetId);
 	}
 
@@ -132,8 +131,8 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(
-			LayoutSet.class, clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(LayoutSet.class,
+			clazz.getClassLoader());
 	}
 
 	/**
@@ -151,7 +150,7 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portal.model.impl.LayoutSetModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.LayoutSetModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -160,18 +159,17 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end) {
-
-		return layoutSetPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
+		return layoutSetPersistence.findWithDynamicQuery(dynamicQuery, start,
+			end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portal.model.impl.LayoutSetModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.LayoutSetModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -181,12 +179,10 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<T> orderByComparator) {
-
-		return layoutSetPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
+		return layoutSetPersistence.findWithDynamicQuery(dynamicQuery, start,
+			end, orderByComparator);
 	}
 
 	/**
@@ -208,11 +204,10 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(
-		DynamicQuery dynamicQuery, Projection projection) {
-
-		return layoutSetPersistence.countWithDynamicQuery(
-			dynamicQuery, projection);
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection) {
+		return layoutSetPersistence.countWithDynamicQuery(dynamicQuery,
+			projection);
 	}
 
 	@Override
@@ -234,8 +229,7 @@ public abstract class LayoutSetLocalServiceBaseImpl
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
 		actionableDynamicQuery.setBaseLocalService(layoutSetLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
@@ -247,26 +241,20 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
 
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
-			new IndexableActionableDynamicQuery();
-
-		indexableActionableDynamicQuery.setBaseLocalService(
-			layoutSetLocalService);
+		indexableActionableDynamicQuery.setBaseLocalService(layoutSetLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(LayoutSet.class);
 
-		indexableActionableDynamicQuery.setPrimaryKeyPropertyName(
-			"layoutSetId");
+		indexableActionableDynamicQuery.setPrimaryKeyPropertyName("layoutSetId");
 
 		return indexableActionableDynamicQuery;
 	}
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-
 		actionableDynamicQuery.setBaseLocalService(layoutSetLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(LayoutSet.class);
@@ -280,21 +268,12 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-
 		return layoutSetLocalService.deleteLayoutSet((LayoutSet)persistedModel);
 	}
 
-	public BasePersistence<LayoutSet> getBasePersistence() {
-		return layoutSetPersistence;
-	}
-
-	/**
-	 * @throws PortalException
-	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
-
 		return layoutSetPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -302,7 +281,7 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 * Returns a range of all the layout sets.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portal.model.impl.LayoutSetModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.LayoutSetModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of layout sets
@@ -352,7 +331,6 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 */
 	public void setLayoutSetLocalService(
 		LayoutSetLocalService layoutSetLocalService) {
-
 		this.layoutSetLocalService = layoutSetLocalService;
 	}
 
@@ -372,7 +350,6 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 */
 	public void setLayoutSetPersistence(
 		LayoutSetPersistence layoutSetPersistence) {
-
 		this.layoutSetPersistence = layoutSetPersistence;
 	}
 
@@ -381,9 +358,7 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -393,28 +368,8 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
-	}
-
-	/**
-	 * Returns the counter persistence.
-	 *
-	 * @return the counter persistence
-	 */
-	public CounterPersistence getCounterPersistence() {
-		return counterPersistence;
-	}
-
-	/**
-	 * Sets the counter persistence.
-	 *
-	 * @param counterPersistence the counter persistence
-	 */
-	public void setCounterPersistence(CounterPersistence counterPersistence) {
-		this.counterPersistence = counterPersistence;
 	}
 
 	/**
@@ -422,9 +377,7 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 *
 	 * @return the group local service
 	 */
-	public com.liferay.portal.kernel.service.GroupLocalService
-		getGroupLocalService() {
-
+	public com.liferay.portal.kernel.service.GroupLocalService getGroupLocalService() {
 		return groupLocalService;
 	}
 
@@ -435,7 +388,6 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 */
 	public void setGroupLocalService(
 		com.liferay.portal.kernel.service.GroupLocalService groupLocalService) {
-
 		this.groupLocalService = groupLocalService;
 	}
 
@@ -480,9 +432,7 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 *
 	 * @return the image local service
 	 */
-	public com.liferay.portal.kernel.service.ImageLocalService
-		getImageLocalService() {
-
+	public com.liferay.portal.kernel.service.ImageLocalService getImageLocalService() {
 		return imageLocalService;
 	}
 
@@ -493,7 +443,6 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 */
 	public void setImageLocalService(
 		com.liferay.portal.kernel.service.ImageLocalService imageLocalService) {
-
 		this.imageLocalService = imageLocalService;
 	}
 
@@ -520,9 +469,7 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 *
 	 * @return the layout local service
 	 */
-	public com.liferay.portal.kernel.service.LayoutLocalService
-		getLayoutLocalService() {
-
+	public com.liferay.portal.kernel.service.LayoutLocalService getLayoutLocalService() {
 		return layoutLocalService;
 	}
 
@@ -532,9 +479,7 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 * @param layoutLocalService the layout local service
 	 */
 	public void setLayoutLocalService(
-		com.liferay.portal.kernel.service.LayoutLocalService
-			layoutLocalService) {
-
+		com.liferay.portal.kernel.service.LayoutLocalService layoutLocalService) {
 		this.layoutLocalService = layoutLocalService;
 	}
 
@@ -579,9 +524,7 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 *
 	 * @return the layout set branch local service
 	 */
-	public com.liferay.portal.kernel.service.LayoutSetBranchLocalService
-		getLayoutSetBranchLocalService() {
-
+	public com.liferay.portal.kernel.service.LayoutSetBranchLocalService getLayoutSetBranchLocalService() {
 		return layoutSetBranchLocalService;
 	}
 
@@ -591,9 +534,7 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 * @param layoutSetBranchLocalService the layout set branch local service
 	 */
 	public void setLayoutSetBranchLocalService(
-		com.liferay.portal.kernel.service.LayoutSetBranchLocalService
-			layoutSetBranchLocalService) {
-
+		com.liferay.portal.kernel.service.LayoutSetBranchLocalService layoutSetBranchLocalService) {
 		this.layoutSetBranchLocalService = layoutSetBranchLocalService;
 	}
 
@@ -613,7 +554,6 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 */
 	public void setLayoutSetBranchPersistence(
 		LayoutSetBranchPersistence layoutSetBranchPersistence) {
-
 		this.layoutSetBranchPersistence = layoutSetBranchPersistence;
 	}
 
@@ -622,9 +562,7 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 *
 	 * @return the plugin setting local service
 	 */
-	public com.liferay.portal.kernel.service.PluginSettingLocalService
-		getPluginSettingLocalService() {
-
+	public com.liferay.portal.kernel.service.PluginSettingLocalService getPluginSettingLocalService() {
 		return pluginSettingLocalService;
 	}
 
@@ -634,9 +572,7 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 * @param pluginSettingLocalService the plugin setting local service
 	 */
 	public void setPluginSettingLocalService(
-		com.liferay.portal.kernel.service.PluginSettingLocalService
-			pluginSettingLocalService) {
-
+		com.liferay.portal.kernel.service.PluginSettingLocalService pluginSettingLocalService) {
 		this.pluginSettingLocalService = pluginSettingLocalService;
 	}
 
@@ -656,7 +592,6 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 */
 	public void setPluginSettingPersistence(
 		PluginSettingPersistence pluginSettingPersistence) {
-
 		this.pluginSettingPersistence = pluginSettingPersistence;
 	}
 
@@ -665,9 +600,7 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 *
 	 * @return the virtual host local service
 	 */
-	public com.liferay.portal.kernel.service.VirtualHostLocalService
-		getVirtualHostLocalService() {
-
+	public com.liferay.portal.kernel.service.VirtualHostLocalService getVirtualHostLocalService() {
 		return virtualHostLocalService;
 	}
 
@@ -677,9 +610,7 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 * @param virtualHostLocalService the virtual host local service
 	 */
 	public void setVirtualHostLocalService(
-		com.liferay.portal.kernel.service.VirtualHostLocalService
-			virtualHostLocalService) {
-
+		com.liferay.portal.kernel.service.VirtualHostLocalService virtualHostLocalService) {
 		this.virtualHostLocalService = virtualHostLocalService;
 	}
 
@@ -699,13 +630,12 @@ public abstract class LayoutSetLocalServiceBaseImpl
 	 */
 	public void setVirtualHostPersistence(
 		VirtualHostPersistence virtualHostPersistence) {
-
 		this.virtualHostPersistence = virtualHostPersistence;
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register(
-			"com.liferay.portal.kernel.model.LayoutSet", layoutSetLocalService);
+		persistedModelLocalServiceRegistry.register("com.liferay.portal.kernel.model.LayoutSet",
+			layoutSetLocalService);
 	}
 
 	public void destroy() {
@@ -745,93 +675,50 @@ public abstract class LayoutSetLocalServiceBaseImpl
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
 	@BeanReference(type = LayoutSetLocalService.class)
 	protected LayoutSetLocalService layoutSetLocalService;
-
 	@BeanReference(type = LayoutSetPersistence.class)
 	protected LayoutSetPersistence layoutSetPersistence;
-
-	@BeanReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
-	@BeanReference(type = CounterPersistence.class)
-	protected CounterPersistence counterPersistence;
-
-	@BeanReference(
-		type = com.liferay.portal.kernel.service.GroupLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.GroupLocalService
-		groupLocalService;
-
+	@BeanReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
+	@BeanReference(type = com.liferay.portal.kernel.service.GroupLocalService.class)
+	protected com.liferay.portal.kernel.service.GroupLocalService groupLocalService;
 	@BeanReference(type = GroupPersistence.class)
 	protected GroupPersistence groupPersistence;
-
 	@BeanReference(type = GroupFinder.class)
 	protected GroupFinder groupFinder;
-
-	@BeanReference(
-		type = com.liferay.portal.kernel.service.ImageLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ImageLocalService
-		imageLocalService;
-
+	@BeanReference(type = com.liferay.portal.kernel.service.ImageLocalService.class)
+	protected com.liferay.portal.kernel.service.ImageLocalService imageLocalService;
 	@BeanReference(type = ImagePersistence.class)
 	protected ImagePersistence imagePersistence;
-
-	@BeanReference(
-		type = com.liferay.portal.kernel.service.LayoutLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.LayoutLocalService
-		layoutLocalService;
-
+	@BeanReference(type = com.liferay.portal.kernel.service.LayoutLocalService.class)
+	protected com.liferay.portal.kernel.service.LayoutLocalService layoutLocalService;
 	@BeanReference(type = LayoutPersistence.class)
 	protected LayoutPersistence layoutPersistence;
-
 	@BeanReference(type = LayoutFinder.class)
 	protected LayoutFinder layoutFinder;
-
-	@BeanReference(
-		type = com.liferay.portal.kernel.service.LayoutSetBranchLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.LayoutSetBranchLocalService
-		layoutSetBranchLocalService;
-
+	@BeanReference(type = com.liferay.portal.kernel.service.LayoutSetBranchLocalService.class)
+	protected com.liferay.portal.kernel.service.LayoutSetBranchLocalService layoutSetBranchLocalService;
 	@BeanReference(type = LayoutSetBranchPersistence.class)
 	protected LayoutSetBranchPersistence layoutSetBranchPersistence;
-
-	@BeanReference(
-		type = com.liferay.portal.kernel.service.PluginSettingLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.PluginSettingLocalService
-		pluginSettingLocalService;
-
+	@BeanReference(type = com.liferay.portal.kernel.service.PluginSettingLocalService.class)
+	protected com.liferay.portal.kernel.service.PluginSettingLocalService pluginSettingLocalService;
 	@BeanReference(type = PluginSettingPersistence.class)
 	protected PluginSettingPersistence pluginSettingPersistence;
-
-	@BeanReference(
-		type = com.liferay.portal.kernel.service.VirtualHostLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.VirtualHostLocalService
-		virtualHostLocalService;
-
+	@BeanReference(type = com.liferay.portal.kernel.service.VirtualHostLocalService.class)
+	protected com.liferay.portal.kernel.service.VirtualHostLocalService virtualHostLocalService;
 	@BeanReference(type = VirtualHostPersistence.class)
 	protected VirtualHostPersistence virtualHostPersistence;
-
 	@BeanReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry
-		persistedModelLocalServiceRegistry;
-
+	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }

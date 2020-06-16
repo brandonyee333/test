@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.PasswordPolicy;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -31,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing PasswordPolicy in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see PasswordPolicy
  * @generated
  */
-public class PasswordPolicyCacheModel
-	implements CacheModel<PasswordPolicy>, Externalizable, MVCCModel {
-
+@ProviderType
+public class PasswordPolicyCacheModel implements CacheModel<PasswordPolicy>,
+	Externalizable, MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -46,12 +50,10 @@ public class PasswordPolicyCacheModel
 			return false;
 		}
 
-		PasswordPolicyCacheModel passwordPolicyCacheModel =
-			(PasswordPolicyCacheModel)obj;
+		PasswordPolicyCacheModel passwordPolicyCacheModel = (PasswordPolicyCacheModel)obj;
 
 		if ((passwordPolicyId == passwordPolicyCacheModel.passwordPolicyId) &&
-			(mvccVersion == passwordPolicyCacheModel.mvccVersion)) {
-
+				(mvccVersion == passwordPolicyCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -161,7 +163,7 @@ public class PasswordPolicyCacheModel
 		passwordPolicyImpl.setMvccVersion(mvccVersion);
 
 		if (uuid == null) {
-			passwordPolicyImpl.setUuid("");
+			passwordPolicyImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			passwordPolicyImpl.setUuid(uuid);
@@ -172,7 +174,7 @@ public class PasswordPolicyCacheModel
 		passwordPolicyImpl.setUserId(userId);
 
 		if (userName == null) {
-			passwordPolicyImpl.setUserName("");
+			passwordPolicyImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			passwordPolicyImpl.setUserName(userName);
@@ -195,14 +197,14 @@ public class PasswordPolicyCacheModel
 		passwordPolicyImpl.setDefaultPolicy(defaultPolicy);
 
 		if (name == null) {
-			passwordPolicyImpl.setName("");
+			passwordPolicyImpl.setName(StringPool.BLANK);
 		}
 		else {
 			passwordPolicyImpl.setName(name);
 		}
 
 		if (description == null) {
-			passwordPolicyImpl.setDescription("");
+			passwordPolicyImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			passwordPolicyImpl.setDescription(description);
@@ -221,7 +223,7 @@ public class PasswordPolicyCacheModel
 		passwordPolicyImpl.setMinUpperCase(minUpperCase);
 
 		if (regex == null) {
-			passwordPolicyImpl.setRegex("");
+			passwordPolicyImpl.setRegex(StringPool.BLANK);
 		}
 		else {
 			passwordPolicyImpl.setRegex(regex);
@@ -312,11 +314,12 @@ public class PasswordPolicyCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -329,7 +332,7 @@ public class PasswordPolicyCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -341,14 +344,14 @@ public class PasswordPolicyCacheModel
 		objectOutput.writeBoolean(defaultPolicy);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -377,7 +380,7 @@ public class PasswordPolicyCacheModel
 		objectOutput.writeInt(minUpperCase);
 
 		if (regex == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(regex);
@@ -443,5 +446,4 @@ public class PasswordPolicyCacheModel
 	public boolean requireUnlock;
 	public long resetFailureCount;
 	public long resetTicketMaxAge;
-
 }

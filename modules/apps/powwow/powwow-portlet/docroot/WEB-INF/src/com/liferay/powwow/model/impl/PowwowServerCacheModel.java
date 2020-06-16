@@ -14,9 +14,13 @@
 
 package com.liferay.powwow.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.powwow.model.PowwowServer;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing PowwowServer in entity cache.
  *
  * @author Shinn Lok
+ * @see PowwowServer
  * @generated
  */
-public class PowwowServerCacheModel
-	implements CacheModel<PowwowServer>, Externalizable {
-
+@ProviderType
+public class PowwowServerCacheModel implements CacheModel<PowwowServer>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class PowwowServerCacheModel
 			return false;
 		}
 
-		PowwowServerCacheModel powwowServerCacheModel =
-			(PowwowServerCacheModel)obj;
+		PowwowServerCacheModel powwowServerCacheModel = (PowwowServerCacheModel)obj;
 
 		if (powwowServerId == powwowServerCacheModel.powwowServerId) {
 			return true;
@@ -102,7 +106,7 @@ public class PowwowServerCacheModel
 		powwowServerImpl.setUserId(userId);
 
 		if (userName == null) {
-			powwowServerImpl.setUserName("");
+			powwowServerImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			powwowServerImpl.setUserName(userName);
@@ -123,35 +127,35 @@ public class PowwowServerCacheModel
 		}
 
 		if (name == null) {
-			powwowServerImpl.setName("");
+			powwowServerImpl.setName(StringPool.BLANK);
 		}
 		else {
 			powwowServerImpl.setName(name);
 		}
 
 		if (providerType == null) {
-			powwowServerImpl.setProviderType("");
+			powwowServerImpl.setProviderType(StringPool.BLANK);
 		}
 		else {
 			powwowServerImpl.setProviderType(providerType);
 		}
 
 		if (url == null) {
-			powwowServerImpl.setUrl("");
+			powwowServerImpl.setUrl(StringPool.BLANK);
 		}
 		else {
 			powwowServerImpl.setUrl(url);
 		}
 
 		if (apiKey == null) {
-			powwowServerImpl.setApiKey("");
+			powwowServerImpl.setApiKey(StringPool.BLANK);
 		}
 		else {
 			powwowServerImpl.setApiKey(apiKey);
 		}
 
 		if (secret == null) {
-			powwowServerImpl.setSecret("");
+			powwowServerImpl.setSecret(StringPool.BLANK);
 		}
 		else {
 			powwowServerImpl.setSecret(secret);
@@ -184,7 +188,8 @@ public class PowwowServerCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(powwowServerId);
 
 		objectOutput.writeLong(companyId);
@@ -192,7 +197,7 @@ public class PowwowServerCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -202,35 +207,35 @@ public class PowwowServerCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (providerType == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(providerType);
 		}
 
 		if (url == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(url);
 		}
 
 		if (apiKey == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(apiKey);
 		}
 
 		if (secret == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(secret);
@@ -251,5 +256,4 @@ public class PowwowServerCacheModel
 	public String apiKey;
 	public String secret;
 	public boolean active;
-
 }

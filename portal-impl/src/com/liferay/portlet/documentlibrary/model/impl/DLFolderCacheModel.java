@@ -14,10 +14,14 @@
 
 package com.liferay.portlet.documentlibrary.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.document.library.kernel.model.DLFolder;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,11 @@ import java.util.Date;
  * The cache model class for representing DLFolder in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see DLFolder
  * @generated
  */
-public class DLFolderCacheModel
-	implements CacheModel<DLFolder>, Externalizable {
-
+@ProviderType
+public class DLFolderCacheModel implements CacheModel<DLFolder>, Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -119,7 +123,7 @@ public class DLFolderCacheModel
 		DLFolderImpl dlFolderImpl = new DLFolderImpl();
 
 		if (uuid == null) {
-			dlFolderImpl.setUuid("");
+			dlFolderImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			dlFolderImpl.setUuid(uuid);
@@ -131,7 +135,7 @@ public class DLFolderCacheModel
 		dlFolderImpl.setUserId(userId);
 
 		if (userName == null) {
-			dlFolderImpl.setUserName("");
+			dlFolderImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			dlFolderImpl.setUserName(userName);
@@ -156,21 +160,21 @@ public class DLFolderCacheModel
 		dlFolderImpl.setParentFolderId(parentFolderId);
 
 		if (treePath == null) {
-			dlFolderImpl.setTreePath("");
+			dlFolderImpl.setTreePath(StringPool.BLANK);
 		}
 		else {
 			dlFolderImpl.setTreePath(treePath);
 		}
 
 		if (name == null) {
-			dlFolderImpl.setName("");
+			dlFolderImpl.setName(StringPool.BLANK);
 		}
 		else {
 			dlFolderImpl.setName(name);
 		}
 
 		if (description == null) {
-			dlFolderImpl.setDescription("");
+			dlFolderImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			dlFolderImpl.setDescription(description);
@@ -198,7 +202,7 @@ public class DLFolderCacheModel
 		dlFolderImpl.setStatusByUserId(statusByUserId);
 
 		if (statusByUserName == null) {
-			dlFolderImpl.setStatusByUserName("");
+			dlFolderImpl.setStatusByUserName(StringPool.BLANK);
 		}
 		else {
 			dlFolderImpl.setStatusByUserName(statusByUserName);
@@ -256,9 +260,10 @@ public class DLFolderCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -273,7 +278,7 @@ public class DLFolderCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -289,21 +294,21 @@ public class DLFolderCacheModel
 		objectOutput.writeLong(parentFolderId);
 
 		if (treePath == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(treePath);
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -323,7 +328,7 @@ public class DLFolderCacheModel
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(statusByUserName);
@@ -355,5 +360,4 @@ public class DLFolderCacheModel
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
-
 }

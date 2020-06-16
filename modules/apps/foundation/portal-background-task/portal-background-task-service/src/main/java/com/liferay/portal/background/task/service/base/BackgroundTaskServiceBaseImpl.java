@@ -40,16 +40,15 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.portal.background.task.service.impl.BackgroundTaskServiceImpl
+ * @see com.liferay.portal.background.task.service.BackgroundTaskServiceUtil
  * @generated
  */
-public abstract class BackgroundTaskServiceBaseImpl
-	extends BaseServiceImpl
+public abstract class BackgroundTaskServiceBaseImpl extends BaseServiceImpl
 	implements BackgroundTaskService, IdentifiableOSGiService {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>BackgroundTaskService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.background.task.service.BackgroundTaskServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.portal.background.task.service.BackgroundTaskServiceUtil} to access the background task remote service.
 	 */
 
 	/**
@@ -57,9 +56,7 @@ public abstract class BackgroundTaskServiceBaseImpl
 	 *
 	 * @return the background task local service
 	 */
-	public com.liferay.portal.background.task.service.BackgroundTaskLocalService
-		getBackgroundTaskLocalService() {
-
+	public com.liferay.portal.background.task.service.BackgroundTaskLocalService getBackgroundTaskLocalService() {
 		return backgroundTaskLocalService;
 	}
 
@@ -69,9 +66,7 @@ public abstract class BackgroundTaskServiceBaseImpl
 	 * @param backgroundTaskLocalService the background task local service
 	 */
 	public void setBackgroundTaskLocalService(
-		com.liferay.portal.background.task.service.BackgroundTaskLocalService
-			backgroundTaskLocalService) {
-
+		com.liferay.portal.background.task.service.BackgroundTaskLocalService backgroundTaskLocalService) {
 		this.backgroundTaskLocalService = backgroundTaskLocalService;
 	}
 
@@ -91,7 +86,6 @@ public abstract class BackgroundTaskServiceBaseImpl
 	 */
 	public void setBackgroundTaskService(
 		BackgroundTaskService backgroundTaskService) {
-
 		this.backgroundTaskService = backgroundTaskService;
 	}
 
@@ -111,7 +105,6 @@ public abstract class BackgroundTaskServiceBaseImpl
 	 */
 	public void setBackgroundTaskPersistence(
 		BackgroundTaskPersistence backgroundTaskPersistence) {
-
 		this.backgroundTaskPersistence = backgroundTaskPersistence;
 	}
 
@@ -120,9 +113,7 @@ public abstract class BackgroundTaskServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -132,9 +123,7 @@ public abstract class BackgroundTaskServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -143,9 +132,7 @@ public abstract class BackgroundTaskServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService
-		getUserLocalService() {
-
+	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
 		return userLocalService;
 	}
 
@@ -156,7 +143,6 @@ public abstract class BackgroundTaskServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
-
 		this.userLocalService = userLocalService;
 	}
 
@@ -176,7 +162,6 @@ public abstract class BackgroundTaskServiceBaseImpl
 	 */
 	public void setUserService(
 		com.liferay.portal.kernel.service.UserService userService) {
-
 		this.userService = userService;
 	}
 
@@ -236,47 +221,28 @@ public abstract class BackgroundTaskServiceBaseImpl
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
-	@BeanReference(
-		type = com.liferay.portal.background.task.service.BackgroundTaskLocalService.class
-	)
-	protected
-		com.liferay.portal.background.task.service.BackgroundTaskLocalService
-			backgroundTaskLocalService;
-
+	@BeanReference(type = com.liferay.portal.background.task.service.BackgroundTaskLocalService.class)
+	protected com.liferay.portal.background.task.service.BackgroundTaskLocalService backgroundTaskLocalService;
 	@BeanReference(type = BackgroundTaskService.class)
 	protected BackgroundTaskService backgroundTaskService;
-
 	@BeanReference(type = BackgroundTaskPersistence.class)
 	protected BackgroundTaskPersistence backgroundTaskPersistence;
-
-	@ServiceReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.UserLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.UserLocalService
-		userLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.UserService.class
-	)
+	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
+	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.UserService.class)
 	protected com.liferay.portal.kernel.service.UserService userService;
-
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-
 }

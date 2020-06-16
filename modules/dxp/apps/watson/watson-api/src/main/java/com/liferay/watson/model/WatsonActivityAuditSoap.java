@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.watson.model;
+
+import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -26,11 +28,9 @@ import java.util.List;
  * @author Steven Smith
  * @generated
  */
+@ProviderType
 public class WatsonActivityAuditSoap implements Serializable {
-
-	public static WatsonActivityAuditSoap toSoapModel(
-		WatsonActivityAudit model) {
-
+	public static WatsonActivityAuditSoap toSoapModel(WatsonActivityAudit model) {
 		WatsonActivityAuditSoap soapModel = new WatsonActivityAuditSoap();
 
 		soapModel.setWatsonActivityAuditId(model.getWatsonActivityAuditId());
@@ -42,8 +42,7 @@ public class WatsonActivityAuditSoap implements Serializable {
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setWatsonActivityId(model.getWatsonActivityId());
 		soapModel.setTypeWatsonListTypeId(model.getTypeWatsonListTypeId());
-		soapModel.setSubtypeWatsonListTypeId(
-			model.getSubtypeWatsonListTypeId());
+		soapModel.setSubtypeWatsonListTypeId(model.getSubtypeWatsonListTypeId());
 		soapModel.setWatsonIncidentId(model.getWatsonIncidentId());
 		soapModel.setNarrative(model.getNarrative());
 		soapModel.setReportDate(model.getReportDate());
@@ -55,9 +54,7 @@ public class WatsonActivityAuditSoap implements Serializable {
 
 	public static WatsonActivityAuditSoap[] toSoapModels(
 		WatsonActivityAudit[] models) {
-
-		WatsonActivityAuditSoap[] soapModels =
-			new WatsonActivityAuditSoap[models.length];
+		WatsonActivityAuditSoap[] soapModels = new WatsonActivityAuditSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -68,12 +65,10 @@ public class WatsonActivityAuditSoap implements Serializable {
 
 	public static WatsonActivityAuditSoap[][] toSoapModels(
 		WatsonActivityAudit[][] models) {
-
 		WatsonActivityAuditSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels =
-				new WatsonActivityAuditSoap[models.length][models[0].length];
+			soapModels = new WatsonActivityAuditSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonActivityAuditSoap[0][0];
@@ -88,16 +83,13 @@ public class WatsonActivityAuditSoap implements Serializable {
 
 	public static WatsonActivityAuditSoap[] toSoapModels(
 		List<WatsonActivityAudit> models) {
-
-		List<WatsonActivityAuditSoap> soapModels =
-			new ArrayList<WatsonActivityAuditSoap>(models.size());
+		List<WatsonActivityAuditSoap> soapModels = new ArrayList<WatsonActivityAuditSoap>(models.size());
 
 		for (WatsonActivityAudit model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(
-			new WatsonActivityAuditSoap[soapModels.size()]);
+		return soapModels.toArray(new WatsonActivityAuditSoap[soapModels.size()]);
 	}
 
 	public WatsonActivityAuditSoap() {
@@ -246,5 +238,4 @@ public class WatsonActivityAuditSoap implements Serializable {
 	private Date _reportDate;
 	private Date _startDate;
 	private int _status;
-
 }

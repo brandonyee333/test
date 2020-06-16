@@ -25,23 +25,20 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see AnalyticsMessageModel
+ * @see com.liferay.analytics.message.storage.model.impl.AnalyticsMessageImpl
+ * @see com.liferay.analytics.message.storage.model.impl.AnalyticsMessageModelImpl
  * @generated
  */
-@ImplementationClassName(
-	"com.liferay.analytics.message.storage.model.impl.AnalyticsMessageImpl"
-)
+@ImplementationClassName("com.liferay.analytics.message.storage.model.impl.AnalyticsMessageImpl")
 @ProviderType
-public interface AnalyticsMessage
-	extends AnalyticsMessageModel, PersistedModel {
-
+public interface AnalyticsMessage extends AnalyticsMessageModel, PersistedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to <code>com.liferay.analytics.message.storage.model.impl.AnalyticsMessageImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to {@link com.liferay.analytics.message.storage.model.impl.AnalyticsMessageImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<AnalyticsMessage, Long>
-		ANALYTICS_MESSAGE_ID_ACCESSOR = new Accessor<AnalyticsMessage, Long>() {
-
+	public static final Accessor<AnalyticsMessage, Long> ANALYTICS_MESSAGE_ID_ACCESSOR =
+		new Accessor<AnalyticsMessage, Long>() {
 			@Override
 			public Long get(AnalyticsMessage analyticsMessage) {
 				return analyticsMessage.getAnalyticsMessageId();
@@ -56,7 +53,5 @@ public interface AnalyticsMessage
 			public Class<AnalyticsMessage> getTypeClass() {
 				return AnalyticsMessage.class;
 			}
-
 		};
-
 }

@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.documentlibrary.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalServiceUt
  * @see DLFileEntryType
  * @generated
  */
-public abstract class DLFileEntryTypeBaseImpl
-	extends DLFileEntryTypeModelImpl implements DLFileEntryType {
-
+@ProviderType
+public abstract class DLFileEntryTypeBaseImpl extends DLFileEntryTypeModelImpl
+	implements DLFileEntryType {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a document library file entry type model instance should use the <code>DLFileEntryType</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a document library file entry type model instance should use the {@link DLFileEntryType} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class DLFileEntryTypeBaseImpl
 			DLFileEntryTypeLocalServiceUtil.updateDLFileEntryType(this);
 		}
 	}
-
 }

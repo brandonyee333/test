@@ -14,10 +14,14 @@
 
 package com.liferay.calendar.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.calendar.model.Calendar;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,11 @@ import java.util.Date;
  * The cache model class for representing Calendar in entity cache.
  *
  * @author Eduardo Lundgren
+ * @see Calendar
  * @generated
  */
-public class CalendarCacheModel
-	implements CacheModel<Calendar>, Externalizable {
-
+@ProviderType
+public class CalendarCacheModel implements CacheModel<Calendar>, Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -109,7 +113,7 @@ public class CalendarCacheModel
 		CalendarImpl calendarImpl = new CalendarImpl();
 
 		if (uuid == null) {
-			calendarImpl.setUuid("");
+			calendarImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			calendarImpl.setUuid(uuid);
@@ -121,7 +125,7 @@ public class CalendarCacheModel
 		calendarImpl.setUserId(userId);
 
 		if (userName == null) {
-			calendarImpl.setUserName("");
+			calendarImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			calendarImpl.setUserName(userName);
@@ -145,21 +149,21 @@ public class CalendarCacheModel
 		calendarImpl.setCalendarResourceId(calendarResourceId);
 
 		if (name == null) {
-			calendarImpl.setName("");
+			calendarImpl.setName(StringPool.BLANK);
 		}
 		else {
 			calendarImpl.setName(name);
 		}
 
 		if (description == null) {
-			calendarImpl.setDescription("");
+			calendarImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			calendarImpl.setDescription(description);
 		}
 
 		if (timeZoneId == null) {
-			calendarImpl.setTimeZoneId("");
+			calendarImpl.setTimeZoneId(StringPool.BLANK);
 		}
 		else {
 			calendarImpl.setTimeZoneId(timeZoneId);
@@ -215,9 +219,10 @@ public class CalendarCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -232,7 +237,7 @@ public class CalendarCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -246,21 +251,21 @@ public class CalendarCacheModel
 		objectOutput.writeLong(calendarResourceId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (timeZoneId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(timeZoneId);
@@ -294,5 +299,4 @@ public class CalendarCacheModel
 	public boolean enableComments;
 	public boolean enableRatings;
 	public long lastPublishDate;
-
 }

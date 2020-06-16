@@ -14,6 +14,8 @@
 
 package com.liferay.dynamic.data.lists.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.dynamic.data.lists.model.DDLRecord;
 import com.liferay.dynamic.data.lists.service.DDLRecordLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.dynamic.data.lists.service.DDLRecordLocalServiceUtil;
  * @see DDLRecord
  * @generated
  */
-public abstract class DDLRecordBaseImpl
-	extends DDLRecordModelImpl implements DDLRecord {
-
+@ProviderType
+public abstract class DDLRecordBaseImpl extends DDLRecordModelImpl
+	implements DDLRecord {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a ddl record model instance should use the <code>DDLRecord</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a ddl record model instance should use the {@link DDLRecord} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class DDLRecordBaseImpl
 			DDLRecordLocalServiceUtil.updateDDLRecord(this);
 		}
 	}
-
 }

@@ -14,9 +14,12 @@
 
 package com.liferay.portal.security.wedeploy.auth.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthApp;
 
 import java.io.Externalizable;
@@ -30,11 +33,12 @@ import java.util.Date;
  * The cache model class for representing WeDeployAuthApp in entity cache.
  *
  * @author Supritha Sundaram
+ * @see WeDeployAuthApp
  * @generated
  */
-public class WeDeployAuthAppCacheModel
-	implements CacheModel<WeDeployAuthApp>, Externalizable {
-
+@ProviderType
+public class WeDeployAuthAppCacheModel implements CacheModel<WeDeployAuthApp>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +49,7 @@ public class WeDeployAuthAppCacheModel
 			return false;
 		}
 
-		WeDeployAuthAppCacheModel weDeployAuthAppCacheModel =
-			(WeDeployAuthAppCacheModel)obj;
+		WeDeployAuthAppCacheModel weDeployAuthAppCacheModel = (WeDeployAuthAppCacheModel)obj;
 
 		if (weDeployAuthAppId == weDeployAuthAppCacheModel.weDeployAuthAppId) {
 			return true;
@@ -98,7 +101,7 @@ public class WeDeployAuthAppCacheModel
 		weDeployAuthAppImpl.setUserId(userId);
 
 		if (userName == null) {
-			weDeployAuthAppImpl.setUserName("");
+			weDeployAuthAppImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			weDeployAuthAppImpl.setUserName(userName);
@@ -119,28 +122,28 @@ public class WeDeployAuthAppCacheModel
 		}
 
 		if (name == null) {
-			weDeployAuthAppImpl.setName("");
+			weDeployAuthAppImpl.setName(StringPool.BLANK);
 		}
 		else {
 			weDeployAuthAppImpl.setName(name);
 		}
 
 		if (redirectURI == null) {
-			weDeployAuthAppImpl.setRedirectURI("");
+			weDeployAuthAppImpl.setRedirectURI(StringPool.BLANK);
 		}
 		else {
 			weDeployAuthAppImpl.setRedirectURI(redirectURI);
 		}
 
 		if (clientId == null) {
-			weDeployAuthAppImpl.setClientId("");
+			weDeployAuthAppImpl.setClientId(StringPool.BLANK);
 		}
 		else {
 			weDeployAuthAppImpl.setClientId(clientId);
 		}
 
 		if (clientSecret == null) {
-			weDeployAuthAppImpl.setClientSecret("");
+			weDeployAuthAppImpl.setClientSecret(StringPool.BLANK);
 		}
 		else {
 			weDeployAuthAppImpl.setClientSecret(clientSecret);
@@ -168,7 +171,8 @@ public class WeDeployAuthAppCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(weDeployAuthAppId);
 
 		objectOutput.writeLong(companyId);
@@ -176,7 +180,7 @@ public class WeDeployAuthAppCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -186,28 +190,28 @@ public class WeDeployAuthAppCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (redirectURI == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(redirectURI);
 		}
 
 		if (clientId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(clientId);
 		}
 
 		if (clientSecret == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(clientSecret);
@@ -224,5 +228,4 @@ public class WeDeployAuthAppCacheModel
 	public String redirectURI;
 	public String clientId;
 	public String clientSecret;
-
 }

@@ -1,15 +1,15 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.watson.model;
@@ -25,39 +25,34 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Steven Smith
  * @see WatsonListTypeRelAuditModel
+ * @see com.liferay.watson.model.impl.WatsonListTypeRelAuditImpl
+ * @see com.liferay.watson.model.impl.WatsonListTypeRelAuditModelImpl
  * @generated
  */
-@ImplementationClassName(
-	"com.liferay.watson.model.impl.WatsonListTypeRelAuditImpl"
-)
+@ImplementationClassName("com.liferay.watson.model.impl.WatsonListTypeRelAuditImpl")
 @ProviderType
-public interface WatsonListTypeRelAudit
-	extends PersistedModel, WatsonListTypeRelAuditModel {
-
+public interface WatsonListTypeRelAudit extends WatsonListTypeRelAuditModel,
+	PersistedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonListTypeRelAuditImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to {@link com.liferay.watson.model.impl.WatsonListTypeRelAuditImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<WatsonListTypeRelAudit, Long>
-		WATSON_LIST_TYPE_REL_AUDIT_ID_ACCESSOR =
-			new Accessor<WatsonListTypeRelAudit, Long>() {
+	public static final Accessor<WatsonListTypeRelAudit, Long> WATSON_LIST_TYPE_REL_AUDIT_ID_ACCESSOR =
+		new Accessor<WatsonListTypeRelAudit, Long>() {
+			@Override
+			public Long get(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+				return watsonListTypeRelAudit.getWatsonListTypeRelAuditId();
+			}
 
-				@Override
-				public Long get(WatsonListTypeRelAudit watsonListTypeRelAudit) {
-					return watsonListTypeRelAudit.getWatsonListTypeRelAuditId();
-				}
+			@Override
+			public Class<Long> getAttributeClass() {
+				return Long.class;
+			}
 
-				@Override
-				public Class<Long> getAttributeClass() {
-					return Long.class;
-				}
-
-				@Override
-				public Class<WatsonListTypeRelAudit> getTypeClass() {
-					return WatsonListTypeRelAudit.class;
-				}
-
-			};
-
+			@Override
+			public Class<WatsonListTypeRelAudit> getTypeClass() {
+				return WatsonListTypeRelAudit.class;
+			}
+		};
 }

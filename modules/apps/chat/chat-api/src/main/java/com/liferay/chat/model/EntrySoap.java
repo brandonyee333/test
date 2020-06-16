@@ -14,6 +14,8 @@
 
 package com.liferay.chat.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -25,8 +27,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
+@ProviderType
 public class EntrySoap implements Serializable {
-
 	public static EntrySoap toSoapModel(Entry model) {
 		EntrySoap soapModel = new EntrySoap();
 
@@ -142,5 +144,4 @@ public class EntrySoap implements Serializable {
 	private long _toUserId;
 	private String _content;
 	private int _flag;
-
 }

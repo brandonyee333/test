@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.RepositoryEntry;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -31,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing RepositoryEntry in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see RepositoryEntry
  * @generated
  */
-public class RepositoryEntryCacheModel
-	implements CacheModel<RepositoryEntry>, Externalizable, MVCCModel {
-
+@ProviderType
+public class RepositoryEntryCacheModel implements CacheModel<RepositoryEntry>,
+	Externalizable, MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -46,13 +50,10 @@ public class RepositoryEntryCacheModel
 			return false;
 		}
 
-		RepositoryEntryCacheModel repositoryEntryCacheModel =
-			(RepositoryEntryCacheModel)obj;
+		RepositoryEntryCacheModel repositoryEntryCacheModel = (RepositoryEntryCacheModel)obj;
 
-		if ((repositoryEntryId ==
-				repositoryEntryCacheModel.repositoryEntryId) &&
-			(mvccVersion == repositoryEntryCacheModel.mvccVersion)) {
-
+		if ((repositoryEntryId == repositoryEntryCacheModel.repositoryEntryId) &&
+				(mvccVersion == repositoryEntryCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -118,7 +119,7 @@ public class RepositoryEntryCacheModel
 		repositoryEntryImpl.setMvccVersion(mvccVersion);
 
 		if (uuid == null) {
-			repositoryEntryImpl.setUuid("");
+			repositoryEntryImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			repositoryEntryImpl.setUuid(uuid);
@@ -130,7 +131,7 @@ public class RepositoryEntryCacheModel
 		repositoryEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			repositoryEntryImpl.setUserName("");
+			repositoryEntryImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			repositoryEntryImpl.setUserName(userName);
@@ -153,7 +154,7 @@ public class RepositoryEntryCacheModel
 		repositoryEntryImpl.setRepositoryId(repositoryId);
 
 		if (mappedId == null) {
-			repositoryEntryImpl.setMappedId("");
+			repositoryEntryImpl.setMappedId(StringPool.BLANK);
 		}
 		else {
 			repositoryEntryImpl.setMappedId(mappedId);
@@ -197,11 +198,12 @@ public class RepositoryEntryCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -216,7 +218,7 @@ public class RepositoryEntryCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -228,7 +230,7 @@ public class RepositoryEntryCacheModel
 		objectOutput.writeLong(repositoryId);
 
 		if (mappedId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(mappedId);
@@ -251,5 +253,4 @@ public class RepositoryEntryCacheModel
 	public String mappedId;
 	public boolean manualCheckInRequired;
 	public long lastPublishDate;
-
 }

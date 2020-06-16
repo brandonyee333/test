@@ -1,22 +1,26 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.watson.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.watson.model.WatsonReportAudit;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing WatsonReportAudit in entity cache.
  *
  * @author Steven Smith
+ * @see WatsonReportAudit
  * @generated
  */
-public class WatsonReportAuditCacheModel
-	implements CacheModel<WatsonReportAudit>, Externalizable {
-
+@ProviderType
+public class WatsonReportAuditCacheModel implements CacheModel<WatsonReportAudit>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +50,9 @@ public class WatsonReportAuditCacheModel
 			return false;
 		}
 
-		WatsonReportAuditCacheModel watsonReportAuditCacheModel =
-			(WatsonReportAuditCacheModel)obj;
+		WatsonReportAuditCacheModel watsonReportAuditCacheModel = (WatsonReportAuditCacheModel)obj;
 
-		if (watsonReportAuditId ==
-				watsonReportAuditCacheModel.watsonReportAuditId) {
-
+		if (watsonReportAuditId == watsonReportAuditCacheModel.watsonReportAuditId) {
 			return true;
 		}
 
@@ -113,8 +115,7 @@ public class WatsonReportAuditCacheModel
 
 	@Override
 	public WatsonReportAudit toEntityModel() {
-		WatsonReportAuditImpl watsonReportAuditImpl =
-			new WatsonReportAuditImpl();
+		WatsonReportAuditImpl watsonReportAuditImpl = new WatsonReportAuditImpl();
 
 		watsonReportAuditImpl.setWatsonReportAuditId(watsonReportAuditId);
 		watsonReportAuditImpl.setGroupId(groupId);
@@ -122,7 +123,7 @@ public class WatsonReportAuditCacheModel
 		watsonReportAuditImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonReportAuditImpl.setUserName("");
+			watsonReportAuditImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			watsonReportAuditImpl.setUserName(userName);
@@ -148,42 +149,42 @@ public class WatsonReportAuditCacheModel
 		watsonReportAuditImpl.setWatsonReportId(watsonReportId);
 
 		if (name == null) {
-			watsonReportAuditImpl.setName("");
+			watsonReportAuditImpl.setName(StringPool.BLANK);
 		}
 		else {
 			watsonReportAuditImpl.setName(name);
 		}
 
 		if (description == null) {
-			watsonReportAuditImpl.setDescription("");
+			watsonReportAuditImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			watsonReportAuditImpl.setDescription(description);
 		}
 
 		if (fullReport == null) {
-			watsonReportAuditImpl.setFullReport("");
+			watsonReportAuditImpl.setFullReport(StringPool.BLANK);
 		}
 		else {
 			watsonReportAuditImpl.setFullReport(fullReport);
 		}
 
 		if (imagePayload == null) {
-			watsonReportAuditImpl.setImagePayload("");
+			watsonReportAuditImpl.setImagePayload(StringPool.BLANK);
 		}
 		else {
 			watsonReportAuditImpl.setImagePayload(imagePayload);
 		}
 
 		if (timeSpent == null) {
-			watsonReportAuditImpl.setTimeSpent("");
+			watsonReportAuditImpl.setTimeSpent(StringPool.BLANK);
 		}
 		else {
 			watsonReportAuditImpl.setTimeSpent(timeSpent);
 		}
 
 		if (reportedUser == null) {
-			watsonReportAuditImpl.setReportedUser("");
+			watsonReportAuditImpl.setReportedUser(StringPool.BLANK);
 		}
 		else {
 			watsonReportAuditImpl.setReportedUser(reportedUser);
@@ -205,9 +206,7 @@ public class WatsonReportAuditCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		watsonReportAuditId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -229,7 +228,7 @@ public class WatsonReportAuditCacheModel
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
 		fullReport = objectInput.readUTF();
-		imagePayload = (String)objectInput.readObject();
+		imagePayload = objectInput.readUTF();
 		timeSpent = objectInput.readUTF();
 		reportedUser = objectInput.readUTF();
 		reportDate = objectInput.readLong();
@@ -240,7 +239,8 @@ public class WatsonReportAuditCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(watsonReportAuditId);
 
 		objectOutput.writeLong(groupId);
@@ -250,7 +250,7 @@ public class WatsonReportAuditCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -268,42 +268,42 @@ public class WatsonReportAuditCacheModel
 		objectOutput.writeLong(watsonReportId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (fullReport == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(fullReport);
 		}
 
 		if (imagePayload == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(imagePayload);
+			objectOutput.writeUTF(imagePayload);
 		}
 
 		if (timeSpent == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(timeSpent);
 		}
 
 		if (reportedUser == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(reportedUser);
@@ -336,5 +336,4 @@ public class WatsonReportAuditCacheModel
 	public long reportDate;
 	public int key;
 	public int status;
-
 }

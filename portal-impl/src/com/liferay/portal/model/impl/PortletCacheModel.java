@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -29,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing Portlet in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see Portlet
  * @generated
  */
-public class PortletCacheModel
-	implements CacheModel<Portlet>, Externalizable, MVCCModel {
-
+@ProviderType
+public class PortletCacheModel implements CacheModel<Portlet>, Externalizable,
+	MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -47,8 +51,7 @@ public class PortletCacheModel
 		PortletCacheModel portletCacheModel = (PortletCacheModel)obj;
 
 		if ((id == portletCacheModel.id) &&
-			(mvccVersion == portletCacheModel.mvccVersion)) {
-
+				(mvccVersion == portletCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -102,14 +105,14 @@ public class PortletCacheModel
 		portletImpl.setCompanyId(companyId);
 
 		if (portletId == null) {
-			portletImpl.setPortletId("");
+			portletImpl.setPortletId(StringPool.BLANK);
 		}
 		else {
 			portletImpl.setPortletId(portletId);
 		}
 
 		if (roles == null) {
-			portletImpl.setRoles("");
+			portletImpl.setRoles(StringPool.BLANK);
 		}
 		else {
 			portletImpl.setRoles(roles);
@@ -136,7 +139,8 @@ public class PortletCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(id);
@@ -144,14 +148,14 @@ public class PortletCacheModel
 		objectOutput.writeLong(companyId);
 
 		if (portletId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(portletId);
 		}
 
 		if (roles == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(roles);
@@ -166,5 +170,4 @@ public class PortletCacheModel
 	public String portletId;
 	public String roles;
 	public boolean active;
-
 }

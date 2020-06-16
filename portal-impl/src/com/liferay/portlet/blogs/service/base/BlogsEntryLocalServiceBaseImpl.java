@@ -14,17 +14,21 @@
 
 package com.liferay.portlet.blogs.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.asset.kernel.service.persistence.AssetEntryFinder;
 import com.liferay.asset.kernel.service.persistence.AssetEntryPersistence;
 import com.liferay.asset.kernel.service.persistence.AssetLinkPersistence;
+
 import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.blogs.kernel.service.BlogsEntryLocalService;
 import com.liferay.blogs.kernel.service.persistence.BlogsEntryFinder;
 import com.liferay.blogs.kernel.service.persistence.BlogsEntryPersistence;
 import com.liferay.blogs.kernel.service.persistence.BlogsStatsUserFinder;
 import com.liferay.blogs.kernel.service.persistence.BlogsStatsUserPersistence;
-import com.liferay.counter.kernel.service.persistence.CounterPersistence;
+
 import com.liferay.expando.kernel.service.persistence.ExpandoRowPersistence;
+
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
@@ -32,6 +36,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerRegistryUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -58,7 +63,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
-import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.CompanyPersistence;
 import com.liferay.portal.kernel.service.persistence.GroupFinder;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
@@ -71,12 +75,13 @@ import com.liferay.portal.kernel.service.persistence.SubscriptionPersistence;
 import com.liferay.portal.kernel.service.persistence.UserFinder;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.service.persistence.WorkflowInstanceLinkPersistence;
-import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+
 import com.liferay.ratings.kernel.service.persistence.RatingsStatsFinder;
 import com.liferay.ratings.kernel.service.persistence.RatingsStatsPersistence;
+
 import com.liferay.trash.kernel.service.persistence.TrashEntryPersistence;
 
 import java.io.Serializable;
@@ -94,16 +99,17 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.portlet.blogs.service.impl.BlogsEntryLocalServiceImpl
+ * @see com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class BlogsEntryLocalServiceBaseImpl
-	extends BaseLocalServiceImpl
-	implements BlogsEntryLocalService, IdentifiableOSGiService {
-
+	extends BaseLocalServiceImpl implements BlogsEntryLocalService,
+		IdentifiableOSGiService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>BlogsEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil} to access the blogs entry local service.
 	 */
 
 	/**
@@ -127,7 +133,6 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 * @return the new blogs entry
 	 */
 	@Override
-	@Transactional(enabled = false)
 	public BlogsEntry createBlogsEntry(long entryId) {
 		return blogsEntryPersistence.create(entryId);
 	}
@@ -161,8 +166,8 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(
-			BlogsEntry.class, clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(BlogsEntry.class,
+			clazz.getClassLoader());
 	}
 
 	/**
@@ -180,7 +185,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portlet.blogs.model.impl.BlogsEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.blogs.model.impl.BlogsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -189,18 +194,17 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end) {
-
-		return blogsEntryPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
+		return blogsEntryPersistence.findWithDynamicQuery(dynamicQuery, start,
+			end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portlet.blogs.model.impl.BlogsEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.blogs.model.impl.BlogsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -210,12 +214,10 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<T> orderByComparator) {
-
-		return blogsEntryPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
+		return blogsEntryPersistence.findWithDynamicQuery(dynamicQuery, start,
+			end, orderByComparator);
 	}
 
 	/**
@@ -237,11 +239,10 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(
-		DynamicQuery dynamicQuery, Projection projection) {
-
-		return blogsEntryPersistence.countWithDynamicQuery(
-			dynamicQuery, projection);
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection) {
+		return blogsEntryPersistence.countWithDynamicQuery(dynamicQuery,
+			projection);
 	}
 
 	@Override
@@ -257,9 +258,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 * @return the matching blogs entry, or <code>null</code> if a matching blogs entry could not be found
 	 */
 	@Override
-	public BlogsEntry fetchBlogsEntryByUuidAndGroupId(
-		String uuid, long groupId) {
-
+	public BlogsEntry fetchBlogsEntryByUuidAndGroupId(String uuid, long groupId) {
 		return blogsEntryPersistence.fetchByUUID_G(uuid, groupId);
 	}
 
@@ -277,8 +276,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
 		actionableDynamicQuery.setBaseLocalService(blogsEntryLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
@@ -290,14 +288,10 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
 
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
-			new IndexableActionableDynamicQuery();
-
-		indexableActionableDynamicQuery.setBaseLocalService(
-			blogsEntryLocalService);
+		indexableActionableDynamicQuery.setBaseLocalService(blogsEntryLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(BlogsEntry.class);
 
@@ -308,7 +302,6 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-
 		actionableDynamicQuery.setBaseLocalService(blogsEntryLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(BlogsEntry.class);
@@ -319,59 +312,48 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	@Override
 	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
 		final PortletDataContext portletDataContext) {
-
-		final ExportActionableDynamicQuery exportActionableDynamicQuery =
-			new ExportActionableDynamicQuery() {
-
+		final ExportActionableDynamicQuery exportActionableDynamicQuery = new ExportActionableDynamicQuery() {
 				@Override
 				public long performCount() throws PortalException {
-					ManifestSummary manifestSummary =
-						portletDataContext.getManifestSummary();
+					ManifestSummary manifestSummary = portletDataContext.getManifestSummary();
 
 					StagedModelType stagedModelType = getStagedModelType();
 
 					long modelAdditionCount = super.performCount();
 
-					manifestSummary.addModelAdditionCount(
-						stagedModelType, modelAdditionCount);
+					manifestSummary.addModelAdditionCount(stagedModelType,
+						modelAdditionCount);
 
-					long modelDeletionCount =
-						ExportImportHelperUtil.getModelDeletionCount(
-							portletDataContext, stagedModelType);
+					long modelDeletionCount = ExportImportHelperUtil.getModelDeletionCount(portletDataContext,
+							stagedModelType);
 
-					manifestSummary.addModelDeletionCount(
-						stagedModelType, modelDeletionCount);
+					manifestSummary.addModelDeletionCount(stagedModelType,
+						modelDeletionCount);
 
 					return modelAdditionCount;
 				}
-
 			};
 
 		initActionableDynamicQuery(exportActionableDynamicQuery);
 
-		exportActionableDynamicQuery.setAddCriteriaMethod(
-			new ActionableDynamicQuery.AddCriteriaMethod() {
-
+		exportActionableDynamicQuery.setAddCriteriaMethod(new ActionableDynamicQuery.AddCriteriaMethod() {
 				@Override
 				public void addCriteria(DynamicQuery dynamicQuery) {
-					Criterion modifiedDateCriterion =
-						portletDataContext.getDateRangeCriteria("modifiedDate");
+					Criterion modifiedDateCriterion = portletDataContext.getDateRangeCriteria(
+							"modifiedDate");
 
 					if (modifiedDateCriterion != null) {
-						Conjunction conjunction =
-							RestrictionsFactoryUtil.conjunction();
+						Conjunction conjunction = RestrictionsFactoryUtil.conjunction();
 
 						conjunction.add(modifiedDateCriterion);
 
-						Disjunction disjunction =
-							RestrictionsFactoryUtil.disjunction();
+						Disjunction disjunction = RestrictionsFactoryUtil.disjunction();
 
-						disjunction.add(
-							RestrictionsFactoryUtil.gtProperty(
+						disjunction.add(RestrictionsFactoryUtil.gtProperty(
 								"modifiedDate", "lastPublishDate"));
 
-						Property lastPublishDateProperty =
-							PropertyFactoryUtil.forName("lastPublishDate");
+						Property lastPublishDateProperty = PropertyFactoryUtil.forName(
+								"lastPublishDate");
 
 						disjunction.add(lastPublishDateProperty.isNull());
 
@@ -380,14 +362,12 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 						modifiedDateCriterion = conjunction;
 					}
 
-					Criterion statusDateCriterion =
-						portletDataContext.getDateRangeCriteria("statusDate");
+					Criterion statusDateCriterion = portletDataContext.getDateRangeCriteria(
+							"statusDate");
 
 					if ((modifiedDateCriterion != null) &&
-						(statusDateCriterion != null)) {
-
-						Disjunction disjunction =
-							RestrictionsFactoryUtil.disjunction();
+							(statusDateCriterion != null)) {
+						Disjunction disjunction = RestrictionsFactoryUtil.disjunction();
 
 						disjunction.add(modifiedDateCriterion);
 						disjunction.add(statusDateCriterion);
@@ -395,49 +375,35 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 						dynamicQuery.add(disjunction);
 					}
 
-					Property workflowStatusProperty =
-						PropertyFactoryUtil.forName("status");
+					Property workflowStatusProperty = PropertyFactoryUtil.forName(
+							"status");
 
 					if (portletDataContext.isInitialPublication()) {
-						dynamicQuery.add(
-							workflowStatusProperty.ne(
+						dynamicQuery.add(workflowStatusProperty.ne(
 								WorkflowConstants.STATUS_IN_TRASH));
 					}
 					else {
-						StagedModelDataHandler<?> stagedModelDataHandler =
-							StagedModelDataHandlerRegistryUtil.
-								getStagedModelDataHandler(
-									BlogsEntry.class.getName());
+						StagedModelDataHandler<?> stagedModelDataHandler = StagedModelDataHandlerRegistryUtil.getStagedModelDataHandler(BlogsEntry.class.getName());
 
-						dynamicQuery.add(
-							workflowStatusProperty.in(
-								stagedModelDataHandler.
-									getExportableStatuses()));
+						dynamicQuery.add(workflowStatusProperty.in(
+								stagedModelDataHandler.getExportableStatuses()));
 					}
 				}
-
 			});
 
-		exportActionableDynamicQuery.setCompanyId(
-			portletDataContext.getCompanyId());
+		exportActionableDynamicQuery.setCompanyId(portletDataContext.getCompanyId());
 
-		exportActionableDynamicQuery.setGroupId(
-			portletDataContext.getScopeGroupId());
+		exportActionableDynamicQuery.setGroupId(portletDataContext.getScopeGroupId());
 
-		exportActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<BlogsEntry>() {
-
+		exportActionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<BlogsEntry>() {
 				@Override
 				public void performAction(BlogsEntry blogsEntry)
 					throws PortalException {
-
-					StagedModelDataHandlerUtil.exportStagedModel(
-						portletDataContext, blogsEntry);
+					StagedModelDataHandlerUtil.exportStagedModel(portletDataContext,
+						blogsEntry);
 				}
-
 			});
-		exportActionableDynamicQuery.setStagedModelType(
-			new StagedModelType(
+		exportActionableDynamicQuery.setStagedModelType(new StagedModelType(
 				PortalUtil.getClassNameId(BlogsEntry.class.getName())));
 
 		return exportActionableDynamicQuery;
@@ -449,22 +415,12 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-
-		return blogsEntryLocalService.deleteBlogsEntry(
-			(BlogsEntry)persistedModel);
+		return blogsEntryLocalService.deleteBlogsEntry((BlogsEntry)persistedModel);
 	}
 
-	public BasePersistence<BlogsEntry> getBasePersistence() {
-		return blogsEntryPersistence;
-	}
-
-	/**
-	 * @throws PortalException
-	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
-
 		return blogsEntryPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -476,9 +432,8 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 * @return the matching blogs entries, or an empty list if no matches were found
 	 */
 	@Override
-	public List<BlogsEntry> getBlogsEntriesByUuidAndCompanyId(
-		String uuid, long companyId) {
-
+	public List<BlogsEntry> getBlogsEntriesByUuidAndCompanyId(String uuid,
+		long companyId) {
 		return blogsEntryPersistence.findByUuid_C(uuid, companyId);
 	}
 
@@ -493,12 +448,11 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 * @return the range of matching blogs entries, or an empty list if no matches were found
 	 */
 	@Override
-	public List<BlogsEntry> getBlogsEntriesByUuidAndCompanyId(
-		String uuid, long companyId, int start, int end,
+	public List<BlogsEntry> getBlogsEntriesByUuidAndCompanyId(String uuid,
+		long companyId, int start, int end,
 		OrderByComparator<BlogsEntry> orderByComparator) {
-
-		return blogsEntryPersistence.findByUuid_C(
-			uuid, companyId, start, end, orderByComparator);
+		return blogsEntryPersistence.findByUuid_C(uuid, companyId, start, end,
+			orderByComparator);
 	}
 
 	/**
@@ -512,7 +466,6 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	@Override
 	public BlogsEntry getBlogsEntryByUuidAndGroupId(String uuid, long groupId)
 		throws PortalException {
-
 		return blogsEntryPersistence.findByUUID_G(uuid, groupId);
 	}
 
@@ -520,7 +473,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 * Returns a range of all the blogs entries.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portlet.blogs.model.impl.BlogsEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.blogs.model.impl.BlogsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of blogs entries
@@ -570,7 +523,6 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 */
 	public void setBlogsEntryLocalService(
 		BlogsEntryLocalService blogsEntryLocalService) {
-
 		this.blogsEntryLocalService = blogsEntryLocalService;
 	}
 
@@ -590,7 +542,6 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 */
 	public void setBlogsEntryPersistence(
 		BlogsEntryPersistence blogsEntryPersistence) {
-
 		this.blogsEntryPersistence = blogsEntryPersistence;
 	}
 
@@ -617,9 +568,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -629,28 +578,8 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
-	}
-
-	/**
-	 * Returns the counter persistence.
-	 *
-	 * @return the counter persistence
-	 */
-	public CounterPersistence getCounterPersistence() {
-		return counterPersistence;
-	}
-
-	/**
-	 * Sets the counter persistence.
-	 *
-	 * @param counterPersistence the counter persistence
-	 */
-	public void setCounterPersistence(CounterPersistence counterPersistence) {
-		this.counterPersistence = counterPersistence;
 	}
 
 	/**
@@ -658,9 +587,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the company local service
 	 */
-	public com.liferay.portal.kernel.service.CompanyLocalService
-		getCompanyLocalService() {
-
+	public com.liferay.portal.kernel.service.CompanyLocalService getCompanyLocalService() {
 		return companyLocalService;
 	}
 
@@ -670,9 +597,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 * @param companyLocalService the company local service
 	 */
 	public void setCompanyLocalService(
-		com.liferay.portal.kernel.service.CompanyLocalService
-			companyLocalService) {
-
+		com.liferay.portal.kernel.service.CompanyLocalService companyLocalService) {
 		this.companyLocalService = companyLocalService;
 	}
 
@@ -699,9 +624,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the group local service
 	 */
-	public com.liferay.portal.kernel.service.GroupLocalService
-		getGroupLocalService() {
-
+	public com.liferay.portal.kernel.service.GroupLocalService getGroupLocalService() {
 		return groupLocalService;
 	}
 
@@ -712,7 +635,6 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 */
 	public void setGroupLocalService(
 		com.liferay.portal.kernel.service.GroupLocalService groupLocalService) {
-
 		this.groupLocalService = groupLocalService;
 	}
 
@@ -757,9 +679,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the image local service
 	 */
-	public com.liferay.portal.kernel.service.ImageLocalService
-		getImageLocalService() {
-
+	public com.liferay.portal.kernel.service.ImageLocalService getImageLocalService() {
 		return imageLocalService;
 	}
 
@@ -770,7 +690,6 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 */
 	public void setImageLocalService(
 		com.liferay.portal.kernel.service.ImageLocalService imageLocalService) {
-
 		this.imageLocalService = imageLocalService;
 	}
 
@@ -797,9 +716,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the organization local service
 	 */
-	public com.liferay.portal.kernel.service.OrganizationLocalService
-		getOrganizationLocalService() {
-
+	public com.liferay.portal.kernel.service.OrganizationLocalService getOrganizationLocalService() {
 		return organizationLocalService;
 	}
 
@@ -809,9 +726,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 * @param organizationLocalService the organization local service
 	 */
 	public void setOrganizationLocalService(
-		com.liferay.portal.kernel.service.OrganizationLocalService
-			organizationLocalService) {
-
+		com.liferay.portal.kernel.service.OrganizationLocalService organizationLocalService) {
 		this.organizationLocalService = organizationLocalService;
 	}
 
@@ -831,7 +746,6 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 */
 	public void setOrganizationPersistence(
 		OrganizationPersistence organizationPersistence) {
-
 		this.organizationPersistence = organizationPersistence;
 	}
 
@@ -858,9 +772,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the portlet preferences local service
 	 */
-	public com.liferay.portal.kernel.service.PortletPreferencesLocalService
-		getPortletPreferencesLocalService() {
-
+	public com.liferay.portal.kernel.service.PortletPreferencesLocalService getPortletPreferencesLocalService() {
 		return portletPreferencesLocalService;
 	}
 
@@ -870,9 +782,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 * @param portletPreferencesLocalService the portlet preferences local service
 	 */
 	public void setPortletPreferencesLocalService(
-		com.liferay.portal.kernel.service.PortletPreferencesLocalService
-			portletPreferencesLocalService) {
-
+		com.liferay.portal.kernel.service.PortletPreferencesLocalService portletPreferencesLocalService) {
 		this.portletPreferencesLocalService = portletPreferencesLocalService;
 	}
 
@@ -892,7 +802,6 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 */
 	public void setPortletPreferencesPersistence(
 		PortletPreferencesPersistence portletPreferencesPersistence) {
-
 		this.portletPreferencesPersistence = portletPreferencesPersistence;
 	}
 
@@ -912,7 +821,6 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 */
 	public void setPortletPreferencesFinder(
 		PortletPreferencesFinder portletPreferencesFinder) {
-
 		this.portletPreferencesFinder = portletPreferencesFinder;
 	}
 
@@ -921,9 +829,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService
-		getResourceLocalService() {
-
+	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
 		return resourceLocalService;
 	}
 
@@ -933,9 +839,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService
-			resourceLocalService) {
-
+		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -944,9 +848,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the subscription local service
 	 */
-	public com.liferay.portal.kernel.service.SubscriptionLocalService
-		getSubscriptionLocalService() {
-
+	public com.liferay.portal.kernel.service.SubscriptionLocalService getSubscriptionLocalService() {
 		return subscriptionLocalService;
 	}
 
@@ -956,9 +858,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 * @param subscriptionLocalService the subscription local service
 	 */
 	public void setSubscriptionLocalService(
-		com.liferay.portal.kernel.service.SubscriptionLocalService
-			subscriptionLocalService) {
-
+		com.liferay.portal.kernel.service.SubscriptionLocalService subscriptionLocalService) {
 		this.subscriptionLocalService = subscriptionLocalService;
 	}
 
@@ -978,7 +878,6 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 */
 	public void setSubscriptionPersistence(
 		SubscriptionPersistence subscriptionPersistence) {
-
 		this.subscriptionPersistence = subscriptionPersistence;
 	}
 
@@ -987,9 +886,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService
-		getUserLocalService() {
-
+	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
 		return userLocalService;
 	}
 
@@ -1000,7 +897,6 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
-
 		this.userLocalService = userLocalService;
 	}
 
@@ -1045,9 +941,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the workflow instance link local service
 	 */
-	public com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService
-		getWorkflowInstanceLinkLocalService() {
-
+	public com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService getWorkflowInstanceLinkLocalService() {
 		return workflowInstanceLinkLocalService;
 	}
 
@@ -1057,11 +951,8 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 * @param workflowInstanceLinkLocalService the workflow instance link local service
 	 */
 	public void setWorkflowInstanceLinkLocalService(
-		com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService
-			workflowInstanceLinkLocalService) {
-
-		this.workflowInstanceLinkLocalService =
-			workflowInstanceLinkLocalService;
+		com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService workflowInstanceLinkLocalService) {
+		this.workflowInstanceLinkLocalService = workflowInstanceLinkLocalService;
 	}
 
 	/**
@@ -1069,9 +960,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the workflow instance link persistence
 	 */
-	public WorkflowInstanceLinkPersistence
-		getWorkflowInstanceLinkPersistence() {
-
+	public WorkflowInstanceLinkPersistence getWorkflowInstanceLinkPersistence() {
 		return workflowInstanceLinkPersistence;
 	}
 
@@ -1082,7 +971,6 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 */
 	public void setWorkflowInstanceLinkPersistence(
 		WorkflowInstanceLinkPersistence workflowInstanceLinkPersistence) {
-
 		this.workflowInstanceLinkPersistence = workflowInstanceLinkPersistence;
 	}
 
@@ -1091,9 +979,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the asset entry local service
 	 */
-	public com.liferay.asset.kernel.service.AssetEntryLocalService
-		getAssetEntryLocalService() {
-
+	public com.liferay.asset.kernel.service.AssetEntryLocalService getAssetEntryLocalService() {
 		return assetEntryLocalService;
 	}
 
@@ -1103,9 +989,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 * @param assetEntryLocalService the asset entry local service
 	 */
 	public void setAssetEntryLocalService(
-		com.liferay.asset.kernel.service.AssetEntryLocalService
-			assetEntryLocalService) {
-
+		com.liferay.asset.kernel.service.AssetEntryLocalService assetEntryLocalService) {
 		this.assetEntryLocalService = assetEntryLocalService;
 	}
 
@@ -1125,7 +1009,6 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 */
 	public void setAssetEntryPersistence(
 		AssetEntryPersistence assetEntryPersistence) {
-
 		this.assetEntryPersistence = assetEntryPersistence;
 	}
 
@@ -1152,9 +1035,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the asset link local service
 	 */
-	public com.liferay.asset.kernel.service.AssetLinkLocalService
-		getAssetLinkLocalService() {
-
+	public com.liferay.asset.kernel.service.AssetLinkLocalService getAssetLinkLocalService() {
 		return assetLinkLocalService;
 	}
 
@@ -1164,9 +1045,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 * @param assetLinkLocalService the asset link local service
 	 */
 	public void setAssetLinkLocalService(
-		com.liferay.asset.kernel.service.AssetLinkLocalService
-			assetLinkLocalService) {
-
+		com.liferay.asset.kernel.service.AssetLinkLocalService assetLinkLocalService) {
 		this.assetLinkLocalService = assetLinkLocalService;
 	}
 
@@ -1186,7 +1065,6 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 */
 	public void setAssetLinkPersistence(
 		AssetLinkPersistence assetLinkPersistence) {
-
 		this.assetLinkPersistence = assetLinkPersistence;
 	}
 
@@ -1195,9 +1073,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the expando row local service
 	 */
-	public com.liferay.expando.kernel.service.ExpandoRowLocalService
-		getExpandoRowLocalService() {
-
+	public com.liferay.expando.kernel.service.ExpandoRowLocalService getExpandoRowLocalService() {
 		return expandoRowLocalService;
 	}
 
@@ -1207,9 +1083,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 * @param expandoRowLocalService the expando row local service
 	 */
 	public void setExpandoRowLocalService(
-		com.liferay.expando.kernel.service.ExpandoRowLocalService
-			expandoRowLocalService) {
-
+		com.liferay.expando.kernel.service.ExpandoRowLocalService expandoRowLocalService) {
 		this.expandoRowLocalService = expandoRowLocalService;
 	}
 
@@ -1229,7 +1103,6 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 */
 	public void setExpandoRowPersistence(
 		ExpandoRowPersistence expandoRowPersistence) {
-
 		this.expandoRowPersistence = expandoRowPersistence;
 	}
 
@@ -1238,9 +1111,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the ratings stats local service
 	 */
-	public com.liferay.ratings.kernel.service.RatingsStatsLocalService
-		getRatingsStatsLocalService() {
-
+	public com.liferay.ratings.kernel.service.RatingsStatsLocalService getRatingsStatsLocalService() {
 		return ratingsStatsLocalService;
 	}
 
@@ -1250,9 +1121,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 * @param ratingsStatsLocalService the ratings stats local service
 	 */
 	public void setRatingsStatsLocalService(
-		com.liferay.ratings.kernel.service.RatingsStatsLocalService
-			ratingsStatsLocalService) {
-
+		com.liferay.ratings.kernel.service.RatingsStatsLocalService ratingsStatsLocalService) {
 		this.ratingsStatsLocalService = ratingsStatsLocalService;
 	}
 
@@ -1272,7 +1141,6 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 */
 	public void setRatingsStatsPersistence(
 		RatingsStatsPersistence ratingsStatsPersistence) {
-
 		this.ratingsStatsPersistence = ratingsStatsPersistence;
 	}
 
@@ -1299,9 +1167,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the trash entry local service
 	 */
-	public com.liferay.trash.kernel.service.TrashEntryLocalService
-		getTrashEntryLocalService() {
-
+	public com.liferay.trash.kernel.service.TrashEntryLocalService getTrashEntryLocalService() {
 		return trashEntryLocalService;
 	}
 
@@ -1311,9 +1177,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 * @param trashEntryLocalService the trash entry local service
 	 */
 	public void setTrashEntryLocalService(
-		com.liferay.trash.kernel.service.TrashEntryLocalService
-			trashEntryLocalService) {
-
+		com.liferay.trash.kernel.service.TrashEntryLocalService trashEntryLocalService) {
 		this.trashEntryLocalService = trashEntryLocalService;
 	}
 
@@ -1333,7 +1197,6 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 */
 	public void setTrashEntryPersistence(
 		TrashEntryPersistence trashEntryPersistence) {
-
 		this.trashEntryPersistence = trashEntryPersistence;
 	}
 
@@ -1342,9 +1205,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the blogs stats user local service
 	 */
-	public com.liferay.blogs.kernel.service.BlogsStatsUserLocalService
-		getBlogsStatsUserLocalService() {
-
+	public com.liferay.blogs.kernel.service.BlogsStatsUserLocalService getBlogsStatsUserLocalService() {
 		return blogsStatsUserLocalService;
 	}
 
@@ -1354,9 +1215,7 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 * @param blogsStatsUserLocalService the blogs stats user local service
 	 */
 	public void setBlogsStatsUserLocalService(
-		com.liferay.blogs.kernel.service.BlogsStatsUserLocalService
-			blogsStatsUserLocalService) {
-
+		com.liferay.blogs.kernel.service.BlogsStatsUserLocalService blogsStatsUserLocalService) {
 		this.blogsStatsUserLocalService = blogsStatsUserLocalService;
 	}
 
@@ -1376,7 +1235,6 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 */
 	public void setBlogsStatsUserPersistence(
 		BlogsStatsUserPersistence blogsStatsUserPersistence) {
-
 		this.blogsStatsUserPersistence = blogsStatsUserPersistence;
 	}
 
@@ -1396,13 +1254,11 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 	 */
 	public void setBlogsStatsUserFinder(
 		BlogsStatsUserFinder blogsStatsUserFinder) {
-
 		this.blogsStatsUserFinder = blogsStatsUserFinder;
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register(
-			"com.liferay.blogs.kernel.model.BlogsEntry",
+		persistedModelLocalServiceRegistry.register("com.liferay.blogs.kernel.model.BlogsEntry",
 			blogsEntryLocalService);
 	}
 
@@ -1443,189 +1299,96 @@ public abstract class BlogsEntryLocalServiceBaseImpl
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
 	@BeanReference(type = BlogsEntryLocalService.class)
 	protected BlogsEntryLocalService blogsEntryLocalService;
-
 	@BeanReference(type = BlogsEntryPersistence.class)
 	protected BlogsEntryPersistence blogsEntryPersistence;
-
 	@BeanReference(type = BlogsEntryFinder.class)
 	protected BlogsEntryFinder blogsEntryFinder;
-
-	@BeanReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
-	@BeanReference(type = CounterPersistence.class)
-	protected CounterPersistence counterPersistence;
-
-	@BeanReference(
-		type = com.liferay.portal.kernel.service.CompanyLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.CompanyLocalService
-		companyLocalService;
-
+	@BeanReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
+	@BeanReference(type = com.liferay.portal.kernel.service.CompanyLocalService.class)
+	protected com.liferay.portal.kernel.service.CompanyLocalService companyLocalService;
 	@BeanReference(type = CompanyPersistence.class)
 	protected CompanyPersistence companyPersistence;
-
-	@BeanReference(
-		type = com.liferay.portal.kernel.service.GroupLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.GroupLocalService
-		groupLocalService;
-
+	@BeanReference(type = com.liferay.portal.kernel.service.GroupLocalService.class)
+	protected com.liferay.portal.kernel.service.GroupLocalService groupLocalService;
 	@BeanReference(type = GroupPersistence.class)
 	protected GroupPersistence groupPersistence;
-
 	@BeanReference(type = GroupFinder.class)
 	protected GroupFinder groupFinder;
-
-	@BeanReference(
-		type = com.liferay.portal.kernel.service.ImageLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ImageLocalService
-		imageLocalService;
-
+	@BeanReference(type = com.liferay.portal.kernel.service.ImageLocalService.class)
+	protected com.liferay.portal.kernel.service.ImageLocalService imageLocalService;
 	@BeanReference(type = ImagePersistence.class)
 	protected ImagePersistence imagePersistence;
-
-	@BeanReference(
-		type = com.liferay.portal.kernel.service.OrganizationLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.OrganizationLocalService
-		organizationLocalService;
-
+	@BeanReference(type = com.liferay.portal.kernel.service.OrganizationLocalService.class)
+	protected com.liferay.portal.kernel.service.OrganizationLocalService organizationLocalService;
 	@BeanReference(type = OrganizationPersistence.class)
 	protected OrganizationPersistence organizationPersistence;
-
 	@BeanReference(type = OrganizationFinder.class)
 	protected OrganizationFinder organizationFinder;
-
-	@BeanReference(
-		type = com.liferay.portal.kernel.service.PortletPreferencesLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.PortletPreferencesLocalService
-		portletPreferencesLocalService;
-
+	@BeanReference(type = com.liferay.portal.kernel.service.PortletPreferencesLocalService.class)
+	protected com.liferay.portal.kernel.service.PortletPreferencesLocalService portletPreferencesLocalService;
 	@BeanReference(type = PortletPreferencesPersistence.class)
 	protected PortletPreferencesPersistence portletPreferencesPersistence;
-
 	@BeanReference(type = PortletPreferencesFinder.class)
 	protected PortletPreferencesFinder portletPreferencesFinder;
-
-	@BeanReference(
-		type = com.liferay.portal.kernel.service.ResourceLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ResourceLocalService
-		resourceLocalService;
-
-	@BeanReference(
-		type = com.liferay.portal.kernel.service.SubscriptionLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.SubscriptionLocalService
-		subscriptionLocalService;
-
+	@BeanReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
+	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
+	@BeanReference(type = com.liferay.portal.kernel.service.SubscriptionLocalService.class)
+	protected com.liferay.portal.kernel.service.SubscriptionLocalService subscriptionLocalService;
 	@BeanReference(type = SubscriptionPersistence.class)
 	protected SubscriptionPersistence subscriptionPersistence;
-
-	@BeanReference(
-		type = com.liferay.portal.kernel.service.UserLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.UserLocalService
-		userLocalService;
-
+	@BeanReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
+	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
 	@BeanReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-
 	@BeanReference(type = UserFinder.class)
 	protected UserFinder userFinder;
-
-	@BeanReference(
-		type = com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService
-		workflowInstanceLinkLocalService;
-
+	@BeanReference(type = com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService.class)
+	protected com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService workflowInstanceLinkLocalService;
 	@BeanReference(type = WorkflowInstanceLinkPersistence.class)
 	protected WorkflowInstanceLinkPersistence workflowInstanceLinkPersistence;
-
-	@BeanReference(
-		type = com.liferay.asset.kernel.service.AssetEntryLocalService.class
-	)
-	protected com.liferay.asset.kernel.service.AssetEntryLocalService
-		assetEntryLocalService;
-
+	@BeanReference(type = com.liferay.asset.kernel.service.AssetEntryLocalService.class)
+	protected com.liferay.asset.kernel.service.AssetEntryLocalService assetEntryLocalService;
 	@BeanReference(type = AssetEntryPersistence.class)
 	protected AssetEntryPersistence assetEntryPersistence;
-
 	@BeanReference(type = AssetEntryFinder.class)
 	protected AssetEntryFinder assetEntryFinder;
-
-	@BeanReference(
-		type = com.liferay.asset.kernel.service.AssetLinkLocalService.class
-	)
-	protected com.liferay.asset.kernel.service.AssetLinkLocalService
-		assetLinkLocalService;
-
+	@BeanReference(type = com.liferay.asset.kernel.service.AssetLinkLocalService.class)
+	protected com.liferay.asset.kernel.service.AssetLinkLocalService assetLinkLocalService;
 	@BeanReference(type = AssetLinkPersistence.class)
 	protected AssetLinkPersistence assetLinkPersistence;
-
-	@BeanReference(
-		type = com.liferay.expando.kernel.service.ExpandoRowLocalService.class
-	)
-	protected com.liferay.expando.kernel.service.ExpandoRowLocalService
-		expandoRowLocalService;
-
+	@BeanReference(type = com.liferay.expando.kernel.service.ExpandoRowLocalService.class)
+	protected com.liferay.expando.kernel.service.ExpandoRowLocalService expandoRowLocalService;
 	@BeanReference(type = ExpandoRowPersistence.class)
 	protected ExpandoRowPersistence expandoRowPersistence;
-
-	@BeanReference(
-		type = com.liferay.ratings.kernel.service.RatingsStatsLocalService.class
-	)
-	protected com.liferay.ratings.kernel.service.RatingsStatsLocalService
-		ratingsStatsLocalService;
-
+	@BeanReference(type = com.liferay.ratings.kernel.service.RatingsStatsLocalService.class)
+	protected com.liferay.ratings.kernel.service.RatingsStatsLocalService ratingsStatsLocalService;
 	@BeanReference(type = RatingsStatsPersistence.class)
 	protected RatingsStatsPersistence ratingsStatsPersistence;
-
 	@BeanReference(type = RatingsStatsFinder.class)
 	protected RatingsStatsFinder ratingsStatsFinder;
-
-	@BeanReference(
-		type = com.liferay.trash.kernel.service.TrashEntryLocalService.class
-	)
-	protected com.liferay.trash.kernel.service.TrashEntryLocalService
-		trashEntryLocalService;
-
+	@BeanReference(type = com.liferay.trash.kernel.service.TrashEntryLocalService.class)
+	protected com.liferay.trash.kernel.service.TrashEntryLocalService trashEntryLocalService;
 	@BeanReference(type = TrashEntryPersistence.class)
 	protected TrashEntryPersistence trashEntryPersistence;
-
-	@BeanReference(
-		type = com.liferay.blogs.kernel.service.BlogsStatsUserLocalService.class
-	)
-	protected com.liferay.blogs.kernel.service.BlogsStatsUserLocalService
-		blogsStatsUserLocalService;
-
+	@BeanReference(type = com.liferay.blogs.kernel.service.BlogsStatsUserLocalService.class)
+	protected com.liferay.blogs.kernel.service.BlogsStatsUserLocalService blogsStatsUserLocalService;
 	@BeanReference(type = BlogsStatsUserPersistence.class)
 	protected BlogsStatsUserPersistence blogsStatsUserPersistence;
-
 	@BeanReference(type = BlogsStatsUserFinder.class)
 	protected BlogsStatsUserFinder blogsStatsUserFinder;
-
 	@BeanReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry
-		persistedModelLocalServiceRegistry;
-
+	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }

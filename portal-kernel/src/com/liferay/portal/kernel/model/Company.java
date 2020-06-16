@@ -24,20 +24,19 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see CompanyModel
+ * @see com.liferay.portal.model.impl.CompanyImpl
+ * @see com.liferay.portal.model.impl.CompanyModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.portal.model.impl.CompanyImpl")
 @ProviderType
 public interface Company extends CompanyModel, PersistedModel {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to <code>com.liferay.portal.model.impl.CompanyImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to {@link com.liferay.portal.model.impl.CompanyImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<Company, Long> COMPANY_ID_ACCESSOR =
-		new Accessor<Company, Long>() {
-
+	public static final Accessor<Company, Long> COMPANY_ID_ACCESSOR = new Accessor<Company, Long>() {
 			@Override
 			public Long get(Company company) {
 				return company.getCompanyId();
@@ -52,22 +51,21 @@ public interface Company extends CompanyModel, PersistedModel {
 			public Class<Company> getTypeClass() {
 				return Company.class;
 			}
-
 		};
 
 	public Account getAccount()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public String getAdminName();
+	public java.lang.String getAdminName();
 
-	public String getAuthType();
+	public java.lang.String getAuthType();
 
 	public User getDefaultUser()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public String getDefaultWebId();
+	public java.lang.String getDefaultWebId();
 
-	public String getEmailAddress();
+	public java.lang.String getEmailAddress();
 
 	public Group getGroup()
 		throws com.liferay.portal.kernel.exception.PortalException;
@@ -80,22 +78,22 @@ public interface Company extends CompanyModel, PersistedModel {
 	public java.util.Locale getLocale()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	@com.liferay.portal.kernel.bean.AutoEscape
-	public String getName()
+	@com.liferay.portal.kernel.bean.AutoEscape()
+	public java.lang.String getName()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public String getPortalURL(long groupId)
+	public java.lang.String getPortalURL(long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public String getShortName()
+	public java.lang.String getShortName()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.util.TimeZone getTimeZone()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public String getVirtualHostname();
+	public java.lang.String getVirtualHostname();
 
-	public boolean hasCompanyMx(String emailAddress);
+	public boolean hasCompanyMx(java.lang.String emailAddress);
 
 	public boolean isAutoLogin();
 
@@ -113,6 +111,5 @@ public interface Company extends CompanyModel, PersistedModel {
 
 	public void setKeyObj(java.security.Key keyObj);
 
-	public void setVirtualHostname(String virtualHostname);
-
+	public void setVirtualHostname(java.lang.String virtualHostname);
 }

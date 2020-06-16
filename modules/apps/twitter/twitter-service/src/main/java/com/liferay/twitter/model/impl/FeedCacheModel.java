@@ -14,9 +14,13 @@
 
 package com.liferay.twitter.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.twitter.model.Feed;
 
 import java.io.Externalizable;
@@ -30,10 +34,11 @@ import java.util.Date;
  * The cache model class for representing Feed in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see Feed
  * @generated
  */
+@ProviderType
 public class FeedCacheModel implements CacheModel<Feed>, Externalizable {
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -94,7 +99,7 @@ public class FeedCacheModel implements CacheModel<Feed>, Externalizable {
 		feedImpl.setUserId(userId);
 
 		if (userName == null) {
-			feedImpl.setUserName("");
+			feedImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			feedImpl.setUserName(userName);
@@ -117,7 +122,7 @@ public class FeedCacheModel implements CacheModel<Feed>, Externalizable {
 		feedImpl.setTwitterUserId(twitterUserId);
 
 		if (twitterScreenName == null) {
-			feedImpl.setTwitterScreenName("");
+			feedImpl.setTwitterScreenName(StringPool.BLANK);
 		}
 		else {
 			feedImpl.setTwitterScreenName(twitterScreenName);
@@ -148,7 +153,8 @@ public class FeedCacheModel implements CacheModel<Feed>, Externalizable {
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(feedId);
 
 		objectOutput.writeLong(companyId);
@@ -156,7 +162,7 @@ public class FeedCacheModel implements CacheModel<Feed>, Externalizable {
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -168,7 +174,7 @@ public class FeedCacheModel implements CacheModel<Feed>, Externalizable {
 		objectOutput.writeLong(twitterUserId);
 
 		if (twitterScreenName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(twitterScreenName);
@@ -186,5 +192,4 @@ public class FeedCacheModel implements CacheModel<Feed>, Externalizable {
 	public long twitterUserId;
 	public String twitterScreenName;
 	public long lastStatusId;
-
 }

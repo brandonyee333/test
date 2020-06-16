@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.community.github.model;
+
+import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -26,8 +28,8 @@ import java.util.List;
  * @author Haote Chou
  * @generated
  */
+@ProviderType
 public class GitHubRepositorySoap implements Serializable {
-
 	public static GitHubRepositorySoap toSoapModel(GitHubRepository model) {
 		GitHubRepositorySoap soapModel = new GitHubRepositorySoap();
 
@@ -48,11 +50,8 @@ public class GitHubRepositorySoap implements Serializable {
 		return soapModel;
 	}
 
-	public static GitHubRepositorySoap[] toSoapModels(
-		GitHubRepository[] models) {
-
-		GitHubRepositorySoap[] soapModels =
-			new GitHubRepositorySoap[models.length];
+	public static GitHubRepositorySoap[] toSoapModels(GitHubRepository[] models) {
+		GitHubRepositorySoap[] soapModels = new GitHubRepositorySoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -63,12 +62,10 @@ public class GitHubRepositorySoap implements Serializable {
 
 	public static GitHubRepositorySoap[][] toSoapModels(
 		GitHubRepository[][] models) {
-
 		GitHubRepositorySoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels =
-				new GitHubRepositorySoap[models.length][models[0].length];
+			soapModels = new GitHubRepositorySoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new GitHubRepositorySoap[0][0];
@@ -83,9 +80,7 @@ public class GitHubRepositorySoap implements Serializable {
 
 	public static GitHubRepositorySoap[] toSoapModels(
 		List<GitHubRepository> models) {
-
-		List<GitHubRepositorySoap> soapModels =
-			new ArrayList<GitHubRepositorySoap>(models.size());
+		List<GitHubRepositorySoap> soapModels = new ArrayList<GitHubRepositorySoap>(models.size());
 
 		for (GitHubRepository model : models) {
 			soapModels.add(toSoapModel(model));
@@ -222,5 +217,4 @@ public class GitHubRepositorySoap implements Serializable {
 	private int _stars;
 	private String _url;
 	private Date _repositoryCreateDate;
-
 }

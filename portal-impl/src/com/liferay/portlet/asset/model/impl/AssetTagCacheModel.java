@@ -14,10 +14,14 @@
 
 package com.liferay.portlet.asset.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.asset.kernel.model.AssetTag;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,11 @@ import java.util.Date;
  * The cache model class for representing AssetTag in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see AssetTag
  * @generated
  */
-public class AssetTagCacheModel
-	implements CacheModel<AssetTag>, Externalizable {
-
+@ProviderType
+public class AssetTagCacheModel implements CacheModel<AssetTag>, Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -95,7 +99,7 @@ public class AssetTagCacheModel
 		AssetTagImpl assetTagImpl = new AssetTagImpl();
 
 		if (uuid == null) {
-			assetTagImpl.setUuid("");
+			assetTagImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			assetTagImpl.setUuid(uuid);
@@ -107,7 +111,7 @@ public class AssetTagCacheModel
 		assetTagImpl.setUserId(userId);
 
 		if (userName == null) {
-			assetTagImpl.setUserName("");
+			assetTagImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			assetTagImpl.setUserName(userName);
@@ -128,7 +132,7 @@ public class AssetTagCacheModel
 		}
 
 		if (name == null) {
-			assetTagImpl.setName("");
+			assetTagImpl.setName(StringPool.BLANK);
 		}
 		else {
 			assetTagImpl.setName(name);
@@ -169,9 +173,10 @@ public class AssetTagCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -186,7 +191,7 @@ public class AssetTagCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -196,7 +201,7 @@ public class AssetTagCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
@@ -217,5 +222,4 @@ public class AssetTagCacheModel
 	public String name;
 	public int assetCount;
 	public long lastPublishDate;
-
 }

@@ -14,6 +14,8 @@
 
 package com.liferay.calendar.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -24,10 +26,11 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.calendar.service.http.CalendarBookingServiceSoap}.
  *
  * @author Eduardo Lundgren
+ * @see com.liferay.calendar.service.http.CalendarBookingServiceSoap
  * @generated
  */
+@ProviderType
 public class CalendarBookingSoap implements Serializable {
-
 	public static CalendarBookingSoap toSoapModel(CalendarBooking model) {
 		CalendarBookingSoap soapModel = new CalendarBookingSoap();
 
@@ -42,15 +45,14 @@ public class CalendarBookingSoap implements Serializable {
 		soapModel.setResourceBlockId(model.getResourceBlockId());
 		soapModel.setCalendarId(model.getCalendarId());
 		soapModel.setCalendarResourceId(model.getCalendarResourceId());
-		soapModel.setParentCalendarBookingId(
-			model.getParentCalendarBookingId());
+		soapModel.setParentCalendarBookingId(model.getParentCalendarBookingId());
 		soapModel.setVEventUid(model.getVEventUid());
 		soapModel.setTitle(model.getTitle());
 		soapModel.setDescription(model.getDescription());
 		soapModel.setLocation(model.getLocation());
 		soapModel.setStartTime(model.getStartTime());
 		soapModel.setEndTime(model.getEndTime());
-		soapModel.setAllDay(model.isAllDay());
+		soapModel.setAllDay(model.getAllDay());
 		soapModel.setRecurrence(model.getRecurrence());
 		soapModel.setFirstReminder(model.getFirstReminder());
 		soapModel.setFirstReminderType(model.getFirstReminderType());
@@ -66,8 +68,7 @@ public class CalendarBookingSoap implements Serializable {
 	}
 
 	public static CalendarBookingSoap[] toSoapModels(CalendarBooking[] models) {
-		CalendarBookingSoap[] soapModels =
-			new CalendarBookingSoap[models.length];
+		CalendarBookingSoap[] soapModels = new CalendarBookingSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -78,12 +79,10 @@ public class CalendarBookingSoap implements Serializable {
 
 	public static CalendarBookingSoap[][] toSoapModels(
 		CalendarBooking[][] models) {
-
 		CalendarBookingSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels =
-				new CalendarBookingSoap[models.length][models[0].length];
+			soapModels = new CalendarBookingSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new CalendarBookingSoap[0][0];
@@ -98,9 +97,7 @@ public class CalendarBookingSoap implements Serializable {
 
 	public static CalendarBookingSoap[] toSoapModels(
 		List<CalendarBooking> models) {
-
-		List<CalendarBookingSoap> soapModels =
-			new ArrayList<CalendarBookingSoap>(models.size());
+		List<CalendarBookingSoap> soapModels = new ArrayList<CalendarBookingSoap>(models.size());
 
 		for (CalendarBooking model : models) {
 			soapModels.add(toSoapModel(model));
@@ -385,5 +382,4 @@ public class CalendarBookingSoap implements Serializable {
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
-
 }

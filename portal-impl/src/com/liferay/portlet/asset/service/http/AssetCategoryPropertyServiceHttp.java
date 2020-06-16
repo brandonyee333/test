@@ -14,7 +14,10 @@
 
 package com.liferay.portlet.asset.service.http;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.asset.kernel.service.AssetCategoryPropertyServiceUtil;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
@@ -24,11 +27,10 @@ import com.liferay.portal.kernel.util.MethodKey;
 
 /**
  * Provides the HTTP utility for the
- * <code>AssetCategoryPropertyServiceUtil</code> service
- * utility. The
+ * {@link AssetCategoryPropertyServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it requires an additional
- * <code>HttpPrincipal</code> parameter.
+ * {@link HttpPrincipal} parameter.
  *
  * <p>
  * The benefits of using the HTTP utility is that it is fast and allows for
@@ -47,98 +49,80 @@ import com.liferay.portal.kernel.util.MethodKey;
  *
  * @author Brian Wing Shun Chan
  * @see AssetCategoryPropertyServiceSoap
+ * @see HttpPrincipal
+ * @see AssetCategoryPropertyServiceUtil
  * @generated
  */
+@ProviderType
 public class AssetCategoryPropertyServiceHttp {
-
-	public static com.liferay.asset.kernel.model.AssetCategoryProperty
-			addCategoryProperty(
-				HttpPrincipal httpPrincipal, long entryId, String key,
-				String value)
+	public static com.liferay.asset.kernel.model.AssetCategoryProperty addCategoryProperty(
+		HttpPrincipal httpPrincipal, long entryId, java.lang.String key,
+		java.lang.String value)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				AssetCategoryPropertyServiceUtil.class, "addCategoryProperty",
-				_addCategoryPropertyParameterTypes0);
+			MethodKey methodKey = new MethodKey(AssetCategoryPropertyServiceUtil.class,
+					"addCategoryProperty", _addCategoryPropertyParameterTypes0);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, entryId, key, value);
+			MethodHandler methodHandler = new MethodHandler(methodKey, entryId,
+					key, value);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.asset.kernel.model.AssetCategoryProperty)
-				returnObj;
+			return (com.liferay.asset.kernel.model.AssetCategoryProperty)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	public static void deleteCategoryProperty(
-			HttpPrincipal httpPrincipal, long categoryPropertyId)
+	public static void deleteCategoryProperty(HttpPrincipal httpPrincipal,
+		long categoryPropertyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				AssetCategoryPropertyServiceUtil.class,
-				"deleteCategoryProperty",
-				_deleteCategoryPropertyParameterTypes1);
+			MethodKey methodKey = new MethodKey(AssetCategoryPropertyServiceUtil.class,
+					"deleteCategoryProperty",
+					_deleteCategoryPropertyParameterTypes1);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, categoryPropertyId);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					categoryPropertyId);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	public static java.util.List
-		<com.liferay.asset.kernel.model.AssetCategoryProperty>
-			getCategoryProperties(HttpPrincipal httpPrincipal, long entryId) {
-
+	public static java.util.List<com.liferay.asset.kernel.model.AssetCategoryProperty> getCategoryProperties(
+		HttpPrincipal httpPrincipal, long entryId) {
 		try {
-			MethodKey methodKey = new MethodKey(
-				AssetCategoryPropertyServiceUtil.class, "getCategoryProperties",
-				_getCategoryPropertiesParameterTypes2);
+			MethodKey methodKey = new MethodKey(AssetCategoryPropertyServiceUtil.class,
+					"getCategoryProperties",
+					_getCategoryPropertiesParameterTypes2);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, entryId);
 
@@ -147,163 +131,133 @@ public class AssetCategoryPropertyServiceHttp {
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+			catch (Exception e) {
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List
-				<com.liferay.asset.kernel.model.AssetCategoryProperty>)
-					returnObj;
+			return (java.util.List<com.liferay.asset.kernel.model.AssetCategoryProperty>)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	public static java.util.List
-		<com.liferay.asset.kernel.model.AssetCategoryProperty>
-			getCategoryPropertyValues(
-				HttpPrincipal httpPrincipal, long companyId, String key) {
-
+	public static java.util.List<com.liferay.asset.kernel.model.AssetCategoryProperty> getCategoryPropertyValues(
+		HttpPrincipal httpPrincipal, long companyId, java.lang.String key) {
 		try {
-			MethodKey methodKey = new MethodKey(
-				AssetCategoryPropertyServiceUtil.class,
-				"getCategoryPropertyValues",
-				_getCategoryPropertyValuesParameterTypes3);
+			MethodKey methodKey = new MethodKey(AssetCategoryPropertyServiceUtil.class,
+					"getCategoryPropertyValues",
+					_getCategoryPropertyValuesParameterTypes3);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, companyId, key);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					companyId, key);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+			catch (Exception e) {
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List
-				<com.liferay.asset.kernel.model.AssetCategoryProperty>)
-					returnObj;
+			return (java.util.List<com.liferay.asset.kernel.model.AssetCategoryProperty>)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	public static com.liferay.asset.kernel.model.AssetCategoryProperty
-			updateCategoryProperty(
-				HttpPrincipal httpPrincipal, long userId,
-				long categoryPropertyId, String key, String value)
+	public static com.liferay.asset.kernel.model.AssetCategoryProperty updateCategoryProperty(
+		HttpPrincipal httpPrincipal, long userId, long categoryPropertyId,
+		java.lang.String key, java.lang.String value)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				AssetCategoryPropertyServiceUtil.class,
-				"updateCategoryProperty",
-				_updateCategoryPropertyParameterTypes4);
+			MethodKey methodKey = new MethodKey(AssetCategoryPropertyServiceUtil.class,
+					"updateCategoryProperty",
+					_updateCategoryPropertyParameterTypes4);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, userId, categoryPropertyId, key, value);
+			MethodHandler methodHandler = new MethodHandler(methodKey, userId,
+					categoryPropertyId, key, value);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.asset.kernel.model.AssetCategoryProperty)
-				returnObj;
+			return (com.liferay.asset.kernel.model.AssetCategoryProperty)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	public static com.liferay.asset.kernel.model.AssetCategoryProperty
-			updateCategoryProperty(
-				HttpPrincipal httpPrincipal, long categoryPropertyId,
-				String key, String value)
+	public static com.liferay.asset.kernel.model.AssetCategoryProperty updateCategoryProperty(
+		HttpPrincipal httpPrincipal, long categoryPropertyId,
+		java.lang.String key, java.lang.String value)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				AssetCategoryPropertyServiceUtil.class,
-				"updateCategoryProperty",
-				_updateCategoryPropertyParameterTypes5);
+			MethodKey methodKey = new MethodKey(AssetCategoryPropertyServiceUtil.class,
+					"updateCategoryProperty",
+					_updateCategoryPropertyParameterTypes5);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, categoryPropertyId, key, value);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					categoryPropertyId, key, value);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.asset.kernel.model.AssetCategoryProperty)
-				returnObj;
+			return (com.liferay.asset.kernel.model.AssetCategoryProperty)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
-		AssetCategoryPropertyServiceHttp.class);
-
-	private static final Class<?>[] _addCategoryPropertyParameterTypes0 =
-		new Class[] {long.class, String.class, String.class};
-	private static final Class<?>[] _deleteCategoryPropertyParameterTypes1 =
-		new Class[] {long.class};
-	private static final Class<?>[] _getCategoryPropertiesParameterTypes2 =
-		new Class[] {long.class};
-	private static final Class<?>[] _getCategoryPropertyValuesParameterTypes3 =
-		new Class[] {long.class, String.class};
-	private static final Class<?>[] _updateCategoryPropertyParameterTypes4 =
-		new Class[] {long.class, long.class, String.class, String.class};
-	private static final Class<?>[] _updateCategoryPropertyParameterTypes5 =
-		new Class[] {long.class, String.class, String.class};
-
+	private static Log _log = LogFactoryUtil.getLog(AssetCategoryPropertyServiceHttp.class);
+	private static final Class<?>[] _addCategoryPropertyParameterTypes0 = new Class[] {
+			long.class, java.lang.String.class, java.lang.String.class
+		};
+	private static final Class<?>[] _deleteCategoryPropertyParameterTypes1 = new Class[] {
+			long.class
+		};
+	private static final Class<?>[] _getCategoryPropertiesParameterTypes2 = new Class[] {
+			long.class
+		};
+	private static final Class<?>[] _getCategoryPropertyValuesParameterTypes3 = new Class[] {
+			long.class, java.lang.String.class
+		};
+	private static final Class<?>[] _updateCategoryPropertyParameterTypes4 = new Class[] {
+			long.class, long.class, java.lang.String.class,
+			java.lang.String.class
+		};
+	private static final Class<?>[] _updateCategoryPropertyParameterTypes5 = new Class[] {
+			long.class, java.lang.String.class, java.lang.String.class
+		};
 }

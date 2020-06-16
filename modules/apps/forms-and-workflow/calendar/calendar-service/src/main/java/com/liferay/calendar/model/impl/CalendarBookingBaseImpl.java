@@ -14,6 +14,8 @@
 
 package com.liferay.calendar.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.calendar.model.CalendarBooking;
 import com.liferay.calendar.service.CalendarBookingLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.calendar.service.CalendarBookingLocalServiceUtil;
  * @see CalendarBooking
  * @generated
  */
-public abstract class CalendarBookingBaseImpl
-	extends CalendarBookingModelImpl implements CalendarBooking {
-
+@ProviderType
+public abstract class CalendarBookingBaseImpl extends CalendarBookingModelImpl
+	implements CalendarBooking {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a calendar booking model instance should use the <code>CalendarBooking</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a calendar booking model instance should use the {@link CalendarBooking} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class CalendarBookingBaseImpl
 			CalendarBookingLocalServiceUtil.updateCalendarBooking(this);
 		}
 	}
-
 }

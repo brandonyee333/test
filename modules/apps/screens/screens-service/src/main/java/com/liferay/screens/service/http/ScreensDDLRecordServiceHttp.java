@@ -14,21 +14,23 @@
 
 package com.liferay.screens.service.http;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
 import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
+
 import com.liferay.screens.service.ScreensDDLRecordServiceUtil;
 
 /**
  * Provides the HTTP utility for the
- * <code>ScreensDDLRecordServiceUtil</code> service
- * utility. The
+ * {@link ScreensDDLRecordServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it requires an additional
- * <code>HttpPrincipal</code> parameter.
+ * {@link HttpPrincipal} parameter.
  *
  * <p>
  * The benefits of using the HTTP utility is that it is fast and allows for
@@ -47,236 +49,192 @@ import com.liferay.screens.service.ScreensDDLRecordServiceUtil;
  *
  * @author José Manuel Navarro
  * @see ScreensDDLRecordServiceSoap
+ * @see HttpPrincipal
+ * @see ScreensDDLRecordServiceUtil
  * @generated
  */
+@ProviderType
 public class ScreensDDLRecordServiceHttp {
-
 	public static com.liferay.portal.kernel.json.JSONObject getDDLRecord(
-			HttpPrincipal httpPrincipal, long ddlRecordId,
-			java.util.Locale locale)
+		HttpPrincipal httpPrincipal, long ddlRecordId, java.util.Locale locale)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				ScreensDDLRecordServiceUtil.class, "getDDLRecord",
-				_getDDLRecordParameterTypes0);
+			MethodKey methodKey = new MethodKey(ScreensDDLRecordServiceUtil.class,
+					"getDDLRecord", _getDDLRecordParameterTypes0);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, ddlRecordId, locale);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					ddlRecordId, locale);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
 			return (com.liferay.portal.kernel.json.JSONObject)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
 	public static com.liferay.portal.kernel.json.JSONArray getDDLRecords(
-			HttpPrincipal httpPrincipal, long ddlRecordSetId,
-			java.util.Locale locale, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.dynamic.data.lists.model.DDLRecord> obc)
+		HttpPrincipal httpPrincipal, long ddlRecordSetId,
+		java.util.Locale locale, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.dynamic.data.lists.model.DDLRecord> obc)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				ScreensDDLRecordServiceUtil.class, "getDDLRecords",
-				_getDDLRecordsParameterTypes1);
+			MethodKey methodKey = new MethodKey(ScreensDDLRecordServiceUtil.class,
+					"getDDLRecords", _getDDLRecordsParameterTypes1);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, ddlRecordSetId, locale, start, end, obc);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					ddlRecordSetId, locale, start, end, obc);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
 			return (com.liferay.portal.kernel.json.JSONArray)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
 	public static com.liferay.portal.kernel.json.JSONArray getDDLRecords(
-			HttpPrincipal httpPrincipal, long ddlRecordSetId, long userId,
-			java.util.Locale locale, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.dynamic.data.lists.model.DDLRecord> obc)
+		HttpPrincipal httpPrincipal, long ddlRecordSetId, long userId,
+		java.util.Locale locale, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.dynamic.data.lists.model.DDLRecord> obc)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				ScreensDDLRecordServiceUtil.class, "getDDLRecords",
-				_getDDLRecordsParameterTypes2);
+			MethodKey methodKey = new MethodKey(ScreensDDLRecordServiceUtil.class,
+					"getDDLRecords", _getDDLRecordsParameterTypes2);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, ddlRecordSetId, userId, locale, start, end, obc);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					ddlRecordSetId, userId, locale, start, end, obc);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
 			return (com.liferay.portal.kernel.json.JSONArray)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	public static int getDDLRecordsCount(
-			HttpPrincipal httpPrincipal, long ddlRecordSetId)
+	public static int getDDLRecordsCount(HttpPrincipal httpPrincipal,
+		long ddlRecordSetId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				ScreensDDLRecordServiceUtil.class, "getDDLRecordsCount",
-				_getDDLRecordsCountParameterTypes3);
+			MethodKey methodKey = new MethodKey(ScreensDDLRecordServiceUtil.class,
+					"getDDLRecordsCount", _getDDLRecordsCountParameterTypes3);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, ddlRecordSetId);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					ddlRecordSetId);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
 			return ((Integer)returnObj).intValue();
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	public static int getDDLRecordsCount(
-			HttpPrincipal httpPrincipal, long ddlRecordSetId, long userId)
+	public static int getDDLRecordsCount(HttpPrincipal httpPrincipal,
+		long ddlRecordSetId, long userId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				ScreensDDLRecordServiceUtil.class, "getDDLRecordsCount",
-				_getDDLRecordsCountParameterTypes4);
+			MethodKey methodKey = new MethodKey(ScreensDDLRecordServiceUtil.class,
+					"getDDLRecordsCount", _getDDLRecordsCountParameterTypes4);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, ddlRecordSetId, userId);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					ddlRecordSetId, userId);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
 			return ((Integer)returnObj).intValue();
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
-		ScreensDDLRecordServiceHttp.class);
-
+	private static Log _log = LogFactoryUtil.getLog(ScreensDDLRecordServiceHttp.class);
 	private static final Class<?>[] _getDDLRecordParameterTypes0 = new Class[] {
-		long.class, java.util.Locale.class
-	};
-	private static final Class<?>[] _getDDLRecordsParameterTypes1 =
-		new Class[] {
+			long.class, java.util.Locale.class
+		};
+	private static final Class<?>[] _getDDLRecordsParameterTypes1 = new Class[] {
 			long.class, java.util.Locale.class, int.class, int.class,
 			com.liferay.portal.kernel.util.OrderByComparator.class
 		};
-	private static final Class<?>[] _getDDLRecordsParameterTypes2 =
-		new Class[] {
-			long.class, long.class, java.util.Locale.class, int.class,
-			int.class, com.liferay.portal.kernel.util.OrderByComparator.class
+	private static final Class<?>[] _getDDLRecordsParameterTypes2 = new Class[] {
+			long.class, long.class, java.util.Locale.class, int.class, int.class,
+			com.liferay.portal.kernel.util.OrderByComparator.class
 		};
-	private static final Class<?>[] _getDDLRecordsCountParameterTypes3 =
-		new Class[] {long.class};
-	private static final Class<?>[] _getDDLRecordsCountParameterTypes4 =
-		new Class[] {long.class, long.class};
-
+	private static final Class<?>[] _getDDLRecordsCountParameterTypes3 = new Class[] {
+			long.class
+		};
+	private static final Class<?>[] _getDDLRecordsCountParameterTypes4 = new Class[] {
+			long.class, long.class
+		};
 }

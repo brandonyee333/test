@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.LayoutRevision;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -31,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing LayoutRevision in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see LayoutRevision
  * @generated
  */
-public class LayoutRevisionCacheModel
-	implements CacheModel<LayoutRevision>, Externalizable, MVCCModel {
-
+@ProviderType
+public class LayoutRevisionCacheModel implements CacheModel<LayoutRevision>,
+	Externalizable, MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -46,12 +50,10 @@ public class LayoutRevisionCacheModel
 			return false;
 		}
 
-		LayoutRevisionCacheModel layoutRevisionCacheModel =
-			(LayoutRevisionCacheModel)obj;
+		LayoutRevisionCacheModel layoutRevisionCacheModel = (LayoutRevisionCacheModel)obj;
 
 		if ((layoutRevisionId == layoutRevisionCacheModel.layoutRevisionId) &&
-			(mvccVersion == layoutRevisionCacheModel.mvccVersion)) {
-
+				(mvccVersion == layoutRevisionCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -153,7 +155,7 @@ public class LayoutRevisionCacheModel
 		layoutRevisionImpl.setUserId(userId);
 
 		if (userName == null) {
-			layoutRevisionImpl.setUserName("");
+			layoutRevisionImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			layoutRevisionImpl.setUserName(userName);
@@ -182,42 +184,42 @@ public class LayoutRevisionCacheModel
 		layoutRevisionImpl.setPrivateLayout(privateLayout);
 
 		if (name == null) {
-			layoutRevisionImpl.setName("");
+			layoutRevisionImpl.setName(StringPool.BLANK);
 		}
 		else {
 			layoutRevisionImpl.setName(name);
 		}
 
 		if (title == null) {
-			layoutRevisionImpl.setTitle("");
+			layoutRevisionImpl.setTitle(StringPool.BLANK);
 		}
 		else {
 			layoutRevisionImpl.setTitle(title);
 		}
 
 		if (description == null) {
-			layoutRevisionImpl.setDescription("");
+			layoutRevisionImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			layoutRevisionImpl.setDescription(description);
 		}
 
 		if (keywords == null) {
-			layoutRevisionImpl.setKeywords("");
+			layoutRevisionImpl.setKeywords(StringPool.BLANK);
 		}
 		else {
 			layoutRevisionImpl.setKeywords(keywords);
 		}
 
 		if (robots == null) {
-			layoutRevisionImpl.setRobots("");
+			layoutRevisionImpl.setRobots(StringPool.BLANK);
 		}
 		else {
 			layoutRevisionImpl.setRobots(robots);
 		}
 
 		if (typeSettings == null) {
-			layoutRevisionImpl.setTypeSettings("");
+			layoutRevisionImpl.setTypeSettings(StringPool.BLANK);
 		}
 		else {
 			layoutRevisionImpl.setTypeSettings(typeSettings);
@@ -226,21 +228,21 @@ public class LayoutRevisionCacheModel
 		layoutRevisionImpl.setIconImageId(iconImageId);
 
 		if (themeId == null) {
-			layoutRevisionImpl.setThemeId("");
+			layoutRevisionImpl.setThemeId(StringPool.BLANK);
 		}
 		else {
 			layoutRevisionImpl.setThemeId(themeId);
 		}
 
 		if (colorSchemeId == null) {
-			layoutRevisionImpl.setColorSchemeId("");
+			layoutRevisionImpl.setColorSchemeId(StringPool.BLANK);
 		}
 		else {
 			layoutRevisionImpl.setColorSchemeId(colorSchemeId);
 		}
 
 		if (css == null) {
-			layoutRevisionImpl.setCss("");
+			layoutRevisionImpl.setCss(StringPool.BLANK);
 		}
 		else {
 			layoutRevisionImpl.setCss(css);
@@ -250,7 +252,7 @@ public class LayoutRevisionCacheModel
 		layoutRevisionImpl.setStatusByUserId(statusByUserId);
 
 		if (statusByUserName == null) {
-			layoutRevisionImpl.setStatusByUserName("");
+			layoutRevisionImpl.setStatusByUserName(StringPool.BLANK);
 		}
 		else {
 			layoutRevisionImpl.setStatusByUserName(statusByUserName);
@@ -269,9 +271,7 @@ public class LayoutRevisionCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
 
 		layoutRevisionId = objectInput.readLong();
@@ -303,12 +303,12 @@ public class LayoutRevisionCacheModel
 		description = objectInput.readUTF();
 		keywords = objectInput.readUTF();
 		robots = objectInput.readUTF();
-		typeSettings = (String)objectInput.readObject();
+		typeSettings = objectInput.readUTF();
 
 		iconImageId = objectInput.readLong();
 		themeId = objectInput.readUTF();
 		colorSchemeId = objectInput.readUTF();
-		css = (String)objectInput.readObject();
+		css = objectInput.readUTF();
 
 		status = objectInput.readInt();
 
@@ -318,7 +318,8 @@ public class LayoutRevisionCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(layoutRevisionId);
@@ -330,7 +331,7 @@ public class LayoutRevisionCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -354,68 +355,68 @@ public class LayoutRevisionCacheModel
 		objectOutput.writeBoolean(privateLayout);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (title == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(title);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (keywords == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(keywords);
 		}
 
 		if (robots == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(robots);
 		}
 
 		if (typeSettings == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(typeSettings);
+			objectOutput.writeUTF(typeSettings);
 		}
 
 		objectOutput.writeLong(iconImageId);
 
 		if (themeId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(themeId);
 		}
 
 		if (colorSchemeId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(colorSchemeId);
 		}
 
 		if (css == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(css);
+			objectOutput.writeUTF(css);
 		}
 
 		objectOutput.writeInt(status);
@@ -423,7 +424,7 @@ public class LayoutRevisionCacheModel
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(statusByUserName);
@@ -461,5 +462,4 @@ public class LayoutRevisionCacheModel
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
-
 }

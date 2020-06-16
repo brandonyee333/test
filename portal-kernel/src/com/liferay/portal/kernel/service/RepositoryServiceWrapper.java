@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 /**
  * Provides a wrapper for {@link RepositoryService}.
  *
@@ -21,63 +23,53 @@ package com.liferay.portal.kernel.service;
  * @see RepositoryService
  * @generated
  */
-public class RepositoryServiceWrapper
-	implements RepositoryService, ServiceWrapper<RepositoryService> {
-
+@ProviderType
+public class RepositoryServiceWrapper implements RepositoryService,
+	ServiceWrapper<RepositoryService> {
 	public RepositoryServiceWrapper(RepositoryService repositoryService) {
 		_repositoryService = repositoryService;
 	}
 
 	@Override
 	public com.liferay.portal.kernel.model.Repository addRepository(
-			long groupId, long classNameId, long parentFolderId,
-			java.lang.String name, java.lang.String description,
-			java.lang.String portletId,
-			com.liferay.portal.kernel.util.UnicodeProperties
-				typeSettingsProperties,
-			ServiceContext serviceContext)
+		long groupId, long classNameId, long parentFolderId,
+		java.lang.String name, java.lang.String description,
+		java.lang.String portletId,
+		com.liferay.portal.kernel.util.UnicodeProperties typeSettingsProperties,
+		ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _repositoryService.addRepository(
-			groupId, classNameId, parentFolderId, name, description, portletId,
+		return _repositoryService.addRepository(groupId, classNameId,
+			parentFolderId, name, description, portletId,
 			typeSettingsProperties, serviceContext);
 	}
 
 	@Override
-	public void checkRepository(long repositoryId)
+	public com.liferay.portal.kernel.model.Repository getRepository(
+		long repositoryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
-		_repositoryService.checkRepository(repositoryId);
+		return _repositoryService.getRepository(repositoryId);
 	}
 
 	@Override
-	public void deleteRepository(long repositoryId)
+	public com.liferay.portal.kernel.util.UnicodeProperties getTypeSettingsProperties(
+		long repositoryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
-		_repositoryService.deleteRepository(repositoryId);
+		return _repositoryService.getTypeSettingsProperties(repositoryId);
 	}
 
 	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _repositoryService.getOSGiServiceIdentifier();
 	}
 
-	@Override
-	public com.liferay.portal.kernel.model.Repository getRepository(
-			long repositoryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _repositoryService.getRepository(repositoryId);
-	}
-
 	/**
-	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement
-	 */
+	* @deprecated As of Wilberforce (7.0.x), with no direct replacement
+	*/
 	@Deprecated
 	@Override
 	public java.lang.String[] getSupportedConfigurations(long classNameId) {
@@ -85,43 +77,43 @@ public class RepositoryServiceWrapper
 	}
 
 	/**
-	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public java.lang.String[] getSupportedParameters(
-		long classNameId, java.lang.String configuration) {
-
-		return _repositoryService.getSupportedParameters(
-			classNameId, configuration);
-	}
-
-	/**
-	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement
-	 */
+	* @deprecated As of Wilberforce (7.0.x), with no direct replacement
+	*/
 	@Deprecated
 	@Override
 	public java.lang.String[] getSupportedParameters(
 		java.lang.String className, java.lang.String configuration) {
+		return _repositoryService.getSupportedParameters(className,
+			configuration);
+	}
 
-		return _repositoryService.getSupportedParameters(
-			className, configuration);
+	/**
+	* @deprecated As of Wilberforce (7.0.x), with no direct replacement
+	*/
+	@Deprecated
+	@Override
+	public java.lang.String[] getSupportedParameters(long classNameId,
+		java.lang.String configuration) {
+		return _repositoryService.getSupportedParameters(classNameId,
+			configuration);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.util.UnicodeProperties
-			getTypeSettingsProperties(long repositoryId)
+	public void checkRepository(long repositoryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _repositoryService.getTypeSettingsProperties(repositoryId);
+		_repositoryService.checkRepository(repositoryId);
 	}
 
 	@Override
-	public void updateRepository(
-			long repositoryId, java.lang.String name,
-			java.lang.String description)
+	public void deleteRepository(long repositoryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
+		_repositoryService.deleteRepository(repositoryId);
+	}
 
+	@Override
+	public void updateRepository(long repositoryId, java.lang.String name,
+		java.lang.String description)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		_repositoryService.updateRepository(repositoryId, name, description);
 	}
 
@@ -136,5 +128,4 @@ public class RepositoryServiceWrapper
 	}
 
 	private RepositoryService _repositoryService;
-
 }

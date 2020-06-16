@@ -22,4 +22,36 @@
 		</id>
 		<property column="body" name="bodyBlob" type="blob" />
 	</class>
+	<class dynamic-update="true" lazy="true" name="com.liferay.analytics.message.storage.model.AnalyticsMessageBodyBlobModel" table="AnalyticsMessage">
+		<id column="analyticsMessageId" name="analyticsMessageId">
+			<generator class="foreign">
+				<param name="property">com.liferay.analytics.message.storage.model.impl.AnalyticsMessageImpl</param>
+			</generator>
+		</id>
+		<property column="body" name="bodyBlob" type="blob" />
+	</class>
+	<class dynamic-update="true" lazy="true" name="com.liferay.analytics.message.storage.model.AnalyticsMessageBodyBlobModel" table="AnalyticsMessage">
+		<id column="analyticsMessageId" name="analyticsMessageId">
+			<generator class="foreign">
+				<param name="property">com.liferay.analytics.message.storage.model.impl.AnalyticsMessageImpl</param>
+			</generator>
+		</id>
+		<property column="body" name="bodyBlob" type="blob" />
+	</class>
+	<class dynamic-update="true" lazy="true" name="com.liferay.analytics.message.storage.model.AnalyticsMessageBodyBlobModel" table="AnalyticsMessage">
+		<id column="analyticsMessageId" name="analyticsMessageId">
+			<generator class="foreign">
+				<param name="property">com.liferay.analytics.message.storage.model.impl.AnalyticsMessageImpl</param>
+			</generator>
+		</id>
+		<property column="body" name="bodyBlob" type="blob" />
+	</class>
+	<class dynamic-update="true" lazy="true" name="com.liferay.analytics.message.storage.model.AnalyticsMessageBodyBlobModel" table="AnalyticsMessage">
+		<id column="analyticsMessageId" name="analyticsMessageId">
+			<generator class="foreign">
+				<param name="property">com.liferay.analytics.message.storage.model.impl.AnalyticsMessageImpl</param>
+			</generator>
+		</id>
+		<property column="body" name="bodyBlob" type="blob" />
+	</class>
 </hibernate-mapping>

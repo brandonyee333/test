@@ -1,23 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.customer.ticket.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.osb.customer.ticket.model.TicketAttachment;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing TicketAttachment in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see TicketAttachment
  * @generated
  */
-public class TicketAttachmentCacheModel
-	implements CacheModel<TicketAttachment>, Externalizable {
-
+@ProviderType
+public class TicketAttachmentCacheModel implements CacheModel<TicketAttachment>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +50,9 @@ public class TicketAttachmentCacheModel
 			return false;
 		}
 
-		TicketAttachmentCacheModel ticketAttachmentCacheModel =
-			(TicketAttachmentCacheModel)obj;
+		TicketAttachmentCacheModel ticketAttachmentCacheModel = (TicketAttachmentCacheModel)obj;
 
-		if (ticketAttachmentId ==
-				ticketAttachmentCacheModel.ticketAttachmentId) {
-
+		if (ticketAttachmentId == ticketAttachmentCacheModel.ticketAttachmentId) {
 			return true;
 		}
 
@@ -99,7 +101,7 @@ public class TicketAttachmentCacheModel
 		ticketAttachmentImpl.setUserId(userId);
 
 		if (userName == null) {
-			ticketAttachmentImpl.setUserName("");
+			ticketAttachmentImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			ticketAttachmentImpl.setUserName(userName);
@@ -116,14 +118,14 @@ public class TicketAttachmentCacheModel
 		ticketAttachmentImpl.setZendeskTicketId(zendeskTicketId);
 
 		if (fileRepositoryId == null) {
-			ticketAttachmentImpl.setFileRepositoryId("");
+			ticketAttachmentImpl.setFileRepositoryId(StringPool.BLANK);
 		}
 		else {
 			ticketAttachmentImpl.setFileRepositoryId(fileRepositoryId);
 		}
 
 		if (fileName == null) {
-			ticketAttachmentImpl.setFileName("");
+			ticketAttachmentImpl.setFileName(StringPool.BLANK);
 		}
 		else {
 			ticketAttachmentImpl.setFileName(fileName);
@@ -157,13 +159,14 @@ public class TicketAttachmentCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(ticketAttachmentId);
 
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -176,14 +179,14 @@ public class TicketAttachmentCacheModel
 		objectOutput.writeLong(zendeskTicketId);
 
 		if (fileRepositoryId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(fileRepositoryId);
 		}
 
 		if (fileName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(fileName);
@@ -204,5 +207,4 @@ public class TicketAttachmentCacheModel
 	public String fileName;
 	public long fileSize;
 	public int type;
-
 }

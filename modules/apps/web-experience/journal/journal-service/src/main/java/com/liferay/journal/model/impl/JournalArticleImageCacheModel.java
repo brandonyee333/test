@@ -14,10 +14,14 @@
 
 package com.liferay.journal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.journal.model.JournalArticleImage;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -28,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing JournalArticleImage in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see JournalArticleImage
  * @generated
  */
-public class JournalArticleImageCacheModel
-	implements CacheModel<JournalArticleImage>, Externalizable {
-
+@ProviderType
+public class JournalArticleImageCacheModel implements CacheModel<JournalArticleImage>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -43,8 +48,7 @@ public class JournalArticleImageCacheModel
 			return false;
 		}
 
-		JournalArticleImageCacheModel journalArticleImageCacheModel =
-			(JournalArticleImageCacheModel)obj;
+		JournalArticleImageCacheModel journalArticleImageCacheModel = (JournalArticleImageCacheModel)obj;
 
 		if (articleImageId == journalArticleImageCacheModel.articleImageId) {
 			return true;
@@ -87,15 +91,14 @@ public class JournalArticleImageCacheModel
 
 	@Override
 	public JournalArticleImage toEntityModel() {
-		JournalArticleImageImpl journalArticleImageImpl =
-			new JournalArticleImageImpl();
+		JournalArticleImageImpl journalArticleImageImpl = new JournalArticleImageImpl();
 
 		journalArticleImageImpl.setArticleImageId(articleImageId);
 		journalArticleImageImpl.setGroupId(groupId);
 		journalArticleImageImpl.setCompanyId(companyId);
 
 		if (articleId == null) {
-			journalArticleImageImpl.setArticleId("");
+			journalArticleImageImpl.setArticleId(StringPool.BLANK);
 		}
 		else {
 			journalArticleImageImpl.setArticleId(articleId);
@@ -104,21 +107,21 @@ public class JournalArticleImageCacheModel
 		journalArticleImageImpl.setVersion(version);
 
 		if (elInstanceId == null) {
-			journalArticleImageImpl.setElInstanceId("");
+			journalArticleImageImpl.setElInstanceId(StringPool.BLANK);
 		}
 		else {
 			journalArticleImageImpl.setElInstanceId(elInstanceId);
 		}
 
 		if (elName == null) {
-			journalArticleImageImpl.setElName("");
+			journalArticleImageImpl.setElName(StringPool.BLANK);
 		}
 		else {
 			journalArticleImageImpl.setElName(elName);
 		}
 
 		if (languageId == null) {
-			journalArticleImageImpl.setLanguageId("");
+			journalArticleImageImpl.setLanguageId(StringPool.BLANK);
 		}
 		else {
 			journalArticleImageImpl.setLanguageId(languageId);
@@ -149,7 +152,8 @@ public class JournalArticleImageCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(articleImageId);
 
 		objectOutput.writeLong(groupId);
@@ -157,7 +161,7 @@ public class JournalArticleImageCacheModel
 		objectOutput.writeLong(companyId);
 
 		if (articleId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(articleId);
@@ -166,21 +170,21 @@ public class JournalArticleImageCacheModel
 		objectOutput.writeDouble(version);
 
 		if (elInstanceId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(elInstanceId);
 		}
 
 		if (elName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(elName);
 		}
 
 		if (languageId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(languageId);
@@ -198,5 +202,4 @@ public class JournalArticleImageCacheModel
 	public String elName;
 	public String languageId;
 	public boolean tempImage;
-
 }

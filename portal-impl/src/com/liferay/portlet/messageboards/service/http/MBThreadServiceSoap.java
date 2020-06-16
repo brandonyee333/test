@@ -14,7 +14,10 @@
 
 package com.liferay.portlet.messageboards.service.http;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.message.boards.kernel.service.MBThreadServiceUtil;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -22,20 +25,19 @@ import java.rmi.RemoteException;
 
 /**
  * Provides the SOAP utility for the
- * <code>MBThreadServiceUtil</code> service
- * utility. The static methods of this class call the same methods of the
- * service utility. However, the signatures are different because it is
- * difficult for SOAP to support certain types.
+ * {@link MBThreadServiceUtil} service utility. The
+ * static methods of this class calls the same methods of the service utility.
+ * However, the signatures are different because it is difficult for SOAP to
+ * support certain types.
  *
  * <p>
  * ServiceBuilder follows certain rules in translating the methods. For example,
- * if the method in the service utility returns a <code>java.util.List</code>,
- * that is translated to an array of
- * <code>com.liferay.message.boards.kernel.model.MBThreadSoap</code>. If the method in the
- * service utility returns a
- * <code>com.liferay.message.boards.kernel.model.MBThread</code>, that is translated to a
- * <code>com.liferay.message.boards.kernel.model.MBThreadSoap</code>. Methods that SOAP
- * cannot safely wire are skipped.
+ * if the method in the service utility returns a {@link java.util.List}, that
+ * is translated to an array of {@link com.liferay.message.boards.kernel.model.MBThreadSoap}.
+ * If the method in the service utility returns a
+ * {@link com.liferay.message.boards.kernel.model.MBThread}, that is translated to a
+ * {@link com.liferay.message.boards.kernel.model.MBThreadSoap}. Methods that SOAP cannot
+ * safely wire are skipped.
  * </p>
  *
  * <p>
@@ -57,351 +59,302 @@ import java.rmi.RemoteException;
  *
  * @author Brian Wing Shun Chan
  * @see MBThreadServiceHttp
+ * @see com.liferay.message.boards.kernel.model.MBThreadSoap
+ * @see MBThreadServiceUtil
  * @generated
  */
+@ProviderType
 public class MBThreadServiceSoap {
-
 	public static void deleteThread(long threadId) throws RemoteException {
 		try {
 			MBThreadServiceUtil.deleteThread(threadId);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.message.boards.kernel.model.MBThreadSoap[]
-			getGroupThreads(
-				long groupId, long userId, java.util.Date modifiedDate,
-				boolean includeAnonymous, int status, int start, int end)
+	public static com.liferay.message.boards.kernel.model.MBThreadSoap[] getGroupThreads(
+		long groupId, long userId, java.util.Date modifiedDate,
+		boolean includeAnonymous, int status, int start, int end)
 		throws RemoteException {
-
 		try {
-			java.util.List<com.liferay.message.boards.kernel.model.MBThread>
-				returnValue = MBThreadServiceUtil.getGroupThreads(
-					groupId, userId, modifiedDate, includeAnonymous, status,
+			java.util.List<com.liferay.message.boards.kernel.model.MBThread> returnValue =
+				MBThreadServiceUtil.getGroupThreads(groupId, userId,
+					modifiedDate, includeAnonymous, status, start, end);
+
+			return com.liferay.message.boards.kernel.model.MBThreadSoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.message.boards.kernel.model.MBThreadSoap[] getGroupThreads(
+		long groupId, long userId, java.util.Date modifiedDate, int status,
+		int start, int end) throws RemoteException {
+		try {
+			java.util.List<com.liferay.message.boards.kernel.model.MBThread> returnValue =
+				MBThreadServiceUtil.getGroupThreads(groupId, userId,
+					modifiedDate, status, start, end);
+
+			return com.liferay.message.boards.kernel.model.MBThreadSoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.message.boards.kernel.model.MBThreadSoap[] getGroupThreads(
+		long groupId, long userId, int status, boolean subscribed,
+		boolean includeAnonymous, int start, int end) throws RemoteException {
+		try {
+			java.util.List<com.liferay.message.boards.kernel.model.MBThread> returnValue =
+				MBThreadServiceUtil.getGroupThreads(groupId, userId, status,
+					subscribed, includeAnonymous, start, end);
+
+			return com.liferay.message.boards.kernel.model.MBThreadSoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.message.boards.kernel.model.MBThreadSoap[] getGroupThreads(
+		long groupId, long userId, int status, boolean subscribed, int start,
+		int end) throws RemoteException {
+		try {
+			java.util.List<com.liferay.message.boards.kernel.model.MBThread> returnValue =
+				MBThreadServiceUtil.getGroupThreads(groupId, userId, status,
+					subscribed, start, end);
+
+			return com.liferay.message.boards.kernel.model.MBThreadSoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.message.boards.kernel.model.MBThreadSoap[] getGroupThreads(
+		long groupId, long userId, int status, int start, int end)
+		throws RemoteException {
+		try {
+			java.util.List<com.liferay.message.boards.kernel.model.MBThread> returnValue =
+				MBThreadServiceUtil.getGroupThreads(groupId, userId, status,
 					start, end);
 
-			return com.liferay.message.boards.kernel.model.MBThreadSoap.
-				toSoapModels(returnValue);
+			return com.liferay.message.boards.kernel.model.MBThreadSoap.toSoapModels(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
-		}
-	}
-
-	public static com.liferay.message.boards.kernel.model.MBThreadSoap[]
-			getGroupThreads(
-				long groupId, long userId, java.util.Date modifiedDate,
-				int status, int start, int end)
-		throws RemoteException {
-
-		try {
-			java.util.List<com.liferay.message.boards.kernel.model.MBThread>
-				returnValue = MBThreadServiceUtil.getGroupThreads(
-					groupId, userId, modifiedDate, status, start, end);
-
-			return com.liferay.message.boards.kernel.model.MBThreadSoap.
-				toSoapModels(returnValue);
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.message.boards.kernel.model.MBThreadSoap[]
-			getGroupThreads(
-				long groupId, long userId, int status, boolean subscribed,
-				boolean includeAnonymous, int start, int end)
+	public static int getGroupThreadsCount(long groupId, long userId,
+		java.util.Date modifiedDate, boolean includeAnonymous, int status)
 		throws RemoteException {
-
 		try {
-			java.util.List<com.liferay.message.boards.kernel.model.MBThread>
-				returnValue = MBThreadServiceUtil.getGroupThreads(
-					groupId, userId, status, subscribed, includeAnonymous,
+			int returnValue = MBThreadServiceUtil.getGroupThreadsCount(groupId,
+					userId, modifiedDate, includeAnonymous, status);
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static int getGroupThreadsCount(long groupId, long userId,
+		java.util.Date modifiedDate, int status) throws RemoteException {
+		try {
+			int returnValue = MBThreadServiceUtil.getGroupThreadsCount(groupId,
+					userId, modifiedDate, status);
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static int getGroupThreadsCount(long groupId, long userId, int status)
+		throws RemoteException {
+		try {
+			int returnValue = MBThreadServiceUtil.getGroupThreadsCount(groupId,
+					userId, status);
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static int getGroupThreadsCount(long groupId, long userId,
+		int status, boolean subscribed) throws RemoteException {
+		try {
+			int returnValue = MBThreadServiceUtil.getGroupThreadsCount(groupId,
+					userId, status, subscribed);
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static int getGroupThreadsCount(long groupId, long userId,
+		int status, boolean subscribed, boolean includeAnonymous)
+		throws RemoteException {
+		try {
+			int returnValue = MBThreadServiceUtil.getGroupThreadsCount(groupId,
+					userId, status, subscribed, includeAnonymous);
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.message.boards.kernel.model.MBThreadSoap[] getThreads(
+		long groupId, long categoryId, int status, int start, int end)
+		throws RemoteException {
+		try {
+			java.util.List<com.liferay.message.boards.kernel.model.MBThread> returnValue =
+				MBThreadServiceUtil.getThreads(groupId, categoryId, status,
 					start, end);
 
-			return com.liferay.message.boards.kernel.model.MBThreadSoap.
-				toSoapModels(returnValue);
+			return com.liferay.message.boards.kernel.model.MBThreadSoap.toSoapModels(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
-		}
-	}
-
-	public static com.liferay.message.boards.kernel.model.MBThreadSoap[]
-			getGroupThreads(
-				long groupId, long userId, int status, boolean subscribed,
-				int start, int end)
-		throws RemoteException {
-
-		try {
-			java.util.List<com.liferay.message.boards.kernel.model.MBThread>
-				returnValue = MBThreadServiceUtil.getGroupThreads(
-					groupId, userId, status, subscribed, start, end);
-
-			return com.liferay.message.boards.kernel.model.MBThreadSoap.
-				toSoapModels(returnValue);
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			throw new RemoteException(exception.getMessage());
-		}
-	}
-
-	public static com.liferay.message.boards.kernel.model.MBThreadSoap[]
-			getGroupThreads(
-				long groupId, long userId, int status, int start, int end)
-		throws RemoteException {
-
-		try {
-			java.util.List<com.liferay.message.boards.kernel.model.MBThread>
-				returnValue = MBThreadServiceUtil.getGroupThreads(
-					groupId, userId, status, start, end);
-
-			return com.liferay.message.boards.kernel.model.MBThreadSoap.
-				toSoapModels(returnValue);
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			throw new RemoteException(exception.getMessage());
-		}
-	}
-
-	public static int getGroupThreadsCount(
-			long groupId, long userId, java.util.Date modifiedDate,
-			boolean includeAnonymous, int status)
-		throws RemoteException {
-
-		try {
-			int returnValue = MBThreadServiceUtil.getGroupThreadsCount(
-				groupId, userId, modifiedDate, includeAnonymous, status);
-
-			return returnValue;
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			throw new RemoteException(exception.getMessage());
-		}
-	}
-
-	public static int getGroupThreadsCount(
-			long groupId, long userId, java.util.Date modifiedDate, int status)
-		throws RemoteException {
-
-		try {
-			int returnValue = MBThreadServiceUtil.getGroupThreadsCount(
-				groupId, userId, modifiedDate, status);
-
-			return returnValue;
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			throw new RemoteException(exception.getMessage());
-		}
-	}
-
-	public static int getGroupThreadsCount(
-			long groupId, long userId, int status)
-		throws RemoteException {
-
-		try {
-			int returnValue = MBThreadServiceUtil.getGroupThreadsCount(
-				groupId, userId, status);
-
-			return returnValue;
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			throw new RemoteException(exception.getMessage());
-		}
-	}
-
-	public static int getGroupThreadsCount(
-			long groupId, long userId, int status, boolean subscribed)
-		throws RemoteException {
-
-		try {
-			int returnValue = MBThreadServiceUtil.getGroupThreadsCount(
-				groupId, userId, status, subscribed);
-
-			return returnValue;
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			throw new RemoteException(exception.getMessage());
-		}
-	}
-
-	public static int getGroupThreadsCount(
-			long groupId, long userId, int status, boolean subscribed,
-			boolean includeAnonymous)
-		throws RemoteException {
-
-		try {
-			int returnValue = MBThreadServiceUtil.getGroupThreadsCount(
-				groupId, userId, status, subscribed, includeAnonymous);
-
-			return returnValue;
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			throw new RemoteException(exception.getMessage());
-		}
-	}
-
-	public static com.liferay.message.boards.kernel.model.MBThreadSoap[]
-			getThreads(
-				long groupId, long categoryId, int status, int start, int end)
-		throws RemoteException {
-
-		try {
-			java.util.List<com.liferay.message.boards.kernel.model.MBThread>
-				returnValue = MBThreadServiceUtil.getThreads(
-					groupId, categoryId, status, start, end);
-
-			return com.liferay.message.boards.kernel.model.MBThreadSoap.
-				toSoapModels(returnValue);
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static int getThreadsCount(long groupId, long categoryId, int status)
 		throws RemoteException {
-
 		try {
-			int returnValue = MBThreadServiceUtil.getThreadsCount(
-				groupId, categoryId, status);
+			int returnValue = MBThreadServiceUtil.getThreadsCount(groupId,
+					categoryId, status);
 
 			return returnValue;
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static com.liferay.portal.kernel.lock.Lock lockThread(long threadId)
 		throws RemoteException {
-
 		try {
-			com.liferay.portal.kernel.lock.Lock returnValue =
-				MBThreadServiceUtil.lockThread(threadId);
+			com.liferay.portal.kernel.lock.Lock returnValue = MBThreadServiceUtil.lockThread(threadId);
 
 			return returnValue;
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.message.boards.kernel.model.MBThreadSoap
-			moveThread(long categoryId, long threadId)
-		throws RemoteException {
-
+	public static com.liferay.message.boards.kernel.model.MBThreadSoap moveThread(
+		long categoryId, long threadId) throws RemoteException {
 		try {
-			com.liferay.message.boards.kernel.model.MBThread returnValue =
-				MBThreadServiceUtil.moveThread(categoryId, threadId);
+			com.liferay.message.boards.kernel.model.MBThread returnValue = MBThreadServiceUtil.moveThread(categoryId,
+					threadId);
 
-			return com.liferay.message.boards.kernel.model.MBThreadSoap.
-				toSoapModel(returnValue);
+			return com.liferay.message.boards.kernel.model.MBThreadSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.message.boards.kernel.model.MBThreadSoap
-			moveThreadFromTrash(long categoryId, long threadId)
-		throws RemoteException {
-
+	public static com.liferay.message.boards.kernel.model.MBThreadSoap moveThreadFromTrash(
+		long categoryId, long threadId) throws RemoteException {
 		try {
-			com.liferay.message.boards.kernel.model.MBThread returnValue =
-				MBThreadServiceUtil.moveThreadFromTrash(categoryId, threadId);
+			com.liferay.message.boards.kernel.model.MBThread returnValue = MBThreadServiceUtil.moveThreadFromTrash(categoryId,
+					threadId);
 
-			return com.liferay.message.boards.kernel.model.MBThreadSoap.
-				toSoapModel(returnValue);
+			return com.liferay.message.boards.kernel.model.MBThreadSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.message.boards.kernel.model.MBThreadSoap
-			moveThreadToTrash(long threadId)
-		throws RemoteException {
-
+	public static com.liferay.message.boards.kernel.model.MBThreadSoap moveThreadToTrash(
+		long threadId) throws RemoteException {
 		try {
-			com.liferay.message.boards.kernel.model.MBThread returnValue =
-				MBThreadServiceUtil.moveThreadToTrash(threadId);
+			com.liferay.message.boards.kernel.model.MBThread returnValue = MBThreadServiceUtil.moveThreadToTrash(threadId);
 
-			return com.liferay.message.boards.kernel.model.MBThreadSoap.
-				toSoapModel(returnValue);
+			return com.liferay.message.boards.kernel.model.MBThreadSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static void restoreThreadFromTrash(long threadId)
 		throws RemoteException {
-
 		try {
 			MBThreadServiceUtil.restoreThreadFromTrash(threadId);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.message.boards.kernel.model.MBThreadSoap
-			splitThread(
-				long messageId, String subject,
-				com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static com.liferay.message.boards.kernel.model.MBThreadSoap splitThread(
+		long messageId, java.lang.String subject,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
-
 		try {
-			com.liferay.message.boards.kernel.model.MBThread returnValue =
-				MBThreadServiceUtil.splitThread(
-					messageId, subject, serviceContext);
+			com.liferay.message.boards.kernel.model.MBThread returnValue = MBThreadServiceUtil.splitThread(messageId,
+					subject, serviceContext);
 
-			return com.liferay.message.boards.kernel.model.MBThreadSoap.
-				toSoapModel(returnValue);
+			return com.liferay.message.boards.kernel.model.MBThreadSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
@@ -409,13 +362,12 @@ public class MBThreadServiceSoap {
 		try {
 			MBThreadServiceUtil.unlockThread(threadId);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(MBThreadServiceSoap.class);
-
 }

@@ -14,6 +14,8 @@
 
 package com.liferay.document.library.kernel.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -25,11 +27,9 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
+@ProviderType
 public class DLFileEntryMetadataSoap implements Serializable {
-
-	public static DLFileEntryMetadataSoap toSoapModel(
-		DLFileEntryMetadata model) {
-
+	public static DLFileEntryMetadataSoap toSoapModel(DLFileEntryMetadata model) {
 		DLFileEntryMetadataSoap soapModel = new DLFileEntryMetadataSoap();
 
 		soapModel.setUuid(model.getUuid());
@@ -45,9 +45,7 @@ public class DLFileEntryMetadataSoap implements Serializable {
 
 	public static DLFileEntryMetadataSoap[] toSoapModels(
 		DLFileEntryMetadata[] models) {
-
-		DLFileEntryMetadataSoap[] soapModels =
-			new DLFileEntryMetadataSoap[models.length];
+		DLFileEntryMetadataSoap[] soapModels = new DLFileEntryMetadataSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -58,12 +56,10 @@ public class DLFileEntryMetadataSoap implements Serializable {
 
 	public static DLFileEntryMetadataSoap[][] toSoapModels(
 		DLFileEntryMetadata[][] models) {
-
 		DLFileEntryMetadataSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels =
-				new DLFileEntryMetadataSoap[models.length][models[0].length];
+			soapModels = new DLFileEntryMetadataSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new DLFileEntryMetadataSoap[0][0];
@@ -78,16 +74,13 @@ public class DLFileEntryMetadataSoap implements Serializable {
 
 	public static DLFileEntryMetadataSoap[] toSoapModels(
 		List<DLFileEntryMetadata> models) {
-
-		List<DLFileEntryMetadataSoap> soapModels =
-			new ArrayList<DLFileEntryMetadataSoap>(models.size());
+		List<DLFileEntryMetadataSoap> soapModels = new ArrayList<DLFileEntryMetadataSoap>(models.size());
 
 		for (DLFileEntryMetadata model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(
-			new DLFileEntryMetadataSoap[soapModels.size()]);
+		return soapModels.toArray(new DLFileEntryMetadataSoap[soapModels.size()]);
 	}
 
 	public DLFileEntryMetadataSoap() {
@@ -164,5 +157,4 @@ public class DLFileEntryMetadataSoap implements Serializable {
 	private long _DDMStructureId;
 	private long _fileEntryId;
 	private long _fileVersionId;
-
 }

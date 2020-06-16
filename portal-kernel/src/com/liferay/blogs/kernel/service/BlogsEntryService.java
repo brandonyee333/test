@@ -17,6 +17,7 @@ package com.liferay.blogs.kernel.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.blogs.kernel.model.BlogsEntry;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -42,61 +43,81 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see BlogsEntryServiceUtil
+ * @see com.liferay.portlet.blogs.service.base.BlogsEntryServiceBaseImpl
+ * @see com.liferay.portlet.blogs.service.impl.BlogsEntryServiceImpl
  * @generated
  */
 @AccessControlled
 @JSONWebService
 @ProviderType
-@Transactional(
-	isolation = Isolation.PORTAL,
-	rollbackFor = {PortalException.class, SystemException.class}
-)
+@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
+	PortalException.class, SystemException.class})
 public interface BlogsEntryService extends BaseService {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link BlogsEntryServiceUtil} to access the blogs entry remote service. Add custom service methods to <code>com.liferay.portlet.blogs.service.impl.BlogsEntryServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link BlogsEntryServiceUtil} to access the blogs entry remote service. Add custom service methods to {@link com.liferay.portlet.blogs.service.impl.BlogsEntryServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 
 	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 #addEntry(String, String, String, String, int, int, int, int,
-	 int, boolean, boolean, String[], String, ImageSelector,
-	 ImageSelector, ServiceContext)}
-	 */
-	@Deprecated
-	public BlogsEntry addEntry(
-			String title, String description, String content,
-			int displayDateMonth, int displayDateDay, int displayDateYear,
-			int displayDateHour, int displayDateMinute, boolean allowPingbacks,
-			boolean allowTrackbacks, String[] trackbacks, boolean smallImage,
-			String smallImageURL, String smallImageFileName,
-			InputStream smallImageInputStream, ServiceContext serviceContext)
-		throws PortalException;
+	* @deprecated As of Wilberforce (7.0.x), replaced by {@link
+	#addEntry(String, String, String, String, int, int, int, int,
+	int, boolean, boolean, String[], String, ImageSelector,
+	ImageSelector, ServiceContext)}
+	*/
+	@java.lang.Deprecated
+	public BlogsEntry addEntry(java.lang.String title,
+		java.lang.String description, java.lang.String content,
+		int displayDateMonth, int displayDateDay, int displayDateYear,
+		int displayDateHour, int displayDateMinute, boolean allowPingbacks,
+		boolean allowTrackbacks, java.lang.String[] trackbacks,
+		boolean smallImage, java.lang.String smallImageURL,
+		java.lang.String smallImageFileName, InputStream smallImageInputStream,
+		ServiceContext serviceContext) throws PortalException;
 
-	public BlogsEntry addEntry(
-			String title, String subtitle, String description, String content,
-			int displayDateMonth, int displayDateDay, int displayDateYear,
-			int displayDateHour, int displayDateMinute, boolean allowPingbacks,
-			boolean allowTrackbacks, String[] trackbacks,
-			String coverImageCaption, ImageSelector coverImageImageSelector,
-			ImageSelector smallImageImageSelector,
-			ServiceContext serviceContext)
-		throws PortalException;
-
-	public void deleteEntry(long entryId) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<BlogsEntry> getCompanyEntries(
-			long companyId, Date displayDate, int status, int max)
+	public BlogsEntry addEntry(java.lang.String title,
+		java.lang.String subtitle, java.lang.String description,
+		java.lang.String content, int displayDateMonth, int displayDateDay,
+		int displayDateYear, int displayDateHour, int displayDateMinute,
+		boolean allowPingbacks, boolean allowTrackbacks,
+		java.lang.String[] trackbacks, java.lang.String coverImageCaption,
+		ImageSelector coverImageImageSelector,
+		ImageSelector smallImageImageSelector, ServiceContext serviceContext)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public String getCompanyEntriesRSS(
-			long companyId, Date displayDate, int status, int max, String type,
-			double version, String displayStyle, String feedURL,
-			String entryURL, ThemeDisplay themeDisplay)
+	public BlogsEntry getEntry(long entryId) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public BlogsEntry getEntry(long groupId, java.lang.String urlTitle)
+		throws PortalException;
+
+	public BlogsEntry moveEntryToTrash(long entryId) throws PortalException;
+
+	/**
+	* @deprecated As of Wilberforce (7.0.x), replaced by {@link
+	#updateEntry(long, String, String, String, String, int, int,
+	int, int, int, boolean, boolean, String[], String,
+	ImageSelector, ImageSelector, ServiceContext)}
+	*/
+	@java.lang.Deprecated
+	public BlogsEntry updateEntry(long entryId, java.lang.String title,
+		java.lang.String description, java.lang.String content,
+		int displayDateMonth, int displayDateDay, int displayDateYear,
+		int displayDateHour, int displayDateMinute, boolean allowPingbacks,
+		boolean allowTrackbacks, java.lang.String[] trackbacks,
+		boolean smallImage, java.lang.String smallImageURL,
+		java.lang.String smallImageFileName, InputStream smallImageInputStream,
+		ServiceContext serviceContext) throws PortalException;
+
+	public BlogsEntry updateEntry(long entryId, java.lang.String title,
+		java.lang.String subtitle, java.lang.String description,
+		java.lang.String content, int displayDateMonth, int displayDateDay,
+		int displayDateYear, int displayDateHour, int displayDateMinute,
+		boolean allowPingbacks, boolean allowTrackbacks,
+		java.lang.String[] trackbacks, java.lang.String coverImageCaption,
+		ImageSelector coverImageImageSelector,
+		ImageSelector smallImageImageSelector, ServiceContext serviceContext)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -104,119 +125,90 @@ public interface BlogsEntryService extends BaseService {
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public BlogsEntry getEntry(long entryId) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public BlogsEntry getEntry(long groupId, String urlTitle)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<BlogsEntry> getGroupEntries(
-		long groupId, Date displayDate, int status, int max);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<BlogsEntry> getGroupEntries(
-		long groupId, Date displayDate, int status, int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<BlogsEntry> getGroupEntries(long groupId, int status, int max);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<BlogsEntry> getGroupEntries(
-		long groupId, int status, int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<BlogsEntry> getGroupEntries(
-		long groupId, int status, int start, int end,
-		OrderByComparator<BlogsEntry> obc);
+	public int getGroupEntriesCount(long groupId, int status);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getGroupEntriesCount(long groupId, Date displayDate, int status);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getGroupEntriesCount(long groupId, int status);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public String getGroupEntriesRSS(
-			long groupId, Date displayDate, int status, int max, String type,
-			double version, String displayStyle, String feedURL,
-			String entryURL, ThemeDisplay themeDisplay)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<BlogsEntry> getGroupsEntries(
-			long companyId, long groupId, Date displayDate, int status, int max)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<BlogsEntry> getGroupUserEntries(
-		long groupId, long userId, int status, int start, int end,
-		OrderByComparator<BlogsEntry> obc);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<BlogsEntry> getGroupUserEntries(
-		long groupId, long userId, int[] statuses, int start, int end,
-		OrderByComparator<BlogsEntry> obc);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getGroupUserEntriesCount(long groupId, long userId, int status);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getGroupUserEntriesCount(
-		long groupId, long userId, int[] statuses);
+	public int getGroupUserEntriesCount(long groupId, long userId,
+		int[] statuses);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<BlogsEntry> getOrganizationEntries(
-			long organizationId, Date displayDate, int status, int max)
-		throws PortalException;
+	public java.lang.String getCompanyEntriesRSS(long companyId,
+		Date displayDate, int status, int max, java.lang.String type,
+		double version, java.lang.String displayStyle,
+		java.lang.String feedURL, java.lang.String entryURL,
+		ThemeDisplay themeDisplay) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public String getOrganizationEntriesRSS(
-			long organizationId, Date displayDate, int status, int max,
-			String type, double version, String displayStyle, String feedURL,
-			String entryURL, ThemeDisplay themeDisplay)
+	public java.lang.String getGroupEntriesRSS(long groupId, Date displayDate,
+		int status, int max, java.lang.String type, double version,
+		java.lang.String displayStyle, java.lang.String feedURL,
+		java.lang.String entryURL, ThemeDisplay themeDisplay)
 		throws PortalException;
 
 	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
-	public String getOSGiServiceIdentifier();
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
 
-	public BlogsEntry moveEntryToTrash(long entryId) throws PortalException;
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.lang.String getOrganizationEntriesRSS(long organizationId,
+		Date displayDate, int status, int max, java.lang.String type,
+		double version, java.lang.String displayStyle,
+		java.lang.String feedURL, java.lang.String entryURL,
+		ThemeDisplay themeDisplay) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<BlogsEntry> getCompanyEntries(long companyId, Date displayDate,
+		int status, int max) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<BlogsEntry> getGroupEntries(long groupId, int status, int max);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<BlogsEntry> getGroupEntries(long groupId, int status,
+		int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<BlogsEntry> getGroupEntries(long groupId, int status,
+		int start, int end, OrderByComparator<BlogsEntry> obc);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<BlogsEntry> getGroupEntries(long groupId, Date displayDate,
+		int status, int max);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<BlogsEntry> getGroupEntries(long groupId, Date displayDate,
+		int status, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<BlogsEntry> getGroupUserEntries(long groupId, long userId,
+		int status, int start, int end, OrderByComparator<BlogsEntry> obc);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<BlogsEntry> getGroupUserEntries(long groupId, long userId,
+		int[] statuses, int start, int end, OrderByComparator<BlogsEntry> obc);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<BlogsEntry> getGroupsEntries(long companyId, long groupId,
+		Date displayDate, int status, int max) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<BlogsEntry> getOrganizationEntries(long organizationId,
+		Date displayDate, int status, int max) throws PortalException;
+
+	public void deleteEntry(long entryId) throws PortalException;
 
 	public void restoreEntryFromTrash(long entryId) throws PortalException;
 
 	public void subscribe(long groupId) throws PortalException;
 
 	public void unsubscribe(long groupId) throws PortalException;
-
-	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 #updateEntry(long, String, String, String, String, int, int,
-	 int, int, int, boolean, boolean, String[], String,
-	 ImageSelector, ImageSelector, ServiceContext)}
-	 */
-	@Deprecated
-	public BlogsEntry updateEntry(
-			long entryId, String title, String description, String content,
-			int displayDateMonth, int displayDateDay, int displayDateYear,
-			int displayDateHour, int displayDateMinute, boolean allowPingbacks,
-			boolean allowTrackbacks, String[] trackbacks, boolean smallImage,
-			String smallImageURL, String smallImageFileName,
-			InputStream smallImageInputStream, ServiceContext serviceContext)
-		throws PortalException;
-
-	public BlogsEntry updateEntry(
-			long entryId, String title, String subtitle, String description,
-			String content, int displayDateMonth, int displayDateDay,
-			int displayDateYear, int displayDateHour, int displayDateMinute,
-			boolean allowPingbacks, boolean allowTrackbacks,
-			String[] trackbacks, String coverImageCaption,
-			ImageSelector coverImageImageSelector,
-			ImageSelector smallImageImageSelector,
-			ServiceContext serviceContext)
-		throws PortalException;
-
 }

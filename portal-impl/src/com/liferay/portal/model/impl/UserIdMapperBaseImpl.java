@@ -14,6 +14,8 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.UserIdMapper;
 import com.liferay.portal.kernel.service.UserIdMapperLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.portal.kernel.service.UserIdMapperLocalServiceUtil;
  * @see UserIdMapper
  * @generated
  */
-public abstract class UserIdMapperBaseImpl
-	extends UserIdMapperModelImpl implements UserIdMapper {
-
+@ProviderType
+public abstract class UserIdMapperBaseImpl extends UserIdMapperModelImpl
+	implements UserIdMapper {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a user ID mapper model instance should use the <code>UserIdMapper</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a user ID mapper model instance should use the {@link UserIdMapper} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class UserIdMapperBaseImpl
 			UserIdMapperLocalServiceUtil.updateUserIdMapper(this);
 		}
 	}
-
 }

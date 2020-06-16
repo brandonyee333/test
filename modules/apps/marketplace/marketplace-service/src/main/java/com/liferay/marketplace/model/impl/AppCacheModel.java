@@ -14,10 +14,14 @@
 
 package com.liferay.marketplace.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.marketplace.model.App;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,10 +34,11 @@ import java.util.Date;
  * The cache model class for representing App in entity cache.
  *
  * @author Ryan Park
+ * @see App
  * @generated
  */
+@ProviderType
 public class AppCacheModel implements CacheModel<App>, Externalizable {
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -100,7 +105,7 @@ public class AppCacheModel implements CacheModel<App>, Externalizable {
 		AppImpl appImpl = new AppImpl();
 
 		if (uuid == null) {
-			appImpl.setUuid("");
+			appImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			appImpl.setUuid(uuid);
@@ -111,7 +116,7 @@ public class AppCacheModel implements CacheModel<App>, Externalizable {
 		appImpl.setUserId(userId);
 
 		if (userName == null) {
-			appImpl.setUserName("");
+			appImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			appImpl.setUserName(userName);
@@ -134,35 +139,35 @@ public class AppCacheModel implements CacheModel<App>, Externalizable {
 		appImpl.setRemoteAppId(remoteAppId);
 
 		if (title == null) {
-			appImpl.setTitle("");
+			appImpl.setTitle(StringPool.BLANK);
 		}
 		else {
 			appImpl.setTitle(title);
 		}
 
 		if (description == null) {
-			appImpl.setDescription("");
+			appImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			appImpl.setDescription(description);
 		}
 
 		if (category == null) {
-			appImpl.setCategory("");
+			appImpl.setCategory(StringPool.BLANK);
 		}
 		else {
 			appImpl.setCategory(category);
 		}
 
 		if (iconURL == null) {
-			appImpl.setIconURL("");
+			appImpl.setIconURL(StringPool.BLANK);
 		}
 		else {
 			appImpl.setIconURL(iconURL);
 		}
 
 		if (version == null) {
-			appImpl.setVersion("");
+			appImpl.setVersion(StringPool.BLANK);
 		}
 		else {
 			appImpl.setVersion(version);
@@ -199,9 +204,10 @@ public class AppCacheModel implements CacheModel<App>, Externalizable {
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -214,7 +220,7 @@ public class AppCacheModel implements CacheModel<App>, Externalizable {
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -226,35 +232,35 @@ public class AppCacheModel implements CacheModel<App>, Externalizable {
 		objectOutput.writeLong(remoteAppId);
 
 		if (title == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(title);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (category == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(category);
 		}
 
 		if (iconURL == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(iconURL);
 		}
 
 		if (version == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(version);
@@ -277,5 +283,4 @@ public class AppCacheModel implements CacheModel<App>, Externalizable {
 	public String iconURL;
 	public String version;
 	public boolean required;
-
 }

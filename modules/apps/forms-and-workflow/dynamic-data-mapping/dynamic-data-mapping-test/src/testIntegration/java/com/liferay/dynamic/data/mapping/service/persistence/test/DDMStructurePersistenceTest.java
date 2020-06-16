@@ -15,11 +15,13 @@
 package com.liferay.dynamic.data.mapping.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+
 import com.liferay.dynamic.data.mapping.exception.NoSuchStructureException;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMStructurePersistence;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMStructureUtil;
+
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -33,10 +35,20 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+
+import org.junit.runner.RunWith;
 
 import java.io.Serializable;
 
@@ -48,27 +60,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 /**
  * @generated
  */
 @RunWith(Arquillian.class)
 public class DDMStructurePersistenceTest {
-
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
-			new TransactionalTestRule(
-				Propagation.REQUIRED,
+	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
+			PersistenceTestRule.INSTANCE,
+			new TransactionalTestRule(Propagation.REQUIRED,
 				"com.liferay.dynamic.data.mapping.service"));
 
 	@Before
@@ -108,8 +109,7 @@ public class DDMStructurePersistenceTest {
 
 		_persistence.remove(newDDMStructure);
 
-		DDMStructure existingDDMStructure = _persistence.fetchByPrimaryKey(
-			newDDMStructure.getPrimaryKey());
+		DDMStructure existingDDMStructure = _persistence.fetchByPrimaryKey(newDDMStructure.getPrimaryKey());
 
 		Assert.assertNull(existingDDMStructure);
 	}
@@ -165,87 +165,76 @@ public class DDMStructurePersistenceTest {
 
 		_ddmStructures.add(_persistence.update(newDDMStructure));
 
-		DDMStructure existingDDMStructure = _persistence.findByPrimaryKey(
-			newDDMStructure.getPrimaryKey());
+		DDMStructure existingDDMStructure = _persistence.findByPrimaryKey(newDDMStructure.getPrimaryKey());
 
-		Assert.assertEquals(
-			existingDDMStructure.getUuid(), newDDMStructure.getUuid());
-		Assert.assertEquals(
-			existingDDMStructure.getStructureId(),
+		Assert.assertEquals(existingDDMStructure.getUuid(),
+			newDDMStructure.getUuid());
+		Assert.assertEquals(existingDDMStructure.getStructureId(),
 			newDDMStructure.getStructureId());
-		Assert.assertEquals(
-			existingDDMStructure.getGroupId(), newDDMStructure.getGroupId());
-		Assert.assertEquals(
-			existingDDMStructure.getCompanyId(),
+		Assert.assertEquals(existingDDMStructure.getGroupId(),
+			newDDMStructure.getGroupId());
+		Assert.assertEquals(existingDDMStructure.getCompanyId(),
 			newDDMStructure.getCompanyId());
-		Assert.assertEquals(
-			existingDDMStructure.getUserId(), newDDMStructure.getUserId());
-		Assert.assertEquals(
-			existingDDMStructure.getUserName(), newDDMStructure.getUserName());
-		Assert.assertEquals(
-			existingDDMStructure.getVersionUserId(),
+		Assert.assertEquals(existingDDMStructure.getUserId(),
+			newDDMStructure.getUserId());
+		Assert.assertEquals(existingDDMStructure.getUserName(),
+			newDDMStructure.getUserName());
+		Assert.assertEquals(existingDDMStructure.getVersionUserId(),
 			newDDMStructure.getVersionUserId());
-		Assert.assertEquals(
-			existingDDMStructure.getVersionUserName(),
+		Assert.assertEquals(existingDDMStructure.getVersionUserName(),
 			newDDMStructure.getVersionUserName());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingDDMStructure.getCreateDate()),
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingDDMStructure.getCreateDate()),
 			Time.getShortTimestamp(newDDMStructure.getCreateDate()));
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingDDMStructure.getModifiedDate()),
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingDDMStructure.getModifiedDate()),
 			Time.getShortTimestamp(newDDMStructure.getModifiedDate()));
-		Assert.assertEquals(
-			existingDDMStructure.getParentStructureId(),
+		Assert.assertEquals(existingDDMStructure.getParentStructureId(),
 			newDDMStructure.getParentStructureId());
-		Assert.assertEquals(
-			existingDDMStructure.getClassNameId(),
+		Assert.assertEquals(existingDDMStructure.getClassNameId(),
 			newDDMStructure.getClassNameId());
-		Assert.assertEquals(
-			existingDDMStructure.getStructureKey(),
+		Assert.assertEquals(existingDDMStructure.getStructureKey(),
 			newDDMStructure.getStructureKey());
-		Assert.assertEquals(
-			existingDDMStructure.getVersion(), newDDMStructure.getVersion());
-		Assert.assertEquals(
-			existingDDMStructure.getName(), newDDMStructure.getName());
-		Assert.assertEquals(
-			existingDDMStructure.getDescription(),
+		Assert.assertEquals(existingDDMStructure.getVersion(),
+			newDDMStructure.getVersion());
+		Assert.assertEquals(existingDDMStructure.getName(),
+			newDDMStructure.getName());
+		Assert.assertEquals(existingDDMStructure.getDescription(),
 			newDDMStructure.getDescription());
-		Assert.assertEquals(
-			existingDDMStructure.getDefinition(),
+		Assert.assertEquals(existingDDMStructure.getDefinition(),
 			newDDMStructure.getDefinition());
-		Assert.assertEquals(
-			existingDDMStructure.getStorageType(),
+		Assert.assertEquals(existingDDMStructure.getStorageType(),
 			newDDMStructure.getStorageType());
-		Assert.assertEquals(
-			existingDDMStructure.getType(), newDDMStructure.getType());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingDDMStructure.getLastPublishDate()),
+		Assert.assertEquals(existingDDMStructure.getType(),
+			newDDMStructure.getType());
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingDDMStructure.getLastPublishDate()),
 			Time.getShortTimestamp(newDDMStructure.getLastPublishDate()));
 	}
 
 	@Test
 	public void testCountByUuid() throws Exception {
-		_persistence.countByUuid("");
+		_persistence.countByUuid(StringPool.BLANK);
 
-		_persistence.countByUuid("null");
+		_persistence.countByUuid(StringPool.NULL);
 
 		_persistence.countByUuid((String)null);
 	}
 
 	@Test
 	public void testCountByUUID_G() throws Exception {
-		_persistence.countByUUID_G("", RandomTestUtil.nextLong());
+		_persistence.countByUUID_G(StringPool.BLANK, RandomTestUtil.nextLong());
 
-		_persistence.countByUUID_G("null", 0L);
+		_persistence.countByUUID_G(StringPool.NULL, 0L);
 
 		_persistence.countByUUID_G((String)null, 0L);
 	}
 
 	@Test
 	public void testCountByUuid_C() throws Exception {
-		_persistence.countByUuid_C("", RandomTestUtil.nextLong());
+		_persistence.countByUuid_C(StringPool.BLANK, RandomTestUtil.nextLong());
 
-		_persistence.countByUuid_C("null", 0L);
+		_persistence.countByUuid_C(StringPool.NULL, 0L);
 
 		_persistence.countByUuid_C((String)null, 0L);
 	}
@@ -259,7 +248,7 @@ public class DDMStructurePersistenceTest {
 
 	@Test
 	public void testCountByGroupIdArrayable() throws Exception {
-		_persistence.countByGroupId(new long[] {RandomTestUtil.nextLong(), 0L});
+		_persistence.countByGroupId(new long[] { RandomTestUtil.nextLong(), 0L });
 	}
 
 	@Test
@@ -278,59 +267,59 @@ public class DDMStructurePersistenceTest {
 
 	@Test
 	public void testCountByStructureKey() throws Exception {
-		_persistence.countByStructureKey("");
+		_persistence.countByStructureKey(StringPool.BLANK);
 
-		_persistence.countByStructureKey("null");
+		_persistence.countByStructureKey(StringPool.NULL);
 
 		_persistence.countByStructureKey((String)null);
 	}
 
 	@Test
 	public void testCountByG_P() throws Exception {
-		_persistence.countByG_P(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+		_persistence.countByG_P(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong());
 
 		_persistence.countByG_P(0L, 0L);
 	}
 
 	@Test
 	public void testCountByG_C() throws Exception {
-		_persistence.countByG_C(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+		_persistence.countByG_C(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong());
 
 		_persistence.countByG_C(0L, 0L);
 	}
 
 	@Test
 	public void testCountByG_CArrayable() throws Exception {
-		_persistence.countByG_C(
-			new long[] {RandomTestUtil.nextLong(), 0L},
+		_persistence.countByG_C(new long[] { RandomTestUtil.nextLong(), 0L },
 			RandomTestUtil.nextLong());
 	}
 
 	@Test
 	public void testCountByC_C() throws Exception {
-		_persistence.countByC_C(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+		_persistence.countByC_C(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong());
 
 		_persistence.countByC_C(0L, 0L);
 	}
 
 	@Test
 	public void testCountByG_C_S() throws Exception {
-		_persistence.countByG_C_S(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(), "");
+		_persistence.countByG_C_S(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong(), StringPool.BLANK);
 
-		_persistence.countByG_C_S(0L, 0L, "null");
+		_persistence.countByG_C_S(0L, 0L, StringPool.NULL);
 
 		_persistence.countByG_C_S(0L, 0L, (String)null);
 	}
 
 	@Test
 	public void testCountByG_N_D() throws Exception {
-		_persistence.countByG_N_D(RandomTestUtil.nextLong(), "", "");
+		_persistence.countByG_N_D(RandomTestUtil.nextLong(), StringPool.BLANK,
+			StringPool.BLANK);
 
-		_persistence.countByG_N_D(0L, "null", "null");
+		_persistence.countByG_N_D(0L, StringPool.NULL, StringPool.NULL);
 
 		_persistence.countByG_N_D(0L, (String)null, (String)null);
 	}
@@ -339,8 +328,7 @@ public class DDMStructurePersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		DDMStructure newDDMStructure = addDDMStructure();
 
-		DDMStructure existingDDMStructure = _persistence.findByPrimaryKey(
-			newDDMStructure.getPrimaryKey());
+		DDMStructure existingDDMStructure = _persistence.findByPrimaryKey(newDDMStructure.getPrimaryKey());
 
 		Assert.assertEquals(existingDDMStructure, newDDMStructure);
 	}
@@ -354,32 +342,31 @@ public class DDMStructurePersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
+		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			getOrderByComparator());
 	}
 
 	@Test
 	public void testFilterFindByGroupId() throws Exception {
-		_persistence.filterFindByGroupId(
-			0, QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
+		_persistence.filterFindByGroupId(0, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, getOrderByComparator());
 	}
 
 	protected OrderByComparator<DDMStructure> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create(
-			"DDMStructure", "uuid", true, "structureId", true, "groupId", true,
-			"companyId", true, "userId", true, "userName", true,
-			"versionUserId", true, "versionUserName", true, "createDate", true,
-			"modifiedDate", true, "parentStructureId", true, "classNameId",
-			true, "structureKey", true, "version", true, "name", true,
-			"storageType", true, "type", true, "lastPublishDate", true);
+		return OrderByComparatorFactoryUtil.create("DDMStructure", "uuid",
+			true, "structureId", true, "groupId", true, "companyId", true,
+			"userId", true, "userName", true, "versionUserId", true,
+			"versionUserName", true, "createDate", true, "modifiedDate", true,
+			"parentStructureId", true, "classNameId", true, "structureKey",
+			true, "version", true, "name", true, "storageType", true, "type",
+			true, "lastPublishDate", true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		DDMStructure newDDMStructure = addDDMStructure();
 
-		DDMStructure existingDDMStructure = _persistence.fetchByPrimaryKey(
-			newDDMStructure.getPrimaryKey());
+		DDMStructure existingDDMStructure = _persistence.fetchByPrimaryKey(newDDMStructure.getPrimaryKey());
 
 		Assert.assertEquals(existingDDMStructure, newDDMStructure);
 	}
@@ -396,7 +383,6 @@ public class DDMStructurePersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
-
 		DDMStructure newDDMStructure1 = addDDMStructure();
 		DDMStructure newDDMStructure2 = addDDMStructure();
 
@@ -405,22 +391,18 @@ public class DDMStructurePersistenceTest {
 		primaryKeys.add(newDDMStructure1.getPrimaryKey());
 		primaryKeys.add(newDDMStructure2.getPrimaryKey());
 
-		Map<Serializable, DDMStructure> ddmStructures =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, DDMStructure> ddmStructures = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(2, ddmStructures.size());
-		Assert.assertEquals(
-			newDDMStructure1,
+		Assert.assertEquals(newDDMStructure1,
 			ddmStructures.get(newDDMStructure1.getPrimaryKey()));
-		Assert.assertEquals(
-			newDDMStructure2,
+		Assert.assertEquals(newDDMStructure2,
 			ddmStructures.get(newDDMStructure2.getPrimaryKey()));
 	}
 
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
-
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -430,8 +412,7 @@ public class DDMStructurePersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, DDMStructure> ddmStructures =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, DDMStructure> ddmStructures = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(ddmStructures.isEmpty());
 	}
@@ -439,7 +420,6 @@ public class DDMStructurePersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
-
 		DDMStructure newDDMStructure = addDDMStructure();
 
 		long pk = RandomTestUtil.nextLong();
@@ -449,39 +429,36 @@ public class DDMStructurePersistenceTest {
 		primaryKeys.add(newDDMStructure.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, DDMStructure> ddmStructures =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, DDMStructure> ddmStructures = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, ddmStructures.size());
-		Assert.assertEquals(
-			newDDMStructure,
+		Assert.assertEquals(newDDMStructure,
 			ddmStructures.get(newDDMStructure.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
+		throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, DDMStructure> ddmStructures =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, DDMStructure> ddmStructures = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(ddmStructures.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey()
+		throws Exception {
 		DDMStructure newDDMStructure = addDDMStructure();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newDDMStructure.getPrimaryKey());
 
-		Map<Serializable, DDMStructure> ddmStructures =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, DDMStructure> ddmStructures = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, ddmStructures.size());
-		Assert.assertEquals(
-			newDDMStructure,
+		Assert.assertEquals(newDDMStructure,
 			ddmStructures.get(newDDMStructure.getPrimaryKey()));
 	}
 
@@ -489,19 +466,15 @@ public class DDMStructurePersistenceTest {
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery =
-			DDMStructureLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = DDMStructureLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<DDMStructure>() {
-
+		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<DDMStructure>() {
 				@Override
 				public void performAction(DDMStructure ddmStructure) {
 					Assert.assertNotNull(ddmStructure);
 
 					count.increment();
 				}
-
 			});
 
 		actionableDynamicQuery.performActions();
@@ -510,18 +483,17 @@ public class DDMStructurePersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting()
+		throws Exception {
 		DDMStructure newDDMStructure = addDDMStructure();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			DDMStructure.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(DDMStructure.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq(
-				"structureId", newDDMStructure.getStructureId()));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("structureId",
+				newDDMStructure.getStructureId()));
 
-		List<DDMStructure> result = _persistence.findWithDynamicQuery(
-			dynamicQuery);
+		List<DDMStructure> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
 		Assert.assertEquals(1, result.size());
 
@@ -532,34 +504,31 @@ public class DDMStructurePersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			DDMStructure.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(DDMStructure.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq(
-				"structureId", RandomTestUtil.nextLong()));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("structureId",
+				RandomTestUtil.nextLong()));
 
-		List<DDMStructure> result = _persistence.findWithDynamicQuery(
-			dynamicQuery);
+		List<DDMStructure> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
 		Assert.assertEquals(0, result.size());
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting() throws Exception {
+	public void testDynamicQueryByProjectionExisting()
+		throws Exception {
 		DDMStructure newDDMStructure = addDDMStructure();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			DDMStructure.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(DDMStructure.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(
-			ProjectionFactoryUtil.property("structureId"));
+		dynamicQuery.setProjection(ProjectionFactoryUtil.property("structureId"));
 
 		Object newStructureId = newDDMStructure.getStructureId();
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in(
-				"structureId", new Object[] {newStructureId}));
+		dynamicQuery.add(RestrictionsFactoryUtil.in("structureId",
+				new Object[] { newStructureId }));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -572,15 +541,13 @@ public class DDMStructurePersistenceTest {
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			DDMStructure.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(DDMStructure.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(
-			ProjectionFactoryUtil.property("structureId"));
+		dynamicQuery.setProjection(ProjectionFactoryUtil.property("structureId"));
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in(
-				"structureId", new Object[] {RandomTestUtil.nextLong()}));
+		dynamicQuery.add(RestrictionsFactoryUtil.in("structureId",
+				new Object[] { RandomTestUtil.nextLong() }));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -593,34 +560,25 @@ public class DDMStructurePersistenceTest {
 
 		_persistence.clearCache();
 
-		DDMStructure existingDDMStructure = _persistence.findByPrimaryKey(
-			newDDMStructure.getPrimaryKey());
+		DDMStructure existingDDMStructure = _persistence.findByPrimaryKey(newDDMStructure.getPrimaryKey());
 
-		Assert.assertTrue(
-			Objects.equals(
-				existingDDMStructure.getUuid(),
-				ReflectionTestUtil.invoke(
-					existingDDMStructure, "getOriginalUuid", new Class<?>[0])));
-		Assert.assertEquals(
-			Long.valueOf(existingDDMStructure.getGroupId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingDDMStructure, "getOriginalGroupId", new Class<?>[0]));
+		Assert.assertTrue(Objects.equals(existingDDMStructure.getUuid(),
+				ReflectionTestUtil.invoke(existingDDMStructure,
+					"getOriginalUuid", new Class<?>[0])));
+		Assert.assertEquals(Long.valueOf(existingDDMStructure.getGroupId()),
+			ReflectionTestUtil.<Long>invoke(existingDDMStructure,
+				"getOriginalGroupId", new Class<?>[0]));
 
-		Assert.assertEquals(
-			Long.valueOf(existingDDMStructure.getGroupId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingDDMStructure, "getOriginalGroupId", new Class<?>[0]));
-		Assert.assertEquals(
-			Long.valueOf(existingDDMStructure.getClassNameId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingDDMStructure, "getOriginalClassNameId",
-				new Class<?>[0]));
-		Assert.assertTrue(
-			Objects.equals(
+		Assert.assertEquals(Long.valueOf(existingDDMStructure.getGroupId()),
+			ReflectionTestUtil.<Long>invoke(existingDDMStructure,
+				"getOriginalGroupId", new Class<?>[0]));
+		Assert.assertEquals(Long.valueOf(existingDDMStructure.getClassNameId()),
+			ReflectionTestUtil.<Long>invoke(existingDDMStructure,
+				"getOriginalClassNameId", new Class<?>[0]));
+		Assert.assertTrue(Objects.equals(
 				existingDDMStructure.getStructureKey(),
-				ReflectionTestUtil.invoke(
-					existingDDMStructure, "getOriginalStructureKey",
-					new Class<?>[0])));
+				ReflectionTestUtil.invoke(existingDDMStructure,
+					"getOriginalStructureKey", new Class<?>[0])));
 	}
 
 	protected DDMStructure addDDMStructure() throws Exception {
@@ -674,5 +632,4 @@ public class DDMStructurePersistenceTest {
 	private List<DDMStructure> _ddmStructures = new ArrayList<DDMStructure>();
 	private DDMStructurePersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
-
 }

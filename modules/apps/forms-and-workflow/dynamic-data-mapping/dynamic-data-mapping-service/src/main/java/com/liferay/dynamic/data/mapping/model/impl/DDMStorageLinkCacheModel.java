@@ -14,10 +14,14 @@
 
 package com.liferay.dynamic.data.mapping.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.dynamic.data.mapping.model.DDMStorageLink;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -28,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing DDMStorageLink in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see DDMStorageLink
  * @generated
  */
-public class DDMStorageLinkCacheModel
-	implements CacheModel<DDMStorageLink>, Externalizable {
-
+@ProviderType
+public class DDMStorageLinkCacheModel implements CacheModel<DDMStorageLink>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -43,8 +48,7 @@ public class DDMStorageLinkCacheModel
 			return false;
 		}
 
-		DDMStorageLinkCacheModel ddmStorageLinkCacheModel =
-			(DDMStorageLinkCacheModel)obj;
+		DDMStorageLinkCacheModel ddmStorageLinkCacheModel = (DDMStorageLinkCacheModel)obj;
 
 		if (storageLinkId == ddmStorageLinkCacheModel.storageLinkId) {
 			return true;
@@ -84,7 +88,7 @@ public class DDMStorageLinkCacheModel
 		DDMStorageLinkImpl ddmStorageLinkImpl = new DDMStorageLinkImpl();
 
 		if (uuid == null) {
-			ddmStorageLinkImpl.setUuid("");
+			ddmStorageLinkImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			ddmStorageLinkImpl.setUuid(uuid);
@@ -117,9 +121,10 @@ public class DDMStorageLinkCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -142,5 +147,4 @@ public class DDMStorageLinkCacheModel
 	public long classNameId;
 	public long classPK;
 	public long structureId;
-
 }

@@ -14,9 +14,13 @@
 
 package com.liferay.powwow.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.powwow.model.PowwowParticipant;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing PowwowParticipant in entity cache.
  *
  * @author Shinn Lok
+ * @see PowwowParticipant
  * @generated
  */
-public class PowwowParticipantCacheModel
-	implements CacheModel<PowwowParticipant>, Externalizable {
-
+@ProviderType
+public class PowwowParticipantCacheModel implements CacheModel<PowwowParticipant>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +50,9 @@ public class PowwowParticipantCacheModel
 			return false;
 		}
 
-		PowwowParticipantCacheModel powwowParticipantCacheModel =
-			(PowwowParticipantCacheModel)obj;
+		PowwowParticipantCacheModel powwowParticipantCacheModel = (PowwowParticipantCacheModel)obj;
 
-		if (powwowParticipantId ==
-				powwowParticipantCacheModel.powwowParticipantId) {
-
+		if (powwowParticipantId == powwowParticipantCacheModel.powwowParticipantId) {
 			return true;
 		}
 
@@ -99,8 +101,7 @@ public class PowwowParticipantCacheModel
 
 	@Override
 	public PowwowParticipant toEntityModel() {
-		PowwowParticipantImpl powwowParticipantImpl =
-			new PowwowParticipantImpl();
+		PowwowParticipantImpl powwowParticipantImpl = new PowwowParticipantImpl();
 
 		powwowParticipantImpl.setPowwowParticipantId(powwowParticipantId);
 		powwowParticipantImpl.setGroupId(groupId);
@@ -108,7 +109,7 @@ public class PowwowParticipantCacheModel
 		powwowParticipantImpl.setUserId(userId);
 
 		if (userName == null) {
-			powwowParticipantImpl.setUserName("");
+			powwowParticipantImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			powwowParticipantImpl.setUserName(userName);
@@ -131,7 +132,7 @@ public class PowwowParticipantCacheModel
 		powwowParticipantImpl.setPowwowMeetingId(powwowMeetingId);
 
 		if (name == null) {
-			powwowParticipantImpl.setName("");
+			powwowParticipantImpl.setName(StringPool.BLANK);
 		}
 		else {
 			powwowParticipantImpl.setName(name);
@@ -140,7 +141,7 @@ public class PowwowParticipantCacheModel
 		powwowParticipantImpl.setParticipantUserId(participantUserId);
 
 		if (emailAddress == null) {
-			powwowParticipantImpl.setEmailAddress("");
+			powwowParticipantImpl.setEmailAddress(StringPool.BLANK);
 		}
 		else {
 			powwowParticipantImpl.setEmailAddress(emailAddress);
@@ -179,7 +180,8 @@ public class PowwowParticipantCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(powwowParticipantId);
 
 		objectOutput.writeLong(groupId);
@@ -189,7 +191,7 @@ public class PowwowParticipantCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -201,7 +203,7 @@ public class PowwowParticipantCacheModel
 		objectOutput.writeLong(powwowMeetingId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
@@ -210,7 +212,7 @@ public class PowwowParticipantCacheModel
 		objectOutput.writeLong(participantUserId);
 
 		if (emailAddress == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(emailAddress);
@@ -234,5 +236,4 @@ public class PowwowParticipantCacheModel
 	public String emailAddress;
 	public int type;
 	public int status;
-
 }

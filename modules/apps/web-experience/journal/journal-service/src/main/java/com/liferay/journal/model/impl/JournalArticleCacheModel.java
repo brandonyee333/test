@@ -14,10 +14,14 @@
 
 package com.liferay.journal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.journal.model.JournalArticle;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing JournalArticle in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see JournalArticle
  * @generated
  */
-public class JournalArticleCacheModel
-	implements CacheModel<JournalArticle>, Externalizable {
-
+@ProviderType
+public class JournalArticleCacheModel implements CacheModel<JournalArticle>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class JournalArticleCacheModel
 			return false;
 		}
 
-		JournalArticleCacheModel journalArticleCacheModel =
-			(JournalArticleCacheModel)obj;
+		JournalArticleCacheModel journalArticleCacheModel = (JournalArticleCacheModel)obj;
 
 		if (id == journalArticleCacheModel.id) {
 			return true;
@@ -142,7 +146,7 @@ public class JournalArticleCacheModel
 		JournalArticleImpl journalArticleImpl = new JournalArticleImpl();
 
 		if (uuid == null) {
-			journalArticleImpl.setUuid("");
+			journalArticleImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			journalArticleImpl.setUuid(uuid);
@@ -155,7 +159,7 @@ public class JournalArticleCacheModel
 		journalArticleImpl.setUserId(userId);
 
 		if (userName == null) {
-			journalArticleImpl.setUserName("");
+			journalArticleImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			journalArticleImpl.setUserName(userName);
@@ -180,14 +184,14 @@ public class JournalArticleCacheModel
 		journalArticleImpl.setClassPK(classPK);
 
 		if (treePath == null) {
-			journalArticleImpl.setTreePath("");
+			journalArticleImpl.setTreePath(StringPool.BLANK);
 		}
 		else {
 			journalArticleImpl.setTreePath(treePath);
 		}
 
 		if (articleId == null) {
-			journalArticleImpl.setArticleId("");
+			journalArticleImpl.setArticleId(StringPool.BLANK);
 		}
 		else {
 			journalArticleImpl.setArticleId(articleId);
@@ -196,49 +200,49 @@ public class JournalArticleCacheModel
 		journalArticleImpl.setVersion(version);
 
 		if (title == null) {
-			journalArticleImpl.setTitle("");
+			journalArticleImpl.setTitle(StringPool.BLANK);
 		}
 		else {
 			journalArticleImpl.setTitle(title);
 		}
 
 		if (urlTitle == null) {
-			journalArticleImpl.setUrlTitle("");
+			journalArticleImpl.setUrlTitle(StringPool.BLANK);
 		}
 		else {
 			journalArticleImpl.setUrlTitle(urlTitle);
 		}
 
 		if (description == null) {
-			journalArticleImpl.setDescription("");
+			journalArticleImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			journalArticleImpl.setDescription(description);
 		}
 
 		if (content == null) {
-			journalArticleImpl.setContent("");
+			journalArticleImpl.setContent(StringPool.BLANK);
 		}
 		else {
 			journalArticleImpl.setContent(content);
 		}
 
 		if (DDMStructureKey == null) {
-			journalArticleImpl.setDDMStructureKey("");
+			journalArticleImpl.setDDMStructureKey(StringPool.BLANK);
 		}
 		else {
 			journalArticleImpl.setDDMStructureKey(DDMStructureKey);
 		}
 
 		if (DDMTemplateKey == null) {
-			journalArticleImpl.setDDMTemplateKey("");
+			journalArticleImpl.setDDMTemplateKey(StringPool.BLANK);
 		}
 		else {
 			journalArticleImpl.setDDMTemplateKey(DDMTemplateKey);
 		}
 
 		if (layoutUuid == null) {
-			journalArticleImpl.setLayoutUuid("");
+			journalArticleImpl.setLayoutUuid(StringPool.BLANK);
 		}
 		else {
 			journalArticleImpl.setLayoutUuid(layoutUuid);
@@ -270,7 +274,7 @@ public class JournalArticleCacheModel
 		journalArticleImpl.setSmallImageId(smallImageId);
 
 		if (smallImageURL == null) {
-			journalArticleImpl.setSmallImageURL("");
+			journalArticleImpl.setSmallImageURL(StringPool.BLANK);
 		}
 		else {
 			journalArticleImpl.setSmallImageURL(smallImageURL);
@@ -287,7 +291,7 @@ public class JournalArticleCacheModel
 		journalArticleImpl.setStatusByUserId(statusByUserId);
 
 		if (statusByUserName == null) {
-			journalArticleImpl.setStatusByUserName("");
+			journalArticleImpl.setStatusByUserName(StringPool.BLANK);
 		}
 		else {
 			journalArticleImpl.setStatusByUserName(statusByUserName);
@@ -312,7 +316,6 @@ public class JournalArticleCacheModel
 	@Override
 	public void readExternal(ObjectInput objectInput)
 		throws ClassNotFoundException, IOException {
-
 		uuid = objectInput.readUTF();
 
 		id = objectInput.readLong();
@@ -339,8 +342,8 @@ public class JournalArticleCacheModel
 		version = objectInput.readDouble();
 		title = objectInput.readUTF();
 		urlTitle = objectInput.readUTF();
-		description = (String)objectInput.readObject();
-		content = (String)objectInput.readObject();
+		description = objectInput.readUTF();
+		content = objectInput.readUTF();
 		DDMStructureKey = objectInput.readUTF();
 		DDMTemplateKey = objectInput.readUTF();
 		layoutUuid = objectInput.readUTF();
@@ -362,15 +365,15 @@ public class JournalArticleCacheModel
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
 
-		_defaultLanguageId = (String)objectInput.readObject();
-		_document =
-			(com.liferay.portal.kernel.xml.Document)objectInput.readObject();
+		_defaultLanguageId = (java.lang.String)objectInput.readObject();
+		_document = (com.liferay.portal.kernel.xml.Document)objectInput.readObject();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -387,7 +390,7 @@ public class JournalArticleCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -403,14 +406,14 @@ public class JournalArticleCacheModel
 		objectOutput.writeLong(classPK);
 
 		if (treePath == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(treePath);
 		}
 
 		if (articleId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(articleId);
@@ -419,49 +422,49 @@ public class JournalArticleCacheModel
 		objectOutput.writeDouble(version);
 
 		if (title == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(title);
 		}
 
 		if (urlTitle == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(urlTitle);
 		}
 
 		if (description == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(description);
+			objectOutput.writeUTF(description);
 		}
 
 		if (content == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(content);
+			objectOutput.writeUTF(content);
 		}
 
 		if (DDMStructureKey == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(DDMStructureKey);
 		}
 
 		if (DDMTemplateKey == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(DDMTemplateKey);
 		}
 
 		if (layoutUuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(layoutUuid);
@@ -478,7 +481,7 @@ public class JournalArticleCacheModel
 		objectOutput.writeLong(smallImageId);
 
 		if (smallImageURL == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(smallImageURL);
@@ -491,7 +494,7 @@ public class JournalArticleCacheModel
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(statusByUserName);
@@ -537,7 +540,6 @@ public class JournalArticleCacheModel
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
-	public String _defaultLanguageId;
+	public java.lang.String _defaultLanguageId;
 	public com.liferay.portal.kernel.xml.Document _document;
-
 }

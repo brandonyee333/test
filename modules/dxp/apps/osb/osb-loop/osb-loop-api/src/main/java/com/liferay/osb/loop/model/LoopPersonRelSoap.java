@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.loop.model;
+
+import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -25,8 +27,8 @@ import java.util.List;
  * @author Ethan Bustad
  * @generated
  */
+@ProviderType
 public class LoopPersonRelSoap implements Serializable {
-
 	public static LoopPersonRelSoap toSoapModel(LoopPersonRel model) {
 		LoopPersonRelSoap soapModel = new LoopPersonRelSoap();
 
@@ -66,8 +68,7 @@ public class LoopPersonRelSoap implements Serializable {
 	}
 
 	public static LoopPersonRelSoap[] toSoapModels(List<LoopPersonRel> models) {
-		List<LoopPersonRelSoap> soapModels = new ArrayList<LoopPersonRelSoap>(
-			models.size());
+		List<LoopPersonRelSoap> soapModels = new ArrayList<LoopPersonRelSoap>(models.size());
 
 		for (LoopPersonRel model : models) {
 			soapModels.add(toSoapModel(model));
@@ -123,5 +124,4 @@ public class LoopPersonRelSoap implements Serializable {
 	private long _childLoopPersonId;
 	private long _parentLoopPersonId;
 	private int _type;
-
 }

@@ -14,6 +14,8 @@
 
 package com.liferay.social.networking.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -33,13 +35,12 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
-import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
-import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+
 import com.liferay.social.networking.model.MeetupsRegistration;
 import com.liferay.social.networking.service.MeetupsRegistrationLocalService;
 import com.liferay.social.networking.service.persistence.MeetupsEntryPersistence;
@@ -62,16 +63,17 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.social.networking.service.impl.MeetupsRegistrationLocalServiceImpl
+ * @see com.liferay.social.networking.service.MeetupsRegistrationLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class MeetupsRegistrationLocalServiceBaseImpl
-	extends BaseLocalServiceImpl
-	implements IdentifiableOSGiService, MeetupsRegistrationLocalService {
-
+	extends BaseLocalServiceImpl implements MeetupsRegistrationLocalService,
+		IdentifiableOSGiService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>MeetupsRegistrationLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.social.networking.service.MeetupsRegistrationLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.social.networking.service.MeetupsRegistrationLocalServiceUtil} to access the meetups registration local service.
 	 */
 
 	/**
@@ -84,7 +86,6 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	@Override
 	public MeetupsRegistration addMeetupsRegistration(
 		MeetupsRegistration meetupsRegistration) {
-
 		meetupsRegistration.setNew(true);
 
 		return meetupsRegistrationPersistence.update(meetupsRegistration);
@@ -97,10 +98,8 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 * @return the new meetups registration
 	 */
 	@Override
-	@Transactional(enabled = false)
 	public MeetupsRegistration createMeetupsRegistration(
 		long meetupsRegistrationId) {
-
 		return meetupsRegistrationPersistence.create(meetupsRegistrationId);
 	}
 
@@ -114,9 +113,7 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public MeetupsRegistration deleteMeetupsRegistration(
-			long meetupsRegistrationId)
-		throws PortalException {
-
+		long meetupsRegistrationId) throws PortalException {
 		return meetupsRegistrationPersistence.remove(meetupsRegistrationId);
 	}
 
@@ -130,7 +127,6 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	@Override
 	public MeetupsRegistration deleteMeetupsRegistration(
 		MeetupsRegistration meetupsRegistration) {
-
 		return meetupsRegistrationPersistence.remove(meetupsRegistration);
 	}
 
@@ -138,8 +134,8 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(
-			MeetupsRegistration.class, clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(MeetupsRegistration.class,
+			clazz.getClassLoader());
 	}
 
 	/**
@@ -150,15 +146,14 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 */
 	@Override
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
-		return meetupsRegistrationPersistence.findWithDynamicQuery(
-			dynamicQuery);
+		return meetupsRegistrationPersistence.findWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.social.networking.model.impl.MeetupsRegistrationModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.social.networking.model.impl.MeetupsRegistrationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -167,18 +162,17 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end) {
-
-		return meetupsRegistrationPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
+		return meetupsRegistrationPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.social.networking.model.impl.MeetupsRegistrationModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.social.networking.model.impl.MeetupsRegistrationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -188,12 +182,10 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<T> orderByComparator) {
-
-		return meetupsRegistrationPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
+		return meetupsRegistrationPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end, orderByComparator);
 	}
 
 	/**
@@ -204,8 +196,7 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 */
 	@Override
 	public long dynamicQueryCount(DynamicQuery dynamicQuery) {
-		return meetupsRegistrationPersistence.countWithDynamicQuery(
-			dynamicQuery);
+		return meetupsRegistrationPersistence.countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
@@ -216,19 +207,16 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(
-		DynamicQuery dynamicQuery, Projection projection) {
-
-		return meetupsRegistrationPersistence.countWithDynamicQuery(
-			dynamicQuery, projection);
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection) {
+		return meetupsRegistrationPersistence.countWithDynamicQuery(dynamicQuery,
+			projection);
 	}
 
 	@Override
 	public MeetupsRegistration fetchMeetupsRegistration(
 		long meetupsRegistrationId) {
-
-		return meetupsRegistrationPersistence.fetchByPrimaryKey(
-			meetupsRegistrationId);
+		return meetupsRegistrationPersistence.fetchByPrimaryKey(meetupsRegistrationId);
 	}
 
 	/**
@@ -240,20 +228,15 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 */
 	@Override
 	public MeetupsRegistration getMeetupsRegistration(
-			long meetupsRegistrationId)
-		throws PortalException {
-
-		return meetupsRegistrationPersistence.findByPrimaryKey(
-			meetupsRegistrationId);
+		long meetupsRegistrationId) throws PortalException {
+		return meetupsRegistrationPersistence.findByPrimaryKey(meetupsRegistrationId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
-		actionableDynamicQuery.setBaseLocalService(
-			meetupsRegistrationLocalService);
+		actionableDynamicQuery.setBaseLocalService(meetupsRegistrationLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(MeetupsRegistration.class);
 
@@ -264,17 +247,12 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
 
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
-			new IndexableActionableDynamicQuery();
-
-		indexableActionableDynamicQuery.setBaseLocalService(
-			meetupsRegistrationLocalService);
+		indexableActionableDynamicQuery.setBaseLocalService(meetupsRegistrationLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
-		indexableActionableDynamicQuery.setModelClass(
-			MeetupsRegistration.class);
+		indexableActionableDynamicQuery.setModelClass(MeetupsRegistration.class);
 
 		indexableActionableDynamicQuery.setPrimaryKeyPropertyName(
 			"meetupsRegistrationId");
@@ -284,9 +262,7 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-
-		actionableDynamicQuery.setBaseLocalService(
-			meetupsRegistrationLocalService);
+		actionableDynamicQuery.setBaseLocalService(meetupsRegistrationLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(MeetupsRegistration.class);
 
@@ -300,22 +276,12 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-
-		return meetupsRegistrationLocalService.deleteMeetupsRegistration(
-			(MeetupsRegistration)persistedModel);
+		return meetupsRegistrationLocalService.deleteMeetupsRegistration((MeetupsRegistration)persistedModel);
 	}
 
-	public BasePersistence<MeetupsRegistration> getBasePersistence() {
-		return meetupsRegistrationPersistence;
-	}
-
-	/**
-	 * @throws PortalException
-	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
-
 		return meetupsRegistrationPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -323,7 +289,7 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 * Returns a range of all the meetups registrations.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.social.networking.model.impl.MeetupsRegistrationModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.social.networking.model.impl.MeetupsRegistrationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of meetups registrations
@@ -331,9 +297,7 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 * @return the range of meetups registrations
 	 */
 	@Override
-	public List<MeetupsRegistration> getMeetupsRegistrations(
-		int start, int end) {
-
+	public List<MeetupsRegistration> getMeetupsRegistrations(int start, int end) {
 		return meetupsRegistrationPersistence.findAll(start, end);
 	}
 
@@ -357,7 +321,6 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	@Override
 	public MeetupsRegistration updateMeetupsRegistration(
 		MeetupsRegistration meetupsRegistration) {
-
 		return meetupsRegistrationPersistence.update(meetupsRegistration);
 	}
 
@@ -366,9 +329,7 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 *
 	 * @return the meetups entry local service
 	 */
-	public com.liferay.social.networking.service.MeetupsEntryLocalService
-		getMeetupsEntryLocalService() {
-
+	public com.liferay.social.networking.service.MeetupsEntryLocalService getMeetupsEntryLocalService() {
 		return meetupsEntryLocalService;
 	}
 
@@ -378,9 +339,7 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 * @param meetupsEntryLocalService the meetups entry local service
 	 */
 	public void setMeetupsEntryLocalService(
-		com.liferay.social.networking.service.MeetupsEntryLocalService
-			meetupsEntryLocalService) {
-
+		com.liferay.social.networking.service.MeetupsEntryLocalService meetupsEntryLocalService) {
 		this.meetupsEntryLocalService = meetupsEntryLocalService;
 	}
 
@@ -400,7 +359,6 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 */
 	public void setMeetupsEntryPersistence(
 		MeetupsEntryPersistence meetupsEntryPersistence) {
-
 		this.meetupsEntryPersistence = meetupsEntryPersistence;
 	}
 
@@ -409,9 +367,7 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 *
 	 * @return the meetups registration local service
 	 */
-	public MeetupsRegistrationLocalService
-		getMeetupsRegistrationLocalService() {
-
+	public MeetupsRegistrationLocalService getMeetupsRegistrationLocalService() {
 		return meetupsRegistrationLocalService;
 	}
 
@@ -422,7 +378,6 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 */
 	public void setMeetupsRegistrationLocalService(
 		MeetupsRegistrationLocalService meetupsRegistrationLocalService) {
-
 		this.meetupsRegistrationLocalService = meetupsRegistrationLocalService;
 	}
 
@@ -442,7 +397,6 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 */
 	public void setMeetupsRegistrationPersistence(
 		MeetupsRegistrationPersistence meetupsRegistrationPersistence) {
-
 		this.meetupsRegistrationPersistence = meetupsRegistrationPersistence;
 	}
 
@@ -451,9 +405,7 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 *
 	 * @return the wall entry local service
 	 */
-	public com.liferay.social.networking.service.WallEntryLocalService
-		getWallEntryLocalService() {
-
+	public com.liferay.social.networking.service.WallEntryLocalService getWallEntryLocalService() {
 		return wallEntryLocalService;
 	}
 
@@ -463,9 +415,7 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 * @param wallEntryLocalService the wall entry local service
 	 */
 	public void setWallEntryLocalService(
-		com.liferay.social.networking.service.WallEntryLocalService
-			wallEntryLocalService) {
-
+		com.liferay.social.networking.service.WallEntryLocalService wallEntryLocalService) {
 		this.wallEntryLocalService = wallEntryLocalService;
 	}
 
@@ -485,7 +435,6 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 */
 	public void setWallEntryPersistence(
 		WallEntryPersistence wallEntryPersistence) {
-
 		this.wallEntryPersistence = wallEntryPersistence;
 	}
 
@@ -512,9 +461,7 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -524,9 +471,7 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -535,9 +480,7 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService
-		getClassNameLocalService() {
-
+	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
 		return classNameLocalService;
 	}
 
@@ -547,9 +490,7 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService
-			classNameLocalService) {
-
+		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -569,7 +510,6 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
-
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -578,9 +518,7 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService
-		getResourceLocalService() {
-
+	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
 		return resourceLocalService;
 	}
 
@@ -590,9 +528,7 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService
-			resourceLocalService) {
-
+		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -601,9 +537,7 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService
-		getUserLocalService() {
-
+	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
 		return userLocalService;
 	}
 
@@ -614,7 +548,6 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
-
 		this.userLocalService = userLocalService;
 	}
 
@@ -637,8 +570,7 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register(
-			"com.liferay.social.networking.model.MeetupsRegistration",
+		persistedModelLocalServiceRegistry.register("com.liferay.social.networking.model.MeetupsRegistration",
 			meetupsRegistrationLocalService);
 	}
 
@@ -672,83 +604,49 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 	 */
 	protected void runSQL(String sql) {
 		try {
-			DataSource dataSource =
-				meetupsRegistrationPersistence.getDataSource();
+			DataSource dataSource = meetupsRegistrationPersistence.getDataSource();
 
 			DB db = DBManagerUtil.getDB();
 
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
-	@BeanReference(
-		type = com.liferay.social.networking.service.MeetupsEntryLocalService.class
-	)
-	protected com.liferay.social.networking.service.MeetupsEntryLocalService
-		meetupsEntryLocalService;
-
+	@BeanReference(type = com.liferay.social.networking.service.MeetupsEntryLocalService.class)
+	protected com.liferay.social.networking.service.MeetupsEntryLocalService meetupsEntryLocalService;
 	@BeanReference(type = MeetupsEntryPersistence.class)
 	protected MeetupsEntryPersistence meetupsEntryPersistence;
-
 	@BeanReference(type = MeetupsRegistrationLocalService.class)
 	protected MeetupsRegistrationLocalService meetupsRegistrationLocalService;
-
 	@BeanReference(type = MeetupsRegistrationPersistence.class)
 	protected MeetupsRegistrationPersistence meetupsRegistrationPersistence;
-
-	@BeanReference(
-		type = com.liferay.social.networking.service.WallEntryLocalService.class
-	)
-	protected com.liferay.social.networking.service.WallEntryLocalService
-		wallEntryLocalService;
-
+	@BeanReference(type = com.liferay.social.networking.service.WallEntryLocalService.class)
+	protected com.liferay.social.networking.service.WallEntryLocalService wallEntryLocalService;
 	@BeanReference(type = WallEntryPersistence.class)
 	protected WallEntryPersistence wallEntryPersistence;
-
 	@BeanReference(type = WallEntryFinder.class)
 	protected WallEntryFinder wallEntryFinder;
-
-	@ServiceReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService
-		classNameLocalService;
-
+	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ResourceLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ResourceLocalService
-		resourceLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.UserLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.UserLocalService
-		userLocalService;
-
+	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
+	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
+	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry
-		persistedModelLocalServiceRegistry;
-
+	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }

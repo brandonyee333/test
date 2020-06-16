@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.portal.resiliency.spi.service.http;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -22,20 +24,19 @@ import java.rmi.RemoteException;
 
 /**
  * Provides the SOAP utility for the
- * <code>SPIDefinitionServiceUtil</code> service
- * utility. The static methods of this class call the same methods of the
- * service utility. However, the signatures are different because it is
- * difficult for SOAP to support certain types.
+ * {@link SPIDefinitionServiceUtil} service utility. The
+ * static methods of this class calls the same methods of the service utility.
+ * However, the signatures are different because it is difficult for SOAP to
+ * support certain types.
  *
  * <p>
  * ServiceBuilder follows certain rules in translating the methods. For example,
- * if the method in the service utility returns a <code>java.util.List</code>,
- * that is translated to an array of
- * <code>com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap</code>. If the method in the
- * service utility returns a
- * <code>com.liferay.portal.resiliency.spi.model.SPIDefinition</code>, that is translated to a
- * <code>com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap</code>. Methods that SOAP
- * cannot safely wire are skipped.
+ * if the method in the service utility returns a {@link java.util.List}, that
+ * is translated to an array of {@link com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap}.
+ * If the method in the service utility returns a
+ * {@link com.liferay.portal.resiliency.spi.model.SPIDefinition}, that is translated to a
+ * {@link com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap}. Methods that SOAP cannot
+ * safely wire are skipped.
  * </p>
  *
  * <p>
@@ -57,122 +58,103 @@ import java.rmi.RemoteException;
  *
  * @author Michael C. Han
  * @see SPIDefinitionServiceHttp
+ * @see com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap
+ * @see SPIDefinitionServiceUtil
  * @generated
  */
+@ProviderType
 public class SPIDefinitionServiceSoap {
-
-	public static com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap
-			addSPIDefinition(
-				String name, String connectorAddress, int connectorPort,
-				String description, String jvmArguments, String portletIds,
-				String servletContextNames, String typeSettings,
-				com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap addSPIDefinition(
+		java.lang.String name, java.lang.String connectorAddress,
+		int connectorPort, java.lang.String description,
+		java.lang.String jvmArguments, java.lang.String portletIds,
+		java.lang.String servletContextNames, java.lang.String typeSettings,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
-
 		try {
-			com.liferay.portal.resiliency.spi.model.SPIDefinition returnValue =
-				SPIDefinitionServiceUtil.addSPIDefinition(
-					name, connectorAddress, connectorPort, description,
-					jvmArguments, portletIds, servletContextNames, typeSettings,
+			com.liferay.portal.resiliency.spi.model.SPIDefinition returnValue = SPIDefinitionServiceUtil.addSPIDefinition(name,
+					connectorAddress, connectorPort, description, jvmArguments,
+					portletIds, servletContextNames, typeSettings,
 					serviceContext);
 
-			return com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap.
-				toSoapModel(returnValue);
+			return com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
-		}
-	}
-
-	public static com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap
-			deleteSPIDefinition(long spiDefinitionId)
-		throws RemoteException {
-
-		try {
-			com.liferay.portal.resiliency.spi.model.SPIDefinition returnValue =
-				SPIDefinitionServiceUtil.deleteSPIDefinition(spiDefinitionId);
-
-			return com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap.
-				toSoapModel(returnValue);
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.portal.kernel.util.Tuple
-			getPortletIdsAndServletContextNames()
-		throws RemoteException {
-
+	public static com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap deleteSPIDefinition(
+		long spiDefinitionId) throws RemoteException {
 		try {
-			com.liferay.portal.kernel.util.Tuple returnValue =
-				SPIDefinitionServiceUtil.getPortletIdsAndServletContextNames();
+			com.liferay.portal.resiliency.spi.model.SPIDefinition returnValue = SPIDefinitionServiceUtil.deleteSPIDefinition(spiDefinitionId);
+
+			return com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.portal.kernel.util.Tuple getPortletIdsAndServletContextNames()
+		throws RemoteException {
+		try {
+			com.liferay.portal.kernel.util.Tuple returnValue = SPIDefinitionServiceUtil.getPortletIdsAndServletContextNames();
 
 			return returnValue;
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap
-			getSPIDefinition(long spiDefinitionId)
-		throws RemoteException {
-
+	public static com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap getSPIDefinition(
+		long spiDefinitionId) throws RemoteException {
 		try {
-			com.liferay.portal.resiliency.spi.model.SPIDefinition returnValue =
-				SPIDefinitionServiceUtil.getSPIDefinition(spiDefinitionId);
+			com.liferay.portal.resiliency.spi.model.SPIDefinition returnValue = SPIDefinitionServiceUtil.getSPIDefinition(spiDefinitionId);
 
-			return com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap.
-				toSoapModel(returnValue);
+			return com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap
-			getSPIDefinition(long companyId, String name)
-		throws RemoteException {
-
+	public static com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap getSPIDefinition(
+		long companyId, java.lang.String name) throws RemoteException {
 		try {
-			com.liferay.portal.resiliency.spi.model.SPIDefinition returnValue =
-				SPIDefinitionServiceUtil.getSPIDefinition(companyId, name);
+			com.liferay.portal.resiliency.spi.model.SPIDefinition returnValue = SPIDefinitionServiceUtil.getSPIDefinition(companyId,
+					name);
 
-			return com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap.
-				toSoapModel(returnValue);
+			return com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap[]
-			getSPIDefinitions()
+	public static com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap[] getSPIDefinitions()
 		throws RemoteException {
-
 		try {
-			java.util.List
-				<com.liferay.portal.resiliency.spi.model.SPIDefinition>
-					returnValue = SPIDefinitionServiceUtil.getSPIDefinitions();
+			java.util.List<com.liferay.portal.resiliency.spi.model.SPIDefinition> returnValue =
+				SPIDefinitionServiceUtil.getSPIDefinitions();
 
-			return com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap.
-				toSoapModels(returnValue);
+			return com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap.toSoapModels(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
@@ -180,26 +162,24 @@ public class SPIDefinitionServiceSoap {
 		try {
 			SPIDefinitionServiceUtil.startSPI(spiDefinitionId);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static long startSPIinBackground(long spiDefinitionId)
 		throws RemoteException {
-
 		try {
-			long returnValue = SPIDefinitionServiceUtil.startSPIinBackground(
-				spiDefinitionId);
+			long returnValue = SPIDefinitionServiceUtil.startSPIinBackground(spiDefinitionId);
 
 			return returnValue;
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
@@ -207,77 +187,65 @@ public class SPIDefinitionServiceSoap {
 		try {
 			SPIDefinitionServiceUtil.stopSPI(spiDefinitionId);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static long stopSPIinBackground(long spiDefinitionId)
 		throws RemoteException {
-
 		try {
-			long returnValue = SPIDefinitionServiceUtil.stopSPIinBackground(
-				spiDefinitionId);
+			long returnValue = SPIDefinitionServiceUtil.stopSPIinBackground(spiDefinitionId);
 
 			return returnValue;
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap
-			updateSPIDefinition(
-				long spiDefinitionId, String connectorAddress,
-				int connectorPort, String description, String jvmArguments,
-				String portletIds, String servletContextNames,
-				String typeSettings,
-				com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap updateSPIDefinition(
+		long spiDefinitionId, java.lang.String connectorAddress,
+		int connectorPort, java.lang.String description,
+		java.lang.String jvmArguments, java.lang.String portletIds,
+		java.lang.String servletContextNames, java.lang.String typeSettings,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
-
 		try {
-			com.liferay.portal.resiliency.spi.model.SPIDefinition returnValue =
-				SPIDefinitionServiceUtil.updateSPIDefinition(
-					spiDefinitionId, connectorAddress, connectorPort,
-					description, jvmArguments, portletIds, servletContextNames,
-					typeSettings, serviceContext);
+			com.liferay.portal.resiliency.spi.model.SPIDefinition returnValue = SPIDefinitionServiceUtil.updateSPIDefinition(spiDefinitionId,
+					connectorAddress, connectorPort, description, jvmArguments,
+					portletIds, servletContextNames, typeSettings,
+					serviceContext);
 
-			return com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap.
-				toSoapModel(returnValue);
+			return com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap
-			updateTypeSettings(
-				long userId, long spiDefinitionId, String recoveryOptions,
-				com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap updateTypeSettings(
+		long userId, long spiDefinitionId, java.lang.String recoveryOptions,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
-
 		try {
-			com.liferay.portal.resiliency.spi.model.SPIDefinition returnValue =
-				SPIDefinitionServiceUtil.updateTypeSettings(
-					userId, spiDefinitionId, recoveryOptions, serviceContext);
+			com.liferay.portal.resiliency.spi.model.SPIDefinition returnValue = SPIDefinitionServiceUtil.updateTypeSettings(userId,
+					spiDefinitionId, recoveryOptions, serviceContext);
 
-			return com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap.
-				toSoapModel(returnValue);
+			return com.liferay.portal.resiliency.spi.model.SPIDefinitionSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
-		SPIDefinitionServiceSoap.class);
-
+	private static Log _log = LogFactoryUtil.getLog(SPIDefinitionServiceSoap.class);
 }

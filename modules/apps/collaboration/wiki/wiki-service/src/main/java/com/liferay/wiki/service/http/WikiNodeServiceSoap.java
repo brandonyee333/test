@@ -14,28 +14,30 @@
 
 package com.liferay.wiki.service.http;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+
 import com.liferay.wiki.service.WikiNodeServiceUtil;
 
 import java.rmi.RemoteException;
 
 /**
  * Provides the SOAP utility for the
- * <code>WikiNodeServiceUtil</code> service
- * utility. The static methods of this class call the same methods of the
- * service utility. However, the signatures are different because it is
- * difficult for SOAP to support certain types.
+ * {@link WikiNodeServiceUtil} service utility. The
+ * static methods of this class calls the same methods of the service utility.
+ * However, the signatures are different because it is difficult for SOAP to
+ * support certain types.
  *
  * <p>
  * ServiceBuilder follows certain rules in translating the methods. For example,
- * if the method in the service utility returns a <code>java.util.List</code>,
- * that is translated to an array of
- * <code>com.liferay.wiki.model.WikiNodeSoap</code>. If the method in the
- * service utility returns a
- * <code>com.liferay.wiki.model.WikiNode</code>, that is translated to a
- * <code>com.liferay.wiki.model.WikiNodeSoap</code>. Methods that SOAP
- * cannot safely wire are skipped.
+ * if the method in the service utility returns a {@link java.util.List}, that
+ * is translated to an array of {@link com.liferay.wiki.model.WikiNodeSoap}.
+ * If the method in the service utility returns a
+ * {@link com.liferay.wiki.model.WikiNode}, that is translated to a
+ * {@link com.liferay.wiki.model.WikiNodeSoap}. Methods that SOAP cannot
+ * safely wire are skipped.
  * </p>
  *
  * <p>
@@ -57,25 +59,26 @@ import java.rmi.RemoteException;
  *
  * @author Brian Wing Shun Chan
  * @see WikiNodeServiceHttp
+ * @see com.liferay.wiki.model.WikiNodeSoap
+ * @see WikiNodeServiceUtil
  * @generated
  */
+@ProviderType
 public class WikiNodeServiceSoap {
-
 	public static com.liferay.wiki.model.WikiNodeSoap addNode(
-			String name, String description,
-			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		java.lang.String name, java.lang.String description,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
-
 		try {
-			com.liferay.wiki.model.WikiNode returnValue =
-				WikiNodeServiceUtil.addNode(name, description, serviceContext);
+			com.liferay.wiki.model.WikiNode returnValue = WikiNodeServiceUtil.addNode(name,
+					description, serviceContext);
 
 			return com.liferay.wiki.model.WikiNodeSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
@@ -83,134 +86,115 @@ public class WikiNodeServiceSoap {
 		try {
 			WikiNodeServiceUtil.deleteNode(nodeId);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static com.liferay.wiki.model.WikiNodeSoap getNode(long nodeId)
 		throws RemoteException {
-
 		try {
-			com.liferay.wiki.model.WikiNode returnValue =
-				WikiNodeServiceUtil.getNode(nodeId);
+			com.liferay.wiki.model.WikiNode returnValue = WikiNodeServiceUtil.getNode(nodeId);
 
 			return com.liferay.wiki.model.WikiNodeSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.wiki.model.WikiNodeSoap getNode(
-			long groupId, String name)
-		throws RemoteException {
-
+	public static com.liferay.wiki.model.WikiNodeSoap getNode(long groupId,
+		java.lang.String name) throws RemoteException {
 		try {
-			com.liferay.wiki.model.WikiNode returnValue =
-				WikiNodeServiceUtil.getNode(groupId, name);
+			com.liferay.wiki.model.WikiNode returnValue = WikiNodeServiceUtil.getNode(groupId,
+					name);
 
 			return com.liferay.wiki.model.WikiNodeSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static com.liferay.wiki.model.WikiNodeSoap[] getNodes(long groupId)
 		throws RemoteException {
-
 		try {
-			java.util.List<com.liferay.wiki.model.WikiNode> returnValue =
-				WikiNodeServiceUtil.getNodes(groupId);
+			java.util.List<com.liferay.wiki.model.WikiNode> returnValue = WikiNodeServiceUtil.getNodes(groupId);
 
-			return com.liferay.wiki.model.WikiNodeSoap.toSoapModels(
-				returnValue);
+			return com.liferay.wiki.model.WikiNodeSoap.toSoapModels(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.wiki.model.WikiNodeSoap[] getNodes(
-			long groupId, int status)
-		throws RemoteException {
-
+	public static com.liferay.wiki.model.WikiNodeSoap[] getNodes(long groupId,
+		int status) throws RemoteException {
 		try {
-			java.util.List<com.liferay.wiki.model.WikiNode> returnValue =
-				WikiNodeServiceUtil.getNodes(groupId, status);
+			java.util.List<com.liferay.wiki.model.WikiNode> returnValue = WikiNodeServiceUtil.getNodes(groupId,
+					status);
 
-			return com.liferay.wiki.model.WikiNodeSoap.toSoapModels(
-				returnValue);
+			return com.liferay.wiki.model.WikiNodeSoap.toSoapModels(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.wiki.model.WikiNodeSoap[] getNodes(
-			long groupId, int start, int end)
-		throws RemoteException {
-
+	public static com.liferay.wiki.model.WikiNodeSoap[] getNodes(long groupId,
+		int start, int end) throws RemoteException {
 		try {
-			java.util.List<com.liferay.wiki.model.WikiNode> returnValue =
-				WikiNodeServiceUtil.getNodes(groupId, start, end);
+			java.util.List<com.liferay.wiki.model.WikiNode> returnValue = WikiNodeServiceUtil.getNodes(groupId,
+					start, end);
 
-			return com.liferay.wiki.model.WikiNodeSoap.toSoapModels(
-				returnValue);
+			return com.liferay.wiki.model.WikiNodeSoap.toSoapModels(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.wiki.model.WikiNodeSoap[] getNodes(
-			long groupId, int status, int start, int end)
-		throws RemoteException {
-
+	public static com.liferay.wiki.model.WikiNodeSoap[] getNodes(long groupId,
+		int status, int start, int end) throws RemoteException {
 		try {
-			java.util.List<com.liferay.wiki.model.WikiNode> returnValue =
-				WikiNodeServiceUtil.getNodes(groupId, status, start, end);
+			java.util.List<com.liferay.wiki.model.WikiNode> returnValue = WikiNodeServiceUtil.getNodes(groupId,
+					status, start, end);
 
-			return com.liferay.wiki.model.WikiNodeSoap.toSoapModels(
-				returnValue);
+			return com.liferay.wiki.model.WikiNodeSoap.toSoapModels(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.wiki.model.WikiNodeSoap[] getNodes(
-			long groupId, int status, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.wiki.model.WikiNode> obc)
+	public static com.liferay.wiki.model.WikiNodeSoap[] getNodes(long groupId,
+		int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.wiki.model.WikiNode> obc)
 		throws RemoteException {
-
 		try {
-			java.util.List<com.liferay.wiki.model.WikiNode> returnValue =
-				WikiNodeServiceUtil.getNodes(groupId, status, start, end, obc);
+			java.util.List<com.liferay.wiki.model.WikiNode> returnValue = WikiNodeServiceUtil.getNodes(groupId,
+					status, start, end, obc);
 
-			return com.liferay.wiki.model.WikiNodeSoap.toSoapModels(
-				returnValue);
+			return com.liferay.wiki.model.WikiNodeSoap.toSoapModels(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
@@ -220,56 +204,50 @@ public class WikiNodeServiceSoap {
 
 			return returnValue;
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static int getNodesCount(long groupId, int status)
 		throws RemoteException {
-
 		try {
-			int returnValue = WikiNodeServiceUtil.getNodesCount(
-				groupId, status);
+			int returnValue = WikiNodeServiceUtil.getNodesCount(groupId, status);
 
 			return returnValue;
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static com.liferay.wiki.model.WikiNodeSoap moveNodeToTrash(
-			long nodeId)
-		throws RemoteException {
-
+		long nodeId) throws RemoteException {
 		try {
-			com.liferay.wiki.model.WikiNode returnValue =
-				WikiNodeServiceUtil.moveNodeToTrash(nodeId);
+			com.liferay.wiki.model.WikiNode returnValue = WikiNodeServiceUtil.moveNodeToTrash(nodeId);
 
 			return com.liferay.wiki.model.WikiNodeSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static void restoreNodeFromTrash(long nodeId)
 		throws RemoteException {
-
 		try {
 			WikiNodeServiceUtil.restoreNodeFromTrash(nodeId);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
@@ -277,10 +255,10 @@ public class WikiNodeServiceSoap {
 		try {
 			WikiNodeServiceUtil.subscribeNode(nodeId);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
@@ -288,32 +266,29 @@ public class WikiNodeServiceSoap {
 		try {
 			WikiNodeServiceUtil.unsubscribeNode(nodeId);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.wiki.model.WikiNodeSoap updateNode(
-			long nodeId, String name, String description,
-			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static com.liferay.wiki.model.WikiNodeSoap updateNode(long nodeId,
+		java.lang.String name, java.lang.String description,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
-
 		try {
-			com.liferay.wiki.model.WikiNode returnValue =
-				WikiNodeServiceUtil.updateNode(
-					nodeId, name, description, serviceContext);
+			com.liferay.wiki.model.WikiNode returnValue = WikiNodeServiceUtil.updateNode(nodeId,
+					name, description, serviceContext);
 
 			return com.liferay.wiki.model.WikiNodeSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(WikiNodeServiceSoap.class);
-
 }

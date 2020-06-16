@@ -14,6 +14,8 @@
 
 package com.liferay.announcements.kernel.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -23,46 +25,41 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see AnnouncementsFlagService
  * @generated
  */
-public class AnnouncementsFlagServiceWrapper
-	implements AnnouncementsFlagService,
-			   ServiceWrapper<AnnouncementsFlagService> {
-
+@ProviderType
+public class AnnouncementsFlagServiceWrapper implements AnnouncementsFlagService,
+	ServiceWrapper<AnnouncementsFlagService> {
 	public AnnouncementsFlagServiceWrapper(
 		AnnouncementsFlagService announcementsFlagService) {
-
 		_announcementsFlagService = announcementsFlagService;
+	}
+
+	@Override
+	public com.liferay.announcements.kernel.model.AnnouncementsFlag getFlag(
+		long entryId, int value)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _announcementsFlagService.getFlag(entryId, value);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _announcementsFlagService.getOSGiServiceIdentifier();
 	}
 
 	@Override
 	public void addFlag(long entryId, int value)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		_announcementsFlagService.addFlag(entryId, value);
 	}
 
 	@Override
 	public void deleteFlag(long flagId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		_announcementsFlagService.deleteFlag(flagId);
-	}
-
-	@Override
-	public com.liferay.announcements.kernel.model.AnnouncementsFlag getFlag(
-			long entryId, int value)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _announcementsFlagService.getFlag(entryId, value);
-	}
-
-	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
-	@Override
-	public String getOSGiServiceIdentifier() {
-		return _announcementsFlagService.getOSGiServiceIdentifier();
 	}
 
 	@Override
@@ -73,10 +70,8 @@ public class AnnouncementsFlagServiceWrapper
 	@Override
 	public void setWrappedService(
 		AnnouncementsFlagService announcementsFlagService) {
-
 		_announcementsFlagService = announcementsFlagService;
 	}
 
 	private AnnouncementsFlagService _announcementsFlagService;
-
 }

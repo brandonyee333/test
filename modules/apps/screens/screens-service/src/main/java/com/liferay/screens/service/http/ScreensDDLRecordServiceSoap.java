@@ -14,19 +14,22 @@
 
 package com.liferay.screens.service.http;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+
 import com.liferay.screens.service.ScreensDDLRecordServiceUtil;
 
 import java.rmi.RemoteException;
 
 /**
  * Provides the SOAP utility for the
- * <code>ScreensDDLRecordServiceUtil</code> service
- * utility. The static methods of this class call the same methods of the
- * service utility. However, the signatures are different because it is
- * difficult for SOAP to support certain types.
+ * {@link ScreensDDLRecordServiceUtil} service utility. The
+ * static methods of this class calls the same methods of the service utility.
+ * However, the signatures are different because it is difficult for SOAP to
+ * support certain types.
  *
  * <p>
  * The benefits of using the SOAP utility is that it is cross platform
@@ -47,102 +50,88 @@ import java.rmi.RemoteException;
  *
  * @author José Manuel Navarro
  * @see ScreensDDLRecordServiceHttp
+ * @see ScreensDDLRecordServiceUtil
  * @generated
  */
+@ProviderType
 public class ScreensDDLRecordServiceSoap {
-
-	public static String getDDLRecord(long ddlRecordId, String locale)
+	public static java.lang.String getDDLRecord(long ddlRecordId, String locale)
 		throws RemoteException {
-
 		try {
-			com.liferay.portal.kernel.json.JSONObject returnValue =
-				ScreensDDLRecordServiceUtil.getDDLRecord(
-					ddlRecordId, LocaleUtil.fromLanguageId(locale));
+			com.liferay.portal.kernel.json.JSONObject returnValue = ScreensDDLRecordServiceUtil.getDDLRecord(ddlRecordId,
+					LocaleUtil.fromLanguageId(locale));
 
 			return returnValue.toString();
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static String getDDLRecords(
-			long ddlRecordSetId, String locale, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.dynamic.data.lists.model.DDLRecord> obc)
+	public static java.lang.String getDDLRecords(long ddlRecordSetId,
+		String locale, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.dynamic.data.lists.model.DDLRecord> obc)
 		throws RemoteException {
-
 		try {
-			com.liferay.portal.kernel.json.JSONArray returnValue =
-				ScreensDDLRecordServiceUtil.getDDLRecords(
-					ddlRecordSetId, LocaleUtil.fromLanguageId(locale), start,
-					end, obc);
+			com.liferay.portal.kernel.json.JSONArray returnValue = ScreensDDLRecordServiceUtil.getDDLRecords(ddlRecordSetId,
+					LocaleUtil.fromLanguageId(locale), start, end, obc);
 
 			return returnValue.toString();
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static String getDDLRecords(
-			long ddlRecordSetId, long userId, String locale, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.dynamic.data.lists.model.DDLRecord> obc)
+	public static java.lang.String getDDLRecords(long ddlRecordSetId,
+		long userId, String locale, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.dynamic.data.lists.model.DDLRecord> obc)
 		throws RemoteException {
-
 		try {
-			com.liferay.portal.kernel.json.JSONArray returnValue =
-				ScreensDDLRecordServiceUtil.getDDLRecords(
-					ddlRecordSetId, userId, LocaleUtil.fromLanguageId(locale),
-					start, end, obc);
+			com.liferay.portal.kernel.json.JSONArray returnValue = ScreensDDLRecordServiceUtil.getDDLRecords(ddlRecordSetId,
+					userId, LocaleUtil.fromLanguageId(locale), start, end, obc);
 
 			return returnValue.toString();
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static int getDDLRecordsCount(long ddlRecordSetId)
 		throws RemoteException {
-
 		try {
-			int returnValue = ScreensDDLRecordServiceUtil.getDDLRecordsCount(
-				ddlRecordSetId);
+			int returnValue = ScreensDDLRecordServiceUtil.getDDLRecordsCount(ddlRecordSetId);
 
 			return returnValue;
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static int getDDLRecordsCount(long ddlRecordSetId, long userId)
 		throws RemoteException {
-
 		try {
-			int returnValue = ScreensDDLRecordServiceUtil.getDDLRecordsCount(
-				ddlRecordSetId, userId);
+			int returnValue = ScreensDDLRecordServiceUtil.getDDLRecordsCount(ddlRecordSetId,
+					userId);
 
 			return returnValue;
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
-		ScreensDDLRecordServiceSoap.class);
-
+	private static Log _log = LogFactoryUtil.getLog(ScreensDDLRecordServiceSoap.class);
 }

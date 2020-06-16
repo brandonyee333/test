@@ -14,9 +14,13 @@
 
 package com.liferay.portlet.trash.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.trash.kernel.model.TrashVersion;
 
 import java.io.Externalizable;
@@ -28,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing TrashVersion in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see TrashVersion
  * @generated
  */
-public class TrashVersionCacheModel
-	implements CacheModel<TrashVersion>, Externalizable {
-
+@ProviderType
+public class TrashVersionCacheModel implements CacheModel<TrashVersion>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -43,8 +48,7 @@ public class TrashVersionCacheModel
 			return false;
 		}
 
-		TrashVersionCacheModel trashVersionCacheModel =
-			(TrashVersionCacheModel)obj;
+		TrashVersionCacheModel trashVersionCacheModel = (TrashVersionCacheModel)obj;
 
 		if (versionId == trashVersionCacheModel.versionId) {
 			return true;
@@ -92,7 +96,7 @@ public class TrashVersionCacheModel
 		trashVersionImpl.setClassPK(classPK);
 
 		if (typeSettings == null) {
-			trashVersionImpl.setTypeSettings("");
+			trashVersionImpl.setTypeSettings(StringPool.BLANK);
 		}
 		else {
 			trashVersionImpl.setTypeSettings(typeSettings);
@@ -106,9 +110,7 @@ public class TrashVersionCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		versionId = objectInput.readLong();
 
 		companyId = objectInput.readLong();
@@ -118,13 +120,14 @@ public class TrashVersionCacheModel
 		classNameId = objectInput.readLong();
 
 		classPK = objectInput.readLong();
-		typeSettings = (String)objectInput.readObject();
+		typeSettings = objectInput.readUTF();
 
 		status = objectInput.readInt();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(versionId);
 
 		objectOutput.writeLong(companyId);
@@ -136,10 +139,10 @@ public class TrashVersionCacheModel
 		objectOutput.writeLong(classPK);
 
 		if (typeSettings == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(typeSettings);
+			objectOutput.writeUTF(typeSettings);
 		}
 
 		objectOutput.writeInt(status);
@@ -152,5 +155,4 @@ public class TrashVersionCacheModel
 	public long classPK;
 	public String typeSettings;
 	public int status;
-
 }

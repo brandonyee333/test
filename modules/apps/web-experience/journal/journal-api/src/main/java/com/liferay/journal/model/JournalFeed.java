@@ -25,20 +25,19 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see JournalFeedModel
+ * @see com.liferay.journal.model.impl.JournalFeedImpl
+ * @see com.liferay.journal.model.impl.JournalFeedModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.journal.model.impl.JournalFeedImpl")
 @ProviderType
 public interface JournalFeed extends JournalFeedModel, PersistedModel {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to <code>com.liferay.journal.model.impl.JournalFeedImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to {@link com.liferay.journal.model.impl.JournalFeedImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<JournalFeed, Long> ID_ACCESSOR =
-		new Accessor<JournalFeed, Long>() {
-
+	public static final Accessor<JournalFeed, Long> ID_ACCESSOR = new Accessor<JournalFeed, Long>() {
 			@Override
 			public Long get(JournalFeed journalFeed) {
 				return journalFeed.getId();
@@ -53,49 +52,47 @@ public interface JournalFeed extends JournalFeedModel, PersistedModel {
 			public Class<JournalFeed> getTypeClass() {
 				return JournalFeed.class;
 			}
-
 		};
 
 	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 #getDDMRendererTemplateKey()}
-	 */
-	@Deprecated
-	public String getRendererTemplateId();
+	* @deprecated As of Wilberforce (7.0.x), replaced by {@link
+	#getDDMRendererTemplateKey()}
+	*/
+	@java.lang.Deprecated()
+	public java.lang.String getRendererTemplateId();
 
 	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 #getDDMStructureKey()}
-	 */
-	@Deprecated
-	public String getStructureId();
+	* @deprecated As of Wilberforce (7.0.x), replaced by {@link
+	#getDDMStructureKey()}
+	*/
+	@java.lang.Deprecated()
+	public java.lang.String getStructureId();
 
 	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 #getDDMTemplateKey()}
-	 */
-	@Deprecated
-	public String getTemplateId();
+	* @deprecated As of Wilberforce (7.0.x), replaced by {@link
+	#getDDMTemplateKey()}
+	*/
+	@java.lang.Deprecated()
+	public java.lang.String getTemplateId();
 
 	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 #setDDMRendererTemplateKey(String)}
-	 */
-	@Deprecated
-	public void setRendererTemplateId(String rendererTemplateKey);
+	* @deprecated As of Wilberforce (7.0.x), replaced by {@link
+	#setDDMRendererTemplateKey(String)}
+	*/
+	@java.lang.Deprecated()
+	public void setRendererTemplateId(java.lang.String rendererTemplateKey);
 
 	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 #setDDMStructureKey(String)}
-	 */
-	@Deprecated
-	public void setStructureId(String structureKey);
+	* @deprecated As of Wilberforce (7.0.x), replaced by {@link
+	#setDDMStructureKey(String)}
+	*/
+	@java.lang.Deprecated()
+	public void setStructureId(java.lang.String structureKey);
 
 	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 #setDDMTemplateKey(String)}
-	 */
-	@Deprecated
-	public void setTemplateId(String templateKey);
-
+	* @deprecated As of Wilberforce (7.0.x), replaced by {@link
+	#setDDMTemplateKey(String)}
+	*/
+	@java.lang.Deprecated()
+	public void setTemplateId(java.lang.String templateKey);
 }

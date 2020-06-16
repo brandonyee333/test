@@ -1,23 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.loop.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.osb.loop.model.LoopTopic;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing LoopTopic in entity cache.
  *
  * @author Ethan Bustad
+ * @see LoopTopic
  * @generated
  */
-public class LoopTopicCacheModel
-	implements CacheModel<LoopTopic>, Externalizable {
-
+@ProviderType
+public class LoopTopicCacheModel implements CacheModel<LoopTopic>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -99,7 +104,7 @@ public class LoopTopicCacheModel
 		loopTopicImpl.setUserId(userId);
 
 		if (userName == null) {
-			loopTopicImpl.setUserName("");
+			loopTopicImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			loopTopicImpl.setUserName(userName);
@@ -122,21 +127,21 @@ public class LoopTopicCacheModel
 		loopTopicImpl.setParentLoopTopicId(parentLoopTopicId);
 
 		if (name == null) {
-			loopTopicImpl.setName("");
+			loopTopicImpl.setName(StringPool.BLANK);
 		}
 		else {
 			loopTopicImpl.setName(name);
 		}
 
 		if (description == null) {
-			loopTopicImpl.setDescription("");
+			loopTopicImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			loopTopicImpl.setDescription(description);
 		}
 
 		if (imagePayload == null) {
-			loopTopicImpl.setImagePayload("");
+			loopTopicImpl.setImagePayload(StringPool.BLANK);
 		}
 		else {
 			loopTopicImpl.setImagePayload(imagePayload);
@@ -169,7 +174,8 @@ public class LoopTopicCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(loopTopicId);
 
 		objectOutput.writeLong(companyId);
@@ -177,7 +183,7 @@ public class LoopTopicCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -189,21 +195,21 @@ public class LoopTopicCacheModel
 		objectOutput.writeLong(parentLoopTopicId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (imagePayload == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(imagePayload);
@@ -223,5 +229,4 @@ public class LoopTopicCacheModel
 	public String description;
 	public String imagePayload;
 	public long mergeTime;
-
 }

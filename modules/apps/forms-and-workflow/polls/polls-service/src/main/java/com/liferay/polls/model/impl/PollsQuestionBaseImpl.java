@@ -14,6 +14,8 @@
 
 package com.liferay.polls.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.polls.model.PollsQuestion;
 import com.liferay.polls.service.PollsQuestionLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.polls.service.PollsQuestionLocalServiceUtil;
  * @see PollsQuestion
  * @generated
  */
-public abstract class PollsQuestionBaseImpl
-	extends PollsQuestionModelImpl implements PollsQuestion {
-
+@ProviderType
+public abstract class PollsQuestionBaseImpl extends PollsQuestionModelImpl
+	implements PollsQuestion {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a polls question model instance should use the <code>PollsQuestion</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a polls question model instance should use the {@link PollsQuestion} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class PollsQuestionBaseImpl
 			PollsQuestionLocalServiceUtil.updatePollsQuestion(this);
 		}
 	}
-
 }

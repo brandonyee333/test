@@ -14,9 +14,13 @@
 
 package com.liferay.portlet.social.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.social.kernel.model.SocialActivityAchievement;
 
 import java.io.Externalizable;
@@ -28,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing SocialActivityAchievement in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see SocialActivityAchievement
  * @generated
  */
-public class SocialActivityAchievementCacheModel
-	implements CacheModel<SocialActivityAchievement>, Externalizable {
-
+@ProviderType
+public class SocialActivityAchievementCacheModel implements CacheModel<SocialActivityAchievement>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -43,13 +48,9 @@ public class SocialActivityAchievementCacheModel
 			return false;
 		}
 
-		SocialActivityAchievementCacheModel
-			socialActivityAchievementCacheModel =
-				(SocialActivityAchievementCacheModel)obj;
+		SocialActivityAchievementCacheModel socialActivityAchievementCacheModel = (SocialActivityAchievementCacheModel)obj;
 
-		if (activityAchievementId ==
-				socialActivityAchievementCacheModel.activityAchievementId) {
-
+		if (activityAchievementId == socialActivityAchievementCacheModel.activityAchievementId) {
 			return true;
 		}
 
@@ -86,18 +87,16 @@ public class SocialActivityAchievementCacheModel
 
 	@Override
 	public SocialActivityAchievement toEntityModel() {
-		SocialActivityAchievementImpl socialActivityAchievementImpl =
-			new SocialActivityAchievementImpl();
+		SocialActivityAchievementImpl socialActivityAchievementImpl = new SocialActivityAchievementImpl();
 
-		socialActivityAchievementImpl.setActivityAchievementId(
-			activityAchievementId);
+		socialActivityAchievementImpl.setActivityAchievementId(activityAchievementId);
 		socialActivityAchievementImpl.setGroupId(groupId);
 		socialActivityAchievementImpl.setCompanyId(companyId);
 		socialActivityAchievementImpl.setUserId(userId);
 		socialActivityAchievementImpl.setCreateDate(createDate);
 
 		if (name == null) {
-			socialActivityAchievementImpl.setName("");
+			socialActivityAchievementImpl.setName(StringPool.BLANK);
 		}
 		else {
 			socialActivityAchievementImpl.setName(name);
@@ -127,7 +126,8 @@ public class SocialActivityAchievementCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(activityAchievementId);
 
 		objectOutput.writeLong(groupId);
@@ -139,7 +139,7 @@ public class SocialActivityAchievementCacheModel
 		objectOutput.writeLong(createDate);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
@@ -155,5 +155,4 @@ public class SocialActivityAchievementCacheModel
 	public long createDate;
 	public String name;
 	public boolean firstInGroup;
-
 }

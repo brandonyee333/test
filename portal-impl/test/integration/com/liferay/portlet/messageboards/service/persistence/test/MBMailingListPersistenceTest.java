@@ -19,6 +19,7 @@ import com.liferay.message.boards.kernel.model.MBMailingList;
 import com.liferay.message.boards.kernel.service.MBMailingListLocalServiceUtil;
 import com.liferay.message.boards.kernel.service.persistence.MBMailingListPersistence;
 import com.liferay.message.boards.kernel.service.persistence.MBMailingListUtil;
+
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -32,10 +33,18 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
 
 import java.io.Serializable;
 
@@ -47,23 +56,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-
 /**
  * @generated
  */
 public class MBMailingListPersistenceTest {
-
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
+	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
+			PersistenceTestRule.INSTANCE,
 			new TransactionalTestRule(Propagation.REQUIRED));
 
 	@Before
@@ -103,8 +103,7 @@ public class MBMailingListPersistenceTest {
 
 		_persistence.remove(newMBMailingList);
 
-		MBMailingList existingMBMailingList = _persistence.fetchByPrimaryKey(
-			newMBMailingList.getPrimaryKey());
+		MBMailingList existingMBMailingList = _persistence.fetchByPrimaryKey(newMBMailingList.getPrimaryKey());
 
 		Assert.assertNull(existingMBMailingList);
 	}
@@ -172,107 +171,87 @@ public class MBMailingListPersistenceTest {
 
 		_mbMailingLists.add(_persistence.update(newMBMailingList));
 
-		MBMailingList existingMBMailingList = _persistence.findByPrimaryKey(
-			newMBMailingList.getPrimaryKey());
+		MBMailingList existingMBMailingList = _persistence.findByPrimaryKey(newMBMailingList.getPrimaryKey());
 
-		Assert.assertEquals(
-			existingMBMailingList.getUuid(), newMBMailingList.getUuid());
-		Assert.assertEquals(
-			existingMBMailingList.getMailingListId(),
+		Assert.assertEquals(existingMBMailingList.getUuid(),
+			newMBMailingList.getUuid());
+		Assert.assertEquals(existingMBMailingList.getMailingListId(),
 			newMBMailingList.getMailingListId());
-		Assert.assertEquals(
-			existingMBMailingList.getGroupId(), newMBMailingList.getGroupId());
-		Assert.assertEquals(
-			existingMBMailingList.getCompanyId(),
+		Assert.assertEquals(existingMBMailingList.getGroupId(),
+			newMBMailingList.getGroupId());
+		Assert.assertEquals(existingMBMailingList.getCompanyId(),
 			newMBMailingList.getCompanyId());
-		Assert.assertEquals(
-			existingMBMailingList.getUserId(), newMBMailingList.getUserId());
-		Assert.assertEquals(
-			existingMBMailingList.getUserName(),
+		Assert.assertEquals(existingMBMailingList.getUserId(),
+			newMBMailingList.getUserId());
+		Assert.assertEquals(existingMBMailingList.getUserName(),
 			newMBMailingList.getUserName());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingMBMailingList.getCreateDate()),
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingMBMailingList.getCreateDate()),
 			Time.getShortTimestamp(newMBMailingList.getCreateDate()));
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingMBMailingList.getModifiedDate()),
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingMBMailingList.getModifiedDate()),
 			Time.getShortTimestamp(newMBMailingList.getModifiedDate()));
-		Assert.assertEquals(
-			existingMBMailingList.getCategoryId(),
+		Assert.assertEquals(existingMBMailingList.getCategoryId(),
 			newMBMailingList.getCategoryId());
-		Assert.assertEquals(
-			existingMBMailingList.getEmailAddress(),
+		Assert.assertEquals(existingMBMailingList.getEmailAddress(),
 			newMBMailingList.getEmailAddress());
-		Assert.assertEquals(
-			existingMBMailingList.getInProtocol(),
+		Assert.assertEquals(existingMBMailingList.getInProtocol(),
 			newMBMailingList.getInProtocol());
-		Assert.assertEquals(
-			existingMBMailingList.getInServerName(),
+		Assert.assertEquals(existingMBMailingList.getInServerName(),
 			newMBMailingList.getInServerName());
-		Assert.assertEquals(
-			existingMBMailingList.getInServerPort(),
+		Assert.assertEquals(existingMBMailingList.getInServerPort(),
 			newMBMailingList.getInServerPort());
-		Assert.assertEquals(
-			existingMBMailingList.isInUseSSL(), newMBMailingList.isInUseSSL());
-		Assert.assertEquals(
-			existingMBMailingList.getInUserName(),
+		Assert.assertEquals(existingMBMailingList.getInUseSSL(),
+			newMBMailingList.getInUseSSL());
+		Assert.assertEquals(existingMBMailingList.getInUserName(),
 			newMBMailingList.getInUserName());
-		Assert.assertEquals(
-			existingMBMailingList.getInPassword(),
+		Assert.assertEquals(existingMBMailingList.getInPassword(),
 			newMBMailingList.getInPassword());
-		Assert.assertEquals(
-			existingMBMailingList.getInReadInterval(),
+		Assert.assertEquals(existingMBMailingList.getInReadInterval(),
 			newMBMailingList.getInReadInterval());
-		Assert.assertEquals(
-			existingMBMailingList.getOutEmailAddress(),
+		Assert.assertEquals(existingMBMailingList.getOutEmailAddress(),
 			newMBMailingList.getOutEmailAddress());
-		Assert.assertEquals(
-			existingMBMailingList.isOutCustom(),
-			newMBMailingList.isOutCustom());
-		Assert.assertEquals(
-			existingMBMailingList.getOutServerName(),
+		Assert.assertEquals(existingMBMailingList.getOutCustom(),
+			newMBMailingList.getOutCustom());
+		Assert.assertEquals(existingMBMailingList.getOutServerName(),
 			newMBMailingList.getOutServerName());
-		Assert.assertEquals(
-			existingMBMailingList.getOutServerPort(),
+		Assert.assertEquals(existingMBMailingList.getOutServerPort(),
 			newMBMailingList.getOutServerPort());
-		Assert.assertEquals(
-			existingMBMailingList.isOutUseSSL(),
-			newMBMailingList.isOutUseSSL());
-		Assert.assertEquals(
-			existingMBMailingList.getOutUserName(),
+		Assert.assertEquals(existingMBMailingList.getOutUseSSL(),
+			newMBMailingList.getOutUseSSL());
+		Assert.assertEquals(existingMBMailingList.getOutUserName(),
 			newMBMailingList.getOutUserName());
-		Assert.assertEquals(
-			existingMBMailingList.getOutPassword(),
+		Assert.assertEquals(existingMBMailingList.getOutPassword(),
 			newMBMailingList.getOutPassword());
-		Assert.assertEquals(
-			existingMBMailingList.isAllowAnonymous(),
-			newMBMailingList.isAllowAnonymous());
-		Assert.assertEquals(
-			existingMBMailingList.isActive(), newMBMailingList.isActive());
+		Assert.assertEquals(existingMBMailingList.getAllowAnonymous(),
+			newMBMailingList.getAllowAnonymous());
+		Assert.assertEquals(existingMBMailingList.getActive(),
+			newMBMailingList.getActive());
 	}
 
 	@Test
 	public void testCountByUuid() throws Exception {
-		_persistence.countByUuid("");
+		_persistence.countByUuid(StringPool.BLANK);
 
-		_persistence.countByUuid("null");
+		_persistence.countByUuid(StringPool.NULL);
 
 		_persistence.countByUuid((String)null);
 	}
 
 	@Test
 	public void testCountByUUID_G() throws Exception {
-		_persistence.countByUUID_G("", RandomTestUtil.nextLong());
+		_persistence.countByUUID_G(StringPool.BLANK, RandomTestUtil.nextLong());
 
-		_persistence.countByUUID_G("null", 0L);
+		_persistence.countByUUID_G(StringPool.NULL, 0L);
 
 		_persistence.countByUUID_G((String)null, 0L);
 	}
 
 	@Test
 	public void testCountByUuid_C() throws Exception {
-		_persistence.countByUuid_C("", RandomTestUtil.nextLong());
+		_persistence.countByUuid_C(StringPool.BLANK, RandomTestUtil.nextLong());
 
-		_persistence.countByUuid_C("null", 0L);
+		_persistence.countByUuid_C(StringPool.NULL, 0L);
 
 		_persistence.countByUuid_C((String)null, 0L);
 	}
@@ -286,8 +265,8 @@ public class MBMailingListPersistenceTest {
 
 	@Test
 	public void testCountByG_C() throws Exception {
-		_persistence.countByG_C(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+		_persistence.countByG_C(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong());
 
 		_persistence.countByG_C(0L, 0L);
 	}
@@ -296,8 +275,7 @@ public class MBMailingListPersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		MBMailingList newMBMailingList = addMBMailingList();
 
-		MBMailingList existingMBMailingList = _persistence.findByPrimaryKey(
-			newMBMailingList.getPrimaryKey());
+		MBMailingList existingMBMailingList = _persistence.findByPrimaryKey(newMBMailingList.getPrimaryKey());
 
 		Assert.assertEquals(existingMBMailingList, newMBMailingList);
 	}
@@ -311,29 +289,28 @@ public class MBMailingListPersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
+		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			getOrderByComparator());
 	}
 
 	protected OrderByComparator<MBMailingList> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create(
-			"MBMailingList", "uuid", true, "mailingListId", true, "groupId",
-			true, "companyId", true, "userId", true, "userName", true,
-			"createDate", true, "modifiedDate", true, "categoryId", true,
-			"emailAddress", true, "inProtocol", true, "inServerName", true,
-			"inServerPort", true, "inUseSSL", true, "inUserName", true,
-			"inPassword", true, "inReadInterval", true, "outEmailAddress", true,
-			"outCustom", true, "outServerName", true, "outServerPort", true,
-			"outUseSSL", true, "outUserName", true, "outPassword", true,
-			"allowAnonymous", true, "active", true);
+		return OrderByComparatorFactoryUtil.create("MBMailingList", "uuid",
+			true, "mailingListId", true, "groupId", true, "companyId", true,
+			"userId", true, "userName", true, "createDate", true,
+			"modifiedDate", true, "categoryId", true, "emailAddress", true,
+			"inProtocol", true, "inServerName", true, "inServerPort", true,
+			"inUseSSL", true, "inUserName", true, "inPassword", true,
+			"inReadInterval", true, "outEmailAddress", true, "outCustom", true,
+			"outServerName", true, "outServerPort", true, "outUseSSL", true,
+			"outUserName", true, "outPassword", true, "allowAnonymous", true,
+			"active", true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		MBMailingList newMBMailingList = addMBMailingList();
 
-		MBMailingList existingMBMailingList = _persistence.fetchByPrimaryKey(
-			newMBMailingList.getPrimaryKey());
+		MBMailingList existingMBMailingList = _persistence.fetchByPrimaryKey(newMBMailingList.getPrimaryKey());
 
 		Assert.assertEquals(existingMBMailingList, newMBMailingList);
 	}
@@ -350,7 +327,6 @@ public class MBMailingListPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
-
 		MBMailingList newMBMailingList1 = addMBMailingList();
 		MBMailingList newMBMailingList2 = addMBMailingList();
 
@@ -359,22 +335,18 @@ public class MBMailingListPersistenceTest {
 		primaryKeys.add(newMBMailingList1.getPrimaryKey());
 		primaryKeys.add(newMBMailingList2.getPrimaryKey());
 
-		Map<Serializable, MBMailingList> mbMailingLists =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, MBMailingList> mbMailingLists = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(2, mbMailingLists.size());
-		Assert.assertEquals(
-			newMBMailingList1,
+		Assert.assertEquals(newMBMailingList1,
 			mbMailingLists.get(newMBMailingList1.getPrimaryKey()));
-		Assert.assertEquals(
-			newMBMailingList2,
+		Assert.assertEquals(newMBMailingList2,
 			mbMailingLists.get(newMBMailingList2.getPrimaryKey()));
 	}
 
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
-
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -384,8 +356,7 @@ public class MBMailingListPersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, MBMailingList> mbMailingLists =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, MBMailingList> mbMailingLists = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(mbMailingLists.isEmpty());
 	}
@@ -393,7 +364,6 @@ public class MBMailingListPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
-
 		MBMailingList newMBMailingList = addMBMailingList();
 
 		long pk = RandomTestUtil.nextLong();
@@ -403,39 +373,36 @@ public class MBMailingListPersistenceTest {
 		primaryKeys.add(newMBMailingList.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, MBMailingList> mbMailingLists =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, MBMailingList> mbMailingLists = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, mbMailingLists.size());
-		Assert.assertEquals(
-			newMBMailingList,
+		Assert.assertEquals(newMBMailingList,
 			mbMailingLists.get(newMBMailingList.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
+		throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, MBMailingList> mbMailingLists =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, MBMailingList> mbMailingLists = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(mbMailingLists.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey()
+		throws Exception {
 		MBMailingList newMBMailingList = addMBMailingList();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newMBMailingList.getPrimaryKey());
 
-		Map<Serializable, MBMailingList> mbMailingLists =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, MBMailingList> mbMailingLists = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, mbMailingLists.size());
-		Assert.assertEquals(
-			newMBMailingList,
+		Assert.assertEquals(newMBMailingList,
 			mbMailingLists.get(newMBMailingList.getPrimaryKey()));
 	}
 
@@ -443,19 +410,15 @@ public class MBMailingListPersistenceTest {
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery =
-			MBMailingListLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = MBMailingListLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<MBMailingList>() {
-
+		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<MBMailingList>() {
 				@Override
 				public void performAction(MBMailingList mbMailingList) {
 					Assert.assertNotNull(mbMailingList);
 
 					count.increment();
 				}
-
 			});
 
 		actionableDynamicQuery.performActions();
@@ -464,18 +427,17 @@ public class MBMailingListPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting()
+		throws Exception {
 		MBMailingList newMBMailingList = addMBMailingList();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			MBMailingList.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(MBMailingList.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq(
-				"mailingListId", newMBMailingList.getMailingListId()));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("mailingListId",
+				newMBMailingList.getMailingListId()));
 
-		List<MBMailingList> result = _persistence.findWithDynamicQuery(
-			dynamicQuery);
+		List<MBMailingList> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
 		Assert.assertEquals(1, result.size());
 
@@ -486,34 +448,32 @@ public class MBMailingListPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			MBMailingList.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(MBMailingList.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq(
-				"mailingListId", RandomTestUtil.nextLong()));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("mailingListId",
+				RandomTestUtil.nextLong()));
 
-		List<MBMailingList> result = _persistence.findWithDynamicQuery(
-			dynamicQuery);
+		List<MBMailingList> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
 		Assert.assertEquals(0, result.size());
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting() throws Exception {
+	public void testDynamicQueryByProjectionExisting()
+		throws Exception {
 		MBMailingList newMBMailingList = addMBMailingList();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			MBMailingList.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(MBMailingList.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(
-			ProjectionFactoryUtil.property("mailingListId"));
+		dynamicQuery.setProjection(ProjectionFactoryUtil.property(
+				"mailingListId"));
 
 		Object newMailingListId = newMBMailingList.getMailingListId();
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in(
-				"mailingListId", new Object[] {newMailingListId}));
+		dynamicQuery.add(RestrictionsFactoryUtil.in("mailingListId",
+				new Object[] { newMailingListId }));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -526,15 +486,14 @@ public class MBMailingListPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			MBMailingList.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(MBMailingList.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(
-			ProjectionFactoryUtil.property("mailingListId"));
+		dynamicQuery.setProjection(ProjectionFactoryUtil.property(
+				"mailingListId"));
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in(
-				"mailingListId", new Object[] {RandomTestUtil.nextLong()}));
+		dynamicQuery.add(RestrictionsFactoryUtil.in("mailingListId",
+				new Object[] { RandomTestUtil.nextLong() }));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -547,29 +506,21 @@ public class MBMailingListPersistenceTest {
 
 		_persistence.clearCache();
 
-		MBMailingList existingMBMailingList = _persistence.findByPrimaryKey(
-			newMBMailingList.getPrimaryKey());
+		MBMailingList existingMBMailingList = _persistence.findByPrimaryKey(newMBMailingList.getPrimaryKey());
 
-		Assert.assertTrue(
-			Objects.equals(
-				existingMBMailingList.getUuid(),
-				ReflectionTestUtil.invoke(
-					existingMBMailingList, "getOriginalUuid",
-					new Class<?>[0])));
-		Assert.assertEquals(
-			Long.valueOf(existingMBMailingList.getGroupId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingMBMailingList, "getOriginalGroupId", new Class<?>[0]));
+		Assert.assertTrue(Objects.equals(existingMBMailingList.getUuid(),
+				ReflectionTestUtil.invoke(existingMBMailingList,
+					"getOriginalUuid", new Class<?>[0])));
+		Assert.assertEquals(Long.valueOf(existingMBMailingList.getGroupId()),
+			ReflectionTestUtil.<Long>invoke(existingMBMailingList,
+				"getOriginalGroupId", new Class<?>[0]));
 
-		Assert.assertEquals(
-			Long.valueOf(existingMBMailingList.getGroupId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingMBMailingList, "getOriginalGroupId", new Class<?>[0]));
-		Assert.assertEquals(
-			Long.valueOf(existingMBMailingList.getCategoryId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingMBMailingList, "getOriginalCategoryId",
-				new Class<?>[0]));
+		Assert.assertEquals(Long.valueOf(existingMBMailingList.getGroupId()),
+			ReflectionTestUtil.<Long>invoke(existingMBMailingList,
+				"getOriginalGroupId", new Class<?>[0]));
+		Assert.assertEquals(Long.valueOf(existingMBMailingList.getCategoryId()),
+			ReflectionTestUtil.<Long>invoke(existingMBMailingList,
+				"getOriginalCategoryId", new Class<?>[0]));
 	}
 
 	protected MBMailingList addMBMailingList() throws Exception {
@@ -632,9 +583,7 @@ public class MBMailingListPersistenceTest {
 		return mbMailingList;
 	}
 
-	private List<MBMailingList> _mbMailingLists =
-		new ArrayList<MBMailingList>();
+	private List<MBMailingList> _mbMailingLists = new ArrayList<MBMailingList>();
 	private MBMailingListPersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
-
 }

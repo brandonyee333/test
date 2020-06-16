@@ -14,10 +14,14 @@
 
 package com.liferay.portlet.messageboards.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.message.boards.kernel.model.MBMessage;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing MBMessage in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see MBMessage
  * @generated
  */
-public class MBMessageCacheModel
-	implements CacheModel<MBMessage>, Externalizable {
-
+@ProviderType
+public class MBMessageCacheModel implements CacheModel<MBMessage>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -125,7 +130,7 @@ public class MBMessageCacheModel
 		MBMessageImpl mbMessageImpl = new MBMessageImpl();
 
 		if (uuid == null) {
-			mbMessageImpl.setUuid("");
+			mbMessageImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			mbMessageImpl.setUuid(uuid);
@@ -137,7 +142,7 @@ public class MBMessageCacheModel
 		mbMessageImpl.setUserId(userId);
 
 		if (userName == null) {
-			mbMessageImpl.setUserName("");
+			mbMessageImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			mbMessageImpl.setUserName(userName);
@@ -165,21 +170,21 @@ public class MBMessageCacheModel
 		mbMessageImpl.setParentMessageId(parentMessageId);
 
 		if (subject == null) {
-			mbMessageImpl.setSubject("");
+			mbMessageImpl.setSubject(StringPool.BLANK);
 		}
 		else {
 			mbMessageImpl.setSubject(subject);
 		}
 
 		if (body == null) {
-			mbMessageImpl.setBody("");
+			mbMessageImpl.setBody(StringPool.BLANK);
 		}
 		else {
 			mbMessageImpl.setBody(body);
 		}
 
 		if (format == null) {
-			mbMessageImpl.setFormat("");
+			mbMessageImpl.setFormat(StringPool.BLANK);
 		}
 		else {
 			mbMessageImpl.setFormat(format);
@@ -201,7 +206,7 @@ public class MBMessageCacheModel
 		mbMessageImpl.setStatusByUserId(statusByUserId);
 
 		if (statusByUserName == null) {
-			mbMessageImpl.setStatusByUserName("");
+			mbMessageImpl.setStatusByUserName(StringPool.BLANK);
 		}
 		else {
 			mbMessageImpl.setStatusByUserName(statusByUserName);
@@ -220,9 +225,7 @@ public class MBMessageCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
 
 		messageId = objectInput.readLong();
@@ -248,7 +251,7 @@ public class MBMessageCacheModel
 
 		parentMessageId = objectInput.readLong();
 		subject = objectInput.readUTF();
-		body = (String)objectInput.readObject();
+		body = objectInput.readUTF();
 		format = objectInput.readUTF();
 
 		anonymous = objectInput.readBoolean();
@@ -268,9 +271,10 @@ public class MBMessageCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -285,7 +289,7 @@ public class MBMessageCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -307,21 +311,21 @@ public class MBMessageCacheModel
 		objectOutput.writeLong(parentMessageId);
 
 		if (subject == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(subject);
 		}
 
 		if (body == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(body);
+			objectOutput.writeUTF(body);
 		}
 
 		if (format == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(format);
@@ -341,7 +345,7 @@ public class MBMessageCacheModel
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(statusByUserName);
@@ -376,5 +380,4 @@ public class MBMessageCacheModel
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
-
 }

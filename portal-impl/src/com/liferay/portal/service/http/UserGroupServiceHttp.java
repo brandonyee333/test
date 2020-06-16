@@ -14,6 +14,8 @@
 
 package com.liferay.portal.service.http;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
@@ -24,11 +26,10 @@ import com.liferay.portal.kernel.util.MethodKey;
 
 /**
  * Provides the HTTP utility for the
- * <code>UserGroupServiceUtil</code> service
- * utility. The
+ * {@link UserGroupServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it requires an additional
- * <code>HttpPrincipal</code> parameter.
+ * {@link HttpPrincipal} parameter.
  *
  * <p>
  * The benefits of using the HTTP utility is that it is fast and allows for
@@ -47,322 +48,261 @@ import com.liferay.portal.kernel.util.MethodKey;
  *
  * @author Brian Wing Shun Chan
  * @see UserGroupServiceSoap
+ * @see HttpPrincipal
+ * @see UserGroupServiceUtil
  * @generated
  */
+@ProviderType
 public class UserGroupServiceHttp {
-
-	public static void addGroupUserGroups(
-			HttpPrincipal httpPrincipal, long groupId, long[] userGroupIds)
+	public static void addGroupUserGroups(HttpPrincipal httpPrincipal,
+		long groupId, long[] userGroupIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				UserGroupServiceUtil.class, "addGroupUserGroups",
-				_addGroupUserGroupsParameterTypes0);
+			MethodKey methodKey = new MethodKey(UserGroupServiceUtil.class,
+					"addGroupUserGroups", _addGroupUserGroupsParameterTypes0);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, groupId, userGroupIds);
+			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
+					userGroupIds);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	public static void addTeamUserGroups(
-			HttpPrincipal httpPrincipal, long teamId, long[] userGroupIds)
+	public static void addTeamUserGroups(HttpPrincipal httpPrincipal,
+		long teamId, long[] userGroupIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				UserGroupServiceUtil.class, "addTeamUserGroups",
-				_addTeamUserGroupsParameterTypes1);
+			MethodKey methodKey = new MethodKey(UserGroupServiceUtil.class,
+					"addTeamUserGroups", _addTeamUserGroupsParameterTypes1);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, teamId, userGroupIds);
+			MethodHandler methodHandler = new MethodHandler(methodKey, teamId,
+					userGroupIds);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
 	public static com.liferay.portal.kernel.model.UserGroup addUserGroup(
-			HttpPrincipal httpPrincipal, String name, String description)
+		HttpPrincipal httpPrincipal, java.lang.String name,
+		java.lang.String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				UserGroupServiceUtil.class, "addUserGroup",
-				_addUserGroupParameterTypes2);
+			MethodKey methodKey = new MethodKey(UserGroupServiceUtil.class,
+					"addUserGroup", _addUserGroupParameterTypes2);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, name, description);
+			MethodHandler methodHandler = new MethodHandler(methodKey, name,
+					description);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
 			return (com.liferay.portal.kernel.model.UserGroup)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
 	public static com.liferay.portal.kernel.model.UserGroup addUserGroup(
-			HttpPrincipal httpPrincipal, String name, String description,
-			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		HttpPrincipal httpPrincipal, java.lang.String name,
+		java.lang.String description,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				UserGroupServiceUtil.class, "addUserGroup",
-				_addUserGroupParameterTypes3);
+			MethodKey methodKey = new MethodKey(UserGroupServiceUtil.class,
+					"addUserGroup", _addUserGroupParameterTypes3);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, name, description, serviceContext);
+			MethodHandler methodHandler = new MethodHandler(methodKey, name,
+					description, serviceContext);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
 			return (com.liferay.portal.kernel.model.UserGroup)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	public static void deleteUserGroup(
-			HttpPrincipal httpPrincipal, long userGroupId)
+	public static void deleteUserGroup(HttpPrincipal httpPrincipal,
+		long userGroupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				UserGroupServiceUtil.class, "deleteUserGroup",
-				_deleteUserGroupParameterTypes4);
+			MethodKey methodKey = new MethodKey(UserGroupServiceUtil.class,
+					"deleteUserGroup", _deleteUserGroupParameterTypes4);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, userGroupId);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					userGroupId);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
 	public static com.liferay.portal.kernel.model.UserGroup fetchUserGroup(
-			HttpPrincipal httpPrincipal, long userGroupId)
+		HttpPrincipal httpPrincipal, long userGroupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				UserGroupServiceUtil.class, "fetchUserGroup",
-				_fetchUserGroupParameterTypes5);
+			MethodKey methodKey = new MethodKey(UserGroupServiceUtil.class,
+					"fetchUserGroup", _fetchUserGroupParameterTypes5);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, userGroupId);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					userGroupId);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
 			return (com.liferay.portal.kernel.model.UserGroup)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.UserGroup>
-		getGtUserGroups(
-			HttpPrincipal httpPrincipal, long gtUserGroupId, long companyId,
-			long parentUserGroupId, int size) {
-
+	public static java.util.List<com.liferay.portal.kernel.model.UserGroup> getGtUserGroups(
+		HttpPrincipal httpPrincipal, long gtUserGroupId, long companyId,
+		long parentUserGroupId, int size) {
 		try {
-			MethodKey methodKey = new MethodKey(
-				UserGroupServiceUtil.class, "getGtUserGroups",
-				_getGtUserGroupsParameterTypes6);
+			MethodKey methodKey = new MethodKey(UserGroupServiceUtil.class,
+					"getGtUserGroups", _getGtUserGroupsParameterTypes6);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, gtUserGroupId, companyId, parentUserGroupId, size);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					gtUserGroupId, companyId, parentUserGroupId, size);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+			catch (Exception e) {
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portal.kernel.model.UserGroup>)
-				returnObj;
+			return (java.util.List<com.liferay.portal.kernel.model.UserGroup>)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
 	public static com.liferay.portal.kernel.model.UserGroup getUserGroup(
-			HttpPrincipal httpPrincipal, long userGroupId)
+		HttpPrincipal httpPrincipal, long userGroupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				UserGroupServiceUtil.class, "getUserGroup",
-				_getUserGroupParameterTypes7);
+			MethodKey methodKey = new MethodKey(UserGroupServiceUtil.class,
+					"getUserGroup", _getUserGroupParameterTypes7);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, userGroupId);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					userGroupId);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
 			return (com.liferay.portal.kernel.model.UserGroup)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
 	public static com.liferay.portal.kernel.model.UserGroup getUserGroup(
-			HttpPrincipal httpPrincipal, String name)
+		HttpPrincipal httpPrincipal, java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				UserGroupServiceUtil.class, "getUserGroup",
-				_getUserGroupParameterTypes8);
+			MethodKey methodKey = new MethodKey(UserGroupServiceUtil.class,
+					"getUserGroup", _getUserGroupParameterTypes8);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, name);
 
@@ -371,145 +311,115 @@ public class UserGroupServiceHttp {
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
 			return (com.liferay.portal.kernel.model.UserGroup)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.UserGroup>
-			getUserGroups(HttpPrincipal httpPrincipal, long companyId)
+	public static java.util.List<com.liferay.portal.kernel.model.UserGroup> getUserGroups(
+		HttpPrincipal httpPrincipal, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				UserGroupServiceUtil.class, "getUserGroups",
-				_getUserGroupsParameterTypes9);
+			MethodKey methodKey = new MethodKey(UserGroupServiceUtil.class,
+					"getUserGroups", _getUserGroupsParameterTypes9);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, companyId);
+			MethodHandler methodHandler = new MethodHandler(methodKey, companyId);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portal.kernel.model.UserGroup>)
-				returnObj;
+			return (java.util.List<com.liferay.portal.kernel.model.UserGroup>)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.UserGroup>
-		getUserGroups(
-			HttpPrincipal httpPrincipal, long companyId, String name, int start,
-			int end) {
-
+	public static java.util.List<com.liferay.portal.kernel.model.UserGroup> getUserGroups(
+		HttpPrincipal httpPrincipal, long companyId, java.lang.String name,
+		int start, int end) {
 		try {
-			MethodKey methodKey = new MethodKey(
-				UserGroupServiceUtil.class, "getUserGroups",
-				_getUserGroupsParameterTypes10);
+			MethodKey methodKey = new MethodKey(UserGroupServiceUtil.class,
+					"getUserGroups", _getUserGroupsParameterTypes10);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, companyId, name, start, end);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					companyId, name, start, end);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+			catch (Exception e) {
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portal.kernel.model.UserGroup>)
-				returnObj;
+			return (java.util.List<com.liferay.portal.kernel.model.UserGroup>)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	public static int getUserGroupsCount(
-		HttpPrincipal httpPrincipal, long companyId, String name) {
-
+	public static int getUserGroupsCount(HttpPrincipal httpPrincipal,
+		long companyId, java.lang.String name) {
 		try {
-			MethodKey methodKey = new MethodKey(
-				UserGroupServiceUtil.class, "getUserGroupsCount",
-				_getUserGroupsCountParameterTypes11);
+			MethodKey methodKey = new MethodKey(UserGroupServiceUtil.class,
+					"getUserGroupsCount", _getUserGroupsCountParameterTypes11);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, companyId, name);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					companyId, name);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+			catch (Exception e) {
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
 			return ((Integer)returnObj).intValue();
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.UserGroup>
-			getUserUserGroups(HttpPrincipal httpPrincipal, long userId)
+	public static java.util.List<com.liferay.portal.kernel.model.UserGroup> getUserUserGroups(
+		HttpPrincipal httpPrincipal, long userId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				UserGroupServiceUtil.class, "getUserUserGroups",
-				_getUserUserGroupsParameterTypes12);
+			MethodKey methodKey = new MethodKey(UserGroupServiceUtil.class,
+					"getUserUserGroups", _getUserUserGroupsParameterTypes12);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, userId);
 
@@ -518,228 +428,199 @@ public class UserGroupServiceHttp {
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portal.kernel.model.UserGroup>)
-				returnObj;
+			return (java.util.List<com.liferay.portal.kernel.model.UserGroup>)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	public static void unsetGroupUserGroups(
-			HttpPrincipal httpPrincipal, long groupId, long[] userGroupIds)
+	public static void unsetGroupUserGroups(HttpPrincipal httpPrincipal,
+		long groupId, long[] userGroupIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				UserGroupServiceUtil.class, "unsetGroupUserGroups",
-				_unsetGroupUserGroupsParameterTypes13);
+			MethodKey methodKey = new MethodKey(UserGroupServiceUtil.class,
+					"unsetGroupUserGroups",
+					_unsetGroupUserGroupsParameterTypes13);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, groupId, userGroupIds);
+			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
+					userGroupIds);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	public static void unsetTeamUserGroups(
-			HttpPrincipal httpPrincipal, long teamId, long[] userGroupIds)
+	public static void unsetTeamUserGroups(HttpPrincipal httpPrincipal,
+		long teamId, long[] userGroupIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				UserGroupServiceUtil.class, "unsetTeamUserGroups",
-				_unsetTeamUserGroupsParameterTypes14);
+			MethodKey methodKey = new MethodKey(UserGroupServiceUtil.class,
+					"unsetTeamUserGroups", _unsetTeamUserGroupsParameterTypes14);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, teamId, userGroupIds);
+			MethodHandler methodHandler = new MethodHandler(methodKey, teamId,
+					userGroupIds);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
 	public static com.liferay.portal.kernel.model.UserGroup updateUserGroup(
-			HttpPrincipal httpPrincipal, long userGroupId, String name,
-			String description)
+		HttpPrincipal httpPrincipal, long userGroupId, java.lang.String name,
+		java.lang.String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				UserGroupServiceUtil.class, "updateUserGroup",
-				_updateUserGroupParameterTypes15);
+			MethodKey methodKey = new MethodKey(UserGroupServiceUtil.class,
+					"updateUserGroup", _updateUserGroupParameterTypes15);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, userGroupId, name, description);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					userGroupId, name, description);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
 			return (com.liferay.portal.kernel.model.UserGroup)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
 	public static com.liferay.portal.kernel.model.UserGroup updateUserGroup(
-			HttpPrincipal httpPrincipal, long userGroupId, String name,
-			String description,
-			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		HttpPrincipal httpPrincipal, long userGroupId, java.lang.String name,
+		java.lang.String description,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				UserGroupServiceUtil.class, "updateUserGroup",
-				_updateUserGroupParameterTypes16);
+			MethodKey methodKey = new MethodKey(UserGroupServiceUtil.class,
+					"updateUserGroup", _updateUserGroupParameterTypes16);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, userGroupId, name, description, serviceContext);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					userGroupId, name, description, serviceContext);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
 			return (com.liferay.portal.kernel.model.UserGroup)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(UserGroupServiceHttp.class);
-
-	private static final Class<?>[] _addGroupUserGroupsParameterTypes0 =
-		new Class[] {long.class, long[].class};
-	private static final Class<?>[] _addTeamUserGroupsParameterTypes1 =
-		new Class[] {long.class, long[].class};
+	private static final Class<?>[] _addGroupUserGroupsParameterTypes0 = new Class[] {
+			long.class, long[].class
+		};
+	private static final Class<?>[] _addTeamUserGroupsParameterTypes1 = new Class[] {
+			long.class, long[].class
+		};
 	private static final Class<?>[] _addUserGroupParameterTypes2 = new Class[] {
-		String.class, String.class
-	};
+			java.lang.String.class, java.lang.String.class
+		};
 	private static final Class<?>[] _addUserGroupParameterTypes3 = new Class[] {
-		String.class, String.class,
-		com.liferay.portal.kernel.service.ServiceContext.class
-	};
-	private static final Class<?>[] _deleteUserGroupParameterTypes4 =
-		new Class[] {long.class};
-	private static final Class<?>[] _fetchUserGroupParameterTypes5 =
-		new Class[] {long.class};
-	private static final Class<?>[] _getGtUserGroupsParameterTypes6 =
-		new Class[] {long.class, long.class, long.class, int.class};
-	private static final Class<?>[] _getUserGroupParameterTypes7 = new Class[] {
-		long.class
-	};
-	private static final Class<?>[] _getUserGroupParameterTypes8 = new Class[] {
-		String.class
-	};
-	private static final Class<?>[] _getUserGroupsParameterTypes9 =
-		new Class[] {long.class};
-	private static final Class<?>[] _getUserGroupsParameterTypes10 =
-		new Class[] {long.class, String.class, int.class, int.class};
-	private static final Class<?>[] _getUserGroupsCountParameterTypes11 =
-		new Class[] {long.class, String.class};
-	private static final Class<?>[] _getUserUserGroupsParameterTypes12 =
-		new Class[] {long.class};
-	private static final Class<?>[] _unsetGroupUserGroupsParameterTypes13 =
-		new Class[] {long.class, long[].class};
-	private static final Class<?>[] _unsetTeamUserGroupsParameterTypes14 =
-		new Class[] {long.class, long[].class};
-	private static final Class<?>[] _updateUserGroupParameterTypes15 =
-		new Class[] {long.class, String.class, String.class};
-	private static final Class<?>[] _updateUserGroupParameterTypes16 =
-		new Class[] {
-			long.class, String.class, String.class,
+			java.lang.String.class, java.lang.String.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
-
+	private static final Class<?>[] _deleteUserGroupParameterTypes4 = new Class[] {
+			long.class
+		};
+	private static final Class<?>[] _fetchUserGroupParameterTypes5 = new Class[] {
+			long.class
+		};
+	private static final Class<?>[] _getGtUserGroupsParameterTypes6 = new Class[] {
+			long.class, long.class, long.class, int.class
+		};
+	private static final Class<?>[] _getUserGroupParameterTypes7 = new Class[] {
+			long.class
+		};
+	private static final Class<?>[] _getUserGroupParameterTypes8 = new Class[] {
+			java.lang.String.class
+		};
+	private static final Class<?>[] _getUserGroupsParameterTypes9 = new Class[] {
+			long.class
+		};
+	private static final Class<?>[] _getUserGroupsParameterTypes10 = new Class[] {
+			long.class, java.lang.String.class, int.class, int.class
+		};
+	private static final Class<?>[] _getUserGroupsCountParameterTypes11 = new Class[] {
+			long.class, java.lang.String.class
+		};
+	private static final Class<?>[] _getUserUserGroupsParameterTypes12 = new Class[] {
+			long.class
+		};
+	private static final Class<?>[] _unsetGroupUserGroupsParameterTypes13 = new Class[] {
+			long.class, long[].class
+		};
+	private static final Class<?>[] _unsetTeamUserGroupsParameterTypes14 = new Class[] {
+			long.class, long[].class
+		};
+	private static final Class<?>[] _updateUserGroupParameterTypes15 = new Class[] {
+			long.class, java.lang.String.class, java.lang.String.class
+		};
+	private static final Class<?>[] _updateUserGroupParameterTypes16 = new Class[] {
+			long.class, java.lang.String.class, java.lang.String.class,
+			com.liferay.portal.kernel.service.ServiceContext.class
+		};
 }

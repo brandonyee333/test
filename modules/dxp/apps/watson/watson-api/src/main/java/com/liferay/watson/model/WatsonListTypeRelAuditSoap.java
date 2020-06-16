@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.watson.model;
+
+import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -26,15 +28,13 @@ import java.util.List;
  * @author Steven Smith
  * @generated
  */
+@ProviderType
 public class WatsonListTypeRelAuditSoap implements Serializable {
-
 	public static WatsonListTypeRelAuditSoap toSoapModel(
 		WatsonListTypeRelAudit model) {
-
 		WatsonListTypeRelAuditSoap soapModel = new WatsonListTypeRelAuditSoap();
 
-		soapModel.setWatsonListTypeRelAuditId(
-			model.getWatsonListTypeRelAuditId());
+		soapModel.setWatsonListTypeRelAuditId(model.getWatsonListTypeRelAuditId());
 		soapModel.setGroupId(model.getGroupId());
 		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserId(model.getUserId());
@@ -45,7 +45,7 @@ public class WatsonListTypeRelAuditSoap implements Serializable {
 		soapModel.setWatsonListTypeRelId(model.getWatsonListTypeRelId());
 		soapModel.setClassNameId(model.getClassNameId());
 		soapModel.setClassPK(model.getClassPK());
-		soapModel.setPrimary(model.isPrimary());
+		soapModel.setPrimary(model.getPrimary());
 		soapModel.setValue(model.getValue());
 		soapModel.setType(model.getType());
 		soapModel.setStatus(model.getStatus());
@@ -55,9 +55,7 @@ public class WatsonListTypeRelAuditSoap implements Serializable {
 
 	public static WatsonListTypeRelAuditSoap[] toSoapModels(
 		WatsonListTypeRelAudit[] models) {
-
-		WatsonListTypeRelAuditSoap[] soapModels =
-			new WatsonListTypeRelAuditSoap[models.length];
+		WatsonListTypeRelAuditSoap[] soapModels = new WatsonListTypeRelAuditSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -68,12 +66,10 @@ public class WatsonListTypeRelAuditSoap implements Serializable {
 
 	public static WatsonListTypeRelAuditSoap[][] toSoapModels(
 		WatsonListTypeRelAudit[][] models) {
-
 		WatsonListTypeRelAuditSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels =
-				new WatsonListTypeRelAuditSoap[models.length][models[0].length];
+			soapModels = new WatsonListTypeRelAuditSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonListTypeRelAuditSoap[0][0];
@@ -88,16 +84,13 @@ public class WatsonListTypeRelAuditSoap implements Serializable {
 
 	public static WatsonListTypeRelAuditSoap[] toSoapModels(
 		List<WatsonListTypeRelAudit> models) {
-
-		List<WatsonListTypeRelAuditSoap> soapModels =
-			new ArrayList<WatsonListTypeRelAuditSoap>(models.size());
+		List<WatsonListTypeRelAuditSoap> soapModels = new ArrayList<WatsonListTypeRelAuditSoap>(models.size());
 
 		for (WatsonListTypeRelAudit model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(
-			new WatsonListTypeRelAuditSoap[soapModels.size()]);
+		return soapModels.toArray(new WatsonListTypeRelAuditSoap[soapModels.size()]);
 	}
 
 	public WatsonListTypeRelAuditSoap() {
@@ -250,5 +243,4 @@ public class WatsonListTypeRelAuditSoap implements Serializable {
 	private String _value;
 	private String _type;
 	private int _status;
-
 }

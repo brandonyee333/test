@@ -1,20 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.saml.persistence.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -34,9 +37,9 @@ import java.util.Objects;
  * @see SamlIdpSsoSession
  * @generated
  */
-public class SamlIdpSsoSessionWrapper
-	implements ModelWrapper<SamlIdpSsoSession>, SamlIdpSsoSession {
-
+@ProviderType
+public class SamlIdpSsoSessionWrapper implements SamlIdpSsoSession,
+	ModelWrapper<SamlIdpSsoSession> {
 	public SamlIdpSsoSessionWrapper(SamlIdpSsoSession samlIdpSsoSession) {
 		_samlIdpSsoSession = samlIdpSsoSession;
 	}
@@ -105,7 +108,7 @@ public class SamlIdpSsoSessionWrapper
 		}
 
 		String samlIdpSsoSessionKey = (String)attributes.get(
-			"samlIdpSsoSessionKey");
+				"samlIdpSsoSessionKey");
 
 		if (samlIdpSsoSessionKey != null) {
 			setSamlIdpSsoSessionKey(samlIdpSsoSessionKey);
@@ -113,119 +116,13 @@ public class SamlIdpSsoSessionWrapper
 	}
 
 	@Override
-	public Object clone() {
-		return new SamlIdpSsoSessionWrapper(
-			(SamlIdpSsoSession)_samlIdpSsoSession.clone());
+	public SamlIdpSsoSession toEscapedModel() {
+		return new SamlIdpSsoSessionWrapper(_samlIdpSsoSession.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(SamlIdpSsoSession samlIdpSsoSession) {
-		return _samlIdpSsoSession.compareTo(samlIdpSsoSession);
-	}
-
-	/**
-	 * Returns the company ID of this saml idp sso session.
-	 *
-	 * @return the company ID of this saml idp sso session
-	 */
-	@Override
-	public long getCompanyId() {
-		return _samlIdpSsoSession.getCompanyId();
-	}
-
-	/**
-	 * Returns the create date of this saml idp sso session.
-	 *
-	 * @return the create date of this saml idp sso session
-	 */
-	@Override
-	public Date getCreateDate() {
-		return _samlIdpSsoSession.getCreateDate();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _samlIdpSsoSession.getExpandoBridge();
-	}
-
-	/**
-	 * Returns the modified date of this saml idp sso session.
-	 *
-	 * @return the modified date of this saml idp sso session
-	 */
-	@Override
-	public Date getModifiedDate() {
-		return _samlIdpSsoSession.getModifiedDate();
-	}
-
-	/**
-	 * Returns the primary key of this saml idp sso session.
-	 *
-	 * @return the primary key of this saml idp sso session
-	 */
-	@Override
-	public long getPrimaryKey() {
-		return _samlIdpSsoSession.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _samlIdpSsoSession.getPrimaryKeyObj();
-	}
-
-	/**
-	 * Returns the saml idp sso session ID of this saml idp sso session.
-	 *
-	 * @return the saml idp sso session ID of this saml idp sso session
-	 */
-	@Override
-	public long getSamlIdpSsoSessionId() {
-		return _samlIdpSsoSession.getSamlIdpSsoSessionId();
-	}
-
-	/**
-	 * Returns the saml idp sso session key of this saml idp sso session.
-	 *
-	 * @return the saml idp sso session key of this saml idp sso session
-	 */
-	@Override
-	public String getSamlIdpSsoSessionKey() {
-		return _samlIdpSsoSession.getSamlIdpSsoSessionKey();
-	}
-
-	/**
-	 * Returns the user ID of this saml idp sso session.
-	 *
-	 * @return the user ID of this saml idp sso session
-	 */
-	@Override
-	public long getUserId() {
-		return _samlIdpSsoSession.getUserId();
-	}
-
-	/**
-	 * Returns the user name of this saml idp sso session.
-	 *
-	 * @return the user name of this saml idp sso session
-	 */
-	@Override
-	public String getUserName() {
-		return _samlIdpSsoSession.getUserName();
-	}
-
-	/**
-	 * Returns the user uuid of this saml idp sso session.
-	 *
-	 * @return the user uuid of this saml idp sso session
-	 */
-	@Override
-	public String getUserUuid() {
-		return _samlIdpSsoSession.getUserUuid();
-	}
-
-	@Override
-	public int hashCode() {
-		return _samlIdpSsoSession.hashCode();
+	public SamlIdpSsoSession toUnescapedModel() {
+		return new SamlIdpSsoSessionWrapper(_samlIdpSsoSession.toUnescapedModel());
 	}
 
 	@Override
@@ -249,6 +146,136 @@ public class SamlIdpSsoSessionWrapper
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _samlIdpSsoSession.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<SamlIdpSsoSession> toCacheModel() {
+		return _samlIdpSsoSession.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(SamlIdpSsoSession samlIdpSsoSession) {
+		return _samlIdpSsoSession.compareTo(samlIdpSsoSession);
+	}
+
+	@Override
+	public int hashCode() {
+		return _samlIdpSsoSession.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _samlIdpSsoSession.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new SamlIdpSsoSessionWrapper((SamlIdpSsoSession)_samlIdpSsoSession.clone());
+	}
+
+	/**
+	* Returns the saml idp sso session key of this saml idp sso session.
+	*
+	* @return the saml idp sso session key of this saml idp sso session
+	*/
+	@Override
+	public java.lang.String getSamlIdpSsoSessionKey() {
+		return _samlIdpSsoSession.getSamlIdpSsoSessionKey();
+	}
+
+	/**
+	* Returns the user name of this saml idp sso session.
+	*
+	* @return the user name of this saml idp sso session
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _samlIdpSsoSession.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this saml idp sso session.
+	*
+	* @return the user uuid of this saml idp sso session
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _samlIdpSsoSession.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _samlIdpSsoSession.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _samlIdpSsoSession.toXmlString();
+	}
+
+	/**
+	* Returns the create date of this saml idp sso session.
+	*
+	* @return the create date of this saml idp sso session
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _samlIdpSsoSession.getCreateDate();
+	}
+
+	/**
+	* Returns the modified date of this saml idp sso session.
+	*
+	* @return the modified date of this saml idp sso session
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _samlIdpSsoSession.getModifiedDate();
+	}
+
+	/**
+	* Returns the company ID of this saml idp sso session.
+	*
+	* @return the company ID of this saml idp sso session
+	*/
+	@Override
+	public long getCompanyId() {
+		return _samlIdpSsoSession.getCompanyId();
+	}
+
+	/**
+	* Returns the primary key of this saml idp sso session.
+	*
+	* @return the primary key of this saml idp sso session
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _samlIdpSsoSession.getPrimaryKey();
+	}
+
+	/**
+	* Returns the saml idp sso session ID of this saml idp sso session.
+	*
+	* @return the saml idp sso session ID of this saml idp sso session
+	*/
+	@Override
+	public long getSamlIdpSsoSessionId() {
+		return _samlIdpSsoSession.getSamlIdpSsoSessionId();
+	}
+
+	/**
+	* Returns the user ID of this saml idp sso session.
+	*
+	* @return the user ID of this saml idp sso session
+	*/
+	@Override
+	public long getUserId() {
+		return _samlIdpSsoSession.getUserId();
+	}
+
+	@Override
 	public void persist() {
 		_samlIdpSsoSession.persist();
 	}
@@ -259,30 +286,23 @@ public class SamlIdpSsoSessionWrapper
 	}
 
 	/**
-	 * Sets the company ID of this saml idp sso session.
-	 *
-	 * @param companyId the company ID of this saml idp sso session
-	 */
+	* Sets the company ID of this saml idp sso session.
+	*
+	* @param companyId the company ID of this saml idp sso session
+	*/
 	@Override
 	public void setCompanyId(long companyId) {
 		_samlIdpSsoSession.setCompanyId(companyId);
 	}
 
 	/**
-	 * Sets the create date of this saml idp sso session.
-	 *
-	 * @param createDate the create date of this saml idp sso session
-	 */
+	* Sets the create date of this saml idp sso session.
+	*
+	* @param createDate the create date of this saml idp sso session
+	*/
 	@Override
 	public void setCreateDate(Date createDate) {
 		_samlIdpSsoSession.setCreateDate(createDate);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-
-		_samlIdpSsoSession.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -291,15 +311,21 @@ public class SamlIdpSsoSessionWrapper
 	}
 
 	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_samlIdpSsoSession.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_samlIdpSsoSession.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	 * Sets the modified date of this saml idp sso session.
-	 *
-	 * @param modifiedDate the modified date of this saml idp sso session
-	 */
+	* Sets the modified date of this saml idp sso session.
+	*
+	* @param modifiedDate the modified date of this saml idp sso session
+	*/
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_samlIdpSsoSession.setModifiedDate(modifiedDate);
@@ -311,10 +337,10 @@ public class SamlIdpSsoSessionWrapper
 	}
 
 	/**
-	 * Sets the primary key of this saml idp sso session.
-	 *
-	 * @param primaryKey the primary key of this saml idp sso session
-	 */
+	* Sets the primary key of this saml idp sso session.
+	*
+	* @param primaryKey the primary key of this saml idp sso session
+	*/
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_samlIdpSsoSession.setPrimaryKey(primaryKey);
@@ -326,82 +352,53 @@ public class SamlIdpSsoSessionWrapper
 	}
 
 	/**
-	 * Sets the saml idp sso session ID of this saml idp sso session.
-	 *
-	 * @param samlIdpSsoSessionId the saml idp sso session ID of this saml idp sso session
-	 */
+	* Sets the saml idp sso session ID of this saml idp sso session.
+	*
+	* @param samlIdpSsoSessionId the saml idp sso session ID of this saml idp sso session
+	*/
 	@Override
 	public void setSamlIdpSsoSessionId(long samlIdpSsoSessionId) {
 		_samlIdpSsoSession.setSamlIdpSsoSessionId(samlIdpSsoSessionId);
 	}
 
 	/**
-	 * Sets the saml idp sso session key of this saml idp sso session.
-	 *
-	 * @param samlIdpSsoSessionKey the saml idp sso session key of this saml idp sso session
-	 */
+	* Sets the saml idp sso session key of this saml idp sso session.
+	*
+	* @param samlIdpSsoSessionKey the saml idp sso session key of this saml idp sso session
+	*/
 	@Override
-	public void setSamlIdpSsoSessionKey(String samlIdpSsoSessionKey) {
+	public void setSamlIdpSsoSessionKey(java.lang.String samlIdpSsoSessionKey) {
 		_samlIdpSsoSession.setSamlIdpSsoSessionKey(samlIdpSsoSessionKey);
 	}
 
 	/**
-	 * Sets the user ID of this saml idp sso session.
-	 *
-	 * @param userId the user ID of this saml idp sso session
-	 */
+	* Sets the user ID of this saml idp sso session.
+	*
+	* @param userId the user ID of this saml idp sso session
+	*/
 	@Override
 	public void setUserId(long userId) {
 		_samlIdpSsoSession.setUserId(userId);
 	}
 
 	/**
-	 * Sets the user name of this saml idp sso session.
-	 *
-	 * @param userName the user name of this saml idp sso session
-	 */
+	* Sets the user name of this saml idp sso session.
+	*
+	* @param userName the user name of this saml idp sso session
+	*/
 	@Override
-	public void setUserName(String userName) {
+	public void setUserName(java.lang.String userName) {
 		_samlIdpSsoSession.setUserName(userName);
 	}
 
 	/**
-	 * Sets the user uuid of this saml idp sso session.
-	 *
-	 * @param userUuid the user uuid of this saml idp sso session
-	 */
+	* Sets the user uuid of this saml idp sso session.
+	*
+	* @param userUuid the user uuid of this saml idp sso session
+	*/
 	@Override
-	public void setUserUuid(String userUuid) {
+	public void setUserUuid(java.lang.String userUuid) {
 		_samlIdpSsoSession.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<SamlIdpSsoSession>
-		toCacheModel() {
-
-		return _samlIdpSsoSession.toCacheModel();
-	}
-
-	@Override
-	public SamlIdpSsoSession toEscapedModel() {
-		return new SamlIdpSsoSessionWrapper(
-			_samlIdpSsoSession.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return _samlIdpSsoSession.toString();
-	}
-
-	@Override
-	public SamlIdpSsoSession toUnescapedModel() {
-		return new SamlIdpSsoSessionWrapper(
-			_samlIdpSsoSession.toUnescapedModel());
-	}
-
-	@Override
-	public String toXmlString() {
-		return _samlIdpSsoSession.toXmlString();
 	}
 
 	@Override
@@ -414,13 +411,10 @@ public class SamlIdpSsoSessionWrapper
 			return false;
 		}
 
-		SamlIdpSsoSessionWrapper samlIdpSsoSessionWrapper =
-			(SamlIdpSsoSessionWrapper)obj;
+		SamlIdpSsoSessionWrapper samlIdpSsoSessionWrapper = (SamlIdpSsoSessionWrapper)obj;
 
-		if (Objects.equals(
-				_samlIdpSsoSession,
-				samlIdpSsoSessionWrapper._samlIdpSsoSession)) {
-
+		if (Objects.equals(_samlIdpSsoSession,
+					samlIdpSsoSessionWrapper._samlIdpSsoSession)) {
 			return true;
 		}
 
@@ -448,5 +442,4 @@ public class SamlIdpSsoSessionWrapper
 	}
 
 	private final SamlIdpSsoSession _samlIdpSsoSession;
-
 }

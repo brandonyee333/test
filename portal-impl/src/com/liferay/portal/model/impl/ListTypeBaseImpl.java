@@ -14,6 +14,8 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.service.ListTypeLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.portal.kernel.service.ListTypeLocalServiceUtil;
  * @see ListType
  * @generated
  */
-public abstract class ListTypeBaseImpl
-	extends ListTypeModelImpl implements ListType {
-
+@ProviderType
+public abstract class ListTypeBaseImpl extends ListTypeModelImpl
+	implements ListType {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a list type model instance should use the <code>ListType</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a list type model instance should use the {@link ListType} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class ListTypeBaseImpl
 			ListTypeLocalServiceUtil.updateListType(this);
 		}
 	}
-
 }

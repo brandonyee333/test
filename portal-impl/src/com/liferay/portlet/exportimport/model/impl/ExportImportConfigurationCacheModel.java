@@ -14,11 +14,15 @@
 
 package com.liferay.portlet.exportimport.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -31,12 +35,12 @@ import java.util.Date;
  * The cache model class for representing ExportImportConfiguration in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see ExportImportConfiguration
  * @generated
  */
-public class ExportImportConfigurationCacheModel
-	implements CacheModel<ExportImportConfiguration>, Externalizable,
-			   MVCCModel {
-
+@ProviderType
+public class ExportImportConfigurationCacheModel implements CacheModel<ExportImportConfiguration>,
+	Externalizable, MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -47,15 +51,10 @@ public class ExportImportConfigurationCacheModel
 			return false;
 		}
 
-		ExportImportConfigurationCacheModel
-			exportImportConfigurationCacheModel =
-				(ExportImportConfigurationCacheModel)obj;
+		ExportImportConfigurationCacheModel exportImportConfigurationCacheModel = (ExportImportConfigurationCacheModel)obj;
 
-		if ((exportImportConfigurationId ==
-				exportImportConfigurationCacheModel.
-					exportImportConfigurationId) &&
-			(mvccVersion == exportImportConfigurationCacheModel.mvccVersion)) {
-
+		if ((exportImportConfigurationId == exportImportConfigurationCacheModel.exportImportConfigurationId) &&
+				(mvccVersion == exportImportConfigurationCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -122,18 +121,16 @@ public class ExportImportConfigurationCacheModel
 
 	@Override
 	public ExportImportConfiguration toEntityModel() {
-		ExportImportConfigurationImpl exportImportConfigurationImpl =
-			new ExportImportConfigurationImpl();
+		ExportImportConfigurationImpl exportImportConfigurationImpl = new ExportImportConfigurationImpl();
 
 		exportImportConfigurationImpl.setMvccVersion(mvccVersion);
-		exportImportConfigurationImpl.setExportImportConfigurationId(
-			exportImportConfigurationId);
+		exportImportConfigurationImpl.setExportImportConfigurationId(exportImportConfigurationId);
 		exportImportConfigurationImpl.setGroupId(groupId);
 		exportImportConfigurationImpl.setCompanyId(companyId);
 		exportImportConfigurationImpl.setUserId(userId);
 
 		if (userName == null) {
-			exportImportConfigurationImpl.setUserName("");
+			exportImportConfigurationImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			exportImportConfigurationImpl.setUserName(userName);
@@ -150,19 +147,18 @@ public class ExportImportConfigurationCacheModel
 			exportImportConfigurationImpl.setModifiedDate(null);
 		}
 		else {
-			exportImportConfigurationImpl.setModifiedDate(
-				new Date(modifiedDate));
+			exportImportConfigurationImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
 		if (name == null) {
-			exportImportConfigurationImpl.setName("");
+			exportImportConfigurationImpl.setName(StringPool.BLANK);
 		}
 		else {
 			exportImportConfigurationImpl.setName(name);
 		}
 
 		if (description == null) {
-			exportImportConfigurationImpl.setDescription("");
+			exportImportConfigurationImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			exportImportConfigurationImpl.setDescription(description);
@@ -171,7 +167,7 @@ public class ExportImportConfigurationCacheModel
 		exportImportConfigurationImpl.setType(type);
 
 		if (settings == null) {
-			exportImportConfigurationImpl.setSettings("");
+			exportImportConfigurationImpl.setSettings(StringPool.BLANK);
 		}
 		else {
 			exportImportConfigurationImpl.setSettings(settings);
@@ -181,7 +177,7 @@ public class ExportImportConfigurationCacheModel
 		exportImportConfigurationImpl.setStatusByUserId(statusByUserId);
 
 		if (statusByUserName == null) {
-			exportImportConfigurationImpl.setStatusByUserName("");
+			exportImportConfigurationImpl.setStatusByUserName(StringPool.BLANK);
 		}
 		else {
 			exportImportConfigurationImpl.setStatusByUserName(statusByUserName);
@@ -200,9 +196,7 @@ public class ExportImportConfigurationCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
 
 		exportImportConfigurationId = objectInput.readLong();
@@ -219,7 +213,7 @@ public class ExportImportConfigurationCacheModel
 		description = objectInput.readUTF();
 
 		type = objectInput.readInt();
-		settings = (String)objectInput.readObject();
+		settings = objectInput.readUTF();
 
 		status = objectInput.readInt();
 
@@ -229,7 +223,8 @@ public class ExportImportConfigurationCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(exportImportConfigurationId);
@@ -241,7 +236,7 @@ public class ExportImportConfigurationCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -251,14 +246,14 @@ public class ExportImportConfigurationCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -267,10 +262,10 @@ public class ExportImportConfigurationCacheModel
 		objectOutput.writeInt(type);
 
 		if (settings == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(settings);
+			objectOutput.writeUTF(settings);
 		}
 
 		objectOutput.writeInt(status);
@@ -278,7 +273,7 @@ public class ExportImportConfigurationCacheModel
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(statusByUserName);
@@ -303,5 +298,4 @@ public class ExportImportConfigurationCacheModel
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
-
 }

@@ -1,15 +1,15 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.portal.reports.engine.console.model;
@@ -25,22 +25,19 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see SourceModel
+ * @see com.liferay.portal.reports.engine.console.model.impl.SourceImpl
+ * @see com.liferay.portal.reports.engine.console.model.impl.SourceModelImpl
  * @generated
  */
-@ImplementationClassName(
-	"com.liferay.portal.reports.engine.console.model.impl.SourceImpl"
-)
+@ImplementationClassName("com.liferay.portal.reports.engine.console.model.impl.SourceImpl")
 @ProviderType
-public interface Source extends PersistedModel, SourceModel {
-
+public interface Source extends SourceModel, PersistedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to <code>com.liferay.portal.reports.engine.console.model.impl.SourceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to {@link com.liferay.portal.reports.engine.console.model.impl.SourceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<Source, Long> SOURCE_ID_ACCESSOR =
-		new Accessor<Source, Long>() {
-
+	public static final Accessor<Source, Long> SOURCE_ID_ACCESSOR = new Accessor<Source, Long>() {
 			@Override
 			public Long get(Source source) {
 				return source.getSourceId();
@@ -55,12 +52,10 @@ public interface Source extends PersistedModel, SourceModel {
 			public Class<Source> getTypeClass() {
 				return Source.class;
 			}
-
 		};
 
-	public String getAttachmentsDir();
+	public java.lang.String getAttachmentsDir();
 
-	public String[] getAttachmentsFiles()
+	public java.lang.String[] getAttachmentsFiles()
 		throws com.liferay.portal.kernel.exception.PortalException;
-
 }

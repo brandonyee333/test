@@ -18,6 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.model.AssetVocabularyDisplay;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -41,147 +42,136 @@ import java.util.Map;
  *
  * @author Brian Wing Shun Chan
  * @see AssetVocabularyServiceUtil
+ * @see com.liferay.portlet.asset.service.base.AssetVocabularyServiceBaseImpl
+ * @see com.liferay.portlet.asset.service.impl.AssetVocabularyServiceImpl
  * @generated
  */
 @AccessControlled
 @JSONWebService
 @ProviderType
-@Transactional(
-	isolation = Isolation.PORTAL,
-	rollbackFor = {PortalException.class, SystemException.class}
-)
+@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
+	PortalException.class, SystemException.class})
 public interface AssetVocabularyService extends BaseService {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link AssetVocabularyServiceUtil} to access the asset vocabulary remote service. Add custom service methods to <code>com.liferay.portlet.asset.service.impl.AssetVocabularyServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link AssetVocabularyServiceUtil} to access the asset vocabulary remote service. Add custom service methods to {@link com.liferay.portlet.asset.service.impl.AssetVocabularyServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public AssetVocabulary addVocabulary(
-			long groupId, String title, Map<Locale, String> titleMap,
-			Map<Locale, String> descriptionMap, String settings,
-			ServiceContext serviceContext)
-		throws PortalException;
+	public AssetVocabulary addVocabulary(long groupId, java.lang.String title,
+		ServiceContext serviceContext) throws PortalException;
 
-	public AssetVocabulary addVocabulary(
-			long groupId, String title, ServiceContext serviceContext)
+	public AssetVocabulary addVocabulary(long groupId, java.lang.String title,
+		Map<Locale, java.lang.String> titleMap,
+		Map<Locale, java.lang.String> descriptionMap,
+		java.lang.String settings, ServiceContext serviceContext)
 		throws PortalException;
-
-	public List<AssetVocabulary> deleteVocabularies(
-			long[] vocabularyIds, ServiceContext serviceContext)
-		throws PortalException;
-
-	public void deleteVocabulary(long vocabularyId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AssetVocabulary fetchVocabulary(long vocabularyId)
-		throws PortalException;
-
-	/**
-	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement
-	 */
-	@Deprecated
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetVocabulary> getCompanyVocabularies(long companyId)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetVocabulary> getGroupsVocabularies(long[] groupIds);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetVocabulary> getGroupsVocabularies(
-		long[] groupIds, String className);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetVocabulary> getGroupsVocabularies(
-		long[] groupIds, String className, long classTypePK);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetVocabulary> getGroupVocabularies(long groupId)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetVocabulary> getGroupVocabularies(
-			long groupId, boolean createDefaultVocabulary)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetVocabulary> getGroupVocabularies(
-			long groupId, boolean createDefaultVocabulary, int start, int end,
-			OrderByComparator<AssetVocabulary> obc)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetVocabulary> getGroupVocabularies(
-		long groupId, int start, int end,
-		OrderByComparator<AssetVocabulary> obc);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetVocabulary> getGroupVocabularies(
-		long groupId, String name, int start, int end,
-		OrderByComparator<AssetVocabulary> obc);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetVocabulary> getGroupVocabularies(long[] groupIds);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getGroupVocabulariesCount(long groupId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getGroupVocabulariesCount(long groupId, String name);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getGroupVocabulariesCount(long[] groupIds);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AssetVocabularyDisplay getGroupVocabulariesDisplay(
-			long groupId, String name, int start, int end,
-			boolean addDefaultVocabulary,
-			OrderByComparator<AssetVocabulary> obc)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AssetVocabularyDisplay getGroupVocabulariesDisplay(
-			long groupId, String name, int start, int end,
-			OrderByComparator<AssetVocabulary> obc)
-		throws PortalException;
-
-	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
-	public String getOSGiServiceIdentifier();
-
-	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 AssetUtil#filterVocabularyIds(PermissionChecker, long[])}
-	 */
-	@Deprecated
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetVocabulary> getVocabularies(long[] vocabularyIds)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AssetVocabulary getVocabulary(long vocabularyId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AssetVocabularyDisplay searchVocabulariesDisplay(
-			long groupId, String title, boolean addDefaultVocabulary, int start,
-			int end)
+	public AssetVocabulary updateVocabulary(long vocabularyId,
+		java.lang.String title, Map<Locale, java.lang.String> titleMap,
+		Map<Locale, java.lang.String> descriptionMap,
+		java.lang.String settings, ServiceContext serviceContext)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AssetVocabularyDisplay searchVocabulariesDisplay(
-			long groupId, String title, boolean addDefaultVocabulary, int start,
-			int end, Sort sort)
+	public AssetVocabularyDisplay getGroupVocabulariesDisplay(long groupId,
+		java.lang.String name, int start, int end,
+		boolean addDefaultVocabulary, OrderByComparator<AssetVocabulary> obc)
 		throws PortalException;
 
-	public AssetVocabulary updateVocabulary(
-			long vocabularyId, String title, Map<Locale, String> titleMap,
-			Map<Locale, String> descriptionMap, String settings,
-			ServiceContext serviceContext)
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AssetVocabularyDisplay getGroupVocabulariesDisplay(long groupId,
+		java.lang.String name, int start, int end,
+		OrderByComparator<AssetVocabulary> obc) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AssetVocabularyDisplay searchVocabulariesDisplay(long groupId,
+		java.lang.String title, boolean addDefaultVocabulary, int start, int end)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AssetVocabularyDisplay searchVocabulariesDisplay(long groupId,
+		java.lang.String title, boolean addDefaultVocabulary, int start,
+		int end, Sort sort) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getGroupVocabulariesCount(long groupId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getGroupVocabulariesCount(long groupId, java.lang.String name);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getGroupVocabulariesCount(long[] groupIds);
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	public List<AssetVocabulary> deleteVocabularies(long[] vocabularyIds,
+		ServiceContext serviceContext) throws PortalException;
+
+	/**
+	* @deprecated As of Wilberforce (7.0.x), with no direct replacement
+	*/
+	@java.lang.Deprecated
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AssetVocabulary> getCompanyVocabularies(long companyId)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AssetVocabulary> getGroupVocabularies(long groupId)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AssetVocabulary> getGroupVocabularies(long groupId,
+		boolean createDefaultVocabulary) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AssetVocabulary> getGroupVocabularies(long groupId,
+		boolean createDefaultVocabulary, int start, int end,
+		OrderByComparator<AssetVocabulary> obc) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AssetVocabulary> getGroupVocabularies(long groupId, int start,
+		int end, OrderByComparator<AssetVocabulary> obc);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AssetVocabulary> getGroupVocabularies(long groupId,
+		java.lang.String name, int start, int end,
+		OrderByComparator<AssetVocabulary> obc);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AssetVocabulary> getGroupVocabularies(long[] groupIds);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AssetVocabulary> getGroupsVocabularies(long[] groupIds);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AssetVocabulary> getGroupsVocabularies(long[] groupIds,
+		java.lang.String className);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AssetVocabulary> getGroupsVocabularies(long[] groupIds,
+		java.lang.String className, long classTypePK);
+
+	/**
+	* @deprecated As of Wilberforce (7.0.x), replaced by {@link
+	AssetUtil#filterVocabularyIds(PermissionChecker, long[])}
+	*/
+	@java.lang.Deprecated
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AssetVocabulary> getVocabularies(long[] vocabularyIds)
+		throws PortalException;
+
+	public void deleteVocabulary(long vocabularyId) throws PortalException;
 }

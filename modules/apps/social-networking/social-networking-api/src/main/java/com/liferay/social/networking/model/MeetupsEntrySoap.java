@@ -14,6 +14,8 @@
 
 package com.liferay.social.networking.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,8 +28,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
+@ProviderType
 public class MeetupsEntrySoap implements Serializable {
-
 	public static MeetupsEntrySoap toSoapModel(MeetupsEntry model) {
 		MeetupsEntrySoap soapModel = new MeetupsEntrySoap();
 
@@ -77,8 +79,7 @@ public class MeetupsEntrySoap implements Serializable {
 	}
 
 	public static MeetupsEntrySoap[] toSoapModels(List<MeetupsEntry> models) {
-		List<MeetupsEntrySoap> soapModels = new ArrayList<MeetupsEntrySoap>(
-			models.size());
+		List<MeetupsEntrySoap> soapModels = new ArrayList<MeetupsEntrySoap>(models.size());
 
 		for (MeetupsEntry model : models) {
 			soapModels.add(toSoapModel(model));
@@ -224,5 +225,4 @@ public class MeetupsEntrySoap implements Serializable {
 	private int _maxAttendees;
 	private double _price;
 	private long _thumbnailId;
-
 }

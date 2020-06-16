@@ -14,10 +14,13 @@
 
 package com.liferay.portal.lock.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.lock.model.Lock;
 
 import java.io.Externalizable;
@@ -31,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing Lock in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see Lock
  * @generated
  */
-public class LockCacheModel
-	implements CacheModel<Lock>, Externalizable, MVCCModel {
-
+@ProviderType
+public class LockCacheModel implements CacheModel<Lock>, Externalizable,
+	MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -49,8 +53,7 @@ public class LockCacheModel
 		LockCacheModel lockCacheModel = (LockCacheModel)obj;
 
 		if ((lockId == lockCacheModel.lockId) &&
-			(mvccVersion == lockCacheModel.mvccVersion)) {
-
+				(mvccVersion == lockCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -114,7 +117,7 @@ public class LockCacheModel
 		lockImpl.setMvccVersion(mvccVersion);
 
 		if (uuid == null) {
-			lockImpl.setUuid("");
+			lockImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			lockImpl.setUuid(uuid);
@@ -125,7 +128,7 @@ public class LockCacheModel
 		lockImpl.setUserId(userId);
 
 		if (userName == null) {
-			lockImpl.setUserName("");
+			lockImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			lockImpl.setUserName(userName);
@@ -139,21 +142,21 @@ public class LockCacheModel
 		}
 
 		if (className == null) {
-			lockImpl.setClassName("");
+			lockImpl.setClassName(StringPool.BLANK);
 		}
 		else {
 			lockImpl.setClassName(className);
 		}
 
 		if (key == null) {
-			lockImpl.setKey("");
+			lockImpl.setKey(StringPool.BLANK);
 		}
 		else {
 			lockImpl.setKey(key);
 		}
 
 		if (owner == null) {
-			lockImpl.setOwner("");
+			lockImpl.setOwner(StringPool.BLANK);
 		}
 		else {
 			lockImpl.setOwner(owner);
@@ -194,11 +197,12 @@ public class LockCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -211,7 +215,7 @@ public class LockCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -220,21 +224,21 @@ public class LockCacheModel
 		objectOutput.writeLong(createDate);
 
 		if (className == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(className);
 		}
 
 		if (key == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(key);
 		}
 
 		if (owner == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(owner);
@@ -256,5 +260,4 @@ public class LockCacheModel
 	public String owner;
 	public boolean inheritable;
 	public long expirationDate;
-
 }

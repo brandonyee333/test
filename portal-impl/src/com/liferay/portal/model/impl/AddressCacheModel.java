@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -31,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing Address in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see Address
  * @generated
  */
-public class AddressCacheModel
-	implements CacheModel<Address>, Externalizable, MVCCModel {
-
+@ProviderType
+public class AddressCacheModel implements CacheModel<Address>, Externalizable,
+	MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -49,8 +53,7 @@ public class AddressCacheModel
 		AddressCacheModel addressCacheModel = (AddressCacheModel)obj;
 
 		if ((addressId == addressCacheModel.addressId) &&
-			(mvccVersion == addressCacheModel.mvccVersion)) {
-
+				(mvccVersion == addressCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -130,7 +133,7 @@ public class AddressCacheModel
 		addressImpl.setMvccVersion(mvccVersion);
 
 		if (uuid == null) {
-			addressImpl.setUuid("");
+			addressImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			addressImpl.setUuid(uuid);
@@ -141,7 +144,7 @@ public class AddressCacheModel
 		addressImpl.setUserId(userId);
 
 		if (userName == null) {
-			addressImpl.setUserName("");
+			addressImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			addressImpl.setUserName(userName);
@@ -165,35 +168,35 @@ public class AddressCacheModel
 		addressImpl.setClassPK(classPK);
 
 		if (street1 == null) {
-			addressImpl.setStreet1("");
+			addressImpl.setStreet1(StringPool.BLANK);
 		}
 		else {
 			addressImpl.setStreet1(street1);
 		}
 
 		if (street2 == null) {
-			addressImpl.setStreet2("");
+			addressImpl.setStreet2(StringPool.BLANK);
 		}
 		else {
 			addressImpl.setStreet2(street2);
 		}
 
 		if (street3 == null) {
-			addressImpl.setStreet3("");
+			addressImpl.setStreet3(StringPool.BLANK);
 		}
 		else {
 			addressImpl.setStreet3(street3);
 		}
 
 		if (city == null) {
-			addressImpl.setCity("");
+			addressImpl.setCity(StringPool.BLANK);
 		}
 		else {
 			addressImpl.setCity(city);
 		}
 
 		if (zip == null) {
-			addressImpl.setZip("");
+			addressImpl.setZip(StringPool.BLANK);
 		}
 		else {
 			addressImpl.setZip(zip);
@@ -245,11 +248,12 @@ public class AddressCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -262,7 +266,7 @@ public class AddressCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -276,35 +280,35 @@ public class AddressCacheModel
 		objectOutput.writeLong(classPK);
 
 		if (street1 == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(street1);
 		}
 
 		if (street2 == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(street2);
 		}
 
 		if (street3 == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(street3);
 		}
 
 		if (city == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(city);
 		}
 
 		if (zip == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(zip);
@@ -341,5 +345,4 @@ public class AddressCacheModel
 	public long typeId;
 	public boolean mailing;
 	public boolean primary;
-
 }

@@ -14,9 +14,12 @@
 
 package com.liferay.portal.security.wedeploy.auth.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthToken;
 
 import java.io.Externalizable;
@@ -30,11 +33,12 @@ import java.util.Date;
  * The cache model class for representing WeDeployAuthToken in entity cache.
  *
  * @author Supritha Sundaram
+ * @see WeDeployAuthToken
  * @generated
  */
-public class WeDeployAuthTokenCacheModel
-	implements CacheModel<WeDeployAuthToken>, Externalizable {
-
+@ProviderType
+public class WeDeployAuthTokenCacheModel implements CacheModel<WeDeployAuthToken>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +49,9 @@ public class WeDeployAuthTokenCacheModel
 			return false;
 		}
 
-		WeDeployAuthTokenCacheModel weDeployAuthTokenCacheModel =
-			(WeDeployAuthTokenCacheModel)obj;
+		WeDeployAuthTokenCacheModel weDeployAuthTokenCacheModel = (WeDeployAuthTokenCacheModel)obj;
 
-		if (weDeployAuthTokenId ==
-				weDeployAuthTokenCacheModel.weDeployAuthTokenId) {
-
+		if (weDeployAuthTokenId == weDeployAuthTokenCacheModel.weDeployAuthTokenId) {
 			return true;
 		}
 
@@ -91,15 +92,14 @@ public class WeDeployAuthTokenCacheModel
 
 	@Override
 	public WeDeployAuthToken toEntityModel() {
-		WeDeployAuthTokenImpl weDeployAuthTokenImpl =
-			new WeDeployAuthTokenImpl();
+		WeDeployAuthTokenImpl weDeployAuthTokenImpl = new WeDeployAuthTokenImpl();
 
 		weDeployAuthTokenImpl.setWeDeployAuthTokenId(weDeployAuthTokenId);
 		weDeployAuthTokenImpl.setCompanyId(companyId);
 		weDeployAuthTokenImpl.setUserId(userId);
 
 		if (userName == null) {
-			weDeployAuthTokenImpl.setUserName("");
+			weDeployAuthTokenImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			weDeployAuthTokenImpl.setUserName(userName);
@@ -120,14 +120,14 @@ public class WeDeployAuthTokenCacheModel
 		}
 
 		if (clientId == null) {
-			weDeployAuthTokenImpl.setClientId("");
+			weDeployAuthTokenImpl.setClientId(StringPool.BLANK);
 		}
 		else {
 			weDeployAuthTokenImpl.setClientId(clientId);
 		}
 
 		if (token == null) {
-			weDeployAuthTokenImpl.setToken("");
+			weDeployAuthTokenImpl.setToken(StringPool.BLANK);
 		}
 		else {
 			weDeployAuthTokenImpl.setToken(token);
@@ -157,7 +157,8 @@ public class WeDeployAuthTokenCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(weDeployAuthTokenId);
 
 		objectOutput.writeLong(companyId);
@@ -165,7 +166,7 @@ public class WeDeployAuthTokenCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -175,14 +176,14 @@ public class WeDeployAuthTokenCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (clientId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(clientId);
 		}
 
 		if (token == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(token);
@@ -200,5 +201,4 @@ public class WeDeployAuthTokenCacheModel
 	public String clientId;
 	public String token;
 	public int type;
-
 }

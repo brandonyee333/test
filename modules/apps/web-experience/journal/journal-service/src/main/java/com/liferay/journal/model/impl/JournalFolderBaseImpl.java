@@ -14,10 +14,14 @@
 
 package com.liferay.journal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.journal.model.JournalFolder;
 import com.liferay.journal.service.JournalFolderLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,13 +38,13 @@ import java.util.List;
  * @see JournalFolder
  * @generated
  */
-public abstract class JournalFolderBaseImpl
-	extends JournalFolderModelImpl implements JournalFolder {
-
+@ProviderType
+public abstract class JournalFolderBaseImpl extends JournalFolderModelImpl
+	implements JournalFolder {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a journal folder model instance should use the <code>JournalFolder</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a journal folder model instance should use the {@link JournalFolder} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -62,19 +66,18 @@ public abstract class JournalFolderBaseImpl
 		while (journalFolder != null) {
 			journalFolders.add(journalFolder);
 
-			journalFolder = JournalFolderLocalServiceUtil.fetchJournalFolder(
-				journalFolder.getParentFolderId());
+			journalFolder = JournalFolderLocalServiceUtil.fetchJournalFolder(journalFolder.getParentFolderId());
 		}
 
-		StringBundler sb = new StringBundler(journalFolders.size() * 2 + 1);
+		StringBundler sb = new StringBundler((journalFolders.size() * 2) + 1);
 
-		sb.append("/");
+		sb.append(StringPool.SLASH);
 
 		for (int i = journalFolders.size() - 1; i >= 0; i--) {
 			journalFolder = journalFolders.get(i);
 
 			sb.append(journalFolder.getFolderId());
-			sb.append("/");
+			sb.append(StringPool.SLASH);
 		}
 
 		return sb.toString();
@@ -88,5 +91,4 @@ public abstract class JournalFolderBaseImpl
 
 		JournalFolderLocalServiceUtil.updateJournalFolder(journalFolder);
 	}
-
 }

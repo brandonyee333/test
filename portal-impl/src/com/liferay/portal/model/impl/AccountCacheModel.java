@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.Account;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -31,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing Account in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see Account
  * @generated
  */
-public class AccountCacheModel
-	implements CacheModel<Account>, Externalizable, MVCCModel {
-
+@ProviderType
+public class AccountCacheModel implements CacheModel<Account>, Externalizable,
+	MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -49,8 +53,7 @@ public class AccountCacheModel
 		AccountCacheModel accountCacheModel = (AccountCacheModel)obj;
 
 		if ((accountId == accountCacheModel.accountId) &&
-			(mvccVersion == accountCacheModel.mvccVersion)) {
-
+				(mvccVersion == accountCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -127,7 +130,7 @@ public class AccountCacheModel
 		accountImpl.setUserId(userId);
 
 		if (userName == null) {
-			accountImpl.setUserName("");
+			accountImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			accountImpl.setUserName(userName);
@@ -150,63 +153,63 @@ public class AccountCacheModel
 		accountImpl.setParentAccountId(parentAccountId);
 
 		if (name == null) {
-			accountImpl.setName("");
+			accountImpl.setName(StringPool.BLANK);
 		}
 		else {
 			accountImpl.setName(name);
 		}
 
 		if (legalName == null) {
-			accountImpl.setLegalName("");
+			accountImpl.setLegalName(StringPool.BLANK);
 		}
 		else {
 			accountImpl.setLegalName(legalName);
 		}
 
 		if (legalId == null) {
-			accountImpl.setLegalId("");
+			accountImpl.setLegalId(StringPool.BLANK);
 		}
 		else {
 			accountImpl.setLegalId(legalId);
 		}
 
 		if (legalType == null) {
-			accountImpl.setLegalType("");
+			accountImpl.setLegalType(StringPool.BLANK);
 		}
 		else {
 			accountImpl.setLegalType(legalType);
 		}
 
 		if (sicCode == null) {
-			accountImpl.setSicCode("");
+			accountImpl.setSicCode(StringPool.BLANK);
 		}
 		else {
 			accountImpl.setSicCode(sicCode);
 		}
 
 		if (tickerSymbol == null) {
-			accountImpl.setTickerSymbol("");
+			accountImpl.setTickerSymbol(StringPool.BLANK);
 		}
 		else {
 			accountImpl.setTickerSymbol(tickerSymbol);
 		}
 
 		if (industry == null) {
-			accountImpl.setIndustry("");
+			accountImpl.setIndustry(StringPool.BLANK);
 		}
 		else {
 			accountImpl.setIndustry(industry);
 		}
 
 		if (type == null) {
-			accountImpl.setType("");
+			accountImpl.setType(StringPool.BLANK);
 		}
 		else {
 			accountImpl.setType(type);
 		}
 
 		if (size == null) {
-			accountImpl.setSize("");
+			accountImpl.setSize(StringPool.BLANK);
 		}
 		else {
 			accountImpl.setSize(size);
@@ -243,7 +246,8 @@ public class AccountCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(accountId);
@@ -253,7 +257,7 @@ public class AccountCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -265,63 +269,63 @@ public class AccountCacheModel
 		objectOutput.writeLong(parentAccountId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (legalName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(legalName);
 		}
 
 		if (legalId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(legalId);
 		}
 
 		if (legalType == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(legalType);
 		}
 
 		if (sicCode == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(sicCode);
 		}
 
 		if (tickerSymbol == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(tickerSymbol);
 		}
 
 		if (industry == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(industry);
 		}
 
 		if (type == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(type);
 		}
 
 		if (size == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(size);
@@ -345,5 +349,4 @@ public class AccountCacheModel
 	public String industry;
 	public String type;
 	public String size;
-
 }

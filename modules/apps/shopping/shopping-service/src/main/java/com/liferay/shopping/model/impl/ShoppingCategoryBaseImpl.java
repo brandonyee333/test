@@ -14,6 +14,8 @@
 
 package com.liferay.shopping.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.shopping.model.ShoppingCategory;
 import com.liferay.shopping.service.ShoppingCategoryLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.shopping.service.ShoppingCategoryLocalServiceUtil;
  * @see ShoppingCategory
  * @generated
  */
-public abstract class ShoppingCategoryBaseImpl
-	extends ShoppingCategoryModelImpl implements ShoppingCategory {
-
+@ProviderType
+public abstract class ShoppingCategoryBaseImpl extends ShoppingCategoryModelImpl
+	implements ShoppingCategory {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a shopping category model instance should use the <code>ShoppingCategory</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a shopping category model instance should use the {@link ShoppingCategory} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class ShoppingCategoryBaseImpl
 			ShoppingCategoryLocalServiceUtil.updateShoppingCategory(this);
 		}
 	}
-
 }

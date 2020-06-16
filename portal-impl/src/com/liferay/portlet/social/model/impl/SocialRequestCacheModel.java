@@ -14,9 +14,13 @@
 
 package com.liferay.portlet.social.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.social.kernel.model.SocialRequest;
 
 import java.io.Externalizable;
@@ -28,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing SocialRequest in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see SocialRequest
  * @generated
  */
-public class SocialRequestCacheModel
-	implements CacheModel<SocialRequest>, Externalizable {
-
+@ProviderType
+public class SocialRequestCacheModel implements CacheModel<SocialRequest>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -43,8 +48,7 @@ public class SocialRequestCacheModel
 			return false;
 		}
 
-		SocialRequestCacheModel socialRequestCacheModel =
-			(SocialRequestCacheModel)obj;
+		SocialRequestCacheModel socialRequestCacheModel = (SocialRequestCacheModel)obj;
 
 		if (requestId == socialRequestCacheModel.requestId) {
 			return true;
@@ -98,7 +102,7 @@ public class SocialRequestCacheModel
 		SocialRequestImpl socialRequestImpl = new SocialRequestImpl();
 
 		if (uuid == null) {
-			socialRequestImpl.setUuid("");
+			socialRequestImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			socialRequestImpl.setUuid(uuid);
@@ -115,7 +119,7 @@ public class SocialRequestCacheModel
 		socialRequestImpl.setType(type);
 
 		if (extraData == null) {
-			socialRequestImpl.setExtraData("");
+			socialRequestImpl.setExtraData(StringPool.BLANK);
 		}
 		else {
 			socialRequestImpl.setExtraData(extraData);
@@ -158,9 +162,10 @@ public class SocialRequestCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -185,7 +190,7 @@ public class SocialRequestCacheModel
 		objectOutput.writeInt(type);
 
 		if (extraData == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(extraData);
@@ -209,5 +214,4 @@ public class SocialRequestCacheModel
 	public String extraData;
 	public long receiverUserId;
 	public int status;
-
 }

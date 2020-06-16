@@ -1,20 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -33,13 +36,11 @@ import java.util.Objects;
  * @see ZendeskArticleAttachment
  * @generated
  */
-public class ZendeskArticleAttachmentWrapper
-	implements ModelWrapper<ZendeskArticleAttachment>,
-			   ZendeskArticleAttachment {
-
+@ProviderType
+public class ZendeskArticleAttachmentWrapper implements ZendeskArticleAttachment,
+	ModelWrapper<ZendeskArticleAttachment> {
 	public ZendeskArticleAttachmentWrapper(
 		ZendeskArticleAttachment zendeskArticleAttachment) {
-
 		_zendeskArticleAttachment = zendeskArticleAttachment;
 	}
 
@@ -57,8 +58,8 @@ public class ZendeskArticleAttachmentWrapper
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put(
-			"zendeskArticleAttachmentId", getZendeskArticleAttachmentId());
+		attributes.put("zendeskArticleAttachmentId",
+			getZendeskArticleAttachmentId());
 		attributes.put("zendeskArticleId", getZendeskArticleId());
 		attributes.put("filePath", getFilePath());
 		attributes.put("checksum", getChecksum());
@@ -71,7 +72,7 @@ public class ZendeskArticleAttachmentWrapper
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
 		Long zendeskArticleAttachmentId = (Long)attributes.get(
-			"zendeskArticleAttachmentId");
+				"zendeskArticleAttachmentId");
 
 		if (zendeskArticleAttachmentId != null) {
 			setZendeskArticleAttachmentId(zendeskArticleAttachmentId);
@@ -109,99 +110,13 @@ public class ZendeskArticleAttachmentWrapper
 	}
 
 	@Override
-	public Object clone() {
-		return new ZendeskArticleAttachmentWrapper(
-			(ZendeskArticleAttachment)_zendeskArticleAttachment.clone());
+	public ZendeskArticleAttachment toEscapedModel() {
+		return new ZendeskArticleAttachmentWrapper(_zendeskArticleAttachment.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(ZendeskArticleAttachment zendeskArticleAttachment) {
-		return _zendeskArticleAttachment.compareTo(zendeskArticleAttachment);
-	}
-
-	/**
-	 * Returns the checksum of this zendesk article attachment.
-	 *
-	 * @return the checksum of this zendesk article attachment
-	 */
-	@Override
-	public String getChecksum() {
-		return _zendeskArticleAttachment.getChecksum();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _zendeskArticleAttachment.getExpandoBridge();
-	}
-
-	/**
-	 * Returns the file path of this zendesk article attachment.
-	 *
-	 * @return the file path of this zendesk article attachment
-	 */
-	@Override
-	public String getFilePath() {
-		return _zendeskArticleAttachment.getFilePath();
-	}
-
-	/**
-	 * Returns the primary key of this zendesk article attachment.
-	 *
-	 * @return the primary key of this zendesk article attachment
-	 */
-	@Override
-	public long getPrimaryKey() {
-		return _zendeskArticleAttachment.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _zendeskArticleAttachment.getPrimaryKeyObj();
-	}
-
-	/**
-	 * Returns the remote content url of this zendesk article attachment.
-	 *
-	 * @return the remote content url of this zendesk article attachment
-	 */
-	@Override
-	public String getRemoteContentURL() {
-		return _zendeskArticleAttachment.getRemoteContentURL();
-	}
-
-	/**
-	 * Returns the remote ID of this zendesk article attachment.
-	 *
-	 * @return the remote ID of this zendesk article attachment
-	 */
-	@Override
-	public long getRemoteId() {
-		return _zendeskArticleAttachment.getRemoteId();
-	}
-
-	/**
-	 * Returns the zendesk article attachment ID of this zendesk article attachment.
-	 *
-	 * @return the zendesk article attachment ID of this zendesk article attachment
-	 */
-	@Override
-	public long getZendeskArticleAttachmentId() {
-		return _zendeskArticleAttachment.getZendeskArticleAttachmentId();
-	}
-
-	/**
-	 * Returns the zendesk article ID of this zendesk article attachment.
-	 *
-	 * @return the zendesk article ID of this zendesk article attachment
-	 */
-	@Override
-	public long getZendeskArticleId() {
-		return _zendeskArticleAttachment.getZendeskArticleId();
-	}
-
-	@Override
-	public int hashCode() {
-		return _zendeskArticleAttachment.hashCode();
+	public ZendeskArticleAttachment toUnescapedModel() {
+		return new ZendeskArticleAttachmentWrapper(_zendeskArticleAttachment.toUnescapedModel());
 	}
 
 	@Override
@@ -220,6 +135,116 @@ public class ZendeskArticleAttachmentWrapper
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _zendeskArticleAttachment.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<ZendeskArticleAttachment> toCacheModel() {
+		return _zendeskArticleAttachment.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(ZendeskArticleAttachment zendeskArticleAttachment) {
+		return _zendeskArticleAttachment.compareTo(zendeskArticleAttachment);
+	}
+
+	@Override
+	public int hashCode() {
+		return _zendeskArticleAttachment.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _zendeskArticleAttachment.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new ZendeskArticleAttachmentWrapper((ZendeskArticleAttachment)_zendeskArticleAttachment.clone());
+	}
+
+	/**
+	* Returns the checksum of this zendesk article attachment.
+	*
+	* @return the checksum of this zendesk article attachment
+	*/
+	@Override
+	public java.lang.String getChecksum() {
+		return _zendeskArticleAttachment.getChecksum();
+	}
+
+	/**
+	* Returns the file path of this zendesk article attachment.
+	*
+	* @return the file path of this zendesk article attachment
+	*/
+	@Override
+	public java.lang.String getFilePath() {
+		return _zendeskArticleAttachment.getFilePath();
+	}
+
+	/**
+	* Returns the remote content url of this zendesk article attachment.
+	*
+	* @return the remote content url of this zendesk article attachment
+	*/
+	@Override
+	public java.lang.String getRemoteContentURL() {
+		return _zendeskArticleAttachment.getRemoteContentURL();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _zendeskArticleAttachment.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _zendeskArticleAttachment.toXmlString();
+	}
+
+	/**
+	* Returns the primary key of this zendesk article attachment.
+	*
+	* @return the primary key of this zendesk article attachment
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _zendeskArticleAttachment.getPrimaryKey();
+	}
+
+	/**
+	* Returns the remote ID of this zendesk article attachment.
+	*
+	* @return the remote ID of this zendesk article attachment
+	*/
+	@Override
+	public long getRemoteId() {
+		return _zendeskArticleAttachment.getRemoteId();
+	}
+
+	/**
+	* Returns the zendesk article attachment ID of this zendesk article attachment.
+	*
+	* @return the zendesk article attachment ID of this zendesk article attachment
+	*/
+	@Override
+	public long getZendeskArticleAttachmentId() {
+		return _zendeskArticleAttachment.getZendeskArticleAttachmentId();
+	}
+
+	/**
+	* Returns the zendesk article ID of this zendesk article attachment.
+	*
+	* @return the zendesk article ID of this zendesk article attachment
+	*/
+	@Override
+	public long getZendeskArticleId() {
+		return _zendeskArticleAttachment.getZendeskArticleId();
+	}
+
+	@Override
 	public void persist() {
 		_zendeskArticleAttachment.persist();
 	}
@@ -230,20 +255,13 @@ public class ZendeskArticleAttachmentWrapper
 	}
 
 	/**
-	 * Sets the checksum of this zendesk article attachment.
-	 *
-	 * @param checksum the checksum of this zendesk article attachment
-	 */
+	* Sets the checksum of this zendesk article attachment.
+	*
+	* @param checksum the checksum of this zendesk article attachment
+	*/
 	@Override
-	public void setChecksum(String checksum) {
+	public void setChecksum(java.lang.String checksum) {
 		_zendeskArticleAttachment.setChecksum(checksum);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-
-		_zendeskArticleAttachment.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -252,17 +270,23 @@ public class ZendeskArticleAttachmentWrapper
 	}
 
 	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_zendeskArticleAttachment.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_zendeskArticleAttachment.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	 * Sets the file path of this zendesk article attachment.
-	 *
-	 * @param filePath the file path of this zendesk article attachment
-	 */
+	* Sets the file path of this zendesk article attachment.
+	*
+	* @param filePath the file path of this zendesk article attachment
+	*/
 	@Override
-	public void setFilePath(String filePath) {
+	public void setFilePath(java.lang.String filePath) {
 		_zendeskArticleAttachment.setFilePath(filePath);
 	}
 
@@ -272,10 +296,10 @@ public class ZendeskArticleAttachmentWrapper
 	}
 
 	/**
-	 * Sets the primary key of this zendesk article attachment.
-	 *
-	 * @param primaryKey the primary key of this zendesk article attachment
-	 */
+	* Sets the primary key of this zendesk article attachment.
+	*
+	* @param primaryKey the primary key of this zendesk article attachment
+	*/
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_zendeskArticleAttachment.setPrimaryKey(primaryKey);
@@ -287,73 +311,43 @@ public class ZendeskArticleAttachmentWrapper
 	}
 
 	/**
-	 * Sets the remote content url of this zendesk article attachment.
-	 *
-	 * @param remoteContentURL the remote content url of this zendesk article attachment
-	 */
+	* Sets the remote content url of this zendesk article attachment.
+	*
+	* @param remoteContentURL the remote content url of this zendesk article attachment
+	*/
 	@Override
-	public void setRemoteContentURL(String remoteContentURL) {
+	public void setRemoteContentURL(java.lang.String remoteContentURL) {
 		_zendeskArticleAttachment.setRemoteContentURL(remoteContentURL);
 	}
 
 	/**
-	 * Sets the remote ID of this zendesk article attachment.
-	 *
-	 * @param remoteId the remote ID of this zendesk article attachment
-	 */
+	* Sets the remote ID of this zendesk article attachment.
+	*
+	* @param remoteId the remote ID of this zendesk article attachment
+	*/
 	@Override
 	public void setRemoteId(long remoteId) {
 		_zendeskArticleAttachment.setRemoteId(remoteId);
 	}
 
 	/**
-	 * Sets the zendesk article attachment ID of this zendesk article attachment.
-	 *
-	 * @param zendeskArticleAttachmentId the zendesk article attachment ID of this zendesk article attachment
-	 */
+	* Sets the zendesk article attachment ID of this zendesk article attachment.
+	*
+	* @param zendeskArticleAttachmentId the zendesk article attachment ID of this zendesk article attachment
+	*/
 	@Override
 	public void setZendeskArticleAttachmentId(long zendeskArticleAttachmentId) {
-		_zendeskArticleAttachment.setZendeskArticleAttachmentId(
-			zendeskArticleAttachmentId);
+		_zendeskArticleAttachment.setZendeskArticleAttachmentId(zendeskArticleAttachmentId);
 	}
 
 	/**
-	 * Sets the zendesk article ID of this zendesk article attachment.
-	 *
-	 * @param zendeskArticleId the zendesk article ID of this zendesk article attachment
-	 */
+	* Sets the zendesk article ID of this zendesk article attachment.
+	*
+	* @param zendeskArticleId the zendesk article ID of this zendesk article attachment
+	*/
 	@Override
 	public void setZendeskArticleId(long zendeskArticleId) {
 		_zendeskArticleAttachment.setZendeskArticleId(zendeskArticleId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<ZendeskArticleAttachment>
-		toCacheModel() {
-
-		return _zendeskArticleAttachment.toCacheModel();
-	}
-
-	@Override
-	public ZendeskArticleAttachment toEscapedModel() {
-		return new ZendeskArticleAttachmentWrapper(
-			_zendeskArticleAttachment.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return _zendeskArticleAttachment.toString();
-	}
-
-	@Override
-	public ZendeskArticleAttachment toUnescapedModel() {
-		return new ZendeskArticleAttachmentWrapper(
-			_zendeskArticleAttachment.toUnescapedModel());
-	}
-
-	@Override
-	public String toXmlString() {
-		return _zendeskArticleAttachment.toXmlString();
 	}
 
 	@Override
@@ -366,13 +360,10 @@ public class ZendeskArticleAttachmentWrapper
 			return false;
 		}
 
-		ZendeskArticleAttachmentWrapper zendeskArticleAttachmentWrapper =
-			(ZendeskArticleAttachmentWrapper)obj;
+		ZendeskArticleAttachmentWrapper zendeskArticleAttachmentWrapper = (ZendeskArticleAttachmentWrapper)obj;
 
-		if (Objects.equals(
-				_zendeskArticleAttachment,
-				zendeskArticleAttachmentWrapper._zendeskArticleAttachment)) {
-
+		if (Objects.equals(_zendeskArticleAttachment,
+					zendeskArticleAttachmentWrapper._zendeskArticleAttachment)) {
 			return true;
 		}
 
@@ -400,5 +391,4 @@ public class ZendeskArticleAttachmentWrapper
 	}
 
 	private final ZendeskArticleAttachment _zendeskArticleAttachment;
-
 }

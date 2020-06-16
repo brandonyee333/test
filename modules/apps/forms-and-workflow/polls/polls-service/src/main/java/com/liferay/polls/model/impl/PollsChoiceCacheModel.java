@@ -14,10 +14,14 @@
 
 package com.liferay.polls.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.polls.model.PollsChoice;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing PollsChoice in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see PollsChoice
  * @generated
  */
-public class PollsChoiceCacheModel
-	implements CacheModel<PollsChoice>, Externalizable {
-
+@ProviderType
+public class PollsChoiceCacheModel implements CacheModel<PollsChoice>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class PollsChoiceCacheModel
 			return false;
 		}
 
-		PollsChoiceCacheModel pollsChoiceCacheModel =
-			(PollsChoiceCacheModel)obj;
+		PollsChoiceCacheModel pollsChoiceCacheModel = (PollsChoiceCacheModel)obj;
 
 		if (choiceId == pollsChoiceCacheModel.choiceId) {
 			return true;
@@ -98,7 +102,7 @@ public class PollsChoiceCacheModel
 		PollsChoiceImpl pollsChoiceImpl = new PollsChoiceImpl();
 
 		if (uuid == null) {
-			pollsChoiceImpl.setUuid("");
+			pollsChoiceImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			pollsChoiceImpl.setUuid(uuid);
@@ -110,7 +114,7 @@ public class PollsChoiceCacheModel
 		pollsChoiceImpl.setUserId(userId);
 
 		if (userName == null) {
-			pollsChoiceImpl.setUserName("");
+			pollsChoiceImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			pollsChoiceImpl.setUserName(userName);
@@ -133,14 +137,14 @@ public class PollsChoiceCacheModel
 		pollsChoiceImpl.setQuestionId(questionId);
 
 		if (name == null) {
-			pollsChoiceImpl.setName("");
+			pollsChoiceImpl.setName(StringPool.BLANK);
 		}
 		else {
 			pollsChoiceImpl.setName(name);
 		}
 
 		if (description == null) {
-			pollsChoiceImpl.setDescription("");
+			pollsChoiceImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			pollsChoiceImpl.setDescription(description);
@@ -180,9 +184,10 @@ public class PollsChoiceCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -197,7 +202,7 @@ public class PollsChoiceCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -209,14 +214,14 @@ public class PollsChoiceCacheModel
 		objectOutput.writeLong(questionId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -237,5 +242,4 @@ public class PollsChoiceCacheModel
 	public String name;
 	public String description;
 	public long lastPublishDate;
-
 }

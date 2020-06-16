@@ -14,10 +14,14 @@
 
 package com.liferay.bookmarks.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.bookmarks.model.BookmarksFolder;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing BookmarksFolder in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see BookmarksFolder
  * @generated
  */
-public class BookmarksFolderCacheModel
-	implements CacheModel<BookmarksFolder>, Externalizable {
-
+@ProviderType
+public class BookmarksFolderCacheModel implements CacheModel<BookmarksFolder>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class BookmarksFolderCacheModel
 			return false;
 		}
 
-		BookmarksFolderCacheModel bookmarksFolderCacheModel =
-			(BookmarksFolderCacheModel)obj;
+		BookmarksFolderCacheModel bookmarksFolderCacheModel = (BookmarksFolderCacheModel)obj;
 
 		if (folderId == bookmarksFolderCacheModel.folderId) {
 			return true;
@@ -110,7 +114,7 @@ public class BookmarksFolderCacheModel
 		BookmarksFolderImpl bookmarksFolderImpl = new BookmarksFolderImpl();
 
 		if (uuid == null) {
-			bookmarksFolderImpl.setUuid("");
+			bookmarksFolderImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			bookmarksFolderImpl.setUuid(uuid);
@@ -122,7 +126,7 @@ public class BookmarksFolderCacheModel
 		bookmarksFolderImpl.setUserId(userId);
 
 		if (userName == null) {
-			bookmarksFolderImpl.setUserName("");
+			bookmarksFolderImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			bookmarksFolderImpl.setUserName(userName);
@@ -146,21 +150,21 @@ public class BookmarksFolderCacheModel
 		bookmarksFolderImpl.setParentFolderId(parentFolderId);
 
 		if (treePath == null) {
-			bookmarksFolderImpl.setTreePath("");
+			bookmarksFolderImpl.setTreePath(StringPool.BLANK);
 		}
 		else {
 			bookmarksFolderImpl.setTreePath(treePath);
 		}
 
 		if (name == null) {
-			bookmarksFolderImpl.setName("");
+			bookmarksFolderImpl.setName(StringPool.BLANK);
 		}
 		else {
 			bookmarksFolderImpl.setName(name);
 		}
 
 		if (description == null) {
-			bookmarksFolderImpl.setDescription("");
+			bookmarksFolderImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			bookmarksFolderImpl.setDescription(description);
@@ -177,7 +181,7 @@ public class BookmarksFolderCacheModel
 		bookmarksFolderImpl.setStatusByUserId(statusByUserId);
 
 		if (statusByUserName == null) {
-			bookmarksFolderImpl.setStatusByUserName("");
+			bookmarksFolderImpl.setStatusByUserName(StringPool.BLANK);
 		}
 		else {
 			bookmarksFolderImpl.setStatusByUserName(statusByUserName);
@@ -226,9 +230,10 @@ public class BookmarksFolderCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -243,7 +248,7 @@ public class BookmarksFolderCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -257,21 +262,21 @@ public class BookmarksFolderCacheModel
 		objectOutput.writeLong(parentFolderId);
 
 		if (treePath == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(treePath);
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -284,7 +289,7 @@ public class BookmarksFolderCacheModel
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(statusByUserName);
@@ -311,5 +316,4 @@ public class BookmarksFolderCacheModel
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
-
 }

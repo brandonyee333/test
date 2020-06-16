@@ -14,6 +14,8 @@
 
 package com.liferay.wsrp.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,11 +28,9 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
+@ProviderType
 public class WSRPConsumerPortletSoap implements Serializable {
-
-	public static WSRPConsumerPortletSoap toSoapModel(
-		WSRPConsumerPortlet model) {
-
+	public static WSRPConsumerPortletSoap toSoapModel(WSRPConsumerPortlet model) {
 		WSRPConsumerPortletSoap soapModel = new WSRPConsumerPortletSoap();
 
 		soapModel.setUuid(model.getUuid());
@@ -48,9 +48,7 @@ public class WSRPConsumerPortletSoap implements Serializable {
 
 	public static WSRPConsumerPortletSoap[] toSoapModels(
 		WSRPConsumerPortlet[] models) {
-
-		WSRPConsumerPortletSoap[] soapModels =
-			new WSRPConsumerPortletSoap[models.length];
+		WSRPConsumerPortletSoap[] soapModels = new WSRPConsumerPortletSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -61,12 +59,10 @@ public class WSRPConsumerPortletSoap implements Serializable {
 
 	public static WSRPConsumerPortletSoap[][] toSoapModels(
 		WSRPConsumerPortlet[][] models) {
-
 		WSRPConsumerPortletSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels =
-				new WSRPConsumerPortletSoap[models.length][models[0].length];
+			soapModels = new WSRPConsumerPortletSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WSRPConsumerPortletSoap[0][0];
@@ -81,16 +77,13 @@ public class WSRPConsumerPortletSoap implements Serializable {
 
 	public static WSRPConsumerPortletSoap[] toSoapModels(
 		List<WSRPConsumerPortlet> models) {
-
-		List<WSRPConsumerPortletSoap> soapModels =
-			new ArrayList<WSRPConsumerPortletSoap>(models.size());
+		List<WSRPConsumerPortletSoap> soapModels = new ArrayList<WSRPConsumerPortletSoap>(models.size());
 
 		for (WSRPConsumerPortlet model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(
-			new WSRPConsumerPortletSoap[soapModels.size()]);
+		return soapModels.toArray(new WSRPConsumerPortletSoap[soapModels.size()]);
 	}
 
 	public WSRPConsumerPortletSoap() {
@@ -185,5 +178,4 @@ public class WSRPConsumerPortletSoap implements Serializable {
 	private String _name;
 	private String _portletHandle;
 	private Date _lastPublishDate;
-
 }

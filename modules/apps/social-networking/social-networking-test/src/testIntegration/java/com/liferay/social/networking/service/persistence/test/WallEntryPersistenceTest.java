@@ -15,6 +15,7 @@
 package com.liferay.social.networking.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -31,11 +32,21 @@ import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
+
 import com.liferay.social.networking.exception.NoSuchWallEntryException;
 import com.liferay.social.networking.model.WallEntry;
 import com.liferay.social.networking.service.WallEntryLocalServiceUtil;
 import com.liferay.social.networking.service.persistence.WallEntryPersistence;
 import com.liferay.social.networking.service.persistence.WallEntryUtil;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+
+import org.junit.runner.RunWith;
 
 import java.io.Serializable;
 
@@ -46,27 +57,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 /**
  * @generated
  */
 @RunWith(Arquillian.class)
 public class WallEntryPersistenceTest {
-
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
-			new TransactionalTestRule(
-				Propagation.REQUIRED, "com.liferay.social.networking.service"));
+	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
+			PersistenceTestRule.INSTANCE,
+			new TransactionalTestRule(Propagation.REQUIRED,
+				"com.liferay.social.networking.service"));
 
 	@Before
 	public void setUp() {
@@ -105,8 +106,7 @@ public class WallEntryPersistenceTest {
 
 		_persistence.remove(newWallEntry);
 
-		WallEntry existingWallEntry = _persistence.fetchByPrimaryKey(
-			newWallEntry.getPrimaryKey());
+		WallEntry existingWallEntry = _persistence.fetchByPrimaryKey(newWallEntry.getPrimaryKey());
 
 		Assert.assertNull(existingWallEntry);
 	}
@@ -138,27 +138,26 @@ public class WallEntryPersistenceTest {
 
 		_wallEntries.add(_persistence.update(newWallEntry));
 
-		WallEntry existingWallEntry = _persistence.findByPrimaryKey(
-			newWallEntry.getPrimaryKey());
+		WallEntry existingWallEntry = _persistence.findByPrimaryKey(newWallEntry.getPrimaryKey());
 
-		Assert.assertEquals(
-			existingWallEntry.getWallEntryId(), newWallEntry.getWallEntryId());
-		Assert.assertEquals(
-			existingWallEntry.getGroupId(), newWallEntry.getGroupId());
-		Assert.assertEquals(
-			existingWallEntry.getCompanyId(), newWallEntry.getCompanyId());
-		Assert.assertEquals(
-			existingWallEntry.getUserId(), newWallEntry.getUserId());
-		Assert.assertEquals(
-			existingWallEntry.getUserName(), newWallEntry.getUserName());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingWallEntry.getCreateDate()),
+		Assert.assertEquals(existingWallEntry.getWallEntryId(),
+			newWallEntry.getWallEntryId());
+		Assert.assertEquals(existingWallEntry.getGroupId(),
+			newWallEntry.getGroupId());
+		Assert.assertEquals(existingWallEntry.getCompanyId(),
+			newWallEntry.getCompanyId());
+		Assert.assertEquals(existingWallEntry.getUserId(),
+			newWallEntry.getUserId());
+		Assert.assertEquals(existingWallEntry.getUserName(),
+			newWallEntry.getUserName());
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingWallEntry.getCreateDate()),
 			Time.getShortTimestamp(newWallEntry.getCreateDate()));
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingWallEntry.getModifiedDate()),
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingWallEntry.getModifiedDate()),
 			Time.getShortTimestamp(newWallEntry.getModifiedDate()));
-		Assert.assertEquals(
-			existingWallEntry.getComments(), newWallEntry.getComments());
+		Assert.assertEquals(existingWallEntry.getComments(),
+			newWallEntry.getComments());
 	}
 
 	@Test
@@ -177,8 +176,8 @@ public class WallEntryPersistenceTest {
 
 	@Test
 	public void testCountByG_U() throws Exception {
-		_persistence.countByG_U(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+		_persistence.countByG_U(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong());
 
 		_persistence.countByG_U(0L, 0L);
 	}
@@ -187,8 +186,7 @@ public class WallEntryPersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		WallEntry newWallEntry = addWallEntry();
 
-		WallEntry existingWallEntry = _persistence.findByPrimaryKey(
-			newWallEntry.getPrimaryKey());
+		WallEntry existingWallEntry = _persistence.findByPrimaryKey(newWallEntry.getPrimaryKey());
 
 		Assert.assertEquals(existingWallEntry, newWallEntry);
 	}
@@ -202,23 +200,22 @@ public class WallEntryPersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
+		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			getOrderByComparator());
 	}
 
 	protected OrderByComparator<WallEntry> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create(
-			"SN_WallEntry", "wallEntryId", true, "groupId", true, "companyId",
-			true, "userId", true, "userName", true, "createDate", true,
-			"modifiedDate", true, "comments", true);
+		return OrderByComparatorFactoryUtil.create("SN_WallEntry",
+			"wallEntryId", true, "groupId", true, "companyId", true, "userId",
+			true, "userName", true, "createDate", true, "modifiedDate", true,
+			"comments", true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		WallEntry newWallEntry = addWallEntry();
 
-		WallEntry existingWallEntry = _persistence.fetchByPrimaryKey(
-			newWallEntry.getPrimaryKey());
+		WallEntry existingWallEntry = _persistence.fetchByPrimaryKey(newWallEntry.getPrimaryKey());
 
 		Assert.assertEquals(existingWallEntry, newWallEntry);
 	}
@@ -235,7 +232,6 @@ public class WallEntryPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
-
 		WallEntry newWallEntry1 = addWallEntry();
 		WallEntry newWallEntry2 = addWallEntry();
 
@@ -244,20 +240,18 @@ public class WallEntryPersistenceTest {
 		primaryKeys.add(newWallEntry1.getPrimaryKey());
 		primaryKeys.add(newWallEntry2.getPrimaryKey());
 
-		Map<Serializable, WallEntry> wallEntries =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, WallEntry> wallEntries = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(2, wallEntries.size());
-		Assert.assertEquals(
-			newWallEntry1, wallEntries.get(newWallEntry1.getPrimaryKey()));
-		Assert.assertEquals(
-			newWallEntry2, wallEntries.get(newWallEntry2.getPrimaryKey()));
+		Assert.assertEquals(newWallEntry1,
+			wallEntries.get(newWallEntry1.getPrimaryKey()));
+		Assert.assertEquals(newWallEntry2,
+			wallEntries.get(newWallEntry2.getPrimaryKey()));
 	}
 
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
-
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -267,8 +261,7 @@ public class WallEntryPersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, WallEntry> wallEntries =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, WallEntry> wallEntries = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(wallEntries.isEmpty());
 	}
@@ -276,7 +269,6 @@ public class WallEntryPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
-
 		WallEntry newWallEntry = addWallEntry();
 
 		long pk = RandomTestUtil.nextLong();
@@ -286,57 +278,52 @@ public class WallEntryPersistenceTest {
 		primaryKeys.add(newWallEntry.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, WallEntry> wallEntries =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, WallEntry> wallEntries = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, wallEntries.size());
-		Assert.assertEquals(
-			newWallEntry, wallEntries.get(newWallEntry.getPrimaryKey()));
+		Assert.assertEquals(newWallEntry,
+			wallEntries.get(newWallEntry.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
+		throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, WallEntry> wallEntries =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, WallEntry> wallEntries = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(wallEntries.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey()
+		throws Exception {
 		WallEntry newWallEntry = addWallEntry();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newWallEntry.getPrimaryKey());
 
-		Map<Serializable, WallEntry> wallEntries =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, WallEntry> wallEntries = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, wallEntries.size());
-		Assert.assertEquals(
-			newWallEntry, wallEntries.get(newWallEntry.getPrimaryKey()));
+		Assert.assertEquals(newWallEntry,
+			wallEntries.get(newWallEntry.getPrimaryKey()));
 	}
 
 	@Test
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery =
-			WallEntryLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = WallEntryLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<WallEntry>() {
-
+		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<WallEntry>() {
 				@Override
 				public void performAction(WallEntry wallEntry) {
 					Assert.assertNotNull(wallEntry);
 
 					count.increment();
 				}
-
 			});
 
 		actionableDynamicQuery.performActions();
@@ -345,18 +332,17 @@ public class WallEntryPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting()
+		throws Exception {
 		WallEntry newWallEntry = addWallEntry();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			WallEntry.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(WallEntry.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq(
-				"wallEntryId", newWallEntry.getWallEntryId()));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("wallEntryId",
+				newWallEntry.getWallEntryId()));
 
-		List<WallEntry> result = _persistence.findWithDynamicQuery(
-			dynamicQuery);
+		List<WallEntry> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
 		Assert.assertEquals(1, result.size());
 
@@ -367,34 +353,31 @@ public class WallEntryPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			WallEntry.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(WallEntry.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq(
-				"wallEntryId", RandomTestUtil.nextLong()));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("wallEntryId",
+				RandomTestUtil.nextLong()));
 
-		List<WallEntry> result = _persistence.findWithDynamicQuery(
-			dynamicQuery);
+		List<WallEntry> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
 		Assert.assertEquals(0, result.size());
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting() throws Exception {
+	public void testDynamicQueryByProjectionExisting()
+		throws Exception {
 		WallEntry newWallEntry = addWallEntry();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			WallEntry.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(WallEntry.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(
-			ProjectionFactoryUtil.property("wallEntryId"));
+		dynamicQuery.setProjection(ProjectionFactoryUtil.property("wallEntryId"));
 
 		Object newWallEntryId = newWallEntry.getWallEntryId();
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in(
-				"wallEntryId", new Object[] {newWallEntryId}));
+		dynamicQuery.add(RestrictionsFactoryUtil.in("wallEntryId",
+				new Object[] { newWallEntryId }));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -407,15 +390,13 @@ public class WallEntryPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			WallEntry.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(WallEntry.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(
-			ProjectionFactoryUtil.property("wallEntryId"));
+		dynamicQuery.setProjection(ProjectionFactoryUtil.property("wallEntryId"));
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in(
-				"wallEntryId", new Object[] {RandomTestUtil.nextLong()}));
+		dynamicQuery.add(RestrictionsFactoryUtil.in("wallEntryId",
+				new Object[] { RandomTestUtil.nextLong() }));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -449,5 +430,4 @@ public class WallEntryPersistenceTest {
 	private List<WallEntry> _wallEntries = new ArrayList<WallEntry>();
 	private WallEntryPersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
-
 }

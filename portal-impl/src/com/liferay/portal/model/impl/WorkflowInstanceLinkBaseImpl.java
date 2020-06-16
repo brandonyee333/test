@@ -14,6 +14,8 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.WorkflowInstanceLink;
 import com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalServiceUtil;
  * @see WorkflowInstanceLink
  * @generated
  */
+@ProviderType
 public abstract class WorkflowInstanceLinkBaseImpl
 	extends WorkflowInstanceLinkModelImpl implements WorkflowInstanceLink {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a workflow instance link model instance should use the <code>WorkflowInstanceLink</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a workflow instance link model instance should use the {@link WorkflowInstanceLink} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -43,9 +45,7 @@ public abstract class WorkflowInstanceLinkBaseImpl
 			WorkflowInstanceLinkLocalServiceUtil.addWorkflowInstanceLink(this);
 		}
 		else {
-			WorkflowInstanceLinkLocalServiceUtil.updateWorkflowInstanceLink(
-				this);
+			WorkflowInstanceLinkLocalServiceUtil.updateWorkflowInstanceLink(this);
 		}
 	}
-
 }

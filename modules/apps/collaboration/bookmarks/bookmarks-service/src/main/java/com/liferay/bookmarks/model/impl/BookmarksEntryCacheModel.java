@@ -14,10 +14,14 @@
 
 package com.liferay.bookmarks.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.bookmarks.model.BookmarksEntry;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing BookmarksEntry in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see BookmarksEntry
  * @generated
  */
-public class BookmarksEntryCacheModel
-	implements CacheModel<BookmarksEntry>, Externalizable {
-
+@ProviderType
+public class BookmarksEntryCacheModel implements CacheModel<BookmarksEntry>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class BookmarksEntryCacheModel
 			return false;
 		}
 
-		BookmarksEntryCacheModel bookmarksEntryCacheModel =
-			(BookmarksEntryCacheModel)obj;
+		BookmarksEntryCacheModel bookmarksEntryCacheModel = (BookmarksEntryCacheModel)obj;
 
 		if (entryId == bookmarksEntryCacheModel.entryId) {
 			return true;
@@ -116,7 +120,7 @@ public class BookmarksEntryCacheModel
 		BookmarksEntryImpl bookmarksEntryImpl = new BookmarksEntryImpl();
 
 		if (uuid == null) {
-			bookmarksEntryImpl.setUuid("");
+			bookmarksEntryImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			bookmarksEntryImpl.setUuid(uuid);
@@ -128,7 +132,7 @@ public class BookmarksEntryCacheModel
 		bookmarksEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			bookmarksEntryImpl.setUserName("");
+			bookmarksEntryImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			bookmarksEntryImpl.setUserName(userName);
@@ -152,28 +156,28 @@ public class BookmarksEntryCacheModel
 		bookmarksEntryImpl.setFolderId(folderId);
 
 		if (treePath == null) {
-			bookmarksEntryImpl.setTreePath("");
+			bookmarksEntryImpl.setTreePath(StringPool.BLANK);
 		}
 		else {
 			bookmarksEntryImpl.setTreePath(treePath);
 		}
 
 		if (name == null) {
-			bookmarksEntryImpl.setName("");
+			bookmarksEntryImpl.setName(StringPool.BLANK);
 		}
 		else {
 			bookmarksEntryImpl.setName(name);
 		}
 
 		if (url == null) {
-			bookmarksEntryImpl.setUrl("");
+			bookmarksEntryImpl.setUrl(StringPool.BLANK);
 		}
 		else {
 			bookmarksEntryImpl.setUrl(url);
 		}
 
 		if (description == null) {
-			bookmarksEntryImpl.setDescription("");
+			bookmarksEntryImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			bookmarksEntryImpl.setDescription(description);
@@ -193,7 +197,7 @@ public class BookmarksEntryCacheModel
 		bookmarksEntryImpl.setStatusByUserId(statusByUserId);
 
 		if (statusByUserName == null) {
-			bookmarksEntryImpl.setStatusByUserName("");
+			bookmarksEntryImpl.setStatusByUserName(StringPool.BLANK);
 		}
 		else {
 			bookmarksEntryImpl.setStatusByUserName(statusByUserName);
@@ -247,9 +251,10 @@ public class BookmarksEntryCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -264,7 +269,7 @@ public class BookmarksEntryCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -278,28 +283,28 @@ public class BookmarksEntryCacheModel
 		objectOutput.writeLong(folderId);
 
 		if (treePath == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(treePath);
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (url == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(url);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -315,7 +320,7 @@ public class BookmarksEntryCacheModel
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(statusByUserName);
@@ -345,5 +350,4 @@ public class BookmarksEntryCacheModel
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
-
 }

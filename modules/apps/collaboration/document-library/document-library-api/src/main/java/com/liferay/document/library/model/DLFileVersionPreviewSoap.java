@@ -14,6 +14,8 @@
 
 package com.liferay.document.library.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -25,11 +27,10 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
+@ProviderType
 public class DLFileVersionPreviewSoap implements Serializable {
-
 	public static DLFileVersionPreviewSoap toSoapModel(
 		DLFileVersionPreview model) {
-
 		DLFileVersionPreviewSoap soapModel = new DLFileVersionPreviewSoap();
 
 		soapModel.setDlFileVersionPreviewId(model.getDlFileVersionPreviewId());
@@ -43,9 +44,7 @@ public class DLFileVersionPreviewSoap implements Serializable {
 
 	public static DLFileVersionPreviewSoap[] toSoapModels(
 		DLFileVersionPreview[] models) {
-
-		DLFileVersionPreviewSoap[] soapModels =
-			new DLFileVersionPreviewSoap[models.length];
+		DLFileVersionPreviewSoap[] soapModels = new DLFileVersionPreviewSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -56,12 +55,10 @@ public class DLFileVersionPreviewSoap implements Serializable {
 
 	public static DLFileVersionPreviewSoap[][] toSoapModels(
 		DLFileVersionPreview[][] models) {
-
 		DLFileVersionPreviewSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels =
-				new DLFileVersionPreviewSoap[models.length][models[0].length];
+			soapModels = new DLFileVersionPreviewSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new DLFileVersionPreviewSoap[0][0];
@@ -76,16 +73,13 @@ public class DLFileVersionPreviewSoap implements Serializable {
 
 	public static DLFileVersionPreviewSoap[] toSoapModels(
 		List<DLFileVersionPreview> models) {
-
-		List<DLFileVersionPreviewSoap> soapModels =
-			new ArrayList<DLFileVersionPreviewSoap>(models.size());
+		List<DLFileVersionPreviewSoap> soapModels = new ArrayList<DLFileVersionPreviewSoap>(models.size());
 
 		for (DLFileVersionPreview model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(
-			new DLFileVersionPreviewSoap[soapModels.size()]);
+		return soapModels.toArray(new DLFileVersionPreviewSoap[soapModels.size()]);
 	}
 
 	public DLFileVersionPreviewSoap() {
@@ -144,5 +138,4 @@ public class DLFileVersionPreviewSoap implements Serializable {
 	private long _fileEntryId;
 	private long _fileVersionId;
 	private int _previewStatus;
-
 }

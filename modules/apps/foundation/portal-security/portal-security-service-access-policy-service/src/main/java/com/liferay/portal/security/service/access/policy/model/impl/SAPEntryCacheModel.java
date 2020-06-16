@@ -14,9 +14,12 @@
 
 package com.liferay.portal.security.service.access.policy.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.security.service.access.policy.model.SAPEntry;
 
 import java.io.Externalizable;
@@ -30,11 +33,11 @@ import java.util.Date;
  * The cache model class for representing SAPEntry in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see SAPEntry
  * @generated
  */
-public class SAPEntryCacheModel
-	implements CacheModel<SAPEntry>, Externalizable {
-
+@ProviderType
+public class SAPEntryCacheModel implements CacheModel<SAPEntry>, Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -97,7 +100,7 @@ public class SAPEntryCacheModel
 		SAPEntryImpl sapEntryImpl = new SAPEntryImpl();
 
 		if (uuid == null) {
-			sapEntryImpl.setUuid("");
+			sapEntryImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			sapEntryImpl.setUuid(uuid);
@@ -108,7 +111,7 @@ public class SAPEntryCacheModel
 		sapEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			sapEntryImpl.setUserName("");
+			sapEntryImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			sapEntryImpl.setUserName(userName);
@@ -129,7 +132,7 @@ public class SAPEntryCacheModel
 		}
 
 		if (allowedServiceSignatures == null) {
-			sapEntryImpl.setAllowedServiceSignatures("");
+			sapEntryImpl.setAllowedServiceSignatures(StringPool.BLANK);
 		}
 		else {
 			sapEntryImpl.setAllowedServiceSignatures(allowedServiceSignatures);
@@ -139,14 +142,14 @@ public class SAPEntryCacheModel
 		sapEntryImpl.setEnabled(enabled);
 
 		if (name == null) {
-			sapEntryImpl.setName("");
+			sapEntryImpl.setName(StringPool.BLANK);
 		}
 		else {
 			sapEntryImpl.setName(name);
 		}
 
 		if (title == null) {
-			sapEntryImpl.setTitle("");
+			sapEntryImpl.setTitle(StringPool.BLANK);
 		}
 		else {
 			sapEntryImpl.setTitle(title);
@@ -179,9 +182,10 @@ public class SAPEntryCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -194,7 +198,7 @@ public class SAPEntryCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -204,7 +208,7 @@ public class SAPEntryCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (allowedServiceSignatures == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(allowedServiceSignatures);
@@ -215,14 +219,14 @@ public class SAPEntryCacheModel
 		objectOutput.writeBoolean(enabled);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (title == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(title);
@@ -241,5 +245,4 @@ public class SAPEntryCacheModel
 	public boolean enabled;
 	public String name;
 	public String title;
-
 }

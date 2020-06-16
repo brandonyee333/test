@@ -14,10 +14,14 @@
 
 package com.liferay.portlet.documentlibrary.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.document.library.kernel.model.DLFileEntry;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing DLFileEntry in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see DLFileEntry
  * @generated
  */
-public class DLFileEntryCacheModel
-	implements CacheModel<DLFileEntry>, Externalizable {
-
+@ProviderType
+public class DLFileEntryCacheModel implements CacheModel<DLFileEntry>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class DLFileEntryCacheModel
 			return false;
 		}
 
-		DLFileEntryCacheModel dlFileEntryCacheModel =
-			(DLFileEntryCacheModel)obj;
+		DLFileEntryCacheModel dlFileEntryCacheModel = (DLFileEntryCacheModel)obj;
 
 		if (fileEntryId == dlFileEntryCacheModel.fileEntryId) {
 			return true;
@@ -134,7 +138,7 @@ public class DLFileEntryCacheModel
 		DLFileEntryImpl dlFileEntryImpl = new DLFileEntryImpl();
 
 		if (uuid == null) {
-			dlFileEntryImpl.setUuid("");
+			dlFileEntryImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			dlFileEntryImpl.setUuid(uuid);
@@ -146,7 +150,7 @@ public class DLFileEntryCacheModel
 		dlFileEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			dlFileEntryImpl.setUserName("");
+			dlFileEntryImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			dlFileEntryImpl.setUserName(userName);
@@ -172,56 +176,56 @@ public class DLFileEntryCacheModel
 		dlFileEntryImpl.setFolderId(folderId);
 
 		if (treePath == null) {
-			dlFileEntryImpl.setTreePath("");
+			dlFileEntryImpl.setTreePath(StringPool.BLANK);
 		}
 		else {
 			dlFileEntryImpl.setTreePath(treePath);
 		}
 
 		if (name == null) {
-			dlFileEntryImpl.setName("");
+			dlFileEntryImpl.setName(StringPool.BLANK);
 		}
 		else {
 			dlFileEntryImpl.setName(name);
 		}
 
 		if (fileName == null) {
-			dlFileEntryImpl.setFileName("");
+			dlFileEntryImpl.setFileName(StringPool.BLANK);
 		}
 		else {
 			dlFileEntryImpl.setFileName(fileName);
 		}
 
 		if (extension == null) {
-			dlFileEntryImpl.setExtension("");
+			dlFileEntryImpl.setExtension(StringPool.BLANK);
 		}
 		else {
 			dlFileEntryImpl.setExtension(extension);
 		}
 
 		if (mimeType == null) {
-			dlFileEntryImpl.setMimeType("");
+			dlFileEntryImpl.setMimeType(StringPool.BLANK);
 		}
 		else {
 			dlFileEntryImpl.setMimeType(mimeType);
 		}
 
 		if (title == null) {
-			dlFileEntryImpl.setTitle("");
+			dlFileEntryImpl.setTitle(StringPool.BLANK);
 		}
 		else {
 			dlFileEntryImpl.setTitle(title);
 		}
 
 		if (description == null) {
-			dlFileEntryImpl.setDescription("");
+			dlFileEntryImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			dlFileEntryImpl.setDescription(description);
 		}
 
 		if (extraSettings == null) {
-			dlFileEntryImpl.setExtraSettings("");
+			dlFileEntryImpl.setExtraSettings(StringPool.BLANK);
 		}
 		else {
 			dlFileEntryImpl.setExtraSettings(extraSettings);
@@ -230,7 +234,7 @@ public class DLFileEntryCacheModel
 		dlFileEntryImpl.setFileEntryTypeId(fileEntryTypeId);
 
 		if (version == null) {
-			dlFileEntryImpl.setVersion("");
+			dlFileEntryImpl.setVersion(StringPool.BLANK);
 		}
 		else {
 			dlFileEntryImpl.setVersion(version);
@@ -257,9 +261,7 @@ public class DLFileEntryCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
 
 		fileEntryId = objectInput.readLong();
@@ -287,7 +289,7 @@ public class DLFileEntryCacheModel
 		mimeType = objectInput.readUTF();
 		title = objectInput.readUTF();
 		description = objectInput.readUTF();
-		extraSettings = (String)objectInput.readObject();
+		extraSettings = objectInput.readUTF();
 
 		fileEntryTypeId = objectInput.readLong();
 		version = objectInput.readUTF();
@@ -309,9 +311,10 @@ public class DLFileEntryCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -326,7 +329,7 @@ public class DLFileEntryCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -344,65 +347,65 @@ public class DLFileEntryCacheModel
 		objectOutput.writeLong(folderId);
 
 		if (treePath == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(treePath);
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (fileName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(fileName);
 		}
 
 		if (extension == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(extension);
 		}
 
 		if (mimeType == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(mimeType);
 		}
 
 		if (title == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(title);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (extraSettings == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(extraSettings);
+			objectOutput.writeUTF(extraSettings);
 		}
 
 		objectOutput.writeLong(fileEntryTypeId);
 
 		if (version == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(version);
@@ -454,5 +457,4 @@ public class DLFileEntryCacheModel
 	public long custom2ImageId;
 	public boolean manualCheckInRequired;
 	public long lastPublishDate;
-
 }

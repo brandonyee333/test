@@ -1,22 +1,26 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.watson.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.watson.model.WatsonDocumentAudit;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing WatsonDocumentAudit in entity cache.
  *
  * @author Steven Smith
+ * @see WatsonDocumentAudit
  * @generated
  */
-public class WatsonDocumentAuditCacheModel
-	implements CacheModel<WatsonDocumentAudit>, Externalizable {
-
+@ProviderType
+public class WatsonDocumentAuditCacheModel implements CacheModel<WatsonDocumentAudit>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +50,9 @@ public class WatsonDocumentAuditCacheModel
 			return false;
 		}
 
-		WatsonDocumentAuditCacheModel watsonDocumentAuditCacheModel =
-			(WatsonDocumentAuditCacheModel)obj;
+		WatsonDocumentAuditCacheModel watsonDocumentAuditCacheModel = (WatsonDocumentAuditCacheModel)obj;
 
-		if (watsonDocumentAuditId ==
-				watsonDocumentAuditCacheModel.watsonDocumentAuditId) {
-
+		if (watsonDocumentAuditId == watsonDocumentAuditCacheModel.watsonDocumentAuditId) {
 			return true;
 		}
 
@@ -105,8 +107,7 @@ public class WatsonDocumentAuditCacheModel
 
 	@Override
 	public WatsonDocumentAudit toEntityModel() {
-		WatsonDocumentAuditImpl watsonDocumentAuditImpl =
-			new WatsonDocumentAuditImpl();
+		WatsonDocumentAuditImpl watsonDocumentAuditImpl = new WatsonDocumentAuditImpl();
 
 		watsonDocumentAuditImpl.setWatsonDocumentAuditId(watsonDocumentAuditId);
 		watsonDocumentAuditImpl.setGroupId(groupId);
@@ -114,7 +115,7 @@ public class WatsonDocumentAuditCacheModel
 		watsonDocumentAuditImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonDocumentAuditImpl.setUserName("");
+			watsonDocumentAuditImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			watsonDocumentAuditImpl.setUserName(userName);
@@ -134,10 +135,8 @@ public class WatsonDocumentAuditCacheModel
 			watsonDocumentAuditImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		watsonDocumentAuditImpl.setParentTypeWatsonListTypeId(
-			parentTypeWatsonListTypeId);
-		watsonDocumentAuditImpl.setSubtypeWatsonListTypeId(
-			subtypeWatsonListTypeId);
+		watsonDocumentAuditImpl.setParentTypeWatsonListTypeId(parentTypeWatsonListTypeId);
+		watsonDocumentAuditImpl.setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
 		watsonDocumentAuditImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
 		watsonDocumentAuditImpl.setWatsonChildId(watsonChildId);
 		watsonDocumentAuditImpl.setWatsonDocumentId(watsonDocumentId);
@@ -151,7 +150,7 @@ public class WatsonDocumentAuditCacheModel
 		}
 
 		if (imagePayload == null) {
-			watsonDocumentAuditImpl.setImagePayload("");
+			watsonDocumentAuditImpl.setImagePayload(StringPool.BLANK);
 		}
 		else {
 			watsonDocumentAuditImpl.setImagePayload(imagePayload);
@@ -165,9 +164,7 @@ public class WatsonDocumentAuditCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		watsonDocumentAuditId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -191,13 +188,14 @@ public class WatsonDocumentAuditCacheModel
 
 		originalDocument = objectInput.readBoolean();
 		receivedDate = objectInput.readLong();
-		imagePayload = (String)objectInput.readObject();
+		imagePayload = objectInput.readUTF();
 
 		status = objectInput.readInt();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(watsonDocumentAuditId);
 
 		objectOutput.writeLong(groupId);
@@ -207,7 +205,7 @@ public class WatsonDocumentAuditCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -230,10 +228,10 @@ public class WatsonDocumentAuditCacheModel
 		objectOutput.writeLong(receivedDate);
 
 		if (imagePayload == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(imagePayload);
+			objectOutput.writeUTF(imagePayload);
 		}
 
 		objectOutput.writeInt(status);
@@ -255,5 +253,4 @@ public class WatsonDocumentAuditCacheModel
 	public long receivedDate;
 	public String imagePayload;
 	public int status;
-
 }

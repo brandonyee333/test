@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -31,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing Role in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see Role
  * @generated
  */
-public class RoleCacheModel
-	implements CacheModel<Role>, Externalizable, MVCCModel {
-
+@ProviderType
+public class RoleCacheModel implements CacheModel<Role>, Externalizable,
+	MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -49,8 +53,7 @@ public class RoleCacheModel
 		RoleCacheModel roleCacheModel = (RoleCacheModel)obj;
 
 		if ((roleId == roleCacheModel.roleId) &&
-			(mvccVersion == roleCacheModel.mvccVersion)) {
-
+				(mvccVersion == roleCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -120,7 +123,7 @@ public class RoleCacheModel
 		roleImpl.setMvccVersion(mvccVersion);
 
 		if (uuid == null) {
-			roleImpl.setUuid("");
+			roleImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			roleImpl.setUuid(uuid);
@@ -131,7 +134,7 @@ public class RoleCacheModel
 		roleImpl.setUserId(userId);
 
 		if (userName == null) {
-			roleImpl.setUserName("");
+			roleImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			roleImpl.setUserName(userName);
@@ -155,21 +158,21 @@ public class RoleCacheModel
 		roleImpl.setClassPK(classPK);
 
 		if (name == null) {
-			roleImpl.setName("");
+			roleImpl.setName(StringPool.BLANK);
 		}
 		else {
 			roleImpl.setName(name);
 		}
 
 		if (title == null) {
-			roleImpl.setTitle("");
+			roleImpl.setTitle(StringPool.BLANK);
 		}
 		else {
 			roleImpl.setTitle(title);
 		}
 
 		if (description == null) {
-			roleImpl.setDescription("");
+			roleImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			roleImpl.setDescription(description);
@@ -178,7 +181,7 @@ public class RoleCacheModel
 		roleImpl.setType(type);
 
 		if (subtype == null) {
-			roleImpl.setSubtype("");
+			roleImpl.setSubtype(StringPool.BLANK);
 		}
 		else {
 			roleImpl.setSubtype(subtype);
@@ -215,11 +218,12 @@ public class RoleCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -232,7 +236,7 @@ public class RoleCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -246,21 +250,21 @@ public class RoleCacheModel
 		objectOutput.writeLong(classPK);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (title == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(title);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -269,7 +273,7 @@ public class RoleCacheModel
 		objectOutput.writeInt(type);
 
 		if (subtype == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(subtype);
@@ -291,5 +295,4 @@ public class RoleCacheModel
 	public String description;
 	public int type;
 	public String subtype;
-
 }

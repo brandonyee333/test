@@ -1,23 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.customer.metrics.sync.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.osb.customer.metrics.sync.model.SyncState;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -28,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing SyncState in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see SyncState
  * @generated
  */
-public class SyncStateCacheModel
-	implements CacheModel<SyncState>, Externalizable {
-
+@ProviderType
+public class SyncStateCacheModel implements CacheModel<SyncState>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -79,7 +84,7 @@ public class SyncStateCacheModel
 		syncStateImpl.setSyncStateId(syncStateId);
 
 		if (modelName == null) {
-			syncStateImpl.setModelName("");
+			syncStateImpl.setModelName(StringPool.BLANK);
 		}
 		else {
 			syncStateImpl.setModelName(modelName);
@@ -101,11 +106,12 @@ public class SyncStateCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(syncStateId);
 
 		if (modelName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(modelName);
@@ -117,5 +123,4 @@ public class SyncStateCacheModel
 	public long syncStateId;
 	public String modelName;
 	public long lastRunTime;
-
 }

@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.saml.persistence.model;
+
+import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -26,8 +28,8 @@ import java.util.List;
  * @author Mika Koivisto
  * @generated
  */
+@ProviderType
 public class SamlSpSessionSoap implements Serializable {
-
 	public static SamlSpSessionSoap toSoapModel(SamlSpSession model) {
 		SamlSpSessionSoap soapModel = new SamlSpSessionSoap();
 
@@ -45,7 +47,7 @@ public class SamlSpSessionSoap implements Serializable {
 		soapModel.setNameIdSPNameQualifier(model.getNameIdSPNameQualifier());
 		soapModel.setNameIdValue(model.getNameIdValue());
 		soapModel.setSessionIndex(model.getSessionIndex());
-		soapModel.setTerminated(model.isTerminated());
+		soapModel.setTerminated(model.getTerminated());
 
 		return soapModel;
 	}
@@ -78,8 +80,7 @@ public class SamlSpSessionSoap implements Serializable {
 	}
 
 	public static SamlSpSessionSoap[] toSoapModels(List<SamlSpSession> models) {
-		List<SamlSpSessionSoap> soapModels = new ArrayList<SamlSpSessionSoap>(
-			models.size());
+		List<SamlSpSessionSoap> soapModels = new ArrayList<SamlSpSessionSoap>(models.size());
 
 		for (SamlSpSession model : models) {
 			soapModels.add(toSoapModel(model));
@@ -238,5 +239,4 @@ public class SamlSpSessionSoap implements Serializable {
 	private String _nameIdValue;
 	private String _sessionIndex;
 	private boolean _terminated;
-
 }

@@ -1,24 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.customer.release.notes.jira.service.persistence.impl;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.customer.release.notes.jira.exception.NoSuchJIRAProjectException;
 import com.liferay.osb.customer.release.notes.jira.model.JIRAProject;
 import com.liferay.osb.customer.release.notes.jira.model.impl.JIRAProjectImpl;
 import com.liferay.osb.customer.release.notes.jira.model.impl.JIRAProjectModelImpl;
 import com.liferay.osb.customer.release.notes.jira.service.persistence.JIRAProjectPersistence;
+
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -30,16 +33,13 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -58,33 +58,44 @@ import java.util.Set;
  * </p>
  *
  * @author Brian Wing Shun Chan
+ * @see JIRAProjectPersistence
+ * @see com.liferay.osb.customer.release.notes.jira.service.persistence.JIRAProjectUtil
  * @generated
  */
-public class JIRAProjectPersistenceImpl
-	extends BasePersistenceImpl<JIRAProject> implements JIRAProjectPersistence {
-
+@ProviderType
+public class JIRAProjectPersistenceImpl extends BasePersistenceImpl<JIRAProject>
+	implements JIRAProjectPersistence {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use <code>JIRAProjectUtil</code> to access the jira project persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use {@link JIRAProjectUtil} to access the jira project persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY =
-		JIRAProjectImpl.class.getName();
-
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List1";
-
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathFetchByKey;
-	private FinderPath _finderPathCountByKey;
+	public static final String FINDER_CLASS_NAME_ENTITY = JIRAProjectImpl.class.getName();
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List1";
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List2";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAProjectModelImpl.FINDER_CACHE_ENABLED, JIRAProjectImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAProjectModelImpl.FINDER_CACHE_ENABLED, JIRAProjectImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAProjectModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	public static final FinderPath FINDER_PATH_FETCH_BY_KEY = new FinderPath(JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAProjectModelImpl.FINDER_CACHE_ENABLED, JIRAProjectImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchByKey",
+			new String[] { String.class.getName() },
+			JIRAProjectModelImpl.KEY_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_KEY = new FinderPath(JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAProjectModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByKey",
+			new String[] { String.class.getName() });
 
 	/**
-	 * Returns the jira project where key = &#63; or throws a <code>NoSuchJIRAProjectException</code> if it could not be found.
+	 * Returns the jira project where key = &#63; or throws a {@link NoSuchJIRAProjectException} if it could not be found.
 	 *
 	 * @param key the key
 	 * @return the matching jira project
@@ -95,20 +106,20 @@ public class JIRAProjectPersistenceImpl
 		JIRAProject jiraProject = fetchByKey(key);
 
 		if (jiraProject == null) {
-			StringBundler sb = new StringBundler(4);
+			StringBundler msg = new StringBundler(4);
 
-			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			sb.append("key=");
-			sb.append(key);
+			msg.append("key=");
+			msg.append(key);
 
-			sb.append("}");
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(sb.toString());
+				_log.debug(msg.toString());
 			}
 
-			throw new NoSuchJIRAProjectException(sb.toString());
+			throw new NoSuchJIRAProjectException(msg.toString());
 		}
 
 		return jiraProject;
@@ -129,24 +140,18 @@ public class JIRAProjectPersistenceImpl
 	 * Returns the jira project where key = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param key the key
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the matching jira project, or <code>null</code> if a matching jira project could not be found
 	 */
 	@Override
-	public JIRAProject fetchByKey(String key, boolean useFinderCache) {
-		key = Objects.toString(key, "");
-
-		Object[] finderArgs = null;
-
-		if (useFinderCache) {
-			finderArgs = new Object[] {key};
-		}
+	public JIRAProject fetchByKey(String key, boolean retrieveFromCache) {
+		Object[] finderArgs = new Object[] { key };
 
 		Object result = null;
 
-		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchByKey, finderArgs, this);
+		if (retrieveFromCache) {
+			result = finderCache.getResult(FINDER_PATH_FETCH_BY_KEY,
+					finderArgs, this);
 		}
 
 		if (result instanceof JIRAProject) {
@@ -158,57 +163,54 @@ public class JIRAProjectPersistenceImpl
 		}
 
 		if (result == null) {
-			StringBundler sb = new StringBundler(3);
+			StringBundler query = new StringBundler(3);
 
-			sb.append(_SQL_SELECT_JIRAPROJECT_WHERE);
+			query.append(_SQL_SELECT_JIRAPROJECT_WHERE);
 
 			boolean bindKey = false;
 
-			if (key.isEmpty()) {
-				sb.append(_FINDER_COLUMN_KEY_KEY_3);
+			if (key == null) {
+				query.append(_FINDER_COLUMN_KEY_KEY_1);
+			}
+			else if (key.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_KEY_KEY_3);
 			}
 			else {
 				bindKey = true;
 
-				sb.append(_FINDER_COLUMN_KEY_KEY_2);
+				query.append(_FINDER_COLUMN_KEY_KEY_2);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
 				if (bindKey) {
-					queryPos.add(key);
+					qPos.add(key);
 				}
 
-				List<JIRAProject> list = query.list();
+				List<JIRAProject> list = q.list();
 
 				if (list.isEmpty()) {
-					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchByKey, finderArgs, list);
-					}
+					finderCache.putResult(FINDER_PATH_FETCH_BY_KEY, finderArgs,
+						list);
 				}
 				else {
 					if (list.size() > 1) {
 						Collections.sort(list, Collections.reverseOrder());
 
 						if (_log.isWarnEnabled()) {
-							if (!useFinderCache) {
-								finderArgs = new Object[] {key};
-							}
-
 							_log.warn(
 								"JIRAProjectPersistenceImpl.fetchByKey(String, boolean) with parameters (" +
-									StringUtil.merge(finderArgs) +
-										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+								StringUtil.merge(finderArgs) +
+								") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 						}
 					}
 
@@ -217,14 +219,18 @@ public class JIRAProjectPersistenceImpl
 					result = jiraProject;
 
 					cacheResult(jiraProject);
+
+					if ((jiraProject.getKey() == null) ||
+							!jiraProject.getKey().equals(key)) {
+						finderCache.putResult(FINDER_PATH_FETCH_BY_KEY,
+							finderArgs, jiraProject);
+					}
 				}
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(_finderPathFetchByKey, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_FETCH_BY_KEY, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -248,7 +254,6 @@ public class JIRAProjectPersistenceImpl
 	@Override
 	public JIRAProject removeByKey(String key)
 		throws NoSuchJIRAProjectException {
-
 		JIRAProject jiraProject = findByKey(key);
 
 		return remove(jiraProject);
@@ -262,53 +267,54 @@ public class JIRAProjectPersistenceImpl
 	 */
 	@Override
 	public int countByKey(String key) {
-		key = Objects.toString(key, "");
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_KEY;
 
-		FinderPath finderPath = _finderPathCountByKey;
-
-		Object[] finderArgs = new Object[] {key};
+		Object[] finderArgs = new Object[] { key };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(2);
+			StringBundler query = new StringBundler(2);
 
-			sb.append(_SQL_COUNT_JIRAPROJECT_WHERE);
+			query.append(_SQL_COUNT_JIRAPROJECT_WHERE);
 
 			boolean bindKey = false;
 
-			if (key.isEmpty()) {
-				sb.append(_FINDER_COLUMN_KEY_KEY_3);
+			if (key == null) {
+				query.append(_FINDER_COLUMN_KEY_KEY_1);
+			}
+			else if (key.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_KEY_KEY_3);
 			}
 			else {
 				bindKey = true;
 
-				sb.append(_FINDER_COLUMN_KEY_KEY_2);
+				query.append(_FINDER_COLUMN_KEY_KEY_2);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
 				if (bindKey) {
-					queryPos.add(key);
+					qPos.add(key);
 				}
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
+			catch (Exception e) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -318,33 +324,11 @@ public class JIRAProjectPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_KEY_KEY_2 =
-		"jiraProject.key = ?";
-
-	private static final String _FINDER_COLUMN_KEY_KEY_3 =
-		"(jiraProject.key IS NULL OR jiraProject.key = '')";
+	private static final String _FINDER_COLUMN_KEY_KEY_1 = "jiraProject.key IS NULL";
+	private static final String _FINDER_COLUMN_KEY_KEY_2 = "jiraProject.key = ?";
+	private static final String _FINDER_COLUMN_KEY_KEY_3 = "(jiraProject.key IS NULL OR jiraProject.key = '')";
 
 	public JIRAProjectPersistenceImpl() {
-		Map<String, String> dbColumnNames = new HashMap<String, String>();
-
-		dbColumnNames.put("jiraProjectId", "id");
-		dbColumnNames.put("key", "pkey");
-		dbColumnNames.put("name", "pname");
-
-		try {
-			Field field = BasePersistenceImpl.class.getDeclaredField(
-				"_dbColumnNames");
-
-			field.setAccessible(true);
-
-			field.set(this, dbColumnNames);
-		}
-		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception, exception);
-			}
-		}
-
 		setModelClass(JIRAProject.class);
 	}
 
@@ -355,13 +339,11 @@ public class JIRAProjectPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(JIRAProject jiraProject) {
-		entityCache.putResult(
-			JIRAProjectModelImpl.ENTITY_CACHE_ENABLED, JIRAProjectImpl.class,
-			jiraProject.getPrimaryKey(), jiraProject);
+		entityCache.putResult(JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAProjectImpl.class, jiraProject.getPrimaryKey(), jiraProject);
 
-		finderCache.putResult(
-			_finderPathFetchByKey, new Object[] {jiraProject.getKey()},
-			jiraProject);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_KEY,
+			new Object[] { jiraProject.getKey() }, jiraProject);
 
 		jiraProject.resetOriginalValues();
 	}
@@ -375,10 +357,8 @@ public class JIRAProjectPersistenceImpl
 	public void cacheResult(List<JIRAProject> jiraProjects) {
 		for (JIRAProject jiraProject : jiraProjects) {
 			if (entityCache.getResult(
-					JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
-					JIRAProjectImpl.class, jiraProject.getPrimaryKey()) ==
-						null) {
-
+						JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
+						JIRAProjectImpl.class, jiraProject.getPrimaryKey()) == null) {
 				cacheResult(jiraProject);
 			}
 			else {
@@ -391,7 +371,7 @@ public class JIRAProjectPersistenceImpl
 	 * Clears the cache for all jira projects.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -407,14 +387,13 @@ public class JIRAProjectPersistenceImpl
 	 * Clears the cache for the jira project.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(JIRAProject jiraProject) {
-		entityCache.removeResult(
-			JIRAProjectModelImpl.ENTITY_CACHE_ENABLED, JIRAProjectImpl.class,
-			jiraProject.getPrimaryKey());
+		entityCache.removeResult(JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAProjectImpl.class, jiraProject.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -428,56 +407,38 @@ public class JIRAProjectPersistenceImpl
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (JIRAProject jiraProject : jiraProjects) {
-			entityCache.removeResult(
-				JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
 				JIRAProjectImpl.class, jiraProject.getPrimaryKey());
 
 			clearUniqueFindersCache((JIRAProjectModelImpl)jiraProject, true);
 		}
 	}
 
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
-				JIRAProjectImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		JIRAProjectModelImpl jiraProjectModelImpl) {
+		Object[] args = new Object[] { jiraProjectModelImpl.getKey() };
 
-		Object[] args = new Object[] {jiraProjectModelImpl.getKey()};
-
-		finderCache.putResult(
-			_finderPathCountByKey, args, Long.valueOf(1), false);
-		finderCache.putResult(
-			_finderPathFetchByKey, args, jiraProjectModelImpl, false);
+		finderCache.putResult(FINDER_PATH_COUNT_BY_KEY, args, Long.valueOf(1),
+			false);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_KEY, args,
+			jiraProjectModelImpl, false);
 	}
 
 	protected void clearUniqueFindersCache(
 		JIRAProjectModelImpl jiraProjectModelImpl, boolean clearCurrent) {
-
 		if (clearCurrent) {
-			Object[] args = new Object[] {jiraProjectModelImpl.getKey()};
+			Object[] args = new Object[] { jiraProjectModelImpl.getKey() };
 
-			finderCache.removeResult(_finderPathCountByKey, args);
-			finderCache.removeResult(_finderPathFetchByKey, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_KEY, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_KEY, args);
 		}
 
 		if ((jiraProjectModelImpl.getColumnBitmask() &
-			 _finderPathFetchByKey.getColumnBitmask()) != 0) {
+				FINDER_PATH_FETCH_BY_KEY.getColumnBitmask()) != 0) {
+			Object[] args = new Object[] { jiraProjectModelImpl.getOriginalKey() };
 
-			Object[] args = new Object[] {
-				jiraProjectModelImpl.getOriginalKey()
-			};
-
-			finderCache.removeResult(_finderPathCountByKey, args);
-			finderCache.removeResult(_finderPathFetchByKey, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_KEY, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_KEY, args);
 		}
 	}
 
@@ -507,7 +468,6 @@ public class JIRAProjectPersistenceImpl
 	@Override
 	public JIRAProject remove(long jiraProjectId)
 		throws NoSuchJIRAProjectException {
-
 		return remove((Serializable)jiraProjectId);
 	}
 
@@ -521,31 +481,30 @@ public class JIRAProjectPersistenceImpl
 	@Override
 	public JIRAProject remove(Serializable primaryKey)
 		throws NoSuchJIRAProjectException {
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			JIRAProject jiraProject = (JIRAProject)session.get(
-				JIRAProjectImpl.class, primaryKey);
+			JIRAProject jiraProject = (JIRAProject)session.get(JIRAProjectImpl.class,
+					primaryKey);
 
 			if (jiraProject == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchJIRAProjectException(
-					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				throw new NoSuchJIRAProjectException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+					primaryKey);
 			}
 
 			return remove(jiraProject);
 		}
-		catch (NoSuchJIRAProjectException noSuchEntityException) {
-			throw noSuchEntityException;
+		catch (NoSuchJIRAProjectException nsee) {
+			throw nsee;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -554,22 +513,24 @@ public class JIRAProjectPersistenceImpl
 
 	@Override
 	protected JIRAProject removeImpl(JIRAProject jiraProject) {
+		jiraProject = toUnwrappedModel(jiraProject);
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(jiraProject)) {
-				jiraProject = (JIRAProject)session.get(
-					JIRAProjectImpl.class, jiraProject.getPrimaryKeyObj());
+				jiraProject = (JIRAProject)session.get(JIRAProjectImpl.class,
+						jiraProject.getPrimaryKeyObj());
 			}
 
 			if (jiraProject != null) {
 				session.delete(jiraProject);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -584,26 +545,11 @@ public class JIRAProjectPersistenceImpl
 
 	@Override
 	public JIRAProject updateImpl(JIRAProject jiraProject) {
+		jiraProject = toUnwrappedModel(jiraProject);
+
 		boolean isNew = jiraProject.isNew();
 
-		if (!(jiraProject instanceof JIRAProjectModelImpl)) {
-			InvocationHandler invocationHandler = null;
-
-			if (ProxyUtil.isProxyClass(jiraProject.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(jiraProject);
-
-				throw new IllegalArgumentException(
-					"Implement ModelWrapper in jiraProject proxy " +
-						invocationHandler.getClass());
-			}
-
-			throw new IllegalArgumentException(
-				"Implement ModelWrapper in custom JIRAProject implementation " +
-					jiraProject.getClass());
-		}
-
-		JIRAProjectModelImpl jiraProjectModelImpl =
-			(JIRAProjectModelImpl)jiraProject;
+		JIRAProjectModelImpl jiraProjectModelImpl = (JIRAProjectModelImpl)jiraProject;
 
 		Session session = null;
 
@@ -619,8 +565,8 @@ public class JIRAProjectPersistenceImpl
 				jiraProject = (JIRAProject)session.merge(jiraProject);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -631,15 +577,16 @@ public class JIRAProjectPersistenceImpl
 		if (!JIRAProjectModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else if (isNew) {
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+		else
+		 if (isNew) {
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(
-			JIRAProjectModelImpl.ENTITY_CACHE_ENABLED, JIRAProjectImpl.class,
-			jiraProject.getPrimaryKey(), jiraProject, false);
+		entityCache.putResult(JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAProjectImpl.class, jiraProject.getPrimaryKey(), jiraProject,
+			false);
 
 		clearUniqueFindersCache(jiraProjectModelImpl, false);
 		cacheUniqueFindersCache(jiraProjectModelImpl);
@@ -649,8 +596,25 @@ public class JIRAProjectPersistenceImpl
 		return jiraProject;
 	}
 
+	protected JIRAProject toUnwrappedModel(JIRAProject jiraProject) {
+		if (jiraProject instanceof JIRAProjectImpl) {
+			return jiraProject;
+		}
+
+		JIRAProjectImpl jiraProjectImpl = new JIRAProjectImpl();
+
+		jiraProjectImpl.setNew(jiraProject.isNew());
+		jiraProjectImpl.setPrimaryKey(jiraProject.getPrimaryKey());
+
+		jiraProjectImpl.setJiraProjectId(jiraProject.getJiraProjectId());
+		jiraProjectImpl.setKey(jiraProject.getKey());
+		jiraProjectImpl.setName(jiraProject.getName());
+
+		return jiraProjectImpl;
+	}
+
 	/**
-	 * Returns the jira project with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
+	 * Returns the jira project with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the jira project
 	 * @return the jira project
@@ -659,7 +623,6 @@ public class JIRAProjectPersistenceImpl
 	@Override
 	public JIRAProject findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchJIRAProjectException {
-
 		JIRAProject jiraProject = fetchByPrimaryKey(primaryKey);
 
 		if (jiraProject == null) {
@@ -667,15 +630,15 @@ public class JIRAProjectPersistenceImpl
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchJIRAProjectException(
-				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			throw new NoSuchJIRAProjectException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
 		}
 
 		return jiraProject;
 	}
 
 	/**
-	 * Returns the jira project with the primary key or throws a <code>NoSuchJIRAProjectException</code> if it could not be found.
+	 * Returns the jira project with the primary key or throws a {@link NoSuchJIRAProjectException} if it could not be found.
 	 *
 	 * @param jiraProjectId the primary key of the jira project
 	 * @return the jira project
@@ -684,7 +647,6 @@ public class JIRAProjectPersistenceImpl
 	@Override
 	public JIRAProject findByPrimaryKey(long jiraProjectId)
 		throws NoSuchJIRAProjectException {
-
 		return findByPrimaryKey((Serializable)jiraProjectId);
 	}
 
@@ -696,9 +658,8 @@ public class JIRAProjectPersistenceImpl
 	 */
 	@Override
 	public JIRAProject fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(
-			JIRAProjectModelImpl.ENTITY_CACHE_ENABLED, JIRAProjectImpl.class,
-			primaryKey);
+		Serializable serializable = entityCache.getResult(JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
+				JIRAProjectImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -712,24 +673,22 @@ public class JIRAProjectPersistenceImpl
 			try {
 				session = openSession();
 
-				jiraProject = (JIRAProject)session.get(
-					JIRAProjectImpl.class, primaryKey);
+				jiraProject = (JIRAProject)session.get(JIRAProjectImpl.class,
+						primaryKey);
 
 				if (jiraProject != null) {
 					cacheResult(jiraProject);
 				}
 				else {
-					entityCache.putResult(
-						JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
 						JIRAProjectImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception exception) {
-				entityCache.removeResult(
-					JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception e) {
+				entityCache.removeResult(JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
 					JIRAProjectImpl.class, primaryKey);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -753,13 +712,11 @@ public class JIRAProjectPersistenceImpl
 	@Override
 	public Map<Serializable, JIRAProject> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
-
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, JIRAProject> map =
-			new HashMap<Serializable, JIRAProject>();
+		Map<Serializable, JIRAProject> map = new HashMap<Serializable, JIRAProject>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -778,9 +735,8 @@ public class JIRAProjectPersistenceImpl
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(
-				JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
-				JIRAProjectImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
+					JIRAProjectImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -800,31 +756,31 @@ public class JIRAProjectPersistenceImpl
 			return map;
 		}
 
-		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
+				1);
 
-		sb.append(_SQL_SELECT_JIRAPROJECT_WHERE_PKS_IN);
+		query.append(_SQL_SELECT_JIRAPROJECT_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			sb.append((long)primaryKey);
+			query.append((long)primaryKey);
 
-			sb.append(",");
+			query.append(StringPool.COMMA);
 		}
 
-		sb.setIndex(sb.index() - 1);
+		query.setIndex(query.index() - 1);
 
-		sb.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query query = session.createQuery(sql);
+			Query q = session.createQuery(sql);
 
-			for (JIRAProject jiraProject : (List<JIRAProject>)query.list()) {
+			for (JIRAProject jiraProject : (List<JIRAProject>)q.list()) {
 				map.put(jiraProject.getPrimaryKeyObj(), jiraProject);
 
 				cacheResult(jiraProject);
@@ -833,13 +789,12 @@ public class JIRAProjectPersistenceImpl
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(
-					JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
 					JIRAProjectImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -862,7 +817,7 @@ public class JIRAProjectPersistenceImpl
 	 * Returns a range of all the jira projects.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>JIRAProjectModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JIRAProjectModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of jira projects
@@ -878,7 +833,7 @@ public class JIRAProjectPersistenceImpl
 	 * Returns an ordered range of all the jira projects.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>JIRAProjectModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JIRAProjectModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of jira projects
@@ -887,9 +842,8 @@ public class JIRAProjectPersistenceImpl
 	 * @return the ordered range of jira projects
 	 */
 	@Override
-	public List<JIRAProject> findAll(
-		int start, int end, OrderByComparator<JIRAProject> orderByComparator) {
-
+	public List<JIRAProject> findAll(int start, int end,
+		OrderByComparator<JIRAProject> orderByComparator) {
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -897,62 +851,62 @@ public class JIRAProjectPersistenceImpl
 	 * Returns an ordered range of all the jira projects.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>JIRAProjectModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JIRAProjectModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of jira projects
 	 * @param end the upper bound of the range of jira projects (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of jira projects
 	 */
 	@Override
-	public List<JIRAProject> findAll(
-		int start, int end, OrderByComparator<JIRAProject> orderByComparator,
-		boolean useFinderCache) {
-
+	public List<JIRAProject> findAll(int start, int end,
+		OrderByComparator<JIRAProject> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
-				finderArgs = FINDER_ARGS_EMPTY;
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+			finderArgs = FINDER_ARGS_EMPTY;
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] {start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
 		List<JIRAProject> list = null;
 
-		if (useFinderCache) {
-			list = (List<JIRAProject>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<JIRAProject>)finderCache.getResult(finderPath,
+					finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					2 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(2 +
+						(orderByComparator.getOrderByFields().length * 2));
 
-				sb.append(_SQL_SELECT_JIRAPROJECT);
+				query.append(_SQL_SELECT_JIRAPROJECT);
 
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 
-				sql = sb.toString();
+				sql = query.toString();
 			}
 			else {
 				sql = _SQL_SELECT_JIRAPROJECT;
 
-				sql = sql.concat(JIRAProjectModelImpl.ORDER_BY_JPQL);
+				if (pagination) {
+					sql = sql.concat(JIRAProjectModelImpl.ORDER_BY_JPQL);
+				}
 			}
 
 			Session session = null;
@@ -960,23 +914,29 @@ public class JIRAProjectPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				list = (List<JIRAProject>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<JIRAProject>)QueryUtil.list(q, getDialect(),
+							start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<JIRAProject>)QueryUtil.list(q, getDialect(),
+							start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1004,8 +964,8 @@ public class JIRAProjectPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -1013,18 +973,18 @@ public class JIRAProjectPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(_SQL_COUNT_JIRAPROJECT);
+				Query q = session.createQuery(_SQL_COUNT_JIRAPROJECT);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
+					count);
 			}
-			catch (Exception exception) {
-				finderCache.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1048,35 +1008,6 @@ public class JIRAProjectPersistenceImpl
 	 * Initializes the jira project persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
-			JIRAProjectModelImpl.FINDER_CACHE_ENABLED, JIRAProjectImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
-			JIRAProjectModelImpl.FINDER_CACHE_ENABLED, JIRAProjectImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
-			JIRAProjectModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
-
-		_finderPathFetchByKey = new FinderPath(
-			JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
-			JIRAProjectModelImpl.FINDER_CACHE_ENABLED, JIRAProjectImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByKey",
-			new String[] {String.class.getName()},
-			JIRAProjectModelImpl.KEY_COLUMN_BITMASK);
-
-		_finderPathCountByKey = new FinderPath(
-			JIRAProjectModelImpl.ENTITY_CACHE_ENABLED,
-			JIRAProjectModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByKey",
-			new String[] {String.class.getName()});
 	}
 
 	public void destroy() {
@@ -1088,37 +1019,18 @@ public class JIRAProjectPersistenceImpl
 
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
-
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-
-	private static final String _SQL_SELECT_JIRAPROJECT =
-		"SELECT jiraProject FROM JIRAProject jiraProject";
-
-	private static final String _SQL_SELECT_JIRAPROJECT_WHERE_PKS_IN =
-		"SELECT jiraProject FROM JIRAProject jiraProject WHERE id IN (";
-
-	private static final String _SQL_SELECT_JIRAPROJECT_WHERE =
-		"SELECT jiraProject FROM JIRAProject jiraProject WHERE ";
-
-	private static final String _SQL_COUNT_JIRAPROJECT =
-		"SELECT COUNT(jiraProject) FROM JIRAProject jiraProject";
-
-	private static final String _SQL_COUNT_JIRAPROJECT_WHERE =
-		"SELECT COUNT(jiraProject) FROM JIRAProject jiraProject WHERE ";
-
+	private static final String _SQL_SELECT_JIRAPROJECT = "SELECT jiraProject FROM JIRAProject jiraProject";
+	private static final String _SQL_SELECT_JIRAPROJECT_WHERE_PKS_IN = "SELECT jiraProject FROM JIRAProject jiraProject WHERE id IN (";
+	private static final String _SQL_SELECT_JIRAPROJECT_WHERE = "SELECT jiraProject FROM JIRAProject jiraProject WHERE ";
+	private static final String _SQL_COUNT_JIRAPROJECT = "SELECT COUNT(jiraProject) FROM JIRAProject jiraProject";
+	private static final String _SQL_COUNT_JIRAPROJECT_WHERE = "SELECT COUNT(jiraProject) FROM JIRAProject jiraProject WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "jiraProject.";
-
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
-		"No JIRAProject exists with the primary key ";
-
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No JIRAProject exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		JIRAProjectPersistenceImpl.class);
-
-	private static final Set<String> _badColumnNames = SetUtil.fromArray(
-		new String[] {"jiraProjectId", "key", "name"});
-
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No JIRAProject exists with the primary key ";
+	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No JIRAProject exists with the key {";
+	private static final Log _log = LogFactoryUtil.getLog(JIRAProjectPersistenceImpl.class);
+	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
+				"jiraProjectId", "key", "name"
+			});
 }

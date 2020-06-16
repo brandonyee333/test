@@ -14,6 +14,8 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.Image;
 import com.liferay.portal.kernel.service.ImageLocalServiceUtil;
 
@@ -29,12 +31,12 @@ import com.liferay.portal.kernel.service.ImageLocalServiceUtil;
  * @see Image
  * @generated
  */
+@ProviderType
 public abstract class ImageBaseImpl extends ImageModelImpl implements Image {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a image model instance should use the <code>Image</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a image model instance should use the {@link Image} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -45,5 +47,4 @@ public abstract class ImageBaseImpl extends ImageModelImpl implements Image {
 			ImageLocalServiceUtil.updateImage(this);
 		}
 	}
-
 }

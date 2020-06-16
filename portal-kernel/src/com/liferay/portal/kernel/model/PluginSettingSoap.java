@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -23,10 +25,11 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.portal.service.http.PluginSettingServiceSoap}.
  *
  * @author Brian Wing Shun Chan
+ * @see com.liferay.portal.service.http.PluginSettingServiceSoap
  * @generated
  */
+@ProviderType
 public class PluginSettingSoap implements Serializable {
-
 	public static PluginSettingSoap toSoapModel(PluginSetting model) {
 		PluginSettingSoap soapModel = new PluginSettingSoap();
 
@@ -36,7 +39,7 @@ public class PluginSettingSoap implements Serializable {
 		soapModel.setPluginId(model.getPluginId());
 		soapModel.setPluginType(model.getPluginType());
 		soapModel.setRoles(model.getRoles());
-		soapModel.setActive(model.isActive());
+		soapModel.setActive(model.getActive());
 
 		return soapModel;
 	}
@@ -69,8 +72,7 @@ public class PluginSettingSoap implements Serializable {
 	}
 
 	public static PluginSettingSoap[] toSoapModels(List<PluginSetting> models) {
-		List<PluginSettingSoap> soapModels = new ArrayList<PluginSettingSoap>(
-			models.size());
+		List<PluginSettingSoap> soapModels = new ArrayList<PluginSettingSoap>(models.size());
 
 		for (PluginSetting model : models) {
 			soapModels.add(toSoapModel(model));
@@ -157,5 +159,4 @@ public class PluginSettingSoap implements Serializable {
 	private String _pluginType;
 	private String _roles;
 	private boolean _active;
-
 }

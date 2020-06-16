@@ -14,6 +14,8 @@
 
 package com.liferay.powwow.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -33,12 +35,11 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
-import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
-import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
+
 import com.liferay.powwow.model.PowwowServer;
 import com.liferay.powwow.service.PowwowServerLocalService;
 import com.liferay.powwow.service.persistence.PowwowMeetingFinder;
@@ -61,16 +62,17 @@ import javax.sql.DataSource;
  *
  * @author Shinn Lok
  * @see com.liferay.powwow.service.impl.PowwowServerLocalServiceImpl
+ * @see com.liferay.powwow.service.PowwowServerLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class PowwowServerLocalServiceBaseImpl
-	extends BaseLocalServiceImpl
-	implements IdentifiableOSGiService, PowwowServerLocalService {
-
+	extends BaseLocalServiceImpl implements PowwowServerLocalService,
+		IdentifiableOSGiService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>PowwowServerLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.powwow.service.PowwowServerLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.powwow.service.PowwowServerLocalServiceUtil} to access the powwow server local service.
 	 */
 
 	/**
@@ -94,7 +96,6 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	 * @return the new powwow server
 	 */
 	@Override
-	@Transactional(enabled = false)
 	public PowwowServer createPowwowServer(long powwowServerId) {
 		return powwowServerPersistence.create(powwowServerId);
 	}
@@ -110,7 +111,6 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	@Override
 	public PowwowServer deletePowwowServer(long powwowServerId)
 		throws PortalException {
-
 		return powwowServerPersistence.remove(powwowServerId);
 	}
 
@@ -130,8 +130,8 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(
-			PowwowServer.class, clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(PowwowServer.class,
+			clazz.getClassLoader());
 	}
 
 	/**
@@ -149,7 +149,7 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.powwow.model.impl.PowwowServerModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.powwow.model.impl.PowwowServerModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -158,18 +158,17 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end) {
-
-		return powwowServerPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
+		return powwowServerPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.powwow.model.impl.PowwowServerModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.powwow.model.impl.PowwowServerModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -179,12 +178,10 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<T> orderByComparator) {
-
-		return powwowServerPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
+		return powwowServerPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end, orderByComparator);
 	}
 
 	/**
@@ -206,11 +203,10 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(
-		DynamicQuery dynamicQuery, Projection projection) {
-
-		return powwowServerPersistence.countWithDynamicQuery(
-			dynamicQuery, projection);
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection) {
+		return powwowServerPersistence.countWithDynamicQuery(dynamicQuery,
+			projection);
 	}
 
 	@Override
@@ -228,14 +224,12 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	@Override
 	public PowwowServer getPowwowServer(long powwowServerId)
 		throws PortalException {
-
 		return powwowServerPersistence.findByPrimaryKey(powwowServerId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
 		actionableDynamicQuery.setBaseLocalService(powwowServerLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
@@ -247,14 +241,10 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
 
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
-			new IndexableActionableDynamicQuery();
-
-		indexableActionableDynamicQuery.setBaseLocalService(
-			powwowServerLocalService);
+		indexableActionableDynamicQuery.setBaseLocalService(powwowServerLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(PowwowServer.class);
 
@@ -266,7 +256,6 @@ public abstract class PowwowServerLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-
 		actionableDynamicQuery.setBaseLocalService(powwowServerLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(PowwowServer.class);
@@ -280,22 +269,12 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-
-		return powwowServerLocalService.deletePowwowServer(
-			(PowwowServer)persistedModel);
+		return powwowServerLocalService.deletePowwowServer((PowwowServer)persistedModel);
 	}
 
-	public BasePersistence<PowwowServer> getBasePersistence() {
-		return powwowServerPersistence;
-	}
-
-	/**
-	 * @throws PortalException
-	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
-
 		return powwowServerPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -303,7 +282,7 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	 * Returns a range of all the powwow servers.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.powwow.model.impl.PowwowServerModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.powwow.model.impl.PowwowServerModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of powwow servers
@@ -342,9 +321,7 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	 *
 	 * @return the powwow meeting local service
 	 */
-	public com.liferay.powwow.service.PowwowMeetingLocalService
-		getPowwowMeetingLocalService() {
-
+	public com.liferay.powwow.service.PowwowMeetingLocalService getPowwowMeetingLocalService() {
 		return powwowMeetingLocalService;
 	}
 
@@ -354,9 +331,7 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	 * @param powwowMeetingLocalService the powwow meeting local service
 	 */
 	public void setPowwowMeetingLocalService(
-		com.liferay.powwow.service.PowwowMeetingLocalService
-			powwowMeetingLocalService) {
-
+		com.liferay.powwow.service.PowwowMeetingLocalService powwowMeetingLocalService) {
 		this.powwowMeetingLocalService = powwowMeetingLocalService;
 	}
 
@@ -376,7 +351,6 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	 */
 	public void setPowwowMeetingPersistence(
 		PowwowMeetingPersistence powwowMeetingPersistence) {
-
 		this.powwowMeetingPersistence = powwowMeetingPersistence;
 	}
 
@@ -394,9 +368,7 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	 *
 	 * @param powwowMeetingFinder the powwow meeting finder
 	 */
-	public void setPowwowMeetingFinder(
-		PowwowMeetingFinder powwowMeetingFinder) {
-
+	public void setPowwowMeetingFinder(PowwowMeetingFinder powwowMeetingFinder) {
 		this.powwowMeetingFinder = powwowMeetingFinder;
 	}
 
@@ -405,9 +377,7 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	 *
 	 * @return the powwow participant local service
 	 */
-	public com.liferay.powwow.service.PowwowParticipantLocalService
-		getPowwowParticipantLocalService() {
-
+	public com.liferay.powwow.service.PowwowParticipantLocalService getPowwowParticipantLocalService() {
 		return powwowParticipantLocalService;
 	}
 
@@ -417,9 +387,7 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	 * @param powwowParticipantLocalService the powwow participant local service
 	 */
 	public void setPowwowParticipantLocalService(
-		com.liferay.powwow.service.PowwowParticipantLocalService
-			powwowParticipantLocalService) {
-
+		com.liferay.powwow.service.PowwowParticipantLocalService powwowParticipantLocalService) {
 		this.powwowParticipantLocalService = powwowParticipantLocalService;
 	}
 
@@ -439,7 +407,6 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	 */
 	public void setPowwowParticipantPersistence(
 		PowwowParticipantPersistence powwowParticipantPersistence) {
-
 		this.powwowParticipantPersistence = powwowParticipantPersistence;
 	}
 
@@ -459,7 +426,6 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	 */
 	public void setPowwowServerLocalService(
 		PowwowServerLocalService powwowServerLocalService) {
-
 		this.powwowServerLocalService = powwowServerLocalService;
 	}
 
@@ -479,7 +445,6 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	 */
 	public void setPowwowServerPersistence(
 		PowwowServerPersistence powwowServerPersistence) {
-
 		this.powwowServerPersistence = powwowServerPersistence;
 	}
 
@@ -488,9 +453,7 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -500,9 +463,7 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -511,9 +472,7 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService
-		getClassNameLocalService() {
-
+	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
 		return classNameLocalService;
 	}
 
@@ -523,9 +482,7 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService
-			classNameLocalService) {
-
+		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -545,7 +502,6 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
-
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -554,9 +510,7 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService
-		getResourceLocalService() {
-
+	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
 		return resourceLocalService;
 	}
 
@@ -566,9 +520,7 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService
-			resourceLocalService) {
-
+		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -577,9 +529,7 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService
-		getUserLocalService() {
-
+	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
 		return userLocalService;
 	}
 
@@ -590,7 +540,6 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
-
 		this.userLocalService = userLocalService;
 	}
 
@@ -613,8 +562,12 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		PersistedModelLocalServiceRegistryUtil.register(
-			"com.liferay.powwow.model.PowwowServer", powwowServerLocalService);
+		Class<?> clazz = getClass();
+
+		_classLoader = clazz.getClassLoader();
+
+		PersistedModelLocalServiceRegistryUtil.register("com.liferay.powwow.model.PowwowServer",
+			powwowServerLocalService);
 	}
 
 	public void destroy() {
@@ -630,6 +583,27 @@ public abstract class PowwowServerLocalServiceBaseImpl
 	@Override
 	public String getOSGiServiceIdentifier() {
 		return PowwowServerLocalService.class.getName();
+	}
+
+	@Override
+	public Object invokeMethod(String name, String[] parameterTypes,
+		Object[] arguments) throws Throwable {
+		Thread currentThread = Thread.currentThread();
+
+		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+		if (contextClassLoader != _classLoader) {
+			currentThread.setContextClassLoader(_classLoader);
+		}
+
+		try {
+			return _clpInvoker.invokeMethod(name, parameterTypes, arguments);
+		}
+		finally {
+			if (contextClassLoader != _classLoader) {
+				currentThread.setContextClassLoader(contextClassLoader);
+			}
+		}
 	}
 
 	protected Class<?> getModelClass() {
@@ -654,71 +628,42 @@ public abstract class PowwowServerLocalServiceBaseImpl
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
-	@BeanReference(
-		type = com.liferay.powwow.service.PowwowMeetingLocalService.class
-	)
-	protected com.liferay.powwow.service.PowwowMeetingLocalService
-		powwowMeetingLocalService;
-
+	@BeanReference(type = com.liferay.powwow.service.PowwowMeetingLocalService.class)
+	protected com.liferay.powwow.service.PowwowMeetingLocalService powwowMeetingLocalService;
 	@BeanReference(type = PowwowMeetingPersistence.class)
 	protected PowwowMeetingPersistence powwowMeetingPersistence;
-
 	@BeanReference(type = PowwowMeetingFinder.class)
 	protected PowwowMeetingFinder powwowMeetingFinder;
-
-	@BeanReference(
-		type = com.liferay.powwow.service.PowwowParticipantLocalService.class
-	)
-	protected com.liferay.powwow.service.PowwowParticipantLocalService
-		powwowParticipantLocalService;
-
+	@BeanReference(type = com.liferay.powwow.service.PowwowParticipantLocalService.class)
+	protected com.liferay.powwow.service.PowwowParticipantLocalService powwowParticipantLocalService;
 	@BeanReference(type = PowwowParticipantPersistence.class)
 	protected PowwowParticipantPersistence powwowParticipantPersistence;
-
 	@BeanReference(type = PowwowServerLocalService.class)
 	protected PowwowServerLocalService powwowServerLocalService;
-
 	@BeanReference(type = PowwowServerPersistence.class)
 	protected PowwowServerPersistence powwowServerPersistence;
-
-	@BeanReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
-	@BeanReference(
-		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService
-		classNameLocalService;
-
+	@BeanReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
+	@BeanReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
 	@BeanReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-
-	@BeanReference(
-		type = com.liferay.portal.kernel.service.ResourceLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ResourceLocalService
-		resourceLocalService;
-
-	@BeanReference(
-		type = com.liferay.portal.kernel.service.UserLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.UserLocalService
-		userLocalService;
-
+	@BeanReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
+	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
+	@BeanReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
+	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
 	@BeanReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-
+	private ClassLoader _classLoader;
+	private PowwowServerLocalServiceClpInvoker _clpInvoker = new PowwowServerLocalServiceClpInvoker();
 }

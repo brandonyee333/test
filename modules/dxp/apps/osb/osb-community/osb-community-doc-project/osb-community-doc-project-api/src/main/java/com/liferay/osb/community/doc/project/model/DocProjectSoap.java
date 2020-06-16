@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.community.doc.project.model;
+
+import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -24,10 +26,11 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.osb.community.doc.project.service.http.DocProjectServiceSoap}.
  *
  * @author Ryan Park
+ * @see com.liferay.osb.community.doc.project.service.http.DocProjectServiceSoap
  * @generated
  */
+@ProviderType
 public class DocProjectSoap implements Serializable {
-
 	public static DocProjectSoap toSoapModel(DocProject model) {
 		DocProjectSoap soapModel = new DocProjectSoap();
 
@@ -42,7 +45,7 @@ public class DocProjectSoap implements Serializable {
 		soapModel.setName(model.getName());
 		soapModel.setDescription(model.getDescription());
 		soapModel.setIconFileName(model.getIconFileName());
-		soapModel.setUnlisted(model.isUnlisted());
+		soapModel.setUnlisted(model.getUnlisted());
 		soapModel.setType(model.getType());
 		soapModel.setTypeSettings(model.getTypeSettings());
 		soapModel.setStatus(model.getStatus());
@@ -78,8 +81,7 @@ public class DocProjectSoap implements Serializable {
 	}
 
 	public static DocProjectSoap[] toSoapModels(List<DocProject> models) {
-		List<DocProjectSoap> soapModels = new ArrayList<DocProjectSoap>(
-			models.size());
+		List<DocProjectSoap> soapModels = new ArrayList<DocProjectSoap>(models.size());
 
 		for (DocProject model : models) {
 			soapModels.add(toSoapModel(model));
@@ -238,5 +240,4 @@ public class DocProjectSoap implements Serializable {
 	private String _type;
 	private String _typeSettings;
 	private int _status;
-
 }

@@ -14,6 +14,8 @@
 
 package com.liferay.social.privatemessaging.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.social.privatemessaging.model.UserThread;
 import com.liferay.social.privatemessaging.service.UserThreadLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.social.privatemessaging.service.UserThreadLocalServiceUtil;
  * @see UserThread
  * @generated
  */
-public abstract class UserThreadBaseImpl
-	extends UserThreadModelImpl implements UserThread {
-
+@ProviderType
+public abstract class UserThreadBaseImpl extends UserThreadModelImpl
+	implements UserThread {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a user thread model instance should use the <code>UserThread</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a user thread model instance should use the {@link UserThread} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class UserThreadBaseImpl
 			UserThreadLocalServiceUtil.updateUserThread(this);
 		}
 	}
-
 }

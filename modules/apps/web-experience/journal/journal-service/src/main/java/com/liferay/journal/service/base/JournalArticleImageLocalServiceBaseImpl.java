@@ -14,9 +14,12 @@
 
 package com.liferay.journal.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.journal.model.JournalArticleImage;
 import com.liferay.journal.service.JournalArticleImageLocalService;
 import com.liferay.journal.service.persistence.JournalArticleImagePersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -36,9 +39,7 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
-import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ImagePersistence;
-import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -58,16 +59,17 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.journal.service.impl.JournalArticleImageLocalServiceImpl
+ * @see com.liferay.journal.service.JournalArticleImageLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class JournalArticleImageLocalServiceBaseImpl
-	extends BaseLocalServiceImpl
-	implements IdentifiableOSGiService, JournalArticleImageLocalService {
-
+	extends BaseLocalServiceImpl implements JournalArticleImageLocalService,
+		IdentifiableOSGiService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>JournalArticleImageLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.journal.service.JournalArticleImageLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.journal.service.JournalArticleImageLocalServiceUtil} to access the journal article image local service.
 	 */
 
 	/**
@@ -80,7 +82,6 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	@Override
 	public JournalArticleImage addJournalArticleImage(
 		JournalArticleImage journalArticleImage) {
-
 		journalArticleImage.setNew(true);
 
 		return journalArticleImagePersistence.update(journalArticleImage);
@@ -93,7 +94,6 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	 * @return the new journal article image
 	 */
 	@Override
-	@Transactional(enabled = false)
 	public JournalArticleImage createJournalArticleImage(long articleImageId) {
 		return journalArticleImagePersistence.create(articleImageId);
 	}
@@ -109,7 +109,6 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	@Override
 	public JournalArticleImage deleteJournalArticleImage(long articleImageId)
 		throws PortalException {
-
 		return journalArticleImagePersistence.remove(articleImageId);
 	}
 
@@ -123,7 +122,6 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	@Override
 	public JournalArticleImage deleteJournalArticleImage(
 		JournalArticleImage journalArticleImage) {
-
 		return journalArticleImagePersistence.remove(journalArticleImage);
 	}
 
@@ -131,8 +129,8 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(
-			JournalArticleImage.class, clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(JournalArticleImage.class,
+			clazz.getClassLoader());
 	}
 
 	/**
@@ -143,15 +141,14 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	 */
 	@Override
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
-		return journalArticleImagePersistence.findWithDynamicQuery(
-			dynamicQuery);
+		return journalArticleImagePersistence.findWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.journal.model.impl.JournalArticleImageModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.journal.model.impl.JournalArticleImageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -160,18 +157,17 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end) {
-
-		return journalArticleImagePersistence.findWithDynamicQuery(
-			dynamicQuery, start, end);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
+		return journalArticleImagePersistence.findWithDynamicQuery(dynamicQuery,
+			start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.journal.model.impl.JournalArticleImageModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.journal.model.impl.JournalArticleImageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -181,12 +177,10 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<T> orderByComparator) {
-
-		return journalArticleImagePersistence.findWithDynamicQuery(
-			dynamicQuery, start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
+		return journalArticleImagePersistence.findWithDynamicQuery(dynamicQuery,
+			start, end, orderByComparator);
 	}
 
 	/**
@@ -197,8 +191,7 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	 */
 	@Override
 	public long dynamicQueryCount(DynamicQuery dynamicQuery) {
-		return journalArticleImagePersistence.countWithDynamicQuery(
-			dynamicQuery);
+		return journalArticleImagePersistence.countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
@@ -209,11 +202,10 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(
-		DynamicQuery dynamicQuery, Projection projection) {
-
-		return journalArticleImagePersistence.countWithDynamicQuery(
-			dynamicQuery, projection);
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection) {
+		return journalArticleImagePersistence.countWithDynamicQuery(dynamicQuery,
+			projection);
 	}
 
 	@Override
@@ -231,17 +223,14 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	@Override
 	public JournalArticleImage getJournalArticleImage(long articleImageId)
 		throws PortalException {
-
 		return journalArticleImagePersistence.findByPrimaryKey(articleImageId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
-		actionableDynamicQuery.setBaseLocalService(
-			journalArticleImageLocalService);
+		actionableDynamicQuery.setBaseLocalService(journalArticleImageLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(JournalArticleImage.class);
 
@@ -251,17 +240,12 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
 
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
-			new IndexableActionableDynamicQuery();
-
-		indexableActionableDynamicQuery.setBaseLocalService(
-			journalArticleImageLocalService);
+		indexableActionableDynamicQuery.setBaseLocalService(journalArticleImageLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
-		indexableActionableDynamicQuery.setModelClass(
-			JournalArticleImage.class);
+		indexableActionableDynamicQuery.setModelClass(JournalArticleImage.class);
 
 		indexableActionableDynamicQuery.setPrimaryKeyPropertyName(
 			"articleImageId");
@@ -271,9 +255,7 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-
-		actionableDynamicQuery.setBaseLocalService(
-			journalArticleImageLocalService);
+		actionableDynamicQuery.setBaseLocalService(journalArticleImageLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(JournalArticleImage.class);
 
@@ -286,22 +268,12 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-
-		return journalArticleImageLocalService.deleteJournalArticleImage(
-			(JournalArticleImage)persistedModel);
+		return journalArticleImageLocalService.deleteJournalArticleImage((JournalArticleImage)persistedModel);
 	}
 
-	public BasePersistence<JournalArticleImage> getBasePersistence() {
-		return journalArticleImagePersistence;
-	}
-
-	/**
-	 * @throws PortalException
-	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
-
 		return journalArticleImagePersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -309,7 +281,7 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	 * Returns a range of all the journal article images.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.journal.model.impl.JournalArticleImageModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.journal.model.impl.JournalArticleImageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of journal article images
@@ -317,9 +289,7 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	 * @return the range of journal article images
 	 */
 	@Override
-	public List<JournalArticleImage> getJournalArticleImages(
-		int start, int end) {
-
+	public List<JournalArticleImage> getJournalArticleImages(int start, int end) {
 		return journalArticleImagePersistence.findAll(start, end);
 	}
 
@@ -343,7 +313,6 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	@Override
 	public JournalArticleImage updateJournalArticleImage(
 		JournalArticleImage journalArticleImage) {
-
 		return journalArticleImagePersistence.update(journalArticleImage);
 	}
 
@@ -352,9 +321,7 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	 *
 	 * @return the journal article image local service
 	 */
-	public JournalArticleImageLocalService
-		getJournalArticleImageLocalService() {
-
+	public JournalArticleImageLocalService getJournalArticleImageLocalService() {
 		return journalArticleImageLocalService;
 	}
 
@@ -365,7 +332,6 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	 */
 	public void setJournalArticleImageLocalService(
 		JournalArticleImageLocalService journalArticleImageLocalService) {
-
 		this.journalArticleImageLocalService = journalArticleImageLocalService;
 	}
 
@@ -385,7 +351,6 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	 */
 	public void setJournalArticleImagePersistence(
 		JournalArticleImagePersistence journalArticleImagePersistence) {
-
 		this.journalArticleImagePersistence = journalArticleImagePersistence;
 	}
 
@@ -394,9 +359,7 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -406,9 +369,7 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -417,9 +378,7 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	 *
 	 * @return the image local service
 	 */
-	public com.liferay.portal.kernel.service.ImageLocalService
-		getImageLocalService() {
-
+	public com.liferay.portal.kernel.service.ImageLocalService getImageLocalService() {
 		return imageLocalService;
 	}
 
@@ -430,7 +389,6 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	 */
 	public void setImageLocalService(
 		com.liferay.portal.kernel.service.ImageLocalService imageLocalService) {
-
 		this.imageLocalService = imageLocalService;
 	}
 
@@ -453,8 +411,7 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register(
-			"com.liferay.journal.model.JournalArticleImage",
+		persistedModelLocalServiceRegistry.register("com.liferay.journal.model.JournalArticleImage",
 			journalArticleImageLocalService);
 	}
 
@@ -488,47 +445,33 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 	 */
 	protected void runSQL(String sql) {
 		try {
-			DataSource dataSource =
-				journalArticleImagePersistence.getDataSource();
+			DataSource dataSource = journalArticleImagePersistence.getDataSource();
 
 			DB db = DBManagerUtil.getDB();
 
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
 	@BeanReference(type = JournalArticleImageLocalService.class)
 	protected JournalArticleImageLocalService journalArticleImageLocalService;
-
 	@BeanReference(type = JournalArticleImagePersistence.class)
 	protected JournalArticleImagePersistence journalArticleImagePersistence;
-
-	@ServiceReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ImageLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ImageLocalService
-		imageLocalService;
-
+	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.ImageLocalService.class)
+	protected com.liferay.portal.kernel.service.ImageLocalService imageLocalService;
 	@ServiceReference(type = ImagePersistence.class)
 	protected ImagePersistence imagePersistence;
-
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry
-		persistedModelLocalServiceRegistry;
-
+	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }

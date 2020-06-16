@@ -14,7 +14,10 @@
 
 package com.liferay.portlet.documentlibrary.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.document.library.kernel.model.DLFileRank;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -30,11 +33,12 @@ import java.util.Date;
  * The cache model class for representing DLFileRank in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see DLFileRank
  * @generated
  */
-public class DLFileRankCacheModel
-	implements CacheModel<DLFileRank>, Externalizable {
-
+@ProviderType
+public class DLFileRankCacheModel implements CacheModel<DLFileRank>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -123,7 +127,8 @@ public class DLFileRankCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(fileRankId);
 
 		objectOutput.writeLong(groupId);
@@ -145,5 +150,4 @@ public class DLFileRankCacheModel
 	public long createDate;
 	public long fileEntryId;
 	public boolean active;
-
 }

@@ -14,9 +14,12 @@
 
 package com.liferay.portal.workflow.kaleo.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.workflow.kaleo.model.KaleoDefinition;
 
 import java.io.Externalizable;
@@ -30,11 +33,12 @@ import java.util.Date;
  * The cache model class for representing KaleoDefinition in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see KaleoDefinition
  * @generated
  */
-public class KaleoDefinitionCacheModel
-	implements CacheModel<KaleoDefinition>, Externalizable {
-
+@ProviderType
+public class KaleoDefinitionCacheModel implements CacheModel<KaleoDefinition>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +49,7 @@ public class KaleoDefinitionCacheModel
 			return false;
 		}
 
-		KaleoDefinitionCacheModel kaleoDefinitionCacheModel =
-			(KaleoDefinitionCacheModel)obj;
+		KaleoDefinitionCacheModel kaleoDefinitionCacheModel = (KaleoDefinitionCacheModel)obj;
 
 		if (kaleoDefinitionId == kaleoDefinitionCacheModel.kaleoDefinitionId) {
 			return true;
@@ -107,7 +110,7 @@ public class KaleoDefinitionCacheModel
 		kaleoDefinitionImpl.setUserId(userId);
 
 		if (userName == null) {
-			kaleoDefinitionImpl.setUserName("");
+			kaleoDefinitionImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			kaleoDefinitionImpl.setUserName(userName);
@@ -128,28 +131,28 @@ public class KaleoDefinitionCacheModel
 		}
 
 		if (name == null) {
-			kaleoDefinitionImpl.setName("");
+			kaleoDefinitionImpl.setName(StringPool.BLANK);
 		}
 		else {
 			kaleoDefinitionImpl.setName(name);
 		}
 
 		if (title == null) {
-			kaleoDefinitionImpl.setTitle("");
+			kaleoDefinitionImpl.setTitle(StringPool.BLANK);
 		}
 		else {
 			kaleoDefinitionImpl.setTitle(title);
 		}
 
 		if (description == null) {
-			kaleoDefinitionImpl.setDescription("");
+			kaleoDefinitionImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			kaleoDefinitionImpl.setDescription(description);
 		}
 
 		if (content == null) {
-			kaleoDefinitionImpl.setContent("");
+			kaleoDefinitionImpl.setContent(StringPool.BLANK);
 		}
 		else {
 			kaleoDefinitionImpl.setContent(content);
@@ -165,9 +168,7 @@ public class KaleoDefinitionCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		kaleoDefinitionId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -181,7 +182,7 @@ public class KaleoDefinitionCacheModel
 		name = objectInput.readUTF();
 		title = objectInput.readUTF();
 		description = objectInput.readUTF();
-		content = (String)objectInput.readObject();
+		content = objectInput.readUTF();
 
 		version = objectInput.readInt();
 
@@ -191,7 +192,8 @@ public class KaleoDefinitionCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(kaleoDefinitionId);
 
 		objectOutput.writeLong(groupId);
@@ -201,7 +203,7 @@ public class KaleoDefinitionCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -211,31 +213,31 @@ public class KaleoDefinitionCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (title == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(title);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (content == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(content);
+			objectOutput.writeUTF(content);
 		}
 
 		objectOutput.writeInt(version);
@@ -259,5 +261,4 @@ public class KaleoDefinitionCacheModel
 	public int version;
 	public boolean active;
 	public long startKaleoNodeId;
-
 }

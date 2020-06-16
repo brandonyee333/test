@@ -14,6 +14,8 @@
 
 package com.liferay.twitter.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,8 +28,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
+@ProviderType
 public class FeedSoap implements Serializable {
-
 	public static FeedSoap toSoapModel(Feed model) {
 		FeedSoap soapModel = new FeedSoap();
 
@@ -173,5 +175,4 @@ public class FeedSoap implements Serializable {
 	private long _twitterUserId;
 	private String _twitterScreenName;
 	private long _lastStatusId;
-
 }

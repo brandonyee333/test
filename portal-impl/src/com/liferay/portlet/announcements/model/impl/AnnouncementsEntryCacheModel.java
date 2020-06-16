@@ -14,10 +14,14 @@
 
 package com.liferay.portlet.announcements.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.announcements.kernel.model.AnnouncementsEntry;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing AnnouncementsEntry in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see AnnouncementsEntry
  * @generated
  */
-public class AnnouncementsEntryCacheModel
-	implements CacheModel<AnnouncementsEntry>, Externalizable {
-
+@ProviderType
+public class AnnouncementsEntryCacheModel implements CacheModel<AnnouncementsEntry>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class AnnouncementsEntryCacheModel
 			return false;
 		}
 
-		AnnouncementsEntryCacheModel announcementsEntryCacheModel =
-			(AnnouncementsEntryCacheModel)obj;
+		AnnouncementsEntryCacheModel announcementsEntryCacheModel = (AnnouncementsEntryCacheModel)obj;
 
 		if (entryId == announcementsEntryCacheModel.entryId) {
 			return true;
@@ -105,11 +109,10 @@ public class AnnouncementsEntryCacheModel
 
 	@Override
 	public AnnouncementsEntry toEntityModel() {
-		AnnouncementsEntryImpl announcementsEntryImpl =
-			new AnnouncementsEntryImpl();
+		AnnouncementsEntryImpl announcementsEntryImpl = new AnnouncementsEntryImpl();
 
 		if (uuid == null) {
-			announcementsEntryImpl.setUuid("");
+			announcementsEntryImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			announcementsEntryImpl.setUuid(uuid);
@@ -120,7 +123,7 @@ public class AnnouncementsEntryCacheModel
 		announcementsEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			announcementsEntryImpl.setUserName("");
+			announcementsEntryImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			announcementsEntryImpl.setUserName(userName);
@@ -144,28 +147,28 @@ public class AnnouncementsEntryCacheModel
 		announcementsEntryImpl.setClassPK(classPK);
 
 		if (title == null) {
-			announcementsEntryImpl.setTitle("");
+			announcementsEntryImpl.setTitle(StringPool.BLANK);
 		}
 		else {
 			announcementsEntryImpl.setTitle(title);
 		}
 
 		if (content == null) {
-			announcementsEntryImpl.setContent("");
+			announcementsEntryImpl.setContent(StringPool.BLANK);
 		}
 		else {
 			announcementsEntryImpl.setContent(content);
 		}
 
 		if (url == null) {
-			announcementsEntryImpl.setUrl("");
+			announcementsEntryImpl.setUrl(StringPool.BLANK);
 		}
 		else {
 			announcementsEntryImpl.setUrl(url);
 		}
 
 		if (type == null) {
-			announcementsEntryImpl.setType("");
+			announcementsEntryImpl.setType(StringPool.BLANK);
 		}
 		else {
 			announcementsEntryImpl.setType(type);
@@ -194,9 +197,7 @@ public class AnnouncementsEntryCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
 
 		entryId = objectInput.readLong();
@@ -212,7 +213,7 @@ public class AnnouncementsEntryCacheModel
 
 		classPK = objectInput.readLong();
 		title = objectInput.readUTF();
-		content = (String)objectInput.readObject();
+		content = objectInput.readUTF();
 		url = objectInput.readUTF();
 		type = objectInput.readUTF();
 		displayDate = objectInput.readLong();
@@ -224,9 +225,10 @@ public class AnnouncementsEntryCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -239,7 +241,7 @@ public class AnnouncementsEntryCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -253,28 +255,28 @@ public class AnnouncementsEntryCacheModel
 		objectOutput.writeLong(classPK);
 
 		if (title == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(title);
 		}
 
 		if (content == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(content);
+			objectOutput.writeUTF(content);
 		}
 
 		if (url == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(url);
 		}
 
 		if (type == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(type);
@@ -305,5 +307,4 @@ public class AnnouncementsEntryCacheModel
 	public long expirationDate;
 	public int priority;
 	public boolean alert;
-
 }

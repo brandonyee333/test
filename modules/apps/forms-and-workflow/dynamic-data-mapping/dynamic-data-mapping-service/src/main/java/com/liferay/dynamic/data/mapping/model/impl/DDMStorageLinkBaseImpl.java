@@ -14,6 +14,8 @@
 
 package com.liferay.dynamic.data.mapping.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.dynamic.data.mapping.model.DDMStorageLink;
 import com.liferay.dynamic.data.mapping.service.DDMStorageLinkLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.dynamic.data.mapping.service.DDMStorageLinkLocalServiceUtil;
  * @see DDMStorageLink
  * @generated
  */
-public abstract class DDMStorageLinkBaseImpl
-	extends DDMStorageLinkModelImpl implements DDMStorageLink {
-
+@ProviderType
+public abstract class DDMStorageLinkBaseImpl extends DDMStorageLinkModelImpl
+	implements DDMStorageLink {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a ddm storage link model instance should use the <code>DDMStorageLink</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a ddm storage link model instance should use the {@link DDMStorageLink} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class DDMStorageLinkBaseImpl
 			DDMStorageLinkLocalServiceUtil.updateDDMStorageLink(this);
 		}
 	}
-
 }

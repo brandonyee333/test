@@ -19,6 +19,7 @@ import com.liferay.document.library.kernel.model.DLFolder;
 import com.liferay.document.library.kernel.service.DLFolderLocalServiceUtil;
 import com.liferay.document.library.kernel.service.persistence.DLFolderPersistence;
 import com.liferay.document.library.kernel.service.persistence.DLFolderUtil;
+
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -32,10 +33,18 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
 
 import java.io.Serializable;
 
@@ -47,23 +56,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-
 /**
  * @generated
  */
 public class DLFolderPersistenceTest {
-
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
+	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
+			PersistenceTestRule.INSTANCE,
 			new TransactionalTestRule(Propagation.REQUIRED));
 
 	@Before
@@ -103,8 +103,7 @@ public class DLFolderPersistenceTest {
 
 		_persistence.remove(newDLFolder);
 
-		DLFolder existingDLFolder = _persistence.fetchByPrimaryKey(
-			newDLFolder.getPrimaryKey());
+		DLFolder existingDLFolder = _persistence.fetchByPrimaryKey(newDLFolder.getPrimaryKey());
 
 		Assert.assertNull(existingDLFolder);
 	}
@@ -166,88 +165,82 @@ public class DLFolderPersistenceTest {
 
 		_dlFolders.add(_persistence.update(newDLFolder));
 
-		DLFolder existingDLFolder = _persistence.findByPrimaryKey(
-			newDLFolder.getPrimaryKey());
+		DLFolder existingDLFolder = _persistence.findByPrimaryKey(newDLFolder.getPrimaryKey());
 
 		Assert.assertEquals(existingDLFolder.getUuid(), newDLFolder.getUuid());
-		Assert.assertEquals(
-			existingDLFolder.getFolderId(), newDLFolder.getFolderId());
-		Assert.assertEquals(
-			existingDLFolder.getGroupId(), newDLFolder.getGroupId());
-		Assert.assertEquals(
-			existingDLFolder.getCompanyId(), newDLFolder.getCompanyId());
-		Assert.assertEquals(
-			existingDLFolder.getUserId(), newDLFolder.getUserId());
-		Assert.assertEquals(
-			existingDLFolder.getUserName(), newDLFolder.getUserName());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingDLFolder.getCreateDate()),
+		Assert.assertEquals(existingDLFolder.getFolderId(),
+			newDLFolder.getFolderId());
+		Assert.assertEquals(existingDLFolder.getGroupId(),
+			newDLFolder.getGroupId());
+		Assert.assertEquals(existingDLFolder.getCompanyId(),
+			newDLFolder.getCompanyId());
+		Assert.assertEquals(existingDLFolder.getUserId(),
+			newDLFolder.getUserId());
+		Assert.assertEquals(existingDLFolder.getUserName(),
+			newDLFolder.getUserName());
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingDLFolder.getCreateDate()),
 			Time.getShortTimestamp(newDLFolder.getCreateDate()));
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingDLFolder.getModifiedDate()),
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingDLFolder.getModifiedDate()),
 			Time.getShortTimestamp(newDLFolder.getModifiedDate()));
-		Assert.assertEquals(
-			existingDLFolder.getRepositoryId(), newDLFolder.getRepositoryId());
-		Assert.assertEquals(
-			existingDLFolder.isMountPoint(), newDLFolder.isMountPoint());
-		Assert.assertEquals(
-			existingDLFolder.getParentFolderId(),
+		Assert.assertEquals(existingDLFolder.getRepositoryId(),
+			newDLFolder.getRepositoryId());
+		Assert.assertEquals(existingDLFolder.getMountPoint(),
+			newDLFolder.getMountPoint());
+		Assert.assertEquals(existingDLFolder.getParentFolderId(),
 			newDLFolder.getParentFolderId());
-		Assert.assertEquals(
-			existingDLFolder.getTreePath(), newDLFolder.getTreePath());
+		Assert.assertEquals(existingDLFolder.getTreePath(),
+			newDLFolder.getTreePath());
 		Assert.assertEquals(existingDLFolder.getName(), newDLFolder.getName());
-		Assert.assertEquals(
-			existingDLFolder.getDescription(), newDLFolder.getDescription());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingDLFolder.getLastPostDate()),
+		Assert.assertEquals(existingDLFolder.getDescription(),
+			newDLFolder.getDescription());
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingDLFolder.getLastPostDate()),
 			Time.getShortTimestamp(newDLFolder.getLastPostDate()));
-		Assert.assertEquals(
-			existingDLFolder.getDefaultFileEntryTypeId(),
+		Assert.assertEquals(existingDLFolder.getDefaultFileEntryTypeId(),
 			newDLFolder.getDefaultFileEntryTypeId());
-		Assert.assertEquals(
-			existingDLFolder.isHidden(), newDLFolder.isHidden());
-		Assert.assertEquals(
-			existingDLFolder.getRestrictionType(),
+		Assert.assertEquals(existingDLFolder.getHidden(),
+			newDLFolder.getHidden());
+		Assert.assertEquals(existingDLFolder.getRestrictionType(),
 			newDLFolder.getRestrictionType());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingDLFolder.getLastPublishDate()),
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingDLFolder.getLastPublishDate()),
 			Time.getShortTimestamp(newDLFolder.getLastPublishDate()));
-		Assert.assertEquals(
-			existingDLFolder.getStatus(), newDLFolder.getStatus());
-		Assert.assertEquals(
-			existingDLFolder.getStatusByUserId(),
+		Assert.assertEquals(existingDLFolder.getStatus(),
+			newDLFolder.getStatus());
+		Assert.assertEquals(existingDLFolder.getStatusByUserId(),
 			newDLFolder.getStatusByUserId());
-		Assert.assertEquals(
-			existingDLFolder.getStatusByUserName(),
+		Assert.assertEquals(existingDLFolder.getStatusByUserName(),
 			newDLFolder.getStatusByUserName());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingDLFolder.getStatusDate()),
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingDLFolder.getStatusDate()),
 			Time.getShortTimestamp(newDLFolder.getStatusDate()));
 	}
 
 	@Test
 	public void testCountByUuid() throws Exception {
-		_persistence.countByUuid("");
+		_persistence.countByUuid(StringPool.BLANK);
 
-		_persistence.countByUuid("null");
+		_persistence.countByUuid(StringPool.NULL);
 
 		_persistence.countByUuid((String)null);
 	}
 
 	@Test
 	public void testCountByUUID_G() throws Exception {
-		_persistence.countByUUID_G("", RandomTestUtil.nextLong());
+		_persistence.countByUUID_G(StringPool.BLANK, RandomTestUtil.nextLong());
 
-		_persistence.countByUUID_G("null", 0L);
+		_persistence.countByUUID_G(StringPool.NULL, 0L);
 
 		_persistence.countByUUID_G((String)null, 0L);
 	}
 
 	@Test
 	public void testCountByUuid_C() throws Exception {
-		_persistence.countByUuid_C("", RandomTestUtil.nextLong());
+		_persistence.countByUuid_C(StringPool.BLANK, RandomTestUtil.nextLong());
 
-		_persistence.countByUuid_C("null", 0L);
+		_persistence.countByUuid_C(StringPool.NULL, 0L);
 
 		_persistence.countByUuid_C((String)null, 0L);
 	}
@@ -275,117 +268,111 @@ public class DLFolderPersistenceTest {
 
 	@Test
 	public void testCountByG_P() throws Exception {
-		_persistence.countByG_P(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+		_persistence.countByG_P(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong());
 
 		_persistence.countByG_P(0L, 0L);
 	}
 
 	@Test
 	public void testCountByC_NotS() throws Exception {
-		_persistence.countByC_NotS(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
+		_persistence.countByC_NotS(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextInt());
 
 		_persistence.countByC_NotS(0L, 0);
 	}
 
 	@Test
 	public void testCountByR_M() throws Exception {
-		_persistence.countByR_M(
-			RandomTestUtil.nextLong(), RandomTestUtil.randomBoolean());
+		_persistence.countByR_M(RandomTestUtil.nextLong(),
+			RandomTestUtil.randomBoolean());
 
 		_persistence.countByR_M(0L, RandomTestUtil.randomBoolean());
 	}
 
 	@Test
 	public void testCountByR_P() throws Exception {
-		_persistence.countByR_P(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+		_persistence.countByR_P(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong());
 
 		_persistence.countByR_P(0L, 0L);
 	}
 
 	@Test
 	public void testCountByP_N() throws Exception {
-		_persistence.countByP_N(RandomTestUtil.nextLong(), "");
+		_persistence.countByP_N(RandomTestUtil.nextLong(), StringPool.BLANK);
 
-		_persistence.countByP_N(0L, "null");
+		_persistence.countByP_N(0L, StringPool.NULL);
 
 		_persistence.countByP_N(0L, (String)null);
 	}
 
 	@Test
 	public void testCountByG_M_P() throws Exception {
-		_persistence.countByG_M_P(
-			RandomTestUtil.nextLong(), RandomTestUtil.randomBoolean(),
-			RandomTestUtil.nextLong());
+		_persistence.countByG_M_P(RandomTestUtil.nextLong(),
+			RandomTestUtil.randomBoolean(), RandomTestUtil.nextLong());
 
 		_persistence.countByG_M_P(0L, RandomTestUtil.randomBoolean(), 0L);
 	}
 
 	@Test
 	public void testCountByG_P_N() throws Exception {
-		_persistence.countByG_P_N(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(), "");
+		_persistence.countByG_P_N(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong(), StringPool.BLANK);
 
-		_persistence.countByG_P_N(0L, 0L, "null");
+		_persistence.countByG_P_N(0L, 0L, StringPool.NULL);
 
 		_persistence.countByG_P_N(0L, 0L, (String)null);
 	}
 
 	@Test
 	public void testCountByF_C_P_NotS() throws Exception {
-		_persistence.countByF_C_P_NotS(
+		_persistence.countByF_C_P_NotS(RandomTestUtil.nextLong(),
 			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
-			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
+			RandomTestUtil.nextInt());
 
 		_persistence.countByF_C_P_NotS(0L, 0L, 0L, 0);
 	}
 
 	@Test
 	public void testCountByG_M_P_H() throws Exception {
-		_persistence.countByG_M_P_H(
-			RandomTestUtil.nextLong(), RandomTestUtil.randomBoolean(),
-			RandomTestUtil.nextLong(), RandomTestUtil.randomBoolean());
+		_persistence.countByG_M_P_H(RandomTestUtil.nextLong(),
+			RandomTestUtil.randomBoolean(), RandomTestUtil.nextLong(),
+			RandomTestUtil.randomBoolean());
 
-		_persistence.countByG_M_P_H(
-			0L, RandomTestUtil.randomBoolean(), 0L,
+		_persistence.countByG_M_P_H(0L, RandomTestUtil.randomBoolean(), 0L,
 			RandomTestUtil.randomBoolean());
 	}
 
 	@Test
 	public void testCountByG_M_T_H() throws Exception {
-		_persistence.countByG_M_T_H(
-			RandomTestUtil.nextLong(), RandomTestUtil.randomBoolean(), "",
+		_persistence.countByG_M_T_H(RandomTestUtil.nextLong(),
+			RandomTestUtil.randomBoolean(), StringPool.BLANK,
 			RandomTestUtil.randomBoolean());
 
-		_persistence.countByG_M_T_H(
-			0L, RandomTestUtil.randomBoolean(), "null",
-			RandomTestUtil.randomBoolean());
+		_persistence.countByG_M_T_H(0L, RandomTestUtil.randomBoolean(),
+			StringPool.NULL, RandomTestUtil.randomBoolean());
 
-		_persistence.countByG_M_T_H(
-			0L, RandomTestUtil.randomBoolean(), (String)null,
-			RandomTestUtil.randomBoolean());
+		_persistence.countByG_M_T_H(0L, RandomTestUtil.randomBoolean(),
+			(String)null, RandomTestUtil.randomBoolean());
 	}
 
 	@Test
 	public void testCountByG_P_H_S() throws Exception {
-		_persistence.countByG_P_H_S(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
-			RandomTestUtil.randomBoolean(), RandomTestUtil.nextInt());
+		_persistence.countByG_P_H_S(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong(), RandomTestUtil.randomBoolean(),
+			RandomTestUtil.nextInt());
 
 		_persistence.countByG_P_H_S(0L, 0L, RandomTestUtil.randomBoolean(), 0);
 	}
 
 	@Test
 	public void testCountByG_M_P_H_S() throws Exception {
-		_persistence.countByG_M_P_H_S(
-			RandomTestUtil.nextLong(), RandomTestUtil.randomBoolean(),
-			RandomTestUtil.nextLong(), RandomTestUtil.randomBoolean(),
-			RandomTestUtil.nextInt());
+		_persistence.countByG_M_P_H_S(RandomTestUtil.nextLong(),
+			RandomTestUtil.randomBoolean(), RandomTestUtil.nextLong(),
+			RandomTestUtil.randomBoolean(), RandomTestUtil.nextInt());
 
-		_persistence.countByG_M_P_H_S(
-			0L, RandomTestUtil.randomBoolean(), 0L,
+		_persistence.countByG_M_P_H_S(0L, RandomTestUtil.randomBoolean(), 0L,
 			RandomTestUtil.randomBoolean(), 0);
 	}
 
@@ -393,8 +380,7 @@ public class DLFolderPersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		DLFolder newDLFolder = addDLFolder();
 
-		DLFolder existingDLFolder = _persistence.findByPrimaryKey(
-			newDLFolder.getPrimaryKey());
+		DLFolder existingDLFolder = _persistence.findByPrimaryKey(newDLFolder.getPrimaryKey());
 
 		Assert.assertEquals(existingDLFolder, newDLFolder);
 	}
@@ -408,34 +394,33 @@ public class DLFolderPersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
+		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			getOrderByComparator());
 	}
 
 	@Test
 	public void testFilterFindByGroupId() throws Exception {
-		_persistence.filterFindByGroupId(
-			0, QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
+		_persistence.filterFindByGroupId(0, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, getOrderByComparator());
 	}
 
 	protected OrderByComparator<DLFolder> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create(
-			"DLFolder", "uuid", true, "folderId", true, "groupId", true,
-			"companyId", true, "userId", true, "userName", true, "createDate",
-			true, "modifiedDate", true, "repositoryId", true, "mountPoint",
-			true, "parentFolderId", true, "treePath", true, "name", true,
-			"description", true, "lastPostDate", true, "defaultFileEntryTypeId",
-			true, "hidden", true, "restrictionType", true, "lastPublishDate",
-			true, "status", true, "statusByUserId", true, "statusByUserName",
-			true, "statusDate", true);
+		return OrderByComparatorFactoryUtil.create("DLFolder", "uuid", true,
+			"folderId", true, "groupId", true, "companyId", true, "userId",
+			true, "userName", true, "createDate", true, "modifiedDate", true,
+			"repositoryId", true, "mountPoint", true, "parentFolderId", true,
+			"treePath", true, "name", true, "description", true,
+			"lastPostDate", true, "defaultFileEntryTypeId", true, "hidden",
+			true, "restrictionType", true, "lastPublishDate", true, "status",
+			true, "statusByUserId", true, "statusByUserName", true,
+			"statusDate", true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		DLFolder newDLFolder = addDLFolder();
 
-		DLFolder existingDLFolder = _persistence.fetchByPrimaryKey(
-			newDLFolder.getPrimaryKey());
+		DLFolder existingDLFolder = _persistence.fetchByPrimaryKey(newDLFolder.getPrimaryKey());
 
 		Assert.assertEquals(existingDLFolder, newDLFolder);
 	}
@@ -452,7 +437,6 @@ public class DLFolderPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
-
 		DLFolder newDLFolder1 = addDLFolder();
 		DLFolder newDLFolder2 = addDLFolder();
 
@@ -461,20 +445,18 @@ public class DLFolderPersistenceTest {
 		primaryKeys.add(newDLFolder1.getPrimaryKey());
 		primaryKeys.add(newDLFolder2.getPrimaryKey());
 
-		Map<Serializable, DLFolder> dlFolders = _persistence.fetchByPrimaryKeys(
-			primaryKeys);
+		Map<Serializable, DLFolder> dlFolders = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(2, dlFolders.size());
-		Assert.assertEquals(
-			newDLFolder1, dlFolders.get(newDLFolder1.getPrimaryKey()));
-		Assert.assertEquals(
-			newDLFolder2, dlFolders.get(newDLFolder2.getPrimaryKey()));
+		Assert.assertEquals(newDLFolder1,
+			dlFolders.get(newDLFolder1.getPrimaryKey()));
+		Assert.assertEquals(newDLFolder2,
+			dlFolders.get(newDLFolder2.getPrimaryKey()));
 	}
 
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
-
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -484,8 +466,7 @@ public class DLFolderPersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, DLFolder> dlFolders = _persistence.fetchByPrimaryKeys(
-			primaryKeys);
+		Map<Serializable, DLFolder> dlFolders = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(dlFolders.isEmpty());
 	}
@@ -493,7 +474,6 @@ public class DLFolderPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
-
 		DLFolder newDLFolder = addDLFolder();
 
 		long pk = RandomTestUtil.nextLong();
@@ -503,57 +483,52 @@ public class DLFolderPersistenceTest {
 		primaryKeys.add(newDLFolder.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, DLFolder> dlFolders = _persistence.fetchByPrimaryKeys(
-			primaryKeys);
+		Map<Serializable, DLFolder> dlFolders = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, dlFolders.size());
-		Assert.assertEquals(
-			newDLFolder, dlFolders.get(newDLFolder.getPrimaryKey()));
+		Assert.assertEquals(newDLFolder,
+			dlFolders.get(newDLFolder.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
+		throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, DLFolder> dlFolders = _persistence.fetchByPrimaryKeys(
-			primaryKeys);
+		Map<Serializable, DLFolder> dlFolders = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(dlFolders.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey()
+		throws Exception {
 		DLFolder newDLFolder = addDLFolder();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newDLFolder.getPrimaryKey());
 
-		Map<Serializable, DLFolder> dlFolders = _persistence.fetchByPrimaryKeys(
-			primaryKeys);
+		Map<Serializable, DLFolder> dlFolders = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, dlFolders.size());
-		Assert.assertEquals(
-			newDLFolder, dlFolders.get(newDLFolder.getPrimaryKey()));
+		Assert.assertEquals(newDLFolder,
+			dlFolders.get(newDLFolder.getPrimaryKey()));
 	}
 
 	@Test
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery =
-			DLFolderLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = DLFolderLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<DLFolder>() {
-
+		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<DLFolder>() {
 				@Override
 				public void performAction(DLFolder dlFolder) {
 					Assert.assertNotNull(dlFolder);
 
 					count.increment();
 				}
-
 			});
 
 		actionableDynamicQuery.performActions();
@@ -562,14 +537,15 @@ public class DLFolderPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting()
+		throws Exception {
 		DLFolder newDLFolder = addDLFolder();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			DLFolder.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(DLFolder.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("folderId", newDLFolder.getFolderId()));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("folderId",
+				newDLFolder.getFolderId()));
 
 		List<DLFolder> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -582,11 +558,11 @@ public class DLFolderPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			DLFolder.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(DLFolder.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("folderId", RandomTestUtil.nextLong()));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("folderId",
+				RandomTestUtil.nextLong()));
 
 		List<DLFolder> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -594,18 +570,19 @@ public class DLFolderPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting() throws Exception {
+	public void testDynamicQueryByProjectionExisting()
+		throws Exception {
 		DLFolder newDLFolder = addDLFolder();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			DLFolder.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(DLFolder.class,
+				_dynamicQueryClassLoader);
 
 		dynamicQuery.setProjection(ProjectionFactoryUtil.property("folderId"));
 
 		Object newFolderId = newDLFolder.getFolderId();
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in("folderId", new Object[] {newFolderId}));
+		dynamicQuery.add(RestrictionsFactoryUtil.in("folderId",
+				new Object[] { newFolderId }));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -618,14 +595,13 @@ public class DLFolderPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			DLFolder.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(DLFolder.class,
+				_dynamicQueryClassLoader);
 
 		dynamicQuery.setProjection(ProjectionFactoryUtil.property("folderId"));
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in(
-				"folderId", new Object[] {RandomTestUtil.nextLong()}));
+		dynamicQuery.add(RestrictionsFactoryUtil.in("folderId",
+				new Object[] { RandomTestUtil.nextLong() }));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -638,42 +614,31 @@ public class DLFolderPersistenceTest {
 
 		_persistence.clearCache();
 
-		DLFolder existingDLFolder = _persistence.findByPrimaryKey(
-			newDLFolder.getPrimaryKey());
+		DLFolder existingDLFolder = _persistence.findByPrimaryKey(newDLFolder.getPrimaryKey());
 
-		Assert.assertTrue(
-			Objects.equals(
-				existingDLFolder.getUuid(),
-				ReflectionTestUtil.invoke(
-					existingDLFolder, "getOriginalUuid", new Class<?>[0])));
-		Assert.assertEquals(
-			Long.valueOf(existingDLFolder.getGroupId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingDLFolder, "getOriginalGroupId", new Class<?>[0]));
+		Assert.assertTrue(Objects.equals(existingDLFolder.getUuid(),
+				ReflectionTestUtil.invoke(existingDLFolder, "getOriginalUuid",
+					new Class<?>[0])));
+		Assert.assertEquals(Long.valueOf(existingDLFolder.getGroupId()),
+			ReflectionTestUtil.<Long>invoke(existingDLFolder,
+				"getOriginalGroupId", new Class<?>[0]));
 
-		Assert.assertEquals(
-			Long.valueOf(existingDLFolder.getRepositoryId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingDLFolder, "getOriginalRepositoryId", new Class<?>[0]));
-		Assert.assertEquals(
-			Boolean.valueOf(existingDLFolder.getMountPoint()),
-			ReflectionTestUtil.<Boolean>invoke(
-				existingDLFolder, "getOriginalMountPoint", new Class<?>[0]));
+		Assert.assertEquals(Long.valueOf(existingDLFolder.getRepositoryId()),
+			ReflectionTestUtil.<Long>invoke(existingDLFolder,
+				"getOriginalRepositoryId", new Class<?>[0]));
+		Assert.assertEquals(Boolean.valueOf(existingDLFolder.getMountPoint()),
+			ReflectionTestUtil.<Boolean>invoke(existingDLFolder,
+				"getOriginalMountPoint", new Class<?>[0]));
 
-		Assert.assertEquals(
-			Long.valueOf(existingDLFolder.getGroupId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingDLFolder, "getOriginalGroupId", new Class<?>[0]));
-		Assert.assertEquals(
-			Long.valueOf(existingDLFolder.getParentFolderId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingDLFolder, "getOriginalParentFolderId",
-				new Class<?>[0]));
-		Assert.assertTrue(
-			Objects.equals(
-				existingDLFolder.getName(),
-				ReflectionTestUtil.invoke(
-					existingDLFolder, "getOriginalName", new Class<?>[0])));
+		Assert.assertEquals(Long.valueOf(existingDLFolder.getGroupId()),
+			ReflectionTestUtil.<Long>invoke(existingDLFolder,
+				"getOriginalGroupId", new Class<?>[0]));
+		Assert.assertEquals(Long.valueOf(existingDLFolder.getParentFolderId()),
+			ReflectionTestUtil.<Long>invoke(existingDLFolder,
+				"getOriginalParentFolderId", new Class<?>[0]));
+		Assert.assertTrue(Objects.equals(existingDLFolder.getName(),
+				ReflectionTestUtil.invoke(existingDLFolder, "getOriginalName",
+					new Class<?>[0])));
 	}
 
 	protected DLFolder addDLFolder() throws Exception {
@@ -733,5 +698,4 @@ public class DLFolderPersistenceTest {
 	private List<DLFolder> _dlFolders = new ArrayList<DLFolder>();
 	private DLFolderPersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
-
 }

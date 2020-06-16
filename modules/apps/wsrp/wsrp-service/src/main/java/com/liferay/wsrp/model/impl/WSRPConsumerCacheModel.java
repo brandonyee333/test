@@ -14,9 +14,13 @@
 
 package com.liferay.wsrp.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.wsrp.model.WSRPConsumer;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing WSRPConsumer in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see WSRPConsumer
  * @generated
  */
-public class WSRPConsumerCacheModel
-	implements CacheModel<WSRPConsumer>, Externalizable {
-
+@ProviderType
+public class WSRPConsumerCacheModel implements CacheModel<WSRPConsumer>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class WSRPConsumerCacheModel
 			return false;
 		}
 
-		WSRPConsumerCacheModel wsrpConsumerCacheModel =
-			(WSRPConsumerCacheModel)obj;
+		WSRPConsumerCacheModel wsrpConsumerCacheModel = (WSRPConsumerCacheModel)obj;
 
 		if (wsrpConsumerId == wsrpConsumerCacheModel.wsrpConsumerId) {
 			return true;
@@ -102,7 +106,7 @@ public class WSRPConsumerCacheModel
 		WSRPConsumerImpl wsrpConsumerImpl = new WSRPConsumerImpl();
 
 		if (uuid == null) {
-			wsrpConsumerImpl.setUuid("");
+			wsrpConsumerImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			wsrpConsumerImpl.setUuid(uuid);
@@ -126,58 +130,56 @@ public class WSRPConsumerCacheModel
 		}
 
 		if (name == null) {
-			wsrpConsumerImpl.setName("");
+			wsrpConsumerImpl.setName(StringPool.BLANK);
 		}
 		else {
 			wsrpConsumerImpl.setName(name);
 		}
 
 		if (url == null) {
-			wsrpConsumerImpl.setUrl("");
+			wsrpConsumerImpl.setUrl(StringPool.BLANK);
 		}
 		else {
 			wsrpConsumerImpl.setUrl(url);
 		}
 
 		if (wsdl == null) {
-			wsrpConsumerImpl.setWsdl("");
+			wsrpConsumerImpl.setWsdl(StringPool.BLANK);
 		}
 		else {
 			wsrpConsumerImpl.setWsdl(wsdl);
 		}
 
 		if (registrationContextString == null) {
-			wsrpConsumerImpl.setRegistrationContextString("");
+			wsrpConsumerImpl.setRegistrationContextString(StringPool.BLANK);
 		}
 		else {
-			wsrpConsumerImpl.setRegistrationContextString(
-				registrationContextString);
+			wsrpConsumerImpl.setRegistrationContextString(registrationContextString);
 		}
 
 		if (registrationPropertiesString == null) {
-			wsrpConsumerImpl.setRegistrationPropertiesString("");
+			wsrpConsumerImpl.setRegistrationPropertiesString(StringPool.BLANK);
 		}
 		else {
-			wsrpConsumerImpl.setRegistrationPropertiesString(
-				registrationPropertiesString);
+			wsrpConsumerImpl.setRegistrationPropertiesString(registrationPropertiesString);
 		}
 
 		if (forwardCookies == null) {
-			wsrpConsumerImpl.setForwardCookies("");
+			wsrpConsumerImpl.setForwardCookies(StringPool.BLANK);
 		}
 		else {
 			wsrpConsumerImpl.setForwardCookies(forwardCookies);
 		}
 
 		if (forwardHeaders == null) {
-			wsrpConsumerImpl.setForwardHeaders("");
+			wsrpConsumerImpl.setForwardHeaders(StringPool.BLANK);
 		}
 		else {
 			wsrpConsumerImpl.setForwardHeaders(forwardHeaders);
 		}
 
 		if (markupCharacterSets == null) {
-			wsrpConsumerImpl.setMarkupCharacterSets("");
+			wsrpConsumerImpl.setMarkupCharacterSets(StringPool.BLANK);
 		}
 		else {
 			wsrpConsumerImpl.setMarkupCharacterSets(markupCharacterSets);
@@ -196,9 +198,7 @@ public class WSRPConsumerCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
 
 		wsrpConsumerId = objectInput.readLong();
@@ -208,8 +208,8 @@ public class WSRPConsumerCacheModel
 		modifiedDate = objectInput.readLong();
 		name = objectInput.readUTF();
 		url = objectInput.readUTF();
-		wsdl = (String)objectInput.readObject();
-		registrationContextString = (String)objectInput.readObject();
+		wsdl = objectInput.readUTF();
+		registrationContextString = objectInput.readUTF();
 		registrationPropertiesString = objectInput.readUTF();
 		forwardCookies = objectInput.readUTF();
 		forwardHeaders = objectInput.readUTF();
@@ -218,9 +218,10 @@ public class WSRPConsumerCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -233,56 +234,56 @@ public class WSRPConsumerCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (url == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(url);
 		}
 
 		if (wsdl == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(wsdl);
+			objectOutput.writeUTF(wsdl);
 		}
 
 		if (registrationContextString == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(registrationContextString);
+			objectOutput.writeUTF(registrationContextString);
 		}
 
 		if (registrationPropertiesString == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(registrationPropertiesString);
 		}
 
 		if (forwardCookies == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(forwardCookies);
 		}
 
 		if (forwardHeaders == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(forwardHeaders);
 		}
 
 		if (markupCharacterSets == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(markupCharacterSets);
@@ -305,5 +306,4 @@ public class WSRPConsumerCacheModel
 	public String forwardHeaders;
 	public String markupCharacterSets;
 	public long lastPublishDate;
-
 }

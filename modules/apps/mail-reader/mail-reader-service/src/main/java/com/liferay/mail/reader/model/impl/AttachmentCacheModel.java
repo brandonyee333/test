@@ -14,10 +14,14 @@
 
 package com.liferay.mail.reader.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.mail.reader.model.Attachment;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -28,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing Attachment in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see Attachment
  * @generated
  */
-public class AttachmentCacheModel
-	implements CacheModel<Attachment>, Externalizable {
-
+@ProviderType
+public class AttachmentCacheModel implements CacheModel<Attachment>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -96,14 +101,14 @@ public class AttachmentCacheModel
 		attachmentImpl.setMessageId(messageId);
 
 		if (contentPath == null) {
-			attachmentImpl.setContentPath("");
+			attachmentImpl.setContentPath(StringPool.BLANK);
 		}
 		else {
 			attachmentImpl.setContentPath(contentPath);
 		}
 
 		if (fileName == null) {
-			attachmentImpl.setFileName("");
+			attachmentImpl.setFileName(StringPool.BLANK);
 		}
 		else {
 			attachmentImpl.setFileName(fileName);
@@ -136,7 +141,8 @@ public class AttachmentCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(attachmentId);
 
 		objectOutput.writeLong(companyId);
@@ -150,14 +156,14 @@ public class AttachmentCacheModel
 		objectOutput.writeLong(messageId);
 
 		if (contentPath == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(contentPath);
 		}
 
 		if (fileName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(fileName);
@@ -175,5 +181,4 @@ public class AttachmentCacheModel
 	public String contentPath;
 	public String fileName;
 	public long size;
-
 }

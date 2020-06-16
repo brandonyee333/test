@@ -14,6 +14,8 @@
 
 package com.liferay.adaptive.media.image.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,8 +28,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
+@ProviderType
 public class AMImageEntrySoap implements Serializable {
-
 	public static AMImageEntrySoap toSoapModel(AMImageEntry model) {
 		AMImageEntrySoap soapModel = new AMImageEntrySoap();
 
@@ -74,8 +76,7 @@ public class AMImageEntrySoap implements Serializable {
 	}
 
 	public static AMImageEntrySoap[] toSoapModels(List<AMImageEntry> models) {
-		List<AMImageEntrySoap> soapModels = new ArrayList<AMImageEntrySoap>(
-			models.size());
+		List<AMImageEntrySoap> soapModels = new ArrayList<AMImageEntrySoap>(models.size());
 
 		for (AMImageEntry model : models) {
 			soapModels.add(toSoapModel(model));
@@ -194,5 +195,4 @@ public class AMImageEntrySoap implements Serializable {
 	private int _height;
 	private int _width;
 	private long _size;
-
 }

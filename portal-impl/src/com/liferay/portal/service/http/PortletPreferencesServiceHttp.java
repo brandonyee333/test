@@ -14,6 +14,8 @@
 
 package com.liferay.portal.service.http;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
@@ -24,11 +26,10 @@ import com.liferay.portal.kernel.util.MethodKey;
 
 /**
  * Provides the HTTP utility for the
- * <code>PortletPreferencesServiceUtil</code> service
- * utility. The
+ * {@link PortletPreferencesServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it requires an additional
- * <code>HttpPrincipal</code> parameter.
+ * {@link HttpPrincipal} parameter.
  *
  * <p>
  * The benefits of using the HTTP utility is that it is fast and allows for
@@ -47,234 +48,189 @@ import com.liferay.portal.kernel.util.MethodKey;
  *
  * @author Brian Wing Shun Chan
  * @see PortletPreferencesServiceSoap
+ * @see HttpPrincipal
+ * @see PortletPreferencesServiceUtil
  * @generated
  */
+@ProviderType
 public class PortletPreferencesServiceHttp {
-
-	public static void deleteArchivedPreferences(
-			HttpPrincipal httpPrincipal, long portletItemId)
+	public static void deleteArchivedPreferences(HttpPrincipal httpPrincipal,
+		long portletItemId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				PortletPreferencesServiceUtil.class,
-				"deleteArchivedPreferences",
-				_deleteArchivedPreferencesParameterTypes0);
+			MethodKey methodKey = new MethodKey(PortletPreferencesServiceUtil.class,
+					"deleteArchivedPreferences",
+					_deleteArchivedPreferencesParameterTypes0);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, portletItemId);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					portletItemId);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	public static void restoreArchivedPreferences(
-			HttpPrincipal httpPrincipal, long groupId,
-			com.liferay.portal.kernel.model.Layout layout, String portletId,
-			long portletItemId,
-			javax.portlet.PortletPreferences jxPortletPreferences)
+	public static void restoreArchivedPreferences(HttpPrincipal httpPrincipal,
+		long groupId, com.liferay.portal.kernel.model.Layout layout,
+		java.lang.String portletId, long portletItemId,
+		javax.portlet.PortletPreferences jxPortletPreferences)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				PortletPreferencesServiceUtil.class,
-				"restoreArchivedPreferences",
-				_restoreArchivedPreferencesParameterTypes1);
+			MethodKey methodKey = new MethodKey(PortletPreferencesServiceUtil.class,
+					"restoreArchivedPreferences",
+					_restoreArchivedPreferencesParameterTypes1);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, groupId, layout, portletId, portletItemId,
-				jxPortletPreferences);
+			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
+					layout, portletId, portletItemId, jxPortletPreferences);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	public static void restoreArchivedPreferences(
-			HttpPrincipal httpPrincipal, long groupId,
-			com.liferay.portal.kernel.model.Layout layout, String portletId,
-			com.liferay.portal.kernel.model.PortletItem portletItem,
-			javax.portlet.PortletPreferences jxPortletPreferences)
+	public static void restoreArchivedPreferences(HttpPrincipal httpPrincipal,
+		long groupId, com.liferay.portal.kernel.model.Layout layout,
+		java.lang.String portletId,
+		com.liferay.portal.kernel.model.PortletItem portletItem,
+		javax.portlet.PortletPreferences jxPortletPreferences)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				PortletPreferencesServiceUtil.class,
-				"restoreArchivedPreferences",
-				_restoreArchivedPreferencesParameterTypes2);
+			MethodKey methodKey = new MethodKey(PortletPreferencesServiceUtil.class,
+					"restoreArchivedPreferences",
+					_restoreArchivedPreferencesParameterTypes2);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, groupId, layout, portletId, portletItem,
-				jxPortletPreferences);
+			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
+					layout, portletId, portletItem, jxPortletPreferences);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	public static void restoreArchivedPreferences(
-			HttpPrincipal httpPrincipal, long groupId, String name,
-			com.liferay.portal.kernel.model.Layout layout, String portletId,
-			javax.portlet.PortletPreferences jxPortletPreferences)
+	public static void restoreArchivedPreferences(HttpPrincipal httpPrincipal,
+		long groupId, java.lang.String name,
+		com.liferay.portal.kernel.model.Layout layout,
+		java.lang.String portletId,
+		javax.portlet.PortletPreferences jxPortletPreferences)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				PortletPreferencesServiceUtil.class,
-				"restoreArchivedPreferences",
-				_restoreArchivedPreferencesParameterTypes3);
+			MethodKey methodKey = new MethodKey(PortletPreferencesServiceUtil.class,
+					"restoreArchivedPreferences",
+					_restoreArchivedPreferencesParameterTypes3);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, groupId, name, layout, portletId,
-				jxPortletPreferences);
+			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
+					name, layout, portletId, jxPortletPreferences);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	public static void updateArchivePreferences(
-			HttpPrincipal httpPrincipal, long userId, long groupId, String name,
-			String portletId,
-			javax.portlet.PortletPreferences jxPortletPreferences)
+	public static void updateArchivePreferences(HttpPrincipal httpPrincipal,
+		long userId, long groupId, java.lang.String name,
+		java.lang.String portletId,
+		javax.portlet.PortletPreferences jxPortletPreferences)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				PortletPreferencesServiceUtil.class, "updateArchivePreferences",
-				_updateArchivePreferencesParameterTypes4);
+			MethodKey methodKey = new MethodKey(PortletPreferencesServiceUtil.class,
+					"updateArchivePreferences",
+					_updateArchivePreferencesParameterTypes4);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, userId, groupId, name, portletId,
-				jxPortletPreferences);
+			MethodHandler methodHandler = new MethodHandler(methodKey, userId,
+					groupId, name, portletId, jxPortletPreferences);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
-		PortletPreferencesServiceHttp.class);
-
-	private static final Class<?>[] _deleteArchivedPreferencesParameterTypes0 =
-		new Class[] {long.class};
-	private static final Class<?>[] _restoreArchivedPreferencesParameterTypes1 =
-		new Class[] {
+	private static Log _log = LogFactoryUtil.getLog(PortletPreferencesServiceHttp.class);
+	private static final Class<?>[] _deleteArchivedPreferencesParameterTypes0 = new Class[] {
+			long.class
+		};
+	private static final Class<?>[] _restoreArchivedPreferencesParameterTypes1 = new Class[] {
 			long.class, com.liferay.portal.kernel.model.Layout.class,
-			String.class, long.class, javax.portlet.PortletPreferences.class
+			java.lang.String.class, long.class,
+			javax.portlet.PortletPreferences.class
 		};
-	private static final Class<?>[] _restoreArchivedPreferencesParameterTypes2 =
-		new Class[] {
+	private static final Class<?>[] _restoreArchivedPreferencesParameterTypes2 = new Class[] {
 			long.class, com.liferay.portal.kernel.model.Layout.class,
-			String.class, com.liferay.portal.kernel.model.PortletItem.class,
+			java.lang.String.class,
+			com.liferay.portal.kernel.model.PortletItem.class,
 			javax.portlet.PortletPreferences.class
 		};
-	private static final Class<?>[] _restoreArchivedPreferencesParameterTypes3 =
-		new Class[] {
-			long.class, String.class,
-			com.liferay.portal.kernel.model.Layout.class, String.class,
+	private static final Class<?>[] _restoreArchivedPreferencesParameterTypes3 = new Class[] {
+			long.class, java.lang.String.class,
+			com.liferay.portal.kernel.model.Layout.class, java.lang.String.class,
 			javax.portlet.PortletPreferences.class
 		};
-	private static final Class<?>[] _updateArchivePreferencesParameterTypes4 =
-		new Class[] {
-			long.class, long.class, String.class, String.class,
-			javax.portlet.PortletPreferences.class
+	private static final Class<?>[] _updateArchivePreferencesParameterTypes4 = new Class[] {
+			long.class, long.class, java.lang.String.class,
+			java.lang.String.class, javax.portlet.PortletPreferences.class
 		};
-
 }

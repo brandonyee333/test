@@ -1,20 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.customer.release.notes.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -34,9 +37,9 @@ import java.util.Objects;
  * @see ReleaseNotes
  * @generated
  */
-public class ReleaseNotesWrapper
-	implements ModelWrapper<ReleaseNotes>, ReleaseNotes {
-
+@ProviderType
+public class ReleaseNotesWrapper implements ReleaseNotes,
+	ModelWrapper<ReleaseNotes> {
 	public ReleaseNotesWrapper(ReleaseNotes releaseNotes) {
 		_releaseNotes = releaseNotes;
 	}
@@ -119,133 +122,13 @@ public class ReleaseNotesWrapper
 	}
 
 	@Override
-	public Object clone() {
-		return new ReleaseNotesWrapper((ReleaseNotes)_releaseNotes.clone());
+	public ReleaseNotes toEscapedModel() {
+		return new ReleaseNotesWrapper(_releaseNotes.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(ReleaseNotes releaseNotes) {
-		return _releaseNotes.compareTo(releaseNotes);
-	}
-
-	/**
-	 * Returns the create date of this release notes.
-	 *
-	 * @return the create date of this release notes
-	 */
-	@Override
-	public Date getCreateDate() {
-		return _releaseNotes.getCreateDate();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _releaseNotes.getExpandoBridge();
-	}
-
-	/**
-	 * Returns the jira issue keys of this release notes.
-	 *
-	 * @return the jira issue keys of this release notes
-	 */
-	@Override
-	public String getJiraIssueKeys() {
-		return _releaseNotes.getJiraIssueKeys();
-	}
-
-	@Override
-	public String[] getJiraIssueKeysArray() {
-		return _releaseNotes.getJiraIssueKeysArray();
-	}
-
-	/**
-	 * Returns the modified date of this release notes.
-	 *
-	 * @return the modified date of this release notes
-	 */
-	@Override
-	public Date getModifiedDate() {
-		return _releaseNotes.getModifiedDate();
-	}
-
-	/**
-	 * Returns the name of this release notes.
-	 *
-	 * @return the name of this release notes
-	 */
-	@Override
-	public String getName() {
-		return _releaseNotes.getName();
-	}
-
-	/**
-	 * Returns the primary key of this release notes.
-	 *
-	 * @return the primary key of this release notes
-	 */
-	@Override
-	public long getPrimaryKey() {
-		return _releaseNotes.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _releaseNotes.getPrimaryKeyObj();
-	}
-
-	/**
-	 * Returns the release notes ID of this release notes.
-	 *
-	 * @return the release notes ID of this release notes
-	 */
-	@Override
-	public long getReleaseNotesId() {
-		return _releaseNotes.getReleaseNotesId();
-	}
-
-	/**
-	 * Returns the user ID of this release notes.
-	 *
-	 * @return the user ID of this release notes
-	 */
-	@Override
-	public long getUserId() {
-		return _releaseNotes.getUserId();
-	}
-
-	/**
-	 * Returns the user name of this release notes.
-	 *
-	 * @return the user name of this release notes
-	 */
-	@Override
-	public String getUserName() {
-		return _releaseNotes.getUserName();
-	}
-
-	/**
-	 * Returns the user uuid of this release notes.
-	 *
-	 * @return the user uuid of this release notes
-	 */
-	@Override
-	public String getUserUuid() {
-		return _releaseNotes.getUserUuid();
-	}
-
-	/**
-	 * Returns the uuid of this release notes.
-	 *
-	 * @return the uuid of this release notes
-	 */
-	@Override
-	public String getUuid() {
-		return _releaseNotes.getUuid();
-	}
-
-	@Override
-	public int hashCode() {
-		return _releaseNotes.hashCode();
+	public ReleaseNotes toUnescapedModel() {
+		return new ReleaseNotesWrapper(_releaseNotes.toUnescapedModel());
 	}
 
 	@Override
@@ -264,6 +147,151 @@ public class ReleaseNotesWrapper
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _releaseNotes.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<ReleaseNotes> toCacheModel() {
+		return _releaseNotes.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(ReleaseNotes releaseNotes) {
+		return _releaseNotes.compareTo(releaseNotes);
+	}
+
+	@Override
+	public int hashCode() {
+		return _releaseNotes.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _releaseNotes.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new ReleaseNotesWrapper((ReleaseNotes)_releaseNotes.clone());
+	}
+
+	/**
+	* Returns the jira issue keys of this release notes.
+	*
+	* @return the jira issue keys of this release notes
+	*/
+	@Override
+	public java.lang.String getJiraIssueKeys() {
+		return _releaseNotes.getJiraIssueKeys();
+	}
+
+	/**
+	* Returns the name of this release notes.
+	*
+	* @return the name of this release notes
+	*/
+	@Override
+	public java.lang.String getName() {
+		return _releaseNotes.getName();
+	}
+
+	/**
+	* Returns the user name of this release notes.
+	*
+	* @return the user name of this release notes
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _releaseNotes.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this release notes.
+	*
+	* @return the user uuid of this release notes
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _releaseNotes.getUserUuid();
+	}
+
+	/**
+	* Returns the uuid of this release notes.
+	*
+	* @return the uuid of this release notes
+	*/
+	@Override
+	public java.lang.String getUuid() {
+		return _releaseNotes.getUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _releaseNotes.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _releaseNotes.toXmlString();
+	}
+
+	@Override
+	public java.lang.String[] getJiraIssueKeysArray() {
+		return _releaseNotes.getJiraIssueKeysArray();
+	}
+
+	/**
+	* Returns the create date of this release notes.
+	*
+	* @return the create date of this release notes
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _releaseNotes.getCreateDate();
+	}
+
+	/**
+	* Returns the modified date of this release notes.
+	*
+	* @return the modified date of this release notes
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _releaseNotes.getModifiedDate();
+	}
+
+	/**
+	* Returns the primary key of this release notes.
+	*
+	* @return the primary key of this release notes
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _releaseNotes.getPrimaryKey();
+	}
+
+	/**
+	* Returns the release notes ID of this release notes.
+	*
+	* @return the release notes ID of this release notes
+	*/
+	@Override
+	public long getReleaseNotesId() {
+		return _releaseNotes.getReleaseNotesId();
+	}
+
+	/**
+	* Returns the user ID of this release notes.
+	*
+	* @return the user ID of this release notes
+	*/
+	@Override
+	public long getUserId() {
+		return _releaseNotes.getUserId();
+	}
+
+	@Override
 	public void persist() {
 		_releaseNotes.persist();
 	}
@@ -274,20 +302,13 @@ public class ReleaseNotesWrapper
 	}
 
 	/**
-	 * Sets the create date of this release notes.
-	 *
-	 * @param createDate the create date of this release notes
-	 */
+	* Sets the create date of this release notes.
+	*
+	* @param createDate the create date of this release notes
+	*/
 	@Override
 	public void setCreateDate(Date createDate) {
 		_releaseNotes.setCreateDate(createDate);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-
-		_releaseNotes.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -296,37 +317,43 @@ public class ReleaseNotesWrapper
 	}
 
 	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_releaseNotes.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_releaseNotes.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	 * Sets the jira issue keys of this release notes.
-	 *
-	 * @param jiraIssueKeys the jira issue keys of this release notes
-	 */
+	* Sets the jira issue keys of this release notes.
+	*
+	* @param jiraIssueKeys the jira issue keys of this release notes
+	*/
 	@Override
-	public void setJiraIssueKeys(String jiraIssueKeys) {
+	public void setJiraIssueKeys(java.lang.String jiraIssueKeys) {
 		_releaseNotes.setJiraIssueKeys(jiraIssueKeys);
 	}
 
 	/**
-	 * Sets the modified date of this release notes.
-	 *
-	 * @param modifiedDate the modified date of this release notes
-	 */
+	* Sets the modified date of this release notes.
+	*
+	* @param modifiedDate the modified date of this release notes
+	*/
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_releaseNotes.setModifiedDate(modifiedDate);
 	}
 
 	/**
-	 * Sets the name of this release notes.
-	 *
-	 * @param name the name of this release notes
-	 */
+	* Sets the name of this release notes.
+	*
+	* @param name the name of this release notes
+	*/
 	@Override
-	public void setName(String name) {
+	public void setName(java.lang.String name) {
 		_releaseNotes.setName(name);
 	}
 
@@ -336,10 +363,10 @@ public class ReleaseNotesWrapper
 	}
 
 	/**
-	 * Sets the primary key of this release notes.
-	 *
-	 * @param primaryKey the primary key of this release notes
-	 */
+	* Sets the primary key of this release notes.
+	*
+	* @param primaryKey the primary key of this release notes
+	*/
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_releaseNotes.setPrimaryKey(primaryKey);
@@ -351,80 +378,53 @@ public class ReleaseNotesWrapper
 	}
 
 	/**
-	 * Sets the release notes ID of this release notes.
-	 *
-	 * @param releaseNotesId the release notes ID of this release notes
-	 */
+	* Sets the release notes ID of this release notes.
+	*
+	* @param releaseNotesId the release notes ID of this release notes
+	*/
 	@Override
 	public void setReleaseNotesId(long releaseNotesId) {
 		_releaseNotes.setReleaseNotesId(releaseNotesId);
 	}
 
 	/**
-	 * Sets the user ID of this release notes.
-	 *
-	 * @param userId the user ID of this release notes
-	 */
+	* Sets the user ID of this release notes.
+	*
+	* @param userId the user ID of this release notes
+	*/
 	@Override
 	public void setUserId(long userId) {
 		_releaseNotes.setUserId(userId);
 	}
 
 	/**
-	 * Sets the user name of this release notes.
-	 *
-	 * @param userName the user name of this release notes
-	 */
+	* Sets the user name of this release notes.
+	*
+	* @param userName the user name of this release notes
+	*/
 	@Override
-	public void setUserName(String userName) {
+	public void setUserName(java.lang.String userName) {
 		_releaseNotes.setUserName(userName);
 	}
 
 	/**
-	 * Sets the user uuid of this release notes.
-	 *
-	 * @param userUuid the user uuid of this release notes
-	 */
+	* Sets the user uuid of this release notes.
+	*
+	* @param userUuid the user uuid of this release notes
+	*/
 	@Override
-	public void setUserUuid(String userUuid) {
+	public void setUserUuid(java.lang.String userUuid) {
 		_releaseNotes.setUserUuid(userUuid);
 	}
 
 	/**
-	 * Sets the uuid of this release notes.
-	 *
-	 * @param uuid the uuid of this release notes
-	 */
+	* Sets the uuid of this release notes.
+	*
+	* @param uuid the uuid of this release notes
+	*/
 	@Override
-	public void setUuid(String uuid) {
+	public void setUuid(java.lang.String uuid) {
 		_releaseNotes.setUuid(uuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<ReleaseNotes>
-		toCacheModel() {
-
-		return _releaseNotes.toCacheModel();
-	}
-
-	@Override
-	public ReleaseNotes toEscapedModel() {
-		return new ReleaseNotesWrapper(_releaseNotes.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return _releaseNotes.toString();
-	}
-
-	@Override
-	public ReleaseNotes toUnescapedModel() {
-		return new ReleaseNotesWrapper(_releaseNotes.toUnescapedModel());
-	}
-
-	@Override
-	public String toXmlString() {
-		return _releaseNotes.toXmlString();
 	}
 
 	@Override
@@ -467,5 +467,4 @@ public class ReleaseNotesWrapper
 	}
 
 	private final ReleaseNotes _releaseNotes;
-
 }

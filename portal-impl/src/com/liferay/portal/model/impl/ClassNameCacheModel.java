@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -29,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing ClassName in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see ClassName
  * @generated
  */
-public class ClassNameCacheModel
-	implements CacheModel<ClassName>, Externalizable, MVCCModel {
-
+@ProviderType
+public class ClassNameCacheModel implements CacheModel<ClassName>,
+	Externalizable, MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -47,8 +51,7 @@ public class ClassNameCacheModel
 		ClassNameCacheModel classNameCacheModel = (ClassNameCacheModel)obj;
 
 		if ((classNameId == classNameCacheModel.classNameId) &&
-			(mvccVersion == classNameCacheModel.mvccVersion)) {
-
+				(mvccVersion == classNameCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -95,7 +98,7 @@ public class ClassNameCacheModel
 		classNameImpl.setClassNameId(classNameId);
 
 		if (value == null) {
-			classNameImpl.setValue("");
+			classNameImpl.setValue(StringPool.BLANK);
 		}
 		else {
 			classNameImpl.setValue(value);
@@ -115,13 +118,14 @@ public class ClassNameCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(classNameId);
 
 		if (value == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(value);
@@ -131,5 +135,4 @@ public class ClassNameCacheModel
 	public long mvccVersion;
 	public long classNameId;
 	public String value;
-
 }

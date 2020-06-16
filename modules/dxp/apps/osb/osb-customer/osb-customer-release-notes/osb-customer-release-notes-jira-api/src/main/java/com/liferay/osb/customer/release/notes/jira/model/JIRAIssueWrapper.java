@@ -1,20 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.customer.release.notes.jira.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -33,8 +36,8 @@ import java.util.Objects;
  * @see JIRAIssue
  * @generated
  */
+@ProviderType
 public class JIRAIssueWrapper implements JIRAIssue, ModelWrapper<JIRAIssue> {
-
 	public JIRAIssueWrapper(JIRAIssue jiraIssue) {
 		_jiraIssue = jiraIssue;
 	}
@@ -110,133 +113,13 @@ public class JIRAIssueWrapper implements JIRAIssue, ModelWrapper<JIRAIssue> {
 	}
 
 	@Override
-	public Object clone() {
-		return new JIRAIssueWrapper((JIRAIssue)_jiraIssue.clone());
+	public JIRAIssue toEscapedModel() {
+		return new JIRAIssueWrapper(_jiraIssue.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(JIRAIssue jiraIssue) {
-		return _jiraIssue.compareTo(jiraIssue);
-	}
-
-	@Override
-	public String getAPIChange() {
-		return _jiraIssue.getAPIChange();
-	}
-
-	/**
-	 * Returns the description of this jira issue.
-	 *
-	 * @return the description of this jira issue
-	 */
-	@Override
-	public String getDescription() {
-		return _jiraIssue.getDescription();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _jiraIssue.getExpandoBridge();
-	}
-
-	@Override
-	public java.util.List<JIRAIssue> getIsRelatedToJiraIssues() {
-		return _jiraIssue.getIsRelatedToJiraIssues();
-	}
-
-	/**
-	 * Returns the issue number of this jira issue.
-	 *
-	 * @return the issue number of this jira issue
-	 */
-	@Override
-	public long getIssueNumber() {
-		return _jiraIssue.getIssueNumber();
-	}
-
-	@Override
-	public java.util.List<JIRAComponent> getJIRAComponents() {
-		return _jiraIssue.getJIRAComponents();
-	}
-
-	/**
-	 * Returns the jira issue ID of this jira issue.
-	 *
-	 * @return the jira issue ID of this jira issue
-	 */
-	@Override
-	public long getJiraIssueId() {
-		return _jiraIssue.getJiraIssueId();
-	}
-
-	/**
-	 * Returns the jira project ID of this jira issue.
-	 *
-	 * @return the jira project ID of this jira issue
-	 */
-	@Override
-	public long getJiraProjectId() {
-		return _jiraIssue.getJiraProjectId();
-	}
-
-	@Override
-	public String getKey() {
-		return _jiraIssue.getKey();
-	}
-
-	/**
-	 * Returns the primary key of this jira issue.
-	 *
-	 * @return the primary key of this jira issue
-	 */
-	@Override
-	public long getPrimaryKey() {
-		return _jiraIssue.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _jiraIssue.getPrimaryKeyObj();
-	}
-
-	/**
-	 * Returns the priority of this jira issue.
-	 *
-	 * @return the priority of this jira issue
-	 */
-	@Override
-	public int getPriority() {
-		return _jiraIssue.getPriority();
-	}
-
-	/**
-	 * Returns the summary of this jira issue.
-	 *
-	 * @return the summary of this jira issue
-	 */
-	@Override
-	public String getSummary() {
-		return _jiraIssue.getSummary();
-	}
-
-	/**
-	 * Returns the type of this jira issue.
-	 *
-	 * @return the type of this jira issue
-	 */
-	@Override
-	public int getType() {
-		return _jiraIssue.getType();
-	}
-
-	@Override
-	public String getUpgradeNote() {
-		return _jiraIssue.getUpgradeNote();
-	}
-
-	@Override
-	public int hashCode() {
-		return _jiraIssue.hashCode();
+	public JIRAIssue toUnescapedModel() {
+		return new JIRAIssueWrapper(_jiraIssue.toUnescapedModel());
 	}
 
 	@Override
@@ -255,6 +138,151 @@ public class JIRAIssueWrapper implements JIRAIssue, ModelWrapper<JIRAIssue> {
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _jiraIssue.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<JIRAIssue> toCacheModel() {
+		return _jiraIssue.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(JIRAIssue jiraIssue) {
+		return _jiraIssue.compareTo(jiraIssue);
+	}
+
+	/**
+	* Returns the priority of this jira issue.
+	*
+	* @return the priority of this jira issue
+	*/
+	@Override
+	public int getPriority() {
+		return _jiraIssue.getPriority();
+	}
+
+	/**
+	* Returns the type of this jira issue.
+	*
+	* @return the type of this jira issue
+	*/
+	@Override
+	public int getType() {
+		return _jiraIssue.getType();
+	}
+
+	@Override
+	public int hashCode() {
+		return _jiraIssue.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _jiraIssue.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new JIRAIssueWrapper((JIRAIssue)_jiraIssue.clone());
+	}
+
+	@Override
+	public java.lang.String getAPIChange() {
+		return _jiraIssue.getAPIChange();
+	}
+
+	/**
+	* Returns the description of this jira issue.
+	*
+	* @return the description of this jira issue
+	*/
+	@Override
+	public java.lang.String getDescription() {
+		return _jiraIssue.getDescription();
+	}
+
+	@Override
+	public java.lang.String getKey() {
+		return _jiraIssue.getKey();
+	}
+
+	/**
+	* Returns the summary of this jira issue.
+	*
+	* @return the summary of this jira issue
+	*/
+	@Override
+	public java.lang.String getSummary() {
+		return _jiraIssue.getSummary();
+	}
+
+	@Override
+	public java.lang.String getUpgradeNote() {
+		return _jiraIssue.getUpgradeNote();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _jiraIssue.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _jiraIssue.toXmlString();
+	}
+
+	@Override
+	public java.util.List<JIRAIssue> getIsRelatedToJiraIssues() {
+		return _jiraIssue.getIsRelatedToJiraIssues();
+	}
+
+	@Override
+	public java.util.List<JIRAComponent> getJIRAComponents() {
+		return _jiraIssue.getJIRAComponents();
+	}
+
+	/**
+	* Returns the issue number of this jira issue.
+	*
+	* @return the issue number of this jira issue
+	*/
+	@Override
+	public long getIssueNumber() {
+		return _jiraIssue.getIssueNumber();
+	}
+
+	/**
+	* Returns the jira issue ID of this jira issue.
+	*
+	* @return the jira issue ID of this jira issue
+	*/
+	@Override
+	public long getJiraIssueId() {
+		return _jiraIssue.getJiraIssueId();
+	}
+
+	/**
+	* Returns the jira project ID of this jira issue.
+	*
+	* @return the jira project ID of this jira issue
+	*/
+	@Override
+	public long getJiraProjectId() {
+		return _jiraIssue.getJiraProjectId();
+	}
+
+	/**
+	* Returns the primary key of this jira issue.
+	*
+	* @return the primary key of this jira issue
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _jiraIssue.getPrimaryKey();
+	}
+
+	@Override
 	public void persist() {
 		_jiraIssue.persist();
 	}
@@ -265,20 +293,13 @@ public class JIRAIssueWrapper implements JIRAIssue, ModelWrapper<JIRAIssue> {
 	}
 
 	/**
-	 * Sets the description of this jira issue.
-	 *
-	 * @param description the description of this jira issue
-	 */
+	* Sets the description of this jira issue.
+	*
+	* @param description the description of this jira issue
+	*/
 	@Override
-	public void setDescription(String description) {
+	public void setDescription(java.lang.String description) {
 		_jiraIssue.setDescription(description);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-
-		_jiraIssue.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -287,35 +308,41 @@ public class JIRAIssueWrapper implements JIRAIssue, ModelWrapper<JIRAIssue> {
 	}
 
 	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_jiraIssue.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_jiraIssue.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	 * Sets the issue number of this jira issue.
-	 *
-	 * @param issueNumber the issue number of this jira issue
-	 */
+	* Sets the issue number of this jira issue.
+	*
+	* @param issueNumber the issue number of this jira issue
+	*/
 	@Override
 	public void setIssueNumber(long issueNumber) {
 		_jiraIssue.setIssueNumber(issueNumber);
 	}
 
 	/**
-	 * Sets the jira issue ID of this jira issue.
-	 *
-	 * @param jiraIssueId the jira issue ID of this jira issue
-	 */
+	* Sets the jira issue ID of this jira issue.
+	*
+	* @param jiraIssueId the jira issue ID of this jira issue
+	*/
 	@Override
 	public void setJiraIssueId(long jiraIssueId) {
 		_jiraIssue.setJiraIssueId(jiraIssueId);
 	}
 
 	/**
-	 * Sets the jira project ID of this jira issue.
-	 *
-	 * @param jiraProjectId the jira project ID of this jira issue
-	 */
+	* Sets the jira project ID of this jira issue.
+	*
+	* @param jiraProjectId the jira project ID of this jira issue
+	*/
 	@Override
 	public void setJiraProjectId(long jiraProjectId) {
 		_jiraIssue.setJiraProjectId(jiraProjectId);
@@ -327,10 +354,10 @@ public class JIRAIssueWrapper implements JIRAIssue, ModelWrapper<JIRAIssue> {
 	}
 
 	/**
-	 * Sets the primary key of this jira issue.
-	 *
-	 * @param primaryKey the primary key of this jira issue
-	 */
+	* Sets the primary key of this jira issue.
+	*
+	* @param primaryKey the primary key of this jira issue
+	*/
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_jiraIssue.setPrimaryKey(primaryKey);
@@ -342,60 +369,33 @@ public class JIRAIssueWrapper implements JIRAIssue, ModelWrapper<JIRAIssue> {
 	}
 
 	/**
-	 * Sets the priority of this jira issue.
-	 *
-	 * @param priority the priority of this jira issue
-	 */
+	* Sets the priority of this jira issue.
+	*
+	* @param priority the priority of this jira issue
+	*/
 	@Override
 	public void setPriority(int priority) {
 		_jiraIssue.setPriority(priority);
 	}
 
 	/**
-	 * Sets the summary of this jira issue.
-	 *
-	 * @param summary the summary of this jira issue
-	 */
+	* Sets the summary of this jira issue.
+	*
+	* @param summary the summary of this jira issue
+	*/
 	@Override
-	public void setSummary(String summary) {
+	public void setSummary(java.lang.String summary) {
 		_jiraIssue.setSummary(summary);
 	}
 
 	/**
-	 * Sets the type of this jira issue.
-	 *
-	 * @param type the type of this jira issue
-	 */
+	* Sets the type of this jira issue.
+	*
+	* @param type the type of this jira issue
+	*/
 	@Override
 	public void setType(int type) {
 		_jiraIssue.setType(type);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<JIRAIssue>
-		toCacheModel() {
-
-		return _jiraIssue.toCacheModel();
-	}
-
-	@Override
-	public JIRAIssue toEscapedModel() {
-		return new JIRAIssueWrapper(_jiraIssue.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return _jiraIssue.toString();
-	}
-
-	@Override
-	public JIRAIssue toUnescapedModel() {
-		return new JIRAIssueWrapper(_jiraIssue.toUnescapedModel());
-	}
-
-	@Override
-	public String toXmlString() {
-		return _jiraIssue.toXmlString();
 	}
 
 	@Override
@@ -438,5 +438,4 @@ public class JIRAIssueWrapper implements JIRAIssue, ModelWrapper<JIRAIssue> {
 	}
 
 	private final JIRAIssue _jiraIssue;
-
 }

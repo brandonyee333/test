@@ -22,13 +22,10 @@ import aQute.bnd.annotation.ProviderType;
  */
 @ProviderType
 public interface WallEntryFinder {
+	public int countByG1_G2_U1_U2(long groupId1, long groupId2, long userId1,
+		long userId2);
 
-	public int countByG1_G2_U1_U2(
-		long groupId1, long groupId2, long userId1, long userId2);
-
-	public java.util.List<com.liferay.social.networking.model.WallEntry>
-		findByG1_G2_U1_U2(
-			long groupId1, long groupId2, long userId1, long userId2, int start,
-			int end);
-
+	public java.util.List<com.liferay.social.networking.model.WallEntry> findByG1_G2_U1_U2(
+		long groupId1, long groupId2, long userId1, long userId2, int start,
+		int end);
 }

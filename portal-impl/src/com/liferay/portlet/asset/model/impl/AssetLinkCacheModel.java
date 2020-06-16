@@ -14,10 +14,14 @@
 
 package com.liferay.portlet.asset.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.asset.kernel.model.AssetLink;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing AssetLink in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see AssetLink
  * @generated
  */
-public class AssetLinkCacheModel
-	implements CacheModel<AssetLink>, Externalizable {
-
+@ProviderType
+public class AssetLinkCacheModel implements CacheModel<AssetLink>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -95,7 +100,7 @@ public class AssetLinkCacheModel
 		assetLinkImpl.setUserId(userId);
 
 		if (userName == null) {
-			assetLinkImpl.setUserName("");
+			assetLinkImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			assetLinkImpl.setUserName(userName);
@@ -138,7 +143,8 @@ public class AssetLinkCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(linkId);
 
 		objectOutput.writeLong(companyId);
@@ -146,7 +152,7 @@ public class AssetLinkCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -172,5 +178,4 @@ public class AssetLinkCacheModel
 	public long entryId2;
 	public int type;
 	public int weight;
-
 }

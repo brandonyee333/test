@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -24,10 +26,11 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.portal.service.http.EmailAddressServiceSoap}.
  *
  * @author Brian Wing Shun Chan
+ * @see com.liferay.portal.service.http.EmailAddressServiceSoap
  * @generated
  */
+@ProviderType
 public class EmailAddressSoap implements Serializable {
-
 	public static EmailAddressSoap toSoapModel(EmailAddress model) {
 		EmailAddressSoap soapModel = new EmailAddressSoap();
 
@@ -43,7 +46,7 @@ public class EmailAddressSoap implements Serializable {
 		soapModel.setClassPK(model.getClassPK());
 		soapModel.setAddress(model.getAddress());
 		soapModel.setTypeId(model.getTypeId());
-		soapModel.setPrimary(model.isPrimary());
+		soapModel.setPrimary(model.getPrimary());
 
 		return soapModel;
 	}
@@ -76,8 +79,7 @@ public class EmailAddressSoap implements Serializable {
 	}
 
 	public static EmailAddressSoap[] toSoapModels(List<EmailAddress> models) {
-		List<EmailAddressSoap> soapModels = new ArrayList<EmailAddressSoap>(
-			models.size());
+		List<EmailAddressSoap> soapModels = new ArrayList<EmailAddressSoap>(models.size());
 
 		for (EmailAddress model : models) {
 			soapModels.add(toSoapModel(model));
@@ -218,5 +220,4 @@ public class EmailAddressSoap implements Serializable {
 	private String _address;
 	private long _typeId;
 	private boolean _primary;
-
 }

@@ -1,23 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.loop.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.osb.loop.model.LoopJobTitle;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing LoopJobTitle in entity cache.
  *
  * @author Ethan Bustad
+ * @see LoopJobTitle
  * @generated
  */
-public class LoopJobTitleCacheModel
-	implements CacheModel<LoopJobTitle>, Externalizable {
-
+@ProviderType
+public class LoopJobTitleCacheModel implements CacheModel<LoopJobTitle>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class LoopJobTitleCacheModel
 			return false;
 		}
 
-		LoopJobTitleCacheModel loopJobTitleCacheModel =
-			(LoopJobTitleCacheModel)obj;
+		LoopJobTitleCacheModel loopJobTitleCacheModel = (LoopJobTitleCacheModel)obj;
 
 		if (loopJobTitleId == loopJobTitleCacheModel.loopJobTitleId) {
 			return true;
@@ -96,7 +100,7 @@ public class LoopJobTitleCacheModel
 		loopJobTitleImpl.setUserId(userId);
 
 		if (userName == null) {
-			loopJobTitleImpl.setUserName("");
+			loopJobTitleImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			loopJobTitleImpl.setUserName(userName);
@@ -117,14 +121,14 @@ public class LoopJobTitleCacheModel
 		}
 
 		if (name == null) {
-			loopJobTitleImpl.setName("");
+			loopJobTitleImpl.setName(StringPool.BLANK);
 		}
 		else {
 			loopJobTitleImpl.setName(name);
 		}
 
 		if (description == null) {
-			loopJobTitleImpl.setDescription("");
+			loopJobTitleImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			loopJobTitleImpl.setDescription(description);
@@ -154,7 +158,8 @@ public class LoopJobTitleCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(loopJobTitleId);
 
 		objectOutput.writeLong(companyId);
@@ -162,7 +167,7 @@ public class LoopJobTitleCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -172,14 +177,14 @@ public class LoopJobTitleCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -197,5 +202,4 @@ public class LoopJobTitleCacheModel
 	public String name;
 	public String description;
 	public int status;
-
 }

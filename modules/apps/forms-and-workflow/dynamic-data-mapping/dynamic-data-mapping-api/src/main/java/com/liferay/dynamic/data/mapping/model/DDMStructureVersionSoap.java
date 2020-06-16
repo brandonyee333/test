@@ -14,6 +14,8 @@
 
 package com.liferay.dynamic.data.mapping.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -24,13 +26,12 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.dynamic.data.mapping.service.http.DDMStructureVersionServiceSoap}.
  *
  * @author Brian Wing Shun Chan
+ * @see com.liferay.dynamic.data.mapping.service.http.DDMStructureVersionServiceSoap
  * @generated
  */
+@ProviderType
 public class DDMStructureVersionSoap implements Serializable {
-
-	public static DDMStructureVersionSoap toSoapModel(
-		DDMStructureVersion model) {
-
+	public static DDMStructureVersionSoap toSoapModel(DDMStructureVersion model) {
 		DDMStructureVersionSoap soapModel = new DDMStructureVersionSoap();
 
 		soapModel.setStructureVersionId(model.getStructureVersionId());
@@ -57,9 +58,7 @@ public class DDMStructureVersionSoap implements Serializable {
 
 	public static DDMStructureVersionSoap[] toSoapModels(
 		DDMStructureVersion[] models) {
-
-		DDMStructureVersionSoap[] soapModels =
-			new DDMStructureVersionSoap[models.length];
+		DDMStructureVersionSoap[] soapModels = new DDMStructureVersionSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -70,12 +69,10 @@ public class DDMStructureVersionSoap implements Serializable {
 
 	public static DDMStructureVersionSoap[][] toSoapModels(
 		DDMStructureVersion[][] models) {
-
 		DDMStructureVersionSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels =
-				new DDMStructureVersionSoap[models.length][models[0].length];
+			soapModels = new DDMStructureVersionSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new DDMStructureVersionSoap[0][0];
@@ -90,16 +87,13 @@ public class DDMStructureVersionSoap implements Serializable {
 
 	public static DDMStructureVersionSoap[] toSoapModels(
 		List<DDMStructureVersion> models) {
-
-		List<DDMStructureVersionSoap> soapModels =
-			new ArrayList<DDMStructureVersionSoap>(models.size());
+		List<DDMStructureVersionSoap> soapModels = new ArrayList<DDMStructureVersionSoap>(models.size());
 
 		for (DDMStructureVersion model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(
-			new DDMStructureVersionSoap[soapModels.size()]);
+		return soapModels.toArray(new DDMStructureVersionSoap[soapModels.size()]);
 	}
 
 	public DDMStructureVersionSoap() {
@@ -275,5 +269,4 @@ public class DDMStructureVersionSoap implements Serializable {
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
-
 }

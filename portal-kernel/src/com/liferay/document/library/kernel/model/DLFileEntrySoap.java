@@ -14,6 +14,8 @@
 
 package com.liferay.document.library.kernel.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -24,10 +26,11 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.portlet.documentlibrary.service.http.DLFileEntryServiceSoap}.
  *
  * @author Brian Wing Shun Chan
+ * @see com.liferay.portlet.documentlibrary.service.http.DLFileEntryServiceSoap
  * @generated
  */
+@ProviderType
 public class DLFileEntrySoap implements Serializable {
-
 	public static DLFileEntrySoap toSoapModel(DLFileEntry model) {
 		DLFileEntrySoap soapModel = new DLFileEntrySoap();
 
@@ -59,7 +62,7 @@ public class DLFileEntrySoap implements Serializable {
 		soapModel.setLargeImageId(model.getLargeImageId());
 		soapModel.setCustom1ImageId(model.getCustom1ImageId());
 		soapModel.setCustom2ImageId(model.getCustom2ImageId());
-		soapModel.setManualCheckInRequired(model.isManualCheckInRequired());
+		soapModel.setManualCheckInRequired(model.getManualCheckInRequired());
 		soapModel.setLastPublishDate(model.getLastPublishDate());
 
 		return soapModel;
@@ -93,8 +96,7 @@ public class DLFileEntrySoap implements Serializable {
 	}
 
 	public static DLFileEntrySoap[] toSoapModels(List<DLFileEntry> models) {
-		List<DLFileEntrySoap> soapModels = new ArrayList<DLFileEntrySoap>(
-			models.size());
+		List<DLFileEntrySoap> soapModels = new ArrayList<DLFileEntrySoap>(models.size());
 
 		for (DLFileEntry model : models) {
 			soapModels.add(toSoapModel(model));
@@ -388,5 +390,4 @@ public class DLFileEntrySoap implements Serializable {
 	private long _custom2ImageId;
 	private boolean _manualCheckInRequired;
 	private Date _lastPublishDate;
-
 }

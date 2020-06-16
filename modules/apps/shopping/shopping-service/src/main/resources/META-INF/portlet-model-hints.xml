@@ -168,9 +168,7 @@
 		<field name="couponDiscount" type="double" />
 		<field name="billingFirstName" type="String" />
 		<field name="billingLastName" type="String" />
-		<field name="billingEmailAddress" type="String">
-			<hint-collection name="EMAIL-ADDRESS" />
-		</field>
+		<field name="billingEmailAddress" type="String" />
 		<field name="billingCompany" type="String" />
 		<field name="billingStreet" type="String" />
 		<field name="billingCity" type="String" />
@@ -181,9 +179,7 @@
 		<field name="shipToBilling" type="boolean" />
 		<field name="shippingFirstName" type="String" />
 		<field name="shippingLastName" type="String" />
-		<field name="shippingEmailAddress" type="String">
-			<hint-collection name="EMAIL-ADDRESS" />
-		</field>
+		<field name="shippingEmailAddress" type="String" />
 		<field name="shippingCompany" type="String" />
 		<field name="shippingStreet" type="String" />
 		<field name="shippingCity" type="String" />
@@ -196,23 +192,13 @@
 		<field name="ccNumber" type="String" />
 		<field name="ccExpMonth" type="int" />
 		<field name="ccExpYear" type="int" />
-		<field name="ccVerNumber" type="String">
-			<hint name="display-width">30</hint>
-		</field>
-		<field name="comments" type="String">
-			<hint-collection name="CLOB" />
-			<hint name="display-height">105</hint>
-			<hint name="display-width">500</hint>
-		</field>
+		<field name="ccVerNumber" type="String" />
+		<field name="comments" type="String" />
 		<field name="ppTxnId" type="String" />
 		<field name="ppPaymentStatus" type="String" />
 		<field name="ppPaymentGross" type="double" />
-		<field name="ppReceiverEmail" type="String">
-			<hint-collection name="EMAIL-ADDRESS" />
-		</field>
-		<field name="ppPayerEmail" type="String">
-			<hint-collection name="EMAIL-ADDRESS" />
-		</field>
+		<field name="ppReceiverEmail" type="String" />
+		<field name="ppPayerEmail" type="String" />
 		<field name="sendOrderEmail" type="boolean" />
 		<field name="sendShippingEmail" type="boolean" />
 	</model>
@@ -220,19 +206,11 @@
 		<field name="orderItemId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="orderId" type="long" />
-		<field name="itemId" type="String">
-			<hint-collection name="CLOB" />
-		</field>
+		<field name="itemId" type="String" />
 		<field name="sku" type="String" />
-		<field name="name" type="String">
-			<hint name="max-length">200</hint>
-		</field>
-		<field name="description" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
-		<field name="properties" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+		<field name="properties" type="String" />
 		<field name="price" type="double" />
 		<field name="quantity" type="int" />
 		<field name="shippedDate" type="Date" />

@@ -14,10 +14,16 @@
 
 package com.liferay.portlet.exportimport.service.persistence.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.exportimport.kernel.exception.NoSuchConfigurationException;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.persistence.ExportImportConfigurationPersistence;
+
+import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
+import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
@@ -26,21 +32,20 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.service.persistence.CompanyProvider;
+import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.portlet.exportimport.model.impl.ExportImportConfigurationImpl;
 import com.liferay.portlet.exportimport.model.impl.ExportImportConfigurationModelImpl;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -59,32 +64,58 @@ import java.util.Set;
  * </p>
  *
  * @author Brian Wing Shun Chan
+ * @see ExportImportConfigurationPersistence
+ * @see com.liferay.exportimport.kernel.service.persistence.ExportImportConfigurationUtil
  * @generated
  */
+@ProviderType
 public class ExportImportConfigurationPersistenceImpl
 	extends BasePersistenceImpl<ExportImportConfiguration>
 	implements ExportImportConfigurationPersistence {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use <code>ExportImportConfigurationUtil</code> to access the export import configuration persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use {@link ExportImportConfigurationUtil} to access the export import configuration persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY =
-		ExportImportConfigurationImpl.class.getName();
-
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List1";
-
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathWithPaginationFindByGroupId;
-	private FinderPath _finderPathWithoutPaginationFindByGroupId;
-	private FinderPath _finderPathCountByGroupId;
+	public static final String FINDER_CLASS_NAME_ENTITY = ExportImportConfigurationImpl.class.getName();
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List1";
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List2";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
+			ExportImportConfigurationImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
+			ExportImportConfigurationImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
+			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_GROUPID = new FinderPath(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
+			ExportImportConfigurationImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupId",
+			new String[] {
+				Long.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID =
+		new FinderPath(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
+			ExportImportConfigurationImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
+			new String[] { Long.class.getName() },
+			ExportImportConfigurationModelImpl.GROUPID_COLUMN_BITMASK |
+			ExportImportConfigurationModelImpl.CREATEDATE_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_GROUPID = new FinderPath(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
+			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"countByGroupId", new String[] { Long.class.getName() });
 
 	/**
 	 * Returns all the export import configurations where groupId = &#63;.
@@ -94,15 +125,14 @@ public class ExportImportConfigurationPersistenceImpl
 	 */
 	@Override
 	public List<ExportImportConfiguration> findByGroupId(long groupId) {
-		return findByGroupId(
-			groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+		return findByGroupId(groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the export import configurations where groupId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ExportImportConfigurationModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
@@ -111,9 +141,8 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @return the range of matching export import configurations
 	 */
 	@Override
-	public List<ExportImportConfiguration> findByGroupId(
-		long groupId, int start, int end) {
-
+	public List<ExportImportConfiguration> findByGroupId(long groupId,
+		int start, int end) {
 		return findByGroupId(groupId, start, end, null);
 	}
 
@@ -121,7 +150,7 @@ public class ExportImportConfigurationPersistenceImpl
 	 * Returns an ordered range of all the export import configurations where groupId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ExportImportConfigurationModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
@@ -131,10 +160,9 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @return the ordered range of matching export import configurations
 	 */
 	@Override
-	public List<ExportImportConfiguration> findByGroupId(
-		long groupId, int start, int end,
+	public List<ExportImportConfiguration> findByGroupId(long groupId,
+		int start, int end,
 		OrderByComparator<ExportImportConfiguration> orderByComparator) {
-
 		return findByGroupId(groupId, start, end, orderByComparator, true);
 	}
 
@@ -142,49 +170,45 @@ public class ExportImportConfigurationPersistenceImpl
 	 * Returns an ordered range of all the export import configurations where groupId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ExportImportConfigurationModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
 	 * @param start the lower bound of the range of export import configurations
 	 * @param end the upper bound of the range of export import configurations (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of matching export import configurations
 	 */
 	@Override
-	public List<ExportImportConfiguration> findByGroupId(
-		long groupId, int start, int end,
+	public List<ExportImportConfiguration> findByGroupId(long groupId,
+		int start, int end,
 		OrderByComparator<ExportImportConfiguration> orderByComparator,
-		boolean useFinderCache) {
-
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByGroupId;
-				finderArgs = new Object[] {groupId};
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID;
+			finderArgs = new Object[] { groupId };
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByGroupId;
-			finderArgs = new Object[] {groupId, start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_GROUPID;
+			finderArgs = new Object[] { groupId, start, end, orderByComparator };
 		}
 
 		List<ExportImportConfiguration> list = null;
 
-		if (useFinderCache) {
-			list = (List<ExportImportConfiguration>)FinderCacheUtil.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<ExportImportConfiguration>)finderCache.getResult(finderPath,
+					finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
-				for (ExportImportConfiguration exportImportConfiguration :
-						list) {
-
-					if (groupId != exportImportConfiguration.getGroupId()) {
+				for (ExportImportConfiguration exportImportConfiguration : list) {
+					if ((groupId != exportImportConfiguration.getGroupId())) {
 						list = null;
 
 						break;
@@ -194,56 +218,63 @@ public class ExportImportConfigurationPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					3 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(3 +
+						(orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				sb = new StringBundler(3);
+				query = new StringBundler(3);
 			}
 
-			sb.append(_SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE);
+			query.append(_SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE);
 
-			sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+			query.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 			}
-			else {
-				sb.append(ExportImportConfigurationModelImpl.ORDER_BY_JPQL);
+			else
+			 if (pagination) {
+				query.append(ExportImportConfigurationModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(groupId);
+				qPos.add(groupId);
 
-				list = (List<ExportImportConfiguration>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<ExportImportConfiguration>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<ExportImportConfiguration>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					FinderCacheUtil.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -262,28 +293,26 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @throws NoSuchConfigurationException if a matching export import configuration could not be found
 	 */
 	@Override
-	public ExportImportConfiguration findByGroupId_First(
-			long groupId,
-			OrderByComparator<ExportImportConfiguration> orderByComparator)
+	public ExportImportConfiguration findByGroupId_First(long groupId,
+		OrderByComparator<ExportImportConfiguration> orderByComparator)
 		throws NoSuchConfigurationException {
-
-		ExportImportConfiguration exportImportConfiguration =
-			fetchByGroupId_First(groupId, orderByComparator);
+		ExportImportConfiguration exportImportConfiguration = fetchByGroupId_First(groupId,
+				orderByComparator);
 
 		if (exportImportConfiguration != null) {
 			return exportImportConfiguration;
 		}
 
-		StringBundler sb = new StringBundler(4);
+		StringBundler msg = new StringBundler(4);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("groupId=");
-		sb.append(groupId);
+		msg.append("groupId=");
+		msg.append(groupId);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchConfigurationException(sb.toString());
+		throw new NoSuchConfigurationException(msg.toString());
 	}
 
 	/**
@@ -294,12 +323,10 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @return the first matching export import configuration, or <code>null</code> if a matching export import configuration could not be found
 	 */
 	@Override
-	public ExportImportConfiguration fetchByGroupId_First(
-		long groupId,
+	public ExportImportConfiguration fetchByGroupId_First(long groupId,
 		OrderByComparator<ExportImportConfiguration> orderByComparator) {
-
-		List<ExportImportConfiguration> list = findByGroupId(
-			groupId, 0, 1, orderByComparator);
+		List<ExportImportConfiguration> list = findByGroupId(groupId, 0, 1,
+				orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -317,28 +344,26 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @throws NoSuchConfigurationException if a matching export import configuration could not be found
 	 */
 	@Override
-	public ExportImportConfiguration findByGroupId_Last(
-			long groupId,
-			OrderByComparator<ExportImportConfiguration> orderByComparator)
+	public ExportImportConfiguration findByGroupId_Last(long groupId,
+		OrderByComparator<ExportImportConfiguration> orderByComparator)
 		throws NoSuchConfigurationException {
-
-		ExportImportConfiguration exportImportConfiguration =
-			fetchByGroupId_Last(groupId, orderByComparator);
+		ExportImportConfiguration exportImportConfiguration = fetchByGroupId_Last(groupId,
+				orderByComparator);
 
 		if (exportImportConfiguration != null) {
 			return exportImportConfiguration;
 		}
 
-		StringBundler sb = new StringBundler(4);
+		StringBundler msg = new StringBundler(4);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("groupId=");
-		sb.append(groupId);
+		msg.append("groupId=");
+		msg.append(groupId);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchConfigurationException(sb.toString());
+		throw new NoSuchConfigurationException(msg.toString());
 	}
 
 	/**
@@ -349,18 +374,16 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @return the last matching export import configuration, or <code>null</code> if a matching export import configuration could not be found
 	 */
 	@Override
-	public ExportImportConfiguration fetchByGroupId_Last(
-		long groupId,
+	public ExportImportConfiguration fetchByGroupId_Last(long groupId,
 		OrderByComparator<ExportImportConfiguration> orderByComparator) {
-
 		int count = countByGroupId(groupId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<ExportImportConfiguration> list = findByGroupId(
-			groupId, count - 1, count, orderByComparator);
+		List<ExportImportConfiguration> list = findByGroupId(groupId,
+				count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -380,35 +403,30 @@ public class ExportImportConfigurationPersistenceImpl
 	 */
 	@Override
 	public ExportImportConfiguration[] findByGroupId_PrevAndNext(
-			long exportImportConfigurationId, long groupId,
-			OrderByComparator<ExportImportConfiguration> orderByComparator)
+		long exportImportConfigurationId, long groupId,
+		OrderByComparator<ExportImportConfiguration> orderByComparator)
 		throws NoSuchConfigurationException {
-
-		ExportImportConfiguration exportImportConfiguration = findByPrimaryKey(
-			exportImportConfigurationId);
+		ExportImportConfiguration exportImportConfiguration = findByPrimaryKey(exportImportConfigurationId);
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			ExportImportConfiguration[] array =
-				new ExportImportConfigurationImpl[3];
+			ExportImportConfiguration[] array = new ExportImportConfigurationImpl[3];
 
-			array[0] = getByGroupId_PrevAndNext(
-				session, exportImportConfiguration, groupId, orderByComparator,
-				true);
+			array[0] = getByGroupId_PrevAndNext(session,
+					exportImportConfiguration, groupId, orderByComparator, true);
 
 			array[1] = exportImportConfiguration;
 
-			array[2] = getByGroupId_PrevAndNext(
-				session, exportImportConfiguration, groupId, orderByComparator,
-				false);
+			array[2] = getByGroupId_PrevAndNext(session,
+					exportImportConfiguration, groupId, orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -420,103 +438,100 @@ public class ExportImportConfigurationPersistenceImpl
 		long groupId,
 		OrderByComparator<ExportImportConfiguration> orderByComparator,
 		boolean previous) {
-
-		StringBundler sb = null;
+		StringBundler query = null;
 
 		if (orderByComparator != null) {
-			sb = new StringBundler(
-				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+			query = new StringBundler(4 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			sb = new StringBundler(3);
+			query = new StringBundler(3);
 		}
 
-		sb.append(_SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE);
+		query.append(_SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE);
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		query.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
+				query.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
+						query.append(WHERE_GREATER_THAN);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN);
+						query.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			sb.append(ORDER_BY_CLAUSE);
+			query.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
+						query.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
+						query.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
+						query.append(ORDER_BY_ASC);
 					}
 					else {
-						sb.append(ORDER_BY_DESC);
+						query.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			sb.append(ExportImportConfigurationModelImpl.ORDER_BY_JPQL);
+			query.append(ExportImportConfigurationModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
-		Query query = session.createQuery(sql);
+		Query q = session.createQuery(sql);
 
-		query.setFirstResult(0);
-		query.setMaxResults(2);
+		q.setFirstResult(0);
+		q.setMaxResults(2);
 
-		QueryPos queryPos = QueryPos.getInstance(query);
+		QueryPos qPos = QueryPos.getInstance(q);
 
-		queryPos.add(groupId);
+		qPos.add(groupId);
 
 		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						exportImportConfiguration)) {
+			Object[] values = orderByComparator.getOrderByConditionValues(exportImportConfiguration);
 
-				queryPos.add(orderByConditionValue);
+			for (Object value : values) {
+				qPos.add(value);
 			}
 		}
 
-		List<ExportImportConfiguration> list = query.list();
+		List<ExportImportConfiguration> list = q.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -533,10 +548,8 @@ public class ExportImportConfigurationPersistenceImpl
 	 */
 	@Override
 	public void removeByGroupId(long groupId) {
-		for (ExportImportConfiguration exportImportConfiguration :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
-
+		for (ExportImportConfiguration exportImportConfiguration : findByGroupId(
+				groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(exportImportConfiguration);
 		}
 	}
@@ -549,41 +562,40 @@ public class ExportImportConfigurationPersistenceImpl
 	 */
 	@Override
 	public int countByGroupId(long groupId) {
-		FinderPath finderPath = _finderPathCountByGroupId;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_GROUPID;
 
-		Object[] finderArgs = new Object[] {groupId};
+		Object[] finderArgs = new Object[] { groupId };
 
-		Long count = (Long)FinderCacheUtil.getResult(
-			finderPath, finderArgs, this);
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(2);
+			StringBundler query = new StringBundler(2);
 
-			sb.append(_SQL_COUNT_EXPORTIMPORTCONFIGURATION_WHERE);
+			query.append(_SQL_COUNT_EXPORTIMPORTCONFIGURATION_WHERE);
 
-			sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+			query.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(groupId);
+				qPos.add(groupId);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				FinderCacheUtil.putResult(finderPath, finderArgs, count);
+				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
-				FinderCacheUtil.removeResult(finderPath, finderArgs);
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -593,12 +605,30 @@ public class ExportImportConfigurationPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2 =
-		"exportImportConfiguration.groupId = ?";
-
-	private FinderPath _finderPathWithPaginationFindByCompanyId;
-	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
-	private FinderPath _finderPathCountByCompanyId;
+	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2 = "exportImportConfiguration.groupId = ?";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_COMPANYID =
+		new FinderPath(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
+			ExportImportConfigurationImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
+			new String[] {
+				Long.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID =
+		new FinderPath(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
+			ExportImportConfigurationImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
+			new String[] { Long.class.getName() },
+			ExportImportConfigurationModelImpl.COMPANYID_COLUMN_BITMASK |
+			ExportImportConfigurationModelImpl.CREATEDATE_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_COMPANYID = new FinderPath(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
+			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"countByCompanyId", new String[] { Long.class.getName() });
 
 	/**
 	 * Returns all the export import configurations where companyId = &#63;.
@@ -608,15 +638,15 @@ public class ExportImportConfigurationPersistenceImpl
 	 */
 	@Override
 	public List<ExportImportConfiguration> findByCompanyId(long companyId) {
-		return findByCompanyId(
-			companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+		return findByCompanyId(companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			null);
 	}
 
 	/**
 	 * Returns a range of all the export import configurations where companyId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ExportImportConfigurationModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param companyId the company ID
@@ -625,9 +655,8 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @return the range of matching export import configurations
 	 */
 	@Override
-	public List<ExportImportConfiguration> findByCompanyId(
-		long companyId, int start, int end) {
-
+	public List<ExportImportConfiguration> findByCompanyId(long companyId,
+		int start, int end) {
 		return findByCompanyId(companyId, start, end, null);
 	}
 
@@ -635,7 +664,7 @@ public class ExportImportConfigurationPersistenceImpl
 	 * Returns an ordered range of all the export import configurations where companyId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ExportImportConfigurationModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param companyId the company ID
@@ -645,10 +674,9 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @return the ordered range of matching export import configurations
 	 */
 	@Override
-	public List<ExportImportConfiguration> findByCompanyId(
-		long companyId, int start, int end,
+	public List<ExportImportConfiguration> findByCompanyId(long companyId,
+		int start, int end,
 		OrderByComparator<ExportImportConfiguration> orderByComparator) {
-
 		return findByCompanyId(companyId, start, end, orderByComparator, true);
 	}
 
@@ -656,51 +684,45 @@ public class ExportImportConfigurationPersistenceImpl
 	 * Returns an ordered range of all the export import configurations where companyId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ExportImportConfigurationModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param companyId the company ID
 	 * @param start the lower bound of the range of export import configurations
 	 * @param end the upper bound of the range of export import configurations (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of matching export import configurations
 	 */
 	@Override
-	public List<ExportImportConfiguration> findByCompanyId(
-		long companyId, int start, int end,
+	public List<ExportImportConfiguration> findByCompanyId(long companyId,
+		int start, int end,
 		OrderByComparator<ExportImportConfiguration> orderByComparator,
-		boolean useFinderCache) {
-
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByCompanyId;
-				finderArgs = new Object[] {companyId};
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID;
+			finderArgs = new Object[] { companyId };
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByCompanyId;
-			finderArgs = new Object[] {
-				companyId, start, end, orderByComparator
-			};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_COMPANYID;
+			finderArgs = new Object[] { companyId, start, end, orderByComparator };
 		}
 
 		List<ExportImportConfiguration> list = null;
 
-		if (useFinderCache) {
-			list = (List<ExportImportConfiguration>)FinderCacheUtil.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<ExportImportConfiguration>)finderCache.getResult(finderPath,
+					finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
-				for (ExportImportConfiguration exportImportConfiguration :
-						list) {
-
-					if (companyId != exportImportConfiguration.getCompanyId()) {
+				for (ExportImportConfiguration exportImportConfiguration : list) {
+					if ((companyId != exportImportConfiguration.getCompanyId())) {
 						list = null;
 
 						break;
@@ -710,56 +732,63 @@ public class ExportImportConfigurationPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					3 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(3 +
+						(orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				sb = new StringBundler(3);
+				query = new StringBundler(3);
 			}
 
-			sb.append(_SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE);
+			query.append(_SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE);
 
-			sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+			query.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 			}
-			else {
-				sb.append(ExportImportConfigurationModelImpl.ORDER_BY_JPQL);
+			else
+			 if (pagination) {
+				query.append(ExportImportConfigurationModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(companyId);
+				qPos.add(companyId);
 
-				list = (List<ExportImportConfiguration>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<ExportImportConfiguration>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<ExportImportConfiguration>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					FinderCacheUtil.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -778,28 +807,26 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @throws NoSuchConfigurationException if a matching export import configuration could not be found
 	 */
 	@Override
-	public ExportImportConfiguration findByCompanyId_First(
-			long companyId,
-			OrderByComparator<ExportImportConfiguration> orderByComparator)
+	public ExportImportConfiguration findByCompanyId_First(long companyId,
+		OrderByComparator<ExportImportConfiguration> orderByComparator)
 		throws NoSuchConfigurationException {
-
-		ExportImportConfiguration exportImportConfiguration =
-			fetchByCompanyId_First(companyId, orderByComparator);
+		ExportImportConfiguration exportImportConfiguration = fetchByCompanyId_First(companyId,
+				orderByComparator);
 
 		if (exportImportConfiguration != null) {
 			return exportImportConfiguration;
 		}
 
-		StringBundler sb = new StringBundler(4);
+		StringBundler msg = new StringBundler(4);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("companyId=");
-		sb.append(companyId);
+		msg.append("companyId=");
+		msg.append(companyId);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchConfigurationException(sb.toString());
+		throw new NoSuchConfigurationException(msg.toString());
 	}
 
 	/**
@@ -810,12 +837,10 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @return the first matching export import configuration, or <code>null</code> if a matching export import configuration could not be found
 	 */
 	@Override
-	public ExportImportConfiguration fetchByCompanyId_First(
-		long companyId,
+	public ExportImportConfiguration fetchByCompanyId_First(long companyId,
 		OrderByComparator<ExportImportConfiguration> orderByComparator) {
-
-		List<ExportImportConfiguration> list = findByCompanyId(
-			companyId, 0, 1, orderByComparator);
+		List<ExportImportConfiguration> list = findByCompanyId(companyId, 0, 1,
+				orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -833,28 +858,26 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @throws NoSuchConfigurationException if a matching export import configuration could not be found
 	 */
 	@Override
-	public ExportImportConfiguration findByCompanyId_Last(
-			long companyId,
-			OrderByComparator<ExportImportConfiguration> orderByComparator)
+	public ExportImportConfiguration findByCompanyId_Last(long companyId,
+		OrderByComparator<ExportImportConfiguration> orderByComparator)
 		throws NoSuchConfigurationException {
-
-		ExportImportConfiguration exportImportConfiguration =
-			fetchByCompanyId_Last(companyId, orderByComparator);
+		ExportImportConfiguration exportImportConfiguration = fetchByCompanyId_Last(companyId,
+				orderByComparator);
 
 		if (exportImportConfiguration != null) {
 			return exportImportConfiguration;
 		}
 
-		StringBundler sb = new StringBundler(4);
+		StringBundler msg = new StringBundler(4);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("companyId=");
-		sb.append(companyId);
+		msg.append("companyId=");
+		msg.append(companyId);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchConfigurationException(sb.toString());
+		throw new NoSuchConfigurationException(msg.toString());
 	}
 
 	/**
@@ -865,18 +888,16 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @return the last matching export import configuration, or <code>null</code> if a matching export import configuration could not be found
 	 */
 	@Override
-	public ExportImportConfiguration fetchByCompanyId_Last(
-		long companyId,
+	public ExportImportConfiguration fetchByCompanyId_Last(long companyId,
 		OrderByComparator<ExportImportConfiguration> orderByComparator) {
-
 		int count = countByCompanyId(companyId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<ExportImportConfiguration> list = findByCompanyId(
-			companyId, count - 1, count, orderByComparator);
+		List<ExportImportConfiguration> list = findByCompanyId(companyId,
+				count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -896,35 +917,32 @@ public class ExportImportConfigurationPersistenceImpl
 	 */
 	@Override
 	public ExportImportConfiguration[] findByCompanyId_PrevAndNext(
-			long exportImportConfigurationId, long companyId,
-			OrderByComparator<ExportImportConfiguration> orderByComparator)
+		long exportImportConfigurationId, long companyId,
+		OrderByComparator<ExportImportConfiguration> orderByComparator)
 		throws NoSuchConfigurationException {
-
-		ExportImportConfiguration exportImportConfiguration = findByPrimaryKey(
-			exportImportConfigurationId);
+		ExportImportConfiguration exportImportConfiguration = findByPrimaryKey(exportImportConfigurationId);
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			ExportImportConfiguration[] array =
-				new ExportImportConfigurationImpl[3];
+			ExportImportConfiguration[] array = new ExportImportConfigurationImpl[3];
 
-			array[0] = getByCompanyId_PrevAndNext(
-				session, exportImportConfiguration, companyId,
-				orderByComparator, true);
+			array[0] = getByCompanyId_PrevAndNext(session,
+					exportImportConfiguration, companyId, orderByComparator,
+					true);
 
 			array[1] = exportImportConfiguration;
 
-			array[2] = getByCompanyId_PrevAndNext(
-				session, exportImportConfiguration, companyId,
-				orderByComparator, false);
+			array[2] = getByCompanyId_PrevAndNext(session,
+					exportImportConfiguration, companyId, orderByComparator,
+					false);
 
 			return array;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -936,103 +954,100 @@ public class ExportImportConfigurationPersistenceImpl
 		long companyId,
 		OrderByComparator<ExportImportConfiguration> orderByComparator,
 		boolean previous) {
-
-		StringBundler sb = null;
+		StringBundler query = null;
 
 		if (orderByComparator != null) {
-			sb = new StringBundler(
-				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+			query = new StringBundler(4 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			sb = new StringBundler(3);
+			query = new StringBundler(3);
 		}
 
-		sb.append(_SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE);
+		query.append(_SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE);
 
-		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		query.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
+				query.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
+						query.append(WHERE_GREATER_THAN);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN);
+						query.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			sb.append(ORDER_BY_CLAUSE);
+			query.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
+						query.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
+						query.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
+						query.append(ORDER_BY_ASC);
 					}
 					else {
-						sb.append(ORDER_BY_DESC);
+						query.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			sb.append(ExportImportConfigurationModelImpl.ORDER_BY_JPQL);
+			query.append(ExportImportConfigurationModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
-		Query query = session.createQuery(sql);
+		Query q = session.createQuery(sql);
 
-		query.setFirstResult(0);
-		query.setMaxResults(2);
+		q.setFirstResult(0);
+		q.setMaxResults(2);
 
-		QueryPos queryPos = QueryPos.getInstance(query);
+		QueryPos qPos = QueryPos.getInstance(q);
 
-		queryPos.add(companyId);
+		qPos.add(companyId);
 
 		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						exportImportConfiguration)) {
+			Object[] values = orderByComparator.getOrderByConditionValues(exportImportConfiguration);
 
-				queryPos.add(orderByConditionValue);
+			for (Object value : values) {
+				qPos.add(value);
 			}
 		}
 
-		List<ExportImportConfiguration> list = query.list();
+		List<ExportImportConfiguration> list = q.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -1049,10 +1064,8 @@ public class ExportImportConfigurationPersistenceImpl
 	 */
 	@Override
 	public void removeByCompanyId(long companyId) {
-		for (ExportImportConfiguration exportImportConfiguration :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
-
+		for (ExportImportConfiguration exportImportConfiguration : findByCompanyId(
+				companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(exportImportConfiguration);
 		}
 	}
@@ -1065,41 +1078,40 @@ public class ExportImportConfigurationPersistenceImpl
 	 */
 	@Override
 	public int countByCompanyId(long companyId) {
-		FinderPath finderPath = _finderPathCountByCompanyId;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_COMPANYID;
 
-		Object[] finderArgs = new Object[] {companyId};
+		Object[] finderArgs = new Object[] { companyId };
 
-		Long count = (Long)FinderCacheUtil.getResult(
-			finderPath, finderArgs, this);
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(2);
+			StringBundler query = new StringBundler(2);
 
-			sb.append(_SQL_COUNT_EXPORTIMPORTCONFIGURATION_WHERE);
+			query.append(_SQL_COUNT_EXPORTIMPORTCONFIGURATION_WHERE);
 
-			sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+			query.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(companyId);
+				qPos.add(companyId);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				FinderCacheUtil.putResult(finderPath, finderArgs, count);
+				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
-				FinderCacheUtil.removeResult(finderPath, finderArgs);
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1109,12 +1121,30 @@ public class ExportImportConfigurationPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2 =
-		"exportImportConfiguration.companyId = ?";
-
-	private FinderPath _finderPathWithPaginationFindByG_T;
-	private FinderPath _finderPathWithoutPaginationFindByG_T;
-	private FinderPath _finderPathCountByG_T;
+	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2 = "exportImportConfiguration.companyId = ?";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_G_T = new FinderPath(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
+			ExportImportConfigurationImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_T",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_T = new FinderPath(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
+			ExportImportConfigurationImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_T",
+			new String[] { Long.class.getName(), Integer.class.getName() },
+			ExportImportConfigurationModelImpl.GROUPID_COLUMN_BITMASK |
+			ExportImportConfigurationModelImpl.TYPE_COLUMN_BITMASK |
+			ExportImportConfigurationModelImpl.CREATEDATE_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_G_T = new FinderPath(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
+			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"countByG_T",
+			new String[] { Long.class.getName(), Integer.class.getName() });
 
 	/**
 	 * Returns all the export import configurations where groupId = &#63; and type = &#63;.
@@ -1125,15 +1155,15 @@ public class ExportImportConfigurationPersistenceImpl
 	 */
 	@Override
 	public List<ExportImportConfiguration> findByG_T(long groupId, int type) {
-		return findByG_T(
-			groupId, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+		return findByG_T(groupId, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			null);
 	}
 
 	/**
 	 * Returns a range of all the export import configurations where groupId = &#63; and type = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ExportImportConfigurationModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
@@ -1143,9 +1173,8 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @return the range of matching export import configurations
 	 */
 	@Override
-	public List<ExportImportConfiguration> findByG_T(
-		long groupId, int type, int start, int end) {
-
+	public List<ExportImportConfiguration> findByG_T(long groupId, int type,
+		int start, int end) {
 		return findByG_T(groupId, type, start, end, null);
 	}
 
@@ -1153,7 +1182,7 @@ public class ExportImportConfigurationPersistenceImpl
 	 * Returns an ordered range of all the export import configurations where groupId = &#63; and type = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ExportImportConfigurationModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
@@ -1164,10 +1193,9 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @return the ordered range of matching export import configurations
 	 */
 	@Override
-	public List<ExportImportConfiguration> findByG_T(
-		long groupId, int type, int start, int end,
+	public List<ExportImportConfiguration> findByG_T(long groupId, int type,
+		int start, int end,
 		OrderByComparator<ExportImportConfiguration> orderByComparator) {
-
 		return findByG_T(groupId, type, start, end, orderByComparator, true);
 	}
 
@@ -1175,7 +1203,7 @@ public class ExportImportConfigurationPersistenceImpl
 	 * Returns an ordered range of all the export import configurations where groupId = &#63; and type = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ExportImportConfigurationModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
@@ -1183,46 +1211,43 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @param start the lower bound of the range of export import configurations
 	 * @param end the upper bound of the range of export import configurations (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of matching export import configurations
 	 */
 	@Override
-	public List<ExportImportConfiguration> findByG_T(
-		long groupId, int type, int start, int end,
+	public List<ExportImportConfiguration> findByG_T(long groupId, int type,
+		int start, int end,
 		OrderByComparator<ExportImportConfiguration> orderByComparator,
-		boolean useFinderCache) {
-
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByG_T;
-				finderArgs = new Object[] {groupId, type};
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_T;
+			finderArgs = new Object[] { groupId, type };
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByG_T;
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_G_T;
 			finderArgs = new Object[] {
-				groupId, type, start, end, orderByComparator
-			};
+					groupId, type,
+					
+					start, end, orderByComparator
+				};
 		}
 
 		List<ExportImportConfiguration> list = null;
 
-		if (useFinderCache) {
-			list = (List<ExportImportConfiguration>)FinderCacheUtil.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<ExportImportConfiguration>)finderCache.getResult(finderPath,
+					finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
-				for (ExportImportConfiguration exportImportConfiguration :
-						list) {
-
+				for (ExportImportConfiguration exportImportConfiguration : list) {
 					if ((groupId != exportImportConfiguration.getGroupId()) ||
-						(type != exportImportConfiguration.getType())) {
-
+							(type != exportImportConfiguration.getType())) {
 						list = null;
 
 						break;
@@ -1232,60 +1257,67 @@ public class ExportImportConfigurationPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					4 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(4 +
+						(orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				sb = new StringBundler(4);
+				query = new StringBundler(4);
 			}
 
-			sb.append(_SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE);
+			query.append(_SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE);
 
-			sb.append(_FINDER_COLUMN_G_T_GROUPID_2);
+			query.append(_FINDER_COLUMN_G_T_GROUPID_2);
 
-			sb.append(_FINDER_COLUMN_G_T_TYPE_2);
+			query.append(_FINDER_COLUMN_G_T_TYPE_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 			}
-			else {
-				sb.append(ExportImportConfigurationModelImpl.ORDER_BY_JPQL);
+			else
+			 if (pagination) {
+				query.append(ExportImportConfigurationModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(groupId);
+				qPos.add(groupId);
 
-				queryPos.add(type);
+				qPos.add(type);
 
-				list = (List<ExportImportConfiguration>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<ExportImportConfiguration>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<ExportImportConfiguration>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					FinderCacheUtil.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1305,31 +1337,29 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @throws NoSuchConfigurationException if a matching export import configuration could not be found
 	 */
 	@Override
-	public ExportImportConfiguration findByG_T_First(
-			long groupId, int type,
-			OrderByComparator<ExportImportConfiguration> orderByComparator)
+	public ExportImportConfiguration findByG_T_First(long groupId, int type,
+		OrderByComparator<ExportImportConfiguration> orderByComparator)
 		throws NoSuchConfigurationException {
-
-		ExportImportConfiguration exportImportConfiguration = fetchByG_T_First(
-			groupId, type, orderByComparator);
+		ExportImportConfiguration exportImportConfiguration = fetchByG_T_First(groupId,
+				type, orderByComparator);
 
 		if (exportImportConfiguration != null) {
 			return exportImportConfiguration;
 		}
 
-		StringBundler sb = new StringBundler(6);
+		StringBundler msg = new StringBundler(6);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("groupId=");
-		sb.append(groupId);
+		msg.append("groupId=");
+		msg.append(groupId);
 
-		sb.append(", type=");
-		sb.append(type);
+		msg.append(", type=");
+		msg.append(type);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchConfigurationException(sb.toString());
+		throw new NoSuchConfigurationException(msg.toString());
 	}
 
 	/**
@@ -1341,12 +1371,10 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @return the first matching export import configuration, or <code>null</code> if a matching export import configuration could not be found
 	 */
 	@Override
-	public ExportImportConfiguration fetchByG_T_First(
-		long groupId, int type,
+	public ExportImportConfiguration fetchByG_T_First(long groupId, int type,
 		OrderByComparator<ExportImportConfiguration> orderByComparator) {
-
-		List<ExportImportConfiguration> list = findByG_T(
-			groupId, type, 0, 1, orderByComparator);
+		List<ExportImportConfiguration> list = findByG_T(groupId, type, 0, 1,
+				orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -1365,31 +1393,29 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @throws NoSuchConfigurationException if a matching export import configuration could not be found
 	 */
 	@Override
-	public ExportImportConfiguration findByG_T_Last(
-			long groupId, int type,
-			OrderByComparator<ExportImportConfiguration> orderByComparator)
+	public ExportImportConfiguration findByG_T_Last(long groupId, int type,
+		OrderByComparator<ExportImportConfiguration> orderByComparator)
 		throws NoSuchConfigurationException {
-
-		ExportImportConfiguration exportImportConfiguration = fetchByG_T_Last(
-			groupId, type, orderByComparator);
+		ExportImportConfiguration exportImportConfiguration = fetchByG_T_Last(groupId,
+				type, orderByComparator);
 
 		if (exportImportConfiguration != null) {
 			return exportImportConfiguration;
 		}
 
-		StringBundler sb = new StringBundler(6);
+		StringBundler msg = new StringBundler(6);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("groupId=");
-		sb.append(groupId);
+		msg.append("groupId=");
+		msg.append(groupId);
 
-		sb.append(", type=");
-		sb.append(type);
+		msg.append(", type=");
+		msg.append(type);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchConfigurationException(sb.toString());
+		throw new NoSuchConfigurationException(msg.toString());
 	}
 
 	/**
@@ -1401,18 +1427,16 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @return the last matching export import configuration, or <code>null</code> if a matching export import configuration could not be found
 	 */
 	@Override
-	public ExportImportConfiguration fetchByG_T_Last(
-		long groupId, int type,
+	public ExportImportConfiguration fetchByG_T_Last(long groupId, int type,
 		OrderByComparator<ExportImportConfiguration> orderByComparator) {
-
 		int count = countByG_T(groupId, type);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<ExportImportConfiguration> list = findByG_T(
-			groupId, type, count - 1, count, orderByComparator);
+		List<ExportImportConfiguration> list = findByG_T(groupId, type,
+				count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -1433,147 +1457,139 @@ public class ExportImportConfigurationPersistenceImpl
 	 */
 	@Override
 	public ExportImportConfiguration[] findByG_T_PrevAndNext(
-			long exportImportConfigurationId, long groupId, int type,
-			OrderByComparator<ExportImportConfiguration> orderByComparator)
+		long exportImportConfigurationId, long groupId, int type,
+		OrderByComparator<ExportImportConfiguration> orderByComparator)
 		throws NoSuchConfigurationException {
-
-		ExportImportConfiguration exportImportConfiguration = findByPrimaryKey(
-			exportImportConfigurationId);
+		ExportImportConfiguration exportImportConfiguration = findByPrimaryKey(exportImportConfigurationId);
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			ExportImportConfiguration[] array =
-				new ExportImportConfigurationImpl[3];
+			ExportImportConfiguration[] array = new ExportImportConfigurationImpl[3];
 
-			array[0] = getByG_T_PrevAndNext(
-				session, exportImportConfiguration, groupId, type,
-				orderByComparator, true);
+			array[0] = getByG_T_PrevAndNext(session, exportImportConfiguration,
+					groupId, type, orderByComparator, true);
 
 			array[1] = exportImportConfiguration;
 
-			array[2] = getByG_T_PrevAndNext(
-				session, exportImportConfiguration, groupId, type,
-				orderByComparator, false);
+			array[2] = getByG_T_PrevAndNext(session, exportImportConfiguration,
+					groupId, type, orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected ExportImportConfiguration getByG_T_PrevAndNext(
-		Session session, ExportImportConfiguration exportImportConfiguration,
-		long groupId, int type,
+	protected ExportImportConfiguration getByG_T_PrevAndNext(Session session,
+		ExportImportConfiguration exportImportConfiguration, long groupId,
+		int type,
 		OrderByComparator<ExportImportConfiguration> orderByComparator,
 		boolean previous) {
-
-		StringBundler sb = null;
+		StringBundler query = null;
 
 		if (orderByComparator != null) {
-			sb = new StringBundler(
-				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
+			query = new StringBundler(5 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			sb = new StringBundler(4);
+			query = new StringBundler(4);
 		}
 
-		sb.append(_SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE);
+		query.append(_SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_T_GROUPID_2);
+		query.append(_FINDER_COLUMN_G_T_GROUPID_2);
 
-		sb.append(_FINDER_COLUMN_G_T_TYPE_2);
+		query.append(_FINDER_COLUMN_G_T_TYPE_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
+				query.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
+						query.append(WHERE_GREATER_THAN);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN);
+						query.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			sb.append(ORDER_BY_CLAUSE);
+			query.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
+						query.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
+						query.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
+						query.append(ORDER_BY_ASC);
 					}
 					else {
-						sb.append(ORDER_BY_DESC);
+						query.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			sb.append(ExportImportConfigurationModelImpl.ORDER_BY_JPQL);
+			query.append(ExportImportConfigurationModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
-		Query query = session.createQuery(sql);
+		Query q = session.createQuery(sql);
 
-		query.setFirstResult(0);
-		query.setMaxResults(2);
+		q.setFirstResult(0);
+		q.setMaxResults(2);
 
-		QueryPos queryPos = QueryPos.getInstance(query);
+		QueryPos qPos = QueryPos.getInstance(q);
 
-		queryPos.add(groupId);
+		qPos.add(groupId);
 
-		queryPos.add(type);
+		qPos.add(type);
 
 		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						exportImportConfiguration)) {
+			Object[] values = orderByComparator.getOrderByConditionValues(exportImportConfiguration);
 
-				queryPos.add(orderByConditionValue);
+			for (Object value : values) {
+				qPos.add(value);
 			}
 		}
 
-		List<ExportImportConfiguration> list = query.list();
+		List<ExportImportConfiguration> list = q.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -1591,11 +1607,8 @@ public class ExportImportConfigurationPersistenceImpl
 	 */
 	@Override
 	public void removeByG_T(long groupId, int type) {
-		for (ExportImportConfiguration exportImportConfiguration :
-				findByG_T(
-					groupId, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
-
+		for (ExportImportConfiguration exportImportConfiguration : findByG_T(
+				groupId, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(exportImportConfiguration);
 		}
 	}
@@ -1609,45 +1622,44 @@ public class ExportImportConfigurationPersistenceImpl
 	 */
 	@Override
 	public int countByG_T(long groupId, int type) {
-		FinderPath finderPath = _finderPathCountByG_T;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_T;
 
-		Object[] finderArgs = new Object[] {groupId, type};
+		Object[] finderArgs = new Object[] { groupId, type };
 
-		Long count = (Long)FinderCacheUtil.getResult(
-			finderPath, finderArgs, this);
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(3);
+			StringBundler query = new StringBundler(3);
 
-			sb.append(_SQL_COUNT_EXPORTIMPORTCONFIGURATION_WHERE);
+			query.append(_SQL_COUNT_EXPORTIMPORTCONFIGURATION_WHERE);
 
-			sb.append(_FINDER_COLUMN_G_T_GROUPID_2);
+			query.append(_FINDER_COLUMN_G_T_GROUPID_2);
 
-			sb.append(_FINDER_COLUMN_G_T_TYPE_2);
+			query.append(_FINDER_COLUMN_G_T_TYPE_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(groupId);
+				qPos.add(groupId);
 
-				queryPos.add(type);
+				qPos.add(type);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				FinderCacheUtil.putResult(finderPath, finderArgs, count);
+				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
-				FinderCacheUtil.removeResult(finderPath, finderArgs);
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1657,15 +1669,31 @@ public class ExportImportConfigurationPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_G_T_GROUPID_2 =
-		"exportImportConfiguration.groupId = ? AND ";
-
-	private static final String _FINDER_COLUMN_G_T_TYPE_2 =
-		"exportImportConfiguration.type = ?";
-
-	private FinderPath _finderPathWithPaginationFindByG_S;
-	private FinderPath _finderPathWithoutPaginationFindByG_S;
-	private FinderPath _finderPathCountByG_S;
+	private static final String _FINDER_COLUMN_G_T_GROUPID_2 = "exportImportConfiguration.groupId = ? AND ";
+	private static final String _FINDER_COLUMN_G_T_TYPE_2 = "exportImportConfiguration.type = ?";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_G_S = new FinderPath(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
+			ExportImportConfigurationImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_S",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_S = new FinderPath(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
+			ExportImportConfigurationImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_S",
+			new String[] { Long.class.getName(), Integer.class.getName() },
+			ExportImportConfigurationModelImpl.GROUPID_COLUMN_BITMASK |
+			ExportImportConfigurationModelImpl.STATUS_COLUMN_BITMASK |
+			ExportImportConfigurationModelImpl.CREATEDATE_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_G_S = new FinderPath(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
+			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"countByG_S",
+			new String[] { Long.class.getName(), Integer.class.getName() });
 
 	/**
 	 * Returns all the export import configurations where groupId = &#63; and status = &#63;.
@@ -1676,15 +1704,15 @@ public class ExportImportConfigurationPersistenceImpl
 	 */
 	@Override
 	public List<ExportImportConfiguration> findByG_S(long groupId, int status) {
-		return findByG_S(
-			groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+		return findByG_S(groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			null);
 	}
 
 	/**
 	 * Returns a range of all the export import configurations where groupId = &#63; and status = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ExportImportConfigurationModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
@@ -1694,9 +1722,8 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @return the range of matching export import configurations
 	 */
 	@Override
-	public List<ExportImportConfiguration> findByG_S(
-		long groupId, int status, int start, int end) {
-
+	public List<ExportImportConfiguration> findByG_S(long groupId, int status,
+		int start, int end) {
 		return findByG_S(groupId, status, start, end, null);
 	}
 
@@ -1704,7 +1731,7 @@ public class ExportImportConfigurationPersistenceImpl
 	 * Returns an ordered range of all the export import configurations where groupId = &#63; and status = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ExportImportConfigurationModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
@@ -1715,10 +1742,9 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @return the ordered range of matching export import configurations
 	 */
 	@Override
-	public List<ExportImportConfiguration> findByG_S(
-		long groupId, int status, int start, int end,
+	public List<ExportImportConfiguration> findByG_S(long groupId, int status,
+		int start, int end,
 		OrderByComparator<ExportImportConfiguration> orderByComparator) {
-
 		return findByG_S(groupId, status, start, end, orderByComparator, true);
 	}
 
@@ -1726,7 +1752,7 @@ public class ExportImportConfigurationPersistenceImpl
 	 * Returns an ordered range of all the export import configurations where groupId = &#63; and status = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ExportImportConfigurationModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
@@ -1734,46 +1760,43 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @param start the lower bound of the range of export import configurations
 	 * @param end the upper bound of the range of export import configurations (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of matching export import configurations
 	 */
 	@Override
-	public List<ExportImportConfiguration> findByG_S(
-		long groupId, int status, int start, int end,
+	public List<ExportImportConfiguration> findByG_S(long groupId, int status,
+		int start, int end,
 		OrderByComparator<ExportImportConfiguration> orderByComparator,
-		boolean useFinderCache) {
-
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByG_S;
-				finderArgs = new Object[] {groupId, status};
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_S;
+			finderArgs = new Object[] { groupId, status };
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByG_S;
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_G_S;
 			finderArgs = new Object[] {
-				groupId, status, start, end, orderByComparator
-			};
+					groupId, status,
+					
+					start, end, orderByComparator
+				};
 		}
 
 		List<ExportImportConfiguration> list = null;
 
-		if (useFinderCache) {
-			list = (List<ExportImportConfiguration>)FinderCacheUtil.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<ExportImportConfiguration>)finderCache.getResult(finderPath,
+					finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
-				for (ExportImportConfiguration exportImportConfiguration :
-						list) {
-
+				for (ExportImportConfiguration exportImportConfiguration : list) {
 					if ((groupId != exportImportConfiguration.getGroupId()) ||
-						(status != exportImportConfiguration.getStatus())) {
-
+							(status != exportImportConfiguration.getStatus())) {
 						list = null;
 
 						break;
@@ -1783,60 +1806,67 @@ public class ExportImportConfigurationPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					4 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(4 +
+						(orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				sb = new StringBundler(4);
+				query = new StringBundler(4);
 			}
 
-			sb.append(_SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE);
+			query.append(_SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE);
 
-			sb.append(_FINDER_COLUMN_G_S_GROUPID_2);
+			query.append(_FINDER_COLUMN_G_S_GROUPID_2);
 
-			sb.append(_FINDER_COLUMN_G_S_STATUS_2);
+			query.append(_FINDER_COLUMN_G_S_STATUS_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 			}
-			else {
-				sb.append(ExportImportConfigurationModelImpl.ORDER_BY_JPQL);
+			else
+			 if (pagination) {
+				query.append(ExportImportConfigurationModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(groupId);
+				qPos.add(groupId);
 
-				queryPos.add(status);
+				qPos.add(status);
 
-				list = (List<ExportImportConfiguration>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<ExportImportConfiguration>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<ExportImportConfiguration>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					FinderCacheUtil.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1856,31 +1886,29 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @throws NoSuchConfigurationException if a matching export import configuration could not be found
 	 */
 	@Override
-	public ExportImportConfiguration findByG_S_First(
-			long groupId, int status,
-			OrderByComparator<ExportImportConfiguration> orderByComparator)
+	public ExportImportConfiguration findByG_S_First(long groupId, int status,
+		OrderByComparator<ExportImportConfiguration> orderByComparator)
 		throws NoSuchConfigurationException {
-
-		ExportImportConfiguration exportImportConfiguration = fetchByG_S_First(
-			groupId, status, orderByComparator);
+		ExportImportConfiguration exportImportConfiguration = fetchByG_S_First(groupId,
+				status, orderByComparator);
 
 		if (exportImportConfiguration != null) {
 			return exportImportConfiguration;
 		}
 
-		StringBundler sb = new StringBundler(6);
+		StringBundler msg = new StringBundler(6);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("groupId=");
-		sb.append(groupId);
+		msg.append("groupId=");
+		msg.append(groupId);
 
-		sb.append(", status=");
-		sb.append(status);
+		msg.append(", status=");
+		msg.append(status);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchConfigurationException(sb.toString());
+		throw new NoSuchConfigurationException(msg.toString());
 	}
 
 	/**
@@ -1892,12 +1920,10 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @return the first matching export import configuration, or <code>null</code> if a matching export import configuration could not be found
 	 */
 	@Override
-	public ExportImportConfiguration fetchByG_S_First(
-		long groupId, int status,
+	public ExportImportConfiguration fetchByG_S_First(long groupId, int status,
 		OrderByComparator<ExportImportConfiguration> orderByComparator) {
-
-		List<ExportImportConfiguration> list = findByG_S(
-			groupId, status, 0, 1, orderByComparator);
+		List<ExportImportConfiguration> list = findByG_S(groupId, status, 0, 1,
+				orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -1916,31 +1942,29 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @throws NoSuchConfigurationException if a matching export import configuration could not be found
 	 */
 	@Override
-	public ExportImportConfiguration findByG_S_Last(
-			long groupId, int status,
-			OrderByComparator<ExportImportConfiguration> orderByComparator)
+	public ExportImportConfiguration findByG_S_Last(long groupId, int status,
+		OrderByComparator<ExportImportConfiguration> orderByComparator)
 		throws NoSuchConfigurationException {
-
-		ExportImportConfiguration exportImportConfiguration = fetchByG_S_Last(
-			groupId, status, orderByComparator);
+		ExportImportConfiguration exportImportConfiguration = fetchByG_S_Last(groupId,
+				status, orderByComparator);
 
 		if (exportImportConfiguration != null) {
 			return exportImportConfiguration;
 		}
 
-		StringBundler sb = new StringBundler(6);
+		StringBundler msg = new StringBundler(6);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("groupId=");
-		sb.append(groupId);
+		msg.append("groupId=");
+		msg.append(groupId);
 
-		sb.append(", status=");
-		sb.append(status);
+		msg.append(", status=");
+		msg.append(status);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchConfigurationException(sb.toString());
+		throw new NoSuchConfigurationException(msg.toString());
 	}
 
 	/**
@@ -1952,18 +1976,16 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @return the last matching export import configuration, or <code>null</code> if a matching export import configuration could not be found
 	 */
 	@Override
-	public ExportImportConfiguration fetchByG_S_Last(
-		long groupId, int status,
+	public ExportImportConfiguration fetchByG_S_Last(long groupId, int status,
 		OrderByComparator<ExportImportConfiguration> orderByComparator) {
-
 		int count = countByG_S(groupId, status);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<ExportImportConfiguration> list = findByG_S(
-			groupId, status, count - 1, count, orderByComparator);
+		List<ExportImportConfiguration> list = findByG_S(groupId, status,
+				count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -1984,147 +2006,139 @@ public class ExportImportConfigurationPersistenceImpl
 	 */
 	@Override
 	public ExportImportConfiguration[] findByG_S_PrevAndNext(
-			long exportImportConfigurationId, long groupId, int status,
-			OrderByComparator<ExportImportConfiguration> orderByComparator)
+		long exportImportConfigurationId, long groupId, int status,
+		OrderByComparator<ExportImportConfiguration> orderByComparator)
 		throws NoSuchConfigurationException {
-
-		ExportImportConfiguration exportImportConfiguration = findByPrimaryKey(
-			exportImportConfigurationId);
+		ExportImportConfiguration exportImportConfiguration = findByPrimaryKey(exportImportConfigurationId);
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			ExportImportConfiguration[] array =
-				new ExportImportConfigurationImpl[3];
+			ExportImportConfiguration[] array = new ExportImportConfigurationImpl[3];
 
-			array[0] = getByG_S_PrevAndNext(
-				session, exportImportConfiguration, groupId, status,
-				orderByComparator, true);
+			array[0] = getByG_S_PrevAndNext(session, exportImportConfiguration,
+					groupId, status, orderByComparator, true);
 
 			array[1] = exportImportConfiguration;
 
-			array[2] = getByG_S_PrevAndNext(
-				session, exportImportConfiguration, groupId, status,
-				orderByComparator, false);
+			array[2] = getByG_S_PrevAndNext(session, exportImportConfiguration,
+					groupId, status, orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected ExportImportConfiguration getByG_S_PrevAndNext(
-		Session session, ExportImportConfiguration exportImportConfiguration,
-		long groupId, int status,
+	protected ExportImportConfiguration getByG_S_PrevAndNext(Session session,
+		ExportImportConfiguration exportImportConfiguration, long groupId,
+		int status,
 		OrderByComparator<ExportImportConfiguration> orderByComparator,
 		boolean previous) {
-
-		StringBundler sb = null;
+		StringBundler query = null;
 
 		if (orderByComparator != null) {
-			sb = new StringBundler(
-				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
+			query = new StringBundler(5 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			sb = new StringBundler(4);
+			query = new StringBundler(4);
 		}
 
-		sb.append(_SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE);
+		query.append(_SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_S_GROUPID_2);
+		query.append(_FINDER_COLUMN_G_S_GROUPID_2);
 
-		sb.append(_FINDER_COLUMN_G_S_STATUS_2);
+		query.append(_FINDER_COLUMN_G_S_STATUS_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
+				query.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
+						query.append(WHERE_GREATER_THAN);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN);
+						query.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			sb.append(ORDER_BY_CLAUSE);
+			query.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
+						query.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
+						query.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
+						query.append(ORDER_BY_ASC);
 					}
 					else {
-						sb.append(ORDER_BY_DESC);
+						query.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			sb.append(ExportImportConfigurationModelImpl.ORDER_BY_JPQL);
+			query.append(ExportImportConfigurationModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
-		Query query = session.createQuery(sql);
+		Query q = session.createQuery(sql);
 
-		query.setFirstResult(0);
-		query.setMaxResults(2);
+		q.setFirstResult(0);
+		q.setMaxResults(2);
 
-		QueryPos queryPos = QueryPos.getInstance(query);
+		QueryPos qPos = QueryPos.getInstance(q);
 
-		queryPos.add(groupId);
+		qPos.add(groupId);
 
-		queryPos.add(status);
+		qPos.add(status);
 
 		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						exportImportConfiguration)) {
+			Object[] values = orderByComparator.getOrderByConditionValues(exportImportConfiguration);
 
-				queryPos.add(orderByConditionValue);
+			for (Object value : values) {
+				qPos.add(value);
 			}
 		}
 
-		List<ExportImportConfiguration> list = query.list();
+		List<ExportImportConfiguration> list = q.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -2142,11 +2156,8 @@ public class ExportImportConfigurationPersistenceImpl
 	 */
 	@Override
 	public void removeByG_S(long groupId, int status) {
-		for (ExportImportConfiguration exportImportConfiguration :
-				findByG_S(
-					groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
-
+		for (ExportImportConfiguration exportImportConfiguration : findByG_S(
+				groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(exportImportConfiguration);
 		}
 	}
@@ -2160,45 +2171,44 @@ public class ExportImportConfigurationPersistenceImpl
 	 */
 	@Override
 	public int countByG_S(long groupId, int status) {
-		FinderPath finderPath = _finderPathCountByG_S;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_S;
 
-		Object[] finderArgs = new Object[] {groupId, status};
+		Object[] finderArgs = new Object[] { groupId, status };
 
-		Long count = (Long)FinderCacheUtil.getResult(
-			finderPath, finderArgs, this);
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(3);
+			StringBundler query = new StringBundler(3);
 
-			sb.append(_SQL_COUNT_EXPORTIMPORTCONFIGURATION_WHERE);
+			query.append(_SQL_COUNT_EXPORTIMPORTCONFIGURATION_WHERE);
 
-			sb.append(_FINDER_COLUMN_G_S_GROUPID_2);
+			query.append(_FINDER_COLUMN_G_S_GROUPID_2);
 
-			sb.append(_FINDER_COLUMN_G_S_STATUS_2);
+			query.append(_FINDER_COLUMN_G_S_STATUS_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(groupId);
+				qPos.add(groupId);
 
-				queryPos.add(status);
+				qPos.add(status);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				FinderCacheUtil.putResult(finderPath, finderArgs, count);
+				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
-				FinderCacheUtil.removeResult(finderPath, finderArgs);
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -2208,15 +2218,39 @@ public class ExportImportConfigurationPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_G_S_GROUPID_2 =
-		"exportImportConfiguration.groupId = ? AND ";
-
-	private static final String _FINDER_COLUMN_G_S_STATUS_2 =
-		"exportImportConfiguration.status = ?";
-
-	private FinderPath _finderPathWithPaginationFindByG_T_S;
-	private FinderPath _finderPathWithoutPaginationFindByG_T_S;
-	private FinderPath _finderPathCountByG_T_S;
+	private static final String _FINDER_COLUMN_G_S_GROUPID_2 = "exportImportConfiguration.groupId = ? AND ";
+	private static final String _FINDER_COLUMN_G_S_STATUS_2 = "exportImportConfiguration.status = ?";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_G_T_S = new FinderPath(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
+			ExportImportConfigurationImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_T_S",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				Integer.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_T_S = new FinderPath(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
+			ExportImportConfigurationImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_T_S",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				Integer.class.getName()
+			},
+			ExportImportConfigurationModelImpl.GROUPID_COLUMN_BITMASK |
+			ExportImportConfigurationModelImpl.TYPE_COLUMN_BITMASK |
+			ExportImportConfigurationModelImpl.STATUS_COLUMN_BITMASK |
+			ExportImportConfigurationModelImpl.CREATEDATE_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_G_T_S = new FinderPath(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
+			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"countByG_T_S",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				Integer.class.getName()
+			});
 
 	/**
 	 * Returns all the export import configurations where groupId = &#63; and type = &#63; and status = &#63;.
@@ -2227,18 +2261,17 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @return the matching export import configurations
 	 */
 	@Override
-	public List<ExportImportConfiguration> findByG_T_S(
-		long groupId, int type, int status) {
-
-		return findByG_T_S(
-			groupId, type, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	public List<ExportImportConfiguration> findByG_T_S(long groupId, int type,
+		int status) {
+		return findByG_T_S(groupId, type, status, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the export import configurations where groupId = &#63; and type = &#63; and status = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ExportImportConfigurationModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
@@ -2249,9 +2282,8 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @return the range of matching export import configurations
 	 */
 	@Override
-	public List<ExportImportConfiguration> findByG_T_S(
-		long groupId, int type, int status, int start, int end) {
-
+	public List<ExportImportConfiguration> findByG_T_S(long groupId, int type,
+		int status, int start, int end) {
 		return findByG_T_S(groupId, type, status, start, end, null);
 	}
 
@@ -2259,7 +2291,7 @@ public class ExportImportConfigurationPersistenceImpl
 	 * Returns an ordered range of all the export import configurations where groupId = &#63; and type = &#63; and status = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ExportImportConfigurationModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
@@ -2271,19 +2303,18 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @return the ordered range of matching export import configurations
 	 */
 	@Override
-	public List<ExportImportConfiguration> findByG_T_S(
-		long groupId, int type, int status, int start, int end,
+	public List<ExportImportConfiguration> findByG_T_S(long groupId, int type,
+		int status, int start, int end,
 		OrderByComparator<ExportImportConfiguration> orderByComparator) {
-
-		return findByG_T_S(
-			groupId, type, status, start, end, orderByComparator, true);
+		return findByG_T_S(groupId, type, status, start, end,
+			orderByComparator, true);
 	}
 
 	/**
 	 * Returns an ordered range of all the export import configurations where groupId = &#63; and type = &#63; and status = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ExportImportConfigurationModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
@@ -2292,47 +2323,44 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @param start the lower bound of the range of export import configurations
 	 * @param end the upper bound of the range of export import configurations (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of matching export import configurations
 	 */
 	@Override
-	public List<ExportImportConfiguration> findByG_T_S(
-		long groupId, int type, int status, int start, int end,
+	public List<ExportImportConfiguration> findByG_T_S(long groupId, int type,
+		int status, int start, int end,
 		OrderByComparator<ExportImportConfiguration> orderByComparator,
-		boolean useFinderCache) {
-
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByG_T_S;
-				finderArgs = new Object[] {groupId, type, status};
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_T_S;
+			finderArgs = new Object[] { groupId, type, status };
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByG_T_S;
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_G_T_S;
 			finderArgs = new Object[] {
-				groupId, type, status, start, end, orderByComparator
-			};
+					groupId, type, status,
+					
+					start, end, orderByComparator
+				};
 		}
 
 		List<ExportImportConfiguration> list = null;
 
-		if (useFinderCache) {
-			list = (List<ExportImportConfiguration>)FinderCacheUtil.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<ExportImportConfiguration>)finderCache.getResult(finderPath,
+					finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
-				for (ExportImportConfiguration exportImportConfiguration :
-						list) {
-
+				for (ExportImportConfiguration exportImportConfiguration : list) {
 					if ((groupId != exportImportConfiguration.getGroupId()) ||
-						(type != exportImportConfiguration.getType()) ||
-						(status != exportImportConfiguration.getStatus())) {
-
+							(type != exportImportConfiguration.getType()) ||
+							(status != exportImportConfiguration.getStatus())) {
 						list = null;
 
 						break;
@@ -2342,64 +2370,71 @@ public class ExportImportConfigurationPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					5 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(5 +
+						(orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				sb = new StringBundler(5);
+				query = new StringBundler(5);
 			}
 
-			sb.append(_SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE);
+			query.append(_SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE);
 
-			sb.append(_FINDER_COLUMN_G_T_S_GROUPID_2);
+			query.append(_FINDER_COLUMN_G_T_S_GROUPID_2);
 
-			sb.append(_FINDER_COLUMN_G_T_S_TYPE_2);
+			query.append(_FINDER_COLUMN_G_T_S_TYPE_2);
 
-			sb.append(_FINDER_COLUMN_G_T_S_STATUS_2);
+			query.append(_FINDER_COLUMN_G_T_S_STATUS_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 			}
-			else {
-				sb.append(ExportImportConfigurationModelImpl.ORDER_BY_JPQL);
+			else
+			 if (pagination) {
+				query.append(ExportImportConfigurationModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(groupId);
+				qPos.add(groupId);
 
-				queryPos.add(type);
+				qPos.add(type);
 
-				queryPos.add(status);
+				qPos.add(status);
 
-				list = (List<ExportImportConfiguration>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<ExportImportConfiguration>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<ExportImportConfiguration>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					FinderCacheUtil.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -2420,34 +2455,33 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @throws NoSuchConfigurationException if a matching export import configuration could not be found
 	 */
 	@Override
-	public ExportImportConfiguration findByG_T_S_First(
-			long groupId, int type, int status,
-			OrderByComparator<ExportImportConfiguration> orderByComparator)
+	public ExportImportConfiguration findByG_T_S_First(long groupId, int type,
+		int status,
+		OrderByComparator<ExportImportConfiguration> orderByComparator)
 		throws NoSuchConfigurationException {
-
-		ExportImportConfiguration exportImportConfiguration =
-			fetchByG_T_S_First(groupId, type, status, orderByComparator);
+		ExportImportConfiguration exportImportConfiguration = fetchByG_T_S_First(groupId,
+				type, status, orderByComparator);
 
 		if (exportImportConfiguration != null) {
 			return exportImportConfiguration;
 		}
 
-		StringBundler sb = new StringBundler(8);
+		StringBundler msg = new StringBundler(8);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("groupId=");
-		sb.append(groupId);
+		msg.append("groupId=");
+		msg.append(groupId);
 
-		sb.append(", type=");
-		sb.append(type);
+		msg.append(", type=");
+		msg.append(type);
 
-		sb.append(", status=");
-		sb.append(status);
+		msg.append(", status=");
+		msg.append(status);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchConfigurationException(sb.toString());
+		throw new NoSuchConfigurationException(msg.toString());
 	}
 
 	/**
@@ -2460,12 +2494,11 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @return the first matching export import configuration, or <code>null</code> if a matching export import configuration could not be found
 	 */
 	@Override
-	public ExportImportConfiguration fetchByG_T_S_First(
-		long groupId, int type, int status,
+	public ExportImportConfiguration fetchByG_T_S_First(long groupId, int type,
+		int status,
 		OrderByComparator<ExportImportConfiguration> orderByComparator) {
-
-		List<ExportImportConfiguration> list = findByG_T_S(
-			groupId, type, status, 0, 1, orderByComparator);
+		List<ExportImportConfiguration> list = findByG_T_S(groupId, type,
+				status, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -2485,34 +2518,33 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @throws NoSuchConfigurationException if a matching export import configuration could not be found
 	 */
 	@Override
-	public ExportImportConfiguration findByG_T_S_Last(
-			long groupId, int type, int status,
-			OrderByComparator<ExportImportConfiguration> orderByComparator)
+	public ExportImportConfiguration findByG_T_S_Last(long groupId, int type,
+		int status,
+		OrderByComparator<ExportImportConfiguration> orderByComparator)
 		throws NoSuchConfigurationException {
-
-		ExportImportConfiguration exportImportConfiguration = fetchByG_T_S_Last(
-			groupId, type, status, orderByComparator);
+		ExportImportConfiguration exportImportConfiguration = fetchByG_T_S_Last(groupId,
+				type, status, orderByComparator);
 
 		if (exportImportConfiguration != null) {
 			return exportImportConfiguration;
 		}
 
-		StringBundler sb = new StringBundler(8);
+		StringBundler msg = new StringBundler(8);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("groupId=");
-		sb.append(groupId);
+		msg.append("groupId=");
+		msg.append(groupId);
 
-		sb.append(", type=");
-		sb.append(type);
+		msg.append(", type=");
+		msg.append(type);
 
-		sb.append(", status=");
-		sb.append(status);
+		msg.append(", status=");
+		msg.append(status);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchConfigurationException(sb.toString());
+		throw new NoSuchConfigurationException(msg.toString());
 	}
 
 	/**
@@ -2525,18 +2557,17 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @return the last matching export import configuration, or <code>null</code> if a matching export import configuration could not be found
 	 */
 	@Override
-	public ExportImportConfiguration fetchByG_T_S_Last(
-		long groupId, int type, int status,
+	public ExportImportConfiguration fetchByG_T_S_Last(long groupId, int type,
+		int status,
 		OrderByComparator<ExportImportConfiguration> orderByComparator) {
-
 		int count = countByG_T_S(groupId, type, status);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<ExportImportConfiguration> list = findByG_T_S(
-			groupId, type, status, count - 1, count, orderByComparator);
+		List<ExportImportConfiguration> list = findByG_T_S(groupId, type,
+				status, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -2558,36 +2589,32 @@ public class ExportImportConfigurationPersistenceImpl
 	 */
 	@Override
 	public ExportImportConfiguration[] findByG_T_S_PrevAndNext(
-			long exportImportConfigurationId, long groupId, int type,
-			int status,
-			OrderByComparator<ExportImportConfiguration> orderByComparator)
+		long exportImportConfigurationId, long groupId, int type, int status,
+		OrderByComparator<ExportImportConfiguration> orderByComparator)
 		throws NoSuchConfigurationException {
-
-		ExportImportConfiguration exportImportConfiguration = findByPrimaryKey(
-			exportImportConfigurationId);
+		ExportImportConfiguration exportImportConfiguration = findByPrimaryKey(exportImportConfigurationId);
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			ExportImportConfiguration[] array =
-				new ExportImportConfigurationImpl[3];
+			ExportImportConfiguration[] array = new ExportImportConfigurationImpl[3];
 
-			array[0] = getByG_T_S_PrevAndNext(
-				session, exportImportConfiguration, groupId, type, status,
-				orderByComparator, true);
+			array[0] = getByG_T_S_PrevAndNext(session,
+					exportImportConfiguration, groupId, type, status,
+					orderByComparator, true);
 
 			array[1] = exportImportConfiguration;
 
-			array[2] = getByG_T_S_PrevAndNext(
-				session, exportImportConfiguration, groupId, type, status,
-				orderByComparator, false);
+			array[2] = getByG_T_S_PrevAndNext(session,
+					exportImportConfiguration, groupId, type, status,
+					orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -2599,111 +2626,108 @@ public class ExportImportConfigurationPersistenceImpl
 		long groupId, int type, int status,
 		OrderByComparator<ExportImportConfiguration> orderByComparator,
 		boolean previous) {
-
-		StringBundler sb = null;
+		StringBundler query = null;
 
 		if (orderByComparator != null) {
-			sb = new StringBundler(
-				6 + (orderByComparator.getOrderByConditionFields().length * 3) +
+			query = new StringBundler(6 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			sb = new StringBundler(5);
+			query = new StringBundler(5);
 		}
 
-		sb.append(_SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE);
+		query.append(_SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_T_S_GROUPID_2);
+		query.append(_FINDER_COLUMN_G_T_S_GROUPID_2);
 
-		sb.append(_FINDER_COLUMN_G_T_S_TYPE_2);
+		query.append(_FINDER_COLUMN_G_T_S_TYPE_2);
 
-		sb.append(_FINDER_COLUMN_G_T_S_STATUS_2);
+		query.append(_FINDER_COLUMN_G_T_S_STATUS_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
+				query.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
+						query.append(WHERE_GREATER_THAN);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN);
+						query.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			sb.append(ORDER_BY_CLAUSE);
+			query.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
+						query.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
+						query.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
+						query.append(ORDER_BY_ASC);
 					}
 					else {
-						sb.append(ORDER_BY_DESC);
+						query.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			sb.append(ExportImportConfigurationModelImpl.ORDER_BY_JPQL);
+			query.append(ExportImportConfigurationModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
-		Query query = session.createQuery(sql);
+		Query q = session.createQuery(sql);
 
-		query.setFirstResult(0);
-		query.setMaxResults(2);
+		q.setFirstResult(0);
+		q.setMaxResults(2);
 
-		QueryPos queryPos = QueryPos.getInstance(query);
+		QueryPos qPos = QueryPos.getInstance(q);
 
-		queryPos.add(groupId);
+		qPos.add(groupId);
 
-		queryPos.add(type);
+		qPos.add(type);
 
-		queryPos.add(status);
+		qPos.add(status);
 
 		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						exportImportConfiguration)) {
+			Object[] values = orderByComparator.getOrderByConditionValues(exportImportConfiguration);
 
-				queryPos.add(orderByConditionValue);
+			for (Object value : values) {
+				qPos.add(value);
 			}
 		}
 
-		List<ExportImportConfiguration> list = query.list();
+		List<ExportImportConfiguration> list = q.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -2722,11 +2746,9 @@ public class ExportImportConfigurationPersistenceImpl
 	 */
 	@Override
 	public void removeByG_T_S(long groupId, int type, int status) {
-		for (ExportImportConfiguration exportImportConfiguration :
-				findByG_T_S(
-					groupId, type, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
-
+		for (ExportImportConfiguration exportImportConfiguration : findByG_T_S(
+				groupId, type, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+				null)) {
 			remove(exportImportConfiguration);
 		}
 	}
@@ -2741,49 +2763,48 @@ public class ExportImportConfigurationPersistenceImpl
 	 */
 	@Override
 	public int countByG_T_S(long groupId, int type, int status) {
-		FinderPath finderPath = _finderPathCountByG_T_S;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_T_S;
 
-		Object[] finderArgs = new Object[] {groupId, type, status};
+		Object[] finderArgs = new Object[] { groupId, type, status };
 
-		Long count = (Long)FinderCacheUtil.getResult(
-			finderPath, finderArgs, this);
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(4);
+			StringBundler query = new StringBundler(4);
 
-			sb.append(_SQL_COUNT_EXPORTIMPORTCONFIGURATION_WHERE);
+			query.append(_SQL_COUNT_EXPORTIMPORTCONFIGURATION_WHERE);
 
-			sb.append(_FINDER_COLUMN_G_T_S_GROUPID_2);
+			query.append(_FINDER_COLUMN_G_T_S_GROUPID_2);
 
-			sb.append(_FINDER_COLUMN_G_T_S_TYPE_2);
+			query.append(_FINDER_COLUMN_G_T_S_TYPE_2);
 
-			sb.append(_FINDER_COLUMN_G_T_S_STATUS_2);
+			query.append(_FINDER_COLUMN_G_T_S_STATUS_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(groupId);
+				qPos.add(groupId);
 
-				queryPos.add(type);
+				qPos.add(type);
 
-				queryPos.add(status);
+				qPos.add(status);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				FinderCacheUtil.putResult(finderPath, finderArgs, count);
+				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
-				FinderCacheUtil.removeResult(finderPath, finderArgs);
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -2793,35 +2814,11 @@ public class ExportImportConfigurationPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_G_T_S_GROUPID_2 =
-		"exportImportConfiguration.groupId = ? AND ";
-
-	private static final String _FINDER_COLUMN_G_T_S_TYPE_2 =
-		"exportImportConfiguration.type = ? AND ";
-
-	private static final String _FINDER_COLUMN_G_T_S_STATUS_2 =
-		"exportImportConfiguration.status = ?";
+	private static final String _FINDER_COLUMN_G_T_S_GROUPID_2 = "exportImportConfiguration.groupId = ? AND ";
+	private static final String _FINDER_COLUMN_G_T_S_TYPE_2 = "exportImportConfiguration.type = ? AND ";
+	private static final String _FINDER_COLUMN_G_T_S_STATUS_2 = "exportImportConfiguration.status = ?";
 
 	public ExportImportConfigurationPersistenceImpl() {
-		Map<String, String> dbColumnNames = new HashMap<String, String>();
-
-		dbColumnNames.put("type", "type_");
-		dbColumnNames.put("settings", "settings_");
-
-		try {
-			Field field = BasePersistenceImpl.class.getDeclaredField(
-				"_dbColumnNames");
-
-			field.setAccessible(true);
-
-			field.set(this, dbColumnNames);
-		}
-		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception, exception);
-			}
-		}
-
 		setModelClass(ExportImportConfiguration.class);
 	}
 
@@ -2831,14 +2828,10 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @param exportImportConfiguration the export import configuration
 	 */
 	@Override
-	public void cacheResult(
-		ExportImportConfiguration exportImportConfiguration) {
-
-		EntityCacheUtil.putResult(
-			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+	public void cacheResult(ExportImportConfiguration exportImportConfiguration) {
+		entityCache.putResult(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
 			ExportImportConfigurationImpl.class,
-			exportImportConfiguration.getPrimaryKey(),
-			exportImportConfiguration);
+			exportImportConfiguration.getPrimaryKey(), exportImportConfiguration);
 
 		exportImportConfiguration.resetOriginalValues();
 	}
@@ -2851,15 +2844,11 @@ public class ExportImportConfigurationPersistenceImpl
 	@Override
 	public void cacheResult(
 		List<ExportImportConfiguration> exportImportConfigurations) {
-
-		for (ExportImportConfiguration exportImportConfiguration :
-				exportImportConfigurations) {
-
-			if (EntityCacheUtil.getResult(
-					ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-					ExportImportConfigurationImpl.class,
-					exportImportConfiguration.getPrimaryKey()) == null) {
-
+		for (ExportImportConfiguration exportImportConfiguration : exportImportConfigurations) {
+			if (entityCache.getResult(
+						ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+						ExportImportConfigurationImpl.class,
+						exportImportConfiguration.getPrimaryKey()) == null) {
 				cacheResult(exportImportConfiguration);
 			}
 			else {
@@ -2872,64 +2861,45 @@ public class ExportImportConfigurationPersistenceImpl
 	 * Clears the cache for all export import configurations.
 	 *
 	 * <p>
-	 * The <code>com.liferay.portal.kernel.dao.orm.EntityCache</code> and <code>com.liferay.portal.kernel.dao.orm.FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache() {
-		EntityCacheUtil.clearCache(ExportImportConfigurationImpl.class);
+		entityCache.clearCache(ExportImportConfigurationImpl.class);
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
 	 * Clears the cache for the export import configuration.
 	 *
 	 * <p>
-	 * The <code>com.liferay.portal.kernel.dao.orm.EntityCache</code> and <code>com.liferay.portal.kernel.dao.orm.FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
-	public void clearCache(
-		ExportImportConfiguration exportImportConfiguration) {
-
-		EntityCacheUtil.removeResult(
-			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+	public void clearCache(ExportImportConfiguration exportImportConfiguration) {
+		entityCache.removeResult(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
 			ExportImportConfigurationImpl.class,
 			exportImportConfiguration.getPrimaryKey());
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override
 	public void clearCache(
 		List<ExportImportConfiguration> exportImportConfigurations) {
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		for (ExportImportConfiguration exportImportConfiguration :
-				exportImportConfigurations) {
-
-			EntityCacheUtil.removeResult(
-				ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+		for (ExportImportConfiguration exportImportConfiguration : exportImportConfigurations) {
+			entityCache.removeResult(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
 				ExportImportConfigurationImpl.class,
 				exportImportConfiguration.getPrimaryKey());
-		}
-	}
-
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-				ExportImportConfigurationImpl.class, primaryKey);
 		}
 	}
 
@@ -2941,14 +2911,12 @@ public class ExportImportConfigurationPersistenceImpl
 	 */
 	@Override
 	public ExportImportConfiguration create(long exportImportConfigurationId) {
-		ExportImportConfiguration exportImportConfiguration =
-			new ExportImportConfigurationImpl();
+		ExportImportConfiguration exportImportConfiguration = new ExportImportConfigurationImpl();
 
 		exportImportConfiguration.setNew(true);
 		exportImportConfiguration.setPrimaryKey(exportImportConfigurationId);
 
-		exportImportConfiguration.setCompanyId(
-			CompanyThreadLocal.getCompanyId());
+		exportImportConfiguration.setCompanyId(companyProvider.getCompanyId());
 
 		return exportImportConfiguration;
 	}
@@ -2963,7 +2931,6 @@ public class ExportImportConfigurationPersistenceImpl
 	@Override
 	public ExportImportConfiguration remove(long exportImportConfigurationId)
 		throws NoSuchConfigurationException {
-
 		return remove((Serializable)exportImportConfigurationId);
 	}
 
@@ -2977,32 +2944,30 @@ public class ExportImportConfigurationPersistenceImpl
 	@Override
 	public ExportImportConfiguration remove(Serializable primaryKey)
 		throws NoSuchConfigurationException {
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			ExportImportConfiguration exportImportConfiguration =
-				(ExportImportConfiguration)session.get(
-					ExportImportConfigurationImpl.class, primaryKey);
+			ExportImportConfiguration exportImportConfiguration = (ExportImportConfiguration)session.get(ExportImportConfigurationImpl.class,
+					primaryKey);
 
 			if (exportImportConfiguration == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchConfigurationException(
-					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				throw new NoSuchConfigurationException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+					primaryKey);
 			}
 
 			return remove(exportImportConfiguration);
 		}
-		catch (NoSuchConfigurationException noSuchEntityException) {
-			throw noSuchEntityException;
+		catch (NoSuchConfigurationException nsee) {
+			throw nsee;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -3012,6 +2977,7 @@ public class ExportImportConfigurationPersistenceImpl
 	@Override
 	protected ExportImportConfiguration removeImpl(
 		ExportImportConfiguration exportImportConfiguration) {
+		exportImportConfiguration = toUnwrappedModel(exportImportConfiguration);
 
 		Session session = null;
 
@@ -3019,9 +2985,7 @@ public class ExportImportConfigurationPersistenceImpl
 			session = openSession();
 
 			if (!session.contains(exportImportConfiguration)) {
-				exportImportConfiguration =
-					(ExportImportConfiguration)session.get(
-						ExportImportConfigurationImpl.class,
+				exportImportConfiguration = (ExportImportConfiguration)session.get(ExportImportConfigurationImpl.class,
 						exportImportConfiguration.getPrimaryKeyObj());
 			}
 
@@ -3029,8 +2993,8 @@ public class ExportImportConfigurationPersistenceImpl
 				session.delete(exportImportConfiguration);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -3046,33 +3010,13 @@ public class ExportImportConfigurationPersistenceImpl
 	@Override
 	public ExportImportConfiguration updateImpl(
 		ExportImportConfiguration exportImportConfiguration) {
+		exportImportConfiguration = toUnwrappedModel(exportImportConfiguration);
 
 		boolean isNew = exportImportConfiguration.isNew();
 
-		if (!(exportImportConfiguration instanceof
-				ExportImportConfigurationModelImpl)) {
+		ExportImportConfigurationModelImpl exportImportConfigurationModelImpl = (ExportImportConfigurationModelImpl)exportImportConfiguration;
 
-			InvocationHandler invocationHandler = null;
-
-			if (ProxyUtil.isProxyClass(exportImportConfiguration.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(
-					exportImportConfiguration);
-
-				throw new IllegalArgumentException(
-					"Implement ModelWrapper in exportImportConfiguration proxy " +
-						invocationHandler.getClass());
-			}
-
-			throw new IllegalArgumentException(
-				"Implement ModelWrapper in custom ExportImportConfiguration implementation " +
-					exportImportConfiguration.getClass());
-		}
-
-		ExportImportConfigurationModelImpl exportImportConfigurationModelImpl =
-			(ExportImportConfigurationModelImpl)exportImportConfiguration;
-
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -3081,8 +3025,8 @@ public class ExportImportConfigurationPersistenceImpl
 				exportImportConfiguration.setCreateDate(now);
 			}
 			else {
-				exportImportConfiguration.setCreateDate(
-					serviceContext.getCreateDate(now));
+				exportImportConfiguration.setCreateDate(serviceContext.getCreateDate(
+						now));
 			}
 		}
 
@@ -3091,8 +3035,8 @@ public class ExportImportConfigurationPersistenceImpl
 				exportImportConfiguration.setModifiedDate(now);
 			}
 			else {
-				exportImportConfiguration.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+				exportImportConfiguration.setModifiedDate(serviceContext.getModifiedDate(
+						now));
 			}
 		}
 
@@ -3107,191 +3051,178 @@ public class ExportImportConfigurationPersistenceImpl
 				exportImportConfiguration.setNew(false);
 			}
 			else {
-				exportImportConfiguration =
-					(ExportImportConfiguration)session.merge(
-						exportImportConfiguration);
+				exportImportConfiguration = (ExportImportConfiguration)session.merge(exportImportConfiguration);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
 		}
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
 		if (!ExportImportConfigurationModelImpl.COLUMN_BITMASK_ENABLED) {
-			FinderCacheUtil.clearCache(
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else if (isNew) {
+		else
+		 if (isNew) {
 			Object[] args = new Object[] {
-				exportImportConfigurationModelImpl.getGroupId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByGroupId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByGroupId, args);
-
-			args = new Object[] {
-				exportImportConfigurationModelImpl.getCompanyId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByCompanyId, args);
-
-			args = new Object[] {
-				exportImportConfigurationModelImpl.getGroupId(),
-				exportImportConfigurationModelImpl.getType()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByG_T, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByG_T, args);
-
-			args = new Object[] {
-				exportImportConfigurationModelImpl.getGroupId(),
-				exportImportConfigurationModelImpl.getStatus()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByG_S, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByG_S, args);
-
-			args = new Object[] {
-				exportImportConfigurationModelImpl.getGroupId(),
-				exportImportConfigurationModelImpl.getType(),
-				exportImportConfigurationModelImpl.getStatus()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByG_T_S, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByG_T_S, args);
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((exportImportConfigurationModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByGroupId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					exportImportConfigurationModelImpl.getOriginalGroupId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByGroupId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-
-				args = new Object[] {
 					exportImportConfigurationModelImpl.getGroupId()
 				};
 
-				FinderCacheUtil.removeResult(_finderPathCountByGroupId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-			}
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_GROUPID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID,
+				args);
 
-			if ((exportImportConfigurationModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCompanyId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					exportImportConfigurationModelImpl.getOriginalCompanyId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-
-				args = new Object[] {
+			args = new Object[] {
 					exportImportConfigurationModelImpl.getCompanyId()
 				};
 
-				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCompanyId, args);
-			}
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPANYID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
+				args);
 
-			if ((exportImportConfigurationModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_T.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					exportImportConfigurationModelImpl.getOriginalGroupId(),
-					exportImportConfigurationModelImpl.getOriginalType()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByG_T, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_T, args);
-
-				args = new Object[] {
+			args = new Object[] {
 					exportImportConfigurationModelImpl.getGroupId(),
 					exportImportConfigurationModelImpl.getType()
 				};
 
-				FinderCacheUtil.removeResult(_finderPathCountByG_T, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_T, args);
-			}
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_T, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_T,
+				args);
 
-			if ((exportImportConfigurationModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_S.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					exportImportConfigurationModelImpl.getOriginalGroupId(),
-					exportImportConfigurationModelImpl.getOriginalStatus()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByG_S, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_S, args);
-
-				args = new Object[] {
+			args = new Object[] {
 					exportImportConfigurationModelImpl.getGroupId(),
 					exportImportConfigurationModelImpl.getStatus()
 				};
 
-				FinderCacheUtil.removeResult(_finderPathCountByG_S, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_S, args);
-			}
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_S, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_S,
+				args);
 
-			if ((exportImportConfigurationModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_T_S.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					exportImportConfigurationModelImpl.getOriginalGroupId(),
-					exportImportConfigurationModelImpl.getOriginalType(),
-					exportImportConfigurationModelImpl.getOriginalStatus()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByG_T_S, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_T_S, args);
-
-				args = new Object[] {
+			args = new Object[] {
 					exportImportConfigurationModelImpl.getGroupId(),
 					exportImportConfigurationModelImpl.getType(),
 					exportImportConfigurationModelImpl.getStatus()
 				};
 
-				FinderCacheUtil.removeResult(_finderPathCountByG_T_S, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_T_S, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_T_S, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_T_S,
+				args);
+
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
+		}
+
+		else {
+			if ((exportImportConfigurationModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						exportImportConfigurationModelImpl.getOriginalGroupId()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_GROUPID, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID,
+					args);
+
+				args = new Object[] {
+						exportImportConfigurationModelImpl.getGroupId()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_GROUPID, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID,
+					args);
+			}
+
+			if ((exportImportConfigurationModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						exportImportConfigurationModelImpl.getOriginalCompanyId()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPANYID, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
+					args);
+
+				args = new Object[] {
+						exportImportConfigurationModelImpl.getCompanyId()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPANYID, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
+					args);
+			}
+
+			if ((exportImportConfigurationModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_T.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						exportImportConfigurationModelImpl.getOriginalGroupId(),
+						exportImportConfigurationModelImpl.getOriginalType()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_T, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_T,
+					args);
+
+				args = new Object[] {
+						exportImportConfigurationModelImpl.getGroupId(),
+						exportImportConfigurationModelImpl.getType()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_T, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_T,
+					args);
+			}
+
+			if ((exportImportConfigurationModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_S.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						exportImportConfigurationModelImpl.getOriginalGroupId(),
+						exportImportConfigurationModelImpl.getOriginalStatus()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_S, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_S,
+					args);
+
+				args = new Object[] {
+						exportImportConfigurationModelImpl.getGroupId(),
+						exportImportConfigurationModelImpl.getStatus()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_S, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_S,
+					args);
+			}
+
+			if ((exportImportConfigurationModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_T_S.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						exportImportConfigurationModelImpl.getOriginalGroupId(),
+						exportImportConfigurationModelImpl.getOriginalType(),
+						exportImportConfigurationModelImpl.getOriginalStatus()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_T_S, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_T_S,
+					args);
+
+				args = new Object[] {
+						exportImportConfigurationModelImpl.getGroupId(),
+						exportImportConfigurationModelImpl.getType(),
+						exportImportConfigurationModelImpl.getStatus()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_T_S, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_T_S,
+					args);
 			}
 		}
 
-		EntityCacheUtil.putResult(
-			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
 			ExportImportConfigurationImpl.class,
 			exportImportConfiguration.getPrimaryKey(),
 			exportImportConfiguration, false);
@@ -3301,8 +3232,39 @@ public class ExportImportConfigurationPersistenceImpl
 		return exportImportConfiguration;
 	}
 
+	protected ExportImportConfiguration toUnwrappedModel(
+		ExportImportConfiguration exportImportConfiguration) {
+		if (exportImportConfiguration instanceof ExportImportConfigurationImpl) {
+			return exportImportConfiguration;
+		}
+
+		ExportImportConfigurationImpl exportImportConfigurationImpl = new ExportImportConfigurationImpl();
+
+		exportImportConfigurationImpl.setNew(exportImportConfiguration.isNew());
+		exportImportConfigurationImpl.setPrimaryKey(exportImportConfiguration.getPrimaryKey());
+
+		exportImportConfigurationImpl.setMvccVersion(exportImportConfiguration.getMvccVersion());
+		exportImportConfigurationImpl.setExportImportConfigurationId(exportImportConfiguration.getExportImportConfigurationId());
+		exportImportConfigurationImpl.setGroupId(exportImportConfiguration.getGroupId());
+		exportImportConfigurationImpl.setCompanyId(exportImportConfiguration.getCompanyId());
+		exportImportConfigurationImpl.setUserId(exportImportConfiguration.getUserId());
+		exportImportConfigurationImpl.setUserName(exportImportConfiguration.getUserName());
+		exportImportConfigurationImpl.setCreateDate(exportImportConfiguration.getCreateDate());
+		exportImportConfigurationImpl.setModifiedDate(exportImportConfiguration.getModifiedDate());
+		exportImportConfigurationImpl.setName(exportImportConfiguration.getName());
+		exportImportConfigurationImpl.setDescription(exportImportConfiguration.getDescription());
+		exportImportConfigurationImpl.setType(exportImportConfiguration.getType());
+		exportImportConfigurationImpl.setSettings(exportImportConfiguration.getSettings());
+		exportImportConfigurationImpl.setStatus(exportImportConfiguration.getStatus());
+		exportImportConfigurationImpl.setStatusByUserId(exportImportConfiguration.getStatusByUserId());
+		exportImportConfigurationImpl.setStatusByUserName(exportImportConfiguration.getStatusByUserName());
+		exportImportConfigurationImpl.setStatusDate(exportImportConfiguration.getStatusDate());
+
+		return exportImportConfigurationImpl;
+	}
+
 	/**
-	 * Returns the export import configuration with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
+	 * Returns the export import configuration with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the export import configuration
 	 * @return the export import configuration
@@ -3311,24 +3273,22 @@ public class ExportImportConfigurationPersistenceImpl
 	@Override
 	public ExportImportConfiguration findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchConfigurationException {
-
-		ExportImportConfiguration exportImportConfiguration = fetchByPrimaryKey(
-			primaryKey);
+		ExportImportConfiguration exportImportConfiguration = fetchByPrimaryKey(primaryKey);
 
 		if (exportImportConfiguration == null) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchConfigurationException(
-				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			throw new NoSuchConfigurationException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
 		}
 
 		return exportImportConfiguration;
 	}
 
 	/**
-	 * Returns the export import configuration with the primary key or throws a <code>NoSuchConfigurationException</code> if it could not be found.
+	 * Returns the export import configuration with the primary key or throws a {@link NoSuchConfigurationException} if it could not be found.
 	 *
 	 * @param exportImportConfigurationId the primary key of the export import configuration
 	 * @return the export import configuration
@@ -3336,9 +3296,7 @@ public class ExportImportConfigurationPersistenceImpl
 	 */
 	@Override
 	public ExportImportConfiguration findByPrimaryKey(
-			long exportImportConfigurationId)
-		throws NoSuchConfigurationException {
-
+		long exportImportConfigurationId) throws NoSuchConfigurationException {
 		return findByPrimaryKey((Serializable)exportImportConfigurationId);
 	}
 
@@ -3349,19 +3307,15 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @return the export import configuration, or <code>null</code> if a export import configuration with the primary key could not be found
 	 */
 	@Override
-	public ExportImportConfiguration fetchByPrimaryKey(
-		Serializable primaryKey) {
-
-		Serializable serializable = EntityCacheUtil.getResult(
-			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-			ExportImportConfigurationImpl.class, primaryKey);
+	public ExportImportConfiguration fetchByPrimaryKey(Serializable primaryKey) {
+		Serializable serializable = entityCache.getResult(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+				ExportImportConfigurationImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
 		}
 
-		ExportImportConfiguration exportImportConfiguration =
-			(ExportImportConfiguration)serializable;
+		ExportImportConfiguration exportImportConfiguration = (ExportImportConfiguration)serializable;
 
 		if (exportImportConfiguration == null) {
 			Session session = null;
@@ -3369,26 +3323,23 @@ public class ExportImportConfigurationPersistenceImpl
 			try {
 				session = openSession();
 
-				exportImportConfiguration =
-					(ExportImportConfiguration)session.get(
-						ExportImportConfigurationImpl.class, primaryKey);
+				exportImportConfiguration = (ExportImportConfiguration)session.get(ExportImportConfigurationImpl.class,
+						primaryKey);
 
 				if (exportImportConfiguration != null) {
 					cacheResult(exportImportConfiguration);
 				}
 				else {
-					EntityCacheUtil.putResult(
-						ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
 						ExportImportConfigurationImpl.class, primaryKey,
 						nullModel);
 				}
 			}
-			catch (Exception exception) {
-				EntityCacheUtil.removeResult(
-					ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception e) {
+				entityCache.removeResult(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
 					ExportImportConfigurationImpl.class, primaryKey);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -3407,28 +3358,24 @@ public class ExportImportConfigurationPersistenceImpl
 	@Override
 	public ExportImportConfiguration fetchByPrimaryKey(
 		long exportImportConfigurationId) {
-
 		return fetchByPrimaryKey((Serializable)exportImportConfigurationId);
 	}
 
 	@Override
 	public Map<Serializable, ExportImportConfiguration> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
-
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, ExportImportConfiguration> map =
-			new HashMap<Serializable, ExportImportConfiguration>();
+		Map<Serializable, ExportImportConfiguration> map = new HashMap<Serializable, ExportImportConfiguration>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
 
 			Serializable primaryKey = iterator.next();
 
-			ExportImportConfiguration exportImportConfiguration =
-				fetchByPrimaryKey(primaryKey);
+			ExportImportConfiguration exportImportConfiguration = fetchByPrimaryKey(primaryKey);
 
 			if (exportImportConfiguration != null) {
 				map.put(primaryKey, exportImportConfiguration);
@@ -3440,9 +3387,8 @@ public class ExportImportConfigurationPersistenceImpl
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = EntityCacheUtil.getResult(
-				ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-				ExportImportConfigurationImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+					ExportImportConfigurationImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -3453,8 +3399,7 @@ public class ExportImportConfigurationPersistenceImpl
 					uncachedPrimaryKeys.add(primaryKey);
 				}
 				else {
-					map.put(
-						primaryKey, (ExportImportConfiguration)serializable);
+					map.put(primaryKey, (ExportImportConfiguration)serializable);
 				}
 			}
 		}
@@ -3463,51 +3408,46 @@ public class ExportImportConfigurationPersistenceImpl
 			return map;
 		}
 
-		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
+				1);
 
-		sb.append(_SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE_PKS_IN);
+		query.append(_SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			sb.append((long)primaryKey);
+			query.append((long)primaryKey);
 
-			sb.append(",");
+			query.append(StringPool.COMMA);
 		}
 
-		sb.setIndex(sb.index() - 1);
+		query.setIndex(query.index() - 1);
 
-		sb.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query query = session.createQuery(sql);
+			Query q = session.createQuery(sql);
 
-			for (ExportImportConfiguration exportImportConfiguration :
-					(List<ExportImportConfiguration>)query.list()) {
-
-				map.put(
-					exportImportConfiguration.getPrimaryKeyObj(),
+			for (ExportImportConfiguration exportImportConfiguration : (List<ExportImportConfiguration>)q.list()) {
+				map.put(exportImportConfiguration.getPrimaryKeyObj(),
 					exportImportConfiguration);
 
 				cacheResult(exportImportConfiguration);
 
-				uncachedPrimaryKeys.remove(
-					exportImportConfiguration.getPrimaryKeyObj());
+				uncachedPrimaryKeys.remove(exportImportConfiguration.getPrimaryKeyObj());
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				EntityCacheUtil.putResult(
-					ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
 					ExportImportConfigurationImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -3530,7 +3470,7 @@ public class ExportImportConfigurationPersistenceImpl
 	 * Returns a range of all the export import configurations.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ExportImportConfigurationModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of export import configurations
@@ -3546,7 +3486,7 @@ public class ExportImportConfigurationPersistenceImpl
 	 * Returns an ordered range of all the export import configurations.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ExportImportConfigurationModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of export import configurations
@@ -3555,10 +3495,8 @@ public class ExportImportConfigurationPersistenceImpl
 	 * @return the ordered range of export import configurations
 	 */
 	@Override
-	public List<ExportImportConfiguration> findAll(
-		int start, int end,
+	public List<ExportImportConfiguration> findAll(int start, int end,
 		OrderByComparator<ExportImportConfiguration> orderByComparator) {
-
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -3566,64 +3504,62 @@ public class ExportImportConfigurationPersistenceImpl
 	 * Returns an ordered range of all the export import configurations.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ExportImportConfigurationModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ExportImportConfigurationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of export import configurations
 	 * @param end the upper bound of the range of export import configurations (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of export import configurations
 	 */
 	@Override
-	public List<ExportImportConfiguration> findAll(
-		int start, int end,
+	public List<ExportImportConfiguration> findAll(int start, int end,
 		OrderByComparator<ExportImportConfiguration> orderByComparator,
-		boolean useFinderCache) {
-
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
-				finderArgs = FINDER_ARGS_EMPTY;
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+			finderArgs = FINDER_ARGS_EMPTY;
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] {start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
 		List<ExportImportConfiguration> list = null;
 
-		if (useFinderCache) {
-			list = (List<ExportImportConfiguration>)FinderCacheUtil.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<ExportImportConfiguration>)finderCache.getResult(finderPath,
+					finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					2 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(2 +
+						(orderByComparator.getOrderByFields().length * 2));
 
-				sb.append(_SQL_SELECT_EXPORTIMPORTCONFIGURATION);
+				query.append(_SQL_SELECT_EXPORTIMPORTCONFIGURATION);
 
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 
-				sql = sb.toString();
+				sql = query.toString();
 			}
 			else {
 				sql = _SQL_SELECT_EXPORTIMPORTCONFIGURATION;
 
-				sql = sql.concat(
-					ExportImportConfigurationModelImpl.ORDER_BY_JPQL);
+				if (pagination) {
+					sql = sql.concat(ExportImportConfigurationModelImpl.ORDER_BY_JPQL);
+				}
 			}
 
 			Session session = null;
@@ -3631,23 +3567,29 @@ public class ExportImportConfigurationPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				list = (List<ExportImportConfiguration>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<ExportImportConfiguration>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<ExportImportConfiguration>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					FinderCacheUtil.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -3675,8 +3617,8 @@ public class ExportImportConfigurationPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)FinderCacheUtil.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -3684,19 +3626,18 @@ public class ExportImportConfigurationPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(
-					_SQL_COUNT_EXPORTIMPORTCONFIGURATION);
+				Query q = session.createQuery(_SQL_COUNT_EXPORTIMPORTCONFIGURATION);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				FinderCacheUtil.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
+					count);
 			}
-			catch (Exception exception) {
-				FinderCacheUtil.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -3720,201 +3661,30 @@ public class ExportImportConfigurationPersistenceImpl
 	 * Initializes the export import configuration persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
-			ExportImportConfigurationImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
-			ExportImportConfigurationImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
-
-		_finderPathWithPaginationFindByGroupId = new FinderPath(
-			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
-			ExportImportConfigurationImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupId",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
-			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
-			ExportImportConfigurationImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
-			new String[] {Long.class.getName()},
-			ExportImportConfigurationModelImpl.GROUPID_COLUMN_BITMASK |
-			ExportImportConfigurationModelImpl.CREATEDATE_COLUMN_BITMASK);
-
-		_finderPathCountByGroupId = new FinderPath(
-			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
-			new String[] {Long.class.getName()});
-
-		_finderPathWithPaginationFindByCompanyId = new FinderPath(
-			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
-			ExportImportConfigurationImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
-			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
-			ExportImportConfigurationImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
-			new String[] {Long.class.getName()},
-			ExportImportConfigurationModelImpl.COMPANYID_COLUMN_BITMASK |
-			ExportImportConfigurationModelImpl.CREATEDATE_COLUMN_BITMASK);
-
-		_finderPathCountByCompanyId = new FinderPath(
-			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
-			new String[] {Long.class.getName()});
-
-		_finderPathWithPaginationFindByG_T = new FinderPath(
-			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
-			ExportImportConfigurationImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_T",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByG_T = new FinderPath(
-			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
-			ExportImportConfigurationImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_T",
-			new String[] {Long.class.getName(), Integer.class.getName()},
-			ExportImportConfigurationModelImpl.GROUPID_COLUMN_BITMASK |
-			ExportImportConfigurationModelImpl.TYPE_COLUMN_BITMASK |
-			ExportImportConfigurationModelImpl.CREATEDATE_COLUMN_BITMASK);
-
-		_finderPathCountByG_T = new FinderPath(
-			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_T",
-			new String[] {Long.class.getName(), Integer.class.getName()});
-
-		_finderPathWithPaginationFindByG_S = new FinderPath(
-			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
-			ExportImportConfigurationImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_S",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByG_S = new FinderPath(
-			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
-			ExportImportConfigurationImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_S",
-			new String[] {Long.class.getName(), Integer.class.getName()},
-			ExportImportConfigurationModelImpl.GROUPID_COLUMN_BITMASK |
-			ExportImportConfigurationModelImpl.STATUS_COLUMN_BITMASK |
-			ExportImportConfigurationModelImpl.CREATEDATE_COLUMN_BITMASK);
-
-		_finderPathCountByG_S = new FinderPath(
-			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_S",
-			new String[] {Long.class.getName(), Integer.class.getName()});
-
-		_finderPathWithPaginationFindByG_T_S = new FinderPath(
-			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
-			ExportImportConfigurationImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_T_S",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByG_T_S = new FinderPath(
-			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED,
-			ExportImportConfigurationImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_T_S",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName()
-			},
-			ExportImportConfigurationModelImpl.GROUPID_COLUMN_BITMASK |
-			ExportImportConfigurationModelImpl.TYPE_COLUMN_BITMASK |
-			ExportImportConfigurationModelImpl.STATUS_COLUMN_BITMASK |
-			ExportImportConfigurationModelImpl.CREATEDATE_COLUMN_BITMASK);
-
-		_finderPathCountByG_T_S = new FinderPath(
-			ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-			ExportImportConfigurationModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_T_S",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName()
-			});
 	}
 
 	public void destroy() {
-		EntityCacheUtil.removeCache(
-			ExportImportConfigurationImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		entityCache.removeCache(ExportImportConfigurationImpl.class.getName());
+		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	private static final String _SQL_SELECT_EXPORTIMPORTCONFIGURATION =
-		"SELECT exportImportConfiguration FROM ExportImportConfiguration exportImportConfiguration";
-
-	private static final String
-		_SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE_PKS_IN =
-			"SELECT exportImportConfiguration FROM ExportImportConfiguration exportImportConfiguration WHERE exportImportConfigurationId IN (";
-
-	private static final String _SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE =
-		"SELECT exportImportConfiguration FROM ExportImportConfiguration exportImportConfiguration WHERE ";
-
-	private static final String _SQL_COUNT_EXPORTIMPORTCONFIGURATION =
-		"SELECT COUNT(exportImportConfiguration) FROM ExportImportConfiguration exportImportConfiguration";
-
-	private static final String _SQL_COUNT_EXPORTIMPORTCONFIGURATION_WHERE =
-		"SELECT COUNT(exportImportConfiguration) FROM ExportImportConfiguration exportImportConfiguration WHERE ";
-
-	private static final String _ORDER_BY_ENTITY_ALIAS =
-		"exportImportConfiguration.";
-
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
-		"No ExportImportConfiguration exists with the primary key ";
-
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No ExportImportConfiguration exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		ExportImportConfigurationPersistenceImpl.class);
-
-	private static final Set<String> _badColumnNames = SetUtil.fromArray(
-		new String[] {"type", "settings"});
-
+	@BeanReference(type = CompanyProviderWrapper.class)
+	protected CompanyProvider companyProvider;
+	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
+	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
+	private static final String _SQL_SELECT_EXPORTIMPORTCONFIGURATION = "SELECT exportImportConfiguration FROM ExportImportConfiguration exportImportConfiguration";
+	private static final String _SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE_PKS_IN =
+		"SELECT exportImportConfiguration FROM ExportImportConfiguration exportImportConfiguration WHERE exportImportConfigurationId IN (";
+	private static final String _SQL_SELECT_EXPORTIMPORTCONFIGURATION_WHERE = "SELECT exportImportConfiguration FROM ExportImportConfiguration exportImportConfiguration WHERE ";
+	private static final String _SQL_COUNT_EXPORTIMPORTCONFIGURATION = "SELECT COUNT(exportImportConfiguration) FROM ExportImportConfiguration exportImportConfiguration";
+	private static final String _SQL_COUNT_EXPORTIMPORTCONFIGURATION_WHERE = "SELECT COUNT(exportImportConfiguration) FROM ExportImportConfiguration exportImportConfiguration WHERE ";
+	private static final String _ORDER_BY_ENTITY_ALIAS = "exportImportConfiguration.";
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No ExportImportConfiguration exists with the primary key ";
+	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No ExportImportConfiguration exists with the key {";
+	private static final Log _log = LogFactoryUtil.getLog(ExportImportConfigurationPersistenceImpl.class);
+	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
+				"type", "settings"
+			});
 }

@@ -14,6 +14,8 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.Subscription;
 import com.liferay.portal.kernel.service.SubscriptionLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.portal.kernel.service.SubscriptionLocalServiceUtil;
  * @see Subscription
  * @generated
  */
-public abstract class SubscriptionBaseImpl
-	extends SubscriptionModelImpl implements Subscription {
-
+@ProviderType
+public abstract class SubscriptionBaseImpl extends SubscriptionModelImpl
+	implements Subscription {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a subscription model instance should use the <code>Subscription</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a subscription model instance should use the {@link Subscription} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class SubscriptionBaseImpl
 			SubscriptionLocalServiceUtil.updateSubscription(this);
 		}
 	}
-
 }

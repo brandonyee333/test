@@ -14,6 +14,8 @@
 
 package com.liferay.journal.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -23,86 +25,84 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see JournalFeedService
  * @generated
  */
-public class JournalFeedServiceWrapper
-	implements JournalFeedService, ServiceWrapper<JournalFeedService> {
-
+@ProviderType
+public class JournalFeedServiceWrapper implements JournalFeedService,
+	ServiceWrapper<JournalFeedService> {
 	public JournalFeedServiceWrapper(JournalFeedService journalFeedService) {
 		_journalFeedService = journalFeedService;
 	}
 
 	@Override
-	public com.liferay.journal.model.JournalFeed addFeed(
-			long groupId, String feedId, boolean autoFeedId, String name,
-			String description, String ddmStructureKey, String ddmTemplateKey,
-			String ddmRendererTemplateKey, int delta, String orderByCol,
-			String orderByType, String targetLayoutFriendlyUrl,
-			String targetPortletId, String contentField, String feedType,
-			double feedVersion,
-			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public com.liferay.journal.model.JournalFeed addFeed(long groupId,
+		java.lang.String feedId, boolean autoFeedId, java.lang.String name,
+		java.lang.String description, java.lang.String ddmStructureKey,
+		java.lang.String ddmTemplateKey,
+		java.lang.String ddmRendererTemplateKey, int delta,
+		java.lang.String orderByCol, java.lang.String orderByType,
+		java.lang.String targetLayoutFriendlyUrl,
+		java.lang.String targetPortletId, java.lang.String contentField,
+		java.lang.String feedType, double feedVersion,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _journalFeedService.addFeed(
-			groupId, feedId, autoFeedId, name, description, ddmStructureKey,
-			ddmTemplateKey, ddmRendererTemplateKey, delta, orderByCol,
-			orderByType, targetLayoutFriendlyUrl, targetPortletId, contentField,
-			feedType, feedVersion, serviceContext);
-	}
-
-	@Override
-	public void deleteFeed(long feedId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		_journalFeedService.deleteFeed(feedId);
-	}
-
-	@Override
-	public void deleteFeed(long groupId, String feedId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		_journalFeedService.deleteFeed(groupId, feedId);
+		return _journalFeedService.addFeed(groupId, feedId, autoFeedId, name,
+			description, ddmStructureKey, ddmTemplateKey,
+			ddmRendererTemplateKey, delta, orderByCol, orderByType,
+			targetLayoutFriendlyUrl, targetPortletId, contentField, feedType,
+			feedVersion, serviceContext);
 	}
 
 	@Override
 	public com.liferay.journal.model.JournalFeed getFeed(long feedId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		return _journalFeedService.getFeed(feedId);
 	}
 
 	@Override
-	public com.liferay.journal.model.JournalFeed getFeed(
-			long groupId, String feedId)
+	public com.liferay.journal.model.JournalFeed getFeed(long groupId,
+		java.lang.String feedId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		return _journalFeedService.getFeed(groupId, feedId);
 	}
 
-	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
 	@Override
-	public String getOSGiServiceIdentifier() {
+	public com.liferay.journal.model.JournalFeed updateFeed(long groupId,
+		java.lang.String feedId, java.lang.String name,
+		java.lang.String description, java.lang.String ddmStructureKey,
+		java.lang.String ddmTemplateKey,
+		java.lang.String ddmRendererTemplateKey, int delta,
+		java.lang.String orderByCol, java.lang.String orderByType,
+		java.lang.String targetLayoutFriendlyUrl,
+		java.lang.String targetPortletId, java.lang.String contentField,
+		java.lang.String feedType, double feedVersion,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _journalFeedService.updateFeed(groupId, feedId, name,
+			description, ddmStructureKey, ddmTemplateKey,
+			ddmRendererTemplateKey, delta, orderByCol, orderByType,
+			targetLayoutFriendlyUrl, targetPortletId, contentField, feedType,
+			feedVersion, serviceContext);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
 		return _journalFeedService.getOSGiServiceIdentifier();
 	}
 
 	@Override
-	public com.liferay.journal.model.JournalFeed updateFeed(
-			long groupId, String feedId, String name, String description,
-			String ddmStructureKey, String ddmTemplateKey,
-			String ddmRendererTemplateKey, int delta, String orderByCol,
-			String orderByType, String targetLayoutFriendlyUrl,
-			String targetPortletId, String contentField, String feedType,
-			double feedVersion,
-			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public void deleteFeed(long feedId)
 		throws com.liferay.portal.kernel.exception.PortalException {
+		_journalFeedService.deleteFeed(feedId);
+	}
 
-		return _journalFeedService.updateFeed(
-			groupId, feedId, name, description, ddmStructureKey, ddmTemplateKey,
-			ddmRendererTemplateKey, delta, orderByCol, orderByType,
-			targetLayoutFriendlyUrl, targetPortletId, contentField, feedType,
-			feedVersion, serviceContext);
+	@Override
+	public void deleteFeed(long groupId, java.lang.String feedId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_journalFeedService.deleteFeed(groupId, feedId);
 	}
 
 	@Override
@@ -116,5 +116,4 @@ public class JournalFeedServiceWrapper
 	}
 
 	private JournalFeedService _journalFeedService;
-
 }

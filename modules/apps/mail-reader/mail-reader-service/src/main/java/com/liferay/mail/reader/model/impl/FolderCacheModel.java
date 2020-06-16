@@ -14,10 +14,14 @@
 
 package com.liferay.mail.reader.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.mail.reader.model.Folder;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,10 +34,11 @@ import java.util.Date;
  * The cache model class for representing Folder in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see Folder
  * @generated
  */
+@ProviderType
 public class FolderCacheModel implements CacheModel<Folder>, Externalizable {
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -96,7 +101,7 @@ public class FolderCacheModel implements CacheModel<Folder>, Externalizable {
 		folderImpl.setUserId(userId);
 
 		if (userName == null) {
-			folderImpl.setUserName("");
+			folderImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			folderImpl.setUserName(userName);
@@ -119,14 +124,14 @@ public class FolderCacheModel implements CacheModel<Folder>, Externalizable {
 		folderImpl.setAccountId(accountId);
 
 		if (fullName == null) {
-			folderImpl.setFullName("");
+			folderImpl.setFullName(StringPool.BLANK);
 		}
 		else {
 			folderImpl.setFullName(fullName);
 		}
 
 		if (displayName == null) {
-			folderImpl.setDisplayName("");
+			folderImpl.setDisplayName(StringPool.BLANK);
 		}
 		else {
 			folderImpl.setDisplayName(displayName);
@@ -158,7 +163,8 @@ public class FolderCacheModel implements CacheModel<Folder>, Externalizable {
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(folderId);
 
 		objectOutput.writeLong(companyId);
@@ -166,7 +172,7 @@ public class FolderCacheModel implements CacheModel<Folder>, Externalizable {
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -178,14 +184,14 @@ public class FolderCacheModel implements CacheModel<Folder>, Externalizable {
 		objectOutput.writeLong(accountId);
 
 		if (fullName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(fullName);
 		}
 
 		if (displayName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(displayName);
@@ -204,5 +210,4 @@ public class FolderCacheModel implements CacheModel<Folder>, Externalizable {
 	public String fullName;
 	public String displayName;
 	public int remoteMessageCount;
-
 }

@@ -14,10 +14,14 @@
 
 package com.liferay.polls.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.polls.model.PollsVote;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing PollsVote in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see PollsVote
  * @generated
  */
-public class PollsVoteCacheModel
-	implements CacheModel<PollsVote>, Externalizable {
-
+@ProviderType
+public class PollsVoteCacheModel implements CacheModel<PollsVote>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -97,7 +102,7 @@ public class PollsVoteCacheModel
 		PollsVoteImpl pollsVoteImpl = new PollsVoteImpl();
 
 		if (uuid == null) {
-			pollsVoteImpl.setUuid("");
+			pollsVoteImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			pollsVoteImpl.setUuid(uuid);
@@ -109,7 +114,7 @@ public class PollsVoteCacheModel
 		pollsVoteImpl.setUserId(userId);
 
 		if (userName == null) {
-			pollsVoteImpl.setUserName("");
+			pollsVoteImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			pollsVoteImpl.setUserName(userName);
@@ -174,9 +179,10 @@ public class PollsVoteCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -191,7 +197,7 @@ public class PollsVoteCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -219,5 +225,4 @@ public class PollsVoteCacheModel
 	public long choiceId;
 	public long lastPublishDate;
 	public long voteDate;
-
 }

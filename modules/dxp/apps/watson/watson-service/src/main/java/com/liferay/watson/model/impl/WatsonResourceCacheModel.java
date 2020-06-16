@@ -1,22 +1,26 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.watson.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.watson.model.WatsonResource;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing WatsonResource in entity cache.
  *
  * @author Steven Smith
+ * @see WatsonResource
  * @generated
  */
-public class WatsonResourceCacheModel
-	implements CacheModel<WatsonResource>, Externalizable {
-
+@ProviderType
+public class WatsonResourceCacheModel implements CacheModel<WatsonResource>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class WatsonResourceCacheModel
 			return false;
 		}
 
-		WatsonResourceCacheModel watsonResourceCacheModel =
-			(WatsonResourceCacheModel)obj;
+		WatsonResourceCacheModel watsonResourceCacheModel = (WatsonResourceCacheModel)obj;
 
 		if (watsonResourceId == watsonResourceCacheModel.watsonResourceId) {
 			return true;
@@ -107,7 +111,7 @@ public class WatsonResourceCacheModel
 		watsonResourceImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonResourceImpl.setUserName("");
+			watsonResourceImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			watsonResourceImpl.setUserName(userName);
@@ -127,27 +131,26 @@ public class WatsonResourceCacheModel
 			watsonResourceImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		watsonResourceImpl.setOriginalWatsonResourceId(
-			originalWatsonResourceId);
+		watsonResourceImpl.setOriginalWatsonResourceId(originalWatsonResourceId);
 		watsonResourceImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
 		watsonResourceImpl.setWatsonIncidentId(watsonIncidentId);
 
 		if (name == null) {
-			watsonResourceImpl.setName("");
+			watsonResourceImpl.setName(StringPool.BLANK);
 		}
 		else {
 			watsonResourceImpl.setName(name);
 		}
 
 		if (description == null) {
-			watsonResourceImpl.setDescription("");
+			watsonResourceImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			watsonResourceImpl.setDescription(description);
 		}
 
 		if (imagePayload == null) {
-			watsonResourceImpl.setImagePayload("");
+			watsonResourceImpl.setImagePayload(StringPool.BLANK);
 		}
 		else {
 			watsonResourceImpl.setImagePayload(imagePayload);
@@ -161,9 +164,7 @@ public class WatsonResourceCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		watsonResourceId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -182,13 +183,14 @@ public class WatsonResourceCacheModel
 		watsonIncidentId = objectInput.readLong();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
-		imagePayload = (String)objectInput.readObject();
+		imagePayload = objectInput.readUTF();
 
 		status = objectInput.readInt();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(watsonResourceId);
 
 		objectOutput.writeLong(groupId);
@@ -198,7 +200,7 @@ public class WatsonResourceCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -214,24 +216,24 @@ public class WatsonResourceCacheModel
 		objectOutput.writeLong(watsonIncidentId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (imagePayload == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(imagePayload);
+			objectOutput.writeUTF(imagePayload);
 		}
 
 		objectOutput.writeInt(status);
@@ -251,5 +253,4 @@ public class WatsonResourceCacheModel
 	public String description;
 	public String imagePayload;
 	public int status;
-
 }

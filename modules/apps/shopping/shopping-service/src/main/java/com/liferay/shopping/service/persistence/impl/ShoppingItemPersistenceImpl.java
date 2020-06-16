@@ -14,6 +14,8 @@
 
 package com.liferay.shopping.service.persistence.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -24,17 +26,19 @@ import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.service.persistence.CompanyProvider;
+import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+
 import com.liferay.shopping.exception.NoSuchItemException;
 import com.liferay.shopping.model.ShoppingItem;
 import com.liferay.shopping.model.impl.ShoppingItemImpl;
@@ -42,9 +46,6 @@ import com.liferay.shopping.model.impl.ShoppingItemModelImpl;
 import com.liferay.shopping.service.persistence.ShoppingItemPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -64,34 +65,44 @@ import java.util.Set;
  * </p>
  *
  * @author Brian Wing Shun Chan
+ * @see ShoppingItemPersistence
+ * @see com.liferay.shopping.service.persistence.ShoppingItemUtil
  * @generated
  */
-public class ShoppingItemPersistenceImpl
-	extends BasePersistenceImpl<ShoppingItem>
+@ProviderType
+public class ShoppingItemPersistenceImpl extends BasePersistenceImpl<ShoppingItem>
 	implements ShoppingItemPersistence {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use <code>ShoppingItemUtil</code> to access the shopping item persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use {@link ShoppingItemUtil} to access the shopping item persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY =
-		ShoppingItemImpl.class.getName();
-
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List1";
-
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathFetchBySmallImageId;
-	private FinderPath _finderPathCountBySmallImageId;
+	public static final String FINDER_CLASS_NAME_ENTITY = ShoppingItemImpl.class.getName();
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List1";
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List2";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
+			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, ShoppingItemImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
+			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, ShoppingItemImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
+			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	public static final FinderPath FINDER_PATH_FETCH_BY_SMALLIMAGEID = new FinderPath(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
+			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, ShoppingItemImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchBySmallImageId",
+			new String[] { Long.class.getName() },
+			ShoppingItemModelImpl.SMALLIMAGEID_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_SMALLIMAGEID = new FinderPath(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
+			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBySmallImageId",
+			new String[] { Long.class.getName() });
 
 	/**
-	 * Returns the shopping item where smallImageId = &#63; or throws a <code>NoSuchItemException</code> if it could not be found.
+	 * Returns the shopping item where smallImageId = &#63; or throws a {@link NoSuchItemException} if it could not be found.
 	 *
 	 * @param smallImageId the small image ID
 	 * @return the matching shopping item
@@ -100,24 +111,23 @@ public class ShoppingItemPersistenceImpl
 	@Override
 	public ShoppingItem findBySmallImageId(long smallImageId)
 		throws NoSuchItemException {
-
 		ShoppingItem shoppingItem = fetchBySmallImageId(smallImageId);
 
 		if (shoppingItem == null) {
-			StringBundler sb = new StringBundler(4);
+			StringBundler msg = new StringBundler(4);
 
-			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			sb.append("smallImageId=");
-			sb.append(smallImageId);
+			msg.append("smallImageId=");
+			msg.append(smallImageId);
 
-			sb.append("}");
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(sb.toString());
+				_log.debug(msg.toString());
 			}
 
-			throw new NoSuchItemException(sb.toString());
+			throw new NoSuchItemException(msg.toString());
 		}
 
 		return shoppingItem;
@@ -138,75 +148,64 @@ public class ShoppingItemPersistenceImpl
 	 * Returns the shopping item where smallImageId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param smallImageId the small image ID
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the matching shopping item, or <code>null</code> if a matching shopping item could not be found
 	 */
 	@Override
-	public ShoppingItem fetchBySmallImageId(
-		long smallImageId, boolean useFinderCache) {
-
-		Object[] finderArgs = null;
-
-		if (useFinderCache) {
-			finderArgs = new Object[] {smallImageId};
-		}
+	public ShoppingItem fetchBySmallImageId(long smallImageId,
+		boolean retrieveFromCache) {
+		Object[] finderArgs = new Object[] { smallImageId };
 
 		Object result = null;
 
-		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchBySmallImageId, finderArgs, this);
+		if (retrieveFromCache) {
+			result = finderCache.getResult(FINDER_PATH_FETCH_BY_SMALLIMAGEID,
+					finderArgs, this);
 		}
 
 		if (result instanceof ShoppingItem) {
 			ShoppingItem shoppingItem = (ShoppingItem)result;
 
-			if (smallImageId != shoppingItem.getSmallImageId()) {
+			if ((smallImageId != shoppingItem.getSmallImageId())) {
 				result = null;
 			}
 		}
 
 		if (result == null) {
-			StringBundler sb = new StringBundler(3);
+			StringBundler query = new StringBundler(3);
 
-			sb.append(_SQL_SELECT_SHOPPINGITEM_WHERE);
+			query.append(_SQL_SELECT_SHOPPINGITEM_WHERE);
 
-			sb.append(_FINDER_COLUMN_SMALLIMAGEID_SMALLIMAGEID_2);
+			query.append(_FINDER_COLUMN_SMALLIMAGEID_SMALLIMAGEID_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(smallImageId);
+				qPos.add(smallImageId);
 
-				List<ShoppingItem> list = query.list();
+				List<ShoppingItem> list = q.list();
 
 				if (list.isEmpty()) {
-					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchBySmallImageId, finderArgs, list);
-					}
+					finderCache.putResult(FINDER_PATH_FETCH_BY_SMALLIMAGEID,
+						finderArgs, list);
 				}
 				else {
 					if (list.size() > 1) {
 						Collections.sort(list, Collections.reverseOrder());
 
 						if (_log.isWarnEnabled()) {
-							if (!useFinderCache) {
-								finderArgs = new Object[] {smallImageId};
-							}
-
 							_log.warn(
 								"ShoppingItemPersistenceImpl.fetchBySmallImageId(long, boolean) with parameters (" +
-									StringUtil.merge(finderArgs) +
-										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+								StringUtil.merge(finderArgs) +
+								") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 						}
 					}
 
@@ -215,15 +214,18 @@ public class ShoppingItemPersistenceImpl
 					result = shoppingItem;
 
 					cacheResult(shoppingItem);
+
+					if ((shoppingItem.getSmallImageId() != smallImageId)) {
+						finderCache.putResult(FINDER_PATH_FETCH_BY_SMALLIMAGEID,
+							finderArgs, shoppingItem);
+					}
 				}
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(
-						_finderPathFetchBySmallImageId, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_FETCH_BY_SMALLIMAGEID,
+					finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -247,7 +249,6 @@ public class ShoppingItemPersistenceImpl
 	@Override
 	public ShoppingItem removeBySmallImageId(long smallImageId)
 		throws NoSuchItemException {
-
 		ShoppingItem shoppingItem = findBySmallImageId(smallImageId);
 
 		return remove(shoppingItem);
@@ -261,40 +262,40 @@ public class ShoppingItemPersistenceImpl
 	 */
 	@Override
 	public int countBySmallImageId(long smallImageId) {
-		FinderPath finderPath = _finderPathCountBySmallImageId;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_SMALLIMAGEID;
 
-		Object[] finderArgs = new Object[] {smallImageId};
+		Object[] finderArgs = new Object[] { smallImageId };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(2);
+			StringBundler query = new StringBundler(2);
 
-			sb.append(_SQL_COUNT_SHOPPINGITEM_WHERE);
+			query.append(_SQL_COUNT_SHOPPINGITEM_WHERE);
 
-			sb.append(_FINDER_COLUMN_SMALLIMAGEID_SMALLIMAGEID_2);
+			query.append(_FINDER_COLUMN_SMALLIMAGEID_SMALLIMAGEID_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(smallImageId);
+				qPos.add(smallImageId);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
+			catch (Exception e) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -304,14 +305,19 @@ public class ShoppingItemPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_SMALLIMAGEID_SMALLIMAGEID_2 =
-		"shoppingItem.smallImageId = ?";
-
-	private FinderPath _finderPathFetchByMediumImageId;
-	private FinderPath _finderPathCountByMediumImageId;
+	private static final String _FINDER_COLUMN_SMALLIMAGEID_SMALLIMAGEID_2 = "shoppingItem.smallImageId = ?";
+	public static final FinderPath FINDER_PATH_FETCH_BY_MEDIUMIMAGEID = new FinderPath(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
+			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, ShoppingItemImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchByMediumImageId",
+			new String[] { Long.class.getName() },
+			ShoppingItemModelImpl.MEDIUMIMAGEID_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_MEDIUMIMAGEID = new FinderPath(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
+			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByMediumImageId",
+			new String[] { Long.class.getName() });
 
 	/**
-	 * Returns the shopping item where mediumImageId = &#63; or throws a <code>NoSuchItemException</code> if it could not be found.
+	 * Returns the shopping item where mediumImageId = &#63; or throws a {@link NoSuchItemException} if it could not be found.
 	 *
 	 * @param mediumImageId the medium image ID
 	 * @return the matching shopping item
@@ -320,24 +326,23 @@ public class ShoppingItemPersistenceImpl
 	@Override
 	public ShoppingItem findByMediumImageId(long mediumImageId)
 		throws NoSuchItemException {
-
 		ShoppingItem shoppingItem = fetchByMediumImageId(mediumImageId);
 
 		if (shoppingItem == null) {
-			StringBundler sb = new StringBundler(4);
+			StringBundler msg = new StringBundler(4);
 
-			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			sb.append("mediumImageId=");
-			sb.append(mediumImageId);
+			msg.append("mediumImageId=");
+			msg.append(mediumImageId);
 
-			sb.append("}");
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(sb.toString());
+				_log.debug(msg.toString());
 			}
 
-			throw new NoSuchItemException(sb.toString());
+			throw new NoSuchItemException(msg.toString());
 		}
 
 		return shoppingItem;
@@ -358,75 +363,64 @@ public class ShoppingItemPersistenceImpl
 	 * Returns the shopping item where mediumImageId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param mediumImageId the medium image ID
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the matching shopping item, or <code>null</code> if a matching shopping item could not be found
 	 */
 	@Override
-	public ShoppingItem fetchByMediumImageId(
-		long mediumImageId, boolean useFinderCache) {
-
-		Object[] finderArgs = null;
-
-		if (useFinderCache) {
-			finderArgs = new Object[] {mediumImageId};
-		}
+	public ShoppingItem fetchByMediumImageId(long mediumImageId,
+		boolean retrieveFromCache) {
+		Object[] finderArgs = new Object[] { mediumImageId };
 
 		Object result = null;
 
-		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchByMediumImageId, finderArgs, this);
+		if (retrieveFromCache) {
+			result = finderCache.getResult(FINDER_PATH_FETCH_BY_MEDIUMIMAGEID,
+					finderArgs, this);
 		}
 
 		if (result instanceof ShoppingItem) {
 			ShoppingItem shoppingItem = (ShoppingItem)result;
 
-			if (mediumImageId != shoppingItem.getMediumImageId()) {
+			if ((mediumImageId != shoppingItem.getMediumImageId())) {
 				result = null;
 			}
 		}
 
 		if (result == null) {
-			StringBundler sb = new StringBundler(3);
+			StringBundler query = new StringBundler(3);
 
-			sb.append(_SQL_SELECT_SHOPPINGITEM_WHERE);
+			query.append(_SQL_SELECT_SHOPPINGITEM_WHERE);
 
-			sb.append(_FINDER_COLUMN_MEDIUMIMAGEID_MEDIUMIMAGEID_2);
+			query.append(_FINDER_COLUMN_MEDIUMIMAGEID_MEDIUMIMAGEID_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(mediumImageId);
+				qPos.add(mediumImageId);
 
-				List<ShoppingItem> list = query.list();
+				List<ShoppingItem> list = q.list();
 
 				if (list.isEmpty()) {
-					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchByMediumImageId, finderArgs, list);
-					}
+					finderCache.putResult(FINDER_PATH_FETCH_BY_MEDIUMIMAGEID,
+						finderArgs, list);
 				}
 				else {
 					if (list.size() > 1) {
 						Collections.sort(list, Collections.reverseOrder());
 
 						if (_log.isWarnEnabled()) {
-							if (!useFinderCache) {
-								finderArgs = new Object[] {mediumImageId};
-							}
-
 							_log.warn(
 								"ShoppingItemPersistenceImpl.fetchByMediumImageId(long, boolean) with parameters (" +
-									StringUtil.merge(finderArgs) +
-										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+								StringUtil.merge(finderArgs) +
+								") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 						}
 					}
 
@@ -435,15 +429,18 @@ public class ShoppingItemPersistenceImpl
 					result = shoppingItem;
 
 					cacheResult(shoppingItem);
+
+					if ((shoppingItem.getMediumImageId() != mediumImageId)) {
+						finderCache.putResult(FINDER_PATH_FETCH_BY_MEDIUMIMAGEID,
+							finderArgs, shoppingItem);
+					}
 				}
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(
-						_finderPathFetchByMediumImageId, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_FETCH_BY_MEDIUMIMAGEID,
+					finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -467,7 +464,6 @@ public class ShoppingItemPersistenceImpl
 	@Override
 	public ShoppingItem removeByMediumImageId(long mediumImageId)
 		throws NoSuchItemException {
-
 		ShoppingItem shoppingItem = findByMediumImageId(mediumImageId);
 
 		return remove(shoppingItem);
@@ -481,40 +477,40 @@ public class ShoppingItemPersistenceImpl
 	 */
 	@Override
 	public int countByMediumImageId(long mediumImageId) {
-		FinderPath finderPath = _finderPathCountByMediumImageId;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_MEDIUMIMAGEID;
 
-		Object[] finderArgs = new Object[] {mediumImageId};
+		Object[] finderArgs = new Object[] { mediumImageId };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(2);
+			StringBundler query = new StringBundler(2);
 
-			sb.append(_SQL_COUNT_SHOPPINGITEM_WHERE);
+			query.append(_SQL_COUNT_SHOPPINGITEM_WHERE);
 
-			sb.append(_FINDER_COLUMN_MEDIUMIMAGEID_MEDIUMIMAGEID_2);
+			query.append(_FINDER_COLUMN_MEDIUMIMAGEID_MEDIUMIMAGEID_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(mediumImageId);
+				qPos.add(mediumImageId);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
+			catch (Exception e) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -524,14 +520,19 @@ public class ShoppingItemPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_MEDIUMIMAGEID_MEDIUMIMAGEID_2 =
-		"shoppingItem.mediumImageId = ?";
-
-	private FinderPath _finderPathFetchByLargeImageId;
-	private FinderPath _finderPathCountByLargeImageId;
+	private static final String _FINDER_COLUMN_MEDIUMIMAGEID_MEDIUMIMAGEID_2 = "shoppingItem.mediumImageId = ?";
+	public static final FinderPath FINDER_PATH_FETCH_BY_LARGEIMAGEID = new FinderPath(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
+			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, ShoppingItemImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchByLargeImageId",
+			new String[] { Long.class.getName() },
+			ShoppingItemModelImpl.LARGEIMAGEID_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_LARGEIMAGEID = new FinderPath(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
+			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByLargeImageId",
+			new String[] { Long.class.getName() });
 
 	/**
-	 * Returns the shopping item where largeImageId = &#63; or throws a <code>NoSuchItemException</code> if it could not be found.
+	 * Returns the shopping item where largeImageId = &#63; or throws a {@link NoSuchItemException} if it could not be found.
 	 *
 	 * @param largeImageId the large image ID
 	 * @return the matching shopping item
@@ -540,24 +541,23 @@ public class ShoppingItemPersistenceImpl
 	@Override
 	public ShoppingItem findByLargeImageId(long largeImageId)
 		throws NoSuchItemException {
-
 		ShoppingItem shoppingItem = fetchByLargeImageId(largeImageId);
 
 		if (shoppingItem == null) {
-			StringBundler sb = new StringBundler(4);
+			StringBundler msg = new StringBundler(4);
 
-			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			sb.append("largeImageId=");
-			sb.append(largeImageId);
+			msg.append("largeImageId=");
+			msg.append(largeImageId);
 
-			sb.append("}");
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(sb.toString());
+				_log.debug(msg.toString());
 			}
 
-			throw new NoSuchItemException(sb.toString());
+			throw new NoSuchItemException(msg.toString());
 		}
 
 		return shoppingItem;
@@ -578,75 +578,64 @@ public class ShoppingItemPersistenceImpl
 	 * Returns the shopping item where largeImageId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param largeImageId the large image ID
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the matching shopping item, or <code>null</code> if a matching shopping item could not be found
 	 */
 	@Override
-	public ShoppingItem fetchByLargeImageId(
-		long largeImageId, boolean useFinderCache) {
-
-		Object[] finderArgs = null;
-
-		if (useFinderCache) {
-			finderArgs = new Object[] {largeImageId};
-		}
+	public ShoppingItem fetchByLargeImageId(long largeImageId,
+		boolean retrieveFromCache) {
+		Object[] finderArgs = new Object[] { largeImageId };
 
 		Object result = null;
 
-		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchByLargeImageId, finderArgs, this);
+		if (retrieveFromCache) {
+			result = finderCache.getResult(FINDER_PATH_FETCH_BY_LARGEIMAGEID,
+					finderArgs, this);
 		}
 
 		if (result instanceof ShoppingItem) {
 			ShoppingItem shoppingItem = (ShoppingItem)result;
 
-			if (largeImageId != shoppingItem.getLargeImageId()) {
+			if ((largeImageId != shoppingItem.getLargeImageId())) {
 				result = null;
 			}
 		}
 
 		if (result == null) {
-			StringBundler sb = new StringBundler(3);
+			StringBundler query = new StringBundler(3);
 
-			sb.append(_SQL_SELECT_SHOPPINGITEM_WHERE);
+			query.append(_SQL_SELECT_SHOPPINGITEM_WHERE);
 
-			sb.append(_FINDER_COLUMN_LARGEIMAGEID_LARGEIMAGEID_2);
+			query.append(_FINDER_COLUMN_LARGEIMAGEID_LARGEIMAGEID_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(largeImageId);
+				qPos.add(largeImageId);
 
-				List<ShoppingItem> list = query.list();
+				List<ShoppingItem> list = q.list();
 
 				if (list.isEmpty()) {
-					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchByLargeImageId, finderArgs, list);
-					}
+					finderCache.putResult(FINDER_PATH_FETCH_BY_LARGEIMAGEID,
+						finderArgs, list);
 				}
 				else {
 					if (list.size() > 1) {
 						Collections.sort(list, Collections.reverseOrder());
 
 						if (_log.isWarnEnabled()) {
-							if (!useFinderCache) {
-								finderArgs = new Object[] {largeImageId};
-							}
-
 							_log.warn(
 								"ShoppingItemPersistenceImpl.fetchByLargeImageId(long, boolean) with parameters (" +
-									StringUtil.merge(finderArgs) +
-										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+								StringUtil.merge(finderArgs) +
+								") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 						}
 					}
 
@@ -655,15 +644,18 @@ public class ShoppingItemPersistenceImpl
 					result = shoppingItem;
 
 					cacheResult(shoppingItem);
+
+					if ((shoppingItem.getLargeImageId() != largeImageId)) {
+						finderCache.putResult(FINDER_PATH_FETCH_BY_LARGEIMAGEID,
+							finderArgs, shoppingItem);
+					}
 				}
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(
-						_finderPathFetchByLargeImageId, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_FETCH_BY_LARGEIMAGEID,
+					finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -687,7 +679,6 @@ public class ShoppingItemPersistenceImpl
 	@Override
 	public ShoppingItem removeByLargeImageId(long largeImageId)
 		throws NoSuchItemException {
-
 		ShoppingItem shoppingItem = findByLargeImageId(largeImageId);
 
 		return remove(shoppingItem);
@@ -701,40 +692,40 @@ public class ShoppingItemPersistenceImpl
 	 */
 	@Override
 	public int countByLargeImageId(long largeImageId) {
-		FinderPath finderPath = _finderPathCountByLargeImageId;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_LARGEIMAGEID;
 
-		Object[] finderArgs = new Object[] {largeImageId};
+		Object[] finderArgs = new Object[] { largeImageId };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(2);
+			StringBundler query = new StringBundler(2);
 
-			sb.append(_SQL_COUNT_SHOPPINGITEM_WHERE);
+			query.append(_SQL_COUNT_SHOPPINGITEM_WHERE);
 
-			sb.append(_FINDER_COLUMN_LARGEIMAGEID_LARGEIMAGEID_2);
+			query.append(_FINDER_COLUMN_LARGEIMAGEID_LARGEIMAGEID_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(largeImageId);
+				qPos.add(largeImageId);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
+			catch (Exception e) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -744,12 +735,26 @@ public class ShoppingItemPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_LARGEIMAGEID_LARGEIMAGEID_2 =
-		"shoppingItem.largeImageId = ?";
-
-	private FinderPath _finderPathWithPaginationFindByG_C;
-	private FinderPath _finderPathWithoutPaginationFindByG_C;
-	private FinderPath _finderPathCountByG_C;
+	private static final String _FINDER_COLUMN_LARGEIMAGEID_LARGEIMAGEID_2 = "shoppingItem.largeImageId = ?";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_G_C = new FinderPath(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
+			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, ShoppingItemImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_C",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C = new FinderPath(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
+			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, ShoppingItemImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_C",
+			new String[] { Long.class.getName(), Long.class.getName() },
+			ShoppingItemModelImpl.GROUPID_COLUMN_BITMASK |
+			ShoppingItemModelImpl.CATEGORYID_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_G_C = new FinderPath(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
+			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C",
+			new String[] { Long.class.getName(), Long.class.getName() });
 
 	/**
 	 * Returns all the shopping items where groupId = &#63; and categoryId = &#63;.
@@ -760,15 +765,15 @@ public class ShoppingItemPersistenceImpl
 	 */
 	@Override
 	public List<ShoppingItem> findByG_C(long groupId, long categoryId) {
-		return findByG_C(
-			groupId, categoryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+		return findByG_C(groupId, categoryId, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the shopping items where groupId = &#63; and categoryId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ShoppingItemModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingItemModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
@@ -778,9 +783,8 @@ public class ShoppingItemPersistenceImpl
 	 * @return the range of matching shopping items
 	 */
 	@Override
-	public List<ShoppingItem> findByG_C(
-		long groupId, long categoryId, int start, int end) {
-
+	public List<ShoppingItem> findByG_C(long groupId, long categoryId,
+		int start, int end) {
 		return findByG_C(groupId, categoryId, start, end, null);
 	}
 
@@ -788,7 +792,7 @@ public class ShoppingItemPersistenceImpl
 	 * Returns an ordered range of all the shopping items where groupId = &#63; and categoryId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ShoppingItemModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingItemModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
@@ -799,19 +803,17 @@ public class ShoppingItemPersistenceImpl
 	 * @return the ordered range of matching shopping items
 	 */
 	@Override
-	public List<ShoppingItem> findByG_C(
-		long groupId, long categoryId, int start, int end,
-		OrderByComparator<ShoppingItem> orderByComparator) {
-
-		return findByG_C(
-			groupId, categoryId, start, end, orderByComparator, true);
+	public List<ShoppingItem> findByG_C(long groupId, long categoryId,
+		int start, int end, OrderByComparator<ShoppingItem> orderByComparator) {
+		return findByG_C(groupId, categoryId, start, end, orderByComparator,
+			true);
 	}
 
 	/**
 	 * Returns an ordered range of all the shopping items where groupId = &#63; and categoryId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ShoppingItemModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingItemModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
@@ -819,44 +821,42 @@ public class ShoppingItemPersistenceImpl
 	 * @param start the lower bound of the range of shopping items
 	 * @param end the upper bound of the range of shopping items (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of matching shopping items
 	 */
 	@Override
-	public List<ShoppingItem> findByG_C(
-		long groupId, long categoryId, int start, int end,
-		OrderByComparator<ShoppingItem> orderByComparator,
-		boolean useFinderCache) {
-
+	public List<ShoppingItem> findByG_C(long groupId, long categoryId,
+		int start, int end, OrderByComparator<ShoppingItem> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByG_C;
-				finderArgs = new Object[] {groupId, categoryId};
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C;
+			finderArgs = new Object[] { groupId, categoryId };
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByG_C;
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_G_C;
 			finderArgs = new Object[] {
-				groupId, categoryId, start, end, orderByComparator
-			};
+					groupId, categoryId,
+					
+					start, end, orderByComparator
+				};
 		}
 
 		List<ShoppingItem> list = null;
 
-		if (useFinderCache) {
-			list = (List<ShoppingItem>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<ShoppingItem>)finderCache.getResult(finderPath,
+					finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (ShoppingItem shoppingItem : list) {
 					if ((groupId != shoppingItem.getGroupId()) ||
-						(categoryId != shoppingItem.getCategoryId())) {
-
+							(categoryId != shoppingItem.getCategoryId())) {
 						list = null;
 
 						break;
@@ -866,60 +866,67 @@ public class ShoppingItemPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					4 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(4 +
+						(orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				sb = new StringBundler(4);
+				query = new StringBundler(4);
 			}
 
-			sb.append(_SQL_SELECT_SHOPPINGITEM_WHERE);
+			query.append(_SQL_SELECT_SHOPPINGITEM_WHERE);
 
-			sb.append(_FINDER_COLUMN_G_C_GROUPID_2);
+			query.append(_FINDER_COLUMN_G_C_GROUPID_2);
 
-			sb.append(_FINDER_COLUMN_G_C_CATEGORYID_2);
+			query.append(_FINDER_COLUMN_G_C_CATEGORYID_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 			}
-			else {
-				sb.append(ShoppingItemModelImpl.ORDER_BY_JPQL);
+			else
+			 if (pagination) {
+				query.append(ShoppingItemModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(groupId);
+				qPos.add(groupId);
 
-				queryPos.add(categoryId);
+				qPos.add(categoryId);
 
-				list = (List<ShoppingItem>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<ShoppingItem>)QueryUtil.list(q, getDialect(),
+							start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<ShoppingItem>)QueryUtil.list(q, getDialect(),
+							start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -939,31 +946,29 @@ public class ShoppingItemPersistenceImpl
 	 * @throws NoSuchItemException if a matching shopping item could not be found
 	 */
 	@Override
-	public ShoppingItem findByG_C_First(
-			long groupId, long categoryId,
-			OrderByComparator<ShoppingItem> orderByComparator)
+	public ShoppingItem findByG_C_First(long groupId, long categoryId,
+		OrderByComparator<ShoppingItem> orderByComparator)
 		throws NoSuchItemException {
-
-		ShoppingItem shoppingItem = fetchByG_C_First(
-			groupId, categoryId, orderByComparator);
+		ShoppingItem shoppingItem = fetchByG_C_First(groupId, categoryId,
+				orderByComparator);
 
 		if (shoppingItem != null) {
 			return shoppingItem;
 		}
 
-		StringBundler sb = new StringBundler(6);
+		StringBundler msg = new StringBundler(6);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("groupId=");
-		sb.append(groupId);
+		msg.append("groupId=");
+		msg.append(groupId);
 
-		sb.append(", categoryId=");
-		sb.append(categoryId);
+		msg.append(", categoryId=");
+		msg.append(categoryId);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchItemException(sb.toString());
+		throw new NoSuchItemException(msg.toString());
 	}
 
 	/**
@@ -975,12 +980,10 @@ public class ShoppingItemPersistenceImpl
 	 * @return the first matching shopping item, or <code>null</code> if a matching shopping item could not be found
 	 */
 	@Override
-	public ShoppingItem fetchByG_C_First(
-		long groupId, long categoryId,
+	public ShoppingItem fetchByG_C_First(long groupId, long categoryId,
 		OrderByComparator<ShoppingItem> orderByComparator) {
-
-		List<ShoppingItem> list = findByG_C(
-			groupId, categoryId, 0, 1, orderByComparator);
+		List<ShoppingItem> list = findByG_C(groupId, categoryId, 0, 1,
+				orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -999,31 +1002,29 @@ public class ShoppingItemPersistenceImpl
 	 * @throws NoSuchItemException if a matching shopping item could not be found
 	 */
 	@Override
-	public ShoppingItem findByG_C_Last(
-			long groupId, long categoryId,
-			OrderByComparator<ShoppingItem> orderByComparator)
+	public ShoppingItem findByG_C_Last(long groupId, long categoryId,
+		OrderByComparator<ShoppingItem> orderByComparator)
 		throws NoSuchItemException {
-
-		ShoppingItem shoppingItem = fetchByG_C_Last(
-			groupId, categoryId, orderByComparator);
+		ShoppingItem shoppingItem = fetchByG_C_Last(groupId, categoryId,
+				orderByComparator);
 
 		if (shoppingItem != null) {
 			return shoppingItem;
 		}
 
-		StringBundler sb = new StringBundler(6);
+		StringBundler msg = new StringBundler(6);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("groupId=");
-		sb.append(groupId);
+		msg.append("groupId=");
+		msg.append(groupId);
 
-		sb.append(", categoryId=");
-		sb.append(categoryId);
+		msg.append(", categoryId=");
+		msg.append(categoryId);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchItemException(sb.toString());
+		throw new NoSuchItemException(msg.toString());
 	}
 
 	/**
@@ -1035,18 +1036,16 @@ public class ShoppingItemPersistenceImpl
 	 * @return the last matching shopping item, or <code>null</code> if a matching shopping item could not be found
 	 */
 	@Override
-	public ShoppingItem fetchByG_C_Last(
-		long groupId, long categoryId,
+	public ShoppingItem fetchByG_C_Last(long groupId, long categoryId,
 		OrderByComparator<ShoppingItem> orderByComparator) {
-
 		int count = countByG_C(groupId, categoryId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<ShoppingItem> list = findByG_C(
-			groupId, categoryId, count - 1, count, orderByComparator);
+		List<ShoppingItem> list = findByG_C(groupId, categoryId, count - 1,
+				count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -1066,11 +1065,9 @@ public class ShoppingItemPersistenceImpl
 	 * @throws NoSuchItemException if a shopping item with the primary key could not be found
 	 */
 	@Override
-	public ShoppingItem[] findByG_C_PrevAndNext(
-			long itemId, long groupId, long categoryId,
-			OrderByComparator<ShoppingItem> orderByComparator)
+	public ShoppingItem[] findByG_C_PrevAndNext(long itemId, long groupId,
+		long categoryId, OrderByComparator<ShoppingItem> orderByComparator)
 		throws NoSuchItemException {
-
 		ShoppingItem shoppingItem = findByPrimaryKey(itemId);
 
 		Session session = null;
@@ -1080,130 +1077,125 @@ public class ShoppingItemPersistenceImpl
 
 			ShoppingItem[] array = new ShoppingItemImpl[3];
 
-			array[0] = getByG_C_PrevAndNext(
-				session, shoppingItem, groupId, categoryId, orderByComparator,
-				true);
+			array[0] = getByG_C_PrevAndNext(session, shoppingItem, groupId,
+					categoryId, orderByComparator, true);
 
 			array[1] = shoppingItem;
 
-			array[2] = getByG_C_PrevAndNext(
-				session, shoppingItem, groupId, categoryId, orderByComparator,
-				false);
+			array[2] = getByG_C_PrevAndNext(session, shoppingItem, groupId,
+					categoryId, orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected ShoppingItem getByG_C_PrevAndNext(
-		Session session, ShoppingItem shoppingItem, long groupId,
-		long categoryId, OrderByComparator<ShoppingItem> orderByComparator,
-		boolean previous) {
-
-		StringBundler sb = null;
+	protected ShoppingItem getByG_C_PrevAndNext(Session session,
+		ShoppingItem shoppingItem, long groupId, long categoryId,
+		OrderByComparator<ShoppingItem> orderByComparator, boolean previous) {
+		StringBundler query = null;
 
 		if (orderByComparator != null) {
-			sb = new StringBundler(
-				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
+			query = new StringBundler(5 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			sb = new StringBundler(4);
+			query = new StringBundler(4);
 		}
 
-		sb.append(_SQL_SELECT_SHOPPINGITEM_WHERE);
+		query.append(_SQL_SELECT_SHOPPINGITEM_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_C_GROUPID_2);
+		query.append(_FINDER_COLUMN_G_C_GROUPID_2);
 
-		sb.append(_FINDER_COLUMN_G_C_CATEGORYID_2);
+		query.append(_FINDER_COLUMN_G_C_CATEGORYID_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
+				query.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
+						query.append(WHERE_GREATER_THAN);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN);
+						query.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			sb.append(ORDER_BY_CLAUSE);
+			query.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
+						query.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
+						query.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
+						query.append(ORDER_BY_ASC);
 					}
 					else {
-						sb.append(ORDER_BY_DESC);
+						query.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			sb.append(ShoppingItemModelImpl.ORDER_BY_JPQL);
+			query.append(ShoppingItemModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
-		Query query = session.createQuery(sql);
+		Query q = session.createQuery(sql);
 
-		query.setFirstResult(0);
-		query.setMaxResults(2);
+		q.setFirstResult(0);
+		q.setMaxResults(2);
 
-		QueryPos queryPos = QueryPos.getInstance(query);
+		QueryPos qPos = QueryPos.getInstance(q);
 
-		queryPos.add(groupId);
+		qPos.add(groupId);
 
-		queryPos.add(categoryId);
+		qPos.add(categoryId);
 
 		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(shoppingItem)) {
+			Object[] values = orderByComparator.getOrderByConditionValues(shoppingItem);
 
-				queryPos.add(orderByConditionValue);
+			for (Object value : values) {
+				qPos.add(value);
 			}
 		}
 
-		List<ShoppingItem> list = query.list();
+		List<ShoppingItem> list = q.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -1222,15 +1214,15 @@ public class ShoppingItemPersistenceImpl
 	 */
 	@Override
 	public List<ShoppingItem> filterFindByG_C(long groupId, long categoryId) {
-		return filterFindByG_C(
-			groupId, categoryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+		return filterFindByG_C(groupId, categoryId, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the shopping items that the user has permission to view where groupId = &#63; and categoryId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ShoppingItemModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingItemModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
@@ -1240,9 +1232,8 @@ public class ShoppingItemPersistenceImpl
 	 * @return the range of matching shopping items that the user has permission to view
 	 */
 	@Override
-	public List<ShoppingItem> filterFindByG_C(
-		long groupId, long categoryId, int start, int end) {
-
+	public List<ShoppingItem> filterFindByG_C(long groupId, long categoryId,
+		int start, int end) {
 		return filterFindByG_C(groupId, categoryId, start, end, null);
 	}
 
@@ -1250,7 +1241,7 @@ public class ShoppingItemPersistenceImpl
 	 * Returns an ordered range of all the shopping items that the user has permissions to view where groupId = &#63; and categoryId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ShoppingItemModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingItemModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
@@ -1261,92 +1252,85 @@ public class ShoppingItemPersistenceImpl
 	 * @return the ordered range of matching shopping items that the user has permission to view
 	 */
 	@Override
-	public List<ShoppingItem> filterFindByG_C(
-		long groupId, long categoryId, int start, int end,
-		OrderByComparator<ShoppingItem> orderByComparator) {
-
+	public List<ShoppingItem> filterFindByG_C(long groupId, long categoryId,
+		int start, int end, OrderByComparator<ShoppingItem> orderByComparator) {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-			return findByG_C(
-				groupId, categoryId, start, end, orderByComparator);
+			return findByG_C(groupId, categoryId, start, end, orderByComparator);
 		}
 
-		StringBundler sb = null;
+		StringBundler query = null;
 
 		if (orderByComparator != null) {
-			sb = new StringBundler(
-				4 + (orderByComparator.getOrderByFields().length * 2));
+			query = new StringBundler(4 +
+					(orderByComparator.getOrderByFields().length * 2));
 		}
 		else {
-			sb = new StringBundler(5);
+			query = new StringBundler(5);
 		}
 
 		if (getDB().isSupportsInlineDistinct()) {
-			sb.append(_FILTER_SQL_SELECT_SHOPPINGITEM_WHERE);
+			query.append(_FILTER_SQL_SELECT_SHOPPINGITEM_WHERE);
 		}
 		else {
-			sb.append(
-				_FILTER_SQL_SELECT_SHOPPINGITEM_NO_INLINE_DISTINCT_WHERE_1);
+			query.append(_FILTER_SQL_SELECT_SHOPPINGITEM_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_GROUPID_2);
+		query.append(_FINDER_COLUMN_G_C_GROUPID_2);
 
-		sb.append(_FINDER_COLUMN_G_C_CATEGORYID_2);
+		query.append(_FINDER_COLUMN_G_C_CATEGORYID_2);
 
 		if (!getDB().isSupportsInlineDistinct()) {
-			sb.append(
-				_FILTER_SQL_SELECT_SHOPPINGITEM_NO_INLINE_DISTINCT_WHERE_2);
+			query.append(_FILTER_SQL_SELECT_SHOPPINGITEM_NO_INLINE_DISTINCT_WHERE_2);
 		}
 
 		if (orderByComparator != null) {
 			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator, true);
 			}
 			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_TABLE,
+					orderByComparator, true);
 			}
 		}
 		else {
 			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(ShoppingItemModelImpl.ORDER_BY_JPQL);
+				query.append(ShoppingItemModelImpl.ORDER_BY_JPQL);
 			}
 			else {
-				sb.append(ShoppingItemModelImpl.ORDER_BY_SQL);
+				query.append(ShoppingItemModelImpl.ORDER_BY_SQL);
 			}
 		}
 
-		String sql = InlineSQLHelperUtil.replacePermissionCheck(
-			sb.toString(), ShoppingItem.class.getName(),
-			_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, groupId);
+		String sql = InlineSQLHelperUtil.replacePermissionCheck(query.toString(),
+				ShoppingItem.class.getName(),
+				_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, groupId);
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, ShoppingItemImpl.class);
+				q.addEntity(_FILTER_ENTITY_ALIAS, ShoppingItemImpl.class);
 			}
 			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, ShoppingItemImpl.class);
+				q.addEntity(_FILTER_ENTITY_TABLE, ShoppingItemImpl.class);
 			}
 
-			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
+			QueryPos qPos = QueryPos.getInstance(q);
 
-			queryPos.add(groupId);
+			qPos.add(groupId);
 
-			queryPos.add(categoryId);
+			qPos.add(categoryId);
 
-			return (List<ShoppingItem>)QueryUtil.list(
-				sqlQuery, getDialect(), start, end);
+			return (List<ShoppingItem>)QueryUtil.list(q, getDialect(), start,
+				end);
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -1364,14 +1348,13 @@ public class ShoppingItemPersistenceImpl
 	 * @throws NoSuchItemException if a shopping item with the primary key could not be found
 	 */
 	@Override
-	public ShoppingItem[] filterFindByG_C_PrevAndNext(
-			long itemId, long groupId, long categoryId,
-			OrderByComparator<ShoppingItem> orderByComparator)
+	public ShoppingItem[] filterFindByG_C_PrevAndNext(long itemId,
+		long groupId, long categoryId,
+		OrderByComparator<ShoppingItem> orderByComparator)
 		throws NoSuchItemException {
-
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-			return findByG_C_PrevAndNext(
-				itemId, groupId, categoryId, orderByComparator);
+			return findByG_C_PrevAndNext(itemId, groupId, categoryId,
+				orderByComparator);
 		}
 
 		ShoppingItem shoppingItem = findByPrimaryKey(itemId);
@@ -1383,173 +1366,160 @@ public class ShoppingItemPersistenceImpl
 
 			ShoppingItem[] array = new ShoppingItemImpl[3];
 
-			array[0] = filterGetByG_C_PrevAndNext(
-				session, shoppingItem, groupId, categoryId, orderByComparator,
-				true);
+			array[0] = filterGetByG_C_PrevAndNext(session, shoppingItem,
+					groupId, categoryId, orderByComparator, true);
 
 			array[1] = shoppingItem;
 
-			array[2] = filterGetByG_C_PrevAndNext(
-				session, shoppingItem, groupId, categoryId, orderByComparator,
-				false);
+			array[2] = filterGetByG_C_PrevAndNext(session, shoppingItem,
+					groupId, categoryId, orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected ShoppingItem filterGetByG_C_PrevAndNext(
-		Session session, ShoppingItem shoppingItem, long groupId,
-		long categoryId, OrderByComparator<ShoppingItem> orderByComparator,
-		boolean previous) {
-
-		StringBundler sb = null;
+	protected ShoppingItem filterGetByG_C_PrevAndNext(Session session,
+		ShoppingItem shoppingItem, long groupId, long categoryId,
+		OrderByComparator<ShoppingItem> orderByComparator, boolean previous) {
+		StringBundler query = null;
 
 		if (orderByComparator != null) {
-			sb = new StringBundler(
-				6 + (orderByComparator.getOrderByConditionFields().length * 3) +
+			query = new StringBundler(6 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			sb = new StringBundler(5);
+			query = new StringBundler(5);
 		}
 
 		if (getDB().isSupportsInlineDistinct()) {
-			sb.append(_FILTER_SQL_SELECT_SHOPPINGITEM_WHERE);
+			query.append(_FILTER_SQL_SELECT_SHOPPINGITEM_WHERE);
 		}
 		else {
-			sb.append(
-				_FILTER_SQL_SELECT_SHOPPINGITEM_NO_INLINE_DISTINCT_WHERE_1);
+			query.append(_FILTER_SQL_SELECT_SHOPPINGITEM_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_GROUPID_2);
+		query.append(_FINDER_COLUMN_G_C_GROUPID_2);
 
-		sb.append(_FINDER_COLUMN_G_C_CATEGORYID_2);
+		query.append(_FINDER_COLUMN_G_C_CATEGORYID_2);
 
 		if (!getDB().isSupportsInlineDistinct()) {
-			sb.append(
-				_FILTER_SQL_SELECT_SHOPPINGITEM_NO_INLINE_DISTINCT_WHERE_2);
+			query.append(_FILTER_SQL_SELECT_SHOPPINGITEM_NO_INLINE_DISTINCT_WHERE_2);
 		}
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
+				query.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
 				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
+					query.append(_ORDER_BY_ENTITY_ALIAS);
 				}
 				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
+					query.append(_ORDER_BY_ENTITY_TABLE);
 				}
+
+				query.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
+						query.append(WHERE_GREATER_THAN);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN);
+						query.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			sb.append(ORDER_BY_CLAUSE);
+			query.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
 				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
+					query.append(_ORDER_BY_ENTITY_ALIAS);
 				}
 				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
+					query.append(_ORDER_BY_ENTITY_TABLE);
 				}
+
+				query.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
+						query.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
+						query.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
+						query.append(ORDER_BY_ASC);
 					}
 					else {
-						sb.append(ORDER_BY_DESC);
+						query.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
 			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(ShoppingItemModelImpl.ORDER_BY_JPQL);
+				query.append(ShoppingItemModelImpl.ORDER_BY_JPQL);
 			}
 			else {
-				sb.append(ShoppingItemModelImpl.ORDER_BY_SQL);
+				query.append(ShoppingItemModelImpl.ORDER_BY_SQL);
 			}
 		}
 
-		String sql = InlineSQLHelperUtil.replacePermissionCheck(
-			sb.toString(), ShoppingItem.class.getName(),
-			_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, groupId);
+		String sql = InlineSQLHelperUtil.replacePermissionCheck(query.toString(),
+				ShoppingItem.class.getName(),
+				_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, groupId);
 
-		SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
+		SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
-		sqlQuery.setFirstResult(0);
-		sqlQuery.setMaxResults(2);
+		q.setFirstResult(0);
+		q.setMaxResults(2);
 
 		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, ShoppingItemImpl.class);
+			q.addEntity(_FILTER_ENTITY_ALIAS, ShoppingItemImpl.class);
 		}
 		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, ShoppingItemImpl.class);
+			q.addEntity(_FILTER_ENTITY_TABLE, ShoppingItemImpl.class);
 		}
 
-		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
+		QueryPos qPos = QueryPos.getInstance(q);
 
-		queryPos.add(groupId);
+		qPos.add(groupId);
 
-		queryPos.add(categoryId);
+		qPos.add(categoryId);
 
 		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(shoppingItem)) {
+			Object[] values = orderByComparator.getOrderByConditionValues(shoppingItem);
 
-				queryPos.add(orderByConditionValue);
+			for (Object value : values) {
+				qPos.add(value);
 			}
 		}
 
-		List<ShoppingItem> list = sqlQuery.list();
+		List<ShoppingItem> list = q.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -1567,11 +1537,8 @@ public class ShoppingItemPersistenceImpl
 	 */
 	@Override
 	public void removeByG_C(long groupId, long categoryId) {
-		for (ShoppingItem shoppingItem :
-				findByG_C(
-					groupId, categoryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
-
+		for (ShoppingItem shoppingItem : findByG_C(groupId, categoryId,
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(shoppingItem);
 		}
 	}
@@ -1585,44 +1552,44 @@ public class ShoppingItemPersistenceImpl
 	 */
 	@Override
 	public int countByG_C(long groupId, long categoryId) {
-		FinderPath finderPath = _finderPathCountByG_C;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_C;
 
-		Object[] finderArgs = new Object[] {groupId, categoryId};
+		Object[] finderArgs = new Object[] { groupId, categoryId };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(3);
+			StringBundler query = new StringBundler(3);
 
-			sb.append(_SQL_COUNT_SHOPPINGITEM_WHERE);
+			query.append(_SQL_COUNT_SHOPPINGITEM_WHERE);
 
-			sb.append(_FINDER_COLUMN_G_C_GROUPID_2);
+			query.append(_FINDER_COLUMN_G_C_GROUPID_2);
 
-			sb.append(_FINDER_COLUMN_G_C_CATEGORYID_2);
+			query.append(_FINDER_COLUMN_G_C_CATEGORYID_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(groupId);
+				qPos.add(groupId);
 
-				queryPos.add(categoryId);
+				qPos.add(categoryId);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
+			catch (Exception e) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1645,57 +1612,61 @@ public class ShoppingItemPersistenceImpl
 			return countByG_C(groupId, categoryId);
 		}
 
-		StringBundler sb = new StringBundler(3);
+		StringBundler query = new StringBundler(3);
 
-		sb.append(_FILTER_SQL_COUNT_SHOPPINGITEM_WHERE);
+		query.append(_FILTER_SQL_COUNT_SHOPPINGITEM_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_C_GROUPID_2);
+		query.append(_FINDER_COLUMN_G_C_GROUPID_2);
 
-		sb.append(_FINDER_COLUMN_G_C_CATEGORYID_2);
+		query.append(_FINDER_COLUMN_G_C_CATEGORYID_2);
 
-		String sql = InlineSQLHelperUtil.replacePermissionCheck(
-			sb.toString(), ShoppingItem.class.getName(),
-			_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, groupId);
+		String sql = InlineSQLHelperUtil.replacePermissionCheck(query.toString(),
+				ShoppingItem.class.getName(),
+				_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, groupId);
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
-			sqlQuery.addScalar(
-				COUNT_COLUMN_NAME, com.liferay.portal.kernel.dao.orm.Type.LONG);
+			q.addScalar(COUNT_COLUMN_NAME,
+				com.liferay.portal.kernel.dao.orm.Type.LONG);
 
-			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
+			QueryPos qPos = QueryPos.getInstance(q);
 
-			queryPos.add(groupId);
+			qPos.add(groupId);
 
-			queryPos.add(categoryId);
+			qPos.add(categoryId);
 
-			Long count = (Long)sqlQuery.uniqueResult();
+			Long count = (Long)q.uniqueResult();
 
 			return count.intValue();
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	private static final String _FINDER_COLUMN_G_C_GROUPID_2 =
-		"shoppingItem.groupId = ? AND ";
-
-	private static final String _FINDER_COLUMN_G_C_CATEGORYID_2 =
-		"shoppingItem.categoryId = ?";
-
-	private FinderPath _finderPathFetchByC_S;
-	private FinderPath _finderPathCountByC_S;
+	private static final String _FINDER_COLUMN_G_C_GROUPID_2 = "shoppingItem.groupId = ? AND ";
+	private static final String _FINDER_COLUMN_G_C_CATEGORYID_2 = "shoppingItem.categoryId = ?";
+	public static final FinderPath FINDER_PATH_FETCH_BY_C_S = new FinderPath(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
+			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, ShoppingItemImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchByC_S",
+			new String[] { Long.class.getName(), String.class.getName() },
+			ShoppingItemModelImpl.COMPANYID_COLUMN_BITMASK |
+			ShoppingItemModelImpl.SKU_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_C_S = new FinderPath(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
+			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_S",
+			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the shopping item where companyId = &#63; and sku = &#63; or throws a <code>NoSuchItemException</code> if it could not be found.
+	 * Returns the shopping item where companyId = &#63; and sku = &#63; or throws a {@link NoSuchItemException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param sku the sku
@@ -1705,27 +1676,26 @@ public class ShoppingItemPersistenceImpl
 	@Override
 	public ShoppingItem findByC_S(long companyId, String sku)
 		throws NoSuchItemException {
-
 		ShoppingItem shoppingItem = fetchByC_S(companyId, sku);
 
 		if (shoppingItem == null) {
-			StringBundler sb = new StringBundler(6);
+			StringBundler msg = new StringBundler(6);
 
-			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			sb.append("companyId=");
-			sb.append(companyId);
+			msg.append("companyId=");
+			msg.append(companyId);
 
-			sb.append(", sku=");
-			sb.append(sku);
+			msg.append(", sku=");
+			msg.append(sku);
 
-			sb.append("}");
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(sb.toString());
+				_log.debug(msg.toString());
 			}
 
-			throw new NoSuchItemException(sb.toString());
+			throw new NoSuchItemException(msg.toString());
 		}
 
 		return shoppingItem;
@@ -1748,80 +1718,73 @@ public class ShoppingItemPersistenceImpl
 	 *
 	 * @param companyId the company ID
 	 * @param sku the sku
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the matching shopping item, or <code>null</code> if a matching shopping item could not be found
 	 */
 	@Override
-	public ShoppingItem fetchByC_S(
-		long companyId, String sku, boolean useFinderCache) {
-
-		sku = Objects.toString(sku, "");
-
-		Object[] finderArgs = null;
-
-		if (useFinderCache) {
-			finderArgs = new Object[] {companyId, sku};
-		}
+	public ShoppingItem fetchByC_S(long companyId, String sku,
+		boolean retrieveFromCache) {
+		Object[] finderArgs = new Object[] { companyId, sku };
 
 		Object result = null;
 
-		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchByC_S, finderArgs, this);
+		if (retrieveFromCache) {
+			result = finderCache.getResult(FINDER_PATH_FETCH_BY_C_S,
+					finderArgs, this);
 		}
 
 		if (result instanceof ShoppingItem) {
 			ShoppingItem shoppingItem = (ShoppingItem)result;
 
 			if ((companyId != shoppingItem.getCompanyId()) ||
-				!Objects.equals(sku, shoppingItem.getSku())) {
-
+					!Objects.equals(sku, shoppingItem.getSku())) {
 				result = null;
 			}
 		}
 
 		if (result == null) {
-			StringBundler sb = new StringBundler(4);
+			StringBundler query = new StringBundler(4);
 
-			sb.append(_SQL_SELECT_SHOPPINGITEM_WHERE);
+			query.append(_SQL_SELECT_SHOPPINGITEM_WHERE);
 
-			sb.append(_FINDER_COLUMN_C_S_COMPANYID_2);
+			query.append(_FINDER_COLUMN_C_S_COMPANYID_2);
 
 			boolean bindSku = false;
 
-			if (sku.isEmpty()) {
-				sb.append(_FINDER_COLUMN_C_S_SKU_3);
+			if (sku == null) {
+				query.append(_FINDER_COLUMN_C_S_SKU_1);
+			}
+			else if (sku.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_C_S_SKU_3);
 			}
 			else {
 				bindSku = true;
 
-				sb.append(_FINDER_COLUMN_C_S_SKU_2);
+				query.append(_FINDER_COLUMN_C_S_SKU_2);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(companyId);
+				qPos.add(companyId);
 
 				if (bindSku) {
-					queryPos.add(sku);
+					qPos.add(sku);
 				}
 
-				List<ShoppingItem> list = query.list();
+				List<ShoppingItem> list = q.list();
 
 				if (list.isEmpty()) {
-					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchByC_S, finderArgs, list);
-					}
+					finderCache.putResult(FINDER_PATH_FETCH_BY_C_S, finderArgs,
+						list);
 				}
 				else {
 					ShoppingItem shoppingItem = list.get(0);
@@ -1829,14 +1792,19 @@ public class ShoppingItemPersistenceImpl
 					result = shoppingItem;
 
 					cacheResult(shoppingItem);
+
+					if ((shoppingItem.getCompanyId() != companyId) ||
+							(shoppingItem.getSku() == null) ||
+							!shoppingItem.getSku().equals(sku)) {
+						finderCache.putResult(FINDER_PATH_FETCH_BY_C_S,
+							finderArgs, shoppingItem);
+					}
 				}
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(_finderPathFetchByC_S, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_FETCH_BY_C_S, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1861,7 +1829,6 @@ public class ShoppingItemPersistenceImpl
 	@Override
 	public ShoppingItem removeByC_S(long companyId, String sku)
 		throws NoSuchItemException {
-
 		ShoppingItem shoppingItem = findByC_S(companyId, sku);
 
 		return remove(shoppingItem);
@@ -1876,57 +1843,58 @@ public class ShoppingItemPersistenceImpl
 	 */
 	@Override
 	public int countByC_S(long companyId, String sku) {
-		sku = Objects.toString(sku, "");
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_S;
 
-		FinderPath finderPath = _finderPathCountByC_S;
-
-		Object[] finderArgs = new Object[] {companyId, sku};
+		Object[] finderArgs = new Object[] { companyId, sku };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(3);
+			StringBundler query = new StringBundler(3);
 
-			sb.append(_SQL_COUNT_SHOPPINGITEM_WHERE);
+			query.append(_SQL_COUNT_SHOPPINGITEM_WHERE);
 
-			sb.append(_FINDER_COLUMN_C_S_COMPANYID_2);
+			query.append(_FINDER_COLUMN_C_S_COMPANYID_2);
 
 			boolean bindSku = false;
 
-			if (sku.isEmpty()) {
-				sb.append(_FINDER_COLUMN_C_S_SKU_3);
+			if (sku == null) {
+				query.append(_FINDER_COLUMN_C_S_SKU_1);
+			}
+			else if (sku.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_C_S_SKU_3);
 			}
 			else {
 				bindSku = true;
 
-				sb.append(_FINDER_COLUMN_C_S_SKU_2);
+				query.append(_FINDER_COLUMN_C_S_SKU_2);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(companyId);
+				qPos.add(companyId);
 
 				if (bindSku) {
-					queryPos.add(sku);
+					qPos.add(sku);
 				}
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
+			catch (Exception e) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1936,36 +1904,12 @@ public class ShoppingItemPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_C_S_COMPANYID_2 =
-		"shoppingItem.companyId = ? AND ";
-
-	private static final String _FINDER_COLUMN_C_S_SKU_2 =
-		"shoppingItem.sku = ?";
-
-	private static final String _FINDER_COLUMN_C_S_SKU_3 =
-		"(shoppingItem.sku IS NULL OR shoppingItem.sku = '')";
+	private static final String _FINDER_COLUMN_C_S_COMPANYID_2 = "shoppingItem.companyId = ? AND ";
+	private static final String _FINDER_COLUMN_C_S_SKU_1 = "shoppingItem.sku IS NULL";
+	private static final String _FINDER_COLUMN_C_S_SKU_2 = "shoppingItem.sku = ?";
+	private static final String _FINDER_COLUMN_C_S_SKU_3 = "(shoppingItem.sku IS NULL OR shoppingItem.sku = '')";
 
 	public ShoppingItemPersistenceImpl() {
-		Map<String, String> dbColumnNames = new HashMap<String, String>();
-
-		dbColumnNames.put("fields", "fields_");
-		dbColumnNames.put("featured", "featured_");
-		dbColumnNames.put("sale", "sale_");
-
-		try {
-			Field field = BasePersistenceImpl.class.getDeclaredField(
-				"_dbColumnNames");
-
-			field.setAccessible(true);
-
-			field.set(this, dbColumnNames);
-		}
-		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception, exception);
-			}
-		}
-
 		setModelClass(ShoppingItem.class);
 	}
 
@@ -1976,25 +1920,20 @@ public class ShoppingItemPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(ShoppingItem shoppingItem) {
-		entityCache.putResult(
-			ShoppingItemModelImpl.ENTITY_CACHE_ENABLED, ShoppingItemImpl.class,
-			shoppingItem.getPrimaryKey(), shoppingItem);
+		entityCache.putResult(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
+			ShoppingItemImpl.class, shoppingItem.getPrimaryKey(), shoppingItem);
 
-		finderCache.putResult(
-			_finderPathFetchBySmallImageId,
-			new Object[] {shoppingItem.getSmallImageId()}, shoppingItem);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_SMALLIMAGEID,
+			new Object[] { shoppingItem.getSmallImageId() }, shoppingItem);
 
-		finderCache.putResult(
-			_finderPathFetchByMediumImageId,
-			new Object[] {shoppingItem.getMediumImageId()}, shoppingItem);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_MEDIUMIMAGEID,
+			new Object[] { shoppingItem.getMediumImageId() }, shoppingItem);
 
-		finderCache.putResult(
-			_finderPathFetchByLargeImageId,
-			new Object[] {shoppingItem.getLargeImageId()}, shoppingItem);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_LARGEIMAGEID,
+			new Object[] { shoppingItem.getLargeImageId() }, shoppingItem);
 
-		finderCache.putResult(
-			_finderPathFetchByC_S,
-			new Object[] {shoppingItem.getCompanyId(), shoppingItem.getSku()},
+		finderCache.putResult(FINDER_PATH_FETCH_BY_C_S,
+			new Object[] { shoppingItem.getCompanyId(), shoppingItem.getSku() },
 			shoppingItem);
 
 		shoppingItem.resetOriginalValues();
@@ -2009,10 +1948,8 @@ public class ShoppingItemPersistenceImpl
 	public void cacheResult(List<ShoppingItem> shoppingItems) {
 		for (ShoppingItem shoppingItem : shoppingItems) {
 			if (entityCache.getResult(
-					ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
-					ShoppingItemImpl.class, shoppingItem.getPrimaryKey()) ==
-						null) {
-
+						ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
+						ShoppingItemImpl.class, shoppingItem.getPrimaryKey()) == null) {
 				cacheResult(shoppingItem);
 			}
 			else {
@@ -2025,7 +1962,7 @@ public class ShoppingItemPersistenceImpl
 	 * Clears the cache for all shopping items.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2041,14 +1978,13 @@ public class ShoppingItemPersistenceImpl
 	 * Clears the cache for the shopping item.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(ShoppingItem shoppingItem) {
-		entityCache.removeResult(
-			ShoppingItemModelImpl.ENTITY_CACHE_ENABLED, ShoppingItemImpl.class,
-			shoppingItem.getPrimaryKey());
+		entityCache.removeResult(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
+			ShoppingItemImpl.class, shoppingItem.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2062,144 +1998,121 @@ public class ShoppingItemPersistenceImpl
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (ShoppingItem shoppingItem : shoppingItems) {
-			entityCache.removeResult(
-				ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
 				ShoppingItemImpl.class, shoppingItem.getPrimaryKey());
 
 			clearUniqueFindersCache((ShoppingItemModelImpl)shoppingItem, true);
 		}
 	}
 
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
-				ShoppingItemImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		ShoppingItemModelImpl shoppingItemModelImpl) {
+		Object[] args = new Object[] { shoppingItemModelImpl.getSmallImageId() };
 
-		Object[] args = new Object[] {shoppingItemModelImpl.getSmallImageId()};
+		finderCache.putResult(FINDER_PATH_COUNT_BY_SMALLIMAGEID, args,
+			Long.valueOf(1), false);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_SMALLIMAGEID, args,
+			shoppingItemModelImpl, false);
 
-		finderCache.putResult(
-			_finderPathCountBySmallImageId, args, Long.valueOf(1), false);
-		finderCache.putResult(
-			_finderPathFetchBySmallImageId, args, shoppingItemModelImpl, false);
+		args = new Object[] { shoppingItemModelImpl.getMediumImageId() };
 
-		args = new Object[] {shoppingItemModelImpl.getMediumImageId()};
+		finderCache.putResult(FINDER_PATH_COUNT_BY_MEDIUMIMAGEID, args,
+			Long.valueOf(1), false);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_MEDIUMIMAGEID, args,
+			shoppingItemModelImpl, false);
 
-		finderCache.putResult(
-			_finderPathCountByMediumImageId, args, Long.valueOf(1), false);
-		finderCache.putResult(
-			_finderPathFetchByMediumImageId, args, shoppingItemModelImpl,
-			false);
+		args = new Object[] { shoppingItemModelImpl.getLargeImageId() };
 
-		args = new Object[] {shoppingItemModelImpl.getLargeImageId()};
-
-		finderCache.putResult(
-			_finderPathCountByLargeImageId, args, Long.valueOf(1), false);
-		finderCache.putResult(
-			_finderPathFetchByLargeImageId, args, shoppingItemModelImpl, false);
+		finderCache.putResult(FINDER_PATH_COUNT_BY_LARGEIMAGEID, args,
+			Long.valueOf(1), false);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_LARGEIMAGEID, args,
+			shoppingItemModelImpl, false);
 
 		args = new Object[] {
-			shoppingItemModelImpl.getCompanyId(), shoppingItemModelImpl.getSku()
-		};
-
-		finderCache.putResult(
-			_finderPathCountByC_S, args, Long.valueOf(1), false);
-		finderCache.putResult(
-			_finderPathFetchByC_S, args, shoppingItemModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		ShoppingItemModelImpl shoppingItemModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				shoppingItemModelImpl.getSmallImageId()
-			};
-
-			finderCache.removeResult(_finderPathCountBySmallImageId, args);
-			finderCache.removeResult(_finderPathFetchBySmallImageId, args);
-		}
-
-		if ((shoppingItemModelImpl.getColumnBitmask() &
-			 _finderPathFetchBySmallImageId.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				shoppingItemModelImpl.getOriginalSmallImageId()
-			};
-
-			finderCache.removeResult(_finderPathCountBySmallImageId, args);
-			finderCache.removeResult(_finderPathFetchBySmallImageId, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				shoppingItemModelImpl.getMediumImageId()
-			};
-
-			finderCache.removeResult(_finderPathCountByMediumImageId, args);
-			finderCache.removeResult(_finderPathFetchByMediumImageId, args);
-		}
-
-		if ((shoppingItemModelImpl.getColumnBitmask() &
-			 _finderPathFetchByMediumImageId.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				shoppingItemModelImpl.getOriginalMediumImageId()
-			};
-
-			finderCache.removeResult(_finderPathCountByMediumImageId, args);
-			finderCache.removeResult(_finderPathFetchByMediumImageId, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-				shoppingItemModelImpl.getLargeImageId()
-			};
-
-			finderCache.removeResult(_finderPathCountByLargeImageId, args);
-			finderCache.removeResult(_finderPathFetchByLargeImageId, args);
-		}
-
-		if ((shoppingItemModelImpl.getColumnBitmask() &
-			 _finderPathFetchByLargeImageId.getColumnBitmask()) != 0) {
-
-			Object[] args = new Object[] {
-				shoppingItemModelImpl.getOriginalLargeImageId()
-			};
-
-			finderCache.removeResult(_finderPathCountByLargeImageId, args);
-			finderCache.removeResult(_finderPathFetchByLargeImageId, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
 				shoppingItemModelImpl.getCompanyId(),
 				shoppingItemModelImpl.getSku()
 			};
 
-			finderCache.removeResult(_finderPathCountByC_S, args);
-			finderCache.removeResult(_finderPathFetchByC_S, args);
+		finderCache.putResult(FINDER_PATH_COUNT_BY_C_S, args, Long.valueOf(1),
+			false);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_C_S, args,
+			shoppingItemModelImpl, false);
+	}
+
+	protected void clearUniqueFindersCache(
+		ShoppingItemModelImpl shoppingItemModelImpl, boolean clearCurrent) {
+		if (clearCurrent) {
+			Object[] args = new Object[] { shoppingItemModelImpl.getSmallImageId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_SMALLIMAGEID, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_SMALLIMAGEID, args);
 		}
 
 		if ((shoppingItemModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_S.getColumnBitmask()) != 0) {
-
+				FINDER_PATH_FETCH_BY_SMALLIMAGEID.getColumnBitmask()) != 0) {
 			Object[] args = new Object[] {
-				shoppingItemModelImpl.getOriginalCompanyId(),
-				shoppingItemModelImpl.getOriginalSku()
-			};
+					shoppingItemModelImpl.getOriginalSmallImageId()
+				};
 
-			finderCache.removeResult(_finderPathCountByC_S, args);
-			finderCache.removeResult(_finderPathFetchByC_S, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_SMALLIMAGEID, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_SMALLIMAGEID, args);
+		}
+
+		if (clearCurrent) {
+			Object[] args = new Object[] {
+					shoppingItemModelImpl.getMediumImageId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_MEDIUMIMAGEID, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_MEDIUMIMAGEID, args);
+		}
+
+		if ((shoppingItemModelImpl.getColumnBitmask() &
+				FINDER_PATH_FETCH_BY_MEDIUMIMAGEID.getColumnBitmask()) != 0) {
+			Object[] args = new Object[] {
+					shoppingItemModelImpl.getOriginalMediumImageId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_MEDIUMIMAGEID, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_MEDIUMIMAGEID, args);
+		}
+
+		if (clearCurrent) {
+			Object[] args = new Object[] { shoppingItemModelImpl.getLargeImageId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_LARGEIMAGEID, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_LARGEIMAGEID, args);
+		}
+
+		if ((shoppingItemModelImpl.getColumnBitmask() &
+				FINDER_PATH_FETCH_BY_LARGEIMAGEID.getColumnBitmask()) != 0) {
+			Object[] args = new Object[] {
+					shoppingItemModelImpl.getOriginalLargeImageId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_LARGEIMAGEID, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_LARGEIMAGEID, args);
+		}
+
+		if (clearCurrent) {
+			Object[] args = new Object[] {
+					shoppingItemModelImpl.getCompanyId(),
+					shoppingItemModelImpl.getSku()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_S, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_C_S, args);
+		}
+
+		if ((shoppingItemModelImpl.getColumnBitmask() &
+				FINDER_PATH_FETCH_BY_C_S.getColumnBitmask()) != 0) {
+			Object[] args = new Object[] {
+					shoppingItemModelImpl.getOriginalCompanyId(),
+					shoppingItemModelImpl.getOriginalSku()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_S, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_C_S, args);
 		}
 	}
 
@@ -2216,7 +2129,7 @@ public class ShoppingItemPersistenceImpl
 		shoppingItem.setNew(true);
 		shoppingItem.setPrimaryKey(itemId);
 
-		shoppingItem.setCompanyId(CompanyThreadLocal.getCompanyId());
+		shoppingItem.setCompanyId(companyProvider.getCompanyId());
 
 		return shoppingItem;
 	}
@@ -2243,31 +2156,30 @@ public class ShoppingItemPersistenceImpl
 	@Override
 	public ShoppingItem remove(Serializable primaryKey)
 		throws NoSuchItemException {
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			ShoppingItem shoppingItem = (ShoppingItem)session.get(
-				ShoppingItemImpl.class, primaryKey);
+			ShoppingItem shoppingItem = (ShoppingItem)session.get(ShoppingItemImpl.class,
+					primaryKey);
 
 			if (shoppingItem == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchItemException(
-					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				throw new NoSuchItemException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+					primaryKey);
 			}
 
 			return remove(shoppingItem);
 		}
-		catch (NoSuchItemException noSuchEntityException) {
-			throw noSuchEntityException;
+		catch (NoSuchItemException nsee) {
+			throw nsee;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -2276,22 +2188,24 @@ public class ShoppingItemPersistenceImpl
 
 	@Override
 	protected ShoppingItem removeImpl(ShoppingItem shoppingItem) {
+		shoppingItem = toUnwrappedModel(shoppingItem);
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(shoppingItem)) {
-				shoppingItem = (ShoppingItem)session.get(
-					ShoppingItemImpl.class, shoppingItem.getPrimaryKeyObj());
+				shoppingItem = (ShoppingItem)session.get(ShoppingItemImpl.class,
+						shoppingItem.getPrimaryKeyObj());
 			}
 
 			if (shoppingItem != null) {
 				session.delete(shoppingItem);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -2306,30 +2220,13 @@ public class ShoppingItemPersistenceImpl
 
 	@Override
 	public ShoppingItem updateImpl(ShoppingItem shoppingItem) {
+		shoppingItem = toUnwrappedModel(shoppingItem);
+
 		boolean isNew = shoppingItem.isNew();
 
-		if (!(shoppingItem instanceof ShoppingItemModelImpl)) {
-			InvocationHandler invocationHandler = null;
+		ShoppingItemModelImpl shoppingItemModelImpl = (ShoppingItemModelImpl)shoppingItem;
 
-			if (ProxyUtil.isProxyClass(shoppingItem.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(
-					shoppingItem);
-
-				throw new IllegalArgumentException(
-					"Implement ModelWrapper in shoppingItem proxy " +
-						invocationHandler.getClass());
-			}
-
-			throw new IllegalArgumentException(
-				"Implement ModelWrapper in custom ShoppingItem implementation " +
-					shoppingItem.getClass());
-		}
-
-		ShoppingItemModelImpl shoppingItemModelImpl =
-			(ShoppingItemModelImpl)shoppingItem;
-
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -2347,8 +2244,7 @@ public class ShoppingItemPersistenceImpl
 				shoppingItem.setModifiedDate(now);
 			}
 			else {
-				shoppingItem.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+				shoppingItem.setModifiedDate(serviceContext.getModifiedDate(now));
 			}
 		}
 
@@ -2366,8 +2262,8 @@ public class ShoppingItemPersistenceImpl
 				shoppingItem = (ShoppingItem)session.merge(shoppingItem);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -2378,48 +2274,48 @@ public class ShoppingItemPersistenceImpl
 		if (!ShoppingItemModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else if (isNew) {
+		else
+		 if (isNew) {
 			Object[] args = new Object[] {
-				shoppingItemModelImpl.getGroupId(),
-				shoppingItemModelImpl.getCategoryId()
-			};
-
-			finderCache.removeResult(_finderPathCountByG_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByG_C, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((shoppingItemModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					shoppingItemModelImpl.getOriginalGroupId(),
-					shoppingItemModelImpl.getOriginalCategoryId()
-				};
-
-				finderCache.removeResult(_finderPathCountByG_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_C, args);
-
-				args = new Object[] {
 					shoppingItemModelImpl.getGroupId(),
 					shoppingItemModelImpl.getCategoryId()
 				};
 
-				finderCache.removeResult(_finderPathCountByG_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByG_C, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_C, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C,
+				args);
+
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
+		}
+
+		else {
+			if ((shoppingItemModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						shoppingItemModelImpl.getOriginalGroupId(),
+						shoppingItemModelImpl.getOriginalCategoryId()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_C, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C,
+					args);
+
+				args = new Object[] {
+						shoppingItemModelImpl.getGroupId(),
+						shoppingItemModelImpl.getCategoryId()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_C, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C,
+					args);
 			}
 		}
 
-		entityCache.putResult(
-			ShoppingItemModelImpl.ENTITY_CACHE_ENABLED, ShoppingItemImpl.class,
-			shoppingItem.getPrimaryKey(), shoppingItem, false);
+		entityCache.putResult(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
+			ShoppingItemImpl.class, shoppingItem.getPrimaryKey(), shoppingItem,
+			false);
 
 		clearUniqueFindersCache(shoppingItemModelImpl, false);
 		cacheUniqueFindersCache(shoppingItemModelImpl);
@@ -2429,8 +2325,56 @@ public class ShoppingItemPersistenceImpl
 		return shoppingItem;
 	}
 
+	protected ShoppingItem toUnwrappedModel(ShoppingItem shoppingItem) {
+		if (shoppingItem instanceof ShoppingItemImpl) {
+			return shoppingItem;
+		}
+
+		ShoppingItemImpl shoppingItemImpl = new ShoppingItemImpl();
+
+		shoppingItemImpl.setNew(shoppingItem.isNew());
+		shoppingItemImpl.setPrimaryKey(shoppingItem.getPrimaryKey());
+
+		shoppingItemImpl.setItemId(shoppingItem.getItemId());
+		shoppingItemImpl.setGroupId(shoppingItem.getGroupId());
+		shoppingItemImpl.setCompanyId(shoppingItem.getCompanyId());
+		shoppingItemImpl.setUserId(shoppingItem.getUserId());
+		shoppingItemImpl.setUserName(shoppingItem.getUserName());
+		shoppingItemImpl.setCreateDate(shoppingItem.getCreateDate());
+		shoppingItemImpl.setModifiedDate(shoppingItem.getModifiedDate());
+		shoppingItemImpl.setCategoryId(shoppingItem.getCategoryId());
+		shoppingItemImpl.setSku(shoppingItem.getSku());
+		shoppingItemImpl.setName(shoppingItem.getName());
+		shoppingItemImpl.setDescription(shoppingItem.getDescription());
+		shoppingItemImpl.setProperties(shoppingItem.getProperties());
+		shoppingItemImpl.setFields(shoppingItem.isFields());
+		shoppingItemImpl.setFieldsQuantities(shoppingItem.getFieldsQuantities());
+		shoppingItemImpl.setMinQuantity(shoppingItem.getMinQuantity());
+		shoppingItemImpl.setMaxQuantity(shoppingItem.getMaxQuantity());
+		shoppingItemImpl.setPrice(shoppingItem.getPrice());
+		shoppingItemImpl.setDiscount(shoppingItem.getDiscount());
+		shoppingItemImpl.setTaxable(shoppingItem.isTaxable());
+		shoppingItemImpl.setShipping(shoppingItem.getShipping());
+		shoppingItemImpl.setUseShippingFormula(shoppingItem.isUseShippingFormula());
+		shoppingItemImpl.setRequiresShipping(shoppingItem.isRequiresShipping());
+		shoppingItemImpl.setStockQuantity(shoppingItem.getStockQuantity());
+		shoppingItemImpl.setFeatured(shoppingItem.isFeatured());
+		shoppingItemImpl.setSale(shoppingItem.isSale());
+		shoppingItemImpl.setSmallImage(shoppingItem.isSmallImage());
+		shoppingItemImpl.setSmallImageId(shoppingItem.getSmallImageId());
+		shoppingItemImpl.setSmallImageURL(shoppingItem.getSmallImageURL());
+		shoppingItemImpl.setMediumImage(shoppingItem.isMediumImage());
+		shoppingItemImpl.setMediumImageId(shoppingItem.getMediumImageId());
+		shoppingItemImpl.setMediumImageURL(shoppingItem.getMediumImageURL());
+		shoppingItemImpl.setLargeImage(shoppingItem.isLargeImage());
+		shoppingItemImpl.setLargeImageId(shoppingItem.getLargeImageId());
+		shoppingItemImpl.setLargeImageURL(shoppingItem.getLargeImageURL());
+
+		return shoppingItemImpl;
+	}
+
 	/**
-	 * Returns the shopping item with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
+	 * Returns the shopping item with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the shopping item
 	 * @return the shopping item
@@ -2439,7 +2383,6 @@ public class ShoppingItemPersistenceImpl
 	@Override
 	public ShoppingItem findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchItemException {
-
 		ShoppingItem shoppingItem = fetchByPrimaryKey(primaryKey);
 
 		if (shoppingItem == null) {
@@ -2447,15 +2390,15 @@ public class ShoppingItemPersistenceImpl
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchItemException(
-				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			throw new NoSuchItemException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
 		}
 
 		return shoppingItem;
 	}
 
 	/**
-	 * Returns the shopping item with the primary key or throws a <code>NoSuchItemException</code> if it could not be found.
+	 * Returns the shopping item with the primary key or throws a {@link NoSuchItemException} if it could not be found.
 	 *
 	 * @param itemId the primary key of the shopping item
 	 * @return the shopping item
@@ -2464,7 +2407,6 @@ public class ShoppingItemPersistenceImpl
 	@Override
 	public ShoppingItem findByPrimaryKey(long itemId)
 		throws NoSuchItemException {
-
 		return findByPrimaryKey((Serializable)itemId);
 	}
 
@@ -2476,9 +2418,8 @@ public class ShoppingItemPersistenceImpl
 	 */
 	@Override
 	public ShoppingItem fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(
-			ShoppingItemModelImpl.ENTITY_CACHE_ENABLED, ShoppingItemImpl.class,
-			primaryKey);
+		Serializable serializable = entityCache.getResult(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
+				ShoppingItemImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -2492,24 +2433,22 @@ public class ShoppingItemPersistenceImpl
 			try {
 				session = openSession();
 
-				shoppingItem = (ShoppingItem)session.get(
-					ShoppingItemImpl.class, primaryKey);
+				shoppingItem = (ShoppingItem)session.get(ShoppingItemImpl.class,
+						primaryKey);
 
 				if (shoppingItem != null) {
 					cacheResult(shoppingItem);
 				}
 				else {
-					entityCache.putResult(
-						ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
 						ShoppingItemImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception exception) {
-				entityCache.removeResult(
-					ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception e) {
+				entityCache.removeResult(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
 					ShoppingItemImpl.class, primaryKey);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -2533,13 +2472,11 @@ public class ShoppingItemPersistenceImpl
 	@Override
 	public Map<Serializable, ShoppingItem> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
-
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, ShoppingItem> map =
-			new HashMap<Serializable, ShoppingItem>();
+		Map<Serializable, ShoppingItem> map = new HashMap<Serializable, ShoppingItem>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -2558,9 +2495,8 @@ public class ShoppingItemPersistenceImpl
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(
-				ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
-				ShoppingItemImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
+					ShoppingItemImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -2580,31 +2516,31 @@ public class ShoppingItemPersistenceImpl
 			return map;
 		}
 
-		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
+				1);
 
-		sb.append(_SQL_SELECT_SHOPPINGITEM_WHERE_PKS_IN);
+		query.append(_SQL_SELECT_SHOPPINGITEM_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			sb.append((long)primaryKey);
+			query.append((long)primaryKey);
 
-			sb.append(",");
+			query.append(StringPool.COMMA);
 		}
 
-		sb.setIndex(sb.index() - 1);
+		query.setIndex(query.index() - 1);
 
-		sb.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query query = session.createQuery(sql);
+			Query q = session.createQuery(sql);
 
-			for (ShoppingItem shoppingItem : (List<ShoppingItem>)query.list()) {
+			for (ShoppingItem shoppingItem : (List<ShoppingItem>)q.list()) {
 				map.put(shoppingItem.getPrimaryKeyObj(), shoppingItem);
 
 				cacheResult(shoppingItem);
@@ -2613,13 +2549,12 @@ public class ShoppingItemPersistenceImpl
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(
-					ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
 					ShoppingItemImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -2642,7 +2577,7 @@ public class ShoppingItemPersistenceImpl
 	 * Returns a range of all the shopping items.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ShoppingItemModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingItemModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of shopping items
@@ -2658,7 +2593,7 @@ public class ShoppingItemPersistenceImpl
 	 * Returns an ordered range of all the shopping items.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ShoppingItemModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingItemModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of shopping items
@@ -2667,9 +2602,8 @@ public class ShoppingItemPersistenceImpl
 	 * @return the ordered range of shopping items
 	 */
 	@Override
-	public List<ShoppingItem> findAll(
-		int start, int end, OrderByComparator<ShoppingItem> orderByComparator) {
-
+	public List<ShoppingItem> findAll(int start, int end,
+		OrderByComparator<ShoppingItem> orderByComparator) {
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -2677,62 +2611,62 @@ public class ShoppingItemPersistenceImpl
 	 * Returns an ordered range of all the shopping items.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ShoppingItemModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingItemModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of shopping items
 	 * @param end the upper bound of the range of shopping items (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of shopping items
 	 */
 	@Override
-	public List<ShoppingItem> findAll(
-		int start, int end, OrderByComparator<ShoppingItem> orderByComparator,
-		boolean useFinderCache) {
-
+	public List<ShoppingItem> findAll(int start, int end,
+		OrderByComparator<ShoppingItem> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
-				finderArgs = FINDER_ARGS_EMPTY;
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+			finderArgs = FINDER_ARGS_EMPTY;
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] {start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
 		List<ShoppingItem> list = null;
 
-		if (useFinderCache) {
-			list = (List<ShoppingItem>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<ShoppingItem>)finderCache.getResult(finderPath,
+					finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					2 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(2 +
+						(orderByComparator.getOrderByFields().length * 2));
 
-				sb.append(_SQL_SELECT_SHOPPINGITEM);
+				query.append(_SQL_SELECT_SHOPPINGITEM);
 
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 
-				sql = sb.toString();
+				sql = query.toString();
 			}
 			else {
 				sql = _SQL_SELECT_SHOPPINGITEM;
 
-				sql = sql.concat(ShoppingItemModelImpl.ORDER_BY_JPQL);
+				if (pagination) {
+					sql = sql.concat(ShoppingItemModelImpl.ORDER_BY_JPQL);
+				}
 			}
 
 			Session session = null;
@@ -2740,23 +2674,29 @@ public class ShoppingItemPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				list = (List<ShoppingItem>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<ShoppingItem>)QueryUtil.list(q, getDialect(),
+							start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<ShoppingItem>)QueryUtil.list(q, getDialect(),
+							start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -2784,8 +2724,8 @@ public class ShoppingItemPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -2793,18 +2733,18 @@ public class ShoppingItemPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(_SQL_COUNT_SHOPPINGITEM);
+				Query q = session.createQuery(_SQL_COUNT_SHOPPINGITEM);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
+					count);
 			}
-			catch (Exception exception) {
-				finderCache.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -2828,99 +2768,6 @@ public class ShoppingItemPersistenceImpl
 	 * Initializes the shopping item persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
-			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, ShoppingItemImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
-			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, ShoppingItemImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
-			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
-
-		_finderPathFetchBySmallImageId = new FinderPath(
-			ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
-			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, ShoppingItemImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchBySmallImageId",
-			new String[] {Long.class.getName()},
-			ShoppingItemModelImpl.SMALLIMAGEID_COLUMN_BITMASK);
-
-		_finderPathCountBySmallImageId = new FinderPath(
-			ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
-			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBySmallImageId",
-			new String[] {Long.class.getName()});
-
-		_finderPathFetchByMediumImageId = new FinderPath(
-			ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
-			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, ShoppingItemImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByMediumImageId",
-			new String[] {Long.class.getName()},
-			ShoppingItemModelImpl.MEDIUMIMAGEID_COLUMN_BITMASK);
-
-		_finderPathCountByMediumImageId = new FinderPath(
-			ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
-			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByMediumImageId",
-			new String[] {Long.class.getName()});
-
-		_finderPathFetchByLargeImageId = new FinderPath(
-			ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
-			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, ShoppingItemImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByLargeImageId",
-			new String[] {Long.class.getName()},
-			ShoppingItemModelImpl.LARGEIMAGEID_COLUMN_BITMASK);
-
-		_finderPathCountByLargeImageId = new FinderPath(
-			ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
-			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByLargeImageId",
-			new String[] {Long.class.getName()});
-
-		_finderPathWithPaginationFindByG_C = new FinderPath(
-			ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
-			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, ShoppingItemImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_C",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByG_C = new FinderPath(
-			ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
-			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, ShoppingItemImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_C",
-			new String[] {Long.class.getName(), Long.class.getName()},
-			ShoppingItemModelImpl.GROUPID_COLUMN_BITMASK |
-			ShoppingItemModelImpl.CATEGORYID_COLUMN_BITMASK);
-
-		_finderPathCountByG_C = new FinderPath(
-			ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
-			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C",
-			new String[] {Long.class.getName(), Long.class.getName()});
-
-		_finderPathFetchByC_S = new FinderPath(
-			ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
-			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, ShoppingItemImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByC_S",
-			new String[] {Long.class.getName(), String.class.getName()},
-			ShoppingItemModelImpl.COMPANYID_COLUMN_BITMASK |
-			ShoppingItemModelImpl.SKU_COLUMN_BITMASK);
-
-		_finderPathCountByC_S = new FinderPath(
-			ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
-			ShoppingItemModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_S",
-			new String[] {Long.class.getName(), String.class.getName()});
 	}
 
 	public void destroy() {
@@ -2930,62 +2777,32 @@ public class ShoppingItemPersistenceImpl
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@ServiceReference(type = CompanyProviderWrapper.class)
+	protected CompanyProvider companyProvider;
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
-
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-
-	private static final String _SQL_SELECT_SHOPPINGITEM =
-		"SELECT shoppingItem FROM ShoppingItem shoppingItem";
-
-	private static final String _SQL_SELECT_SHOPPINGITEM_WHERE_PKS_IN =
-		"SELECT shoppingItem FROM ShoppingItem shoppingItem WHERE itemId IN (";
-
-	private static final String _SQL_SELECT_SHOPPINGITEM_WHERE =
-		"SELECT shoppingItem FROM ShoppingItem shoppingItem WHERE ";
-
-	private static final String _SQL_COUNT_SHOPPINGITEM =
-		"SELECT COUNT(shoppingItem) FROM ShoppingItem shoppingItem";
-
-	private static final String _SQL_COUNT_SHOPPINGITEM_WHERE =
-		"SELECT COUNT(shoppingItem) FROM ShoppingItem shoppingItem WHERE ";
-
-	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"shoppingItem.itemId";
-
-	private static final String _FILTER_SQL_SELECT_SHOPPINGITEM_WHERE =
-		"SELECT DISTINCT {shoppingItem.*} FROM ShoppingItem shoppingItem WHERE ";
-
-	private static final String
-		_FILTER_SQL_SELECT_SHOPPINGITEM_NO_INLINE_DISTINCT_WHERE_1 =
-			"SELECT {ShoppingItem.*} FROM (SELECT DISTINCT shoppingItem.itemId FROM ShoppingItem shoppingItem WHERE ";
-
-	private static final String
-		_FILTER_SQL_SELECT_SHOPPINGITEM_NO_INLINE_DISTINCT_WHERE_2 =
-			") TEMP_TABLE INNER JOIN ShoppingItem ON TEMP_TABLE.itemId = ShoppingItem.itemId";
-
-	private static final String _FILTER_SQL_COUNT_SHOPPINGITEM_WHERE =
-		"SELECT COUNT(DISTINCT shoppingItem.itemId) AS COUNT_VALUE FROM ShoppingItem shoppingItem WHERE ";
-
+	private static final String _SQL_SELECT_SHOPPINGITEM = "SELECT shoppingItem FROM ShoppingItem shoppingItem";
+	private static final String _SQL_SELECT_SHOPPINGITEM_WHERE_PKS_IN = "SELECT shoppingItem FROM ShoppingItem shoppingItem WHERE itemId IN (";
+	private static final String _SQL_SELECT_SHOPPINGITEM_WHERE = "SELECT shoppingItem FROM ShoppingItem shoppingItem WHERE ";
+	private static final String _SQL_COUNT_SHOPPINGITEM = "SELECT COUNT(shoppingItem) FROM ShoppingItem shoppingItem";
+	private static final String _SQL_COUNT_SHOPPINGITEM_WHERE = "SELECT COUNT(shoppingItem) FROM ShoppingItem shoppingItem WHERE ";
+	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN = "shoppingItem.itemId";
+	private static final String _FILTER_SQL_SELECT_SHOPPINGITEM_WHERE = "SELECT DISTINCT {shoppingItem.*} FROM ShoppingItem shoppingItem WHERE ";
+	private static final String _FILTER_SQL_SELECT_SHOPPINGITEM_NO_INLINE_DISTINCT_WHERE_1 =
+		"SELECT {ShoppingItem.*} FROM (SELECT DISTINCT shoppingItem.itemId FROM ShoppingItem shoppingItem WHERE ";
+	private static final String _FILTER_SQL_SELECT_SHOPPINGITEM_NO_INLINE_DISTINCT_WHERE_2 =
+		") TEMP_TABLE INNER JOIN ShoppingItem ON TEMP_TABLE.itemId = ShoppingItem.itemId";
+	private static final String _FILTER_SQL_COUNT_SHOPPINGITEM_WHERE = "SELECT COUNT(DISTINCT shoppingItem.itemId) AS COUNT_VALUE FROM ShoppingItem shoppingItem WHERE ";
 	private static final String _FILTER_ENTITY_ALIAS = "shoppingItem";
-
 	private static final String _FILTER_ENTITY_TABLE = "ShoppingItem";
-
 	private static final String _ORDER_BY_ENTITY_ALIAS = "shoppingItem.";
-
 	private static final String _ORDER_BY_ENTITY_TABLE = "ShoppingItem.";
-
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
-		"No ShoppingItem exists with the primary key ";
-
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No ShoppingItem exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		ShoppingItemPersistenceImpl.class);
-
-	private static final Set<String> _badColumnNames = SetUtil.fromArray(
-		new String[] {"fields", "featured", "sale"});
-
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No ShoppingItem exists with the primary key ";
+	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No ShoppingItem exists with the key {";
+	private static final Log _log = LogFactoryUtil.getLog(ShoppingItemPersistenceImpl.class);
+	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
+				"fields", "featured", "sale"
+			});
 }

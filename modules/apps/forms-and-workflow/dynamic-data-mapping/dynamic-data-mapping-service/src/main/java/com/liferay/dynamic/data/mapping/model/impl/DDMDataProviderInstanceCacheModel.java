@@ -14,10 +14,14 @@
 
 package com.liferay.dynamic.data.mapping.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing DDMDataProviderInstance in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see DDMDataProviderInstance
  * @generated
  */
-public class DDMDataProviderInstanceCacheModel
-	implements CacheModel<DDMDataProviderInstance>, Externalizable {
-
+@ProviderType
+public class DDMDataProviderInstanceCacheModel implements CacheModel<DDMDataProviderInstance>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +50,9 @@ public class DDMDataProviderInstanceCacheModel
 			return false;
 		}
 
-		DDMDataProviderInstanceCacheModel ddmDataProviderInstanceCacheModel =
-			(DDMDataProviderInstanceCacheModel)obj;
+		DDMDataProviderInstanceCacheModel ddmDataProviderInstanceCacheModel = (DDMDataProviderInstanceCacheModel)obj;
 
-		if (dataProviderInstanceId ==
-				ddmDataProviderInstanceCacheModel.dataProviderInstanceId) {
-
+		if (dataProviderInstanceId == ddmDataProviderInstanceCacheModel.dataProviderInstanceId) {
 			return true;
 		}
 
@@ -97,24 +99,22 @@ public class DDMDataProviderInstanceCacheModel
 
 	@Override
 	public DDMDataProviderInstance toEntityModel() {
-		DDMDataProviderInstanceImpl ddmDataProviderInstanceImpl =
-			new DDMDataProviderInstanceImpl();
+		DDMDataProviderInstanceImpl ddmDataProviderInstanceImpl = new DDMDataProviderInstanceImpl();
 
 		if (uuid == null) {
-			ddmDataProviderInstanceImpl.setUuid("");
+			ddmDataProviderInstanceImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			ddmDataProviderInstanceImpl.setUuid(uuid);
 		}
 
-		ddmDataProviderInstanceImpl.setDataProviderInstanceId(
-			dataProviderInstanceId);
+		ddmDataProviderInstanceImpl.setDataProviderInstanceId(dataProviderInstanceId);
 		ddmDataProviderInstanceImpl.setGroupId(groupId);
 		ddmDataProviderInstanceImpl.setCompanyId(companyId);
 		ddmDataProviderInstanceImpl.setUserId(userId);
 
 		if (userName == null) {
-			ddmDataProviderInstanceImpl.setUserName("");
+			ddmDataProviderInstanceImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			ddmDataProviderInstanceImpl.setUserName(userName);
@@ -135,28 +135,28 @@ public class DDMDataProviderInstanceCacheModel
 		}
 
 		if (name == null) {
-			ddmDataProviderInstanceImpl.setName("");
+			ddmDataProviderInstanceImpl.setName(StringPool.BLANK);
 		}
 		else {
 			ddmDataProviderInstanceImpl.setName(name);
 		}
 
 		if (description == null) {
-			ddmDataProviderInstanceImpl.setDescription("");
+			ddmDataProviderInstanceImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			ddmDataProviderInstanceImpl.setDescription(description);
 		}
 
 		if (definition == null) {
-			ddmDataProviderInstanceImpl.setDefinition("");
+			ddmDataProviderInstanceImpl.setDefinition(StringPool.BLANK);
 		}
 		else {
 			ddmDataProviderInstanceImpl.setDefinition(definition);
 		}
 
 		if (type == null) {
-			ddmDataProviderInstanceImpl.setType("");
+			ddmDataProviderInstanceImpl.setType(StringPool.BLANK);
 		}
 		else {
 			ddmDataProviderInstanceImpl.setType(type);
@@ -168,9 +168,7 @@ public class DDMDataProviderInstanceCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
 
 		dataProviderInstanceId = objectInput.readLong();
@@ -184,15 +182,16 @@ public class DDMDataProviderInstanceCacheModel
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 		name = objectInput.readUTF();
-		description = (String)objectInput.readObject();
-		definition = (String)objectInput.readObject();
+		description = objectInput.readUTF();
+		definition = objectInput.readUTF();
 		type = objectInput.readUTF();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -207,7 +206,7 @@ public class DDMDataProviderInstanceCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -217,28 +216,28 @@ public class DDMDataProviderInstanceCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(description);
+			objectOutput.writeUTF(description);
 		}
 
 		if (definition == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(definition);
+			objectOutput.writeUTF(definition);
 		}
 
 		if (type == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(type);
@@ -257,5 +256,4 @@ public class DDMDataProviderInstanceCacheModel
 	public String description;
 	public String definition;
 	public String type;
-
 }

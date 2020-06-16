@@ -24,20 +24,20 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see LayoutRevisionModel
+ * @see com.liferay.portal.model.impl.LayoutRevisionImpl
+ * @see com.liferay.portal.model.impl.LayoutRevisionModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.portal.model.impl.LayoutRevisionImpl")
 @ProviderType
 public interface LayoutRevision extends LayoutRevisionModel, PersistedModel {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to <code>com.liferay.portal.model.impl.LayoutRevisionImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to {@link com.liferay.portal.model.impl.LayoutRevisionImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<LayoutRevision, Long>
-		LAYOUT_REVISION_ID_ACCESSOR = new Accessor<LayoutRevision, Long>() {
-
+	public static final Accessor<LayoutRevision, Long> LAYOUT_REVISION_ID_ACCESSOR =
+		new Accessor<LayoutRevision, Long>() {
 			@Override
 			public Long get(LayoutRevision layoutRevision) {
 				return layoutRevision.getLayoutRevisionId();
@@ -52,7 +52,6 @@ public interface LayoutRevision extends LayoutRevisionModel, PersistedModel {
 			public Class<LayoutRevision> getTypeClass() {
 				return LayoutRevision.class;
 			}
-
 		};
 
 	public java.util.List<LayoutRevision> getChildren();
@@ -60,12 +59,12 @@ public interface LayoutRevision extends LayoutRevisionModel, PersistedModel {
 	public ColorScheme getColorScheme()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public String getCssText()
+	public java.lang.String getCssText()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public String getHTMLTitle(java.util.Locale locale);
+	public java.lang.String getHTMLTitle(java.util.Locale locale);
 
-	public String getHTMLTitle(String localeLanguageId);
+	public java.lang.String getHTMLTitle(java.lang.String localeLanguageId);
 
 	public boolean getIconImage();
 
@@ -75,20 +74,22 @@ public interface LayoutRevision extends LayoutRevisionModel, PersistedModel {
 	public LayoutSet getLayoutSet()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public String getRegularURL(javax.servlet.http.HttpServletRequest request)
+	public java.lang.String getRegularURL(
+		javax.servlet.http.HttpServletRequest request)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public Theme getTheme()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public String getThemeSetting(String key, String device);
+	public java.lang.String getThemeSetting(java.lang.String key,
+		java.lang.String device);
 
-	public com.liferay.portal.kernel.util.UnicodeProperties
-		getTypeSettingsProperties();
+	public com.liferay.portal.kernel.util.UnicodeProperties getTypeSettingsProperties();
 
-	public String getTypeSettingsProperty(String key);
+	public java.lang.String getTypeSettingsProperty(java.lang.String key);
 
-	public String getTypeSettingsProperty(String key, String defaultValue);
+	public java.lang.String getTypeSettingsProperty(java.lang.String key,
+		java.lang.String defaultValue);
 
 	public boolean hasChildren();
 
@@ -99,7 +100,5 @@ public interface LayoutRevision extends LayoutRevisionModel, PersistedModel {
 	public boolean isInheritLookAndFeel();
 
 	public void setTypeSettingsProperties(
-		com.liferay.portal.kernel.util.UnicodeProperties
-			typeSettingsProperties);
-
+		com.liferay.portal.kernel.util.UnicodeProperties typeSettingsProperties);
 }

@@ -14,10 +14,14 @@
 
 package com.liferay.portlet.messageboards.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.message.boards.kernel.model.MBThread;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,11 @@ import java.util.Date;
  * The cache model class for representing MBThread in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see MBThread
  * @generated
  */
-public class MBThreadCacheModel
-	implements CacheModel<MBThread>, Externalizable {
-
+@ProviderType
+public class MBThreadCacheModel implements CacheModel<MBThread>, Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -117,7 +121,7 @@ public class MBThreadCacheModel
 		MBThreadImpl mbThreadImpl = new MBThreadImpl();
 
 		if (uuid == null) {
-			mbThreadImpl.setUuid("");
+			mbThreadImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			mbThreadImpl.setUuid(uuid);
@@ -129,7 +133,7 @@ public class MBThreadCacheModel
 		mbThreadImpl.setUserId(userId);
 
 		if (userName == null) {
-			mbThreadImpl.setUserName("");
+			mbThreadImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			mbThreadImpl.setUserName(userName);
@@ -177,7 +181,7 @@ public class MBThreadCacheModel
 		mbThreadImpl.setStatusByUserId(statusByUserId);
 
 		if (statusByUserName == null) {
-			mbThreadImpl.setStatusByUserName("");
+			mbThreadImpl.setStatusByUserName(StringPool.BLANK);
 		}
 		else {
 			mbThreadImpl.setStatusByUserName(statusByUserName);
@@ -236,9 +240,10 @@ public class MBThreadCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -253,7 +258,7 @@ public class MBThreadCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -285,7 +290,7 @@ public class MBThreadCacheModel
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(statusByUserName);
@@ -316,5 +321,4 @@ public class MBThreadCacheModel
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
-
 }

@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ClusterGroup;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -29,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing ClusterGroup in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see ClusterGroup
  * @generated
  */
-public class ClusterGroupCacheModel
-	implements CacheModel<ClusterGroup>, Externalizable, MVCCModel {
-
+@ProviderType
+public class ClusterGroupCacheModel implements CacheModel<ClusterGroup>,
+	Externalizable, MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -44,12 +48,10 @@ public class ClusterGroupCacheModel
 			return false;
 		}
 
-		ClusterGroupCacheModel clusterGroupCacheModel =
-			(ClusterGroupCacheModel)obj;
+		ClusterGroupCacheModel clusterGroupCacheModel = (ClusterGroupCacheModel)obj;
 
 		if ((clusterGroupId == clusterGroupCacheModel.clusterGroupId) &&
-			(mvccVersion == clusterGroupCacheModel.mvccVersion)) {
-
+				(mvccVersion == clusterGroupCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -100,14 +102,14 @@ public class ClusterGroupCacheModel
 		clusterGroupImpl.setClusterGroupId(clusterGroupId);
 
 		if (name == null) {
-			clusterGroupImpl.setName("");
+			clusterGroupImpl.setName(StringPool.BLANK);
 		}
 		else {
 			clusterGroupImpl.setName(name);
 		}
 
 		if (clusterNodeIds == null) {
-			clusterGroupImpl.setClusterNodeIds("");
+			clusterGroupImpl.setClusterNodeIds(StringPool.BLANK);
 		}
 		else {
 			clusterGroupImpl.setClusterNodeIds(clusterNodeIds);
@@ -132,20 +134,21 @@ public class ClusterGroupCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(clusterGroupId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (clusterNodeIds == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(clusterNodeIds);
@@ -159,5 +162,4 @@ public class ClusterGroupCacheModel
 	public String name;
 	public String clusterNodeIds;
 	public boolean wholeCluster;
-
 }

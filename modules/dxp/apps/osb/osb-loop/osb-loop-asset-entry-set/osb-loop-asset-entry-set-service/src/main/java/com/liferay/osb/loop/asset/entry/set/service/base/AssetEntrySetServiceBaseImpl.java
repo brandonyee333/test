@@ -1,27 +1,30 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.loop.asset.entry.set.service.base;
 
 import com.liferay.asset.kernel.service.persistence.AssetEntryPersistence;
+
 import com.liferay.document.library.kernel.service.persistence.DLFileEntryPersistence;
+
 import com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet;
 import com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetService;
 import com.liferay.osb.loop.asset.entry.set.service.persistence.AssetEntrySetFinder;
 import com.liferay.osb.loop.asset.entry.set.service.persistence.AssetEntrySetLikeFinder;
 import com.liferay.osb.loop.asset.entry.set.service.persistence.AssetEntrySetLikePersistence;
 import com.liferay.osb.loop.asset.entry.set.service.persistence.AssetEntrySetPersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -47,16 +50,15 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.osb.loop.asset.entry.set.service.impl.AssetEntrySetServiceImpl
+ * @see com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetServiceUtil
  * @generated
  */
-public abstract class AssetEntrySetServiceBaseImpl
-	extends BaseServiceImpl
+public abstract class AssetEntrySetServiceBaseImpl extends BaseServiceImpl
 	implements AssetEntrySetService, IdentifiableOSGiService {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AssetEntrySetService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetServiceUtil} to access the asset entry set remote service.
 	 */
 
 	/**
@@ -64,10 +66,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 *
 	 * @return the asset entry set local service
 	 */
-	public
-		com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLocalService
-			getAssetEntrySetLocalService() {
-
+	public com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLocalService getAssetEntrySetLocalService() {
 		return assetEntrySetLocalService;
 	}
 
@@ -77,9 +76,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 * @param assetEntrySetLocalService the asset entry set local service
 	 */
 	public void setAssetEntrySetLocalService(
-		com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLocalService
-			assetEntrySetLocalService) {
-
+		com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLocalService assetEntrySetLocalService) {
 		this.assetEntrySetLocalService = assetEntrySetLocalService;
 	}
 
@@ -99,7 +96,6 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 */
 	public void setAssetEntrySetService(
 		AssetEntrySetService assetEntrySetService) {
-
 		this.assetEntrySetService = assetEntrySetService;
 	}
 
@@ -119,7 +115,6 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 */
 	public void setAssetEntrySetPersistence(
 		AssetEntrySetPersistence assetEntrySetPersistence) {
-
 		this.assetEntrySetPersistence = assetEntrySetPersistence;
 	}
 
@@ -137,9 +132,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 *
 	 * @param assetEntrySetFinder the asset entry set finder
 	 */
-	public void setAssetEntrySetFinder(
-		AssetEntrySetFinder assetEntrySetFinder) {
-
+	public void setAssetEntrySetFinder(AssetEntrySetFinder assetEntrySetFinder) {
 		this.assetEntrySetFinder = assetEntrySetFinder;
 	}
 
@@ -148,10 +141,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 *
 	 * @return the asset entry set like local service
 	 */
-	public
-		com.liferay.osb.loop.asset.entry.set.service.
-			AssetEntrySetLikeLocalService getAssetEntrySetLikeLocalService() {
-
+	public com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLikeLocalService getAssetEntrySetLikeLocalService() {
 		return assetEntrySetLikeLocalService;
 	}
 
@@ -161,9 +151,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 * @param assetEntrySetLikeLocalService the asset entry set like local service
 	 */
 	public void setAssetEntrySetLikeLocalService(
-		com.liferay.osb.loop.asset.entry.set.service.
-			AssetEntrySetLikeLocalService assetEntrySetLikeLocalService) {
-
+		com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLikeLocalService assetEntrySetLikeLocalService) {
 		this.assetEntrySetLikeLocalService = assetEntrySetLikeLocalService;
 	}
 
@@ -183,7 +171,6 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 */
 	public void setAssetEntrySetLikePersistence(
 		AssetEntrySetLikePersistence assetEntrySetLikePersistence) {
-
 		this.assetEntrySetLikePersistence = assetEntrySetLikePersistence;
 	}
 
@@ -203,7 +190,6 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 */
 	public void setAssetEntrySetLikeFinder(
 		AssetEntrySetLikeFinder assetEntrySetLikeFinder) {
-
 		this.assetEntrySetLikeFinder = assetEntrySetLikeFinder;
 	}
 
@@ -212,9 +198,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -224,9 +208,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -235,9 +217,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService
-		getClassNameLocalService() {
-
+	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
 		return classNameLocalService;
 	}
 
@@ -247,9 +227,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService
-			classNameLocalService) {
-
+		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -258,9 +236,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 *
 	 * @return the class name remote service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameService
-		getClassNameService() {
-
+	public com.liferay.portal.kernel.service.ClassNameService getClassNameService() {
 		return classNameService;
 	}
 
@@ -271,7 +247,6 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 */
 	public void setClassNameService(
 		com.liferay.portal.kernel.service.ClassNameService classNameService) {
-
 		this.classNameService = classNameService;
 	}
 
@@ -291,7 +266,6 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
-
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -300,9 +274,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 *
 	 * @return the group local service
 	 */
-	public com.liferay.portal.kernel.service.GroupLocalService
-		getGroupLocalService() {
-
+	public com.liferay.portal.kernel.service.GroupLocalService getGroupLocalService() {
 		return groupLocalService;
 	}
 
@@ -313,7 +285,6 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 */
 	public void setGroupLocalService(
 		com.liferay.portal.kernel.service.GroupLocalService groupLocalService) {
-
 		this.groupLocalService = groupLocalService;
 	}
 
@@ -333,7 +304,6 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 */
 	public void setGroupService(
 		com.liferay.portal.kernel.service.GroupService groupService) {
-
 		this.groupService = groupService;
 	}
 
@@ -360,9 +330,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService
-		getResourceLocalService() {
-
+	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
 		return resourceLocalService;
 	}
 
@@ -372,9 +340,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService
-			resourceLocalService) {
-
+		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -383,9 +349,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService
-		getUserLocalService() {
-
+	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
 		return userLocalService;
 	}
 
@@ -396,7 +360,6 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
-
 		this.userLocalService = userLocalService;
 	}
 
@@ -416,7 +379,6 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 */
 	public void setUserService(
 		com.liferay.portal.kernel.service.UserService userService) {
-
 		this.userService = userService;
 	}
 
@@ -443,9 +405,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 *
 	 * @return the asset entry local service
 	 */
-	public com.liferay.asset.kernel.service.AssetEntryLocalService
-		getAssetEntryLocalService() {
-
+	public com.liferay.asset.kernel.service.AssetEntryLocalService getAssetEntryLocalService() {
 		return assetEntryLocalService;
 	}
 
@@ -455,9 +415,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 * @param assetEntryLocalService the asset entry local service
 	 */
 	public void setAssetEntryLocalService(
-		com.liferay.asset.kernel.service.AssetEntryLocalService
-			assetEntryLocalService) {
-
+		com.liferay.asset.kernel.service.AssetEntryLocalService assetEntryLocalService) {
 		this.assetEntryLocalService = assetEntryLocalService;
 	}
 
@@ -466,9 +424,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 *
 	 * @return the asset entry remote service
 	 */
-	public com.liferay.asset.kernel.service.AssetEntryService
-		getAssetEntryService() {
-
+	public com.liferay.asset.kernel.service.AssetEntryService getAssetEntryService() {
 		return assetEntryService;
 	}
 
@@ -479,7 +435,6 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 */
 	public void setAssetEntryService(
 		com.liferay.asset.kernel.service.AssetEntryService assetEntryService) {
-
 		this.assetEntryService = assetEntryService;
 	}
 
@@ -499,7 +454,6 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 */
 	public void setAssetEntryPersistence(
 		AssetEntryPersistence assetEntryPersistence) {
-
 		this.assetEntryPersistence = assetEntryPersistence;
 	}
 
@@ -508,9 +462,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 *
 	 * @return the dl app local service
 	 */
-	public com.liferay.document.library.kernel.service.DLAppLocalService
-		getDLAppLocalService() {
-
+	public com.liferay.document.library.kernel.service.DLAppLocalService getDLAppLocalService() {
 		return dlAppLocalService;
 	}
 
@@ -520,9 +472,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 * @param dlAppLocalService the dl app local service
 	 */
 	public void setDLAppLocalService(
-		com.liferay.document.library.kernel.service.DLAppLocalService
-			dlAppLocalService) {
-
+		com.liferay.document.library.kernel.service.DLAppLocalService dlAppLocalService) {
 		this.dlAppLocalService = dlAppLocalService;
 	}
 
@@ -531,9 +481,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 *
 	 * @return the dl app remote service
 	 */
-	public com.liferay.document.library.kernel.service.DLAppService
-		getDLAppService() {
-
+	public com.liferay.document.library.kernel.service.DLAppService getDLAppService() {
 		return dlAppService;
 	}
 
@@ -544,7 +492,6 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 */
 	public void setDLAppService(
 		com.liferay.document.library.kernel.service.DLAppService dlAppService) {
-
 		this.dlAppService = dlAppService;
 	}
 
@@ -553,9 +500,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 *
 	 * @return the document library file entry local service
 	 */
-	public com.liferay.document.library.kernel.service.DLFileEntryLocalService
-		getDLFileEntryLocalService() {
-
+	public com.liferay.document.library.kernel.service.DLFileEntryLocalService getDLFileEntryLocalService() {
 		return dlFileEntryLocalService;
 	}
 
@@ -565,9 +510,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 * @param dlFileEntryLocalService the document library file entry local service
 	 */
 	public void setDLFileEntryLocalService(
-		com.liferay.document.library.kernel.service.DLFileEntryLocalService
-			dlFileEntryLocalService) {
-
+		com.liferay.document.library.kernel.service.DLFileEntryLocalService dlFileEntryLocalService) {
 		this.dlFileEntryLocalService = dlFileEntryLocalService;
 	}
 
@@ -576,9 +519,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 *
 	 * @return the document library file entry remote service
 	 */
-	public com.liferay.document.library.kernel.service.DLFileEntryService
-		getDLFileEntryService() {
-
+	public com.liferay.document.library.kernel.service.DLFileEntryService getDLFileEntryService() {
 		return dlFileEntryService;
 	}
 
@@ -588,9 +529,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 * @param dlFileEntryService the document library file entry remote service
 	 */
 	public void setDLFileEntryService(
-		com.liferay.document.library.kernel.service.DLFileEntryService
-			dlFileEntryService) {
-
+		com.liferay.document.library.kernel.service.DLFileEntryService dlFileEntryService) {
 		this.dlFileEntryService = dlFileEntryService;
 	}
 
@@ -610,7 +549,6 @@ public abstract class AssetEntrySetServiceBaseImpl
 	 */
 	public void setDLFileEntryPersistence(
 		DLFileEntryPersistence dlFileEntryPersistence) {
-
 		this.dlFileEntryPersistence = dlFileEntryPersistence;
 	}
 
@@ -652,141 +590,66 @@ public abstract class AssetEntrySetServiceBaseImpl
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
-	@BeanReference(
-		type = com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLocalService.class
-	)
-	protected
-		com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLocalService
-			assetEntrySetLocalService;
-
+	@BeanReference(type = com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLocalService.class)
+	protected com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLocalService assetEntrySetLocalService;
 	@BeanReference(type = AssetEntrySetService.class)
 	protected AssetEntrySetService assetEntrySetService;
-
 	@BeanReference(type = AssetEntrySetPersistence.class)
 	protected AssetEntrySetPersistence assetEntrySetPersistence;
-
 	@BeanReference(type = AssetEntrySetFinder.class)
 	protected AssetEntrySetFinder assetEntrySetFinder;
-
-	@BeanReference(
-		type = com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLikeLocalService.class
-	)
-	protected
-		com.liferay.osb.loop.asset.entry.set.service.
-			AssetEntrySetLikeLocalService assetEntrySetLikeLocalService;
-
+	@BeanReference(type = com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLikeLocalService.class)
+	protected com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLikeLocalService assetEntrySetLikeLocalService;
 	@BeanReference(type = AssetEntrySetLikePersistence.class)
 	protected AssetEntrySetLikePersistence assetEntrySetLikePersistence;
-
 	@BeanReference(type = AssetEntrySetLikeFinder.class)
 	protected AssetEntrySetLikeFinder assetEntrySetLikeFinder;
-
-	@ServiceReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService
-		classNameLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ClassNameService.class
-	)
-	protected com.liferay.portal.kernel.service.ClassNameService
-		classNameService;
-
+	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameService.class)
+	protected com.liferay.portal.kernel.service.ClassNameService classNameService;
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.GroupLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.GroupLocalService
-		groupLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.GroupService.class
-	)
+	@ServiceReference(type = com.liferay.portal.kernel.service.GroupLocalService.class)
+	protected com.liferay.portal.kernel.service.GroupLocalService groupLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.GroupService.class)
 	protected com.liferay.portal.kernel.service.GroupService groupService;
-
 	@ServiceReference(type = GroupPersistence.class)
 	protected GroupPersistence groupPersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ResourceLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ResourceLocalService
-		resourceLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.UserLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.UserLocalService
-		userLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.UserService.class
-	)
+	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
+	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
+	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.UserService.class)
 	protected com.liferay.portal.kernel.service.UserService userService;
-
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-
-	@ServiceReference(
-		type = com.liferay.asset.kernel.service.AssetEntryLocalService.class
-	)
-	protected com.liferay.asset.kernel.service.AssetEntryLocalService
-		assetEntryLocalService;
-
-	@ServiceReference(
-		type = com.liferay.asset.kernel.service.AssetEntryService.class
-	)
-	protected com.liferay.asset.kernel.service.AssetEntryService
-		assetEntryService;
-
+	@ServiceReference(type = com.liferay.asset.kernel.service.AssetEntryLocalService.class)
+	protected com.liferay.asset.kernel.service.AssetEntryLocalService assetEntryLocalService;
+	@ServiceReference(type = com.liferay.asset.kernel.service.AssetEntryService.class)
+	protected com.liferay.asset.kernel.service.AssetEntryService assetEntryService;
 	@ServiceReference(type = AssetEntryPersistence.class)
 	protected AssetEntryPersistence assetEntryPersistence;
-
-	@ServiceReference(
-		type = com.liferay.document.library.kernel.service.DLAppLocalService.class
-	)
-	protected com.liferay.document.library.kernel.service.DLAppLocalService
-		dlAppLocalService;
-
-	@ServiceReference(
-		type = com.liferay.document.library.kernel.service.DLAppService.class
-	)
-	protected com.liferay.document.library.kernel.service.DLAppService
-		dlAppService;
-
-	@ServiceReference(
-		type = com.liferay.document.library.kernel.service.DLFileEntryLocalService.class
-	)
-	protected
-		com.liferay.document.library.kernel.service.DLFileEntryLocalService
-			dlFileEntryLocalService;
-
-	@ServiceReference(
-		type = com.liferay.document.library.kernel.service.DLFileEntryService.class
-	)
-	protected com.liferay.document.library.kernel.service.DLFileEntryService
-		dlFileEntryService;
-
+	@ServiceReference(type = com.liferay.document.library.kernel.service.DLAppLocalService.class)
+	protected com.liferay.document.library.kernel.service.DLAppLocalService dlAppLocalService;
+	@ServiceReference(type = com.liferay.document.library.kernel.service.DLAppService.class)
+	protected com.liferay.document.library.kernel.service.DLAppService dlAppService;
+	@ServiceReference(type = com.liferay.document.library.kernel.service.DLFileEntryLocalService.class)
+	protected com.liferay.document.library.kernel.service.DLFileEntryLocalService dlFileEntryLocalService;
+	@ServiceReference(type = com.liferay.document.library.kernel.service.DLFileEntryService.class)
+	protected com.liferay.document.library.kernel.service.DLFileEntryService dlFileEntryService;
 	@ServiceReference(type = DLFileEntryPersistence.class)
 	protected DLFileEntryPersistence dlFileEntryPersistence;
-
 }

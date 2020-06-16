@@ -14,6 +14,8 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.PluginSetting;
 import com.liferay.portal.kernel.service.PluginSettingLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.portal.kernel.service.PluginSettingLocalServiceUtil;
  * @see PluginSetting
  * @generated
  */
-public abstract class PluginSettingBaseImpl
-	extends PluginSettingModelImpl implements PluginSetting {
-
+@ProviderType
+public abstract class PluginSettingBaseImpl extends PluginSettingModelImpl
+	implements PluginSetting {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a plugin setting model instance should use the <code>PluginSetting</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a plugin setting model instance should use the {@link PluginSetting} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class PluginSettingBaseImpl
 			PluginSettingLocalServiceUtil.updatePluginSetting(this);
 		}
 	}
-
 }

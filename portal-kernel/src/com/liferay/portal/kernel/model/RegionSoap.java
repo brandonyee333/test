@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -23,10 +25,11 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.portal.service.http.RegionServiceSoap}.
  *
  * @author Brian Wing Shun Chan
+ * @see com.liferay.portal.service.http.RegionServiceSoap
  * @generated
  */
+@ProviderType
 public class RegionSoap implements Serializable {
-
 	public static RegionSoap toSoapModel(Region model) {
 		RegionSoap soapModel = new RegionSoap();
 
@@ -35,7 +38,7 @@ public class RegionSoap implements Serializable {
 		soapModel.setCountryId(model.getCountryId());
 		soapModel.setRegionCode(model.getRegionCode());
 		soapModel.setName(model.getName());
-		soapModel.setActive(model.isActive());
+		soapModel.setActive(model.getActive());
 
 		return soapModel;
 	}
@@ -146,5 +149,4 @@ public class RegionSoap implements Serializable {
 	private String _regionCode;
 	private String _name;
 	private boolean _active;
-
 }

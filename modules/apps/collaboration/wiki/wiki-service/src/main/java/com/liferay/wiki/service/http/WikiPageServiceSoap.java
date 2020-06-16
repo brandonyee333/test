@@ -14,29 +14,31 @@
 
 package com.liferay.wiki.service.http;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+
 import com.liferay.wiki.service.WikiPageServiceUtil;
 
 import java.rmi.RemoteException;
 
 /**
  * Provides the SOAP utility for the
- * <code>WikiPageServiceUtil</code> service
- * utility. The static methods of this class call the same methods of the
- * service utility. However, the signatures are different because it is
- * difficult for SOAP to support certain types.
+ * {@link WikiPageServiceUtil} service utility. The
+ * static methods of this class calls the same methods of the service utility.
+ * However, the signatures are different because it is difficult for SOAP to
+ * support certain types.
  *
  * <p>
  * ServiceBuilder follows certain rules in translating the methods. For example,
- * if the method in the service utility returns a <code>java.util.List</code>,
- * that is translated to an array of
- * <code>com.liferay.wiki.model.WikiPageSoap</code>. If the method in the
- * service utility returns a
- * <code>com.liferay.wiki.model.WikiPage</code>, that is translated to a
- * <code>com.liferay.wiki.model.WikiPageSoap</code>. Methods that SOAP
- * cannot safely wire are skipped.
+ * if the method in the service utility returns a {@link java.util.List}, that
+ * is translated to an array of {@link com.liferay.wiki.model.WikiPageSoap}.
+ * If the method in the service utility returns a
+ * {@link com.liferay.wiki.model.WikiPage}, that is translated to a
+ * {@link com.liferay.wiki.model.WikiPageSoap}. Methods that SOAP cannot
+ * safely wire are skipped.
  * </p>
  *
  * <p>
@@ -58,734 +60,650 @@ import java.rmi.RemoteException;
  *
  * @author Brian Wing Shun Chan
  * @see WikiPageServiceHttp
+ * @see com.liferay.wiki.model.WikiPageSoap
+ * @see WikiPageServiceUtil
  * @generated
  */
+@ProviderType
 public class WikiPageServiceSoap {
-
-	public static com.liferay.wiki.model.WikiPageSoap addPage(
-			long nodeId, String title, String content, String summary,
-			boolean minorEdit,
-			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static com.liferay.wiki.model.WikiPageSoap addPage(long nodeId,
+		java.lang.String title, java.lang.String content,
+		java.lang.String summary, boolean minorEdit,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
-
 		try {
-			com.liferay.wiki.model.WikiPage returnValue =
-				WikiPageServiceUtil.addPage(
-					nodeId, title, content, summary, minorEdit, serviceContext);
+			com.liferay.wiki.model.WikiPage returnValue = WikiPageServiceUtil.addPage(nodeId,
+					title, content, summary, minorEdit, serviceContext);
 
 			return com.liferay.wiki.model.WikiPageSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.wiki.model.WikiPageSoap addPage(
-			long nodeId, String title, String content, String summary,
-			boolean minorEdit, String format, String parentTitle,
-			String redirectTitle,
-			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static com.liferay.wiki.model.WikiPageSoap addPage(long nodeId,
+		java.lang.String title, java.lang.String content,
+		java.lang.String summary, boolean minorEdit, java.lang.String format,
+		java.lang.String parentTitle, java.lang.String redirectTitle,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
-
 		try {
-			com.liferay.wiki.model.WikiPage returnValue =
-				WikiPageServiceUtil.addPage(
-					nodeId, title, content, summary, minorEdit, format,
-					parentTitle, redirectTitle, serviceContext);
+			com.liferay.wiki.model.WikiPage returnValue = WikiPageServiceUtil.addPage(nodeId,
+					title, content, summary, minorEdit, format, parentTitle,
+					redirectTitle, serviceContext);
 
 			return com.liferay.wiki.model.WikiPageSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.portal.kernel.repository.model.FileEntrySoap[]
-			addPageAttachments(
-				long nodeId, String title,
-				java.util.List
-					<com.liferay.portal.kernel.util.ObjectValuePair
-						<String, java.io.InputStream>> inputStreamOVPs)
+	public static com.liferay.portal.kernel.repository.model.FileEntrySoap[] addPageAttachments(
+		long nodeId, java.lang.String title,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.InputStream>> inputStreamOVPs)
 		throws RemoteException {
-
 		try {
-			java.util.List<com.liferay.portal.kernel.repository.model.FileEntry>
-				returnValue = WikiPageServiceUtil.addPageAttachments(
-					nodeId, title, inputStreamOVPs);
+			java.util.List<com.liferay.portal.kernel.repository.model.FileEntry> returnValue =
+				WikiPageServiceUtil.addPageAttachments(nodeId, title,
+					inputStreamOVPs);
 
-			return com.liferay.portal.kernel.repository.model.FileEntrySoap.
-				toSoapModels(returnValue);
+			return com.liferay.portal.kernel.repository.model.FileEntrySoap.toSoapModels(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static void changeParent(
-			long nodeId, String title, String newParentTitle,
-			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static void changeParent(long nodeId, java.lang.String title,
+		java.lang.String newParentTitle,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
-
 		try {
-			WikiPageServiceUtil.changeParent(
-				nodeId, title, newParentTitle, serviceContext);
+			WikiPageServiceUtil.changeParent(nodeId, title, newParentTitle,
+				serviceContext);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static void copyPageAttachments(
-			long templateNodeId, String templateTitle, long nodeId,
-			String title)
+	public static void copyPageAttachments(long templateNodeId,
+		java.lang.String templateTitle, long nodeId, java.lang.String title)
 		throws RemoteException {
-
 		try {
-			WikiPageServiceUtil.copyPageAttachments(
-				templateNodeId, templateTitle, nodeId, title);
+			WikiPageServiceUtil.copyPageAttachments(templateNodeId,
+				templateTitle, nodeId, title);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static void deletePage(long nodeId, String title)
+	public static void deletePage(long nodeId, java.lang.String title)
 		throws RemoteException {
-
 		try {
 			WikiPageServiceUtil.deletePage(nodeId, title);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static void deletePageAttachment(
-			long nodeId, String title, String fileName)
+	public static void deletePageAttachment(long nodeId,
+		java.lang.String title, java.lang.String fileName)
 		throws RemoteException {
-
 		try {
 			WikiPageServiceUtil.deletePageAttachment(nodeId, title, fileName);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static void deletePageAttachments(long nodeId, String title)
+	public static void deletePageAttachments(long nodeId, java.lang.String title)
 		throws RemoteException {
-
 		try {
 			WikiPageServiceUtil.deletePageAttachments(nodeId, title);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static void deleteTempFileEntry(
-			long nodeId, String folderName, String fileName)
+	public static void deleteTempFileEntry(long nodeId,
+		java.lang.String folderName, java.lang.String fileName)
 		throws RemoteException {
-
 		try {
-			WikiPageServiceUtil.deleteTempFileEntry(
-				nodeId, folderName, fileName);
+			WikiPageServiceUtil.deleteTempFileEntry(nodeId, folderName, fileName);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static void deleteTrashPageAttachments(long nodeId, String title)
-		throws RemoteException {
-
+	public static void deleteTrashPageAttachments(long nodeId,
+		java.lang.String title) throws RemoteException {
 		try {
 			WikiPageServiceUtil.deleteTrashPageAttachments(nodeId, title);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static void discardDraft(long nodeId, String title, double version)
-		throws RemoteException {
-
+	public static void discardDraft(long nodeId, java.lang.String title,
+		double version) throws RemoteException {
 		try {
 			WikiPageServiceUtil.discardDraft(nodeId, title, version);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.wiki.model.WikiPageSoap fetchPage(
-			long nodeId, String title, double version)
-		throws RemoteException {
-
+	public static com.liferay.wiki.model.WikiPageSoap fetchPage(long nodeId,
+		java.lang.String title, double version) throws RemoteException {
 		try {
-			com.liferay.wiki.model.WikiPage returnValue =
-				WikiPageServiceUtil.fetchPage(nodeId, title, version);
+			com.liferay.wiki.model.WikiPage returnValue = WikiPageServiceUtil.fetchPage(nodeId,
+					title, version);
 
 			return com.liferay.wiki.model.WikiPageSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static com.liferay.wiki.model.WikiPageSoap[] getChildren(
-			long groupId, long nodeId, boolean head, String parentTitle)
+		long groupId, long nodeId, boolean head, java.lang.String parentTitle)
 		throws RemoteException {
-
 		try {
-			java.util.List<com.liferay.wiki.model.WikiPage> returnValue =
-				WikiPageServiceUtil.getChildren(
-					groupId, nodeId, head, parentTitle);
+			java.util.List<com.liferay.wiki.model.WikiPage> returnValue = WikiPageServiceUtil.getChildren(groupId,
+					nodeId, head, parentTitle);
 
-			return com.liferay.wiki.model.WikiPageSoap.toSoapModels(
-				returnValue);
+			return com.liferay.wiki.model.WikiPageSoap.toSoapModels(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static com.liferay.wiki.model.WikiPageSoap getDraftPage(
-			long nodeId, String title)
-		throws RemoteException {
-
+		long nodeId, java.lang.String title) throws RemoteException {
 		try {
-			com.liferay.wiki.model.WikiPage returnValue =
-				WikiPageServiceUtil.getDraftPage(nodeId, title);
+			com.liferay.wiki.model.WikiPage returnValue = WikiPageServiceUtil.getDraftPage(nodeId,
+					title);
 
 			return com.liferay.wiki.model.WikiPageSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static com.liferay.wiki.model.WikiPageSoap[] getNodePages(
-			long nodeId, int max)
-		throws RemoteException {
-
+		long nodeId, int max) throws RemoteException {
 		try {
-			java.util.List<com.liferay.wiki.model.WikiPage> returnValue =
-				WikiPageServiceUtil.getNodePages(nodeId, max);
+			java.util.List<com.liferay.wiki.model.WikiPage> returnValue = WikiPageServiceUtil.getNodePages(nodeId,
+					max);
 
-			return com.liferay.wiki.model.WikiPageSoap.toSoapModels(
-				returnValue);
+			return com.liferay.wiki.model.WikiPageSoap.toSoapModels(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static String getNodePagesRSS(
-			long nodeId, int max, String type, double version,
-			String displayStyle, String feedURL, String entryURL,
-			String attachmentURLPrefix)
-		throws RemoteException {
-
+	public static java.lang.String getNodePagesRSS(long nodeId, int max,
+		java.lang.String type, double version, java.lang.String displayStyle,
+		java.lang.String feedURL, java.lang.String entryURL,
+		java.lang.String attachmentURLPrefix) throws RemoteException {
 		try {
-			String returnValue = WikiPageServiceUtil.getNodePagesRSS(
-				nodeId, max, type, version, displayStyle, feedURL, entryURL,
-				attachmentURLPrefix);
+			java.lang.String returnValue = WikiPageServiceUtil.getNodePagesRSS(nodeId,
+					max, type, version, displayStyle, feedURL, entryURL,
+					attachmentURLPrefix);
 
 			return returnValue;
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static com.liferay.wiki.model.WikiPageSoap[] getOrphans(
-			long groupId, long nodeId)
-		throws RemoteException {
-
+		long groupId, long nodeId) throws RemoteException {
 		try {
-			java.util.List<com.liferay.wiki.model.WikiPage> returnValue =
-				WikiPageServiceUtil.getOrphans(groupId, nodeId);
+			java.util.List<com.liferay.wiki.model.WikiPage> returnValue = WikiPageServiceUtil.getOrphans(groupId,
+					nodeId);
 
-			return com.liferay.wiki.model.WikiPageSoap.toSoapModels(
-				returnValue);
+			return com.liferay.wiki.model.WikiPageSoap.toSoapModels(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static com.liferay.wiki.model.WikiPageSoap getPage(long pageId)
 		throws RemoteException {
-
 		try {
-			com.liferay.wiki.model.WikiPage returnValue =
-				WikiPageServiceUtil.getPage(pageId);
+			com.liferay.wiki.model.WikiPage returnValue = WikiPageServiceUtil.getPage(pageId);
 
 			return com.liferay.wiki.model.WikiPageSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.wiki.model.WikiPageSoap getPage(
-			long groupId, long nodeId, String title)
-		throws RemoteException {
-
+	public static com.liferay.wiki.model.WikiPageSoap getPage(long groupId,
+		long nodeId, java.lang.String title) throws RemoteException {
 		try {
-			com.liferay.wiki.model.WikiPage returnValue =
-				WikiPageServiceUtil.getPage(groupId, nodeId, title);
+			com.liferay.wiki.model.WikiPage returnValue = WikiPageServiceUtil.getPage(groupId,
+					nodeId, title);
 
 			return com.liferay.wiki.model.WikiPageSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.wiki.model.WikiPageSoap getPage(
-			long nodeId, String title)
-		throws RemoteException {
-
+	public static com.liferay.wiki.model.WikiPageSoap getPage(long nodeId,
+		java.lang.String title) throws RemoteException {
 		try {
-			com.liferay.wiki.model.WikiPage returnValue =
-				WikiPageServiceUtil.getPage(nodeId, title);
+			com.liferay.wiki.model.WikiPage returnValue = WikiPageServiceUtil.getPage(nodeId,
+					title);
 
 			return com.liferay.wiki.model.WikiPageSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.wiki.model.WikiPageSoap getPage(
-			long nodeId, String title, Boolean head)
+	public static com.liferay.wiki.model.WikiPageSoap getPage(long nodeId,
+		java.lang.String title, java.lang.Boolean head)
 		throws RemoteException {
-
 		try {
-			com.liferay.wiki.model.WikiPage returnValue =
-				WikiPageServiceUtil.getPage(nodeId, title, head);
+			com.liferay.wiki.model.WikiPage returnValue = WikiPageServiceUtil.getPage(nodeId,
+					title, head);
 
 			return com.liferay.wiki.model.WikiPageSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.wiki.model.WikiPageSoap getPage(
-			long nodeId, String title, double version)
-		throws RemoteException {
-
+	public static com.liferay.wiki.model.WikiPageSoap getPage(long nodeId,
+		java.lang.String title, double version) throws RemoteException {
 		try {
-			com.liferay.wiki.model.WikiPage returnValue =
-				WikiPageServiceUtil.getPage(nodeId, title, version);
+			com.liferay.wiki.model.WikiPage returnValue = WikiPageServiceUtil.getPage(nodeId,
+					title, version);
 
 			return com.liferay.wiki.model.WikiPageSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.wiki.model.WikiPageSoap[] getPages(
-			long groupId, long nodeId, boolean head, int status, int start,
-			int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.wiki.model.WikiPage> obc)
+	public static com.liferay.wiki.model.WikiPageSoap[] getPages(long groupId,
+		long nodeId, boolean head, int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.wiki.model.WikiPage> obc)
 		throws RemoteException {
-
 		try {
-			java.util.List<com.liferay.wiki.model.WikiPage> returnValue =
-				WikiPageServiceUtil.getPages(
-					groupId, nodeId, head, status, start, end, obc);
+			java.util.List<com.liferay.wiki.model.WikiPage> returnValue = WikiPageServiceUtil.getPages(groupId,
+					nodeId, head, status, start, end, obc);
 
-			return com.liferay.wiki.model.WikiPageSoap.toSoapModels(
-				returnValue);
+			return com.liferay.wiki.model.WikiPageSoap.toSoapModels(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.wiki.model.WikiPageSoap[] getPages(
-			long groupId, long nodeId, boolean head, long userId,
-			boolean includeOwner, int status, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.wiki.model.WikiPage> obc)
+	public static com.liferay.wiki.model.WikiPageSoap[] getPages(long groupId,
+		long nodeId, boolean head, long userId, boolean includeOwner,
+		int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.wiki.model.WikiPage> obc)
 		throws RemoteException {
-
 		try {
-			java.util.List<com.liferay.wiki.model.WikiPage> returnValue =
-				WikiPageServiceUtil.getPages(
-					groupId, nodeId, head, userId, includeOwner, status, start,
-					end, obc);
+			java.util.List<com.liferay.wiki.model.WikiPage> returnValue = WikiPageServiceUtil.getPages(groupId,
+					nodeId, head, userId, includeOwner, status, start, end, obc);
 
-			return com.liferay.wiki.model.WikiPageSoap.toSoapModels(
-				returnValue);
+			return com.liferay.wiki.model.WikiPageSoap.toSoapModels(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.wiki.model.WikiPageSoap[] getPages(
-			long groupId, long userId, long nodeId, int status, int start,
-			int end)
+	public static com.liferay.wiki.model.WikiPageSoap[] getPages(long groupId,
+		long userId, long nodeId, int status, int start, int end)
 		throws RemoteException {
-
 		try {
-			java.util.List<com.liferay.wiki.model.WikiPage> returnValue =
-				WikiPageServiceUtil.getPages(
-					groupId, userId, nodeId, status, start, end);
+			java.util.List<com.liferay.wiki.model.WikiPage> returnValue = WikiPageServiceUtil.getPages(groupId,
+					userId, nodeId, status, start, end);
 
-			return com.liferay.wiki.model.WikiPageSoap.toSoapModels(
-				returnValue);
+			return com.liferay.wiki.model.WikiPageSoap.toSoapModels(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static int getPagesCount(long groupId, long nodeId, boolean head)
 		throws RemoteException {
-
 		try {
-			int returnValue = WikiPageServiceUtil.getPagesCount(
-				groupId, nodeId, head);
+			int returnValue = WikiPageServiceUtil.getPagesCount(groupId,
+					nodeId, head);
 
 			return returnValue;
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static int getPagesCount(
-			long groupId, long nodeId, boolean head, long userId,
-			boolean includeOwner, int status)
+	public static int getPagesCount(long groupId, long nodeId, boolean head,
+		long userId, boolean includeOwner, int status)
 		throws RemoteException {
-
 		try {
-			int returnValue = WikiPageServiceUtil.getPagesCount(
-				groupId, nodeId, head, userId, includeOwner, status);
+			int returnValue = WikiPageServiceUtil.getPagesCount(groupId,
+					nodeId, head, userId, includeOwner, status);
 
 			return returnValue;
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static int getPagesCount(
-			long groupId, long userId, long nodeId, int status)
-		throws RemoteException {
-
+	public static int getPagesCount(long groupId, long userId, long nodeId,
+		int status) throws RemoteException {
 		try {
-			int returnValue = WikiPageServiceUtil.getPagesCount(
-				groupId, userId, nodeId, status);
+			int returnValue = WikiPageServiceUtil.getPagesCount(groupId,
+					userId, nodeId, status);
 
 			return returnValue;
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static String getPagesRSS(
-			long nodeId, String title, int max, String type, double version,
-			String displayStyle, String feedURL, String entryURL,
-			String attachmentURLPrefix, String locale)
-		throws RemoteException {
-
+	public static java.lang.String getPagesRSS(long nodeId,
+		java.lang.String title, int max, java.lang.String type, double version,
+		java.lang.String displayStyle, java.lang.String feedURL,
+		java.lang.String entryURL, java.lang.String attachmentURLPrefix,
+		String locale) throws RemoteException {
 		try {
-			String returnValue = WikiPageServiceUtil.getPagesRSS(
-				nodeId, title, max, type, version, displayStyle, feedURL,
-				entryURL, attachmentURLPrefix,
-				LocaleUtil.fromLanguageId(locale));
+			java.lang.String returnValue = WikiPageServiceUtil.getPagesRSS(nodeId,
+					title, max, type, version, displayStyle, feedURL, entryURL,
+					attachmentURLPrefix, LocaleUtil.fromLanguageId(locale));
 
 			return returnValue;
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static com.liferay.wiki.model.WikiPageSoap[] getRecentChanges(
-			long groupId, long nodeId, int start, int end)
+		long groupId, long nodeId, int start, int end)
 		throws RemoteException {
-
 		try {
-			java.util.List<com.liferay.wiki.model.WikiPage> returnValue =
-				WikiPageServiceUtil.getRecentChanges(
-					groupId, nodeId, start, end);
+			java.util.List<com.liferay.wiki.model.WikiPage> returnValue = WikiPageServiceUtil.getRecentChanges(groupId,
+					nodeId, start, end);
 
-			return com.liferay.wiki.model.WikiPageSoap.toSoapModels(
-				returnValue);
+			return com.liferay.wiki.model.WikiPageSoap.toSoapModels(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static int getRecentChangesCount(long groupId, long nodeId)
 		throws RemoteException {
-
 		try {
-			int returnValue = WikiPageServiceUtil.getRecentChangesCount(
-				groupId, nodeId);
+			int returnValue = WikiPageServiceUtil.getRecentChangesCount(groupId,
+					nodeId);
 
 			return returnValue;
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static String[] getTempFileNames(long nodeId, String folderName)
-		throws RemoteException {
-
+	public static java.lang.String[] getTempFileNames(long nodeId,
+		java.lang.String folderName) throws RemoteException {
 		try {
-			String[] returnValue = WikiPageServiceUtil.getTempFileNames(
-				nodeId, folderName);
+			java.lang.String[] returnValue = WikiPageServiceUtil.getTempFileNames(nodeId,
+					folderName);
 
 			return returnValue;
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.portal.kernel.repository.model.FileEntrySoap
-			movePageAttachmentToTrash(
-				long nodeId, String title, String fileName)
+	public static com.liferay.portal.kernel.repository.model.FileEntrySoap movePageAttachmentToTrash(
+		long nodeId, java.lang.String title, java.lang.String fileName)
 		throws RemoteException {
-
 		try {
-			com.liferay.portal.kernel.repository.model.FileEntry returnValue =
-				WikiPageServiceUtil.movePageAttachmentToTrash(
-					nodeId, title, fileName);
+			com.liferay.portal.kernel.repository.model.FileEntry returnValue = WikiPageServiceUtil.movePageAttachmentToTrash(nodeId,
+					title, fileName);
 
-			return com.liferay.portal.kernel.repository.model.FileEntrySoap.
-				toSoapModel(returnValue);
+			return com.liferay.portal.kernel.repository.model.FileEntrySoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static com.liferay.wiki.model.WikiPageSoap movePageToTrash(
-			long nodeId, String title)
-		throws RemoteException {
-
+		long nodeId, java.lang.String title) throws RemoteException {
 		try {
-			com.liferay.wiki.model.WikiPage returnValue =
-				WikiPageServiceUtil.movePageToTrash(nodeId, title);
+			com.liferay.wiki.model.WikiPage returnValue = WikiPageServiceUtil.movePageToTrash(nodeId,
+					title);
 
 			return com.liferay.wiki.model.WikiPageSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static com.liferay.wiki.model.WikiPageSoap movePageToTrash(
-			long nodeId, String title, double version)
+		long nodeId, java.lang.String title, double version)
 		throws RemoteException {
-
 		try {
-			com.liferay.wiki.model.WikiPage returnValue =
-				WikiPageServiceUtil.movePageToTrash(nodeId, title, version);
+			com.liferay.wiki.model.WikiPage returnValue = WikiPageServiceUtil.movePageToTrash(nodeId,
+					title, version);
 
 			return com.liferay.wiki.model.WikiPageSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static void renamePage(
-			long nodeId, String title, String newTitle,
-			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static void renamePage(long nodeId, java.lang.String title,
+		java.lang.String newTitle,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
-
 		try {
-			WikiPageServiceUtil.renamePage(
-				nodeId, title, newTitle, serviceContext);
+			WikiPageServiceUtil.renamePage(nodeId, title, newTitle,
+				serviceContext);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static void restorePageAttachmentFromTrash(
-			long nodeId, String title, String fileName)
+	public static void restorePageAttachmentFromTrash(long nodeId,
+		java.lang.String title, java.lang.String fileName)
 		throws RemoteException {
-
 		try {
-			WikiPageServiceUtil.restorePageAttachmentFromTrash(
-				nodeId, title, fileName);
+			WikiPageServiceUtil.restorePageAttachmentFromTrash(nodeId, title,
+				fileName);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static void restorePageFromTrash(long resourcePrimKey)
 		throws RemoteException {
-
 		try {
 			WikiPageServiceUtil.restorePageFromTrash(resourcePrimKey);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.wiki.model.WikiPageSoap revertPage(
-			long nodeId, String title, double version,
-			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static com.liferay.wiki.model.WikiPageSoap revertPage(long nodeId,
+		java.lang.String title, double version,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
-
 		try {
-			com.liferay.wiki.model.WikiPage returnValue =
-				WikiPageServiceUtil.revertPage(
-					nodeId, title, version, serviceContext);
+			com.liferay.wiki.model.WikiPage returnValue = WikiPageServiceUtil.revertPage(nodeId,
+					title, version, serviceContext);
 
 			return com.liferay.wiki.model.WikiPageSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static void subscribePage(long nodeId, String title)
+	public static void subscribePage(long nodeId, java.lang.String title)
 		throws RemoteException {
-
 		try {
 			WikiPageServiceUtil.subscribePage(nodeId, title);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static void unsubscribePage(long nodeId, String title)
+	public static void unsubscribePage(long nodeId, java.lang.String title)
 		throws RemoteException {
-
 		try {
 			WikiPageServiceUtil.unsubscribePage(nodeId, title);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.wiki.model.WikiPageSoap updatePage(
-			long nodeId, String title, double version, String content,
-			String summary, boolean minorEdit, String format,
-			String parentTitle, String redirectTitle,
-			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static com.liferay.wiki.model.WikiPageSoap updatePage(long nodeId,
+		java.lang.String title, double version, java.lang.String content,
+		java.lang.String summary, boolean minorEdit, java.lang.String format,
+		java.lang.String parentTitle, java.lang.String redirectTitle,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
-
 		try {
-			com.liferay.wiki.model.WikiPage returnValue =
-				WikiPageServiceUtil.updatePage(
-					nodeId, title, version, content, summary, minorEdit, format,
+			com.liferay.wiki.model.WikiPage returnValue = WikiPageServiceUtil.updatePage(nodeId,
+					title, version, content, summary, minorEdit, format,
 					parentTitle, redirectTitle, serviceContext);
 
 			return com.liferay.wiki.model.WikiPageSoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(WikiPageServiceSoap.class);
-
 }

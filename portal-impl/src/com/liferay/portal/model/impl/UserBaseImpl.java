@@ -14,6 +14,8 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 
@@ -29,12 +31,12 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
  * @see User
  * @generated
  */
+@ProviderType
 public abstract class UserBaseImpl extends UserModelImpl implements User {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a user model instance should use the <code>User</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a user model instance should use the {@link User} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -45,5 +47,4 @@ public abstract class UserBaseImpl extends UserModelImpl implements User {
 			UserLocalServiceUtil.updateUser(this);
 		}
 	}
-
 }

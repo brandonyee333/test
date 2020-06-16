@@ -14,6 +14,8 @@
 
 package com.liferay.powwow.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.powwow.model.PowwowServer;
 import com.liferay.powwow.service.PowwowServerLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.powwow.service.PowwowServerLocalServiceUtil;
  * @see PowwowServer
  * @generated
  */
-public abstract class PowwowServerBaseImpl
-	extends PowwowServerModelImpl implements PowwowServer {
-
+@ProviderType
+public abstract class PowwowServerBaseImpl extends PowwowServerModelImpl
+	implements PowwowServer {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a powwow server model instance should use the <code>PowwowServer</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a powwow server model instance should use the {@link PowwowServer} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class PowwowServerBaseImpl
 			PowwowServerLocalServiceUtil.updatePowwowServer(this);
 		}
 	}
-
 }

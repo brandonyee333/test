@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.calendar.model.CalendarNotificationTemplate;
 import com.liferay.calendar.notification.NotificationTemplateType;
 import com.liferay.calendar.notification.NotificationType;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -36,47 +37,40 @@ import com.liferay.portal.kernel.transaction.Transactional;
  *
  * @author Eduardo Lundgren
  * @see CalendarNotificationTemplateServiceUtil
+ * @see com.liferay.calendar.service.base.CalendarNotificationTemplateServiceBaseImpl
+ * @see com.liferay.calendar.service.impl.CalendarNotificationTemplateServiceImpl
  * @generated
  */
 @AccessControlled
 @JSONWebService
-@OSGiBeanProperties(
-	property = {
-		"json.web.service.context.name=calendar",
-		"json.web.service.context.path=CalendarNotificationTemplate"
-	},
-	service = CalendarNotificationTemplateService.class
-)
+@OSGiBeanProperties(property =  {
+	"json.web.service.context.name=calendar", "json.web.service.context.path=CalendarNotificationTemplate"}, service = CalendarNotificationTemplateService.class)
 @ProviderType
-@Transactional(
-	isolation = Isolation.PORTAL,
-	rollbackFor = {PortalException.class, SystemException.class}
-)
+@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
+	PortalException.class, SystemException.class})
 public interface CalendarNotificationTemplateService extends BaseService {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link CalendarNotificationTemplateServiceUtil} to access the calendar notification template remote service. Add custom service methods to <code>com.liferay.calendar.service.impl.CalendarNotificationTemplateServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link CalendarNotificationTemplateServiceUtil} to access the calendar notification template remote service. Add custom service methods to {@link com.liferay.calendar.service.impl.CalendarNotificationTemplateServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public CalendarNotificationTemplate addCalendarNotificationTemplate(
-			long calendarId, NotificationType notificationType,
-			String notificationTypeSettings,
-			NotificationTemplateType notificationTemplateType, String subject,
-			String body, ServiceContext serviceContext)
+		long calendarId, NotificationType notificationType,
+		java.lang.String notificationTypeSettings,
+		NotificationTemplateType notificationTemplateType,
+		java.lang.String subject, java.lang.String body,
+		ServiceContext serviceContext) throws PortalException;
+
+	public CalendarNotificationTemplate updateCalendarNotificationTemplate(
+		long calendarNotificationTemplateId,
+		java.lang.String notificationTypeSettings, java.lang.String subject,
+		java.lang.String body, ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
-	public String getOSGiServiceIdentifier();
-
-	public CalendarNotificationTemplate updateCalendarNotificationTemplate(
-			long calendarNotificationTemplateId,
-			String notificationTypeSettings, String subject, String body,
-			ServiceContext serviceContext)
-		throws PortalException;
-
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
 }

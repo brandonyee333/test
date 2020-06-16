@@ -14,6 +14,8 @@
 
 package com.liferay.portal.workflow.kaleo.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.workflow.kaleo.model.KaleoInstance;
 import com.liferay.portal.workflow.kaleo.service.KaleoInstanceLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.portal.workflow.kaleo.service.KaleoInstanceLocalServiceUtil;
  * @see KaleoInstance
  * @generated
  */
-public abstract class KaleoInstanceBaseImpl
-	extends KaleoInstanceModelImpl implements KaleoInstance {
-
+@ProviderType
+public abstract class KaleoInstanceBaseImpl extends KaleoInstanceModelImpl
+	implements KaleoInstance {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a kaleo instance model instance should use the <code>KaleoInstance</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a kaleo instance model instance should use the {@link KaleoInstance} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class KaleoInstanceBaseImpl
 			KaleoInstanceLocalServiceUtil.updateKaleoInstance(this);
 		}
 	}
-
 }

@@ -14,9 +14,13 @@
 
 package com.liferay.portlet.social.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.social.kernel.model.SocialActivitySet;
 
 import java.io.Externalizable;
@@ -28,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing SocialActivitySet in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see SocialActivitySet
  * @generated
  */
-public class SocialActivitySetCacheModel
-	implements CacheModel<SocialActivitySet>, Externalizable {
-
+@ProviderType
+public class SocialActivitySetCacheModel implements CacheModel<SocialActivitySet>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -43,8 +48,7 @@ public class SocialActivitySetCacheModel
 			return false;
 		}
 
-		SocialActivitySetCacheModel socialActivitySetCacheModel =
-			(SocialActivitySetCacheModel)obj;
+		SocialActivitySetCacheModel socialActivitySetCacheModel = (SocialActivitySetCacheModel)obj;
 
 		if (activitySetId == socialActivitySetCacheModel.activitySetId) {
 			return true;
@@ -91,8 +95,7 @@ public class SocialActivitySetCacheModel
 
 	@Override
 	public SocialActivitySet toEntityModel() {
-		SocialActivitySetImpl socialActivitySetImpl =
-			new SocialActivitySetImpl();
+		SocialActivitySetImpl socialActivitySetImpl = new SocialActivitySetImpl();
 
 		socialActivitySetImpl.setActivitySetId(activitySetId);
 		socialActivitySetImpl.setGroupId(groupId);
@@ -105,7 +108,7 @@ public class SocialActivitySetCacheModel
 		socialActivitySetImpl.setType(type);
 
 		if (extraData == null) {
-			socialActivitySetImpl.setExtraData("");
+			socialActivitySetImpl.setExtraData(StringPool.BLANK);
 		}
 		else {
 			socialActivitySetImpl.setExtraData(extraData);
@@ -143,7 +146,8 @@ public class SocialActivitySetCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(activitySetId);
 
 		objectOutput.writeLong(groupId);
@@ -163,7 +167,7 @@ public class SocialActivitySetCacheModel
 		objectOutput.writeInt(type);
 
 		if (extraData == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(extraData);
@@ -183,5 +187,4 @@ public class SocialActivitySetCacheModel
 	public int type;
 	public String extraData;
 	public int activityCount;
-
 }

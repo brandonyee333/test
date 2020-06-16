@@ -14,23 +14,22 @@
 
 package com.liferay.shopping.service.persistence;
 
+import aQute.bnd.annotation.ProviderType;
+
+import com.liferay.osgi.util.ServiceTrackerFactory;
+
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
+
 import com.liferay.shopping.model.ShoppingOrder;
 
-import java.io.Serializable;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
 import org.osgi.util.tracker.ServiceTracker;
 
+import java.util.List;
+
 /**
- * The persistence utility for the shopping order service. This utility wraps <code>com.liferay.shopping.service.persistence.impl.ShoppingOrderPersistenceImpl</code> and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
+ * The persistence utility for the shopping order service. This utility wraps {@link com.liferay.shopping.service.persistence.impl.ShoppingOrderPersistenceImpl} and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
  *
  * <p>
  * Caching information and settings can be found in <code>portal.properties</code>
@@ -38,10 +37,11 @@ import org.osgi.util.tracker.ServiceTracker;
  *
  * @author Brian Wing Shun Chan
  * @see ShoppingOrderPersistence
+ * @see com.liferay.shopping.service.persistence.impl.ShoppingOrderPersistenceImpl
  * @generated
  */
+@ProviderType
 public class ShoppingOrderUtil {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -70,20 +70,10 @@ public class ShoppingOrderUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#fetchByPrimaryKeys(Set)
-	 */
-	public static Map<Serializable, ShoppingOrder> fetchByPrimaryKeys(
-		Set<Serializable> primaryKeys) {
-
-		return getPersistence().fetchByPrimaryKeys(primaryKeys);
-	}
-
-	/**
 	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<ShoppingOrder> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
-
 		return getPersistence().findWithDynamicQuery(dynamicQuery);
 	}
 
@@ -92,7 +82,6 @@ public class ShoppingOrderUtil {
 	 */
 	public static List<ShoppingOrder> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
-
 		return getPersistence().findWithDynamicQuery(dynamicQuery, start, end);
 	}
 
@@ -102,9 +91,9 @@ public class ShoppingOrderUtil {
 	public static List<ShoppingOrder> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
 		OrderByComparator<ShoppingOrder> orderByComparator) {
-
-		return getPersistence().findWithDynamicQuery(
-			dynamicQuery, start, end, orderByComparator);
+		return getPersistence()
+				   .findWithDynamicQuery(dynamicQuery, start, end,
+			orderByComparator);
 	}
 
 	/**
@@ -117,708 +106,679 @@ public class ShoppingOrderUtil {
 	/**
 	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
-	public static ShoppingOrder update(
-		ShoppingOrder shoppingOrder, ServiceContext serviceContext) {
-
+	public static ShoppingOrder update(ShoppingOrder shoppingOrder,
+		ServiceContext serviceContext) {
 		return getPersistence().update(shoppingOrder, serviceContext);
 	}
 
 	/**
-	 * Returns all the shopping orders where groupId = &#63;.
-	 *
-	 * @param groupId the group ID
-	 * @return the matching shopping orders
-	 */
+	* Returns all the shopping orders where groupId = &#63;.
+	*
+	* @param groupId the group ID
+	* @return the matching shopping orders
+	*/
 	public static List<ShoppingOrder> findByGroupId(long groupId) {
 		return getPersistence().findByGroupId(groupId);
 	}
 
 	/**
-	 * Returns a range of all the shopping orders where groupId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ShoppingOrderModelImpl</code>.
-	 * </p>
-	 *
-	 * @param groupId the group ID
-	 * @param start the lower bound of the range of shopping orders
-	 * @param end the upper bound of the range of shopping orders (not inclusive)
-	 * @return the range of matching shopping orders
-	 */
-	public static List<ShoppingOrder> findByGroupId(
-		long groupId, int start, int end) {
-
+	* Returns a range of all the shopping orders where groupId = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingOrderModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param start the lower bound of the range of shopping orders
+	* @param end the upper bound of the range of shopping orders (not inclusive)
+	* @return the range of matching shopping orders
+	*/
+	public static List<ShoppingOrder> findByGroupId(long groupId, int start,
+		int end) {
 		return getPersistence().findByGroupId(groupId, start, end);
 	}
 
 	/**
-	 * Returns an ordered range of all the shopping orders where groupId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ShoppingOrderModelImpl</code>.
-	 * </p>
-	 *
-	 * @param groupId the group ID
-	 * @param start the lower bound of the range of shopping orders
-	 * @param end the upper bound of the range of shopping orders (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching shopping orders
-	 */
-	public static List<ShoppingOrder> findByGroupId(
-		long groupId, int start, int end,
-		OrderByComparator<ShoppingOrder> orderByComparator) {
-
-		return getPersistence().findByGroupId(
-			groupId, start, end, orderByComparator);
+	* Returns an ordered range of all the shopping orders where groupId = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingOrderModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param start the lower bound of the range of shopping orders
+	* @param end the upper bound of the range of shopping orders (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching shopping orders
+	*/
+	public static List<ShoppingOrder> findByGroupId(long groupId, int start,
+		int end, OrderByComparator<ShoppingOrder> orderByComparator) {
+		return getPersistence()
+				   .findByGroupId(groupId, start, end, orderByComparator);
 	}
 
 	/**
-	 * Returns an ordered range of all the shopping orders where groupId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ShoppingOrderModelImpl</code>.
-	 * </p>
-	 *
-	 * @param groupId the group ID
-	 * @param start the lower bound of the range of shopping orders
-	 * @param end the upper bound of the range of shopping orders (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the ordered range of matching shopping orders
-	 */
-	public static List<ShoppingOrder> findByGroupId(
-		long groupId, int start, int end,
-		OrderByComparator<ShoppingOrder> orderByComparator,
-		boolean useFinderCache) {
-
-		return getPersistence().findByGroupId(
-			groupId, start, end, orderByComparator, useFinderCache);
+	* Returns an ordered range of all the shopping orders where groupId = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingOrderModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param start the lower bound of the range of shopping orders
+	* @param end the upper bound of the range of shopping orders (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching shopping orders
+	*/
+	public static List<ShoppingOrder> findByGroupId(long groupId, int start,
+		int end, OrderByComparator<ShoppingOrder> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByGroupId(groupId, start, end, orderByComparator,
+			retrieveFromCache);
 	}
 
 	/**
-	 * Returns the first shopping order in the ordered set where groupId = &#63;.
-	 *
-	 * @param groupId the group ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching shopping order
-	 * @throws NoSuchOrderException if a matching shopping order could not be found
-	 */
-	public static ShoppingOrder findByGroupId_First(
-			long groupId, OrderByComparator<ShoppingOrder> orderByComparator)
+	* Returns the first shopping order in the ordered set where groupId = &#63;.
+	*
+	* @param groupId the group ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching shopping order
+	* @throws NoSuchOrderException if a matching shopping order could not be found
+	*/
+	public static ShoppingOrder findByGroupId_First(long groupId,
+		OrderByComparator<ShoppingOrder> orderByComparator)
 		throws com.liferay.shopping.exception.NoSuchOrderException {
-
 		return getPersistence().findByGroupId_First(groupId, orderByComparator);
 	}
 
 	/**
-	 * Returns the first shopping order in the ordered set where groupId = &#63;.
-	 *
-	 * @param groupId the group ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching shopping order, or <code>null</code> if a matching shopping order could not be found
-	 */
-	public static ShoppingOrder fetchByGroupId_First(
-		long groupId, OrderByComparator<ShoppingOrder> orderByComparator) {
-
-		return getPersistence().fetchByGroupId_First(
-			groupId, orderByComparator);
+	* Returns the first shopping order in the ordered set where groupId = &#63;.
+	*
+	* @param groupId the group ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching shopping order, or <code>null</code> if a matching shopping order could not be found
+	*/
+	public static ShoppingOrder fetchByGroupId_First(long groupId,
+		OrderByComparator<ShoppingOrder> orderByComparator) {
+		return getPersistence().fetchByGroupId_First(groupId, orderByComparator);
 	}
 
 	/**
-	 * Returns the last shopping order in the ordered set where groupId = &#63;.
-	 *
-	 * @param groupId the group ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching shopping order
-	 * @throws NoSuchOrderException if a matching shopping order could not be found
-	 */
-	public static ShoppingOrder findByGroupId_Last(
-			long groupId, OrderByComparator<ShoppingOrder> orderByComparator)
+	* Returns the last shopping order in the ordered set where groupId = &#63;.
+	*
+	* @param groupId the group ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching shopping order
+	* @throws NoSuchOrderException if a matching shopping order could not be found
+	*/
+	public static ShoppingOrder findByGroupId_Last(long groupId,
+		OrderByComparator<ShoppingOrder> orderByComparator)
 		throws com.liferay.shopping.exception.NoSuchOrderException {
-
 		return getPersistence().findByGroupId_Last(groupId, orderByComparator);
 	}
 
 	/**
-	 * Returns the last shopping order in the ordered set where groupId = &#63;.
-	 *
-	 * @param groupId the group ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching shopping order, or <code>null</code> if a matching shopping order could not be found
-	 */
-	public static ShoppingOrder fetchByGroupId_Last(
-		long groupId, OrderByComparator<ShoppingOrder> orderByComparator) {
-
+	* Returns the last shopping order in the ordered set where groupId = &#63;.
+	*
+	* @param groupId the group ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching shopping order, or <code>null</code> if a matching shopping order could not be found
+	*/
+	public static ShoppingOrder fetchByGroupId_Last(long groupId,
+		OrderByComparator<ShoppingOrder> orderByComparator) {
 		return getPersistence().fetchByGroupId_Last(groupId, orderByComparator);
 	}
 
 	/**
-	 * Returns the shopping orders before and after the current shopping order in the ordered set where groupId = &#63;.
-	 *
-	 * @param orderId the primary key of the current shopping order
-	 * @param groupId the group ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next shopping order
-	 * @throws NoSuchOrderException if a shopping order with the primary key could not be found
-	 */
-	public static ShoppingOrder[] findByGroupId_PrevAndNext(
-			long orderId, long groupId,
-			OrderByComparator<ShoppingOrder> orderByComparator)
+	* Returns the shopping orders before and after the current shopping order in the ordered set where groupId = &#63;.
+	*
+	* @param orderId the primary key of the current shopping order
+	* @param groupId the group ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next shopping order
+	* @throws NoSuchOrderException if a shopping order with the primary key could not be found
+	*/
+	public static ShoppingOrder[] findByGroupId_PrevAndNext(long orderId,
+		long groupId, OrderByComparator<ShoppingOrder> orderByComparator)
 		throws com.liferay.shopping.exception.NoSuchOrderException {
-
-		return getPersistence().findByGroupId_PrevAndNext(
-			orderId, groupId, orderByComparator);
+		return getPersistence()
+				   .findByGroupId_PrevAndNext(orderId, groupId,
+			orderByComparator);
 	}
 
 	/**
-	 * Returns all the shopping orders that the user has permission to view where groupId = &#63;.
-	 *
-	 * @param groupId the group ID
-	 * @return the matching shopping orders that the user has permission to view
-	 */
+	* Returns all the shopping orders that the user has permission to view where groupId = &#63;.
+	*
+	* @param groupId the group ID
+	* @return the matching shopping orders that the user has permission to view
+	*/
 	public static List<ShoppingOrder> filterFindByGroupId(long groupId) {
 		return getPersistence().filterFindByGroupId(groupId);
 	}
 
 	/**
-	 * Returns a range of all the shopping orders that the user has permission to view where groupId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ShoppingOrderModelImpl</code>.
-	 * </p>
-	 *
-	 * @param groupId the group ID
-	 * @param start the lower bound of the range of shopping orders
-	 * @param end the upper bound of the range of shopping orders (not inclusive)
-	 * @return the range of matching shopping orders that the user has permission to view
-	 */
-	public static List<ShoppingOrder> filterFindByGroupId(
-		long groupId, int start, int end) {
-
+	* Returns a range of all the shopping orders that the user has permission to view where groupId = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingOrderModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param start the lower bound of the range of shopping orders
+	* @param end the upper bound of the range of shopping orders (not inclusive)
+	* @return the range of matching shopping orders that the user has permission to view
+	*/
+	public static List<ShoppingOrder> filterFindByGroupId(long groupId,
+		int start, int end) {
 		return getPersistence().filterFindByGroupId(groupId, start, end);
 	}
 
 	/**
-	 * Returns an ordered range of all the shopping orders that the user has permissions to view where groupId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ShoppingOrderModelImpl</code>.
-	 * </p>
-	 *
-	 * @param groupId the group ID
-	 * @param start the lower bound of the range of shopping orders
-	 * @param end the upper bound of the range of shopping orders (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching shopping orders that the user has permission to view
-	 */
-	public static List<ShoppingOrder> filterFindByGroupId(
-		long groupId, int start, int end,
-		OrderByComparator<ShoppingOrder> orderByComparator) {
-
-		return getPersistence().filterFindByGroupId(
-			groupId, start, end, orderByComparator);
+	* Returns an ordered range of all the shopping orders that the user has permissions to view where groupId = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingOrderModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param start the lower bound of the range of shopping orders
+	* @param end the upper bound of the range of shopping orders (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching shopping orders that the user has permission to view
+	*/
+	public static List<ShoppingOrder> filterFindByGroupId(long groupId,
+		int start, int end, OrderByComparator<ShoppingOrder> orderByComparator) {
+		return getPersistence()
+				   .filterFindByGroupId(groupId, start, end, orderByComparator);
 	}
 
 	/**
-	 * Returns the shopping orders before and after the current shopping order in the ordered set of shopping orders that the user has permission to view where groupId = &#63;.
-	 *
-	 * @param orderId the primary key of the current shopping order
-	 * @param groupId the group ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next shopping order
-	 * @throws NoSuchOrderException if a shopping order with the primary key could not be found
-	 */
+	* Returns the shopping orders before and after the current shopping order in the ordered set of shopping orders that the user has permission to view where groupId = &#63;.
+	*
+	* @param orderId the primary key of the current shopping order
+	* @param groupId the group ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next shopping order
+	* @throws NoSuchOrderException if a shopping order with the primary key could not be found
+	*/
 	public static ShoppingOrder[] filterFindByGroupId_PrevAndNext(
-			long orderId, long groupId,
-			OrderByComparator<ShoppingOrder> orderByComparator)
+		long orderId, long groupId,
+		OrderByComparator<ShoppingOrder> orderByComparator)
 		throws com.liferay.shopping.exception.NoSuchOrderException {
-
-		return getPersistence().filterFindByGroupId_PrevAndNext(
-			orderId, groupId, orderByComparator);
+		return getPersistence()
+				   .filterFindByGroupId_PrevAndNext(orderId, groupId,
+			orderByComparator);
 	}
 
 	/**
-	 * Removes all the shopping orders where groupId = &#63; from the database.
-	 *
-	 * @param groupId the group ID
-	 */
+	* Removes all the shopping orders where groupId = &#63; from the database.
+	*
+	* @param groupId the group ID
+	*/
 	public static void removeByGroupId(long groupId) {
 		getPersistence().removeByGroupId(groupId);
 	}
 
 	/**
-	 * Returns the number of shopping orders where groupId = &#63;.
-	 *
-	 * @param groupId the group ID
-	 * @return the number of matching shopping orders
-	 */
+	* Returns the number of shopping orders where groupId = &#63;.
+	*
+	* @param groupId the group ID
+	* @return the number of matching shopping orders
+	*/
 	public static int countByGroupId(long groupId) {
 		return getPersistence().countByGroupId(groupId);
 	}
 
 	/**
-	 * Returns the number of shopping orders that the user has permission to view where groupId = &#63;.
-	 *
-	 * @param groupId the group ID
-	 * @return the number of matching shopping orders that the user has permission to view
-	 */
+	* Returns the number of shopping orders that the user has permission to view where groupId = &#63;.
+	*
+	* @param groupId the group ID
+	* @return the number of matching shopping orders that the user has permission to view
+	*/
 	public static int filterCountByGroupId(long groupId) {
 		return getPersistence().filterCountByGroupId(groupId);
 	}
 
 	/**
-	 * Returns the shopping order where number = &#63; or throws a <code>NoSuchOrderException</code> if it could not be found.
-	 *
-	 * @param number the number
-	 * @return the matching shopping order
-	 * @throws NoSuchOrderException if a matching shopping order could not be found
-	 */
-	public static ShoppingOrder findByNumber(String number)
+	* Returns the shopping order where number = &#63; or throws a {@link NoSuchOrderException} if it could not be found.
+	*
+	* @param number the number
+	* @return the matching shopping order
+	* @throws NoSuchOrderException if a matching shopping order could not be found
+	*/
+	public static ShoppingOrder findByNumber(java.lang.String number)
 		throws com.liferay.shopping.exception.NoSuchOrderException {
-
 		return getPersistence().findByNumber(number);
 	}
 
 	/**
-	 * Returns the shopping order where number = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-	 *
-	 * @param number the number
-	 * @return the matching shopping order, or <code>null</code> if a matching shopping order could not be found
-	 */
-	public static ShoppingOrder fetchByNumber(String number) {
+	* Returns the shopping order where number = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	*
+	* @param number the number
+	* @return the matching shopping order, or <code>null</code> if a matching shopping order could not be found
+	*/
+	public static ShoppingOrder fetchByNumber(java.lang.String number) {
 		return getPersistence().fetchByNumber(number);
 	}
 
 	/**
-	 * Returns the shopping order where number = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-	 *
-	 * @param number the number
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the matching shopping order, or <code>null</code> if a matching shopping order could not be found
-	 */
-	public static ShoppingOrder fetchByNumber(
-		String number, boolean useFinderCache) {
-
-		return getPersistence().fetchByNumber(number, useFinderCache);
+	* Returns the shopping order where number = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	*
+	* @param number the number
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the matching shopping order, or <code>null</code> if a matching shopping order could not be found
+	*/
+	public static ShoppingOrder fetchByNumber(java.lang.String number,
+		boolean retrieveFromCache) {
+		return getPersistence().fetchByNumber(number, retrieveFromCache);
 	}
 
 	/**
-	 * Removes the shopping order where number = &#63; from the database.
-	 *
-	 * @param number the number
-	 * @return the shopping order that was removed
-	 */
-	public static ShoppingOrder removeByNumber(String number)
+	* Removes the shopping order where number = &#63; from the database.
+	*
+	* @param number the number
+	* @return the shopping order that was removed
+	*/
+	public static ShoppingOrder removeByNumber(java.lang.String number)
 		throws com.liferay.shopping.exception.NoSuchOrderException {
-
 		return getPersistence().removeByNumber(number);
 	}
 
 	/**
-	 * Returns the number of shopping orders where number = &#63;.
-	 *
-	 * @param number the number
-	 * @return the number of matching shopping orders
-	 */
-	public static int countByNumber(String number) {
+	* Returns the number of shopping orders where number = &#63;.
+	*
+	* @param number the number
+	* @return the number of matching shopping orders
+	*/
+	public static int countByNumber(java.lang.String number) {
 		return getPersistence().countByNumber(number);
 	}
 
 	/**
-	 * Returns the shopping order where ppTxnId = &#63; or throws a <code>NoSuchOrderException</code> if it could not be found.
-	 *
-	 * @param ppTxnId the pp txn ID
-	 * @return the matching shopping order
-	 * @throws NoSuchOrderException if a matching shopping order could not be found
-	 */
-	public static ShoppingOrder findByPPTxnId(String ppTxnId)
+	* Returns the shopping order where ppTxnId = &#63; or throws a {@link NoSuchOrderException} if it could not be found.
+	*
+	* @param ppTxnId the pp txn ID
+	* @return the matching shopping order
+	* @throws NoSuchOrderException if a matching shopping order could not be found
+	*/
+	public static ShoppingOrder findByPPTxnId(java.lang.String ppTxnId)
 		throws com.liferay.shopping.exception.NoSuchOrderException {
-
 		return getPersistence().findByPPTxnId(ppTxnId);
 	}
 
 	/**
-	 * Returns the shopping order where ppTxnId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-	 *
-	 * @param ppTxnId the pp txn ID
-	 * @return the matching shopping order, or <code>null</code> if a matching shopping order could not be found
-	 */
-	public static ShoppingOrder fetchByPPTxnId(String ppTxnId) {
+	* Returns the shopping order where ppTxnId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	*
+	* @param ppTxnId the pp txn ID
+	* @return the matching shopping order, or <code>null</code> if a matching shopping order could not be found
+	*/
+	public static ShoppingOrder fetchByPPTxnId(java.lang.String ppTxnId) {
 		return getPersistence().fetchByPPTxnId(ppTxnId);
 	}
 
 	/**
-	 * Returns the shopping order where ppTxnId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-	 *
-	 * @param ppTxnId the pp txn ID
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the matching shopping order, or <code>null</code> if a matching shopping order could not be found
-	 */
-	public static ShoppingOrder fetchByPPTxnId(
-		String ppTxnId, boolean useFinderCache) {
-
-		return getPersistence().fetchByPPTxnId(ppTxnId, useFinderCache);
+	* Returns the shopping order where ppTxnId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	*
+	* @param ppTxnId the pp txn ID
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the matching shopping order, or <code>null</code> if a matching shopping order could not be found
+	*/
+	public static ShoppingOrder fetchByPPTxnId(java.lang.String ppTxnId,
+		boolean retrieveFromCache) {
+		return getPersistence().fetchByPPTxnId(ppTxnId, retrieveFromCache);
 	}
 
 	/**
-	 * Removes the shopping order where ppTxnId = &#63; from the database.
-	 *
-	 * @param ppTxnId the pp txn ID
-	 * @return the shopping order that was removed
-	 */
-	public static ShoppingOrder removeByPPTxnId(String ppTxnId)
+	* Removes the shopping order where ppTxnId = &#63; from the database.
+	*
+	* @param ppTxnId the pp txn ID
+	* @return the shopping order that was removed
+	*/
+	public static ShoppingOrder removeByPPTxnId(java.lang.String ppTxnId)
 		throws com.liferay.shopping.exception.NoSuchOrderException {
-
 		return getPersistence().removeByPPTxnId(ppTxnId);
 	}
 
 	/**
-	 * Returns the number of shopping orders where ppTxnId = &#63;.
-	 *
-	 * @param ppTxnId the pp txn ID
-	 * @return the number of matching shopping orders
-	 */
-	public static int countByPPTxnId(String ppTxnId) {
+	* Returns the number of shopping orders where ppTxnId = &#63;.
+	*
+	* @param ppTxnId the pp txn ID
+	* @return the number of matching shopping orders
+	*/
+	public static int countByPPTxnId(java.lang.String ppTxnId) {
 		return getPersistence().countByPPTxnId(ppTxnId);
 	}
 
 	/**
-	 * Returns all the shopping orders where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
-	 *
-	 * @param groupId the group ID
-	 * @param userId the user ID
-	 * @param ppPaymentStatus the pp payment status
-	 * @return the matching shopping orders
-	 */
-	public static List<ShoppingOrder> findByG_U_PPPS(
-		long groupId, long userId, String ppPaymentStatus) {
-
-		return getPersistence().findByG_U_PPPS(
-			groupId, userId, ppPaymentStatus);
+	* Returns all the shopping orders where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param ppPaymentStatus the pp payment status
+	* @return the matching shopping orders
+	*/
+	public static List<ShoppingOrder> findByG_U_PPPS(long groupId, long userId,
+		java.lang.String ppPaymentStatus) {
+		return getPersistence().findByG_U_PPPS(groupId, userId, ppPaymentStatus);
 	}
 
 	/**
-	 * Returns a range of all the shopping orders where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ShoppingOrderModelImpl</code>.
-	 * </p>
-	 *
-	 * @param groupId the group ID
-	 * @param userId the user ID
-	 * @param ppPaymentStatus the pp payment status
-	 * @param start the lower bound of the range of shopping orders
-	 * @param end the upper bound of the range of shopping orders (not inclusive)
-	 * @return the range of matching shopping orders
-	 */
-	public static List<ShoppingOrder> findByG_U_PPPS(
-		long groupId, long userId, String ppPaymentStatus, int start, int end) {
-
-		return getPersistence().findByG_U_PPPS(
-			groupId, userId, ppPaymentStatus, start, end);
+	* Returns a range of all the shopping orders where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingOrderModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param ppPaymentStatus the pp payment status
+	* @param start the lower bound of the range of shopping orders
+	* @param end the upper bound of the range of shopping orders (not inclusive)
+	* @return the range of matching shopping orders
+	*/
+	public static List<ShoppingOrder> findByG_U_PPPS(long groupId, long userId,
+		java.lang.String ppPaymentStatus, int start, int end) {
+		return getPersistence()
+				   .findByG_U_PPPS(groupId, userId, ppPaymentStatus, start, end);
 	}
 
 	/**
-	 * Returns an ordered range of all the shopping orders where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ShoppingOrderModelImpl</code>.
-	 * </p>
-	 *
-	 * @param groupId the group ID
-	 * @param userId the user ID
-	 * @param ppPaymentStatus the pp payment status
-	 * @param start the lower bound of the range of shopping orders
-	 * @param end the upper bound of the range of shopping orders (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching shopping orders
-	 */
-	public static List<ShoppingOrder> findByG_U_PPPS(
-		long groupId, long userId, String ppPaymentStatus, int start, int end,
+	* Returns an ordered range of all the shopping orders where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingOrderModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param ppPaymentStatus the pp payment status
+	* @param start the lower bound of the range of shopping orders
+	* @param end the upper bound of the range of shopping orders (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching shopping orders
+	*/
+	public static List<ShoppingOrder> findByG_U_PPPS(long groupId, long userId,
+		java.lang.String ppPaymentStatus, int start, int end,
 		OrderByComparator<ShoppingOrder> orderByComparator) {
-
-		return getPersistence().findByG_U_PPPS(
-			groupId, userId, ppPaymentStatus, start, end, orderByComparator);
+		return getPersistence()
+				   .findByG_U_PPPS(groupId, userId, ppPaymentStatus, start,
+			end, orderByComparator);
 	}
 
 	/**
-	 * Returns an ordered range of all the shopping orders where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ShoppingOrderModelImpl</code>.
-	 * </p>
-	 *
-	 * @param groupId the group ID
-	 * @param userId the user ID
-	 * @param ppPaymentStatus the pp payment status
-	 * @param start the lower bound of the range of shopping orders
-	 * @param end the upper bound of the range of shopping orders (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the ordered range of matching shopping orders
-	 */
-	public static List<ShoppingOrder> findByG_U_PPPS(
-		long groupId, long userId, String ppPaymentStatus, int start, int end,
+	* Returns an ordered range of all the shopping orders where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingOrderModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param ppPaymentStatus the pp payment status
+	* @param start the lower bound of the range of shopping orders
+	* @param end the upper bound of the range of shopping orders (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching shopping orders
+	*/
+	public static List<ShoppingOrder> findByG_U_PPPS(long groupId, long userId,
+		java.lang.String ppPaymentStatus, int start, int end,
 		OrderByComparator<ShoppingOrder> orderByComparator,
-		boolean useFinderCache) {
-
-		return getPersistence().findByG_U_PPPS(
-			groupId, userId, ppPaymentStatus, start, end, orderByComparator,
-			useFinderCache);
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_U_PPPS(groupId, userId, ppPaymentStatus, start,
+			end, orderByComparator, retrieveFromCache);
 	}
 
 	/**
-	 * Returns the first shopping order in the ordered set where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
-	 *
-	 * @param groupId the group ID
-	 * @param userId the user ID
-	 * @param ppPaymentStatus the pp payment status
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching shopping order
-	 * @throws NoSuchOrderException if a matching shopping order could not be found
-	 */
-	public static ShoppingOrder findByG_U_PPPS_First(
-			long groupId, long userId, String ppPaymentStatus,
-			OrderByComparator<ShoppingOrder> orderByComparator)
+	* Returns the first shopping order in the ordered set where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param ppPaymentStatus the pp payment status
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching shopping order
+	* @throws NoSuchOrderException if a matching shopping order could not be found
+	*/
+	public static ShoppingOrder findByG_U_PPPS_First(long groupId, long userId,
+		java.lang.String ppPaymentStatus,
+		OrderByComparator<ShoppingOrder> orderByComparator)
 		throws com.liferay.shopping.exception.NoSuchOrderException {
-
-		return getPersistence().findByG_U_PPPS_First(
-			groupId, userId, ppPaymentStatus, orderByComparator);
+		return getPersistence()
+				   .findByG_U_PPPS_First(groupId, userId, ppPaymentStatus,
+			orderByComparator);
 	}
 
 	/**
-	 * Returns the first shopping order in the ordered set where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
-	 *
-	 * @param groupId the group ID
-	 * @param userId the user ID
-	 * @param ppPaymentStatus the pp payment status
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching shopping order, or <code>null</code> if a matching shopping order could not be found
-	 */
-	public static ShoppingOrder fetchByG_U_PPPS_First(
-		long groupId, long userId, String ppPaymentStatus,
+	* Returns the first shopping order in the ordered set where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param ppPaymentStatus the pp payment status
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching shopping order, or <code>null</code> if a matching shopping order could not be found
+	*/
+	public static ShoppingOrder fetchByG_U_PPPS_First(long groupId,
+		long userId, java.lang.String ppPaymentStatus,
 		OrderByComparator<ShoppingOrder> orderByComparator) {
-
-		return getPersistence().fetchByG_U_PPPS_First(
-			groupId, userId, ppPaymentStatus, orderByComparator);
+		return getPersistence()
+				   .fetchByG_U_PPPS_First(groupId, userId, ppPaymentStatus,
+			orderByComparator);
 	}
 
 	/**
-	 * Returns the last shopping order in the ordered set where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
-	 *
-	 * @param groupId the group ID
-	 * @param userId the user ID
-	 * @param ppPaymentStatus the pp payment status
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching shopping order
-	 * @throws NoSuchOrderException if a matching shopping order could not be found
-	 */
-	public static ShoppingOrder findByG_U_PPPS_Last(
-			long groupId, long userId, String ppPaymentStatus,
-			OrderByComparator<ShoppingOrder> orderByComparator)
+	* Returns the last shopping order in the ordered set where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param ppPaymentStatus the pp payment status
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching shopping order
+	* @throws NoSuchOrderException if a matching shopping order could not be found
+	*/
+	public static ShoppingOrder findByG_U_PPPS_Last(long groupId, long userId,
+		java.lang.String ppPaymentStatus,
+		OrderByComparator<ShoppingOrder> orderByComparator)
 		throws com.liferay.shopping.exception.NoSuchOrderException {
-
-		return getPersistence().findByG_U_PPPS_Last(
-			groupId, userId, ppPaymentStatus, orderByComparator);
+		return getPersistence()
+				   .findByG_U_PPPS_Last(groupId, userId, ppPaymentStatus,
+			orderByComparator);
 	}
 
 	/**
-	 * Returns the last shopping order in the ordered set where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
-	 *
-	 * @param groupId the group ID
-	 * @param userId the user ID
-	 * @param ppPaymentStatus the pp payment status
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching shopping order, or <code>null</code> if a matching shopping order could not be found
-	 */
-	public static ShoppingOrder fetchByG_U_PPPS_Last(
-		long groupId, long userId, String ppPaymentStatus,
+	* Returns the last shopping order in the ordered set where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param ppPaymentStatus the pp payment status
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching shopping order, or <code>null</code> if a matching shopping order could not be found
+	*/
+	public static ShoppingOrder fetchByG_U_PPPS_Last(long groupId, long userId,
+		java.lang.String ppPaymentStatus,
 		OrderByComparator<ShoppingOrder> orderByComparator) {
-
-		return getPersistence().fetchByG_U_PPPS_Last(
-			groupId, userId, ppPaymentStatus, orderByComparator);
+		return getPersistence()
+				   .fetchByG_U_PPPS_Last(groupId, userId, ppPaymentStatus,
+			orderByComparator);
 	}
 
 	/**
-	 * Returns the shopping orders before and after the current shopping order in the ordered set where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
-	 *
-	 * @param orderId the primary key of the current shopping order
-	 * @param groupId the group ID
-	 * @param userId the user ID
-	 * @param ppPaymentStatus the pp payment status
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next shopping order
-	 * @throws NoSuchOrderException if a shopping order with the primary key could not be found
-	 */
-	public static ShoppingOrder[] findByG_U_PPPS_PrevAndNext(
-			long orderId, long groupId, long userId, String ppPaymentStatus,
-			OrderByComparator<ShoppingOrder> orderByComparator)
+	* Returns the shopping orders before and after the current shopping order in the ordered set where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
+	*
+	* @param orderId the primary key of the current shopping order
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param ppPaymentStatus the pp payment status
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next shopping order
+	* @throws NoSuchOrderException if a shopping order with the primary key could not be found
+	*/
+	public static ShoppingOrder[] findByG_U_PPPS_PrevAndNext(long orderId,
+		long groupId, long userId, java.lang.String ppPaymentStatus,
+		OrderByComparator<ShoppingOrder> orderByComparator)
 		throws com.liferay.shopping.exception.NoSuchOrderException {
-
-		return getPersistence().findByG_U_PPPS_PrevAndNext(
-			orderId, groupId, userId, ppPaymentStatus, orderByComparator);
+		return getPersistence()
+				   .findByG_U_PPPS_PrevAndNext(orderId, groupId, userId,
+			ppPaymentStatus, orderByComparator);
 	}
 
 	/**
-	 * Returns all the shopping orders that the user has permission to view where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
-	 *
-	 * @param groupId the group ID
-	 * @param userId the user ID
-	 * @param ppPaymentStatus the pp payment status
-	 * @return the matching shopping orders that the user has permission to view
-	 */
-	public static List<ShoppingOrder> filterFindByG_U_PPPS(
-		long groupId, long userId, String ppPaymentStatus) {
-
-		return getPersistence().filterFindByG_U_PPPS(
-			groupId, userId, ppPaymentStatus);
+	* Returns all the shopping orders that the user has permission to view where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param ppPaymentStatus the pp payment status
+	* @return the matching shopping orders that the user has permission to view
+	*/
+	public static List<ShoppingOrder> filterFindByG_U_PPPS(long groupId,
+		long userId, java.lang.String ppPaymentStatus) {
+		return getPersistence()
+				   .filterFindByG_U_PPPS(groupId, userId, ppPaymentStatus);
 	}
 
 	/**
-	 * Returns a range of all the shopping orders that the user has permission to view where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ShoppingOrderModelImpl</code>.
-	 * </p>
-	 *
-	 * @param groupId the group ID
-	 * @param userId the user ID
-	 * @param ppPaymentStatus the pp payment status
-	 * @param start the lower bound of the range of shopping orders
-	 * @param end the upper bound of the range of shopping orders (not inclusive)
-	 * @return the range of matching shopping orders that the user has permission to view
-	 */
-	public static List<ShoppingOrder> filterFindByG_U_PPPS(
-		long groupId, long userId, String ppPaymentStatus, int start, int end) {
-
-		return getPersistence().filterFindByG_U_PPPS(
-			groupId, userId, ppPaymentStatus, start, end);
+	* Returns a range of all the shopping orders that the user has permission to view where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingOrderModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param ppPaymentStatus the pp payment status
+	* @param start the lower bound of the range of shopping orders
+	* @param end the upper bound of the range of shopping orders (not inclusive)
+	* @return the range of matching shopping orders that the user has permission to view
+	*/
+	public static List<ShoppingOrder> filterFindByG_U_PPPS(long groupId,
+		long userId, java.lang.String ppPaymentStatus, int start, int end) {
+		return getPersistence()
+				   .filterFindByG_U_PPPS(groupId, userId, ppPaymentStatus,
+			start, end);
 	}
 
 	/**
-	 * Returns an ordered range of all the shopping orders that the user has permissions to view where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ShoppingOrderModelImpl</code>.
-	 * </p>
-	 *
-	 * @param groupId the group ID
-	 * @param userId the user ID
-	 * @param ppPaymentStatus the pp payment status
-	 * @param start the lower bound of the range of shopping orders
-	 * @param end the upper bound of the range of shopping orders (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching shopping orders that the user has permission to view
-	 */
-	public static List<ShoppingOrder> filterFindByG_U_PPPS(
-		long groupId, long userId, String ppPaymentStatus, int start, int end,
+	* Returns an ordered range of all the shopping orders that the user has permissions to view where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingOrderModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param ppPaymentStatus the pp payment status
+	* @param start the lower bound of the range of shopping orders
+	* @param end the upper bound of the range of shopping orders (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching shopping orders that the user has permission to view
+	*/
+	public static List<ShoppingOrder> filterFindByG_U_PPPS(long groupId,
+		long userId, java.lang.String ppPaymentStatus, int start, int end,
 		OrderByComparator<ShoppingOrder> orderByComparator) {
-
-		return getPersistence().filterFindByG_U_PPPS(
-			groupId, userId, ppPaymentStatus, start, end, orderByComparator);
+		return getPersistence()
+				   .filterFindByG_U_PPPS(groupId, userId, ppPaymentStatus,
+			start, end, orderByComparator);
 	}
 
 	/**
-	 * Returns the shopping orders before and after the current shopping order in the ordered set of shopping orders that the user has permission to view where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
-	 *
-	 * @param orderId the primary key of the current shopping order
-	 * @param groupId the group ID
-	 * @param userId the user ID
-	 * @param ppPaymentStatus the pp payment status
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next shopping order
-	 * @throws NoSuchOrderException if a shopping order with the primary key could not be found
-	 */
+	* Returns the shopping orders before and after the current shopping order in the ordered set of shopping orders that the user has permission to view where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
+	*
+	* @param orderId the primary key of the current shopping order
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param ppPaymentStatus the pp payment status
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next shopping order
+	* @throws NoSuchOrderException if a shopping order with the primary key could not be found
+	*/
 	public static ShoppingOrder[] filterFindByG_U_PPPS_PrevAndNext(
-			long orderId, long groupId, long userId, String ppPaymentStatus,
-			OrderByComparator<ShoppingOrder> orderByComparator)
+		long orderId, long groupId, long userId,
+		java.lang.String ppPaymentStatus,
+		OrderByComparator<ShoppingOrder> orderByComparator)
 		throws com.liferay.shopping.exception.NoSuchOrderException {
-
-		return getPersistence().filterFindByG_U_PPPS_PrevAndNext(
-			orderId, groupId, userId, ppPaymentStatus, orderByComparator);
+		return getPersistence()
+				   .filterFindByG_U_PPPS_PrevAndNext(orderId, groupId, userId,
+			ppPaymentStatus, orderByComparator);
 	}
 
 	/**
-	 * Removes all the shopping orders where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63; from the database.
-	 *
-	 * @param groupId the group ID
-	 * @param userId the user ID
-	 * @param ppPaymentStatus the pp payment status
-	 */
-	public static void removeByG_U_PPPS(
-		long groupId, long userId, String ppPaymentStatus) {
-
+	* Removes all the shopping orders where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63; from the database.
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param ppPaymentStatus the pp payment status
+	*/
+	public static void removeByG_U_PPPS(long groupId, long userId,
+		java.lang.String ppPaymentStatus) {
 		getPersistence().removeByG_U_PPPS(groupId, userId, ppPaymentStatus);
 	}
 
 	/**
-	 * Returns the number of shopping orders where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
-	 *
-	 * @param groupId the group ID
-	 * @param userId the user ID
-	 * @param ppPaymentStatus the pp payment status
-	 * @return the number of matching shopping orders
-	 */
-	public static int countByG_U_PPPS(
-		long groupId, long userId, String ppPaymentStatus) {
-
-		return getPersistence().countByG_U_PPPS(
-			groupId, userId, ppPaymentStatus);
+	* Returns the number of shopping orders where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param ppPaymentStatus the pp payment status
+	* @return the number of matching shopping orders
+	*/
+	public static int countByG_U_PPPS(long groupId, long userId,
+		java.lang.String ppPaymentStatus) {
+		return getPersistence().countByG_U_PPPS(groupId, userId, ppPaymentStatus);
 	}
 
 	/**
-	 * Returns the number of shopping orders that the user has permission to view where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
-	 *
-	 * @param groupId the group ID
-	 * @param userId the user ID
-	 * @param ppPaymentStatus the pp payment status
-	 * @return the number of matching shopping orders that the user has permission to view
-	 */
-	public static int filterCountByG_U_PPPS(
-		long groupId, long userId, String ppPaymentStatus) {
-
-		return getPersistence().filterCountByG_U_PPPS(
-			groupId, userId, ppPaymentStatus);
+	* Returns the number of shopping orders that the user has permission to view where groupId = &#63; and userId = &#63; and ppPaymentStatus = &#63;.
+	*
+	* @param groupId the group ID
+	* @param userId the user ID
+	* @param ppPaymentStatus the pp payment status
+	* @return the number of matching shopping orders that the user has permission to view
+	*/
+	public static int filterCountByG_U_PPPS(long groupId, long userId,
+		java.lang.String ppPaymentStatus) {
+		return getPersistence()
+				   .filterCountByG_U_PPPS(groupId, userId, ppPaymentStatus);
 	}
 
 	/**
-	 * Caches the shopping order in the entity cache if it is enabled.
-	 *
-	 * @param shoppingOrder the shopping order
-	 */
+	* Caches the shopping order in the entity cache if it is enabled.
+	*
+	* @param shoppingOrder the shopping order
+	*/
 	public static void cacheResult(ShoppingOrder shoppingOrder) {
 		getPersistence().cacheResult(shoppingOrder);
 	}
 
 	/**
-	 * Caches the shopping orders in the entity cache if it is enabled.
-	 *
-	 * @param shoppingOrders the shopping orders
-	 */
+	* Caches the shopping orders in the entity cache if it is enabled.
+	*
+	* @param shoppingOrders the shopping orders
+	*/
 	public static void cacheResult(List<ShoppingOrder> shoppingOrders) {
 		getPersistence().cacheResult(shoppingOrders);
 	}
 
 	/**
-	 * Creates a new shopping order with the primary key. Does not add the shopping order to the database.
-	 *
-	 * @param orderId the primary key for the new shopping order
-	 * @return the new shopping order
-	 */
+	* Creates a new shopping order with the primary key. Does not add the shopping order to the database.
+	*
+	* @param orderId the primary key for the new shopping order
+	* @return the new shopping order
+	*/
 	public static ShoppingOrder create(long orderId) {
 		return getPersistence().create(orderId);
 	}
 
 	/**
-	 * Removes the shopping order with the primary key from the database. Also notifies the appropriate model listeners.
-	 *
-	 * @param orderId the primary key of the shopping order
-	 * @return the shopping order that was removed
-	 * @throws NoSuchOrderException if a shopping order with the primary key could not be found
-	 */
+	* Removes the shopping order with the primary key from the database. Also notifies the appropriate model listeners.
+	*
+	* @param orderId the primary key of the shopping order
+	* @return the shopping order that was removed
+	* @throws NoSuchOrderException if a shopping order with the primary key could not be found
+	*/
 	public static ShoppingOrder remove(long orderId)
 		throws com.liferay.shopping.exception.NoSuchOrderException {
-
 		return getPersistence().remove(orderId);
 	}
 
@@ -827,109 +787,110 @@ public class ShoppingOrderUtil {
 	}
 
 	/**
-	 * Returns the shopping order with the primary key or throws a <code>NoSuchOrderException</code> if it could not be found.
-	 *
-	 * @param orderId the primary key of the shopping order
-	 * @return the shopping order
-	 * @throws NoSuchOrderException if a shopping order with the primary key could not be found
-	 */
+	* Returns the shopping order with the primary key or throws a {@link NoSuchOrderException} if it could not be found.
+	*
+	* @param orderId the primary key of the shopping order
+	* @return the shopping order
+	* @throws NoSuchOrderException if a shopping order with the primary key could not be found
+	*/
 	public static ShoppingOrder findByPrimaryKey(long orderId)
 		throws com.liferay.shopping.exception.NoSuchOrderException {
-
 		return getPersistence().findByPrimaryKey(orderId);
 	}
 
 	/**
-	 * Returns the shopping order with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param orderId the primary key of the shopping order
-	 * @return the shopping order, or <code>null</code> if a shopping order with the primary key could not be found
-	 */
+	* Returns the shopping order with the primary key or returns <code>null</code> if it could not be found.
+	*
+	* @param orderId the primary key of the shopping order
+	* @return the shopping order, or <code>null</code> if a shopping order with the primary key could not be found
+	*/
 	public static ShoppingOrder fetchByPrimaryKey(long orderId) {
 		return getPersistence().fetchByPrimaryKey(orderId);
 	}
 
+	public static java.util.Map<java.io.Serializable, ShoppingOrder> fetchByPrimaryKeys(
+		java.util.Set<java.io.Serializable> primaryKeys) {
+		return getPersistence().fetchByPrimaryKeys(primaryKeys);
+	}
+
 	/**
-	 * Returns all the shopping orders.
-	 *
-	 * @return the shopping orders
-	 */
+	* Returns all the shopping orders.
+	*
+	* @return the shopping orders
+	*/
 	public static List<ShoppingOrder> findAll() {
 		return getPersistence().findAll();
 	}
 
 	/**
-	 * Returns a range of all the shopping orders.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ShoppingOrderModelImpl</code>.
-	 * </p>
-	 *
-	 * @param start the lower bound of the range of shopping orders
-	 * @param end the upper bound of the range of shopping orders (not inclusive)
-	 * @return the range of shopping orders
-	 */
+	* Returns a range of all the shopping orders.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingOrderModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of shopping orders
+	* @param end the upper bound of the range of shopping orders (not inclusive)
+	* @return the range of shopping orders
+	*/
 	public static List<ShoppingOrder> findAll(int start, int end) {
 		return getPersistence().findAll(start, end);
 	}
 
 	/**
-	 * Returns an ordered range of all the shopping orders.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ShoppingOrderModelImpl</code>.
-	 * </p>
-	 *
-	 * @param start the lower bound of the range of shopping orders
-	 * @param end the upper bound of the range of shopping orders (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of shopping orders
-	 */
-	public static List<ShoppingOrder> findAll(
-		int start, int end,
+	* Returns an ordered range of all the shopping orders.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingOrderModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of shopping orders
+	* @param end the upper bound of the range of shopping orders (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of shopping orders
+	*/
+	public static List<ShoppingOrder> findAll(int start, int end,
 		OrderByComparator<ShoppingOrder> orderByComparator) {
-
 		return getPersistence().findAll(start, end, orderByComparator);
 	}
 
 	/**
-	 * Returns an ordered range of all the shopping orders.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ShoppingOrderModelImpl</code>.
-	 * </p>
-	 *
-	 * @param start the lower bound of the range of shopping orders
-	 * @param end the upper bound of the range of shopping orders (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the ordered range of shopping orders
-	 */
-	public static List<ShoppingOrder> findAll(
-		int start, int end, OrderByComparator<ShoppingOrder> orderByComparator,
-		boolean useFinderCache) {
-
-		return getPersistence().findAll(
-			start, end, orderByComparator, useFinderCache);
+	* Returns an ordered range of all the shopping orders.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ShoppingOrderModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of shopping orders
+	* @param end the upper bound of the range of shopping orders (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of shopping orders
+	*/
+	public static List<ShoppingOrder> findAll(int start, int end,
+		OrderByComparator<ShoppingOrder> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findAll(start, end, orderByComparator, retrieveFromCache);
 	}
 
 	/**
-	 * Removes all the shopping orders from the database.
-	 */
+	* Removes all the shopping orders from the database.
+	*/
 	public static void removeAll() {
 		getPersistence().removeAll();
 	}
 
 	/**
-	 * Returns the number of shopping orders.
-	 *
-	 * @return the number of shopping orders
-	 */
+	* Returns the number of shopping orders.
+	*
+	* @return the number of shopping orders
+	*/
 	public static int countAll() {
 		return getPersistence().countAll();
 	}
 
-	public static Set<String> getBadColumnNames() {
+	public static java.util.Set<java.lang.String> getBadColumnNames() {
 		return getPersistence().getBadColumnNames();
 	}
 
@@ -937,22 +898,6 @@ public class ShoppingOrderUtil {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker
-		<ShoppingOrderPersistence, ShoppingOrderPersistence> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(ShoppingOrderPersistence.class);
-
-		ServiceTracker<ShoppingOrderPersistence, ShoppingOrderPersistence>
-			serviceTracker =
-				new ServiceTracker
-					<ShoppingOrderPersistence, ShoppingOrderPersistence>(
-						bundle.getBundleContext(),
-						ShoppingOrderPersistence.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
-
+	private static ServiceTracker<ShoppingOrderPersistence, ShoppingOrderPersistence> _serviceTracker =
+		ServiceTrackerFactory.open(ShoppingOrderPersistence.class);
 }

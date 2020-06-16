@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.PortalPreferences;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -29,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing PortalPreferences in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see PortalPreferences
  * @generated
  */
-public class PortalPreferencesCacheModel
-	implements CacheModel<PortalPreferences>, Externalizable, MVCCModel {
-
+@ProviderType
+public class PortalPreferencesCacheModel implements CacheModel<PortalPreferences>,
+	Externalizable, MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -44,13 +48,10 @@ public class PortalPreferencesCacheModel
 			return false;
 		}
 
-		PortalPreferencesCacheModel portalPreferencesCacheModel =
-			(PortalPreferencesCacheModel)obj;
+		PortalPreferencesCacheModel portalPreferencesCacheModel = (PortalPreferencesCacheModel)obj;
 
-		if ((portalPreferencesId ==
-				portalPreferencesCacheModel.portalPreferencesId) &&
-			(mvccVersion == portalPreferencesCacheModel.mvccVersion)) {
-
+		if ((portalPreferencesId == portalPreferencesCacheModel.portalPreferencesId) &&
+				(mvccVersion == portalPreferencesCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -95,8 +96,7 @@ public class PortalPreferencesCacheModel
 
 	@Override
 	public PortalPreferences toEntityModel() {
-		PortalPreferencesImpl portalPreferencesImpl =
-			new PortalPreferencesImpl();
+		PortalPreferencesImpl portalPreferencesImpl = new PortalPreferencesImpl();
 
 		portalPreferencesImpl.setMvccVersion(mvccVersion);
 		portalPreferencesImpl.setPortalPreferencesId(portalPreferencesId);
@@ -104,7 +104,7 @@ public class PortalPreferencesCacheModel
 		portalPreferencesImpl.setOwnerType(ownerType);
 
 		if (preferences == null) {
-			portalPreferencesImpl.setPreferences("");
+			portalPreferencesImpl.setPreferences(StringPool.BLANK);
 		}
 		else {
 			portalPreferencesImpl.setPreferences(preferences);
@@ -116,9 +116,7 @@ public class PortalPreferencesCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
 
 		portalPreferencesId = objectInput.readLong();
@@ -126,11 +124,12 @@ public class PortalPreferencesCacheModel
 		ownerId = objectInput.readLong();
 
 		ownerType = objectInput.readInt();
-		preferences = (String)objectInput.readObject();
+		preferences = objectInput.readUTF();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(portalPreferencesId);
@@ -140,10 +139,10 @@ public class PortalPreferencesCacheModel
 		objectOutput.writeInt(ownerType);
 
 		if (preferences == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(preferences);
+			objectOutput.writeUTF(preferences);
 		}
 	}
 
@@ -152,5 +151,4 @@ public class PortalPreferencesCacheModel
 	public long ownerId;
 	public int ownerType;
 	public String preferences;
-
 }

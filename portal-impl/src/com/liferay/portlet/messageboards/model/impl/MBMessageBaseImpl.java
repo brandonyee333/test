@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.messageboards.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.message.boards.kernel.service.MBMessageLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.message.boards.kernel.service.MBMessageLocalServiceUtil;
  * @see MBMessage
  * @generated
  */
-public abstract class MBMessageBaseImpl
-	extends MBMessageModelImpl implements MBMessage {
-
+@ProviderType
+public abstract class MBMessageBaseImpl extends MBMessageModelImpl
+	implements MBMessage {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a message-boards message model instance should use the <code>MBMessage</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a message-boards message model instance should use the {@link MBMessage} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class MBMessageBaseImpl
 			MBMessageLocalServiceUtil.updateMBMessage(this);
 		}
 	}
-
 }

@@ -14,6 +14,8 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.UserGroupRole;
@@ -30,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing UserGroupRole in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see UserGroupRole
  * @generated
  */
-public class UserGroupRoleCacheModel
-	implements CacheModel<UserGroupRole>, Externalizable, MVCCModel {
-
+@ProviderType
+public class UserGroupRoleCacheModel implements CacheModel<UserGroupRole>,
+	Externalizable, MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +48,10 @@ public class UserGroupRoleCacheModel
 			return false;
 		}
 
-		UserGroupRoleCacheModel userGroupRoleCacheModel =
-			(UserGroupRoleCacheModel)obj;
+		UserGroupRoleCacheModel userGroupRoleCacheModel = (UserGroupRoleCacheModel)obj;
 
 		if (userGroupRolePK.equals(userGroupRoleCacheModel.userGroupRolePK) &&
-			(mvccVersion == userGroupRoleCacheModel.mvccVersion)) {
-
+				(mvccVersion == userGroupRoleCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -124,7 +125,8 @@ public class UserGroupRoleCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(userId);
@@ -142,5 +144,4 @@ public class UserGroupRoleCacheModel
 	public long roleId;
 	public long companyId;
 	public transient UserGroupRolePK userGroupRolePK;
-
 }

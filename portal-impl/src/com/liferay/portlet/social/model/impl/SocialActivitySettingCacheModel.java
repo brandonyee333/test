@@ -14,9 +14,13 @@
 
 package com.liferay.portlet.social.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.social.kernel.model.SocialActivitySetting;
 
 import java.io.Externalizable;
@@ -28,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing SocialActivitySetting in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see SocialActivitySetting
  * @generated
  */
-public class SocialActivitySettingCacheModel
-	implements CacheModel<SocialActivitySetting>, Externalizable {
-
+@ProviderType
+public class SocialActivitySettingCacheModel implements CacheModel<SocialActivitySetting>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -43,12 +48,9 @@ public class SocialActivitySettingCacheModel
 			return false;
 		}
 
-		SocialActivitySettingCacheModel socialActivitySettingCacheModel =
-			(SocialActivitySettingCacheModel)obj;
+		SocialActivitySettingCacheModel socialActivitySettingCacheModel = (SocialActivitySettingCacheModel)obj;
 
-		if (activitySettingId ==
-				socialActivitySettingCacheModel.activitySettingId) {
-
+		if (activitySettingId == socialActivitySettingCacheModel.activitySettingId) {
 			return true;
 		}
 
@@ -85,8 +87,7 @@ public class SocialActivitySettingCacheModel
 
 	@Override
 	public SocialActivitySetting toEntityModel() {
-		SocialActivitySettingImpl socialActivitySettingImpl =
-			new SocialActivitySettingImpl();
+		SocialActivitySettingImpl socialActivitySettingImpl = new SocialActivitySettingImpl();
 
 		socialActivitySettingImpl.setActivitySettingId(activitySettingId);
 		socialActivitySettingImpl.setGroupId(groupId);
@@ -95,14 +96,14 @@ public class SocialActivitySettingCacheModel
 		socialActivitySettingImpl.setActivityType(activityType);
 
 		if (name == null) {
-			socialActivitySettingImpl.setName("");
+			socialActivitySettingImpl.setName(StringPool.BLANK);
 		}
 		else {
 			socialActivitySettingImpl.setName(name);
 		}
 
 		if (value == null) {
-			socialActivitySettingImpl.setValue("");
+			socialActivitySettingImpl.setValue(StringPool.BLANK);
 		}
 		else {
 			socialActivitySettingImpl.setValue(value);
@@ -129,7 +130,8 @@ public class SocialActivitySettingCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(activitySettingId);
 
 		objectOutput.writeLong(groupId);
@@ -141,14 +143,14 @@ public class SocialActivitySettingCacheModel
 		objectOutput.writeInt(activityType);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (value == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(value);
@@ -162,5 +164,4 @@ public class SocialActivitySettingCacheModel
 	public int activityType;
 	public String name;
 	public String value;
-
 }

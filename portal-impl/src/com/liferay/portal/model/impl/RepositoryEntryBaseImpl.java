@@ -14,6 +14,8 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.RepositoryEntry;
 import com.liferay.portal.kernel.service.RepositoryEntryLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.portal.kernel.service.RepositoryEntryLocalServiceUtil;
  * @see RepositoryEntry
  * @generated
  */
-public abstract class RepositoryEntryBaseImpl
-	extends RepositoryEntryModelImpl implements RepositoryEntry {
-
+@ProviderType
+public abstract class RepositoryEntryBaseImpl extends RepositoryEntryModelImpl
+	implements RepositoryEntry {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a repository entry model instance should use the <code>RepositoryEntry</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a repository entry model instance should use the {@link RepositoryEntry} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class RepositoryEntryBaseImpl
 			RepositoryEntryLocalServiceUtil.updateRepositoryEntry(this);
 		}
 	}
-
 }

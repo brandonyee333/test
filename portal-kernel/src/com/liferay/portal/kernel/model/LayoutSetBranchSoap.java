@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -24,10 +26,11 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.portal.service.http.LayoutSetBranchServiceSoap}.
  *
  * @author Brian Wing Shun Chan
+ * @see com.liferay.portal.service.http.LayoutSetBranchServiceSoap
  * @generated
  */
+@ProviderType
 public class LayoutSetBranchSoap implements Serializable {
-
 	public static LayoutSetBranchSoap toSoapModel(LayoutSetBranch model) {
 		LayoutSetBranchSoap soapModel = new LayoutSetBranchSoap();
 
@@ -39,25 +42,23 @@ public class LayoutSetBranchSoap implements Serializable {
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
-		soapModel.setPrivateLayout(model.isPrivateLayout());
+		soapModel.setPrivateLayout(model.getPrivateLayout());
 		soapModel.setName(model.getName());
 		soapModel.setDescription(model.getDescription());
-		soapModel.setMaster(model.isMaster());
+		soapModel.setMaster(model.getMaster());
 		soapModel.setLogoId(model.getLogoId());
 		soapModel.setThemeId(model.getThemeId());
 		soapModel.setColorSchemeId(model.getColorSchemeId());
 		soapModel.setCss(model.getCss());
 		soapModel.setSettings(model.getSettings());
 		soapModel.setLayoutSetPrototypeUuid(model.getLayoutSetPrototypeUuid());
-		soapModel.setLayoutSetPrototypeLinkEnabled(
-			model.isLayoutSetPrototypeLinkEnabled());
+		soapModel.setLayoutSetPrototypeLinkEnabled(model.getLayoutSetPrototypeLinkEnabled());
 
 		return soapModel;
 	}
 
 	public static LayoutSetBranchSoap[] toSoapModels(LayoutSetBranch[] models) {
-		LayoutSetBranchSoap[] soapModels =
-			new LayoutSetBranchSoap[models.length];
+		LayoutSetBranchSoap[] soapModels = new LayoutSetBranchSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -68,12 +69,10 @@ public class LayoutSetBranchSoap implements Serializable {
 
 	public static LayoutSetBranchSoap[][] toSoapModels(
 		LayoutSetBranch[][] models) {
-
 		LayoutSetBranchSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels =
-				new LayoutSetBranchSoap[models.length][models[0].length];
+			soapModels = new LayoutSetBranchSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new LayoutSetBranchSoap[0][0];
@@ -88,9 +87,7 @@ public class LayoutSetBranchSoap implements Serializable {
 
 	public static LayoutSetBranchSoap[] toSoapModels(
 		List<LayoutSetBranch> models) {
-
-		List<LayoutSetBranchSoap> soapModels =
-			new ArrayList<LayoutSetBranchSoap>(models.size());
+		List<LayoutSetBranchSoap> soapModels = new ArrayList<LayoutSetBranchSoap>(models.size());
 
 		for (LayoutSetBranch model : models) {
 			soapModels.add(toSoapModel(model));
@@ -272,7 +269,6 @@ public class LayoutSetBranchSoap implements Serializable {
 
 	public void setLayoutSetPrototypeLinkEnabled(
 		boolean layoutSetPrototypeLinkEnabled) {
-
 		_layoutSetPrototypeLinkEnabled = layoutSetPrototypeLinkEnabled;
 	}
 
@@ -295,5 +291,4 @@ public class LayoutSetBranchSoap implements Serializable {
 	private String _settings;
 	private String _layoutSetPrototypeUuid;
 	private boolean _layoutSetPrototypeLinkEnabled;
-
 }

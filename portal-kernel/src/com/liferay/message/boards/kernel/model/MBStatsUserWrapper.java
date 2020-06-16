@@ -14,7 +14,10 @@
 
 package com.liferay.message.boards.kernel.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -34,9 +37,9 @@ import java.util.Objects;
  * @see MBStatsUser
  * @generated
  */
-public class MBStatsUserWrapper
-	implements MBStatsUser, ModelWrapper<MBStatsUser> {
-
+@ProviderType
+public class MBStatsUserWrapper implements MBStatsUser,
+	ModelWrapper<MBStatsUser> {
 	public MBStatsUserWrapper(MBStatsUser mbStatsUser) {
 		_mbStatsUser = mbStatsUser;
 	}
@@ -105,121 +108,6 @@ public class MBStatsUserWrapper
 	}
 
 	@Override
-	public Object clone() {
-		return new MBStatsUserWrapper((MBStatsUser)_mbStatsUser.clone());
-	}
-
-	@Override
-	public int compareTo(MBStatsUser mbStatsUser) {
-		return _mbStatsUser.compareTo(mbStatsUser);
-	}
-
-	/**
-	 * Returns the company ID of this message boards stats user.
-	 *
-	 * @return the company ID of this message boards stats user
-	 */
-	@Override
-	public long getCompanyId() {
-		return _mbStatsUser.getCompanyId();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _mbStatsUser.getExpandoBridge();
-	}
-
-	/**
-	 * Returns the group ID of this message boards stats user.
-	 *
-	 * @return the group ID of this message boards stats user
-	 */
-	@Override
-	public long getGroupId() {
-		return _mbStatsUser.getGroupId();
-	}
-
-	/**
-	 * Returns the last post date of this message boards stats user.
-	 *
-	 * @return the last post date of this message boards stats user
-	 */
-	@Override
-	public Date getLastPostDate() {
-		return _mbStatsUser.getLastPostDate();
-	}
-
-	/**
-	 * Returns the message count of this message boards stats user.
-	 *
-	 * @return the message count of this message boards stats user
-	 */
-	@Override
-	public int getMessageCount() {
-		return _mbStatsUser.getMessageCount();
-	}
-
-	/**
-	 * Returns the primary key of this message boards stats user.
-	 *
-	 * @return the primary key of this message boards stats user
-	 */
-	@Override
-	public long getPrimaryKey() {
-		return _mbStatsUser.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _mbStatsUser.getPrimaryKeyObj();
-	}
-
-	/**
-	 * Returns the stats user ID of this message boards stats user.
-	 *
-	 * @return the stats user ID of this message boards stats user
-	 */
-	@Override
-	public long getStatsUserId() {
-		return _mbStatsUser.getStatsUserId();
-	}
-
-	/**
-	 * Returns the stats user uuid of this message boards stats user.
-	 *
-	 * @return the stats user uuid of this message boards stats user
-	 */
-	@Override
-	public String getStatsUserUuid() {
-		return _mbStatsUser.getStatsUserUuid();
-	}
-
-	/**
-	 * Returns the user ID of this message boards stats user.
-	 *
-	 * @return the user ID of this message boards stats user
-	 */
-	@Override
-	public long getUserId() {
-		return _mbStatsUser.getUserId();
-	}
-
-	/**
-	 * Returns the user uuid of this message boards stats user.
-	 *
-	 * @return the user uuid of this message boards stats user
-	 */
-	@Override
-	public String getUserUuid() {
-		return _mbStatsUser.getUserUuid();
-	}
-
-	@Override
-	public int hashCode() {
-		return _mbStatsUser.hashCode();
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _mbStatsUser.isCachedModel();
 	}
@@ -235,6 +123,146 @@ public class MBStatsUserWrapper
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _mbStatsUser.getExpandoBridge();
+	}
+
+	@Override
+	public MBStatsUser toEscapedModel() {
+		return new MBStatsUserWrapper(_mbStatsUser.toEscapedModel());
+	}
+
+	@Override
+	public MBStatsUser toUnescapedModel() {
+		return new MBStatsUserWrapper(_mbStatsUser.toUnescapedModel());
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<MBStatsUser> toCacheModel() {
+		return _mbStatsUser.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(MBStatsUser mbStatsUser) {
+		return _mbStatsUser.compareTo(mbStatsUser);
+	}
+
+	/**
+	* Returns the message count of this message boards stats user.
+	*
+	* @return the message count of this message boards stats user
+	*/
+	@Override
+	public int getMessageCount() {
+		return _mbStatsUser.getMessageCount();
+	}
+
+	@Override
+	public int hashCode() {
+		return _mbStatsUser.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _mbStatsUser.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new MBStatsUserWrapper((MBStatsUser)_mbStatsUser.clone());
+	}
+
+	/**
+	* Returns the stats user uuid of this message boards stats user.
+	*
+	* @return the stats user uuid of this message boards stats user
+	*/
+	@Override
+	public java.lang.String getStatsUserUuid() {
+		return _mbStatsUser.getStatsUserUuid();
+	}
+
+	/**
+	* Returns the user uuid of this message boards stats user.
+	*
+	* @return the user uuid of this message boards stats user
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _mbStatsUser.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _mbStatsUser.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _mbStatsUser.toXmlString();
+	}
+
+	/**
+	* Returns the last post date of this message boards stats user.
+	*
+	* @return the last post date of this message boards stats user
+	*/
+	@Override
+	public Date getLastPostDate() {
+		return _mbStatsUser.getLastPostDate();
+	}
+
+	/**
+	* Returns the company ID of this message boards stats user.
+	*
+	* @return the company ID of this message boards stats user
+	*/
+	@Override
+	public long getCompanyId() {
+		return _mbStatsUser.getCompanyId();
+	}
+
+	/**
+	* Returns the group ID of this message boards stats user.
+	*
+	* @return the group ID of this message boards stats user
+	*/
+	@Override
+	public long getGroupId() {
+		return _mbStatsUser.getGroupId();
+	}
+
+	/**
+	* Returns the primary key of this message boards stats user.
+	*
+	* @return the primary key of this message boards stats user
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _mbStatsUser.getPrimaryKey();
+	}
+
+	/**
+	* Returns the stats user ID of this message boards stats user.
+	*
+	* @return the stats user ID of this message boards stats user
+	*/
+	@Override
+	public long getStatsUserId() {
+		return _mbStatsUser.getStatsUserId();
+	}
+
+	/**
+	* Returns the user ID of this message boards stats user.
+	*
+	* @return the user ID of this message boards stats user
+	*/
+	@Override
+	public long getUserId() {
+		return _mbStatsUser.getUserId();
+	}
+
+	@Override
 	public void persist() {
 		_mbStatsUser.persist();
 	}
@@ -245,20 +273,13 @@ public class MBStatsUserWrapper
 	}
 
 	/**
-	 * Sets the company ID of this message boards stats user.
-	 *
-	 * @param companyId the company ID of this message boards stats user
-	 */
+	* Sets the company ID of this message boards stats user.
+	*
+	* @param companyId the company ID of this message boards stats user
+	*/
 	@Override
 	public void setCompanyId(long companyId) {
 		_mbStatsUser.setCompanyId(companyId);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-
-		_mbStatsUser.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -267,35 +288,41 @@ public class MBStatsUserWrapper
 	}
 
 	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_mbStatsUser.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_mbStatsUser.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	 * Sets the group ID of this message boards stats user.
-	 *
-	 * @param groupId the group ID of this message boards stats user
-	 */
+	* Sets the group ID of this message boards stats user.
+	*
+	* @param groupId the group ID of this message boards stats user
+	*/
 	@Override
 	public void setGroupId(long groupId) {
 		_mbStatsUser.setGroupId(groupId);
 	}
 
 	/**
-	 * Sets the last post date of this message boards stats user.
-	 *
-	 * @param lastPostDate the last post date of this message boards stats user
-	 */
+	* Sets the last post date of this message boards stats user.
+	*
+	* @param lastPostDate the last post date of this message boards stats user
+	*/
 	@Override
 	public void setLastPostDate(Date lastPostDate) {
 		_mbStatsUser.setLastPostDate(lastPostDate);
 	}
 
 	/**
-	 * Sets the message count of this message boards stats user.
-	 *
-	 * @param messageCount the message count of this message boards stats user
-	 */
+	* Sets the message count of this message boards stats user.
+	*
+	* @param messageCount the message count of this message boards stats user
+	*/
 	@Override
 	public void setMessageCount(int messageCount) {
 		_mbStatsUser.setMessageCount(messageCount);
@@ -307,10 +334,10 @@ public class MBStatsUserWrapper
 	}
 
 	/**
-	 * Sets the primary key of this message boards stats user.
-	 *
-	 * @param primaryKey the primary key of this message boards stats user
-	 */
+	* Sets the primary key of this message boards stats user.
+	*
+	* @param primaryKey the primary key of this message boards stats user
+	*/
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_mbStatsUser.setPrimaryKey(primaryKey);
@@ -322,70 +349,43 @@ public class MBStatsUserWrapper
 	}
 
 	/**
-	 * Sets the stats user ID of this message boards stats user.
-	 *
-	 * @param statsUserId the stats user ID of this message boards stats user
-	 */
+	* Sets the stats user ID of this message boards stats user.
+	*
+	* @param statsUserId the stats user ID of this message boards stats user
+	*/
 	@Override
 	public void setStatsUserId(long statsUserId) {
 		_mbStatsUser.setStatsUserId(statsUserId);
 	}
 
 	/**
-	 * Sets the stats user uuid of this message boards stats user.
-	 *
-	 * @param statsUserUuid the stats user uuid of this message boards stats user
-	 */
+	* Sets the stats user uuid of this message boards stats user.
+	*
+	* @param statsUserUuid the stats user uuid of this message boards stats user
+	*/
 	@Override
-	public void setStatsUserUuid(String statsUserUuid) {
+	public void setStatsUserUuid(java.lang.String statsUserUuid) {
 		_mbStatsUser.setStatsUserUuid(statsUserUuid);
 	}
 
 	/**
-	 * Sets the user ID of this message boards stats user.
-	 *
-	 * @param userId the user ID of this message boards stats user
-	 */
+	* Sets the user ID of this message boards stats user.
+	*
+	* @param userId the user ID of this message boards stats user
+	*/
 	@Override
 	public void setUserId(long userId) {
 		_mbStatsUser.setUserId(userId);
 	}
 
 	/**
-	 * Sets the user uuid of this message boards stats user.
-	 *
-	 * @param userUuid the user uuid of this message boards stats user
-	 */
+	* Sets the user uuid of this message boards stats user.
+	*
+	* @param userUuid the user uuid of this message boards stats user
+	*/
 	@Override
-	public void setUserUuid(String userUuid) {
+	public void setUserUuid(java.lang.String userUuid) {
 		_mbStatsUser.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<MBStatsUser>
-		toCacheModel() {
-
-		return _mbStatsUser.toCacheModel();
-	}
-
-	@Override
-	public MBStatsUser toEscapedModel() {
-		return new MBStatsUserWrapper(_mbStatsUser.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return _mbStatsUser.toString();
-	}
-
-	@Override
-	public MBStatsUser toUnescapedModel() {
-		return new MBStatsUserWrapper(_mbStatsUser.toUnescapedModel());
-	}
-
-	@Override
-	public String toXmlString() {
-		return _mbStatsUser.toXmlString();
 	}
 
 	@Override
@@ -428,5 +428,4 @@ public class MBStatsUserWrapper
 	}
 
 	private final MBStatsUser _mbStatsUser;
-
 }

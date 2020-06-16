@@ -14,6 +14,8 @@
 
 package com.liferay.shopping.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -33,12 +35,11 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
-import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
-import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+
 import com.liferay.shopping.model.ShoppingCoupon;
 import com.liferay.shopping.service.ShoppingCouponLocalService;
 import com.liferay.shopping.service.persistence.ShoppingCategoryFinder;
@@ -63,16 +64,17 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.shopping.service.impl.ShoppingCouponLocalServiceImpl
+ * @see com.liferay.shopping.service.ShoppingCouponLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class ShoppingCouponLocalServiceBaseImpl
-	extends BaseLocalServiceImpl
-	implements IdentifiableOSGiService, ShoppingCouponLocalService {
-
+	extends BaseLocalServiceImpl implements ShoppingCouponLocalService,
+		IdentifiableOSGiService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ShoppingCouponLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.shopping.service.ShoppingCouponLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.shopping.service.ShoppingCouponLocalServiceUtil} to access the shopping coupon local service.
 	 */
 
 	/**
@@ -96,7 +98,6 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	 * @return the new shopping coupon
 	 */
 	@Override
-	@Transactional(enabled = false)
 	public ShoppingCoupon createShoppingCoupon(long couponId) {
 		return shoppingCouponPersistence.create(couponId);
 	}
@@ -112,7 +113,6 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	@Override
 	public ShoppingCoupon deleteShoppingCoupon(long couponId)
 		throws PortalException {
-
 		return shoppingCouponPersistence.remove(couponId);
 	}
 
@@ -132,8 +132,8 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(
-			ShoppingCoupon.class, clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(ShoppingCoupon.class,
+			clazz.getClassLoader());
 	}
 
 	/**
@@ -151,7 +151,7 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.shopping.model.impl.ShoppingCouponModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.shopping.model.impl.ShoppingCouponModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -160,18 +160,17 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end) {
-
-		return shoppingCouponPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
+		return shoppingCouponPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.shopping.model.impl.ShoppingCouponModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.shopping.model.impl.ShoppingCouponModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -181,12 +180,10 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<T> orderByComparator) {
-
-		return shoppingCouponPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
+		return shoppingCouponPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end, orderByComparator);
 	}
 
 	/**
@@ -208,11 +205,10 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(
-		DynamicQuery dynamicQuery, Projection projection) {
-
-		return shoppingCouponPersistence.countWithDynamicQuery(
-			dynamicQuery, projection);
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection) {
+		return shoppingCouponPersistence.countWithDynamicQuery(dynamicQuery,
+			projection);
 	}
 
 	@Override
@@ -230,14 +226,12 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	@Override
 	public ShoppingCoupon getShoppingCoupon(long couponId)
 		throws PortalException {
-
 		return shoppingCouponPersistence.findByPrimaryKey(couponId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
 		actionableDynamicQuery.setBaseLocalService(shoppingCouponLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
@@ -249,14 +243,10 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
 
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
-			new IndexableActionableDynamicQuery();
-
-		indexableActionableDynamicQuery.setBaseLocalService(
-			shoppingCouponLocalService);
+		indexableActionableDynamicQuery.setBaseLocalService(shoppingCouponLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(ShoppingCoupon.class);
 
@@ -267,7 +257,6 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-
 		actionableDynamicQuery.setBaseLocalService(shoppingCouponLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(ShoppingCoupon.class);
@@ -281,22 +270,12 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-
-		return shoppingCouponLocalService.deleteShoppingCoupon(
-			(ShoppingCoupon)persistedModel);
+		return shoppingCouponLocalService.deleteShoppingCoupon((ShoppingCoupon)persistedModel);
 	}
 
-	public BasePersistence<ShoppingCoupon> getBasePersistence() {
-		return shoppingCouponPersistence;
-	}
-
-	/**
-	 * @throws PortalException
-	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
-
 		return shoppingCouponPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -304,7 +283,7 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	 * Returns a range of all the shopping coupons.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.shopping.model.impl.ShoppingCouponModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.shopping.model.impl.ShoppingCouponModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of shopping coupons
@@ -354,7 +333,6 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	 */
 	public void setShoppingCouponLocalService(
 		ShoppingCouponLocalService shoppingCouponLocalService) {
-
 		this.shoppingCouponLocalService = shoppingCouponLocalService;
 	}
 
@@ -374,7 +352,6 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	 */
 	public void setShoppingCouponPersistence(
 		ShoppingCouponPersistence shoppingCouponPersistence) {
-
 		this.shoppingCouponPersistence = shoppingCouponPersistence;
 	}
 
@@ -394,7 +371,6 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	 */
 	public void setShoppingCouponFinder(
 		ShoppingCouponFinder shoppingCouponFinder) {
-
 		this.shoppingCouponFinder = shoppingCouponFinder;
 	}
 
@@ -403,9 +379,7 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -415,9 +389,7 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -426,9 +398,7 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService
-		getUserLocalService() {
-
+	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
 		return userLocalService;
 	}
 
@@ -439,7 +409,6 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
-
 		this.userLocalService = userLocalService;
 	}
 
@@ -466,9 +435,7 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	 *
 	 * @return the shopping category local service
 	 */
-	public com.liferay.shopping.service.ShoppingCategoryLocalService
-		getShoppingCategoryLocalService() {
-
+	public com.liferay.shopping.service.ShoppingCategoryLocalService getShoppingCategoryLocalService() {
 		return shoppingCategoryLocalService;
 	}
 
@@ -478,9 +445,7 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	 * @param shoppingCategoryLocalService the shopping category local service
 	 */
 	public void setShoppingCategoryLocalService(
-		com.liferay.shopping.service.ShoppingCategoryLocalService
-			shoppingCategoryLocalService) {
-
+		com.liferay.shopping.service.ShoppingCategoryLocalService shoppingCategoryLocalService) {
 		this.shoppingCategoryLocalService = shoppingCategoryLocalService;
 	}
 
@@ -500,7 +465,6 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	 */
 	public void setShoppingCategoryPersistence(
 		ShoppingCategoryPersistence shoppingCategoryPersistence) {
-
 		this.shoppingCategoryPersistence = shoppingCategoryPersistence;
 	}
 
@@ -520,7 +484,6 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	 */
 	public void setShoppingCategoryFinder(
 		ShoppingCategoryFinder shoppingCategoryFinder) {
-
 		this.shoppingCategoryFinder = shoppingCategoryFinder;
 	}
 
@@ -529,9 +492,7 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	 *
 	 * @return the shopping item local service
 	 */
-	public com.liferay.shopping.service.ShoppingItemLocalService
-		getShoppingItemLocalService() {
-
+	public com.liferay.shopping.service.ShoppingItemLocalService getShoppingItemLocalService() {
 		return shoppingItemLocalService;
 	}
 
@@ -541,9 +502,7 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	 * @param shoppingItemLocalService the shopping item local service
 	 */
 	public void setShoppingItemLocalService(
-		com.liferay.shopping.service.ShoppingItemLocalService
-			shoppingItemLocalService) {
-
+		com.liferay.shopping.service.ShoppingItemLocalService shoppingItemLocalService) {
 		this.shoppingItemLocalService = shoppingItemLocalService;
 	}
 
@@ -563,7 +522,6 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	 */
 	public void setShoppingItemPersistence(
 		ShoppingItemPersistence shoppingItemPersistence) {
-
 		this.shoppingItemPersistence = shoppingItemPersistence;
 	}
 
@@ -586,8 +544,7 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register(
-			"com.liferay.shopping.model.ShoppingCoupon",
+		persistedModelLocalServiceRegistry.register("com.liferay.shopping.model.ShoppingCoupon",
 			shoppingCouponLocalService);
 	}
 
@@ -628,66 +585,40 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
 	@BeanReference(type = ShoppingCouponLocalService.class)
 	protected ShoppingCouponLocalService shoppingCouponLocalService;
-
 	@BeanReference(type = ShoppingCouponPersistence.class)
 	protected ShoppingCouponPersistence shoppingCouponPersistence;
-
 	@BeanReference(type = ShoppingCouponFinder.class)
 	protected ShoppingCouponFinder shoppingCouponFinder;
-
-	@ServiceReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.UserLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.UserLocalService
-		userLocalService;
-
+	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
+	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-
-	@BeanReference(
-		type = com.liferay.shopping.service.ShoppingCategoryLocalService.class
-	)
-	protected com.liferay.shopping.service.ShoppingCategoryLocalService
-		shoppingCategoryLocalService;
-
+	@BeanReference(type = com.liferay.shopping.service.ShoppingCategoryLocalService.class)
+	protected com.liferay.shopping.service.ShoppingCategoryLocalService shoppingCategoryLocalService;
 	@BeanReference(type = ShoppingCategoryPersistence.class)
 	protected ShoppingCategoryPersistence shoppingCategoryPersistence;
-
 	@BeanReference(type = ShoppingCategoryFinder.class)
 	protected ShoppingCategoryFinder shoppingCategoryFinder;
-
-	@BeanReference(
-		type = com.liferay.shopping.service.ShoppingItemLocalService.class
-	)
-	protected com.liferay.shopping.service.ShoppingItemLocalService
-		shoppingItemLocalService;
-
+	@BeanReference(type = com.liferay.shopping.service.ShoppingItemLocalService.class)
+	protected com.liferay.shopping.service.ShoppingItemLocalService shoppingItemLocalService;
 	@BeanReference(type = ShoppingItemPersistence.class)
 	protected ShoppingItemPersistence shoppingItemPersistence;
-
 	@BeanReference(type = ShoppingItemFinder.class)
 	protected ShoppingItemFinder shoppingItemFinder;
-
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry
-		persistedModelLocalServiceRegistry;
-
+	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }

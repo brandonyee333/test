@@ -1,20 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.email.blacklist.service.http;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.osb.email.blacklist.service.BounceableEmailServiceUtil;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -22,10 +25,10 @@ import java.rmi.RemoteException;
 
 /**
  * Provides the SOAP utility for the
- * <code>BounceableEmailServiceUtil</code> service
- * utility. The static methods of this class call the same methods of the
- * service utility. However, the signatures are different because it is
- * difficult for SOAP to support certain types.
+ * {@link BounceableEmailServiceUtil} service utility. The
+ * static methods of this class calls the same methods of the service utility.
+ * However, the signatures are different because it is difficult for SOAP to
+ * support certain types.
  *
  * <p>
  * The benefits of using the SOAP utility is that it is cross platform
@@ -46,70 +49,62 @@ import java.rmi.RemoteException;
  *
  * @author Jamie Sammons
  * @see BounceableEmailServiceHttp
+ * @see BounceableEmailServiceUtil
  * @generated
  */
+@ProviderType
 public class BounceableEmailServiceSoap {
-
 	public static void sendBounceableEmail(
-			com.liferay.mail.kernel.model.MailMessage mailMessage)
+		com.liferay.mail.kernel.model.MailMessage mailMessage)
 		throws RemoteException {
-
 		try {
 			BounceableEmailServiceUtil.sendBounceableEmail(mailMessage);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static void sendBounceableEmail(
-			com.liferay.portal.kernel.util.SubscriptionSender
-				subscriptionSender)
+		com.liferay.portal.kernel.util.SubscriptionSender subscriptionSender)
 		throws RemoteException {
-
 		try {
 			BounceableEmailServiceUtil.sendBounceableEmail(subscriptionSender);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static void sendBounceableEmailAsync(
-			com.liferay.mail.kernel.model.MailMessage mailMessage)
+		com.liferay.mail.kernel.model.MailMessage mailMessage)
 		throws RemoteException {
-
 		try {
 			BounceableEmailServiceUtil.sendBounceableEmailAsync(mailMessage);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static void sendBounceableEmailAsync(
-			com.liferay.portal.kernel.util.SubscriptionSender
-				subscriptionSender)
+		com.liferay.portal.kernel.util.SubscriptionSender subscriptionSender)
 		throws RemoteException {
-
 		try {
-			BounceableEmailServiceUtil.sendBounceableEmailAsync(
-				subscriptionSender);
+			BounceableEmailServiceUtil.sendBounceableEmailAsync(subscriptionSender);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
-		BounceableEmailServiceSoap.class);
-
+	private static Log _log = LogFactoryUtil.getLog(BounceableEmailServiceSoap.class);
 }

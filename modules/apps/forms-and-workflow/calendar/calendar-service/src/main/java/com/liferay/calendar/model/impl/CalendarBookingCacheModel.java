@@ -14,10 +14,14 @@
 
 package com.liferay.calendar.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.calendar.model.CalendarBooking;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing CalendarBooking in entity cache.
  *
  * @author Eduardo Lundgren
+ * @see CalendarBooking
  * @generated
  */
-public class CalendarBookingCacheModel
-	implements CacheModel<CalendarBooking>, Externalizable {
-
+@ProviderType
+public class CalendarBookingCacheModel implements CacheModel<CalendarBooking>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class CalendarBookingCacheModel
 			return false;
 		}
 
-		CalendarBookingCacheModel calendarBookingCacheModel =
-			(CalendarBookingCacheModel)obj;
+		CalendarBookingCacheModel calendarBookingCacheModel = (CalendarBookingCacheModel)obj;
 
 		if (calendarBookingId == calendarBookingCacheModel.calendarBookingId) {
 			return true;
@@ -132,7 +136,7 @@ public class CalendarBookingCacheModel
 		CalendarBookingImpl calendarBookingImpl = new CalendarBookingImpl();
 
 		if (uuid == null) {
-			calendarBookingImpl.setUuid("");
+			calendarBookingImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			calendarBookingImpl.setUuid(uuid);
@@ -144,7 +148,7 @@ public class CalendarBookingCacheModel
 		calendarBookingImpl.setUserId(userId);
 
 		if (userName == null) {
-			calendarBookingImpl.setUserName("");
+			calendarBookingImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			calendarBookingImpl.setUserName(userName);
@@ -170,28 +174,28 @@ public class CalendarBookingCacheModel
 		calendarBookingImpl.setParentCalendarBookingId(parentCalendarBookingId);
 
 		if (vEventUid == null) {
-			calendarBookingImpl.setVEventUid("");
+			calendarBookingImpl.setVEventUid(StringPool.BLANK);
 		}
 		else {
 			calendarBookingImpl.setVEventUid(vEventUid);
 		}
 
 		if (title == null) {
-			calendarBookingImpl.setTitle("");
+			calendarBookingImpl.setTitle(StringPool.BLANK);
 		}
 		else {
 			calendarBookingImpl.setTitle(title);
 		}
 
 		if (description == null) {
-			calendarBookingImpl.setDescription("");
+			calendarBookingImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			calendarBookingImpl.setDescription(description);
 		}
 
 		if (location == null) {
-			calendarBookingImpl.setLocation("");
+			calendarBookingImpl.setLocation(StringPool.BLANK);
 		}
 		else {
 			calendarBookingImpl.setLocation(location);
@@ -202,7 +206,7 @@ public class CalendarBookingCacheModel
 		calendarBookingImpl.setAllDay(allDay);
 
 		if (recurrence == null) {
-			calendarBookingImpl.setRecurrence("");
+			calendarBookingImpl.setRecurrence(StringPool.BLANK);
 		}
 		else {
 			calendarBookingImpl.setRecurrence(recurrence);
@@ -211,7 +215,7 @@ public class CalendarBookingCacheModel
 		calendarBookingImpl.setFirstReminder(firstReminder);
 
 		if (firstReminderType == null) {
-			calendarBookingImpl.setFirstReminderType("");
+			calendarBookingImpl.setFirstReminderType(StringPool.BLANK);
 		}
 		else {
 			calendarBookingImpl.setFirstReminderType(firstReminderType);
@@ -220,7 +224,7 @@ public class CalendarBookingCacheModel
 		calendarBookingImpl.setSecondReminder(secondReminder);
 
 		if (secondReminderType == null) {
-			calendarBookingImpl.setSecondReminderType("");
+			calendarBookingImpl.setSecondReminderType(StringPool.BLANK);
 		}
 		else {
 			calendarBookingImpl.setSecondReminderType(secondReminderType);
@@ -237,7 +241,7 @@ public class CalendarBookingCacheModel
 		calendarBookingImpl.setStatusByUserId(statusByUserId);
 
 		if (statusByUserName == null) {
-			calendarBookingImpl.setStatusByUserName("");
+			calendarBookingImpl.setStatusByUserName(StringPool.BLANK);
 		}
 		else {
 			calendarBookingImpl.setStatusByUserName(statusByUserName);
@@ -256,9 +260,7 @@ public class CalendarBookingCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
 
 		calendarBookingId = objectInput.readLong();
@@ -281,7 +283,7 @@ public class CalendarBookingCacheModel
 		parentCalendarBookingId = objectInput.readLong();
 		vEventUid = objectInput.readUTF();
 		title = objectInput.readUTF();
-		description = (String)objectInput.readObject();
+		description = objectInput.readUTF();
 		location = objectInput.readUTF();
 
 		startTime = objectInput.readLong();
@@ -306,9 +308,10 @@ public class CalendarBookingCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -323,7 +326,7 @@ public class CalendarBookingCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -341,28 +344,28 @@ public class CalendarBookingCacheModel
 		objectOutput.writeLong(parentCalendarBookingId);
 
 		if (vEventUid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(vEventUid);
 		}
 
 		if (title == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(title);
 		}
 
 		if (description == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(description);
+			objectOutput.writeUTF(description);
 		}
 
 		if (location == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(location);
@@ -375,7 +378,7 @@ public class CalendarBookingCacheModel
 		objectOutput.writeBoolean(allDay);
 
 		if (recurrence == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(recurrence);
@@ -384,7 +387,7 @@ public class CalendarBookingCacheModel
 		objectOutput.writeLong(firstReminder);
 
 		if (firstReminderType == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(firstReminderType);
@@ -393,7 +396,7 @@ public class CalendarBookingCacheModel
 		objectOutput.writeLong(secondReminder);
 
 		if (secondReminderType == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(secondReminderType);
@@ -406,7 +409,7 @@ public class CalendarBookingCacheModel
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(statusByUserName);
@@ -444,5 +447,4 @@ public class CalendarBookingCacheModel
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
-
 }

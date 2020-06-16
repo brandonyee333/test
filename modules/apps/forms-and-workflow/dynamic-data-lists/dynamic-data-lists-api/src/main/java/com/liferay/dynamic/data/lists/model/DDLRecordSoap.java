@@ -14,6 +14,8 @@
 
 package com.liferay.dynamic.data.lists.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -24,10 +26,11 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.dynamic.data.lists.service.http.DDLRecordServiceSoap}.
  *
  * @author Brian Wing Shun Chan
+ * @see com.liferay.dynamic.data.lists.service.http.DDLRecordServiceSoap
  * @generated
  */
+@ProviderType
 public class DDLRecordSoap implements Serializable {
-
 	public static DDLRecordSoap toSoapModel(DDLRecord model) {
 		DDLRecordSoap soapModel = new DDLRecordSoap();
 
@@ -78,8 +81,7 @@ public class DDLRecordSoap implements Serializable {
 	}
 
 	public static DDLRecordSoap[] toSoapModels(List<DDLRecord> models) {
-		List<DDLRecordSoap> soapModels = new ArrayList<DDLRecordSoap>(
-			models.size());
+		List<DDLRecordSoap> soapModels = new ArrayList<DDLRecordSoap>(models.size());
 
 		for (DDLRecord model : models) {
 			soapModels.add(toSoapModel(model));
@@ -234,5 +236,4 @@ public class DDLRecordSoap implements Serializable {
 	private String _version;
 	private int _displayIndex;
 	private Date _lastPublishDate;
-
 }

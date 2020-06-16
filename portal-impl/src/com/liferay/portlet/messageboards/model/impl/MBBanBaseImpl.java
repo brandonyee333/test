@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.messageboards.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.message.boards.kernel.model.MBBan;
 import com.liferay.message.boards.kernel.service.MBBanLocalServiceUtil;
 
@@ -29,12 +31,12 @@ import com.liferay.message.boards.kernel.service.MBBanLocalServiceUtil;
  * @see MBBan
  * @generated
  */
+@ProviderType
 public abstract class MBBanBaseImpl extends MBBanModelImpl implements MBBan {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a message boards ban model instance should use the <code>MBBan</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a message boards ban model instance should use the {@link MBBan} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -45,5 +47,4 @@ public abstract class MBBanBaseImpl extends MBBanModelImpl implements MBBan {
 			MBBanLocalServiceUtil.updateMBBan(this);
 		}
 	}
-
 }

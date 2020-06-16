@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -29,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing Country in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see Country
  * @generated
  */
-public class CountryCacheModel
-	implements CacheModel<Country>, Externalizable, MVCCModel {
-
+@ProviderType
+public class CountryCacheModel implements CacheModel<Country>, Externalizable,
+	MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -47,8 +51,7 @@ public class CountryCacheModel
 		CountryCacheModel countryCacheModel = (CountryCacheModel)obj;
 
 		if ((countryId == countryCacheModel.countryId) &&
-			(mvccVersion == countryCacheModel.mvccVersion)) {
-
+				(mvccVersion == countryCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -107,35 +110,35 @@ public class CountryCacheModel
 		countryImpl.setCountryId(countryId);
 
 		if (name == null) {
-			countryImpl.setName("");
+			countryImpl.setName(StringPool.BLANK);
 		}
 		else {
 			countryImpl.setName(name);
 		}
 
 		if (a2 == null) {
-			countryImpl.setA2("");
+			countryImpl.setA2(StringPool.BLANK);
 		}
 		else {
 			countryImpl.setA2(a2);
 		}
 
 		if (a3 == null) {
-			countryImpl.setA3("");
+			countryImpl.setA3(StringPool.BLANK);
 		}
 		else {
 			countryImpl.setA3(a3);
 		}
 
 		if (number == null) {
-			countryImpl.setNumber("");
+			countryImpl.setNumber(StringPool.BLANK);
 		}
 		else {
 			countryImpl.setNumber(number);
 		}
 
 		if (idd == null) {
-			countryImpl.setIdd("");
+			countryImpl.setIdd(StringPool.BLANK);
 		}
 		else {
 			countryImpl.setIdd(idd);
@@ -166,41 +169,42 @@ public class CountryCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(countryId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (a2 == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(a2);
 		}
 
 		if (a3 == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(a3);
 		}
 
 		if (number == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(number);
 		}
 
 		if (idd == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(idd);
@@ -220,5 +224,4 @@ public class CountryCacheModel
 	public String idd;
 	public boolean zipRequired;
 	public boolean active;
-
 }

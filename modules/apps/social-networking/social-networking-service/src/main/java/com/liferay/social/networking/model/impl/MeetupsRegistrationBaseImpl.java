@@ -14,6 +14,8 @@
 
 package com.liferay.social.networking.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.social.networking.model.MeetupsRegistration;
 import com.liferay.social.networking.service.MeetupsRegistrationLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.social.networking.service.MeetupsRegistrationLocalServiceUtil
  * @see MeetupsRegistration
  * @generated
  */
+@ProviderType
 public abstract class MeetupsRegistrationBaseImpl
 	extends MeetupsRegistrationModelImpl implements MeetupsRegistration {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a meetups registration model instance should use the <code>MeetupsRegistration</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a meetups registration model instance should use the {@link MeetupsRegistration} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class MeetupsRegistrationBaseImpl
 			MeetupsRegistrationLocalServiceUtil.updateMeetupsRegistration(this);
 		}
 	}
-
 }

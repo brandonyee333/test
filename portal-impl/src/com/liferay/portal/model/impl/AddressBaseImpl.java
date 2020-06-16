@@ -14,6 +14,8 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
  * @see Address
  * @generated
  */
-public abstract class AddressBaseImpl
-	extends AddressModelImpl implements Address {
-
+@ProviderType
+public abstract class AddressBaseImpl extends AddressModelImpl
+	implements Address {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a address model instance should use the <code>Address</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a address model instance should use the {@link Address} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class AddressBaseImpl
 			AddressLocalServiceUtil.updateAddress(this);
 		}
 	}
-
 }

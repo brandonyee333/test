@@ -14,10 +14,14 @@
 
 package com.liferay.dynamic.data.lists.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.dynamic.data.lists.model.DDLRecord;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing DDLRecord in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see DDLRecord
  * @generated
  */
-public class DDLRecordCacheModel
-	implements CacheModel<DDLRecord>, Externalizable {
-
+@ProviderType
+public class DDLRecordCacheModel implements CacheModel<DDLRecord>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -103,7 +108,7 @@ public class DDLRecordCacheModel
 		DDLRecordImpl ddlRecordImpl = new DDLRecordImpl();
 
 		if (uuid == null) {
-			ddlRecordImpl.setUuid("");
+			ddlRecordImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			ddlRecordImpl.setUuid(uuid);
@@ -115,7 +120,7 @@ public class DDLRecordCacheModel
 		ddlRecordImpl.setUserId(userId);
 
 		if (userName == null) {
-			ddlRecordImpl.setUserName("");
+			ddlRecordImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			ddlRecordImpl.setUserName(userName);
@@ -124,7 +129,7 @@ public class DDLRecordCacheModel
 		ddlRecordImpl.setVersionUserId(versionUserId);
 
 		if (versionUserName == null) {
-			ddlRecordImpl.setVersionUserName("");
+			ddlRecordImpl.setVersionUserName(StringPool.BLANK);
 		}
 		else {
 			ddlRecordImpl.setVersionUserName(versionUserName);
@@ -148,7 +153,7 @@ public class DDLRecordCacheModel
 		ddlRecordImpl.setRecordSetId(recordSetId);
 
 		if (version == null) {
-			ddlRecordImpl.setVersion("");
+			ddlRecordImpl.setVersion(StringPool.BLANK);
 		}
 		else {
 			ddlRecordImpl.setVersion(version);
@@ -196,9 +201,10 @@ public class DDLRecordCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -213,7 +219,7 @@ public class DDLRecordCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -222,7 +228,7 @@ public class DDLRecordCacheModel
 		objectOutput.writeLong(versionUserId);
 
 		if (versionUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(versionUserName);
@@ -236,7 +242,7 @@ public class DDLRecordCacheModel
 		objectOutput.writeLong(recordSetId);
 
 		if (version == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(version);
@@ -261,5 +267,4 @@ public class DDLRecordCacheModel
 	public String version;
 	public int displayIndex;
 	public long lastPublishDate;
-
 }

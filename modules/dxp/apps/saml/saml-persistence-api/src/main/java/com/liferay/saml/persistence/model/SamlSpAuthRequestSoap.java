@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.saml.persistence.model;
+
+import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -26,8 +28,8 @@ import java.util.List;
  * @author Mika Koivisto
  * @generated
  */
+@ProviderType
 public class SamlSpAuthRequestSoap implements Serializable {
-
 	public static SamlSpAuthRequestSoap toSoapModel(SamlSpAuthRequest model) {
 		SamlSpAuthRequestSoap soapModel = new SamlSpAuthRequestSoap();
 
@@ -42,9 +44,7 @@ public class SamlSpAuthRequestSoap implements Serializable {
 
 	public static SamlSpAuthRequestSoap[] toSoapModels(
 		SamlSpAuthRequest[] models) {
-
-		SamlSpAuthRequestSoap[] soapModels =
-			new SamlSpAuthRequestSoap[models.length];
+		SamlSpAuthRequestSoap[] soapModels = new SamlSpAuthRequestSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -55,12 +55,10 @@ public class SamlSpAuthRequestSoap implements Serializable {
 
 	public static SamlSpAuthRequestSoap[][] toSoapModels(
 		SamlSpAuthRequest[][] models) {
-
 		SamlSpAuthRequestSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels =
-				new SamlSpAuthRequestSoap[models.length][models[0].length];
+			soapModels = new SamlSpAuthRequestSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new SamlSpAuthRequestSoap[0][0];
@@ -75,9 +73,7 @@ public class SamlSpAuthRequestSoap implements Serializable {
 
 	public static SamlSpAuthRequestSoap[] toSoapModels(
 		List<SamlSpAuthRequest> models) {
-
-		List<SamlSpAuthRequestSoap> soapModels =
-			new ArrayList<SamlSpAuthRequestSoap>(models.size());
+		List<SamlSpAuthRequestSoap> soapModels = new ArrayList<SamlSpAuthRequestSoap>(models.size());
 
 		for (SamlSpAuthRequest model : models) {
 			soapModels.add(toSoapModel(model));
@@ -142,5 +138,4 @@ public class SamlSpAuthRequestSoap implements Serializable {
 	private Date _createDate;
 	private String _samlIdpEntityId;
 	private String _samlSpAuthRequestKey;
-
 }

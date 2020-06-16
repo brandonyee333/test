@@ -19,6 +19,7 @@ import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil;
 import com.liferay.blogs.kernel.service.persistence.BlogsEntryPersistence;
 import com.liferay.blogs.kernel.service.persistence.BlogsEntryUtil;
+
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -32,10 +33,18 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
 
 import java.io.Serializable;
 
@@ -47,23 +56,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-
 /**
  * @generated
  */
 public class BlogsEntryPersistenceTest {
-
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
+	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
+			PersistenceTestRule.INSTANCE,
 			new TransactionalTestRule(Propagation.REQUIRED));
 
 	@Before
@@ -103,8 +103,7 @@ public class BlogsEntryPersistenceTest {
 
 		_persistence.remove(newBlogsEntry);
 
-		BlogsEntry existingBlogsEntry = _persistence.fetchByPrimaryKey(
-			newBlogsEntry.getPrimaryKey());
+		BlogsEntry existingBlogsEntry = _persistence.fetchByPrimaryKey(newBlogsEntry.getPrimaryKey());
 
 		Assert.assertNull(existingBlogsEntry);
 	}
@@ -178,108 +177,96 @@ public class BlogsEntryPersistenceTest {
 
 		_blogsEntries.add(_persistence.update(newBlogsEntry));
 
-		BlogsEntry existingBlogsEntry = _persistence.findByPrimaryKey(
-			newBlogsEntry.getPrimaryKey());
+		BlogsEntry existingBlogsEntry = _persistence.findByPrimaryKey(newBlogsEntry.getPrimaryKey());
 
-		Assert.assertEquals(
-			existingBlogsEntry.getUuid(), newBlogsEntry.getUuid());
-		Assert.assertEquals(
-			existingBlogsEntry.getEntryId(), newBlogsEntry.getEntryId());
-		Assert.assertEquals(
-			existingBlogsEntry.getGroupId(), newBlogsEntry.getGroupId());
-		Assert.assertEquals(
-			existingBlogsEntry.getCompanyId(), newBlogsEntry.getCompanyId());
-		Assert.assertEquals(
-			existingBlogsEntry.getUserId(), newBlogsEntry.getUserId());
-		Assert.assertEquals(
-			existingBlogsEntry.getUserName(), newBlogsEntry.getUserName());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingBlogsEntry.getCreateDate()),
+		Assert.assertEquals(existingBlogsEntry.getUuid(),
+			newBlogsEntry.getUuid());
+		Assert.assertEquals(existingBlogsEntry.getEntryId(),
+			newBlogsEntry.getEntryId());
+		Assert.assertEquals(existingBlogsEntry.getGroupId(),
+			newBlogsEntry.getGroupId());
+		Assert.assertEquals(existingBlogsEntry.getCompanyId(),
+			newBlogsEntry.getCompanyId());
+		Assert.assertEquals(existingBlogsEntry.getUserId(),
+			newBlogsEntry.getUserId());
+		Assert.assertEquals(existingBlogsEntry.getUserName(),
+			newBlogsEntry.getUserName());
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingBlogsEntry.getCreateDate()),
 			Time.getShortTimestamp(newBlogsEntry.getCreateDate()));
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingBlogsEntry.getModifiedDate()),
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingBlogsEntry.getModifiedDate()),
 			Time.getShortTimestamp(newBlogsEntry.getModifiedDate()));
-		Assert.assertEquals(
-			existingBlogsEntry.getTitle(), newBlogsEntry.getTitle());
-		Assert.assertEquals(
-			existingBlogsEntry.getSubtitle(), newBlogsEntry.getSubtitle());
-		Assert.assertEquals(
-			existingBlogsEntry.getUrlTitle(), newBlogsEntry.getUrlTitle());
-		Assert.assertEquals(
-			existingBlogsEntry.getDescription(),
+		Assert.assertEquals(existingBlogsEntry.getTitle(),
+			newBlogsEntry.getTitle());
+		Assert.assertEquals(existingBlogsEntry.getSubtitle(),
+			newBlogsEntry.getSubtitle());
+		Assert.assertEquals(existingBlogsEntry.getUrlTitle(),
+			newBlogsEntry.getUrlTitle());
+		Assert.assertEquals(existingBlogsEntry.getDescription(),
 			newBlogsEntry.getDescription());
-		Assert.assertEquals(
-			existingBlogsEntry.getContent(), newBlogsEntry.getContent());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingBlogsEntry.getDisplayDate()),
+		Assert.assertEquals(existingBlogsEntry.getContent(),
+			newBlogsEntry.getContent());
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingBlogsEntry.getDisplayDate()),
 			Time.getShortTimestamp(newBlogsEntry.getDisplayDate()));
-		Assert.assertEquals(
-			existingBlogsEntry.isAllowPingbacks(),
-			newBlogsEntry.isAllowPingbacks());
-		Assert.assertEquals(
-			existingBlogsEntry.isAllowTrackbacks(),
-			newBlogsEntry.isAllowTrackbacks());
-		Assert.assertEquals(
-			existingBlogsEntry.getTrackbacks(), newBlogsEntry.getTrackbacks());
-		Assert.assertEquals(
-			existingBlogsEntry.getCoverImageCaption(),
+		Assert.assertEquals(existingBlogsEntry.getAllowPingbacks(),
+			newBlogsEntry.getAllowPingbacks());
+		Assert.assertEquals(existingBlogsEntry.getAllowTrackbacks(),
+			newBlogsEntry.getAllowTrackbacks());
+		Assert.assertEquals(existingBlogsEntry.getTrackbacks(),
+			newBlogsEntry.getTrackbacks());
+		Assert.assertEquals(existingBlogsEntry.getCoverImageCaption(),
 			newBlogsEntry.getCoverImageCaption());
-		Assert.assertEquals(
-			existingBlogsEntry.getCoverImageFileEntryId(),
+		Assert.assertEquals(existingBlogsEntry.getCoverImageFileEntryId(),
 			newBlogsEntry.getCoverImageFileEntryId());
-		Assert.assertEquals(
-			existingBlogsEntry.getCoverImageURL(),
+		Assert.assertEquals(existingBlogsEntry.getCoverImageURL(),
 			newBlogsEntry.getCoverImageURL());
-		Assert.assertEquals(
-			existingBlogsEntry.isSmallImage(), newBlogsEntry.isSmallImage());
-		Assert.assertEquals(
-			existingBlogsEntry.getSmallImageFileEntryId(),
+		Assert.assertEquals(existingBlogsEntry.getSmallImage(),
+			newBlogsEntry.getSmallImage());
+		Assert.assertEquals(existingBlogsEntry.getSmallImageFileEntryId(),
 			newBlogsEntry.getSmallImageFileEntryId());
-		Assert.assertEquals(
-			existingBlogsEntry.getSmallImageId(),
+		Assert.assertEquals(existingBlogsEntry.getSmallImageId(),
 			newBlogsEntry.getSmallImageId());
-		Assert.assertEquals(
-			existingBlogsEntry.getSmallImageURL(),
+		Assert.assertEquals(existingBlogsEntry.getSmallImageURL(),
 			newBlogsEntry.getSmallImageURL());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingBlogsEntry.getLastPublishDate()),
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingBlogsEntry.getLastPublishDate()),
 			Time.getShortTimestamp(newBlogsEntry.getLastPublishDate()));
-		Assert.assertEquals(
-			existingBlogsEntry.getStatus(), newBlogsEntry.getStatus());
-		Assert.assertEquals(
-			existingBlogsEntry.getStatusByUserId(),
+		Assert.assertEquals(existingBlogsEntry.getStatus(),
+			newBlogsEntry.getStatus());
+		Assert.assertEquals(existingBlogsEntry.getStatusByUserId(),
 			newBlogsEntry.getStatusByUserId());
-		Assert.assertEquals(
-			existingBlogsEntry.getStatusByUserName(),
+		Assert.assertEquals(existingBlogsEntry.getStatusByUserName(),
 			newBlogsEntry.getStatusByUserName());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingBlogsEntry.getStatusDate()),
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingBlogsEntry.getStatusDate()),
 			Time.getShortTimestamp(newBlogsEntry.getStatusDate()));
 	}
 
 	@Test
 	public void testCountByUuid() throws Exception {
-		_persistence.countByUuid("");
+		_persistence.countByUuid(StringPool.BLANK);
 
-		_persistence.countByUuid("null");
+		_persistence.countByUuid(StringPool.NULL);
 
 		_persistence.countByUuid((String)null);
 	}
 
 	@Test
 	public void testCountByUUID_G() throws Exception {
-		_persistence.countByUUID_G("", RandomTestUtil.nextLong());
+		_persistence.countByUUID_G(StringPool.BLANK, RandomTestUtil.nextLong());
 
-		_persistence.countByUUID_G("null", 0L);
+		_persistence.countByUUID_G(StringPool.NULL, 0L);
 
 		_persistence.countByUUID_G((String)null, 0L);
 	}
 
 	@Test
 	public void testCountByUuid_C() throws Exception {
-		_persistence.countByUuid_C("", RandomTestUtil.nextLong());
+		_persistence.countByUuid_C(StringPool.BLANK, RandomTestUtil.nextLong());
 
-		_persistence.countByUuid_C("null", 0L);
+		_persistence.countByUuid_C(StringPool.NULL, 0L);
 
 		_persistence.countByUuid_C((String)null, 0L);
 	}
@@ -300,197 +287,185 @@ public class BlogsEntryPersistenceTest {
 
 	@Test
 	public void testCountByG_UT() throws Exception {
-		_persistence.countByG_UT(RandomTestUtil.nextLong(), "");
+		_persistence.countByG_UT(RandomTestUtil.nextLong(), StringPool.BLANK);
 
-		_persistence.countByG_UT(0L, "null");
+		_persistence.countByG_UT(0L, StringPool.NULL);
 
 		_persistence.countByG_UT(0L, (String)null);
 	}
 
 	@Test
 	public void testCountByG_LtD() throws Exception {
-		_persistence.countByG_LtD(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextDate());
+		_persistence.countByG_LtD(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextDate());
 
 		_persistence.countByG_LtD(0L, RandomTestUtil.nextDate());
 	}
 
 	@Test
 	public void testCountByG_S() throws Exception {
-		_persistence.countByG_S(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
+		_persistence.countByG_S(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextInt());
 
 		_persistence.countByG_S(0L, 0);
 	}
 
 	@Test
 	public void testCountByG_NotS() throws Exception {
-		_persistence.countByG_NotS(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
+		_persistence.countByG_NotS(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextInt());
 
 		_persistence.countByG_NotS(0L, 0);
 	}
 
 	@Test
 	public void testCountByC_U() throws Exception {
-		_persistence.countByC_U(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+		_persistence.countByC_U(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong());
 
 		_persistence.countByC_U(0L, 0L);
 	}
 
 	@Test
 	public void testCountByC_LtD() throws Exception {
-		_persistence.countByC_LtD(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextDate());
+		_persistence.countByC_LtD(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextDate());
 
 		_persistence.countByC_LtD(0L, RandomTestUtil.nextDate());
 	}
 
 	@Test
 	public void testCountByC_S() throws Exception {
-		_persistence.countByC_S(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
+		_persistence.countByC_S(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextInt());
 
 		_persistence.countByC_S(0L, 0);
 	}
 
 	@Test
 	public void testCountByC_NotS() throws Exception {
-		_persistence.countByC_NotS(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
+		_persistence.countByC_NotS(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextInt());
 
 		_persistence.countByC_NotS(0L, 0);
 	}
 
 	@Test
 	public void testCountByLtD_S() throws Exception {
-		_persistence.countByLtD_S(
-			RandomTestUtil.nextDate(), RandomTestUtil.nextInt());
+		_persistence.countByLtD_S(RandomTestUtil.nextDate(),
+			RandomTestUtil.nextInt());
 
 		_persistence.countByLtD_S(RandomTestUtil.nextDate(), 0);
 	}
 
 	@Test
 	public void testCountByG_U_LtD() throws Exception {
-		_persistence.countByG_U_LtD(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
-			RandomTestUtil.nextDate());
+		_persistence.countByG_U_LtD(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong(), RandomTestUtil.nextDate());
 
 		_persistence.countByG_U_LtD(0L, 0L, RandomTestUtil.nextDate());
 	}
 
 	@Test
 	public void testCountByG_U_S() throws Exception {
-		_persistence.countByG_U_S(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
-			RandomTestUtil.nextInt());
+		_persistence.countByG_U_S(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
 
 		_persistence.countByG_U_S(0L, 0L, 0);
 	}
 
 	@Test
 	public void testCountByG_U_SArrayable() throws Exception {
-		_persistence.countByG_U_S(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
-			new int[] {RandomTestUtil.nextInt(), 0});
+		_persistence.countByG_U_S(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong(), new int[] { RandomTestUtil.nextInt(), 0 });
 	}
 
 	@Test
 	public void testCountByG_U_NotS() throws Exception {
-		_persistence.countByG_U_NotS(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
-			RandomTestUtil.nextInt());
+		_persistence.countByG_U_NotS(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
 
 		_persistence.countByG_U_NotS(0L, 0L, 0);
 	}
 
 	@Test
 	public void testCountByG_D_S() throws Exception {
-		_persistence.countByG_D_S(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextDate(),
-			RandomTestUtil.nextInt());
+		_persistence.countByG_D_S(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextDate(), RandomTestUtil.nextInt());
 
 		_persistence.countByG_D_S(0L, RandomTestUtil.nextDate(), 0);
 	}
 
 	@Test
 	public void testCountByG_GtD_S() throws Exception {
-		_persistence.countByG_GtD_S(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextDate(),
-			RandomTestUtil.nextInt());
+		_persistence.countByG_GtD_S(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextDate(), RandomTestUtil.nextInt());
 
 		_persistence.countByG_GtD_S(0L, RandomTestUtil.nextDate(), 0);
 	}
 
 	@Test
 	public void testCountByG_LtD_S() throws Exception {
-		_persistence.countByG_LtD_S(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextDate(),
-			RandomTestUtil.nextInt());
+		_persistence.countByG_LtD_S(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextDate(), RandomTestUtil.nextInt());
 
 		_persistence.countByG_LtD_S(0L, RandomTestUtil.nextDate(), 0);
 	}
 
 	@Test
 	public void testCountByG_LtD_NotS() throws Exception {
-		_persistence.countByG_LtD_NotS(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextDate(),
-			RandomTestUtil.nextInt());
+		_persistence.countByG_LtD_NotS(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextDate(), RandomTestUtil.nextInt());
 
 		_persistence.countByG_LtD_NotS(0L, RandomTestUtil.nextDate(), 0);
 	}
 
 	@Test
 	public void testCountByC_U_S() throws Exception {
-		_persistence.countByC_U_S(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
-			RandomTestUtil.nextInt());
+		_persistence.countByC_U_S(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
 
 		_persistence.countByC_U_S(0L, 0L, 0);
 	}
 
 	@Test
 	public void testCountByC_U_NotS() throws Exception {
-		_persistence.countByC_U_NotS(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
-			RandomTestUtil.nextInt());
+		_persistence.countByC_U_NotS(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
 
 		_persistence.countByC_U_NotS(0L, 0L, 0);
 	}
 
 	@Test
 	public void testCountByC_LtD_S() throws Exception {
-		_persistence.countByC_LtD_S(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextDate(),
-			RandomTestUtil.nextInt());
+		_persistence.countByC_LtD_S(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextDate(), RandomTestUtil.nextInt());
 
 		_persistence.countByC_LtD_S(0L, RandomTestUtil.nextDate(), 0);
 	}
 
 	@Test
 	public void testCountByC_LtD_NotS() throws Exception {
-		_persistence.countByC_LtD_NotS(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextDate(),
-			RandomTestUtil.nextInt());
+		_persistence.countByC_LtD_NotS(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextDate(), RandomTestUtil.nextInt());
 
 		_persistence.countByC_LtD_NotS(0L, RandomTestUtil.nextDate(), 0);
 	}
 
 	@Test
 	public void testCountByG_U_LtD_S() throws Exception {
-		_persistence.countByG_U_LtD_S(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
-			RandomTestUtil.nextDate(), RandomTestUtil.nextInt());
+		_persistence.countByG_U_LtD_S(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong(), RandomTestUtil.nextDate(),
+			RandomTestUtil.nextInt());
 
 		_persistence.countByG_U_LtD_S(0L, 0L, RandomTestUtil.nextDate(), 0);
 	}
 
 	@Test
 	public void testCountByG_U_LtD_NotS() throws Exception {
-		_persistence.countByG_U_LtD_NotS(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
-			RandomTestUtil.nextDate(), RandomTestUtil.nextInt());
+		_persistence.countByG_U_LtD_NotS(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong(), RandomTestUtil.nextDate(),
+			RandomTestUtil.nextInt());
 
 		_persistence.countByG_U_LtD_NotS(0L, 0L, RandomTestUtil.nextDate(), 0);
 	}
@@ -499,8 +474,7 @@ public class BlogsEntryPersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		BlogsEntry newBlogsEntry = addBlogsEntry();
 
-		BlogsEntry existingBlogsEntry = _persistence.findByPrimaryKey(
-			newBlogsEntry.getPrimaryKey());
+		BlogsEntry existingBlogsEntry = _persistence.findByPrimaryKey(newBlogsEntry.getPrimaryKey());
 
 		Assert.assertEquals(existingBlogsEntry, newBlogsEntry);
 	}
@@ -514,36 +488,34 @@ public class BlogsEntryPersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
+		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			getOrderByComparator());
 	}
 
 	@Test
 	public void testFilterFindByGroupId() throws Exception {
-		_persistence.filterFindByGroupId(
-			0, QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
+		_persistence.filterFindByGroupId(0, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, getOrderByComparator());
 	}
 
 	protected OrderByComparator<BlogsEntry> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create(
-			"BlogsEntry", "uuid", true, "entryId", true, "groupId", true,
-			"companyId", true, "userId", true, "userName", true, "createDate",
-			true, "modifiedDate", true, "title", true, "subtitle", true,
-			"urlTitle", true, "description", true, "displayDate", true,
-			"allowPingbacks", true, "allowTrackbacks", true,
-			"coverImageCaption", true, "coverImageFileEntryId", true,
-			"coverImageURL", true, "smallImage", true, "smallImageFileEntryId",
-			true, "smallImageId", true, "smallImageURL", true,
-			"lastPublishDate", true, "status", true, "statusByUserId", true,
-			"statusByUserName", true, "statusDate", true);
+		return OrderByComparatorFactoryUtil.create("BlogsEntry", "uuid", true,
+			"entryId", true, "groupId", true, "companyId", true, "userId",
+			true, "userName", true, "createDate", true, "modifiedDate", true,
+			"title", true, "subtitle", true, "urlTitle", true, "description",
+			true, "displayDate", true, "allowPingbacks", true,
+			"allowTrackbacks", true, "coverImageCaption", true,
+			"coverImageFileEntryId", true, "coverImageURL", true, "smallImage",
+			true, "smallImageFileEntryId", true, "smallImageId", true,
+			"smallImageURL", true, "lastPublishDate", true, "status", true,
+			"statusByUserId", true, "statusByUserName", true, "statusDate", true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		BlogsEntry newBlogsEntry = addBlogsEntry();
 
-		BlogsEntry existingBlogsEntry = _persistence.fetchByPrimaryKey(
-			newBlogsEntry.getPrimaryKey());
+		BlogsEntry existingBlogsEntry = _persistence.fetchByPrimaryKey(newBlogsEntry.getPrimaryKey());
 
 		Assert.assertEquals(existingBlogsEntry, newBlogsEntry);
 	}
@@ -560,7 +532,6 @@ public class BlogsEntryPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
-
 		BlogsEntry newBlogsEntry1 = addBlogsEntry();
 		BlogsEntry newBlogsEntry2 = addBlogsEntry();
 
@@ -569,20 +540,18 @@ public class BlogsEntryPersistenceTest {
 		primaryKeys.add(newBlogsEntry1.getPrimaryKey());
 		primaryKeys.add(newBlogsEntry2.getPrimaryKey());
 
-		Map<Serializable, BlogsEntry> blogsEntries =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, BlogsEntry> blogsEntries = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(2, blogsEntries.size());
-		Assert.assertEquals(
-			newBlogsEntry1, blogsEntries.get(newBlogsEntry1.getPrimaryKey()));
-		Assert.assertEquals(
-			newBlogsEntry2, blogsEntries.get(newBlogsEntry2.getPrimaryKey()));
+		Assert.assertEquals(newBlogsEntry1,
+			blogsEntries.get(newBlogsEntry1.getPrimaryKey()));
+		Assert.assertEquals(newBlogsEntry2,
+			blogsEntries.get(newBlogsEntry2.getPrimaryKey()));
 	}
 
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
-
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -592,8 +561,7 @@ public class BlogsEntryPersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, BlogsEntry> blogsEntries =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, BlogsEntry> blogsEntries = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(blogsEntries.isEmpty());
 	}
@@ -601,7 +569,6 @@ public class BlogsEntryPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
-
 		BlogsEntry newBlogsEntry = addBlogsEntry();
 
 		long pk = RandomTestUtil.nextLong();
@@ -611,57 +578,52 @@ public class BlogsEntryPersistenceTest {
 		primaryKeys.add(newBlogsEntry.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, BlogsEntry> blogsEntries =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, BlogsEntry> blogsEntries = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, blogsEntries.size());
-		Assert.assertEquals(
-			newBlogsEntry, blogsEntries.get(newBlogsEntry.getPrimaryKey()));
+		Assert.assertEquals(newBlogsEntry,
+			blogsEntries.get(newBlogsEntry.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
+		throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, BlogsEntry> blogsEntries =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, BlogsEntry> blogsEntries = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(blogsEntries.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey()
+		throws Exception {
 		BlogsEntry newBlogsEntry = addBlogsEntry();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newBlogsEntry.getPrimaryKey());
 
-		Map<Serializable, BlogsEntry> blogsEntries =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, BlogsEntry> blogsEntries = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, blogsEntries.size());
-		Assert.assertEquals(
-			newBlogsEntry, blogsEntries.get(newBlogsEntry.getPrimaryKey()));
+		Assert.assertEquals(newBlogsEntry,
+			blogsEntries.get(newBlogsEntry.getPrimaryKey()));
 	}
 
 	@Test
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery =
-			BlogsEntryLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = BlogsEntryLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<BlogsEntry>() {
-
+		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<BlogsEntry>() {
 				@Override
 				public void performAction(BlogsEntry blogsEntry) {
 					Assert.assertNotNull(blogsEntry);
 
 					count.increment();
 				}
-
 			});
 
 		actionableDynamicQuery.performActions();
@@ -670,17 +632,17 @@ public class BlogsEntryPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting()
+		throws Exception {
 		BlogsEntry newBlogsEntry = addBlogsEntry();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			BlogsEntry.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(BlogsEntry.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("entryId", newBlogsEntry.getEntryId()));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("entryId",
+				newBlogsEntry.getEntryId()));
 
-		List<BlogsEntry> result = _persistence.findWithDynamicQuery(
-			dynamicQuery);
+		List<BlogsEntry> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
 		Assert.assertEquals(1, result.size());
 
@@ -691,31 +653,31 @@ public class BlogsEntryPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			BlogsEntry.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(BlogsEntry.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("entryId", RandomTestUtil.nextLong()));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("entryId",
+				RandomTestUtil.nextLong()));
 
-		List<BlogsEntry> result = _persistence.findWithDynamicQuery(
-			dynamicQuery);
+		List<BlogsEntry> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
 		Assert.assertEquals(0, result.size());
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting() throws Exception {
+	public void testDynamicQueryByProjectionExisting()
+		throws Exception {
 		BlogsEntry newBlogsEntry = addBlogsEntry();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			BlogsEntry.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(BlogsEntry.class,
+				_dynamicQueryClassLoader);
 
 		dynamicQuery.setProjection(ProjectionFactoryUtil.property("entryId"));
 
 		Object newEntryId = newBlogsEntry.getEntryId();
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in("entryId", new Object[] {newEntryId}));
+		dynamicQuery.add(RestrictionsFactoryUtil.in("entryId",
+				new Object[] { newEntryId }));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -728,14 +690,13 @@ public class BlogsEntryPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			BlogsEntry.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(BlogsEntry.class,
+				_dynamicQueryClassLoader);
 
 		dynamicQuery.setProjection(ProjectionFactoryUtil.property("entryId"));
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in(
-				"entryId", new Object[] {RandomTestUtil.nextLong()}));
+		dynamicQuery.add(RestrictionsFactoryUtil.in("entryId",
+				new Object[] { RandomTestUtil.nextLong() }));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -748,29 +709,21 @@ public class BlogsEntryPersistenceTest {
 
 		_persistence.clearCache();
 
-		BlogsEntry existingBlogsEntry = _persistence.findByPrimaryKey(
-			newBlogsEntry.getPrimaryKey());
+		BlogsEntry existingBlogsEntry = _persistence.findByPrimaryKey(newBlogsEntry.getPrimaryKey());
 
-		Assert.assertTrue(
-			Objects.equals(
-				existingBlogsEntry.getUuid(),
-				ReflectionTestUtil.invoke(
-					existingBlogsEntry, "getOriginalUuid", new Class<?>[0])));
-		Assert.assertEquals(
-			Long.valueOf(existingBlogsEntry.getGroupId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingBlogsEntry, "getOriginalGroupId", new Class<?>[0]));
+		Assert.assertTrue(Objects.equals(existingBlogsEntry.getUuid(),
+				ReflectionTestUtil.invoke(existingBlogsEntry,
+					"getOriginalUuid", new Class<?>[0])));
+		Assert.assertEquals(Long.valueOf(existingBlogsEntry.getGroupId()),
+			ReflectionTestUtil.<Long>invoke(existingBlogsEntry,
+				"getOriginalGroupId", new Class<?>[0]));
 
-		Assert.assertEquals(
-			Long.valueOf(existingBlogsEntry.getGroupId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingBlogsEntry, "getOriginalGroupId", new Class<?>[0]));
-		Assert.assertTrue(
-			Objects.equals(
-				existingBlogsEntry.getUrlTitle(),
-				ReflectionTestUtil.invoke(
-					existingBlogsEntry, "getOriginalUrlTitle",
-					new Class<?>[0])));
+		Assert.assertEquals(Long.valueOf(existingBlogsEntry.getGroupId()),
+			ReflectionTestUtil.<Long>invoke(existingBlogsEntry,
+				"getOriginalGroupId", new Class<?>[0]));
+		Assert.assertTrue(Objects.equals(existingBlogsEntry.getUrlTitle(),
+				ReflectionTestUtil.invoke(existingBlogsEntry,
+					"getOriginalUrlTitle", new Class<?>[0])));
 	}
 
 	protected BlogsEntry addBlogsEntry() throws Exception {
@@ -842,5 +795,4 @@ public class BlogsEntryPersistenceTest {
 	private List<BlogsEntry> _blogsEntries = new ArrayList<BlogsEntry>();
 	private BlogsEntryPersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
-
 }

@@ -14,9 +14,12 @@
 
 package com.liferay.dynamic.data.mapping.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.dynamic.data.mapping.model.DDMStructureLink;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLinkLocalService;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMStructureLinkPersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -36,8 +39,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
-import com.liferay.portal.kernel.service.persistence.BasePersistence;
-import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -57,16 +58,17 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.dynamic.data.mapping.service.impl.DDMStructureLinkLocalServiceImpl
+ * @see com.liferay.dynamic.data.mapping.service.DDMStructureLinkLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class DDMStructureLinkLocalServiceBaseImpl
-	extends BaseLocalServiceImpl
-	implements DDMStructureLinkLocalService, IdentifiableOSGiService {
-
+	extends BaseLocalServiceImpl implements DDMStructureLinkLocalService,
+		IdentifiableOSGiService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DDMStructureLinkLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.dynamic.data.mapping.service.DDMStructureLinkLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.dynamic.data.mapping.service.DDMStructureLinkLocalServiceUtil} to access the ddm structure link local service.
 	 */
 
 	/**
@@ -79,7 +81,6 @@ public abstract class DDMStructureLinkLocalServiceBaseImpl
 	@Override
 	public DDMStructureLink addDDMStructureLink(
 		DDMStructureLink ddmStructureLink) {
-
 		ddmStructureLink.setNew(true);
 
 		return ddmStructureLinkPersistence.update(ddmStructureLink);
@@ -92,7 +93,6 @@ public abstract class DDMStructureLinkLocalServiceBaseImpl
 	 * @return the new ddm structure link
 	 */
 	@Override
-	@Transactional(enabled = false)
 	public DDMStructureLink createDDMStructureLink(long structureLinkId) {
 		return ddmStructureLinkPersistence.create(structureLinkId);
 	}
@@ -108,7 +108,6 @@ public abstract class DDMStructureLinkLocalServiceBaseImpl
 	@Override
 	public DDMStructureLink deleteDDMStructureLink(long structureLinkId)
 		throws PortalException {
-
 		return ddmStructureLinkPersistence.remove(structureLinkId);
 	}
 
@@ -122,7 +121,6 @@ public abstract class DDMStructureLinkLocalServiceBaseImpl
 	@Override
 	public DDMStructureLink deleteDDMStructureLink(
 		DDMStructureLink ddmStructureLink) {
-
 		return ddmStructureLinkPersistence.remove(ddmStructureLink);
 	}
 
@@ -130,8 +128,8 @@ public abstract class DDMStructureLinkLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(
-			DDMStructureLink.class, clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(DDMStructureLink.class,
+			clazz.getClassLoader());
 	}
 
 	/**
@@ -149,7 +147,7 @@ public abstract class DDMStructureLinkLocalServiceBaseImpl
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.dynamic.data.mapping.model.impl.DDMStructureLinkModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.dynamic.data.mapping.model.impl.DDMStructureLinkModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -158,18 +156,17 @@ public abstract class DDMStructureLinkLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end) {
-
-		return ddmStructureLinkPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
+		return ddmStructureLinkPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.dynamic.data.mapping.model.impl.DDMStructureLinkModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.dynamic.data.mapping.model.impl.DDMStructureLinkModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -179,12 +176,10 @@ public abstract class DDMStructureLinkLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<T> orderByComparator) {
-
-		return ddmStructureLinkPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
+		return ddmStructureLinkPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end, orderByComparator);
 	}
 
 	/**
@@ -206,11 +201,10 @@ public abstract class DDMStructureLinkLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(
-		DynamicQuery dynamicQuery, Projection projection) {
-
-		return ddmStructureLinkPersistence.countWithDynamicQuery(
-			dynamicQuery, projection);
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection) {
+		return ddmStructureLinkPersistence.countWithDynamicQuery(dynamicQuery,
+			projection);
 	}
 
 	@Override
@@ -228,17 +222,14 @@ public abstract class DDMStructureLinkLocalServiceBaseImpl
 	@Override
 	public DDMStructureLink getDDMStructureLink(long structureLinkId)
 		throws PortalException {
-
 		return ddmStructureLinkPersistence.findByPrimaryKey(structureLinkId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
-		actionableDynamicQuery.setBaseLocalService(
-			ddmStructureLinkLocalService);
+		actionableDynamicQuery.setBaseLocalService(ddmStructureLinkLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(DDMStructureLink.class);
 
@@ -248,14 +239,10 @@ public abstract class DDMStructureLinkLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
 
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
-			new IndexableActionableDynamicQuery();
-
-		indexableActionableDynamicQuery.setBaseLocalService(
-			ddmStructureLinkLocalService);
+		indexableActionableDynamicQuery.setBaseLocalService(ddmStructureLinkLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(DDMStructureLink.class);
 
@@ -267,9 +254,7 @@ public abstract class DDMStructureLinkLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-
-		actionableDynamicQuery.setBaseLocalService(
-			ddmStructureLinkLocalService);
+		actionableDynamicQuery.setBaseLocalService(ddmStructureLinkLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(DDMStructureLink.class);
 
@@ -282,22 +267,12 @@ public abstract class DDMStructureLinkLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-
-		return ddmStructureLinkLocalService.deleteDDMStructureLink(
-			(DDMStructureLink)persistedModel);
+		return ddmStructureLinkLocalService.deleteDDMStructureLink((DDMStructureLink)persistedModel);
 	}
 
-	public BasePersistence<DDMStructureLink> getBasePersistence() {
-		return ddmStructureLinkPersistence;
-	}
-
-	/**
-	 * @throws PortalException
-	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
-
 		return ddmStructureLinkPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -305,7 +280,7 @@ public abstract class DDMStructureLinkLocalServiceBaseImpl
 	 * Returns a range of all the ddm structure links.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.dynamic.data.mapping.model.impl.DDMStructureLinkModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.dynamic.data.mapping.model.impl.DDMStructureLinkModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of ddm structure links
@@ -337,7 +312,6 @@ public abstract class DDMStructureLinkLocalServiceBaseImpl
 	@Override
 	public DDMStructureLink updateDDMStructureLink(
 		DDMStructureLink ddmStructureLink) {
-
 		return ddmStructureLinkPersistence.update(ddmStructureLink);
 	}
 
@@ -357,7 +331,6 @@ public abstract class DDMStructureLinkLocalServiceBaseImpl
 	 */
 	public void setDDMStructureLinkLocalService(
 		DDMStructureLinkLocalService ddmStructureLinkLocalService) {
-
 		this.ddmStructureLinkLocalService = ddmStructureLinkLocalService;
 	}
 
@@ -377,7 +350,6 @@ public abstract class DDMStructureLinkLocalServiceBaseImpl
 	 */
 	public void setDDMStructureLinkPersistence(
 		DDMStructureLinkPersistence ddmStructureLinkPersistence) {
-
 		this.ddmStructureLinkPersistence = ddmStructureLinkPersistence;
 	}
 
@@ -386,9 +358,7 @@ public abstract class DDMStructureLinkLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -398,15 +368,12 @@ public abstract class DDMStructureLinkLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register(
-			"com.liferay.dynamic.data.mapping.model.DDMStructureLink",
+		persistedModelLocalServiceRegistry.register("com.liferay.dynamic.data.mapping.model.DDMStructureLink",
 			ddmStructureLinkLocalService);
 	}
 
@@ -447,30 +414,22 @@ public abstract class DDMStructureLinkLocalServiceBaseImpl
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
 	@BeanReference(type = DDMStructureLinkLocalService.class)
 	protected DDMStructureLinkLocalService ddmStructureLinkLocalService;
-
 	@BeanReference(type = DDMStructureLinkPersistence.class)
 	protected DDMStructureLinkPersistence ddmStructureLinkPersistence;
-
-	@ServiceReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
+	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry
-		persistedModelLocalServiceRegistry;
-
+	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }

@@ -1,15 +1,15 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.saml.persistence.model;
@@ -25,39 +25,34 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Mika Koivisto
  * @see SamlSpIdpConnectionModel
+ * @see com.liferay.saml.persistence.model.impl.SamlSpIdpConnectionImpl
+ * @see com.liferay.saml.persistence.model.impl.SamlSpIdpConnectionModelImpl
  * @generated
  */
-@ImplementationClassName(
-	"com.liferay.saml.persistence.model.impl.SamlSpIdpConnectionImpl"
-)
+@ImplementationClassName("com.liferay.saml.persistence.model.impl.SamlSpIdpConnectionImpl")
 @ProviderType
-public interface SamlSpIdpConnection
-	extends PersistedModel, SamlSpIdpConnectionModel {
-
+public interface SamlSpIdpConnection extends SamlSpIdpConnectionModel,
+	PersistedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to <code>com.liferay.saml.persistence.model.impl.SamlSpIdpConnectionImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to {@link com.liferay.saml.persistence.model.impl.SamlSpIdpConnectionImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<SamlSpIdpConnection, Long>
-		SAML_SP_IDP_CONNECTION_ID_ACCESSOR =
-			new Accessor<SamlSpIdpConnection, Long>() {
+	public static final Accessor<SamlSpIdpConnection, Long> SAML_SP_IDP_CONNECTION_ID_ACCESSOR =
+		new Accessor<SamlSpIdpConnection, Long>() {
+			@Override
+			public Long get(SamlSpIdpConnection samlSpIdpConnection) {
+				return samlSpIdpConnection.getSamlSpIdpConnectionId();
+			}
 
-				@Override
-				public Long get(SamlSpIdpConnection samlSpIdpConnection) {
-					return samlSpIdpConnection.getSamlSpIdpConnectionId();
-				}
+			@Override
+			public Class<Long> getAttributeClass() {
+				return Long.class;
+			}
 
-				@Override
-				public Class<Long> getAttributeClass() {
-					return Long.class;
-				}
-
-				@Override
-				public Class<SamlSpIdpConnection> getTypeClass() {
-					return SamlSpIdpConnection.class;
-				}
-
-			};
-
+			@Override
+			public Class<SamlSpIdpConnection> getTypeClass() {
+				return SamlSpIdpConnection.class;
+			}
+		};
 }

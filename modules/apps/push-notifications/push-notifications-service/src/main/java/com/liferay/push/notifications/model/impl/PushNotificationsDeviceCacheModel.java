@@ -14,9 +14,13 @@
 
 package com.liferay.push.notifications.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.push.notifications.model.PushNotificationsDevice;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing PushNotificationsDevice in entity cache.
  *
  * @author Bruno Farache
+ * @see PushNotificationsDevice
  * @generated
  */
-public class PushNotificationsDeviceCacheModel
-	implements CacheModel<PushNotificationsDevice>, Externalizable {
-
+@ProviderType
+public class PushNotificationsDeviceCacheModel implements CacheModel<PushNotificationsDevice>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +50,9 @@ public class PushNotificationsDeviceCacheModel
 			return false;
 		}
 
-		PushNotificationsDeviceCacheModel pushNotificationsDeviceCacheModel =
-			(PushNotificationsDeviceCacheModel)obj;
+		PushNotificationsDeviceCacheModel pushNotificationsDeviceCacheModel = (PushNotificationsDeviceCacheModel)obj;
 
-		if (pushNotificationsDeviceId ==
-				pushNotificationsDeviceCacheModel.pushNotificationsDeviceId) {
-
+		if (pushNotificationsDeviceId == pushNotificationsDeviceCacheModel.pushNotificationsDeviceId) {
 			return true;
 		}
 
@@ -85,11 +87,9 @@ public class PushNotificationsDeviceCacheModel
 
 	@Override
 	public PushNotificationsDevice toEntityModel() {
-		PushNotificationsDeviceImpl pushNotificationsDeviceImpl =
-			new PushNotificationsDeviceImpl();
+		PushNotificationsDeviceImpl pushNotificationsDeviceImpl = new PushNotificationsDeviceImpl();
 
-		pushNotificationsDeviceImpl.setPushNotificationsDeviceId(
-			pushNotificationsDeviceId);
+		pushNotificationsDeviceImpl.setPushNotificationsDeviceId(pushNotificationsDeviceId);
 		pushNotificationsDeviceImpl.setCompanyId(companyId);
 		pushNotificationsDeviceImpl.setUserId(userId);
 
@@ -101,14 +101,14 @@ public class PushNotificationsDeviceCacheModel
 		}
 
 		if (platform == null) {
-			pushNotificationsDeviceImpl.setPlatform("");
+			pushNotificationsDeviceImpl.setPlatform(StringPool.BLANK);
 		}
 		else {
 			pushNotificationsDeviceImpl.setPlatform(platform);
 		}
 
 		if (token == null) {
-			pushNotificationsDeviceImpl.setToken("");
+			pushNotificationsDeviceImpl.setToken(StringPool.BLANK);
 		}
 		else {
 			pushNotificationsDeviceImpl.setToken(token);
@@ -132,7 +132,8 @@ public class PushNotificationsDeviceCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(pushNotificationsDeviceId);
 
 		objectOutput.writeLong(companyId);
@@ -141,14 +142,14 @@ public class PushNotificationsDeviceCacheModel
 		objectOutput.writeLong(createDate);
 
 		if (platform == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(platform);
 		}
 
 		if (token == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(token);
@@ -161,5 +162,4 @@ public class PushNotificationsDeviceCacheModel
 	public long createDate;
 	public String platform;
 	public String token;
-
 }

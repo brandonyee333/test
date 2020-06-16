@@ -14,6 +14,8 @@
 
 package com.liferay.portal.security.wedeploy.auth.service.http;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
@@ -24,11 +26,10 @@ import com.liferay.portal.security.wedeploy.auth.service.WeDeployAuthAppServiceU
 
 /**
  * Provides the HTTP utility for the
- * <code>WeDeployAuthAppServiceUtil</code> service
- * utility. The
+ * {@link WeDeployAuthAppServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it requires an additional
- * <code>HttpPrincipal</code> parameter.
+ * {@link HttpPrincipal} parameter.
  *
  * <p>
  * The benefits of using the HTTP utility is that it is fast and allows for
@@ -47,108 +48,85 @@ import com.liferay.portal.security.wedeploy.auth.service.WeDeployAuthAppServiceU
  *
  * @author Supritha Sundaram
  * @see WeDeployAuthAppServiceSoap
+ * @see HttpPrincipal
+ * @see WeDeployAuthAppServiceUtil
  * @generated
  */
+@ProviderType
 public class WeDeployAuthAppServiceHttp {
-
-	public static
-		com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthApp
-				addWeDeployAuthApp(
-					HttpPrincipal httpPrincipal, String name,
-					String redirectURI,
-					com.liferay.portal.kernel.service.ServiceContext
-						serviceContext)
-			throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthApp addWeDeployAuthApp(
+		HttpPrincipal httpPrincipal, java.lang.String name,
+		java.lang.String redirectURI,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			MethodKey methodKey = new MethodKey(
-				WeDeployAuthAppServiceUtil.class, "addWeDeployAuthApp",
-				_addWeDeployAuthAppParameterTypes0);
+			MethodKey methodKey = new MethodKey(WeDeployAuthAppServiceUtil.class,
+					"addWeDeployAuthApp", _addWeDeployAuthAppParameterTypes0);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, name, redirectURI, serviceContext);
+			MethodHandler methodHandler = new MethodHandler(methodKey, name,
+					redirectURI, serviceContext);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.security.wedeploy.auth.model.
-				WeDeployAuthApp)returnObj;
+			return (com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthApp)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	public static
-		com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthApp
-				deleteWeDeployAuthApp(
-					HttpPrincipal httpPrincipal, long weDeployAuthAppId)
-			throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthApp deleteWeDeployAuthApp(
+		HttpPrincipal httpPrincipal, long weDeployAuthAppId)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			MethodKey methodKey = new MethodKey(
-				WeDeployAuthAppServiceUtil.class, "deleteWeDeployAuthApp",
-				_deleteWeDeployAuthAppParameterTypes1);
+			MethodKey methodKey = new MethodKey(WeDeployAuthAppServiceUtil.class,
+					"deleteWeDeployAuthApp",
+					_deleteWeDeployAuthAppParameterTypes1);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, weDeployAuthAppId);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					weDeployAuthAppId);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.security.wedeploy.auth.model.
-				WeDeployAuthApp)returnObj;
+			return (com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthApp)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
-		WeDeployAuthAppServiceHttp.class);
-
-	private static final Class<?>[] _addWeDeployAuthAppParameterTypes0 =
-		new Class[] {
-			String.class, String.class,
+	private static Log _log = LogFactoryUtil.getLog(WeDeployAuthAppServiceHttp.class);
+	private static final Class<?>[] _addWeDeployAuthAppParameterTypes0 = new Class[] {
+			java.lang.String.class, java.lang.String.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
-	private static final Class<?>[] _deleteWeDeployAuthAppParameterTypes1 =
-		new Class[] {long.class};
-
+	private static final Class<?>[] _deleteWeDeployAuthAppParameterTypes1 = new Class[] {
+			long.class
+		};
 }

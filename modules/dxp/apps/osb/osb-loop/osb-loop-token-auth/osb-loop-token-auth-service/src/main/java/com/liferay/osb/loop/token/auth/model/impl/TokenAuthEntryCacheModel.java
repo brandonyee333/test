@@ -1,23 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.loop.token.auth.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.osb.loop.token.auth.model.TokenAuthEntry;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing TokenAuthEntry in entity cache.
  *
  * @author Bruno Farache
+ * @see TokenAuthEntry
  * @generated
  */
-public class TokenAuthEntryCacheModel
-	implements CacheModel<TokenAuthEntry>, Externalizable {
-
+@ProviderType
+public class TokenAuthEntryCacheModel implements CacheModel<TokenAuthEntry>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class TokenAuthEntryCacheModel
 			return false;
 		}
 
-		TokenAuthEntryCacheModel tokenAuthEntryCacheModel =
-			(TokenAuthEntryCacheModel)obj;
+		TokenAuthEntryCacheModel tokenAuthEntryCacheModel = (TokenAuthEntryCacheModel)obj;
 
 		if (tokenAuthEntryId == tokenAuthEntryCacheModel.tokenAuthEntryId) {
 			return true;
@@ -96,7 +100,7 @@ public class TokenAuthEntryCacheModel
 		tokenAuthEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			tokenAuthEntryImpl.setUserName("");
+			tokenAuthEntryImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			tokenAuthEntryImpl.setUserName(userName);
@@ -110,14 +114,14 @@ public class TokenAuthEntryCacheModel
 		}
 
 		if (device == null) {
-			tokenAuthEntryImpl.setDevice("");
+			tokenAuthEntryImpl.setDevice(StringPool.BLANK);
 		}
 		else {
 			tokenAuthEntryImpl.setDevice(device);
 		}
 
 		if (token == null) {
-			tokenAuthEntryImpl.setToken("");
+			tokenAuthEntryImpl.setToken(StringPool.BLANK);
 		}
 		else {
 			tokenAuthEntryImpl.setToken(token);
@@ -131,7 +135,7 @@ public class TokenAuthEntryCacheModel
 		}
 
 		if (loginIP == null) {
-			tokenAuthEntryImpl.setLoginIP("");
+			tokenAuthEntryImpl.setLoginIP(StringPool.BLANK);
 		}
 		else {
 			tokenAuthEntryImpl.setLoginIP(loginIP);
@@ -158,7 +162,8 @@ public class TokenAuthEntryCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(tokenAuthEntryId);
 
 		objectOutput.writeLong(companyId);
@@ -166,7 +171,7 @@ public class TokenAuthEntryCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -175,14 +180,14 @@ public class TokenAuthEntryCacheModel
 		objectOutput.writeLong(createDate);
 
 		if (device == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(device);
 		}
 
 		if (token == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(token);
@@ -191,7 +196,7 @@ public class TokenAuthEntryCacheModel
 		objectOutput.writeLong(loginDate);
 
 		if (loginIP == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(loginIP);
@@ -207,5 +212,4 @@ public class TokenAuthEntryCacheModel
 	public String token;
 	public long loginDate;
 	public String loginIP;
-
 }

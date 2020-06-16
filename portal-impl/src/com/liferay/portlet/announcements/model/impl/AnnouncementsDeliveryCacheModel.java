@@ -14,10 +14,14 @@
 
 package com.liferay.portlet.announcements.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.announcements.kernel.model.AnnouncementsDelivery;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -28,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing AnnouncementsDelivery in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see AnnouncementsDelivery
  * @generated
  */
-public class AnnouncementsDeliveryCacheModel
-	implements CacheModel<AnnouncementsDelivery>, Externalizable {
-
+@ProviderType
+public class AnnouncementsDeliveryCacheModel implements CacheModel<AnnouncementsDelivery>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -43,8 +48,7 @@ public class AnnouncementsDeliveryCacheModel
 			return false;
 		}
 
-		AnnouncementsDeliveryCacheModel announcementsDeliveryCacheModel =
-			(AnnouncementsDeliveryCacheModel)obj;
+		AnnouncementsDeliveryCacheModel announcementsDeliveryCacheModel = (AnnouncementsDeliveryCacheModel)obj;
 
 		if (deliveryId == announcementsDeliveryCacheModel.deliveryId) {
 			return true;
@@ -83,15 +87,14 @@ public class AnnouncementsDeliveryCacheModel
 
 	@Override
 	public AnnouncementsDelivery toEntityModel() {
-		AnnouncementsDeliveryImpl announcementsDeliveryImpl =
-			new AnnouncementsDeliveryImpl();
+		AnnouncementsDeliveryImpl announcementsDeliveryImpl = new AnnouncementsDeliveryImpl();
 
 		announcementsDeliveryImpl.setDeliveryId(deliveryId);
 		announcementsDeliveryImpl.setCompanyId(companyId);
 		announcementsDeliveryImpl.setUserId(userId);
 
 		if (type == null) {
-			announcementsDeliveryImpl.setType("");
+			announcementsDeliveryImpl.setType(StringPool.BLANK);
 		}
 		else {
 			announcementsDeliveryImpl.setType(type);
@@ -123,7 +126,8 @@ public class AnnouncementsDeliveryCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(deliveryId);
 
 		objectOutput.writeLong(companyId);
@@ -131,7 +135,7 @@ public class AnnouncementsDeliveryCacheModel
 		objectOutput.writeLong(userId);
 
 		if (type == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(type);
@@ -151,5 +155,4 @@ public class AnnouncementsDeliveryCacheModel
 	public boolean email;
 	public boolean sms;
 	public boolean website;
-
 }

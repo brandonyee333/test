@@ -14,10 +14,14 @@
 
 package com.liferay.portlet.asset.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.asset.kernel.model.AssetVocabulary;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing AssetVocabulary in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see AssetVocabulary
  * @generated
  */
-public class AssetVocabularyCacheModel
-	implements CacheModel<AssetVocabulary>, Externalizable {
-
+@ProviderType
+public class AssetVocabularyCacheModel implements CacheModel<AssetVocabulary>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class AssetVocabularyCacheModel
 			return false;
 		}
 
-		AssetVocabularyCacheModel assetVocabularyCacheModel =
-			(AssetVocabularyCacheModel)obj;
+		AssetVocabularyCacheModel assetVocabularyCacheModel = (AssetVocabularyCacheModel)obj;
 
 		if (vocabularyId == assetVocabularyCacheModel.vocabularyId) {
 			return true;
@@ -100,7 +104,7 @@ public class AssetVocabularyCacheModel
 		AssetVocabularyImpl assetVocabularyImpl = new AssetVocabularyImpl();
 
 		if (uuid == null) {
-			assetVocabularyImpl.setUuid("");
+			assetVocabularyImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			assetVocabularyImpl.setUuid(uuid);
@@ -112,7 +116,7 @@ public class AssetVocabularyCacheModel
 		assetVocabularyImpl.setUserId(userId);
 
 		if (userName == null) {
-			assetVocabularyImpl.setUserName("");
+			assetVocabularyImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			assetVocabularyImpl.setUserName(userName);
@@ -133,28 +137,28 @@ public class AssetVocabularyCacheModel
 		}
 
 		if (name == null) {
-			assetVocabularyImpl.setName("");
+			assetVocabularyImpl.setName(StringPool.BLANK);
 		}
 		else {
 			assetVocabularyImpl.setName(name);
 		}
 
 		if (title == null) {
-			assetVocabularyImpl.setTitle("");
+			assetVocabularyImpl.setTitle(StringPool.BLANK);
 		}
 		else {
 			assetVocabularyImpl.setTitle(title);
 		}
 
 		if (description == null) {
-			assetVocabularyImpl.setDescription("");
+			assetVocabularyImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			assetVocabularyImpl.setDescription(description);
 		}
 
 		if (settings == null) {
-			assetVocabularyImpl.setSettings("");
+			assetVocabularyImpl.setSettings(StringPool.BLANK);
 		}
 		else {
 			assetVocabularyImpl.setSettings(settings);
@@ -194,9 +198,10 @@ public class AssetVocabularyCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -211,7 +216,7 @@ public class AssetVocabularyCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -221,28 +226,28 @@ public class AssetVocabularyCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (title == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(title);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (settings == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(settings);
@@ -264,5 +269,4 @@ public class AssetVocabularyCacheModel
 	public String description;
 	public String settings;
 	public long lastPublishDate;
-
 }

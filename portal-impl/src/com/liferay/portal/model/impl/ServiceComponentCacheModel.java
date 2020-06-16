@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.ServiceComponent;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -29,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing ServiceComponent in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see ServiceComponent
  * @generated
  */
-public class ServiceComponentCacheModel
-	implements CacheModel<ServiceComponent>, Externalizable, MVCCModel {
-
+@ProviderType
+public class ServiceComponentCacheModel implements CacheModel<ServiceComponent>,
+	Externalizable, MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -44,13 +48,10 @@ public class ServiceComponentCacheModel
 			return false;
 		}
 
-		ServiceComponentCacheModel serviceComponentCacheModel =
-			(ServiceComponentCacheModel)obj;
+		ServiceComponentCacheModel serviceComponentCacheModel = (ServiceComponentCacheModel)obj;
 
-		if ((serviceComponentId ==
-				serviceComponentCacheModel.serviceComponentId) &&
-			(mvccVersion == serviceComponentCacheModel.mvccVersion)) {
-
+		if ((serviceComponentId == serviceComponentCacheModel.serviceComponentId) &&
+				(mvccVersion == serviceComponentCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -103,7 +104,7 @@ public class ServiceComponentCacheModel
 		serviceComponentImpl.setServiceComponentId(serviceComponentId);
 
 		if (buildNamespace == null) {
-			serviceComponentImpl.setBuildNamespace("");
+			serviceComponentImpl.setBuildNamespace(StringPool.BLANK);
 		}
 		else {
 			serviceComponentImpl.setBuildNamespace(buildNamespace);
@@ -113,7 +114,7 @@ public class ServiceComponentCacheModel
 		serviceComponentImpl.setBuildDate(buildDate);
 
 		if (data == null) {
-			serviceComponentImpl.setData("");
+			serviceComponentImpl.setData(StringPool.BLANK);
 		}
 		else {
 			serviceComponentImpl.setData(data);
@@ -125,9 +126,7 @@ public class ServiceComponentCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
 
 		serviceComponentId = objectInput.readLong();
@@ -136,17 +135,18 @@ public class ServiceComponentCacheModel
 		buildNumber = objectInput.readLong();
 
 		buildDate = objectInput.readLong();
-		data = (String)objectInput.readObject();
+		data = objectInput.readUTF();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(serviceComponentId);
 
 		if (buildNamespace == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(buildNamespace);
@@ -157,10 +157,10 @@ public class ServiceComponentCacheModel
 		objectOutput.writeLong(buildDate);
 
 		if (data == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(data);
+			objectOutput.writeUTF(data);
 		}
 	}
 
@@ -170,5 +170,4 @@ public class ServiceComponentCacheModel
 	public long buildNumber;
 	public long buildDate;
 	public String data;
-
 }

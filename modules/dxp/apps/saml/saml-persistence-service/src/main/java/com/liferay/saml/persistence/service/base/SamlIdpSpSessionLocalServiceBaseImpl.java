@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.saml.persistence.service.base;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -33,13 +35,12 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
-import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
-import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+
 import com.liferay.saml.persistence.model.SamlIdpSpSession;
 import com.liferay.saml.persistence.service.SamlIdpSpSessionLocalService;
 import com.liferay.saml.persistence.service.persistence.SamlIdpSpConnectionPersistence;
@@ -65,16 +66,17 @@ import javax.sql.DataSource;
  *
  * @author Mika Koivisto
  * @see com.liferay.saml.persistence.service.impl.SamlIdpSpSessionLocalServiceImpl
+ * @see com.liferay.saml.persistence.service.SamlIdpSpSessionLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class SamlIdpSpSessionLocalServiceBaseImpl
-	extends BaseLocalServiceImpl
-	implements IdentifiableOSGiService, SamlIdpSpSessionLocalService {
-
+	extends BaseLocalServiceImpl implements SamlIdpSpSessionLocalService,
+		IdentifiableOSGiService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SamlIdpSpSessionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.saml.persistence.service.SamlIdpSpSessionLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.saml.persistence.service.SamlIdpSpSessionLocalServiceUtil} to access the saml idp sp session local service.
 	 */
 
 	/**
@@ -87,7 +89,6 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	@Override
 	public SamlIdpSpSession addSamlIdpSpSession(
 		SamlIdpSpSession samlIdpSpSession) {
-
 		samlIdpSpSession.setNew(true);
 
 		return samlIdpSpSessionPersistence.update(samlIdpSpSession);
@@ -100,7 +101,6 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 * @return the new saml idp sp session
 	 */
 	@Override
-	@Transactional(enabled = false)
 	public SamlIdpSpSession createSamlIdpSpSession(long samlIdpSpSessionId) {
 		return samlIdpSpSessionPersistence.create(samlIdpSpSessionId);
 	}
@@ -116,7 +116,6 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	@Override
 	public SamlIdpSpSession deleteSamlIdpSpSession(long samlIdpSpSessionId)
 		throws PortalException {
-
 		return samlIdpSpSessionPersistence.remove(samlIdpSpSessionId);
 	}
 
@@ -130,7 +129,6 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	@Override
 	public SamlIdpSpSession deleteSamlIdpSpSession(
 		SamlIdpSpSession samlIdpSpSession) {
-
 		return samlIdpSpSessionPersistence.remove(samlIdpSpSession);
 	}
 
@@ -138,8 +136,8 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(
-			SamlIdpSpSession.class, clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(SamlIdpSpSession.class,
+			clazz.getClassLoader());
 	}
 
 	/**
@@ -157,7 +155,7 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.saml.persistence.model.impl.SamlIdpSpSessionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.saml.persistence.model.impl.SamlIdpSpSessionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -166,18 +164,17 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end) {
-
-		return samlIdpSpSessionPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
+		return samlIdpSpSessionPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.saml.persistence.model.impl.SamlIdpSpSessionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.saml.persistence.model.impl.SamlIdpSpSessionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -187,12 +184,10 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<T> orderByComparator) {
-
-		return samlIdpSpSessionPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
+		return samlIdpSpSessionPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end, orderByComparator);
 	}
 
 	/**
@@ -214,17 +209,15 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(
-		DynamicQuery dynamicQuery, Projection projection) {
-
-		return samlIdpSpSessionPersistence.countWithDynamicQuery(
-			dynamicQuery, projection);
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection) {
+		return samlIdpSpSessionPersistence.countWithDynamicQuery(dynamicQuery,
+			projection);
 	}
 
 	@Override
 	public SamlIdpSpSession fetchSamlIdpSpSession(long samlIdpSpSessionId) {
-		return samlIdpSpSessionPersistence.fetchByPrimaryKey(
-			samlIdpSpSessionId);
+		return samlIdpSpSessionPersistence.fetchByPrimaryKey(samlIdpSpSessionId);
 	}
 
 	/**
@@ -237,17 +230,14 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	@Override
 	public SamlIdpSpSession getSamlIdpSpSession(long samlIdpSpSessionId)
 		throws PortalException {
-
 		return samlIdpSpSessionPersistence.findByPrimaryKey(samlIdpSpSessionId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
-		actionableDynamicQuery.setBaseLocalService(
-			samlIdpSpSessionLocalService);
+		actionableDynamicQuery.setBaseLocalService(samlIdpSpSessionLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(SamlIdpSpSession.class);
 
@@ -257,14 +247,10 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
 
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
-			new IndexableActionableDynamicQuery();
-
-		indexableActionableDynamicQuery.setBaseLocalService(
-			samlIdpSpSessionLocalService);
+		indexableActionableDynamicQuery.setBaseLocalService(samlIdpSpSessionLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(SamlIdpSpSession.class);
 
@@ -276,9 +262,7 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-
-		actionableDynamicQuery.setBaseLocalService(
-			samlIdpSpSessionLocalService);
+		actionableDynamicQuery.setBaseLocalService(samlIdpSpSessionLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(SamlIdpSpSession.class);
 
@@ -291,22 +275,12 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-
-		return samlIdpSpSessionLocalService.deleteSamlIdpSpSession(
-			(SamlIdpSpSession)persistedModel);
+		return samlIdpSpSessionLocalService.deleteSamlIdpSpSession((SamlIdpSpSession)persistedModel);
 	}
 
-	public BasePersistence<SamlIdpSpSession> getBasePersistence() {
-		return samlIdpSpSessionPersistence;
-	}
-
-	/**
-	 * @throws PortalException
-	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
-
 		return samlIdpSpSessionPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -314,7 +288,7 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 * Returns a range of all the saml idp sp sessions.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.saml.persistence.model.impl.SamlIdpSpSessionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.saml.persistence.model.impl.SamlIdpSpSessionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of saml idp sp sessions
@@ -346,7 +320,6 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	@Override
 	public SamlIdpSpSession updateSamlIdpSpSession(
 		SamlIdpSpSession samlIdpSpSession) {
-
 		return samlIdpSpSessionPersistence.update(samlIdpSpSession);
 	}
 
@@ -355,9 +328,7 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 *
 	 * @return the saml idp sp connection local service
 	 */
-	public com.liferay.saml.persistence.service.SamlIdpSpConnectionLocalService
-		getSamlIdpSpConnectionLocalService() {
-
+	public com.liferay.saml.persistence.service.SamlIdpSpConnectionLocalService getSamlIdpSpConnectionLocalService() {
 		return samlIdpSpConnectionLocalService;
 	}
 
@@ -367,9 +338,7 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 * @param samlIdpSpConnectionLocalService the saml idp sp connection local service
 	 */
 	public void setSamlIdpSpConnectionLocalService(
-		com.liferay.saml.persistence.service.SamlIdpSpConnectionLocalService
-			samlIdpSpConnectionLocalService) {
-
+		com.liferay.saml.persistence.service.SamlIdpSpConnectionLocalService samlIdpSpConnectionLocalService) {
 		this.samlIdpSpConnectionLocalService = samlIdpSpConnectionLocalService;
 	}
 
@@ -389,7 +358,6 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 */
 	public void setSamlIdpSpConnectionPersistence(
 		SamlIdpSpConnectionPersistence samlIdpSpConnectionPersistence) {
-
 		this.samlIdpSpConnectionPersistence = samlIdpSpConnectionPersistence;
 	}
 
@@ -409,7 +377,6 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 */
 	public void setSamlIdpSpSessionLocalService(
 		SamlIdpSpSessionLocalService samlIdpSpSessionLocalService) {
-
 		this.samlIdpSpSessionLocalService = samlIdpSpSessionLocalService;
 	}
 
@@ -429,7 +396,6 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 */
 	public void setSamlIdpSpSessionPersistence(
 		SamlIdpSpSessionPersistence samlIdpSpSessionPersistence) {
-
 		this.samlIdpSpSessionPersistence = samlIdpSpSessionPersistence;
 	}
 
@@ -438,9 +404,7 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 *
 	 * @return the saml idp sso session local service
 	 */
-	public com.liferay.saml.persistence.service.SamlIdpSsoSessionLocalService
-		getSamlIdpSsoSessionLocalService() {
-
+	public com.liferay.saml.persistence.service.SamlIdpSsoSessionLocalService getSamlIdpSsoSessionLocalService() {
 		return samlIdpSsoSessionLocalService;
 	}
 
@@ -450,9 +414,7 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 * @param samlIdpSsoSessionLocalService the saml idp sso session local service
 	 */
 	public void setSamlIdpSsoSessionLocalService(
-		com.liferay.saml.persistence.service.SamlIdpSsoSessionLocalService
-			samlIdpSsoSessionLocalService) {
-
+		com.liferay.saml.persistence.service.SamlIdpSsoSessionLocalService samlIdpSsoSessionLocalService) {
 		this.samlIdpSsoSessionLocalService = samlIdpSsoSessionLocalService;
 	}
 
@@ -472,7 +434,6 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 */
 	public void setSamlIdpSsoSessionPersistence(
 		SamlIdpSsoSessionPersistence samlIdpSsoSessionPersistence) {
-
 		this.samlIdpSsoSessionPersistence = samlIdpSsoSessionPersistence;
 	}
 
@@ -481,9 +442,7 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 *
 	 * @return the saml sp auth request local service
 	 */
-	public com.liferay.saml.persistence.service.SamlSpAuthRequestLocalService
-		getSamlSpAuthRequestLocalService() {
-
+	public com.liferay.saml.persistence.service.SamlSpAuthRequestLocalService getSamlSpAuthRequestLocalService() {
 		return samlSpAuthRequestLocalService;
 	}
 
@@ -493,9 +452,7 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 * @param samlSpAuthRequestLocalService the saml sp auth request local service
 	 */
 	public void setSamlSpAuthRequestLocalService(
-		com.liferay.saml.persistence.service.SamlSpAuthRequestLocalService
-			samlSpAuthRequestLocalService) {
-
+		com.liferay.saml.persistence.service.SamlSpAuthRequestLocalService samlSpAuthRequestLocalService) {
 		this.samlSpAuthRequestLocalService = samlSpAuthRequestLocalService;
 	}
 
@@ -515,7 +472,6 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 */
 	public void setSamlSpAuthRequestPersistence(
 		SamlSpAuthRequestPersistence samlSpAuthRequestPersistence) {
-
 		this.samlSpAuthRequestPersistence = samlSpAuthRequestPersistence;
 	}
 
@@ -524,9 +480,7 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 *
 	 * @return the saml sp idp connection local service
 	 */
-	public com.liferay.saml.persistence.service.SamlSpIdpConnectionLocalService
-		getSamlSpIdpConnectionLocalService() {
-
+	public com.liferay.saml.persistence.service.SamlSpIdpConnectionLocalService getSamlSpIdpConnectionLocalService() {
 		return samlSpIdpConnectionLocalService;
 	}
 
@@ -536,9 +490,7 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 * @param samlSpIdpConnectionLocalService the saml sp idp connection local service
 	 */
 	public void setSamlSpIdpConnectionLocalService(
-		com.liferay.saml.persistence.service.SamlSpIdpConnectionLocalService
-			samlSpIdpConnectionLocalService) {
-
+		com.liferay.saml.persistence.service.SamlSpIdpConnectionLocalService samlSpIdpConnectionLocalService) {
 		this.samlSpIdpConnectionLocalService = samlSpIdpConnectionLocalService;
 	}
 
@@ -558,7 +510,6 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 */
 	public void setSamlSpIdpConnectionPersistence(
 		SamlSpIdpConnectionPersistence samlSpIdpConnectionPersistence) {
-
 		this.samlSpIdpConnectionPersistence = samlSpIdpConnectionPersistence;
 	}
 
@@ -567,9 +518,7 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 *
 	 * @return the saml sp message local service
 	 */
-	public com.liferay.saml.persistence.service.SamlSpMessageLocalService
-		getSamlSpMessageLocalService() {
-
+	public com.liferay.saml.persistence.service.SamlSpMessageLocalService getSamlSpMessageLocalService() {
 		return samlSpMessageLocalService;
 	}
 
@@ -579,9 +528,7 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 * @param samlSpMessageLocalService the saml sp message local service
 	 */
 	public void setSamlSpMessageLocalService(
-		com.liferay.saml.persistence.service.SamlSpMessageLocalService
-			samlSpMessageLocalService) {
-
+		com.liferay.saml.persistence.service.SamlSpMessageLocalService samlSpMessageLocalService) {
 		this.samlSpMessageLocalService = samlSpMessageLocalService;
 	}
 
@@ -601,7 +548,6 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 */
 	public void setSamlSpMessagePersistence(
 		SamlSpMessagePersistence samlSpMessagePersistence) {
-
 		this.samlSpMessagePersistence = samlSpMessagePersistence;
 	}
 
@@ -610,9 +556,7 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 *
 	 * @return the saml sp session local service
 	 */
-	public com.liferay.saml.persistence.service.SamlSpSessionLocalService
-		getSamlSpSessionLocalService() {
-
+	public com.liferay.saml.persistence.service.SamlSpSessionLocalService getSamlSpSessionLocalService() {
 		return samlSpSessionLocalService;
 	}
 
@@ -622,9 +566,7 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 * @param samlSpSessionLocalService the saml sp session local service
 	 */
 	public void setSamlSpSessionLocalService(
-		com.liferay.saml.persistence.service.SamlSpSessionLocalService
-			samlSpSessionLocalService) {
-
+		com.liferay.saml.persistence.service.SamlSpSessionLocalService samlSpSessionLocalService) {
 		this.samlSpSessionLocalService = samlSpSessionLocalService;
 	}
 
@@ -644,7 +586,6 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 */
 	public void setSamlSpSessionPersistence(
 		SamlSpSessionPersistence samlSpSessionPersistence) {
-
 		this.samlSpSessionPersistence = samlSpSessionPersistence;
 	}
 
@@ -653,9 +594,7 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -665,9 +604,7 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -676,9 +613,7 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService
-		getClassNameLocalService() {
-
+	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
 		return classNameLocalService;
 	}
 
@@ -688,9 +623,7 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService
-			classNameLocalService) {
-
+		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -710,7 +643,6 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
-
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -719,9 +651,7 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService
-		getResourceLocalService() {
-
+	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
 		return resourceLocalService;
 	}
 
@@ -731,9 +661,7 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService
-			resourceLocalService) {
-
+		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -742,9 +670,7 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService
-		getUserLocalService() {
-
+	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
 		return userLocalService;
 	}
 
@@ -755,7 +681,6 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
-
 		this.userLocalService = userLocalService;
 	}
 
@@ -778,8 +703,7 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register(
-			"com.liferay.saml.persistence.model.SamlIdpSpSession",
+		persistedModelLocalServiceRegistry.register("com.liferay.saml.persistence.model.SamlIdpSpSession",
 			samlIdpSpSessionLocalService);
 	}
 
@@ -820,110 +744,56 @@ public abstract class SamlIdpSpSessionLocalServiceBaseImpl
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
-	@BeanReference(
-		type = com.liferay.saml.persistence.service.SamlIdpSpConnectionLocalService.class
-	)
-	protected
-		com.liferay.saml.persistence.service.SamlIdpSpConnectionLocalService
-			samlIdpSpConnectionLocalService;
-
+	@BeanReference(type = com.liferay.saml.persistence.service.SamlIdpSpConnectionLocalService.class)
+	protected com.liferay.saml.persistence.service.SamlIdpSpConnectionLocalService samlIdpSpConnectionLocalService;
 	@BeanReference(type = SamlIdpSpConnectionPersistence.class)
 	protected SamlIdpSpConnectionPersistence samlIdpSpConnectionPersistence;
-
 	@BeanReference(type = SamlIdpSpSessionLocalService.class)
 	protected SamlIdpSpSessionLocalService samlIdpSpSessionLocalService;
-
 	@BeanReference(type = SamlIdpSpSessionPersistence.class)
 	protected SamlIdpSpSessionPersistence samlIdpSpSessionPersistence;
-
-	@BeanReference(
-		type = com.liferay.saml.persistence.service.SamlIdpSsoSessionLocalService.class
-	)
-	protected com.liferay.saml.persistence.service.SamlIdpSsoSessionLocalService
-		samlIdpSsoSessionLocalService;
-
+	@BeanReference(type = com.liferay.saml.persistence.service.SamlIdpSsoSessionLocalService.class)
+	protected com.liferay.saml.persistence.service.SamlIdpSsoSessionLocalService samlIdpSsoSessionLocalService;
 	@BeanReference(type = SamlIdpSsoSessionPersistence.class)
 	protected SamlIdpSsoSessionPersistence samlIdpSsoSessionPersistence;
-
-	@BeanReference(
-		type = com.liferay.saml.persistence.service.SamlSpAuthRequestLocalService.class
-	)
-	protected com.liferay.saml.persistence.service.SamlSpAuthRequestLocalService
-		samlSpAuthRequestLocalService;
-
+	@BeanReference(type = com.liferay.saml.persistence.service.SamlSpAuthRequestLocalService.class)
+	protected com.liferay.saml.persistence.service.SamlSpAuthRequestLocalService samlSpAuthRequestLocalService;
 	@BeanReference(type = SamlSpAuthRequestPersistence.class)
 	protected SamlSpAuthRequestPersistence samlSpAuthRequestPersistence;
-
-	@BeanReference(
-		type = com.liferay.saml.persistence.service.SamlSpIdpConnectionLocalService.class
-	)
-	protected
-		com.liferay.saml.persistence.service.SamlSpIdpConnectionLocalService
-			samlSpIdpConnectionLocalService;
-
+	@BeanReference(type = com.liferay.saml.persistence.service.SamlSpIdpConnectionLocalService.class)
+	protected com.liferay.saml.persistence.service.SamlSpIdpConnectionLocalService samlSpIdpConnectionLocalService;
 	@BeanReference(type = SamlSpIdpConnectionPersistence.class)
 	protected SamlSpIdpConnectionPersistence samlSpIdpConnectionPersistence;
-
-	@BeanReference(
-		type = com.liferay.saml.persistence.service.SamlSpMessageLocalService.class
-	)
-	protected com.liferay.saml.persistence.service.SamlSpMessageLocalService
-		samlSpMessageLocalService;
-
+	@BeanReference(type = com.liferay.saml.persistence.service.SamlSpMessageLocalService.class)
+	protected com.liferay.saml.persistence.service.SamlSpMessageLocalService samlSpMessageLocalService;
 	@BeanReference(type = SamlSpMessagePersistence.class)
 	protected SamlSpMessagePersistence samlSpMessagePersistence;
-
-	@BeanReference(
-		type = com.liferay.saml.persistence.service.SamlSpSessionLocalService.class
-	)
-	protected com.liferay.saml.persistence.service.SamlSpSessionLocalService
-		samlSpSessionLocalService;
-
+	@BeanReference(type = com.liferay.saml.persistence.service.SamlSpSessionLocalService.class)
+	protected com.liferay.saml.persistence.service.SamlSpSessionLocalService samlSpSessionLocalService;
 	@BeanReference(type = SamlSpSessionPersistence.class)
 	protected SamlSpSessionPersistence samlSpSessionPersistence;
-
-	@ServiceReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService
-		classNameLocalService;
-
+	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ResourceLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ResourceLocalService
-		resourceLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.UserLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.UserLocalService
-		userLocalService;
-
+	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
+	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
+	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry
-		persistedModelLocalServiceRegistry;
-
+	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }

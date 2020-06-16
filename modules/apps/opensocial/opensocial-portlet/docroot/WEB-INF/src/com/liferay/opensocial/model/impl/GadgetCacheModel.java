@@ -14,10 +14,14 @@
 
 package com.liferay.opensocial.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.opensocial.model.Gadget;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,10 +34,11 @@ import java.util.Date;
  * The cache model class for representing Gadget in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see Gadget
  * @generated
  */
+@ProviderType
 public class GadgetCacheModel implements CacheModel<Gadget>, Externalizable {
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -90,7 +95,7 @@ public class GadgetCacheModel implements CacheModel<Gadget>, Externalizable {
 		GadgetImpl gadgetImpl = new GadgetImpl();
 
 		if (uuid == null) {
-			gadgetImpl.setUuid("");
+			gadgetImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			gadgetImpl.setUuid(uuid);
@@ -114,21 +119,21 @@ public class GadgetCacheModel implements CacheModel<Gadget>, Externalizable {
 		}
 
 		if (name == null) {
-			gadgetImpl.setName("");
+			gadgetImpl.setName(StringPool.BLANK);
 		}
 		else {
 			gadgetImpl.setName(name);
 		}
 
 		if (url == null) {
-			gadgetImpl.setUrl("");
+			gadgetImpl.setUrl(StringPool.BLANK);
 		}
 		else {
 			gadgetImpl.setUrl(url);
 		}
 
 		if (portletCategoryNames == null) {
-			gadgetImpl.setPortletCategoryNames("");
+			gadgetImpl.setPortletCategoryNames(StringPool.BLANK);
 		}
 		else {
 			gadgetImpl.setPortletCategoryNames(portletCategoryNames);
@@ -162,9 +167,10 @@ public class GadgetCacheModel implements CacheModel<Gadget>, Externalizable {
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -177,21 +183,21 @@ public class GadgetCacheModel implements CacheModel<Gadget>, Externalizable {
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (url == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(url);
 		}
 
 		if (portletCategoryNames == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(portletCategoryNames);
@@ -209,5 +215,4 @@ public class GadgetCacheModel implements CacheModel<Gadget>, Externalizable {
 	public String url;
 	public String portletCategoryNames;
 	public long lastPublishDate;
-
 }

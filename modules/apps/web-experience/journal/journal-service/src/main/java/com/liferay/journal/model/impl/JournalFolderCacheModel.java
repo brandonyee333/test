@@ -14,10 +14,14 @@
 
 package com.liferay.journal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.journal.model.JournalFolder;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing JournalFolder in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see JournalFolder
  * @generated
  */
-public class JournalFolderCacheModel
-	implements CacheModel<JournalFolder>, Externalizable {
-
+@ProviderType
+public class JournalFolderCacheModel implements CacheModel<JournalFolder>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class JournalFolderCacheModel
 			return false;
 		}
 
-		JournalFolderCacheModel journalFolderCacheModel =
-			(JournalFolderCacheModel)obj;
+		JournalFolderCacheModel journalFolderCacheModel = (JournalFolderCacheModel)obj;
 
 		if (folderId == journalFolderCacheModel.folderId) {
 			return true;
@@ -110,7 +114,7 @@ public class JournalFolderCacheModel
 		JournalFolderImpl journalFolderImpl = new JournalFolderImpl();
 
 		if (uuid == null) {
-			journalFolderImpl.setUuid("");
+			journalFolderImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			journalFolderImpl.setUuid(uuid);
@@ -122,7 +126,7 @@ public class JournalFolderCacheModel
 		journalFolderImpl.setUserId(userId);
 
 		if (userName == null) {
-			journalFolderImpl.setUserName("");
+			journalFolderImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			journalFolderImpl.setUserName(userName);
@@ -145,21 +149,21 @@ public class JournalFolderCacheModel
 		journalFolderImpl.setParentFolderId(parentFolderId);
 
 		if (treePath == null) {
-			journalFolderImpl.setTreePath("");
+			journalFolderImpl.setTreePath(StringPool.BLANK);
 		}
 		else {
 			journalFolderImpl.setTreePath(treePath);
 		}
 
 		if (name == null) {
-			journalFolderImpl.setName("");
+			journalFolderImpl.setName(StringPool.BLANK);
 		}
 		else {
 			journalFolderImpl.setName(name);
 		}
 
 		if (description == null) {
-			journalFolderImpl.setDescription("");
+			journalFolderImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			journalFolderImpl.setDescription(description);
@@ -178,7 +182,7 @@ public class JournalFolderCacheModel
 		journalFolderImpl.setStatusByUserId(statusByUserId);
 
 		if (statusByUserName == null) {
-			journalFolderImpl.setStatusByUserName("");
+			journalFolderImpl.setStatusByUserName(StringPool.BLANK);
 		}
 		else {
 			journalFolderImpl.setStatusByUserName(statusByUserName);
@@ -227,9 +231,10 @@ public class JournalFolderCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -244,7 +249,7 @@ public class JournalFolderCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -256,21 +261,21 @@ public class JournalFolderCacheModel
 		objectOutput.writeLong(parentFolderId);
 
 		if (treePath == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(treePath);
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -284,7 +289,7 @@ public class JournalFolderCacheModel
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(statusByUserName);
@@ -311,5 +316,4 @@ public class JournalFolderCacheModel
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
-
 }

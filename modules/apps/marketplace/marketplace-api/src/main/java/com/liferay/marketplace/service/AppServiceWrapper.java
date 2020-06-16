@@ -14,6 +14,8 @@
 
 package com.liferay.marketplace.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -23,9 +25,9 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see AppService
  * @generated
  */
-public class AppServiceWrapper
-	implements AppService, ServiceWrapper<AppService> {
-
+@ProviderType
+public class AppServiceWrapper implements AppService,
+	ServiceWrapper<AppService> {
 	public AppServiceWrapper(AppService appService) {
 		_appService = appService;
 	}
@@ -33,39 +35,35 @@ public class AppServiceWrapper
 	@Override
 	public com.liferay.marketplace.model.App deleteApp(long appId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		return _appService.deleteApp(appId);
 	}
 
-	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
 	@Override
-	public String getOSGiServiceIdentifier() {
+	public com.liferay.marketplace.model.App updateApp(java.io.File file)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _appService.updateApp(file);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
 		return _appService.getOSGiServiceIdentifier();
 	}
 
 	@Override
 	public void installApp(long remoteAppId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		_appService.installApp(remoteAppId);
 	}
 
 	@Override
 	public void uninstallApp(long remoteAppId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		_appService.uninstallApp(remoteAppId);
-	}
-
-	@Override
-	public com.liferay.marketplace.model.App updateApp(java.io.File file)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _appService.updateApp(file);
 	}
 
 	@Override
@@ -79,5 +77,4 @@ public class AppServiceWrapper
 	}
 
 	private AppService _appService;
-
 }

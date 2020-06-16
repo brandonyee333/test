@@ -14,6 +14,8 @@
 
 package com.liferay.shopping.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.shopping.model.ShoppingOrderItem;
 import com.liferay.shopping.service.ShoppingOrderItemLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.shopping.service.ShoppingOrderItemLocalServiceUtil;
  * @see ShoppingOrderItem
  * @generated
  */
+@ProviderType
 public abstract class ShoppingOrderItemBaseImpl
 	extends ShoppingOrderItemModelImpl implements ShoppingOrderItem {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a shopping order item model instance should use the <code>ShoppingOrderItem</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a shopping order item model instance should use the {@link ShoppingOrderItem} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class ShoppingOrderItemBaseImpl
 			ShoppingOrderItemLocalServiceUtil.updateShoppingOrderItem(this);
 		}
 	}
-
 }

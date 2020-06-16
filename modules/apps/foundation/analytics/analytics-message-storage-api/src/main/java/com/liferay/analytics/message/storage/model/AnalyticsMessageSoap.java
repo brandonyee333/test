@@ -14,6 +14,8 @@
 
 package com.liferay.analytics.message.storage.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.sql.Blob;
@@ -28,8 +30,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
+@ProviderType
 public class AnalyticsMessageSoap implements Serializable {
-
 	public static AnalyticsMessageSoap toSoapModel(AnalyticsMessage model) {
 		AnalyticsMessageSoap soapModel = new AnalyticsMessageSoap();
 
@@ -44,11 +46,8 @@ public class AnalyticsMessageSoap implements Serializable {
 		return soapModel;
 	}
 
-	public static AnalyticsMessageSoap[] toSoapModels(
-		AnalyticsMessage[] models) {
-
-		AnalyticsMessageSoap[] soapModels =
-			new AnalyticsMessageSoap[models.length];
+	public static AnalyticsMessageSoap[] toSoapModels(AnalyticsMessage[] models) {
+		AnalyticsMessageSoap[] soapModels = new AnalyticsMessageSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -59,12 +58,10 @@ public class AnalyticsMessageSoap implements Serializable {
 
 	public static AnalyticsMessageSoap[][] toSoapModels(
 		AnalyticsMessage[][] models) {
-
 		AnalyticsMessageSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels =
-				new AnalyticsMessageSoap[models.length][models[0].length];
+			soapModels = new AnalyticsMessageSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new AnalyticsMessageSoap[0][0];
@@ -79,9 +76,7 @@ public class AnalyticsMessageSoap implements Serializable {
 
 	public static AnalyticsMessageSoap[] toSoapModels(
 		List<AnalyticsMessage> models) {
-
-		List<AnalyticsMessageSoap> soapModels =
-			new ArrayList<AnalyticsMessageSoap>(models.size());
+		List<AnalyticsMessageSoap> soapModels = new ArrayList<AnalyticsMessageSoap>(models.size());
 
 		for (AnalyticsMessage model : models) {
 			soapModels.add(toSoapModel(model));
@@ -164,5 +159,4 @@ public class AnalyticsMessageSoap implements Serializable {
 	private String _userName;
 	private Date _createDate;
 	private Blob _body;
-
 }

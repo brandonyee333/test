@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.watson.model;
+
+import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -26,8 +28,8 @@ import java.util.List;
  * @author Steven Smith
  * @generated
  */
+@ProviderType
 public class WatsonResourceSoap implements Serializable {
-
 	public static WatsonResourceSoap toSoapModel(WatsonResource model) {
 		WatsonResourceSoap soapModel = new WatsonResourceSoap();
 
@@ -38,8 +40,7 @@ public class WatsonResourceSoap implements Serializable {
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
-		soapModel.setOriginalWatsonResourceId(
-			model.getOriginalWatsonResourceId());
+		soapModel.setOriginalWatsonResourceId(model.getOriginalWatsonResourceId());
 		soapModel.setTypeWatsonListTypeId(model.getTypeWatsonListTypeId());
 		soapModel.setWatsonIncidentId(model.getWatsonIncidentId());
 		soapModel.setName(model.getName());
@@ -60,14 +61,11 @@ public class WatsonResourceSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static WatsonResourceSoap[][] toSoapModels(
-		WatsonResource[][] models) {
-
+	public static WatsonResourceSoap[][] toSoapModels(WatsonResource[][] models) {
 		WatsonResourceSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels =
-				new WatsonResourceSoap[models.length][models[0].length];
+			soapModels = new WatsonResourceSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonResourceSoap[0][0];
@@ -80,11 +78,8 @@ public class WatsonResourceSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static WatsonResourceSoap[] toSoapModels(
-		List<WatsonResource> models) {
-
-		List<WatsonResourceSoap> soapModels = new ArrayList<WatsonResourceSoap>(
-			models.size());
+	public static WatsonResourceSoap[] toSoapModels(List<WatsonResource> models) {
+		List<WatsonResourceSoap> soapModels = new ArrayList<WatsonResourceSoap>(models.size());
 
 		for (WatsonResource model : models) {
 			soapModels.add(toSoapModel(model));
@@ -230,5 +225,4 @@ public class WatsonResourceSoap implements Serializable {
 	private String _description;
 	private String _imagePayload;
 	private int _status;
-
 }

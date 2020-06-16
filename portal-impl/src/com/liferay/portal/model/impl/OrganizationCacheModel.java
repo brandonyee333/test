@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -31,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing Organization in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see Organization
  * @generated
  */
-public class OrganizationCacheModel
-	implements CacheModel<Organization>, Externalizable, MVCCModel {
-
+@ProviderType
+public class OrganizationCacheModel implements CacheModel<Organization>,
+	Externalizable, MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -46,12 +50,10 @@ public class OrganizationCacheModel
 			return false;
 		}
 
-		OrganizationCacheModel organizationCacheModel =
-			(OrganizationCacheModel)obj;
+		OrganizationCacheModel organizationCacheModel = (OrganizationCacheModel)obj;
 
 		if ((organizationId == organizationCacheModel.organizationId) &&
-			(mvccVersion == organizationCacheModel.mvccVersion)) {
-
+				(mvccVersion == organizationCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -127,7 +129,7 @@ public class OrganizationCacheModel
 		organizationImpl.setMvccVersion(mvccVersion);
 
 		if (uuid == null) {
-			organizationImpl.setUuid("");
+			organizationImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			organizationImpl.setUuid(uuid);
@@ -138,7 +140,7 @@ public class OrganizationCacheModel
 		organizationImpl.setUserId(userId);
 
 		if (userName == null) {
-			organizationImpl.setUserName("");
+			organizationImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			organizationImpl.setUserName(userName);
@@ -161,21 +163,21 @@ public class OrganizationCacheModel
 		organizationImpl.setParentOrganizationId(parentOrganizationId);
 
 		if (treePath == null) {
-			organizationImpl.setTreePath("");
+			organizationImpl.setTreePath(StringPool.BLANK);
 		}
 		else {
 			organizationImpl.setTreePath(treePath);
 		}
 
 		if (name == null) {
-			organizationImpl.setName("");
+			organizationImpl.setName(StringPool.BLANK);
 		}
 		else {
 			organizationImpl.setName(name);
 		}
 
 		if (type == null) {
-			organizationImpl.setType("");
+			organizationImpl.setType(StringPool.BLANK);
 		}
 		else {
 			organizationImpl.setType(type);
@@ -187,7 +189,7 @@ public class OrganizationCacheModel
 		organizationImpl.setStatusId(statusId);
 
 		if (comments == null) {
-			organizationImpl.setComments("");
+			organizationImpl.setComments(StringPool.BLANK);
 		}
 		else {
 			organizationImpl.setComments(comments);
@@ -232,11 +234,12 @@ public class OrganizationCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -249,7 +252,7 @@ public class OrganizationCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -261,21 +264,21 @@ public class OrganizationCacheModel
 		objectOutput.writeLong(parentOrganizationId);
 
 		if (treePath == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(treePath);
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (type == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(type);
@@ -290,7 +293,7 @@ public class OrganizationCacheModel
 		objectOutput.writeLong(statusId);
 
 		if (comments == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(comments);
@@ -317,5 +320,4 @@ public class OrganizationCacheModel
 	public long statusId;
 	public String comments;
 	public long logoId;
-
 }

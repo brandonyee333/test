@@ -1,20 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.email.blacklist.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -34,9 +37,9 @@ import java.util.Objects;
  * @see BounceEntry
  * @generated
  */
-public class BounceEntryWrapper
-	implements BounceEntry, ModelWrapper<BounceEntry> {
-
+@ProviderType
+public class BounceEntryWrapper implements BounceEntry,
+	ModelWrapper<BounceEntry> {
 	public BounceEntryWrapper(BounceEntry bounceEntry) {
 		_bounceEntry = bounceEntry;
 	}
@@ -98,88 +101,13 @@ public class BounceEntryWrapper
 	}
 
 	@Override
-	public Object clone() {
-		return new BounceEntryWrapper((BounceEntry)_bounceEntry.clone());
+	public BounceEntry toEscapedModel() {
+		return new BounceEntryWrapper(_bounceEntry.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(BounceEntry bounceEntry) {
-		return _bounceEntry.compareTo(bounceEntry);
-	}
-
-	/**
-	 * Returns the bounce date of this bounce entry.
-	 *
-	 * @return the bounce date of this bounce entry
-	 */
-	@Override
-	public Date getBounceDate() {
-		return _bounceEntry.getBounceDate();
-	}
-
-	/**
-	 * Returns the bounce entry ID of this bounce entry.
-	 *
-	 * @return the bounce entry ID of this bounce entry
-	 */
-	@Override
-	public long getBounceEntryId() {
-		return _bounceEntry.getBounceEntryId();
-	}
-
-	/**
-	 * Returns the bounce subtype of this bounce entry.
-	 *
-	 * @return the bounce subtype of this bounce entry
-	 */
-	@Override
-	public String getBounceSubtype() {
-		return _bounceEntry.getBounceSubtype();
-	}
-
-	/**
-	 * Returns the bounce type of this bounce entry.
-	 *
-	 * @return the bounce type of this bounce entry
-	 */
-	@Override
-	public String getBounceType() {
-		return _bounceEntry.getBounceType();
-	}
-
-	/**
-	 * Returns the email address of this bounce entry.
-	 *
-	 * @return the email address of this bounce entry
-	 */
-	@Override
-	public String getEmailAddress() {
-		return _bounceEntry.getEmailAddress();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _bounceEntry.getExpandoBridge();
-	}
-
-	/**
-	 * Returns the primary key of this bounce entry.
-	 *
-	 * @return the primary key of this bounce entry
-	 */
-	@Override
-	public long getPrimaryKey() {
-		return _bounceEntry.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _bounceEntry.getPrimaryKeyObj();
-	}
-
-	@Override
-	public int hashCode() {
-		return _bounceEntry.hashCode();
+	public BounceEntry toUnescapedModel() {
+		return new BounceEntryWrapper(_bounceEntry.toUnescapedModel());
 	}
 
 	@Override
@@ -198,47 +126,147 @@ public class BounceEntryWrapper
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _bounceEntry.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<BounceEntry> toCacheModel() {
+		return _bounceEntry.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(BounceEntry bounceEntry) {
+		return _bounceEntry.compareTo(bounceEntry);
+	}
+
+	@Override
+	public int hashCode() {
+		return _bounceEntry.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _bounceEntry.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new BounceEntryWrapper((BounceEntry)_bounceEntry.clone());
+	}
+
+	/**
+	* Returns the bounce subtype of this bounce entry.
+	*
+	* @return the bounce subtype of this bounce entry
+	*/
+	@Override
+	public java.lang.String getBounceSubtype() {
+		return _bounceEntry.getBounceSubtype();
+	}
+
+	/**
+	* Returns the bounce type of this bounce entry.
+	*
+	* @return the bounce type of this bounce entry
+	*/
+	@Override
+	public java.lang.String getBounceType() {
+		return _bounceEntry.getBounceType();
+	}
+
+	/**
+	* Returns the email address of this bounce entry.
+	*
+	* @return the email address of this bounce entry
+	*/
+	@Override
+	public java.lang.String getEmailAddress() {
+		return _bounceEntry.getEmailAddress();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _bounceEntry.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _bounceEntry.toXmlString();
+	}
+
+	/**
+	* Returns the bounce date of this bounce entry.
+	*
+	* @return the bounce date of this bounce entry
+	*/
+	@Override
+	public Date getBounceDate() {
+		return _bounceEntry.getBounceDate();
+	}
+
+	/**
+	* Returns the bounce entry ID of this bounce entry.
+	*
+	* @return the bounce entry ID of this bounce entry
+	*/
+	@Override
+	public long getBounceEntryId() {
+		return _bounceEntry.getBounceEntryId();
+	}
+
+	/**
+	* Returns the primary key of this bounce entry.
+	*
+	* @return the primary key of this bounce entry
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _bounceEntry.getPrimaryKey();
+	}
+
+	@Override
 	public void persist() {
 		_bounceEntry.persist();
 	}
 
 	/**
-	 * Sets the bounce date of this bounce entry.
-	 *
-	 * @param bounceDate the bounce date of this bounce entry
-	 */
+	* Sets the bounce date of this bounce entry.
+	*
+	* @param bounceDate the bounce date of this bounce entry
+	*/
 	@Override
 	public void setBounceDate(Date bounceDate) {
 		_bounceEntry.setBounceDate(bounceDate);
 	}
 
 	/**
-	 * Sets the bounce entry ID of this bounce entry.
-	 *
-	 * @param bounceEntryId the bounce entry ID of this bounce entry
-	 */
+	* Sets the bounce entry ID of this bounce entry.
+	*
+	* @param bounceEntryId the bounce entry ID of this bounce entry
+	*/
 	@Override
 	public void setBounceEntryId(long bounceEntryId) {
 		_bounceEntry.setBounceEntryId(bounceEntryId);
 	}
 
 	/**
-	 * Sets the bounce subtype of this bounce entry.
-	 *
-	 * @param bounceSubtype the bounce subtype of this bounce entry
-	 */
+	* Sets the bounce subtype of this bounce entry.
+	*
+	* @param bounceSubtype the bounce subtype of this bounce entry
+	*/
 	@Override
-	public void setBounceSubtype(String bounceSubtype) {
+	public void setBounceSubtype(java.lang.String bounceSubtype) {
 		_bounceEntry.setBounceSubtype(bounceSubtype);
 	}
 
 	/**
-	 * Sets the bounce type of this bounce entry.
-	 *
-	 * @param bounceType the bounce type of this bounce entry
-	 */
+	* Sets the bounce type of this bounce entry.
+	*
+	* @param bounceType the bounce type of this bounce entry
+	*/
 	@Override
-	public void setBounceType(String bounceType) {
+	public void setBounceType(java.lang.String bounceType) {
 		_bounceEntry.setBounceType(bounceType);
 	}
 
@@ -248,25 +276,24 @@ public class BounceEntryWrapper
 	}
 
 	/**
-	 * Sets the email address of this bounce entry.
-	 *
-	 * @param emailAddress the email address of this bounce entry
-	 */
+	* Sets the email address of this bounce entry.
+	*
+	* @param emailAddress the email address of this bounce entry
+	*/
 	@Override
-	public void setEmailAddress(String emailAddress) {
+	public void setEmailAddress(java.lang.String emailAddress) {
 		_bounceEntry.setEmailAddress(emailAddress);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-
-		_bounceEntry.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
 	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
 		_bounceEntry.setExpandoBridgeAttributes(expandoBridge);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_bounceEntry.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -280,10 +307,10 @@ public class BounceEntryWrapper
 	}
 
 	/**
-	 * Sets the primary key of this bounce entry.
-	 *
-	 * @param primaryKey the primary key of this bounce entry
-	 */
+	* Sets the primary key of this bounce entry.
+	*
+	* @param primaryKey the primary key of this bounce entry
+	*/
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_bounceEntry.setPrimaryKey(primaryKey);
@@ -292,33 +319,6 @@ public class BounceEntryWrapper
 	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		_bounceEntry.setPrimaryKeyObj(primaryKeyObj);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<BounceEntry>
-		toCacheModel() {
-
-		return _bounceEntry.toCacheModel();
-	}
-
-	@Override
-	public BounceEntry toEscapedModel() {
-		return new BounceEntryWrapper(_bounceEntry.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return _bounceEntry.toString();
-	}
-
-	@Override
-	public BounceEntry toUnescapedModel() {
-		return new BounceEntryWrapper(_bounceEntry.toUnescapedModel());
-	}
-
-	@Override
-	public String toXmlString() {
-		return _bounceEntry.toXmlString();
 	}
 
 	@Override
@@ -361,5 +361,4 @@ public class BounceEntryWrapper
 	}
 
 	private final BounceEntry _bounceEntry;
-
 }

@@ -14,6 +14,8 @@
 
 package com.liferay.wsrp.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.wsrp.model.WSRPConsumer;
 import com.liferay.wsrp.service.WSRPConsumerLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.wsrp.service.WSRPConsumerLocalServiceUtil;
  * @see WSRPConsumer
  * @generated
  */
-public abstract class WSRPConsumerBaseImpl
-	extends WSRPConsumerModelImpl implements WSRPConsumer {
-
+@ProviderType
+public abstract class WSRPConsumerBaseImpl extends WSRPConsumerModelImpl
+	implements WSRPConsumer {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a wsrp consumer model instance should use the <code>WSRPConsumer</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a wsrp consumer model instance should use the {@link WSRPConsumer} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class WSRPConsumerBaseImpl
 			WSRPConsumerLocalServiceUtil.updateWSRPConsumer(this);
 		}
 	}
-
 }

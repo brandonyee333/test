@@ -14,8 +14,12 @@
 
 package com.liferay.wsrp.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.exportimport.kernel.lar.StagedModelType;
+
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -35,9 +39,9 @@ import java.util.Objects;
  * @see WSRPConsumer
  * @generated
  */
-public class WSRPConsumerWrapper
-	implements ModelWrapper<WSRPConsumer>, WSRPConsumer {
-
+@ProviderType
+public class WSRPConsumerWrapper implements WSRPConsumer,
+	ModelWrapper<WSRPConsumer> {
 	public WSRPConsumerWrapper(WSRPConsumer wsrpConsumer) {
 		_wsrpConsumer = wsrpConsumer;
 	}
@@ -64,10 +68,10 @@ public class WSRPConsumerWrapper
 		attributes.put("name", getName());
 		attributes.put("url", getUrl());
 		attributes.put("wsdl", getWsdl());
-		attributes.put(
-			"registrationContextString", getRegistrationContextString());
-		attributes.put(
-			"registrationPropertiesString", getRegistrationPropertiesString());
+		attributes.put("registrationContextString",
+			getRegistrationContextString());
+		attributes.put("registrationPropertiesString",
+			getRegistrationPropertiesString());
 		attributes.put("forwardCookies", getForwardCookies());
 		attributes.put("forwardHeaders", getForwardHeaders());
 		attributes.put("markupCharacterSets", getMarkupCharacterSets());
@@ -127,14 +131,14 @@ public class WSRPConsumerWrapper
 		}
 
 		String registrationContextString = (String)attributes.get(
-			"registrationContextString");
+				"registrationContextString");
 
 		if (registrationContextString != null) {
 			setRegistrationContextString(registrationContextString);
 		}
 
 		String registrationPropertiesString = (String)attributes.get(
-			"registrationPropertiesString");
+				"registrationPropertiesString");
 
 		if (registrationPropertiesString != null) {
 			setRegistrationPropertiesString(registrationPropertiesString);
@@ -153,7 +157,7 @@ public class WSRPConsumerWrapper
 		}
 
 		String markupCharacterSets = (String)attributes.get(
-			"markupCharacterSets");
+				"markupCharacterSets");
 
 		if (markupCharacterSets != null) {
 			setMarkupCharacterSets(markupCharacterSets);
@@ -167,192 +171,13 @@ public class WSRPConsumerWrapper
 	}
 
 	@Override
-	public Object clone() {
-		return new WSRPConsumerWrapper((WSRPConsumer)_wsrpConsumer.clone());
+	public WSRPConsumer toEscapedModel() {
+		return new WSRPConsumerWrapper(_wsrpConsumer.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(WSRPConsumer wsrpConsumer) {
-		return _wsrpConsumer.compareTo(wsrpConsumer);
-	}
-
-	/**
-	 * Returns the company ID of this wsrp consumer.
-	 *
-	 * @return the company ID of this wsrp consumer
-	 */
-	@Override
-	public long getCompanyId() {
-		return _wsrpConsumer.getCompanyId();
-	}
-
-	/**
-	 * Returns the create date of this wsrp consumer.
-	 *
-	 * @return the create date of this wsrp consumer
-	 */
-	@Override
-	public Date getCreateDate() {
-		return _wsrpConsumer.getCreateDate();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _wsrpConsumer.getExpandoBridge();
-	}
-
-	/**
-	 * Returns the forward cookies of this wsrp consumer.
-	 *
-	 * @return the forward cookies of this wsrp consumer
-	 */
-	@Override
-	public String getForwardCookies() {
-		return _wsrpConsumer.getForwardCookies();
-	}
-
-	/**
-	 * Returns the forward headers of this wsrp consumer.
-	 *
-	 * @return the forward headers of this wsrp consumer
-	 */
-	@Override
-	public String getForwardHeaders() {
-		return _wsrpConsumer.getForwardHeaders();
-	}
-
-	/**
-	 * Returns the last publish date of this wsrp consumer.
-	 *
-	 * @return the last publish date of this wsrp consumer
-	 */
-	@Override
-	public Date getLastPublishDate() {
-		return _wsrpConsumer.getLastPublishDate();
-	}
-
-	/**
-	 * Returns the markup character sets of this wsrp consumer.
-	 *
-	 * @return the markup character sets of this wsrp consumer
-	 */
-	@Override
-	public String getMarkupCharacterSets() {
-		return _wsrpConsumer.getMarkupCharacterSets();
-	}
-
-	/**
-	 * Returns the modified date of this wsrp consumer.
-	 *
-	 * @return the modified date of this wsrp consumer
-	 */
-	@Override
-	public Date getModifiedDate() {
-		return _wsrpConsumer.getModifiedDate();
-	}
-
-	/**
-	 * Returns the name of this wsrp consumer.
-	 *
-	 * @return the name of this wsrp consumer
-	 */
-	@Override
-	public String getName() {
-		return _wsrpConsumer.getName();
-	}
-
-	/**
-	 * Returns the primary key of this wsrp consumer.
-	 *
-	 * @return the primary key of this wsrp consumer
-	 */
-	@Override
-	public long getPrimaryKey() {
-		return _wsrpConsumer.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _wsrpConsumer.getPrimaryKeyObj();
-	}
-
-	@Override
-	public oasis.names.tc.wsrp.v2.types.RegistrationContext
-		getRegistrationContext() {
-
-		return _wsrpConsumer.getRegistrationContext();
-	}
-
-	/**
-	 * Returns the registration context string of this wsrp consumer.
-	 *
-	 * @return the registration context string of this wsrp consumer
-	 */
-	@Override
-	public String getRegistrationContextString() {
-		return _wsrpConsumer.getRegistrationContextString();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.util.UnicodeProperties
-		getRegistrationProperties() {
-
-		return _wsrpConsumer.getRegistrationProperties();
-	}
-
-	/**
-	 * Returns the registration properties string of this wsrp consumer.
-	 *
-	 * @return the registration properties string of this wsrp consumer
-	 */
-	@Override
-	public String getRegistrationPropertiesString() {
-		return _wsrpConsumer.getRegistrationPropertiesString();
-	}
-
-	/**
-	 * Returns the url of this wsrp consumer.
-	 *
-	 * @return the url of this wsrp consumer
-	 */
-	@Override
-	public String getUrl() {
-		return _wsrpConsumer.getUrl();
-	}
-
-	/**
-	 * Returns the uuid of this wsrp consumer.
-	 *
-	 * @return the uuid of this wsrp consumer
-	 */
-	@Override
-	public String getUuid() {
-		return _wsrpConsumer.getUuid();
-	}
-
-	/**
-	 * Returns the wsdl of this wsrp consumer.
-	 *
-	 * @return the wsdl of this wsrp consumer
-	 */
-	@Override
-	public String getWsdl() {
-		return _wsrpConsumer.getWsdl();
-	}
-
-	/**
-	 * Returns the wsrp consumer ID of this wsrp consumer.
-	 *
-	 * @return the wsrp consumer ID of this wsrp consumer
-	 */
-	@Override
-	public long getWsrpConsumerId() {
-		return _wsrpConsumer.getWsrpConsumerId();
-	}
-
-	@Override
-	public int hashCode() {
-		return _wsrpConsumer.hashCode();
+	public WSRPConsumer toUnescapedModel() {
+		return new WSRPConsumerWrapper(_wsrpConsumer.toUnescapedModel());
 	}
 
 	@Override
@@ -371,6 +196,206 @@ public class WSRPConsumerWrapper
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _wsrpConsumer.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<WSRPConsumer> toCacheModel() {
+		return _wsrpConsumer.toCacheModel();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.util.UnicodeProperties getRegistrationProperties() {
+		return _wsrpConsumer.getRegistrationProperties();
+	}
+
+	@Override
+	public int compareTo(WSRPConsumer wsrpConsumer) {
+		return _wsrpConsumer.compareTo(wsrpConsumer);
+	}
+
+	@Override
+	public int hashCode() {
+		return _wsrpConsumer.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _wsrpConsumer.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new WSRPConsumerWrapper((WSRPConsumer)_wsrpConsumer.clone());
+	}
+
+	/**
+	* Returns the forward cookies of this wsrp consumer.
+	*
+	* @return the forward cookies of this wsrp consumer
+	*/
+	@Override
+	public java.lang.String getForwardCookies() {
+		return _wsrpConsumer.getForwardCookies();
+	}
+
+	/**
+	* Returns the forward headers of this wsrp consumer.
+	*
+	* @return the forward headers of this wsrp consumer
+	*/
+	@Override
+	public java.lang.String getForwardHeaders() {
+		return _wsrpConsumer.getForwardHeaders();
+	}
+
+	/**
+	* Returns the markup character sets of this wsrp consumer.
+	*
+	* @return the markup character sets of this wsrp consumer
+	*/
+	@Override
+	public java.lang.String getMarkupCharacterSets() {
+		return _wsrpConsumer.getMarkupCharacterSets();
+	}
+
+	/**
+	* Returns the name of this wsrp consumer.
+	*
+	* @return the name of this wsrp consumer
+	*/
+	@Override
+	public java.lang.String getName() {
+		return _wsrpConsumer.getName();
+	}
+
+	/**
+	* Returns the registration context string of this wsrp consumer.
+	*
+	* @return the registration context string of this wsrp consumer
+	*/
+	@Override
+	public java.lang.String getRegistrationContextString() {
+		return _wsrpConsumer.getRegistrationContextString();
+	}
+
+	/**
+	* Returns the registration properties string of this wsrp consumer.
+	*
+	* @return the registration properties string of this wsrp consumer
+	*/
+	@Override
+	public java.lang.String getRegistrationPropertiesString() {
+		return _wsrpConsumer.getRegistrationPropertiesString();
+	}
+
+	/**
+	* Returns the url of this wsrp consumer.
+	*
+	* @return the url of this wsrp consumer
+	*/
+	@Override
+	public java.lang.String getUrl() {
+		return _wsrpConsumer.getUrl();
+	}
+
+	/**
+	* Returns the uuid of this wsrp consumer.
+	*
+	* @return the uuid of this wsrp consumer
+	*/
+	@Override
+	public java.lang.String getUuid() {
+		return _wsrpConsumer.getUuid();
+	}
+
+	/**
+	* Returns the wsdl of this wsrp consumer.
+	*
+	* @return the wsdl of this wsrp consumer
+	*/
+	@Override
+	public java.lang.String getWsdl() {
+		return _wsrpConsumer.getWsdl();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _wsrpConsumer.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _wsrpConsumer.toXmlString();
+	}
+
+	/**
+	* Returns the create date of this wsrp consumer.
+	*
+	* @return the create date of this wsrp consumer
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _wsrpConsumer.getCreateDate();
+	}
+
+	/**
+	* Returns the last publish date of this wsrp consumer.
+	*
+	* @return the last publish date of this wsrp consumer
+	*/
+	@Override
+	public Date getLastPublishDate() {
+		return _wsrpConsumer.getLastPublishDate();
+	}
+
+	/**
+	* Returns the modified date of this wsrp consumer.
+	*
+	* @return the modified date of this wsrp consumer
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _wsrpConsumer.getModifiedDate();
+	}
+
+	/**
+	* Returns the company ID of this wsrp consumer.
+	*
+	* @return the company ID of this wsrp consumer
+	*/
+	@Override
+	public long getCompanyId() {
+		return _wsrpConsumer.getCompanyId();
+	}
+
+	/**
+	* Returns the primary key of this wsrp consumer.
+	*
+	* @return the primary key of this wsrp consumer
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _wsrpConsumer.getPrimaryKey();
+	}
+
+	/**
+	* Returns the wsrp consumer ID of this wsrp consumer.
+	*
+	* @return the wsrp consumer ID of this wsrp consumer
+	*/
+	@Override
+	public long getWsrpConsumerId() {
+		return _wsrpConsumer.getWsrpConsumerId();
+	}
+
+	@Override
+	public oasis.names.tc.wsrp.v2.types.RegistrationContext getRegistrationContext() {
+		return _wsrpConsumer.getRegistrationContext();
+	}
+
+	@Override
 	public void persist() {
 		_wsrpConsumer.persist();
 	}
@@ -381,30 +406,23 @@ public class WSRPConsumerWrapper
 	}
 
 	/**
-	 * Sets the company ID of this wsrp consumer.
-	 *
-	 * @param companyId the company ID of this wsrp consumer
-	 */
+	* Sets the company ID of this wsrp consumer.
+	*
+	* @param companyId the company ID of this wsrp consumer
+	*/
 	@Override
 	public void setCompanyId(long companyId) {
 		_wsrpConsumer.setCompanyId(companyId);
 	}
 
 	/**
-	 * Sets the create date of this wsrp consumer.
-	 *
-	 * @param createDate the create date of this wsrp consumer
-	 */
+	* Sets the create date of this wsrp consumer.
+	*
+	* @param createDate the create date of this wsrp consumer
+	*/
 	@Override
 	public void setCreateDate(Date createDate) {
 		_wsrpConsumer.setCreateDate(createDate);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-
-		_wsrpConsumer.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -413,67 +431,73 @@ public class WSRPConsumerWrapper
 	}
 
 	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_wsrpConsumer.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_wsrpConsumer.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	 * Sets the forward cookies of this wsrp consumer.
-	 *
-	 * @param forwardCookies the forward cookies of this wsrp consumer
-	 */
+	* Sets the forward cookies of this wsrp consumer.
+	*
+	* @param forwardCookies the forward cookies of this wsrp consumer
+	*/
 	@Override
-	public void setForwardCookies(String forwardCookies) {
+	public void setForwardCookies(java.lang.String forwardCookies) {
 		_wsrpConsumer.setForwardCookies(forwardCookies);
 	}
 
 	/**
-	 * Sets the forward headers of this wsrp consumer.
-	 *
-	 * @param forwardHeaders the forward headers of this wsrp consumer
-	 */
+	* Sets the forward headers of this wsrp consumer.
+	*
+	* @param forwardHeaders the forward headers of this wsrp consumer
+	*/
 	@Override
-	public void setForwardHeaders(String forwardHeaders) {
+	public void setForwardHeaders(java.lang.String forwardHeaders) {
 		_wsrpConsumer.setForwardHeaders(forwardHeaders);
 	}
 
 	/**
-	 * Sets the last publish date of this wsrp consumer.
-	 *
-	 * @param lastPublishDate the last publish date of this wsrp consumer
-	 */
+	* Sets the last publish date of this wsrp consumer.
+	*
+	* @param lastPublishDate the last publish date of this wsrp consumer
+	*/
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
 		_wsrpConsumer.setLastPublishDate(lastPublishDate);
 	}
 
 	/**
-	 * Sets the markup character sets of this wsrp consumer.
-	 *
-	 * @param markupCharacterSets the markup character sets of this wsrp consumer
-	 */
+	* Sets the markup character sets of this wsrp consumer.
+	*
+	* @param markupCharacterSets the markup character sets of this wsrp consumer
+	*/
 	@Override
-	public void setMarkupCharacterSets(String markupCharacterSets) {
+	public void setMarkupCharacterSets(java.lang.String markupCharacterSets) {
 		_wsrpConsumer.setMarkupCharacterSets(markupCharacterSets);
 	}
 
 	/**
-	 * Sets the modified date of this wsrp consumer.
-	 *
-	 * @param modifiedDate the modified date of this wsrp consumer
-	 */
+	* Sets the modified date of this wsrp consumer.
+	*
+	* @param modifiedDate the modified date of this wsrp consumer
+	*/
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_wsrpConsumer.setModifiedDate(modifiedDate);
 	}
 
 	/**
-	 * Sets the name of this wsrp consumer.
-	 *
-	 * @param name the name of this wsrp consumer
-	 */
+	* Sets the name of this wsrp consumer.
+	*
+	* @param name the name of this wsrp consumer
+	*/
 	@Override
-	public void setName(String name) {
+	public void setName(java.lang.String name) {
 		_wsrpConsumer.setName(name);
 	}
 
@@ -483,10 +507,10 @@ public class WSRPConsumerWrapper
 	}
 
 	/**
-	 * Sets the primary key of this wsrp consumer.
-	 *
-	 * @param primaryKey the primary key of this wsrp consumer
-	 */
+	* Sets the primary key of this wsrp consumer.
+	*
+	* @param primaryKey the primary key of this wsrp consumer
+	*/
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_wsrpConsumer.setPrimaryKey(primaryKey);
@@ -500,106 +524,75 @@ public class WSRPConsumerWrapper
 	@Override
 	public void setRegistrationContext(
 		oasis.names.tc.wsrp.v2.types.RegistrationContext registrationContext) {
-
 		_wsrpConsumer.setRegistrationContext(registrationContext);
 	}
 
 	/**
-	 * Sets the registration context string of this wsrp consumer.
-	 *
-	 * @param registrationContextString the registration context string of this wsrp consumer
-	 */
+	* Sets the registration context string of this wsrp consumer.
+	*
+	* @param registrationContextString the registration context string of this wsrp consumer
+	*/
 	@Override
-	public void setRegistrationContextString(String registrationContextString) {
+	public void setRegistrationContextString(
+		java.lang.String registrationContextString) {
 		_wsrpConsumer.setRegistrationContextString(registrationContextString);
 	}
 
 	@Override
 	public void setRegistrationProperties(
-		com.liferay.portal.kernel.util.UnicodeProperties
-			registrationProperties) {
-
+		com.liferay.portal.kernel.util.UnicodeProperties registrationProperties) {
 		_wsrpConsumer.setRegistrationProperties(registrationProperties);
 	}
 
 	/**
-	 * Sets the registration properties string of this wsrp consumer.
-	 *
-	 * @param registrationPropertiesString the registration properties string of this wsrp consumer
-	 */
+	* Sets the registration properties string of this wsrp consumer.
+	*
+	* @param registrationPropertiesString the registration properties string of this wsrp consumer
+	*/
 	@Override
 	public void setRegistrationPropertiesString(
-		String registrationPropertiesString) {
-
-		_wsrpConsumer.setRegistrationPropertiesString(
-			registrationPropertiesString);
+		java.lang.String registrationPropertiesString) {
+		_wsrpConsumer.setRegistrationPropertiesString(registrationPropertiesString);
 	}
 
 	/**
-	 * Sets the url of this wsrp consumer.
-	 *
-	 * @param url the url of this wsrp consumer
-	 */
+	* Sets the url of this wsrp consumer.
+	*
+	* @param url the url of this wsrp consumer
+	*/
 	@Override
-	public void setUrl(String url) {
+	public void setUrl(java.lang.String url) {
 		_wsrpConsumer.setUrl(url);
 	}
 
 	/**
-	 * Sets the uuid of this wsrp consumer.
-	 *
-	 * @param uuid the uuid of this wsrp consumer
-	 */
+	* Sets the uuid of this wsrp consumer.
+	*
+	* @param uuid the uuid of this wsrp consumer
+	*/
 	@Override
-	public void setUuid(String uuid) {
+	public void setUuid(java.lang.String uuid) {
 		_wsrpConsumer.setUuid(uuid);
 	}
 
 	/**
-	 * Sets the wsdl of this wsrp consumer.
-	 *
-	 * @param wsdl the wsdl of this wsrp consumer
-	 */
+	* Sets the wsdl of this wsrp consumer.
+	*
+	* @param wsdl the wsdl of this wsrp consumer
+	*/
 	@Override
-	public void setWsdl(String wsdl) {
+	public void setWsdl(java.lang.String wsdl) {
 		_wsrpConsumer.setWsdl(wsdl);
 	}
 
 	/**
-	 * Sets the wsrp consumer ID of this wsrp consumer.
-	 *
-	 * @param wsrpConsumerId the wsrp consumer ID of this wsrp consumer
-	 */
+	* Sets the wsrp consumer ID of this wsrp consumer.
+	*
+	* @param wsrpConsumerId the wsrp consumer ID of this wsrp consumer
+	*/
 	@Override
 	public void setWsrpConsumerId(long wsrpConsumerId) {
 		_wsrpConsumer.setWsrpConsumerId(wsrpConsumerId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WSRPConsumer>
-		toCacheModel() {
-
-		return _wsrpConsumer.toCacheModel();
-	}
-
-	@Override
-	public WSRPConsumer toEscapedModel() {
-		return new WSRPConsumerWrapper(_wsrpConsumer.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return _wsrpConsumer.toString();
-	}
-
-	@Override
-	public WSRPConsumer toUnescapedModel() {
-		return new WSRPConsumerWrapper(_wsrpConsumer.toUnescapedModel());
-	}
-
-	@Override
-	public String toXmlString() {
-		return _wsrpConsumer.toXmlString();
 	}
 
 	@Override
@@ -647,5 +640,4 @@ public class WSRPConsumerWrapper
 	}
 
 	private final WSRPConsumer _wsrpConsumer;
-
 }

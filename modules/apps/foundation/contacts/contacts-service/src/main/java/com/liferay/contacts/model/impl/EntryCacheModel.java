@@ -14,10 +14,14 @@
 
 package com.liferay.contacts.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.contacts.model.Entry;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,10 +34,11 @@ import java.util.Date;
  * The cache model class for representing Entry in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see Entry
  * @generated
  */
+@ProviderType
 public class EntryCacheModel implements CacheModel<Entry>, Externalizable {
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -97,7 +102,7 @@ public class EntryCacheModel implements CacheModel<Entry>, Externalizable {
 		entryImpl.setUserId(userId);
 
 		if (userName == null) {
-			entryImpl.setUserName("");
+			entryImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			entryImpl.setUserName(userName);
@@ -118,21 +123,21 @@ public class EntryCacheModel implements CacheModel<Entry>, Externalizable {
 		}
 
 		if (fullName == null) {
-			entryImpl.setFullName("");
+			entryImpl.setFullName(StringPool.BLANK);
 		}
 		else {
 			entryImpl.setFullName(fullName);
 		}
 
 		if (emailAddress == null) {
-			entryImpl.setEmailAddress("");
+			entryImpl.setEmailAddress(StringPool.BLANK);
 		}
 		else {
 			entryImpl.setEmailAddress(emailAddress);
 		}
 
 		if (comments == null) {
-			entryImpl.setComments("");
+			entryImpl.setComments(StringPool.BLANK);
 		}
 		else {
 			entryImpl.setComments(comments);
@@ -161,7 +166,8 @@ public class EntryCacheModel implements CacheModel<Entry>, Externalizable {
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(entryId);
 
 		objectOutput.writeLong(groupId);
@@ -171,7 +177,7 @@ public class EntryCacheModel implements CacheModel<Entry>, Externalizable {
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -181,21 +187,21 @@ public class EntryCacheModel implements CacheModel<Entry>, Externalizable {
 		objectOutput.writeLong(modifiedDate);
 
 		if (fullName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(fullName);
 		}
 
 		if (emailAddress == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(emailAddress);
 		}
 
 		if (comments == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(comments);
@@ -212,5 +218,4 @@ public class EntryCacheModel implements CacheModel<Entry>, Externalizable {
 	public String fullName;
 	public String emailAddress;
 	public String comments;
-
 }

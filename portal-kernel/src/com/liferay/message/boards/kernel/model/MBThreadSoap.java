@@ -14,6 +14,8 @@
 
 package com.liferay.message.boards.kernel.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -24,10 +26,11 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.portlet.messageboards.service.http.MBThreadServiceSoap}.
  *
  * @author Brian Wing Shun Chan
+ * @see com.liferay.portlet.messageboards.service.http.MBThreadServiceSoap
  * @generated
  */
+@ProviderType
 public class MBThreadSoap implements Serializable {
-
 	public static MBThreadSoap toSoapModel(MBThread model) {
 		MBThreadSoap soapModel = new MBThreadSoap();
 
@@ -47,7 +50,7 @@ public class MBThreadSoap implements Serializable {
 		soapModel.setLastPostByUserId(model.getLastPostByUserId());
 		soapModel.setLastPostDate(model.getLastPostDate());
 		soapModel.setPriority(model.getPriority());
-		soapModel.setQuestion(model.isQuestion());
+		soapModel.setQuestion(model.getQuestion());
 		soapModel.setLastPublishDate(model.getLastPublishDate());
 		soapModel.setStatus(model.getStatus());
 		soapModel.setStatusByUserId(model.getStatusByUserId());
@@ -85,8 +88,7 @@ public class MBThreadSoap implements Serializable {
 	}
 
 	public static MBThreadSoap[] toSoapModels(List<MBThread> models) {
-		List<MBThreadSoap> soapModels = new ArrayList<MBThreadSoap>(
-			models.size());
+		List<MBThreadSoap> soapModels = new ArrayList<MBThreadSoap>(models.size());
 
 		for (MBThread model : models) {
 			soapModels.add(toSoapModel(model));
@@ -308,5 +310,4 @@ public class MBThreadSoap implements Serializable {
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
-
 }

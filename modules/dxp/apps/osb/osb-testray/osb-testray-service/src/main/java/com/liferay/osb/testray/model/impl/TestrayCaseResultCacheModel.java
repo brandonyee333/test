@@ -1,23 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.testray.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.osb.testray.model.TestrayCaseResult;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing TestrayCaseResult in entity cache.
  *
  * @author Ethan Bustad
+ * @see TestrayCaseResult
  * @generated
  */
-public class TestrayCaseResultCacheModel
-	implements CacheModel<TestrayCaseResult>, Externalizable {
-
+@ProviderType
+public class TestrayCaseResultCacheModel implements CacheModel<TestrayCaseResult>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +50,9 @@ public class TestrayCaseResultCacheModel
 			return false;
 		}
 
-		TestrayCaseResultCacheModel testrayCaseResultCacheModel =
-			(TestrayCaseResultCacheModel)obj;
+		TestrayCaseResultCacheModel testrayCaseResultCacheModel = (TestrayCaseResultCacheModel)obj;
 
-		if (testrayCaseResultId ==
-				testrayCaseResultCacheModel.testrayCaseResultId) {
-
+		if (testrayCaseResultId == testrayCaseResultCacheModel.testrayCaseResultId) {
 			return true;
 		}
 
@@ -109,8 +111,7 @@ public class TestrayCaseResultCacheModel
 
 	@Override
 	public TestrayCaseResult toEntityModel() {
-		TestrayCaseResultImpl testrayCaseResultImpl =
-			new TestrayCaseResultImpl();
+		TestrayCaseResultImpl testrayCaseResultImpl = new TestrayCaseResultImpl();
 
 		testrayCaseResultImpl.setTestrayCaseResultId(testrayCaseResultId);
 		testrayCaseResultImpl.setGroupId(groupId);
@@ -118,7 +119,7 @@ public class TestrayCaseResultCacheModel
 		testrayCaseResultImpl.setUserId(userId);
 
 		if (userName == null) {
-			testrayCaseResultImpl.setUserName("");
+			testrayCaseResultImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			testrayCaseResultImpl.setUserName(userName);
@@ -160,14 +161,14 @@ public class TestrayCaseResultCacheModel
 		}
 
 		if (attachments == null) {
-			testrayCaseResultImpl.setAttachments("");
+			testrayCaseResultImpl.setAttachments(StringPool.BLANK);
 		}
 		else {
 			testrayCaseResultImpl.setAttachments(attachments);
 		}
 
 		if (errors == null) {
-			testrayCaseResultImpl.setErrors("");
+			testrayCaseResultImpl.setErrors(StringPool.BLANK);
 		}
 		else {
 			testrayCaseResultImpl.setErrors(errors);
@@ -213,7 +214,8 @@ public class TestrayCaseResultCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(testrayCaseResultId);
 
 		objectOutput.writeLong(groupId);
@@ -223,7 +225,7 @@ public class TestrayCaseResultCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -247,14 +249,14 @@ public class TestrayCaseResultCacheModel
 		objectOutput.writeLong(closedDate);
 
 		if (attachments == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(attachments);
 		}
 
 		if (errors == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(errors);
@@ -281,5 +283,4 @@ public class TestrayCaseResultCacheModel
 	public String attachments;
 	public String errors;
 	public int status;
-
 }

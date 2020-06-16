@@ -170,7 +170,7 @@
 		<property name="ccExpMonth" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="ccExpYear" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="ccVerNumber" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="comments" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
+		<property name="comments" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="ppTxnId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="ppPaymentStatus" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="ppPaymentGross" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
@@ -185,7 +185,7 @@
 		</id>
 		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="orderId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="itemId" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
+		<property name="itemId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="sku" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />

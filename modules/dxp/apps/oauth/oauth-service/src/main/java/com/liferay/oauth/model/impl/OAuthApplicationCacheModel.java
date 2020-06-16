@@ -1,23 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.oauth.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.oauth.model.OAuthApplication;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing OAuthApplication in entity cache.
  *
  * @author Ivica Cardic
+ * @see OAuthApplication
  * @generated
  */
-public class OAuthApplicationCacheModel
-	implements CacheModel<OAuthApplication>, Externalizable {
-
+@ProviderType
+public class OAuthApplicationCacheModel implements CacheModel<OAuthApplication>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +50,9 @@ public class OAuthApplicationCacheModel
 			return false;
 		}
 
-		OAuthApplicationCacheModel oAuthApplicationCacheModel =
-			(OAuthApplicationCacheModel)obj;
+		OAuthApplicationCacheModel oAuthApplicationCacheModel = (OAuthApplicationCacheModel)obj;
 
-		if (oAuthApplicationId ==
-				oAuthApplicationCacheModel.oAuthApplicationId) {
-
+		if (oAuthApplicationId == oAuthApplicationCacheModel.oAuthApplicationId) {
 			return true;
 		}
 
@@ -110,7 +112,7 @@ public class OAuthApplicationCacheModel
 		oAuthApplicationImpl.setUserId(userId);
 
 		if (userName == null) {
-			oAuthApplicationImpl.setUserName("");
+			oAuthApplicationImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			oAuthApplicationImpl.setUserName(userName);
@@ -131,28 +133,28 @@ public class OAuthApplicationCacheModel
 		}
 
 		if (name == null) {
-			oAuthApplicationImpl.setName("");
+			oAuthApplicationImpl.setName(StringPool.BLANK);
 		}
 		else {
 			oAuthApplicationImpl.setName(name);
 		}
 
 		if (description == null) {
-			oAuthApplicationImpl.setDescription("");
+			oAuthApplicationImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			oAuthApplicationImpl.setDescription(description);
 		}
 
 		if (consumerKey == null) {
-			oAuthApplicationImpl.setConsumerKey("");
+			oAuthApplicationImpl.setConsumerKey(StringPool.BLANK);
 		}
 		else {
 			oAuthApplicationImpl.setConsumerKey(consumerKey);
 		}
 
 		if (consumerSecret == null) {
-			oAuthApplicationImpl.setConsumerSecret("");
+			oAuthApplicationImpl.setConsumerSecret(StringPool.BLANK);
 		}
 		else {
 			oAuthApplicationImpl.setConsumerSecret(consumerSecret);
@@ -163,14 +165,14 @@ public class OAuthApplicationCacheModel
 		oAuthApplicationImpl.setShareableAccessToken(shareableAccessToken);
 
 		if (callbackURI == null) {
-			oAuthApplicationImpl.setCallbackURI("");
+			oAuthApplicationImpl.setCallbackURI(StringPool.BLANK);
 		}
 		else {
 			oAuthApplicationImpl.setCallbackURI(callbackURI);
 		}
 
 		if (websiteURL == null) {
-			oAuthApplicationImpl.setWebsiteURL("");
+			oAuthApplicationImpl.setWebsiteURL(StringPool.BLANK);
 		}
 		else {
 			oAuthApplicationImpl.setWebsiteURL(websiteURL);
@@ -206,7 +208,8 @@ public class OAuthApplicationCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(oAuthApplicationId);
 
 		objectOutput.writeLong(companyId);
@@ -214,7 +217,7 @@ public class OAuthApplicationCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -224,28 +227,28 @@ public class OAuthApplicationCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (consumerKey == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(consumerKey);
 		}
 
 		if (consumerSecret == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(consumerSecret);
@@ -258,14 +261,14 @@ public class OAuthApplicationCacheModel
 		objectOutput.writeBoolean(shareableAccessToken);
 
 		if (callbackURI == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(callbackURI);
 		}
 
 		if (websiteURL == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(websiteURL);
@@ -287,5 +290,4 @@ public class OAuthApplicationCacheModel
 	public boolean shareableAccessToken;
 	public String callbackURI;
 	public String websiteURL;
-
 }

@@ -14,10 +14,14 @@
 
 package com.liferay.portlet.blogs.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.blogs.kernel.model.BlogsEntry;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing BlogsEntry in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see BlogsEntry
  * @generated
  */
-public class BlogsEntryCacheModel
-	implements CacheModel<BlogsEntry>, Externalizable {
-
+@ProviderType
+public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -131,7 +136,7 @@ public class BlogsEntryCacheModel
 		BlogsEntryImpl blogsEntryImpl = new BlogsEntryImpl();
 
 		if (uuid == null) {
-			blogsEntryImpl.setUuid("");
+			blogsEntryImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			blogsEntryImpl.setUuid(uuid);
@@ -143,7 +148,7 @@ public class BlogsEntryCacheModel
 		blogsEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			blogsEntryImpl.setUserName("");
+			blogsEntryImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			blogsEntryImpl.setUserName(userName);
@@ -164,35 +169,35 @@ public class BlogsEntryCacheModel
 		}
 
 		if (title == null) {
-			blogsEntryImpl.setTitle("");
+			blogsEntryImpl.setTitle(StringPool.BLANK);
 		}
 		else {
 			blogsEntryImpl.setTitle(title);
 		}
 
 		if (subtitle == null) {
-			blogsEntryImpl.setSubtitle("");
+			blogsEntryImpl.setSubtitle(StringPool.BLANK);
 		}
 		else {
 			blogsEntryImpl.setSubtitle(subtitle);
 		}
 
 		if (urlTitle == null) {
-			blogsEntryImpl.setUrlTitle("");
+			blogsEntryImpl.setUrlTitle(StringPool.BLANK);
 		}
 		else {
 			blogsEntryImpl.setUrlTitle(urlTitle);
 		}
 
 		if (description == null) {
-			blogsEntryImpl.setDescription("");
+			blogsEntryImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			blogsEntryImpl.setDescription(description);
 		}
 
 		if (content == null) {
-			blogsEntryImpl.setContent("");
+			blogsEntryImpl.setContent(StringPool.BLANK);
 		}
 		else {
 			blogsEntryImpl.setContent(content);
@@ -209,14 +214,14 @@ public class BlogsEntryCacheModel
 		blogsEntryImpl.setAllowTrackbacks(allowTrackbacks);
 
 		if (trackbacks == null) {
-			blogsEntryImpl.setTrackbacks("");
+			blogsEntryImpl.setTrackbacks(StringPool.BLANK);
 		}
 		else {
 			blogsEntryImpl.setTrackbacks(trackbacks);
 		}
 
 		if (coverImageCaption == null) {
-			blogsEntryImpl.setCoverImageCaption("");
+			blogsEntryImpl.setCoverImageCaption(StringPool.BLANK);
 		}
 		else {
 			blogsEntryImpl.setCoverImageCaption(coverImageCaption);
@@ -225,7 +230,7 @@ public class BlogsEntryCacheModel
 		blogsEntryImpl.setCoverImageFileEntryId(coverImageFileEntryId);
 
 		if (coverImageURL == null) {
-			blogsEntryImpl.setCoverImageURL("");
+			blogsEntryImpl.setCoverImageURL(StringPool.BLANK);
 		}
 		else {
 			blogsEntryImpl.setCoverImageURL(coverImageURL);
@@ -236,7 +241,7 @@ public class BlogsEntryCacheModel
 		blogsEntryImpl.setSmallImageId(smallImageId);
 
 		if (smallImageURL == null) {
-			blogsEntryImpl.setSmallImageURL("");
+			blogsEntryImpl.setSmallImageURL(StringPool.BLANK);
 		}
 		else {
 			blogsEntryImpl.setSmallImageURL(smallImageURL);
@@ -253,7 +258,7 @@ public class BlogsEntryCacheModel
 		blogsEntryImpl.setStatusByUserId(statusByUserId);
 
 		if (statusByUserName == null) {
-			blogsEntryImpl.setStatusByUserName("");
+			blogsEntryImpl.setStatusByUserName(StringPool.BLANK);
 		}
 		else {
 			blogsEntryImpl.setStatusByUserName(statusByUserName);
@@ -272,9 +277,7 @@ public class BlogsEntryCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
 
 		entryId = objectInput.readLong();
@@ -291,13 +294,13 @@ public class BlogsEntryCacheModel
 		subtitle = objectInput.readUTF();
 		urlTitle = objectInput.readUTF();
 		description = objectInput.readUTF();
-		content = (String)objectInput.readObject();
+		content = objectInput.readUTF();
 		displayDate = objectInput.readLong();
 
 		allowPingbacks = objectInput.readBoolean();
 
 		allowTrackbacks = objectInput.readBoolean();
-		trackbacks = (String)objectInput.readObject();
+		trackbacks = objectInput.readUTF();
 		coverImageCaption = objectInput.readUTF();
 
 		coverImageFileEntryId = objectInput.readLong();
@@ -319,9 +322,10 @@ public class BlogsEntryCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -336,7 +340,7 @@ public class BlogsEntryCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -346,38 +350,38 @@ public class BlogsEntryCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (title == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(title);
 		}
 
 		if (subtitle == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(subtitle);
 		}
 
 		if (urlTitle == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(urlTitle);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (content == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(content);
+			objectOutput.writeUTF(content);
 		}
 
 		objectOutput.writeLong(displayDate);
@@ -387,14 +391,14 @@ public class BlogsEntryCacheModel
 		objectOutput.writeBoolean(allowTrackbacks);
 
 		if (trackbacks == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(trackbacks);
+			objectOutput.writeUTF(trackbacks);
 		}
 
 		if (coverImageCaption == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(coverImageCaption);
@@ -403,7 +407,7 @@ public class BlogsEntryCacheModel
 		objectOutput.writeLong(coverImageFileEntryId);
 
 		if (coverImageURL == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(coverImageURL);
@@ -416,7 +420,7 @@ public class BlogsEntryCacheModel
 		objectOutput.writeLong(smallImageId);
 
 		if (smallImageURL == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(smallImageURL);
@@ -429,7 +433,7 @@ public class BlogsEntryCacheModel
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(statusByUserName);
@@ -467,5 +471,4 @@ public class BlogsEntryCacheModel
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
-
 }

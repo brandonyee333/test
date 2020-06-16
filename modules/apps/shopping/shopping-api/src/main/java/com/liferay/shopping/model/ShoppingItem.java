@@ -25,20 +25,19 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see ShoppingItemModel
+ * @see com.liferay.shopping.model.impl.ShoppingItemImpl
+ * @see com.liferay.shopping.model.impl.ShoppingItemModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.shopping.model.impl.ShoppingItemImpl")
 @ProviderType
-public interface ShoppingItem extends PersistedModel, ShoppingItemModel {
-
+public interface ShoppingItem extends ShoppingItemModel, PersistedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to <code>com.liferay.shopping.model.impl.ShoppingItemImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to {@link com.liferay.shopping.model.impl.ShoppingItemImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<ShoppingItem, Long> ITEM_ID_ACCESSOR =
-		new Accessor<ShoppingItem, Long>() {
-
+	public static final Accessor<ShoppingItem, Long> ITEM_ID_ACCESSOR = new Accessor<ShoppingItem, Long>() {
 			@Override
 			public Long get(ShoppingItem shoppingItem) {
 				return shoppingItem.getItemId();
@@ -53,21 +52,20 @@ public interface ShoppingItem extends PersistedModel, ShoppingItemModel {
 			public Class<ShoppingItem> getTypeClass() {
 				return ShoppingItem.class;
 			}
-
 		};
 
 	public ShoppingCategory getCategory();
 
-	public String[] getFieldsQuantitiesArray();
+	public java.lang.String[] getFieldsQuantitiesArray();
 
 	public java.util.List<ShoppingItemPrice> getItemPrices()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public String getShoppingItemImageURL(
+	public java.lang.String getShoppingItemImageURL(
 		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay);
 
 	public boolean isInfiniteStock();
 
-	public void setFieldsQuantitiesArray(String[] fieldsQuantitiesArray);
-
+	public void setFieldsQuantitiesArray(
+		java.lang.String[] fieldsQuantitiesArray);
 }

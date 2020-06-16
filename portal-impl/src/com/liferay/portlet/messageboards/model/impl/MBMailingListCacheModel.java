@@ -14,10 +14,14 @@
 
 package com.liferay.portlet.messageboards.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.message.boards.kernel.model.MBMailingList;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing MBMailingList in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see MBMailingList
  * @generated
  */
-public class MBMailingListCacheModel
-	implements CacheModel<MBMailingList>, Externalizable {
-
+@ProviderType
+public class MBMailingListCacheModel implements CacheModel<MBMailingList>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class MBMailingListCacheModel
 			return false;
 		}
 
-		MBMailingListCacheModel mbMailingListCacheModel =
-			(MBMailingListCacheModel)obj;
+		MBMailingListCacheModel mbMailingListCacheModel = (MBMailingListCacheModel)obj;
 
 		if (mailingListId == mbMailingListCacheModel.mailingListId) {
 			return true;
@@ -126,7 +130,7 @@ public class MBMailingListCacheModel
 		MBMailingListImpl mbMailingListImpl = new MBMailingListImpl();
 
 		if (uuid == null) {
-			mbMailingListImpl.setUuid("");
+			mbMailingListImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			mbMailingListImpl.setUuid(uuid);
@@ -138,7 +142,7 @@ public class MBMailingListCacheModel
 		mbMailingListImpl.setUserId(userId);
 
 		if (userName == null) {
-			mbMailingListImpl.setUserName("");
+			mbMailingListImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			mbMailingListImpl.setUserName(userName);
@@ -161,21 +165,21 @@ public class MBMailingListCacheModel
 		mbMailingListImpl.setCategoryId(categoryId);
 
 		if (emailAddress == null) {
-			mbMailingListImpl.setEmailAddress("");
+			mbMailingListImpl.setEmailAddress(StringPool.BLANK);
 		}
 		else {
 			mbMailingListImpl.setEmailAddress(emailAddress);
 		}
 
 		if (inProtocol == null) {
-			mbMailingListImpl.setInProtocol("");
+			mbMailingListImpl.setInProtocol(StringPool.BLANK);
 		}
 		else {
 			mbMailingListImpl.setInProtocol(inProtocol);
 		}
 
 		if (inServerName == null) {
-			mbMailingListImpl.setInServerName("");
+			mbMailingListImpl.setInServerName(StringPool.BLANK);
 		}
 		else {
 			mbMailingListImpl.setInServerName(inServerName);
@@ -185,14 +189,14 @@ public class MBMailingListCacheModel
 		mbMailingListImpl.setInUseSSL(inUseSSL);
 
 		if (inUserName == null) {
-			mbMailingListImpl.setInUserName("");
+			mbMailingListImpl.setInUserName(StringPool.BLANK);
 		}
 		else {
 			mbMailingListImpl.setInUserName(inUserName);
 		}
 
 		if (inPassword == null) {
-			mbMailingListImpl.setInPassword("");
+			mbMailingListImpl.setInPassword(StringPool.BLANK);
 		}
 		else {
 			mbMailingListImpl.setInPassword(inPassword);
@@ -201,7 +205,7 @@ public class MBMailingListCacheModel
 		mbMailingListImpl.setInReadInterval(inReadInterval);
 
 		if (outEmailAddress == null) {
-			mbMailingListImpl.setOutEmailAddress("");
+			mbMailingListImpl.setOutEmailAddress(StringPool.BLANK);
 		}
 		else {
 			mbMailingListImpl.setOutEmailAddress(outEmailAddress);
@@ -210,7 +214,7 @@ public class MBMailingListCacheModel
 		mbMailingListImpl.setOutCustom(outCustom);
 
 		if (outServerName == null) {
-			mbMailingListImpl.setOutServerName("");
+			mbMailingListImpl.setOutServerName(StringPool.BLANK);
 		}
 		else {
 			mbMailingListImpl.setOutServerName(outServerName);
@@ -220,14 +224,14 @@ public class MBMailingListCacheModel
 		mbMailingListImpl.setOutUseSSL(outUseSSL);
 
 		if (outUserName == null) {
-			mbMailingListImpl.setOutUserName("");
+			mbMailingListImpl.setOutUserName(StringPool.BLANK);
 		}
 		else {
 			mbMailingListImpl.setOutUserName(outUserName);
 		}
 
 		if (outPassword == null) {
-			mbMailingListImpl.setOutPassword("");
+			mbMailingListImpl.setOutPassword(StringPool.BLANK);
 		}
 		else {
 			mbMailingListImpl.setOutPassword(outPassword);
@@ -285,9 +289,10 @@ public class MBMailingListCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -302,7 +307,7 @@ public class MBMailingListCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -314,21 +319,21 @@ public class MBMailingListCacheModel
 		objectOutput.writeLong(categoryId);
 
 		if (emailAddress == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(emailAddress);
 		}
 
 		if (inProtocol == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(inProtocol);
 		}
 
 		if (inServerName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(inServerName);
@@ -339,14 +344,14 @@ public class MBMailingListCacheModel
 		objectOutput.writeBoolean(inUseSSL);
 
 		if (inUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(inUserName);
 		}
 
 		if (inPassword == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(inPassword);
@@ -355,7 +360,7 @@ public class MBMailingListCacheModel
 		objectOutput.writeInt(inReadInterval);
 
 		if (outEmailAddress == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(outEmailAddress);
@@ -364,7 +369,7 @@ public class MBMailingListCacheModel
 		objectOutput.writeBoolean(outCustom);
 
 		if (outServerName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(outServerName);
@@ -375,14 +380,14 @@ public class MBMailingListCacheModel
 		objectOutput.writeBoolean(outUseSSL);
 
 		if (outUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(outUserName);
 		}
 
 		if (outPassword == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(outPassword);
@@ -419,5 +424,4 @@ public class MBMailingListCacheModel
 	public String outPassword;
 	public boolean allowAnonymous;
 	public boolean active;
-
 }

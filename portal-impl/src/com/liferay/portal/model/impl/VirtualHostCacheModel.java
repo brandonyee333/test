@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.VirtualHost;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -29,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing VirtualHost in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see VirtualHost
  * @generated
  */
-public class VirtualHostCacheModel
-	implements CacheModel<VirtualHost>, Externalizable, MVCCModel {
-
+@ProviderType
+public class VirtualHostCacheModel implements CacheModel<VirtualHost>,
+	Externalizable, MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -44,12 +48,10 @@ public class VirtualHostCacheModel
 			return false;
 		}
 
-		VirtualHostCacheModel virtualHostCacheModel =
-			(VirtualHostCacheModel)obj;
+		VirtualHostCacheModel virtualHostCacheModel = (VirtualHostCacheModel)obj;
 
 		if ((virtualHostId == virtualHostCacheModel.virtualHostId) &&
-			(mvccVersion == virtualHostCacheModel.mvccVersion)) {
-
+				(mvccVersion == virtualHostCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -102,7 +104,7 @@ public class VirtualHostCacheModel
 		virtualHostImpl.setLayoutSetId(layoutSetId);
 
 		if (hostname == null) {
-			virtualHostImpl.setHostname("");
+			virtualHostImpl.setHostname(StringPool.BLANK);
 		}
 		else {
 			virtualHostImpl.setHostname(hostname);
@@ -126,7 +128,8 @@ public class VirtualHostCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(virtualHostId);
@@ -136,7 +139,7 @@ public class VirtualHostCacheModel
 		objectOutput.writeLong(layoutSetId);
 
 		if (hostname == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(hostname);
@@ -148,5 +151,4 @@ public class VirtualHostCacheModel
 	public long companyId;
 	public long layoutSetId;
 	public String hostname;
-
 }

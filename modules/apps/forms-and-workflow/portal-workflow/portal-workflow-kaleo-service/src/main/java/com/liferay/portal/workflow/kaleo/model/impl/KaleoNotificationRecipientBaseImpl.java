@@ -14,6 +14,8 @@
 
 package com.liferay.portal.workflow.kaleo.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.workflow.kaleo.model.KaleoNotificationRecipient;
 import com.liferay.portal.workflow.kaleo.service.KaleoNotificationRecipientLocalServiceUtil;
 
@@ -29,25 +31,22 @@ import com.liferay.portal.workflow.kaleo.service.KaleoNotificationRecipientLocal
  * @see KaleoNotificationRecipient
  * @generated
  */
+@ProviderType
 public abstract class KaleoNotificationRecipientBaseImpl
 	extends KaleoNotificationRecipientModelImpl
 	implements KaleoNotificationRecipient {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a kaleo notification recipient model instance should use the <code>KaleoNotificationRecipient</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a kaleo notification recipient model instance should use the {@link KaleoNotificationRecipient} interface instead.
 	 */
 	@Override
 	public void persist() {
 		if (this.isNew()) {
-			KaleoNotificationRecipientLocalServiceUtil.
-				addKaleoNotificationRecipient(this);
+			KaleoNotificationRecipientLocalServiceUtil.addKaleoNotificationRecipient(this);
 		}
 		else {
-			KaleoNotificationRecipientLocalServiceUtil.
-				updateKaleoNotificationRecipient(this);
+			KaleoNotificationRecipientLocalServiceUtil.updateKaleoNotificationRecipient(this);
 		}
 	}
-
 }

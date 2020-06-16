@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.Team;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -31,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing Team in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see Team
  * @generated
  */
-public class TeamCacheModel
-	implements CacheModel<Team>, Externalizable, MVCCModel {
-
+@ProviderType
+public class TeamCacheModel implements CacheModel<Team>, Externalizable,
+	MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -49,8 +53,7 @@ public class TeamCacheModel
 		TeamCacheModel teamCacheModel = (TeamCacheModel)obj;
 
 		if ((teamId == teamCacheModel.teamId) &&
-			(mvccVersion == teamCacheModel.mvccVersion)) {
-
+				(mvccVersion == teamCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -114,7 +117,7 @@ public class TeamCacheModel
 		teamImpl.setMvccVersion(mvccVersion);
 
 		if (uuid == null) {
-			teamImpl.setUuid("");
+			teamImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			teamImpl.setUuid(uuid);
@@ -125,7 +128,7 @@ public class TeamCacheModel
 		teamImpl.setUserId(userId);
 
 		if (userName == null) {
-			teamImpl.setUserName("");
+			teamImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			teamImpl.setUserName(userName);
@@ -148,14 +151,14 @@ public class TeamCacheModel
 		teamImpl.setGroupId(groupId);
 
 		if (name == null) {
-			teamImpl.setName("");
+			teamImpl.setName(StringPool.BLANK);
 		}
 		else {
 			teamImpl.setName(name);
 		}
 
 		if (description == null) {
-			teamImpl.setDescription("");
+			teamImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			teamImpl.setDescription(description);
@@ -194,11 +197,12 @@ public class TeamCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -211,7 +215,7 @@ public class TeamCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -223,14 +227,14 @@ public class TeamCacheModel
 		objectOutput.writeLong(groupId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -251,5 +255,4 @@ public class TeamCacheModel
 	public String name;
 	public String description;
 	public long lastPublishDate;
-
 }

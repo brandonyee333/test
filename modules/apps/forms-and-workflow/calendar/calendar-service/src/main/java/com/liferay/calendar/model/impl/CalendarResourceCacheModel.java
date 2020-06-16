@@ -14,10 +14,14 @@
 
 package com.liferay.calendar.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.calendar.model.CalendarResource;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing CalendarResource in entity cache.
  *
  * @author Eduardo Lundgren
+ * @see CalendarResource
  * @generated
  */
-public class CalendarResourceCacheModel
-	implements CacheModel<CalendarResource>, Externalizable {
-
+@ProviderType
+public class CalendarResourceCacheModel implements CacheModel<CalendarResource>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +50,9 @@ public class CalendarResourceCacheModel
 			return false;
 		}
 
-		CalendarResourceCacheModel calendarResourceCacheModel =
-			(CalendarResourceCacheModel)obj;
+		CalendarResourceCacheModel calendarResourceCacheModel = (CalendarResourceCacheModel)obj;
 
-		if (calendarResourceId ==
-				calendarResourceCacheModel.calendarResourceId) {
-
+		if (calendarResourceId == calendarResourceCacheModel.calendarResourceId) {
 			return true;
 		}
 
@@ -110,7 +112,7 @@ public class CalendarResourceCacheModel
 		CalendarResourceImpl calendarResourceImpl = new CalendarResourceImpl();
 
 		if (uuid == null) {
-			calendarResourceImpl.setUuid("");
+			calendarResourceImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			calendarResourceImpl.setUuid(uuid);
@@ -122,7 +124,7 @@ public class CalendarResourceCacheModel
 		calendarResourceImpl.setUserId(userId);
 
 		if (userName == null) {
-			calendarResourceImpl.setUserName("");
+			calendarResourceImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			calendarResourceImpl.setUserName(userName);
@@ -147,28 +149,28 @@ public class CalendarResourceCacheModel
 		calendarResourceImpl.setClassPK(classPK);
 
 		if (classUuid == null) {
-			calendarResourceImpl.setClassUuid("");
+			calendarResourceImpl.setClassUuid(StringPool.BLANK);
 		}
 		else {
 			calendarResourceImpl.setClassUuid(classUuid);
 		}
 
 		if (code == null) {
-			calendarResourceImpl.setCode("");
+			calendarResourceImpl.setCode(StringPool.BLANK);
 		}
 		else {
 			calendarResourceImpl.setCode(code);
 		}
 
 		if (name == null) {
-			calendarResourceImpl.setName("");
+			calendarResourceImpl.setName(StringPool.BLANK);
 		}
 		else {
 			calendarResourceImpl.setName(name);
 		}
 
 		if (description == null) {
-			calendarResourceImpl.setDescription("");
+			calendarResourceImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			calendarResourceImpl.setDescription(description);
@@ -218,9 +220,10 @@ public class CalendarResourceCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -235,7 +238,7 @@ public class CalendarResourceCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -251,28 +254,28 @@ public class CalendarResourceCacheModel
 		objectOutput.writeLong(classPK);
 
 		if (classUuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(classUuid);
 		}
 
 		if (code == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(code);
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -299,5 +302,4 @@ public class CalendarResourceCacheModel
 	public String description;
 	public boolean active;
 	public long lastPublishDate;
-
 }

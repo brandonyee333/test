@@ -14,6 +14,8 @@
 
 package com.liferay.portal.background.task.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -25,10 +27,11 @@ import java.util.Map;
  * This class is used by SOAP remote services, specifically {@link com.liferay.portal.background.task.service.http.BackgroundTaskServiceSoap}.
  *
  * @author Brian Wing Shun Chan
+ * @see com.liferay.portal.background.task.service.http.BackgroundTaskServiceSoap
  * @generated
  */
+@ProviderType
 public class BackgroundTaskSoap implements Serializable {
-
 	public static BackgroundTaskSoap toSoapModel(BackgroundTask model) {
 		BackgroundTaskSoap soapModel = new BackgroundTaskSoap();
 
@@ -44,7 +47,7 @@ public class BackgroundTaskSoap implements Serializable {
 		soapModel.setServletContextNames(model.getServletContextNames());
 		soapModel.setTaskExecutorClassName(model.getTaskExecutorClassName());
 		soapModel.setTaskContextMap(model.getTaskContextMap());
-		soapModel.setCompleted(model.isCompleted());
+		soapModel.setCompleted(model.getCompleted());
 		soapModel.setCompletionDate(model.getCompletionDate());
 		soapModel.setStatus(model.getStatus());
 		soapModel.setStatusMessage(model.getStatusMessage());
@@ -62,14 +65,11 @@ public class BackgroundTaskSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static BackgroundTaskSoap[][] toSoapModels(
-		BackgroundTask[][] models) {
-
+	public static BackgroundTaskSoap[][] toSoapModels(BackgroundTask[][] models) {
 		BackgroundTaskSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels =
-				new BackgroundTaskSoap[models.length][models[0].length];
+			soapModels = new BackgroundTaskSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new BackgroundTaskSoap[0][0];
@@ -82,11 +82,8 @@ public class BackgroundTaskSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static BackgroundTaskSoap[] toSoapModels(
-		List<BackgroundTask> models) {
-
-		List<BackgroundTaskSoap> soapModels = new ArrayList<BackgroundTaskSoap>(
-			models.size());
+	public static BackgroundTaskSoap[] toSoapModels(List<BackgroundTask> models) {
+		List<BackgroundTaskSoap> soapModels = new ArrayList<BackgroundTaskSoap>(models.size());
 
 		for (BackgroundTask model : models) {
 			soapModels.add(toSoapModel(model));
@@ -254,5 +251,4 @@ public class BackgroundTaskSoap implements Serializable {
 	private Date _completionDate;
 	private int _status;
 	private String _statusMessage;
-
 }

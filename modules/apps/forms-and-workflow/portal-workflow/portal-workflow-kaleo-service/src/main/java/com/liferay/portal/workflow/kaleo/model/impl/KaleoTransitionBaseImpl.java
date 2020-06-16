@@ -14,6 +14,8 @@
 
 package com.liferay.portal.workflow.kaleo.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.workflow.kaleo.model.KaleoTransition;
 import com.liferay.portal.workflow.kaleo.service.KaleoTransitionLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.portal.workflow.kaleo.service.KaleoTransitionLocalServiceUtil
  * @see KaleoTransition
  * @generated
  */
-public abstract class KaleoTransitionBaseImpl
-	extends KaleoTransitionModelImpl implements KaleoTransition {
-
+@ProviderType
+public abstract class KaleoTransitionBaseImpl extends KaleoTransitionModelImpl
+	implements KaleoTransition {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a kaleo transition model instance should use the <code>KaleoTransition</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a kaleo transition model instance should use the {@link KaleoTransition} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class KaleoTransitionBaseImpl
 			KaleoTransitionLocalServiceUtil.updateKaleoTransition(this);
 		}
 	}
-
 }

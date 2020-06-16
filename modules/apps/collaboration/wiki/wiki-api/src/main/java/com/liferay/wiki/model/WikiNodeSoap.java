@@ -14,6 +14,8 @@
 
 package com.liferay.wiki.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -24,10 +26,11 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.wiki.service.http.WikiNodeServiceSoap}.
  *
  * @author Brian Wing Shun Chan
+ * @see com.liferay.wiki.service.http.WikiNodeServiceSoap
  * @generated
  */
+@ProviderType
 public class WikiNodeSoap implements Serializable {
-
 	public static WikiNodeSoap toSoapModel(WikiNode model) {
 		WikiNodeSoap soapModel = new WikiNodeSoap();
 
@@ -79,8 +82,7 @@ public class WikiNodeSoap implements Serializable {
 	}
 
 	public static WikiNodeSoap[] toSoapModels(List<WikiNode> models) {
-		List<WikiNodeSoap> soapModels = new ArrayList<WikiNodeSoap>(
-			models.size());
+		List<WikiNodeSoap> soapModels = new ArrayList<WikiNodeSoap>(models.size());
 
 		for (WikiNode model : models) {
 			soapModels.add(toSoapModel(model));
@@ -244,5 +246,4 @@ public class WikiNodeSoap implements Serializable {
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
-
 }

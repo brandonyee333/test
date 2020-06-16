@@ -25,20 +25,19 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see KBFolderModel
+ * @see com.liferay.knowledge.base.model.impl.KBFolderImpl
+ * @see com.liferay.knowledge.base.model.impl.KBFolderModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.knowledge.base.model.impl.KBFolderImpl")
 @ProviderType
 public interface KBFolder extends KBFolderModel, PersistedModel {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to <code>com.liferay.knowledge.base.model.impl.KBFolderImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to {@link com.liferay.knowledge.base.model.impl.KBFolderImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<KBFolder, Long> KB_FOLDER_ID_ACCESSOR =
-		new Accessor<KBFolder, Long>() {
-
+	public static final Accessor<KBFolder, Long> KB_FOLDER_ID_ACCESSOR = new Accessor<KBFolder, Long>() {
 			@Override
 			public Long get(KBFolder kbFolder) {
 				return kbFolder.getKbFolderId();
@@ -53,10 +52,9 @@ public interface KBFolder extends KBFolderModel, PersistedModel {
 			public Class<KBFolder> getTypeClass() {
 				return KBFolder.class;
 			}
-
 		};
 
-	public java.util.List<Long> getAncestorKBFolderIds()
+	public java.util.List<java.lang.Long> getAncestorKBFolderIds()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public long getClassNameId();
@@ -64,12 +62,11 @@ public interface KBFolder extends KBFolderModel, PersistedModel {
 	public KBFolder getParentKBFolder()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public String getParentTitle(java.util.Locale locale)
+	public java.lang.String getParentTitle(java.util.Locale locale)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public boolean isEmpty()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public boolean isRoot();
-
 }

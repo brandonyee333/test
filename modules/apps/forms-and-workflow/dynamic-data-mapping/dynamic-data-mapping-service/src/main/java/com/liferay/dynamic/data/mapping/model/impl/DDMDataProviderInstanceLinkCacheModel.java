@@ -14,7 +14,10 @@
 
 package com.liferay.dynamic.data.mapping.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.dynamic.data.mapping.model.DDMDataProviderInstanceLink;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -28,11 +31,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing DDMDataProviderInstanceLink in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see DDMDataProviderInstanceLink
  * @generated
  */
-public class DDMDataProviderInstanceLinkCacheModel
-	implements CacheModel<DDMDataProviderInstanceLink>, Externalizable {
-
+@ProviderType
+public class DDMDataProviderInstanceLinkCacheModel implements CacheModel<DDMDataProviderInstanceLink>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -43,14 +47,10 @@ public class DDMDataProviderInstanceLinkCacheModel
 			return false;
 		}
 
-		DDMDataProviderInstanceLinkCacheModel
-			ddmDataProviderInstanceLinkCacheModel =
-				(DDMDataProviderInstanceLinkCacheModel)obj;
+		DDMDataProviderInstanceLinkCacheModel ddmDataProviderInstanceLinkCacheModel =
+			(DDMDataProviderInstanceLinkCacheModel)obj;
 
-		if (dataProviderInstanceLinkId ==
-				ddmDataProviderInstanceLinkCacheModel.
-					dataProviderInstanceLinkId) {
-
+		if (dataProviderInstanceLinkId == ddmDataProviderInstanceLinkCacheModel.dataProviderInstanceLinkId) {
 			return true;
 		}
 
@@ -81,14 +81,11 @@ public class DDMDataProviderInstanceLinkCacheModel
 
 	@Override
 	public DDMDataProviderInstanceLink toEntityModel() {
-		DDMDataProviderInstanceLinkImpl ddmDataProviderInstanceLinkImpl =
-			new DDMDataProviderInstanceLinkImpl();
+		DDMDataProviderInstanceLinkImpl ddmDataProviderInstanceLinkImpl = new DDMDataProviderInstanceLinkImpl();
 
-		ddmDataProviderInstanceLinkImpl.setDataProviderInstanceLinkId(
-			dataProviderInstanceLinkId);
+		ddmDataProviderInstanceLinkImpl.setDataProviderInstanceLinkId(dataProviderInstanceLinkId);
 		ddmDataProviderInstanceLinkImpl.setCompanyId(companyId);
-		ddmDataProviderInstanceLinkImpl.setDataProviderInstanceId(
-			dataProviderInstanceId);
+		ddmDataProviderInstanceLinkImpl.setDataProviderInstanceId(dataProviderInstanceId);
 		ddmDataProviderInstanceLinkImpl.setStructureId(structureId);
 
 		ddmDataProviderInstanceLinkImpl.resetOriginalValues();
@@ -108,7 +105,8 @@ public class DDMDataProviderInstanceLinkCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(dataProviderInstanceLinkId);
 
 		objectOutput.writeLong(companyId);
@@ -122,5 +120,4 @@ public class DDMDataProviderInstanceLinkCacheModel
 	public long companyId;
 	public long dataProviderInstanceId;
 	public long structureId;
-
 }

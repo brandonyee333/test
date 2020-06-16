@@ -14,10 +14,14 @@
 
 package com.liferay.portlet.asset.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.asset.kernel.model.AssetCategoryProperty;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing AssetCategoryProperty in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see AssetCategoryProperty
  * @generated
  */
-public class AssetCategoryPropertyCacheModel
-	implements CacheModel<AssetCategoryProperty>, Externalizable {
-
+@ProviderType
+public class AssetCategoryPropertyCacheModel implements CacheModel<AssetCategoryProperty>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +50,9 @@ public class AssetCategoryPropertyCacheModel
 			return false;
 		}
 
-		AssetCategoryPropertyCacheModel assetCategoryPropertyCacheModel =
-			(AssetCategoryPropertyCacheModel)obj;
+		AssetCategoryPropertyCacheModel assetCategoryPropertyCacheModel = (AssetCategoryPropertyCacheModel)obj;
 
-		if (categoryPropertyId ==
-				assetCategoryPropertyCacheModel.categoryPropertyId) {
-
+		if (categoryPropertyId == assetCategoryPropertyCacheModel.categoryPropertyId) {
 			return true;
 		}
 
@@ -91,15 +93,14 @@ public class AssetCategoryPropertyCacheModel
 
 	@Override
 	public AssetCategoryProperty toEntityModel() {
-		AssetCategoryPropertyImpl assetCategoryPropertyImpl =
-			new AssetCategoryPropertyImpl();
+		AssetCategoryPropertyImpl assetCategoryPropertyImpl = new AssetCategoryPropertyImpl();
 
 		assetCategoryPropertyImpl.setCategoryPropertyId(categoryPropertyId);
 		assetCategoryPropertyImpl.setCompanyId(companyId);
 		assetCategoryPropertyImpl.setUserId(userId);
 
 		if (userName == null) {
-			assetCategoryPropertyImpl.setUserName("");
+			assetCategoryPropertyImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			assetCategoryPropertyImpl.setUserName(userName);
@@ -122,14 +123,14 @@ public class AssetCategoryPropertyCacheModel
 		assetCategoryPropertyImpl.setCategoryId(categoryId);
 
 		if (key == null) {
-			assetCategoryPropertyImpl.setKey("");
+			assetCategoryPropertyImpl.setKey(StringPool.BLANK);
 		}
 		else {
 			assetCategoryPropertyImpl.setKey(key);
 		}
 
 		if (value == null) {
-			assetCategoryPropertyImpl.setValue("");
+			assetCategoryPropertyImpl.setValue(StringPool.BLANK);
 		}
 		else {
 			assetCategoryPropertyImpl.setValue(value);
@@ -157,7 +158,8 @@ public class AssetCategoryPropertyCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(categoryPropertyId);
 
 		objectOutput.writeLong(companyId);
@@ -165,7 +167,7 @@ public class AssetCategoryPropertyCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -177,14 +179,14 @@ public class AssetCategoryPropertyCacheModel
 		objectOutput.writeLong(categoryId);
 
 		if (key == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(key);
 		}
 
 		if (value == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(value);
@@ -200,5 +202,4 @@ public class AssetCategoryPropertyCacheModel
 	public long categoryId;
 	public String key;
 	public String value;
-
 }

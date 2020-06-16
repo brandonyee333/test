@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.messageboards.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.message.boards.kernel.model.MBCategory;
 import com.liferay.message.boards.kernel.service.MBCategoryLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.message.boards.kernel.service.MBCategoryLocalServiceUtil;
  * @see MBCategory
  * @generated
  */
-public abstract class MBCategoryBaseImpl
-	extends MBCategoryModelImpl implements MBCategory {
-
+@ProviderType
+public abstract class MBCategoryBaseImpl extends MBCategoryModelImpl
+	implements MBCategory {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a message boards category model instance should use the <code>MBCategory</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a message boards category model instance should use the {@link MBCategory} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class MBCategoryBaseImpl
 			MBCategoryLocalServiceUtil.updateMBCategory(this);
 		}
 	}
-
 }

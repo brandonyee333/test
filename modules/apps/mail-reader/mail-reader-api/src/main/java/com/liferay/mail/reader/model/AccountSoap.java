@@ -14,6 +14,8 @@
 
 package com.liferay.mail.reader.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,8 +28,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
+@ProviderType
 public class AccountSoap implements Serializable {
-
 	public static AccountSoap toSoapModel(Account model) {
 		AccountSoap soapModel = new AccountSoap();
 
@@ -42,21 +44,21 @@ public class AccountSoap implements Serializable {
 		soapModel.setProtocol(model.getProtocol());
 		soapModel.setIncomingHostName(model.getIncomingHostName());
 		soapModel.setIncomingPort(model.getIncomingPort());
-		soapModel.setIncomingSecure(model.isIncomingSecure());
+		soapModel.setIncomingSecure(model.getIncomingSecure());
 		soapModel.setOutgoingHostName(model.getOutgoingHostName());
 		soapModel.setOutgoingPort(model.getOutgoingPort());
-		soapModel.setOutgoingSecure(model.isOutgoingSecure());
+		soapModel.setOutgoingSecure(model.getOutgoingSecure());
 		soapModel.setLogin(model.getLogin());
 		soapModel.setPassword(model.getPassword());
-		soapModel.setSavePassword(model.isSavePassword());
+		soapModel.setSavePassword(model.getSavePassword());
 		soapModel.setSignature(model.getSignature());
-		soapModel.setUseSignature(model.isUseSignature());
+		soapModel.setUseSignature(model.getUseSignature());
 		soapModel.setFolderPrefix(model.getFolderPrefix());
 		soapModel.setInboxFolderId(model.getInboxFolderId());
 		soapModel.setDraftFolderId(model.getDraftFolderId());
 		soapModel.setSentFolderId(model.getSentFolderId());
 		soapModel.setTrashFolderId(model.getTrashFolderId());
-		soapModel.setDefaultSender(model.isDefaultSender());
+		soapModel.setDefaultSender(model.getDefaultSender());
 
 		return soapModel;
 	}
@@ -89,8 +91,7 @@ public class AccountSoap implements Serializable {
 	}
 
 	public static AccountSoap[] toSoapModels(List<Account> models) {
-		List<AccountSoap> soapModels = new ArrayList<AccountSoap>(
-			models.size());
+		List<AccountSoap> soapModels = new ArrayList<AccountSoap>(models.size());
 
 		for (Account model : models) {
 			soapModels.add(toSoapModel(model));
@@ -364,5 +365,4 @@ public class AccountSoap implements Serializable {
 	private long _sentFolderId;
 	private long _trashFolderId;
 	private boolean _defaultSender;
-
 }

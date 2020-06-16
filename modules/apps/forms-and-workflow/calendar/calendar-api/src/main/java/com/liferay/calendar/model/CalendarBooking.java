@@ -25,21 +25,20 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Eduardo Lundgren
  * @see CalendarBookingModel
+ * @see com.liferay.calendar.model.impl.CalendarBookingImpl
+ * @see com.liferay.calendar.model.impl.CalendarBookingModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.calendar.model.impl.CalendarBookingImpl")
 @ProviderType
-public interface CalendarBooking
-	extends CalendarBookingModel, PermissionedModel {
-
+public interface CalendarBooking extends CalendarBookingModel, PermissionedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to <code>com.liferay.calendar.model.impl.CalendarBookingImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to {@link com.liferay.calendar.model.impl.CalendarBookingImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<CalendarBooking, Long>
-		CALENDAR_BOOKING_ID_ACCESSOR = new Accessor<CalendarBooking, Long>() {
-
+	public static final Accessor<CalendarBooking, Long> CALENDAR_BOOKING_ID_ACCESSOR =
+		new Accessor<CalendarBooking, Long>() {
 			@Override
 			public Long get(CalendarBooking calendarBooking) {
 				return calendarBooking.getCalendarBookingId();
@@ -54,7 +53,6 @@ public interface CalendarBooking
 			public Class<CalendarBooking> getTypeClass() {
 				return CalendarBooking.class;
 			}
-
 		};
 
 	public Calendar getCalendar()
@@ -67,10 +65,9 @@ public interface CalendarBooking
 
 	public long getDuration();
 
-	public com.liferay.calendar.notification.NotificationType
-		getFirstReminderNotificationType();
+	public com.liferay.calendar.notification.NotificationType getFirstReminderNotificationType();
 
-	@com.liferay.portal.kernel.json.JSON
+	@com.liferay.portal.kernel.json.JSON()
 	public int getInstanceIndex();
 
 	public CalendarBooking getParentCalendarBooking()
@@ -78,8 +75,7 @@ public interface CalendarBooking
 
 	public com.liferay.calendar.recurrence.Recurrence getRecurrenceObj();
 
-	public com.liferay.calendar.notification.NotificationType
-		getSecondReminderNotificationType();
+	public com.liferay.calendar.notification.NotificationType getSecondReminderNotificationType();
 
 	public java.util.TimeZone getTimeZone();
 
@@ -87,7 +83,6 @@ public interface CalendarBooking
 
 	public boolean isRecurring();
 
-	@com.liferay.portal.kernel.json.JSON
+	@com.liferay.portal.kernel.json.JSON()
 	public void setInstanceIndex(int instanceIndex);
-
 }

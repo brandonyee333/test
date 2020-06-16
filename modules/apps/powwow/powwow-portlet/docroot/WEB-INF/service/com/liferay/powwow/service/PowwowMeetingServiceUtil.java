@@ -14,92 +14,97 @@
 
 package com.liferay.powwow.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableService;
+import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
  * Provides the remote service utility for PowwowMeeting. This utility wraps
- * <code>com.liferay.powwow.service.impl.PowwowMeetingServiceImpl</code> and is an
- * access point for service operations in application layer code running on a
- * remote server. Methods of this service are expected to have security checks
- * based on the propagated JAAS credentials because this service can be
+ * {@link com.liferay.powwow.service.impl.PowwowMeetingServiceImpl} and is the
+ * primary access point for service operations in application layer code running
+ * on a remote server. Methods of this service are expected to have security
+ * checks based on the propagated JAAS credentials because this service can be
  * accessed remotely.
  *
  * @author Shinn Lok
  * @see PowwowMeetingService
+ * @see com.liferay.powwow.service.base.PowwowMeetingServiceBaseImpl
+ * @see com.liferay.powwow.service.impl.PowwowMeetingServiceImpl
  * @generated
  */
+@ProviderType
 public class PowwowMeetingServiceUtil {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this class directly. Add custom service methods to <code>com.liferay.powwow.service.impl.PowwowMeetingServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify this class directly. Add custom service methods to {@link com.liferay.powwow.service.impl.PowwowMeetingServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.powwow.model.PowwowMeeting addPowwowMeeting(
-			long groupId, String portletId, long powwowServerId, String name,
-			String description, String providerType,
-			java.util.Map<String, java.io.Serializable> providerTypeMetadataMap,
-			String languageId, long calendarBookingId, int status,
-			java.util.List<com.liferay.powwow.model.PowwowParticipant>
-				powwowParticipants,
-			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		long groupId, java.lang.String portletId, long powwowServerId,
+		java.lang.String name, java.lang.String description,
+		java.lang.String providerType,
+		java.util.Map<java.lang.String, java.io.Serializable> providerTypeMetadataMap,
+		java.lang.String languageId, long calendarBookingId, int status,
+		java.util.List<com.liferay.powwow.model.PowwowParticipant> powwowParticipants,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return getService().addPowwowMeeting(
-			groupId, portletId, powwowServerId, name, description, providerType,
-			providerTypeMetadataMap, languageId, calendarBookingId, status,
-			powwowParticipants, serviceContext);
+		return getService()
+				   .addPowwowMeeting(groupId, portletId, powwowServerId, name,
+			description, providerType, providerTypeMetadataMap, languageId,
+			calendarBookingId, status, powwowParticipants, serviceContext);
 	}
 
 	public static com.liferay.powwow.model.PowwowMeeting deletePowwowMeeting(
-			long powwowMeetingId)
+		long powwowMeetingId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		return getService().deletePowwowMeeting(powwowMeetingId);
 	}
 
-	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
-	public static String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
-	}
-
 	public static com.liferay.powwow.model.PowwowMeeting getPowwowMeeting(
-			long powwowMeetingId)
+		long powwowMeetingId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		return getService().getPowwowMeeting(powwowMeetingId);
 	}
 
-	public static java.util.List<com.liferay.powwow.model.PowwowMeeting>
-		getPowwowMeetings(
-			long groupId, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator obc) {
-
-		return getService().getPowwowMeetings(groupId, start, end, obc);
+	public static com.liferay.powwow.model.PowwowMeeting updatePowwowMeeting(
+		long powwowMeetingId, long powwowServerId, java.lang.String name,
+		java.lang.String description, java.lang.String providerType,
+		java.util.Map<java.lang.String, java.io.Serializable> providerTypeMetadataMap,
+		java.lang.String languageId, long calendarBookingId, int status,
+		java.util.List<com.liferay.powwow.model.PowwowParticipant> powwowParticipants,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updatePowwowMeeting(powwowMeetingId, powwowServerId, name,
+			description, providerType, providerTypeMetadataMap, languageId,
+			calendarBookingId, status, powwowParticipants, serviceContext);
 	}
 
 	public static int getPowwowMeetingsCount(long groupId) {
 		return getService().getPowwowMeetingsCount(groupId);
 	}
 
-	public static com.liferay.powwow.model.PowwowMeeting updatePowwowMeeting(
-			long powwowMeetingId, long powwowServerId, String name,
-			String description, String providerType,
-			java.util.Map<String, java.io.Serializable> providerTypeMetadataMap,
-			String languageId, long calendarBookingId, int status,
-			java.util.List<com.liferay.powwow.model.PowwowParticipant>
-				powwowParticipants,
-			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
 
-		return getService().updatePowwowMeeting(
-			powwowMeetingId, powwowServerId, name, description, providerType,
-			providerTypeMetadataMap, languageId, calendarBookingId, status,
-			powwowParticipants, serviceContext);
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static java.util.List<com.liferay.powwow.model.PowwowMeeting> getPowwowMeetings(
+		long groupId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
+		return getService().getPowwowMeetings(groupId, start, end, obc);
 	}
 
 	public static void clearService() {
@@ -108,14 +113,22 @@ public class PowwowMeetingServiceUtil {
 
 	public static PowwowMeetingService getService() {
 		if (_service == null) {
-			_service = (PowwowMeetingService)PortletBeanLocatorUtil.locate(
-				ServletContextUtil.getServletContextName(),
-				PowwowMeetingService.class.getName());
+			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+					PowwowMeetingService.class.getName());
+
+			if (invokableService instanceof PowwowMeetingService) {
+				_service = (PowwowMeetingService)invokableService;
+			}
+			else {
+				_service = new PowwowMeetingServiceClp(invokableService);
+			}
+
+			ReferenceRegistry.registerReference(PowwowMeetingServiceUtil.class,
+				"_service");
 		}
 
 		return _service;
 	}
 
 	private static PowwowMeetingService _service;
-
 }

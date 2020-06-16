@@ -15,6 +15,7 @@
 package com.liferay.shopping.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -29,15 +30,26 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
+
 import com.liferay.shopping.exception.NoSuchOrderException;
 import com.liferay.shopping.model.ShoppingOrder;
 import com.liferay.shopping.service.ShoppingOrderLocalServiceUtil;
 import com.liferay.shopping.service.persistence.ShoppingOrderPersistence;
 import com.liferay.shopping.service.persistence.ShoppingOrderUtil;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+
+import org.junit.runner.RunWith;
 
 import java.io.Serializable;
 
@@ -49,27 +61,17 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 /**
  * @generated
  */
 @RunWith(Arquillian.class)
 public class ShoppingOrderPersistenceTest {
-
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
-			new TransactionalTestRule(
-				Propagation.REQUIRED, "com.liferay.shopping.service"));
+	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
+			PersistenceTestRule.INSTANCE,
+			new TransactionalTestRule(Propagation.REQUIRED,
+				"com.liferay.shopping.service"));
 
 	@Before
 	public void setUp() {
@@ -108,8 +110,7 @@ public class ShoppingOrderPersistenceTest {
 
 		_persistence.remove(newShoppingOrder);
 
-		ShoppingOrder existingShoppingOrder = _persistence.fetchByPrimaryKey(
-			newShoppingOrder.getPrimaryKey());
+		ShoppingOrder existingShoppingOrder = _persistence.fetchByPrimaryKey(newShoppingOrder.getPrimaryKey());
 
 		Assert.assertNull(existingShoppingOrder);
 	}
@@ -227,153 +228,112 @@ public class ShoppingOrderPersistenceTest {
 
 		_shoppingOrders.add(_persistence.update(newShoppingOrder));
 
-		ShoppingOrder existingShoppingOrder = _persistence.findByPrimaryKey(
-			newShoppingOrder.getPrimaryKey());
+		ShoppingOrder existingShoppingOrder = _persistence.findByPrimaryKey(newShoppingOrder.getPrimaryKey());
 
-		Assert.assertEquals(
-			existingShoppingOrder.getOrderId(), newShoppingOrder.getOrderId());
-		Assert.assertEquals(
-			existingShoppingOrder.getGroupId(), newShoppingOrder.getGroupId());
-		Assert.assertEquals(
-			existingShoppingOrder.getCompanyId(),
+		Assert.assertEquals(existingShoppingOrder.getOrderId(),
+			newShoppingOrder.getOrderId());
+		Assert.assertEquals(existingShoppingOrder.getGroupId(),
+			newShoppingOrder.getGroupId());
+		Assert.assertEquals(existingShoppingOrder.getCompanyId(),
 			newShoppingOrder.getCompanyId());
-		Assert.assertEquals(
-			existingShoppingOrder.getUserId(), newShoppingOrder.getUserId());
-		Assert.assertEquals(
-			existingShoppingOrder.getUserName(),
+		Assert.assertEquals(existingShoppingOrder.getUserId(),
+			newShoppingOrder.getUserId());
+		Assert.assertEquals(existingShoppingOrder.getUserName(),
 			newShoppingOrder.getUserName());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingShoppingOrder.getCreateDate()),
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingShoppingOrder.getCreateDate()),
 			Time.getShortTimestamp(newShoppingOrder.getCreateDate()));
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingShoppingOrder.getModifiedDate()),
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingShoppingOrder.getModifiedDate()),
 			Time.getShortTimestamp(newShoppingOrder.getModifiedDate()));
-		Assert.assertEquals(
-			existingShoppingOrder.getNumber(), newShoppingOrder.getNumber());
-		AssertUtils.assertEquals(
-			existingShoppingOrder.getTax(), newShoppingOrder.getTax());
-		AssertUtils.assertEquals(
-			existingShoppingOrder.getShipping(),
+		Assert.assertEquals(existingShoppingOrder.getNumber(),
+			newShoppingOrder.getNumber());
+		AssertUtils.assertEquals(existingShoppingOrder.getTax(),
+			newShoppingOrder.getTax());
+		AssertUtils.assertEquals(existingShoppingOrder.getShipping(),
 			newShoppingOrder.getShipping());
-		Assert.assertEquals(
-			existingShoppingOrder.getAltShipping(),
+		Assert.assertEquals(existingShoppingOrder.getAltShipping(),
 			newShoppingOrder.getAltShipping());
-		Assert.assertEquals(
-			existingShoppingOrder.isRequiresShipping(),
-			newShoppingOrder.isRequiresShipping());
-		Assert.assertEquals(
-			existingShoppingOrder.isInsure(), newShoppingOrder.isInsure());
-		AssertUtils.assertEquals(
-			existingShoppingOrder.getInsurance(),
+		Assert.assertEquals(existingShoppingOrder.getRequiresShipping(),
+			newShoppingOrder.getRequiresShipping());
+		Assert.assertEquals(existingShoppingOrder.getInsure(),
+			newShoppingOrder.getInsure());
+		AssertUtils.assertEquals(existingShoppingOrder.getInsurance(),
 			newShoppingOrder.getInsurance());
-		Assert.assertEquals(
-			existingShoppingOrder.getCouponCodes(),
+		Assert.assertEquals(existingShoppingOrder.getCouponCodes(),
 			newShoppingOrder.getCouponCodes());
-		AssertUtils.assertEquals(
-			existingShoppingOrder.getCouponDiscount(),
+		AssertUtils.assertEquals(existingShoppingOrder.getCouponDiscount(),
 			newShoppingOrder.getCouponDiscount());
-		Assert.assertEquals(
-			existingShoppingOrder.getBillingFirstName(),
+		Assert.assertEquals(existingShoppingOrder.getBillingFirstName(),
 			newShoppingOrder.getBillingFirstName());
-		Assert.assertEquals(
-			existingShoppingOrder.getBillingLastName(),
+		Assert.assertEquals(existingShoppingOrder.getBillingLastName(),
 			newShoppingOrder.getBillingLastName());
-		Assert.assertEquals(
-			existingShoppingOrder.getBillingEmailAddress(),
+		Assert.assertEquals(existingShoppingOrder.getBillingEmailAddress(),
 			newShoppingOrder.getBillingEmailAddress());
-		Assert.assertEquals(
-			existingShoppingOrder.getBillingCompany(),
+		Assert.assertEquals(existingShoppingOrder.getBillingCompany(),
 			newShoppingOrder.getBillingCompany());
-		Assert.assertEquals(
-			existingShoppingOrder.getBillingStreet(),
+		Assert.assertEquals(existingShoppingOrder.getBillingStreet(),
 			newShoppingOrder.getBillingStreet());
-		Assert.assertEquals(
-			existingShoppingOrder.getBillingCity(),
+		Assert.assertEquals(existingShoppingOrder.getBillingCity(),
 			newShoppingOrder.getBillingCity());
-		Assert.assertEquals(
-			existingShoppingOrder.getBillingState(),
+		Assert.assertEquals(existingShoppingOrder.getBillingState(),
 			newShoppingOrder.getBillingState());
-		Assert.assertEquals(
-			existingShoppingOrder.getBillingZip(),
+		Assert.assertEquals(existingShoppingOrder.getBillingZip(),
 			newShoppingOrder.getBillingZip());
-		Assert.assertEquals(
-			existingShoppingOrder.getBillingCountry(),
+		Assert.assertEquals(existingShoppingOrder.getBillingCountry(),
 			newShoppingOrder.getBillingCountry());
-		Assert.assertEquals(
-			existingShoppingOrder.getBillingPhone(),
+		Assert.assertEquals(existingShoppingOrder.getBillingPhone(),
 			newShoppingOrder.getBillingPhone());
-		Assert.assertEquals(
-			existingShoppingOrder.isShipToBilling(),
-			newShoppingOrder.isShipToBilling());
-		Assert.assertEquals(
-			existingShoppingOrder.getShippingFirstName(),
+		Assert.assertEquals(existingShoppingOrder.getShipToBilling(),
+			newShoppingOrder.getShipToBilling());
+		Assert.assertEquals(existingShoppingOrder.getShippingFirstName(),
 			newShoppingOrder.getShippingFirstName());
-		Assert.assertEquals(
-			existingShoppingOrder.getShippingLastName(),
+		Assert.assertEquals(existingShoppingOrder.getShippingLastName(),
 			newShoppingOrder.getShippingLastName());
-		Assert.assertEquals(
-			existingShoppingOrder.getShippingEmailAddress(),
+		Assert.assertEquals(existingShoppingOrder.getShippingEmailAddress(),
 			newShoppingOrder.getShippingEmailAddress());
-		Assert.assertEquals(
-			existingShoppingOrder.getShippingCompany(),
+		Assert.assertEquals(existingShoppingOrder.getShippingCompany(),
 			newShoppingOrder.getShippingCompany());
-		Assert.assertEquals(
-			existingShoppingOrder.getShippingStreet(),
+		Assert.assertEquals(existingShoppingOrder.getShippingStreet(),
 			newShoppingOrder.getShippingStreet());
-		Assert.assertEquals(
-			existingShoppingOrder.getShippingCity(),
+		Assert.assertEquals(existingShoppingOrder.getShippingCity(),
 			newShoppingOrder.getShippingCity());
-		Assert.assertEquals(
-			existingShoppingOrder.getShippingState(),
+		Assert.assertEquals(existingShoppingOrder.getShippingState(),
 			newShoppingOrder.getShippingState());
-		Assert.assertEquals(
-			existingShoppingOrder.getShippingZip(),
+		Assert.assertEquals(existingShoppingOrder.getShippingZip(),
 			newShoppingOrder.getShippingZip());
-		Assert.assertEquals(
-			existingShoppingOrder.getShippingCountry(),
+		Assert.assertEquals(existingShoppingOrder.getShippingCountry(),
 			newShoppingOrder.getShippingCountry());
-		Assert.assertEquals(
-			existingShoppingOrder.getShippingPhone(),
+		Assert.assertEquals(existingShoppingOrder.getShippingPhone(),
 			newShoppingOrder.getShippingPhone());
-		Assert.assertEquals(
-			existingShoppingOrder.getCcName(), newShoppingOrder.getCcName());
-		Assert.assertEquals(
-			existingShoppingOrder.getCcType(), newShoppingOrder.getCcType());
-		Assert.assertEquals(
-			existingShoppingOrder.getCcNumber(),
+		Assert.assertEquals(existingShoppingOrder.getCcName(),
+			newShoppingOrder.getCcName());
+		Assert.assertEquals(existingShoppingOrder.getCcType(),
+			newShoppingOrder.getCcType());
+		Assert.assertEquals(existingShoppingOrder.getCcNumber(),
 			newShoppingOrder.getCcNumber());
-		Assert.assertEquals(
-			existingShoppingOrder.getCcExpMonth(),
+		Assert.assertEquals(existingShoppingOrder.getCcExpMonth(),
 			newShoppingOrder.getCcExpMonth());
-		Assert.assertEquals(
-			existingShoppingOrder.getCcExpYear(),
+		Assert.assertEquals(existingShoppingOrder.getCcExpYear(),
 			newShoppingOrder.getCcExpYear());
-		Assert.assertEquals(
-			existingShoppingOrder.getCcVerNumber(),
+		Assert.assertEquals(existingShoppingOrder.getCcVerNumber(),
 			newShoppingOrder.getCcVerNumber());
-		Assert.assertEquals(
-			existingShoppingOrder.getComments(),
+		Assert.assertEquals(existingShoppingOrder.getComments(),
 			newShoppingOrder.getComments());
-		Assert.assertEquals(
-			existingShoppingOrder.getPpTxnId(), newShoppingOrder.getPpTxnId());
-		Assert.assertEquals(
-			existingShoppingOrder.getPpPaymentStatus(),
+		Assert.assertEquals(existingShoppingOrder.getPpTxnId(),
+			newShoppingOrder.getPpTxnId());
+		Assert.assertEquals(existingShoppingOrder.getPpPaymentStatus(),
 			newShoppingOrder.getPpPaymentStatus());
-		AssertUtils.assertEquals(
-			existingShoppingOrder.getPpPaymentGross(),
+		AssertUtils.assertEquals(existingShoppingOrder.getPpPaymentGross(),
 			newShoppingOrder.getPpPaymentGross());
-		Assert.assertEquals(
-			existingShoppingOrder.getPpReceiverEmail(),
+		Assert.assertEquals(existingShoppingOrder.getPpReceiverEmail(),
 			newShoppingOrder.getPpReceiverEmail());
-		Assert.assertEquals(
-			existingShoppingOrder.getPpPayerEmail(),
+		Assert.assertEquals(existingShoppingOrder.getPpPayerEmail(),
 			newShoppingOrder.getPpPayerEmail());
-		Assert.assertEquals(
-			existingShoppingOrder.isSendOrderEmail(),
-			newShoppingOrder.isSendOrderEmail());
-		Assert.assertEquals(
-			existingShoppingOrder.isSendShippingEmail(),
-			newShoppingOrder.isSendShippingEmail());
+		Assert.assertEquals(existingShoppingOrder.getSendOrderEmail(),
+			newShoppingOrder.getSendOrderEmail());
+		Assert.assertEquals(existingShoppingOrder.getSendShippingEmail(),
+			newShoppingOrder.getSendShippingEmail());
 	}
 
 	@Test
@@ -385,28 +345,28 @@ public class ShoppingOrderPersistenceTest {
 
 	@Test
 	public void testCountByNumber() throws Exception {
-		_persistence.countByNumber("");
+		_persistence.countByNumber(StringPool.BLANK);
 
-		_persistence.countByNumber("null");
+		_persistence.countByNumber(StringPool.NULL);
 
 		_persistence.countByNumber((String)null);
 	}
 
 	@Test
 	public void testCountByPPTxnId() throws Exception {
-		_persistence.countByPPTxnId("");
+		_persistence.countByPPTxnId(StringPool.BLANK);
 
-		_persistence.countByPPTxnId("null");
+		_persistence.countByPPTxnId(StringPool.NULL);
 
 		_persistence.countByPPTxnId((String)null);
 	}
 
 	@Test
 	public void testCountByG_U_PPPS() throws Exception {
-		_persistence.countByG_U_PPPS(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(), "");
+		_persistence.countByG_U_PPPS(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong(), StringPool.BLANK);
 
-		_persistence.countByG_U_PPPS(0L, 0L, "null");
+		_persistence.countByG_U_PPPS(0L, 0L, StringPool.NULL);
 
 		_persistence.countByG_U_PPPS(0L, 0L, (String)null);
 	}
@@ -415,8 +375,7 @@ public class ShoppingOrderPersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		ShoppingOrder newShoppingOrder = addShoppingOrder();
 
-		ShoppingOrder existingShoppingOrder = _persistence.findByPrimaryKey(
-			newShoppingOrder.getPrimaryKey());
+		ShoppingOrder existingShoppingOrder = _persistence.findByPrimaryKey(newShoppingOrder.getPrimaryKey());
 
 		Assert.assertEquals(existingShoppingOrder, newShoppingOrder);
 	}
@@ -430,44 +389,43 @@ public class ShoppingOrderPersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
+		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			getOrderByComparator());
 	}
 
 	@Test
 	public void testFilterFindByGroupId() throws Exception {
-		_persistence.filterFindByGroupId(
-			0, QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
+		_persistence.filterFindByGroupId(0, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, getOrderByComparator());
 	}
 
 	protected OrderByComparator<ShoppingOrder> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create(
-			"ShoppingOrder", "orderId", true, "groupId", true, "companyId",
-			true, "userId", true, "userName", true, "createDate", true,
-			"modifiedDate", true, "number", true, "tax", true, "shipping", true,
-			"altShipping", true, "requiresShipping", true, "insure", true,
-			"insurance", true, "couponCodes", true, "couponDiscount", true,
-			"billingFirstName", true, "billingLastName", true,
-			"billingEmailAddress", true, "billingCompany", true,
-			"billingStreet", true, "billingCity", true, "billingState", true,
-			"billingZip", true, "billingCountry", true, "billingPhone", true,
-			"shipToBilling", true, "shippingFirstName", true,
-			"shippingLastName", true, "shippingEmailAddress", true,
+		return OrderByComparatorFactoryUtil.create("ShoppingOrder", "orderId",
+			true, "groupId", true, "companyId", true, "userId", true,
+			"userName", true, "createDate", true, "modifiedDate", true,
+			"number", true, "tax", true, "shipping", true, "altShipping", true,
+			"requiresShipping", true, "insure", true, "insurance", true,
+			"couponCodes", true, "couponDiscount", true, "billingFirstName",
+			true, "billingLastName", true, "billingEmailAddress", true,
+			"billingCompany", true, "billingStreet", true, "billingCity", true,
+			"billingState", true, "billingZip", true, "billingCountry", true,
+			"billingPhone", true, "shipToBilling", true, "shippingFirstName",
+			true, "shippingLastName", true, "shippingEmailAddress", true,
 			"shippingCompany", true, "shippingStreet", true, "shippingCity",
-			true, "shippingState", true, "shippingZip", true, "shippingCountry",
-			true, "shippingPhone", true, "ccName", true, "ccType", true,
-			"ccNumber", true, "ccExpMonth", true, "ccExpYear", true,
-			"ccVerNumber", true, "ppTxnId", true, "ppPaymentStatus", true,
-			"ppPaymentGross", true, "ppReceiverEmail", true, "ppPayerEmail",
-			true, "sendOrderEmail", true, "sendShippingEmail", true);
+			true, "shippingState", true, "shippingZip", true,
+			"shippingCountry", true, "shippingPhone", true, "ccName", true,
+			"ccType", true, "ccNumber", true, "ccExpMonth", true, "ccExpYear",
+			true, "ccVerNumber", true, "comments", true, "ppTxnId", true,
+			"ppPaymentStatus", true, "ppPaymentGross", true, "ppReceiverEmail",
+			true, "ppPayerEmail", true, "sendOrderEmail", true,
+			"sendShippingEmail", true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		ShoppingOrder newShoppingOrder = addShoppingOrder();
 
-		ShoppingOrder existingShoppingOrder = _persistence.fetchByPrimaryKey(
-			newShoppingOrder.getPrimaryKey());
+		ShoppingOrder existingShoppingOrder = _persistence.fetchByPrimaryKey(newShoppingOrder.getPrimaryKey());
 
 		Assert.assertEquals(existingShoppingOrder, newShoppingOrder);
 	}
@@ -484,7 +442,6 @@ public class ShoppingOrderPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
-
 		ShoppingOrder newShoppingOrder1 = addShoppingOrder();
 		ShoppingOrder newShoppingOrder2 = addShoppingOrder();
 
@@ -493,22 +450,18 @@ public class ShoppingOrderPersistenceTest {
 		primaryKeys.add(newShoppingOrder1.getPrimaryKey());
 		primaryKeys.add(newShoppingOrder2.getPrimaryKey());
 
-		Map<Serializable, ShoppingOrder> shoppingOrders =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ShoppingOrder> shoppingOrders = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(2, shoppingOrders.size());
-		Assert.assertEquals(
-			newShoppingOrder1,
+		Assert.assertEquals(newShoppingOrder1,
 			shoppingOrders.get(newShoppingOrder1.getPrimaryKey()));
-		Assert.assertEquals(
-			newShoppingOrder2,
+		Assert.assertEquals(newShoppingOrder2,
 			shoppingOrders.get(newShoppingOrder2.getPrimaryKey()));
 	}
 
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
-
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -518,8 +471,7 @@ public class ShoppingOrderPersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, ShoppingOrder> shoppingOrders =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ShoppingOrder> shoppingOrders = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(shoppingOrders.isEmpty());
 	}
@@ -527,7 +479,6 @@ public class ShoppingOrderPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
-
 		ShoppingOrder newShoppingOrder = addShoppingOrder();
 
 		long pk = RandomTestUtil.nextLong();
@@ -537,39 +488,36 @@ public class ShoppingOrderPersistenceTest {
 		primaryKeys.add(newShoppingOrder.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, ShoppingOrder> shoppingOrders =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ShoppingOrder> shoppingOrders = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, shoppingOrders.size());
-		Assert.assertEquals(
-			newShoppingOrder,
+		Assert.assertEquals(newShoppingOrder,
 			shoppingOrders.get(newShoppingOrder.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
+		throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, ShoppingOrder> shoppingOrders =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ShoppingOrder> shoppingOrders = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(shoppingOrders.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey()
+		throws Exception {
 		ShoppingOrder newShoppingOrder = addShoppingOrder();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newShoppingOrder.getPrimaryKey());
 
-		Map<Serializable, ShoppingOrder> shoppingOrders =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ShoppingOrder> shoppingOrders = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, shoppingOrders.size());
-		Assert.assertEquals(
-			newShoppingOrder,
+		Assert.assertEquals(newShoppingOrder,
 			shoppingOrders.get(newShoppingOrder.getPrimaryKey()));
 	}
 
@@ -577,19 +525,15 @@ public class ShoppingOrderPersistenceTest {
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery =
-			ShoppingOrderLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = ShoppingOrderLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<ShoppingOrder>() {
-
+		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<ShoppingOrder>() {
 				@Override
 				public void performAction(ShoppingOrder shoppingOrder) {
 					Assert.assertNotNull(shoppingOrder);
 
 					count.increment();
 				}
-
 			});
 
 		actionableDynamicQuery.performActions();
@@ -598,18 +542,17 @@ public class ShoppingOrderPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting()
+		throws Exception {
 		ShoppingOrder newShoppingOrder = addShoppingOrder();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			ShoppingOrder.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(ShoppingOrder.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq(
-				"orderId", newShoppingOrder.getOrderId()));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("orderId",
+				newShoppingOrder.getOrderId()));
 
-		List<ShoppingOrder> result = _persistence.findWithDynamicQuery(
-			dynamicQuery);
+		List<ShoppingOrder> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
 		Assert.assertEquals(1, result.size());
 
@@ -620,31 +563,31 @@ public class ShoppingOrderPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			ShoppingOrder.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(ShoppingOrder.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("orderId", RandomTestUtil.nextLong()));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("orderId",
+				RandomTestUtil.nextLong()));
 
-		List<ShoppingOrder> result = _persistence.findWithDynamicQuery(
-			dynamicQuery);
+		List<ShoppingOrder> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
 		Assert.assertEquals(0, result.size());
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting() throws Exception {
+	public void testDynamicQueryByProjectionExisting()
+		throws Exception {
 		ShoppingOrder newShoppingOrder = addShoppingOrder();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			ShoppingOrder.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(ShoppingOrder.class,
+				_dynamicQueryClassLoader);
 
 		dynamicQuery.setProjection(ProjectionFactoryUtil.property("orderId"));
 
 		Object newOrderId = newShoppingOrder.getOrderId();
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in("orderId", new Object[] {newOrderId}));
+		dynamicQuery.add(RestrictionsFactoryUtil.in("orderId",
+				new Object[] { newOrderId }));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -657,14 +600,13 @@ public class ShoppingOrderPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			ShoppingOrder.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(ShoppingOrder.class,
+				_dynamicQueryClassLoader);
 
 		dynamicQuery.setProjection(ProjectionFactoryUtil.property("orderId"));
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in(
-				"orderId", new Object[] {RandomTestUtil.nextLong()}));
+		dynamicQuery.add(RestrictionsFactoryUtil.in("orderId",
+				new Object[] { RandomTestUtil.nextLong() }));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -677,22 +619,15 @@ public class ShoppingOrderPersistenceTest {
 
 		_persistence.clearCache();
 
-		ShoppingOrder existingShoppingOrder = _persistence.findByPrimaryKey(
-			newShoppingOrder.getPrimaryKey());
+		ShoppingOrder existingShoppingOrder = _persistence.findByPrimaryKey(newShoppingOrder.getPrimaryKey());
 
-		Assert.assertTrue(
-			Objects.equals(
-				existingShoppingOrder.getNumber(),
-				ReflectionTestUtil.invoke(
-					existingShoppingOrder, "getOriginalNumber",
-					new Class<?>[0])));
+		Assert.assertTrue(Objects.equals(existingShoppingOrder.getNumber(),
+				ReflectionTestUtil.invoke(existingShoppingOrder,
+					"getOriginalNumber", new Class<?>[0])));
 
-		Assert.assertTrue(
-			Objects.equals(
-				existingShoppingOrder.getPpTxnId(),
-				ReflectionTestUtil.invoke(
-					existingShoppingOrder, "getOriginalPpTxnId",
-					new Class<?>[0])));
+		Assert.assertTrue(Objects.equals(existingShoppingOrder.getPpTxnId(),
+				ReflectionTestUtil.invoke(existingShoppingOrder,
+					"getOriginalPpTxnId", new Class<?>[0])));
 	}
 
 	protected ShoppingOrder addShoppingOrder() throws Exception {
@@ -805,9 +740,7 @@ public class ShoppingOrderPersistenceTest {
 		return shoppingOrder;
 	}
 
-	private List<ShoppingOrder> _shoppingOrders =
-		new ArrayList<ShoppingOrder>();
+	private List<ShoppingOrder> _shoppingOrders = new ArrayList<ShoppingOrder>();
 	private ShoppingOrderPersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
-
 }

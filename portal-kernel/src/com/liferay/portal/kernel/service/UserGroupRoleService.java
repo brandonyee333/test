@@ -30,22 +30,29 @@ import com.liferay.portal.kernel.transaction.Transactional;
  *
  * @author Brian Wing Shun Chan
  * @see UserGroupRoleServiceUtil
+ * @see com.liferay.portal.service.base.UserGroupRoleServiceBaseImpl
+ * @see com.liferay.portal.service.impl.UserGroupRoleServiceImpl
  * @generated
  */
 @AccessControlled
 @JSONWebService
 @ProviderType
-@Transactional(
-	isolation = Isolation.PORTAL,
-	rollbackFor = {PortalException.class, SystemException.class}
-)
+@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
+	PortalException.class, SystemException.class})
 public interface UserGroupRoleService extends BaseService {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link UserGroupRoleServiceUtil} to access the user group role remote service. Add custom service methods to <code>com.liferay.portal.service.impl.UserGroupRoleServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link UserGroupRoleServiceUtil} to access the user group role remote service. Add custom service methods to {@link com.liferay.portal.service.impl.UserGroupRoleServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
 	public void addUserGroupRoles(long userId, long groupId, long[] roleIds)
 		throws PortalException;
 
@@ -58,16 +65,6 @@ public interface UserGroupRoleService extends BaseService {
 	public void deleteUserGroupRoles(long[] userIds, long groupId, long roleId)
 		throws PortalException;
 
-	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
-	public String getOSGiServiceIdentifier();
-
-	public void updateUserGroupRoles(
-			long userId, long groupId, long[] addedRoleIds,
-			long[] deletedRoleIds)
-		throws PortalException;
-
+	public void updateUserGroupRoles(long userId, long groupId,
+		long[] addedRoleIds, long[] deletedRoleIds) throws PortalException;
 }

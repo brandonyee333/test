@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.customer.release.notes.jira.service.base;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.customer.release.notes.jira.model.JIRAComponent;
 import com.liferay.osb.customer.release.notes.jira.service.JIRAComponentLocalService;
@@ -23,6 +25,7 @@ import com.liferay.osb.customer.release.notes.jira.service.persistence.JIRAIssue
 import com.liferay.osb.customer.release.notes.jira.service.persistence.JIRAProjectPersistence;
 import com.liferay.osb.customer.release.notes.jira.service.persistence.JIRAProjectVersionFinder;
 import com.liferay.osb.customer.release.notes.jira.service.persistence.JIRAProjectVersionPersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -42,10 +45,8 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
-import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
-import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -65,16 +66,17 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.osb.customer.release.notes.jira.service.impl.JIRAComponentLocalServiceImpl
+ * @see com.liferay.osb.customer.release.notes.jira.service.JIRAComponentLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class JIRAComponentLocalServiceBaseImpl
-	extends BaseLocalServiceImpl
-	implements IdentifiableOSGiService, JIRAComponentLocalService {
-
+	extends BaseLocalServiceImpl implements JIRAComponentLocalService,
+		IdentifiableOSGiService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>JIRAComponentLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.release.notes.jira.service.JIRAComponentLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.osb.customer.release.notes.jira.service.JIRAComponentLocalServiceUtil} to access the jira component local service.
 	 */
 
 	/**
@@ -98,7 +100,6 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 * @return the new jira component
 	 */
 	@Override
-	@Transactional(enabled = false)
 	public JIRAComponent createJIRAComponent(long jiraComponentId) {
 		return jiraComponentPersistence.create(jiraComponentId);
 	}
@@ -114,7 +115,6 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	@Override
 	public JIRAComponent deleteJIRAComponent(long jiraComponentId)
 		throws PortalException {
-
 		return jiraComponentPersistence.remove(jiraComponentId);
 	}
 
@@ -134,8 +134,8 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(
-			JIRAComponent.class, clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(JIRAComponent.class,
+			clazz.getClassLoader());
 	}
 
 	/**
@@ -153,7 +153,7 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.customer.release.notes.jira.model.impl.JIRAComponentModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.customer.release.notes.jira.model.impl.JIRAComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -162,18 +162,17 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end) {
-
-		return jiraComponentPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
+		return jiraComponentPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.customer.release.notes.jira.model.impl.JIRAComponentModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.customer.release.notes.jira.model.impl.JIRAComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -183,12 +182,10 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<T> orderByComparator) {
-
-		return jiraComponentPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
+		return jiraComponentPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end, orderByComparator);
 	}
 
 	/**
@@ -210,11 +207,10 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(
-		DynamicQuery dynamicQuery, Projection projection) {
-
-		return jiraComponentPersistence.countWithDynamicQuery(
-			dynamicQuery, projection);
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection) {
+		return jiraComponentPersistence.countWithDynamicQuery(dynamicQuery,
+			projection);
 	}
 
 	@Override
@@ -232,14 +228,12 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	@Override
 	public JIRAComponent getJIRAComponent(long jiraComponentId)
 		throws PortalException {
-
 		return jiraComponentPersistence.findByPrimaryKey(jiraComponentId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
 		actionableDynamicQuery.setBaseLocalService(jiraComponentLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
@@ -251,14 +245,10 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
 
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
-			new IndexableActionableDynamicQuery();
-
-		indexableActionableDynamicQuery.setBaseLocalService(
-			jiraComponentLocalService);
+		indexableActionableDynamicQuery.setBaseLocalService(jiraComponentLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(JIRAComponent.class);
 
@@ -270,7 +260,6 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-
 		actionableDynamicQuery.setBaseLocalService(jiraComponentLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(JIRAComponent.class);
@@ -284,22 +273,12 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-
-		return jiraComponentLocalService.deleteJIRAComponent(
-			(JIRAComponent)persistedModel);
+		return jiraComponentLocalService.deleteJIRAComponent((JIRAComponent)persistedModel);
 	}
 
-	public BasePersistence<JIRAComponent> getBasePersistence() {
-		return jiraComponentPersistence;
-	}
-
-	/**
-	 * @throws PortalException
-	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
-
 		return jiraComponentPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -307,7 +286,7 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 * Returns a range of all the jira components.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.customer.release.notes.jira.model.impl.JIRAComponentModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.customer.release.notes.jira.model.impl.JIRAComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of jira components
@@ -357,7 +336,6 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 */
 	public void setJIRAComponentLocalService(
 		JIRAComponentLocalService jiraComponentLocalService) {
-
 		this.jiraComponentLocalService = jiraComponentLocalService;
 	}
 
@@ -377,7 +355,6 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 */
 	public void setJIRAComponentPersistence(
 		JIRAComponentPersistence jiraComponentPersistence) {
-
 		this.jiraComponentPersistence = jiraComponentPersistence;
 	}
 
@@ -395,9 +372,7 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 *
 	 * @param jiraComponentFinder the jira component finder
 	 */
-	public void setJIRAComponentFinder(
-		JIRAComponentFinder jiraComponentFinder) {
-
+	public void setJIRAComponentFinder(JIRAComponentFinder jiraComponentFinder) {
 		this.jiraComponentFinder = jiraComponentFinder;
 	}
 
@@ -406,10 +381,7 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 *
 	 * @return the jira issue local service
 	 */
-	public
-		com.liferay.osb.customer.release.notes.jira.service.
-			JIRAIssueLocalService getJIRAIssueLocalService() {
-
+	public com.liferay.osb.customer.release.notes.jira.service.JIRAIssueLocalService getJIRAIssueLocalService() {
 		return jiraIssueLocalService;
 	}
 
@@ -419,9 +391,7 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 * @param jiraIssueLocalService the jira issue local service
 	 */
 	public void setJIRAIssueLocalService(
-		com.liferay.osb.customer.release.notes.jira.service.
-			JIRAIssueLocalService jiraIssueLocalService) {
-
+		com.liferay.osb.customer.release.notes.jira.service.JIRAIssueLocalService jiraIssueLocalService) {
 		this.jiraIssueLocalService = jiraIssueLocalService;
 	}
 
@@ -441,7 +411,6 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 */
 	public void setJIRAIssuePersistence(
 		JIRAIssuePersistence jiraIssuePersistence) {
-
 		this.jiraIssuePersistence = jiraIssuePersistence;
 	}
 
@@ -468,10 +437,7 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 *
 	 * @return the jira project local service
 	 */
-	public
-		com.liferay.osb.customer.release.notes.jira.service.
-			JIRAProjectLocalService getJIRAProjectLocalService() {
-
+	public com.liferay.osb.customer.release.notes.jira.service.JIRAProjectLocalService getJIRAProjectLocalService() {
 		return jiraProjectLocalService;
 	}
 
@@ -481,9 +447,7 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 * @param jiraProjectLocalService the jira project local service
 	 */
 	public void setJIRAProjectLocalService(
-		com.liferay.osb.customer.release.notes.jira.service.
-			JIRAProjectLocalService jiraProjectLocalService) {
-
+		com.liferay.osb.customer.release.notes.jira.service.JIRAProjectLocalService jiraProjectLocalService) {
 		this.jiraProjectLocalService = jiraProjectLocalService;
 	}
 
@@ -503,7 +467,6 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 */
 	public void setJIRAProjectPersistence(
 		JIRAProjectPersistence jiraProjectPersistence) {
-
 		this.jiraProjectPersistence = jiraProjectPersistence;
 	}
 
@@ -512,9 +475,7 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 *
 	 * @return the jira project version local service
 	 */
-	public com.liferay.osb.customer.release.notes.jira.service.
-		JIRAProjectVersionLocalService getJIRAProjectVersionLocalService() {
-
+	public com.liferay.osb.customer.release.notes.jira.service.JIRAProjectVersionLocalService getJIRAProjectVersionLocalService() {
 		return jiraProjectVersionLocalService;
 	}
 
@@ -524,9 +485,7 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 * @param jiraProjectVersionLocalService the jira project version local service
 	 */
 	public void setJIRAProjectVersionLocalService(
-		com.liferay.osb.customer.release.notes.jira.service.
-			JIRAProjectVersionLocalService jiraProjectVersionLocalService) {
-
+		com.liferay.osb.customer.release.notes.jira.service.JIRAProjectVersionLocalService jiraProjectVersionLocalService) {
 		this.jiraProjectVersionLocalService = jiraProjectVersionLocalService;
 	}
 
@@ -546,7 +505,6 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 */
 	public void setJIRAProjectVersionPersistence(
 		JIRAProjectVersionPersistence jiraProjectVersionPersistence) {
-
 		this.jiraProjectVersionPersistence = jiraProjectVersionPersistence;
 	}
 
@@ -566,7 +524,6 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 */
 	public void setJIRAProjectVersionFinder(
 		JIRAProjectVersionFinder jiraProjectVersionFinder) {
-
 		this.jiraProjectVersionFinder = jiraProjectVersionFinder;
 	}
 
@@ -575,9 +532,7 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -587,9 +542,7 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -598,9 +551,7 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService
-		getClassNameLocalService() {
-
+	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
 		return classNameLocalService;
 	}
 
@@ -610,9 +561,7 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService
-			classNameLocalService) {
-
+		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -632,7 +581,6 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
-
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -641,9 +589,7 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService
-		getResourceLocalService() {
-
+	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
 		return resourceLocalService;
 	}
 
@@ -653,9 +599,7 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService
-			resourceLocalService) {
-
+		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -664,9 +608,7 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService
-		getUserLocalService() {
-
+	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
 		return userLocalService;
 	}
 
@@ -677,7 +619,6 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
-
 		this.userLocalService = userLocalService;
 	}
 
@@ -700,8 +641,7 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register(
-			"com.liferay.osb.customer.release.notes.jira.model.JIRAComponent",
+		persistedModelLocalServiceRegistry.register("com.liferay.osb.customer.release.notes.jira.model.JIRAComponent",
 			jiraComponentLocalService);
 	}
 
@@ -742,92 +682,50 @@ public abstract class JIRAComponentLocalServiceBaseImpl
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
 	@BeanReference(type = JIRAComponentLocalService.class)
 	protected JIRAComponentLocalService jiraComponentLocalService;
-
 	@BeanReference(type = JIRAComponentPersistence.class)
 	protected JIRAComponentPersistence jiraComponentPersistence;
-
 	@BeanReference(type = JIRAComponentFinder.class)
 	protected JIRAComponentFinder jiraComponentFinder;
-
-	@BeanReference(
-		type = com.liferay.osb.customer.release.notes.jira.service.JIRAIssueLocalService.class
-	)
-	protected
-		com.liferay.osb.customer.release.notes.jira.service.
-			JIRAIssueLocalService jiraIssueLocalService;
-
+	@BeanReference(type = com.liferay.osb.customer.release.notes.jira.service.JIRAIssueLocalService.class)
+	protected com.liferay.osb.customer.release.notes.jira.service.JIRAIssueLocalService jiraIssueLocalService;
 	@BeanReference(type = JIRAIssuePersistence.class)
 	protected JIRAIssuePersistence jiraIssuePersistence;
-
 	@BeanReference(type = JIRAIssueFinder.class)
 	protected JIRAIssueFinder jiraIssueFinder;
-
-	@BeanReference(
-		type = com.liferay.osb.customer.release.notes.jira.service.JIRAProjectLocalService.class
-	)
-	protected
-		com.liferay.osb.customer.release.notes.jira.service.
-			JIRAProjectLocalService jiraProjectLocalService;
-
+	@BeanReference(type = com.liferay.osb.customer.release.notes.jira.service.JIRAProjectLocalService.class)
+	protected com.liferay.osb.customer.release.notes.jira.service.JIRAProjectLocalService jiraProjectLocalService;
 	@BeanReference(type = JIRAProjectPersistence.class)
 	protected JIRAProjectPersistence jiraProjectPersistence;
-
-	@BeanReference(
-		type = com.liferay.osb.customer.release.notes.jira.service.JIRAProjectVersionLocalService.class
-	)
-	protected com.liferay.osb.customer.release.notes.jira.service.
-		JIRAProjectVersionLocalService jiraProjectVersionLocalService;
-
+	@BeanReference(type = com.liferay.osb.customer.release.notes.jira.service.JIRAProjectVersionLocalService.class)
+	protected com.liferay.osb.customer.release.notes.jira.service.JIRAProjectVersionLocalService jiraProjectVersionLocalService;
 	@BeanReference(type = JIRAProjectVersionPersistence.class)
 	protected JIRAProjectVersionPersistence jiraProjectVersionPersistence;
-
 	@BeanReference(type = JIRAProjectVersionFinder.class)
 	protected JIRAProjectVersionFinder jiraProjectVersionFinder;
-
-	@ServiceReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService
-		classNameLocalService;
-
+	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ResourceLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ResourceLocalService
-		resourceLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.UserLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.UserLocalService
-		userLocalService;
-
+	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
+	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
+	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry
-		persistedModelLocalServiceRegistry;
-
+	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }

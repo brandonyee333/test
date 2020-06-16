@@ -14,10 +14,14 @@
 
 package com.liferay.marketplace.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.marketplace.model.Module;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -28,10 +32,11 @@ import java.io.ObjectOutput;
  * The cache model class for representing Module in entity cache.
  *
  * @author Ryan Park
+ * @see Module
  * @generated
  */
+@ProviderType
 public class ModuleCacheModel implements CacheModel<Module>, Externalizable {
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -84,7 +89,7 @@ public class ModuleCacheModel implements CacheModel<Module>, Externalizable {
 		ModuleImpl moduleImpl = new ModuleImpl();
 
 		if (uuid == null) {
-			moduleImpl.setUuid("");
+			moduleImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			moduleImpl.setUuid(uuid);
@@ -95,21 +100,21 @@ public class ModuleCacheModel implements CacheModel<Module>, Externalizable {
 		moduleImpl.setAppId(appId);
 
 		if (bundleSymbolicName == null) {
-			moduleImpl.setBundleSymbolicName("");
+			moduleImpl.setBundleSymbolicName(StringPool.BLANK);
 		}
 		else {
 			moduleImpl.setBundleSymbolicName(bundleSymbolicName);
 		}
 
 		if (bundleVersion == null) {
-			moduleImpl.setBundleVersion("");
+			moduleImpl.setBundleVersion(StringPool.BLANK);
 		}
 		else {
 			moduleImpl.setBundleVersion(bundleVersion);
 		}
 
 		if (contextName == null) {
-			moduleImpl.setContextName("");
+			moduleImpl.setContextName(StringPool.BLANK);
 		}
 		else {
 			moduleImpl.setContextName(contextName);
@@ -135,9 +140,10 @@ public class ModuleCacheModel implements CacheModel<Module>, Externalizable {
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -150,21 +156,21 @@ public class ModuleCacheModel implements CacheModel<Module>, Externalizable {
 		objectOutput.writeLong(appId);
 
 		if (bundleSymbolicName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(bundleSymbolicName);
 		}
 
 		if (bundleVersion == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(bundleVersion);
 		}
 
 		if (contextName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(contextName);
@@ -178,5 +184,4 @@ public class ModuleCacheModel implements CacheModel<Module>, Externalizable {
 	public String bundleSymbolicName;
 	public String bundleVersion;
 	public String contextName;
-
 }

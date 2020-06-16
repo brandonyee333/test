@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.loop.asset.entry.set.service.base;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetLike;
 import com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLikeLocalService;
@@ -21,6 +23,7 @@ import com.liferay.osb.loop.asset.entry.set.service.persistence.AssetEntrySetLik
 import com.liferay.osb.loop.asset.entry.set.service.persistence.AssetEntrySetLikePK;
 import com.liferay.osb.loop.asset.entry.set.service.persistence.AssetEntrySetLikePersistence;
 import com.liferay.osb.loop.asset.entry.set.service.persistence.AssetEntrySetPersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -40,10 +43,8 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
-import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
-import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -63,16 +64,17 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.osb.loop.asset.entry.set.service.impl.AssetEntrySetLikeLocalServiceImpl
+ * @see com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLikeLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class AssetEntrySetLikeLocalServiceBaseImpl
-	extends BaseLocalServiceImpl
-	implements AssetEntrySetLikeLocalService, IdentifiableOSGiService {
-
+	extends BaseLocalServiceImpl implements AssetEntrySetLikeLocalService,
+		IdentifiableOSGiService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AssetEntrySetLikeLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLikeLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLikeLocalServiceUtil} to access the asset entry set like local service.
 	 */
 
 	/**
@@ -85,7 +87,6 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	@Override
 	public AssetEntrySetLike addAssetEntrySetLike(
 		AssetEntrySetLike assetEntrySetLike) {
-
 		assetEntrySetLike.setNew(true);
 
 		return assetEntrySetLikePersistence.update(assetEntrySetLike);
@@ -98,10 +99,8 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	 * @return the new asset entry set like
 	 */
 	@Override
-	@Transactional(enabled = false)
 	public AssetEntrySetLike createAssetEntrySetLike(
 		AssetEntrySetLikePK assetEntrySetLikePK) {
-
 		return assetEntrySetLikePersistence.create(assetEntrySetLikePK);
 	}
 
@@ -115,9 +114,7 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public AssetEntrySetLike deleteAssetEntrySetLike(
-			AssetEntrySetLikePK assetEntrySetLikePK)
-		throws PortalException {
-
+		AssetEntrySetLikePK assetEntrySetLikePK) throws PortalException {
 		return assetEntrySetLikePersistence.remove(assetEntrySetLikePK);
 	}
 
@@ -131,7 +128,6 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	@Override
 	public AssetEntrySetLike deleteAssetEntrySetLike(
 		AssetEntrySetLike assetEntrySetLike) {
-
 		return assetEntrySetLikePersistence.remove(assetEntrySetLike);
 	}
 
@@ -139,8 +135,8 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(
-			AssetEntrySetLike.class, clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(AssetEntrySetLike.class,
+			clazz.getClassLoader());
 	}
 
 	/**
@@ -158,7 +154,7 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.loop.asset.entry.set.model.impl.AssetEntrySetLikeModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.loop.asset.entry.set.model.impl.AssetEntrySetLikeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -167,18 +163,17 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end) {
-
-		return assetEntrySetLikePersistence.findWithDynamicQuery(
-			dynamicQuery, start, end);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
+		return assetEntrySetLikePersistence.findWithDynamicQuery(dynamicQuery,
+			start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.loop.asset.entry.set.model.impl.AssetEntrySetLikeModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.loop.asset.entry.set.model.impl.AssetEntrySetLikeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -188,12 +183,10 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<T> orderByComparator) {
-
-		return assetEntrySetLikePersistence.findWithDynamicQuery(
-			dynamicQuery, start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
+		return assetEntrySetLikePersistence.findWithDynamicQuery(dynamicQuery,
+			start, end, orderByComparator);
 	}
 
 	/**
@@ -215,19 +208,16 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(
-		DynamicQuery dynamicQuery, Projection projection) {
-
-		return assetEntrySetLikePersistence.countWithDynamicQuery(
-			dynamicQuery, projection);
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection) {
+		return assetEntrySetLikePersistence.countWithDynamicQuery(dynamicQuery,
+			projection);
 	}
 
 	@Override
 	public AssetEntrySetLike fetchAssetEntrySetLike(
 		AssetEntrySetLikePK assetEntrySetLikePK) {
-
-		return assetEntrySetLikePersistence.fetchByPrimaryKey(
-			assetEntrySetLikePK);
+		return assetEntrySetLikePersistence.fetchByPrimaryKey(assetEntrySetLikePK);
 	}
 
 	/**
@@ -239,20 +229,15 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	 */
 	@Override
 	public AssetEntrySetLike getAssetEntrySetLike(
-			AssetEntrySetLikePK assetEntrySetLikePK)
-		throws PortalException {
-
-		return assetEntrySetLikePersistence.findByPrimaryKey(
-			assetEntrySetLikePK);
+		AssetEntrySetLikePK assetEntrySetLikePK) throws PortalException {
+		return assetEntrySetLikePersistence.findByPrimaryKey(assetEntrySetLikePK);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
-		actionableDynamicQuery.setBaseLocalService(
-			assetEntrySetLikeLocalService);
+		actionableDynamicQuery.setBaseLocalService(assetEntrySetLikeLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(AssetEntrySetLike.class);
 
@@ -263,14 +248,10 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
 
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
-			new IndexableActionableDynamicQuery();
-
-		indexableActionableDynamicQuery.setBaseLocalService(
-			assetEntrySetLikeLocalService);
+		indexableActionableDynamicQuery.setBaseLocalService(assetEntrySetLikeLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(AssetEntrySetLike.class);
 
@@ -282,9 +263,7 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-
-		actionableDynamicQuery.setBaseLocalService(
-			assetEntrySetLikeLocalService);
+		actionableDynamicQuery.setBaseLocalService(assetEntrySetLikeLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(AssetEntrySetLike.class);
 
@@ -298,22 +277,12 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-
-		return assetEntrySetLikeLocalService.deleteAssetEntrySetLike(
-			(AssetEntrySetLike)persistedModel);
+		return assetEntrySetLikeLocalService.deleteAssetEntrySetLike((AssetEntrySetLike)persistedModel);
 	}
 
-	public BasePersistence<AssetEntrySetLike> getBasePersistence() {
-		return assetEntrySetLikePersistence;
-	}
-
-	/**
-	 * @throws PortalException
-	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
-
 		return assetEntrySetLikePersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -321,7 +290,7 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	 * Returns a range of all the asset entry set likes.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.loop.asset.entry.set.model.impl.AssetEntrySetLikeModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.loop.asset.entry.set.model.impl.AssetEntrySetLikeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of asset entry set likes
@@ -353,7 +322,6 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	@Override
 	public AssetEntrySetLike updateAssetEntrySetLike(
 		AssetEntrySetLike assetEntrySetLike) {
-
 		return assetEntrySetLikePersistence.update(assetEntrySetLike);
 	}
 
@@ -362,10 +330,7 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	 *
 	 * @return the asset entry set local service
 	 */
-	public
-		com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLocalService
-			getAssetEntrySetLocalService() {
-
+	public com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLocalService getAssetEntrySetLocalService() {
 		return assetEntrySetLocalService;
 	}
 
@@ -375,9 +340,7 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	 * @param assetEntrySetLocalService the asset entry set local service
 	 */
 	public void setAssetEntrySetLocalService(
-		com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLocalService
-			assetEntrySetLocalService) {
-
+		com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLocalService assetEntrySetLocalService) {
 		this.assetEntrySetLocalService = assetEntrySetLocalService;
 	}
 
@@ -397,7 +360,6 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	 */
 	public void setAssetEntrySetPersistence(
 		AssetEntrySetPersistence assetEntrySetPersistence) {
-
 		this.assetEntrySetPersistence = assetEntrySetPersistence;
 	}
 
@@ -415,9 +377,7 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	 *
 	 * @param assetEntrySetFinder the asset entry set finder
 	 */
-	public void setAssetEntrySetFinder(
-		AssetEntrySetFinder assetEntrySetFinder) {
-
+	public void setAssetEntrySetFinder(AssetEntrySetFinder assetEntrySetFinder) {
 		this.assetEntrySetFinder = assetEntrySetFinder;
 	}
 
@@ -437,7 +397,6 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	 */
 	public void setAssetEntrySetLikeLocalService(
 		AssetEntrySetLikeLocalService assetEntrySetLikeLocalService) {
-
 		this.assetEntrySetLikeLocalService = assetEntrySetLikeLocalService;
 	}
 
@@ -457,7 +416,6 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	 */
 	public void setAssetEntrySetLikePersistence(
 		AssetEntrySetLikePersistence assetEntrySetLikePersistence) {
-
 		this.assetEntrySetLikePersistence = assetEntrySetLikePersistence;
 	}
 
@@ -477,7 +435,6 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	 */
 	public void setAssetEntrySetLikeFinder(
 		AssetEntrySetLikeFinder assetEntrySetLikeFinder) {
-
 		this.assetEntrySetLikeFinder = assetEntrySetLikeFinder;
 	}
 
@@ -486,9 +443,7 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -498,9 +453,7 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -509,9 +462,7 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService
-		getClassNameLocalService() {
-
+	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
 		return classNameLocalService;
 	}
 
@@ -521,9 +472,7 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService
-			classNameLocalService) {
-
+		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -543,7 +492,6 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
-
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -552,9 +500,7 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService
-		getResourceLocalService() {
-
+	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
 		return resourceLocalService;
 	}
 
@@ -564,9 +510,7 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService
-			resourceLocalService) {
-
+		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -575,9 +519,7 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService
-		getUserLocalService() {
-
+	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
 		return userLocalService;
 	}
 
@@ -588,7 +530,6 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
-
 		this.userLocalService = userLocalService;
 	}
 
@@ -611,8 +552,7 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register(
-			"com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetLike",
+		persistedModelLocalServiceRegistry.register("com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetLike",
 			assetEntrySetLikeLocalService);
 	}
 
@@ -646,78 +586,47 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	 */
 	protected void runSQL(String sql) {
 		try {
-			DataSource dataSource =
-				assetEntrySetLikePersistence.getDataSource();
+			DataSource dataSource = assetEntrySetLikePersistence.getDataSource();
 
 			DB db = DBManagerUtil.getDB();
 
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
-	@BeanReference(
-		type = com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLocalService.class
-	)
-	protected
-		com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLocalService
-			assetEntrySetLocalService;
-
+	@BeanReference(type = com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLocalService.class)
+	protected com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLocalService assetEntrySetLocalService;
 	@BeanReference(type = AssetEntrySetPersistence.class)
 	protected AssetEntrySetPersistence assetEntrySetPersistence;
-
 	@BeanReference(type = AssetEntrySetFinder.class)
 	protected AssetEntrySetFinder assetEntrySetFinder;
-
 	@BeanReference(type = AssetEntrySetLikeLocalService.class)
 	protected AssetEntrySetLikeLocalService assetEntrySetLikeLocalService;
-
 	@BeanReference(type = AssetEntrySetLikePersistence.class)
 	protected AssetEntrySetLikePersistence assetEntrySetLikePersistence;
-
 	@BeanReference(type = AssetEntrySetLikeFinder.class)
 	protected AssetEntrySetLikeFinder assetEntrySetLikeFinder;
-
-	@ServiceReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService
-		classNameLocalService;
-
+	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ResourceLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ResourceLocalService
-		resourceLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.UserLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.UserLocalService
-		userLocalService;
-
+	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
+	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
+	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry
-		persistedModelLocalServiceRegistry;
-
+	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }

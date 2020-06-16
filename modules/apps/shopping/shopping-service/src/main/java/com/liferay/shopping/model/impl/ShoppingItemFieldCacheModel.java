@@ -14,9 +14,13 @@
 
 package com.liferay.shopping.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.shopping.model.ShoppingItemField;
 
 import java.io.Externalizable;
@@ -28,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing ShoppingItemField in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see ShoppingItemField
  * @generated
  */
-public class ShoppingItemFieldCacheModel
-	implements CacheModel<ShoppingItemField>, Externalizable {
-
+@ProviderType
+public class ShoppingItemFieldCacheModel implements CacheModel<ShoppingItemField>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -43,8 +48,7 @@ public class ShoppingItemFieldCacheModel
 			return false;
 		}
 
-		ShoppingItemFieldCacheModel shoppingItemFieldCacheModel =
-			(ShoppingItemFieldCacheModel)obj;
+		ShoppingItemFieldCacheModel shoppingItemFieldCacheModel = (ShoppingItemFieldCacheModel)obj;
 
 		if (itemFieldId == shoppingItemFieldCacheModel.itemFieldId) {
 			return true;
@@ -81,29 +85,28 @@ public class ShoppingItemFieldCacheModel
 
 	@Override
 	public ShoppingItemField toEntityModel() {
-		ShoppingItemFieldImpl shoppingItemFieldImpl =
-			new ShoppingItemFieldImpl();
+		ShoppingItemFieldImpl shoppingItemFieldImpl = new ShoppingItemFieldImpl();
 
 		shoppingItemFieldImpl.setItemFieldId(itemFieldId);
 		shoppingItemFieldImpl.setCompanyId(companyId);
 		shoppingItemFieldImpl.setItemId(itemId);
 
 		if (name == null) {
-			shoppingItemFieldImpl.setName("");
+			shoppingItemFieldImpl.setName(StringPool.BLANK);
 		}
 		else {
 			shoppingItemFieldImpl.setName(name);
 		}
 
 		if (values == null) {
-			shoppingItemFieldImpl.setValues("");
+			shoppingItemFieldImpl.setValues(StringPool.BLANK);
 		}
 		else {
 			shoppingItemFieldImpl.setValues(values);
 		}
 
 		if (description == null) {
-			shoppingItemFieldImpl.setDescription("");
+			shoppingItemFieldImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			shoppingItemFieldImpl.setDescription(description);
@@ -127,7 +130,8 @@ public class ShoppingItemFieldCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(itemFieldId);
 
 		objectOutput.writeLong(companyId);
@@ -135,21 +139,21 @@ public class ShoppingItemFieldCacheModel
 		objectOutput.writeLong(itemId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (values == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(values);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -162,5 +166,4 @@ public class ShoppingItemFieldCacheModel
 	public String name;
 	public String values;
 	public String description;
-
 }

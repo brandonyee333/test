@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 /**
  * Provides a wrapper for {@link ListTypeService}.
  *
@@ -21,9 +23,9 @@ package com.liferay.portal.kernel.service;
  * @see ListTypeService
  * @generated
  */
-public class ListTypeServiceWrapper
-	implements ListTypeService, ServiceWrapper<ListTypeService> {
-
+@ProviderType
+public class ListTypeServiceWrapper implements ListTypeService,
+	ServiceWrapper<ListTypeService> {
 	public ListTypeServiceWrapper(ListTypeService listTypeService) {
 		_listTypeService = listTypeService;
 	}
@@ -31,40 +33,36 @@ public class ListTypeServiceWrapper
 	@Override
 	public com.liferay.portal.kernel.model.ListType getListType(long listTypeId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		return _listTypeService.getListType(listTypeId);
 	}
 
-	@Override
-	public java.util.List<com.liferay.portal.kernel.model.ListType>
-		getListTypes(java.lang.String type) {
-
-		return _listTypeService.getListTypes(type);
-	}
-
 	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _listTypeService.getOSGiServiceIdentifier();
 	}
 
 	@Override
-	public void validate(
-			long listTypeId, long classNameId, java.lang.String type)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		_listTypeService.validate(listTypeId, classNameId, type);
+	public java.util.List<com.liferay.portal.kernel.model.ListType> getListTypes(
+		java.lang.String type) {
+		return _listTypeService.getListTypes(type);
 	}
 
 	@Override
 	public void validate(long listTypeId, java.lang.String type)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		_listTypeService.validate(listTypeId, type);
+	}
+
+	@Override
+	public void validate(long listTypeId, long classNameId,
+		java.lang.String type)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_listTypeService.validate(listTypeId, classNameId, type);
 	}
 
 	@Override
@@ -78,5 +76,4 @@ public class ListTypeServiceWrapper
 	}
 
 	private ListTypeService _listTypeService;
-
 }

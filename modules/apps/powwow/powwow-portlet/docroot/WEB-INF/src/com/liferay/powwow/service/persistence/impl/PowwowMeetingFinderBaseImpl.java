@@ -16,6 +16,7 @@ package com.liferay.powwow.service.persistence.impl;
 
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+
 import com.liferay.powwow.model.PowwowMeeting;
 import com.liferay.powwow.service.persistence.PowwowMeetingPersistence;
 
@@ -23,13 +24,7 @@ import com.liferay.powwow.service.persistence.PowwowMeetingPersistence;
  * @author Shinn Lok
  * @generated
  */
-public class PowwowMeetingFinderBaseImpl
-	extends BasePersistenceImpl<PowwowMeeting> {
-
-	public PowwowMeetingFinderBaseImpl() {
-		setModelClass(PowwowMeeting.class);
-	}
-
+public class PowwowMeetingFinderBaseImpl extends BasePersistenceImpl<PowwowMeeting> {
 	/**
 	 * Returns the powwow meeting persistence.
 	 *
@@ -46,11 +41,9 @@ public class PowwowMeetingFinderBaseImpl
 	 */
 	public void setPowwowMeetingPersistence(
 		PowwowMeetingPersistence powwowMeetingPersistence) {
-
 		this.powwowMeetingPersistence = powwowMeetingPersistence;
 	}
 
 	@BeanReference(type = PowwowMeetingPersistence.class)
 	protected PowwowMeetingPersistence powwowMeetingPersistence;
-
 }

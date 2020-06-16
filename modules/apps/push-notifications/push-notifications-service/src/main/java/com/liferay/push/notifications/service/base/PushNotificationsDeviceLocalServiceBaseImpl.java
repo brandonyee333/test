@@ -14,6 +14,8 @@
 
 package com.liferay.push.notifications.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -33,13 +35,12 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
-import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
-import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+
 import com.liferay.push.notifications.model.PushNotificationsDevice;
 import com.liferay.push.notifications.service.PushNotificationsDeviceLocalService;
 import com.liferay.push.notifications.service.persistence.PushNotificationsDevicePersistence;
@@ -59,16 +60,17 @@ import javax.sql.DataSource;
  *
  * @author Bruno Farache
  * @see com.liferay.push.notifications.service.impl.PushNotificationsDeviceLocalServiceImpl
+ * @see com.liferay.push.notifications.service.PushNotificationsDeviceLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class PushNotificationsDeviceLocalServiceBaseImpl
-	extends BaseLocalServiceImpl
-	implements IdentifiableOSGiService, PushNotificationsDeviceLocalService {
-
+	extends BaseLocalServiceImpl implements PushNotificationsDeviceLocalService,
+		IdentifiableOSGiService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>PushNotificationsDeviceLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.push.notifications.service.PushNotificationsDeviceLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.push.notifications.service.PushNotificationsDeviceLocalServiceUtil} to access the push notifications device local service.
 	 */
 
 	/**
@@ -81,11 +83,9 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	@Override
 	public PushNotificationsDevice addPushNotificationsDevice(
 		PushNotificationsDevice pushNotificationsDevice) {
-
 		pushNotificationsDevice.setNew(true);
 
-		return pushNotificationsDevicePersistence.update(
-			pushNotificationsDevice);
+		return pushNotificationsDevicePersistence.update(pushNotificationsDevice);
 	}
 
 	/**
@@ -95,12 +95,9 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	 * @return the new push notifications device
 	 */
 	@Override
-	@Transactional(enabled = false)
 	public PushNotificationsDevice createPushNotificationsDevice(
 		long pushNotificationsDeviceId) {
-
-		return pushNotificationsDevicePersistence.create(
-			pushNotificationsDeviceId);
+		return pushNotificationsDevicePersistence.create(pushNotificationsDeviceId);
 	}
 
 	/**
@@ -113,11 +110,8 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public PushNotificationsDevice deletePushNotificationsDevice(
-			long pushNotificationsDeviceId)
-		throws PortalException {
-
-		return pushNotificationsDevicePersistence.remove(
-			pushNotificationsDeviceId);
+		long pushNotificationsDeviceId) throws PortalException {
+		return pushNotificationsDevicePersistence.remove(pushNotificationsDeviceId);
 	}
 
 	/**
@@ -130,17 +124,15 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	@Override
 	public PushNotificationsDevice deletePushNotificationsDevice(
 		PushNotificationsDevice pushNotificationsDevice) {
-
-		return pushNotificationsDevicePersistence.remove(
-			pushNotificationsDevice);
+		return pushNotificationsDevicePersistence.remove(pushNotificationsDevice);
 	}
 
 	@Override
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(
-			PushNotificationsDevice.class, clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(PushNotificationsDevice.class,
+			clazz.getClassLoader());
 	}
 
 	/**
@@ -151,15 +143,14 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	 */
 	@Override
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
-		return pushNotificationsDevicePersistence.findWithDynamicQuery(
-			dynamicQuery);
+		return pushNotificationsDevicePersistence.findWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.push.notifications.model.impl.PushNotificationsDeviceModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.push.notifications.model.impl.PushNotificationsDeviceModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -168,18 +159,17 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end) {
-
-		return pushNotificationsDevicePersistence.findWithDynamicQuery(
-			dynamicQuery, start, end);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
+		return pushNotificationsDevicePersistence.findWithDynamicQuery(dynamicQuery,
+			start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.push.notifications.model.impl.PushNotificationsDeviceModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.push.notifications.model.impl.PushNotificationsDeviceModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -189,12 +179,10 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<T> orderByComparator) {
-
-		return pushNotificationsDevicePersistence.findWithDynamicQuery(
-			dynamicQuery, start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
+		return pushNotificationsDevicePersistence.findWithDynamicQuery(dynamicQuery,
+			start, end, orderByComparator);
 	}
 
 	/**
@@ -205,8 +193,7 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	 */
 	@Override
 	public long dynamicQueryCount(DynamicQuery dynamicQuery) {
-		return pushNotificationsDevicePersistence.countWithDynamicQuery(
-			dynamicQuery);
+		return pushNotificationsDevicePersistence.countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
@@ -217,19 +204,16 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(
-		DynamicQuery dynamicQuery, Projection projection) {
-
-		return pushNotificationsDevicePersistence.countWithDynamicQuery(
-			dynamicQuery, projection);
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection) {
+		return pushNotificationsDevicePersistence.countWithDynamicQuery(dynamicQuery,
+			projection);
 	}
 
 	@Override
 	public PushNotificationsDevice fetchPushNotificationsDevice(
 		long pushNotificationsDeviceId) {
-
-		return pushNotificationsDevicePersistence.fetchByPrimaryKey(
-			pushNotificationsDeviceId);
+		return pushNotificationsDevicePersistence.fetchByPrimaryKey(pushNotificationsDeviceId);
 	}
 
 	/**
@@ -241,20 +225,15 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	 */
 	@Override
 	public PushNotificationsDevice getPushNotificationsDevice(
-			long pushNotificationsDeviceId)
-		throws PortalException {
-
-		return pushNotificationsDevicePersistence.findByPrimaryKey(
-			pushNotificationsDeviceId);
+		long pushNotificationsDeviceId) throws PortalException {
+		return pushNotificationsDevicePersistence.findByPrimaryKey(pushNotificationsDeviceId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
-		actionableDynamicQuery.setBaseLocalService(
-			pushNotificationsDeviceLocalService);
+		actionableDynamicQuery.setBaseLocalService(pushNotificationsDeviceLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(PushNotificationsDevice.class);
 
@@ -265,17 +244,12 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
 
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
-			new IndexableActionableDynamicQuery();
-
-		indexableActionableDynamicQuery.setBaseLocalService(
-			pushNotificationsDeviceLocalService);
+		indexableActionableDynamicQuery.setBaseLocalService(pushNotificationsDeviceLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
-		indexableActionableDynamicQuery.setModelClass(
-			PushNotificationsDevice.class);
+		indexableActionableDynamicQuery.setModelClass(PushNotificationsDevice.class);
 
 		indexableActionableDynamicQuery.setPrimaryKeyPropertyName(
 			"pushNotificationsDeviceId");
@@ -285,9 +259,7 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-
-		actionableDynamicQuery.setBaseLocalService(
-			pushNotificationsDeviceLocalService);
+		actionableDynamicQuery.setBaseLocalService(pushNotificationsDeviceLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(PushNotificationsDevice.class);
 
@@ -301,32 +273,20 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-
-		return pushNotificationsDeviceLocalService.
-			deletePushNotificationsDevice(
-				(PushNotificationsDevice)persistedModel);
+		return pushNotificationsDeviceLocalService.deletePushNotificationsDevice((PushNotificationsDevice)persistedModel);
 	}
 
-	public BasePersistence<PushNotificationsDevice> getBasePersistence() {
-		return pushNotificationsDevicePersistence;
-	}
-
-	/**
-	 * @throws PortalException
-	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
-
-		return pushNotificationsDevicePersistence.findByPrimaryKey(
-			primaryKeyObj);
+		return pushNotificationsDevicePersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
 	/**
 	 * Returns a range of all the push notifications devices.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.push.notifications.model.impl.PushNotificationsDeviceModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.push.notifications.model.impl.PushNotificationsDeviceModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of push notifications devices
@@ -336,7 +296,6 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	@Override
 	public List<PushNotificationsDevice> getPushNotificationsDevices(
 		int start, int end) {
-
 		return pushNotificationsDevicePersistence.findAll(start, end);
 	}
 
@@ -360,9 +319,7 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	@Override
 	public PushNotificationsDevice updatePushNotificationsDevice(
 		PushNotificationsDevice pushNotificationsDevice) {
-
-		return pushNotificationsDevicePersistence.update(
-			pushNotificationsDevice);
+		return pushNotificationsDevicePersistence.update(pushNotificationsDevice);
 	}
 
 	/**
@@ -370,9 +327,7 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	 *
 	 * @return the push notifications device local service
 	 */
-	public PushNotificationsDeviceLocalService
-		getPushNotificationsDeviceLocalService() {
-
+	public PushNotificationsDeviceLocalService getPushNotificationsDeviceLocalService() {
 		return pushNotificationsDeviceLocalService;
 	}
 
@@ -382,11 +337,8 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	 * @param pushNotificationsDeviceLocalService the push notifications device local service
 	 */
 	public void setPushNotificationsDeviceLocalService(
-		PushNotificationsDeviceLocalService
-			pushNotificationsDeviceLocalService) {
-
-		this.pushNotificationsDeviceLocalService =
-			pushNotificationsDeviceLocalService;
+		PushNotificationsDeviceLocalService pushNotificationsDeviceLocalService) {
+		this.pushNotificationsDeviceLocalService = pushNotificationsDeviceLocalService;
 	}
 
 	/**
@@ -394,9 +346,7 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	 *
 	 * @return the push notifications device persistence
 	 */
-	public PushNotificationsDevicePersistence
-		getPushNotificationsDevicePersistence() {
-
+	public PushNotificationsDevicePersistence getPushNotificationsDevicePersistence() {
 		return pushNotificationsDevicePersistence;
 	}
 
@@ -407,9 +357,7 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	 */
 	public void setPushNotificationsDevicePersistence(
 		PushNotificationsDevicePersistence pushNotificationsDevicePersistence) {
-
-		this.pushNotificationsDevicePersistence =
-			pushNotificationsDevicePersistence;
+		this.pushNotificationsDevicePersistence = pushNotificationsDevicePersistence;
 	}
 
 	/**
@@ -417,9 +365,7 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -429,9 +375,7 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -440,9 +384,7 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService
-		getClassNameLocalService() {
-
+	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
 		return classNameLocalService;
 	}
 
@@ -452,9 +394,7 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService
-			classNameLocalService) {
-
+		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -474,7 +414,6 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
-
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -483,9 +422,7 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService
-		getResourceLocalService() {
-
+	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
 		return resourceLocalService;
 	}
 
@@ -495,9 +432,7 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService
-			resourceLocalService) {
-
+		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -506,9 +441,7 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService
-		getUserLocalService() {
-
+	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
 		return userLocalService;
 	}
 
@@ -519,7 +452,6 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
-
 		this.userLocalService = userLocalService;
 	}
 
@@ -542,8 +474,7 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register(
-			"com.liferay.push.notifications.model.PushNotificationsDevice",
+		persistedModelLocalServiceRegistry.register("com.liferay.push.notifications.model.PushNotificationsDevice",
 			pushNotificationsDeviceLocalService);
 	}
 
@@ -577,64 +508,39 @@ public abstract class PushNotificationsDeviceLocalServiceBaseImpl
 	 */
 	protected void runSQL(String sql) {
 		try {
-			DataSource dataSource =
-				pushNotificationsDevicePersistence.getDataSource();
+			DataSource dataSource = pushNotificationsDevicePersistence.getDataSource();
 
 			DB db = DBManagerUtil.getDB();
 
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
 	@BeanReference(type = PushNotificationsDeviceLocalService.class)
-	protected PushNotificationsDeviceLocalService
-		pushNotificationsDeviceLocalService;
-
+	protected PushNotificationsDeviceLocalService pushNotificationsDeviceLocalService;
 	@BeanReference(type = PushNotificationsDevicePersistence.class)
-	protected PushNotificationsDevicePersistence
-		pushNotificationsDevicePersistence;
-
-	@ServiceReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService
-		classNameLocalService;
-
+	protected PushNotificationsDevicePersistence pushNotificationsDevicePersistence;
+	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ResourceLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ResourceLocalService
-		resourceLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.UserLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.UserLocalService
-		userLocalService;
-
+	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
+	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
+	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry
-		persistedModelLocalServiceRegistry;
-
+	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }

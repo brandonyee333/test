@@ -14,10 +14,14 @@
 
 package com.liferay.portlet.expando.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoTable;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -28,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing ExpandoTable in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see ExpandoTable
  * @generated
  */
-public class ExpandoTableCacheModel
-	implements CacheModel<ExpandoTable>, Externalizable {
-
+@ProviderType
+public class ExpandoTableCacheModel implements CacheModel<ExpandoTable>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -43,8 +48,7 @@ public class ExpandoTableCacheModel
 			return false;
 		}
 
-		ExpandoTableCacheModel expandoTableCacheModel =
-			(ExpandoTableCacheModel)obj;
+		ExpandoTableCacheModel expandoTableCacheModel = (ExpandoTableCacheModel)obj;
 
 		if (tableId == expandoTableCacheModel.tableId) {
 			return true;
@@ -84,7 +88,7 @@ public class ExpandoTableCacheModel
 		expandoTableImpl.setClassNameId(classNameId);
 
 		if (name == null) {
-			expandoTableImpl.setName("");
+			expandoTableImpl.setName(StringPool.BLANK);
 		}
 		else {
 			expandoTableImpl.setName(name);
@@ -106,7 +110,8 @@ public class ExpandoTableCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(tableId);
 
 		objectOutput.writeLong(companyId);
@@ -114,7 +119,7 @@ public class ExpandoTableCacheModel
 		objectOutput.writeLong(classNameId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
@@ -125,5 +130,4 @@ public class ExpandoTableCacheModel
 	public long companyId;
 	public long classNameId;
 	public String name;
-
 }

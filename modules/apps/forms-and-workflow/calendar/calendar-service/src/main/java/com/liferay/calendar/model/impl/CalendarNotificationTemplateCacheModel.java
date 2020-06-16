@@ -14,10 +14,14 @@
 
 package com.liferay.calendar.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.calendar.model.CalendarNotificationTemplate;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing CalendarNotificationTemplate in entity cache.
  *
  * @author Eduardo Lundgren
+ * @see CalendarNotificationTemplate
  * @generated
  */
-public class CalendarNotificationTemplateCacheModel
-	implements CacheModel<CalendarNotificationTemplate>, Externalizable {
-
+@ProviderType
+public class CalendarNotificationTemplateCacheModel implements CacheModel<CalendarNotificationTemplate>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,14 +50,10 @@ public class CalendarNotificationTemplateCacheModel
 			return false;
 		}
 
-		CalendarNotificationTemplateCacheModel
-			calendarNotificationTemplateCacheModel =
-				(CalendarNotificationTemplateCacheModel)obj;
+		CalendarNotificationTemplateCacheModel calendarNotificationTemplateCacheModel =
+			(CalendarNotificationTemplateCacheModel)obj;
 
-		if (calendarNotificationTemplateId ==
-				calendarNotificationTemplateCacheModel.
-					calendarNotificationTemplateId) {
-
+		if (calendarNotificationTemplateId == calendarNotificationTemplateCacheModel.calendarNotificationTemplateId) {
 			return true;
 		}
 
@@ -105,24 +106,22 @@ public class CalendarNotificationTemplateCacheModel
 
 	@Override
 	public CalendarNotificationTemplate toEntityModel() {
-		CalendarNotificationTemplateImpl calendarNotificationTemplateImpl =
-			new CalendarNotificationTemplateImpl();
+		CalendarNotificationTemplateImpl calendarNotificationTemplateImpl = new CalendarNotificationTemplateImpl();
 
 		if (uuid == null) {
-			calendarNotificationTemplateImpl.setUuid("");
+			calendarNotificationTemplateImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			calendarNotificationTemplateImpl.setUuid(uuid);
 		}
 
-		calendarNotificationTemplateImpl.setCalendarNotificationTemplateId(
-			calendarNotificationTemplateId);
+		calendarNotificationTemplateImpl.setCalendarNotificationTemplateId(calendarNotificationTemplateId);
 		calendarNotificationTemplateImpl.setGroupId(groupId);
 		calendarNotificationTemplateImpl.setCompanyId(companyId);
 		calendarNotificationTemplateImpl.setUserId(userId);
 
 		if (userName == null) {
-			calendarNotificationTemplateImpl.setUserName("");
+			calendarNotificationTemplateImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			calendarNotificationTemplateImpl.setUserName(userName);
@@ -132,53 +131,49 @@ public class CalendarNotificationTemplateCacheModel
 			calendarNotificationTemplateImpl.setCreateDate(null);
 		}
 		else {
-			calendarNotificationTemplateImpl.setCreateDate(
-				new Date(createDate));
+			calendarNotificationTemplateImpl.setCreateDate(new Date(createDate));
 		}
 
 		if (modifiedDate == Long.MIN_VALUE) {
 			calendarNotificationTemplateImpl.setModifiedDate(null);
 		}
 		else {
-			calendarNotificationTemplateImpl.setModifiedDate(
-				new Date(modifiedDate));
+			calendarNotificationTemplateImpl.setModifiedDate(new Date(
+					modifiedDate));
 		}
 
 		calendarNotificationTemplateImpl.setCalendarId(calendarId);
 
 		if (notificationType == null) {
-			calendarNotificationTemplateImpl.setNotificationType("");
+			calendarNotificationTemplateImpl.setNotificationType(StringPool.BLANK);
 		}
 		else {
-			calendarNotificationTemplateImpl.setNotificationType(
-				notificationType);
+			calendarNotificationTemplateImpl.setNotificationType(notificationType);
 		}
 
 		if (notificationTypeSettings == null) {
-			calendarNotificationTemplateImpl.setNotificationTypeSettings("");
+			calendarNotificationTemplateImpl.setNotificationTypeSettings(StringPool.BLANK);
 		}
 		else {
-			calendarNotificationTemplateImpl.setNotificationTypeSettings(
-				notificationTypeSettings);
+			calendarNotificationTemplateImpl.setNotificationTypeSettings(notificationTypeSettings);
 		}
 
 		if (notificationTemplateType == null) {
-			calendarNotificationTemplateImpl.setNotificationTemplateType("");
+			calendarNotificationTemplateImpl.setNotificationTemplateType(StringPool.BLANK);
 		}
 		else {
-			calendarNotificationTemplateImpl.setNotificationTemplateType(
-				notificationTemplateType);
+			calendarNotificationTemplateImpl.setNotificationTemplateType(notificationTemplateType);
 		}
 
 		if (subject == null) {
-			calendarNotificationTemplateImpl.setSubject("");
+			calendarNotificationTemplateImpl.setSubject(StringPool.BLANK);
 		}
 		else {
 			calendarNotificationTemplateImpl.setSubject(subject);
 		}
 
 		if (body == null) {
-			calendarNotificationTemplateImpl.setBody("");
+			calendarNotificationTemplateImpl.setBody(StringPool.BLANK);
 		}
 		else {
 			calendarNotificationTemplateImpl.setBody(body);
@@ -188,8 +183,8 @@ public class CalendarNotificationTemplateCacheModel
 			calendarNotificationTemplateImpl.setLastPublishDate(null);
 		}
 		else {
-			calendarNotificationTemplateImpl.setLastPublishDate(
-				new Date(lastPublishDate));
+			calendarNotificationTemplateImpl.setLastPublishDate(new Date(
+					lastPublishDate));
 		}
 
 		calendarNotificationTemplateImpl.resetOriginalValues();
@@ -198,9 +193,7 @@ public class CalendarNotificationTemplateCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
 
 		calendarNotificationTemplateId = objectInput.readLong();
@@ -219,14 +212,15 @@ public class CalendarNotificationTemplateCacheModel
 		notificationTypeSettings = objectInput.readUTF();
 		notificationTemplateType = objectInput.readUTF();
 		subject = objectInput.readUTF();
-		body = (String)objectInput.readObject();
+		body = objectInput.readUTF();
 		lastPublishDate = objectInput.readLong();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -241,7 +235,7 @@ public class CalendarNotificationTemplateCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -253,38 +247,38 @@ public class CalendarNotificationTemplateCacheModel
 		objectOutput.writeLong(calendarId);
 
 		if (notificationType == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(notificationType);
 		}
 
 		if (notificationTypeSettings == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(notificationTypeSettings);
 		}
 
 		if (notificationTemplateType == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(notificationTemplateType);
 		}
 
 		if (subject == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(subject);
 		}
 
 		if (body == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(body);
+			objectOutput.writeUTF(body);
 		}
 
 		objectOutput.writeLong(lastPublishDate);
@@ -305,5 +299,4 @@ public class CalendarNotificationTemplateCacheModel
 	public String subject;
 	public String body;
 	public long lastPublishDate;
-
 }

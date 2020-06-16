@@ -14,6 +14,8 @@
 
 package com.liferay.document.library.kernel.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -23,52 +25,46 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see DLTrashLocalService
  * @generated
  */
-public class DLTrashLocalServiceWrapper
-	implements DLTrashLocalService, ServiceWrapper<DLTrashLocalService> {
-
+@ProviderType
+public class DLTrashLocalServiceWrapper implements DLTrashLocalService,
+	ServiceWrapper<DLTrashLocalService> {
 	public DLTrashLocalServiceWrapper(DLTrashLocalService dlTrashLocalService) {
 		_dlTrashLocalService = dlTrashLocalService;
 	}
 
-	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
 	@Override
-	public String getOSGiServiceIdentifier() {
+	public com.liferay.portal.kernel.repository.model.FileEntry moveFileEntryFromTrash(
+		long userId, long repositoryId, long fileEntryId, long newFolderId,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _dlTrashLocalService.moveFileEntryFromTrash(userId,
+			repositoryId, fileEntryId, newFolderId, serviceContext);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.repository.model.FileEntry moveFileEntryToTrash(
+		long userId, long repositoryId, long fileEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _dlTrashLocalService.moveFileEntryToTrash(userId, repositoryId,
+			fileEntryId);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
 		return _dlTrashLocalService.getOSGiServiceIdentifier();
 	}
 
 	@Override
-	public com.liferay.portal.kernel.repository.model.FileEntry
-			moveFileEntryFromTrash(
-				long userId, long repositoryId, long fileEntryId,
-				long newFolderId,
-				com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public void restoreFileEntryFromTrash(long userId, long repositoryId,
+		long fileEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _dlTrashLocalService.moveFileEntryFromTrash(
-			userId, repositoryId, fileEntryId, newFolderId, serviceContext);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.repository.model.FileEntry
-			moveFileEntryToTrash(
-				long userId, long repositoryId, long fileEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _dlTrashLocalService.moveFileEntryToTrash(
-			userId, repositoryId, fileEntryId);
-	}
-
-	@Override
-	public void restoreFileEntryFromTrash(
-			long userId, long repositoryId, long fileEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		_dlTrashLocalService.restoreFileEntryFromTrash(
-			userId, repositoryId, fileEntryId);
+		_dlTrashLocalService.restoreFileEntryFromTrash(userId, repositoryId,
+			fileEntryId);
 	}
 
 	@Override
@@ -82,5 +78,4 @@ public class DLTrashLocalServiceWrapper
 	}
 
 	private DLTrashLocalService _dlTrashLocalService;
-
 }

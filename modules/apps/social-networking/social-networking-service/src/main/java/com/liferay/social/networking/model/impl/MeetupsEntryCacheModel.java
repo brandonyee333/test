@@ -14,9 +14,13 @@
 
 package com.liferay.social.networking.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.social.networking.model.MeetupsEntry;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing MeetupsEntry in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see MeetupsEntry
  * @generated
  */
-public class MeetupsEntryCacheModel
-	implements CacheModel<MeetupsEntry>, Externalizable {
-
+@ProviderType
+public class MeetupsEntryCacheModel implements CacheModel<MeetupsEntry>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class MeetupsEntryCacheModel
 			return false;
 		}
 
-		MeetupsEntryCacheModel meetupsEntryCacheModel =
-			(MeetupsEntryCacheModel)obj;
+		MeetupsEntryCacheModel meetupsEntryCacheModel = (MeetupsEntryCacheModel)obj;
 
 		if (meetupsEntryId == meetupsEntryCacheModel.meetupsEntryId) {
 			return true;
@@ -106,7 +110,7 @@ public class MeetupsEntryCacheModel
 		meetupsEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			meetupsEntryImpl.setUserName("");
+			meetupsEntryImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			meetupsEntryImpl.setUserName(userName);
@@ -127,14 +131,14 @@ public class MeetupsEntryCacheModel
 		}
 
 		if (title == null) {
-			meetupsEntryImpl.setTitle("");
+			meetupsEntryImpl.setTitle(StringPool.BLANK);
 		}
 		else {
 			meetupsEntryImpl.setTitle(title);
 		}
 
 		if (description == null) {
-			meetupsEntryImpl.setDescription("");
+			meetupsEntryImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			meetupsEntryImpl.setDescription(description);
@@ -189,7 +193,8 @@ public class MeetupsEntryCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(meetupsEntryId);
 
 		objectOutput.writeLong(companyId);
@@ -197,7 +202,7 @@ public class MeetupsEntryCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -207,14 +212,14 @@ public class MeetupsEntryCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (title == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(title);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -246,5 +251,4 @@ public class MeetupsEntryCacheModel
 	public int maxAttendees;
 	public double price;
 	public long thumbnailId;
-
 }

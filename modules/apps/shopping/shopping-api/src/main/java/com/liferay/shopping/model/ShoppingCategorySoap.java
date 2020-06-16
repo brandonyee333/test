@@ -14,6 +14,8 @@
 
 package com.liferay.shopping.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -24,10 +26,11 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.shopping.service.http.ShoppingCategoryServiceSoap}.
  *
  * @author Brian Wing Shun Chan
+ * @see com.liferay.shopping.service.http.ShoppingCategoryServiceSoap
  * @generated
  */
+@ProviderType
 public class ShoppingCategorySoap implements Serializable {
-
 	public static ShoppingCategorySoap toSoapModel(ShoppingCategory model) {
 		ShoppingCategorySoap soapModel = new ShoppingCategorySoap();
 
@@ -45,11 +48,8 @@ public class ShoppingCategorySoap implements Serializable {
 		return soapModel;
 	}
 
-	public static ShoppingCategorySoap[] toSoapModels(
-		ShoppingCategory[] models) {
-
-		ShoppingCategorySoap[] soapModels =
-			new ShoppingCategorySoap[models.length];
+	public static ShoppingCategorySoap[] toSoapModels(ShoppingCategory[] models) {
+		ShoppingCategorySoap[] soapModels = new ShoppingCategorySoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -60,12 +60,10 @@ public class ShoppingCategorySoap implements Serializable {
 
 	public static ShoppingCategorySoap[][] toSoapModels(
 		ShoppingCategory[][] models) {
-
 		ShoppingCategorySoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels =
-				new ShoppingCategorySoap[models.length][models[0].length];
+			soapModels = new ShoppingCategorySoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new ShoppingCategorySoap[0][0];
@@ -80,9 +78,7 @@ public class ShoppingCategorySoap implements Serializable {
 
 	public static ShoppingCategorySoap[] toSoapModels(
 		List<ShoppingCategory> models) {
-
-		List<ShoppingCategorySoap> soapModels =
-			new ArrayList<ShoppingCategorySoap>(models.size());
+		List<ShoppingCategorySoap> soapModels = new ArrayList<ShoppingCategorySoap>(models.size());
 
 		for (ShoppingCategory model : models) {
 			soapModels.add(toSoapModel(model));
@@ -192,5 +188,4 @@ public class ShoppingCategorySoap implements Serializable {
 	private long _parentCategoryId;
 	private String _name;
 	private String _description;
-
 }

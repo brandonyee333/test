@@ -14,6 +14,8 @@
 
 package com.liferay.social.privatemessaging.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -23,53 +25,48 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see UserThreadService
  * @generated
  */
-public class UserThreadServiceWrapper
-	implements ServiceWrapper<UserThreadService>, UserThreadService {
-
+@ProviderType
+public class UserThreadServiceWrapper implements UserThreadService,
+	ServiceWrapper<UserThreadService> {
 	public UserThreadServiceWrapper(UserThreadService userThreadService) {
 		_userThreadService = userThreadService;
 	}
 
 	@Override
-	public com.liferay.message.boards.kernel.model.MBMessage
-			getLastThreadMessage(long mbThreadId)
+	public com.liferay.message.boards.kernel.model.MBMessage getLastThreadMessage(
+		long mbThreadId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		return _userThreadService.getLastThreadMessage(mbThreadId);
-	}
-
-	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
-	@Override
-	public String getOSGiServiceIdentifier() {
-		return _userThreadService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public java.util.List<com.liferay.message.boards.kernel.model.MBMessage>
-			getThreadMessages(
-				long mbThreadId, int start, int end, boolean ascending)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _userThreadService.getThreadMessages(
-			mbThreadId, start, end, ascending);
 	}
 
 	@Override
 	public int getThreadMessagesCount(long mbThreadId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		return _userThreadService.getThreadMessagesCount(mbThreadId);
 	}
 
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
 	@Override
-	public java.util.List<com.liferay.social.privatemessaging.model.UserThread>
-			getUserUserThreads(boolean deleted)
-		throws com.liferay.portal.kernel.security.auth.PrincipalException {
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _userThreadService.getOSGiServiceIdentifier();
+	}
 
+	@Override
+	public java.util.List<com.liferay.message.boards.kernel.model.MBMessage> getThreadMessages(
+		long mbThreadId, int start, int end, boolean ascending)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _userThreadService.getThreadMessages(mbThreadId, start, end,
+			ascending);
+	}
+
+	@Override
+	public java.util.List<com.liferay.social.privatemessaging.model.UserThread> getUserUserThreads(
+		boolean deleted)
+		throws com.liferay.portal.kernel.security.auth.PrincipalException {
 		return _userThreadService.getUserUserThreads(deleted);
 	}
 
@@ -84,5 +81,4 @@ public class UserThreadServiceWrapper
 	}
 
 	private UserThreadService _userThreadService;
-
 }

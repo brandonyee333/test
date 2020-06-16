@@ -1,23 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.testray.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.osb.testray.model.TestrayFactorCategory;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing TestrayFactorCategory in entity cache.
  *
  * @author Ethan Bustad
+ * @see TestrayFactorCategory
  * @generated
  */
-public class TestrayFactorCategoryCacheModel
-	implements CacheModel<TestrayFactorCategory>, Externalizable {
-
+@ProviderType
+public class TestrayFactorCategoryCacheModel implements CacheModel<TestrayFactorCategory>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +50,9 @@ public class TestrayFactorCategoryCacheModel
 			return false;
 		}
 
-		TestrayFactorCategoryCacheModel testrayFactorCategoryCacheModel =
-			(TestrayFactorCategoryCacheModel)obj;
+		TestrayFactorCategoryCacheModel testrayFactorCategoryCacheModel = (TestrayFactorCategoryCacheModel)obj;
 
-		if (testrayFactorCategoryId ==
-				testrayFactorCategoryCacheModel.testrayFactorCategoryId) {
-
+		if (testrayFactorCategoryId == testrayFactorCategoryCacheModel.testrayFactorCategoryId) {
 			return true;
 		}
 
@@ -89,17 +91,15 @@ public class TestrayFactorCategoryCacheModel
 
 	@Override
 	public TestrayFactorCategory toEntityModel() {
-		TestrayFactorCategoryImpl testrayFactorCategoryImpl =
-			new TestrayFactorCategoryImpl();
+		TestrayFactorCategoryImpl testrayFactorCategoryImpl = new TestrayFactorCategoryImpl();
 
-		testrayFactorCategoryImpl.setTestrayFactorCategoryId(
-			testrayFactorCategoryId);
+		testrayFactorCategoryImpl.setTestrayFactorCategoryId(testrayFactorCategoryId);
 		testrayFactorCategoryImpl.setGroupId(groupId);
 		testrayFactorCategoryImpl.setCompanyId(companyId);
 		testrayFactorCategoryImpl.setUserId(userId);
 
 		if (userName == null) {
-			testrayFactorCategoryImpl.setUserName("");
+			testrayFactorCategoryImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			testrayFactorCategoryImpl.setUserName(userName);
@@ -120,7 +120,7 @@ public class TestrayFactorCategoryCacheModel
 		}
 
 		if (name == null) {
-			testrayFactorCategoryImpl.setName("");
+			testrayFactorCategoryImpl.setName(StringPool.BLANK);
 		}
 		else {
 			testrayFactorCategoryImpl.setName(name);
@@ -147,7 +147,8 @@ public class TestrayFactorCategoryCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(testrayFactorCategoryId);
 
 		objectOutput.writeLong(groupId);
@@ -157,7 +158,7 @@ public class TestrayFactorCategoryCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -167,7 +168,7 @@ public class TestrayFactorCategoryCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
@@ -182,5 +183,4 @@ public class TestrayFactorCategoryCacheModel
 	public long createDate;
 	public long modifiedDate;
 	public String name;
-
 }

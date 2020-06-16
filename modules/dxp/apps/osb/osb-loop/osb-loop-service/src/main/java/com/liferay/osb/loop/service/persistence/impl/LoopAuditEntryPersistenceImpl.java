@@ -1,24 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.loop.service.persistence.impl;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.loop.exception.NoSuchLoopAuditEntryException;
 import com.liferay.osb.loop.model.LoopAuditEntry;
 import com.liferay.osb.loop.model.impl.LoopAuditEntryImpl;
 import com.liferay.osb.loop.model.impl.LoopAuditEntryModelImpl;
 import com.liferay.osb.loop.service.persistence.LoopAuditEntryPersistence;
+
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -27,18 +30,17 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.service.persistence.CompanyProvider;
+import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
-
-import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -57,29 +59,34 @@ import java.util.Set;
  * </p>
  *
  * @author Ethan Bustad
+ * @see LoopAuditEntryPersistence
+ * @see com.liferay.osb.loop.service.persistence.LoopAuditEntryUtil
  * @generated
  */
-public class LoopAuditEntryPersistenceImpl
-	extends BasePersistenceImpl<LoopAuditEntry>
+@ProviderType
+public class LoopAuditEntryPersistenceImpl extends BasePersistenceImpl<LoopAuditEntry>
 	implements LoopAuditEntryPersistence {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use <code>LoopAuditEntryUtil</code> to access the loop audit entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use {@link LoopAuditEntryUtil} to access the loop audit entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY =
-		LoopAuditEntryImpl.class.getName();
-
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List1";
-
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
+	public static final String FINDER_CLASS_NAME_ENTITY = LoopAuditEntryImpl.class.getName();
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List1";
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List2";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
+			LoopAuditEntryModelImpl.FINDER_CACHE_ENABLED,
+			LoopAuditEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
+			LoopAuditEntryModelImpl.FINDER_CACHE_ENABLED,
+			LoopAuditEntryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
+			LoopAuditEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
 
 	public LoopAuditEntryPersistenceImpl() {
 		setModelClass(LoopAuditEntry.class);
@@ -92,8 +99,7 @@ public class LoopAuditEntryPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(LoopAuditEntry loopAuditEntry) {
-		entityCache.putResult(
-			LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
 			LoopAuditEntryImpl.class, loopAuditEntry.getPrimaryKey(),
 			loopAuditEntry);
 
@@ -109,10 +115,8 @@ public class LoopAuditEntryPersistenceImpl
 	public void cacheResult(List<LoopAuditEntry> loopAuditEntries) {
 		for (LoopAuditEntry loopAuditEntry : loopAuditEntries) {
 			if (entityCache.getResult(
-					LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
-					LoopAuditEntryImpl.class, loopAuditEntry.getPrimaryKey()) ==
-						null) {
-
+						LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
+						LoopAuditEntryImpl.class, loopAuditEntry.getPrimaryKey()) == null) {
 				cacheResult(loopAuditEntry);
 			}
 			else {
@@ -125,7 +129,7 @@ public class LoopAuditEntryPersistenceImpl
 	 * Clears the cache for all loop audit entries.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -141,13 +145,12 @@ public class LoopAuditEntryPersistenceImpl
 	 * Clears the cache for the loop audit entry.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(LoopAuditEntry loopAuditEntry) {
-		entityCache.removeResult(
-			LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
 			LoopAuditEntryImpl.class, loopAuditEntry.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -160,21 +163,8 @@ public class LoopAuditEntryPersistenceImpl
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (LoopAuditEntry loopAuditEntry : loopAuditEntries) {
-			entityCache.removeResult(
-				LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
 				LoopAuditEntryImpl.class, loopAuditEntry.getPrimaryKey());
-		}
-	}
-
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
-				LoopAuditEntryImpl.class, primaryKey);
 		}
 	}
 
@@ -191,7 +181,7 @@ public class LoopAuditEntryPersistenceImpl
 		loopAuditEntry.setNew(true);
 		loopAuditEntry.setPrimaryKey(loopAuditEntryId);
 
-		loopAuditEntry.setCompanyId(CompanyThreadLocal.getCompanyId());
+		loopAuditEntry.setCompanyId(companyProvider.getCompanyId());
 
 		return loopAuditEntry;
 	}
@@ -206,7 +196,6 @@ public class LoopAuditEntryPersistenceImpl
 	@Override
 	public LoopAuditEntry remove(long loopAuditEntryId)
 		throws NoSuchLoopAuditEntryException {
-
 		return remove((Serializable)loopAuditEntryId);
 	}
 
@@ -220,31 +209,30 @@ public class LoopAuditEntryPersistenceImpl
 	@Override
 	public LoopAuditEntry remove(Serializable primaryKey)
 		throws NoSuchLoopAuditEntryException {
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			LoopAuditEntry loopAuditEntry = (LoopAuditEntry)session.get(
-				LoopAuditEntryImpl.class, primaryKey);
+			LoopAuditEntry loopAuditEntry = (LoopAuditEntry)session.get(LoopAuditEntryImpl.class,
+					primaryKey);
 
 			if (loopAuditEntry == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchLoopAuditEntryException(
-					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				throw new NoSuchLoopAuditEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+					primaryKey);
 			}
 
 			return remove(loopAuditEntry);
 		}
-		catch (NoSuchLoopAuditEntryException noSuchEntityException) {
-			throw noSuchEntityException;
+		catch (NoSuchLoopAuditEntryException nsee) {
+			throw nsee;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -253,23 +241,24 @@ public class LoopAuditEntryPersistenceImpl
 
 	@Override
 	protected LoopAuditEntry removeImpl(LoopAuditEntry loopAuditEntry) {
+		loopAuditEntry = toUnwrappedModel(loopAuditEntry);
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(loopAuditEntry)) {
-				loopAuditEntry = (LoopAuditEntry)session.get(
-					LoopAuditEntryImpl.class,
-					loopAuditEntry.getPrimaryKeyObj());
+				loopAuditEntry = (LoopAuditEntry)session.get(LoopAuditEntryImpl.class,
+						loopAuditEntry.getPrimaryKeyObj());
 			}
 
 			if (loopAuditEntry != null) {
 				session.delete(loopAuditEntry);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -284,30 +273,13 @@ public class LoopAuditEntryPersistenceImpl
 
 	@Override
 	public LoopAuditEntry updateImpl(LoopAuditEntry loopAuditEntry) {
+		loopAuditEntry = toUnwrappedModel(loopAuditEntry);
+
 		boolean isNew = loopAuditEntry.isNew();
 
-		if (!(loopAuditEntry instanceof LoopAuditEntryModelImpl)) {
-			InvocationHandler invocationHandler = null;
+		LoopAuditEntryModelImpl loopAuditEntryModelImpl = (LoopAuditEntryModelImpl)loopAuditEntry;
 
-			if (ProxyUtil.isProxyClass(loopAuditEntry.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(
-					loopAuditEntry);
-
-				throw new IllegalArgumentException(
-					"Implement ModelWrapper in loopAuditEntry proxy " +
-						invocationHandler.getClass());
-			}
-
-			throw new IllegalArgumentException(
-				"Implement ModelWrapper in custom LoopAuditEntry implementation " +
-					loopAuditEntry.getClass());
-		}
-
-		LoopAuditEntryModelImpl loopAuditEntryModelImpl =
-			(LoopAuditEntryModelImpl)loopAuditEntry;
-
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -325,8 +297,8 @@ public class LoopAuditEntryPersistenceImpl
 				loopAuditEntry.setModifiedDate(now);
 			}
 			else {
-				loopAuditEntry.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+				loopAuditEntry.setModifiedDate(serviceContext.getModifiedDate(
+						now));
 			}
 		}
 
@@ -344,8 +316,8 @@ public class LoopAuditEntryPersistenceImpl
 				loopAuditEntry = (LoopAuditEntry)session.merge(loopAuditEntry);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -354,13 +326,12 @@ public class LoopAuditEntryPersistenceImpl
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
 		if (isNew) {
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(
-			LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
 			LoopAuditEntryImpl.class, loopAuditEntry.getPrimaryKey(),
 			loopAuditEntry, false);
 
@@ -369,8 +340,31 @@ public class LoopAuditEntryPersistenceImpl
 		return loopAuditEntry;
 	}
 
+	protected LoopAuditEntry toUnwrappedModel(LoopAuditEntry loopAuditEntry) {
+		if (loopAuditEntry instanceof LoopAuditEntryImpl) {
+			return loopAuditEntry;
+		}
+
+		LoopAuditEntryImpl loopAuditEntryImpl = new LoopAuditEntryImpl();
+
+		loopAuditEntryImpl.setNew(loopAuditEntry.isNew());
+		loopAuditEntryImpl.setPrimaryKey(loopAuditEntry.getPrimaryKey());
+
+		loopAuditEntryImpl.setLoopAuditEntryId(loopAuditEntry.getLoopAuditEntryId());
+		loopAuditEntryImpl.setCompanyId(loopAuditEntry.getCompanyId());
+		loopAuditEntryImpl.setUserId(loopAuditEntry.getUserId());
+		loopAuditEntryImpl.setUserName(loopAuditEntry.getUserName());
+		loopAuditEntryImpl.setCreateDate(loopAuditEntry.getCreateDate());
+		loopAuditEntryImpl.setModifiedDate(loopAuditEntry.getModifiedDate());
+		loopAuditEntryImpl.setClassNameId(loopAuditEntry.getClassNameId());
+		loopAuditEntryImpl.setClassPK(loopAuditEntry.getClassPK());
+		loopAuditEntryImpl.setName(loopAuditEntry.getName());
+
+		return loopAuditEntryImpl;
+	}
+
 	/**
-	 * Returns the loop audit entry with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
+	 * Returns the loop audit entry with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the loop audit entry
 	 * @return the loop audit entry
@@ -379,7 +373,6 @@ public class LoopAuditEntryPersistenceImpl
 	@Override
 	public LoopAuditEntry findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchLoopAuditEntryException {
-
 		LoopAuditEntry loopAuditEntry = fetchByPrimaryKey(primaryKey);
 
 		if (loopAuditEntry == null) {
@@ -387,15 +380,15 @@ public class LoopAuditEntryPersistenceImpl
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchLoopAuditEntryException(
-				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			throw new NoSuchLoopAuditEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
 		}
 
 		return loopAuditEntry;
 	}
 
 	/**
-	 * Returns the loop audit entry with the primary key or throws a <code>NoSuchLoopAuditEntryException</code> if it could not be found.
+	 * Returns the loop audit entry with the primary key or throws a {@link NoSuchLoopAuditEntryException} if it could not be found.
 	 *
 	 * @param loopAuditEntryId the primary key of the loop audit entry
 	 * @return the loop audit entry
@@ -404,7 +397,6 @@ public class LoopAuditEntryPersistenceImpl
 	@Override
 	public LoopAuditEntry findByPrimaryKey(long loopAuditEntryId)
 		throws NoSuchLoopAuditEntryException {
-
 		return findByPrimaryKey((Serializable)loopAuditEntryId);
 	}
 
@@ -416,9 +408,8 @@ public class LoopAuditEntryPersistenceImpl
 	 */
 	@Override
 	public LoopAuditEntry fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(
-			LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
-			LoopAuditEntryImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
+				LoopAuditEntryImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -432,24 +423,22 @@ public class LoopAuditEntryPersistenceImpl
 			try {
 				session = openSession();
 
-				loopAuditEntry = (LoopAuditEntry)session.get(
-					LoopAuditEntryImpl.class, primaryKey);
+				loopAuditEntry = (LoopAuditEntry)session.get(LoopAuditEntryImpl.class,
+						primaryKey);
 
 				if (loopAuditEntry != null) {
 					cacheResult(loopAuditEntry);
 				}
 				else {
-					entityCache.putResult(
-						LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
 						LoopAuditEntryImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception exception) {
-				entityCache.removeResult(
-					LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception e) {
+				entityCache.removeResult(LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
 					LoopAuditEntryImpl.class, primaryKey);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -473,13 +462,11 @@ public class LoopAuditEntryPersistenceImpl
 	@Override
 	public Map<Serializable, LoopAuditEntry> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
-
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, LoopAuditEntry> map =
-			new HashMap<Serializable, LoopAuditEntry>();
+		Map<Serializable, LoopAuditEntry> map = new HashMap<Serializable, LoopAuditEntry>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -498,9 +485,8 @@ public class LoopAuditEntryPersistenceImpl
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(
-				LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
-				LoopAuditEntryImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
+					LoopAuditEntryImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -520,33 +506,31 @@ public class LoopAuditEntryPersistenceImpl
 			return map;
 		}
 
-		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
+				1);
 
-		sb.append(_SQL_SELECT_LOOPAUDITENTRY_WHERE_PKS_IN);
+		query.append(_SQL_SELECT_LOOPAUDITENTRY_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			sb.append((long)primaryKey);
+			query.append((long)primaryKey);
 
-			sb.append(",");
+			query.append(StringPool.COMMA);
 		}
 
-		sb.setIndex(sb.index() - 1);
+		query.setIndex(query.index() - 1);
 
-		sb.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query query = session.createQuery(sql);
+			Query q = session.createQuery(sql);
 
-			for (LoopAuditEntry loopAuditEntry :
-					(List<LoopAuditEntry>)query.list()) {
-
+			for (LoopAuditEntry loopAuditEntry : (List<LoopAuditEntry>)q.list()) {
 				map.put(loopAuditEntry.getPrimaryKeyObj(), loopAuditEntry);
 
 				cacheResult(loopAuditEntry);
@@ -555,13 +539,12 @@ public class LoopAuditEntryPersistenceImpl
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(
-					LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
 					LoopAuditEntryImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -584,7 +567,7 @@ public class LoopAuditEntryPersistenceImpl
 	 * Returns a range of all the loop audit entries.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopAuditEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopAuditEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of loop audit entries
@@ -600,7 +583,7 @@ public class LoopAuditEntryPersistenceImpl
 	 * Returns an ordered range of all the loop audit entries.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopAuditEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopAuditEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of loop audit entries
@@ -609,10 +592,8 @@ public class LoopAuditEntryPersistenceImpl
 	 * @return the ordered range of loop audit entries
 	 */
 	@Override
-	public List<LoopAuditEntry> findAll(
-		int start, int end,
+	public List<LoopAuditEntry> findAll(int start, int end,
 		OrderByComparator<LoopAuditEntry> orderByComparator) {
-
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -620,62 +601,62 @@ public class LoopAuditEntryPersistenceImpl
 	 * Returns an ordered range of all the loop audit entries.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopAuditEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopAuditEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of loop audit entries
 	 * @param end the upper bound of the range of loop audit entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of loop audit entries
 	 */
 	@Override
-	public List<LoopAuditEntry> findAll(
-		int start, int end, OrderByComparator<LoopAuditEntry> orderByComparator,
-		boolean useFinderCache) {
-
+	public List<LoopAuditEntry> findAll(int start, int end,
+		OrderByComparator<LoopAuditEntry> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
-				finderArgs = FINDER_ARGS_EMPTY;
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+			finderArgs = FINDER_ARGS_EMPTY;
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] {start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
 		List<LoopAuditEntry> list = null;
 
-		if (useFinderCache) {
-			list = (List<LoopAuditEntry>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<LoopAuditEntry>)finderCache.getResult(finderPath,
+					finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					2 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(2 +
+						(orderByComparator.getOrderByFields().length * 2));
 
-				sb.append(_SQL_SELECT_LOOPAUDITENTRY);
+				query.append(_SQL_SELECT_LOOPAUDITENTRY);
 
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 
-				sql = sb.toString();
+				sql = query.toString();
 			}
 			else {
 				sql = _SQL_SELECT_LOOPAUDITENTRY;
 
-				sql = sql.concat(LoopAuditEntryModelImpl.ORDER_BY_JPQL);
+				if (pagination) {
+					sql = sql.concat(LoopAuditEntryModelImpl.ORDER_BY_JPQL);
+				}
 			}
 
 			Session session = null;
@@ -683,23 +664,29 @@ public class LoopAuditEntryPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				list = (List<LoopAuditEntry>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<LoopAuditEntry>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<LoopAuditEntry>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -727,8 +714,8 @@ public class LoopAuditEntryPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -736,18 +723,18 @@ public class LoopAuditEntryPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(_SQL_COUNT_LOOPAUDITENTRY);
+				Query q = session.createQuery(_SQL_COUNT_LOOPAUDITENTRY);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
+					count);
 			}
-			catch (Exception exception) {
-				finderCache.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -766,23 +753,6 @@ public class LoopAuditEntryPersistenceImpl
 	 * Initializes the loop audit entry persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
-			LoopAuditEntryModelImpl.FINDER_CACHE_ENABLED,
-			LoopAuditEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
-			LoopAuditEntryModelImpl.FINDER_CACHE_ENABLED,
-			LoopAuditEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findAll", new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			LoopAuditEntryModelImpl.ENTITY_CACHE_ENABLED,
-			LoopAuditEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
 	}
 
 	public void destroy() {
@@ -792,27 +762,16 @@ public class LoopAuditEntryPersistenceImpl
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@ServiceReference(type = CompanyProviderWrapper.class)
+	protected CompanyProvider companyProvider;
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
-
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-
-	private static final String _SQL_SELECT_LOOPAUDITENTRY =
-		"SELECT loopAuditEntry FROM LoopAuditEntry loopAuditEntry";
-
-	private static final String _SQL_SELECT_LOOPAUDITENTRY_WHERE_PKS_IN =
-		"SELECT loopAuditEntry FROM LoopAuditEntry loopAuditEntry WHERE loopAuditEntryId IN (";
-
-	private static final String _SQL_COUNT_LOOPAUDITENTRY =
-		"SELECT COUNT(loopAuditEntry) FROM LoopAuditEntry loopAuditEntry";
-
+	private static final String _SQL_SELECT_LOOPAUDITENTRY = "SELECT loopAuditEntry FROM LoopAuditEntry loopAuditEntry";
+	private static final String _SQL_SELECT_LOOPAUDITENTRY_WHERE_PKS_IN = "SELECT loopAuditEntry FROM LoopAuditEntry loopAuditEntry WHERE loopAuditEntryId IN (";
+	private static final String _SQL_COUNT_LOOPAUDITENTRY = "SELECT COUNT(loopAuditEntry) FROM LoopAuditEntry loopAuditEntry";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "loopAuditEntry.";
-
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
-		"No LoopAuditEntry exists with the primary key ";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		LoopAuditEntryPersistenceImpl.class);
-
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No LoopAuditEntry exists with the primary key ";
+	private static final Log _log = LogFactoryUtil.getLog(LoopAuditEntryPersistenceImpl.class);
 }

@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.UserTracker;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -31,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing UserTracker in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see UserTracker
  * @generated
  */
-public class UserTrackerCacheModel
-	implements CacheModel<UserTracker>, Externalizable, MVCCModel {
-
+@ProviderType
+public class UserTrackerCacheModel implements CacheModel<UserTracker>,
+	Externalizable, MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -46,12 +50,10 @@ public class UserTrackerCacheModel
 			return false;
 		}
 
-		UserTrackerCacheModel userTrackerCacheModel =
-			(UserTrackerCacheModel)obj;
+		UserTrackerCacheModel userTrackerCacheModel = (UserTrackerCacheModel)obj;
 
 		if ((userTrackerId == userTrackerCacheModel.userTrackerId) &&
-			(mvccVersion == userTrackerCacheModel.mvccVersion)) {
-
+				(mvccVersion == userTrackerCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -119,28 +121,28 @@ public class UserTrackerCacheModel
 		}
 
 		if (sessionId == null) {
-			userTrackerImpl.setSessionId("");
+			userTrackerImpl.setSessionId(StringPool.BLANK);
 		}
 		else {
 			userTrackerImpl.setSessionId(sessionId);
 		}
 
 		if (remoteAddr == null) {
-			userTrackerImpl.setRemoteAddr("");
+			userTrackerImpl.setRemoteAddr(StringPool.BLANK);
 		}
 		else {
 			userTrackerImpl.setRemoteAddr(remoteAddr);
 		}
 
 		if (remoteHost == null) {
-			userTrackerImpl.setRemoteHost("");
+			userTrackerImpl.setRemoteHost(StringPool.BLANK);
 		}
 		else {
 			userTrackerImpl.setRemoteHost(remoteHost);
 		}
 
 		if (userAgent == null) {
-			userTrackerImpl.setUserAgent("");
+			userTrackerImpl.setUserAgent(StringPool.BLANK);
 		}
 		else {
 			userTrackerImpl.setUserAgent(userAgent);
@@ -168,7 +170,8 @@ public class UserTrackerCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(userTrackerId);
@@ -179,28 +182,28 @@ public class UserTrackerCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (sessionId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(sessionId);
 		}
 
 		if (remoteAddr == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(remoteAddr);
 		}
 
 		if (remoteHost == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(remoteHost);
 		}
 
 		if (userAgent == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userAgent);
@@ -216,5 +219,4 @@ public class UserTrackerCacheModel
 	public String remoteAddr;
 	public String remoteHost;
 	public String userAgent;
-
 }

@@ -14,6 +14,8 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
  * @see ResourcePermission
  * @generated
  */
+@ProviderType
 public abstract class ResourcePermissionBaseImpl
 	extends ResourcePermissionModelImpl implements ResourcePermission {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a resource permission model instance should use the <code>ResourcePermission</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a resource permission model instance should use the {@link ResourcePermission} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class ResourcePermissionBaseImpl
 			ResourcePermissionLocalServiceUtil.updateResourcePermission(this);
 		}
 	}
-
 }

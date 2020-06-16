@@ -14,10 +14,12 @@
 
 package com.liferay.portlet.documentlibrary.service.base;
 
-import com.liferay.counter.kernel.service.persistence.CounterPersistence;
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.document.library.kernel.model.DLSyncEvent;
 import com.liferay.document.library.kernel.service.DLSyncEventLocalService;
 import com.liferay.document.library.kernel.service.persistence.DLSyncEventPersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -37,8 +39,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
-import com.liferay.portal.kernel.service.persistence.BasePersistence;
-import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -57,16 +57,17 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.portlet.documentlibrary.service.impl.DLSyncEventLocalServiceImpl
+ * @see com.liferay.document.library.kernel.service.DLSyncEventLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class DLSyncEventLocalServiceBaseImpl
-	extends BaseLocalServiceImpl
-	implements DLSyncEventLocalService, IdentifiableOSGiService {
-
+	extends BaseLocalServiceImpl implements DLSyncEventLocalService,
+		IdentifiableOSGiService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DLSyncEventLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.document.library.kernel.service.DLSyncEventLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.document.library.kernel.service.DLSyncEventLocalServiceUtil} to access the dl sync event local service.
 	 */
 
 	/**
@@ -90,7 +91,6 @@ public abstract class DLSyncEventLocalServiceBaseImpl
 	 * @return the new dl sync event
 	 */
 	@Override
-	@Transactional(enabled = false)
 	public DLSyncEvent createDLSyncEvent(long syncEventId) {
 		return dlSyncEventPersistence.create(syncEventId);
 	}
@@ -106,7 +106,6 @@ public abstract class DLSyncEventLocalServiceBaseImpl
 	@Override
 	public DLSyncEvent deleteDLSyncEvent(long syncEventId)
 		throws PortalException {
-
 		return dlSyncEventPersistence.remove(syncEventId);
 	}
 
@@ -126,8 +125,8 @@ public abstract class DLSyncEventLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(
-			DLSyncEvent.class, clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(DLSyncEvent.class,
+			clazz.getClassLoader());
 	}
 
 	/**
@@ -145,7 +144,7 @@ public abstract class DLSyncEventLocalServiceBaseImpl
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portlet.documentlibrary.model.impl.DLSyncEventModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.documentlibrary.model.impl.DLSyncEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -154,18 +153,17 @@ public abstract class DLSyncEventLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end) {
-
-		return dlSyncEventPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
+		return dlSyncEventPersistence.findWithDynamicQuery(dynamicQuery, start,
+			end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portlet.documentlibrary.model.impl.DLSyncEventModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.documentlibrary.model.impl.DLSyncEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -175,12 +173,10 @@ public abstract class DLSyncEventLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<T> orderByComparator) {
-
-		return dlSyncEventPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
+		return dlSyncEventPersistence.findWithDynamicQuery(dynamicQuery, start,
+			end, orderByComparator);
 	}
 
 	/**
@@ -202,11 +198,10 @@ public abstract class DLSyncEventLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(
-		DynamicQuery dynamicQuery, Projection projection) {
-
-		return dlSyncEventPersistence.countWithDynamicQuery(
-			dynamicQuery, projection);
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection) {
+		return dlSyncEventPersistence.countWithDynamicQuery(dynamicQuery,
+			projection);
 	}
 
 	@Override
@@ -222,14 +217,14 @@ public abstract class DLSyncEventLocalServiceBaseImpl
 	 * @throws PortalException if a dl sync event with the primary key could not be found
 	 */
 	@Override
-	public DLSyncEvent getDLSyncEvent(long syncEventId) throws PortalException {
+	public DLSyncEvent getDLSyncEvent(long syncEventId)
+		throws PortalException {
 		return dlSyncEventPersistence.findByPrimaryKey(syncEventId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
 		actionableDynamicQuery.setBaseLocalService(dlSyncEventLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
@@ -241,26 +236,20 @@ public abstract class DLSyncEventLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
 
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
-			new IndexableActionableDynamicQuery();
-
-		indexableActionableDynamicQuery.setBaseLocalService(
-			dlSyncEventLocalService);
+		indexableActionableDynamicQuery.setBaseLocalService(dlSyncEventLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(DLSyncEvent.class);
 
-		indexableActionableDynamicQuery.setPrimaryKeyPropertyName(
-			"syncEventId");
+		indexableActionableDynamicQuery.setPrimaryKeyPropertyName("syncEventId");
 
 		return indexableActionableDynamicQuery;
 	}
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-
 		actionableDynamicQuery.setBaseLocalService(dlSyncEventLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(DLSyncEvent.class);
@@ -274,22 +263,12 @@ public abstract class DLSyncEventLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-
-		return dlSyncEventLocalService.deleteDLSyncEvent(
-			(DLSyncEvent)persistedModel);
+		return dlSyncEventLocalService.deleteDLSyncEvent((DLSyncEvent)persistedModel);
 	}
 
-	public BasePersistence<DLSyncEvent> getBasePersistence() {
-		return dlSyncEventPersistence;
-	}
-
-	/**
-	 * @throws PortalException
-	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
-
 		return dlSyncEventPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -297,7 +276,7 @@ public abstract class DLSyncEventLocalServiceBaseImpl
 	 * Returns a range of all the dl sync events.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portlet.documentlibrary.model.impl.DLSyncEventModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.documentlibrary.model.impl.DLSyncEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of dl sync events
@@ -347,7 +326,6 @@ public abstract class DLSyncEventLocalServiceBaseImpl
 	 */
 	public void setDLSyncEventLocalService(
 		DLSyncEventLocalService dlSyncEventLocalService) {
-
 		this.dlSyncEventLocalService = dlSyncEventLocalService;
 	}
 
@@ -367,7 +345,6 @@ public abstract class DLSyncEventLocalServiceBaseImpl
 	 */
 	public void setDLSyncEventPersistence(
 		DLSyncEventPersistence dlSyncEventPersistence) {
-
 		this.dlSyncEventPersistence = dlSyncEventPersistence;
 	}
 
@@ -376,9 +353,7 @@ public abstract class DLSyncEventLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -388,33 +363,12 @@ public abstract class DLSyncEventLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
-	/**
-	 * Returns the counter persistence.
-	 *
-	 * @return the counter persistence
-	 */
-	public CounterPersistence getCounterPersistence() {
-		return counterPersistence;
-	}
-
-	/**
-	 * Sets the counter persistence.
-	 *
-	 * @param counterPersistence the counter persistence
-	 */
-	public void setCounterPersistence(CounterPersistence counterPersistence) {
-		this.counterPersistence = counterPersistence;
-	}
-
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register(
-			"com.liferay.document.library.kernel.model.DLSyncEvent",
+		persistedModelLocalServiceRegistry.register("com.liferay.document.library.kernel.model.DLSyncEvent",
 			dlSyncEventLocalService);
 	}
 
@@ -455,33 +409,22 @@ public abstract class DLSyncEventLocalServiceBaseImpl
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
 	@BeanReference(type = DLSyncEventLocalService.class)
 	protected DLSyncEventLocalService dlSyncEventLocalService;
-
 	@BeanReference(type = DLSyncEventPersistence.class)
 	protected DLSyncEventPersistence dlSyncEventPersistence;
-
-	@BeanReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
-	@BeanReference(type = CounterPersistence.class)
-	protected CounterPersistence counterPersistence;
-
+	@BeanReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
 	@BeanReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry
-		persistedModelLocalServiceRegistry;
-
+	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }

@@ -14,6 +14,8 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.VirtualHost;
 import com.liferay.portal.kernel.service.VirtualHostLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.portal.kernel.service.VirtualHostLocalServiceUtil;
  * @see VirtualHost
  * @generated
  */
-public abstract class VirtualHostBaseImpl
-	extends VirtualHostModelImpl implements VirtualHost {
-
+@ProviderType
+public abstract class VirtualHostBaseImpl extends VirtualHostModelImpl
+	implements VirtualHost {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a virtual host model instance should use the <code>VirtualHost</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a virtual host model instance should use the {@link VirtualHost} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class VirtualHostBaseImpl
 			VirtualHostLocalServiceUtil.updateVirtualHost(this);
 		}
 	}
-
 }

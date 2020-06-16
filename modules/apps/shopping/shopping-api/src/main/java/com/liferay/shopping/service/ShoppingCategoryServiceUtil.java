@@ -14,68 +14,60 @@
 
 package com.liferay.shopping.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
+import aQute.bnd.annotation.ProviderType;
+
+import com.liferay.osgi.util.ServiceTrackerFactory;
+
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * Provides the remote service utility for ShoppingCategory. This utility wraps
- * <code>com.liferay.shopping.service.impl.ShoppingCategoryServiceImpl</code> and is an
- * access point for service operations in application layer code running on a
- * remote server. Methods of this service are expected to have security checks
- * based on the propagated JAAS credentials because this service can be
+ * {@link com.liferay.shopping.service.impl.ShoppingCategoryServiceImpl} and is the
+ * primary access point for service operations in application layer code running
+ * on a remote server. Methods of this service are expected to have security
+ * checks based on the propagated JAAS credentials because this service can be
  * accessed remotely.
  *
  * @author Brian Wing Shun Chan
  * @see ShoppingCategoryService
+ * @see com.liferay.shopping.service.base.ShoppingCategoryServiceBaseImpl
+ * @see com.liferay.shopping.service.impl.ShoppingCategoryServiceImpl
  * @generated
  */
+@ProviderType
 public class ShoppingCategoryServiceUtil {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this class directly. Add custom service methods to <code>com.liferay.shopping.service.impl.ShoppingCategoryServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify this class directly. Add custom service methods to {@link com.liferay.shopping.service.impl.ShoppingCategoryServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.shopping.model.ShoppingCategory addCategory(
-			long parentCategoryId, String name, String description,
-			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		long parentCategoryId, java.lang.String name,
+		java.lang.String description,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return getService().addCategory(
-			parentCategoryId, name, description, serviceContext);
+		return getService()
+				   .addCategory(parentCategoryId, name, description,
+			serviceContext);
 	}
 
-	public static void deleteCategory(long categoryId)
+	public static com.liferay.shopping.model.ShoppingCategory getCategory(
+		long categoryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
-		getService().deleteCategory(categoryId);
+		return getService().getCategory(categoryId);
 	}
 
-	public static java.util.List<com.liferay.shopping.model.ShoppingCategory>
-		getCategories(long groupId) {
-
-		return getService().getCategories(groupId);
+	public static com.liferay.shopping.model.ShoppingCategory updateCategory(
+		long categoryId, long parentCategoryId, java.lang.String name,
+		java.lang.String description, boolean mergeWithParentCategory,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateCategory(categoryId, parentCategoryId, name,
+			description, mergeWithParentCategory, serviceContext);
 	}
 
-	public static java.util.List<com.liferay.shopping.model.ShoppingCategory>
-		getCategories(long groupId, long parentCategoryId, int start, int end) {
-
-		return getService().getCategories(
-			groupId, parentCategoryId, start, end);
-	}
-
-	public static java.util.List<Object> getCategoriesAndItems(
-		long groupId, long categoryId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<?> obc) {
-
-		return getService().getCategoriesAndItems(
-			groupId, categoryId, start, end, obc);
-	}
-
-	public static int getCategoriesAndItemsCount(
-		long groupId, long categoryId) {
-
+	public static int getCategoriesAndItemsCount(long groupId, long categoryId) {
 		return getService().getCategoriesAndItemsCount(groupId, categoryId);
 	}
 
@@ -83,59 +75,47 @@ public class ShoppingCategoryServiceUtil {
 		return getService().getCategoriesCount(groupId, parentCategoryId);
 	}
 
-	public static com.liferay.shopping.model.ShoppingCategory getCategory(
-			long categoryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return getService().getCategory(categoryId);
-	}
-
 	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
-	public static String getOSGiServiceIdentifier() {
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static void getSubcategoryIds(
-		java.util.List<Long> categoryIds, long groupId, long categoryId) {
-
-		getService().getSubcategoryIds(categoryIds, groupId, categoryId);
+	public static java.util.List<com.liferay.shopping.model.ShoppingCategory> getCategories(
+		long groupId) {
+		return getService().getCategories(groupId);
 	}
 
-	public static com.liferay.shopping.model.ShoppingCategory updateCategory(
-			long categoryId, long parentCategoryId, String name,
-			String description, boolean mergeWithParentCategory,
-			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static java.util.List<com.liferay.shopping.model.ShoppingCategory> getCategories(
+		long groupId, long parentCategoryId, int start, int end) {
+		return getService().getCategories(groupId, parentCategoryId, start, end);
+	}
 
-		return getService().updateCategory(
-			categoryId, parentCategoryId, name, description,
-			mergeWithParentCategory, serviceContext);
+	public static java.util.List<java.lang.Object> getCategoriesAndItems(
+		long groupId, long categoryId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<?> obc) {
+		return getService()
+				   .getCategoriesAndItems(groupId, categoryId, start, end, obc);
+	}
+
+	public static void deleteCategory(long categoryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteCategory(categoryId);
+	}
+
+	public static void getSubcategoryIds(
+		java.util.List<java.lang.Long> categoryIds, long groupId,
+		long categoryId) {
+		getService().getSubcategoryIds(categoryIds, groupId, categoryId);
 	}
 
 	public static ShoppingCategoryService getService() {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker
-		<ShoppingCategoryService, ShoppingCategoryService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(ShoppingCategoryService.class);
-
-		ServiceTracker<ShoppingCategoryService, ShoppingCategoryService>
-			serviceTracker =
-				new ServiceTracker
-					<ShoppingCategoryService, ShoppingCategoryService>(
-						bundle.getBundleContext(),
-						ShoppingCategoryService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
-
+	private static ServiceTracker<ShoppingCategoryService, ShoppingCategoryService> _serviceTracker =
+		ServiceTrackerFactory.open(ShoppingCategoryService.class);
 }

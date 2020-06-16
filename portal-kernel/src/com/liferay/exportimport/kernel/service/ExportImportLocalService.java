@@ -18,6 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.exportimport.kernel.lar.MissingReferences;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.service.BaseLocalService;
@@ -37,149 +38,132 @@ import java.util.Map;
  *
  * @author Brian Wing Shun Chan
  * @see ExportImportLocalServiceUtil
+ * @see com.liferay.portlet.exportimport.service.base.ExportImportLocalServiceBaseImpl
+ * @see com.liferay.portlet.exportimport.service.impl.ExportImportLocalServiceImpl
  * @generated
  */
 @ProviderType
-@Transactional(
-	isolation = Isolation.PORTAL,
-	rollbackFor = {PortalException.class, SystemException.class}
-)
+@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
+	PortalException.class, SystemException.class})
 public interface ExportImportLocalService extends BaseLocalService {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link ExportImportLocalServiceUtil} to access the export import local service. Add custom service methods to <code>com.liferay.portlet.exportimport.service.impl.ExportImportLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link ExportImportLocalServiceUtil} to access the export import local service. Add custom service methods to {@link com.liferay.portlet.exportimport.service.impl.ExportImportLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public MissingReferences validateImportLayoutsFile(
+		ExportImportConfiguration exportImportConfiguration, File file)
+		throws PortalException;
+
+	public MissingReferences validateImportLayoutsFile(
+		ExportImportConfiguration exportImportConfiguration,
+		InputStream inputStream) throws PortalException;
+
+	public MissingReferences validateImportPortletInfo(
+		ExportImportConfiguration exportImportConfiguration, File file)
+		throws PortalException;
+
+	public MissingReferences validateImportPortletInfo(
+		ExportImportConfiguration exportImportConfiguration,
+		InputStream inputStream) throws PortalException;
+
 	public File exportLayoutsAsFile(
-			ExportImportConfiguration exportImportConfiguration)
+		ExportImportConfiguration exportImportConfiguration)
 		throws PortalException;
 
 	/**
-	 * @deprecated As of Judson (7.1.x)
-	 */
-	@Deprecated
-	public File exportLayoutsAsFile(
-			long userId, long groupId, boolean privateLayout,
-			Map<String, String[]> parameterMap)
-		throws PortalException;
-
-	public long exportLayoutsAsFileInBackground(
-			long userId, ExportImportConfiguration exportImportConfiguration)
-		throws PortalException;
-
-	public long exportLayoutsAsFileInBackground(
-			long userId, long exportImportConfigurationId)
+	* @deprecated As of Judson (7.1.x)
+	*/
+	@java.lang.Deprecated
+	public File exportLayoutsAsFile(long userId, long groupId,
+		boolean privateLayout,
+		Map<java.lang.String, java.lang.String[]> parameterMap)
 		throws PortalException;
 
 	public File exportPortletInfoAsFile(
-			ExportImportConfiguration exportImportConfiguration)
-		throws PortalException;
-
-	public long exportPortletInfoAsFileInBackground(
-			long userId, ExportImportConfiguration exportImportConfiguration)
-		throws PortalException;
-
-	public long exportPortletInfoAsFileInBackground(
-			long userId, long exportImportConfigurationId)
+		ExportImportConfiguration exportImportConfiguration)
 		throws PortalException;
 
 	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
-	public String getOSGiServiceIdentifier();
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
 
-	public void importLayouts(
-			ExportImportConfiguration exportImportConfiguration, File file)
+	public long exportLayoutsAsFileInBackground(long userId,
+		ExportImportConfiguration exportImportConfiguration)
+		throws PortalException;
+
+	public long exportLayoutsAsFileInBackground(long userId,
+		long exportImportConfigurationId) throws PortalException;
+
+	public long exportPortletInfoAsFileInBackground(long userId,
+		ExportImportConfiguration exportImportConfiguration)
+		throws PortalException;
+
+	public long exportPortletInfoAsFileInBackground(long userId,
+		long exportImportConfigurationId) throws PortalException;
+
+	public long importLayoutsInBackground(long userId,
+		ExportImportConfiguration exportImportConfiguration, File file)
+		throws PortalException;
+
+	public long importLayoutsInBackground(long userId,
+		ExportImportConfiguration exportImportConfiguration,
+		InputStream inputStream) throws PortalException;
+
+	public long importLayoutsInBackground(long userId,
+		long exportImportConfigurationId, File file) throws PortalException;
+
+	public long importLayoutsInBackground(long userId,
+		long exportImportConfigurationId, InputStream inputStream)
+		throws PortalException;
+
+	public long importPortletInfoInBackground(long userId,
+		ExportImportConfiguration exportImportConfiguration, File file)
+		throws PortalException;
+
+	public long importPortletInfoInBackground(long userId,
+		ExportImportConfiguration exportImportConfiguration,
+		InputStream inputStream) throws PortalException;
+
+	public long importPortletInfoInBackground(long userId,
+		long exportImportConfigurationId, File file) throws PortalException;
+
+	public long importPortletInfoInBackground(long userId,
+		long exportImportConfigurationId, InputStream inputStream)
 		throws PortalException;
 
 	public void importLayouts(
-			ExportImportConfiguration exportImportConfiguration,
-			InputStream inputStream)
+		ExportImportConfiguration exportImportConfiguration, File file)
 		throws PortalException;
+
+	public void importLayouts(
+		ExportImportConfiguration exportImportConfiguration,
+		InputStream inputStream) throws PortalException;
 
 	/**
-	 * @deprecated As of Judson (7.1.x)
-	 */
-	@Deprecated
-	public void importLayouts(
-			long userId, long groupId, boolean privateLayout,
-			Map<String, String[]> parameterMap, File file)
+	* @deprecated As of Judson (7.1.x)
+	*/
+	@java.lang.Deprecated
+	public void importLayouts(long userId, long groupId, boolean privateLayout,
+		Map<java.lang.String, java.lang.String[]> parameterMap, File file)
 		throws PortalException;
 
 	public void importLayoutsDataDeletions(
-			ExportImportConfiguration exportImportConfiguration, File file)
-		throws PortalException;
-
-	public long importLayoutsInBackground(
-			long userId, ExportImportConfiguration exportImportConfiguration,
-			File file)
-		throws PortalException;
-
-	public long importLayoutsInBackground(
-			long userId, ExportImportConfiguration exportImportConfiguration,
-			InputStream inputStream)
-		throws PortalException;
-
-	public long importLayoutsInBackground(
-			long userId, long exportImportConfigurationId, File file)
-		throws PortalException;
-
-	public long importLayoutsInBackground(
-			long userId, long exportImportConfigurationId,
-			InputStream inputStream)
+		ExportImportConfiguration exportImportConfiguration, File file)
 		throws PortalException;
 
 	public void importPortletDataDeletions(
-			ExportImportConfiguration exportImportConfiguration, File file)
+		ExportImportConfiguration exportImportConfiguration, File file)
 		throws PortalException;
 
 	public void importPortletInfo(
-			ExportImportConfiguration exportImportConfiguration, File file)
+		ExportImportConfiguration exportImportConfiguration, File file)
 		throws PortalException;
 
 	public void importPortletInfo(
-			ExportImportConfiguration exportImportConfiguration,
-			InputStream inputStream)
-		throws PortalException;
-
-	public long importPortletInfoInBackground(
-			long userId, ExportImportConfiguration exportImportConfiguration,
-			File file)
-		throws PortalException;
-
-	public long importPortletInfoInBackground(
-			long userId, ExportImportConfiguration exportImportConfiguration,
-			InputStream inputStream)
-		throws PortalException;
-
-	public long importPortletInfoInBackground(
-			long userId, long exportImportConfigurationId, File file)
-		throws PortalException;
-
-	public long importPortletInfoInBackground(
-			long userId, long exportImportConfigurationId,
-			InputStream inputStream)
-		throws PortalException;
-
-	public MissingReferences validateImportLayoutsFile(
-			ExportImportConfiguration exportImportConfiguration, File file)
-		throws PortalException;
-
-	public MissingReferences validateImportLayoutsFile(
-			ExportImportConfiguration exportImportConfiguration,
-			InputStream inputStream)
-		throws PortalException;
-
-	public MissingReferences validateImportPortletInfo(
-			ExportImportConfiguration exportImportConfiguration, File file)
-		throws PortalException;
-
-	public MissingReferences validateImportPortletInfo(
-			ExportImportConfiguration exportImportConfiguration,
-			InputStream inputStream)
-		throws PortalException;
-
+		ExportImportConfiguration exportImportConfiguration,
+		InputStream inputStream) throws PortalException;
 }

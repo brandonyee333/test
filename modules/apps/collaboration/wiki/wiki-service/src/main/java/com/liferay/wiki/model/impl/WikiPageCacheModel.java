@@ -14,9 +14,13 @@
 
 package com.liferay.wiki.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.wiki.model.WikiPage;
 
 import java.io.Externalizable;
@@ -30,11 +34,11 @@ import java.util.Date;
  * The cache model class for representing WikiPage in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see WikiPage
  * @generated
  */
-public class WikiPageCacheModel
-	implements CacheModel<WikiPage>, Externalizable {
-
+@ProviderType
+public class WikiPageCacheModel implements CacheModel<WikiPage>, Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -121,7 +125,7 @@ public class WikiPageCacheModel
 		WikiPageImpl wikiPageImpl = new WikiPageImpl();
 
 		if (uuid == null) {
-			wikiPageImpl.setUuid("");
+			wikiPageImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			wikiPageImpl.setUuid(uuid);
@@ -134,7 +138,7 @@ public class WikiPageCacheModel
 		wikiPageImpl.setUserId(userId);
 
 		if (userName == null) {
-			wikiPageImpl.setUserName("");
+			wikiPageImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			wikiPageImpl.setUserName(userName);
@@ -157,7 +161,7 @@ public class WikiPageCacheModel
 		wikiPageImpl.setNodeId(nodeId);
 
 		if (title == null) {
-			wikiPageImpl.setTitle("");
+			wikiPageImpl.setTitle(StringPool.BLANK);
 		}
 		else {
 			wikiPageImpl.setTitle(title);
@@ -167,21 +171,21 @@ public class WikiPageCacheModel
 		wikiPageImpl.setMinorEdit(minorEdit);
 
 		if (content == null) {
-			wikiPageImpl.setContent("");
+			wikiPageImpl.setContent(StringPool.BLANK);
 		}
 		else {
 			wikiPageImpl.setContent(content);
 		}
 
 		if (summary == null) {
-			wikiPageImpl.setSummary("");
+			wikiPageImpl.setSummary(StringPool.BLANK);
 		}
 		else {
 			wikiPageImpl.setSummary(summary);
 		}
 
 		if (format == null) {
-			wikiPageImpl.setFormat("");
+			wikiPageImpl.setFormat(StringPool.BLANK);
 		}
 		else {
 			wikiPageImpl.setFormat(format);
@@ -190,14 +194,14 @@ public class WikiPageCacheModel
 		wikiPageImpl.setHead(head);
 
 		if (parentTitle == null) {
-			wikiPageImpl.setParentTitle("");
+			wikiPageImpl.setParentTitle(StringPool.BLANK);
 		}
 		else {
 			wikiPageImpl.setParentTitle(parentTitle);
 		}
 
 		if (redirectTitle == null) {
-			wikiPageImpl.setRedirectTitle("");
+			wikiPageImpl.setRedirectTitle(StringPool.BLANK);
 		}
 		else {
 			wikiPageImpl.setRedirectTitle(redirectTitle);
@@ -214,7 +218,7 @@ public class WikiPageCacheModel
 		wikiPageImpl.setStatusByUserId(statusByUserId);
 
 		if (statusByUserName == null) {
-			wikiPageImpl.setStatusByUserName("");
+			wikiPageImpl.setStatusByUserName(StringPool.BLANK);
 		}
 		else {
 			wikiPageImpl.setStatusByUserName(statusByUserName);
@@ -233,9 +237,7 @@ public class WikiPageCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
 
 		pageId = objectInput.readLong();
@@ -257,7 +259,7 @@ public class WikiPageCacheModel
 		version = objectInput.readDouble();
 
 		minorEdit = objectInput.readBoolean();
-		content = (String)objectInput.readObject();
+		content = objectInput.readUTF();
 		summary = objectInput.readUTF();
 		format = objectInput.readUTF();
 
@@ -274,9 +276,10 @@ public class WikiPageCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -293,7 +296,7 @@ public class WikiPageCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -305,7 +308,7 @@ public class WikiPageCacheModel
 		objectOutput.writeLong(nodeId);
 
 		if (title == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(title);
@@ -316,21 +319,21 @@ public class WikiPageCacheModel
 		objectOutput.writeBoolean(minorEdit);
 
 		if (content == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(content);
+			objectOutput.writeUTF(content);
 		}
 
 		if (summary == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(summary);
 		}
 
 		if (format == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(format);
@@ -339,14 +342,14 @@ public class WikiPageCacheModel
 		objectOutput.writeBoolean(head);
 
 		if (parentTitle == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(parentTitle);
 		}
 
 		if (redirectTitle == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(redirectTitle);
@@ -359,7 +362,7 @@ public class WikiPageCacheModel
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(statusByUserName);
@@ -392,5 +395,4 @@ public class WikiPageCacheModel
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
-
 }

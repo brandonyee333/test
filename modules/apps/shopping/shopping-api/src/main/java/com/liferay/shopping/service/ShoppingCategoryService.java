@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
+
 import com.liferay.shopping.model.ShoppingCategory;
 
 import java.util.List;
@@ -38,47 +39,35 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see ShoppingCategoryServiceUtil
+ * @see com.liferay.shopping.service.base.ShoppingCategoryServiceBaseImpl
+ * @see com.liferay.shopping.service.impl.ShoppingCategoryServiceImpl
  * @generated
  */
 @AccessControlled
 @JSONWebService
-@OSGiBeanProperties(
-	property = {
-		"json.web.service.context.name=shopping",
-		"json.web.service.context.path=ShoppingCategory"
-	},
-	service = ShoppingCategoryService.class
-)
+@OSGiBeanProperties(property =  {
+	"json.web.service.context.name=shopping", "json.web.service.context.path=ShoppingCategory"}, service = ShoppingCategoryService.class)
 @ProviderType
-@Transactional(
-	isolation = Isolation.PORTAL,
-	rollbackFor = {PortalException.class, SystemException.class}
-)
+@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
+	PortalException.class, SystemException.class})
 public interface ShoppingCategoryService extends BaseService {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link ShoppingCategoryServiceUtil} to access the shopping category remote service. Add custom service methods to <code>com.liferay.shopping.service.impl.ShoppingCategoryServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link ShoppingCategoryServiceUtil} to access the shopping category remote service. Add custom service methods to {@link com.liferay.shopping.service.impl.ShoppingCategoryServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public ShoppingCategory addCategory(
-			long parentCategoryId, String name, String description,
-			ServiceContext serviceContext)
+	public ShoppingCategory addCategory(long parentCategoryId,
+		java.lang.String name, java.lang.String description,
+		ServiceContext serviceContext) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ShoppingCategory getCategory(long categoryId)
 		throws PortalException;
 
-	public void deleteCategory(long categoryId) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<ShoppingCategory> getCategories(long groupId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<ShoppingCategory> getCategories(
-		long groupId, long parentCategoryId, int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<Object> getCategoriesAndItems(
-		long groupId, long categoryId, int start, int end,
-		OrderByComparator<?> obc);
+	public ShoppingCategory updateCategory(long categoryId,
+		long parentCategoryId, java.lang.String name,
+		java.lang.String description, boolean mergeWithParentCategory,
+		ServiceContext serviceContext) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getCategoriesAndItemsCount(long groupId, long categoryId);
@@ -86,24 +75,27 @@ public interface ShoppingCategoryService extends BaseService {
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getCategoriesCount(long groupId, long parentCategoryId);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ShoppingCategory getCategory(long categoryId) throws PortalException;
-
 	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
-	public String getOSGiServiceIdentifier();
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public void getSubcategoryIds(
-		List<Long> categoryIds, long groupId, long categoryId);
+	public List<ShoppingCategory> getCategories(long groupId);
 
-	public ShoppingCategory updateCategory(
-			long categoryId, long parentCategoryId, String name,
-			String description, boolean mergeWithParentCategory,
-			ServiceContext serviceContext)
-		throws PortalException;
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ShoppingCategory> getCategories(long groupId,
+		long parentCategoryId, int start, int end);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<java.lang.Object> getCategoriesAndItems(long groupId,
+		long categoryId, int start, int end, OrderByComparator<?> obc);
+
+	public void deleteCategory(long categoryId) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public void getSubcategoryIds(List<java.lang.Long> categoryIds,
+		long groupId, long categoryId);
 }

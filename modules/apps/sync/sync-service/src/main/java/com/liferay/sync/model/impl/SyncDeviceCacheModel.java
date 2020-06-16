@@ -14,9 +14,13 @@
 
 package com.liferay.sync.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.sync.model.SyncDevice;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing SyncDevice in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see SyncDevice
  * @generated
  */
-public class SyncDeviceCacheModel
-	implements CacheModel<SyncDevice>, Externalizable {
-
+@ProviderType
+public class SyncDeviceCacheModel implements CacheModel<SyncDevice>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -97,7 +102,7 @@ public class SyncDeviceCacheModel
 		SyncDeviceImpl syncDeviceImpl = new SyncDeviceImpl();
 
 		if (uuid == null) {
-			syncDeviceImpl.setUuid("");
+			syncDeviceImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			syncDeviceImpl.setUuid(uuid);
@@ -108,7 +113,7 @@ public class SyncDeviceCacheModel
 		syncDeviceImpl.setUserId(userId);
 
 		if (userName == null) {
-			syncDeviceImpl.setUserName("");
+			syncDeviceImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			syncDeviceImpl.setUserName(userName);
@@ -129,7 +134,7 @@ public class SyncDeviceCacheModel
 		}
 
 		if (type == null) {
-			syncDeviceImpl.setType("");
+			syncDeviceImpl.setType(StringPool.BLANK);
 		}
 		else {
 			syncDeviceImpl.setType(type);
@@ -139,7 +144,7 @@ public class SyncDeviceCacheModel
 		syncDeviceImpl.setFeatureSet(featureSet);
 
 		if (hostname == null) {
-			syncDeviceImpl.setHostname("");
+			syncDeviceImpl.setHostname(StringPool.BLANK);
 		}
 		else {
 			syncDeviceImpl.setHostname(hostname);
@@ -175,9 +180,10 @@ public class SyncDeviceCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -190,7 +196,7 @@ public class SyncDeviceCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -200,7 +206,7 @@ public class SyncDeviceCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (type == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(type);
@@ -211,7 +217,7 @@ public class SyncDeviceCacheModel
 		objectOutput.writeInt(featureSet);
 
 		if (hostname == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(hostname);
@@ -232,5 +238,4 @@ public class SyncDeviceCacheModel
 	public int featureSet;
 	public String hostname;
 	public int status;
-
 }

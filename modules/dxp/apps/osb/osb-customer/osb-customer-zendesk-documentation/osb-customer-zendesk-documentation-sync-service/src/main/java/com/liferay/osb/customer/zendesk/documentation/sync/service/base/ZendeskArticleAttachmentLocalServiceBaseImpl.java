@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.customer.zendesk.documentation.sync.service.base;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticleAttachmentLocalService;
@@ -20,6 +22,7 @@ import com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.Z
 import com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.ZendeskArticlePersistence;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.ZendeskCategoryPersistence;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.ZendeskSectionPersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -39,10 +42,8 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
-import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
-import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -62,16 +63,17 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskArticleAttachmentLocalServiceImpl
+ * @see com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticleAttachmentLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
-	extends BaseLocalServiceImpl
-	implements IdentifiableOSGiService, ZendeskArticleAttachmentLocalService {
-
+	extends BaseLocalServiceImpl implements ZendeskArticleAttachmentLocalService,
+		IdentifiableOSGiService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ZendeskArticleAttachmentLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticleAttachmentLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticleAttachmentLocalServiceUtil} to access the zendesk article attachment local service.
 	 */
 
 	/**
@@ -84,11 +86,9 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	@Override
 	public ZendeskArticleAttachment addZendeskArticleAttachment(
 		ZendeskArticleAttachment zendeskArticleAttachment) {
-
 		zendeskArticleAttachment.setNew(true);
 
-		return zendeskArticleAttachmentPersistence.update(
-			zendeskArticleAttachment);
+		return zendeskArticleAttachmentPersistence.update(zendeskArticleAttachment);
 	}
 
 	/**
@@ -98,12 +98,9 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 * @return the new zendesk article attachment
 	 */
 	@Override
-	@Transactional(enabled = false)
 	public ZendeskArticleAttachment createZendeskArticleAttachment(
 		long zendeskArticleAttachmentId) {
-
-		return zendeskArticleAttachmentPersistence.create(
-			zendeskArticleAttachmentId);
+		return zendeskArticleAttachmentPersistence.create(zendeskArticleAttachmentId);
 	}
 
 	/**
@@ -116,11 +113,8 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public ZendeskArticleAttachment deleteZendeskArticleAttachment(
-			long zendeskArticleAttachmentId)
-		throws PortalException {
-
-		return zendeskArticleAttachmentPersistence.remove(
-			zendeskArticleAttachmentId);
+		long zendeskArticleAttachmentId) throws PortalException {
+		return zendeskArticleAttachmentPersistence.remove(zendeskArticleAttachmentId);
 	}
 
 	/**
@@ -133,19 +127,17 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public ZendeskArticleAttachment deleteZendeskArticleAttachment(
-			ZendeskArticleAttachment zendeskArticleAttachment)
+		ZendeskArticleAttachment zendeskArticleAttachment)
 		throws PortalException {
-
-		return zendeskArticleAttachmentPersistence.remove(
-			zendeskArticleAttachment);
+		return zendeskArticleAttachmentPersistence.remove(zendeskArticleAttachment);
 	}
 
 	@Override
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(
-			ZendeskArticleAttachment.class, clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(ZendeskArticleAttachment.class,
+			clazz.getClassLoader());
 	}
 
 	/**
@@ -156,15 +148,14 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 */
 	@Override
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
-		return zendeskArticleAttachmentPersistence.findWithDynamicQuery(
-			dynamicQuery);
+		return zendeskArticleAttachmentPersistence.findWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleAttachmentModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -173,18 +164,17 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end) {
-
-		return zendeskArticleAttachmentPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
+		return zendeskArticleAttachmentPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleAttachmentModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -194,12 +184,10 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<T> orderByComparator) {
-
-		return zendeskArticleAttachmentPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
+		return zendeskArticleAttachmentPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end, orderByComparator);
 	}
 
 	/**
@@ -210,8 +198,7 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 */
 	@Override
 	public long dynamicQueryCount(DynamicQuery dynamicQuery) {
-		return zendeskArticleAttachmentPersistence.countWithDynamicQuery(
-			dynamicQuery);
+		return zendeskArticleAttachmentPersistence.countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
@@ -222,19 +209,16 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(
-		DynamicQuery dynamicQuery, Projection projection) {
-
-		return zendeskArticleAttachmentPersistence.countWithDynamicQuery(
-			dynamicQuery, projection);
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection) {
+		return zendeskArticleAttachmentPersistence.countWithDynamicQuery(dynamicQuery,
+			projection);
 	}
 
 	@Override
 	public ZendeskArticleAttachment fetchZendeskArticleAttachment(
 		long zendeskArticleAttachmentId) {
-
-		return zendeskArticleAttachmentPersistence.fetchByPrimaryKey(
-			zendeskArticleAttachmentId);
+		return zendeskArticleAttachmentPersistence.fetchByPrimaryKey(zendeskArticleAttachmentId);
 	}
 
 	/**
@@ -246,20 +230,15 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 */
 	@Override
 	public ZendeskArticleAttachment getZendeskArticleAttachment(
-			long zendeskArticleAttachmentId)
-		throws PortalException {
-
-		return zendeskArticleAttachmentPersistence.findByPrimaryKey(
-			zendeskArticleAttachmentId);
+		long zendeskArticleAttachmentId) throws PortalException {
+		return zendeskArticleAttachmentPersistence.findByPrimaryKey(zendeskArticleAttachmentId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
-		actionableDynamicQuery.setBaseLocalService(
-			zendeskArticleAttachmentLocalService);
+		actionableDynamicQuery.setBaseLocalService(zendeskArticleAttachmentLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(ZendeskArticleAttachment.class);
 
@@ -270,17 +249,12 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
 
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
-			new IndexableActionableDynamicQuery();
-
-		indexableActionableDynamicQuery.setBaseLocalService(
-			zendeskArticleAttachmentLocalService);
+		indexableActionableDynamicQuery.setBaseLocalService(zendeskArticleAttachmentLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
-		indexableActionableDynamicQuery.setModelClass(
-			ZendeskArticleAttachment.class);
+		indexableActionableDynamicQuery.setModelClass(ZendeskArticleAttachment.class);
 
 		indexableActionableDynamicQuery.setPrimaryKeyPropertyName(
 			"zendeskArticleAttachmentId");
@@ -290,9 +264,7 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-
-		actionableDynamicQuery.setBaseLocalService(
-			zendeskArticleAttachmentLocalService);
+		actionableDynamicQuery.setBaseLocalService(zendeskArticleAttachmentLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(ZendeskArticleAttachment.class);
 
@@ -306,32 +278,20 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-
-		return zendeskArticleAttachmentLocalService.
-			deleteZendeskArticleAttachment(
-				(ZendeskArticleAttachment)persistedModel);
+		return zendeskArticleAttachmentLocalService.deleteZendeskArticleAttachment((ZendeskArticleAttachment)persistedModel);
 	}
 
-	public BasePersistence<ZendeskArticleAttachment> getBasePersistence() {
-		return zendeskArticleAttachmentPersistence;
-	}
-
-	/**
-	 * @throws PortalException
-	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
-
-		return zendeskArticleAttachmentPersistence.findByPrimaryKey(
-			primaryKeyObj);
+		return zendeskArticleAttachmentPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
 	/**
 	 * Returns a range of all the zendesk article attachments.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleAttachmentModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of zendesk article attachments
@@ -341,7 +301,6 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	@Override
 	public List<ZendeskArticleAttachment> getZendeskArticleAttachments(
 		int start, int end) {
-
 		return zendeskArticleAttachmentPersistence.findAll(start, end);
 	}
 
@@ -365,9 +324,7 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	@Override
 	public ZendeskArticleAttachment updateZendeskArticleAttachment(
 		ZendeskArticleAttachment zendeskArticleAttachment) {
-
-		return zendeskArticleAttachmentPersistence.update(
-			zendeskArticleAttachment);
+		return zendeskArticleAttachmentPersistence.update(zendeskArticleAttachment);
 	}
 
 	/**
@@ -375,9 +332,7 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 *
 	 * @return the zendesk article local service
 	 */
-	public com.liferay.osb.customer.zendesk.documentation.sync.service.
-		ZendeskArticleLocalService getZendeskArticleLocalService() {
-
+	public com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticleLocalService getZendeskArticleLocalService() {
 		return zendeskArticleLocalService;
 	}
 
@@ -387,9 +342,7 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 * @param zendeskArticleLocalService the zendesk article local service
 	 */
 	public void setZendeskArticleLocalService(
-		com.liferay.osb.customer.zendesk.documentation.sync.service.
-			ZendeskArticleLocalService zendeskArticleLocalService) {
-
+		com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticleLocalService zendeskArticleLocalService) {
 		this.zendeskArticleLocalService = zendeskArticleLocalService;
 	}
 
@@ -409,7 +362,6 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 */
 	public void setZendeskArticlePersistence(
 		ZendeskArticlePersistence zendeskArticlePersistence) {
-
 		this.zendeskArticlePersistence = zendeskArticlePersistence;
 	}
 
@@ -418,9 +370,7 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 *
 	 * @return the zendesk article attachment local service
 	 */
-	public ZendeskArticleAttachmentLocalService
-		getZendeskArticleAttachmentLocalService() {
-
+	public ZendeskArticleAttachmentLocalService getZendeskArticleAttachmentLocalService() {
 		return zendeskArticleAttachmentLocalService;
 	}
 
@@ -430,11 +380,8 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 * @param zendeskArticleAttachmentLocalService the zendesk article attachment local service
 	 */
 	public void setZendeskArticleAttachmentLocalService(
-		ZendeskArticleAttachmentLocalService
-			zendeskArticleAttachmentLocalService) {
-
-		this.zendeskArticleAttachmentLocalService =
-			zendeskArticleAttachmentLocalService;
+		ZendeskArticleAttachmentLocalService zendeskArticleAttachmentLocalService) {
+		this.zendeskArticleAttachmentLocalService = zendeskArticleAttachmentLocalService;
 	}
 
 	/**
@@ -442,9 +389,7 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 *
 	 * @return the zendesk article attachment persistence
 	 */
-	public ZendeskArticleAttachmentPersistence
-		getZendeskArticleAttachmentPersistence() {
-
+	public ZendeskArticleAttachmentPersistence getZendeskArticleAttachmentPersistence() {
 		return zendeskArticleAttachmentPersistence;
 	}
 
@@ -454,11 +399,8 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 * @param zendeskArticleAttachmentPersistence the zendesk article attachment persistence
 	 */
 	public void setZendeskArticleAttachmentPersistence(
-		ZendeskArticleAttachmentPersistence
-			zendeskArticleAttachmentPersistence) {
-
-		this.zendeskArticleAttachmentPersistence =
-			zendeskArticleAttachmentPersistence;
+		ZendeskArticleAttachmentPersistence zendeskArticleAttachmentPersistence) {
+		this.zendeskArticleAttachmentPersistence = zendeskArticleAttachmentPersistence;
 	}
 
 	/**
@@ -466,9 +408,7 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 *
 	 * @return the zendesk category local service
 	 */
-	public com.liferay.osb.customer.zendesk.documentation.sync.service.
-		ZendeskCategoryLocalService getZendeskCategoryLocalService() {
-
+	public com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskCategoryLocalService getZendeskCategoryLocalService() {
 		return zendeskCategoryLocalService;
 	}
 
@@ -478,9 +418,7 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 * @param zendeskCategoryLocalService the zendesk category local service
 	 */
 	public void setZendeskCategoryLocalService(
-		com.liferay.osb.customer.zendesk.documentation.sync.service.
-			ZendeskCategoryLocalService zendeskCategoryLocalService) {
-
+		com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskCategoryLocalService zendeskCategoryLocalService) {
 		this.zendeskCategoryLocalService = zendeskCategoryLocalService;
 	}
 
@@ -500,7 +438,6 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 */
 	public void setZendeskCategoryPersistence(
 		ZendeskCategoryPersistence zendeskCategoryPersistence) {
-
 		this.zendeskCategoryPersistence = zendeskCategoryPersistence;
 	}
 
@@ -509,9 +446,7 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 *
 	 * @return the zendesk section local service
 	 */
-	public com.liferay.osb.customer.zendesk.documentation.sync.service.
-		ZendeskSectionLocalService getZendeskSectionLocalService() {
-
+	public com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskSectionLocalService getZendeskSectionLocalService() {
 		return zendeskSectionLocalService;
 	}
 
@@ -521,9 +456,7 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 * @param zendeskSectionLocalService the zendesk section local service
 	 */
 	public void setZendeskSectionLocalService(
-		com.liferay.osb.customer.zendesk.documentation.sync.service.
-			ZendeskSectionLocalService zendeskSectionLocalService) {
-
+		com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskSectionLocalService zendeskSectionLocalService) {
 		this.zendeskSectionLocalService = zendeskSectionLocalService;
 	}
 
@@ -543,7 +476,6 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 */
 	public void setZendeskSectionPersistence(
 		ZendeskSectionPersistence zendeskSectionPersistence) {
-
 		this.zendeskSectionPersistence = zendeskSectionPersistence;
 	}
 
@@ -552,9 +484,7 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -564,9 +494,7 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -575,9 +503,7 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService
-		getClassNameLocalService() {
-
+	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
 		return classNameLocalService;
 	}
 
@@ -587,9 +513,7 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService
-			classNameLocalService) {
-
+		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -609,7 +533,6 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
-
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -618,9 +541,7 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService
-		getResourceLocalService() {
-
+	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
 		return resourceLocalService;
 	}
 
@@ -630,9 +551,7 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService
-			resourceLocalService) {
-
+		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -641,9 +560,7 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService
-		getUserLocalService() {
-
+	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
 		return userLocalService;
 	}
 
@@ -654,7 +571,6 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
-
 		this.userLocalService = userLocalService;
 	}
 
@@ -677,8 +593,7 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register(
-			"com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment",
+		persistedModelLocalServiceRegistry.register("com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment",
 			zendeskArticleAttachmentLocalService);
 	}
 
@@ -712,91 +627,51 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	 */
 	protected void runSQL(String sql) {
 		try {
-			DataSource dataSource =
-				zendeskArticleAttachmentPersistence.getDataSource();
+			DataSource dataSource = zendeskArticleAttachmentPersistence.getDataSource();
 
 			DB db = DBManagerUtil.getDB();
 
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
-	@BeanReference(
-		type = com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticleLocalService.class
-	)
-	protected com.liferay.osb.customer.zendesk.documentation.sync.service.
-		ZendeskArticleLocalService zendeskArticleLocalService;
-
+	@BeanReference(type = com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticleLocalService.class)
+	protected com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticleLocalService zendeskArticleLocalService;
 	@BeanReference(type = ZendeskArticlePersistence.class)
 	protected ZendeskArticlePersistence zendeskArticlePersistence;
-
 	@BeanReference(type = ZendeskArticleAttachmentLocalService.class)
-	protected ZendeskArticleAttachmentLocalService
-		zendeskArticleAttachmentLocalService;
-
+	protected ZendeskArticleAttachmentLocalService zendeskArticleAttachmentLocalService;
 	@BeanReference(type = ZendeskArticleAttachmentPersistence.class)
-	protected ZendeskArticleAttachmentPersistence
-		zendeskArticleAttachmentPersistence;
-
-	@BeanReference(
-		type = com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskCategoryLocalService.class
-	)
-	protected com.liferay.osb.customer.zendesk.documentation.sync.service.
-		ZendeskCategoryLocalService zendeskCategoryLocalService;
-
+	protected ZendeskArticleAttachmentPersistence zendeskArticleAttachmentPersistence;
+	@BeanReference(type = com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskCategoryLocalService.class)
+	protected com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskCategoryLocalService zendeskCategoryLocalService;
 	@BeanReference(type = ZendeskCategoryPersistence.class)
 	protected ZendeskCategoryPersistence zendeskCategoryPersistence;
-
-	@BeanReference(
-		type = com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskSectionLocalService.class
-	)
-	protected com.liferay.osb.customer.zendesk.documentation.sync.service.
-		ZendeskSectionLocalService zendeskSectionLocalService;
-
+	@BeanReference(type = com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskSectionLocalService.class)
+	protected com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskSectionLocalService zendeskSectionLocalService;
 	@BeanReference(type = ZendeskSectionPersistence.class)
 	protected ZendeskSectionPersistence zendeskSectionPersistence;
-
-	@ServiceReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService
-		classNameLocalService;
-
+	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ResourceLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ResourceLocalService
-		resourceLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.UserLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.UserLocalService
-		userLocalService;
-
+	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
+	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
+	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry
-		persistedModelLocalServiceRegistry;
-
+	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }

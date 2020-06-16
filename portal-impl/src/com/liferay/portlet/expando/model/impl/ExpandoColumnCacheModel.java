@@ -14,10 +14,14 @@
 
 package com.liferay.portlet.expando.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoColumn;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -28,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing ExpandoColumn in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see ExpandoColumn
  * @generated
  */
-public class ExpandoColumnCacheModel
-	implements CacheModel<ExpandoColumn>, Externalizable {
-
+@ProviderType
+public class ExpandoColumnCacheModel implements CacheModel<ExpandoColumn>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -43,8 +48,7 @@ public class ExpandoColumnCacheModel
 			return false;
 		}
 
-		ExpandoColumnCacheModel expandoColumnCacheModel =
-			(ExpandoColumnCacheModel)obj;
+		ExpandoColumnCacheModel expandoColumnCacheModel = (ExpandoColumnCacheModel)obj;
 
 		if (columnId == expandoColumnCacheModel.columnId) {
 			return true;
@@ -90,7 +94,7 @@ public class ExpandoColumnCacheModel
 		expandoColumnImpl.setTableId(tableId);
 
 		if (name == null) {
-			expandoColumnImpl.setName("");
+			expandoColumnImpl.setName(StringPool.BLANK);
 		}
 		else {
 			expandoColumnImpl.setName(name);
@@ -99,14 +103,14 @@ public class ExpandoColumnCacheModel
 		expandoColumnImpl.setType(type);
 
 		if (defaultData == null) {
-			expandoColumnImpl.setDefaultData("");
+			expandoColumnImpl.setDefaultData(StringPool.BLANK);
 		}
 		else {
 			expandoColumnImpl.setDefaultData(defaultData);
 		}
 
 		if (typeSettings == null) {
-			expandoColumnImpl.setTypeSettings("");
+			expandoColumnImpl.setTypeSettings(StringPool.BLANK);
 		}
 		else {
 			expandoColumnImpl.setTypeSettings(typeSettings);
@@ -118,9 +122,7 @@ public class ExpandoColumnCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		columnId = objectInput.readLong();
 
 		companyId = objectInput.readLong();
@@ -129,12 +131,13 @@ public class ExpandoColumnCacheModel
 		name = objectInput.readUTF();
 
 		type = objectInput.readInt();
-		defaultData = (String)objectInput.readObject();
-		typeSettings = (String)objectInput.readObject();
+		defaultData = objectInput.readUTF();
+		typeSettings = objectInput.readUTF();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(columnId);
 
 		objectOutput.writeLong(companyId);
@@ -142,7 +145,7 @@ public class ExpandoColumnCacheModel
 		objectOutput.writeLong(tableId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
@@ -151,17 +154,17 @@ public class ExpandoColumnCacheModel
 		objectOutput.writeInt(type);
 
 		if (defaultData == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(defaultData);
+			objectOutput.writeUTF(defaultData);
 		}
 
 		if (typeSettings == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(typeSettings);
+			objectOutput.writeUTF(typeSettings);
 		}
 	}
 
@@ -172,5 +175,4 @@ public class ExpandoColumnCacheModel
 	public int type;
 	public String defaultData;
 	public String typeSettings;
-
 }

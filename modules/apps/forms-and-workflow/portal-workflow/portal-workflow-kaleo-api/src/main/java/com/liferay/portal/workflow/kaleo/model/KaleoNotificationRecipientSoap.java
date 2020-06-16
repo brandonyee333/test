@@ -14,6 +14,8 @@
 
 package com.liferay.portal.workflow.kaleo.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,16 +28,13 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
+@ProviderType
 public class KaleoNotificationRecipientSoap implements Serializable {
-
 	public static KaleoNotificationRecipientSoap toSoapModel(
 		KaleoNotificationRecipient model) {
+		KaleoNotificationRecipientSoap soapModel = new KaleoNotificationRecipientSoap();
 
-		KaleoNotificationRecipientSoap soapModel =
-			new KaleoNotificationRecipientSoap();
-
-		soapModel.setKaleoNotificationRecipientId(
-			model.getKaleoNotificationRecipientId());
+		soapModel.setKaleoNotificationRecipientId(model.getKaleoNotificationRecipientId());
 		soapModel.setGroupId(model.getGroupId());
 		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserId(model.getUserId());
@@ -48,22 +47,17 @@ public class KaleoNotificationRecipientSoap implements Serializable {
 		soapModel.setRecipientClassPK(model.getRecipientClassPK());
 		soapModel.setRecipientRoleType(model.getRecipientRoleType());
 		soapModel.setRecipientScript(model.getRecipientScript());
-		soapModel.setRecipientScriptLanguage(
-			model.getRecipientScriptLanguage());
-		soapModel.setRecipientScriptContexts(
-			model.getRecipientScriptContexts());
+		soapModel.setRecipientScriptLanguage(model.getRecipientScriptLanguage());
+		soapModel.setRecipientScriptContexts(model.getRecipientScriptContexts());
 		soapModel.setAddress(model.getAddress());
-		soapModel.setNotificationReceptionType(
-			model.getNotificationReceptionType());
+		soapModel.setNotificationReceptionType(model.getNotificationReceptionType());
 
 		return soapModel;
 	}
 
 	public static KaleoNotificationRecipientSoap[] toSoapModels(
 		KaleoNotificationRecipient[] models) {
-
-		KaleoNotificationRecipientSoap[] soapModels =
-			new KaleoNotificationRecipientSoap[models.length];
+		KaleoNotificationRecipientSoap[] soapModels = new KaleoNotificationRecipientSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -74,13 +68,10 @@ public class KaleoNotificationRecipientSoap implements Serializable {
 
 	public static KaleoNotificationRecipientSoap[][] toSoapModels(
 		KaleoNotificationRecipient[][] models) {
-
 		KaleoNotificationRecipientSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels =
-				new KaleoNotificationRecipientSoap
-					[models.length][models[0].length];
+			soapModels = new KaleoNotificationRecipientSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new KaleoNotificationRecipientSoap[0][0];
@@ -95,16 +86,13 @@ public class KaleoNotificationRecipientSoap implements Serializable {
 
 	public static KaleoNotificationRecipientSoap[] toSoapModels(
 		List<KaleoNotificationRecipient> models) {
-
-		List<KaleoNotificationRecipientSoap> soapModels =
-			new ArrayList<KaleoNotificationRecipientSoap>(models.size());
+		List<KaleoNotificationRecipientSoap> soapModels = new ArrayList<KaleoNotificationRecipientSoap>(models.size());
 
 		for (KaleoNotificationRecipient model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(
-			new KaleoNotificationRecipientSoap[soapModels.size()]);
+		return soapModels.toArray(new KaleoNotificationRecipientSoap[soapModels.size()]);
 	}
 
 	public KaleoNotificationRecipientSoap() {
@@ -124,7 +112,6 @@ public class KaleoNotificationRecipientSoap implements Serializable {
 
 	public void setKaleoNotificationRecipientId(
 		long kaleoNotificationRecipientId) {
-
 		_kaleoNotificationRecipientId = kaleoNotificationRecipientId;
 	}
 
@@ -273,5 +260,4 @@ public class KaleoNotificationRecipientSoap implements Serializable {
 	private String _recipientScriptContexts;
 	private String _address;
 	private String _notificationReceptionType;
-
 }

@@ -14,7 +14,10 @@
 
 package com.liferay.portal.security.wedeploy.auth.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -34,9 +37,9 @@ import java.util.Objects;
  * @see WeDeployAuthApp
  * @generated
  */
-public class WeDeployAuthAppWrapper
-	implements ModelWrapper<WeDeployAuthApp>, WeDeployAuthApp {
-
+@ProviderType
+public class WeDeployAuthAppWrapper implements WeDeployAuthApp,
+	ModelWrapper<WeDeployAuthApp> {
 	public WeDeployAuthAppWrapper(WeDeployAuthApp weDeployAuthApp) {
 		_weDeployAuthApp = weDeployAuthApp;
 	}
@@ -133,149 +136,13 @@ public class WeDeployAuthAppWrapper
 	}
 
 	@Override
-	public Object clone() {
-		return new WeDeployAuthAppWrapper(
-			(WeDeployAuthApp)_weDeployAuthApp.clone());
+	public WeDeployAuthApp toEscapedModel() {
+		return new WeDeployAuthAppWrapper(_weDeployAuthApp.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(WeDeployAuthApp weDeployAuthApp) {
-		return _weDeployAuthApp.compareTo(weDeployAuthApp);
-	}
-
-	/**
-	 * Returns the client ID of this we deploy auth app.
-	 *
-	 * @return the client ID of this we deploy auth app
-	 */
-	@Override
-	public String getClientId() {
-		return _weDeployAuthApp.getClientId();
-	}
-
-	/**
-	 * Returns the client secret of this we deploy auth app.
-	 *
-	 * @return the client secret of this we deploy auth app
-	 */
-	@Override
-	public String getClientSecret() {
-		return _weDeployAuthApp.getClientSecret();
-	}
-
-	/**
-	 * Returns the company ID of this we deploy auth app.
-	 *
-	 * @return the company ID of this we deploy auth app
-	 */
-	@Override
-	public long getCompanyId() {
-		return _weDeployAuthApp.getCompanyId();
-	}
-
-	/**
-	 * Returns the create date of this we deploy auth app.
-	 *
-	 * @return the create date of this we deploy auth app
-	 */
-	@Override
-	public Date getCreateDate() {
-		return _weDeployAuthApp.getCreateDate();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _weDeployAuthApp.getExpandoBridge();
-	}
-
-	/**
-	 * Returns the modified date of this we deploy auth app.
-	 *
-	 * @return the modified date of this we deploy auth app
-	 */
-	@Override
-	public Date getModifiedDate() {
-		return _weDeployAuthApp.getModifiedDate();
-	}
-
-	/**
-	 * Returns the name of this we deploy auth app.
-	 *
-	 * @return the name of this we deploy auth app
-	 */
-	@Override
-	public String getName() {
-		return _weDeployAuthApp.getName();
-	}
-
-	/**
-	 * Returns the primary key of this we deploy auth app.
-	 *
-	 * @return the primary key of this we deploy auth app
-	 */
-	@Override
-	public long getPrimaryKey() {
-		return _weDeployAuthApp.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _weDeployAuthApp.getPrimaryKeyObj();
-	}
-
-	/**
-	 * Returns the redirect uri of this we deploy auth app.
-	 *
-	 * @return the redirect uri of this we deploy auth app
-	 */
-	@Override
-	public String getRedirectURI() {
-		return _weDeployAuthApp.getRedirectURI();
-	}
-
-	/**
-	 * Returns the user ID of this we deploy auth app.
-	 *
-	 * @return the user ID of this we deploy auth app
-	 */
-	@Override
-	public long getUserId() {
-		return _weDeployAuthApp.getUserId();
-	}
-
-	/**
-	 * Returns the user name of this we deploy auth app.
-	 *
-	 * @return the user name of this we deploy auth app
-	 */
-	@Override
-	public String getUserName() {
-		return _weDeployAuthApp.getUserName();
-	}
-
-	/**
-	 * Returns the user uuid of this we deploy auth app.
-	 *
-	 * @return the user uuid of this we deploy auth app
-	 */
-	@Override
-	public String getUserUuid() {
-		return _weDeployAuthApp.getUserUuid();
-	}
-
-	/**
-	 * Returns the we deploy auth app ID of this we deploy auth app.
-	 *
-	 * @return the we deploy auth app ID of this we deploy auth app
-	 */
-	@Override
-	public long getWeDeployAuthAppId() {
-		return _weDeployAuthApp.getWeDeployAuthAppId();
-	}
-
-	@Override
-	public int hashCode() {
-		return _weDeployAuthApp.hashCode();
+	public WeDeployAuthApp toUnescapedModel() {
+		return new WeDeployAuthAppWrapper(_weDeployAuthApp.toUnescapedModel());
 	}
 
 	@Override
@@ -294,6 +161,166 @@ public class WeDeployAuthAppWrapper
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _weDeployAuthApp.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<WeDeployAuthApp> toCacheModel() {
+		return _weDeployAuthApp.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(WeDeployAuthApp weDeployAuthApp) {
+		return _weDeployAuthApp.compareTo(weDeployAuthApp);
+	}
+
+	@Override
+	public int hashCode() {
+		return _weDeployAuthApp.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _weDeployAuthApp.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new WeDeployAuthAppWrapper((WeDeployAuthApp)_weDeployAuthApp.clone());
+	}
+
+	/**
+	* Returns the client ID of this we deploy auth app.
+	*
+	* @return the client ID of this we deploy auth app
+	*/
+	@Override
+	public java.lang.String getClientId() {
+		return _weDeployAuthApp.getClientId();
+	}
+
+	/**
+	* Returns the client secret of this we deploy auth app.
+	*
+	* @return the client secret of this we deploy auth app
+	*/
+	@Override
+	public java.lang.String getClientSecret() {
+		return _weDeployAuthApp.getClientSecret();
+	}
+
+	/**
+	* Returns the name of this we deploy auth app.
+	*
+	* @return the name of this we deploy auth app
+	*/
+	@Override
+	public java.lang.String getName() {
+		return _weDeployAuthApp.getName();
+	}
+
+	/**
+	* Returns the redirect uri of this we deploy auth app.
+	*
+	* @return the redirect uri of this we deploy auth app
+	*/
+	@Override
+	public java.lang.String getRedirectURI() {
+		return _weDeployAuthApp.getRedirectURI();
+	}
+
+	/**
+	* Returns the user name of this we deploy auth app.
+	*
+	* @return the user name of this we deploy auth app
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _weDeployAuthApp.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this we deploy auth app.
+	*
+	* @return the user uuid of this we deploy auth app
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _weDeployAuthApp.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _weDeployAuthApp.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _weDeployAuthApp.toXmlString();
+	}
+
+	/**
+	* Returns the create date of this we deploy auth app.
+	*
+	* @return the create date of this we deploy auth app
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _weDeployAuthApp.getCreateDate();
+	}
+
+	/**
+	* Returns the modified date of this we deploy auth app.
+	*
+	* @return the modified date of this we deploy auth app
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _weDeployAuthApp.getModifiedDate();
+	}
+
+	/**
+	* Returns the company ID of this we deploy auth app.
+	*
+	* @return the company ID of this we deploy auth app
+	*/
+	@Override
+	public long getCompanyId() {
+		return _weDeployAuthApp.getCompanyId();
+	}
+
+	/**
+	* Returns the primary key of this we deploy auth app.
+	*
+	* @return the primary key of this we deploy auth app
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _weDeployAuthApp.getPrimaryKey();
+	}
+
+	/**
+	* Returns the user ID of this we deploy auth app.
+	*
+	* @return the user ID of this we deploy auth app
+	*/
+	@Override
+	public long getUserId() {
+		return _weDeployAuthApp.getUserId();
+	}
+
+	/**
+	* Returns the we deploy auth app ID of this we deploy auth app.
+	*
+	* @return the we deploy auth app ID of this we deploy auth app
+	*/
+	@Override
+	public long getWeDeployAuthAppId() {
+		return _weDeployAuthApp.getWeDeployAuthAppId();
+	}
+
+	@Override
 	public void persist() {
 		_weDeployAuthApp.persist();
 	}
@@ -304,50 +331,43 @@ public class WeDeployAuthAppWrapper
 	}
 
 	/**
-	 * Sets the client ID of this we deploy auth app.
-	 *
-	 * @param clientId the client ID of this we deploy auth app
-	 */
+	* Sets the client ID of this we deploy auth app.
+	*
+	* @param clientId the client ID of this we deploy auth app
+	*/
 	@Override
-	public void setClientId(String clientId) {
+	public void setClientId(java.lang.String clientId) {
 		_weDeployAuthApp.setClientId(clientId);
 	}
 
 	/**
-	 * Sets the client secret of this we deploy auth app.
-	 *
-	 * @param clientSecret the client secret of this we deploy auth app
-	 */
+	* Sets the client secret of this we deploy auth app.
+	*
+	* @param clientSecret the client secret of this we deploy auth app
+	*/
 	@Override
-	public void setClientSecret(String clientSecret) {
+	public void setClientSecret(java.lang.String clientSecret) {
 		_weDeployAuthApp.setClientSecret(clientSecret);
 	}
 
 	/**
-	 * Sets the company ID of this we deploy auth app.
-	 *
-	 * @param companyId the company ID of this we deploy auth app
-	 */
+	* Sets the company ID of this we deploy auth app.
+	*
+	* @param companyId the company ID of this we deploy auth app
+	*/
 	@Override
 	public void setCompanyId(long companyId) {
 		_weDeployAuthApp.setCompanyId(companyId);
 	}
 
 	/**
-	 * Sets the create date of this we deploy auth app.
-	 *
-	 * @param createDate the create date of this we deploy auth app
-	 */
+	* Sets the create date of this we deploy auth app.
+	*
+	* @param createDate the create date of this we deploy auth app
+	*/
 	@Override
 	public void setCreateDate(Date createDate) {
 		_weDeployAuthApp.setCreateDate(createDate);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-
-		_weDeployAuthApp.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -356,27 +376,33 @@ public class WeDeployAuthAppWrapper
 	}
 
 	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_weDeployAuthApp.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_weDeployAuthApp.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	 * Sets the modified date of this we deploy auth app.
-	 *
-	 * @param modifiedDate the modified date of this we deploy auth app
-	 */
+	* Sets the modified date of this we deploy auth app.
+	*
+	* @param modifiedDate the modified date of this we deploy auth app
+	*/
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_weDeployAuthApp.setModifiedDate(modifiedDate);
 	}
 
 	/**
-	 * Sets the name of this we deploy auth app.
-	 *
-	 * @param name the name of this we deploy auth app
-	 */
+	* Sets the name of this we deploy auth app.
+	*
+	* @param name the name of this we deploy auth app
+	*/
 	@Override
-	public void setName(String name) {
+	public void setName(java.lang.String name) {
 		_weDeployAuthApp.setName(name);
 	}
 
@@ -386,10 +412,10 @@ public class WeDeployAuthAppWrapper
 	}
 
 	/**
-	 * Sets the primary key of this we deploy auth app.
-	 *
-	 * @param primaryKey the primary key of this we deploy auth app
-	 */
+	* Sets the primary key of this we deploy auth app.
+	*
+	* @param primaryKey the primary key of this we deploy auth app
+	*/
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_weDeployAuthApp.setPrimaryKey(primaryKey);
@@ -401,80 +427,53 @@ public class WeDeployAuthAppWrapper
 	}
 
 	/**
-	 * Sets the redirect uri of this we deploy auth app.
-	 *
-	 * @param redirectURI the redirect uri of this we deploy auth app
-	 */
+	* Sets the redirect uri of this we deploy auth app.
+	*
+	* @param redirectURI the redirect uri of this we deploy auth app
+	*/
 	@Override
-	public void setRedirectURI(String redirectURI) {
+	public void setRedirectURI(java.lang.String redirectURI) {
 		_weDeployAuthApp.setRedirectURI(redirectURI);
 	}
 
 	/**
-	 * Sets the user ID of this we deploy auth app.
-	 *
-	 * @param userId the user ID of this we deploy auth app
-	 */
+	* Sets the user ID of this we deploy auth app.
+	*
+	* @param userId the user ID of this we deploy auth app
+	*/
 	@Override
 	public void setUserId(long userId) {
 		_weDeployAuthApp.setUserId(userId);
 	}
 
 	/**
-	 * Sets the user name of this we deploy auth app.
-	 *
-	 * @param userName the user name of this we deploy auth app
-	 */
+	* Sets the user name of this we deploy auth app.
+	*
+	* @param userName the user name of this we deploy auth app
+	*/
 	@Override
-	public void setUserName(String userName) {
+	public void setUserName(java.lang.String userName) {
 		_weDeployAuthApp.setUserName(userName);
 	}
 
 	/**
-	 * Sets the user uuid of this we deploy auth app.
-	 *
-	 * @param userUuid the user uuid of this we deploy auth app
-	 */
+	* Sets the user uuid of this we deploy auth app.
+	*
+	* @param userUuid the user uuid of this we deploy auth app
+	*/
 	@Override
-	public void setUserUuid(String userUuid) {
+	public void setUserUuid(java.lang.String userUuid) {
 		_weDeployAuthApp.setUserUuid(userUuid);
 	}
 
 	/**
-	 * Sets the we deploy auth app ID of this we deploy auth app.
-	 *
-	 * @param weDeployAuthAppId the we deploy auth app ID of this we deploy auth app
-	 */
+	* Sets the we deploy auth app ID of this we deploy auth app.
+	*
+	* @param weDeployAuthAppId the we deploy auth app ID of this we deploy auth app
+	*/
 	@Override
 	public void setWeDeployAuthAppId(long weDeployAuthAppId) {
 		_weDeployAuthApp.setWeDeployAuthAppId(weDeployAuthAppId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WeDeployAuthApp>
-		toCacheModel() {
-
-		return _weDeployAuthApp.toCacheModel();
-	}
-
-	@Override
-	public WeDeployAuthApp toEscapedModel() {
-		return new WeDeployAuthAppWrapper(_weDeployAuthApp.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return _weDeployAuthApp.toString();
-	}
-
-	@Override
-	public WeDeployAuthApp toUnescapedModel() {
-		return new WeDeployAuthAppWrapper(_weDeployAuthApp.toUnescapedModel());
-	}
-
-	@Override
-	public String toXmlString() {
-		return _weDeployAuthApp.toXmlString();
 	}
 
 	@Override
@@ -487,12 +486,10 @@ public class WeDeployAuthAppWrapper
 			return false;
 		}
 
-		WeDeployAuthAppWrapper weDeployAuthAppWrapper =
-			(WeDeployAuthAppWrapper)obj;
+		WeDeployAuthAppWrapper weDeployAuthAppWrapper = (WeDeployAuthAppWrapper)obj;
 
-		if (Objects.equals(
-				_weDeployAuthApp, weDeployAuthAppWrapper._weDeployAuthApp)) {
-
+		if (Objects.equals(_weDeployAuthApp,
+					weDeployAuthAppWrapper._weDeployAuthApp)) {
 			return true;
 		}
 
@@ -520,5 +517,4 @@ public class WeDeployAuthAppWrapper
 	}
 
 	private final WeDeployAuthApp _weDeployAuthApp;
-
 }

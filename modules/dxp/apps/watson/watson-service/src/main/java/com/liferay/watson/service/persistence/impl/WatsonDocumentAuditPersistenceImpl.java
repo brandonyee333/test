@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.watson.service.persistence.impl;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -22,14 +24,16 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.service.persistence.CompanyProvider;
+import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+
 import com.liferay.watson.exception.NoSuchDocumentAuditException;
 import com.liferay.watson.model.WatsonDocumentAudit;
 import com.liferay.watson.model.impl.WatsonDocumentAuditImpl;
@@ -37,8 +41,6 @@ import com.liferay.watson.model.impl.WatsonDocumentAuditModelImpl;
 import com.liferay.watson.service.persistence.WatsonDocumentAuditPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -57,29 +59,34 @@ import java.util.Set;
  * </p>
  *
  * @author Steven Smith
+ * @see WatsonDocumentAuditPersistence
+ * @see com.liferay.watson.service.persistence.WatsonDocumentAuditUtil
  * @generated
  */
-public class WatsonDocumentAuditPersistenceImpl
-	extends BasePersistenceImpl<WatsonDocumentAudit>
+@ProviderType
+public class WatsonDocumentAuditPersistenceImpl extends BasePersistenceImpl<WatsonDocumentAudit>
 	implements WatsonDocumentAuditPersistence {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use <code>WatsonDocumentAuditUtil</code> to access the watson document audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use {@link WatsonDocumentAuditUtil} to access the watson document audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY =
-		WatsonDocumentAuditImpl.class.getName();
-
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List1";
-
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
+	public static final String FINDER_CLASS_NAME_ENTITY = WatsonDocumentAuditImpl.class.getName();
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List1";
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List2";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonDocumentAuditModelImpl.FINDER_CACHE_ENABLED,
+			WatsonDocumentAuditImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonDocumentAuditModelImpl.FINDER_CACHE_ENABLED,
+			WatsonDocumentAuditImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonDocumentAuditModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
 
 	public WatsonDocumentAuditPersistenceImpl() {
 		setModelClass(WatsonDocumentAudit.class);
@@ -92,8 +99,7 @@ public class WatsonDocumentAuditPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(WatsonDocumentAudit watsonDocumentAudit) {
-		entityCache.putResult(
-			WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonDocumentAuditImpl.class, watsonDocumentAudit.getPrimaryKey(),
 			watsonDocumentAudit);
 
@@ -109,10 +115,9 @@ public class WatsonDocumentAuditPersistenceImpl
 	public void cacheResult(List<WatsonDocumentAudit> watsonDocumentAudits) {
 		for (WatsonDocumentAudit watsonDocumentAudit : watsonDocumentAudits) {
 			if (entityCache.getResult(
-					WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
-					WatsonDocumentAuditImpl.class,
-					watsonDocumentAudit.getPrimaryKey()) == null) {
-
+						WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
+						WatsonDocumentAuditImpl.class,
+						watsonDocumentAudit.getPrimaryKey()) == null) {
 				cacheResult(watsonDocumentAudit);
 			}
 			else {
@@ -125,7 +130,7 @@ public class WatsonDocumentAuditPersistenceImpl
 	 * Clears the cache for all watson document audits.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -141,13 +146,12 @@ public class WatsonDocumentAuditPersistenceImpl
 	 * Clears the cache for the watson document audit.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(WatsonDocumentAudit watsonDocumentAudit) {
-		entityCache.removeResult(
-			WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonDocumentAuditImpl.class, watsonDocumentAudit.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -160,22 +164,9 @@ public class WatsonDocumentAuditPersistenceImpl
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (WatsonDocumentAudit watsonDocumentAudit : watsonDocumentAudits) {
-			entityCache.removeResult(
-				WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
 				WatsonDocumentAuditImpl.class,
 				watsonDocumentAudit.getPrimaryKey());
-		}
-	}
-
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonDocumentAuditImpl.class, primaryKey);
 		}
 	}
 
@@ -192,7 +183,7 @@ public class WatsonDocumentAuditPersistenceImpl
 		watsonDocumentAudit.setNew(true);
 		watsonDocumentAudit.setPrimaryKey(watsonDocumentAuditId);
 
-		watsonDocumentAudit.setCompanyId(CompanyThreadLocal.getCompanyId());
+		watsonDocumentAudit.setCompanyId(companyProvider.getCompanyId());
 
 		return watsonDocumentAudit;
 	}
@@ -207,7 +198,6 @@ public class WatsonDocumentAuditPersistenceImpl
 	@Override
 	public WatsonDocumentAudit remove(long watsonDocumentAuditId)
 		throws NoSuchDocumentAuditException {
-
 		return remove((Serializable)watsonDocumentAuditId);
 	}
 
@@ -221,32 +211,30 @@ public class WatsonDocumentAuditPersistenceImpl
 	@Override
 	public WatsonDocumentAudit remove(Serializable primaryKey)
 		throws NoSuchDocumentAuditException {
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			WatsonDocumentAudit watsonDocumentAudit =
-				(WatsonDocumentAudit)session.get(
-					WatsonDocumentAuditImpl.class, primaryKey);
+			WatsonDocumentAudit watsonDocumentAudit = (WatsonDocumentAudit)session.get(WatsonDocumentAuditImpl.class,
+					primaryKey);
 
 			if (watsonDocumentAudit == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchDocumentAuditException(
-					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				throw new NoSuchDocumentAuditException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+					primaryKey);
 			}
 
 			return remove(watsonDocumentAudit);
 		}
-		catch (NoSuchDocumentAuditException noSuchEntityException) {
-			throw noSuchEntityException;
+		catch (NoSuchDocumentAuditException nsee) {
+			throw nsee;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -256,6 +244,7 @@ public class WatsonDocumentAuditPersistenceImpl
 	@Override
 	protected WatsonDocumentAudit removeImpl(
 		WatsonDocumentAudit watsonDocumentAudit) {
+		watsonDocumentAudit = toUnwrappedModel(watsonDocumentAudit);
 
 		Session session = null;
 
@@ -263,17 +252,16 @@ public class WatsonDocumentAuditPersistenceImpl
 			session = openSession();
 
 			if (!session.contains(watsonDocumentAudit)) {
-				watsonDocumentAudit = (WatsonDocumentAudit)session.get(
-					WatsonDocumentAuditImpl.class,
-					watsonDocumentAudit.getPrimaryKeyObj());
+				watsonDocumentAudit = (WatsonDocumentAudit)session.get(WatsonDocumentAuditImpl.class,
+						watsonDocumentAudit.getPrimaryKeyObj());
 			}
 
 			if (watsonDocumentAudit != null) {
 				session.delete(watsonDocumentAudit);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -289,31 +277,13 @@ public class WatsonDocumentAuditPersistenceImpl
 	@Override
 	public WatsonDocumentAudit updateImpl(
 		WatsonDocumentAudit watsonDocumentAudit) {
+		watsonDocumentAudit = toUnwrappedModel(watsonDocumentAudit);
 
 		boolean isNew = watsonDocumentAudit.isNew();
 
-		if (!(watsonDocumentAudit instanceof WatsonDocumentAuditModelImpl)) {
-			InvocationHandler invocationHandler = null;
+		WatsonDocumentAuditModelImpl watsonDocumentAuditModelImpl = (WatsonDocumentAuditModelImpl)watsonDocumentAudit;
 
-			if (ProxyUtil.isProxyClass(watsonDocumentAudit.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(
-					watsonDocumentAudit);
-
-				throw new IllegalArgumentException(
-					"Implement ModelWrapper in watsonDocumentAudit proxy " +
-						invocationHandler.getClass());
-			}
-
-			throw new IllegalArgumentException(
-				"Implement ModelWrapper in custom WatsonDocumentAudit implementation " +
-					watsonDocumentAudit.getClass());
-		}
-
-		WatsonDocumentAuditModelImpl watsonDocumentAuditModelImpl =
-			(WatsonDocumentAuditModelImpl)watsonDocumentAudit;
-
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -322,8 +292,8 @@ public class WatsonDocumentAuditPersistenceImpl
 				watsonDocumentAudit.setCreateDate(now);
 			}
 			else {
-				watsonDocumentAudit.setCreateDate(
-					serviceContext.getCreateDate(now));
+				watsonDocumentAudit.setCreateDate(serviceContext.getCreateDate(
+						now));
 			}
 		}
 
@@ -332,8 +302,8 @@ public class WatsonDocumentAuditPersistenceImpl
 				watsonDocumentAudit.setModifiedDate(now);
 			}
 			else {
-				watsonDocumentAudit.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+				watsonDocumentAudit.setModifiedDate(serviceContext.getModifiedDate(
+						now));
 			}
 		}
 
@@ -348,12 +318,11 @@ public class WatsonDocumentAuditPersistenceImpl
 				watsonDocumentAudit.setNew(false);
 			}
 			else {
-				watsonDocumentAudit = (WatsonDocumentAudit)session.merge(
-					watsonDocumentAudit);
+				watsonDocumentAudit = (WatsonDocumentAudit)session.merge(watsonDocumentAudit);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -362,13 +331,12 @@ public class WatsonDocumentAuditPersistenceImpl
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
 		if (isNew) {
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(
-			WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonDocumentAuditImpl.class, watsonDocumentAudit.getPrimaryKey(),
 			watsonDocumentAudit, false);
 
@@ -377,8 +345,39 @@ public class WatsonDocumentAuditPersistenceImpl
 		return watsonDocumentAudit;
 	}
 
+	protected WatsonDocumentAudit toUnwrappedModel(
+		WatsonDocumentAudit watsonDocumentAudit) {
+		if (watsonDocumentAudit instanceof WatsonDocumentAuditImpl) {
+			return watsonDocumentAudit;
+		}
+
+		WatsonDocumentAuditImpl watsonDocumentAuditImpl = new WatsonDocumentAuditImpl();
+
+		watsonDocumentAuditImpl.setNew(watsonDocumentAudit.isNew());
+		watsonDocumentAuditImpl.setPrimaryKey(watsonDocumentAudit.getPrimaryKey());
+
+		watsonDocumentAuditImpl.setWatsonDocumentAuditId(watsonDocumentAudit.getWatsonDocumentAuditId());
+		watsonDocumentAuditImpl.setGroupId(watsonDocumentAudit.getGroupId());
+		watsonDocumentAuditImpl.setCompanyId(watsonDocumentAudit.getCompanyId());
+		watsonDocumentAuditImpl.setUserId(watsonDocumentAudit.getUserId());
+		watsonDocumentAuditImpl.setUserName(watsonDocumentAudit.getUserName());
+		watsonDocumentAuditImpl.setCreateDate(watsonDocumentAudit.getCreateDate());
+		watsonDocumentAuditImpl.setModifiedDate(watsonDocumentAudit.getModifiedDate());
+		watsonDocumentAuditImpl.setParentTypeWatsonListTypeId(watsonDocumentAudit.getParentTypeWatsonListTypeId());
+		watsonDocumentAuditImpl.setSubtypeWatsonListTypeId(watsonDocumentAudit.getSubtypeWatsonListTypeId());
+		watsonDocumentAuditImpl.setTypeWatsonListTypeId(watsonDocumentAudit.getTypeWatsonListTypeId());
+		watsonDocumentAuditImpl.setWatsonChildId(watsonDocumentAudit.getWatsonChildId());
+		watsonDocumentAuditImpl.setWatsonDocumentId(watsonDocumentAudit.getWatsonDocumentId());
+		watsonDocumentAuditImpl.setOriginalDocument(watsonDocumentAudit.isOriginalDocument());
+		watsonDocumentAuditImpl.setReceivedDate(watsonDocumentAudit.getReceivedDate());
+		watsonDocumentAuditImpl.setImagePayload(watsonDocumentAudit.getImagePayload());
+		watsonDocumentAuditImpl.setStatus(watsonDocumentAudit.getStatus());
+
+		return watsonDocumentAuditImpl;
+	}
+
 	/**
-	 * Returns the watson document audit with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
+	 * Returns the watson document audit with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the watson document audit
 	 * @return the watson document audit
@@ -387,7 +386,6 @@ public class WatsonDocumentAuditPersistenceImpl
 	@Override
 	public WatsonDocumentAudit findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchDocumentAuditException {
-
 		WatsonDocumentAudit watsonDocumentAudit = fetchByPrimaryKey(primaryKey);
 
 		if (watsonDocumentAudit == null) {
@@ -395,15 +393,15 @@ public class WatsonDocumentAuditPersistenceImpl
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchDocumentAuditException(
-				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			throw new NoSuchDocumentAuditException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
 		}
 
 		return watsonDocumentAudit;
 	}
 
 	/**
-	 * Returns the watson document audit with the primary key or throws a <code>NoSuchDocumentAuditException</code> if it could not be found.
+	 * Returns the watson document audit with the primary key or throws a {@link NoSuchDocumentAuditException} if it could not be found.
 	 *
 	 * @param watsonDocumentAuditId the primary key of the watson document audit
 	 * @return the watson document audit
@@ -412,7 +410,6 @@ public class WatsonDocumentAuditPersistenceImpl
 	@Override
 	public WatsonDocumentAudit findByPrimaryKey(long watsonDocumentAuditId)
 		throws NoSuchDocumentAuditException {
-
 		return findByPrimaryKey((Serializable)watsonDocumentAuditId);
 	}
 
@@ -424,16 +421,14 @@ public class WatsonDocumentAuditPersistenceImpl
 	 */
 	@Override
 	public WatsonDocumentAudit fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(
-			WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonDocumentAuditImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonDocumentAuditImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
 		}
 
-		WatsonDocumentAudit watsonDocumentAudit =
-			(WatsonDocumentAudit)serializable;
+		WatsonDocumentAudit watsonDocumentAudit = (WatsonDocumentAudit)serializable;
 
 		if (watsonDocumentAudit == null) {
 			Session session = null;
@@ -441,24 +436,22 @@ public class WatsonDocumentAuditPersistenceImpl
 			try {
 				session = openSession();
 
-				watsonDocumentAudit = (WatsonDocumentAudit)session.get(
-					WatsonDocumentAuditImpl.class, primaryKey);
+				watsonDocumentAudit = (WatsonDocumentAudit)session.get(WatsonDocumentAuditImpl.class,
+						primaryKey);
 
 				if (watsonDocumentAudit != null) {
 					cacheResult(watsonDocumentAudit);
 				}
 				else {
-					entityCache.putResult(
-						WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
 						WatsonDocumentAuditImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception exception) {
-				entityCache.removeResult(
-					WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception e) {
+				entityCache.removeResult(WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonDocumentAuditImpl.class, primaryKey);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -482,21 +475,18 @@ public class WatsonDocumentAuditPersistenceImpl
 	@Override
 	public Map<Serializable, WatsonDocumentAudit> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
-
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, WatsonDocumentAudit> map =
-			new HashMap<Serializable, WatsonDocumentAudit>();
+		Map<Serializable, WatsonDocumentAudit> map = new HashMap<Serializable, WatsonDocumentAudit>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
 
 			Serializable primaryKey = iterator.next();
 
-			WatsonDocumentAudit watsonDocumentAudit = fetchByPrimaryKey(
-				primaryKey);
+			WatsonDocumentAudit watsonDocumentAudit = fetchByPrimaryKey(primaryKey);
 
 			if (watsonDocumentAudit != null) {
 				map.put(primaryKey, watsonDocumentAudit);
@@ -508,9 +498,8 @@ public class WatsonDocumentAuditPersistenceImpl
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(
-				WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonDocumentAuditImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
+					WatsonDocumentAuditImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -530,51 +519,46 @@ public class WatsonDocumentAuditPersistenceImpl
 			return map;
 		}
 
-		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
+				1);
 
-		sb.append(_SQL_SELECT_WATSONDOCUMENTAUDIT_WHERE_PKS_IN);
+		query.append(_SQL_SELECT_WATSONDOCUMENTAUDIT_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			sb.append((long)primaryKey);
+			query.append((long)primaryKey);
 
-			sb.append(",");
+			query.append(StringPool.COMMA);
 		}
 
-		sb.setIndex(sb.index() - 1);
+		query.setIndex(query.index() - 1);
 
-		sb.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query query = session.createQuery(sql);
+			Query q = session.createQuery(sql);
 
-			for (WatsonDocumentAudit watsonDocumentAudit :
-					(List<WatsonDocumentAudit>)query.list()) {
-
-				map.put(
-					watsonDocumentAudit.getPrimaryKeyObj(),
+			for (WatsonDocumentAudit watsonDocumentAudit : (List<WatsonDocumentAudit>)q.list()) {
+				map.put(watsonDocumentAudit.getPrimaryKeyObj(),
 					watsonDocumentAudit);
 
 				cacheResult(watsonDocumentAudit);
 
-				uncachedPrimaryKeys.remove(
-					watsonDocumentAudit.getPrimaryKeyObj());
+				uncachedPrimaryKeys.remove(watsonDocumentAudit.getPrimaryKeyObj());
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(
-					WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonDocumentAuditImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -597,7 +581,7 @@ public class WatsonDocumentAuditPersistenceImpl
 	 * Returns a range of all the watson document audits.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>WatsonDocumentAuditModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WatsonDocumentAuditModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of watson document audits
@@ -613,7 +597,7 @@ public class WatsonDocumentAuditPersistenceImpl
 	 * Returns an ordered range of all the watson document audits.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>WatsonDocumentAuditModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WatsonDocumentAuditModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of watson document audits
@@ -622,10 +606,8 @@ public class WatsonDocumentAuditPersistenceImpl
 	 * @return the ordered range of watson document audits
 	 */
 	@Override
-	public List<WatsonDocumentAudit> findAll(
-		int start, int end,
+	public List<WatsonDocumentAudit> findAll(int start, int end,
 		OrderByComparator<WatsonDocumentAudit> orderByComparator) {
-
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -633,63 +615,62 @@ public class WatsonDocumentAuditPersistenceImpl
 	 * Returns an ordered range of all the watson document audits.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>WatsonDocumentAuditModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WatsonDocumentAuditModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of watson document audits
 	 * @param end the upper bound of the range of watson document audits (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of watson document audits
 	 */
 	@Override
-	public List<WatsonDocumentAudit> findAll(
-		int start, int end,
+	public List<WatsonDocumentAudit> findAll(int start, int end,
 		OrderByComparator<WatsonDocumentAudit> orderByComparator,
-		boolean useFinderCache) {
-
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
-				finderArgs = FINDER_ARGS_EMPTY;
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+			finderArgs = FINDER_ARGS_EMPTY;
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] {start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
 		List<WatsonDocumentAudit> list = null;
 
-		if (useFinderCache) {
-			list = (List<WatsonDocumentAudit>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<WatsonDocumentAudit>)finderCache.getResult(finderPath,
+					finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					2 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(2 +
+						(orderByComparator.getOrderByFields().length * 2));
 
-				sb.append(_SQL_SELECT_WATSONDOCUMENTAUDIT);
+				query.append(_SQL_SELECT_WATSONDOCUMENTAUDIT);
 
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 
-				sql = sb.toString();
+				sql = query.toString();
 			}
 			else {
 				sql = _SQL_SELECT_WATSONDOCUMENTAUDIT;
 
-				sql = sql.concat(WatsonDocumentAuditModelImpl.ORDER_BY_JPQL);
+				if (pagination) {
+					sql = sql.concat(WatsonDocumentAuditModelImpl.ORDER_BY_JPQL);
+				}
 			}
 
 			Session session = null;
@@ -697,23 +678,29 @@ public class WatsonDocumentAuditPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				list = (List<WatsonDocumentAudit>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<WatsonDocumentAudit>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<WatsonDocumentAudit>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -741,8 +728,8 @@ public class WatsonDocumentAuditPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -750,19 +737,18 @@ public class WatsonDocumentAuditPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(
-					_SQL_COUNT_WATSONDOCUMENTAUDIT);
+				Query q = session.createQuery(_SQL_COUNT_WATSONDOCUMENTAUDIT);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
+					count);
 			}
-			catch (Exception exception) {
-				finderCache.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -781,24 +767,6 @@ public class WatsonDocumentAuditPersistenceImpl
 	 * Initializes the watson document audit persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonDocumentAuditModelImpl.FINDER_CACHE_ENABLED,
-			WatsonDocumentAuditImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonDocumentAuditModelImpl.FINDER_CACHE_ENABLED,
-			WatsonDocumentAuditImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			WatsonDocumentAuditModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonDocumentAuditModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
 	}
 
 	public void destroy() {
@@ -808,27 +776,16 @@ public class WatsonDocumentAuditPersistenceImpl
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@ServiceReference(type = CompanyProviderWrapper.class)
+	protected CompanyProvider companyProvider;
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
-
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-
-	private static final String _SQL_SELECT_WATSONDOCUMENTAUDIT =
-		"SELECT watsonDocumentAudit FROM WatsonDocumentAudit watsonDocumentAudit";
-
-	private static final String _SQL_SELECT_WATSONDOCUMENTAUDIT_WHERE_PKS_IN =
-		"SELECT watsonDocumentAudit FROM WatsonDocumentAudit watsonDocumentAudit WHERE watsonDocumentAuditId IN (";
-
-	private static final String _SQL_COUNT_WATSONDOCUMENTAUDIT =
-		"SELECT COUNT(watsonDocumentAudit) FROM WatsonDocumentAudit watsonDocumentAudit";
-
+	private static final String _SQL_SELECT_WATSONDOCUMENTAUDIT = "SELECT watsonDocumentAudit FROM WatsonDocumentAudit watsonDocumentAudit";
+	private static final String _SQL_SELECT_WATSONDOCUMENTAUDIT_WHERE_PKS_IN = "SELECT watsonDocumentAudit FROM WatsonDocumentAudit watsonDocumentAudit WHERE watsonDocumentAuditId IN (";
+	private static final String _SQL_COUNT_WATSONDOCUMENTAUDIT = "SELECT COUNT(watsonDocumentAudit) FROM WatsonDocumentAudit watsonDocumentAudit";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "watsonDocumentAudit.";
-
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
-		"No WatsonDocumentAudit exists with the primary key ";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		WatsonDocumentAuditPersistenceImpl.class);
-
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No WatsonDocumentAudit exists with the primary key ";
+	private static final Log _log = LogFactoryUtil.getLog(WatsonDocumentAuditPersistenceImpl.class);
 }

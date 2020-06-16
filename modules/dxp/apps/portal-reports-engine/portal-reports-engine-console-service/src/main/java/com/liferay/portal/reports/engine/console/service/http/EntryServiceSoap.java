@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.portal.reports.engine.console.service.http;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -22,20 +24,19 @@ import java.rmi.RemoteException;
 
 /**
  * Provides the SOAP utility for the
- * <code>EntryServiceUtil</code> service
- * utility. The static methods of this class call the same methods of the
- * service utility. However, the signatures are different because it is
- * difficult for SOAP to support certain types.
+ * {@link EntryServiceUtil} service utility. The
+ * static methods of this class calls the same methods of the service utility.
+ * However, the signatures are different because it is difficult for SOAP to
+ * support certain types.
  *
  * <p>
  * ServiceBuilder follows certain rules in translating the methods. For example,
- * if the method in the service utility returns a <code>java.util.List</code>,
- * that is translated to an array of
- * <code>com.liferay.portal.reports.engine.console.model.EntrySoap</code>. If the method in the
- * service utility returns a
- * <code>com.liferay.portal.reports.engine.console.model.Entry</code>, that is translated to a
- * <code>com.liferay.portal.reports.engine.console.model.EntrySoap</code>. Methods that SOAP
- * cannot safely wire are skipped.
+ * if the method in the service utility returns a {@link java.util.List}, that
+ * is translated to an array of {@link com.liferay.portal.reports.engine.console.model.EntrySoap}.
+ * If the method in the service utility returns a
+ * {@link com.liferay.portal.reports.engine.console.model.Entry}, that is translated to a
+ * {@link com.liferay.portal.reports.engine.console.model.EntrySoap}. Methods that SOAP cannot
+ * safely wire are skipped.
  * </p>
  *
  * <p>
@@ -57,130 +58,113 @@ import java.rmi.RemoteException;
  *
  * @author Brian Wing Shun Chan
  * @see EntryServiceHttp
+ * @see com.liferay.portal.reports.engine.console.model.EntrySoap
+ * @see EntryServiceUtil
  * @generated
  */
+@ProviderType
 public class EntryServiceSoap {
-
-	public static com.liferay.portal.reports.engine.console.model.EntrySoap
-			addEntry(
-				long groupId, long definitionId, String format,
-				boolean schedulerRequest, java.util.Date startDate,
-				java.util.Date endDate, boolean repeating, String recurrence,
-				String emailNotifications, String emailDelivery,
-				String portletId, String pageURL, String reportName,
-				String reportParameters,
-				com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static com.liferay.portal.reports.engine.console.model.EntrySoap addEntry(
+		long groupId, long definitionId, java.lang.String format,
+		boolean schedulerRequest, java.util.Date startDate,
+		java.util.Date endDate, boolean repeating, java.lang.String recurrence,
+		java.lang.String emailNotifications, java.lang.String emailDelivery,
+		java.lang.String portletId, java.lang.String pageURL,
+		java.lang.String reportName, java.lang.String reportParameters,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
-
 		try {
-			com.liferay.portal.reports.engine.console.model.Entry returnValue =
-				EntryServiceUtil.addEntry(
-					groupId, definitionId, format, schedulerRequest, startDate,
-					endDate, repeating, recurrence, emailNotifications,
-					emailDelivery, portletId, pageURL, reportName,
-					reportParameters, serviceContext);
+			com.liferay.portal.reports.engine.console.model.Entry returnValue = EntryServiceUtil.addEntry(groupId,
+					definitionId, format, schedulerRequest, startDate, endDate,
+					repeating, recurrence, emailNotifications, emailDelivery,
+					portletId, pageURL, reportName, reportParameters,
+					serviceContext);
 
-			return com.liferay.portal.reports.engine.console.model.EntrySoap.
-				toSoapModel(returnValue);
+			return com.liferay.portal.reports.engine.console.model.EntrySoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static void deleteAttachment(
-			long companyId, long entryId, String fileName)
-		throws RemoteException {
-
+	public static void deleteAttachment(long companyId, long entryId,
+		java.lang.String fileName) throws RemoteException {
 		try {
 			EntryServiceUtil.deleteAttachment(companyId, entryId, fileName);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.portal.reports.engine.console.model.EntrySoap
-			deleteEntry(long entryId)
-		throws RemoteException {
-
+	public static com.liferay.portal.reports.engine.console.model.EntrySoap deleteEntry(
+		long entryId) throws RemoteException {
 		try {
-			com.liferay.portal.reports.engine.console.model.Entry returnValue =
-				EntryServiceUtil.deleteEntry(entryId);
+			com.liferay.portal.reports.engine.console.model.Entry returnValue = EntryServiceUtil.deleteEntry(entryId);
 
-			return com.liferay.portal.reports.engine.console.model.EntrySoap.
-				toSoapModel(returnValue);
+			return com.liferay.portal.reports.engine.console.model.EntrySoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.portal.reports.engine.console.model.EntrySoap[]
-			getEntries(
-				long groupId, String definitionName, String userName,
-				java.util.Date createDateGT, java.util.Date createDateLT,
-				boolean andSearch, int start, int end,
-				com.liferay.portal.kernel.util.OrderByComparator
-					orderByComparator)
+	public static com.liferay.portal.reports.engine.console.model.EntrySoap[] getEntries(
+		long groupId, java.lang.String definitionName,
+		java.lang.String userName, java.util.Date createDateGT,
+		java.util.Date createDateLT, boolean andSearch, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
 		throws RemoteException {
-
 		try {
-			java.util.List
-				<com.liferay.portal.reports.engine.console.model.Entry>
-					returnValue = EntryServiceUtil.getEntries(
-						groupId, definitionName, userName, createDateGT,
-						createDateLT, andSearch, start, end, orderByComparator);
+			java.util.List<com.liferay.portal.reports.engine.console.model.Entry> returnValue =
+				EntryServiceUtil.getEntries(groupId, definitionName, userName,
+					createDateGT, createDateLT, andSearch, start, end,
+					orderByComparator);
 
-			return com.liferay.portal.reports.engine.console.model.EntrySoap.
-				toSoapModels(returnValue);
+			return com.liferay.portal.reports.engine.console.model.EntrySoap.toSoapModels(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static int getEntriesCount(
-			long groupId, String definitionName, String userName,
-			java.util.Date createDateGT, java.util.Date createDateLT,
-			boolean andSearch)
-		throws RemoteException {
-
+	public static int getEntriesCount(long groupId,
+		java.lang.String definitionName, java.lang.String userName,
+		java.util.Date createDateGT, java.util.Date createDateLT,
+		boolean andSearch) throws RemoteException {
 		try {
-			int returnValue = EntryServiceUtil.getEntriesCount(
-				groupId, definitionName, userName, createDateGT, createDateLT,
-				andSearch);
+			int returnValue = EntryServiceUtil.getEntriesCount(groupId,
+					definitionName, userName, createDateGT, createDateLT,
+					andSearch);
 
 			return returnValue;
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static void sendEmails(
-			long entryId, String fileName, String[] emailAddresses,
-			boolean notification)
+	public static void sendEmails(long entryId, java.lang.String fileName,
+		java.lang.String[] emailAddresses, boolean notification)
 		throws RemoteException {
-
 		try {
-			EntryServiceUtil.sendEmails(
-				entryId, fileName, emailAddresses, notification);
+			EntryServiceUtil.sendEmails(entryId, fileName, emailAddresses,
+				notification);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
@@ -188,13 +172,12 @@ public class EntryServiceSoap {
 		try {
 			EntryServiceUtil.unscheduleEntry(entryId);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(EntryServiceSoap.class);
-
 }

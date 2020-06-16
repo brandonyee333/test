@@ -1,23 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.community.meetup.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.osb.community.meetup.model.MeetupGroup;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing MeetupGroup in entity cache.
  *
  * @author Jamie Sammons
+ * @see MeetupGroup
  * @generated
  */
-public class MeetupGroupCacheModel
-	implements CacheModel<MeetupGroup>, Externalizable {
-
+@ProviderType
+public class MeetupGroupCacheModel implements CacheModel<MeetupGroup>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class MeetupGroupCacheModel
 			return false;
 		}
 
-		MeetupGroupCacheModel meetupGroupCacheModel =
-			(MeetupGroupCacheModel)obj;
+		MeetupGroupCacheModel meetupGroupCacheModel = (MeetupGroupCacheModel)obj;
 
 		if (meetupGroupId == meetupGroupCacheModel.meetupGroupId) {
 			return true;
@@ -112,14 +116,14 @@ public class MeetupGroupCacheModel
 		}
 
 		if (name == null) {
-			meetupGroupImpl.setName("");
+			meetupGroupImpl.setName(StringPool.BLANK);
 		}
 		else {
 			meetupGroupImpl.setName(name);
 		}
 
 		if (city == null) {
-			meetupGroupImpl.setCity("");
+			meetupGroupImpl.setCity(StringPool.BLANK);
 		}
 		else {
 			meetupGroupImpl.setCity(city);
@@ -128,14 +132,14 @@ public class MeetupGroupCacheModel
 		meetupGroupImpl.setMemberCount(memberCount);
 
 		if (description == null) {
-			meetupGroupImpl.setDescription("");
+			meetupGroupImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			meetupGroupImpl.setDescription(description);
 		}
 
 		if (url == null) {
-			meetupGroupImpl.setUrl("");
+			meetupGroupImpl.setUrl(StringPool.BLANK);
 		}
 		else {
 			meetupGroupImpl.setUrl(url);
@@ -164,7 +168,8 @@ public class MeetupGroupCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(meetupGroupId);
 
 		objectOutput.writeLong(groupId);
@@ -174,14 +179,14 @@ public class MeetupGroupCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (city == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(city);
@@ -190,14 +195,14 @@ public class MeetupGroupCacheModel
 		objectOutput.writeInt(memberCount);
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (url == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(url);
@@ -214,5 +219,4 @@ public class MeetupGroupCacheModel
 	public int memberCount;
 	public String description;
 	public String url;
-
 }

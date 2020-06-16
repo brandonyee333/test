@@ -17,6 +17,7 @@ package com.liferay.social.privatemessaging.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.message.boards.kernel.model.MBMessage;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -27,6 +28,7 @@ import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
+
 import com.liferay.social.privatemessaging.model.UserThread;
 
 import java.util.List;
@@ -38,50 +40,43 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see UserThreadServiceUtil
+ * @see com.liferay.social.privatemessaging.service.base.UserThreadServiceBaseImpl
+ * @see com.liferay.social.privatemessaging.service.impl.UserThreadServiceImpl
  * @generated
  */
 @AccessControlled
 @JSONWebService
-@OSGiBeanProperties(
-	property = {
-		"json.web.service.context.name=pm",
-		"json.web.service.context.path=UserThread"
-	},
-	service = UserThreadService.class
-)
+@OSGiBeanProperties(property =  {
+	"json.web.service.context.name=pm", "json.web.service.context.path=UserThread"}, service = UserThreadService.class)
 @ProviderType
-@Transactional(
-	isolation = Isolation.PORTAL,
-	rollbackFor = {PortalException.class, SystemException.class}
-)
+@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
+	PortalException.class, SystemException.class})
 public interface UserThreadService extends BaseService {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link UserThreadServiceUtil} to access the user thread remote service. Add custom service methods to <code>com.liferay.social.privatemessaging.service.impl.UserThreadServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link UserThreadServiceUtil} to access the user thread remote service. Add custom service methods to {@link com.liferay.social.privatemessaging.service.impl.UserThreadServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public MBMessage getLastThreadMessage(long mbThreadId)
 		throws PortalException;
 
-	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
-	public String getOSGiServiceIdentifier();
-
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<MBMessage> getThreadMessages(
-			long mbThreadId, int start, int end, boolean ascending)
+	public int getThreadMessagesCount(long mbThreadId)
 		throws PortalException;
 
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getThreadMessagesCount(long mbThreadId) throws PortalException;
+	public List<MBMessage> getThreadMessages(long mbThreadId, int start,
+		int end, boolean ascending) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<UserThread> getUserUserThreads(boolean deleted)
 		throws PrincipalException;
-
 }

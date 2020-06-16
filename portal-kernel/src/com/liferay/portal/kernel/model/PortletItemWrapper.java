@@ -14,7 +14,10 @@
 
 package com.liferay.portal.kernel.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -33,9 +36,9 @@ import java.util.Objects;
  * @see PortletItem
  * @generated
  */
-public class PortletItemWrapper
-	implements ModelWrapper<PortletItem>, PortletItem {
-
+@ProviderType
+public class PortletItemWrapper implements PortletItem,
+	ModelWrapper<PortletItem> {
 	public PortletItemWrapper(PortletItem portletItem) {
 		_portletItem = portletItem;
 	}
@@ -139,171 +142,6 @@ public class PortletItemWrapper
 	}
 
 	@Override
-	public Object clone() {
-		return new PortletItemWrapper((PortletItem)_portletItem.clone());
-	}
-
-	@Override
-	public int compareTo(PortletItem portletItem) {
-		return _portletItem.compareTo(portletItem);
-	}
-
-	/**
-	 * Returns the fully qualified class name of this portlet item.
-	 *
-	 * @return the fully qualified class name of this portlet item
-	 */
-	@Override
-	public String getClassName() {
-		return _portletItem.getClassName();
-	}
-
-	/**
-	 * Returns the class name ID of this portlet item.
-	 *
-	 * @return the class name ID of this portlet item
-	 */
-	@Override
-	public long getClassNameId() {
-		return _portletItem.getClassNameId();
-	}
-
-	/**
-	 * Returns the company ID of this portlet item.
-	 *
-	 * @return the company ID of this portlet item
-	 */
-	@Override
-	public long getCompanyId() {
-		return _portletItem.getCompanyId();
-	}
-
-	/**
-	 * Returns the create date of this portlet item.
-	 *
-	 * @return the create date of this portlet item
-	 */
-	@Override
-	public Date getCreateDate() {
-		return _portletItem.getCreateDate();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _portletItem.getExpandoBridge();
-	}
-
-	/**
-	 * Returns the group ID of this portlet item.
-	 *
-	 * @return the group ID of this portlet item
-	 */
-	@Override
-	public long getGroupId() {
-		return _portletItem.getGroupId();
-	}
-
-	/**
-	 * Returns the modified date of this portlet item.
-	 *
-	 * @return the modified date of this portlet item
-	 */
-	@Override
-	public Date getModifiedDate() {
-		return _portletItem.getModifiedDate();
-	}
-
-	/**
-	 * Returns the mvcc version of this portlet item.
-	 *
-	 * @return the mvcc version of this portlet item
-	 */
-	@Override
-	public long getMvccVersion() {
-		return _portletItem.getMvccVersion();
-	}
-
-	/**
-	 * Returns the name of this portlet item.
-	 *
-	 * @return the name of this portlet item
-	 */
-	@Override
-	public String getName() {
-		return _portletItem.getName();
-	}
-
-	/**
-	 * Returns the portlet ID of this portlet item.
-	 *
-	 * @return the portlet ID of this portlet item
-	 */
-	@Override
-	public String getPortletId() {
-		return _portletItem.getPortletId();
-	}
-
-	/**
-	 * Returns the portlet item ID of this portlet item.
-	 *
-	 * @return the portlet item ID of this portlet item
-	 */
-	@Override
-	public long getPortletItemId() {
-		return _portletItem.getPortletItemId();
-	}
-
-	/**
-	 * Returns the primary key of this portlet item.
-	 *
-	 * @return the primary key of this portlet item
-	 */
-	@Override
-	public long getPrimaryKey() {
-		return _portletItem.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _portletItem.getPrimaryKeyObj();
-	}
-
-	/**
-	 * Returns the user ID of this portlet item.
-	 *
-	 * @return the user ID of this portlet item
-	 */
-	@Override
-	public long getUserId() {
-		return _portletItem.getUserId();
-	}
-
-	/**
-	 * Returns the user name of this portlet item.
-	 *
-	 * @return the user name of this portlet item
-	 */
-	@Override
-	public String getUserName() {
-		return _portletItem.getUserName();
-	}
-
-	/**
-	 * Returns the user uuid of this portlet item.
-	 *
-	 * @return the user uuid of this portlet item
-	 */
-	@Override
-	public String getUserUuid() {
-		return _portletItem.getUserUuid();
-	}
-
-	@Override
-	public int hashCode() {
-		return _portletItem.hashCode();
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _portletItem.isCachedModel();
 	}
@@ -319,173 +157,8 @@ public class PortletItemWrapper
 	}
 
 	@Override
-	public void persist() {
-		_portletItem.persist();
-	}
-
-	@Override
-	public void setCachedModel(boolean cachedModel) {
-		_portletItem.setCachedModel(cachedModel);
-	}
-
-	@Override
-	public void setClassName(String className) {
-		_portletItem.setClassName(className);
-	}
-
-	/**
-	 * Sets the class name ID of this portlet item.
-	 *
-	 * @param classNameId the class name ID of this portlet item
-	 */
-	@Override
-	public void setClassNameId(long classNameId) {
-		_portletItem.setClassNameId(classNameId);
-	}
-
-	/**
-	 * Sets the company ID of this portlet item.
-	 *
-	 * @param companyId the company ID of this portlet item
-	 */
-	@Override
-	public void setCompanyId(long companyId) {
-		_portletItem.setCompanyId(companyId);
-	}
-
-	/**
-	 * Sets the create date of this portlet item.
-	 *
-	 * @param createDate the create date of this portlet item
-	 */
-	@Override
-	public void setCreateDate(Date createDate) {
-		_portletItem.setCreateDate(createDate);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(BaseModel<?> baseModel) {
-		_portletItem.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_portletItem.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-		_portletItem.setExpandoBridgeAttributes(serviceContext);
-	}
-
-	/**
-	 * Sets the group ID of this portlet item.
-	 *
-	 * @param groupId the group ID of this portlet item
-	 */
-	@Override
-	public void setGroupId(long groupId) {
-		_portletItem.setGroupId(groupId);
-	}
-
-	/**
-	 * Sets the modified date of this portlet item.
-	 *
-	 * @param modifiedDate the modified date of this portlet item
-	 */
-	@Override
-	public void setModifiedDate(Date modifiedDate) {
-		_portletItem.setModifiedDate(modifiedDate);
-	}
-
-	/**
-	 * Sets the mvcc version of this portlet item.
-	 *
-	 * @param mvccVersion the mvcc version of this portlet item
-	 */
-	@Override
-	public void setMvccVersion(long mvccVersion) {
-		_portletItem.setMvccVersion(mvccVersion);
-	}
-
-	/**
-	 * Sets the name of this portlet item.
-	 *
-	 * @param name the name of this portlet item
-	 */
-	@Override
-	public void setName(String name) {
-		_portletItem.setName(name);
-	}
-
-	@Override
-	public void setNew(boolean n) {
-		_portletItem.setNew(n);
-	}
-
-	/**
-	 * Sets the portlet ID of this portlet item.
-	 *
-	 * @param portletId the portlet ID of this portlet item
-	 */
-	@Override
-	public void setPortletId(String portletId) {
-		_portletItem.setPortletId(portletId);
-	}
-
-	/**
-	 * Sets the portlet item ID of this portlet item.
-	 *
-	 * @param portletItemId the portlet item ID of this portlet item
-	 */
-	@Override
-	public void setPortletItemId(long portletItemId) {
-		_portletItem.setPortletItemId(portletItemId);
-	}
-
-	/**
-	 * Sets the primary key of this portlet item.
-	 *
-	 * @param primaryKey the primary key of this portlet item
-	 */
-	@Override
-	public void setPrimaryKey(long primaryKey) {
-		_portletItem.setPrimaryKey(primaryKey);
-	}
-
-	@Override
-	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		_portletItem.setPrimaryKeyObj(primaryKeyObj);
-	}
-
-	/**
-	 * Sets the user ID of this portlet item.
-	 *
-	 * @param userId the user ID of this portlet item
-	 */
-	@Override
-	public void setUserId(long userId) {
-		_portletItem.setUserId(userId);
-	}
-
-	/**
-	 * Sets the user name of this portlet item.
-	 *
-	 * @param userName the user name of this portlet item
-	 */
-	@Override
-	public void setUserName(String userName) {
-		_portletItem.setUserName(userName);
-	}
-
-	/**
-	 * Sets the user uuid of this portlet item.
-	 *
-	 * @param userUuid the user uuid of this portlet item
-	 */
-	@Override
-	public void setUserUuid(String userUuid) {
-		_portletItem.setUserUuid(userUuid);
+	public ExpandoBridge getExpandoBridge() {
+		return _portletItem.getExpandoBridge();
 	}
 
 	@Override
@@ -499,18 +172,348 @@ public class PortletItemWrapper
 	}
 
 	@Override
-	public String toString() {
-		return _portletItem.toString();
-	}
-
-	@Override
 	public PortletItem toUnescapedModel() {
 		return new PortletItemWrapper(_portletItem.toUnescapedModel());
 	}
 
 	@Override
-	public String toXmlString() {
+	public int compareTo(PortletItem portletItem) {
+		return _portletItem.compareTo(portletItem);
+	}
+
+	@Override
+	public int hashCode() {
+		return _portletItem.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _portletItem.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new PortletItemWrapper((PortletItem)_portletItem.clone());
+	}
+
+	/**
+	* Returns the fully qualified class name of this portlet item.
+	*
+	* @return the fully qualified class name of this portlet item
+	*/
+	@Override
+	public java.lang.String getClassName() {
+		return _portletItem.getClassName();
+	}
+
+	/**
+	* Returns the name of this portlet item.
+	*
+	* @return the name of this portlet item
+	*/
+	@Override
+	public java.lang.String getName() {
+		return _portletItem.getName();
+	}
+
+	/**
+	* Returns the portlet ID of this portlet item.
+	*
+	* @return the portlet ID of this portlet item
+	*/
+	@Override
+	public java.lang.String getPortletId() {
+		return _portletItem.getPortletId();
+	}
+
+	/**
+	* Returns the user name of this portlet item.
+	*
+	* @return the user name of this portlet item
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _portletItem.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this portlet item.
+	*
+	* @return the user uuid of this portlet item
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _portletItem.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _portletItem.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
 		return _portletItem.toXmlString();
+	}
+
+	/**
+	* Returns the create date of this portlet item.
+	*
+	* @return the create date of this portlet item
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _portletItem.getCreateDate();
+	}
+
+	/**
+	* Returns the modified date of this portlet item.
+	*
+	* @return the modified date of this portlet item
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _portletItem.getModifiedDate();
+	}
+
+	/**
+	* Returns the class name ID of this portlet item.
+	*
+	* @return the class name ID of this portlet item
+	*/
+	@Override
+	public long getClassNameId() {
+		return _portletItem.getClassNameId();
+	}
+
+	/**
+	* Returns the company ID of this portlet item.
+	*
+	* @return the company ID of this portlet item
+	*/
+	@Override
+	public long getCompanyId() {
+		return _portletItem.getCompanyId();
+	}
+
+	/**
+	* Returns the group ID of this portlet item.
+	*
+	* @return the group ID of this portlet item
+	*/
+	@Override
+	public long getGroupId() {
+		return _portletItem.getGroupId();
+	}
+
+	/**
+	* Returns the mvcc version of this portlet item.
+	*
+	* @return the mvcc version of this portlet item
+	*/
+	@Override
+	public long getMvccVersion() {
+		return _portletItem.getMvccVersion();
+	}
+
+	/**
+	* Returns the portlet item ID of this portlet item.
+	*
+	* @return the portlet item ID of this portlet item
+	*/
+	@Override
+	public long getPortletItemId() {
+		return _portletItem.getPortletItemId();
+	}
+
+	/**
+	* Returns the primary key of this portlet item.
+	*
+	* @return the primary key of this portlet item
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _portletItem.getPrimaryKey();
+	}
+
+	/**
+	* Returns the user ID of this portlet item.
+	*
+	* @return the user ID of this portlet item
+	*/
+	@Override
+	public long getUserId() {
+		return _portletItem.getUserId();
+	}
+
+	@Override
+	public void persist() {
+		_portletItem.persist();
+	}
+
+	@Override
+	public void setCachedModel(boolean cachedModel) {
+		_portletItem.setCachedModel(cachedModel);
+	}
+
+	@Override
+	public void setClassName(java.lang.String className) {
+		_portletItem.setClassName(className);
+	}
+
+	/**
+	* Sets the class name ID of this portlet item.
+	*
+	* @param classNameId the class name ID of this portlet item
+	*/
+	@Override
+	public void setClassNameId(long classNameId) {
+		_portletItem.setClassNameId(classNameId);
+	}
+
+	/**
+	* Sets the company ID of this portlet item.
+	*
+	* @param companyId the company ID of this portlet item
+	*/
+	@Override
+	public void setCompanyId(long companyId) {
+		_portletItem.setCompanyId(companyId);
+	}
+
+	/**
+	* Sets the create date of this portlet item.
+	*
+	* @param createDate the create date of this portlet item
+	*/
+	@Override
+	public void setCreateDate(Date createDate) {
+		_portletItem.setCreateDate(createDate);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_portletItem.setExpandoBridgeAttributes(expandoBridge);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(BaseModel<?> baseModel) {
+		_portletItem.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
+		_portletItem.setExpandoBridgeAttributes(serviceContext);
+	}
+
+	/**
+	* Sets the group ID of this portlet item.
+	*
+	* @param groupId the group ID of this portlet item
+	*/
+	@Override
+	public void setGroupId(long groupId) {
+		_portletItem.setGroupId(groupId);
+	}
+
+	/**
+	* Sets the modified date of this portlet item.
+	*
+	* @param modifiedDate the modified date of this portlet item
+	*/
+	@Override
+	public void setModifiedDate(Date modifiedDate) {
+		_portletItem.setModifiedDate(modifiedDate);
+	}
+
+	/**
+	* Sets the mvcc version of this portlet item.
+	*
+	* @param mvccVersion the mvcc version of this portlet item
+	*/
+	@Override
+	public void setMvccVersion(long mvccVersion) {
+		_portletItem.setMvccVersion(mvccVersion);
+	}
+
+	/**
+	* Sets the name of this portlet item.
+	*
+	* @param name the name of this portlet item
+	*/
+	@Override
+	public void setName(java.lang.String name) {
+		_portletItem.setName(name);
+	}
+
+	@Override
+	public void setNew(boolean n) {
+		_portletItem.setNew(n);
+	}
+
+	/**
+	* Sets the portlet ID of this portlet item.
+	*
+	* @param portletId the portlet ID of this portlet item
+	*/
+	@Override
+	public void setPortletId(java.lang.String portletId) {
+		_portletItem.setPortletId(portletId);
+	}
+
+	/**
+	* Sets the portlet item ID of this portlet item.
+	*
+	* @param portletItemId the portlet item ID of this portlet item
+	*/
+	@Override
+	public void setPortletItemId(long portletItemId) {
+		_portletItem.setPortletItemId(portletItemId);
+	}
+
+	/**
+	* Sets the primary key of this portlet item.
+	*
+	* @param primaryKey the primary key of this portlet item
+	*/
+	@Override
+	public void setPrimaryKey(long primaryKey) {
+		_portletItem.setPrimaryKey(primaryKey);
+	}
+
+	@Override
+	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
+		_portletItem.setPrimaryKeyObj(primaryKeyObj);
+	}
+
+	/**
+	* Sets the user ID of this portlet item.
+	*
+	* @param userId the user ID of this portlet item
+	*/
+	@Override
+	public void setUserId(long userId) {
+		_portletItem.setUserId(userId);
+	}
+
+	/**
+	* Sets the user name of this portlet item.
+	*
+	* @param userName the user name of this portlet item
+	*/
+	@Override
+	public void setUserName(java.lang.String userName) {
+		_portletItem.setUserName(userName);
+	}
+
+	/**
+	* Sets the user uuid of this portlet item.
+	*
+	* @param userUuid the user uuid of this portlet item
+	*/
+	@Override
+	public void setUserUuid(java.lang.String userUuid) {
+		_portletItem.setUserUuid(userUuid);
 	}
 
 	@Override
@@ -553,5 +556,4 @@ public class PortletItemWrapper
 	}
 
 	private final PortletItem _portletItem;
-
 }

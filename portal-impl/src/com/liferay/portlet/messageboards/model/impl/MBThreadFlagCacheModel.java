@@ -14,10 +14,14 @@
 
 package com.liferay.portlet.messageboards.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.message.boards.kernel.model.MBThreadFlag;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing MBThreadFlag in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see MBThreadFlag
  * @generated
  */
-public class MBThreadFlagCacheModel
-	implements CacheModel<MBThreadFlag>, Externalizable {
-
+@ProviderType
+public class MBThreadFlagCacheModel implements CacheModel<MBThreadFlag>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class MBThreadFlagCacheModel
 			return false;
 		}
 
-		MBThreadFlagCacheModel mbThreadFlagCacheModel =
-			(MBThreadFlagCacheModel)obj;
+		MBThreadFlagCacheModel mbThreadFlagCacheModel = (MBThreadFlagCacheModel)obj;
 
 		if (threadFlagId == mbThreadFlagCacheModel.threadFlagId) {
 			return true;
@@ -94,7 +98,7 @@ public class MBThreadFlagCacheModel
 		MBThreadFlagImpl mbThreadFlagImpl = new MBThreadFlagImpl();
 
 		if (uuid == null) {
-			mbThreadFlagImpl.setUuid("");
+			mbThreadFlagImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			mbThreadFlagImpl.setUuid(uuid);
@@ -106,7 +110,7 @@ public class MBThreadFlagCacheModel
 		mbThreadFlagImpl.setUserId(userId);
 
 		if (userName == null) {
-			mbThreadFlagImpl.setUserName("");
+			mbThreadFlagImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			mbThreadFlagImpl.setUserName(userName);
@@ -160,9 +164,10 @@ public class MBThreadFlagCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -177,7 +182,7 @@ public class MBThreadFlagCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -200,5 +205,4 @@ public class MBThreadFlagCacheModel
 	public long modifiedDate;
 	public long threadId;
 	public long lastPublishDate;
-
 }

@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -29,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing ListType in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see ListType
  * @generated
  */
-public class ListTypeCacheModel
-	implements CacheModel<ListType>, Externalizable, MVCCModel {
-
+@ProviderType
+public class ListTypeCacheModel implements CacheModel<ListType>, Externalizable,
+	MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -47,8 +51,7 @@ public class ListTypeCacheModel
 		ListTypeCacheModel listTypeCacheModel = (ListTypeCacheModel)obj;
 
 		if ((listTypeId == listTypeCacheModel.listTypeId) &&
-			(mvccVersion == listTypeCacheModel.mvccVersion)) {
-
+				(mvccVersion == listTypeCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -97,14 +100,14 @@ public class ListTypeCacheModel
 		listTypeImpl.setListTypeId(listTypeId);
 
 		if (name == null) {
-			listTypeImpl.setName("");
+			listTypeImpl.setName(StringPool.BLANK);
 		}
 		else {
 			listTypeImpl.setName(name);
 		}
 
 		if (type == null) {
-			listTypeImpl.setType("");
+			listTypeImpl.setType(StringPool.BLANK);
 		}
 		else {
 			listTypeImpl.setType(type);
@@ -125,20 +128,21 @@ public class ListTypeCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(listTypeId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (type == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(type);
@@ -149,5 +153,4 @@ public class ListTypeCacheModel
 	public long listTypeId;
 	public String name;
 	public String type;
-
 }

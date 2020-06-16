@@ -14,6 +14,8 @@
 
 package com.liferay.marketplace.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.marketplace.model.App;
 import com.liferay.marketplace.service.AppLocalServiceUtil;
 
@@ -29,12 +31,12 @@ import com.liferay.marketplace.service.AppLocalServiceUtil;
  * @see App
  * @generated
  */
+@ProviderType
 public abstract class AppBaseImpl extends AppModelImpl implements App {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a app model instance should use the <code>App</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a app model instance should use the {@link App} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -45,5 +47,4 @@ public abstract class AppBaseImpl extends AppModelImpl implements App {
 			AppLocalServiceUtil.updateApp(this);
 		}
 	}
-
 }

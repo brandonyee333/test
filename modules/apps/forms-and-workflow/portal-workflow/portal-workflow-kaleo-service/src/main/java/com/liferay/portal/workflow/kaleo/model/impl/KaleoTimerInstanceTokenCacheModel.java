@@ -14,9 +14,12 @@
 
 package com.liferay.portal.workflow.kaleo.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.workflow.kaleo.model.KaleoTimerInstanceToken;
 
 import java.io.Externalizable;
@@ -30,11 +33,12 @@ import java.util.Date;
  * The cache model class for representing KaleoTimerInstanceToken in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see KaleoTimerInstanceToken
  * @generated
  */
-public class KaleoTimerInstanceTokenCacheModel
-	implements CacheModel<KaleoTimerInstanceToken>, Externalizable {
-
+@ProviderType
+public class KaleoTimerInstanceTokenCacheModel implements CacheModel<KaleoTimerInstanceToken>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +49,9 @@ public class KaleoTimerInstanceTokenCacheModel
 			return false;
 		}
 
-		KaleoTimerInstanceTokenCacheModel kaleoTimerInstanceTokenCacheModel =
-			(KaleoTimerInstanceTokenCacheModel)obj;
+		KaleoTimerInstanceTokenCacheModel kaleoTimerInstanceTokenCacheModel = (KaleoTimerInstanceTokenCacheModel)obj;
 
-		if (kaleoTimerInstanceTokenId ==
-				kaleoTimerInstanceTokenCacheModel.kaleoTimerInstanceTokenId) {
-
+		if (kaleoTimerInstanceTokenId == kaleoTimerInstanceTokenCacheModel.kaleoTimerInstanceTokenId) {
 			return true;
 		}
 
@@ -113,17 +114,15 @@ public class KaleoTimerInstanceTokenCacheModel
 
 	@Override
 	public KaleoTimerInstanceToken toEntityModel() {
-		KaleoTimerInstanceTokenImpl kaleoTimerInstanceTokenImpl =
-			new KaleoTimerInstanceTokenImpl();
+		KaleoTimerInstanceTokenImpl kaleoTimerInstanceTokenImpl = new KaleoTimerInstanceTokenImpl();
 
-		kaleoTimerInstanceTokenImpl.setKaleoTimerInstanceTokenId(
-			kaleoTimerInstanceTokenId);
+		kaleoTimerInstanceTokenImpl.setKaleoTimerInstanceTokenId(kaleoTimerInstanceTokenId);
 		kaleoTimerInstanceTokenImpl.setGroupId(groupId);
 		kaleoTimerInstanceTokenImpl.setCompanyId(companyId);
 		kaleoTimerInstanceTokenImpl.setUserId(userId);
 
 		if (userName == null) {
-			kaleoTimerInstanceTokenImpl.setUserName("");
+			kaleoTimerInstanceTokenImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			kaleoTimerInstanceTokenImpl.setUserName(userName);
@@ -144,7 +143,7 @@ public class KaleoTimerInstanceTokenCacheModel
 		}
 
 		if (kaleoClassName == null) {
-			kaleoTimerInstanceTokenImpl.setKaleoClassName("");
+			kaleoTimerInstanceTokenImpl.setKaleoClassName(StringPool.BLANK);
 		}
 		else {
 			kaleoTimerInstanceTokenImpl.setKaleoClassName(kaleoClassName);
@@ -153,14 +152,12 @@ public class KaleoTimerInstanceTokenCacheModel
 		kaleoTimerInstanceTokenImpl.setKaleoClassPK(kaleoClassPK);
 		kaleoTimerInstanceTokenImpl.setKaleoDefinitionId(kaleoDefinitionId);
 		kaleoTimerInstanceTokenImpl.setKaleoInstanceId(kaleoInstanceId);
-		kaleoTimerInstanceTokenImpl.setKaleoInstanceTokenId(
-			kaleoInstanceTokenId);
-		kaleoTimerInstanceTokenImpl.setKaleoTaskInstanceTokenId(
-			kaleoTaskInstanceTokenId);
+		kaleoTimerInstanceTokenImpl.setKaleoInstanceTokenId(kaleoInstanceTokenId);
+		kaleoTimerInstanceTokenImpl.setKaleoTaskInstanceTokenId(kaleoTaskInstanceTokenId);
 		kaleoTimerInstanceTokenImpl.setKaleoTimerId(kaleoTimerId);
 
 		if (kaleoTimerName == null) {
-			kaleoTimerInstanceTokenImpl.setKaleoTimerName("");
+			kaleoTimerInstanceTokenImpl.setKaleoTimerName(StringPool.BLANK);
 		}
 		else {
 			kaleoTimerInstanceTokenImpl.setKaleoTimerName(kaleoTimerName);
@@ -174,12 +171,12 @@ public class KaleoTimerInstanceTokenCacheModel
 			kaleoTimerInstanceTokenImpl.setCompletionDate(null);
 		}
 		else {
-			kaleoTimerInstanceTokenImpl.setCompletionDate(
-				new Date(completionDate));
+			kaleoTimerInstanceTokenImpl.setCompletionDate(new Date(
+					completionDate));
 		}
 
 		if (workflowContext == null) {
-			kaleoTimerInstanceTokenImpl.setWorkflowContext("");
+			kaleoTimerInstanceTokenImpl.setWorkflowContext(StringPool.BLANK);
 		}
 		else {
 			kaleoTimerInstanceTokenImpl.setWorkflowContext(workflowContext);
@@ -191,9 +188,7 @@ public class KaleoTimerInstanceTokenCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		kaleoTimerInstanceTokenId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -225,11 +220,12 @@ public class KaleoTimerInstanceTokenCacheModel
 
 		completed = objectInput.readBoolean();
 		completionDate = objectInput.readLong();
-		workflowContext = (String)objectInput.readObject();
+		workflowContext = objectInput.readUTF();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(kaleoTimerInstanceTokenId);
 
 		objectOutput.writeLong(groupId);
@@ -239,7 +235,7 @@ public class KaleoTimerInstanceTokenCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -249,7 +245,7 @@ public class KaleoTimerInstanceTokenCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (kaleoClassName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(kaleoClassName);
@@ -268,7 +264,7 @@ public class KaleoTimerInstanceTokenCacheModel
 		objectOutput.writeLong(kaleoTimerId);
 
 		if (kaleoTimerName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(kaleoTimerName);
@@ -282,10 +278,10 @@ public class KaleoTimerInstanceTokenCacheModel
 		objectOutput.writeLong(completionDate);
 
 		if (workflowContext == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(workflowContext);
+			objectOutput.writeUTF(workflowContext);
 		}
 	}
 
@@ -309,5 +305,4 @@ public class KaleoTimerInstanceTokenCacheModel
 	public boolean completed;
 	public long completionDate;
 	public String workflowContext;
-
 }

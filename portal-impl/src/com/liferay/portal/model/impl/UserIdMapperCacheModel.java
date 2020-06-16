@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.UserIdMapper;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -29,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing UserIdMapper in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see UserIdMapper
  * @generated
  */
-public class UserIdMapperCacheModel
-	implements CacheModel<UserIdMapper>, Externalizable, MVCCModel {
-
+@ProviderType
+public class UserIdMapperCacheModel implements CacheModel<UserIdMapper>,
+	Externalizable, MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -44,12 +48,10 @@ public class UserIdMapperCacheModel
 			return false;
 		}
 
-		UserIdMapperCacheModel userIdMapperCacheModel =
-			(UserIdMapperCacheModel)obj;
+		UserIdMapperCacheModel userIdMapperCacheModel = (UserIdMapperCacheModel)obj;
 
 		if ((userIdMapperId == userIdMapperCacheModel.userIdMapperId) &&
-			(mvccVersion == userIdMapperCacheModel.mvccVersion)) {
-
+				(mvccVersion == userIdMapperCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -106,21 +108,21 @@ public class UserIdMapperCacheModel
 		userIdMapperImpl.setUserId(userId);
 
 		if (type == null) {
-			userIdMapperImpl.setType("");
+			userIdMapperImpl.setType(StringPool.BLANK);
 		}
 		else {
 			userIdMapperImpl.setType(type);
 		}
 
 		if (description == null) {
-			userIdMapperImpl.setDescription("");
+			userIdMapperImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			userIdMapperImpl.setDescription(description);
 		}
 
 		if (externalUserId == null) {
-			userIdMapperImpl.setExternalUserId("");
+			userIdMapperImpl.setExternalUserId(StringPool.BLANK);
 		}
 		else {
 			userIdMapperImpl.setExternalUserId(externalUserId);
@@ -146,7 +148,8 @@ public class UserIdMapperCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(userIdMapperId);
@@ -156,21 +159,21 @@ public class UserIdMapperCacheModel
 		objectOutput.writeLong(userId);
 
 		if (type == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(type);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (externalUserId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(externalUserId);
@@ -184,5 +187,4 @@ public class UserIdMapperCacheModel
 	public String type;
 	public String description;
 	public String externalUserId;
-
 }

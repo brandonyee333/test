@@ -14,7 +14,12 @@
 
 package com.liferay.portal.service.persistence.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
+import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
+import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
@@ -25,18 +30,17 @@ import com.liferay.portal.kernel.exception.NoSuchMembershipRequestException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.MembershipRequest;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.service.persistence.CompanyProvider;
+import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.MembershipRequestPersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.impl.MembershipRequestImpl;
 import com.liferay.portal.model.impl.MembershipRequestModelImpl;
 
 import java.io.Serializable;
-
-import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -54,32 +58,56 @@ import java.util.Set;
  * </p>
  *
  * @author Brian Wing Shun Chan
+ * @see MembershipRequestPersistence
+ * @see com.liferay.portal.kernel.service.persistence.MembershipRequestUtil
  * @generated
  */
-public class MembershipRequestPersistenceImpl
-	extends BasePersistenceImpl<MembershipRequest>
+@ProviderType
+public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<MembershipRequest>
 	implements MembershipRequestPersistence {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use <code>MembershipRequestUtil</code> to access the membership request persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use {@link MembershipRequestUtil} to access the membership request persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY =
-		MembershipRequestImpl.class.getName();
-
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List1";
-
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathWithPaginationFindByGroupId;
-	private FinderPath _finderPathWithoutPaginationFindByGroupId;
-	private FinderPath _finderPathCountByGroupId;
+	public static final String FINDER_CLASS_NAME_ENTITY = MembershipRequestImpl.class.getName();
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List1";
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List2";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
+			MembershipRequestImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
+			MembershipRequestImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+			MembershipRequestModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_GROUPID = new FinderPath(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
+			MembershipRequestImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupId",
+			new String[] {
+				Long.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID =
+		new FinderPath(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
+			MembershipRequestImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
+			new String[] { Long.class.getName() },
+			MembershipRequestModelImpl.GROUPID_COLUMN_BITMASK |
+			MembershipRequestModelImpl.CREATEDATE_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_GROUPID = new FinderPath(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+			MembershipRequestModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
+			new String[] { Long.class.getName() });
 
 	/**
 	 * Returns all the membership requests where groupId = &#63;.
@@ -89,15 +117,14 @@ public class MembershipRequestPersistenceImpl
 	 */
 	@Override
 	public List<MembershipRequest> findByGroupId(long groupId) {
-		return findByGroupId(
-			groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+		return findByGroupId(groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the membership requests where groupId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>MembershipRequestModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MembershipRequestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
@@ -106,9 +133,8 @@ public class MembershipRequestPersistenceImpl
 	 * @return the range of matching membership requests
 	 */
 	@Override
-	public List<MembershipRequest> findByGroupId(
-		long groupId, int start, int end) {
-
+	public List<MembershipRequest> findByGroupId(long groupId, int start,
+		int end) {
 		return findByGroupId(groupId, start, end, null);
 	}
 
@@ -116,7 +142,7 @@ public class MembershipRequestPersistenceImpl
 	 * Returns an ordered range of all the membership requests where groupId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>MembershipRequestModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MembershipRequestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
@@ -126,10 +152,8 @@ public class MembershipRequestPersistenceImpl
 	 * @return the ordered range of matching membership requests
 	 */
 	@Override
-	public List<MembershipRequest> findByGroupId(
-		long groupId, int start, int end,
-		OrderByComparator<MembershipRequest> orderByComparator) {
-
+	public List<MembershipRequest> findByGroupId(long groupId, int start,
+		int end, OrderByComparator<MembershipRequest> orderByComparator) {
 		return findByGroupId(groupId, start, end, orderByComparator, true);
 	}
 
@@ -137,47 +161,44 @@ public class MembershipRequestPersistenceImpl
 	 * Returns an ordered range of all the membership requests where groupId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>MembershipRequestModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MembershipRequestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
 	 * @param start the lower bound of the range of membership requests
 	 * @param end the upper bound of the range of membership requests (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of matching membership requests
 	 */
 	@Override
-	public List<MembershipRequest> findByGroupId(
-		long groupId, int start, int end,
-		OrderByComparator<MembershipRequest> orderByComparator,
-		boolean useFinderCache) {
-
+	public List<MembershipRequest> findByGroupId(long groupId, int start,
+		int end, OrderByComparator<MembershipRequest> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByGroupId;
-				finderArgs = new Object[] {groupId};
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID;
+			finderArgs = new Object[] { groupId };
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByGroupId;
-			finderArgs = new Object[] {groupId, start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_GROUPID;
+			finderArgs = new Object[] { groupId, start, end, orderByComparator };
 		}
 
 		List<MembershipRequest> list = null;
 
-		if (useFinderCache) {
-			list = (List<MembershipRequest>)FinderCacheUtil.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<MembershipRequest>)finderCache.getResult(finderPath,
+					finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (MembershipRequest membershipRequest : list) {
-					if (groupId != membershipRequest.getGroupId()) {
+					if ((groupId != membershipRequest.getGroupId())) {
 						list = null;
 
 						break;
@@ -187,56 +208,63 @@ public class MembershipRequestPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					3 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(3 +
+						(orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				sb = new StringBundler(3);
+				query = new StringBundler(3);
 			}
 
-			sb.append(_SQL_SELECT_MEMBERSHIPREQUEST_WHERE);
+			query.append(_SQL_SELECT_MEMBERSHIPREQUEST_WHERE);
 
-			sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+			query.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 			}
-			else {
-				sb.append(MembershipRequestModelImpl.ORDER_BY_JPQL);
+			else
+			 if (pagination) {
+				query.append(MembershipRequestModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(groupId);
+				qPos.add(groupId);
 
-				list = (List<MembershipRequest>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<MembershipRequest>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<MembershipRequest>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					FinderCacheUtil.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -255,28 +283,26 @@ public class MembershipRequestPersistenceImpl
 	 * @throws NoSuchMembershipRequestException if a matching membership request could not be found
 	 */
 	@Override
-	public MembershipRequest findByGroupId_First(
-			long groupId,
-			OrderByComparator<MembershipRequest> orderByComparator)
+	public MembershipRequest findByGroupId_First(long groupId,
+		OrderByComparator<MembershipRequest> orderByComparator)
 		throws NoSuchMembershipRequestException {
-
-		MembershipRequest membershipRequest = fetchByGroupId_First(
-			groupId, orderByComparator);
+		MembershipRequest membershipRequest = fetchByGroupId_First(groupId,
+				orderByComparator);
 
 		if (membershipRequest != null) {
 			return membershipRequest;
 		}
 
-		StringBundler sb = new StringBundler(4);
+		StringBundler msg = new StringBundler(4);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("groupId=");
-		sb.append(groupId);
+		msg.append("groupId=");
+		msg.append(groupId);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMembershipRequestException(sb.toString());
+		throw new NoSuchMembershipRequestException(msg.toString());
 	}
 
 	/**
@@ -287,11 +313,10 @@ public class MembershipRequestPersistenceImpl
 	 * @return the first matching membership request, or <code>null</code> if a matching membership request could not be found
 	 */
 	@Override
-	public MembershipRequest fetchByGroupId_First(
-		long groupId, OrderByComparator<MembershipRequest> orderByComparator) {
-
-		List<MembershipRequest> list = findByGroupId(
-			groupId, 0, 1, orderByComparator);
+	public MembershipRequest fetchByGroupId_First(long groupId,
+		OrderByComparator<MembershipRequest> orderByComparator) {
+		List<MembershipRequest> list = findByGroupId(groupId, 0, 1,
+				orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -309,28 +334,26 @@ public class MembershipRequestPersistenceImpl
 	 * @throws NoSuchMembershipRequestException if a matching membership request could not be found
 	 */
 	@Override
-	public MembershipRequest findByGroupId_Last(
-			long groupId,
-			OrderByComparator<MembershipRequest> orderByComparator)
+	public MembershipRequest findByGroupId_Last(long groupId,
+		OrderByComparator<MembershipRequest> orderByComparator)
 		throws NoSuchMembershipRequestException {
-
-		MembershipRequest membershipRequest = fetchByGroupId_Last(
-			groupId, orderByComparator);
+		MembershipRequest membershipRequest = fetchByGroupId_Last(groupId,
+				orderByComparator);
 
 		if (membershipRequest != null) {
 			return membershipRequest;
 		}
 
-		StringBundler sb = new StringBundler(4);
+		StringBundler msg = new StringBundler(4);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("groupId=");
-		sb.append(groupId);
+		msg.append("groupId=");
+		msg.append(groupId);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMembershipRequestException(sb.toString());
+		throw new NoSuchMembershipRequestException(msg.toString());
 	}
 
 	/**
@@ -341,17 +364,16 @@ public class MembershipRequestPersistenceImpl
 	 * @return the last matching membership request, or <code>null</code> if a matching membership request could not be found
 	 */
 	@Override
-	public MembershipRequest fetchByGroupId_Last(
-		long groupId, OrderByComparator<MembershipRequest> orderByComparator) {
-
+	public MembershipRequest fetchByGroupId_Last(long groupId,
+		OrderByComparator<MembershipRequest> orderByComparator) {
 		int count = countByGroupId(groupId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<MembershipRequest> list = findByGroupId(
-			groupId, count - 1, count, orderByComparator);
+		List<MembershipRequest> list = findByGroupId(groupId, count - 1, count,
+				orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -371,12 +393,10 @@ public class MembershipRequestPersistenceImpl
 	 */
 	@Override
 	public MembershipRequest[] findByGroupId_PrevAndNext(
-			long membershipRequestId, long groupId,
-			OrderByComparator<MembershipRequest> orderByComparator)
+		long membershipRequestId, long groupId,
+		OrderByComparator<MembershipRequest> orderByComparator)
 		throws NoSuchMembershipRequestException {
-
-		MembershipRequest membershipRequest = findByPrimaryKey(
-			membershipRequestId);
+		MembershipRequest membershipRequest = findByPrimaryKey(membershipRequestId);
 
 		Session session = null;
 
@@ -385,125 +405,121 @@ public class MembershipRequestPersistenceImpl
 
 			MembershipRequest[] array = new MembershipRequestImpl[3];
 
-			array[0] = getByGroupId_PrevAndNext(
-				session, membershipRequest, groupId, orderByComparator, true);
+			array[0] = getByGroupId_PrevAndNext(session, membershipRequest,
+					groupId, orderByComparator, true);
 
 			array[1] = membershipRequest;
 
-			array[2] = getByGroupId_PrevAndNext(
-				session, membershipRequest, groupId, orderByComparator, false);
+			array[2] = getByGroupId_PrevAndNext(session, membershipRequest,
+					groupId, orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected MembershipRequest getByGroupId_PrevAndNext(
-		Session session, MembershipRequest membershipRequest, long groupId,
-		OrderByComparator<MembershipRequest> orderByComparator,
-		boolean previous) {
-
-		StringBundler sb = null;
+	protected MembershipRequest getByGroupId_PrevAndNext(Session session,
+		MembershipRequest membershipRequest, long groupId,
+		OrderByComparator<MembershipRequest> orderByComparator, boolean previous) {
+		StringBundler query = null;
 
 		if (orderByComparator != null) {
-			sb = new StringBundler(
-				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+			query = new StringBundler(4 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			sb = new StringBundler(3);
+			query = new StringBundler(3);
 		}
 
-		sb.append(_SQL_SELECT_MEMBERSHIPREQUEST_WHERE);
+		query.append(_SQL_SELECT_MEMBERSHIPREQUEST_WHERE);
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		query.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
+				query.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
+						query.append(WHERE_GREATER_THAN);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN);
+						query.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			sb.append(ORDER_BY_CLAUSE);
+			query.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
+						query.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
+						query.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
+						query.append(ORDER_BY_ASC);
 					}
 					else {
-						sb.append(ORDER_BY_DESC);
+						query.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			sb.append(MembershipRequestModelImpl.ORDER_BY_JPQL);
+			query.append(MembershipRequestModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
-		Query query = session.createQuery(sql);
+		Query q = session.createQuery(sql);
 
-		query.setFirstResult(0);
-		query.setMaxResults(2);
+		q.setFirstResult(0);
+		q.setMaxResults(2);
 
-		QueryPos queryPos = QueryPos.getInstance(query);
+		QueryPos qPos = QueryPos.getInstance(q);
 
-		queryPos.add(groupId);
+		qPos.add(groupId);
 
 		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						membershipRequest)) {
+			Object[] values = orderByComparator.getOrderByConditionValues(membershipRequest);
 
-				queryPos.add(orderByConditionValue);
+			for (Object value : values) {
+				qPos.add(value);
 			}
 		}
 
-		List<MembershipRequest> list = query.list();
+		List<MembershipRequest> list = q.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -520,10 +536,8 @@ public class MembershipRequestPersistenceImpl
 	 */
 	@Override
 	public void removeByGroupId(long groupId) {
-		for (MembershipRequest membershipRequest :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
-
+		for (MembershipRequest membershipRequest : findByGroupId(groupId,
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(membershipRequest);
 		}
 	}
@@ -536,41 +550,40 @@ public class MembershipRequestPersistenceImpl
 	 */
 	@Override
 	public int countByGroupId(long groupId) {
-		FinderPath finderPath = _finderPathCountByGroupId;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_GROUPID;
 
-		Object[] finderArgs = new Object[] {groupId};
+		Object[] finderArgs = new Object[] { groupId };
 
-		Long count = (Long)FinderCacheUtil.getResult(
-			finderPath, finderArgs, this);
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(2);
+			StringBundler query = new StringBundler(2);
 
-			sb.append(_SQL_COUNT_MEMBERSHIPREQUEST_WHERE);
+			query.append(_SQL_COUNT_MEMBERSHIPREQUEST_WHERE);
 
-			sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+			query.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(groupId);
+				qPos.add(groupId);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				FinderCacheUtil.putResult(finderPath, finderArgs, count);
+				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
-				FinderCacheUtil.removeResult(finderPath, finderArgs);
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -580,12 +593,29 @@ public class MembershipRequestPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2 =
-		"membershipRequest.groupId = ?";
-
-	private FinderPath _finderPathWithPaginationFindByUserId;
-	private FinderPath _finderPathWithoutPaginationFindByUserId;
-	private FinderPath _finderPathCountByUserId;
+	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2 = "membershipRequest.groupId = ?";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_USERID = new FinderPath(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
+			MembershipRequestImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUserId",
+			new String[] {
+				Long.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID =
+		new FinderPath(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
+			MembershipRequestImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUserId",
+			new String[] { Long.class.getName() },
+			MembershipRequestModelImpl.USERID_COLUMN_BITMASK |
+			MembershipRequestModelImpl.CREATEDATE_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_USERID = new FinderPath(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+			MembershipRequestModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
+			new String[] { Long.class.getName() });
 
 	/**
 	 * Returns all the membership requests where userId = &#63;.
@@ -602,7 +632,7 @@ public class MembershipRequestPersistenceImpl
 	 * Returns a range of all the membership requests where userId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>MembershipRequestModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MembershipRequestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param userId the user ID
@@ -611,9 +641,7 @@ public class MembershipRequestPersistenceImpl
 	 * @return the range of matching membership requests
 	 */
 	@Override
-	public List<MembershipRequest> findByUserId(
-		long userId, int start, int end) {
-
+	public List<MembershipRequest> findByUserId(long userId, int start, int end) {
 		return findByUserId(userId, start, end, null);
 	}
 
@@ -621,7 +649,7 @@ public class MembershipRequestPersistenceImpl
 	 * Returns an ordered range of all the membership requests where userId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>MembershipRequestModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MembershipRequestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param userId the user ID
@@ -631,10 +659,8 @@ public class MembershipRequestPersistenceImpl
 	 * @return the ordered range of matching membership requests
 	 */
 	@Override
-	public List<MembershipRequest> findByUserId(
-		long userId, int start, int end,
-		OrderByComparator<MembershipRequest> orderByComparator) {
-
+	public List<MembershipRequest> findByUserId(long userId, int start,
+		int end, OrderByComparator<MembershipRequest> orderByComparator) {
 		return findByUserId(userId, start, end, orderByComparator, true);
 	}
 
@@ -642,47 +668,44 @@ public class MembershipRequestPersistenceImpl
 	 * Returns an ordered range of all the membership requests where userId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>MembershipRequestModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MembershipRequestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param userId the user ID
 	 * @param start the lower bound of the range of membership requests
 	 * @param end the upper bound of the range of membership requests (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of matching membership requests
 	 */
 	@Override
-	public List<MembershipRequest> findByUserId(
-		long userId, int start, int end,
-		OrderByComparator<MembershipRequest> orderByComparator,
-		boolean useFinderCache) {
-
+	public List<MembershipRequest> findByUserId(long userId, int start,
+		int end, OrderByComparator<MembershipRequest> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByUserId;
-				finderArgs = new Object[] {userId};
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID;
+			finderArgs = new Object[] { userId };
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByUserId;
-			finderArgs = new Object[] {userId, start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_USERID;
+			finderArgs = new Object[] { userId, start, end, orderByComparator };
 		}
 
 		List<MembershipRequest> list = null;
 
-		if (useFinderCache) {
-			list = (List<MembershipRequest>)FinderCacheUtil.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<MembershipRequest>)finderCache.getResult(finderPath,
+					finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (MembershipRequest membershipRequest : list) {
-					if (userId != membershipRequest.getUserId()) {
+					if ((userId != membershipRequest.getUserId())) {
 						list = null;
 
 						break;
@@ -692,56 +715,63 @@ public class MembershipRequestPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					3 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(3 +
+						(orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				sb = new StringBundler(3);
+				query = new StringBundler(3);
 			}
 
-			sb.append(_SQL_SELECT_MEMBERSHIPREQUEST_WHERE);
+			query.append(_SQL_SELECT_MEMBERSHIPREQUEST_WHERE);
 
-			sb.append(_FINDER_COLUMN_USERID_USERID_2);
+			query.append(_FINDER_COLUMN_USERID_USERID_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 			}
-			else {
-				sb.append(MembershipRequestModelImpl.ORDER_BY_JPQL);
+			else
+			 if (pagination) {
+				query.append(MembershipRequestModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(userId);
+				qPos.add(userId);
 
-				list = (List<MembershipRequest>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<MembershipRequest>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<MembershipRequest>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					FinderCacheUtil.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -760,27 +790,26 @@ public class MembershipRequestPersistenceImpl
 	 * @throws NoSuchMembershipRequestException if a matching membership request could not be found
 	 */
 	@Override
-	public MembershipRequest findByUserId_First(
-			long userId, OrderByComparator<MembershipRequest> orderByComparator)
+	public MembershipRequest findByUserId_First(long userId,
+		OrderByComparator<MembershipRequest> orderByComparator)
 		throws NoSuchMembershipRequestException {
-
-		MembershipRequest membershipRequest = fetchByUserId_First(
-			userId, orderByComparator);
+		MembershipRequest membershipRequest = fetchByUserId_First(userId,
+				orderByComparator);
 
 		if (membershipRequest != null) {
 			return membershipRequest;
 		}
 
-		StringBundler sb = new StringBundler(4);
+		StringBundler msg = new StringBundler(4);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("userId=");
-		sb.append(userId);
+		msg.append("userId=");
+		msg.append(userId);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMembershipRequestException(sb.toString());
+		throw new NoSuchMembershipRequestException(msg.toString());
 	}
 
 	/**
@@ -791,11 +820,10 @@ public class MembershipRequestPersistenceImpl
 	 * @return the first matching membership request, or <code>null</code> if a matching membership request could not be found
 	 */
 	@Override
-	public MembershipRequest fetchByUserId_First(
-		long userId, OrderByComparator<MembershipRequest> orderByComparator) {
-
-		List<MembershipRequest> list = findByUserId(
-			userId, 0, 1, orderByComparator);
+	public MembershipRequest fetchByUserId_First(long userId,
+		OrderByComparator<MembershipRequest> orderByComparator) {
+		List<MembershipRequest> list = findByUserId(userId, 0, 1,
+				orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -813,27 +841,26 @@ public class MembershipRequestPersistenceImpl
 	 * @throws NoSuchMembershipRequestException if a matching membership request could not be found
 	 */
 	@Override
-	public MembershipRequest findByUserId_Last(
-			long userId, OrderByComparator<MembershipRequest> orderByComparator)
+	public MembershipRequest findByUserId_Last(long userId,
+		OrderByComparator<MembershipRequest> orderByComparator)
 		throws NoSuchMembershipRequestException {
-
-		MembershipRequest membershipRequest = fetchByUserId_Last(
-			userId, orderByComparator);
+		MembershipRequest membershipRequest = fetchByUserId_Last(userId,
+				orderByComparator);
 
 		if (membershipRequest != null) {
 			return membershipRequest;
 		}
 
-		StringBundler sb = new StringBundler(4);
+		StringBundler msg = new StringBundler(4);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("userId=");
-		sb.append(userId);
+		msg.append("userId=");
+		msg.append(userId);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMembershipRequestException(sb.toString());
+		throw new NoSuchMembershipRequestException(msg.toString());
 	}
 
 	/**
@@ -844,17 +871,16 @@ public class MembershipRequestPersistenceImpl
 	 * @return the last matching membership request, or <code>null</code> if a matching membership request could not be found
 	 */
 	@Override
-	public MembershipRequest fetchByUserId_Last(
-		long userId, OrderByComparator<MembershipRequest> orderByComparator) {
-
+	public MembershipRequest fetchByUserId_Last(long userId,
+		OrderByComparator<MembershipRequest> orderByComparator) {
 		int count = countByUserId(userId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<MembershipRequest> list = findByUserId(
-			userId, count - 1, count, orderByComparator);
+		List<MembershipRequest> list = findByUserId(userId, count - 1, count,
+				orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -874,12 +900,10 @@ public class MembershipRequestPersistenceImpl
 	 */
 	@Override
 	public MembershipRequest[] findByUserId_PrevAndNext(
-			long membershipRequestId, long userId,
-			OrderByComparator<MembershipRequest> orderByComparator)
+		long membershipRequestId, long userId,
+		OrderByComparator<MembershipRequest> orderByComparator)
 		throws NoSuchMembershipRequestException {
-
-		MembershipRequest membershipRequest = findByPrimaryKey(
-			membershipRequestId);
+		MembershipRequest membershipRequest = findByPrimaryKey(membershipRequestId);
 
 		Session session = null;
 
@@ -888,125 +912,121 @@ public class MembershipRequestPersistenceImpl
 
 			MembershipRequest[] array = new MembershipRequestImpl[3];
 
-			array[0] = getByUserId_PrevAndNext(
-				session, membershipRequest, userId, orderByComparator, true);
+			array[0] = getByUserId_PrevAndNext(session, membershipRequest,
+					userId, orderByComparator, true);
 
 			array[1] = membershipRequest;
 
-			array[2] = getByUserId_PrevAndNext(
-				session, membershipRequest, userId, orderByComparator, false);
+			array[2] = getByUserId_PrevAndNext(session, membershipRequest,
+					userId, orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected MembershipRequest getByUserId_PrevAndNext(
-		Session session, MembershipRequest membershipRequest, long userId,
-		OrderByComparator<MembershipRequest> orderByComparator,
-		boolean previous) {
-
-		StringBundler sb = null;
+	protected MembershipRequest getByUserId_PrevAndNext(Session session,
+		MembershipRequest membershipRequest, long userId,
+		OrderByComparator<MembershipRequest> orderByComparator, boolean previous) {
+		StringBundler query = null;
 
 		if (orderByComparator != null) {
-			sb = new StringBundler(
-				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+			query = new StringBundler(4 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			sb = new StringBundler(3);
+			query = new StringBundler(3);
 		}
 
-		sb.append(_SQL_SELECT_MEMBERSHIPREQUEST_WHERE);
+		query.append(_SQL_SELECT_MEMBERSHIPREQUEST_WHERE);
 
-		sb.append(_FINDER_COLUMN_USERID_USERID_2);
+		query.append(_FINDER_COLUMN_USERID_USERID_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
+				query.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
+						query.append(WHERE_GREATER_THAN);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN);
+						query.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			sb.append(ORDER_BY_CLAUSE);
+			query.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
+						query.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
+						query.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
+						query.append(ORDER_BY_ASC);
 					}
 					else {
-						sb.append(ORDER_BY_DESC);
+						query.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			sb.append(MembershipRequestModelImpl.ORDER_BY_JPQL);
+			query.append(MembershipRequestModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
-		Query query = session.createQuery(sql);
+		Query q = session.createQuery(sql);
 
-		query.setFirstResult(0);
-		query.setMaxResults(2);
+		q.setFirstResult(0);
+		q.setMaxResults(2);
 
-		QueryPos queryPos = QueryPos.getInstance(query);
+		QueryPos qPos = QueryPos.getInstance(q);
 
-		queryPos.add(userId);
+		qPos.add(userId);
 
 		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						membershipRequest)) {
+			Object[] values = orderByComparator.getOrderByConditionValues(membershipRequest);
 
-				queryPos.add(orderByConditionValue);
+			for (Object value : values) {
+				qPos.add(value);
 			}
 		}
 
-		List<MembershipRequest> list = query.list();
+		List<MembershipRequest> list = q.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -1023,10 +1043,8 @@ public class MembershipRequestPersistenceImpl
 	 */
 	@Override
 	public void removeByUserId(long userId) {
-		for (MembershipRequest membershipRequest :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
-
+		for (MembershipRequest membershipRequest : findByUserId(userId,
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(membershipRequest);
 		}
 	}
@@ -1039,41 +1057,40 @@ public class MembershipRequestPersistenceImpl
 	 */
 	@Override
 	public int countByUserId(long userId) {
-		FinderPath finderPath = _finderPathCountByUserId;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_USERID;
 
-		Object[] finderArgs = new Object[] {userId};
+		Object[] finderArgs = new Object[] { userId };
 
-		Long count = (Long)FinderCacheUtil.getResult(
-			finderPath, finderArgs, this);
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(2);
+			StringBundler query = new StringBundler(2);
 
-			sb.append(_SQL_COUNT_MEMBERSHIPREQUEST_WHERE);
+			query.append(_SQL_COUNT_MEMBERSHIPREQUEST_WHERE);
 
-			sb.append(_FINDER_COLUMN_USERID_USERID_2);
+			query.append(_FINDER_COLUMN_USERID_USERID_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(userId);
+				qPos.add(userId);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				FinderCacheUtil.putResult(finderPath, finderArgs, count);
+				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
-				FinderCacheUtil.removeResult(finderPath, finderArgs);
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1083,12 +1100,29 @@ public class MembershipRequestPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_USERID_USERID_2 =
-		"membershipRequest.userId = ?";
-
-	private FinderPath _finderPathWithPaginationFindByG_S;
-	private FinderPath _finderPathWithoutPaginationFindByG_S;
-	private FinderPath _finderPathCountByG_S;
+	private static final String _FINDER_COLUMN_USERID_USERID_2 = "membershipRequest.userId = ?";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_G_S = new FinderPath(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
+			MembershipRequestImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_S",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_S = new FinderPath(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
+			MembershipRequestImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_S",
+			new String[] { Long.class.getName(), Long.class.getName() },
+			MembershipRequestModelImpl.GROUPID_COLUMN_BITMASK |
+			MembershipRequestModelImpl.STATUSID_COLUMN_BITMASK |
+			MembershipRequestModelImpl.CREATEDATE_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_G_S = new FinderPath(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+			MembershipRequestModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_S",
+			new String[] { Long.class.getName(), Long.class.getName() });
 
 	/**
 	 * Returns all the membership requests where groupId = &#63; and statusId = &#63;.
@@ -1099,15 +1133,15 @@ public class MembershipRequestPersistenceImpl
 	 */
 	@Override
 	public List<MembershipRequest> findByG_S(long groupId, long statusId) {
-		return findByG_S(
-			groupId, statusId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+		return findByG_S(groupId, statusId, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the membership requests where groupId = &#63; and statusId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>MembershipRequestModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MembershipRequestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
@@ -1117,9 +1151,8 @@ public class MembershipRequestPersistenceImpl
 	 * @return the range of matching membership requests
 	 */
 	@Override
-	public List<MembershipRequest> findByG_S(
-		long groupId, long statusId, int start, int end) {
-
+	public List<MembershipRequest> findByG_S(long groupId, long statusId,
+		int start, int end) {
 		return findByG_S(groupId, statusId, start, end, null);
 	}
 
@@ -1127,7 +1160,7 @@ public class MembershipRequestPersistenceImpl
 	 * Returns an ordered range of all the membership requests where groupId = &#63; and statusId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>MembershipRequestModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MembershipRequestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
@@ -1138,19 +1171,17 @@ public class MembershipRequestPersistenceImpl
 	 * @return the ordered range of matching membership requests
 	 */
 	@Override
-	public List<MembershipRequest> findByG_S(
-		long groupId, long statusId, int start, int end,
+	public List<MembershipRequest> findByG_S(long groupId, long statusId,
+		int start, int end,
 		OrderByComparator<MembershipRequest> orderByComparator) {
-
-		return findByG_S(
-			groupId, statusId, start, end, orderByComparator, true);
+		return findByG_S(groupId, statusId, start, end, orderByComparator, true);
 	}
 
 	/**
 	 * Returns an ordered range of all the membership requests where groupId = &#63; and statusId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>MembershipRequestModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MembershipRequestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
@@ -1158,44 +1189,43 @@ public class MembershipRequestPersistenceImpl
 	 * @param start the lower bound of the range of membership requests
 	 * @param end the upper bound of the range of membership requests (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of matching membership requests
 	 */
 	@Override
-	public List<MembershipRequest> findByG_S(
-		long groupId, long statusId, int start, int end,
+	public List<MembershipRequest> findByG_S(long groupId, long statusId,
+		int start, int end,
 		OrderByComparator<MembershipRequest> orderByComparator,
-		boolean useFinderCache) {
-
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByG_S;
-				finderArgs = new Object[] {groupId, statusId};
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_S;
+			finderArgs = new Object[] { groupId, statusId };
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByG_S;
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_G_S;
 			finderArgs = new Object[] {
-				groupId, statusId, start, end, orderByComparator
-			};
+					groupId, statusId,
+					
+					start, end, orderByComparator
+				};
 		}
 
 		List<MembershipRequest> list = null;
 
-		if (useFinderCache) {
-			list = (List<MembershipRequest>)FinderCacheUtil.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<MembershipRequest>)finderCache.getResult(finderPath,
+					finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (MembershipRequest membershipRequest : list) {
 					if ((groupId != membershipRequest.getGroupId()) ||
-						(statusId != membershipRequest.getStatusId())) {
-
+							(statusId != membershipRequest.getStatusId())) {
 						list = null;
 
 						break;
@@ -1205,60 +1235,67 @@ public class MembershipRequestPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					4 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(4 +
+						(orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				sb = new StringBundler(4);
+				query = new StringBundler(4);
 			}
 
-			sb.append(_SQL_SELECT_MEMBERSHIPREQUEST_WHERE);
+			query.append(_SQL_SELECT_MEMBERSHIPREQUEST_WHERE);
 
-			sb.append(_FINDER_COLUMN_G_S_GROUPID_2);
+			query.append(_FINDER_COLUMN_G_S_GROUPID_2);
 
-			sb.append(_FINDER_COLUMN_G_S_STATUSID_2);
+			query.append(_FINDER_COLUMN_G_S_STATUSID_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 			}
-			else {
-				sb.append(MembershipRequestModelImpl.ORDER_BY_JPQL);
+			else
+			 if (pagination) {
+				query.append(MembershipRequestModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(groupId);
+				qPos.add(groupId);
 
-				queryPos.add(statusId);
+				qPos.add(statusId);
 
-				list = (List<MembershipRequest>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<MembershipRequest>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<MembershipRequest>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					FinderCacheUtil.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1278,31 +1315,29 @@ public class MembershipRequestPersistenceImpl
 	 * @throws NoSuchMembershipRequestException if a matching membership request could not be found
 	 */
 	@Override
-	public MembershipRequest findByG_S_First(
-			long groupId, long statusId,
-			OrderByComparator<MembershipRequest> orderByComparator)
+	public MembershipRequest findByG_S_First(long groupId, long statusId,
+		OrderByComparator<MembershipRequest> orderByComparator)
 		throws NoSuchMembershipRequestException {
-
-		MembershipRequest membershipRequest = fetchByG_S_First(
-			groupId, statusId, orderByComparator);
+		MembershipRequest membershipRequest = fetchByG_S_First(groupId,
+				statusId, orderByComparator);
 
 		if (membershipRequest != null) {
 			return membershipRequest;
 		}
 
-		StringBundler sb = new StringBundler(6);
+		StringBundler msg = new StringBundler(6);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("groupId=");
-		sb.append(groupId);
+		msg.append("groupId=");
+		msg.append(groupId);
 
-		sb.append(", statusId=");
-		sb.append(statusId);
+		msg.append(", statusId=");
+		msg.append(statusId);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMembershipRequestException(sb.toString());
+		throw new NoSuchMembershipRequestException(msg.toString());
 	}
 
 	/**
@@ -1314,12 +1349,10 @@ public class MembershipRequestPersistenceImpl
 	 * @return the first matching membership request, or <code>null</code> if a matching membership request could not be found
 	 */
 	@Override
-	public MembershipRequest fetchByG_S_First(
-		long groupId, long statusId,
+	public MembershipRequest fetchByG_S_First(long groupId, long statusId,
 		OrderByComparator<MembershipRequest> orderByComparator) {
-
-		List<MembershipRequest> list = findByG_S(
-			groupId, statusId, 0, 1, orderByComparator);
+		List<MembershipRequest> list = findByG_S(groupId, statusId, 0, 1,
+				orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -1338,31 +1371,29 @@ public class MembershipRequestPersistenceImpl
 	 * @throws NoSuchMembershipRequestException if a matching membership request could not be found
 	 */
 	@Override
-	public MembershipRequest findByG_S_Last(
-			long groupId, long statusId,
-			OrderByComparator<MembershipRequest> orderByComparator)
+	public MembershipRequest findByG_S_Last(long groupId, long statusId,
+		OrderByComparator<MembershipRequest> orderByComparator)
 		throws NoSuchMembershipRequestException {
-
-		MembershipRequest membershipRequest = fetchByG_S_Last(
-			groupId, statusId, orderByComparator);
+		MembershipRequest membershipRequest = fetchByG_S_Last(groupId,
+				statusId, orderByComparator);
 
 		if (membershipRequest != null) {
 			return membershipRequest;
 		}
 
-		StringBundler sb = new StringBundler(6);
+		StringBundler msg = new StringBundler(6);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("groupId=");
-		sb.append(groupId);
+		msg.append("groupId=");
+		msg.append(groupId);
 
-		sb.append(", statusId=");
-		sb.append(statusId);
+		msg.append(", statusId=");
+		msg.append(statusId);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMembershipRequestException(sb.toString());
+		throw new NoSuchMembershipRequestException(msg.toString());
 	}
 
 	/**
@@ -1374,18 +1405,16 @@ public class MembershipRequestPersistenceImpl
 	 * @return the last matching membership request, or <code>null</code> if a matching membership request could not be found
 	 */
 	@Override
-	public MembershipRequest fetchByG_S_Last(
-		long groupId, long statusId,
+	public MembershipRequest fetchByG_S_Last(long groupId, long statusId,
 		OrderByComparator<MembershipRequest> orderByComparator) {
-
 		int count = countByG_S(groupId, statusId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<MembershipRequest> list = findByG_S(
-			groupId, statusId, count - 1, count, orderByComparator);
+		List<MembershipRequest> list = findByG_S(groupId, statusId, count - 1,
+				count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -1405,13 +1434,11 @@ public class MembershipRequestPersistenceImpl
 	 * @throws NoSuchMembershipRequestException if a membership request with the primary key could not be found
 	 */
 	@Override
-	public MembershipRequest[] findByG_S_PrevAndNext(
-			long membershipRequestId, long groupId, long statusId,
-			OrderByComparator<MembershipRequest> orderByComparator)
+	public MembershipRequest[] findByG_S_PrevAndNext(long membershipRequestId,
+		long groupId, long statusId,
+		OrderByComparator<MembershipRequest> orderByComparator)
 		throws NoSuchMembershipRequestException {
-
-		MembershipRequest membershipRequest = findByPrimaryKey(
-			membershipRequestId);
+		MembershipRequest membershipRequest = findByPrimaryKey(membershipRequestId);
 
 		Session session = null;
 
@@ -1420,131 +1447,125 @@ public class MembershipRequestPersistenceImpl
 
 			MembershipRequest[] array = new MembershipRequestImpl[3];
 
-			array[0] = getByG_S_PrevAndNext(
-				session, membershipRequest, groupId, statusId,
-				orderByComparator, true);
+			array[0] = getByG_S_PrevAndNext(session, membershipRequest,
+					groupId, statusId, orderByComparator, true);
 
 			array[1] = membershipRequest;
 
-			array[2] = getByG_S_PrevAndNext(
-				session, membershipRequest, groupId, statusId,
-				orderByComparator, false);
+			array[2] = getByG_S_PrevAndNext(session, membershipRequest,
+					groupId, statusId, orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected MembershipRequest getByG_S_PrevAndNext(
-		Session session, MembershipRequest membershipRequest, long groupId,
-		long statusId, OrderByComparator<MembershipRequest> orderByComparator,
-		boolean previous) {
-
-		StringBundler sb = null;
+	protected MembershipRequest getByG_S_PrevAndNext(Session session,
+		MembershipRequest membershipRequest, long groupId, long statusId,
+		OrderByComparator<MembershipRequest> orderByComparator, boolean previous) {
+		StringBundler query = null;
 
 		if (orderByComparator != null) {
-			sb = new StringBundler(
-				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
+			query = new StringBundler(5 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			sb = new StringBundler(4);
+			query = new StringBundler(4);
 		}
 
-		sb.append(_SQL_SELECT_MEMBERSHIPREQUEST_WHERE);
+		query.append(_SQL_SELECT_MEMBERSHIPREQUEST_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_S_GROUPID_2);
+		query.append(_FINDER_COLUMN_G_S_GROUPID_2);
 
-		sb.append(_FINDER_COLUMN_G_S_STATUSID_2);
+		query.append(_FINDER_COLUMN_G_S_STATUSID_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
+				query.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
+						query.append(WHERE_GREATER_THAN);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN);
+						query.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			sb.append(ORDER_BY_CLAUSE);
+			query.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
+						query.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
+						query.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
+						query.append(ORDER_BY_ASC);
 					}
 					else {
-						sb.append(ORDER_BY_DESC);
+						query.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			sb.append(MembershipRequestModelImpl.ORDER_BY_JPQL);
+			query.append(MembershipRequestModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
-		Query query = session.createQuery(sql);
+		Query q = session.createQuery(sql);
 
-		query.setFirstResult(0);
-		query.setMaxResults(2);
+		q.setFirstResult(0);
+		q.setMaxResults(2);
 
-		QueryPos queryPos = QueryPos.getInstance(query);
+		QueryPos qPos = QueryPos.getInstance(q);
 
-		queryPos.add(groupId);
+		qPos.add(groupId);
 
-		queryPos.add(statusId);
+		qPos.add(statusId);
 
 		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						membershipRequest)) {
+			Object[] values = orderByComparator.getOrderByConditionValues(membershipRequest);
 
-				queryPos.add(orderByConditionValue);
+			for (Object value : values) {
+				qPos.add(value);
 			}
 		}
 
-		List<MembershipRequest> list = query.list();
+		List<MembershipRequest> list = q.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -1562,11 +1583,8 @@ public class MembershipRequestPersistenceImpl
 	 */
 	@Override
 	public void removeByG_S(long groupId, long statusId) {
-		for (MembershipRequest membershipRequest :
-				findByG_S(
-					groupId, statusId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
-
+		for (MembershipRequest membershipRequest : findByG_S(groupId, statusId,
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(membershipRequest);
 		}
 	}
@@ -1580,45 +1598,44 @@ public class MembershipRequestPersistenceImpl
 	 */
 	@Override
 	public int countByG_S(long groupId, long statusId) {
-		FinderPath finderPath = _finderPathCountByG_S;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_S;
 
-		Object[] finderArgs = new Object[] {groupId, statusId};
+		Object[] finderArgs = new Object[] { groupId, statusId };
 
-		Long count = (Long)FinderCacheUtil.getResult(
-			finderPath, finderArgs, this);
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(3);
+			StringBundler query = new StringBundler(3);
 
-			sb.append(_SQL_COUNT_MEMBERSHIPREQUEST_WHERE);
+			query.append(_SQL_COUNT_MEMBERSHIPREQUEST_WHERE);
 
-			sb.append(_FINDER_COLUMN_G_S_GROUPID_2);
+			query.append(_FINDER_COLUMN_G_S_GROUPID_2);
 
-			sb.append(_FINDER_COLUMN_G_S_STATUSID_2);
+			query.append(_FINDER_COLUMN_G_S_STATUSID_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(groupId);
+				qPos.add(groupId);
 
-				queryPos.add(statusId);
+				qPos.add(statusId);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				FinderCacheUtil.putResult(finderPath, finderArgs, count);
+				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
-				FinderCacheUtil.removeResult(finderPath, finderArgs);
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1628,15 +1645,35 @@ public class MembershipRequestPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_G_S_GROUPID_2 =
-		"membershipRequest.groupId = ? AND ";
-
-	private static final String _FINDER_COLUMN_G_S_STATUSID_2 =
-		"membershipRequest.statusId = ?";
-
-	private FinderPath _finderPathWithPaginationFindByG_U_S;
-	private FinderPath _finderPathWithoutPaginationFindByG_U_S;
-	private FinderPath _finderPathCountByG_U_S;
+	private static final String _FINDER_COLUMN_G_S_GROUPID_2 = "membershipRequest.groupId = ? AND ";
+	private static final String _FINDER_COLUMN_G_S_STATUSID_2 = "membershipRequest.statusId = ?";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_G_U_S = new FinderPath(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
+			MembershipRequestImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_U_S",
+			new String[] {
+				Long.class.getName(), Long.class.getName(), Long.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_U_S = new FinderPath(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
+			MembershipRequestImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_U_S",
+			new String[] {
+				Long.class.getName(), Long.class.getName(), Long.class.getName()
+			},
+			MembershipRequestModelImpl.GROUPID_COLUMN_BITMASK |
+			MembershipRequestModelImpl.USERID_COLUMN_BITMASK |
+			MembershipRequestModelImpl.STATUSID_COLUMN_BITMASK |
+			MembershipRequestModelImpl.CREATEDATE_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_G_U_S = new FinderPath(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+			MembershipRequestModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_U_S",
+			new String[] {
+				Long.class.getName(), Long.class.getName(), Long.class.getName()
+			});
 
 	/**
 	 * Returns all the membership requests where groupId = &#63; and userId = &#63; and statusId = &#63;.
@@ -1647,19 +1684,17 @@ public class MembershipRequestPersistenceImpl
 	 * @return the matching membership requests
 	 */
 	@Override
-	public List<MembershipRequest> findByG_U_S(
-		long groupId, long userId, long statusId) {
-
-		return findByG_U_S(
-			groupId, userId, statusId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			null);
+	public List<MembershipRequest> findByG_U_S(long groupId, long userId,
+		long statusId) {
+		return findByG_U_S(groupId, userId, statusId, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the membership requests where groupId = &#63; and userId = &#63; and statusId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>MembershipRequestModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MembershipRequestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
@@ -1670,9 +1705,8 @@ public class MembershipRequestPersistenceImpl
 	 * @return the range of matching membership requests
 	 */
 	@Override
-	public List<MembershipRequest> findByG_U_S(
-		long groupId, long userId, long statusId, int start, int end) {
-
+	public List<MembershipRequest> findByG_U_S(long groupId, long userId,
+		long statusId, int start, int end) {
 		return findByG_U_S(groupId, userId, statusId, start, end, null);
 	}
 
@@ -1680,7 +1714,7 @@ public class MembershipRequestPersistenceImpl
 	 * Returns an ordered range of all the membership requests where groupId = &#63; and userId = &#63; and statusId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>MembershipRequestModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MembershipRequestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
@@ -1692,19 +1726,18 @@ public class MembershipRequestPersistenceImpl
 	 * @return the ordered range of matching membership requests
 	 */
 	@Override
-	public List<MembershipRequest> findByG_U_S(
-		long groupId, long userId, long statusId, int start, int end,
+	public List<MembershipRequest> findByG_U_S(long groupId, long userId,
+		long statusId, int start, int end,
 		OrderByComparator<MembershipRequest> orderByComparator) {
-
-		return findByG_U_S(
-			groupId, userId, statusId, start, end, orderByComparator, true);
+		return findByG_U_S(groupId, userId, statusId, start, end,
+			orderByComparator, true);
 	}
 
 	/**
 	 * Returns an ordered range of all the membership requests where groupId = &#63; and userId = &#63; and statusId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>MembershipRequestModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MembershipRequestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param groupId the group ID
@@ -1713,45 +1746,44 @@ public class MembershipRequestPersistenceImpl
 	 * @param start the lower bound of the range of membership requests
 	 * @param end the upper bound of the range of membership requests (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of matching membership requests
 	 */
 	@Override
-	public List<MembershipRequest> findByG_U_S(
-		long groupId, long userId, long statusId, int start, int end,
+	public List<MembershipRequest> findByG_U_S(long groupId, long userId,
+		long statusId, int start, int end,
 		OrderByComparator<MembershipRequest> orderByComparator,
-		boolean useFinderCache) {
-
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByG_U_S;
-				finderArgs = new Object[] {groupId, userId, statusId};
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_U_S;
+			finderArgs = new Object[] { groupId, userId, statusId };
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByG_U_S;
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_G_U_S;
 			finderArgs = new Object[] {
-				groupId, userId, statusId, start, end, orderByComparator
-			};
+					groupId, userId, statusId,
+					
+					start, end, orderByComparator
+				};
 		}
 
 		List<MembershipRequest> list = null;
 
-		if (useFinderCache) {
-			list = (List<MembershipRequest>)FinderCacheUtil.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<MembershipRequest>)finderCache.getResult(finderPath,
+					finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (MembershipRequest membershipRequest : list) {
 					if ((groupId != membershipRequest.getGroupId()) ||
-						(userId != membershipRequest.getUserId()) ||
-						(statusId != membershipRequest.getStatusId())) {
-
+							(userId != membershipRequest.getUserId()) ||
+							(statusId != membershipRequest.getStatusId())) {
 						list = null;
 
 						break;
@@ -1761,64 +1793,71 @@ public class MembershipRequestPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					5 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(5 +
+						(orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				sb = new StringBundler(5);
+				query = new StringBundler(5);
 			}
 
-			sb.append(_SQL_SELECT_MEMBERSHIPREQUEST_WHERE);
+			query.append(_SQL_SELECT_MEMBERSHIPREQUEST_WHERE);
 
-			sb.append(_FINDER_COLUMN_G_U_S_GROUPID_2);
+			query.append(_FINDER_COLUMN_G_U_S_GROUPID_2);
 
-			sb.append(_FINDER_COLUMN_G_U_S_USERID_2);
+			query.append(_FINDER_COLUMN_G_U_S_USERID_2);
 
-			sb.append(_FINDER_COLUMN_G_U_S_STATUSID_2);
+			query.append(_FINDER_COLUMN_G_U_S_STATUSID_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 			}
-			else {
-				sb.append(MembershipRequestModelImpl.ORDER_BY_JPQL);
+			else
+			 if (pagination) {
+				query.append(MembershipRequestModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(groupId);
+				qPos.add(groupId);
 
-				queryPos.add(userId);
+				qPos.add(userId);
 
-				queryPos.add(statusId);
+				qPos.add(statusId);
 
-				list = (List<MembershipRequest>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<MembershipRequest>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<MembershipRequest>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					FinderCacheUtil.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1839,34 +1878,32 @@ public class MembershipRequestPersistenceImpl
 	 * @throws NoSuchMembershipRequestException if a matching membership request could not be found
 	 */
 	@Override
-	public MembershipRequest findByG_U_S_First(
-			long groupId, long userId, long statusId,
-			OrderByComparator<MembershipRequest> orderByComparator)
+	public MembershipRequest findByG_U_S_First(long groupId, long userId,
+		long statusId, OrderByComparator<MembershipRequest> orderByComparator)
 		throws NoSuchMembershipRequestException {
-
-		MembershipRequest membershipRequest = fetchByG_U_S_First(
-			groupId, userId, statusId, orderByComparator);
+		MembershipRequest membershipRequest = fetchByG_U_S_First(groupId,
+				userId, statusId, orderByComparator);
 
 		if (membershipRequest != null) {
 			return membershipRequest;
 		}
 
-		StringBundler sb = new StringBundler(8);
+		StringBundler msg = new StringBundler(8);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("groupId=");
-		sb.append(groupId);
+		msg.append("groupId=");
+		msg.append(groupId);
 
-		sb.append(", userId=");
-		sb.append(userId);
+		msg.append(", userId=");
+		msg.append(userId);
 
-		sb.append(", statusId=");
-		sb.append(statusId);
+		msg.append(", statusId=");
+		msg.append(statusId);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMembershipRequestException(sb.toString());
+		throw new NoSuchMembershipRequestException(msg.toString());
 	}
 
 	/**
@@ -1879,12 +1916,10 @@ public class MembershipRequestPersistenceImpl
 	 * @return the first matching membership request, or <code>null</code> if a matching membership request could not be found
 	 */
 	@Override
-	public MembershipRequest fetchByG_U_S_First(
-		long groupId, long userId, long statusId,
-		OrderByComparator<MembershipRequest> orderByComparator) {
-
-		List<MembershipRequest> list = findByG_U_S(
-			groupId, userId, statusId, 0, 1, orderByComparator);
+	public MembershipRequest fetchByG_U_S_First(long groupId, long userId,
+		long statusId, OrderByComparator<MembershipRequest> orderByComparator) {
+		List<MembershipRequest> list = findByG_U_S(groupId, userId, statusId,
+				0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -1904,34 +1939,32 @@ public class MembershipRequestPersistenceImpl
 	 * @throws NoSuchMembershipRequestException if a matching membership request could not be found
 	 */
 	@Override
-	public MembershipRequest findByG_U_S_Last(
-			long groupId, long userId, long statusId,
-			OrderByComparator<MembershipRequest> orderByComparator)
+	public MembershipRequest findByG_U_S_Last(long groupId, long userId,
+		long statusId, OrderByComparator<MembershipRequest> orderByComparator)
 		throws NoSuchMembershipRequestException {
-
-		MembershipRequest membershipRequest = fetchByG_U_S_Last(
-			groupId, userId, statusId, orderByComparator);
+		MembershipRequest membershipRequest = fetchByG_U_S_Last(groupId,
+				userId, statusId, orderByComparator);
 
 		if (membershipRequest != null) {
 			return membershipRequest;
 		}
 
-		StringBundler sb = new StringBundler(8);
+		StringBundler msg = new StringBundler(8);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("groupId=");
-		sb.append(groupId);
+		msg.append("groupId=");
+		msg.append(groupId);
 
-		sb.append(", userId=");
-		sb.append(userId);
+		msg.append(", userId=");
+		msg.append(userId);
 
-		sb.append(", statusId=");
-		sb.append(statusId);
+		msg.append(", statusId=");
+		msg.append(statusId);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMembershipRequestException(sb.toString());
+		throw new NoSuchMembershipRequestException(msg.toString());
 	}
 
 	/**
@@ -1944,18 +1977,16 @@ public class MembershipRequestPersistenceImpl
 	 * @return the last matching membership request, or <code>null</code> if a matching membership request could not be found
 	 */
 	@Override
-	public MembershipRequest fetchByG_U_S_Last(
-		long groupId, long userId, long statusId,
-		OrderByComparator<MembershipRequest> orderByComparator) {
-
+	public MembershipRequest fetchByG_U_S_Last(long groupId, long userId,
+		long statusId, OrderByComparator<MembershipRequest> orderByComparator) {
 		int count = countByG_U_S(groupId, userId, statusId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<MembershipRequest> list = findByG_U_S(
-			groupId, userId, statusId, count - 1, count, orderByComparator);
+		List<MembershipRequest> list = findByG_U_S(groupId, userId, statusId,
+				count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -1977,12 +2008,10 @@ public class MembershipRequestPersistenceImpl
 	 */
 	@Override
 	public MembershipRequest[] findByG_U_S_PrevAndNext(
-			long membershipRequestId, long groupId, long userId, long statusId,
-			OrderByComparator<MembershipRequest> orderByComparator)
+		long membershipRequestId, long groupId, long userId, long statusId,
+		OrderByComparator<MembershipRequest> orderByComparator)
 		throws NoSuchMembershipRequestException {
-
-		MembershipRequest membershipRequest = findByPrimaryKey(
-			membershipRequestId);
+		MembershipRequest membershipRequest = findByPrimaryKey(membershipRequestId);
 
 		Session session = null;
 
@@ -1991,136 +2020,130 @@ public class MembershipRequestPersistenceImpl
 
 			MembershipRequest[] array = new MembershipRequestImpl[3];
 
-			array[0] = getByG_U_S_PrevAndNext(
-				session, membershipRequest, groupId, userId, statusId,
-				orderByComparator, true);
+			array[0] = getByG_U_S_PrevAndNext(session, membershipRequest,
+					groupId, userId, statusId, orderByComparator, true);
 
 			array[1] = membershipRequest;
 
-			array[2] = getByG_U_S_PrevAndNext(
-				session, membershipRequest, groupId, userId, statusId,
-				orderByComparator, false);
+			array[2] = getByG_U_S_PrevAndNext(session, membershipRequest,
+					groupId, userId, statusId, orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected MembershipRequest getByG_U_S_PrevAndNext(
-		Session session, MembershipRequest membershipRequest, long groupId,
-		long userId, long statusId,
-		OrderByComparator<MembershipRequest> orderByComparator,
+	protected MembershipRequest getByG_U_S_PrevAndNext(Session session,
+		MembershipRequest membershipRequest, long groupId, long userId,
+		long statusId, OrderByComparator<MembershipRequest> orderByComparator,
 		boolean previous) {
-
-		StringBundler sb = null;
+		StringBundler query = null;
 
 		if (orderByComparator != null) {
-			sb = new StringBundler(
-				6 + (orderByComparator.getOrderByConditionFields().length * 3) +
+			query = new StringBundler(6 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			sb = new StringBundler(5);
+			query = new StringBundler(5);
 		}
 
-		sb.append(_SQL_SELECT_MEMBERSHIPREQUEST_WHERE);
+		query.append(_SQL_SELECT_MEMBERSHIPREQUEST_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_U_S_GROUPID_2);
+		query.append(_FINDER_COLUMN_G_U_S_GROUPID_2);
 
-		sb.append(_FINDER_COLUMN_G_U_S_USERID_2);
+		query.append(_FINDER_COLUMN_G_U_S_USERID_2);
 
-		sb.append(_FINDER_COLUMN_G_U_S_STATUSID_2);
+		query.append(_FINDER_COLUMN_G_U_S_STATUSID_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
+				query.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
+						query.append(WHERE_GREATER_THAN);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN);
+						query.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			sb.append(ORDER_BY_CLAUSE);
+			query.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
+						query.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
+						query.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
+						query.append(ORDER_BY_ASC);
 					}
 					else {
-						sb.append(ORDER_BY_DESC);
+						query.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			sb.append(MembershipRequestModelImpl.ORDER_BY_JPQL);
+			query.append(MembershipRequestModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
-		Query query = session.createQuery(sql);
+		Query q = session.createQuery(sql);
 
-		query.setFirstResult(0);
-		query.setMaxResults(2);
+		q.setFirstResult(0);
+		q.setMaxResults(2);
 
-		QueryPos queryPos = QueryPos.getInstance(query);
+		QueryPos qPos = QueryPos.getInstance(q);
 
-		queryPos.add(groupId);
+		qPos.add(groupId);
 
-		queryPos.add(userId);
+		qPos.add(userId);
 
-		queryPos.add(statusId);
+		qPos.add(statusId);
 
 		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						membershipRequest)) {
+			Object[] values = orderByComparator.getOrderByConditionValues(membershipRequest);
 
-				queryPos.add(orderByConditionValue);
+			for (Object value : values) {
+				qPos.add(value);
 			}
 		}
 
-		List<MembershipRequest> list = query.list();
+		List<MembershipRequest> list = q.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -2139,11 +2162,8 @@ public class MembershipRequestPersistenceImpl
 	 */
 	@Override
 	public void removeByG_U_S(long groupId, long userId, long statusId) {
-		for (MembershipRequest membershipRequest :
-				findByG_U_S(
-					groupId, userId, statusId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
-
+		for (MembershipRequest membershipRequest : findByG_U_S(groupId, userId,
+				statusId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(membershipRequest);
 		}
 	}
@@ -2158,49 +2178,48 @@ public class MembershipRequestPersistenceImpl
 	 */
 	@Override
 	public int countByG_U_S(long groupId, long userId, long statusId) {
-		FinderPath finderPath = _finderPathCountByG_U_S;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_U_S;
 
-		Object[] finderArgs = new Object[] {groupId, userId, statusId};
+		Object[] finderArgs = new Object[] { groupId, userId, statusId };
 
-		Long count = (Long)FinderCacheUtil.getResult(
-			finderPath, finderArgs, this);
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(4);
+			StringBundler query = new StringBundler(4);
 
-			sb.append(_SQL_COUNT_MEMBERSHIPREQUEST_WHERE);
+			query.append(_SQL_COUNT_MEMBERSHIPREQUEST_WHERE);
 
-			sb.append(_FINDER_COLUMN_G_U_S_GROUPID_2);
+			query.append(_FINDER_COLUMN_G_U_S_GROUPID_2);
 
-			sb.append(_FINDER_COLUMN_G_U_S_USERID_2);
+			query.append(_FINDER_COLUMN_G_U_S_USERID_2);
 
-			sb.append(_FINDER_COLUMN_G_U_S_STATUSID_2);
+			query.append(_FINDER_COLUMN_G_U_S_STATUSID_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(groupId);
+				qPos.add(groupId);
 
-				queryPos.add(userId);
+				qPos.add(userId);
 
-				queryPos.add(statusId);
+				qPos.add(statusId);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				FinderCacheUtil.putResult(finderPath, finderArgs, count);
+				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
-				FinderCacheUtil.removeResult(finderPath, finderArgs);
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -2210,14 +2229,9 @@ public class MembershipRequestPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_G_U_S_GROUPID_2 =
-		"membershipRequest.groupId = ? AND ";
-
-	private static final String _FINDER_COLUMN_G_U_S_USERID_2 =
-		"membershipRequest.userId = ? AND ";
-
-	private static final String _FINDER_COLUMN_G_U_S_STATUSID_2 =
-		"membershipRequest.statusId = ?";
+	private static final String _FINDER_COLUMN_G_U_S_GROUPID_2 = "membershipRequest.groupId = ? AND ";
+	private static final String _FINDER_COLUMN_G_U_S_USERID_2 = "membershipRequest.userId = ? AND ";
+	private static final String _FINDER_COLUMN_G_U_S_STATUSID_2 = "membershipRequest.statusId = ?";
 
 	public MembershipRequestPersistenceImpl() {
 		setModelClass(MembershipRequest.class);
@@ -2230,8 +2244,7 @@ public class MembershipRequestPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(MembershipRequest membershipRequest) {
-		EntityCacheUtil.putResult(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
 			MembershipRequestImpl.class, membershipRequest.getPrimaryKey(),
 			membershipRequest);
 
@@ -2246,11 +2259,10 @@ public class MembershipRequestPersistenceImpl
 	@Override
 	public void cacheResult(List<MembershipRequest> membershipRequests) {
 		for (MembershipRequest membershipRequest : membershipRequests) {
-			if (EntityCacheUtil.getResult(
-					MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-					MembershipRequestImpl.class,
-					membershipRequest.getPrimaryKey()) == null) {
-
+			if (entityCache.getResult(
+						MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+						MembershipRequestImpl.class,
+						membershipRequest.getPrimaryKey()) == null) {
 				cacheResult(membershipRequest);
 			}
 			else {
@@ -2263,56 +2275,42 @@ public class MembershipRequestPersistenceImpl
 	 * Clears the cache for all membership requests.
 	 *
 	 * <p>
-	 * The <code>com.liferay.portal.kernel.dao.orm.EntityCache</code> and <code>com.liferay.portal.kernel.dao.orm.FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache() {
-		EntityCacheUtil.clearCache(MembershipRequestImpl.class);
+		entityCache.clearCache(MembershipRequestImpl.class);
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
 	 * Clears the cache for the membership request.
 	 *
 	 * <p>
-	 * The <code>com.liferay.portal.kernel.dao.orm.EntityCache</code> and <code>com.liferay.portal.kernel.dao.orm.FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(MembershipRequest membershipRequest) {
-		EntityCacheUtil.removeResult(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
 			MembershipRequestImpl.class, membershipRequest.getPrimaryKey());
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override
 	public void clearCache(List<MembershipRequest> membershipRequests) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (MembershipRequest membershipRequest : membershipRequests) {
-			EntityCacheUtil.removeResult(
-				MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
 				MembershipRequestImpl.class, membershipRequest.getPrimaryKey());
-		}
-	}
-
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-				MembershipRequestImpl.class, primaryKey);
 		}
 	}
 
@@ -2329,7 +2327,7 @@ public class MembershipRequestPersistenceImpl
 		membershipRequest.setNew(true);
 		membershipRequest.setPrimaryKey(membershipRequestId);
 
-		membershipRequest.setCompanyId(CompanyThreadLocal.getCompanyId());
+		membershipRequest.setCompanyId(companyProvider.getCompanyId());
 
 		return membershipRequest;
 	}
@@ -2344,7 +2342,6 @@ public class MembershipRequestPersistenceImpl
 	@Override
 	public MembershipRequest remove(long membershipRequestId)
 		throws NoSuchMembershipRequestException {
-
 		return remove((Serializable)membershipRequestId);
 	}
 
@@ -2358,32 +2355,30 @@ public class MembershipRequestPersistenceImpl
 	@Override
 	public MembershipRequest remove(Serializable primaryKey)
 		throws NoSuchMembershipRequestException {
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			MembershipRequest membershipRequest =
-				(MembershipRequest)session.get(
-					MembershipRequestImpl.class, primaryKey);
+			MembershipRequest membershipRequest = (MembershipRequest)session.get(MembershipRequestImpl.class,
+					primaryKey);
 
 			if (membershipRequest == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchMembershipRequestException(
-					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				throw new NoSuchMembershipRequestException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+					primaryKey);
 			}
 
 			return remove(membershipRequest);
 		}
-		catch (NoSuchMembershipRequestException noSuchEntityException) {
-			throw noSuchEntityException;
+		catch (NoSuchMembershipRequestException nsee) {
+			throw nsee;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -2391,8 +2386,8 @@ public class MembershipRequestPersistenceImpl
 	}
 
 	@Override
-	protected MembershipRequest removeImpl(
-		MembershipRequest membershipRequest) {
+	protected MembershipRequest removeImpl(MembershipRequest membershipRequest) {
+		membershipRequest = toUnwrappedModel(membershipRequest);
 
 		Session session = null;
 
@@ -2400,17 +2395,16 @@ public class MembershipRequestPersistenceImpl
 			session = openSession();
 
 			if (!session.contains(membershipRequest)) {
-				membershipRequest = (MembershipRequest)session.get(
-					MembershipRequestImpl.class,
-					membershipRequest.getPrimaryKeyObj());
+				membershipRequest = (MembershipRequest)session.get(MembershipRequestImpl.class,
+						membershipRequest.getPrimaryKeyObj());
 			}
 
 			if (membershipRequest != null) {
 				session.delete(membershipRequest);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -2425,27 +2419,11 @@ public class MembershipRequestPersistenceImpl
 
 	@Override
 	public MembershipRequest updateImpl(MembershipRequest membershipRequest) {
+		membershipRequest = toUnwrappedModel(membershipRequest);
+
 		boolean isNew = membershipRequest.isNew();
 
-		if (!(membershipRequest instanceof MembershipRequestModelImpl)) {
-			InvocationHandler invocationHandler = null;
-
-			if (ProxyUtil.isProxyClass(membershipRequest.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(
-					membershipRequest);
-
-				throw new IllegalArgumentException(
-					"Implement ModelWrapper in membershipRequest proxy " +
-						invocationHandler.getClass());
-			}
-
-			throw new IllegalArgumentException(
-				"Implement ModelWrapper in custom MembershipRequest implementation " +
-					membershipRequest.getClass());
-		}
-
-		MembershipRequestModelImpl membershipRequestModelImpl =
-			(MembershipRequestModelImpl)membershipRequest;
+		MembershipRequestModelImpl membershipRequestModelImpl = (MembershipRequestModelImpl)membershipRequest;
 
 		Session session = null;
 
@@ -2458,152 +2436,140 @@ public class MembershipRequestPersistenceImpl
 				membershipRequest.setNew(false);
 			}
 			else {
-				membershipRequest = (MembershipRequest)session.merge(
-					membershipRequest);
+				membershipRequest = (MembershipRequest)session.merge(membershipRequest);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
 		}
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
 		if (!MembershipRequestModelImpl.COLUMN_BITMASK_ENABLED) {
-			FinderCacheUtil.clearCache(
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				membershipRequestModelImpl.getGroupId()
-			};
+		else
+		 if (isNew) {
+			Object[] args = new Object[] { membershipRequestModelImpl.getGroupId() };
 
-			FinderCacheUtil.removeResult(_finderPathCountByGroupId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByGroupId, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_GROUPID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID,
+				args);
 
-			args = new Object[] {membershipRequestModelImpl.getUserId()};
+			args = new Object[] { membershipRequestModelImpl.getUserId() };
 
-			FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByUserId, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
+				args);
 
 			args = new Object[] {
-				membershipRequestModelImpl.getGroupId(),
-				membershipRequestModelImpl.getStatusId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByG_S, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByG_S, args);
-
-			args = new Object[] {
-				membershipRequestModelImpl.getGroupId(),
-				membershipRequestModelImpl.getUserId(),
-				membershipRequestModelImpl.getStatusId()
-			};
-
-			FinderCacheUtil.removeResult(_finderPathCountByG_U_S, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByG_U_S, args);
-
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((membershipRequestModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByGroupId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					membershipRequestModelImpl.getOriginalGroupId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByGroupId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-
-				args = new Object[] {membershipRequestModelImpl.getGroupId()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByGroupId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-			}
-
-			if ((membershipRequestModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUserId.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					membershipRequestModelImpl.getOriginalUserId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUserId, args);
-
-				args = new Object[] {membershipRequestModelImpl.getUserId()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByUserId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByUserId, args);
-			}
-
-			if ((membershipRequestModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_S.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					membershipRequestModelImpl.getOriginalGroupId(),
-					membershipRequestModelImpl.getOriginalStatusId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByG_S, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_S, args);
-
-				args = new Object[] {
 					membershipRequestModelImpl.getGroupId(),
 					membershipRequestModelImpl.getStatusId()
 				};
 
-				FinderCacheUtil.removeResult(_finderPathCountByG_S, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_S, args);
-			}
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_S, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_S,
+				args);
 
-			if ((membershipRequestModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByG_U_S.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					membershipRequestModelImpl.getOriginalGroupId(),
-					membershipRequestModelImpl.getOriginalUserId(),
-					membershipRequestModelImpl.getOriginalStatusId()
-				};
-
-				FinderCacheUtil.removeResult(_finderPathCountByG_U_S, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_U_S, args);
-
-				args = new Object[] {
+			args = new Object[] {
 					membershipRequestModelImpl.getGroupId(),
 					membershipRequestModelImpl.getUserId(),
 					membershipRequestModelImpl.getStatusId()
 				};
 
-				FinderCacheUtil.removeResult(_finderPathCountByG_U_S, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByG_U_S, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_U_S, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_U_S,
+				args);
+
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
+		}
+
+		else {
+			if ((membershipRequestModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						membershipRequestModelImpl.getOriginalGroupId()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_GROUPID, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID,
+					args);
+
+				args = new Object[] { membershipRequestModelImpl.getGroupId() };
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_GROUPID, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID,
+					args);
+			}
+
+			if ((membershipRequestModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						membershipRequestModelImpl.getOriginalUserId()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
+					args);
+
+				args = new Object[] { membershipRequestModelImpl.getUserId() };
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
+					args);
+			}
+
+			if ((membershipRequestModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_S.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						membershipRequestModelImpl.getOriginalGroupId(),
+						membershipRequestModelImpl.getOriginalStatusId()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_S, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_S,
+					args);
+
+				args = new Object[] {
+						membershipRequestModelImpl.getGroupId(),
+						membershipRequestModelImpl.getStatusId()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_S, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_S,
+					args);
+			}
+
+			if ((membershipRequestModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_U_S.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						membershipRequestModelImpl.getOriginalGroupId(),
+						membershipRequestModelImpl.getOriginalUserId(),
+						membershipRequestModelImpl.getOriginalStatusId()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_U_S, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_U_S,
+					args);
+
+				args = new Object[] {
+						membershipRequestModelImpl.getGroupId(),
+						membershipRequestModelImpl.getUserId(),
+						membershipRequestModelImpl.getStatusId()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_U_S, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_U_S,
+					args);
 			}
 		}
 
-		EntityCacheUtil.putResult(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
 			MembershipRequestImpl.class, membershipRequest.getPrimaryKey(),
 			membershipRequest, false);
 
@@ -2612,8 +2578,34 @@ public class MembershipRequestPersistenceImpl
 		return membershipRequest;
 	}
 
+	protected MembershipRequest toUnwrappedModel(
+		MembershipRequest membershipRequest) {
+		if (membershipRequest instanceof MembershipRequestImpl) {
+			return membershipRequest;
+		}
+
+		MembershipRequestImpl membershipRequestImpl = new MembershipRequestImpl();
+
+		membershipRequestImpl.setNew(membershipRequest.isNew());
+		membershipRequestImpl.setPrimaryKey(membershipRequest.getPrimaryKey());
+
+		membershipRequestImpl.setMvccVersion(membershipRequest.getMvccVersion());
+		membershipRequestImpl.setMembershipRequestId(membershipRequest.getMembershipRequestId());
+		membershipRequestImpl.setGroupId(membershipRequest.getGroupId());
+		membershipRequestImpl.setCompanyId(membershipRequest.getCompanyId());
+		membershipRequestImpl.setUserId(membershipRequest.getUserId());
+		membershipRequestImpl.setCreateDate(membershipRequest.getCreateDate());
+		membershipRequestImpl.setComments(membershipRequest.getComments());
+		membershipRequestImpl.setReplyComments(membershipRequest.getReplyComments());
+		membershipRequestImpl.setReplyDate(membershipRequest.getReplyDate());
+		membershipRequestImpl.setReplierUserId(membershipRequest.getReplierUserId());
+		membershipRequestImpl.setStatusId(membershipRequest.getStatusId());
+
+		return membershipRequestImpl;
+	}
+
 	/**
-	 * Returns the membership request with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
+	 * Returns the membership request with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the membership request
 	 * @return the membership request
@@ -2622,7 +2614,6 @@ public class MembershipRequestPersistenceImpl
 	@Override
 	public MembershipRequest findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchMembershipRequestException {
-
 		MembershipRequest membershipRequest = fetchByPrimaryKey(primaryKey);
 
 		if (membershipRequest == null) {
@@ -2630,15 +2621,15 @@ public class MembershipRequestPersistenceImpl
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchMembershipRequestException(
-				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			throw new NoSuchMembershipRequestException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
 		}
 
 		return membershipRequest;
 	}
 
 	/**
-	 * Returns the membership request with the primary key or throws a <code>NoSuchMembershipRequestException</code> if it could not be found.
+	 * Returns the membership request with the primary key or throws a {@link NoSuchMembershipRequestException} if it could not be found.
 	 *
 	 * @param membershipRequestId the primary key of the membership request
 	 * @return the membership request
@@ -2647,7 +2638,6 @@ public class MembershipRequestPersistenceImpl
 	@Override
 	public MembershipRequest findByPrimaryKey(long membershipRequestId)
 		throws NoSuchMembershipRequestException {
-
 		return findByPrimaryKey((Serializable)membershipRequestId);
 	}
 
@@ -2659,9 +2649,8 @@ public class MembershipRequestPersistenceImpl
 	 */
 	@Override
 	public MembershipRequest fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = EntityCacheUtil.getResult(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+				MembershipRequestImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -2675,24 +2664,22 @@ public class MembershipRequestPersistenceImpl
 			try {
 				session = openSession();
 
-				membershipRequest = (MembershipRequest)session.get(
-					MembershipRequestImpl.class, primaryKey);
+				membershipRequest = (MembershipRequest)session.get(MembershipRequestImpl.class,
+						primaryKey);
 
 				if (membershipRequest != null) {
 					cacheResult(membershipRequest);
 				}
 				else {
-					EntityCacheUtil.putResult(
-						MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
 						MembershipRequestImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception exception) {
-				EntityCacheUtil.removeResult(
-					MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception e) {
+				entityCache.removeResult(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
 					MembershipRequestImpl.class, primaryKey);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -2716,13 +2703,11 @@ public class MembershipRequestPersistenceImpl
 	@Override
 	public Map<Serializable, MembershipRequest> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
-
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, MembershipRequest> map =
-			new HashMap<Serializable, MembershipRequest>();
+		Map<Serializable, MembershipRequest> map = new HashMap<Serializable, MembershipRequest>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -2741,9 +2726,8 @@ public class MembershipRequestPersistenceImpl
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = EntityCacheUtil.getResult(
-				MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-				MembershipRequestImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+					MembershipRequestImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -2763,50 +2747,45 @@ public class MembershipRequestPersistenceImpl
 			return map;
 		}
 
-		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
+				1);
 
-		sb.append(_SQL_SELECT_MEMBERSHIPREQUEST_WHERE_PKS_IN);
+		query.append(_SQL_SELECT_MEMBERSHIPREQUEST_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			sb.append((long)primaryKey);
+			query.append((long)primaryKey);
 
-			sb.append(",");
+			query.append(StringPool.COMMA);
 		}
 
-		sb.setIndex(sb.index() - 1);
+		query.setIndex(query.index() - 1);
 
-		sb.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query query = session.createQuery(sql);
+			Query q = session.createQuery(sql);
 
-			for (MembershipRequest membershipRequest :
-					(List<MembershipRequest>)query.list()) {
-
-				map.put(
-					membershipRequest.getPrimaryKeyObj(), membershipRequest);
+			for (MembershipRequest membershipRequest : (List<MembershipRequest>)q.list()) {
+				map.put(membershipRequest.getPrimaryKeyObj(), membershipRequest);
 
 				cacheResult(membershipRequest);
 
-				uncachedPrimaryKeys.remove(
-					membershipRequest.getPrimaryKeyObj());
+				uncachedPrimaryKeys.remove(membershipRequest.getPrimaryKeyObj());
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				EntityCacheUtil.putResult(
-					MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
 					MembershipRequestImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -2829,7 +2808,7 @@ public class MembershipRequestPersistenceImpl
 	 * Returns a range of all the membership requests.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>MembershipRequestModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MembershipRequestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of membership requests
@@ -2845,7 +2824,7 @@ public class MembershipRequestPersistenceImpl
 	 * Returns an ordered range of all the membership requests.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>MembershipRequestModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MembershipRequestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of membership requests
@@ -2854,10 +2833,8 @@ public class MembershipRequestPersistenceImpl
 	 * @return the ordered range of membership requests
 	 */
 	@Override
-	public List<MembershipRequest> findAll(
-		int start, int end,
+	public List<MembershipRequest> findAll(int start, int end,
 		OrderByComparator<MembershipRequest> orderByComparator) {
-
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -2865,63 +2842,62 @@ public class MembershipRequestPersistenceImpl
 	 * Returns an ordered range of all the membership requests.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>MembershipRequestModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MembershipRequestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of membership requests
 	 * @param end the upper bound of the range of membership requests (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of membership requests
 	 */
 	@Override
-	public List<MembershipRequest> findAll(
-		int start, int end,
+	public List<MembershipRequest> findAll(int start, int end,
 		OrderByComparator<MembershipRequest> orderByComparator,
-		boolean useFinderCache) {
-
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
-				finderArgs = FINDER_ARGS_EMPTY;
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+			finderArgs = FINDER_ARGS_EMPTY;
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] {start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
 		List<MembershipRequest> list = null;
 
-		if (useFinderCache) {
-			list = (List<MembershipRequest>)FinderCacheUtil.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<MembershipRequest>)finderCache.getResult(finderPath,
+					finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					2 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(2 +
+						(orderByComparator.getOrderByFields().length * 2));
 
-				sb.append(_SQL_SELECT_MEMBERSHIPREQUEST);
+				query.append(_SQL_SELECT_MEMBERSHIPREQUEST);
 
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 
-				sql = sb.toString();
+				sql = query.toString();
 			}
 			else {
 				sql = _SQL_SELECT_MEMBERSHIPREQUEST;
 
-				sql = sql.concat(MembershipRequestModelImpl.ORDER_BY_JPQL);
+				if (pagination) {
+					sql = sql.concat(MembershipRequestModelImpl.ORDER_BY_JPQL);
+				}
 			}
 
 			Session session = null;
@@ -2929,23 +2905,29 @@ public class MembershipRequestPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				list = (List<MembershipRequest>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<MembershipRequest>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<MembershipRequest>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					FinderCacheUtil.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -2973,8 +2955,8 @@ public class MembershipRequestPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)FinderCacheUtil.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -2982,18 +2964,18 @@ public class MembershipRequestPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(_SQL_COUNT_MEMBERSHIPREQUEST);
+				Query q = session.createQuery(_SQL_COUNT_MEMBERSHIPREQUEST);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				FinderCacheUtil.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
+					count);
 			}
-			catch (Exception exception) {
-				FinderCacheUtil.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -3012,166 +2994,26 @@ public class MembershipRequestPersistenceImpl
 	 * Initializes the membership request persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
-			MembershipRequestImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
-			MembershipRequestImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
-
-		_finderPathWithPaginationFindByGroupId = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
-			MembershipRequestImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByGroupId",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
-			MembershipRequestImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
-			new String[] {Long.class.getName()},
-			MembershipRequestModelImpl.GROUPID_COLUMN_BITMASK |
-			MembershipRequestModelImpl.CREATEDATE_COLUMN_BITMASK);
-
-		_finderPathCountByGroupId = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
-			new String[] {Long.class.getName()});
-
-		_finderPathWithPaginationFindByUserId = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
-			MembershipRequestImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByUserId",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByUserId = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
-			MembershipRequestImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUserId",
-			new String[] {Long.class.getName()},
-			MembershipRequestModelImpl.USERID_COLUMN_BITMASK |
-			MembershipRequestModelImpl.CREATEDATE_COLUMN_BITMASK);
-
-		_finderPathCountByUserId = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
-			new String[] {Long.class.getName()});
-
-		_finderPathWithPaginationFindByG_S = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
-			MembershipRequestImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByG_S",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByG_S = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
-			MembershipRequestImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_S",
-			new String[] {Long.class.getName(), Long.class.getName()},
-			MembershipRequestModelImpl.GROUPID_COLUMN_BITMASK |
-			MembershipRequestModelImpl.STATUSID_COLUMN_BITMASK |
-			MembershipRequestModelImpl.CREATEDATE_COLUMN_BITMASK);
-
-		_finderPathCountByG_S = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_S",
-			new String[] {Long.class.getName(), Long.class.getName()});
-
-		_finderPathWithPaginationFindByG_U_S = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
-			MembershipRequestImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByG_U_S",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByG_U_S = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED,
-			MembershipRequestImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_U_S",
-			new String[] {
-				Long.class.getName(), Long.class.getName(), Long.class.getName()
-			},
-			MembershipRequestModelImpl.GROUPID_COLUMN_BITMASK |
-			MembershipRequestModelImpl.USERID_COLUMN_BITMASK |
-			MembershipRequestModelImpl.STATUSID_COLUMN_BITMASK |
-			MembershipRequestModelImpl.CREATEDATE_COLUMN_BITMASK);
-
-		_finderPathCountByG_U_S = new FinderPath(
-			MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-			MembershipRequestModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_U_S",
-			new String[] {
-				Long.class.getName(), Long.class.getName(), Long.class.getName()
-			});
 	}
 
 	public void destroy() {
-		EntityCacheUtil.removeCache(MembershipRequestImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		entityCache.removeCache(MembershipRequestImpl.class.getName());
+		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	private static final String _SQL_SELECT_MEMBERSHIPREQUEST =
-		"SELECT membershipRequest FROM MembershipRequest membershipRequest";
-
-	private static final String _SQL_SELECT_MEMBERSHIPREQUEST_WHERE_PKS_IN =
-		"SELECT membershipRequest FROM MembershipRequest membershipRequest WHERE membershipRequestId IN (";
-
-	private static final String _SQL_SELECT_MEMBERSHIPREQUEST_WHERE =
-		"SELECT membershipRequest FROM MembershipRequest membershipRequest WHERE ";
-
-	private static final String _SQL_COUNT_MEMBERSHIPREQUEST =
-		"SELECT COUNT(membershipRequest) FROM MembershipRequest membershipRequest";
-
-	private static final String _SQL_COUNT_MEMBERSHIPREQUEST_WHERE =
-		"SELECT COUNT(membershipRequest) FROM MembershipRequest membershipRequest WHERE ";
-
+	@BeanReference(type = CompanyProviderWrapper.class)
+	protected CompanyProvider companyProvider;
+	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
+	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
+	private static final String _SQL_SELECT_MEMBERSHIPREQUEST = "SELECT membershipRequest FROM MembershipRequest membershipRequest";
+	private static final String _SQL_SELECT_MEMBERSHIPREQUEST_WHERE_PKS_IN = "SELECT membershipRequest FROM MembershipRequest membershipRequest WHERE membershipRequestId IN (";
+	private static final String _SQL_SELECT_MEMBERSHIPREQUEST_WHERE = "SELECT membershipRequest FROM MembershipRequest membershipRequest WHERE ";
+	private static final String _SQL_COUNT_MEMBERSHIPREQUEST = "SELECT COUNT(membershipRequest) FROM MembershipRequest membershipRequest";
+	private static final String _SQL_COUNT_MEMBERSHIPREQUEST_WHERE = "SELECT COUNT(membershipRequest) FROM MembershipRequest membershipRequest WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "membershipRequest.";
-
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
-		"No MembershipRequest exists with the primary key ";
-
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No MembershipRequest exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		MembershipRequestPersistenceImpl.class);
-
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No MembershipRequest exists with the primary key ";
+	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No MembershipRequest exists with the key {";
+	private static final Log _log = LogFactoryUtil.getLog(MembershipRequestPersistenceImpl.class);
 }

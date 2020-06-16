@@ -14,10 +14,14 @@
 
 package com.liferay.chat.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.chat.model.Status;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -28,10 +32,11 @@ import java.io.ObjectOutput;
  * The cache model class for representing Status in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see Status
  * @generated
  */
+@ProviderType
 public class StatusCacheModel implements CacheModel<Status>, Externalizable {
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -92,14 +97,14 @@ public class StatusCacheModel implements CacheModel<Status>, Externalizable {
 		statusImpl.setAwake(awake);
 
 		if (activePanelIds == null) {
-			statusImpl.setActivePanelIds("");
+			statusImpl.setActivePanelIds(StringPool.BLANK);
 		}
 		else {
 			statusImpl.setActivePanelIds(activePanelIds);
 		}
 
 		if (message == null) {
-			statusImpl.setMessage("");
+			statusImpl.setMessage(StringPool.BLANK);
 		}
 		else {
 			statusImpl.setMessage(message);
@@ -130,7 +135,8 @@ public class StatusCacheModel implements CacheModel<Status>, Externalizable {
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(statusId);
 
 		objectOutput.writeLong(userId);
@@ -142,14 +148,14 @@ public class StatusCacheModel implements CacheModel<Status>, Externalizable {
 		objectOutput.writeBoolean(awake);
 
 		if (activePanelIds == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(activePanelIds);
 		}
 
 		if (message == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(message);
@@ -166,5 +172,4 @@ public class StatusCacheModel implements CacheModel<Status>, Externalizable {
 	public String activePanelIds;
 	public String message;
 	public boolean playSound;
-
 }

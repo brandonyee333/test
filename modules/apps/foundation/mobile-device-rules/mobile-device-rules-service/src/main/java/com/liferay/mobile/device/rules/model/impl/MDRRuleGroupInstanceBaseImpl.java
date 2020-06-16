@@ -14,6 +14,8 @@
 
 package com.liferay.mobile.device.rules.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.mobile.device.rules.model.MDRRuleGroupInstance;
 import com.liferay.mobile.device.rules.service.MDRRuleGroupInstanceLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.mobile.device.rules.service.MDRRuleGroupInstanceLocalServiceU
  * @see MDRRuleGroupInstance
  * @generated
  */
+@ProviderType
 public abstract class MDRRuleGroupInstanceBaseImpl
 	extends MDRRuleGroupInstanceModelImpl implements MDRRuleGroupInstance {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a mdr rule group instance model instance should use the <code>MDRRuleGroupInstance</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a mdr rule group instance model instance should use the {@link MDRRuleGroupInstance} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -43,9 +45,7 @@ public abstract class MDRRuleGroupInstanceBaseImpl
 			MDRRuleGroupInstanceLocalServiceUtil.addMDRRuleGroupInstance(this);
 		}
 		else {
-			MDRRuleGroupInstanceLocalServiceUtil.updateMDRRuleGroupInstance(
-				this);
+			MDRRuleGroupInstanceLocalServiceUtil.updateMDRRuleGroupInstance(this);
 		}
 	}
-
 }

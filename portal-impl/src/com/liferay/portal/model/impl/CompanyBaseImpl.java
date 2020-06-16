@@ -14,6 +14,8 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
  * @see Company
  * @generated
  */
-public abstract class CompanyBaseImpl
-	extends CompanyModelImpl implements Company {
-
+@ProviderType
+public abstract class CompanyBaseImpl extends CompanyModelImpl
+	implements Company {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a company model instance should use the <code>Company</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a company model instance should use the {@link Company} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class CompanyBaseImpl
 			CompanyLocalServiceUtil.updateCompany(this);
 		}
 	}
-
 }

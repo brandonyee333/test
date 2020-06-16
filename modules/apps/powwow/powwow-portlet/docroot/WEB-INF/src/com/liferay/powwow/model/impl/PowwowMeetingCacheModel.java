@@ -14,9 +14,13 @@
 
 package com.liferay.powwow.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.powwow.model.PowwowMeeting;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing PowwowMeeting in entity cache.
  *
  * @author Shinn Lok
+ * @see PowwowMeeting
  * @generated
  */
-public class PowwowMeetingCacheModel
-	implements CacheModel<PowwowMeeting>, Externalizable {
-
+@ProviderType
+public class PowwowMeetingCacheModel implements CacheModel<PowwowMeeting>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class PowwowMeetingCacheModel
 			return false;
 		}
 
-		PowwowMeetingCacheModel powwowMeetingCacheModel =
-			(PowwowMeetingCacheModel)obj;
+		PowwowMeetingCacheModel powwowMeetingCacheModel = (PowwowMeetingCacheModel)obj;
 
 		if (powwowMeetingId == powwowMeetingCacheModel.powwowMeetingId) {
 			return true;
@@ -109,7 +113,7 @@ public class PowwowMeetingCacheModel
 		powwowMeetingImpl.setUserId(userId);
 
 		if (userName == null) {
-			powwowMeetingImpl.setUserName("");
+			powwowMeetingImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			powwowMeetingImpl.setUserName(userName);
@@ -132,35 +136,35 @@ public class PowwowMeetingCacheModel
 		powwowMeetingImpl.setPowwowServerId(powwowServerId);
 
 		if (name == null) {
-			powwowMeetingImpl.setName("");
+			powwowMeetingImpl.setName(StringPool.BLANK);
 		}
 		else {
 			powwowMeetingImpl.setName(name);
 		}
 
 		if (description == null) {
-			powwowMeetingImpl.setDescription("");
+			powwowMeetingImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			powwowMeetingImpl.setDescription(description);
 		}
 
 		if (providerType == null) {
-			powwowMeetingImpl.setProviderType("");
+			powwowMeetingImpl.setProviderType(StringPool.BLANK);
 		}
 		else {
 			powwowMeetingImpl.setProviderType(providerType);
 		}
 
 		if (providerTypeMetadata == null) {
-			powwowMeetingImpl.setProviderTypeMetadata("");
+			powwowMeetingImpl.setProviderTypeMetadata(StringPool.BLANK);
 		}
 		else {
 			powwowMeetingImpl.setProviderTypeMetadata(providerTypeMetadata);
 		}
 
 		if (languageId == null) {
-			powwowMeetingImpl.setLanguageId("");
+			powwowMeetingImpl.setLanguageId(StringPool.BLANK);
 		}
 		else {
 			powwowMeetingImpl.setLanguageId(languageId);
@@ -200,7 +204,8 @@ public class PowwowMeetingCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(powwowMeetingId);
 
 		objectOutput.writeLong(groupId);
@@ -210,7 +215,7 @@ public class PowwowMeetingCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -222,35 +227,35 @@ public class PowwowMeetingCacheModel
 		objectOutput.writeLong(powwowServerId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (providerType == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(providerType);
 		}
 
 		if (providerTypeMetadata == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(providerTypeMetadata);
 		}
 
 		if (languageId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(languageId);
@@ -276,5 +281,4 @@ public class PowwowMeetingCacheModel
 	public String languageId;
 	public long calendarBookingId;
 	public int status;
-
 }

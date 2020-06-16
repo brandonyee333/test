@@ -14,6 +14,8 @@
 
 package com.liferay.analytics.message.storage.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.sql.Blob;
 
 /**
@@ -23,8 +25,8 @@ import java.sql.Blob;
  * @see AnalyticsMessage
  * @generated
  */
+@ProviderType
 public class AnalyticsMessageBodyBlobModel {
-
 	public AnalyticsMessageBodyBlobModel() {
 	}
 
@@ -32,9 +34,7 @@ public class AnalyticsMessageBodyBlobModel {
 		_analyticsMessageId = analyticsMessageId;
 	}
 
-	public AnalyticsMessageBodyBlobModel(
-		long analyticsMessageId, Blob bodyBlob) {
-
+	public AnalyticsMessageBodyBlobModel(long analyticsMessageId, Blob bodyBlob) {
 		_analyticsMessageId = analyticsMessageId;
 		_bodyBlob = bodyBlob;
 	}
@@ -57,5 +57,4 @@ public class AnalyticsMessageBodyBlobModel {
 
 	private long _analyticsMessageId;
 	private Blob _bodyBlob;
-
 }

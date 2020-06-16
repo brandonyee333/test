@@ -14,6 +14,8 @@
 
 package com.liferay.social.kernel.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -23,93 +25,80 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see SocialActivitySettingService
  * @generated
  */
+@ProviderType
 public class SocialActivitySettingServiceWrapper
-	implements ServiceWrapper<SocialActivitySettingService>,
-			   SocialActivitySettingService {
-
+	implements SocialActivitySettingService,
+		ServiceWrapper<SocialActivitySettingService> {
 	public SocialActivitySettingServiceWrapper(
 		SocialActivitySettingService socialActivitySettingService) {
-
 		_socialActivitySettingService = socialActivitySettingService;
 	}
 
 	@Override
-	public com.liferay.social.kernel.model.SocialActivityDefinition
-			getActivityDefinition(
-				long groupId, String className, int activityType)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _socialActivitySettingService.getActivityDefinition(
-			groupId, className, activityType);
-	}
-
-	@Override
-	public java.util.List
-		<com.liferay.social.kernel.model.SocialActivityDefinition>
-				getActivityDefinitions(long groupId, String className)
-			throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _socialActivitySettingService.getActivityDefinitions(
-			groupId, className);
-	}
-
-	@Override
-	public java.util.List<com.liferay.social.kernel.model.SocialActivitySetting>
-			getActivitySettings(long groupId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _socialActivitySettingService.getActivitySettings(groupId);
-	}
-
-	@Override
 	public com.liferay.portal.kernel.json.JSONArray getJSONActivityDefinitions(
-			long groupId, String className)
+		long groupId, java.lang.String className)
 		throws com.liferay.portal.kernel.exception.PortalException {
+		return _socialActivitySettingService.getJSONActivityDefinitions(groupId,
+			className);
+	}
 
-		return _socialActivitySettingService.getJSONActivityDefinitions(
-			groupId, className);
+	@Override
+	public com.liferay.social.kernel.model.SocialActivityDefinition getActivityDefinition(
+		long groupId, java.lang.String className, int activityType)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _socialActivitySettingService.getActivityDefinition(groupId,
+			className, activityType);
 	}
 
 	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
 	@Override
-	public String getOSGiServiceIdentifier() {
+	public java.lang.String getOSGiServiceIdentifier() {
 		return _socialActivitySettingService.getOSGiServiceIdentifier();
 	}
 
 	@Override
-	public void updateActivitySetting(
-			long groupId, String className, boolean enabled)
+	public java.util.List<com.liferay.social.kernel.model.SocialActivityDefinition> getActivityDefinitions(
+		long groupId, java.lang.String className)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
-		_socialActivitySettingService.updateActivitySetting(
-			groupId, className, enabled);
+		return _socialActivitySettingService.getActivityDefinitions(groupId,
+			className);
 	}
 
 	@Override
-	public void updateActivitySetting(
-			long groupId, String className, int activityType,
-			com.liferay.social.kernel.model.SocialActivityCounterDefinition
-				activityCounterDefinition)
+	public java.util.List<com.liferay.social.kernel.model.SocialActivitySetting> getActivitySettings(
+		long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
-		_socialActivitySettingService.updateActivitySetting(
-			groupId, className, activityType, activityCounterDefinition);
+		return _socialActivitySettingService.getActivitySettings(groupId);
 	}
 
 	@Override
-	public void updateActivitySettings(
-			long groupId, String className, int activityType,
-			java.util.List
-				<com.liferay.social.kernel.model.
-					SocialActivityCounterDefinition> activityCounterDefinitions)
+	public void updateActivitySetting(long groupId, java.lang.String className,
+		boolean enabled)
 		throws com.liferay.portal.kernel.exception.PortalException {
+		_socialActivitySettingService.updateActivitySetting(groupId, className,
+			enabled);
+	}
 
-		_socialActivitySettingService.updateActivitySettings(
-			groupId, className, activityType, activityCounterDefinitions);
+	@Override
+	public void updateActivitySetting(long groupId, java.lang.String className,
+		int activityType,
+		com.liferay.social.kernel.model.SocialActivityCounterDefinition activityCounterDefinition)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_socialActivitySettingService.updateActivitySetting(groupId, className,
+			activityType, activityCounterDefinition);
+	}
+
+	@Override
+	public void updateActivitySettings(long groupId,
+		java.lang.String className, int activityType,
+		java.util.List<com.liferay.social.kernel.model.SocialActivityCounterDefinition> activityCounterDefinitions)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_socialActivitySettingService.updateActivitySettings(groupId,
+			className, activityType, activityCounterDefinitions);
 	}
 
 	@Override
@@ -120,10 +109,8 @@ public class SocialActivitySettingServiceWrapper
 	@Override
 	public void setWrappedService(
 		SocialActivitySettingService socialActivitySettingService) {
-
 		_socialActivitySettingService = socialActivitySettingService;
 	}
 
 	private SocialActivitySettingService _socialActivitySettingService;
-
 }

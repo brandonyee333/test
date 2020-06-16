@@ -14,9 +14,13 @@
 
 package com.liferay.shopping.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.shopping.model.ShoppingCategory;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing ShoppingCategory in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see ShoppingCategory
  * @generated
  */
-public class ShoppingCategoryCacheModel
-	implements CacheModel<ShoppingCategory>, Externalizable {
-
+@ProviderType
+public class ShoppingCategoryCacheModel implements CacheModel<ShoppingCategory>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class ShoppingCategoryCacheModel
 			return false;
 		}
 
-		ShoppingCategoryCacheModel shoppingCategoryCacheModel =
-			(ShoppingCategoryCacheModel)obj;
+		ShoppingCategoryCacheModel shoppingCategoryCacheModel = (ShoppingCategoryCacheModel)obj;
 
 		if (categoryId == shoppingCategoryCacheModel.categoryId) {
 			return true;
@@ -99,7 +103,7 @@ public class ShoppingCategoryCacheModel
 		shoppingCategoryImpl.setUserId(userId);
 
 		if (userName == null) {
-			shoppingCategoryImpl.setUserName("");
+			shoppingCategoryImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			shoppingCategoryImpl.setUserName(userName);
@@ -122,14 +126,14 @@ public class ShoppingCategoryCacheModel
 		shoppingCategoryImpl.setParentCategoryId(parentCategoryId);
 
 		if (name == null) {
-			shoppingCategoryImpl.setName("");
+			shoppingCategoryImpl.setName(StringPool.BLANK);
 		}
 		else {
 			shoppingCategoryImpl.setName(name);
 		}
 
 		if (description == null) {
-			shoppingCategoryImpl.setDescription("");
+			shoppingCategoryImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			shoppingCategoryImpl.setDescription(description);
@@ -159,7 +163,8 @@ public class ShoppingCategoryCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(categoryId);
 
 		objectOutput.writeLong(groupId);
@@ -169,7 +174,7 @@ public class ShoppingCategoryCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -181,14 +186,14 @@ public class ShoppingCategoryCacheModel
 		objectOutput.writeLong(parentCategoryId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -205,5 +210,4 @@ public class ShoppingCategoryCacheModel
 	public long parentCategoryId;
 	public String name;
 	public String description;
-
 }

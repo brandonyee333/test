@@ -14,7 +14,10 @@
 
 package com.liferay.portal.kernel.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -32,12 +35,11 @@ import java.util.Objects;
  * @see RecentLayoutRevision
  * @generated
  */
-public class RecentLayoutRevisionWrapper
-	implements ModelWrapper<RecentLayoutRevision>, RecentLayoutRevision {
-
+@ProviderType
+public class RecentLayoutRevisionWrapper implements RecentLayoutRevision,
+	ModelWrapper<RecentLayoutRevision> {
 	public RecentLayoutRevisionWrapper(
 		RecentLayoutRevision recentLayoutRevision) {
-
 		_recentLayoutRevision = recentLayoutRevision;
 	}
 
@@ -76,7 +78,7 @@ public class RecentLayoutRevisionWrapper
 		}
 
 		Long recentLayoutRevisionId = (Long)attributes.get(
-			"recentLayoutRevisionId");
+				"recentLayoutRevisionId");
 
 		if (recentLayoutRevisionId != null) {
 			setRecentLayoutRevisionId(recentLayoutRevisionId);
@@ -120,132 +122,6 @@ public class RecentLayoutRevisionWrapper
 	}
 
 	@Override
-	public Object clone() {
-		return new RecentLayoutRevisionWrapper(
-			(RecentLayoutRevision)_recentLayoutRevision.clone());
-	}
-
-	@Override
-	public int compareTo(RecentLayoutRevision recentLayoutRevision) {
-		return _recentLayoutRevision.compareTo(recentLayoutRevision);
-	}
-
-	/**
-	 * Returns the company ID of this recent layout revision.
-	 *
-	 * @return the company ID of this recent layout revision
-	 */
-	@Override
-	public long getCompanyId() {
-		return _recentLayoutRevision.getCompanyId();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _recentLayoutRevision.getExpandoBridge();
-	}
-
-	/**
-	 * Returns the group ID of this recent layout revision.
-	 *
-	 * @return the group ID of this recent layout revision
-	 */
-	@Override
-	public long getGroupId() {
-		return _recentLayoutRevision.getGroupId();
-	}
-
-	/**
-	 * Returns the layout revision ID of this recent layout revision.
-	 *
-	 * @return the layout revision ID of this recent layout revision
-	 */
-	@Override
-	public long getLayoutRevisionId() {
-		return _recentLayoutRevision.getLayoutRevisionId();
-	}
-
-	/**
-	 * Returns the layout set branch ID of this recent layout revision.
-	 *
-	 * @return the layout set branch ID of this recent layout revision
-	 */
-	@Override
-	public long getLayoutSetBranchId() {
-		return _recentLayoutRevision.getLayoutSetBranchId();
-	}
-
-	/**
-	 * Returns the mvcc version of this recent layout revision.
-	 *
-	 * @return the mvcc version of this recent layout revision
-	 */
-	@Override
-	public long getMvccVersion() {
-		return _recentLayoutRevision.getMvccVersion();
-	}
-
-	/**
-	 * Returns the plid of this recent layout revision.
-	 *
-	 * @return the plid of this recent layout revision
-	 */
-	@Override
-	public long getPlid() {
-		return _recentLayoutRevision.getPlid();
-	}
-
-	/**
-	 * Returns the primary key of this recent layout revision.
-	 *
-	 * @return the primary key of this recent layout revision
-	 */
-	@Override
-	public long getPrimaryKey() {
-		return _recentLayoutRevision.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _recentLayoutRevision.getPrimaryKeyObj();
-	}
-
-	/**
-	 * Returns the recent layout revision ID of this recent layout revision.
-	 *
-	 * @return the recent layout revision ID of this recent layout revision
-	 */
-	@Override
-	public long getRecentLayoutRevisionId() {
-		return _recentLayoutRevision.getRecentLayoutRevisionId();
-	}
-
-	/**
-	 * Returns the user ID of this recent layout revision.
-	 *
-	 * @return the user ID of this recent layout revision
-	 */
-	@Override
-	public long getUserId() {
-		return _recentLayoutRevision.getUserId();
-	}
-
-	/**
-	 * Returns the user uuid of this recent layout revision.
-	 *
-	 * @return the user uuid of this recent layout revision
-	 */
-	@Override
-	public String getUserUuid() {
-		return _recentLayoutRevision.getUserUuid();
-	}
-
-	@Override
-	public int hashCode() {
-		return _recentLayoutRevision.hashCode();
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _recentLayoutRevision.isCachedModel();
 	}
@@ -261,6 +137,156 @@ public class RecentLayoutRevisionWrapper
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _recentLayoutRevision.getExpandoBridge();
+	}
+
+	@Override
+	public CacheModel<RecentLayoutRevision> toCacheModel() {
+		return _recentLayoutRevision.toCacheModel();
+	}
+
+	@Override
+	public RecentLayoutRevision toEscapedModel() {
+		return new RecentLayoutRevisionWrapper(_recentLayoutRevision.toEscapedModel());
+	}
+
+	@Override
+	public RecentLayoutRevision toUnescapedModel() {
+		return new RecentLayoutRevisionWrapper(_recentLayoutRevision.toUnescapedModel());
+	}
+
+	@Override
+	public int compareTo(RecentLayoutRevision recentLayoutRevision) {
+		return _recentLayoutRevision.compareTo(recentLayoutRevision);
+	}
+
+	@Override
+	public int hashCode() {
+		return _recentLayoutRevision.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _recentLayoutRevision.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new RecentLayoutRevisionWrapper((RecentLayoutRevision)_recentLayoutRevision.clone());
+	}
+
+	/**
+	* Returns the user uuid of this recent layout revision.
+	*
+	* @return the user uuid of this recent layout revision
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _recentLayoutRevision.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _recentLayoutRevision.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _recentLayoutRevision.toXmlString();
+	}
+
+	/**
+	* Returns the company ID of this recent layout revision.
+	*
+	* @return the company ID of this recent layout revision
+	*/
+	@Override
+	public long getCompanyId() {
+		return _recentLayoutRevision.getCompanyId();
+	}
+
+	/**
+	* Returns the group ID of this recent layout revision.
+	*
+	* @return the group ID of this recent layout revision
+	*/
+	@Override
+	public long getGroupId() {
+		return _recentLayoutRevision.getGroupId();
+	}
+
+	/**
+	* Returns the layout revision ID of this recent layout revision.
+	*
+	* @return the layout revision ID of this recent layout revision
+	*/
+	@Override
+	public long getLayoutRevisionId() {
+		return _recentLayoutRevision.getLayoutRevisionId();
+	}
+
+	/**
+	* Returns the layout set branch ID of this recent layout revision.
+	*
+	* @return the layout set branch ID of this recent layout revision
+	*/
+	@Override
+	public long getLayoutSetBranchId() {
+		return _recentLayoutRevision.getLayoutSetBranchId();
+	}
+
+	/**
+	* Returns the mvcc version of this recent layout revision.
+	*
+	* @return the mvcc version of this recent layout revision
+	*/
+	@Override
+	public long getMvccVersion() {
+		return _recentLayoutRevision.getMvccVersion();
+	}
+
+	/**
+	* Returns the plid of this recent layout revision.
+	*
+	* @return the plid of this recent layout revision
+	*/
+	@Override
+	public long getPlid() {
+		return _recentLayoutRevision.getPlid();
+	}
+
+	/**
+	* Returns the primary key of this recent layout revision.
+	*
+	* @return the primary key of this recent layout revision
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _recentLayoutRevision.getPrimaryKey();
+	}
+
+	/**
+	* Returns the recent layout revision ID of this recent layout revision.
+	*
+	* @return the recent layout revision ID of this recent layout revision
+	*/
+	@Override
+	public long getRecentLayoutRevisionId() {
+		return _recentLayoutRevision.getRecentLayoutRevisionId();
+	}
+
+	/**
+	* Returns the user ID of this recent layout revision.
+	*
+	* @return the user ID of this recent layout revision
+	*/
+	@Override
+	public long getUserId() {
+		return _recentLayoutRevision.getUserId();
+	}
+
+	@Override
 	public void persist() {
 		_recentLayoutRevision.persist();
 	}
@@ -271,18 +297,13 @@ public class RecentLayoutRevisionWrapper
 	}
 
 	/**
-	 * Sets the company ID of this recent layout revision.
-	 *
-	 * @param companyId the company ID of this recent layout revision
-	 */
+	* Sets the company ID of this recent layout revision.
+	*
+	* @param companyId the company ID of this recent layout revision
+	*/
 	@Override
 	public void setCompanyId(long companyId) {
 		_recentLayoutRevision.setCompanyId(companyId);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(BaseModel<?> baseModel) {
-		_recentLayoutRevision.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -291,45 +312,50 @@ public class RecentLayoutRevisionWrapper
 	}
 
 	@Override
+	public void setExpandoBridgeAttributes(BaseModel<?> baseModel) {
+		_recentLayoutRevision.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_recentLayoutRevision.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	 * Sets the group ID of this recent layout revision.
-	 *
-	 * @param groupId the group ID of this recent layout revision
-	 */
+	* Sets the group ID of this recent layout revision.
+	*
+	* @param groupId the group ID of this recent layout revision
+	*/
 	@Override
 	public void setGroupId(long groupId) {
 		_recentLayoutRevision.setGroupId(groupId);
 	}
 
 	/**
-	 * Sets the layout revision ID of this recent layout revision.
-	 *
-	 * @param layoutRevisionId the layout revision ID of this recent layout revision
-	 */
+	* Sets the layout revision ID of this recent layout revision.
+	*
+	* @param layoutRevisionId the layout revision ID of this recent layout revision
+	*/
 	@Override
 	public void setLayoutRevisionId(long layoutRevisionId) {
 		_recentLayoutRevision.setLayoutRevisionId(layoutRevisionId);
 	}
 
 	/**
-	 * Sets the layout set branch ID of this recent layout revision.
-	 *
-	 * @param layoutSetBranchId the layout set branch ID of this recent layout revision
-	 */
+	* Sets the layout set branch ID of this recent layout revision.
+	*
+	* @param layoutSetBranchId the layout set branch ID of this recent layout revision
+	*/
 	@Override
 	public void setLayoutSetBranchId(long layoutSetBranchId) {
 		_recentLayoutRevision.setLayoutSetBranchId(layoutSetBranchId);
 	}
 
 	/**
-	 * Sets the mvcc version of this recent layout revision.
-	 *
-	 * @param mvccVersion the mvcc version of this recent layout revision
-	 */
+	* Sets the mvcc version of this recent layout revision.
+	*
+	* @param mvccVersion the mvcc version of this recent layout revision
+	*/
 	@Override
 	public void setMvccVersion(long mvccVersion) {
 		_recentLayoutRevision.setMvccVersion(mvccVersion);
@@ -341,20 +367,20 @@ public class RecentLayoutRevisionWrapper
 	}
 
 	/**
-	 * Sets the plid of this recent layout revision.
-	 *
-	 * @param plid the plid of this recent layout revision
-	 */
+	* Sets the plid of this recent layout revision.
+	*
+	* @param plid the plid of this recent layout revision
+	*/
 	@Override
 	public void setPlid(long plid) {
 		_recentLayoutRevision.setPlid(plid);
 	}
 
 	/**
-	 * Sets the primary key of this recent layout revision.
-	 *
-	 * @param primaryKey the primary key of this recent layout revision
-	 */
+	* Sets the primary key of this recent layout revision.
+	*
+	* @param primaryKey the primary key of this recent layout revision
+	*/
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_recentLayoutRevision.setPrimaryKey(primaryKey);
@@ -366,60 +392,33 @@ public class RecentLayoutRevisionWrapper
 	}
 
 	/**
-	 * Sets the recent layout revision ID of this recent layout revision.
-	 *
-	 * @param recentLayoutRevisionId the recent layout revision ID of this recent layout revision
-	 */
+	* Sets the recent layout revision ID of this recent layout revision.
+	*
+	* @param recentLayoutRevisionId the recent layout revision ID of this recent layout revision
+	*/
 	@Override
 	public void setRecentLayoutRevisionId(long recentLayoutRevisionId) {
 		_recentLayoutRevision.setRecentLayoutRevisionId(recentLayoutRevisionId);
 	}
 
 	/**
-	 * Sets the user ID of this recent layout revision.
-	 *
-	 * @param userId the user ID of this recent layout revision
-	 */
+	* Sets the user ID of this recent layout revision.
+	*
+	* @param userId the user ID of this recent layout revision
+	*/
 	@Override
 	public void setUserId(long userId) {
 		_recentLayoutRevision.setUserId(userId);
 	}
 
 	/**
-	 * Sets the user uuid of this recent layout revision.
-	 *
-	 * @param userUuid the user uuid of this recent layout revision
-	 */
+	* Sets the user uuid of this recent layout revision.
+	*
+	* @param userUuid the user uuid of this recent layout revision
+	*/
 	@Override
-	public void setUserUuid(String userUuid) {
+	public void setUserUuid(java.lang.String userUuid) {
 		_recentLayoutRevision.setUserUuid(userUuid);
-	}
-
-	@Override
-	public CacheModel<RecentLayoutRevision> toCacheModel() {
-		return _recentLayoutRevision.toCacheModel();
-	}
-
-	@Override
-	public RecentLayoutRevision toEscapedModel() {
-		return new RecentLayoutRevisionWrapper(
-			_recentLayoutRevision.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return _recentLayoutRevision.toString();
-	}
-
-	@Override
-	public RecentLayoutRevision toUnescapedModel() {
-		return new RecentLayoutRevisionWrapper(
-			_recentLayoutRevision.toUnescapedModel());
-	}
-
-	@Override
-	public String toXmlString() {
-		return _recentLayoutRevision.toXmlString();
 	}
 
 	@Override
@@ -432,13 +431,10 @@ public class RecentLayoutRevisionWrapper
 			return false;
 		}
 
-		RecentLayoutRevisionWrapper recentLayoutRevisionWrapper =
-			(RecentLayoutRevisionWrapper)obj;
+		RecentLayoutRevisionWrapper recentLayoutRevisionWrapper = (RecentLayoutRevisionWrapper)obj;
 
-		if (Objects.equals(
-				_recentLayoutRevision,
-				recentLayoutRevisionWrapper._recentLayoutRevision)) {
-
+		if (Objects.equals(_recentLayoutRevision,
+					recentLayoutRevisionWrapper._recentLayoutRevision)) {
 			return true;
 		}
 
@@ -466,5 +462,4 @@ public class RecentLayoutRevisionWrapper
 	}
 
 	private final RecentLayoutRevision _recentLayoutRevision;
-
 }

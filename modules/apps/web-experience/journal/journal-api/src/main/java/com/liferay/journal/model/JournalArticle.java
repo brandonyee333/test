@@ -26,21 +26,20 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see JournalArticleModel
+ * @see com.liferay.journal.model.impl.JournalArticleImpl
+ * @see com.liferay.journal.model.impl.JournalArticleModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.journal.model.impl.JournalArticleImpl")
 @ProviderType
-public interface JournalArticle
-	extends JournalArticleModel, PersistedModel, TreeModel {
-
+public interface JournalArticle extends JournalArticleModel, PersistedModel,
+	TreeModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to <code>com.liferay.journal.model.impl.JournalArticleImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to {@link com.liferay.journal.model.impl.JournalArticleImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<JournalArticle, Long> ID_ACCESSOR =
-		new Accessor<JournalArticle, Long>() {
-
+	public static final Accessor<JournalArticle, Long> ID_ACCESSOR = new Accessor<JournalArticle, Long>() {
 			@Override
 			public Long get(JournalArticle journalArticle) {
 				return journalArticle.getId();
@@ -55,11 +54,9 @@ public interface JournalArticle
 			public Class<JournalArticle> getTypeClass() {
 				return JournalArticle.class;
 			}
-
 		};
-	public static final Accessor<JournalArticle, String> ARTICLE_ID_ACCESSOR =
-		new Accessor<JournalArticle, String>() {
 
+	public static final Accessor<JournalArticle, String> ARTICLE_ID_ACCESSOR = new Accessor<JournalArticle, String>() {
 			@Override
 			public String get(JournalArticle journalArticle) {
 				return journalArticle.getArticleId();
@@ -74,26 +71,25 @@ public interface JournalArticle
 			public Class<JournalArticle> getTypeClass() {
 				return JournalArticle.class;
 			}
-
 		};
 
 	@Override
-	public String buildTreePath()
+	public java.lang.String buildTreePath()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public long getArticleImageId(
-		String elInstanceId, String elName, String languageId);
+	public long getArticleImageId(java.lang.String elInstanceId,
+		java.lang.String elName, java.lang.String languageId);
 
-	public String getArticleImageURL(
+	public java.lang.String getArticleImageURL(
 		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay);
 
 	public JournalArticleResource getArticleResource()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public String getArticleResourceUuid()
+	public java.lang.String getArticleResourceUuid()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public String getContentByLocale(String languageId);
+	public java.lang.String getContentByLocale(java.lang.String languageId);
 
 	public com.liferay.dynamic.data.mapping.model.DDMStructure getDDMStructure()
 		throws com.liferay.portal.kernel.exception.PortalException;
@@ -108,49 +104,48 @@ public interface JournalArticle
 
 	public com.liferay.portal.kernel.model.Layout getLayout();
 
-	public String getSmallImageType()
+	public java.lang.String getSmallImageType()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 #getDDMStructureKey()}
-	 */
-	@Deprecated
-	public String getStructureId();
+	* @deprecated As of Wilberforce (7.0.x), replaced by {@link
+	#getDDMStructureKey()}
+	*/
+	@java.lang.Deprecated()
+	public java.lang.String getStructureId();
 
 	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 #getDDMTemplateKey()}
-	 */
-	@Deprecated
-	public String getTemplateId();
+	* @deprecated As of Wilberforce (7.0.x), replaced by {@link
+	#getDDMTemplateKey()}
+	*/
+	@java.lang.Deprecated()
+	public java.lang.String getTemplateId();
 
 	public boolean hasApprovedVersion();
 
 	/**
-	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement
-	 */
-	@Deprecated
+	* @deprecated As of Wilberforce (7.0.x), with no direct replacement
+	*/
+	@java.lang.Deprecated()
 	public boolean isTemplateDriven();
 
-	public void setDefaultLanguageId(String defaultLanguageId);
+	public void setDefaultLanguageId(java.lang.String defaultLanguageId);
 
 	public void setDocument(com.liferay.portal.kernel.xml.Document document);
 
-	public void setSmallImageType(String smallImageType);
+	public void setSmallImageType(java.lang.String smallImageType);
 
 	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 #setDDMStructureKey(String)}
-	 */
-	@Deprecated
-	public void setStructureId(String ddmStructureKey);
+	* @deprecated As of Wilberforce (7.0.x), replaced by {@link
+	#setDDMStructureKey(String)}
+	*/
+	@java.lang.Deprecated()
+	public void setStructureId(java.lang.String ddmStructureKey);
 
 	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 #setDDMTemplateKey(String)}
-	 */
-	@Deprecated
-	public void setTemplateId(String ddmTemplateKey);
-
+	* @deprecated As of Wilberforce (7.0.x), replaced by {@link
+	#setDDMTemplateKey(String)}
+	*/
+	@java.lang.Deprecated()
+	public void setTemplateId(java.lang.String ddmTemplateKey);
 }

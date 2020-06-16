@@ -1,22 +1,26 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.watson.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.watson.model.WatsonPerson;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing WatsonPerson in entity cache.
  *
  * @author Steven Smith
+ * @see WatsonPerson
  * @generated
  */
-public class WatsonPersonCacheModel
-	implements CacheModel<WatsonPerson>, Externalizable {
-
+@ProviderType
+public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class WatsonPersonCacheModel
 			return false;
 		}
 
-		WatsonPersonCacheModel watsonPersonCacheModel =
-			(WatsonPersonCacheModel)obj;
+		WatsonPersonCacheModel watsonPersonCacheModel = (WatsonPersonCacheModel)obj;
 
 		if (watsonPersonId == watsonPersonCacheModel.watsonPersonId) {
 			return true;
@@ -139,7 +143,7 @@ public class WatsonPersonCacheModel
 		watsonPersonImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonPersonImpl.setUserName("");
+			watsonPersonImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			watsonPersonImpl.setUserName(userName);
@@ -160,11 +164,9 @@ public class WatsonPersonCacheModel
 		}
 
 		watsonPersonImpl.setBirthCountryId(birthCountryId);
-		watsonPersonImpl.setCitizenshipWatsonListTypeId(
-			citizenshipWatsonListTypeId);
+		watsonPersonImpl.setCitizenshipWatsonListTypeId(citizenshipWatsonListTypeId);
 		watsonPersonImpl.setCountryWatsonListTypeId(countryWatsonListTypeId);
-		watsonPersonImpl.setEthnicityWatsonListTypeId(
-			ethnicityWatsonListTypeId);
+		watsonPersonImpl.setEthnicityWatsonListTypeId(ethnicityWatsonListTypeId);
 		watsonPersonImpl.setEyesWatsonListTypeId(eyesWatsonListTypeId);
 		watsonPersonImpl.setHairWatsonListTypeId(hairWatsonListTypeId);
 		watsonPersonImpl.setOriginalWatsonPersonId(originalWatsonPersonId);
@@ -173,14 +175,14 @@ public class WatsonPersonCacheModel
 		watsonPersonImpl.setWatsonIncidentId(watsonIncidentId);
 
 		if (description == null) {
-			watsonPersonImpl.setDescription("");
+			watsonPersonImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			watsonPersonImpl.setDescription(description);
 		}
 
 		if (imagePayload == null) {
-			watsonPersonImpl.setImagePayload("");
+			watsonPersonImpl.setImagePayload(StringPool.BLANK);
 		}
 		else {
 			watsonPersonImpl.setImagePayload(imagePayload);
@@ -208,35 +210,35 @@ public class WatsonPersonCacheModel
 		}
 
 		if (startAge == null) {
-			watsonPersonImpl.setStartAge("");
+			watsonPersonImpl.setStartAge(StringPool.BLANK);
 		}
 		else {
 			watsonPersonImpl.setStartAge(startAge);
 		}
 
 		if (endAge == null) {
-			watsonPersonImpl.setEndAge("");
+			watsonPersonImpl.setEndAge(StringPool.BLANK);
 		}
 		else {
 			watsonPersonImpl.setEndAge(endAge);
 		}
 
 		if (occupation == null) {
-			watsonPersonImpl.setOccupation("");
+			watsonPersonImpl.setOccupation(StringPool.BLANK);
 		}
 		else {
 			watsonPersonImpl.setOccupation(occupation);
 		}
 
 		if (height == null) {
-			watsonPersonImpl.setHeight("");
+			watsonPersonImpl.setHeight(StringPool.BLANK);
 		}
 		else {
 			watsonPersonImpl.setHeight(height);
 		}
 
 		if (weight == null) {
-			watsonPersonImpl.setWeight("");
+			watsonPersonImpl.setWeight(StringPool.BLANK);
 		}
 		else {
 			watsonPersonImpl.setWeight(weight);
@@ -252,9 +254,7 @@ public class WatsonPersonCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		watsonPersonId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -286,7 +286,7 @@ public class WatsonPersonCacheModel
 
 		watsonIncidentId = objectInput.readLong();
 		description = objectInput.readUTF();
-		imagePayload = (String)objectInput.readObject();
+		imagePayload = objectInput.readUTF();
 		birthDate = objectInput.readLong();
 		dateAccepted = objectInput.readLong();
 		dateRescued = objectInput.readLong();
@@ -304,7 +304,8 @@ public class WatsonPersonCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(watsonPersonId);
 
 		objectOutput.writeLong(groupId);
@@ -314,7 +315,7 @@ public class WatsonPersonCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -344,17 +345,17 @@ public class WatsonPersonCacheModel
 		objectOutput.writeLong(watsonIncidentId);
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (imagePayload == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(imagePayload);
+			objectOutput.writeUTF(imagePayload);
 		}
 
 		objectOutput.writeLong(birthDate);
@@ -362,35 +363,35 @@ public class WatsonPersonCacheModel
 		objectOutput.writeLong(dateRescued);
 
 		if (startAge == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(startAge);
 		}
 
 		if (endAge == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(endAge);
 		}
 
 		if (occupation == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(occupation);
 		}
 
 		if (height == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(height);
 		}
 
 		if (weight == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(weight);
@@ -433,5 +434,4 @@ public class WatsonPersonCacheModel
 	public boolean accepted;
 	public boolean rescued;
 	public int status;
-
 }

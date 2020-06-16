@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.testray.service.persistence.impl;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.testray.exception.NoSuchTestrayBuildException;
 import com.liferay.osb.testray.model.TestrayBuild;
@@ -20,6 +22,7 @@ import com.liferay.osb.testray.model.impl.TestrayBuildImpl;
 import com.liferay.osb.testray.model.impl.TestrayBuildModelImpl;
 import com.liferay.osb.testray.service.persistence.TestrayBuildPersistence;
 import com.liferay.osb.testray.service.persistence.TestrayCasePersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -30,23 +33,22 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.service.persistence.CompanyProvider;
+import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapper;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapperFactory;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
-
-import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -66,34 +68,45 @@ import java.util.Set;
  * </p>
  *
  * @author Ethan Bustad
+ * @see TestrayBuildPersistence
+ * @see com.liferay.osb.testray.service.persistence.TestrayBuildUtil
  * @generated
  */
-public class TestrayBuildPersistenceImpl
-	extends BasePersistenceImpl<TestrayBuild>
+@ProviderType
+public class TestrayBuildPersistenceImpl extends BasePersistenceImpl<TestrayBuild>
 	implements TestrayBuildPersistence {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use <code>TestrayBuildUtil</code> to access the testray build persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use {@link TestrayBuildUtil} to access the testray build persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY =
-		TestrayBuildImpl.class.getName();
-
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List1";
-
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathFetchByTRI_N;
-	private FinderPath _finderPathCountByTRI_N;
+	public static final String FINDER_CLASS_NAME_ENTITY = TestrayBuildImpl.class.getName();
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List1";
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List2";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayBuildModelImpl.FINDER_CACHE_ENABLED, TestrayBuildImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayBuildModelImpl.FINDER_CACHE_ENABLED, TestrayBuildImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayBuildModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	public static final FinderPath FINDER_PATH_FETCH_BY_TRI_N = new FinderPath(TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayBuildModelImpl.FINDER_CACHE_ENABLED, TestrayBuildImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchByTRI_N",
+			new String[] { Long.class.getName(), String.class.getName() },
+			TestrayBuildModelImpl.TESTRAYROUTINEID_COLUMN_BITMASK |
+			TestrayBuildModelImpl.NAME_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_TRI_N = new FinderPath(TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayBuildModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByTRI_N",
+			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the testray build where testrayRoutineId = &#63; and name = &#63; or throws a <code>NoSuchTestrayBuildException</code> if it could not be found.
+	 * Returns the testray build where testrayRoutineId = &#63; and name = &#63; or throws a {@link NoSuchTestrayBuildException} if it could not be found.
 	 *
 	 * @param testrayRoutineId the testray routine ID
 	 * @param name the name
@@ -103,27 +116,26 @@ public class TestrayBuildPersistenceImpl
 	@Override
 	public TestrayBuild findByTRI_N(long testrayRoutineId, String name)
 		throws NoSuchTestrayBuildException {
-
 		TestrayBuild testrayBuild = fetchByTRI_N(testrayRoutineId, name);
 
 		if (testrayBuild == null) {
-			StringBundler sb = new StringBundler(6);
+			StringBundler msg = new StringBundler(6);
 
-			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			sb.append("testrayRoutineId=");
-			sb.append(testrayRoutineId);
+			msg.append("testrayRoutineId=");
+			msg.append(testrayRoutineId);
 
-			sb.append(", name=");
-			sb.append(name);
+			msg.append(", name=");
+			msg.append(name);
 
-			sb.append("}");
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(sb.toString());
+				_log.debug(msg.toString());
 			}
 
-			throw new NoSuchTestrayBuildException(sb.toString());
+			throw new NoSuchTestrayBuildException(msg.toString());
 		}
 
 		return testrayBuild;
@@ -146,80 +158,73 @@ public class TestrayBuildPersistenceImpl
 	 *
 	 * @param testrayRoutineId the testray routine ID
 	 * @param name the name
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the matching testray build, or <code>null</code> if a matching testray build could not be found
 	 */
 	@Override
-	public TestrayBuild fetchByTRI_N(
-		long testrayRoutineId, String name, boolean useFinderCache) {
-
-		name = Objects.toString(name, "");
-
-		Object[] finderArgs = null;
-
-		if (useFinderCache) {
-			finderArgs = new Object[] {testrayRoutineId, name};
-		}
+	public TestrayBuild fetchByTRI_N(long testrayRoutineId, String name,
+		boolean retrieveFromCache) {
+		Object[] finderArgs = new Object[] { testrayRoutineId, name };
 
 		Object result = null;
 
-		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchByTRI_N, finderArgs, this);
+		if (retrieveFromCache) {
+			result = finderCache.getResult(FINDER_PATH_FETCH_BY_TRI_N,
+					finderArgs, this);
 		}
 
 		if (result instanceof TestrayBuild) {
 			TestrayBuild testrayBuild = (TestrayBuild)result;
 
 			if ((testrayRoutineId != testrayBuild.getTestrayRoutineId()) ||
-				!Objects.equals(name, testrayBuild.getName())) {
-
+					!Objects.equals(name, testrayBuild.getName())) {
 				result = null;
 			}
 		}
 
 		if (result == null) {
-			StringBundler sb = new StringBundler(4);
+			StringBundler query = new StringBundler(4);
 
-			sb.append(_SQL_SELECT_TESTRAYBUILD_WHERE);
+			query.append(_SQL_SELECT_TESTRAYBUILD_WHERE);
 
-			sb.append(_FINDER_COLUMN_TRI_N_TESTRAYROUTINEID_2);
+			query.append(_FINDER_COLUMN_TRI_N_TESTRAYROUTINEID_2);
 
 			boolean bindName = false;
 
-			if (name.isEmpty()) {
-				sb.append(_FINDER_COLUMN_TRI_N_NAME_3);
+			if (name == null) {
+				query.append(_FINDER_COLUMN_TRI_N_NAME_1);
+			}
+			else if (name.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_TRI_N_NAME_3);
 			}
 			else {
 				bindName = true;
 
-				sb.append(_FINDER_COLUMN_TRI_N_NAME_2);
+				query.append(_FINDER_COLUMN_TRI_N_NAME_2);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(testrayRoutineId);
+				qPos.add(testrayRoutineId);
 
 				if (bindName) {
-					queryPos.add(name);
+					qPos.add(name);
 				}
 
-				List<TestrayBuild> list = query.list();
+				List<TestrayBuild> list = q.list();
 
 				if (list.isEmpty()) {
-					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchByTRI_N, finderArgs, list);
-					}
+					finderCache.putResult(FINDER_PATH_FETCH_BY_TRI_N,
+						finderArgs, list);
 				}
 				else {
 					TestrayBuild testrayBuild = list.get(0);
@@ -227,15 +232,19 @@ public class TestrayBuildPersistenceImpl
 					result = testrayBuild;
 
 					cacheResult(testrayBuild);
+
+					if ((testrayBuild.getTestrayRoutineId() != testrayRoutineId) ||
+							(testrayBuild.getName() == null) ||
+							!testrayBuild.getName().equals(name)) {
+						finderCache.putResult(FINDER_PATH_FETCH_BY_TRI_N,
+							finderArgs, testrayBuild);
+					}
 				}
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(
-						_finderPathFetchByTRI_N, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_FETCH_BY_TRI_N, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -260,7 +269,6 @@ public class TestrayBuildPersistenceImpl
 	@Override
 	public TestrayBuild removeByTRI_N(long testrayRoutineId, String name)
 		throws NoSuchTestrayBuildException {
-
 		TestrayBuild testrayBuild = findByTRI_N(testrayRoutineId, name);
 
 		return remove(testrayBuild);
@@ -275,57 +283,58 @@ public class TestrayBuildPersistenceImpl
 	 */
 	@Override
 	public int countByTRI_N(long testrayRoutineId, String name) {
-		name = Objects.toString(name, "");
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_TRI_N;
 
-		FinderPath finderPath = _finderPathCountByTRI_N;
-
-		Object[] finderArgs = new Object[] {testrayRoutineId, name};
+		Object[] finderArgs = new Object[] { testrayRoutineId, name };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(3);
+			StringBundler query = new StringBundler(3);
 
-			sb.append(_SQL_COUNT_TESTRAYBUILD_WHERE);
+			query.append(_SQL_COUNT_TESTRAYBUILD_WHERE);
 
-			sb.append(_FINDER_COLUMN_TRI_N_TESTRAYROUTINEID_2);
+			query.append(_FINDER_COLUMN_TRI_N_TESTRAYROUTINEID_2);
 
 			boolean bindName = false;
 
-			if (name.isEmpty()) {
-				sb.append(_FINDER_COLUMN_TRI_N_NAME_3);
+			if (name == null) {
+				query.append(_FINDER_COLUMN_TRI_N_NAME_1);
+			}
+			else if (name.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_TRI_N_NAME_3);
 			}
 			else {
 				bindName = true;
 
-				sb.append(_FINDER_COLUMN_TRI_N_NAME_2);
+				query.append(_FINDER_COLUMN_TRI_N_NAME_2);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(testrayRoutineId);
+				qPos.add(testrayRoutineId);
 
 				if (bindName) {
-					queryPos.add(name);
+					qPos.add(name);
 				}
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
+			catch (Exception e) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -335,14 +344,10 @@ public class TestrayBuildPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_TRI_N_TESTRAYROUTINEID_2 =
-		"testrayBuild.testrayRoutineId = ? AND ";
-
-	private static final String _FINDER_COLUMN_TRI_N_NAME_2 =
-		"testrayBuild.name = ?";
-
-	private static final String _FINDER_COLUMN_TRI_N_NAME_3 =
-		"(testrayBuild.name IS NULL OR testrayBuild.name = '')";
+	private static final String _FINDER_COLUMN_TRI_N_TESTRAYROUTINEID_2 = "testrayBuild.testrayRoutineId = ? AND ";
+	private static final String _FINDER_COLUMN_TRI_N_NAME_1 = "testrayBuild.name IS NULL";
+	private static final String _FINDER_COLUMN_TRI_N_NAME_2 = "testrayBuild.name = ?";
+	private static final String _FINDER_COLUMN_TRI_N_NAME_3 = "(testrayBuild.name IS NULL OR testrayBuild.name = '')";
 
 	public TestrayBuildPersistenceImpl() {
 		setModelClass(TestrayBuild.class);
@@ -355,16 +360,13 @@ public class TestrayBuildPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(TestrayBuild testrayBuild) {
-		entityCache.putResult(
-			TestrayBuildModelImpl.ENTITY_CACHE_ENABLED, TestrayBuildImpl.class,
-			testrayBuild.getPrimaryKey(), testrayBuild);
+		entityCache.putResult(TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayBuildImpl.class, testrayBuild.getPrimaryKey(), testrayBuild);
 
-		finderCache.putResult(
-			_finderPathFetchByTRI_N,
+		finderCache.putResult(FINDER_PATH_FETCH_BY_TRI_N,
 			new Object[] {
 				testrayBuild.getTestrayRoutineId(), testrayBuild.getName()
-			},
-			testrayBuild);
+			}, testrayBuild);
 
 		testrayBuild.resetOriginalValues();
 	}
@@ -378,10 +380,8 @@ public class TestrayBuildPersistenceImpl
 	public void cacheResult(List<TestrayBuild> testrayBuilds) {
 		for (TestrayBuild testrayBuild : testrayBuilds) {
 			if (entityCache.getResult(
-					TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
-					TestrayBuildImpl.class, testrayBuild.getPrimaryKey()) ==
-						null) {
-
+						TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
+						TestrayBuildImpl.class, testrayBuild.getPrimaryKey()) == null) {
 				cacheResult(testrayBuild);
 			}
 			else {
@@ -394,7 +394,7 @@ public class TestrayBuildPersistenceImpl
 	 * Clears the cache for all testray builds.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -410,14 +410,13 @@ public class TestrayBuildPersistenceImpl
 	 * Clears the cache for the testray build.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(TestrayBuild testrayBuild) {
-		entityCache.removeResult(
-			TestrayBuildModelImpl.ENTITY_CACHE_ENABLED, TestrayBuildImpl.class,
-			testrayBuild.getPrimaryKey());
+		entityCache.removeResult(TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayBuildImpl.class, testrayBuild.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -431,63 +430,47 @@ public class TestrayBuildPersistenceImpl
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (TestrayBuild testrayBuild : testrayBuilds) {
-			entityCache.removeResult(
-				TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
 				TestrayBuildImpl.class, testrayBuild.getPrimaryKey());
 
 			clearUniqueFindersCache((TestrayBuildModelImpl)testrayBuild, true);
 		}
 	}
 
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
-				TestrayBuildImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		TestrayBuildModelImpl testrayBuildModelImpl) {
-
 		Object[] args = new Object[] {
-			testrayBuildModelImpl.getTestrayRoutineId(),
-			testrayBuildModelImpl.getName()
-		};
-
-		finderCache.putResult(
-			_finderPathCountByTRI_N, args, Long.valueOf(1), false);
-		finderCache.putResult(
-			_finderPathFetchByTRI_N, args, testrayBuildModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		TestrayBuildModelImpl testrayBuildModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
 				testrayBuildModelImpl.getTestrayRoutineId(),
 				testrayBuildModelImpl.getName()
 			};
 
-			finderCache.removeResult(_finderPathCountByTRI_N, args);
-			finderCache.removeResult(_finderPathFetchByTRI_N, args);
+		finderCache.putResult(FINDER_PATH_COUNT_BY_TRI_N, args,
+			Long.valueOf(1), false);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_TRI_N, args,
+			testrayBuildModelImpl, false);
+	}
+
+	protected void clearUniqueFindersCache(
+		TestrayBuildModelImpl testrayBuildModelImpl, boolean clearCurrent) {
+		if (clearCurrent) {
+			Object[] args = new Object[] {
+					testrayBuildModelImpl.getTestrayRoutineId(),
+					testrayBuildModelImpl.getName()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_TRI_N, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_TRI_N, args);
 		}
 
 		if ((testrayBuildModelImpl.getColumnBitmask() &
-			 _finderPathFetchByTRI_N.getColumnBitmask()) != 0) {
-
+				FINDER_PATH_FETCH_BY_TRI_N.getColumnBitmask()) != 0) {
 			Object[] args = new Object[] {
-				testrayBuildModelImpl.getOriginalTestrayRoutineId(),
-				testrayBuildModelImpl.getOriginalName()
-			};
+					testrayBuildModelImpl.getOriginalTestrayRoutineId(),
+					testrayBuildModelImpl.getOriginalName()
+				};
 
-			finderCache.removeResult(_finderPathCountByTRI_N, args);
-			finderCache.removeResult(_finderPathFetchByTRI_N, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_TRI_N, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_TRI_N, args);
 		}
 	}
 
@@ -504,7 +487,7 @@ public class TestrayBuildPersistenceImpl
 		testrayBuild.setNew(true);
 		testrayBuild.setPrimaryKey(testrayBuildId);
 
-		testrayBuild.setCompanyId(CompanyThreadLocal.getCompanyId());
+		testrayBuild.setCompanyId(companyProvider.getCompanyId());
 
 		return testrayBuild;
 	}
@@ -519,7 +502,6 @@ public class TestrayBuildPersistenceImpl
 	@Override
 	public TestrayBuild remove(long testrayBuildId)
 		throws NoSuchTestrayBuildException {
-
 		return remove((Serializable)testrayBuildId);
 	}
 
@@ -533,31 +515,30 @@ public class TestrayBuildPersistenceImpl
 	@Override
 	public TestrayBuild remove(Serializable primaryKey)
 		throws NoSuchTestrayBuildException {
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			TestrayBuild testrayBuild = (TestrayBuild)session.get(
-				TestrayBuildImpl.class, primaryKey);
+			TestrayBuild testrayBuild = (TestrayBuild)session.get(TestrayBuildImpl.class,
+					primaryKey);
 
 			if (testrayBuild == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchTestrayBuildException(
-					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				throw new NoSuchTestrayBuildException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+					primaryKey);
 			}
 
 			return remove(testrayBuild);
 		}
-		catch (NoSuchTestrayBuildException noSuchEntityException) {
-			throw noSuchEntityException;
+		catch (NoSuchTestrayBuildException nsee) {
+			throw nsee;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -566,8 +547,9 @@ public class TestrayBuildPersistenceImpl
 
 	@Override
 	protected TestrayBuild removeImpl(TestrayBuild testrayBuild) {
-		testrayBuildToTestrayCaseTableMapper.deleteLeftPrimaryKeyTableMappings(
-			testrayBuild.getPrimaryKey());
+		testrayBuild = toUnwrappedModel(testrayBuild);
+
+		testrayBuildToTestrayCaseTableMapper.deleteLeftPrimaryKeyTableMappings(testrayBuild.getPrimaryKey());
 
 		Session session = null;
 
@@ -575,16 +557,16 @@ public class TestrayBuildPersistenceImpl
 			session = openSession();
 
 			if (!session.contains(testrayBuild)) {
-				testrayBuild = (TestrayBuild)session.get(
-					TestrayBuildImpl.class, testrayBuild.getPrimaryKeyObj());
+				testrayBuild = (TestrayBuild)session.get(TestrayBuildImpl.class,
+						testrayBuild.getPrimaryKeyObj());
 			}
 
 			if (testrayBuild != null) {
 				session.delete(testrayBuild);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -599,30 +581,13 @@ public class TestrayBuildPersistenceImpl
 
 	@Override
 	public TestrayBuild updateImpl(TestrayBuild testrayBuild) {
+		testrayBuild = toUnwrappedModel(testrayBuild);
+
 		boolean isNew = testrayBuild.isNew();
 
-		if (!(testrayBuild instanceof TestrayBuildModelImpl)) {
-			InvocationHandler invocationHandler = null;
+		TestrayBuildModelImpl testrayBuildModelImpl = (TestrayBuildModelImpl)testrayBuild;
 
-			if (ProxyUtil.isProxyClass(testrayBuild.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(
-					testrayBuild);
-
-				throw new IllegalArgumentException(
-					"Implement ModelWrapper in testrayBuild proxy " +
-						invocationHandler.getClass());
-			}
-
-			throw new IllegalArgumentException(
-				"Implement ModelWrapper in custom TestrayBuild implementation " +
-					testrayBuild.getClass());
-		}
-
-		TestrayBuildModelImpl testrayBuildModelImpl =
-			(TestrayBuildModelImpl)testrayBuild;
-
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -640,8 +605,7 @@ public class TestrayBuildPersistenceImpl
 				testrayBuild.setModifiedDate(now);
 			}
 			else {
-				testrayBuild.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+				testrayBuild.setModifiedDate(serviceContext.getModifiedDate(now));
 			}
 		}
 
@@ -659,8 +623,8 @@ public class TestrayBuildPersistenceImpl
 				testrayBuild = (TestrayBuild)session.merge(testrayBuild);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -671,15 +635,16 @@ public class TestrayBuildPersistenceImpl
 		if (!TestrayBuildModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else if (isNew) {
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+		else
+		 if (isNew) {
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(
-			TestrayBuildModelImpl.ENTITY_CACHE_ENABLED, TestrayBuildImpl.class,
-			testrayBuild.getPrimaryKey(), testrayBuild, false);
+		entityCache.putResult(TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayBuildImpl.class, testrayBuild.getPrimaryKey(), testrayBuild,
+			false);
 
 		clearUniqueFindersCache(testrayBuildModelImpl, false);
 		cacheUniqueFindersCache(testrayBuildModelImpl);
@@ -689,8 +654,42 @@ public class TestrayBuildPersistenceImpl
 		return testrayBuild;
 	}
 
+	protected TestrayBuild toUnwrappedModel(TestrayBuild testrayBuild) {
+		if (testrayBuild instanceof TestrayBuildImpl) {
+			return testrayBuild;
+		}
+
+		TestrayBuildImpl testrayBuildImpl = new TestrayBuildImpl();
+
+		testrayBuildImpl.setNew(testrayBuild.isNew());
+		testrayBuildImpl.setPrimaryKey(testrayBuild.getPrimaryKey());
+
+		testrayBuildImpl.setTestrayBuildId(testrayBuild.getTestrayBuildId());
+		testrayBuildImpl.setGroupId(testrayBuild.getGroupId());
+		testrayBuildImpl.setCompanyId(testrayBuild.getCompanyId());
+		testrayBuildImpl.setUserId(testrayBuild.getUserId());
+		testrayBuildImpl.setUserName(testrayBuild.getUserName());
+		testrayBuildImpl.setCreateDate(testrayBuild.getCreateDate());
+		testrayBuildImpl.setModifiedDate(testrayBuild.getModifiedDate());
+		testrayBuildImpl.setTemplateTestrayBuildId(testrayBuild.getTemplateTestrayBuildId());
+		testrayBuildImpl.setTestrayRoutineId(testrayBuild.getTestrayRoutineId());
+		testrayBuildImpl.setTestrayProductVersionId(testrayBuild.getTestrayProductVersionId());
+		testrayBuildImpl.setTestrayProjectId(testrayBuild.getTestrayProjectId());
+		testrayBuildImpl.setName(testrayBuild.getName());
+		testrayBuildImpl.setDescription(testrayBuild.getDescription());
+		testrayBuildImpl.setDescriptionType(testrayBuild.getDescriptionType());
+		testrayBuildImpl.setTemplate(testrayBuild.isTemplate());
+		testrayBuildImpl.setDueDate(testrayBuild.getDueDate());
+		testrayBuildImpl.setGitHash(testrayBuild.getGitHash());
+		testrayBuildImpl.setGithubCompareURLs(testrayBuild.getGithubCompareURLs());
+		testrayBuildImpl.setPromoted(testrayBuild.isPromoted());
+		testrayBuildImpl.setStatus(testrayBuild.getStatus());
+
+		return testrayBuildImpl;
+	}
+
 	/**
-	 * Returns the testray build with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
+	 * Returns the testray build with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the testray build
 	 * @return the testray build
@@ -699,7 +698,6 @@ public class TestrayBuildPersistenceImpl
 	@Override
 	public TestrayBuild findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchTestrayBuildException {
-
 		TestrayBuild testrayBuild = fetchByPrimaryKey(primaryKey);
 
 		if (testrayBuild == null) {
@@ -707,15 +705,15 @@ public class TestrayBuildPersistenceImpl
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchTestrayBuildException(
-				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			throw new NoSuchTestrayBuildException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
 		}
 
 		return testrayBuild;
 	}
 
 	/**
-	 * Returns the testray build with the primary key or throws a <code>NoSuchTestrayBuildException</code> if it could not be found.
+	 * Returns the testray build with the primary key or throws a {@link NoSuchTestrayBuildException} if it could not be found.
 	 *
 	 * @param testrayBuildId the primary key of the testray build
 	 * @return the testray build
@@ -724,7 +722,6 @@ public class TestrayBuildPersistenceImpl
 	@Override
 	public TestrayBuild findByPrimaryKey(long testrayBuildId)
 		throws NoSuchTestrayBuildException {
-
 		return findByPrimaryKey((Serializable)testrayBuildId);
 	}
 
@@ -736,9 +733,8 @@ public class TestrayBuildPersistenceImpl
 	 */
 	@Override
 	public TestrayBuild fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(
-			TestrayBuildModelImpl.ENTITY_CACHE_ENABLED, TestrayBuildImpl.class,
-			primaryKey);
+		Serializable serializable = entityCache.getResult(TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
+				TestrayBuildImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -752,24 +748,22 @@ public class TestrayBuildPersistenceImpl
 			try {
 				session = openSession();
 
-				testrayBuild = (TestrayBuild)session.get(
-					TestrayBuildImpl.class, primaryKey);
+				testrayBuild = (TestrayBuild)session.get(TestrayBuildImpl.class,
+						primaryKey);
 
 				if (testrayBuild != null) {
 					cacheResult(testrayBuild);
 				}
 				else {
-					entityCache.putResult(
-						TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
 						TestrayBuildImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception exception) {
-				entityCache.removeResult(
-					TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception e) {
+				entityCache.removeResult(TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
 					TestrayBuildImpl.class, primaryKey);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -793,13 +787,11 @@ public class TestrayBuildPersistenceImpl
 	@Override
 	public Map<Serializable, TestrayBuild> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
-
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, TestrayBuild> map =
-			new HashMap<Serializable, TestrayBuild>();
+		Map<Serializable, TestrayBuild> map = new HashMap<Serializable, TestrayBuild>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -818,9 +810,8 @@ public class TestrayBuildPersistenceImpl
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(
-				TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
-				TestrayBuildImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
+					TestrayBuildImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -840,31 +831,31 @@ public class TestrayBuildPersistenceImpl
 			return map;
 		}
 
-		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
+				1);
 
-		sb.append(_SQL_SELECT_TESTRAYBUILD_WHERE_PKS_IN);
+		query.append(_SQL_SELECT_TESTRAYBUILD_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			sb.append((long)primaryKey);
+			query.append((long)primaryKey);
 
-			sb.append(",");
+			query.append(StringPool.COMMA);
 		}
 
-		sb.setIndex(sb.index() - 1);
+		query.setIndex(query.index() - 1);
 
-		sb.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query query = session.createQuery(sql);
+			Query q = session.createQuery(sql);
 
-			for (TestrayBuild testrayBuild : (List<TestrayBuild>)query.list()) {
+			for (TestrayBuild testrayBuild : (List<TestrayBuild>)q.list()) {
 				map.put(testrayBuild.getPrimaryKeyObj(), testrayBuild);
 
 				cacheResult(testrayBuild);
@@ -873,13 +864,12 @@ public class TestrayBuildPersistenceImpl
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(
-					TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
 					TestrayBuildImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -902,7 +892,7 @@ public class TestrayBuildPersistenceImpl
 	 * Returns a range of all the testray builds.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayBuildModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestrayBuildModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray builds
@@ -918,7 +908,7 @@ public class TestrayBuildPersistenceImpl
 	 * Returns an ordered range of all the testray builds.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayBuildModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestrayBuildModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray builds
@@ -927,9 +917,8 @@ public class TestrayBuildPersistenceImpl
 	 * @return the ordered range of testray builds
 	 */
 	@Override
-	public List<TestrayBuild> findAll(
-		int start, int end, OrderByComparator<TestrayBuild> orderByComparator) {
-
+	public List<TestrayBuild> findAll(int start, int end,
+		OrderByComparator<TestrayBuild> orderByComparator) {
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -937,62 +926,62 @@ public class TestrayBuildPersistenceImpl
 	 * Returns an ordered range of all the testray builds.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayBuildModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestrayBuildModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray builds
 	 * @param end the upper bound of the range of testray builds (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of testray builds
 	 */
 	@Override
-	public List<TestrayBuild> findAll(
-		int start, int end, OrderByComparator<TestrayBuild> orderByComparator,
-		boolean useFinderCache) {
-
+	public List<TestrayBuild> findAll(int start, int end,
+		OrderByComparator<TestrayBuild> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
-				finderArgs = FINDER_ARGS_EMPTY;
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+			finderArgs = FINDER_ARGS_EMPTY;
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] {start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
 		List<TestrayBuild> list = null;
 
-		if (useFinderCache) {
-			list = (List<TestrayBuild>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<TestrayBuild>)finderCache.getResult(finderPath,
+					finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					2 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(2 +
+						(orderByComparator.getOrderByFields().length * 2));
 
-				sb.append(_SQL_SELECT_TESTRAYBUILD);
+				query.append(_SQL_SELECT_TESTRAYBUILD);
 
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 
-				sql = sb.toString();
+				sql = query.toString();
 			}
 			else {
 				sql = _SQL_SELECT_TESTRAYBUILD;
 
-				sql = sql.concat(TestrayBuildModelImpl.ORDER_BY_JPQL);
+				if (pagination) {
+					sql = sql.concat(TestrayBuildModelImpl.ORDER_BY_JPQL);
+				}
 			}
 
 			Session session = null;
@@ -1000,23 +989,29 @@ public class TestrayBuildPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				list = (List<TestrayBuild>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<TestrayBuild>)QueryUtil.list(q, getDialect(),
+							start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<TestrayBuild>)QueryUtil.list(q, getDialect(),
+							start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1044,8 +1039,8 @@ public class TestrayBuildPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -1053,18 +1048,18 @@ public class TestrayBuildPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(_SQL_COUNT_TESTRAYBUILD);
+				Query q = session.createQuery(_SQL_COUNT_TESTRAYBUILD);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
+					count);
 			}
-			catch (Exception exception) {
-				finderCache.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1082,8 +1077,7 @@ public class TestrayBuildPersistenceImpl
 	 */
 	@Override
 	public long[] getTestrayCasePrimaryKeys(long pk) {
-		long[] pks = testrayBuildToTestrayCaseTableMapper.getRightPrimaryKeys(
-			pk);
+		long[] pks = testrayBuildToTestrayCaseTableMapper.getRightPrimaryKeys(pk);
 
 		return pks.clone();
 	}
@@ -1097,7 +1091,6 @@ public class TestrayBuildPersistenceImpl
 	@Override
 	public List<com.liferay.osb.testray.model.TestrayCase> getTestrayCases(
 		long pk) {
-
 		return getTestrayCases(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
@@ -1105,7 +1098,7 @@ public class TestrayBuildPersistenceImpl
 	 * Returns a range of all the testray cases associated with the testray build.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayBuildModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestrayBuildModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param pk the primary key of the testray build
@@ -1116,7 +1109,6 @@ public class TestrayBuildPersistenceImpl
 	@Override
 	public List<com.liferay.osb.testray.model.TestrayCase> getTestrayCases(
 		long pk, int start, int end) {
-
 		return getTestrayCases(pk, start, end, null);
 	}
 
@@ -1124,7 +1116,7 @@ public class TestrayBuildPersistenceImpl
 	 * Returns an ordered range of all the testray cases associated with the testray build.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayBuildModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestrayBuildModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param pk the primary key of the testray build
@@ -1136,11 +1128,9 @@ public class TestrayBuildPersistenceImpl
 	@Override
 	public List<com.liferay.osb.testray.model.TestrayCase> getTestrayCases(
 		long pk, int start, int end,
-		OrderByComparator<com.liferay.osb.testray.model.TestrayCase>
-			orderByComparator) {
-
-		return testrayBuildToTestrayCaseTableMapper.getRightBaseModels(
-			pk, start, end, orderByComparator);
+		OrderByComparator<com.liferay.osb.testray.model.TestrayCase> orderByComparator) {
+		return testrayBuildToTestrayCaseTableMapper.getRightBaseModels(pk,
+			start, end, orderByComparator);
 	}
 
 	/**
@@ -1151,8 +1141,7 @@ public class TestrayBuildPersistenceImpl
 	 */
 	@Override
 	public int getTestrayCasesSize(long pk) {
-		long[] pks = testrayBuildToTestrayCaseTableMapper.getRightPrimaryKeys(
-			pk);
+		long[] pks = testrayBuildToTestrayCaseTableMapper.getRightPrimaryKeys(pk);
 
 		return pks.length;
 	}
@@ -1166,8 +1155,8 @@ public class TestrayBuildPersistenceImpl
 	 */
 	@Override
 	public boolean containsTestrayCase(long pk, long testrayCasePK) {
-		return testrayBuildToTestrayCaseTableMapper.containsTableMapping(
-			pk, testrayCasePK);
+		return testrayBuildToTestrayCaseTableMapper.containsTableMapping(pk,
+			testrayCasePK);
 	}
 
 	/**
@@ -1197,12 +1186,12 @@ public class TestrayBuildPersistenceImpl
 		TestrayBuild testrayBuild = fetchByPrimaryKey(pk);
 
 		if (testrayBuild == null) {
-			testrayBuildToTestrayCaseTableMapper.addTableMapping(
-				CompanyThreadLocal.getCompanyId(), pk, testrayCasePK);
+			testrayBuildToTestrayCaseTableMapper.addTableMapping(companyProvider.getCompanyId(),
+				pk, testrayCasePK);
 		}
 		else {
-			testrayBuildToTestrayCaseTableMapper.addTableMapping(
-				testrayBuild.getCompanyId(), pk, testrayCasePK);
+			testrayBuildToTestrayCaseTableMapper.addTableMapping(testrayBuild.getCompanyId(),
+				pk, testrayCasePK);
 		}
 	}
 
@@ -1213,19 +1202,17 @@ public class TestrayBuildPersistenceImpl
 	 * @param testrayCase the testray case
 	 */
 	@Override
-	public void addTestrayCase(
-		long pk, com.liferay.osb.testray.model.TestrayCase testrayCase) {
-
+	public void addTestrayCase(long pk,
+		com.liferay.osb.testray.model.TestrayCase testrayCase) {
 		TestrayBuild testrayBuild = fetchByPrimaryKey(pk);
 
 		if (testrayBuild == null) {
-			testrayBuildToTestrayCaseTableMapper.addTableMapping(
-				CompanyThreadLocal.getCompanyId(), pk,
-				testrayCase.getPrimaryKey());
+			testrayBuildToTestrayCaseTableMapper.addTableMapping(companyProvider.getCompanyId(),
+				pk, testrayCase.getPrimaryKey());
 		}
 		else {
-			testrayBuildToTestrayCaseTableMapper.addTableMapping(
-				testrayBuild.getCompanyId(), pk, testrayCase.getPrimaryKey());
+			testrayBuildToTestrayCaseTableMapper.addTableMapping(testrayBuild.getCompanyId(),
+				pk, testrayCase.getPrimaryKey());
 		}
 	}
 
@@ -1242,14 +1229,14 @@ public class TestrayBuildPersistenceImpl
 		TestrayBuild testrayBuild = fetchByPrimaryKey(pk);
 
 		if (testrayBuild == null) {
-			companyId = CompanyThreadLocal.getCompanyId();
+			companyId = companyProvider.getCompanyId();
 		}
 		else {
 			companyId = testrayBuild.getCompanyId();
 		}
 
-		testrayBuildToTestrayCaseTableMapper.addTableMappings(
-			companyId, pk, testrayCasePKs);
+		testrayBuildToTestrayCaseTableMapper.addTableMappings(companyId, pk,
+			testrayCasePKs);
 	}
 
 	/**
@@ -1259,15 +1246,11 @@ public class TestrayBuildPersistenceImpl
 	 * @param testrayCases the testray cases
 	 */
 	@Override
-	public void addTestrayCases(
-		long pk, List<com.liferay.osb.testray.model.TestrayCase> testrayCases) {
-
-		addTestrayCases(
-			pk,
-			ListUtil.toLongArray(
-				testrayCases,
-				com.liferay.osb.testray.model.TestrayCase.
-					TESTRAY_CASE_ID_ACCESSOR));
+	public void addTestrayCases(long pk,
+		List<com.liferay.osb.testray.model.TestrayCase> testrayCases) {
+		addTestrayCases(pk,
+			ListUtil.toLongArray(testrayCases,
+				com.liferay.osb.testray.model.TestrayCase.TESTRAY_CASE_ID_ACCESSOR));
 	}
 
 	/**
@@ -1277,8 +1260,7 @@ public class TestrayBuildPersistenceImpl
 	 */
 	@Override
 	public void clearTestrayCases(long pk) {
-		testrayBuildToTestrayCaseTableMapper.deleteLeftPrimaryKeyTableMappings(
-			pk);
+		testrayBuildToTestrayCaseTableMapper.deleteLeftPrimaryKeyTableMappings(pk);
 	}
 
 	/**
@@ -1289,8 +1271,8 @@ public class TestrayBuildPersistenceImpl
 	 */
 	@Override
 	public void removeTestrayCase(long pk, long testrayCasePK) {
-		testrayBuildToTestrayCaseTableMapper.deleteTableMapping(
-			pk, testrayCasePK);
+		testrayBuildToTestrayCaseTableMapper.deleteTableMapping(pk,
+			testrayCasePK);
 	}
 
 	/**
@@ -1300,11 +1282,10 @@ public class TestrayBuildPersistenceImpl
 	 * @param testrayCase the testray case
 	 */
 	@Override
-	public void removeTestrayCase(
-		long pk, com.liferay.osb.testray.model.TestrayCase testrayCase) {
-
-		testrayBuildToTestrayCaseTableMapper.deleteTableMapping(
-			pk, testrayCase.getPrimaryKey());
+	public void removeTestrayCase(long pk,
+		com.liferay.osb.testray.model.TestrayCase testrayCase) {
+		testrayBuildToTestrayCaseTableMapper.deleteTableMapping(pk,
+			testrayCase.getPrimaryKey());
 	}
 
 	/**
@@ -1315,8 +1296,8 @@ public class TestrayBuildPersistenceImpl
 	 */
 	@Override
 	public void removeTestrayCases(long pk, long[] testrayCasePKs) {
-		testrayBuildToTestrayCaseTableMapper.deleteTableMappings(
-			pk, testrayCasePKs);
+		testrayBuildToTestrayCaseTableMapper.deleteTableMappings(pk,
+			testrayCasePKs);
 	}
 
 	/**
@@ -1326,15 +1307,11 @@ public class TestrayBuildPersistenceImpl
 	 * @param testrayCases the testray cases
 	 */
 	@Override
-	public void removeTestrayCases(
-		long pk, List<com.liferay.osb.testray.model.TestrayCase> testrayCases) {
-
-		removeTestrayCases(
-			pk,
-			ListUtil.toLongArray(
-				testrayCases,
-				com.liferay.osb.testray.model.TestrayCase.
-					TESTRAY_CASE_ID_ACCESSOR));
+	public void removeTestrayCases(long pk,
+		List<com.liferay.osb.testray.model.TestrayCase> testrayCases) {
+		removeTestrayCases(pk,
+			ListUtil.toLongArray(testrayCases,
+				com.liferay.osb.testray.model.TestrayCase.TESTRAY_CASE_ID_ACCESSOR));
 	}
 
 	/**
@@ -1346,16 +1323,15 @@ public class TestrayBuildPersistenceImpl
 	@Override
 	public void setTestrayCases(long pk, long[] testrayCasePKs) {
 		Set<Long> newTestrayCasePKsSet = SetUtil.fromArray(testrayCasePKs);
-		Set<Long> oldTestrayCasePKsSet = SetUtil.fromArray(
-			testrayBuildToTestrayCaseTableMapper.getRightPrimaryKeys(pk));
+		Set<Long> oldTestrayCasePKsSet = SetUtil.fromArray(testrayBuildToTestrayCaseTableMapper.getRightPrimaryKeys(
+					pk));
 
-		Set<Long> removeTestrayCasePKsSet = new HashSet<Long>(
-			oldTestrayCasePKsSet);
+		Set<Long> removeTestrayCasePKsSet = new HashSet<Long>(oldTestrayCasePKsSet);
 
 		removeTestrayCasePKsSet.removeAll(newTestrayCasePKsSet);
 
-		testrayBuildToTestrayCaseTableMapper.deleteTableMappings(
-			pk, ArrayUtil.toLongArray(removeTestrayCasePKsSet));
+		testrayBuildToTestrayCaseTableMapper.deleteTableMappings(pk,
+			ArrayUtil.toLongArray(removeTestrayCasePKsSet));
 
 		newTestrayCasePKsSet.removeAll(oldTestrayCasePKsSet);
 
@@ -1364,14 +1340,14 @@ public class TestrayBuildPersistenceImpl
 		TestrayBuild testrayBuild = fetchByPrimaryKey(pk);
 
 		if (testrayBuild == null) {
-			companyId = CompanyThreadLocal.getCompanyId();
+			companyId = companyProvider.getCompanyId();
 		}
 		else {
 			companyId = testrayBuild.getCompanyId();
 		}
 
-		testrayBuildToTestrayCaseTableMapper.addTableMappings(
-			companyId, pk, ArrayUtil.toLongArray(newTestrayCasePKsSet));
+		testrayBuildToTestrayCaseTableMapper.addTableMappings(companyId, pk,
+			ArrayUtil.toLongArray(newTestrayCasePKsSet));
 	}
 
 	/**
@@ -1381,23 +1357,21 @@ public class TestrayBuildPersistenceImpl
 	 * @param testrayCases the testray cases to be associated with the testray build
 	 */
 	@Override
-	public void setTestrayCases(
-		long pk, List<com.liferay.osb.testray.model.TestrayCase> testrayCases) {
-
+	public void setTestrayCases(long pk,
+		List<com.liferay.osb.testray.model.TestrayCase> testrayCases) {
 		try {
 			long[] testrayCasePKs = new long[testrayCases.size()];
 
 			for (int i = 0; i < testrayCases.size(); i++) {
-				com.liferay.osb.testray.model.TestrayCase testrayCase =
-					testrayCases.get(i);
+				com.liferay.osb.testray.model.TestrayCase testrayCase = testrayCases.get(i);
 
 				testrayCasePKs[i] = testrayCase.getPrimaryKey();
 			}
 
 			setTestrayCases(pk, testrayCasePKs);
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 	}
 
@@ -1410,41 +1384,9 @@ public class TestrayBuildPersistenceImpl
 	 * Initializes the testray build persistence.
 	 */
 	public void afterPropertiesSet() {
-		testrayBuildToTestrayCaseTableMapper =
-			TableMapperFactory.getTableMapper(
-				"OSB_TestrayBuilds_TestrayCases", "companyId", "testrayBuildId",
-				"testrayCaseId", this, testrayCasePersistence);
-
-		_finderPathWithPaginationFindAll = new FinderPath(
-			TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayBuildModelImpl.FINDER_CACHE_ENABLED, TestrayBuildImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayBuildModelImpl.FINDER_CACHE_ENABLED, TestrayBuildImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayBuildModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
-
-		_finderPathFetchByTRI_N = new FinderPath(
-			TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayBuildModelImpl.FINDER_CACHE_ENABLED, TestrayBuildImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByTRI_N",
-			new String[] {Long.class.getName(), String.class.getName()},
-			TestrayBuildModelImpl.TESTRAYROUTINEID_COLUMN_BITMASK |
-			TestrayBuildModelImpl.NAME_COLUMN_BITMASK);
-
-		_finderPathCountByTRI_N = new FinderPath(
-			TestrayBuildModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayBuildModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByTRI_N",
-			new String[] {Long.class.getName(), String.class.getName()});
+		testrayBuildToTestrayCaseTableMapper = TableMapperFactory.getTableMapper("OSB_TestrayBuilds_TestrayCases",
+				"companyId", "testrayBuildId", "testrayCaseId", this,
+				testrayCasePersistence);
 	}
 
 	public void destroy() {
@@ -1456,43 +1398,22 @@ public class TestrayBuildPersistenceImpl
 		TableMapperFactory.removeTableMapper("OSB_TestrayBuilds_TestrayCases");
 	}
 
+	@ServiceReference(type = CompanyProviderWrapper.class)
+	protected CompanyProvider companyProvider;
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
-
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-
 	@BeanReference(type = TestrayCasePersistence.class)
 	protected TestrayCasePersistence testrayCasePersistence;
-
-	protected TableMapper
-		<TestrayBuild, com.liferay.osb.testray.model.TestrayCase>
-			testrayBuildToTestrayCaseTableMapper;
-
-	private static final String _SQL_SELECT_TESTRAYBUILD =
-		"SELECT testrayBuild FROM TestrayBuild testrayBuild";
-
-	private static final String _SQL_SELECT_TESTRAYBUILD_WHERE_PKS_IN =
-		"SELECT testrayBuild FROM TestrayBuild testrayBuild WHERE testrayBuildId IN (";
-
-	private static final String _SQL_SELECT_TESTRAYBUILD_WHERE =
-		"SELECT testrayBuild FROM TestrayBuild testrayBuild WHERE ";
-
-	private static final String _SQL_COUNT_TESTRAYBUILD =
-		"SELECT COUNT(testrayBuild) FROM TestrayBuild testrayBuild";
-
-	private static final String _SQL_COUNT_TESTRAYBUILD_WHERE =
-		"SELECT COUNT(testrayBuild) FROM TestrayBuild testrayBuild WHERE ";
-
+	protected TableMapper<TestrayBuild, com.liferay.osb.testray.model.TestrayCase> testrayBuildToTestrayCaseTableMapper;
+	private static final String _SQL_SELECT_TESTRAYBUILD = "SELECT testrayBuild FROM TestrayBuild testrayBuild";
+	private static final String _SQL_SELECT_TESTRAYBUILD_WHERE_PKS_IN = "SELECT testrayBuild FROM TestrayBuild testrayBuild WHERE testrayBuildId IN (";
+	private static final String _SQL_SELECT_TESTRAYBUILD_WHERE = "SELECT testrayBuild FROM TestrayBuild testrayBuild WHERE ";
+	private static final String _SQL_COUNT_TESTRAYBUILD = "SELECT COUNT(testrayBuild) FROM TestrayBuild testrayBuild";
+	private static final String _SQL_COUNT_TESTRAYBUILD_WHERE = "SELECT COUNT(testrayBuild) FROM TestrayBuild testrayBuild WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "testrayBuild.";
-
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
-		"No TestrayBuild exists with the primary key ";
-
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No TestrayBuild exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		TestrayBuildPersistenceImpl.class);
-
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No TestrayBuild exists with the primary key ";
+	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No TestrayBuild exists with the key {";
+	private static final Log _log = LogFactoryUtil.getLog(TestrayBuildPersistenceImpl.class);
 }

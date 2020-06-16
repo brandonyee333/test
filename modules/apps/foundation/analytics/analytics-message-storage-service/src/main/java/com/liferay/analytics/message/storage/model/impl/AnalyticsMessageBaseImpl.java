@@ -14,6 +14,8 @@
 
 package com.liferay.analytics.message.storage.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.analytics.message.storage.model.AnalyticsMessage;
 import com.liferay.analytics.message.storage.service.AnalyticsMessageLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.analytics.message.storage.service.AnalyticsMessageLocalServic
  * @see AnalyticsMessage
  * @generated
  */
-public abstract class AnalyticsMessageBaseImpl
-	extends AnalyticsMessageModelImpl implements AnalyticsMessage {
-
+@ProviderType
+public abstract class AnalyticsMessageBaseImpl extends AnalyticsMessageModelImpl
+	implements AnalyticsMessage {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a analytics message model instance should use the <code>AnalyticsMessage</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a analytics message model instance should use the {@link AnalyticsMessage} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class AnalyticsMessageBaseImpl
 			AnalyticsMessageLocalServiceUtil.updateAnalyticsMessage(this);
 		}
 	}
-
 }

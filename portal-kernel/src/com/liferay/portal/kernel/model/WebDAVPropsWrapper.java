@@ -14,7 +14,10 @@
 
 package com.liferay.portal.kernel.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -33,9 +36,9 @@ import java.util.Objects;
  * @see WebDAVProps
  * @generated
  */
-public class WebDAVPropsWrapper
-	implements ModelWrapper<WebDAVProps>, WebDAVProps {
-
+@ProviderType
+public class WebDAVPropsWrapper implements WebDAVProps,
+	ModelWrapper<WebDAVProps> {
 	public WebDAVPropsWrapper(WebDAVProps webDAVProps) {
 		_webDAVProps = webDAVProps;
 	}
@@ -118,159 +121,6 @@ public class WebDAVPropsWrapper
 	}
 
 	@Override
-	public void addProp(String name, String prefix, String uri)
-		throws Exception {
-
-		_webDAVProps.addProp(name, prefix, uri);
-	}
-
-	@Override
-	public void addProp(String name, String prefix, String uri, String text)
-		throws Exception {
-
-		_webDAVProps.addProp(name, prefix, uri, text);
-	}
-
-	@Override
-	public Object clone() {
-		return new WebDAVPropsWrapper((WebDAVProps)_webDAVProps.clone());
-	}
-
-	@Override
-	public int compareTo(WebDAVProps webDAVProps) {
-		return _webDAVProps.compareTo(webDAVProps);
-	}
-
-	/**
-	 * Returns the fully qualified class name of this web dav props.
-	 *
-	 * @return the fully qualified class name of this web dav props
-	 */
-	@Override
-	public String getClassName() {
-		return _webDAVProps.getClassName();
-	}
-
-	/**
-	 * Returns the class name ID of this web dav props.
-	 *
-	 * @return the class name ID of this web dav props
-	 */
-	@Override
-	public long getClassNameId() {
-		return _webDAVProps.getClassNameId();
-	}
-
-	/**
-	 * Returns the class pk of this web dav props.
-	 *
-	 * @return the class pk of this web dav props
-	 */
-	@Override
-	public long getClassPK() {
-		return _webDAVProps.getClassPK();
-	}
-
-	/**
-	 * Returns the company ID of this web dav props.
-	 *
-	 * @return the company ID of this web dav props
-	 */
-	@Override
-	public long getCompanyId() {
-		return _webDAVProps.getCompanyId();
-	}
-
-	/**
-	 * Returns the create date of this web dav props.
-	 *
-	 * @return the create date of this web dav props
-	 */
-	@Override
-	public Date getCreateDate() {
-		return _webDAVProps.getCreateDate();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _webDAVProps.getExpandoBridge();
-	}
-
-	/**
-	 * Returns the modified date of this web dav props.
-	 *
-	 * @return the modified date of this web dav props
-	 */
-	@Override
-	public Date getModifiedDate() {
-		return _webDAVProps.getModifiedDate();
-	}
-
-	/**
-	 * Returns the mvcc version of this web dav props.
-	 *
-	 * @return the mvcc version of this web dav props
-	 */
-	@Override
-	public long getMvccVersion() {
-		return _webDAVProps.getMvccVersion();
-	}
-
-	/**
-	 * Returns the primary key of this web dav props.
-	 *
-	 * @return the primary key of this web dav props
-	 */
-	@Override
-	public long getPrimaryKey() {
-		return _webDAVProps.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _webDAVProps.getPrimaryKeyObj();
-	}
-
-	/**
-	 * Returns the props of this web dav props.
-	 *
-	 * @return the props of this web dav props
-	 */
-	@Override
-	public String getProps() {
-		return _webDAVProps.getProps();
-	}
-
-	@Override
-	public java.util.Set<com.liferay.portal.kernel.xml.QName> getPropsSet()
-		throws Exception {
-
-		return _webDAVProps.getPropsSet();
-	}
-
-	@Override
-	public String getText(String name, String prefix, String uri)
-		throws Exception {
-
-		return _webDAVProps.getText(name, prefix, uri);
-	}
-
-	/**
-	 * Returns the web dav props ID of this web dav props.
-	 *
-	 * @return the web dav props ID of this web dav props
-	 */
-	@Override
-	public long getWebDavPropsId() {
-		return _webDAVProps.getWebDavPropsId();
-	}
-
-	@Override
-	public int hashCode() {
-		return _webDAVProps.hashCode();
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _webDAVProps.isCachedModel();
 	}
@@ -286,145 +136,8 @@ public class WebDAVPropsWrapper
 	}
 
 	@Override
-	public void persist() {
-		_webDAVProps.persist();
-	}
-
-	@Override
-	public void removeProp(String name, String prefix, String uri)
-		throws Exception {
-
-		_webDAVProps.removeProp(name, prefix, uri);
-	}
-
-	@Override
-	public void setCachedModel(boolean cachedModel) {
-		_webDAVProps.setCachedModel(cachedModel);
-	}
-
-	@Override
-	public void setClassName(String className) {
-		_webDAVProps.setClassName(className);
-	}
-
-	/**
-	 * Sets the class name ID of this web dav props.
-	 *
-	 * @param classNameId the class name ID of this web dav props
-	 */
-	@Override
-	public void setClassNameId(long classNameId) {
-		_webDAVProps.setClassNameId(classNameId);
-	}
-
-	/**
-	 * Sets the class pk of this web dav props.
-	 *
-	 * @param classPK the class pk of this web dav props
-	 */
-	@Override
-	public void setClassPK(long classPK) {
-		_webDAVProps.setClassPK(classPK);
-	}
-
-	/**
-	 * Sets the company ID of this web dav props.
-	 *
-	 * @param companyId the company ID of this web dav props
-	 */
-	@Override
-	public void setCompanyId(long companyId) {
-		_webDAVProps.setCompanyId(companyId);
-	}
-
-	/**
-	 * Sets the create date of this web dav props.
-	 *
-	 * @param createDate the create date of this web dav props
-	 */
-	@Override
-	public void setCreateDate(Date createDate) {
-		_webDAVProps.setCreateDate(createDate);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(BaseModel<?> baseModel) {
-		_webDAVProps.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_webDAVProps.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-		_webDAVProps.setExpandoBridgeAttributes(serviceContext);
-	}
-
-	/**
-	 * Sets the modified date of this web dav props.
-	 *
-	 * @param modifiedDate the modified date of this web dav props
-	 */
-	@Override
-	public void setModifiedDate(Date modifiedDate) {
-		_webDAVProps.setModifiedDate(modifiedDate);
-	}
-
-	/**
-	 * Sets the mvcc version of this web dav props.
-	 *
-	 * @param mvccVersion the mvcc version of this web dav props
-	 */
-	@Override
-	public void setMvccVersion(long mvccVersion) {
-		_webDAVProps.setMvccVersion(mvccVersion);
-	}
-
-	@Override
-	public void setNew(boolean n) {
-		_webDAVProps.setNew(n);
-	}
-
-	/**
-	 * Sets the primary key of this web dav props.
-	 *
-	 * @param primaryKey the primary key of this web dav props
-	 */
-	@Override
-	public void setPrimaryKey(long primaryKey) {
-		_webDAVProps.setPrimaryKey(primaryKey);
-	}
-
-	@Override
-	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		_webDAVProps.setPrimaryKeyObj(primaryKeyObj);
-	}
-
-	/**
-	 * Sets the props of this web dav props.
-	 *
-	 * @param props the props of this web dav props
-	 */
-	@Override
-	public void setProps(String props) {
-		_webDAVProps.setProps(props);
-	}
-
-	/**
-	 * Sets the web dav props ID of this web dav props.
-	 *
-	 * @param webDavPropsId the web dav props ID of this web dav props
-	 */
-	@Override
-	public void setWebDavPropsId(long webDavPropsId) {
-		_webDAVProps.setWebDavPropsId(webDavPropsId);
-	}
-
-	@Override
-	public void store() throws Exception {
-		_webDAVProps.store();
+	public ExpandoBridge getExpandoBridge() {
+		return _webDAVProps.getExpandoBridge();
 	}
 
 	@Override
@@ -438,18 +151,304 @@ public class WebDAVPropsWrapper
 	}
 
 	@Override
-	public String toString() {
-		return _webDAVProps.toString();
-	}
-
-	@Override
 	public WebDAVProps toUnescapedModel() {
 		return new WebDAVPropsWrapper(_webDAVProps.toUnescapedModel());
 	}
 
 	@Override
-	public String toXmlString() {
+	public int compareTo(WebDAVProps webDAVProps) {
+		return _webDAVProps.compareTo(webDAVProps);
+	}
+
+	@Override
+	public int hashCode() {
+		return _webDAVProps.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _webDAVProps.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new WebDAVPropsWrapper((WebDAVProps)_webDAVProps.clone());
+	}
+
+	/**
+	* Returns the fully qualified class name of this web dav props.
+	*
+	* @return the fully qualified class name of this web dav props
+	*/
+	@Override
+	public java.lang.String getClassName() {
+		return _webDAVProps.getClassName();
+	}
+
+	/**
+	* Returns the props of this web dav props.
+	*
+	* @return the props of this web dav props
+	*/
+	@Override
+	public java.lang.String getProps() {
+		return _webDAVProps.getProps();
+	}
+
+	@Override
+	public java.lang.String getText(java.lang.String name,
+		java.lang.String prefix, java.lang.String uri)
+		throws java.lang.Exception {
+		return _webDAVProps.getText(name, prefix, uri);
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _webDAVProps.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
 		return _webDAVProps.toXmlString();
+	}
+
+	/**
+	* Returns the create date of this web dav props.
+	*
+	* @return the create date of this web dav props
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _webDAVProps.getCreateDate();
+	}
+
+	/**
+	* Returns the modified date of this web dav props.
+	*
+	* @return the modified date of this web dav props
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _webDAVProps.getModifiedDate();
+	}
+
+	@Override
+	public java.util.Set<com.liferay.portal.kernel.xml.QName> getPropsSet()
+		throws java.lang.Exception {
+		return _webDAVProps.getPropsSet();
+	}
+
+	/**
+	* Returns the class name ID of this web dav props.
+	*
+	* @return the class name ID of this web dav props
+	*/
+	@Override
+	public long getClassNameId() {
+		return _webDAVProps.getClassNameId();
+	}
+
+	/**
+	* Returns the class pk of this web dav props.
+	*
+	* @return the class pk of this web dav props
+	*/
+	@Override
+	public long getClassPK() {
+		return _webDAVProps.getClassPK();
+	}
+
+	/**
+	* Returns the company ID of this web dav props.
+	*
+	* @return the company ID of this web dav props
+	*/
+	@Override
+	public long getCompanyId() {
+		return _webDAVProps.getCompanyId();
+	}
+
+	/**
+	* Returns the mvcc version of this web dav props.
+	*
+	* @return the mvcc version of this web dav props
+	*/
+	@Override
+	public long getMvccVersion() {
+		return _webDAVProps.getMvccVersion();
+	}
+
+	/**
+	* Returns the primary key of this web dav props.
+	*
+	* @return the primary key of this web dav props
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _webDAVProps.getPrimaryKey();
+	}
+
+	/**
+	* Returns the web dav props ID of this web dav props.
+	*
+	* @return the web dav props ID of this web dav props
+	*/
+	@Override
+	public long getWebDavPropsId() {
+		return _webDAVProps.getWebDavPropsId();
+	}
+
+	@Override
+	public void addProp(java.lang.String name, java.lang.String prefix,
+		java.lang.String uri) throws java.lang.Exception {
+		_webDAVProps.addProp(name, prefix, uri);
+	}
+
+	@Override
+	public void addProp(java.lang.String name, java.lang.String prefix,
+		java.lang.String uri, java.lang.String text) throws java.lang.Exception {
+		_webDAVProps.addProp(name, prefix, uri, text);
+	}
+
+	@Override
+	public void persist() {
+		_webDAVProps.persist();
+	}
+
+	@Override
+	public void removeProp(java.lang.String name, java.lang.String prefix,
+		java.lang.String uri) throws java.lang.Exception {
+		_webDAVProps.removeProp(name, prefix, uri);
+	}
+
+	@Override
+	public void setCachedModel(boolean cachedModel) {
+		_webDAVProps.setCachedModel(cachedModel);
+	}
+
+	@Override
+	public void setClassName(java.lang.String className) {
+		_webDAVProps.setClassName(className);
+	}
+
+	/**
+	* Sets the class name ID of this web dav props.
+	*
+	* @param classNameId the class name ID of this web dav props
+	*/
+	@Override
+	public void setClassNameId(long classNameId) {
+		_webDAVProps.setClassNameId(classNameId);
+	}
+
+	/**
+	* Sets the class pk of this web dav props.
+	*
+	* @param classPK the class pk of this web dav props
+	*/
+	@Override
+	public void setClassPK(long classPK) {
+		_webDAVProps.setClassPK(classPK);
+	}
+
+	/**
+	* Sets the company ID of this web dav props.
+	*
+	* @param companyId the company ID of this web dav props
+	*/
+	@Override
+	public void setCompanyId(long companyId) {
+		_webDAVProps.setCompanyId(companyId);
+	}
+
+	/**
+	* Sets the create date of this web dav props.
+	*
+	* @param createDate the create date of this web dav props
+	*/
+	@Override
+	public void setCreateDate(Date createDate) {
+		_webDAVProps.setCreateDate(createDate);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_webDAVProps.setExpandoBridgeAttributes(expandoBridge);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(BaseModel<?> baseModel) {
+		_webDAVProps.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
+		_webDAVProps.setExpandoBridgeAttributes(serviceContext);
+	}
+
+	/**
+	* Sets the modified date of this web dav props.
+	*
+	* @param modifiedDate the modified date of this web dav props
+	*/
+	@Override
+	public void setModifiedDate(Date modifiedDate) {
+		_webDAVProps.setModifiedDate(modifiedDate);
+	}
+
+	/**
+	* Sets the mvcc version of this web dav props.
+	*
+	* @param mvccVersion the mvcc version of this web dav props
+	*/
+	@Override
+	public void setMvccVersion(long mvccVersion) {
+		_webDAVProps.setMvccVersion(mvccVersion);
+	}
+
+	@Override
+	public void setNew(boolean n) {
+		_webDAVProps.setNew(n);
+	}
+
+	/**
+	* Sets the primary key of this web dav props.
+	*
+	* @param primaryKey the primary key of this web dav props
+	*/
+	@Override
+	public void setPrimaryKey(long primaryKey) {
+		_webDAVProps.setPrimaryKey(primaryKey);
+	}
+
+	@Override
+	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
+		_webDAVProps.setPrimaryKeyObj(primaryKeyObj);
+	}
+
+	/**
+	* Sets the props of this web dav props.
+	*
+	* @param props the props of this web dav props
+	*/
+	@Override
+	public void setProps(java.lang.String props) {
+		_webDAVProps.setProps(props);
+	}
+
+	/**
+	* Sets the web dav props ID of this web dav props.
+	*
+	* @param webDavPropsId the web dav props ID of this web dav props
+	*/
+	@Override
+	public void setWebDavPropsId(long webDavPropsId) {
+		_webDAVProps.setWebDavPropsId(webDavPropsId);
+	}
+
+	@Override
+	public void store() throws java.lang.Exception {
+		_webDAVProps.store();
 	}
 
 	@Override
@@ -492,5 +491,4 @@ public class WebDAVPropsWrapper
 	}
 
 	private final WebDAVProps _webDAVProps;
-
 }

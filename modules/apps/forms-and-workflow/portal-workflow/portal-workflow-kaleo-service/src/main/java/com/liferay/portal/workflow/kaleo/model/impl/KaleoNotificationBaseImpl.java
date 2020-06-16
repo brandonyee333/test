@@ -14,6 +14,8 @@
 
 package com.liferay.portal.workflow.kaleo.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.workflow.kaleo.model.KaleoNotification;
 import com.liferay.portal.workflow.kaleo.service.KaleoNotificationLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.portal.workflow.kaleo.service.KaleoNotificationLocalServiceUt
  * @see KaleoNotification
  * @generated
  */
+@ProviderType
 public abstract class KaleoNotificationBaseImpl
 	extends KaleoNotificationModelImpl implements KaleoNotification {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a kaleo notification model instance should use the <code>KaleoNotification</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a kaleo notification model instance should use the {@link KaleoNotification} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class KaleoNotificationBaseImpl
 			KaleoNotificationLocalServiceUtil.updateKaleoNotification(this);
 		}
 	}
-
 }

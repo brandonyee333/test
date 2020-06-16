@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.Subscription;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -31,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing Subscription in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see Subscription
  * @generated
  */
-public class SubscriptionCacheModel
-	implements CacheModel<Subscription>, Externalizable, MVCCModel {
-
+@ProviderType
+public class SubscriptionCacheModel implements CacheModel<Subscription>,
+	Externalizable, MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -46,12 +50,10 @@ public class SubscriptionCacheModel
 			return false;
 		}
 
-		SubscriptionCacheModel subscriptionCacheModel =
-			(SubscriptionCacheModel)obj;
+		SubscriptionCacheModel subscriptionCacheModel = (SubscriptionCacheModel)obj;
 
 		if ((subscriptionId == subscriptionCacheModel.subscriptionId) &&
-			(mvccVersion == subscriptionCacheModel.mvccVersion)) {
-
+				(mvccVersion == subscriptionCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -117,7 +119,7 @@ public class SubscriptionCacheModel
 		subscriptionImpl.setUserId(userId);
 
 		if (userName == null) {
-			subscriptionImpl.setUserName("");
+			subscriptionImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			subscriptionImpl.setUserName(userName);
@@ -141,7 +143,7 @@ public class SubscriptionCacheModel
 		subscriptionImpl.setClassPK(classPK);
 
 		if (frequency == null) {
-			subscriptionImpl.setFrequency("");
+			subscriptionImpl.setFrequency(StringPool.BLANK);
 		}
 		else {
 			subscriptionImpl.setFrequency(frequency);
@@ -174,7 +176,8 @@ public class SubscriptionCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(subscriptionId);
@@ -186,7 +189,7 @@ public class SubscriptionCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -200,7 +203,7 @@ public class SubscriptionCacheModel
 		objectOutput.writeLong(classPK);
 
 		if (frequency == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(frequency);
@@ -218,5 +221,4 @@ public class SubscriptionCacheModel
 	public long classNameId;
 	public long classPK;
 	public String frequency;
-
 }

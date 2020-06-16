@@ -14,6 +14,8 @@
 
 package com.liferay.knowledge.base.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -24,10 +26,11 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.knowledge.base.service.http.KBTemplateServiceSoap}.
  *
  * @author Brian Wing Shun Chan
+ * @see com.liferay.knowledge.base.service.http.KBTemplateServiceSoap
  * @generated
  */
+@ProviderType
 public class KBTemplateSoap implements Serializable {
-
 	public static KBTemplateSoap toSoapModel(KBTemplate model) {
 		KBTemplateSoap soapModel = new KBTemplateSoap();
 
@@ -74,8 +77,7 @@ public class KBTemplateSoap implements Serializable {
 	}
 
 	public static KBTemplateSoap[] toSoapModels(List<KBTemplate> models) {
-		List<KBTemplateSoap> soapModels = new ArrayList<KBTemplateSoap>(
-			models.size());
+		List<KBTemplateSoap> soapModels = new ArrayList<KBTemplateSoap>(models.size());
 
 		for (KBTemplate model : models) {
 			soapModels.add(toSoapModel(model));
@@ -194,5 +196,4 @@ public class KBTemplateSoap implements Serializable {
 	private String _title;
 	private String _content;
 	private Date _lastPublishDate;
-
 }

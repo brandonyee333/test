@@ -1,22 +1,25 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.portal.workflow.kaleo.designer.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition;
 
 import java.io.Externalizable;
@@ -30,11 +33,12 @@ import java.util.Date;
  * The cache model class for representing KaleoDraftDefinition in entity cache.
  *
  * @author Eduardo Lundgren
+ * @see KaleoDraftDefinition
  * @generated
  */
-public class KaleoDraftDefinitionCacheModel
-	implements CacheModel<KaleoDraftDefinition>, Externalizable {
-
+@ProviderType
+public class KaleoDraftDefinitionCacheModel implements CacheModel<KaleoDraftDefinition>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +49,9 @@ public class KaleoDraftDefinitionCacheModel
 			return false;
 		}
 
-		KaleoDraftDefinitionCacheModel kaleoDraftDefinitionCacheModel =
-			(KaleoDraftDefinitionCacheModel)obj;
+		KaleoDraftDefinitionCacheModel kaleoDraftDefinitionCacheModel = (KaleoDraftDefinitionCacheModel)obj;
 
-		if (kaleoDraftDefinitionId ==
-				kaleoDraftDefinitionCacheModel.kaleoDraftDefinitionId) {
-
+		if (kaleoDraftDefinitionId == kaleoDraftDefinitionCacheModel.kaleoDraftDefinitionId) {
 			return true;
 		}
 
@@ -97,17 +98,15 @@ public class KaleoDraftDefinitionCacheModel
 
 	@Override
 	public KaleoDraftDefinition toEntityModel() {
-		KaleoDraftDefinitionImpl kaleoDraftDefinitionImpl =
-			new KaleoDraftDefinitionImpl();
+		KaleoDraftDefinitionImpl kaleoDraftDefinitionImpl = new KaleoDraftDefinitionImpl();
 
-		kaleoDraftDefinitionImpl.setKaleoDraftDefinitionId(
-			kaleoDraftDefinitionId);
+		kaleoDraftDefinitionImpl.setKaleoDraftDefinitionId(kaleoDraftDefinitionId);
 		kaleoDraftDefinitionImpl.setGroupId(groupId);
 		kaleoDraftDefinitionImpl.setCompanyId(companyId);
 		kaleoDraftDefinitionImpl.setUserId(userId);
 
 		if (userName == null) {
-			kaleoDraftDefinitionImpl.setUserName("");
+			kaleoDraftDefinitionImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			kaleoDraftDefinitionImpl.setUserName(userName);
@@ -128,21 +127,21 @@ public class KaleoDraftDefinitionCacheModel
 		}
 
 		if (name == null) {
-			kaleoDraftDefinitionImpl.setName("");
+			kaleoDraftDefinitionImpl.setName(StringPool.BLANK);
 		}
 		else {
 			kaleoDraftDefinitionImpl.setName(name);
 		}
 
 		if (title == null) {
-			kaleoDraftDefinitionImpl.setTitle("");
+			kaleoDraftDefinitionImpl.setTitle(StringPool.BLANK);
 		}
 		else {
 			kaleoDraftDefinitionImpl.setTitle(title);
 		}
 
 		if (content == null) {
-			kaleoDraftDefinitionImpl.setContent("");
+			kaleoDraftDefinitionImpl.setContent(StringPool.BLANK);
 		}
 		else {
 			kaleoDraftDefinitionImpl.setContent(content);
@@ -157,9 +156,7 @@ public class KaleoDraftDefinitionCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		kaleoDraftDefinitionId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -172,7 +169,7 @@ public class KaleoDraftDefinitionCacheModel
 		modifiedDate = objectInput.readLong();
 		name = objectInput.readUTF();
 		title = objectInput.readUTF();
-		content = (String)objectInput.readObject();
+		content = objectInput.readUTF();
 
 		version = objectInput.readInt();
 
@@ -180,7 +177,8 @@ public class KaleoDraftDefinitionCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(kaleoDraftDefinitionId);
 
 		objectOutput.writeLong(groupId);
@@ -190,7 +188,7 @@ public class KaleoDraftDefinitionCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -200,24 +198,24 @@ public class KaleoDraftDefinitionCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (title == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(title);
 		}
 
 		if (content == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(content);
+			objectOutput.writeUTF(content);
 		}
 
 		objectOutput.writeInt(version);
@@ -237,5 +235,4 @@ public class KaleoDraftDefinitionCacheModel
 	public String content;
 	public int version;
 	public int draftVersion;
-
 }

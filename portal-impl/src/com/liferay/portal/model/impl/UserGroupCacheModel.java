@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -31,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing UserGroup in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see UserGroup
  * @generated
  */
-public class UserGroupCacheModel
-	implements CacheModel<UserGroup>, Externalizable, MVCCModel {
-
+@ProviderType
+public class UserGroupCacheModel implements CacheModel<UserGroup>,
+	Externalizable, MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -49,8 +53,7 @@ public class UserGroupCacheModel
 		UserGroupCacheModel userGroupCacheModel = (UserGroupCacheModel)obj;
 
 		if ((userGroupId == userGroupCacheModel.userGroupId) &&
-			(mvccVersion == userGroupCacheModel.mvccVersion)) {
-
+				(mvccVersion == userGroupCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -114,7 +117,7 @@ public class UserGroupCacheModel
 		userGroupImpl.setMvccVersion(mvccVersion);
 
 		if (uuid == null) {
-			userGroupImpl.setUuid("");
+			userGroupImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			userGroupImpl.setUuid(uuid);
@@ -125,7 +128,7 @@ public class UserGroupCacheModel
 		userGroupImpl.setUserId(userId);
 
 		if (userName == null) {
-			userGroupImpl.setUserName("");
+			userGroupImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			userGroupImpl.setUserName(userName);
@@ -148,14 +151,14 @@ public class UserGroupCacheModel
 		userGroupImpl.setParentUserGroupId(parentUserGroupId);
 
 		if (name == null) {
-			userGroupImpl.setName("");
+			userGroupImpl.setName(StringPool.BLANK);
 		}
 		else {
 			userGroupImpl.setName(name);
 		}
 
 		if (description == null) {
-			userGroupImpl.setDescription("");
+			userGroupImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			userGroupImpl.setDescription(description);
@@ -190,11 +193,12 @@ public class UserGroupCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -207,7 +211,7 @@ public class UserGroupCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -219,14 +223,14 @@ public class UserGroupCacheModel
 		objectOutput.writeLong(parentUserGroupId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -247,5 +251,4 @@ public class UserGroupCacheModel
 	public String name;
 	public String description;
 	public boolean addedByLDAPImport;
-
 }

@@ -15,6 +15,7 @@
 package com.liferay.wsrp.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -27,15 +28,26 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
+
 import com.liferay.wsrp.exception.NoSuchConsumerException;
 import com.liferay.wsrp.model.WSRPConsumer;
 import com.liferay.wsrp.service.WSRPConsumerLocalServiceUtil;
 import com.liferay.wsrp.service.persistence.WSRPConsumerPersistence;
 import com.liferay.wsrp.service.persistence.WSRPConsumerUtil;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+
+import org.junit.runner.RunWith;
 
 import java.io.Serializable;
 
@@ -46,27 +58,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 /**
  * @generated
  */
 @RunWith(Arquillian.class)
 public class WSRPConsumerPersistenceTest {
-
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
-			new TransactionalTestRule(
-				Propagation.REQUIRED, "com.liferay.wsrp.service"));
+	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
+			PersistenceTestRule.INSTANCE,
+			new TransactionalTestRule(Propagation.REQUIRED,
+				"com.liferay.wsrp.service"));
 
 	@Before
 	public void setUp() {
@@ -105,8 +107,7 @@ public class WSRPConsumerPersistenceTest {
 
 		_persistence.remove(newWSRPConsumer);
 
-		WSRPConsumer existingWSRPConsumer = _persistence.fetchByPrimaryKey(
-			newWSRPConsumer.getPrimaryKey());
+		WSRPConsumer existingWSRPConsumer = _persistence.fetchByPrimaryKey(newWSRPConsumer.getPrimaryKey());
 
 		Assert.assertNull(existingWSRPConsumer);
 	}
@@ -136,11 +137,9 @@ public class WSRPConsumerPersistenceTest {
 
 		newWSRPConsumer.setWsdl(RandomTestUtil.randomString());
 
-		newWSRPConsumer.setRegistrationContextString(
-			RandomTestUtil.randomString());
+		newWSRPConsumer.setRegistrationContextString(RandomTestUtil.randomString());
 
-		newWSRPConsumer.setRegistrationPropertiesString(
-			RandomTestUtil.randomString());
+		newWSRPConsumer.setRegistrationPropertiesString(RandomTestUtil.randomString());
 
 		newWSRPConsumer.setForwardCookies(RandomTestUtil.randomString());
 
@@ -152,63 +151,55 @@ public class WSRPConsumerPersistenceTest {
 
 		_wsrpConsumers.add(_persistence.update(newWSRPConsumer));
 
-		WSRPConsumer existingWSRPConsumer = _persistence.findByPrimaryKey(
-			newWSRPConsumer.getPrimaryKey());
+		WSRPConsumer existingWSRPConsumer = _persistence.findByPrimaryKey(newWSRPConsumer.getPrimaryKey());
 
-		Assert.assertEquals(
-			existingWSRPConsumer.getUuid(), newWSRPConsumer.getUuid());
-		Assert.assertEquals(
-			existingWSRPConsumer.getWsrpConsumerId(),
+		Assert.assertEquals(existingWSRPConsumer.getUuid(),
+			newWSRPConsumer.getUuid());
+		Assert.assertEquals(existingWSRPConsumer.getWsrpConsumerId(),
 			newWSRPConsumer.getWsrpConsumerId());
-		Assert.assertEquals(
-			existingWSRPConsumer.getCompanyId(),
+		Assert.assertEquals(existingWSRPConsumer.getCompanyId(),
 			newWSRPConsumer.getCompanyId());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingWSRPConsumer.getCreateDate()),
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingWSRPConsumer.getCreateDate()),
 			Time.getShortTimestamp(newWSRPConsumer.getCreateDate()));
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingWSRPConsumer.getModifiedDate()),
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingWSRPConsumer.getModifiedDate()),
 			Time.getShortTimestamp(newWSRPConsumer.getModifiedDate()));
-		Assert.assertEquals(
-			existingWSRPConsumer.getName(), newWSRPConsumer.getName());
-		Assert.assertEquals(
-			existingWSRPConsumer.getUrl(), newWSRPConsumer.getUrl());
-		Assert.assertEquals(
-			existingWSRPConsumer.getWsdl(), newWSRPConsumer.getWsdl());
-		Assert.assertEquals(
-			existingWSRPConsumer.getRegistrationContextString(),
+		Assert.assertEquals(existingWSRPConsumer.getName(),
+			newWSRPConsumer.getName());
+		Assert.assertEquals(existingWSRPConsumer.getUrl(),
+			newWSRPConsumer.getUrl());
+		Assert.assertEquals(existingWSRPConsumer.getWsdl(),
+			newWSRPConsumer.getWsdl());
+		Assert.assertEquals(existingWSRPConsumer.getRegistrationContextString(),
 			newWSRPConsumer.getRegistrationContextString());
-		Assert.assertEquals(
-			existingWSRPConsumer.getRegistrationPropertiesString(),
+		Assert.assertEquals(existingWSRPConsumer.getRegistrationPropertiesString(),
 			newWSRPConsumer.getRegistrationPropertiesString());
-		Assert.assertEquals(
-			existingWSRPConsumer.getForwardCookies(),
+		Assert.assertEquals(existingWSRPConsumer.getForwardCookies(),
 			newWSRPConsumer.getForwardCookies());
-		Assert.assertEquals(
-			existingWSRPConsumer.getForwardHeaders(),
+		Assert.assertEquals(existingWSRPConsumer.getForwardHeaders(),
 			newWSRPConsumer.getForwardHeaders());
-		Assert.assertEquals(
-			existingWSRPConsumer.getMarkupCharacterSets(),
+		Assert.assertEquals(existingWSRPConsumer.getMarkupCharacterSets(),
 			newWSRPConsumer.getMarkupCharacterSets());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingWSRPConsumer.getLastPublishDate()),
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingWSRPConsumer.getLastPublishDate()),
 			Time.getShortTimestamp(newWSRPConsumer.getLastPublishDate()));
 	}
 
 	@Test
 	public void testCountByUuid() throws Exception {
-		_persistence.countByUuid("");
+		_persistence.countByUuid(StringPool.BLANK);
 
-		_persistence.countByUuid("null");
+		_persistence.countByUuid(StringPool.NULL);
 
 		_persistence.countByUuid((String)null);
 	}
 
 	@Test
 	public void testCountByUuid_C() throws Exception {
-		_persistence.countByUuid_C("", RandomTestUtil.nextLong());
+		_persistence.countByUuid_C(StringPool.BLANK, RandomTestUtil.nextLong());
 
-		_persistence.countByUuid_C("null", 0L);
+		_persistence.countByUuid_C(StringPool.NULL, 0L);
 
 		_persistence.countByUuid_C((String)null, 0L);
 	}
@@ -224,8 +215,7 @@ public class WSRPConsumerPersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		WSRPConsumer newWSRPConsumer = addWSRPConsumer();
 
-		WSRPConsumer existingWSRPConsumer = _persistence.findByPrimaryKey(
-			newWSRPConsumer.getPrimaryKey());
+		WSRPConsumer existingWSRPConsumer = _persistence.findByPrimaryKey(newWSRPConsumer.getPrimaryKey());
 
 		Assert.assertEquals(existingWSRPConsumer, newWSRPConsumer);
 	}
@@ -239,25 +229,24 @@ public class WSRPConsumerPersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
+		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			getOrderByComparator());
 	}
 
 	protected OrderByComparator<WSRPConsumer> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create(
-			"WSRP_WSRPConsumer", "uuid", true, "wsrpConsumerId", true,
-			"companyId", true, "createDate", true, "modifiedDate", true, "name",
-			true, "url", true, "registrationPropertiesString", true,
-			"forwardCookies", true, "forwardHeaders", true,
-			"markupCharacterSets", true, "lastPublishDate", true);
+		return OrderByComparatorFactoryUtil.create("WSRP_WSRPConsumer", "uuid",
+			true, "wsrpConsumerId", true, "companyId", true, "createDate",
+			true, "modifiedDate", true, "name", true, "url", true,
+			"registrationPropertiesString", true, "forwardCookies", true,
+			"forwardHeaders", true, "markupCharacterSets", true,
+			"lastPublishDate", true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		WSRPConsumer newWSRPConsumer = addWSRPConsumer();
 
-		WSRPConsumer existingWSRPConsumer = _persistence.fetchByPrimaryKey(
-			newWSRPConsumer.getPrimaryKey());
+		WSRPConsumer existingWSRPConsumer = _persistence.fetchByPrimaryKey(newWSRPConsumer.getPrimaryKey());
 
 		Assert.assertEquals(existingWSRPConsumer, newWSRPConsumer);
 	}
@@ -274,7 +263,6 @@ public class WSRPConsumerPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
-
 		WSRPConsumer newWSRPConsumer1 = addWSRPConsumer();
 		WSRPConsumer newWSRPConsumer2 = addWSRPConsumer();
 
@@ -283,22 +271,18 @@ public class WSRPConsumerPersistenceTest {
 		primaryKeys.add(newWSRPConsumer1.getPrimaryKey());
 		primaryKeys.add(newWSRPConsumer2.getPrimaryKey());
 
-		Map<Serializable, WSRPConsumer> wsrpConsumers =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, WSRPConsumer> wsrpConsumers = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(2, wsrpConsumers.size());
-		Assert.assertEquals(
-			newWSRPConsumer1,
+		Assert.assertEquals(newWSRPConsumer1,
 			wsrpConsumers.get(newWSRPConsumer1.getPrimaryKey()));
-		Assert.assertEquals(
-			newWSRPConsumer2,
+		Assert.assertEquals(newWSRPConsumer2,
 			wsrpConsumers.get(newWSRPConsumer2.getPrimaryKey()));
 	}
 
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
-
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -308,8 +292,7 @@ public class WSRPConsumerPersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, WSRPConsumer> wsrpConsumers =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, WSRPConsumer> wsrpConsumers = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(wsrpConsumers.isEmpty());
 	}
@@ -317,7 +300,6 @@ public class WSRPConsumerPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
-
 		WSRPConsumer newWSRPConsumer = addWSRPConsumer();
 
 		long pk = RandomTestUtil.nextLong();
@@ -327,39 +309,36 @@ public class WSRPConsumerPersistenceTest {
 		primaryKeys.add(newWSRPConsumer.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, WSRPConsumer> wsrpConsumers =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, WSRPConsumer> wsrpConsumers = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, wsrpConsumers.size());
-		Assert.assertEquals(
-			newWSRPConsumer,
+		Assert.assertEquals(newWSRPConsumer,
 			wsrpConsumers.get(newWSRPConsumer.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
+		throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, WSRPConsumer> wsrpConsumers =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, WSRPConsumer> wsrpConsumers = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(wsrpConsumers.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey()
+		throws Exception {
 		WSRPConsumer newWSRPConsumer = addWSRPConsumer();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newWSRPConsumer.getPrimaryKey());
 
-		Map<Serializable, WSRPConsumer> wsrpConsumers =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, WSRPConsumer> wsrpConsumers = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, wsrpConsumers.size());
-		Assert.assertEquals(
-			newWSRPConsumer,
+		Assert.assertEquals(newWSRPConsumer,
 			wsrpConsumers.get(newWSRPConsumer.getPrimaryKey()));
 	}
 
@@ -367,19 +346,15 @@ public class WSRPConsumerPersistenceTest {
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery =
-			WSRPConsumerLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = WSRPConsumerLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<WSRPConsumer>() {
-
+		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<WSRPConsumer>() {
 				@Override
 				public void performAction(WSRPConsumer wsrpConsumer) {
 					Assert.assertNotNull(wsrpConsumer);
 
 					count.increment();
 				}
-
 			});
 
 		actionableDynamicQuery.performActions();
@@ -388,18 +363,17 @@ public class WSRPConsumerPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting()
+		throws Exception {
 		WSRPConsumer newWSRPConsumer = addWSRPConsumer();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			WSRPConsumer.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(WSRPConsumer.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq(
-				"wsrpConsumerId", newWSRPConsumer.getWsrpConsumerId()));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("wsrpConsumerId",
+				newWSRPConsumer.getWsrpConsumerId()));
 
-		List<WSRPConsumer> result = _persistence.findWithDynamicQuery(
-			dynamicQuery);
+		List<WSRPConsumer> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
 		Assert.assertEquals(1, result.size());
 
@@ -410,34 +384,32 @@ public class WSRPConsumerPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			WSRPConsumer.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(WSRPConsumer.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq(
-				"wsrpConsumerId", RandomTestUtil.nextLong()));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("wsrpConsumerId",
+				RandomTestUtil.nextLong()));
 
-		List<WSRPConsumer> result = _persistence.findWithDynamicQuery(
-			dynamicQuery);
+		List<WSRPConsumer> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
 		Assert.assertEquals(0, result.size());
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting() throws Exception {
+	public void testDynamicQueryByProjectionExisting()
+		throws Exception {
 		WSRPConsumer newWSRPConsumer = addWSRPConsumer();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			WSRPConsumer.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(WSRPConsumer.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(
-			ProjectionFactoryUtil.property("wsrpConsumerId"));
+		dynamicQuery.setProjection(ProjectionFactoryUtil.property(
+				"wsrpConsumerId"));
 
 		Object newWsrpConsumerId = newWSRPConsumer.getWsrpConsumerId();
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in(
-				"wsrpConsumerId", new Object[] {newWsrpConsumerId}));
+		dynamicQuery.add(RestrictionsFactoryUtil.in("wsrpConsumerId",
+				new Object[] { newWsrpConsumerId }));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -450,15 +422,14 @@ public class WSRPConsumerPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			WSRPConsumer.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(WSRPConsumer.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(
-			ProjectionFactoryUtil.property("wsrpConsumerId"));
+		dynamicQuery.setProjection(ProjectionFactoryUtil.property(
+				"wsrpConsumerId"));
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in(
-				"wsrpConsumerId", new Object[] {RandomTestUtil.nextLong()}));
+		dynamicQuery.add(RestrictionsFactoryUtil.in("wsrpConsumerId",
+				new Object[] { RandomTestUtil.nextLong() }));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -484,11 +455,9 @@ public class WSRPConsumerPersistenceTest {
 
 		wsrpConsumer.setWsdl(RandomTestUtil.randomString());
 
-		wsrpConsumer.setRegistrationContextString(
-			RandomTestUtil.randomString());
+		wsrpConsumer.setRegistrationContextString(RandomTestUtil.randomString());
 
-		wsrpConsumer.setRegistrationPropertiesString(
-			RandomTestUtil.randomString());
+		wsrpConsumer.setRegistrationPropertiesString(RandomTestUtil.randomString());
 
 		wsrpConsumer.setForwardCookies(RandomTestUtil.randomString());
 
@@ -506,5 +475,4 @@ public class WSRPConsumerPersistenceTest {
 	private List<WSRPConsumer> _wsrpConsumers = new ArrayList<WSRPConsumer>();
 	private WSRPConsumerPersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
-
 }

@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -31,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing Contact in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see Contact
  * @generated
  */
-public class ContactCacheModel
-	implements CacheModel<Contact>, Externalizable, MVCCModel {
-
+@ProviderType
+public class ContactCacheModel implements CacheModel<Contact>, Externalizable,
+	MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -49,8 +53,7 @@ public class ContactCacheModel
 		ContactCacheModel contactCacheModel = (ContactCacheModel)obj;
 
 		if ((contactId == contactCacheModel.contactId) &&
-			(mvccVersion == contactCacheModel.mvccVersion)) {
-
+				(mvccVersion == contactCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -151,7 +154,7 @@ public class ContactCacheModel
 		contactImpl.setUserId(userId);
 
 		if (userName == null) {
-			contactImpl.setUserName("");
+			contactImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			contactImpl.setUserName(userName);
@@ -177,28 +180,28 @@ public class ContactCacheModel
 		contactImpl.setParentContactId(parentContactId);
 
 		if (emailAddress == null) {
-			contactImpl.setEmailAddress("");
+			contactImpl.setEmailAddress(StringPool.BLANK);
 		}
 		else {
 			contactImpl.setEmailAddress(emailAddress);
 		}
 
 		if (firstName == null) {
-			contactImpl.setFirstName("");
+			contactImpl.setFirstName(StringPool.BLANK);
 		}
 		else {
 			contactImpl.setFirstName(firstName);
 		}
 
 		if (middleName == null) {
-			contactImpl.setMiddleName("");
+			contactImpl.setMiddleName(StringPool.BLANK);
 		}
 		else {
 			contactImpl.setMiddleName(middleName);
 		}
 
 		if (lastName == null) {
-			contactImpl.setLastName("");
+			contactImpl.setLastName(StringPool.BLANK);
 		}
 		else {
 			contactImpl.setLastName(lastName);
@@ -216,70 +219,70 @@ public class ContactCacheModel
 		}
 
 		if (smsSn == null) {
-			contactImpl.setSmsSn("");
+			contactImpl.setSmsSn(StringPool.BLANK);
 		}
 		else {
 			contactImpl.setSmsSn(smsSn);
 		}
 
 		if (facebookSn == null) {
-			contactImpl.setFacebookSn("");
+			contactImpl.setFacebookSn(StringPool.BLANK);
 		}
 		else {
 			contactImpl.setFacebookSn(facebookSn);
 		}
 
 		if (jabberSn == null) {
-			contactImpl.setJabberSn("");
+			contactImpl.setJabberSn(StringPool.BLANK);
 		}
 		else {
 			contactImpl.setJabberSn(jabberSn);
 		}
 
 		if (skypeSn == null) {
-			contactImpl.setSkypeSn("");
+			contactImpl.setSkypeSn(StringPool.BLANK);
 		}
 		else {
 			contactImpl.setSkypeSn(skypeSn);
 		}
 
 		if (twitterSn == null) {
-			contactImpl.setTwitterSn("");
+			contactImpl.setTwitterSn(StringPool.BLANK);
 		}
 		else {
 			contactImpl.setTwitterSn(twitterSn);
 		}
 
 		if (employeeStatusId == null) {
-			contactImpl.setEmployeeStatusId("");
+			contactImpl.setEmployeeStatusId(StringPool.BLANK);
 		}
 		else {
 			contactImpl.setEmployeeStatusId(employeeStatusId);
 		}
 
 		if (employeeNumber == null) {
-			contactImpl.setEmployeeNumber("");
+			contactImpl.setEmployeeNumber(StringPool.BLANK);
 		}
 		else {
 			contactImpl.setEmployeeNumber(employeeNumber);
 		}
 
 		if (jobTitle == null) {
-			contactImpl.setJobTitle("");
+			contactImpl.setJobTitle(StringPool.BLANK);
 		}
 		else {
 			contactImpl.setJobTitle(jobTitle);
 		}
 
 		if (jobClass == null) {
-			contactImpl.setJobClass("");
+			contactImpl.setJobClass(StringPool.BLANK);
 		}
 		else {
 			contactImpl.setJobClass(jobClass);
 		}
 
 		if (hoursOfOperation == null) {
-			contactImpl.setHoursOfOperation("");
+			contactImpl.setHoursOfOperation(StringPool.BLANK);
 		}
 		else {
 			contactImpl.setHoursOfOperation(hoursOfOperation);
@@ -334,7 +337,8 @@ public class ContactCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(contactId);
@@ -344,7 +348,7 @@ public class ContactCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -362,28 +366,28 @@ public class ContactCacheModel
 		objectOutput.writeLong(parentContactId);
 
 		if (emailAddress == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(emailAddress);
 		}
 
 		if (firstName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(firstName);
 		}
 
 		if (middleName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(middleName);
 		}
 
 		if (lastName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(lastName);
@@ -397,70 +401,70 @@ public class ContactCacheModel
 		objectOutput.writeLong(birthday);
 
 		if (smsSn == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(smsSn);
 		}
 
 		if (facebookSn == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(facebookSn);
 		}
 
 		if (jabberSn == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(jabberSn);
 		}
 
 		if (skypeSn == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(skypeSn);
 		}
 
 		if (twitterSn == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(twitterSn);
 		}
 
 		if (employeeStatusId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(employeeStatusId);
 		}
 
 		if (employeeNumber == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(employeeNumber);
 		}
 
 		if (jobTitle == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(jobTitle);
 		}
 
 		if (jobClass == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(jobClass);
 		}
 
 		if (hoursOfOperation == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(hoursOfOperation);
@@ -496,5 +500,4 @@ public class ContactCacheModel
 	public String jobTitle;
 	public String jobClass;
 	public String hoursOfOperation;
-
 }

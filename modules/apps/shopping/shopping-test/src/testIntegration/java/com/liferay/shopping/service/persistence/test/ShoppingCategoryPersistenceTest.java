@@ -15,6 +15,7 @@
 package com.liferay.shopping.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -28,15 +29,26 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
+
 import com.liferay.shopping.exception.NoSuchCategoryException;
 import com.liferay.shopping.model.ShoppingCategory;
 import com.liferay.shopping.service.ShoppingCategoryLocalServiceUtil;
 import com.liferay.shopping.service.persistence.ShoppingCategoryPersistence;
 import com.liferay.shopping.service.persistence.ShoppingCategoryUtil;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+
+import org.junit.runner.RunWith;
 
 import java.io.Serializable;
 
@@ -48,27 +60,17 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 /**
  * @generated
  */
 @RunWith(Arquillian.class)
 public class ShoppingCategoryPersistenceTest {
-
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
-			new TransactionalTestRule(
-				Propagation.REQUIRED, "com.liferay.shopping.service"));
+	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
+			PersistenceTestRule.INSTANCE,
+			new TransactionalTestRule(Propagation.REQUIRED,
+				"com.liferay.shopping.service"));
 
 	@Before
 	public void setUp() {
@@ -107,8 +109,7 @@ public class ShoppingCategoryPersistenceTest {
 
 		_persistence.remove(newShoppingCategory);
 
-		ShoppingCategory existingShoppingCategory =
-			_persistence.fetchByPrimaryKey(newShoppingCategory.getPrimaryKey());
+		ShoppingCategory existingShoppingCategory = _persistence.fetchByPrimaryKey(newShoppingCategory.getPrimaryKey());
 
 		Assert.assertNull(existingShoppingCategory);
 	}
@@ -144,37 +145,29 @@ public class ShoppingCategoryPersistenceTest {
 
 		_shoppingCategories.add(_persistence.update(newShoppingCategory));
 
-		ShoppingCategory existingShoppingCategory =
-			_persistence.findByPrimaryKey(newShoppingCategory.getPrimaryKey());
+		ShoppingCategory existingShoppingCategory = _persistence.findByPrimaryKey(newShoppingCategory.getPrimaryKey());
 
-		Assert.assertEquals(
-			existingShoppingCategory.getCategoryId(),
+		Assert.assertEquals(existingShoppingCategory.getCategoryId(),
 			newShoppingCategory.getCategoryId());
-		Assert.assertEquals(
-			existingShoppingCategory.getGroupId(),
+		Assert.assertEquals(existingShoppingCategory.getGroupId(),
 			newShoppingCategory.getGroupId());
-		Assert.assertEquals(
-			existingShoppingCategory.getCompanyId(),
+		Assert.assertEquals(existingShoppingCategory.getCompanyId(),
 			newShoppingCategory.getCompanyId());
-		Assert.assertEquals(
-			existingShoppingCategory.getUserId(),
+		Assert.assertEquals(existingShoppingCategory.getUserId(),
 			newShoppingCategory.getUserId());
-		Assert.assertEquals(
-			existingShoppingCategory.getUserName(),
+		Assert.assertEquals(existingShoppingCategory.getUserName(),
 			newShoppingCategory.getUserName());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingShoppingCategory.getCreateDate()),
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingShoppingCategory.getCreateDate()),
 			Time.getShortTimestamp(newShoppingCategory.getCreateDate()));
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingShoppingCategory.getModifiedDate()),
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingShoppingCategory.getModifiedDate()),
 			Time.getShortTimestamp(newShoppingCategory.getModifiedDate()));
-		Assert.assertEquals(
-			existingShoppingCategory.getParentCategoryId(),
+		Assert.assertEquals(existingShoppingCategory.getParentCategoryId(),
 			newShoppingCategory.getParentCategoryId());
-		Assert.assertEquals(
-			existingShoppingCategory.getName(), newShoppingCategory.getName());
-		Assert.assertEquals(
-			existingShoppingCategory.getDescription(),
+		Assert.assertEquals(existingShoppingCategory.getName(),
+			newShoppingCategory.getName());
+		Assert.assertEquals(existingShoppingCategory.getDescription(),
 			newShoppingCategory.getDescription());
 	}
 
@@ -187,17 +180,17 @@ public class ShoppingCategoryPersistenceTest {
 
 	@Test
 	public void testCountByG_P() throws Exception {
-		_persistence.countByG_P(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+		_persistence.countByG_P(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong());
 
 		_persistence.countByG_P(0L, 0L);
 	}
 
 	@Test
 	public void testCountByG_N() throws Exception {
-		_persistence.countByG_N(RandomTestUtil.nextLong(), "");
+		_persistence.countByG_N(RandomTestUtil.nextLong(), StringPool.BLANK);
 
-		_persistence.countByG_N(0L, "null");
+		_persistence.countByG_N(0L, StringPool.NULL);
 
 		_persistence.countByG_N(0L, (String)null);
 	}
@@ -206,8 +199,7 @@ public class ShoppingCategoryPersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		ShoppingCategory newShoppingCategory = addShoppingCategory();
 
-		ShoppingCategory existingShoppingCategory =
-			_persistence.findByPrimaryKey(newShoppingCategory.getPrimaryKey());
+		ShoppingCategory existingShoppingCategory = _persistence.findByPrimaryKey(newShoppingCategory.getPrimaryKey());
 
 		Assert.assertEquals(existingShoppingCategory, newShoppingCategory);
 	}
@@ -221,30 +213,28 @@ public class ShoppingCategoryPersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
+		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			getOrderByComparator());
 	}
 
 	@Test
 	public void testFilterFindByGroupId() throws Exception {
-		_persistence.filterFindByGroupId(
-			0, QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
+		_persistence.filterFindByGroupId(0, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, getOrderByComparator());
 	}
 
 	protected OrderByComparator<ShoppingCategory> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create(
-			"ShoppingCategory", "categoryId", true, "groupId", true,
-			"companyId", true, "userId", true, "userName", true, "createDate",
-			true, "modifiedDate", true, "parentCategoryId", true, "name", true,
-			"description", true);
+		return OrderByComparatorFactoryUtil.create("ShoppingCategory",
+			"categoryId", true, "groupId", true, "companyId", true, "userId",
+			true, "userName", true, "createDate", true, "modifiedDate", true,
+			"parentCategoryId", true, "name", true, "description", true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		ShoppingCategory newShoppingCategory = addShoppingCategory();
 
-		ShoppingCategory existingShoppingCategory =
-			_persistence.fetchByPrimaryKey(newShoppingCategory.getPrimaryKey());
+		ShoppingCategory existingShoppingCategory = _persistence.fetchByPrimaryKey(newShoppingCategory.getPrimaryKey());
 
 		Assert.assertEquals(existingShoppingCategory, newShoppingCategory);
 	}
@@ -253,8 +243,7 @@ public class ShoppingCategoryPersistenceTest {
 	public void testFetchByPrimaryKeyMissing() throws Exception {
 		long pk = RandomTestUtil.nextLong();
 
-		ShoppingCategory missingShoppingCategory =
-			_persistence.fetchByPrimaryKey(pk);
+		ShoppingCategory missingShoppingCategory = _persistence.fetchByPrimaryKey(pk);
 
 		Assert.assertNull(missingShoppingCategory);
 	}
@@ -262,7 +251,6 @@ public class ShoppingCategoryPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
-
 		ShoppingCategory newShoppingCategory1 = addShoppingCategory();
 		ShoppingCategory newShoppingCategory2 = addShoppingCategory();
 
@@ -271,22 +259,18 @@ public class ShoppingCategoryPersistenceTest {
 		primaryKeys.add(newShoppingCategory1.getPrimaryKey());
 		primaryKeys.add(newShoppingCategory2.getPrimaryKey());
 
-		Map<Serializable, ShoppingCategory> shoppingCategories =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ShoppingCategory> shoppingCategories = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(2, shoppingCategories.size());
-		Assert.assertEquals(
-			newShoppingCategory1,
+		Assert.assertEquals(newShoppingCategory1,
 			shoppingCategories.get(newShoppingCategory1.getPrimaryKey()));
-		Assert.assertEquals(
-			newShoppingCategory2,
+		Assert.assertEquals(newShoppingCategory2,
 			shoppingCategories.get(newShoppingCategory2.getPrimaryKey()));
 	}
 
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
-
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -296,8 +280,7 @@ public class ShoppingCategoryPersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, ShoppingCategory> shoppingCategories =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ShoppingCategory> shoppingCategories = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(shoppingCategories.isEmpty());
 	}
@@ -305,7 +288,6 @@ public class ShoppingCategoryPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
-
 		ShoppingCategory newShoppingCategory = addShoppingCategory();
 
 		long pk = RandomTestUtil.nextLong();
@@ -315,39 +297,36 @@ public class ShoppingCategoryPersistenceTest {
 		primaryKeys.add(newShoppingCategory.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, ShoppingCategory> shoppingCategories =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ShoppingCategory> shoppingCategories = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, shoppingCategories.size());
-		Assert.assertEquals(
-			newShoppingCategory,
+		Assert.assertEquals(newShoppingCategory,
 			shoppingCategories.get(newShoppingCategory.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
+		throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, ShoppingCategory> shoppingCategories =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ShoppingCategory> shoppingCategories = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(shoppingCategories.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey()
+		throws Exception {
 		ShoppingCategory newShoppingCategory = addShoppingCategory();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newShoppingCategory.getPrimaryKey());
 
-		Map<Serializable, ShoppingCategory> shoppingCategories =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ShoppingCategory> shoppingCategories = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, shoppingCategories.size());
-		Assert.assertEquals(
-			newShoppingCategory,
+		Assert.assertEquals(newShoppingCategory,
 			shoppingCategories.get(newShoppingCategory.getPrimaryKey()));
 	}
 
@@ -355,19 +334,15 @@ public class ShoppingCategoryPersistenceTest {
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery =
-			ShoppingCategoryLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = ShoppingCategoryLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<ShoppingCategory>() {
-
+		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<ShoppingCategory>() {
 				@Override
 				public void performAction(ShoppingCategory shoppingCategory) {
 					Assert.assertNotNull(shoppingCategory);
 
 					count.increment();
 				}
-
 			});
 
 		actionableDynamicQuery.performActions();
@@ -376,18 +351,17 @@ public class ShoppingCategoryPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting()
+		throws Exception {
 		ShoppingCategory newShoppingCategory = addShoppingCategory();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			ShoppingCategory.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(ShoppingCategory.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq(
-				"categoryId", newShoppingCategory.getCategoryId()));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("categoryId",
+				newShoppingCategory.getCategoryId()));
 
-		List<ShoppingCategory> result = _persistence.findWithDynamicQuery(
-			dynamicQuery);
+		List<ShoppingCategory> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
 		Assert.assertEquals(1, result.size());
 
@@ -398,34 +372,31 @@ public class ShoppingCategoryPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			ShoppingCategory.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(ShoppingCategory.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq(
-				"categoryId", RandomTestUtil.nextLong()));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("categoryId",
+				RandomTestUtil.nextLong()));
 
-		List<ShoppingCategory> result = _persistence.findWithDynamicQuery(
-			dynamicQuery);
+		List<ShoppingCategory> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
 		Assert.assertEquals(0, result.size());
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting() throws Exception {
+	public void testDynamicQueryByProjectionExisting()
+		throws Exception {
 		ShoppingCategory newShoppingCategory = addShoppingCategory();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			ShoppingCategory.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(ShoppingCategory.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(
-			ProjectionFactoryUtil.property("categoryId"));
+		dynamicQuery.setProjection(ProjectionFactoryUtil.property("categoryId"));
 
 		Object newCategoryId = newShoppingCategory.getCategoryId();
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in(
-				"categoryId", new Object[] {newCategoryId}));
+		dynamicQuery.add(RestrictionsFactoryUtil.in("categoryId",
+				new Object[] { newCategoryId }));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -438,15 +409,13 @@ public class ShoppingCategoryPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			ShoppingCategory.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(ShoppingCategory.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(
-			ProjectionFactoryUtil.property("categoryId"));
+		dynamicQuery.setProjection(ProjectionFactoryUtil.property("categoryId"));
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in(
-				"categoryId", new Object[] {RandomTestUtil.nextLong()}));
+		dynamicQuery.add(RestrictionsFactoryUtil.in("categoryId",
+				new Object[] { RandomTestUtil.nextLong() }));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -459,20 +428,14 @@ public class ShoppingCategoryPersistenceTest {
 
 		_persistence.clearCache();
 
-		ShoppingCategory existingShoppingCategory =
-			_persistence.findByPrimaryKey(newShoppingCategory.getPrimaryKey());
+		ShoppingCategory existingShoppingCategory = _persistence.findByPrimaryKey(newShoppingCategory.getPrimaryKey());
 
-		Assert.assertEquals(
-			Long.valueOf(existingShoppingCategory.getGroupId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingShoppingCategory, "getOriginalGroupId",
-				new Class<?>[0]));
-		Assert.assertTrue(
-			Objects.equals(
-				existingShoppingCategory.getName(),
-				ReflectionTestUtil.invoke(
-					existingShoppingCategory, "getOriginalName",
-					new Class<?>[0])));
+		Assert.assertEquals(Long.valueOf(existingShoppingCategory.getGroupId()),
+			ReflectionTestUtil.<Long>invoke(existingShoppingCategory,
+				"getOriginalGroupId", new Class<?>[0]));
+		Assert.assertTrue(Objects.equals(existingShoppingCategory.getName(),
+				ReflectionTestUtil.invoke(existingShoppingCategory,
+					"getOriginalName", new Class<?>[0])));
 	}
 
 	protected ShoppingCategory addShoppingCategory() throws Exception {
@@ -503,9 +466,7 @@ public class ShoppingCategoryPersistenceTest {
 		return shoppingCategory;
 	}
 
-	private List<ShoppingCategory> _shoppingCategories =
-		new ArrayList<ShoppingCategory>();
+	private List<ShoppingCategory> _shoppingCategories = new ArrayList<ShoppingCategory>();
 	private ShoppingCategoryPersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
-
 }

@@ -14,6 +14,8 @@
 
 package com.liferay.mail.reader.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,8 +28,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
+@ProviderType
 public class MessageSoap implements Serializable {
-
 	public static MessageSoap toSoapModel(Message model) {
 		MessageSoap soapModel = new MessageSoap();
 
@@ -83,8 +85,7 @@ public class MessageSoap implements Serializable {
 	}
 
 	public static MessageSoap[] toSoapModels(List<Message> models) {
-		List<MessageSoap> soapModels = new ArrayList<MessageSoap>(
-			models.size());
+		List<MessageSoap> soapModels = new ArrayList<MessageSoap>(models.size());
 
 		for (Message model : models) {
 			soapModels.add(toSoapModel(model));
@@ -284,5 +285,4 @@ public class MessageSoap implements Serializable {
 	private long _size;
 	private long _remoteMessageId;
 	private String _contentType;
-
 }

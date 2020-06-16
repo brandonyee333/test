@@ -14,9 +14,12 @@
 
 package com.liferay.portal.workflow.kaleo.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.workflow.kaleo.model.KaleoCondition;
 
 import java.io.Externalizable;
@@ -30,11 +33,12 @@ import java.util.Date;
  * The cache model class for representing KaleoCondition in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see KaleoCondition
  * @generated
  */
-public class KaleoConditionCacheModel
-	implements CacheModel<KaleoCondition>, Externalizable {
-
+@ProviderType
+public class KaleoConditionCacheModel implements CacheModel<KaleoCondition>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +49,7 @@ public class KaleoConditionCacheModel
 			return false;
 		}
 
-		KaleoConditionCacheModel kaleoConditionCacheModel =
-			(KaleoConditionCacheModel)obj;
+		KaleoConditionCacheModel kaleoConditionCacheModel = (KaleoConditionCacheModel)obj;
 
 		if (kaleoConditionId == kaleoConditionCacheModel.kaleoConditionId) {
 			return true;
@@ -103,7 +106,7 @@ public class KaleoConditionCacheModel
 		kaleoConditionImpl.setUserId(userId);
 
 		if (userName == null) {
-			kaleoConditionImpl.setUserName("");
+			kaleoConditionImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			kaleoConditionImpl.setUserName(userName);
@@ -127,25 +130,24 @@ public class KaleoConditionCacheModel
 		kaleoConditionImpl.setKaleoNodeId(kaleoNodeId);
 
 		if (script == null) {
-			kaleoConditionImpl.setScript("");
+			kaleoConditionImpl.setScript(StringPool.BLANK);
 		}
 		else {
 			kaleoConditionImpl.setScript(script);
 		}
 
 		if (scriptLanguage == null) {
-			kaleoConditionImpl.setScriptLanguage("");
+			kaleoConditionImpl.setScriptLanguage(StringPool.BLANK);
 		}
 		else {
 			kaleoConditionImpl.setScriptLanguage(scriptLanguage);
 		}
 
 		if (scriptRequiredContexts == null) {
-			kaleoConditionImpl.setScriptRequiredContexts("");
+			kaleoConditionImpl.setScriptRequiredContexts(StringPool.BLANK);
 		}
 		else {
-			kaleoConditionImpl.setScriptRequiredContexts(
-				scriptRequiredContexts);
+			kaleoConditionImpl.setScriptRequiredContexts(scriptRequiredContexts);
 		}
 
 		kaleoConditionImpl.resetOriginalValues();
@@ -154,9 +156,7 @@ public class KaleoConditionCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		kaleoConditionId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -171,13 +171,14 @@ public class KaleoConditionCacheModel
 		kaleoDefinitionId = objectInput.readLong();
 
 		kaleoNodeId = objectInput.readLong();
-		script = (String)objectInput.readObject();
+		script = objectInput.readUTF();
 		scriptLanguage = objectInput.readUTF();
 		scriptRequiredContexts = objectInput.readUTF();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(kaleoConditionId);
 
 		objectOutput.writeLong(groupId);
@@ -187,7 +188,7 @@ public class KaleoConditionCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -201,21 +202,21 @@ public class KaleoConditionCacheModel
 		objectOutput.writeLong(kaleoNodeId);
 
 		if (script == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(script);
+			objectOutput.writeUTF(script);
 		}
 
 		if (scriptLanguage == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(scriptLanguage);
 		}
 
 		if (scriptRequiredContexts == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(scriptRequiredContexts);
@@ -234,5 +235,4 @@ public class KaleoConditionCacheModel
 	public String script;
 	public String scriptLanguage;
 	public String scriptRequiredContexts;
-
 }

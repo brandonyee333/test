@@ -14,10 +14,14 @@
 
 package com.liferay.journal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.journal.model.JournalFeed;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing JournalFeed in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see JournalFeed
  * @generated
  */
-public class JournalFeedCacheModel
-	implements CacheModel<JournalFeed>, Externalizable {
-
+@ProviderType
+public class JournalFeedCacheModel implements CacheModel<JournalFeed>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class JournalFeedCacheModel
 			return false;
 		}
 
-		JournalFeedCacheModel journalFeedCacheModel =
-			(JournalFeedCacheModel)obj;
+		JournalFeedCacheModel journalFeedCacheModel = (JournalFeedCacheModel)obj;
 
 		if (id == journalFeedCacheModel.id) {
 			return true;
@@ -120,7 +124,7 @@ public class JournalFeedCacheModel
 		JournalFeedImpl journalFeedImpl = new JournalFeedImpl();
 
 		if (uuid == null) {
-			journalFeedImpl.setUuid("");
+			journalFeedImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			journalFeedImpl.setUuid(uuid);
@@ -132,7 +136,7 @@ public class JournalFeedCacheModel
 		journalFeedImpl.setUserId(userId);
 
 		if (userName == null) {
-			journalFeedImpl.setUserName("");
+			journalFeedImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			journalFeedImpl.setUserName(userName);
@@ -153,42 +157,42 @@ public class JournalFeedCacheModel
 		}
 
 		if (feedId == null) {
-			journalFeedImpl.setFeedId("");
+			journalFeedImpl.setFeedId(StringPool.BLANK);
 		}
 		else {
 			journalFeedImpl.setFeedId(feedId);
 		}
 
 		if (name == null) {
-			journalFeedImpl.setName("");
+			journalFeedImpl.setName(StringPool.BLANK);
 		}
 		else {
 			journalFeedImpl.setName(name);
 		}
 
 		if (description == null) {
-			journalFeedImpl.setDescription("");
+			journalFeedImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			journalFeedImpl.setDescription(description);
 		}
 
 		if (DDMStructureKey == null) {
-			journalFeedImpl.setDDMStructureKey("");
+			journalFeedImpl.setDDMStructureKey(StringPool.BLANK);
 		}
 		else {
 			journalFeedImpl.setDDMStructureKey(DDMStructureKey);
 		}
 
 		if (DDMTemplateKey == null) {
-			journalFeedImpl.setDDMTemplateKey("");
+			journalFeedImpl.setDDMTemplateKey(StringPool.BLANK);
 		}
 		else {
 			journalFeedImpl.setDDMTemplateKey(DDMTemplateKey);
 		}
 
 		if (DDMRendererTemplateKey == null) {
-			journalFeedImpl.setDDMRendererTemplateKey("");
+			journalFeedImpl.setDDMRendererTemplateKey(StringPool.BLANK);
 		}
 		else {
 			journalFeedImpl.setDDMRendererTemplateKey(DDMRendererTemplateKey);
@@ -197,42 +201,42 @@ public class JournalFeedCacheModel
 		journalFeedImpl.setDelta(delta);
 
 		if (orderByCol == null) {
-			journalFeedImpl.setOrderByCol("");
+			journalFeedImpl.setOrderByCol(StringPool.BLANK);
 		}
 		else {
 			journalFeedImpl.setOrderByCol(orderByCol);
 		}
 
 		if (orderByType == null) {
-			journalFeedImpl.setOrderByType("");
+			journalFeedImpl.setOrderByType(StringPool.BLANK);
 		}
 		else {
 			journalFeedImpl.setOrderByType(orderByType);
 		}
 
 		if (targetLayoutFriendlyUrl == null) {
-			journalFeedImpl.setTargetLayoutFriendlyUrl("");
+			journalFeedImpl.setTargetLayoutFriendlyUrl(StringPool.BLANK);
 		}
 		else {
 			journalFeedImpl.setTargetLayoutFriendlyUrl(targetLayoutFriendlyUrl);
 		}
 
 		if (targetPortletId == null) {
-			journalFeedImpl.setTargetPortletId("");
+			journalFeedImpl.setTargetPortletId(StringPool.BLANK);
 		}
 		else {
 			journalFeedImpl.setTargetPortletId(targetPortletId);
 		}
 
 		if (contentField == null) {
-			journalFeedImpl.setContentField("");
+			journalFeedImpl.setContentField(StringPool.BLANK);
 		}
 		else {
 			journalFeedImpl.setContentField(contentField);
 		}
 
 		if (feedFormat == null) {
-			journalFeedImpl.setFeedFormat("");
+			journalFeedImpl.setFeedFormat(StringPool.BLANK);
 		}
 		else {
 			journalFeedImpl.setFeedFormat(feedFormat);
@@ -286,9 +290,10 @@ public class JournalFeedCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -303,7 +308,7 @@ public class JournalFeedCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -313,42 +318,42 @@ public class JournalFeedCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (feedId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(feedId);
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (DDMStructureKey == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(DDMStructureKey);
 		}
 
 		if (DDMTemplateKey == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(DDMTemplateKey);
 		}
 
 		if (DDMRendererTemplateKey == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(DDMRendererTemplateKey);
@@ -357,42 +362,42 @@ public class JournalFeedCacheModel
 		objectOutput.writeInt(delta);
 
 		if (orderByCol == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(orderByCol);
 		}
 
 		if (orderByType == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(orderByType);
 		}
 
 		if (targetLayoutFriendlyUrl == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(targetLayoutFriendlyUrl);
 		}
 
 		if (targetPortletId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(targetPortletId);
 		}
 
 		if (contentField == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(contentField);
 		}
 
 		if (feedFormat == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(feedFormat);
@@ -425,5 +430,4 @@ public class JournalFeedCacheModel
 	public String feedFormat;
 	public double feedVersion;
 	public long lastPublishDate;
-
 }

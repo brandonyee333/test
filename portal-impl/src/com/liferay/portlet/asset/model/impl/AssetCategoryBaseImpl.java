@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.asset.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.service.AssetCategoryLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.asset.kernel.service.AssetCategoryLocalServiceUtil;
  * @see AssetCategory
  * @generated
  */
-public abstract class AssetCategoryBaseImpl
-	extends AssetCategoryModelImpl implements AssetCategory {
-
+@ProviderType
+public abstract class AssetCategoryBaseImpl extends AssetCategoryModelImpl
+	implements AssetCategory {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a asset category model instance should use the <code>AssetCategory</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a asset category model instance should use the {@link AssetCategory} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class AssetCategoryBaseImpl
 			AssetCategoryLocalServiceUtil.updateAssetCategory(this);
 		}
 	}
-
 }

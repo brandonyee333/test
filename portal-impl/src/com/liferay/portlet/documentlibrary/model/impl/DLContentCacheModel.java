@@ -14,10 +14,14 @@
 
 package com.liferay.portlet.documentlibrary.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.document.library.kernel.model.DLContent;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -28,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing DLContent in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see DLContent
  * @generated
  */
-public class DLContentCacheModel
-	implements CacheModel<DLContent>, Externalizable {
-
+@ProviderType
+public class DLContentCacheModel implements CacheModel<DLContent>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -90,14 +95,14 @@ public class DLContentCacheModel
 		dlContentImpl.setRepositoryId(repositoryId);
 
 		if (path == null) {
-			dlContentImpl.setPath("");
+			dlContentImpl.setPath(StringPool.BLANK);
 		}
 		else {
 			dlContentImpl.setPath(path);
 		}
 
 		if (version == null) {
-			dlContentImpl.setVersion("");
+			dlContentImpl.setVersion(StringPool.BLANK);
 		}
 		else {
 			dlContentImpl.setVersion(version);
@@ -126,7 +131,8 @@ public class DLContentCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(contentId);
 
 		objectOutput.writeLong(groupId);
@@ -136,14 +142,14 @@ public class DLContentCacheModel
 		objectOutput.writeLong(repositoryId);
 
 		if (path == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(path);
 		}
 
 		if (version == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(version);
@@ -159,5 +165,4 @@ public class DLContentCacheModel
 	public String path;
 	public String version;
 	public long size;
-
 }

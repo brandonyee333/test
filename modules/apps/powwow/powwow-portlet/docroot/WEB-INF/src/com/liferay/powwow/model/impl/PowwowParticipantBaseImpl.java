@@ -14,6 +14,8 @@
 
 package com.liferay.powwow.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.powwow.model.PowwowParticipant;
 import com.liferay.powwow.service.PowwowParticipantLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.powwow.service.PowwowParticipantLocalServiceUtil;
  * @see PowwowParticipant
  * @generated
  */
+@ProviderType
 public abstract class PowwowParticipantBaseImpl
 	extends PowwowParticipantModelImpl implements PowwowParticipant {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a powwow participant model instance should use the <code>PowwowParticipant</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a powwow participant model instance should use the {@link PowwowParticipant} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class PowwowParticipantBaseImpl
 			PowwowParticipantLocalServiceUtil.updatePowwowParticipant(this);
 		}
 	}
-
 }

@@ -14,10 +14,14 @@
 
 package com.liferay.adaptive.media.image.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.adaptive.media.image.model.AMImageEntry;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing AMImageEntry in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see AMImageEntry
  * @generated
  */
-public class AMImageEntryCacheModel
-	implements CacheModel<AMImageEntry>, Externalizable {
-
+@ProviderType
+public class AMImageEntryCacheModel implements CacheModel<AMImageEntry>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class AMImageEntryCacheModel
 			return false;
 		}
 
-		AMImageEntryCacheModel amImageEntryCacheModel =
-			(AMImageEntryCacheModel)obj;
+		AMImageEntryCacheModel amImageEntryCacheModel = (AMImageEntryCacheModel)obj;
 
 		if (amImageEntryId == amImageEntryCacheModel.amImageEntryId) {
 			return true;
@@ -96,7 +100,7 @@ public class AMImageEntryCacheModel
 		AMImageEntryImpl amImageEntryImpl = new AMImageEntryImpl();
 
 		if (uuid == null) {
-			amImageEntryImpl.setUuid("");
+			amImageEntryImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			amImageEntryImpl.setUuid(uuid);
@@ -114,7 +118,7 @@ public class AMImageEntryCacheModel
 		}
 
 		if (configurationUuid == null) {
-			amImageEntryImpl.setConfigurationUuid("");
+			amImageEntryImpl.setConfigurationUuid(StringPool.BLANK);
 		}
 		else {
 			amImageEntryImpl.setConfigurationUuid(configurationUuid);
@@ -123,7 +127,7 @@ public class AMImageEntryCacheModel
 		amImageEntryImpl.setFileVersionId(fileVersionId);
 
 		if (mimeType == null) {
-			amImageEntryImpl.setMimeType("");
+			amImageEntryImpl.setMimeType(StringPool.BLANK);
 		}
 		else {
 			amImageEntryImpl.setMimeType(mimeType);
@@ -161,9 +165,10 @@ public class AMImageEntryCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -177,7 +182,7 @@ public class AMImageEntryCacheModel
 		objectOutput.writeLong(createDate);
 
 		if (configurationUuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(configurationUuid);
@@ -186,7 +191,7 @@ public class AMImageEntryCacheModel
 		objectOutput.writeLong(fileVersionId);
 
 		if (mimeType == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(mimeType);
@@ -210,5 +215,4 @@ public class AMImageEntryCacheModel
 	public int height;
 	public int width;
 	public long size;
-
 }

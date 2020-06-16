@@ -14,9 +14,13 @@
 
 package com.liferay.shopping.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.shopping.model.ShoppingCoupon;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing ShoppingCoupon in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see ShoppingCoupon
  * @generated
  */
-public class ShoppingCouponCacheModel
-	implements CacheModel<ShoppingCoupon>, Externalizable {
-
+@ProviderType
+public class ShoppingCouponCacheModel implements CacheModel<ShoppingCoupon>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class ShoppingCouponCacheModel
 			return false;
 		}
 
-		ShoppingCouponCacheModel shoppingCouponCacheModel =
-			(ShoppingCouponCacheModel)obj;
+		ShoppingCouponCacheModel shoppingCouponCacheModel = (ShoppingCouponCacheModel)obj;
 
 		if (couponId == shoppingCouponCacheModel.couponId) {
 			return true;
@@ -115,7 +119,7 @@ public class ShoppingCouponCacheModel
 		shoppingCouponImpl.setUserId(userId);
 
 		if (userName == null) {
-			shoppingCouponImpl.setUserName("");
+			shoppingCouponImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			shoppingCouponImpl.setUserName(userName);
@@ -136,21 +140,21 @@ public class ShoppingCouponCacheModel
 		}
 
 		if (code == null) {
-			shoppingCouponImpl.setCode("");
+			shoppingCouponImpl.setCode(StringPool.BLANK);
 		}
 		else {
 			shoppingCouponImpl.setCode(code);
 		}
 
 		if (name == null) {
-			shoppingCouponImpl.setName("");
+			shoppingCouponImpl.setName(StringPool.BLANK);
 		}
 		else {
 			shoppingCouponImpl.setName(name);
 		}
 
 		if (description == null) {
-			shoppingCouponImpl.setDescription("");
+			shoppingCouponImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			shoppingCouponImpl.setDescription(description);
@@ -173,14 +177,14 @@ public class ShoppingCouponCacheModel
 		shoppingCouponImpl.setActive(active);
 
 		if (limitCategories == null) {
-			shoppingCouponImpl.setLimitCategories("");
+			shoppingCouponImpl.setLimitCategories(StringPool.BLANK);
 		}
 		else {
 			shoppingCouponImpl.setLimitCategories(limitCategories);
 		}
 
 		if (limitSkus == null) {
-			shoppingCouponImpl.setLimitSkus("");
+			shoppingCouponImpl.setLimitSkus(StringPool.BLANK);
 		}
 		else {
 			shoppingCouponImpl.setLimitSkus(limitSkus);
@@ -190,7 +194,7 @@ public class ShoppingCouponCacheModel
 		shoppingCouponImpl.setDiscount(discount);
 
 		if (discountType == null) {
-			shoppingCouponImpl.setDiscountType("");
+			shoppingCouponImpl.setDiscountType(StringPool.BLANK);
 		}
 		else {
 			shoppingCouponImpl.setDiscountType(discountType);
@@ -230,7 +234,8 @@ public class ShoppingCouponCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(couponId);
 
 		objectOutput.writeLong(groupId);
@@ -240,7 +245,7 @@ public class ShoppingCouponCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -250,21 +255,21 @@ public class ShoppingCouponCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (code == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(code);
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -276,14 +281,14 @@ public class ShoppingCouponCacheModel
 		objectOutput.writeBoolean(active);
 
 		if (limitCategories == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(limitCategories);
 		}
 
 		if (limitSkus == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(limitSkus);
@@ -294,7 +299,7 @@ public class ShoppingCouponCacheModel
 		objectOutput.writeDouble(discount);
 
 		if (discountType == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(discountType);
@@ -319,5 +324,4 @@ public class ShoppingCouponCacheModel
 	public double minOrder;
 	public double discount;
 	public String discountType;
-
 }

@@ -1,22 +1,26 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.saml.persistence.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.saml.persistence.model.SamlSpSession;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing SamlSpSession in entity cache.
  *
  * @author Mika Koivisto
+ * @see SamlSpSession
  * @generated
  */
-public class SamlSpSessionCacheModel
-	implements CacheModel<SamlSpSession>, Externalizable {
-
+@ProviderType
+public class SamlSpSessionCacheModel implements CacheModel<SamlSpSession>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class SamlSpSessionCacheModel
 			return false;
 		}
 
-		SamlSpSessionCacheModel samlSpSessionCacheModel =
-			(SamlSpSessionCacheModel)obj;
+		SamlSpSessionCacheModel samlSpSessionCacheModel = (SamlSpSessionCacheModel)obj;
 
 		if (samlSpSessionId == samlSpSessionCacheModel.samlSpSessionId) {
 			return true;
@@ -108,7 +112,7 @@ public class SamlSpSessionCacheModel
 		samlSpSessionImpl.setUserId(userId);
 
 		if (userName == null) {
-			samlSpSessionImpl.setUserName("");
+			samlSpSessionImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			samlSpSessionImpl.setUserName(userName);
@@ -129,56 +133,56 @@ public class SamlSpSessionCacheModel
 		}
 
 		if (samlSpSessionKey == null) {
-			samlSpSessionImpl.setSamlSpSessionKey("");
+			samlSpSessionImpl.setSamlSpSessionKey(StringPool.BLANK);
 		}
 		else {
 			samlSpSessionImpl.setSamlSpSessionKey(samlSpSessionKey);
 		}
 
 		if (assertionXml == null) {
-			samlSpSessionImpl.setAssertionXml("");
+			samlSpSessionImpl.setAssertionXml(StringPool.BLANK);
 		}
 		else {
 			samlSpSessionImpl.setAssertionXml(assertionXml);
 		}
 
 		if (jSessionId == null) {
-			samlSpSessionImpl.setJSessionId("");
+			samlSpSessionImpl.setJSessionId(StringPool.BLANK);
 		}
 		else {
 			samlSpSessionImpl.setJSessionId(jSessionId);
 		}
 
 		if (nameIdFormat == null) {
-			samlSpSessionImpl.setNameIdFormat("");
+			samlSpSessionImpl.setNameIdFormat(StringPool.BLANK);
 		}
 		else {
 			samlSpSessionImpl.setNameIdFormat(nameIdFormat);
 		}
 
 		if (nameIdNameQualifier == null) {
-			samlSpSessionImpl.setNameIdNameQualifier("");
+			samlSpSessionImpl.setNameIdNameQualifier(StringPool.BLANK);
 		}
 		else {
 			samlSpSessionImpl.setNameIdNameQualifier(nameIdNameQualifier);
 		}
 
 		if (nameIdSPNameQualifier == null) {
-			samlSpSessionImpl.setNameIdSPNameQualifier("");
+			samlSpSessionImpl.setNameIdSPNameQualifier(StringPool.BLANK);
 		}
 		else {
 			samlSpSessionImpl.setNameIdSPNameQualifier(nameIdSPNameQualifier);
 		}
 
 		if (nameIdValue == null) {
-			samlSpSessionImpl.setNameIdValue("");
+			samlSpSessionImpl.setNameIdValue(StringPool.BLANK);
 		}
 		else {
 			samlSpSessionImpl.setNameIdValue(nameIdValue);
 		}
 
 		if (sessionIndex == null) {
-			samlSpSessionImpl.setSessionIndex("");
+			samlSpSessionImpl.setSessionIndex(StringPool.BLANK);
 		}
 		else {
 			samlSpSessionImpl.setSessionIndex(sessionIndex);
@@ -192,9 +196,7 @@ public class SamlSpSessionCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		samlSpSessionId = objectInput.readLong();
 
 		companyId = objectInput.readLong();
@@ -204,7 +206,7 @@ public class SamlSpSessionCacheModel
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 		samlSpSessionKey = objectInput.readUTF();
-		assertionXml = (String)objectInput.readObject();
+		assertionXml = objectInput.readUTF();
 		jSessionId = objectInput.readUTF();
 		nameIdFormat = objectInput.readUTF();
 		nameIdNameQualifier = objectInput.readUTF();
@@ -216,7 +218,8 @@ public class SamlSpSessionCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(samlSpSessionId);
 
 		objectOutput.writeLong(companyId);
@@ -224,7 +227,7 @@ public class SamlSpSessionCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -234,56 +237,56 @@ public class SamlSpSessionCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (samlSpSessionKey == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(samlSpSessionKey);
 		}
 
 		if (assertionXml == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(assertionXml);
+			objectOutput.writeUTF(assertionXml);
 		}
 
 		if (jSessionId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(jSessionId);
 		}
 
 		if (nameIdFormat == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(nameIdFormat);
 		}
 
 		if (nameIdNameQualifier == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(nameIdNameQualifier);
 		}
 
 		if (nameIdSPNameQualifier == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(nameIdSPNameQualifier);
 		}
 
 		if (nameIdValue == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(nameIdValue);
 		}
 
 		if (sessionIndex == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(sessionIndex);
@@ -307,5 +310,4 @@ public class SamlSpSessionCacheModel
 	public String nameIdValue;
 	public String sessionIndex;
 	public boolean terminated;
-
 }

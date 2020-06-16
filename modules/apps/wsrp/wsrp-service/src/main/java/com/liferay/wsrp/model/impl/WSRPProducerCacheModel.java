@@ -14,9 +14,13 @@
 
 package com.liferay.wsrp.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.wsrp.model.WSRPProducer;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing WSRPProducer in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see WSRPProducer
  * @generated
  */
-public class WSRPProducerCacheModel
-	implements CacheModel<WSRPProducer>, Externalizable {
-
+@ProviderType
+public class WSRPProducerCacheModel implements CacheModel<WSRPProducer>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class WSRPProducerCacheModel
 			return false;
 		}
 
-		WSRPProducerCacheModel wsrpProducerCacheModel =
-			(WSRPProducerCacheModel)obj;
+		WSRPProducerCacheModel wsrpProducerCacheModel = (WSRPProducerCacheModel)obj;
 
 		if (wsrpProducerId == wsrpProducerCacheModel.wsrpProducerId) {
 			return true;
@@ -94,7 +98,7 @@ public class WSRPProducerCacheModel
 		WSRPProducerImpl wsrpProducerImpl = new WSRPProducerImpl();
 
 		if (uuid == null) {
-			wsrpProducerImpl.setUuid("");
+			wsrpProducerImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			wsrpProducerImpl.setUuid(uuid);
@@ -119,21 +123,21 @@ public class WSRPProducerCacheModel
 		}
 
 		if (name == null) {
-			wsrpProducerImpl.setName("");
+			wsrpProducerImpl.setName(StringPool.BLANK);
 		}
 		else {
 			wsrpProducerImpl.setName(name);
 		}
 
 		if (version == null) {
-			wsrpProducerImpl.setVersion("");
+			wsrpProducerImpl.setVersion(StringPool.BLANK);
 		}
 		else {
 			wsrpProducerImpl.setVersion(version);
 		}
 
 		if (portletIds == null) {
-			wsrpProducerImpl.setPortletIds("");
+			wsrpProducerImpl.setPortletIds(StringPool.BLANK);
 		}
 		else {
 			wsrpProducerImpl.setPortletIds(portletIds);
@@ -169,9 +173,10 @@ public class WSRPProducerCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -186,21 +191,21 @@ public class WSRPProducerCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (version == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(version);
 		}
 
 		if (portletIds == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(portletIds);
@@ -219,5 +224,4 @@ public class WSRPProducerCacheModel
 	public String version;
 	public String portletIds;
 	public long lastPublishDate;
-
 }

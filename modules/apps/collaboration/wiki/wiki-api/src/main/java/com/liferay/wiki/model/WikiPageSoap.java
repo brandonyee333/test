@@ -14,6 +14,8 @@
 
 package com.liferay.wiki.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -24,10 +26,11 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.wiki.service.http.WikiPageServiceSoap}.
  *
  * @author Brian Wing Shun Chan
+ * @see com.liferay.wiki.service.http.WikiPageServiceSoap
  * @generated
  */
+@ProviderType
 public class WikiPageSoap implements Serializable {
-
 	public static WikiPageSoap toSoapModel(WikiPage model) {
 		WikiPageSoap soapModel = new WikiPageSoap();
 
@@ -43,11 +46,11 @@ public class WikiPageSoap implements Serializable {
 		soapModel.setNodeId(model.getNodeId());
 		soapModel.setTitle(model.getTitle());
 		soapModel.setVersion(model.getVersion());
-		soapModel.setMinorEdit(model.isMinorEdit());
+		soapModel.setMinorEdit(model.getMinorEdit());
 		soapModel.setContent(model.getContent());
 		soapModel.setSummary(model.getSummary());
 		soapModel.setFormat(model.getFormat());
-		soapModel.setHead(model.isHead());
+		soapModel.setHead(model.getHead());
 		soapModel.setParentTitle(model.getParentTitle());
 		soapModel.setRedirectTitle(model.getRedirectTitle());
 		soapModel.setLastPublishDate(model.getLastPublishDate());
@@ -87,8 +90,7 @@ public class WikiPageSoap implements Serializable {
 	}
 
 	public static WikiPageSoap[] toSoapModels(List<WikiPage> models) {
-		List<WikiPageSoap> soapModels = new ArrayList<WikiPageSoap>(
-			models.size());
+		List<WikiPageSoap> soapModels = new ArrayList<WikiPageSoap>(models.size());
 
 		for (WikiPage model : models) {
 			soapModels.add(toSoapModel(model));
@@ -332,5 +334,4 @@ public class WikiPageSoap implements Serializable {
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
-
 }

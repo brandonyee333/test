@@ -1,20 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.email.blacklist.service.http;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.osb.email.blacklist.service.BounceableEmailServiceUtil;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
@@ -24,11 +27,10 @@ import com.liferay.portal.kernel.util.MethodKey;
 
 /**
  * Provides the HTTP utility for the
- * <code>BounceableEmailServiceUtil</code> service
- * utility. The
+ * {@link BounceableEmailServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it requires an additional
- * <code>HttpPrincipal</code> parameter.
+ * {@link HttpPrincipal} parameter.
  *
  * <p>
  * The benefits of using the HTTP utility is that it is fast and allows for
@@ -47,142 +49,122 @@ import com.liferay.portal.kernel.util.MethodKey;
  *
  * @author Jamie Sammons
  * @see BounceableEmailServiceSoap
+ * @see HttpPrincipal
+ * @see BounceableEmailServiceUtil
  * @generated
  */
+@ProviderType
 public class BounceableEmailServiceHttp {
-
-	public static void sendBounceableEmail(
-		HttpPrincipal httpPrincipal,
+	public static void sendBounceableEmail(HttpPrincipal httpPrincipal,
 		com.liferay.mail.kernel.model.MailMessage mailMessage) {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				BounceableEmailServiceUtil.class, "sendBounceableEmail",
-				_sendBounceableEmailParameterTypes0);
+			MethodKey methodKey = new MethodKey(BounceableEmailServiceUtil.class,
+					"sendBounceableEmail", _sendBounceableEmailParameterTypes0);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, mailMessage);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					mailMessage);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+			catch (Exception e) {
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	public static void sendBounceableEmail(
-			HttpPrincipal httpPrincipal,
-			com.liferay.portal.kernel.util.SubscriptionSender
-				subscriptionSender)
-		throws Exception {
-
+	public static void sendBounceableEmail(HttpPrincipal httpPrincipal,
+		com.liferay.portal.kernel.util.SubscriptionSender subscriptionSender)
+		throws java.lang.Exception {
 		try {
-			MethodKey methodKey = new MethodKey(
-				BounceableEmailServiceUtil.class, "sendBounceableEmail",
-				_sendBounceableEmailParameterTypes1);
+			MethodKey methodKey = new MethodKey(BounceableEmailServiceUtil.class,
+					"sendBounceableEmail", _sendBounceableEmailParameterTypes1);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, subscriptionSender);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					subscriptionSender);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				if (exception instanceof Exception) {
-					throw (Exception)exception;
+			catch (Exception e) {
+				if (e instanceof java.lang.Exception) {
+					throw (java.lang.Exception)e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	public static void sendBounceableEmailAsync(
-		HttpPrincipal httpPrincipal,
+	public static void sendBounceableEmailAsync(HttpPrincipal httpPrincipal,
 		com.liferay.mail.kernel.model.MailMessage mailMessage) {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				BounceableEmailServiceUtil.class, "sendBounceableEmailAsync",
-				_sendBounceableEmailAsyncParameterTypes2);
+			MethodKey methodKey = new MethodKey(BounceableEmailServiceUtil.class,
+					"sendBounceableEmailAsync",
+					_sendBounceableEmailAsyncParameterTypes2);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, mailMessage);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					mailMessage);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+			catch (Exception e) {
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	public static void sendBounceableEmailAsync(
-		HttpPrincipal httpPrincipal,
+	public static void sendBounceableEmailAsync(HttpPrincipal httpPrincipal,
 		com.liferay.portal.kernel.util.SubscriptionSender subscriptionSender) {
-
 		try {
-			MethodKey methodKey = new MethodKey(
-				BounceableEmailServiceUtil.class, "sendBounceableEmailAsync",
-				_sendBounceableEmailAsyncParameterTypes3);
+			MethodKey methodKey = new MethodKey(BounceableEmailServiceUtil.class,
+					"sendBounceableEmailAsync",
+					_sendBounceableEmailAsyncParameterTypes3);
 
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, subscriptionSender);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					subscriptionSender);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception exception) {
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
+			catch (Exception e) {
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
 
-			_log.error(systemException, systemException);
-
-			throw systemException;
+			throw se;
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
-		BounceableEmailServiceHttp.class);
-
-	private static final Class<?>[] _sendBounceableEmailParameterTypes0 =
-		new Class[] {com.liferay.mail.kernel.model.MailMessage.class};
-	private static final Class<?>[] _sendBounceableEmailParameterTypes1 =
-		new Class[] {com.liferay.portal.kernel.util.SubscriptionSender.class};
-	private static final Class<?>[] _sendBounceableEmailAsyncParameterTypes2 =
-		new Class[] {com.liferay.mail.kernel.model.MailMessage.class};
-	private static final Class<?>[] _sendBounceableEmailAsyncParameterTypes3 =
-		new Class[] {com.liferay.portal.kernel.util.SubscriptionSender.class};
-
+	private static Log _log = LogFactoryUtil.getLog(BounceableEmailServiceHttp.class);
+	private static final Class<?>[] _sendBounceableEmailParameterTypes0 = new Class[] {
+			com.liferay.mail.kernel.model.MailMessage.class
+		};
+	private static final Class<?>[] _sendBounceableEmailParameterTypes1 = new Class[] {
+			com.liferay.portal.kernel.util.SubscriptionSender.class
+		};
+	private static final Class<?>[] _sendBounceableEmailAsyncParameterTypes2 = new Class[] {
+			com.liferay.mail.kernel.model.MailMessage.class
+		};
+	private static final Class<?>[] _sendBounceableEmailAsyncParameterTypes3 = new Class[] {
+			com.liferay.portal.kernel.util.SubscriptionSender.class
+		};
 }

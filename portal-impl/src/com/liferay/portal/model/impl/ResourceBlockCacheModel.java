@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.ResourceBlock;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -29,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing ResourceBlock in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see ResourceBlock
  * @generated
  */
-public class ResourceBlockCacheModel
-	implements CacheModel<ResourceBlock>, Externalizable, MVCCModel {
-
+@ProviderType
+public class ResourceBlockCacheModel implements CacheModel<ResourceBlock>,
+	Externalizable, MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -44,12 +48,10 @@ public class ResourceBlockCacheModel
 			return false;
 		}
 
-		ResourceBlockCacheModel resourceBlockCacheModel =
-			(ResourceBlockCacheModel)obj;
+		ResourceBlockCacheModel resourceBlockCacheModel = (ResourceBlockCacheModel)obj;
 
 		if ((resourceBlockId == resourceBlockCacheModel.resourceBlockId) &&
-			(mvccVersion == resourceBlockCacheModel.mvccVersion)) {
-
+				(mvccVersion == resourceBlockCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -106,14 +108,14 @@ public class ResourceBlockCacheModel
 		resourceBlockImpl.setGroupId(groupId);
 
 		if (name == null) {
-			resourceBlockImpl.setName("");
+			resourceBlockImpl.setName(StringPool.BLANK);
 		}
 		else {
 			resourceBlockImpl.setName(name);
 		}
 
 		if (permissionsHash == null) {
-			resourceBlockImpl.setPermissionsHash("");
+			resourceBlockImpl.setPermissionsHash(StringPool.BLANK);
 		}
 		else {
 			resourceBlockImpl.setPermissionsHash(permissionsHash);
@@ -142,7 +144,8 @@ public class ResourceBlockCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(resourceBlockId);
@@ -152,14 +155,14 @@ public class ResourceBlockCacheModel
 		objectOutput.writeLong(groupId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (permissionsHash == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(permissionsHash);
@@ -175,5 +178,4 @@ public class ResourceBlockCacheModel
 	public String name;
 	public String permissionsHash;
 	public long referenceCount;
-
 }

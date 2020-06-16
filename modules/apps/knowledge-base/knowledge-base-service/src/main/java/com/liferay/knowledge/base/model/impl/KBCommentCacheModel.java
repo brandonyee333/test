@@ -14,10 +14,14 @@
 
 package com.liferay.knowledge.base.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.knowledge.base.model.KBComment;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing KBComment in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see KBComment
  * @generated
  */
-public class KBCommentCacheModel
-	implements CacheModel<KBComment>, Externalizable {
-
+@ProviderType
+public class KBCommentCacheModel implements CacheModel<KBComment>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -101,7 +106,7 @@ public class KBCommentCacheModel
 		KBCommentImpl kbCommentImpl = new KBCommentImpl();
 
 		if (uuid == null) {
-			kbCommentImpl.setUuid("");
+			kbCommentImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			kbCommentImpl.setUuid(uuid);
@@ -113,7 +118,7 @@ public class KBCommentCacheModel
 		kbCommentImpl.setUserId(userId);
 
 		if (userName == null) {
-			kbCommentImpl.setUserName("");
+			kbCommentImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			kbCommentImpl.setUserName(userName);
@@ -137,7 +142,7 @@ public class KBCommentCacheModel
 		kbCommentImpl.setClassPK(classPK);
 
 		if (content == null) {
-			kbCommentImpl.setContent("");
+			kbCommentImpl.setContent(StringPool.BLANK);
 		}
 		else {
 			kbCommentImpl.setContent(content);
@@ -186,9 +191,10 @@ public class KBCommentCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -203,7 +209,7 @@ public class KBCommentCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -217,7 +223,7 @@ public class KBCommentCacheModel
 		objectOutput.writeLong(classPK);
 
 		if (content == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(content);
@@ -243,5 +249,4 @@ public class KBCommentCacheModel
 	public int userRating;
 	public long lastPublishDate;
 	public int status;
-
 }

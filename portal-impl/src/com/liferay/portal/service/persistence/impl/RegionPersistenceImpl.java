@@ -14,7 +14,11 @@
 
 package com.liferay.portal.service.persistence.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
+import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
+import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
@@ -28,16 +32,13 @@ import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.service.persistence.RegionPersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.impl.RegionImpl;
 import com.liferay.portal.model.impl.RegionModelImpl;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -56,31 +57,53 @@ import java.util.Set;
  * </p>
  *
  * @author Brian Wing Shun Chan
+ * @see RegionPersistence
+ * @see com.liferay.portal.kernel.service.persistence.RegionUtil
  * @generated
  */
-public class RegionPersistenceImpl
-	extends BasePersistenceImpl<Region> implements RegionPersistence {
-
+@ProviderType
+public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
+	implements RegionPersistence {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use <code>RegionUtil</code> to access the region persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use {@link RegionUtil} to access the region persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY =
-		RegionImpl.class.getName();
-
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List1";
-
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathWithPaginationFindByCountryId;
-	private FinderPath _finderPathWithoutPaginationFindByCountryId;
-	private FinderPath _finderPathCountByCountryId;
+	public static final String FINDER_CLASS_NAME_ENTITY = RegionImpl.class.getName();
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List1";
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List2";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(RegionModelImpl.ENTITY_CACHE_ENABLED,
+			RegionModelImpl.FINDER_CACHE_ENABLED, RegionImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(RegionModelImpl.ENTITY_CACHE_ENABLED,
+			RegionModelImpl.FINDER_CACHE_ENABLED, RegionImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(RegionModelImpl.ENTITY_CACHE_ENABLED,
+			RegionModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_COUNTRYID =
+		new FinderPath(RegionModelImpl.ENTITY_CACHE_ENABLED,
+			RegionModelImpl.FINDER_CACHE_ENABLED, RegionImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCountryId",
+			new String[] {
+				Long.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COUNTRYID =
+		new FinderPath(RegionModelImpl.ENTITY_CACHE_ENABLED,
+			RegionModelImpl.FINDER_CACHE_ENABLED, RegionImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCountryId",
+			new String[] { Long.class.getName() },
+			RegionModelImpl.COUNTRYID_COLUMN_BITMASK |
+			RegionModelImpl.NAME_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_COUNTRYID = new FinderPath(RegionModelImpl.ENTITY_CACHE_ENABLED,
+			RegionModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCountryId",
+			new String[] { Long.class.getName() });
 
 	/**
 	 * Returns all the regions where countryId = &#63;.
@@ -90,15 +113,15 @@ public class RegionPersistenceImpl
 	 */
 	@Override
 	public List<Region> findByCountryId(long countryId) {
-		return findByCountryId(
-			countryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+		return findByCountryId(countryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			null);
 	}
 
 	/**
 	 * Returns a range of all the regions where countryId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>RegionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link RegionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param countryId the country ID
@@ -115,7 +138,7 @@ public class RegionPersistenceImpl
 	 * Returns an ordered range of all the regions where countryId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>RegionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link RegionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param countryId the country ID
@@ -125,10 +148,8 @@ public class RegionPersistenceImpl
 	 * @return the ordered range of matching regions
 	 */
 	@Override
-	public List<Region> findByCountryId(
-		long countryId, int start, int end,
+	public List<Region> findByCountryId(long countryId, int start, int end,
 		OrderByComparator<Region> orderByComparator) {
-
 		return findByCountryId(countryId, start, end, orderByComparator, true);
 	}
 
@@ -136,48 +157,43 @@ public class RegionPersistenceImpl
 	 * Returns an ordered range of all the regions where countryId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>RegionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link RegionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param countryId the country ID
 	 * @param start the lower bound of the range of regions
 	 * @param end the upper bound of the range of regions (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of matching regions
 	 */
 	@Override
-	public List<Region> findByCountryId(
-		long countryId, int start, int end,
-		OrderByComparator<Region> orderByComparator, boolean useFinderCache) {
-
+	public List<Region> findByCountryId(long countryId, int start, int end,
+		OrderByComparator<Region> orderByComparator, boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByCountryId;
-				finderArgs = new Object[] {countryId};
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COUNTRYID;
+			finderArgs = new Object[] { countryId };
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByCountryId;
-			finderArgs = new Object[] {
-				countryId, start, end, orderByComparator
-			};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_COUNTRYID;
+			finderArgs = new Object[] { countryId, start, end, orderByComparator };
 		}
 
 		List<Region> list = null;
 
-		if (useFinderCache) {
-			list = (List<Region>)FinderCacheUtil.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<Region>)finderCache.getResult(finderPath, finderArgs,
+					this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (Region region : list) {
-					if (countryId != region.getCountryId()) {
+					if ((countryId != region.getCountryId())) {
 						list = null;
 
 						break;
@@ -187,56 +203,63 @@ public class RegionPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					3 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(3 +
+						(orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				sb = new StringBundler(3);
+				query = new StringBundler(3);
 			}
 
-			sb.append(_SQL_SELECT_REGION_WHERE);
+			query.append(_SQL_SELECT_REGION_WHERE);
 
-			sb.append(_FINDER_COLUMN_COUNTRYID_COUNTRYID_2);
+			query.append(_FINDER_COLUMN_COUNTRYID_COUNTRYID_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 			}
-			else {
-				sb.append(RegionModelImpl.ORDER_BY_JPQL);
+			else
+			 if (pagination) {
+				query.append(RegionModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(countryId);
+				qPos.add(countryId);
 
-				list = (List<Region>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<Region>)QueryUtil.list(q, getDialect(), start,
+							end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<Region>)QueryUtil.list(q, getDialect(), start,
+							end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					FinderCacheUtil.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -255,26 +278,25 @@ public class RegionPersistenceImpl
 	 * @throws NoSuchRegionException if a matching region could not be found
 	 */
 	@Override
-	public Region findByCountryId_First(
-			long countryId, OrderByComparator<Region> orderByComparator)
+	public Region findByCountryId_First(long countryId,
+		OrderByComparator<Region> orderByComparator)
 		throws NoSuchRegionException {
-
 		Region region = fetchByCountryId_First(countryId, orderByComparator);
 
 		if (region != null) {
 			return region;
 		}
 
-		StringBundler sb = new StringBundler(4);
+		StringBundler msg = new StringBundler(4);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("countryId=");
-		sb.append(countryId);
+		msg.append("countryId=");
+		msg.append(countryId);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRegionException(sb.toString());
+		throw new NoSuchRegionException(msg.toString());
 	}
 
 	/**
@@ -285,9 +307,8 @@ public class RegionPersistenceImpl
 	 * @return the first matching region, or <code>null</code> if a matching region could not be found
 	 */
 	@Override
-	public Region fetchByCountryId_First(
-		long countryId, OrderByComparator<Region> orderByComparator) {
-
+	public Region fetchByCountryId_First(long countryId,
+		OrderByComparator<Region> orderByComparator) {
 		List<Region> list = findByCountryId(countryId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -306,26 +327,25 @@ public class RegionPersistenceImpl
 	 * @throws NoSuchRegionException if a matching region could not be found
 	 */
 	@Override
-	public Region findByCountryId_Last(
-			long countryId, OrderByComparator<Region> orderByComparator)
+	public Region findByCountryId_Last(long countryId,
+		OrderByComparator<Region> orderByComparator)
 		throws NoSuchRegionException {
-
 		Region region = fetchByCountryId_Last(countryId, orderByComparator);
 
 		if (region != null) {
 			return region;
 		}
 
-		StringBundler sb = new StringBundler(4);
+		StringBundler msg = new StringBundler(4);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("countryId=");
-		sb.append(countryId);
+		msg.append("countryId=");
+		msg.append(countryId);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRegionException(sb.toString());
+		throw new NoSuchRegionException(msg.toString());
 	}
 
 	/**
@@ -336,17 +356,16 @@ public class RegionPersistenceImpl
 	 * @return the last matching region, or <code>null</code> if a matching region could not be found
 	 */
 	@Override
-	public Region fetchByCountryId_Last(
-		long countryId, OrderByComparator<Region> orderByComparator) {
-
+	public Region fetchByCountryId_Last(long countryId,
+		OrderByComparator<Region> orderByComparator) {
 		int count = countByCountryId(countryId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<Region> list = findByCountryId(
-			countryId, count - 1, count, orderByComparator);
+		List<Region> list = findByCountryId(countryId, count - 1, count,
+				orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -365,11 +384,9 @@ public class RegionPersistenceImpl
 	 * @throws NoSuchRegionException if a region with the primary key could not be found
 	 */
 	@Override
-	public Region[] findByCountryId_PrevAndNext(
-			long regionId, long countryId,
-			OrderByComparator<Region> orderByComparator)
+	public Region[] findByCountryId_PrevAndNext(long regionId, long countryId,
+		OrderByComparator<Region> orderByComparator)
 		throws NoSuchRegionException {
-
 		Region region = findByPrimaryKey(regionId);
 
 		Session session = null;
@@ -379,123 +396,121 @@ public class RegionPersistenceImpl
 
 			Region[] array = new RegionImpl[3];
 
-			array[0] = getByCountryId_PrevAndNext(
-				session, region, countryId, orderByComparator, true);
+			array[0] = getByCountryId_PrevAndNext(session, region, countryId,
+					orderByComparator, true);
 
 			array[1] = region;
 
-			array[2] = getByCountryId_PrevAndNext(
-				session, region, countryId, orderByComparator, false);
+			array[2] = getByCountryId_PrevAndNext(session, region, countryId,
+					orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected Region getByCountryId_PrevAndNext(
-		Session session, Region region, long countryId,
-		OrderByComparator<Region> orderByComparator, boolean previous) {
-
-		StringBundler sb = null;
+	protected Region getByCountryId_PrevAndNext(Session session, Region region,
+		long countryId, OrderByComparator<Region> orderByComparator,
+		boolean previous) {
+		StringBundler query = null;
 
 		if (orderByComparator != null) {
-			sb = new StringBundler(
-				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+			query = new StringBundler(4 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			sb = new StringBundler(3);
+			query = new StringBundler(3);
 		}
 
-		sb.append(_SQL_SELECT_REGION_WHERE);
+		query.append(_SQL_SELECT_REGION_WHERE);
 
-		sb.append(_FINDER_COLUMN_COUNTRYID_COUNTRYID_2);
+		query.append(_FINDER_COLUMN_COUNTRYID_COUNTRYID_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
+				query.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
+						query.append(WHERE_GREATER_THAN);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN);
+						query.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			sb.append(ORDER_BY_CLAUSE);
+			query.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
+						query.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
+						query.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
+						query.append(ORDER_BY_ASC);
 					}
 					else {
-						sb.append(ORDER_BY_DESC);
+						query.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			sb.append(RegionModelImpl.ORDER_BY_JPQL);
+			query.append(RegionModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
-		Query query = session.createQuery(sql);
+		Query q = session.createQuery(sql);
 
-		query.setFirstResult(0);
-		query.setMaxResults(2);
+		q.setFirstResult(0);
+		q.setMaxResults(2);
 
-		QueryPos queryPos = QueryPos.getInstance(query);
+		QueryPos qPos = QueryPos.getInstance(q);
 
-		queryPos.add(countryId);
+		qPos.add(countryId);
 
 		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(region)) {
+			Object[] values = orderByComparator.getOrderByConditionValues(region);
 
-				queryPos.add(orderByConditionValue);
+			for (Object value : values) {
+				qPos.add(value);
 			}
 		}
 
-		List<Region> list = query.list();
+		List<Region> list = q.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -512,10 +527,8 @@ public class RegionPersistenceImpl
 	 */
 	@Override
 	public void removeByCountryId(long countryId) {
-		for (Region region :
-				findByCountryId(
-					countryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
-
+		for (Region region : findByCountryId(countryId, QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS, null)) {
 			remove(region);
 		}
 	}
@@ -528,41 +541,40 @@ public class RegionPersistenceImpl
 	 */
 	@Override
 	public int countByCountryId(long countryId) {
-		FinderPath finderPath = _finderPathCountByCountryId;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_COUNTRYID;
 
-		Object[] finderArgs = new Object[] {countryId};
+		Object[] finderArgs = new Object[] { countryId };
 
-		Long count = (Long)FinderCacheUtil.getResult(
-			finderPath, finderArgs, this);
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(2);
+			StringBundler query = new StringBundler(2);
 
-			sb.append(_SQL_COUNT_REGION_WHERE);
+			query.append(_SQL_COUNT_REGION_WHERE);
 
-			sb.append(_FINDER_COLUMN_COUNTRYID_COUNTRYID_2);
+			query.append(_FINDER_COLUMN_COUNTRYID_COUNTRYID_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(countryId);
+				qPos.add(countryId);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				FinderCacheUtil.putResult(finderPath, finderArgs, count);
+				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
-				FinderCacheUtil.removeResult(finderPath, finderArgs);
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -572,12 +584,27 @@ public class RegionPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_COUNTRYID_COUNTRYID_2 =
-		"region.countryId = ?";
-
-	private FinderPath _finderPathWithPaginationFindByActive;
-	private FinderPath _finderPathWithoutPaginationFindByActive;
-	private FinderPath _finderPathCountByActive;
+	private static final String _FINDER_COLUMN_COUNTRYID_COUNTRYID_2 = "region.countryId = ?";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_ACTIVE = new FinderPath(RegionModelImpl.ENTITY_CACHE_ENABLED,
+			RegionModelImpl.FINDER_CACHE_ENABLED, RegionImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByActive",
+			new String[] {
+				Boolean.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ACTIVE =
+		new FinderPath(RegionModelImpl.ENTITY_CACHE_ENABLED,
+			RegionModelImpl.FINDER_CACHE_ENABLED, RegionImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByActive",
+			new String[] { Boolean.class.getName() },
+			RegionModelImpl.ACTIVE_COLUMN_BITMASK |
+			RegionModelImpl.NAME_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_ACTIVE = new FinderPath(RegionModelImpl.ENTITY_CACHE_ENABLED,
+			RegionModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByActive",
+			new String[] { Boolean.class.getName() });
 
 	/**
 	 * Returns all the regions where active = &#63;.
@@ -594,7 +621,7 @@ public class RegionPersistenceImpl
 	 * Returns a range of all the regions where active = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>RegionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link RegionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param active the active
@@ -611,7 +638,7 @@ public class RegionPersistenceImpl
 	 * Returns an ordered range of all the regions where active = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>RegionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link RegionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param active the active
@@ -621,10 +648,8 @@ public class RegionPersistenceImpl
 	 * @return the ordered range of matching regions
 	 */
 	@Override
-	public List<Region> findByActive(
-		boolean active, int start, int end,
+	public List<Region> findByActive(boolean active, int start, int end,
 		OrderByComparator<Region> orderByComparator) {
-
 		return findByActive(active, start, end, orderByComparator, true);
 	}
 
@@ -632,46 +657,43 @@ public class RegionPersistenceImpl
 	 * Returns an ordered range of all the regions where active = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>RegionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link RegionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param active the active
 	 * @param start the lower bound of the range of regions
 	 * @param end the upper bound of the range of regions (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of matching regions
 	 */
 	@Override
-	public List<Region> findByActive(
-		boolean active, int start, int end,
-		OrderByComparator<Region> orderByComparator, boolean useFinderCache) {
-
+	public List<Region> findByActive(boolean active, int start, int end,
+		OrderByComparator<Region> orderByComparator, boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByActive;
-				finderArgs = new Object[] {active};
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ACTIVE;
+			finderArgs = new Object[] { active };
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByActive;
-			finderArgs = new Object[] {active, start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_ACTIVE;
+			finderArgs = new Object[] { active, start, end, orderByComparator };
 		}
 
 		List<Region> list = null;
 
-		if (useFinderCache) {
-			list = (List<Region>)FinderCacheUtil.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<Region>)finderCache.getResult(finderPath, finderArgs,
+					this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (Region region : list) {
-					if (active != region.isActive()) {
+					if ((active != region.getActive())) {
 						list = null;
 
 						break;
@@ -681,56 +703,63 @@ public class RegionPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					3 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(3 +
+						(orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				sb = new StringBundler(3);
+				query = new StringBundler(3);
 			}
 
-			sb.append(_SQL_SELECT_REGION_WHERE);
+			query.append(_SQL_SELECT_REGION_WHERE);
 
-			sb.append(_FINDER_COLUMN_ACTIVE_ACTIVE_2);
+			query.append(_FINDER_COLUMN_ACTIVE_ACTIVE_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 			}
-			else {
-				sb.append(RegionModelImpl.ORDER_BY_JPQL);
+			else
+			 if (pagination) {
+				query.append(RegionModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(active);
+				qPos.add(active);
 
-				list = (List<Region>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<Region>)QueryUtil.list(q, getDialect(), start,
+							end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<Region>)QueryUtil.list(q, getDialect(), start,
+							end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					FinderCacheUtil.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -749,26 +778,25 @@ public class RegionPersistenceImpl
 	 * @throws NoSuchRegionException if a matching region could not be found
 	 */
 	@Override
-	public Region findByActive_First(
-			boolean active, OrderByComparator<Region> orderByComparator)
+	public Region findByActive_First(boolean active,
+		OrderByComparator<Region> orderByComparator)
 		throws NoSuchRegionException {
-
 		Region region = fetchByActive_First(active, orderByComparator);
 
 		if (region != null) {
 			return region;
 		}
 
-		StringBundler sb = new StringBundler(4);
+		StringBundler msg = new StringBundler(4);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("active=");
-		sb.append(active);
+		msg.append("active=");
+		msg.append(active);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRegionException(sb.toString());
+		throw new NoSuchRegionException(msg.toString());
 	}
 
 	/**
@@ -779,9 +807,8 @@ public class RegionPersistenceImpl
 	 * @return the first matching region, or <code>null</code> if a matching region could not be found
 	 */
 	@Override
-	public Region fetchByActive_First(
-		boolean active, OrderByComparator<Region> orderByComparator) {
-
+	public Region fetchByActive_First(boolean active,
+		OrderByComparator<Region> orderByComparator) {
 		List<Region> list = findByActive(active, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -800,26 +827,25 @@ public class RegionPersistenceImpl
 	 * @throws NoSuchRegionException if a matching region could not be found
 	 */
 	@Override
-	public Region findByActive_Last(
-			boolean active, OrderByComparator<Region> orderByComparator)
+	public Region findByActive_Last(boolean active,
+		OrderByComparator<Region> orderByComparator)
 		throws NoSuchRegionException {
-
 		Region region = fetchByActive_Last(active, orderByComparator);
 
 		if (region != null) {
 			return region;
 		}
 
-		StringBundler sb = new StringBundler(4);
+		StringBundler msg = new StringBundler(4);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("active=");
-		sb.append(active);
+		msg.append("active=");
+		msg.append(active);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRegionException(sb.toString());
+		throw new NoSuchRegionException(msg.toString());
 	}
 
 	/**
@@ -830,17 +856,16 @@ public class RegionPersistenceImpl
 	 * @return the last matching region, or <code>null</code> if a matching region could not be found
 	 */
 	@Override
-	public Region fetchByActive_Last(
-		boolean active, OrderByComparator<Region> orderByComparator) {
-
+	public Region fetchByActive_Last(boolean active,
+		OrderByComparator<Region> orderByComparator) {
 		int count = countByActive(active);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<Region> list = findByActive(
-			active, count - 1, count, orderByComparator);
+		List<Region> list = findByActive(active, count - 1, count,
+				orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -859,11 +884,9 @@ public class RegionPersistenceImpl
 	 * @throws NoSuchRegionException if a region with the primary key could not be found
 	 */
 	@Override
-	public Region[] findByActive_PrevAndNext(
-			long regionId, boolean active,
-			OrderByComparator<Region> orderByComparator)
+	public Region[] findByActive_PrevAndNext(long regionId, boolean active,
+		OrderByComparator<Region> orderByComparator)
 		throws NoSuchRegionException {
-
 		Region region = findByPrimaryKey(regionId);
 
 		Session session = null;
@@ -873,123 +896,121 @@ public class RegionPersistenceImpl
 
 			Region[] array = new RegionImpl[3];
 
-			array[0] = getByActive_PrevAndNext(
-				session, region, active, orderByComparator, true);
+			array[0] = getByActive_PrevAndNext(session, region, active,
+					orderByComparator, true);
 
 			array[1] = region;
 
-			array[2] = getByActive_PrevAndNext(
-				session, region, active, orderByComparator, false);
+			array[2] = getByActive_PrevAndNext(session, region, active,
+					orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected Region getByActive_PrevAndNext(
-		Session session, Region region, boolean active,
-		OrderByComparator<Region> orderByComparator, boolean previous) {
-
-		StringBundler sb = null;
+	protected Region getByActive_PrevAndNext(Session session, Region region,
+		boolean active, OrderByComparator<Region> orderByComparator,
+		boolean previous) {
+		StringBundler query = null;
 
 		if (orderByComparator != null) {
-			sb = new StringBundler(
-				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+			query = new StringBundler(4 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			sb = new StringBundler(3);
+			query = new StringBundler(3);
 		}
 
-		sb.append(_SQL_SELECT_REGION_WHERE);
+		query.append(_SQL_SELECT_REGION_WHERE);
 
-		sb.append(_FINDER_COLUMN_ACTIVE_ACTIVE_2);
+		query.append(_FINDER_COLUMN_ACTIVE_ACTIVE_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
+				query.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
+						query.append(WHERE_GREATER_THAN);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN);
+						query.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			sb.append(ORDER_BY_CLAUSE);
+			query.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
+						query.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
+						query.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
+						query.append(ORDER_BY_ASC);
 					}
 					else {
-						sb.append(ORDER_BY_DESC);
+						query.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			sb.append(RegionModelImpl.ORDER_BY_JPQL);
+			query.append(RegionModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
-		Query query = session.createQuery(sql);
+		Query q = session.createQuery(sql);
 
-		query.setFirstResult(0);
-		query.setMaxResults(2);
+		q.setFirstResult(0);
+		q.setMaxResults(2);
 
-		QueryPos queryPos = QueryPos.getInstance(query);
+		QueryPos qPos = QueryPos.getInstance(q);
 
-		queryPos.add(active);
+		qPos.add(active);
 
 		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(region)) {
+			Object[] values = orderByComparator.getOrderByConditionValues(region);
 
-				queryPos.add(orderByConditionValue);
+			for (Object value : values) {
+				qPos.add(value);
 			}
 		}
 
-		List<Region> list = query.list();
+		List<Region> list = q.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -1006,10 +1027,8 @@ public class RegionPersistenceImpl
 	 */
 	@Override
 	public void removeByActive(boolean active) {
-		for (Region region :
-				findByActive(
-					active, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
-
+		for (Region region : findByActive(active, QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS, null)) {
 			remove(region);
 		}
 	}
@@ -1022,41 +1041,40 @@ public class RegionPersistenceImpl
 	 */
 	@Override
 	public int countByActive(boolean active) {
-		FinderPath finderPath = _finderPathCountByActive;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_ACTIVE;
 
-		Object[] finderArgs = new Object[] {active};
+		Object[] finderArgs = new Object[] { active };
 
-		Long count = (Long)FinderCacheUtil.getResult(
-			finderPath, finderArgs, this);
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(2);
+			StringBundler query = new StringBundler(2);
 
-			sb.append(_SQL_COUNT_REGION_WHERE);
+			query.append(_SQL_COUNT_REGION_WHERE);
 
-			sb.append(_FINDER_COLUMN_ACTIVE_ACTIVE_2);
+			query.append(_FINDER_COLUMN_ACTIVE_ACTIVE_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(active);
+				qPos.add(active);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				FinderCacheUtil.putResult(finderPath, finderArgs, count);
+				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
-				FinderCacheUtil.removeResult(finderPath, finderArgs);
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1066,14 +1084,20 @@ public class RegionPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_ACTIVE_ACTIVE_2 =
-		"region.active = ?";
-
-	private FinderPath _finderPathFetchByC_R;
-	private FinderPath _finderPathCountByC_R;
+	private static final String _FINDER_COLUMN_ACTIVE_ACTIVE_2 = "region.active = ?";
+	public static final FinderPath FINDER_PATH_FETCH_BY_C_R = new FinderPath(RegionModelImpl.ENTITY_CACHE_ENABLED,
+			RegionModelImpl.FINDER_CACHE_ENABLED, RegionImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchByC_R",
+			new String[] { Long.class.getName(), String.class.getName() },
+			RegionModelImpl.COUNTRYID_COLUMN_BITMASK |
+			RegionModelImpl.REGIONCODE_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_C_R = new FinderPath(RegionModelImpl.ENTITY_CACHE_ENABLED,
+			RegionModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_R",
+			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the region where countryId = &#63; and regionCode = &#63; or throws a <code>NoSuchRegionException</code> if it could not be found.
+	 * Returns the region where countryId = &#63; and regionCode = &#63; or throws a {@link NoSuchRegionException} if it could not be found.
 	 *
 	 * @param countryId the country ID
 	 * @param regionCode the region code
@@ -1083,27 +1107,26 @@ public class RegionPersistenceImpl
 	@Override
 	public Region findByC_R(long countryId, String regionCode)
 		throws NoSuchRegionException {
-
 		Region region = fetchByC_R(countryId, regionCode);
 
 		if (region == null) {
-			StringBundler sb = new StringBundler(6);
+			StringBundler msg = new StringBundler(6);
 
-			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			sb.append("countryId=");
-			sb.append(countryId);
+			msg.append("countryId=");
+			msg.append(countryId);
 
-			sb.append(", regionCode=");
-			sb.append(regionCode);
+			msg.append(", regionCode=");
+			msg.append(regionCode);
 
-			sb.append("}");
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(sb.toString());
+				_log.debug(msg.toString());
 			}
 
-			throw new NoSuchRegionException(sb.toString());
+			throw new NoSuchRegionException(msg.toString());
 		}
 
 		return region;
@@ -1126,80 +1149,73 @@ public class RegionPersistenceImpl
 	 *
 	 * @param countryId the country ID
 	 * @param regionCode the region code
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the matching region, or <code>null</code> if a matching region could not be found
 	 */
 	@Override
-	public Region fetchByC_R(
-		long countryId, String regionCode, boolean useFinderCache) {
-
-		regionCode = Objects.toString(regionCode, "");
-
-		Object[] finderArgs = null;
-
-		if (useFinderCache) {
-			finderArgs = new Object[] {countryId, regionCode};
-		}
+	public Region fetchByC_R(long countryId, String regionCode,
+		boolean retrieveFromCache) {
+		Object[] finderArgs = new Object[] { countryId, regionCode };
 
 		Object result = null;
 
-		if (useFinderCache) {
-			result = FinderCacheUtil.getResult(
-				_finderPathFetchByC_R, finderArgs, this);
+		if (retrieveFromCache) {
+			result = finderCache.getResult(FINDER_PATH_FETCH_BY_C_R,
+					finderArgs, this);
 		}
 
 		if (result instanceof Region) {
 			Region region = (Region)result;
 
 			if ((countryId != region.getCountryId()) ||
-				!Objects.equals(regionCode, region.getRegionCode())) {
-
+					!Objects.equals(regionCode, region.getRegionCode())) {
 				result = null;
 			}
 		}
 
 		if (result == null) {
-			StringBundler sb = new StringBundler(4);
+			StringBundler query = new StringBundler(4);
 
-			sb.append(_SQL_SELECT_REGION_WHERE);
+			query.append(_SQL_SELECT_REGION_WHERE);
 
-			sb.append(_FINDER_COLUMN_C_R_COUNTRYID_2);
+			query.append(_FINDER_COLUMN_C_R_COUNTRYID_2);
 
 			boolean bindRegionCode = false;
 
-			if (regionCode.isEmpty()) {
-				sb.append(_FINDER_COLUMN_C_R_REGIONCODE_3);
+			if (regionCode == null) {
+				query.append(_FINDER_COLUMN_C_R_REGIONCODE_1);
+			}
+			else if (regionCode.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_C_R_REGIONCODE_3);
 			}
 			else {
 				bindRegionCode = true;
 
-				sb.append(_FINDER_COLUMN_C_R_REGIONCODE_2);
+				query.append(_FINDER_COLUMN_C_R_REGIONCODE_2);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(countryId);
+				qPos.add(countryId);
 
 				if (bindRegionCode) {
-					queryPos.add(regionCode);
+					qPos.add(regionCode);
 				}
 
-				List<Region> list = query.list();
+				List<Region> list = q.list();
 
 				if (list.isEmpty()) {
-					if (useFinderCache) {
-						FinderCacheUtil.putResult(
-							_finderPathFetchByC_R, finderArgs, list);
-					}
+					finderCache.putResult(FINDER_PATH_FETCH_BY_C_R, finderArgs,
+						list);
 				}
 				else {
 					Region region = list.get(0);
@@ -1207,15 +1223,19 @@ public class RegionPersistenceImpl
 					result = region;
 
 					cacheResult(region);
+
+					if ((region.getCountryId() != countryId) ||
+							(region.getRegionCode() == null) ||
+							!region.getRegionCode().equals(regionCode)) {
+						finderCache.putResult(FINDER_PATH_FETCH_BY_C_R,
+							finderArgs, region);
+					}
 				}
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					FinderCacheUtil.removeResult(
-						_finderPathFetchByC_R, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_FETCH_BY_C_R, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1240,7 +1260,6 @@ public class RegionPersistenceImpl
 	@Override
 	public Region removeByC_R(long countryId, String regionCode)
 		throws NoSuchRegionException {
-
 		Region region = findByC_R(countryId, regionCode);
 
 		return remove(region);
@@ -1255,58 +1274,58 @@ public class RegionPersistenceImpl
 	 */
 	@Override
 	public int countByC_R(long countryId, String regionCode) {
-		regionCode = Objects.toString(regionCode, "");
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_R;
 
-		FinderPath finderPath = _finderPathCountByC_R;
+		Object[] finderArgs = new Object[] { countryId, regionCode };
 
-		Object[] finderArgs = new Object[] {countryId, regionCode};
-
-		Long count = (Long)FinderCacheUtil.getResult(
-			finderPath, finderArgs, this);
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(3);
+			StringBundler query = new StringBundler(3);
 
-			sb.append(_SQL_COUNT_REGION_WHERE);
+			query.append(_SQL_COUNT_REGION_WHERE);
 
-			sb.append(_FINDER_COLUMN_C_R_COUNTRYID_2);
+			query.append(_FINDER_COLUMN_C_R_COUNTRYID_2);
 
 			boolean bindRegionCode = false;
 
-			if (regionCode.isEmpty()) {
-				sb.append(_FINDER_COLUMN_C_R_REGIONCODE_3);
+			if (regionCode == null) {
+				query.append(_FINDER_COLUMN_C_R_REGIONCODE_1);
+			}
+			else if (regionCode.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_C_R_REGIONCODE_3);
 			}
 			else {
 				bindRegionCode = true;
 
-				sb.append(_FINDER_COLUMN_C_R_REGIONCODE_2);
+				query.append(_FINDER_COLUMN_C_R_REGIONCODE_2);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(countryId);
+				qPos.add(countryId);
 
 				if (bindRegionCode) {
-					queryPos.add(regionCode);
+					qPos.add(regionCode);
 				}
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				FinderCacheUtil.putResult(finderPath, finderArgs, count);
+				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
-				FinderCacheUtil.removeResult(finderPath, finderArgs);
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1316,18 +1335,30 @@ public class RegionPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_C_R_COUNTRYID_2 =
-		"region.countryId = ? AND ";
-
-	private static final String _FINDER_COLUMN_C_R_REGIONCODE_2 =
-		"region.regionCode = ?";
-
-	private static final String _FINDER_COLUMN_C_R_REGIONCODE_3 =
-		"(region.regionCode IS NULL OR region.regionCode = '')";
-
-	private FinderPath _finderPathWithPaginationFindByC_A;
-	private FinderPath _finderPathWithoutPaginationFindByC_A;
-	private FinderPath _finderPathCountByC_A;
+	private static final String _FINDER_COLUMN_C_R_COUNTRYID_2 = "region.countryId = ? AND ";
+	private static final String _FINDER_COLUMN_C_R_REGIONCODE_1 = "region.regionCode IS NULL";
+	private static final String _FINDER_COLUMN_C_R_REGIONCODE_2 = "region.regionCode = ?";
+	private static final String _FINDER_COLUMN_C_R_REGIONCODE_3 = "(region.regionCode IS NULL OR region.regionCode = '')";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_C_A = new FinderPath(RegionModelImpl.ENTITY_CACHE_ENABLED,
+			RegionModelImpl.FINDER_CACHE_ENABLED, RegionImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_A",
+			new String[] {
+				Long.class.getName(), Boolean.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_A = new FinderPath(RegionModelImpl.ENTITY_CACHE_ENABLED,
+			RegionModelImpl.FINDER_CACHE_ENABLED, RegionImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_A",
+			new String[] { Long.class.getName(), Boolean.class.getName() },
+			RegionModelImpl.COUNTRYID_COLUMN_BITMASK |
+			RegionModelImpl.ACTIVE_COLUMN_BITMASK |
+			RegionModelImpl.NAME_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_C_A = new FinderPath(RegionModelImpl.ENTITY_CACHE_ENABLED,
+			RegionModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_A",
+			new String[] { Long.class.getName(), Boolean.class.getName() });
 
 	/**
 	 * Returns all the regions where countryId = &#63; and active = &#63;.
@@ -1338,15 +1369,15 @@ public class RegionPersistenceImpl
 	 */
 	@Override
 	public List<Region> findByC_A(long countryId, boolean active) {
-		return findByC_A(
-			countryId, active, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+		return findByC_A(countryId, active, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the regions where countryId = &#63; and active = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>RegionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link RegionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param countryId the country ID
@@ -1356,9 +1387,8 @@ public class RegionPersistenceImpl
 	 * @return the range of matching regions
 	 */
 	@Override
-	public List<Region> findByC_A(
-		long countryId, boolean active, int start, int end) {
-
+	public List<Region> findByC_A(long countryId, boolean active, int start,
+		int end) {
 		return findByC_A(countryId, active, start, end, null);
 	}
 
@@ -1366,7 +1396,7 @@ public class RegionPersistenceImpl
 	 * Returns an ordered range of all the regions where countryId = &#63; and active = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>RegionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link RegionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param countryId the country ID
@@ -1377,19 +1407,16 @@ public class RegionPersistenceImpl
 	 * @return the ordered range of matching regions
 	 */
 	@Override
-	public List<Region> findByC_A(
-		long countryId, boolean active, int start, int end,
-		OrderByComparator<Region> orderByComparator) {
-
-		return findByC_A(
-			countryId, active, start, end, orderByComparator, true);
+	public List<Region> findByC_A(long countryId, boolean active, int start,
+		int end, OrderByComparator<Region> orderByComparator) {
+		return findByC_A(countryId, active, start, end, orderByComparator, true);
 	}
 
 	/**
 	 * Returns an ordered range of all the regions where countryId = &#63; and active = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>RegionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link RegionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param countryId the country ID
@@ -1397,43 +1424,42 @@ public class RegionPersistenceImpl
 	 * @param start the lower bound of the range of regions
 	 * @param end the upper bound of the range of regions (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of matching regions
 	 */
 	@Override
-	public List<Region> findByC_A(
-		long countryId, boolean active, int start, int end,
-		OrderByComparator<Region> orderByComparator, boolean useFinderCache) {
-
+	public List<Region> findByC_A(long countryId, boolean active, int start,
+		int end, OrderByComparator<Region> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByC_A;
-				finderArgs = new Object[] {countryId, active};
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_A;
+			finderArgs = new Object[] { countryId, active };
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByC_A;
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_C_A;
 			finderArgs = new Object[] {
-				countryId, active, start, end, orderByComparator
-			};
+					countryId, active,
+					
+					start, end, orderByComparator
+				};
 		}
 
 		List<Region> list = null;
 
-		if (useFinderCache) {
-			list = (List<Region>)FinderCacheUtil.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<Region>)finderCache.getResult(finderPath, finderArgs,
+					this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (Region region : list) {
 					if ((countryId != region.getCountryId()) ||
-						(active != region.isActive())) {
-
+							(active != region.getActive())) {
 						list = null;
 
 						break;
@@ -1443,60 +1469,67 @@ public class RegionPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					4 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(4 +
+						(orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				sb = new StringBundler(4);
+				query = new StringBundler(4);
 			}
 
-			sb.append(_SQL_SELECT_REGION_WHERE);
+			query.append(_SQL_SELECT_REGION_WHERE);
 
-			sb.append(_FINDER_COLUMN_C_A_COUNTRYID_2);
+			query.append(_FINDER_COLUMN_C_A_COUNTRYID_2);
 
-			sb.append(_FINDER_COLUMN_C_A_ACTIVE_2);
+			query.append(_FINDER_COLUMN_C_A_ACTIVE_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 			}
-			else {
-				sb.append(RegionModelImpl.ORDER_BY_JPQL);
+			else
+			 if (pagination) {
+				query.append(RegionModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(countryId);
+				qPos.add(countryId);
 
-				queryPos.add(active);
+				qPos.add(active);
 
-				list = (List<Region>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<Region>)QueryUtil.list(q, getDialect(), start,
+							end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<Region>)QueryUtil.list(q, getDialect(), start,
+							end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					FinderCacheUtil.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1516,30 +1549,28 @@ public class RegionPersistenceImpl
 	 * @throws NoSuchRegionException if a matching region could not be found
 	 */
 	@Override
-	public Region findByC_A_First(
-			long countryId, boolean active,
-			OrderByComparator<Region> orderByComparator)
+	public Region findByC_A_First(long countryId, boolean active,
+		OrderByComparator<Region> orderByComparator)
 		throws NoSuchRegionException {
-
 		Region region = fetchByC_A_First(countryId, active, orderByComparator);
 
 		if (region != null) {
 			return region;
 		}
 
-		StringBundler sb = new StringBundler(6);
+		StringBundler msg = new StringBundler(6);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("countryId=");
-		sb.append(countryId);
+		msg.append("countryId=");
+		msg.append(countryId);
 
-		sb.append(", active=");
-		sb.append(active);
+		msg.append(", active=");
+		msg.append(active);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRegionException(sb.toString());
+		throw new NoSuchRegionException(msg.toString());
 	}
 
 	/**
@@ -1551,12 +1582,9 @@ public class RegionPersistenceImpl
 	 * @return the first matching region, or <code>null</code> if a matching region could not be found
 	 */
 	@Override
-	public Region fetchByC_A_First(
-		long countryId, boolean active,
+	public Region fetchByC_A_First(long countryId, boolean active,
 		OrderByComparator<Region> orderByComparator) {
-
-		List<Region> list = findByC_A(
-			countryId, active, 0, 1, orderByComparator);
+		List<Region> list = findByC_A(countryId, active, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -1575,30 +1603,28 @@ public class RegionPersistenceImpl
 	 * @throws NoSuchRegionException if a matching region could not be found
 	 */
 	@Override
-	public Region findByC_A_Last(
-			long countryId, boolean active,
-			OrderByComparator<Region> orderByComparator)
+	public Region findByC_A_Last(long countryId, boolean active,
+		OrderByComparator<Region> orderByComparator)
 		throws NoSuchRegionException {
-
 		Region region = fetchByC_A_Last(countryId, active, orderByComparator);
 
 		if (region != null) {
 			return region;
 		}
 
-		StringBundler sb = new StringBundler(6);
+		StringBundler msg = new StringBundler(6);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("countryId=");
-		sb.append(countryId);
+		msg.append("countryId=");
+		msg.append(countryId);
 
-		sb.append(", active=");
-		sb.append(active);
+		msg.append(", active=");
+		msg.append(active);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRegionException(sb.toString());
+		throw new NoSuchRegionException(msg.toString());
 	}
 
 	/**
@@ -1610,18 +1636,16 @@ public class RegionPersistenceImpl
 	 * @return the last matching region, or <code>null</code> if a matching region could not be found
 	 */
 	@Override
-	public Region fetchByC_A_Last(
-		long countryId, boolean active,
+	public Region fetchByC_A_Last(long countryId, boolean active,
 		OrderByComparator<Region> orderByComparator) {
-
 		int count = countByC_A(countryId, active);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<Region> list = findByC_A(
-			countryId, active, count - 1, count, orderByComparator);
+		List<Region> list = findByC_A(countryId, active, count - 1, count,
+				orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -1641,11 +1665,9 @@ public class RegionPersistenceImpl
 	 * @throws NoSuchRegionException if a region with the primary key could not be found
 	 */
 	@Override
-	public Region[] findByC_A_PrevAndNext(
-			long regionId, long countryId, boolean active,
-			OrderByComparator<Region> orderByComparator)
+	public Region[] findByC_A_PrevAndNext(long regionId, long countryId,
+		boolean active, OrderByComparator<Region> orderByComparator)
 		throws NoSuchRegionException {
-
 		Region region = findByPrimaryKey(regionId);
 
 		Session session = null;
@@ -1655,127 +1677,125 @@ public class RegionPersistenceImpl
 
 			Region[] array = new RegionImpl[3];
 
-			array[0] = getByC_A_PrevAndNext(
-				session, region, countryId, active, orderByComparator, true);
+			array[0] = getByC_A_PrevAndNext(session, region, countryId, active,
+					orderByComparator, true);
 
 			array[1] = region;
 
-			array[2] = getByC_A_PrevAndNext(
-				session, region, countryId, active, orderByComparator, false);
+			array[2] = getByC_A_PrevAndNext(session, region, countryId, active,
+					orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected Region getByC_A_PrevAndNext(
-		Session session, Region region, long countryId, boolean active,
+	protected Region getByC_A_PrevAndNext(Session session, Region region,
+		long countryId, boolean active,
 		OrderByComparator<Region> orderByComparator, boolean previous) {
-
-		StringBundler sb = null;
+		StringBundler query = null;
 
 		if (orderByComparator != null) {
-			sb = new StringBundler(
-				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
+			query = new StringBundler(5 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			sb = new StringBundler(4);
+			query = new StringBundler(4);
 		}
 
-		sb.append(_SQL_SELECT_REGION_WHERE);
+		query.append(_SQL_SELECT_REGION_WHERE);
 
-		sb.append(_FINDER_COLUMN_C_A_COUNTRYID_2);
+		query.append(_FINDER_COLUMN_C_A_COUNTRYID_2);
 
-		sb.append(_FINDER_COLUMN_C_A_ACTIVE_2);
+		query.append(_FINDER_COLUMN_C_A_ACTIVE_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
+				query.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
+						query.append(WHERE_GREATER_THAN);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN);
+						query.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			sb.append(ORDER_BY_CLAUSE);
+			query.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
+						query.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
+						query.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
+						query.append(ORDER_BY_ASC);
 					}
 					else {
-						sb.append(ORDER_BY_DESC);
+						query.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			sb.append(RegionModelImpl.ORDER_BY_JPQL);
+			query.append(RegionModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
-		Query query = session.createQuery(sql);
+		Query q = session.createQuery(sql);
 
-		query.setFirstResult(0);
-		query.setMaxResults(2);
+		q.setFirstResult(0);
+		q.setMaxResults(2);
 
-		QueryPos queryPos = QueryPos.getInstance(query);
+		QueryPos qPos = QueryPos.getInstance(q);
 
-		queryPos.add(countryId);
+		qPos.add(countryId);
 
-		queryPos.add(active);
+		qPos.add(active);
 
 		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(region)) {
+			Object[] values = orderByComparator.getOrderByConditionValues(region);
 
-				queryPos.add(orderByConditionValue);
+			for (Object value : values) {
+				qPos.add(value);
 			}
 		}
 
-		List<Region> list = query.list();
+		List<Region> list = q.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -1793,11 +1813,8 @@ public class RegionPersistenceImpl
 	 */
 	@Override
 	public void removeByC_A(long countryId, boolean active) {
-		for (Region region :
-				findByC_A(
-					countryId, active, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
-
+		for (Region region : findByC_A(countryId, active, QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS, null)) {
 			remove(region);
 		}
 	}
@@ -1811,45 +1828,44 @@ public class RegionPersistenceImpl
 	 */
 	@Override
 	public int countByC_A(long countryId, boolean active) {
-		FinderPath finderPath = _finderPathCountByC_A;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_A;
 
-		Object[] finderArgs = new Object[] {countryId, active};
+		Object[] finderArgs = new Object[] { countryId, active };
 
-		Long count = (Long)FinderCacheUtil.getResult(
-			finderPath, finderArgs, this);
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(3);
+			StringBundler query = new StringBundler(3);
 
-			sb.append(_SQL_COUNT_REGION_WHERE);
+			query.append(_SQL_COUNT_REGION_WHERE);
 
-			sb.append(_FINDER_COLUMN_C_A_COUNTRYID_2);
+			query.append(_FINDER_COLUMN_C_A_COUNTRYID_2);
 
-			sb.append(_FINDER_COLUMN_C_A_ACTIVE_2);
+			query.append(_FINDER_COLUMN_C_A_ACTIVE_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(countryId);
+				qPos.add(countryId);
 
-				queryPos.add(active);
+				qPos.add(active);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				FinderCacheUtil.putResult(finderPath, finderArgs, count);
+				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
-				FinderCacheUtil.removeResult(finderPath, finderArgs);
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1859,31 +1875,10 @@ public class RegionPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_C_A_COUNTRYID_2 =
-		"region.countryId = ? AND ";
-
-	private static final String _FINDER_COLUMN_C_A_ACTIVE_2 =
-		"region.active = ?";
+	private static final String _FINDER_COLUMN_C_A_COUNTRYID_2 = "region.countryId = ? AND ";
+	private static final String _FINDER_COLUMN_C_A_ACTIVE_2 = "region.active = ?";
 
 	public RegionPersistenceImpl() {
-		Map<String, String> dbColumnNames = new HashMap<String, String>();
-
-		dbColumnNames.put("active", "active_");
-
-		try {
-			Field field = BasePersistenceImpl.class.getDeclaredField(
-				"_dbColumnNames");
-
-			field.setAccessible(true);
-
-			field.set(this, dbColumnNames);
-		}
-		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception, exception);
-			}
-		}
-
 		setModelClass(Region.class);
 	}
 
@@ -1894,13 +1889,11 @@ public class RegionPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(Region region) {
-		EntityCacheUtil.putResult(
-			RegionModelImpl.ENTITY_CACHE_ENABLED, RegionImpl.class,
-			region.getPrimaryKey(), region);
+		entityCache.putResult(RegionModelImpl.ENTITY_CACHE_ENABLED,
+			RegionImpl.class, region.getPrimaryKey(), region);
 
-		FinderCacheUtil.putResult(
-			_finderPathFetchByC_R,
-			new Object[] {region.getCountryId(), region.getRegionCode()},
+		finderCache.putResult(FINDER_PATH_FETCH_BY_C_R,
+			new Object[] { region.getCountryId(), region.getRegionCode() },
 			region);
 
 		region.resetOriginalValues();
@@ -1914,10 +1907,8 @@ public class RegionPersistenceImpl
 	@Override
 	public void cacheResult(List<Region> regions) {
 		for (Region region : regions) {
-			if (EntityCacheUtil.getResult(
-					RegionModelImpl.ENTITY_CACHE_ENABLED, RegionImpl.class,
-					region.getPrimaryKey()) == null) {
-
+			if (entityCache.getResult(RegionModelImpl.ENTITY_CACHE_ENABLED,
+						RegionImpl.class, region.getPrimaryKey()) == null) {
 				cacheResult(region);
 			}
 			else {
@@ -1930,96 +1921,81 @@ public class RegionPersistenceImpl
 	 * Clears the cache for all regions.
 	 *
 	 * <p>
-	 * The <code>com.liferay.portal.kernel.dao.orm.EntityCache</code> and <code>com.liferay.portal.kernel.dao.orm.FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache() {
-		EntityCacheUtil.clearCache(RegionImpl.class);
+		entityCache.clearCache(RegionImpl.class);
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
 	 * Clears the cache for the region.
 	 *
 	 * <p>
-	 * The <code>com.liferay.portal.kernel.dao.orm.EntityCache</code> and <code>com.liferay.portal.kernel.dao.orm.FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(Region region) {
-		EntityCacheUtil.removeResult(
-			RegionModelImpl.ENTITY_CACHE_ENABLED, RegionImpl.class,
-			region.getPrimaryKey());
+		entityCache.removeResult(RegionModelImpl.ENTITY_CACHE_ENABLED,
+			RegionImpl.class, region.getPrimaryKey());
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		clearUniqueFindersCache((RegionModelImpl)region, true);
 	}
 
 	@Override
 	public void clearCache(List<Region> regions) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (Region region : regions) {
-			EntityCacheUtil.removeResult(
-				RegionModelImpl.ENTITY_CACHE_ENABLED, RegionImpl.class,
-				region.getPrimaryKey());
+			entityCache.removeResult(RegionModelImpl.ENTITY_CACHE_ENABLED,
+				RegionImpl.class, region.getPrimaryKey());
 
 			clearUniqueFindersCache((RegionModelImpl)region, true);
 		}
 	}
 
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				RegionModelImpl.ENTITY_CACHE_ENABLED, RegionImpl.class,
-				primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(RegionModelImpl regionModelImpl) {
 		Object[] args = new Object[] {
-			regionModelImpl.getCountryId(), regionModelImpl.getRegionCode()
-		};
-
-		FinderCacheUtil.putResult(
-			_finderPathCountByC_R, args, Long.valueOf(1), false);
-		FinderCacheUtil.putResult(
-			_finderPathFetchByC_R, args, regionModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		RegionModelImpl regionModelImpl, boolean clearCurrent) {
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
 				regionModelImpl.getCountryId(), regionModelImpl.getRegionCode()
 			};
 
-			FinderCacheUtil.removeResult(_finderPathCountByC_R, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_R, args);
+		finderCache.putResult(FINDER_PATH_COUNT_BY_C_R, args, Long.valueOf(1),
+			false);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_C_R, args, regionModelImpl,
+			false);
+	}
+
+	protected void clearUniqueFindersCache(RegionModelImpl regionModelImpl,
+		boolean clearCurrent) {
+		if (clearCurrent) {
+			Object[] args = new Object[] {
+					regionModelImpl.getCountryId(),
+					regionModelImpl.getRegionCode()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_R, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_C_R, args);
 		}
 
 		if ((regionModelImpl.getColumnBitmask() &
-			 _finderPathFetchByC_R.getColumnBitmask()) != 0) {
-
+				FINDER_PATH_FETCH_BY_C_R.getColumnBitmask()) != 0) {
 			Object[] args = new Object[] {
-				regionModelImpl.getOriginalCountryId(),
-				regionModelImpl.getOriginalRegionCode()
-			};
+					regionModelImpl.getOriginalCountryId(),
+					regionModelImpl.getOriginalRegionCode()
+				};
 
-			FinderCacheUtil.removeResult(_finderPathCountByC_R, args);
-			FinderCacheUtil.removeResult(_finderPathFetchByC_R, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_R, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_C_R, args);
 		}
 	}
 
@@ -2072,17 +2048,17 @@ public class RegionPersistenceImpl
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchRegionException(
-					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				throw new NoSuchRegionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+					primaryKey);
 			}
 
 			return remove(region);
 		}
-		catch (NoSuchRegionException noSuchEntityException) {
-			throw noSuchEntityException;
+		catch (NoSuchRegionException nsee) {
+			throw nsee;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -2091,22 +2067,24 @@ public class RegionPersistenceImpl
 
 	@Override
 	protected Region removeImpl(Region region) {
+		region = toUnwrappedModel(region);
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(region)) {
-				region = (Region)session.get(
-					RegionImpl.class, region.getPrimaryKeyObj());
+				region = (Region)session.get(RegionImpl.class,
+						region.getPrimaryKeyObj());
 			}
 
 			if (region != null) {
 				session.delete(region);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -2121,23 +2099,9 @@ public class RegionPersistenceImpl
 
 	@Override
 	public Region updateImpl(Region region) {
+		region = toUnwrappedModel(region);
+
 		boolean isNew = region.isNew();
-
-		if (!(region instanceof RegionModelImpl)) {
-			InvocationHandler invocationHandler = null;
-
-			if (ProxyUtil.isProxyClass(region.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(region);
-
-				throw new IllegalArgumentException(
-					"Implement ModelWrapper in region proxy " +
-						invocationHandler.getClass());
-			}
-
-			throw new IllegalArgumentException(
-				"Implement ModelWrapper in custom Region implementation " +
-					region.getClass());
-		}
 
 		RegionModelImpl regionModelImpl = (RegionModelImpl)region;
 
@@ -2155,110 +2119,102 @@ public class RegionPersistenceImpl
 				region = (Region)session.merge(region);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
 		}
 
-		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
 		if (!RegionModelImpl.COLUMN_BITMASK_ENABLED) {
-			FinderCacheUtil.clearCache(
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else if (isNew) {
-			Object[] args = new Object[] {regionModelImpl.getCountryId()};
+		else
+		 if (isNew) {
+			Object[] args = new Object[] { regionModelImpl.getCountryId() };
 
-			FinderCacheUtil.removeResult(_finderPathCountByCountryId, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByCountryId, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_COUNTRYID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COUNTRYID,
+				args);
 
-			args = new Object[] {regionModelImpl.isActive()};
+			args = new Object[] { regionModelImpl.getActive() };
 
-			FinderCacheUtil.removeResult(_finderPathCountByActive, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByActive, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_ACTIVE, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ACTIVE,
+				args);
 
 			args = new Object[] {
-				regionModelImpl.getCountryId(), regionModelImpl.isActive()
-			};
+					regionModelImpl.getCountryId(), regionModelImpl.getActive()
+				};
 
-			FinderCacheUtil.removeResult(_finderPathCountByC_A, args);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindByC_A, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_A, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_A,
+				args);
 
-			FinderCacheUtil.removeResult(
-				_finderPathCountAll, FINDER_ARGS_EMPTY);
-			FinderCacheUtil.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
+
 		else {
 			if ((regionModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByCountryId.
-					 getColumnBitmask()) != 0) {
-
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COUNTRYID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-					regionModelImpl.getOriginalCountryId()
-				};
+						regionModelImpl.getOriginalCountryId()
+					};
 
-				FinderCacheUtil.removeResult(_finderPathCountByCountryId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCountryId, args);
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_COUNTRYID, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COUNTRYID,
+					args);
 
-				args = new Object[] {regionModelImpl.getCountryId()};
+				args = new Object[] { regionModelImpl.getCountryId() };
 
-				FinderCacheUtil.removeResult(_finderPathCountByCountryId, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByCountryId, args);
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_COUNTRYID, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COUNTRYID,
+					args);
 			}
 
 			if ((regionModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByActive.getColumnBitmask()) !=
-					 0) {
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ACTIVE.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] { regionModelImpl.getOriginalActive() };
 
-				Object[] args = new Object[] {
-					regionModelImpl.getOriginalActive()
-				};
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_ACTIVE, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ACTIVE,
+					args);
 
-				FinderCacheUtil.removeResult(_finderPathCountByActive, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByActive, args);
+				args = new Object[] { regionModelImpl.getActive() };
 
-				args = new Object[] {regionModelImpl.isActive()};
-
-				FinderCacheUtil.removeResult(_finderPathCountByActive, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByActive, args);
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_ACTIVE, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ACTIVE,
+					args);
 			}
 
 			if ((regionModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_A.getColumnBitmask()) !=
-					 0) {
-
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_A.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-					regionModelImpl.getOriginalCountryId(),
-					regionModelImpl.getOriginalActive()
-				};
+						regionModelImpl.getOriginalCountryId(),
+						regionModelImpl.getOriginalActive()
+					};
 
-				FinderCacheUtil.removeResult(_finderPathCountByC_A, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_A, args);
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_C_A, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_A,
+					args);
 
 				args = new Object[] {
-					regionModelImpl.getCountryId(), regionModelImpl.isActive()
-				};
+						regionModelImpl.getCountryId(),
+						regionModelImpl.getActive()
+					};
 
-				FinderCacheUtil.removeResult(_finderPathCountByC_A, args);
-				FinderCacheUtil.removeResult(
-					_finderPathWithoutPaginationFindByC_A, args);
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_C_A, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_A,
+					args);
 			}
 		}
 
-		EntityCacheUtil.putResult(
-			RegionModelImpl.ENTITY_CACHE_ENABLED, RegionImpl.class,
-			region.getPrimaryKey(), region, false);
+		entityCache.putResult(RegionModelImpl.ENTITY_CACHE_ENABLED,
+			RegionImpl.class, region.getPrimaryKey(), region, false);
 
 		clearUniqueFindersCache(regionModelImpl, false);
 		cacheUniqueFindersCache(regionModelImpl);
@@ -2268,8 +2224,28 @@ public class RegionPersistenceImpl
 		return region;
 	}
 
+	protected Region toUnwrappedModel(Region region) {
+		if (region instanceof RegionImpl) {
+			return region;
+		}
+
+		RegionImpl regionImpl = new RegionImpl();
+
+		regionImpl.setNew(region.isNew());
+		regionImpl.setPrimaryKey(region.getPrimaryKey());
+
+		regionImpl.setMvccVersion(region.getMvccVersion());
+		regionImpl.setRegionId(region.getRegionId());
+		regionImpl.setCountryId(region.getCountryId());
+		regionImpl.setRegionCode(region.getRegionCode());
+		regionImpl.setName(region.getName());
+		regionImpl.setActive(region.isActive());
+
+		return regionImpl;
+	}
+
 	/**
-	 * Returns the region with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
+	 * Returns the region with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the region
 	 * @return the region
@@ -2278,7 +2254,6 @@ public class RegionPersistenceImpl
 	@Override
 	public Region findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchRegionException {
-
 		Region region = fetchByPrimaryKey(primaryKey);
 
 		if (region == null) {
@@ -2286,15 +2261,15 @@ public class RegionPersistenceImpl
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchRegionException(
-				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			throw new NoSuchRegionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
 		}
 
 		return region;
 	}
 
 	/**
-	 * Returns the region with the primary key or throws a <code>NoSuchRegionException</code> if it could not be found.
+	 * Returns the region with the primary key or throws a {@link NoSuchRegionException} if it could not be found.
 	 *
 	 * @param regionId the primary key of the region
 	 * @return the region
@@ -2313,8 +2288,8 @@ public class RegionPersistenceImpl
 	 */
 	@Override
 	public Region fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = EntityCacheUtil.getResult(
-			RegionModelImpl.ENTITY_CACHE_ENABLED, RegionImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(RegionModelImpl.ENTITY_CACHE_ENABLED,
+				RegionImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -2334,17 +2309,15 @@ public class RegionPersistenceImpl
 					cacheResult(region);
 				}
 				else {
-					EntityCacheUtil.putResult(
-						RegionModelImpl.ENTITY_CACHE_ENABLED, RegionImpl.class,
-						primaryKey, nullModel);
+					entityCache.putResult(RegionModelImpl.ENTITY_CACHE_ENABLED,
+						RegionImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception exception) {
-				EntityCacheUtil.removeResult(
-					RegionModelImpl.ENTITY_CACHE_ENABLED, RegionImpl.class,
-					primaryKey);
+			catch (Exception e) {
+				entityCache.removeResult(RegionModelImpl.ENTITY_CACHE_ENABLED,
+					RegionImpl.class, primaryKey);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -2368,7 +2341,6 @@ public class RegionPersistenceImpl
 	@Override
 	public Map<Serializable, Region> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
-
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
@@ -2392,9 +2364,8 @@ public class RegionPersistenceImpl
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = EntityCacheUtil.getResult(
-				RegionModelImpl.ENTITY_CACHE_ENABLED, RegionImpl.class,
-				primaryKey);
+			Serializable serializable = entityCache.getResult(RegionModelImpl.ENTITY_CACHE_ENABLED,
+					RegionImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -2414,31 +2385,31 @@ public class RegionPersistenceImpl
 			return map;
 		}
 
-		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
+				1);
 
-		sb.append(_SQL_SELECT_REGION_WHERE_PKS_IN);
+		query.append(_SQL_SELECT_REGION_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			sb.append((long)primaryKey);
+			query.append((long)primaryKey);
 
-			sb.append(",");
+			query.append(StringPool.COMMA);
 		}
 
-		sb.setIndex(sb.index() - 1);
+		query.setIndex(query.index() - 1);
 
-		sb.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query query = session.createQuery(sql);
+			Query q = session.createQuery(sql);
 
-			for (Region region : (List<Region>)query.list()) {
+			for (Region region : (List<Region>)q.list()) {
 				map.put(region.getPrimaryKeyObj(), region);
 
 				cacheResult(region);
@@ -2447,13 +2418,12 @@ public class RegionPersistenceImpl
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				EntityCacheUtil.putResult(
-					RegionModelImpl.ENTITY_CACHE_ENABLED, RegionImpl.class,
-					primaryKey, nullModel);
+				entityCache.putResult(RegionModelImpl.ENTITY_CACHE_ENABLED,
+					RegionImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -2476,7 +2446,7 @@ public class RegionPersistenceImpl
 	 * Returns a range of all the regions.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>RegionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link RegionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of regions
@@ -2492,7 +2462,7 @@ public class RegionPersistenceImpl
 	 * Returns an ordered range of all the regions.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>RegionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link RegionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of regions
@@ -2501,9 +2471,8 @@ public class RegionPersistenceImpl
 	 * @return the ordered range of regions
 	 */
 	@Override
-	public List<Region> findAll(
-		int start, int end, OrderByComparator<Region> orderByComparator) {
-
+	public List<Region> findAll(int start, int end,
+		OrderByComparator<Region> orderByComparator) {
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -2511,62 +2480,61 @@ public class RegionPersistenceImpl
 	 * Returns an ordered range of all the regions.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>RegionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link RegionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of regions
 	 * @param end the upper bound of the range of regions (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of regions
 	 */
 	@Override
-	public List<Region> findAll(
-		int start, int end, OrderByComparator<Region> orderByComparator,
-		boolean useFinderCache) {
-
+	public List<Region> findAll(int start, int end,
+		OrderByComparator<Region> orderByComparator, boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
-				finderArgs = FINDER_ARGS_EMPTY;
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+			finderArgs = FINDER_ARGS_EMPTY;
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] {start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
 		List<Region> list = null;
 
-		if (useFinderCache) {
-			list = (List<Region>)FinderCacheUtil.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<Region>)finderCache.getResult(finderPath, finderArgs,
+					this);
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					2 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(2 +
+						(orderByComparator.getOrderByFields().length * 2));
 
-				sb.append(_SQL_SELECT_REGION);
+				query.append(_SQL_SELECT_REGION);
 
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 
-				sql = sb.toString();
+				sql = query.toString();
 			}
 			else {
 				sql = _SQL_SELECT_REGION;
 
-				sql = sql.concat(RegionModelImpl.ORDER_BY_JPQL);
+				if (pagination) {
+					sql = sql.concat(RegionModelImpl.ORDER_BY_JPQL);
+				}
 			}
 
 			Session session = null;
@@ -2574,23 +2542,29 @@ public class RegionPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				list = (List<Region>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<Region>)QueryUtil.list(q, getDialect(), start,
+							end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<Region>)QueryUtil.list(q, getDialect(), start,
+							end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					FinderCacheUtil.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -2618,8 +2592,8 @@ public class RegionPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)FinderCacheUtil.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -2627,18 +2601,18 @@ public class RegionPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(_SQL_COUNT_REGION);
+				Query q = session.createQuery(_SQL_COUNT_REGION);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				FinderCacheUtil.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
+					count);
 			}
-			catch (Exception exception) {
-				FinderCacheUtil.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -2662,143 +2636,27 @@ public class RegionPersistenceImpl
 	 * Initializes the region persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			RegionModelImpl.ENTITY_CACHE_ENABLED,
-			RegionModelImpl.FINDER_CACHE_ENABLED, RegionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			RegionModelImpl.ENTITY_CACHE_ENABLED,
-			RegionModelImpl.FINDER_CACHE_ENABLED, RegionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			RegionModelImpl.ENTITY_CACHE_ENABLED,
-			RegionModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
-
-		_finderPathWithPaginationFindByCountryId = new FinderPath(
-			RegionModelImpl.ENTITY_CACHE_ENABLED,
-			RegionModelImpl.FINDER_CACHE_ENABLED, RegionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCountryId",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByCountryId = new FinderPath(
-			RegionModelImpl.ENTITY_CACHE_ENABLED,
-			RegionModelImpl.FINDER_CACHE_ENABLED, RegionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCountryId",
-			new String[] {Long.class.getName()},
-			RegionModelImpl.COUNTRYID_COLUMN_BITMASK |
-			RegionModelImpl.NAME_COLUMN_BITMASK);
-
-		_finderPathCountByCountryId = new FinderPath(
-			RegionModelImpl.ENTITY_CACHE_ENABLED,
-			RegionModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCountryId",
-			new String[] {Long.class.getName()});
-
-		_finderPathWithPaginationFindByActive = new FinderPath(
-			RegionModelImpl.ENTITY_CACHE_ENABLED,
-			RegionModelImpl.FINDER_CACHE_ENABLED, RegionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByActive",
-			new String[] {
-				Boolean.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByActive = new FinderPath(
-			RegionModelImpl.ENTITY_CACHE_ENABLED,
-			RegionModelImpl.FINDER_CACHE_ENABLED, RegionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByActive",
-			new String[] {Boolean.class.getName()},
-			RegionModelImpl.ACTIVE_COLUMN_BITMASK |
-			RegionModelImpl.NAME_COLUMN_BITMASK);
-
-		_finderPathCountByActive = new FinderPath(
-			RegionModelImpl.ENTITY_CACHE_ENABLED,
-			RegionModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByActive",
-			new String[] {Boolean.class.getName()});
-
-		_finderPathFetchByC_R = new FinderPath(
-			RegionModelImpl.ENTITY_CACHE_ENABLED,
-			RegionModelImpl.FINDER_CACHE_ENABLED, RegionImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByC_R",
-			new String[] {Long.class.getName(), String.class.getName()},
-			RegionModelImpl.COUNTRYID_COLUMN_BITMASK |
-			RegionModelImpl.REGIONCODE_COLUMN_BITMASK);
-
-		_finderPathCountByC_R = new FinderPath(
-			RegionModelImpl.ENTITY_CACHE_ENABLED,
-			RegionModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_R",
-			new String[] {Long.class.getName(), String.class.getName()});
-
-		_finderPathWithPaginationFindByC_A = new FinderPath(
-			RegionModelImpl.ENTITY_CACHE_ENABLED,
-			RegionModelImpl.FINDER_CACHE_ENABLED, RegionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_A",
-			new String[] {
-				Long.class.getName(), Boolean.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByC_A = new FinderPath(
-			RegionModelImpl.ENTITY_CACHE_ENABLED,
-			RegionModelImpl.FINDER_CACHE_ENABLED, RegionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_A",
-			new String[] {Long.class.getName(), Boolean.class.getName()},
-			RegionModelImpl.COUNTRYID_COLUMN_BITMASK |
-			RegionModelImpl.ACTIVE_COLUMN_BITMASK |
-			RegionModelImpl.NAME_COLUMN_BITMASK);
-
-		_finderPathCountByC_A = new FinderPath(
-			RegionModelImpl.ENTITY_CACHE_ENABLED,
-			RegionModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_A",
-			new String[] {Long.class.getName(), Boolean.class.getName()});
 	}
 
 	public void destroy() {
-		EntityCacheUtil.removeCache(RegionImpl.class.getName());
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		entityCache.removeCache(RegionImpl.class.getName());
+		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	private static final String _SQL_SELECT_REGION =
-		"SELECT region FROM Region region";
-
-	private static final String _SQL_SELECT_REGION_WHERE_PKS_IN =
-		"SELECT region FROM Region region WHERE regionId IN (";
-
-	private static final String _SQL_SELECT_REGION_WHERE =
-		"SELECT region FROM Region region WHERE ";
-
-	private static final String _SQL_COUNT_REGION =
-		"SELECT COUNT(region) FROM Region region";
-
-	private static final String _SQL_COUNT_REGION_WHERE =
-		"SELECT COUNT(region) FROM Region region WHERE ";
-
+	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
+	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
+	private static final String _SQL_SELECT_REGION = "SELECT region FROM Region region";
+	private static final String _SQL_SELECT_REGION_WHERE_PKS_IN = "SELECT region FROM Region region WHERE regionId IN (";
+	private static final String _SQL_SELECT_REGION_WHERE = "SELECT region FROM Region region WHERE ";
+	private static final String _SQL_COUNT_REGION = "SELECT COUNT(region) FROM Region region";
+	private static final String _SQL_COUNT_REGION_WHERE = "SELECT COUNT(region) FROM Region region WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "region.";
-
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
-		"No Region exists with the primary key ";
-
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No Region exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		RegionPersistenceImpl.class);
-
-	private static final Set<String> _badColumnNames = SetUtil.fromArray(
-		new String[] {"active"});
-
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Region exists with the primary key ";
+	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Region exists with the key {";
+	private static final Log _log = LogFactoryUtil.getLog(RegionPersistenceImpl.class);
+	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
+				"active"
+			});
 }

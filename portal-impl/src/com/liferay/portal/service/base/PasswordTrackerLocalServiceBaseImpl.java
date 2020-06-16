@@ -14,7 +14,8 @@
 
 package com.liferay.portal.service.base;
 
-import com.liferay.counter.kernel.service.persistence.CounterPersistence;
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -36,13 +37,11 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PasswordTrackerLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
-import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.PasswordPolicyFinder;
 import com.liferay.portal.kernel.service.persistence.PasswordPolicyPersistence;
 import com.liferay.portal.kernel.service.persistence.PasswordTrackerPersistence;
 import com.liferay.portal.kernel.service.persistence.UserFinder;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
-import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -61,16 +60,17 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.portal.service.impl.PasswordTrackerLocalServiceImpl
+ * @see com.liferay.portal.kernel.service.PasswordTrackerLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class PasswordTrackerLocalServiceBaseImpl
-	extends BaseLocalServiceImpl
-	implements IdentifiableOSGiService, PasswordTrackerLocalService {
-
+	extends BaseLocalServiceImpl implements PasswordTrackerLocalService,
+		IdentifiableOSGiService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>PasswordTrackerLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.PasswordTrackerLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.portal.kernel.service.PasswordTrackerLocalServiceUtil} to access the password tracker local service.
 	 */
 
 	/**
@@ -94,7 +94,6 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 	 * @return the new password tracker
 	 */
 	@Override
-	@Transactional(enabled = false)
 	public PasswordTracker createPasswordTracker(long passwordTrackerId) {
 		return passwordTrackerPersistence.create(passwordTrackerId);
 	}
@@ -110,7 +109,6 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 	@Override
 	public PasswordTracker deletePasswordTracker(long passwordTrackerId)
 		throws PortalException {
-
 		return passwordTrackerPersistence.remove(passwordTrackerId);
 	}
 
@@ -124,7 +122,6 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 	@Override
 	public PasswordTracker deletePasswordTracker(
 		PasswordTracker passwordTracker) {
-
 		return passwordTrackerPersistence.remove(passwordTracker);
 	}
 
@@ -132,8 +129,8 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(
-			PasswordTracker.class, clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(PasswordTracker.class,
+			clazz.getClassLoader());
 	}
 
 	/**
@@ -151,7 +148,7 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portal.model.impl.PasswordTrackerModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.PasswordTrackerModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -160,18 +157,17 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end) {
-
-		return passwordTrackerPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
+		return passwordTrackerPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portal.model.impl.PasswordTrackerModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.PasswordTrackerModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -181,12 +177,10 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<T> orderByComparator) {
-
-		return passwordTrackerPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
+		return passwordTrackerPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end, orderByComparator);
 	}
 
 	/**
@@ -208,11 +202,10 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(
-		DynamicQuery dynamicQuery, Projection projection) {
-
-		return passwordTrackerPersistence.countWithDynamicQuery(
-			dynamicQuery, projection);
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection) {
+		return passwordTrackerPersistence.countWithDynamicQuery(dynamicQuery,
+			projection);
 	}
 
 	@Override
@@ -230,14 +223,12 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 	@Override
 	public PasswordTracker getPasswordTracker(long passwordTrackerId)
 		throws PortalException {
-
 		return passwordTrackerPersistence.findByPrimaryKey(passwordTrackerId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
 		actionableDynamicQuery.setBaseLocalService(passwordTrackerLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
@@ -249,14 +240,10 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
 
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
-			new IndexableActionableDynamicQuery();
-
-		indexableActionableDynamicQuery.setBaseLocalService(
-			passwordTrackerLocalService);
+		indexableActionableDynamicQuery.setBaseLocalService(passwordTrackerLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(PasswordTracker.class);
 
@@ -268,7 +255,6 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-
 		actionableDynamicQuery.setBaseLocalService(passwordTrackerLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(PasswordTracker.class);
@@ -282,22 +268,12 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-
-		return passwordTrackerLocalService.deletePasswordTracker(
-			(PasswordTracker)persistedModel);
+		return passwordTrackerLocalService.deletePasswordTracker((PasswordTracker)persistedModel);
 	}
 
-	public BasePersistence<PasswordTracker> getBasePersistence() {
-		return passwordTrackerPersistence;
-	}
-
-	/**
-	 * @throws PortalException
-	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
-
 		return passwordTrackerPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -305,7 +281,7 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 	 * Returns a range of all the password trackers.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portal.model.impl.PasswordTrackerModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.PasswordTrackerModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of password trackers
@@ -337,7 +313,6 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 	@Override
 	public PasswordTracker updatePasswordTracker(
 		PasswordTracker passwordTracker) {
-
 		return passwordTrackerPersistence.update(passwordTracker);
 	}
 
@@ -357,7 +332,6 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 	 */
 	public void setPasswordTrackerLocalService(
 		PasswordTrackerLocalService passwordTrackerLocalService) {
-
 		this.passwordTrackerLocalService = passwordTrackerLocalService;
 	}
 
@@ -377,7 +351,6 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 	 */
 	public void setPasswordTrackerPersistence(
 		PasswordTrackerPersistence passwordTrackerPersistence) {
-
 		this.passwordTrackerPersistence = passwordTrackerPersistence;
 	}
 
@@ -386,9 +359,7 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -398,28 +369,8 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
-	}
-
-	/**
-	 * Returns the counter persistence.
-	 *
-	 * @return the counter persistence
-	 */
-	public CounterPersistence getCounterPersistence() {
-		return counterPersistence;
-	}
-
-	/**
-	 * Sets the counter persistence.
-	 *
-	 * @param counterPersistence the counter persistence
-	 */
-	public void setCounterPersistence(CounterPersistence counterPersistence) {
-		this.counterPersistence = counterPersistence;
 	}
 
 	/**
@@ -427,9 +378,7 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 	 *
 	 * @return the password policy local service
 	 */
-	public com.liferay.portal.kernel.service.PasswordPolicyLocalService
-		getPasswordPolicyLocalService() {
-
+	public com.liferay.portal.kernel.service.PasswordPolicyLocalService getPasswordPolicyLocalService() {
 		return passwordPolicyLocalService;
 	}
 
@@ -439,9 +388,7 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 	 * @param passwordPolicyLocalService the password policy local service
 	 */
 	public void setPasswordPolicyLocalService(
-		com.liferay.portal.kernel.service.PasswordPolicyLocalService
-			passwordPolicyLocalService) {
-
+		com.liferay.portal.kernel.service.PasswordPolicyLocalService passwordPolicyLocalService) {
 		this.passwordPolicyLocalService = passwordPolicyLocalService;
 	}
 
@@ -461,7 +408,6 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 	 */
 	public void setPasswordPolicyPersistence(
 		PasswordPolicyPersistence passwordPolicyPersistence) {
-
 		this.passwordPolicyPersistence = passwordPolicyPersistence;
 	}
 
@@ -481,7 +427,6 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 	 */
 	public void setPasswordPolicyFinder(
 		PasswordPolicyFinder passwordPolicyFinder) {
-
 		this.passwordPolicyFinder = passwordPolicyFinder;
 	}
 
@@ -490,9 +435,7 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService
-		getUserLocalService() {
-
+	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
 		return userLocalService;
 	}
 
@@ -503,7 +446,6 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
-
 		this.userLocalService = userLocalService;
 	}
 
@@ -544,8 +486,7 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register(
-			"com.liferay.portal.kernel.model.PasswordTracker",
+		persistedModelLocalServiceRegistry.register("com.liferay.portal.kernel.model.PasswordTracker",
 			passwordTrackerLocalService);
 	}
 
@@ -586,57 +527,34 @@ public abstract class PasswordTrackerLocalServiceBaseImpl
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
 	@BeanReference(type = PasswordTrackerLocalService.class)
 	protected PasswordTrackerLocalService passwordTrackerLocalService;
-
 	@BeanReference(type = PasswordTrackerPersistence.class)
 	protected PasswordTrackerPersistence passwordTrackerPersistence;
-
-	@BeanReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
-	@BeanReference(type = CounterPersistence.class)
-	protected CounterPersistence counterPersistence;
-
-	@BeanReference(
-		type = com.liferay.portal.kernel.service.PasswordPolicyLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.PasswordPolicyLocalService
-		passwordPolicyLocalService;
-
+	@BeanReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
+	@BeanReference(type = com.liferay.portal.kernel.service.PasswordPolicyLocalService.class)
+	protected com.liferay.portal.kernel.service.PasswordPolicyLocalService passwordPolicyLocalService;
 	@BeanReference(type = PasswordPolicyPersistence.class)
 	protected PasswordPolicyPersistence passwordPolicyPersistence;
-
 	@BeanReference(type = PasswordPolicyFinder.class)
 	protected PasswordPolicyFinder passwordPolicyFinder;
-
-	@BeanReference(
-		type = com.liferay.portal.kernel.service.UserLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.UserLocalService
-		userLocalService;
-
+	@BeanReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
+	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
 	@BeanReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-
 	@BeanReference(type = UserFinder.class)
 	protected UserFinder userFinder;
-
 	@BeanReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry
-		persistedModelLocalServiceRegistry;
-
+	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }

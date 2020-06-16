@@ -1,20 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.customer.release.notes.jira.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -33,9 +36,9 @@ import java.util.Objects;
  * @see JIRAComponent
  * @generated
  */
-public class JIRAComponentWrapper
-	implements JIRAComponent, ModelWrapper<JIRAComponent> {
-
+@ProviderType
+public class JIRAComponentWrapper implements JIRAComponent,
+	ModelWrapper<JIRAComponent> {
 	public JIRAComponentWrapper(JIRAComponent jiraComponent) {
 		_jiraComponent = jiraComponent;
 	}
@@ -83,68 +86,13 @@ public class JIRAComponentWrapper
 	}
 
 	@Override
-	public Object clone() {
-		return new JIRAComponentWrapper((JIRAComponent)_jiraComponent.clone());
+	public JIRAComponent toEscapedModel() {
+		return new JIRAComponentWrapper(_jiraComponent.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(JIRAComponent jiraComponent) {
-		return _jiraComponent.compareTo(jiraComponent);
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _jiraComponent.getExpandoBridge();
-	}
-
-	/**
-	 * Returns the jira component ID of this jira component.
-	 *
-	 * @return the jira component ID of this jira component
-	 */
-	@Override
-	public long getJiraComponentId() {
-		return _jiraComponent.getJiraComponentId();
-	}
-
-	/**
-	 * Returns the jira project ID of this jira component.
-	 *
-	 * @return the jira project ID of this jira component
-	 */
-	@Override
-	public long getJiraProjectId() {
-		return _jiraComponent.getJiraProjectId();
-	}
-
-	/**
-	 * Returns the name of this jira component.
-	 *
-	 * @return the name of this jira component
-	 */
-	@Override
-	public String getName() {
-		return _jiraComponent.getName();
-	}
-
-	/**
-	 * Returns the primary key of this jira component.
-	 *
-	 * @return the primary key of this jira component
-	 */
-	@Override
-	public long getPrimaryKey() {
-		return _jiraComponent.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _jiraComponent.getPrimaryKeyObj();
-	}
-
-	@Override
-	public int hashCode() {
-		return _jiraComponent.hashCode();
+	public JIRAComponent toUnescapedModel() {
+		return new JIRAComponentWrapper(_jiraComponent.toUnescapedModel());
 	}
 
 	@Override
@@ -163,6 +111,86 @@ public class JIRAComponentWrapper
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _jiraComponent.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<JIRAComponent> toCacheModel() {
+		return _jiraComponent.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(JIRAComponent jiraComponent) {
+		return _jiraComponent.compareTo(jiraComponent);
+	}
+
+	@Override
+	public int hashCode() {
+		return _jiraComponent.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _jiraComponent.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new JIRAComponentWrapper((JIRAComponent)_jiraComponent.clone());
+	}
+
+	/**
+	* Returns the name of this jira component.
+	*
+	* @return the name of this jira component
+	*/
+	@Override
+	public java.lang.String getName() {
+		return _jiraComponent.getName();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _jiraComponent.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _jiraComponent.toXmlString();
+	}
+
+	/**
+	* Returns the jira component ID of this jira component.
+	*
+	* @return the jira component ID of this jira component
+	*/
+	@Override
+	public long getJiraComponentId() {
+		return _jiraComponent.getJiraComponentId();
+	}
+
+	/**
+	* Returns the jira project ID of this jira component.
+	*
+	* @return the jira project ID of this jira component
+	*/
+	@Override
+	public long getJiraProjectId() {
+		return _jiraComponent.getJiraProjectId();
+	}
+
+	/**
+	* Returns the primary key of this jira component.
+	*
+	* @return the primary key of this jira component
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _jiraComponent.getPrimaryKey();
+	}
+
+	@Override
 	public void persist() {
 		_jiraComponent.persist();
 	}
@@ -173,15 +201,14 @@ public class JIRAComponentWrapper
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-
-		_jiraComponent.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_jiraComponent.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_jiraComponent.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_jiraComponent.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -190,32 +217,32 @@ public class JIRAComponentWrapper
 	}
 
 	/**
-	 * Sets the jira component ID of this jira component.
-	 *
-	 * @param jiraComponentId the jira component ID of this jira component
-	 */
+	* Sets the jira component ID of this jira component.
+	*
+	* @param jiraComponentId the jira component ID of this jira component
+	*/
 	@Override
 	public void setJiraComponentId(long jiraComponentId) {
 		_jiraComponent.setJiraComponentId(jiraComponentId);
 	}
 
 	/**
-	 * Sets the jira project ID of this jira component.
-	 *
-	 * @param jiraProjectId the jira project ID of this jira component
-	 */
+	* Sets the jira project ID of this jira component.
+	*
+	* @param jiraProjectId the jira project ID of this jira component
+	*/
 	@Override
 	public void setJiraProjectId(long jiraProjectId) {
 		_jiraComponent.setJiraProjectId(jiraProjectId);
 	}
 
 	/**
-	 * Sets the name of this jira component.
-	 *
-	 * @param name the name of this jira component
-	 */
+	* Sets the name of this jira component.
+	*
+	* @param name the name of this jira component
+	*/
 	@Override
-	public void setName(String name) {
+	public void setName(java.lang.String name) {
 		_jiraComponent.setName(name);
 	}
 
@@ -225,10 +252,10 @@ public class JIRAComponentWrapper
 	}
 
 	/**
-	 * Sets the primary key of this jira component.
-	 *
-	 * @param primaryKey the primary key of this jira component
-	 */
+	* Sets the primary key of this jira component.
+	*
+	* @param primaryKey the primary key of this jira component
+	*/
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_jiraComponent.setPrimaryKey(primaryKey);
@@ -237,33 +264,6 @@ public class JIRAComponentWrapper
 	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		_jiraComponent.setPrimaryKeyObj(primaryKeyObj);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<JIRAComponent>
-		toCacheModel() {
-
-		return _jiraComponent.toCacheModel();
-	}
-
-	@Override
-	public JIRAComponent toEscapedModel() {
-		return new JIRAComponentWrapper(_jiraComponent.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return _jiraComponent.toString();
-	}
-
-	@Override
-	public JIRAComponent toUnescapedModel() {
-		return new JIRAComponentWrapper(_jiraComponent.toUnescapedModel());
-	}
-
-	@Override
-	public String toXmlString() {
-		return _jiraComponent.toXmlString();
 	}
 
 	@Override
@@ -278,9 +278,7 @@ public class JIRAComponentWrapper
 
 		JIRAComponentWrapper jiraComponentWrapper = (JIRAComponentWrapper)obj;
 
-		if (Objects.equals(
-				_jiraComponent, jiraComponentWrapper._jiraComponent)) {
-
+		if (Objects.equals(_jiraComponent, jiraComponentWrapper._jiraComponent)) {
 			return true;
 		}
 
@@ -308,5 +306,4 @@ public class JIRAComponentWrapper
 	}
 
 	private final JIRAComponent _jiraComponent;
-
 }

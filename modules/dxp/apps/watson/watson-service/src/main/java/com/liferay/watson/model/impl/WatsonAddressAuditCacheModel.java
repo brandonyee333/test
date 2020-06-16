@@ -1,22 +1,26 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.watson.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.watson.model.WatsonAddressAudit;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing WatsonAddressAudit in entity cache.
  *
  * @author Steven Smith
+ * @see WatsonAddressAudit
  * @generated
  */
-public class WatsonAddressAuditCacheModel
-	implements CacheModel<WatsonAddressAudit>, Externalizable {
-
+@ProviderType
+public class WatsonAddressAuditCacheModel implements CacheModel<WatsonAddressAudit>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +50,9 @@ public class WatsonAddressAuditCacheModel
 			return false;
 		}
 
-		WatsonAddressAuditCacheModel watsonAddressAuditCacheModel =
-			(WatsonAddressAuditCacheModel)obj;
+		WatsonAddressAuditCacheModel watsonAddressAuditCacheModel = (WatsonAddressAuditCacheModel)obj;
 
-		if (watsonAddressAuditId ==
-				watsonAddressAuditCacheModel.watsonAddressAuditId) {
-
+		if (watsonAddressAuditId == watsonAddressAuditCacheModel.watsonAddressAuditId) {
 			return true;
 		}
 
@@ -133,8 +135,7 @@ public class WatsonAddressAuditCacheModel
 
 	@Override
 	public WatsonAddressAudit toEntityModel() {
-		WatsonAddressAuditImpl watsonAddressAuditImpl =
-			new WatsonAddressAuditImpl();
+		WatsonAddressAuditImpl watsonAddressAuditImpl = new WatsonAddressAuditImpl();
 
 		watsonAddressAuditImpl.setWatsonAddressAuditId(watsonAddressAuditId);
 		watsonAddressAuditImpl.setGroupId(groupId);
@@ -142,7 +143,7 @@ public class WatsonAddressAuditCacheModel
 		watsonAddressAuditImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonAddressAuditImpl.setUserName("");
+			watsonAddressAuditImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			watsonAddressAuditImpl.setUserName(userName);
@@ -163,90 +164,86 @@ public class WatsonAddressAuditCacheModel
 		}
 
 		watsonAddressAuditImpl.setCountryId(countryId);
-		watsonAddressAuditImpl.setDistrictWatsonListTypeId(
-			districtWatsonListTypeId);
-		watsonAddressAuditImpl.setOriginalWatsonAddressId(
-			originalWatsonAddressId);
-		watsonAddressAuditImpl.setProvinceWatsonListTypeId(
-			provinceWatsonListTypeId);
-		watsonAddressAuditImpl.setSubDistrictWatsonListTypeId(
-			subDistrictWatsonListTypeId);
+		watsonAddressAuditImpl.setDistrictWatsonListTypeId(districtWatsonListTypeId);
+		watsonAddressAuditImpl.setOriginalWatsonAddressId(originalWatsonAddressId);
+		watsonAddressAuditImpl.setProvinceWatsonListTypeId(provinceWatsonListTypeId);
+		watsonAddressAuditImpl.setSubDistrictWatsonListTypeId(subDistrictWatsonListTypeId);
 		watsonAddressAuditImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
 		watsonAddressAuditImpl.setWatsonAddressId(watsonAddressId);
 		watsonAddressAuditImpl.setWatsonIncidentId(watsonIncidentId);
 
 		if (name == null) {
-			watsonAddressAuditImpl.setName("");
+			watsonAddressAuditImpl.setName(StringPool.BLANK);
 		}
 		else {
 			watsonAddressAuditImpl.setName(name);
 		}
 
 		if (postalCode == null) {
-			watsonAddressAuditImpl.setPostalCode("");
+			watsonAddressAuditImpl.setPostalCode(StringPool.BLANK);
 		}
 		else {
 			watsonAddressAuditImpl.setPostalCode(postalCode);
 		}
 
 		if (region == null) {
-			watsonAddressAuditImpl.setRegion("");
+			watsonAddressAuditImpl.setRegion(StringPool.BLANK);
 		}
 		else {
 			watsonAddressAuditImpl.setRegion(region);
 		}
 
 		if (street == null) {
-			watsonAddressAuditImpl.setStreet("");
+			watsonAddressAuditImpl.setStreet(StringPool.BLANK);
 		}
 		else {
 			watsonAddressAuditImpl.setStreet(street);
 		}
 
 		if (number == null) {
-			watsonAddressAuditImpl.setNumber("");
+			watsonAddressAuditImpl.setNumber(StringPool.BLANK);
 		}
 		else {
 			watsonAddressAuditImpl.setNumber(number);
 		}
 
 		if (building == null) {
-			watsonAddressAuditImpl.setBuilding("");
+			watsonAddressAuditImpl.setBuilding(StringPool.BLANK);
 		}
 		else {
 			watsonAddressAuditImpl.setBuilding(building);
 		}
 
 		if (floor == null) {
-			watsonAddressAuditImpl.setFloor("");
+			watsonAddressAuditImpl.setFloor(StringPool.BLANK);
 		}
 		else {
 			watsonAddressAuditImpl.setFloor(floor);
 		}
 
 		if (room == null) {
-			watsonAddressAuditImpl.setRoom("");
+			watsonAddressAuditImpl.setRoom(StringPool.BLANK);
 		}
 		else {
 			watsonAddressAuditImpl.setRoom(room);
 		}
 
 		if (description == null) {
-			watsonAddressAuditImpl.setDescription("");
+			watsonAddressAuditImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			watsonAddressAuditImpl.setDescription(description);
 		}
 
 		if (imagePayload == null) {
-			watsonAddressAuditImpl.setImagePayload("");
+			watsonAddressAuditImpl.setImagePayload(StringPool.BLANK);
 		}
 		else {
 			watsonAddressAuditImpl.setImagePayload(imagePayload);
 		}
 
 		if (otherType == null) {
-			watsonAddressAuditImpl.setOtherType("");
+			watsonAddressAuditImpl.setOtherType(StringPool.BLANK);
 		}
 		else {
 			watsonAddressAuditImpl.setOtherType(otherType);
@@ -269,9 +266,7 @@ public class WatsonAddressAuditCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		watsonAddressAuditId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -307,7 +302,7 @@ public class WatsonAddressAuditCacheModel
 		floor = objectInput.readUTF();
 		room = objectInput.readUTF();
 		description = objectInput.readUTF();
-		imagePayload = (String)objectInput.readObject();
+		imagePayload = objectInput.readUTF();
 		otherType = objectInput.readUTF();
 		lastSeenDate = objectInput.readLong();
 
@@ -319,7 +314,8 @@ public class WatsonAddressAuditCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(watsonAddressAuditId);
 
 		objectOutput.writeLong(groupId);
@@ -329,7 +325,7 @@ public class WatsonAddressAuditCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -355,77 +351,77 @@ public class WatsonAddressAuditCacheModel
 		objectOutput.writeLong(watsonIncidentId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (postalCode == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(postalCode);
 		}
 
 		if (region == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(region);
 		}
 
 		if (street == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(street);
 		}
 
 		if (number == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(number);
 		}
 
 		if (building == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(building);
 		}
 
 		if (floor == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(floor);
 		}
 
 		if (room == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(room);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (imagePayload == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(imagePayload);
+			objectOutput.writeUTF(imagePayload);
 		}
 
 		if (otherType == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(otherType);
@@ -470,5 +466,4 @@ public class WatsonAddressAuditCacheModel
 	public double latitude;
 	public double longitude;
 	public int status;
-
 }

@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.watson.model;
+
+import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -26,8 +28,8 @@ import java.util.List;
  * @author Steven Smith
  * @generated
  */
+@ProviderType
 public class WatsonVehicleSoap implements Serializable {
-
 	public static WatsonVehicleSoap toSoapModel(WatsonVehicle model) {
 		WatsonVehicleSoap soapModel = new WatsonVehicleSoap();
 
@@ -41,8 +43,7 @@ public class WatsonVehicleSoap implements Serializable {
 		soapModel.setColorWatsonListTypeId(model.getColorWatsonListTypeId());
 		soapModel.setMakeWatsonListTypeId(model.getMakeWatsonListTypeId());
 		soapModel.setModelWatsonListTypeId(model.getModelWatsonListTypeId());
-		soapModel.setOriginalWatsonVehicleId(
-			model.getOriginalWatsonVehicleId());
+		soapModel.setOriginalWatsonVehicleId(model.getOriginalWatsonVehicleId());
 		soapModel.setTypeWatsonListTypeId(model.getTypeWatsonListTypeId());
 		soapModel.setYearWatsonListTypeId(model.getYearWatsonListTypeId());
 		soapModel.setWatsonIncidentId(model.getWatsonIncidentId());
@@ -83,8 +84,7 @@ public class WatsonVehicleSoap implements Serializable {
 	}
 
 	public static WatsonVehicleSoap[] toSoapModels(List<WatsonVehicle> models) {
-		List<WatsonVehicleSoap> soapModels = new ArrayList<WatsonVehicleSoap>(
-			models.size());
+		List<WatsonVehicleSoap> soapModels = new ArrayList<WatsonVehicleSoap>(models.size());
 
 		for (WatsonVehicle model : models) {
 			soapModels.add(toSoapModel(model));
@@ -275,5 +275,4 @@ public class WatsonVehicleSoap implements Serializable {
 	private String _imagePayload;
 	private String _licensePlate;
 	private int _status;
-
 }

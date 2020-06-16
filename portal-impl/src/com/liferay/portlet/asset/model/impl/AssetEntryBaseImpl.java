@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.asset.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
  * @see AssetEntry
  * @generated
  */
-public abstract class AssetEntryBaseImpl
-	extends AssetEntryModelImpl implements AssetEntry {
-
+@ProviderType
+public abstract class AssetEntryBaseImpl extends AssetEntryModelImpl
+	implements AssetEntry {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a asset entry model instance should use the <code>AssetEntry</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a asset entry model instance should use the {@link AssetEntry} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class AssetEntryBaseImpl
 			AssetEntryLocalServiceUtil.updateAssetEntry(this);
 		}
 	}
-
 }

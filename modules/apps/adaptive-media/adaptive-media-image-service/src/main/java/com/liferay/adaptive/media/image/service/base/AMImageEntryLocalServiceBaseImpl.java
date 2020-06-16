@@ -14,9 +14,12 @@
 
 package com.liferay.adaptive.media.image.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.adaptive.media.image.model.AMImageEntry;
 import com.liferay.adaptive.media.image.service.AMImageEntryLocalService;
 import com.liferay.adaptive.media.image.service.persistence.AMImageEntryPersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -36,8 +39,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
-import com.liferay.portal.kernel.service.persistence.BasePersistence;
-import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -57,16 +58,17 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.adaptive.media.image.service.impl.AMImageEntryLocalServiceImpl
+ * @see com.liferay.adaptive.media.image.service.AMImageEntryLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class AMImageEntryLocalServiceBaseImpl
-	extends BaseLocalServiceImpl
-	implements AMImageEntryLocalService, IdentifiableOSGiService {
-
+	extends BaseLocalServiceImpl implements AMImageEntryLocalService,
+		IdentifiableOSGiService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AMImageEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.adaptive.media.image.service.AMImageEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.adaptive.media.image.service.AMImageEntryLocalServiceUtil} to access the am image entry local service.
 	 */
 
 	/**
@@ -90,7 +92,6 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 	 * @return the new am image entry
 	 */
 	@Override
-	@Transactional(enabled = false)
 	public AMImageEntry createAMImageEntry(long amImageEntryId) {
 		return amImageEntryPersistence.create(amImageEntryId);
 	}
@@ -106,7 +107,6 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 	@Override
 	public AMImageEntry deleteAMImageEntry(long amImageEntryId)
 		throws PortalException {
-
 		return amImageEntryPersistence.remove(amImageEntryId);
 	}
 
@@ -126,8 +126,8 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(
-			AMImageEntry.class, clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(AMImageEntry.class,
+			clazz.getClassLoader());
 	}
 
 	/**
@@ -145,7 +145,7 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.adaptive.media.image.model.impl.AMImageEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.adaptive.media.image.model.impl.AMImageEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -154,18 +154,17 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end) {
-
-		return amImageEntryPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
+		return amImageEntryPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.adaptive.media.image.model.impl.AMImageEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.adaptive.media.image.model.impl.AMImageEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -175,12 +174,10 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<T> orderByComparator) {
-
-		return amImageEntryPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
+		return amImageEntryPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end, orderByComparator);
 	}
 
 	/**
@@ -202,11 +199,10 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(
-		DynamicQuery dynamicQuery, Projection projection) {
-
-		return amImageEntryPersistence.countWithDynamicQuery(
-			dynamicQuery, projection);
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection) {
+		return amImageEntryPersistence.countWithDynamicQuery(dynamicQuery,
+			projection);
 	}
 
 	@Override
@@ -222,9 +218,8 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 	 * @return the matching am image entry, or <code>null</code> if a matching am image entry could not be found
 	 */
 	@Override
-	public AMImageEntry fetchAMImageEntryByUuidAndGroupId(
-		String uuid, long groupId) {
-
+	public AMImageEntry fetchAMImageEntryByUuidAndGroupId(String uuid,
+		long groupId) {
 		return amImageEntryPersistence.fetchByUUID_G(uuid, groupId);
 	}
 
@@ -238,14 +233,12 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 	@Override
 	public AMImageEntry getAMImageEntry(long amImageEntryId)
 		throws PortalException {
-
 		return amImageEntryPersistence.findByPrimaryKey(amImageEntryId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
 		actionableDynamicQuery.setBaseLocalService(amImageEntryLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
@@ -257,14 +250,10 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
 
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
-			new IndexableActionableDynamicQuery();
-
-		indexableActionableDynamicQuery.setBaseLocalService(
-			amImageEntryLocalService);
+		indexableActionableDynamicQuery.setBaseLocalService(amImageEntryLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(AMImageEntry.class);
 
@@ -276,7 +265,6 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-
 		actionableDynamicQuery.setBaseLocalService(amImageEntryLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(AMImageEntry.class);
@@ -290,22 +278,12 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-
-		return amImageEntryLocalService.deleteAMImageEntry(
-			(AMImageEntry)persistedModel);
+		return amImageEntryLocalService.deleteAMImageEntry((AMImageEntry)persistedModel);
 	}
 
-	public BasePersistence<AMImageEntry> getBasePersistence() {
-		return amImageEntryPersistence;
-	}
-
-	/**
-	 * @throws PortalException
-	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
-
 		return amImageEntryPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -317,9 +295,8 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 	 * @return the matching am image entries, or an empty list if no matches were found
 	 */
 	@Override
-	public List<AMImageEntry> getAMImageEntriesByUuidAndCompanyId(
-		String uuid, long companyId) {
-
+	public List<AMImageEntry> getAMImageEntriesByUuidAndCompanyId(String uuid,
+		long companyId) {
 		return amImageEntryPersistence.findByUuid_C(uuid, companyId);
 	}
 
@@ -334,12 +311,11 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 	 * @return the range of matching am image entries, or an empty list if no matches were found
 	 */
 	@Override
-	public List<AMImageEntry> getAMImageEntriesByUuidAndCompanyId(
-		String uuid, long companyId, int start, int end,
+	public List<AMImageEntry> getAMImageEntriesByUuidAndCompanyId(String uuid,
+		long companyId, int start, int end,
 		OrderByComparator<AMImageEntry> orderByComparator) {
-
-		return amImageEntryPersistence.findByUuid_C(
-			uuid, companyId, start, end, orderByComparator);
+		return amImageEntryPersistence.findByUuid_C(uuid, companyId, start,
+			end, orderByComparator);
 	}
 
 	/**
@@ -351,10 +327,8 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 	 * @throws PortalException if a matching am image entry could not be found
 	 */
 	@Override
-	public AMImageEntry getAMImageEntryByUuidAndGroupId(
-			String uuid, long groupId)
-		throws PortalException {
-
+	public AMImageEntry getAMImageEntryByUuidAndGroupId(String uuid,
+		long groupId) throws PortalException {
 		return amImageEntryPersistence.findByUUID_G(uuid, groupId);
 	}
 
@@ -362,7 +336,7 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 	 * Returns a range of all the am image entries.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.adaptive.media.image.model.impl.AMImageEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.adaptive.media.image.model.impl.AMImageEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of am image entries
@@ -412,7 +386,6 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 	 */
 	public void setAMImageEntryLocalService(
 		AMImageEntryLocalService amImageEntryLocalService) {
-
 		this.amImageEntryLocalService = amImageEntryLocalService;
 	}
 
@@ -432,7 +405,6 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 	 */
 	public void setAMImageEntryPersistence(
 		AMImageEntryPersistence amImageEntryPersistence) {
-
 		this.amImageEntryPersistence = amImageEntryPersistence;
 	}
 
@@ -441,9 +413,7 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -453,15 +423,12 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register(
-			"com.liferay.adaptive.media.image.model.AMImageEntry",
+		persistedModelLocalServiceRegistry.register("com.liferay.adaptive.media.image.model.AMImageEntry",
 			amImageEntryLocalService);
 	}
 
@@ -502,30 +469,22 @@ public abstract class AMImageEntryLocalServiceBaseImpl
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
 	@BeanReference(type = AMImageEntryLocalService.class)
 	protected AMImageEntryLocalService amImageEntryLocalService;
-
 	@BeanReference(type = AMImageEntryPersistence.class)
 	protected AMImageEntryPersistence amImageEntryPersistence;
-
-	@ServiceReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
+	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry
-		persistedModelLocalServiceRegistry;
-
+	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }

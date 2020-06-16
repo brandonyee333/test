@@ -1,23 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.loop.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.osb.loop.model.LoopTopicAssignment;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing LoopTopicAssignment in entity cache.
  *
  * @author Ethan Bustad
+ * @see LoopTopicAssignment
  * @generated
  */
-public class LoopTopicAssignmentCacheModel
-	implements CacheModel<LoopTopicAssignment>, Externalizable {
-
+@ProviderType
+public class LoopTopicAssignmentCacheModel implements CacheModel<LoopTopicAssignment>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +50,9 @@ public class LoopTopicAssignmentCacheModel
 			return false;
 		}
 
-		LoopTopicAssignmentCacheModel loopTopicAssignmentCacheModel =
-			(LoopTopicAssignmentCacheModel)obj;
+		LoopTopicAssignmentCacheModel loopTopicAssignmentCacheModel = (LoopTopicAssignmentCacheModel)obj;
 
-		if (loopTopicAssignmentId ==
-				loopTopicAssignmentCacheModel.loopTopicAssignmentId) {
-
+		if (loopTopicAssignmentId == loopTopicAssignmentCacheModel.loopTopicAssignmentId) {
 			return true;
 		}
 
@@ -87,8 +89,7 @@ public class LoopTopicAssignmentCacheModel
 
 	@Override
 	public LoopTopicAssignment toEntityModel() {
-		LoopTopicAssignmentImpl loopTopicAssignmentImpl =
-			new LoopTopicAssignmentImpl();
+		LoopTopicAssignmentImpl loopTopicAssignmentImpl = new LoopTopicAssignmentImpl();
 
 		loopTopicAssignmentImpl.setLoopTopicAssignmentId(loopTopicAssignmentId);
 		loopTopicAssignmentImpl.setLoopPersonId(loopPersonId);
@@ -104,7 +105,7 @@ public class LoopTopicAssignmentCacheModel
 		loopTopicAssignmentImpl.setStatusByUserId(statusByUserId);
 
 		if (statusByUserName == null) {
-			loopTopicAssignmentImpl.setStatusByUserName("");
+			loopTopicAssignmentImpl.setStatusByUserName(StringPool.BLANK);
 		}
 		else {
 			loopTopicAssignmentImpl.setStatusByUserName(statusByUserName);
@@ -133,7 +134,8 @@ public class LoopTopicAssignmentCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(loopTopicAssignmentId);
 
 		objectOutput.writeLong(loopPersonId);
@@ -144,7 +146,7 @@ public class LoopTopicAssignmentCacheModel
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(statusByUserName);
@@ -160,5 +162,4 @@ public class LoopTopicAssignmentCacheModel
 	public long statusByUserId;
 	public String statusByUserName;
 	public int status;
-
 }

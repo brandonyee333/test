@@ -14,10 +14,14 @@
 
 package com.liferay.knowledge.base.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.knowledge.base.model.KBFolder;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,11 @@ import java.util.Date;
  * The cache model class for representing KBFolder in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see KBFolder
  * @generated
  */
-public class KBFolderCacheModel
-	implements CacheModel<KBFolder>, Externalizable {
-
+@ProviderType
+public class KBFolderCacheModel implements CacheModel<KBFolder>, Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -99,7 +103,7 @@ public class KBFolderCacheModel
 		KBFolderImpl kbFolderImpl = new KBFolderImpl();
 
 		if (uuid == null) {
-			kbFolderImpl.setUuid("");
+			kbFolderImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			kbFolderImpl.setUuid(uuid);
@@ -111,7 +115,7 @@ public class KBFolderCacheModel
 		kbFolderImpl.setUserId(userId);
 
 		if (userName == null) {
-			kbFolderImpl.setUserName("");
+			kbFolderImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			kbFolderImpl.setUserName(userName);
@@ -134,21 +138,21 @@ public class KBFolderCacheModel
 		kbFolderImpl.setParentKBFolderId(parentKBFolderId);
 
 		if (name == null) {
-			kbFolderImpl.setName("");
+			kbFolderImpl.setName(StringPool.BLANK);
 		}
 		else {
 			kbFolderImpl.setName(name);
 		}
 
 		if (urlTitle == null) {
-			kbFolderImpl.setUrlTitle("");
+			kbFolderImpl.setUrlTitle(StringPool.BLANK);
 		}
 		else {
 			kbFolderImpl.setUrlTitle(urlTitle);
 		}
 
 		if (description == null) {
-			kbFolderImpl.setDescription("");
+			kbFolderImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			kbFolderImpl.setDescription(description);
@@ -189,9 +193,10 @@ public class KBFolderCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -206,7 +211,7 @@ public class KBFolderCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -218,21 +223,21 @@ public class KBFolderCacheModel
 		objectOutput.writeLong(parentKBFolderId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (urlTitle == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(urlTitle);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -254,5 +259,4 @@ public class KBFolderCacheModel
 	public String urlTitle;
 	public String description;
 	public long lastPublishDate;
-
 }

@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.asset.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.asset.kernel.model.AssetLink;
 import com.liferay.asset.kernel.service.AssetLinkLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.asset.kernel.service.AssetLinkLocalServiceUtil;
  * @see AssetLink
  * @generated
  */
-public abstract class AssetLinkBaseImpl
-	extends AssetLinkModelImpl implements AssetLink {
-
+@ProviderType
+public abstract class AssetLinkBaseImpl extends AssetLinkModelImpl
+	implements AssetLink {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a asset link model instance should use the <code>AssetLink</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a asset link model instance should use the {@link AssetLink} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class AssetLinkBaseImpl
 			AssetLinkLocalServiceUtil.updateAssetLink(this);
 		}
 	}
-
 }

@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.social.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.social.kernel.model.SocialRelation;
 import com.liferay.social.kernel.service.SocialRelationLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.social.kernel.service.SocialRelationLocalServiceUtil;
  * @see SocialRelation
  * @generated
  */
-public abstract class SocialRelationBaseImpl
-	extends SocialRelationModelImpl implements SocialRelation {
-
+@ProviderType
+public abstract class SocialRelationBaseImpl extends SocialRelationModelImpl
+	implements SocialRelation {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a social relation model instance should use the <code>SocialRelation</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a social relation model instance should use the {@link SocialRelation} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class SocialRelationBaseImpl
 			SocialRelationLocalServiceUtil.updateSocialRelation(this);
 		}
 	}
-
 }

@@ -14,10 +14,14 @@
 
 package com.liferay.portlet.messageboards.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.message.boards.kernel.model.MBBan;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,10 +34,11 @@ import java.util.Date;
  * The cache model class for representing MBBan in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see MBBan
  * @generated
  */
+@ProviderType
 public class MBBanCacheModel implements CacheModel<MBBan>, Externalizable {
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -92,7 +97,7 @@ public class MBBanCacheModel implements CacheModel<MBBan>, Externalizable {
 		MBBanImpl mbBanImpl = new MBBanImpl();
 
 		if (uuid == null) {
-			mbBanImpl.setUuid("");
+			mbBanImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			mbBanImpl.setUuid(uuid);
@@ -104,7 +109,7 @@ public class MBBanCacheModel implements CacheModel<MBBan>, Externalizable {
 		mbBanImpl.setUserId(userId);
 
 		if (userName == null) {
-			mbBanImpl.setUserName("");
+			mbBanImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			mbBanImpl.setUserName(userName);
@@ -158,9 +163,10 @@ public class MBBanCacheModel implements CacheModel<MBBan>, Externalizable {
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -175,7 +181,7 @@ public class MBBanCacheModel implements CacheModel<MBBan>, Externalizable {
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -198,5 +204,4 @@ public class MBBanCacheModel implements CacheModel<MBBan>, Externalizable {
 	public long modifiedDate;
 	public long banUserId;
 	public long lastPublishDate;
-
 }

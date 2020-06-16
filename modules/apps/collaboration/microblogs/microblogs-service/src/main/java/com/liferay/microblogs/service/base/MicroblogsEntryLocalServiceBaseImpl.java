@@ -14,11 +14,15 @@
 
 package com.liferay.microblogs.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.asset.kernel.service.persistence.AssetEntryPersistence;
+
 import com.liferay.microblogs.model.MicroblogsEntry;
 import com.liferay.microblogs.service.MicroblogsEntryLocalService;
 import com.liferay.microblogs.service.persistence.MicroblogsEntryFinder;
 import com.liferay.microblogs.service.persistence.MicroblogsEntryPersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -38,16 +42,15 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
-import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
 import com.liferay.portal.kernel.service.persistence.SubscriptionPersistence;
 import com.liferay.portal.kernel.service.persistence.UserNotificationEventPersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
-import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+
 import com.liferay.social.kernel.service.persistence.SocialActivityPersistence;
 
 import java.io.Serializable;
@@ -65,16 +68,17 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.microblogs.service.impl.MicroblogsEntryLocalServiceImpl
+ * @see com.liferay.microblogs.service.MicroblogsEntryLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class MicroblogsEntryLocalServiceBaseImpl
-	extends BaseLocalServiceImpl
-	implements IdentifiableOSGiService, MicroblogsEntryLocalService {
-
+	extends BaseLocalServiceImpl implements MicroblogsEntryLocalService,
+		IdentifiableOSGiService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>MicroblogsEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.microblogs.service.MicroblogsEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.microblogs.service.MicroblogsEntryLocalServiceUtil} to access the microblogs entry local service.
 	 */
 
 	/**
@@ -98,7 +102,6 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 * @return the new microblogs entry
 	 */
 	@Override
-	@Transactional(enabled = false)
 	public MicroblogsEntry createMicroblogsEntry(long microblogsEntryId) {
 		return microblogsEntryPersistence.create(microblogsEntryId);
 	}
@@ -114,7 +117,6 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	@Override
 	public MicroblogsEntry deleteMicroblogsEntry(long microblogsEntryId)
 		throws PortalException {
-
 		return microblogsEntryPersistence.remove(microblogsEntryId);
 	}
 
@@ -128,9 +130,7 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public MicroblogsEntry deleteMicroblogsEntry(
-			MicroblogsEntry microblogsEntry)
-		throws PortalException {
-
+		MicroblogsEntry microblogsEntry) throws PortalException {
 		return microblogsEntryPersistence.remove(microblogsEntry);
 	}
 
@@ -138,8 +138,8 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(
-			MicroblogsEntry.class, clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(MicroblogsEntry.class,
+			clazz.getClassLoader());
 	}
 
 	/**
@@ -157,7 +157,7 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.microblogs.model.impl.MicroblogsEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.microblogs.model.impl.MicroblogsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -166,18 +166,17 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end) {
-
-		return microblogsEntryPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
+		return microblogsEntryPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.microblogs.model.impl.MicroblogsEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.microblogs.model.impl.MicroblogsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -187,12 +186,10 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<T> orderByComparator) {
-
-		return microblogsEntryPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
+		return microblogsEntryPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end, orderByComparator);
 	}
 
 	/**
@@ -214,11 +211,10 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(
-		DynamicQuery dynamicQuery, Projection projection) {
-
-		return microblogsEntryPersistence.countWithDynamicQuery(
-			dynamicQuery, projection);
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection) {
+		return microblogsEntryPersistence.countWithDynamicQuery(dynamicQuery,
+			projection);
 	}
 
 	@Override
@@ -236,14 +232,12 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	@Override
 	public MicroblogsEntry getMicroblogsEntry(long microblogsEntryId)
 		throws PortalException {
-
 		return microblogsEntryPersistence.findByPrimaryKey(microblogsEntryId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
 		actionableDynamicQuery.setBaseLocalService(microblogsEntryLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
@@ -255,14 +249,10 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
 
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
-			new IndexableActionableDynamicQuery();
-
-		indexableActionableDynamicQuery.setBaseLocalService(
-			microblogsEntryLocalService);
+		indexableActionableDynamicQuery.setBaseLocalService(microblogsEntryLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(MicroblogsEntry.class);
 
@@ -274,7 +264,6 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-
 		actionableDynamicQuery.setBaseLocalService(microblogsEntryLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(MicroblogsEntry.class);
@@ -288,22 +277,12 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-
-		return microblogsEntryLocalService.deleteMicroblogsEntry(
-			(MicroblogsEntry)persistedModel);
+		return microblogsEntryLocalService.deleteMicroblogsEntry((MicroblogsEntry)persistedModel);
 	}
 
-	public BasePersistence<MicroblogsEntry> getBasePersistence() {
-		return microblogsEntryPersistence;
-	}
-
-	/**
-	 * @throws PortalException
-	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
-
 		return microblogsEntryPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -311,7 +290,7 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 * Returns a range of all the microblogs entries.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.microblogs.model.impl.MicroblogsEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.microblogs.model.impl.MicroblogsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of microblogs entries
@@ -343,7 +322,6 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	@Override
 	public MicroblogsEntry updateMicroblogsEntry(
 		MicroblogsEntry microblogsEntry) {
-
 		return microblogsEntryPersistence.update(microblogsEntry);
 	}
 
@@ -363,7 +341,6 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 */
 	public void setMicroblogsEntryLocalService(
 		MicroblogsEntryLocalService microblogsEntryLocalService) {
-
 		this.microblogsEntryLocalService = microblogsEntryLocalService;
 	}
 
@@ -383,7 +360,6 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 */
 	public void setMicroblogsEntryPersistence(
 		MicroblogsEntryPersistence microblogsEntryPersistence) {
-
 		this.microblogsEntryPersistence = microblogsEntryPersistence;
 	}
 
@@ -403,7 +379,6 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 */
 	public void setMicroblogsEntryFinder(
 		MicroblogsEntryFinder microblogsEntryFinder) {
-
 		this.microblogsEntryFinder = microblogsEntryFinder;
 	}
 
@@ -412,9 +387,7 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -424,9 +397,7 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -435,9 +406,7 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService
-		getClassNameLocalService() {
-
+	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
 		return classNameLocalService;
 	}
 
@@ -447,9 +416,7 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService
-			classNameLocalService) {
-
+		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -469,7 +436,6 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
-
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -478,9 +444,7 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the group local service
 	 */
-	public com.liferay.portal.kernel.service.GroupLocalService
-		getGroupLocalService() {
-
+	public com.liferay.portal.kernel.service.GroupLocalService getGroupLocalService() {
 		return groupLocalService;
 	}
 
@@ -491,7 +455,6 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 */
 	public void setGroupLocalService(
 		com.liferay.portal.kernel.service.GroupLocalService groupLocalService) {
-
 		this.groupLocalService = groupLocalService;
 	}
 
@@ -518,9 +481,7 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService
-		getResourceLocalService() {
-
+	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
 		return resourceLocalService;
 	}
 
@@ -530,9 +491,7 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService
-			resourceLocalService) {
-
+		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -541,9 +500,7 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the subscription local service
 	 */
-	public com.liferay.portal.kernel.service.SubscriptionLocalService
-		getSubscriptionLocalService() {
-
+	public com.liferay.portal.kernel.service.SubscriptionLocalService getSubscriptionLocalService() {
 		return subscriptionLocalService;
 	}
 
@@ -553,9 +510,7 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 * @param subscriptionLocalService the subscription local service
 	 */
 	public void setSubscriptionLocalService(
-		com.liferay.portal.kernel.service.SubscriptionLocalService
-			subscriptionLocalService) {
-
+		com.liferay.portal.kernel.service.SubscriptionLocalService subscriptionLocalService) {
 		this.subscriptionLocalService = subscriptionLocalService;
 	}
 
@@ -575,7 +530,6 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 */
 	public void setSubscriptionPersistence(
 		SubscriptionPersistence subscriptionPersistence) {
-
 		this.subscriptionPersistence = subscriptionPersistence;
 	}
 
@@ -584,9 +538,7 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService
-		getUserLocalService() {
-
+	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
 		return userLocalService;
 	}
 
@@ -597,7 +549,6 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
-
 		this.userLocalService = userLocalService;
 	}
 
@@ -624,9 +575,7 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the user notification event local service
 	 */
-	public com.liferay.portal.kernel.service.UserNotificationEventLocalService
-		getUserNotificationEventLocalService() {
-
+	public com.liferay.portal.kernel.service.UserNotificationEventLocalService getUserNotificationEventLocalService() {
 		return userNotificationEventLocalService;
 	}
 
@@ -636,11 +585,8 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 * @param userNotificationEventLocalService the user notification event local service
 	 */
 	public void setUserNotificationEventLocalService(
-		com.liferay.portal.kernel.service.UserNotificationEventLocalService
-			userNotificationEventLocalService) {
-
-		this.userNotificationEventLocalService =
-			userNotificationEventLocalService;
+		com.liferay.portal.kernel.service.UserNotificationEventLocalService userNotificationEventLocalService) {
+		this.userNotificationEventLocalService = userNotificationEventLocalService;
 	}
 
 	/**
@@ -648,9 +594,7 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the user notification event persistence
 	 */
-	public UserNotificationEventPersistence
-		getUserNotificationEventPersistence() {
-
+	public UserNotificationEventPersistence getUserNotificationEventPersistence() {
 		return userNotificationEventPersistence;
 	}
 
@@ -661,9 +605,7 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 */
 	public void setUserNotificationEventPersistence(
 		UserNotificationEventPersistence userNotificationEventPersistence) {
-
-		this.userNotificationEventPersistence =
-			userNotificationEventPersistence;
+		this.userNotificationEventPersistence = userNotificationEventPersistence;
 	}
 
 	/**
@@ -671,9 +613,7 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the asset entry local service
 	 */
-	public com.liferay.asset.kernel.service.AssetEntryLocalService
-		getAssetEntryLocalService() {
-
+	public com.liferay.asset.kernel.service.AssetEntryLocalService getAssetEntryLocalService() {
 		return assetEntryLocalService;
 	}
 
@@ -683,9 +623,7 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 * @param assetEntryLocalService the asset entry local service
 	 */
 	public void setAssetEntryLocalService(
-		com.liferay.asset.kernel.service.AssetEntryLocalService
-			assetEntryLocalService) {
-
+		com.liferay.asset.kernel.service.AssetEntryLocalService assetEntryLocalService) {
 		this.assetEntryLocalService = assetEntryLocalService;
 	}
 
@@ -705,7 +643,6 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 */
 	public void setAssetEntryPersistence(
 		AssetEntryPersistence assetEntryPersistence) {
-
 		this.assetEntryPersistence = assetEntryPersistence;
 	}
 
@@ -714,9 +651,7 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 *
 	 * @return the social activity local service
 	 */
-	public com.liferay.social.kernel.service.SocialActivityLocalService
-		getSocialActivityLocalService() {
-
+	public com.liferay.social.kernel.service.SocialActivityLocalService getSocialActivityLocalService() {
 		return socialActivityLocalService;
 	}
 
@@ -726,9 +661,7 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 * @param socialActivityLocalService the social activity local service
 	 */
 	public void setSocialActivityLocalService(
-		com.liferay.social.kernel.service.SocialActivityLocalService
-			socialActivityLocalService) {
-
+		com.liferay.social.kernel.service.SocialActivityLocalService socialActivityLocalService) {
 		this.socialActivityLocalService = socialActivityLocalService;
 	}
 
@@ -748,13 +681,11 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 	 */
 	public void setSocialActivityPersistence(
 		SocialActivityPersistence socialActivityPersistence) {
-
 		this.socialActivityPersistence = socialActivityPersistence;
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register(
-			"com.liferay.microblogs.model.MicroblogsEntry",
+		persistedModelLocalServiceRegistry.register("com.liferay.microblogs.model.MicroblogsEntry",
 			microblogsEntryLocalService);
 	}
 
@@ -795,103 +726,54 @@ public abstract class MicroblogsEntryLocalServiceBaseImpl
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
 	@BeanReference(type = MicroblogsEntryLocalService.class)
 	protected MicroblogsEntryLocalService microblogsEntryLocalService;
-
 	@BeanReference(type = MicroblogsEntryPersistence.class)
 	protected MicroblogsEntryPersistence microblogsEntryPersistence;
-
 	@BeanReference(type = MicroblogsEntryFinder.class)
 	protected MicroblogsEntryFinder microblogsEntryFinder;
-
-	@ServiceReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService
-		classNameLocalService;
-
+	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.GroupLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.GroupLocalService
-		groupLocalService;
-
+	@ServiceReference(type = com.liferay.portal.kernel.service.GroupLocalService.class)
+	protected com.liferay.portal.kernel.service.GroupLocalService groupLocalService;
 	@ServiceReference(type = GroupPersistence.class)
 	protected GroupPersistence groupPersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ResourceLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ResourceLocalService
-		resourceLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.SubscriptionLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.SubscriptionLocalService
-		subscriptionLocalService;
-
+	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
+	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.SubscriptionLocalService.class)
+	protected com.liferay.portal.kernel.service.SubscriptionLocalService subscriptionLocalService;
 	@ServiceReference(type = SubscriptionPersistence.class)
 	protected SubscriptionPersistence subscriptionPersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.UserLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.UserLocalService
-		userLocalService;
-
+	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
+	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.UserNotificationEventLocalService.class
-	)
-	protected
-		com.liferay.portal.kernel.service.UserNotificationEventLocalService
-			userNotificationEventLocalService;
-
+	@ServiceReference(type = com.liferay.portal.kernel.service.UserNotificationEventLocalService.class)
+	protected com.liferay.portal.kernel.service.UserNotificationEventLocalService userNotificationEventLocalService;
 	@ServiceReference(type = UserNotificationEventPersistence.class)
 	protected UserNotificationEventPersistence userNotificationEventPersistence;
-
-	@ServiceReference(
-		type = com.liferay.asset.kernel.service.AssetEntryLocalService.class
-	)
-	protected com.liferay.asset.kernel.service.AssetEntryLocalService
-		assetEntryLocalService;
-
+	@ServiceReference(type = com.liferay.asset.kernel.service.AssetEntryLocalService.class)
+	protected com.liferay.asset.kernel.service.AssetEntryLocalService assetEntryLocalService;
 	@ServiceReference(type = AssetEntryPersistence.class)
 	protected AssetEntryPersistence assetEntryPersistence;
-
-	@ServiceReference(
-		type = com.liferay.social.kernel.service.SocialActivityLocalService.class
-	)
-	protected com.liferay.social.kernel.service.SocialActivityLocalService
-		socialActivityLocalService;
-
+	@ServiceReference(type = com.liferay.social.kernel.service.SocialActivityLocalService.class)
+	protected com.liferay.social.kernel.service.SocialActivityLocalService socialActivityLocalService;
 	@ServiceReference(type = SocialActivityPersistence.class)
 	protected SocialActivityPersistence socialActivityPersistence;
-
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry
-		persistedModelLocalServiceRegistry;
-
+	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }

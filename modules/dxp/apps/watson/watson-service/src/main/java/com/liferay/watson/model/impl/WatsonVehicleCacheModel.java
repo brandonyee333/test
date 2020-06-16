@@ -1,22 +1,26 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.watson.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.watson.model.WatsonVehicle;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing WatsonVehicle in entity cache.
  *
  * @author Steven Smith
+ * @see WatsonVehicle
  * @generated
  */
-public class WatsonVehicleCacheModel
-	implements CacheModel<WatsonVehicle>, Externalizable {
-
+@ProviderType
+public class WatsonVehicleCacheModel implements CacheModel<WatsonVehicle>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class WatsonVehicleCacheModel
 			return false;
 		}
 
-		WatsonVehicleCacheModel watsonVehicleCacheModel =
-			(WatsonVehicleCacheModel)obj;
+		WatsonVehicleCacheModel watsonVehicleCacheModel = (WatsonVehicleCacheModel)obj;
 
 		if (watsonVehicleId == watsonVehicleCacheModel.watsonVehicleId) {
 			return true;
@@ -117,7 +121,7 @@ public class WatsonVehicleCacheModel
 		watsonVehicleImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonVehicleImpl.setUserName("");
+			watsonVehicleImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			watsonVehicleImpl.setUserName(userName);
@@ -147,21 +151,21 @@ public class WatsonVehicleCacheModel
 		watsonVehicleImpl.setYear(year);
 
 		if (description == null) {
-			watsonVehicleImpl.setDescription("");
+			watsonVehicleImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			watsonVehicleImpl.setDescription(description);
 		}
 
 		if (imagePayload == null) {
-			watsonVehicleImpl.setImagePayload("");
+			watsonVehicleImpl.setImagePayload(StringPool.BLANK);
 		}
 		else {
 			watsonVehicleImpl.setImagePayload(imagePayload);
 		}
 
 		if (licensePlate == null) {
-			watsonVehicleImpl.setLicensePlate("");
+			watsonVehicleImpl.setLicensePlate(StringPool.BLANK);
 		}
 		else {
 			watsonVehicleImpl.setLicensePlate(licensePlate);
@@ -175,9 +179,7 @@ public class WatsonVehicleCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		watsonVehicleId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -205,14 +207,15 @@ public class WatsonVehicleCacheModel
 
 		year = objectInput.readInt();
 		description = objectInput.readUTF();
-		imagePayload = (String)objectInput.readObject();
+		imagePayload = objectInput.readUTF();
 		licensePlate = objectInput.readUTF();
 
 		status = objectInput.readInt();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(watsonVehicleId);
 
 		objectOutput.writeLong(groupId);
@@ -222,7 +225,7 @@ public class WatsonVehicleCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -248,21 +251,21 @@ public class WatsonVehicleCacheModel
 		objectOutput.writeInt(year);
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (imagePayload == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(imagePayload);
+			objectOutput.writeUTF(imagePayload);
 		}
 
 		if (licensePlate == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(licensePlate);
@@ -290,5 +293,4 @@ public class WatsonVehicleCacheModel
 	public String imagePayload;
 	public String licensePlate;
 	public int status;
-
 }

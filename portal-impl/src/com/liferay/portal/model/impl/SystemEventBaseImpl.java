@@ -14,6 +14,8 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.SystemEvent;
 import com.liferay.portal.kernel.service.SystemEventLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.portal.kernel.service.SystemEventLocalServiceUtil;
  * @see SystemEvent
  * @generated
  */
-public abstract class SystemEventBaseImpl
-	extends SystemEventModelImpl implements SystemEvent {
-
+@ProviderType
+public abstract class SystemEventBaseImpl extends SystemEventModelImpl
+	implements SystemEvent {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a system event model instance should use the <code>SystemEvent</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a system event model instance should use the {@link SystemEvent} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class SystemEventBaseImpl
 			SystemEventLocalServiceUtil.updateSystemEvent(this);
 		}
 	}
-
 }

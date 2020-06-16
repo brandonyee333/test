@@ -14,10 +14,14 @@
 
 package com.liferay.counter.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.counter.kernel.model.Counter;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -28,10 +32,11 @@ import java.io.ObjectOutput;
  * The cache model class for representing Counter in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see Counter
  * @generated
  */
+@ProviderType
 public class CounterCacheModel implements CacheModel<Counter>, Externalizable {
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -74,7 +79,7 @@ public class CounterCacheModel implements CacheModel<Counter>, Externalizable {
 		CounterImpl counterImpl = new CounterImpl();
 
 		if (name == null) {
-			counterImpl.setName("");
+			counterImpl.setName(StringPool.BLANK);
 		}
 		else {
 			counterImpl.setName(name);
@@ -95,9 +100,10 @@ public class CounterCacheModel implements CacheModel<Counter>, Externalizable {
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
@@ -108,5 +114,4 @@ public class CounterCacheModel implements CacheModel<Counter>, Externalizable {
 
 	public String name;
 	public long currentId;
-
 }

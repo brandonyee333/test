@@ -14,10 +14,14 @@
 
 package com.liferay.portlet.asset.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.asset.kernel.model.AssetEntry;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing AssetEntry in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see AssetEntry
  * @generated
  */
-public class AssetEntryCacheModel
-	implements CacheModel<AssetEntry>, Externalizable {
-
+@ProviderType
+public class AssetEntryCacheModel implements CacheModel<AssetEntry>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -132,7 +137,7 @@ public class AssetEntryCacheModel
 		assetEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			assetEntryImpl.setUserName("");
+			assetEntryImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			assetEntryImpl.setUserName(userName);
@@ -156,7 +161,7 @@ public class AssetEntryCacheModel
 		assetEntryImpl.setClassPK(classPK);
 
 		if (classUuid == null) {
-			assetEntryImpl.setClassUuid("");
+			assetEntryImpl.setClassUuid(StringPool.BLANK);
 		}
 		else {
 			assetEntryImpl.setClassUuid(classUuid);
@@ -195,42 +200,42 @@ public class AssetEntryCacheModel
 		}
 
 		if (mimeType == null) {
-			assetEntryImpl.setMimeType("");
+			assetEntryImpl.setMimeType(StringPool.BLANK);
 		}
 		else {
 			assetEntryImpl.setMimeType(mimeType);
 		}
 
 		if (title == null) {
-			assetEntryImpl.setTitle("");
+			assetEntryImpl.setTitle(StringPool.BLANK);
 		}
 		else {
 			assetEntryImpl.setTitle(title);
 		}
 
 		if (description == null) {
-			assetEntryImpl.setDescription("");
+			assetEntryImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			assetEntryImpl.setDescription(description);
 		}
 
 		if (summary == null) {
-			assetEntryImpl.setSummary("");
+			assetEntryImpl.setSummary(StringPool.BLANK);
 		}
 		else {
 			assetEntryImpl.setSummary(summary);
 		}
 
 		if (url == null) {
-			assetEntryImpl.setUrl("");
+			assetEntryImpl.setUrl(StringPool.BLANK);
 		}
 		else {
 			assetEntryImpl.setUrl(url);
 		}
 
 		if (layoutUuid == null) {
-			assetEntryImpl.setLayoutUuid("");
+			assetEntryImpl.setLayoutUuid(StringPool.BLANK);
 		}
 		else {
 			assetEntryImpl.setLayoutUuid(layoutUuid);
@@ -247,9 +252,7 @@ public class AssetEntryCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		entryId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -277,8 +280,8 @@ public class AssetEntryCacheModel
 		expirationDate = objectInput.readLong();
 		mimeType = objectInput.readUTF();
 		title = objectInput.readUTF();
-		description = (String)objectInput.readObject();
-		summary = (String)objectInput.readObject();
+		description = objectInput.readUTF();
+		summary = objectInput.readUTF();
 		url = objectInput.readUTF();
 		layoutUuid = objectInput.readUTF();
 
@@ -292,7 +295,8 @@ public class AssetEntryCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(entryId);
 
 		objectOutput.writeLong(groupId);
@@ -302,7 +306,7 @@ public class AssetEntryCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -316,7 +320,7 @@ public class AssetEntryCacheModel
 		objectOutput.writeLong(classPK);
 
 		if (classUuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(classUuid);
@@ -333,42 +337,42 @@ public class AssetEntryCacheModel
 		objectOutput.writeLong(expirationDate);
 
 		if (mimeType == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(mimeType);
 		}
 
 		if (title == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(title);
 		}
 
 		if (description == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(description);
+			objectOutput.writeUTF(description);
 		}
 
 		if (summary == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(summary);
+			objectOutput.writeUTF(summary);
 		}
 
 		if (url == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(url);
 		}
 
 		if (layoutUuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(layoutUuid);
@@ -410,5 +414,4 @@ public class AssetEntryCacheModel
 	public int width;
 	public double priority;
 	public int viewCount;
-
 }

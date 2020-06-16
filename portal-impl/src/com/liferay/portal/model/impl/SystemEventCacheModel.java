@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.SystemEvent;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -31,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing SystemEvent in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see SystemEvent
  * @generated
  */
-public class SystemEventCacheModel
-	implements CacheModel<SystemEvent>, Externalizable, MVCCModel {
-
+@ProviderType
+public class SystemEventCacheModel implements CacheModel<SystemEvent>,
+	Externalizable, MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -46,12 +50,10 @@ public class SystemEventCacheModel
 			return false;
 		}
 
-		SystemEventCacheModel systemEventCacheModel =
-			(SystemEventCacheModel)obj;
+		SystemEventCacheModel systemEventCacheModel = (SystemEventCacheModel)obj;
 
 		if ((systemEventId == systemEventCacheModel.systemEventId) &&
-			(mvccVersion == systemEventCacheModel.mvccVersion)) {
-
+				(mvccVersion == systemEventCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -125,7 +127,7 @@ public class SystemEventCacheModel
 		systemEventImpl.setUserId(userId);
 
 		if (userName == null) {
-			systemEventImpl.setUserName("");
+			systemEventImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			systemEventImpl.setUserName(userName);
@@ -142,7 +144,7 @@ public class SystemEventCacheModel
 		systemEventImpl.setClassPK(classPK);
 
 		if (classUuid == null) {
-			systemEventImpl.setClassUuid("");
+			systemEventImpl.setClassUuid(StringPool.BLANK);
 		}
 		else {
 			systemEventImpl.setClassUuid(classUuid);
@@ -154,7 +156,7 @@ public class SystemEventCacheModel
 		systemEventImpl.setType(type);
 
 		if (extraData == null) {
-			systemEventImpl.setExtraData("");
+			systemEventImpl.setExtraData(StringPool.BLANK);
 		}
 		else {
 			systemEventImpl.setExtraData(extraData);
@@ -166,9 +168,7 @@ public class SystemEventCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
 
 		systemEventId = objectInput.readLong();
@@ -193,11 +193,12 @@ public class SystemEventCacheModel
 		systemEventSetKey = objectInput.readLong();
 
 		type = objectInput.readInt();
-		extraData = (String)objectInput.readObject();
+		extraData = objectInput.readUTF();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(systemEventId);
@@ -209,7 +210,7 @@ public class SystemEventCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -222,7 +223,7 @@ public class SystemEventCacheModel
 		objectOutput.writeLong(classPK);
 
 		if (classUuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(classUuid);
@@ -237,10 +238,10 @@ public class SystemEventCacheModel
 		objectOutput.writeInt(type);
 
 		if (extraData == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(extraData);
+			objectOutput.writeUTF(extraData);
 		}
 	}
 
@@ -259,5 +260,4 @@ public class SystemEventCacheModel
 	public long systemEventSetKey;
 	public int type;
 	public String extraData;
-
 }

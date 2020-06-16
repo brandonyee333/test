@@ -14,7 +14,10 @@
 
 package com.liferay.portal.workflow.kaleo.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -34,9 +37,9 @@ import java.util.Objects;
  * @see KaleoTaskAssignment
  * @generated
  */
-public class KaleoTaskAssignmentWrapper
-	implements KaleoTaskAssignment, ModelWrapper<KaleoTaskAssignment> {
-
+@ProviderType
+public class KaleoTaskAssignmentWrapper implements KaleoTaskAssignment,
+	ModelWrapper<KaleoTaskAssignment> {
 	public KaleoTaskAssignmentWrapper(KaleoTaskAssignment kaleoTaskAssignment) {
 		_kaleoTaskAssignment = kaleoTaskAssignment;
 	}
@@ -71,8 +74,7 @@ public class KaleoTaskAssignmentWrapper
 		attributes.put("assigneeActionId", getAssigneeActionId());
 		attributes.put("assigneeScript", getAssigneeScript());
 		attributes.put("assigneeScriptLanguage", getAssigneeScriptLanguage());
-		attributes.put(
-			"assigneeScriptRequiredContexts",
+		attributes.put("assigneeScriptRequiredContexts",
 			getAssigneeScriptRequiredContexts());
 
 		return attributes;
@@ -81,7 +83,7 @@ public class KaleoTaskAssignmentWrapper
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
 		Long kaleoTaskAssignmentId = (Long)attributes.get(
-			"kaleoTaskAssignmentId");
+				"kaleoTaskAssignmentId");
 
 		if (kaleoTaskAssignmentId != null) {
 			setKaleoTaskAssignmentId(kaleoTaskAssignmentId);
@@ -172,14 +174,14 @@ public class KaleoTaskAssignmentWrapper
 		}
 
 		String assigneeScriptLanguage = (String)attributes.get(
-			"assigneeScriptLanguage");
+				"assigneeScriptLanguage");
 
 		if (assigneeScriptLanguage != null) {
 			setAssigneeScriptLanguage(assigneeScriptLanguage);
 		}
 
 		String assigneeScriptRequiredContexts = (String)attributes.get(
-			"assigneeScriptRequiredContexts");
+				"assigneeScriptRequiredContexts");
 
 		if (assigneeScriptRequiredContexts != null) {
 			setAssigneeScriptRequiredContexts(assigneeScriptRequiredContexts);
@@ -187,219 +189,13 @@ public class KaleoTaskAssignmentWrapper
 	}
 
 	@Override
-	public Object clone() {
-		return new KaleoTaskAssignmentWrapper(
-			(KaleoTaskAssignment)_kaleoTaskAssignment.clone());
+	public KaleoTaskAssignment toEscapedModel() {
+		return new KaleoTaskAssignmentWrapper(_kaleoTaskAssignment.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(KaleoTaskAssignment kaleoTaskAssignment) {
-		return _kaleoTaskAssignment.compareTo(kaleoTaskAssignment);
-	}
-
-	/**
-	 * Returns the assignee action ID of this kaleo task assignment.
-	 *
-	 * @return the assignee action ID of this kaleo task assignment
-	 */
-	@Override
-	public String getAssigneeActionId() {
-		return _kaleoTaskAssignment.getAssigneeActionId();
-	}
-
-	/**
-	 * Returns the assignee class name of this kaleo task assignment.
-	 *
-	 * @return the assignee class name of this kaleo task assignment
-	 */
-	@Override
-	public String getAssigneeClassName() {
-		return _kaleoTaskAssignment.getAssigneeClassName();
-	}
-
-	/**
-	 * Returns the assignee class pk of this kaleo task assignment.
-	 *
-	 * @return the assignee class pk of this kaleo task assignment
-	 */
-	@Override
-	public long getAssigneeClassPK() {
-		return _kaleoTaskAssignment.getAssigneeClassPK();
-	}
-
-	/**
-	 * Returns the assignee script of this kaleo task assignment.
-	 *
-	 * @return the assignee script of this kaleo task assignment
-	 */
-	@Override
-	public String getAssigneeScript() {
-		return _kaleoTaskAssignment.getAssigneeScript();
-	}
-
-	/**
-	 * Returns the assignee script language of this kaleo task assignment.
-	 *
-	 * @return the assignee script language of this kaleo task assignment
-	 */
-	@Override
-	public String getAssigneeScriptLanguage() {
-		return _kaleoTaskAssignment.getAssigneeScriptLanguage();
-	}
-
-	/**
-	 * Returns the assignee script required contexts of this kaleo task assignment.
-	 *
-	 * @return the assignee script required contexts of this kaleo task assignment
-	 */
-	@Override
-	public String getAssigneeScriptRequiredContexts() {
-		return _kaleoTaskAssignment.getAssigneeScriptRequiredContexts();
-	}
-
-	/**
-	 * Returns the company ID of this kaleo task assignment.
-	 *
-	 * @return the company ID of this kaleo task assignment
-	 */
-	@Override
-	public long getCompanyId() {
-		return _kaleoTaskAssignment.getCompanyId();
-	}
-
-	/**
-	 * Returns the create date of this kaleo task assignment.
-	 *
-	 * @return the create date of this kaleo task assignment
-	 */
-	@Override
-	public Date getCreateDate() {
-		return _kaleoTaskAssignment.getCreateDate();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _kaleoTaskAssignment.getExpandoBridge();
-	}
-
-	/**
-	 * Returns the group ID of this kaleo task assignment.
-	 *
-	 * @return the group ID of this kaleo task assignment
-	 */
-	@Override
-	public long getGroupId() {
-		return _kaleoTaskAssignment.getGroupId();
-	}
-
-	/**
-	 * Returns the kaleo class name of this kaleo task assignment.
-	 *
-	 * @return the kaleo class name of this kaleo task assignment
-	 */
-	@Override
-	public String getKaleoClassName() {
-		return _kaleoTaskAssignment.getKaleoClassName();
-	}
-
-	/**
-	 * Returns the kaleo class pk of this kaleo task assignment.
-	 *
-	 * @return the kaleo class pk of this kaleo task assignment
-	 */
-	@Override
-	public long getKaleoClassPK() {
-		return _kaleoTaskAssignment.getKaleoClassPK();
-	}
-
-	/**
-	 * Returns the kaleo definition ID of this kaleo task assignment.
-	 *
-	 * @return the kaleo definition ID of this kaleo task assignment
-	 */
-	@Override
-	public long getKaleoDefinitionId() {
-		return _kaleoTaskAssignment.getKaleoDefinitionId();
-	}
-
-	/**
-	 * Returns the kaleo node ID of this kaleo task assignment.
-	 *
-	 * @return the kaleo node ID of this kaleo task assignment
-	 */
-	@Override
-	public long getKaleoNodeId() {
-		return _kaleoTaskAssignment.getKaleoNodeId();
-	}
-
-	/**
-	 * Returns the kaleo task assignment ID of this kaleo task assignment.
-	 *
-	 * @return the kaleo task assignment ID of this kaleo task assignment
-	 */
-	@Override
-	public long getKaleoTaskAssignmentId() {
-		return _kaleoTaskAssignment.getKaleoTaskAssignmentId();
-	}
-
-	/**
-	 * Returns the modified date of this kaleo task assignment.
-	 *
-	 * @return the modified date of this kaleo task assignment
-	 */
-	@Override
-	public Date getModifiedDate() {
-		return _kaleoTaskAssignment.getModifiedDate();
-	}
-
-	/**
-	 * Returns the primary key of this kaleo task assignment.
-	 *
-	 * @return the primary key of this kaleo task assignment
-	 */
-	@Override
-	public long getPrimaryKey() {
-		return _kaleoTaskAssignment.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _kaleoTaskAssignment.getPrimaryKeyObj();
-	}
-
-	/**
-	 * Returns the user ID of this kaleo task assignment.
-	 *
-	 * @return the user ID of this kaleo task assignment
-	 */
-	@Override
-	public long getUserId() {
-		return _kaleoTaskAssignment.getUserId();
-	}
-
-	/**
-	 * Returns the user name of this kaleo task assignment.
-	 *
-	 * @return the user name of this kaleo task assignment
-	 */
-	@Override
-	public String getUserName() {
-		return _kaleoTaskAssignment.getUserName();
-	}
-
-	/**
-	 * Returns the user uuid of this kaleo task assignment.
-	 *
-	 * @return the user uuid of this kaleo task assignment
-	 */
-	@Override
-	public String getUserUuid() {
-		return _kaleoTaskAssignment.getUserUuid();
-	}
-
-	@Override
-	public int hashCode() {
-		return _kaleoTaskAssignment.hashCode();
+	public KaleoTaskAssignment toUnescapedModel() {
+		return new KaleoTaskAssignmentWrapper(_kaleoTaskAssignment.toUnescapedModel());
 	}
 
 	@Override
@@ -418,71 +214,300 @@ public class KaleoTaskAssignmentWrapper
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _kaleoTaskAssignment.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<KaleoTaskAssignment> toCacheModel() {
+		return _kaleoTaskAssignment.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(KaleoTaskAssignment kaleoTaskAssignment) {
+		return _kaleoTaskAssignment.compareTo(kaleoTaskAssignment);
+	}
+
+	@Override
+	public int hashCode() {
+		return _kaleoTaskAssignment.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _kaleoTaskAssignment.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new KaleoTaskAssignmentWrapper((KaleoTaskAssignment)_kaleoTaskAssignment.clone());
+	}
+
+	/**
+	* Returns the assignee action ID of this kaleo task assignment.
+	*
+	* @return the assignee action ID of this kaleo task assignment
+	*/
+	@Override
+	public java.lang.String getAssigneeActionId() {
+		return _kaleoTaskAssignment.getAssigneeActionId();
+	}
+
+	/**
+	* Returns the assignee class name of this kaleo task assignment.
+	*
+	* @return the assignee class name of this kaleo task assignment
+	*/
+	@Override
+	public java.lang.String getAssigneeClassName() {
+		return _kaleoTaskAssignment.getAssigneeClassName();
+	}
+
+	/**
+	* Returns the assignee script of this kaleo task assignment.
+	*
+	* @return the assignee script of this kaleo task assignment
+	*/
+	@Override
+	public java.lang.String getAssigneeScript() {
+		return _kaleoTaskAssignment.getAssigneeScript();
+	}
+
+	/**
+	* Returns the assignee script language of this kaleo task assignment.
+	*
+	* @return the assignee script language of this kaleo task assignment
+	*/
+	@Override
+	public java.lang.String getAssigneeScriptLanguage() {
+		return _kaleoTaskAssignment.getAssigneeScriptLanguage();
+	}
+
+	/**
+	* Returns the assignee script required contexts of this kaleo task assignment.
+	*
+	* @return the assignee script required contexts of this kaleo task assignment
+	*/
+	@Override
+	public java.lang.String getAssigneeScriptRequiredContexts() {
+		return _kaleoTaskAssignment.getAssigneeScriptRequiredContexts();
+	}
+
+	/**
+	* Returns the kaleo class name of this kaleo task assignment.
+	*
+	* @return the kaleo class name of this kaleo task assignment
+	*/
+	@Override
+	public java.lang.String getKaleoClassName() {
+		return _kaleoTaskAssignment.getKaleoClassName();
+	}
+
+	/**
+	* Returns the user name of this kaleo task assignment.
+	*
+	* @return the user name of this kaleo task assignment
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _kaleoTaskAssignment.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this kaleo task assignment.
+	*
+	* @return the user uuid of this kaleo task assignment
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _kaleoTaskAssignment.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _kaleoTaskAssignment.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _kaleoTaskAssignment.toXmlString();
+	}
+
+	/**
+	* Returns the create date of this kaleo task assignment.
+	*
+	* @return the create date of this kaleo task assignment
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _kaleoTaskAssignment.getCreateDate();
+	}
+
+	/**
+	* Returns the modified date of this kaleo task assignment.
+	*
+	* @return the modified date of this kaleo task assignment
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _kaleoTaskAssignment.getModifiedDate();
+	}
+
+	/**
+	* Returns the assignee class pk of this kaleo task assignment.
+	*
+	* @return the assignee class pk of this kaleo task assignment
+	*/
+	@Override
+	public long getAssigneeClassPK() {
+		return _kaleoTaskAssignment.getAssigneeClassPK();
+	}
+
+	/**
+	* Returns the company ID of this kaleo task assignment.
+	*
+	* @return the company ID of this kaleo task assignment
+	*/
+	@Override
+	public long getCompanyId() {
+		return _kaleoTaskAssignment.getCompanyId();
+	}
+
+	/**
+	* Returns the group ID of this kaleo task assignment.
+	*
+	* @return the group ID of this kaleo task assignment
+	*/
+	@Override
+	public long getGroupId() {
+		return _kaleoTaskAssignment.getGroupId();
+	}
+
+	/**
+	* Returns the kaleo class pk of this kaleo task assignment.
+	*
+	* @return the kaleo class pk of this kaleo task assignment
+	*/
+	@Override
+	public long getKaleoClassPK() {
+		return _kaleoTaskAssignment.getKaleoClassPK();
+	}
+
+	/**
+	* Returns the kaleo definition ID of this kaleo task assignment.
+	*
+	* @return the kaleo definition ID of this kaleo task assignment
+	*/
+	@Override
+	public long getKaleoDefinitionId() {
+		return _kaleoTaskAssignment.getKaleoDefinitionId();
+	}
+
+	/**
+	* Returns the kaleo node ID of this kaleo task assignment.
+	*
+	* @return the kaleo node ID of this kaleo task assignment
+	*/
+	@Override
+	public long getKaleoNodeId() {
+		return _kaleoTaskAssignment.getKaleoNodeId();
+	}
+
+	/**
+	* Returns the kaleo task assignment ID of this kaleo task assignment.
+	*
+	* @return the kaleo task assignment ID of this kaleo task assignment
+	*/
+	@Override
+	public long getKaleoTaskAssignmentId() {
+		return _kaleoTaskAssignment.getKaleoTaskAssignmentId();
+	}
+
+	/**
+	* Returns the primary key of this kaleo task assignment.
+	*
+	* @return the primary key of this kaleo task assignment
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _kaleoTaskAssignment.getPrimaryKey();
+	}
+
+	/**
+	* Returns the user ID of this kaleo task assignment.
+	*
+	* @return the user ID of this kaleo task assignment
+	*/
+	@Override
+	public long getUserId() {
+		return _kaleoTaskAssignment.getUserId();
+	}
+
+	@Override
 	public void persist() {
 		_kaleoTaskAssignment.persist();
 	}
 
 	/**
-	 * Sets the assignee action ID of this kaleo task assignment.
-	 *
-	 * @param assigneeActionId the assignee action ID of this kaleo task assignment
-	 */
+	* Sets the assignee action ID of this kaleo task assignment.
+	*
+	* @param assigneeActionId the assignee action ID of this kaleo task assignment
+	*/
 	@Override
-	public void setAssigneeActionId(String assigneeActionId) {
+	public void setAssigneeActionId(java.lang.String assigneeActionId) {
 		_kaleoTaskAssignment.setAssigneeActionId(assigneeActionId);
 	}
 
 	/**
-	 * Sets the assignee class name of this kaleo task assignment.
-	 *
-	 * @param assigneeClassName the assignee class name of this kaleo task assignment
-	 */
+	* Sets the assignee class name of this kaleo task assignment.
+	*
+	* @param assigneeClassName the assignee class name of this kaleo task assignment
+	*/
 	@Override
-	public void setAssigneeClassName(String assigneeClassName) {
+	public void setAssigneeClassName(java.lang.String assigneeClassName) {
 		_kaleoTaskAssignment.setAssigneeClassName(assigneeClassName);
 	}
 
 	/**
-	 * Sets the assignee class pk of this kaleo task assignment.
-	 *
-	 * @param assigneeClassPK the assignee class pk of this kaleo task assignment
-	 */
+	* Sets the assignee class pk of this kaleo task assignment.
+	*
+	* @param assigneeClassPK the assignee class pk of this kaleo task assignment
+	*/
 	@Override
 	public void setAssigneeClassPK(long assigneeClassPK) {
 		_kaleoTaskAssignment.setAssigneeClassPK(assigneeClassPK);
 	}
 
 	/**
-	 * Sets the assignee script of this kaleo task assignment.
-	 *
-	 * @param assigneeScript the assignee script of this kaleo task assignment
-	 */
+	* Sets the assignee script of this kaleo task assignment.
+	*
+	* @param assigneeScript the assignee script of this kaleo task assignment
+	*/
 	@Override
-	public void setAssigneeScript(String assigneeScript) {
+	public void setAssigneeScript(java.lang.String assigneeScript) {
 		_kaleoTaskAssignment.setAssigneeScript(assigneeScript);
 	}
 
 	/**
-	 * Sets the assignee script language of this kaleo task assignment.
-	 *
-	 * @param assigneeScriptLanguage the assignee script language of this kaleo task assignment
-	 */
+	* Sets the assignee script language of this kaleo task assignment.
+	*
+	* @param assigneeScriptLanguage the assignee script language of this kaleo task assignment
+	*/
 	@Override
-	public void setAssigneeScriptLanguage(String assigneeScriptLanguage) {
+	public void setAssigneeScriptLanguage(
+		java.lang.String assigneeScriptLanguage) {
 		_kaleoTaskAssignment.setAssigneeScriptLanguage(assigneeScriptLanguage);
 	}
 
 	/**
-	 * Sets the assignee script required contexts of this kaleo task assignment.
-	 *
-	 * @param assigneeScriptRequiredContexts the assignee script required contexts of this kaleo task assignment
-	 */
+	* Sets the assignee script required contexts of this kaleo task assignment.
+	*
+	* @param assigneeScriptRequiredContexts the assignee script required contexts of this kaleo task assignment
+	*/
 	@Override
 	public void setAssigneeScriptRequiredContexts(
-		String assigneeScriptRequiredContexts) {
-
-		_kaleoTaskAssignment.setAssigneeScriptRequiredContexts(
-			assigneeScriptRequiredContexts);
+		java.lang.String assigneeScriptRequiredContexts) {
+		_kaleoTaskAssignment.setAssigneeScriptRequiredContexts(assigneeScriptRequiredContexts);
 	}
 
 	@Override
@@ -491,30 +516,23 @@ public class KaleoTaskAssignmentWrapper
 	}
 
 	/**
-	 * Sets the company ID of this kaleo task assignment.
-	 *
-	 * @param companyId the company ID of this kaleo task assignment
-	 */
+	* Sets the company ID of this kaleo task assignment.
+	*
+	* @param companyId the company ID of this kaleo task assignment
+	*/
 	@Override
 	public void setCompanyId(long companyId) {
 		_kaleoTaskAssignment.setCompanyId(companyId);
 	}
 
 	/**
-	 * Sets the create date of this kaleo task assignment.
-	 *
-	 * @param createDate the create date of this kaleo task assignment
-	 */
+	* Sets the create date of this kaleo task assignment.
+	*
+	* @param createDate the create date of this kaleo task assignment
+	*/
 	@Override
 	public void setCreateDate(Date createDate) {
 		_kaleoTaskAssignment.setCreateDate(createDate);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-
-		_kaleoTaskAssignment.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -523,75 +541,81 @@ public class KaleoTaskAssignmentWrapper
 	}
 
 	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_kaleoTaskAssignment.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_kaleoTaskAssignment.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	 * Sets the group ID of this kaleo task assignment.
-	 *
-	 * @param groupId the group ID of this kaleo task assignment
-	 */
+	* Sets the group ID of this kaleo task assignment.
+	*
+	* @param groupId the group ID of this kaleo task assignment
+	*/
 	@Override
 	public void setGroupId(long groupId) {
 		_kaleoTaskAssignment.setGroupId(groupId);
 	}
 
 	/**
-	 * Sets the kaleo class name of this kaleo task assignment.
-	 *
-	 * @param kaleoClassName the kaleo class name of this kaleo task assignment
-	 */
+	* Sets the kaleo class name of this kaleo task assignment.
+	*
+	* @param kaleoClassName the kaleo class name of this kaleo task assignment
+	*/
 	@Override
-	public void setKaleoClassName(String kaleoClassName) {
+	public void setKaleoClassName(java.lang.String kaleoClassName) {
 		_kaleoTaskAssignment.setKaleoClassName(kaleoClassName);
 	}
 
 	/**
-	 * Sets the kaleo class pk of this kaleo task assignment.
-	 *
-	 * @param kaleoClassPK the kaleo class pk of this kaleo task assignment
-	 */
+	* Sets the kaleo class pk of this kaleo task assignment.
+	*
+	* @param kaleoClassPK the kaleo class pk of this kaleo task assignment
+	*/
 	@Override
 	public void setKaleoClassPK(long kaleoClassPK) {
 		_kaleoTaskAssignment.setKaleoClassPK(kaleoClassPK);
 	}
 
 	/**
-	 * Sets the kaleo definition ID of this kaleo task assignment.
-	 *
-	 * @param kaleoDefinitionId the kaleo definition ID of this kaleo task assignment
-	 */
+	* Sets the kaleo definition ID of this kaleo task assignment.
+	*
+	* @param kaleoDefinitionId the kaleo definition ID of this kaleo task assignment
+	*/
 	@Override
 	public void setKaleoDefinitionId(long kaleoDefinitionId) {
 		_kaleoTaskAssignment.setKaleoDefinitionId(kaleoDefinitionId);
 	}
 
 	/**
-	 * Sets the kaleo node ID of this kaleo task assignment.
-	 *
-	 * @param kaleoNodeId the kaleo node ID of this kaleo task assignment
-	 */
+	* Sets the kaleo node ID of this kaleo task assignment.
+	*
+	* @param kaleoNodeId the kaleo node ID of this kaleo task assignment
+	*/
 	@Override
 	public void setKaleoNodeId(long kaleoNodeId) {
 		_kaleoTaskAssignment.setKaleoNodeId(kaleoNodeId);
 	}
 
 	/**
-	 * Sets the kaleo task assignment ID of this kaleo task assignment.
-	 *
-	 * @param kaleoTaskAssignmentId the kaleo task assignment ID of this kaleo task assignment
-	 */
+	* Sets the kaleo task assignment ID of this kaleo task assignment.
+	*
+	* @param kaleoTaskAssignmentId the kaleo task assignment ID of this kaleo task assignment
+	*/
 	@Override
 	public void setKaleoTaskAssignmentId(long kaleoTaskAssignmentId) {
 		_kaleoTaskAssignment.setKaleoTaskAssignmentId(kaleoTaskAssignmentId);
 	}
 
 	/**
-	 * Sets the modified date of this kaleo task assignment.
-	 *
-	 * @param modifiedDate the modified date of this kaleo task assignment
-	 */
+	* Sets the modified date of this kaleo task assignment.
+	*
+	* @param modifiedDate the modified date of this kaleo task assignment
+	*/
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_kaleoTaskAssignment.setModifiedDate(modifiedDate);
@@ -603,10 +627,10 @@ public class KaleoTaskAssignmentWrapper
 	}
 
 	/**
-	 * Sets the primary key of this kaleo task assignment.
-	 *
-	 * @param primaryKey the primary key of this kaleo task assignment
-	 */
+	* Sets the primary key of this kaleo task assignment.
+	*
+	* @param primaryKey the primary key of this kaleo task assignment
+	*/
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_kaleoTaskAssignment.setPrimaryKey(primaryKey);
@@ -618,62 +642,33 @@ public class KaleoTaskAssignmentWrapper
 	}
 
 	/**
-	 * Sets the user ID of this kaleo task assignment.
-	 *
-	 * @param userId the user ID of this kaleo task assignment
-	 */
+	* Sets the user ID of this kaleo task assignment.
+	*
+	* @param userId the user ID of this kaleo task assignment
+	*/
 	@Override
 	public void setUserId(long userId) {
 		_kaleoTaskAssignment.setUserId(userId);
 	}
 
 	/**
-	 * Sets the user name of this kaleo task assignment.
-	 *
-	 * @param userName the user name of this kaleo task assignment
-	 */
+	* Sets the user name of this kaleo task assignment.
+	*
+	* @param userName the user name of this kaleo task assignment
+	*/
 	@Override
-	public void setUserName(String userName) {
+	public void setUserName(java.lang.String userName) {
 		_kaleoTaskAssignment.setUserName(userName);
 	}
 
 	/**
-	 * Sets the user uuid of this kaleo task assignment.
-	 *
-	 * @param userUuid the user uuid of this kaleo task assignment
-	 */
+	* Sets the user uuid of this kaleo task assignment.
+	*
+	* @param userUuid the user uuid of this kaleo task assignment
+	*/
 	@Override
-	public void setUserUuid(String userUuid) {
+	public void setUserUuid(java.lang.String userUuid) {
 		_kaleoTaskAssignment.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<KaleoTaskAssignment>
-		toCacheModel() {
-
-		return _kaleoTaskAssignment.toCacheModel();
-	}
-
-	@Override
-	public KaleoTaskAssignment toEscapedModel() {
-		return new KaleoTaskAssignmentWrapper(
-			_kaleoTaskAssignment.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return _kaleoTaskAssignment.toString();
-	}
-
-	@Override
-	public KaleoTaskAssignment toUnescapedModel() {
-		return new KaleoTaskAssignmentWrapper(
-			_kaleoTaskAssignment.toUnescapedModel());
-	}
-
-	@Override
-	public String toXmlString() {
-		return _kaleoTaskAssignment.toXmlString();
 	}
 
 	@Override
@@ -686,13 +681,10 @@ public class KaleoTaskAssignmentWrapper
 			return false;
 		}
 
-		KaleoTaskAssignmentWrapper kaleoTaskAssignmentWrapper =
-			(KaleoTaskAssignmentWrapper)obj;
+		KaleoTaskAssignmentWrapper kaleoTaskAssignmentWrapper = (KaleoTaskAssignmentWrapper)obj;
 
-		if (Objects.equals(
-				_kaleoTaskAssignment,
-				kaleoTaskAssignmentWrapper._kaleoTaskAssignment)) {
-
+		if (Objects.equals(_kaleoTaskAssignment,
+					kaleoTaskAssignmentWrapper._kaleoTaskAssignment)) {
 			return true;
 		}
 
@@ -720,5 +712,4 @@ public class KaleoTaskAssignmentWrapper
 	}
 
 	private final KaleoTaskAssignment _kaleoTaskAssignment;
-
 }

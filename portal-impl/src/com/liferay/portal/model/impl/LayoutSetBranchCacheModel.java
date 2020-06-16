@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.LayoutSetBranch;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -31,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing LayoutSetBranch in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see LayoutSetBranch
  * @generated
  */
-public class LayoutSetBranchCacheModel
-	implements CacheModel<LayoutSetBranch>, Externalizable, MVCCModel {
-
+@ProviderType
+public class LayoutSetBranchCacheModel implements CacheModel<LayoutSetBranch>,
+	Externalizable, MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -46,13 +50,10 @@ public class LayoutSetBranchCacheModel
 			return false;
 		}
 
-		LayoutSetBranchCacheModel layoutSetBranchCacheModel =
-			(LayoutSetBranchCacheModel)obj;
+		LayoutSetBranchCacheModel layoutSetBranchCacheModel = (LayoutSetBranchCacheModel)obj;
 
-		if ((layoutSetBranchId ==
-				layoutSetBranchCacheModel.layoutSetBranchId) &&
-			(mvccVersion == layoutSetBranchCacheModel.mvccVersion)) {
-
+		if ((layoutSetBranchId == layoutSetBranchCacheModel.layoutSetBranchId) &&
+				(mvccVersion == layoutSetBranchCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -134,7 +135,7 @@ public class LayoutSetBranchCacheModel
 		layoutSetBranchImpl.setUserId(userId);
 
 		if (userName == null) {
-			layoutSetBranchImpl.setUserName("");
+			layoutSetBranchImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			layoutSetBranchImpl.setUserName(userName);
@@ -157,14 +158,14 @@ public class LayoutSetBranchCacheModel
 		layoutSetBranchImpl.setPrivateLayout(privateLayout);
 
 		if (name == null) {
-			layoutSetBranchImpl.setName("");
+			layoutSetBranchImpl.setName(StringPool.BLANK);
 		}
 		else {
 			layoutSetBranchImpl.setName(name);
 		}
 
 		if (description == null) {
-			layoutSetBranchImpl.setDescription("");
+			layoutSetBranchImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			layoutSetBranchImpl.setDescription(description);
@@ -174,43 +175,41 @@ public class LayoutSetBranchCacheModel
 		layoutSetBranchImpl.setLogoId(logoId);
 
 		if (themeId == null) {
-			layoutSetBranchImpl.setThemeId("");
+			layoutSetBranchImpl.setThemeId(StringPool.BLANK);
 		}
 		else {
 			layoutSetBranchImpl.setThemeId(themeId);
 		}
 
 		if (colorSchemeId == null) {
-			layoutSetBranchImpl.setColorSchemeId("");
+			layoutSetBranchImpl.setColorSchemeId(StringPool.BLANK);
 		}
 		else {
 			layoutSetBranchImpl.setColorSchemeId(colorSchemeId);
 		}
 
 		if (css == null) {
-			layoutSetBranchImpl.setCss("");
+			layoutSetBranchImpl.setCss(StringPool.BLANK);
 		}
 		else {
 			layoutSetBranchImpl.setCss(css);
 		}
 
 		if (settings == null) {
-			layoutSetBranchImpl.setSettings("");
+			layoutSetBranchImpl.setSettings(StringPool.BLANK);
 		}
 		else {
 			layoutSetBranchImpl.setSettings(settings);
 		}
 
 		if (layoutSetPrototypeUuid == null) {
-			layoutSetBranchImpl.setLayoutSetPrototypeUuid("");
+			layoutSetBranchImpl.setLayoutSetPrototypeUuid(StringPool.BLANK);
 		}
 		else {
-			layoutSetBranchImpl.setLayoutSetPrototypeUuid(
-				layoutSetPrototypeUuid);
+			layoutSetBranchImpl.setLayoutSetPrototypeUuid(layoutSetPrototypeUuid);
 		}
 
-		layoutSetBranchImpl.setLayoutSetPrototypeLinkEnabled(
-			layoutSetPrototypeLinkEnabled);
+		layoutSetBranchImpl.setLayoutSetPrototypeLinkEnabled(layoutSetPrototypeLinkEnabled);
 
 		layoutSetBranchImpl.resetOriginalValues();
 
@@ -218,9 +217,7 @@ public class LayoutSetBranchCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
 
 		layoutSetBranchId = objectInput.readLong();
@@ -243,15 +240,16 @@ public class LayoutSetBranchCacheModel
 		logoId = objectInput.readLong();
 		themeId = objectInput.readUTF();
 		colorSchemeId = objectInput.readUTF();
-		css = (String)objectInput.readObject();
-		settings = (String)objectInput.readObject();
+		css = objectInput.readUTF();
+		settings = objectInput.readUTF();
 		layoutSetPrototypeUuid = objectInput.readUTF();
 
 		layoutSetPrototypeLinkEnabled = objectInput.readBoolean();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(layoutSetBranchId);
@@ -263,7 +261,7 @@ public class LayoutSetBranchCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -275,14 +273,14 @@ public class LayoutSetBranchCacheModel
 		objectOutput.writeBoolean(privateLayout);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -293,35 +291,35 @@ public class LayoutSetBranchCacheModel
 		objectOutput.writeLong(logoId);
 
 		if (themeId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(themeId);
 		}
 
 		if (colorSchemeId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(colorSchemeId);
 		}
 
 		if (css == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(css);
+			objectOutput.writeUTF(css);
 		}
 
 		if (settings == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(settings);
+			objectOutput.writeUTF(settings);
 		}
 
 		if (layoutSetPrototypeUuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(layoutSetPrototypeUuid);
@@ -349,5 +347,4 @@ public class LayoutSetBranchCacheModel
 	public String settings;
 	public String layoutSetPrototypeUuid;
 	public boolean layoutSetPrototypeLinkEnabled;
-
 }

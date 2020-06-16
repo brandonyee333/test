@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -29,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing ResourcePermission in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see ResourcePermission
  * @generated
  */
-public class ResourcePermissionCacheModel
-	implements CacheModel<ResourcePermission>, Externalizable, MVCCModel {
-
+@ProviderType
+public class ResourcePermissionCacheModel implements CacheModel<ResourcePermission>,
+	Externalizable, MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -44,13 +48,10 @@ public class ResourcePermissionCacheModel
 			return false;
 		}
 
-		ResourcePermissionCacheModel resourcePermissionCacheModel =
-			(ResourcePermissionCacheModel)obj;
+		ResourcePermissionCacheModel resourcePermissionCacheModel = (ResourcePermissionCacheModel)obj;
 
-		if ((resourcePermissionId ==
-				resourcePermissionCacheModel.resourcePermissionId) &&
-			(mvccVersion == resourcePermissionCacheModel.mvccVersion)) {
-
+		if ((resourcePermissionId == resourcePermissionCacheModel.resourcePermissionId) &&
+				(mvccVersion == resourcePermissionCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -107,15 +108,14 @@ public class ResourcePermissionCacheModel
 
 	@Override
 	public ResourcePermission toEntityModel() {
-		ResourcePermissionImpl resourcePermissionImpl =
-			new ResourcePermissionImpl();
+		ResourcePermissionImpl resourcePermissionImpl = new ResourcePermissionImpl();
 
 		resourcePermissionImpl.setMvccVersion(mvccVersion);
 		resourcePermissionImpl.setResourcePermissionId(resourcePermissionId);
 		resourcePermissionImpl.setCompanyId(companyId);
 
 		if (name == null) {
-			resourcePermissionImpl.setName("");
+			resourcePermissionImpl.setName(StringPool.BLANK);
 		}
 		else {
 			resourcePermissionImpl.setName(name);
@@ -124,7 +124,7 @@ public class ResourcePermissionCacheModel
 		resourcePermissionImpl.setScope(scope);
 
 		if (primKey == null) {
-			resourcePermissionImpl.setPrimKey("");
+			resourcePermissionImpl.setPrimKey(StringPool.BLANK);
 		}
 		else {
 			resourcePermissionImpl.setPrimKey(primKey);
@@ -165,7 +165,8 @@ public class ResourcePermissionCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(resourcePermissionId);
@@ -173,7 +174,7 @@ public class ResourcePermissionCacheModel
 		objectOutput.writeLong(companyId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
@@ -182,7 +183,7 @@ public class ResourcePermissionCacheModel
 		objectOutput.writeInt(scope);
 
 		if (primKey == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(primKey);
@@ -210,5 +211,4 @@ public class ResourcePermissionCacheModel
 	public long ownerId;
 	public long actionIds;
 	public boolean viewActionId;
-
 }

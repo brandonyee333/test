@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.ResourceTypePermission;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -29,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing ResourceTypePermission in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see ResourceTypePermission
  * @generated
  */
-public class ResourceTypePermissionCacheModel
-	implements CacheModel<ResourceTypePermission>, Externalizable, MVCCModel {
-
+@ProviderType
+public class ResourceTypePermissionCacheModel implements CacheModel<ResourceTypePermission>,
+	Externalizable, MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -44,13 +48,10 @@ public class ResourceTypePermissionCacheModel
 			return false;
 		}
 
-		ResourceTypePermissionCacheModel resourceTypePermissionCacheModel =
-			(ResourceTypePermissionCacheModel)obj;
+		ResourceTypePermissionCacheModel resourceTypePermissionCacheModel = (ResourceTypePermissionCacheModel)obj;
 
-		if ((resourceTypePermissionId ==
-				resourceTypePermissionCacheModel.resourceTypePermissionId) &&
-			(mvccVersion == resourceTypePermissionCacheModel.mvccVersion)) {
-
+		if ((resourceTypePermissionId == resourceTypePermissionCacheModel.resourceTypePermissionId) &&
+				(mvccVersion == resourceTypePermissionCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -99,17 +100,15 @@ public class ResourceTypePermissionCacheModel
 
 	@Override
 	public ResourceTypePermission toEntityModel() {
-		ResourceTypePermissionImpl resourceTypePermissionImpl =
-			new ResourceTypePermissionImpl();
+		ResourceTypePermissionImpl resourceTypePermissionImpl = new ResourceTypePermissionImpl();
 
 		resourceTypePermissionImpl.setMvccVersion(mvccVersion);
-		resourceTypePermissionImpl.setResourceTypePermissionId(
-			resourceTypePermissionId);
+		resourceTypePermissionImpl.setResourceTypePermissionId(resourceTypePermissionId);
 		resourceTypePermissionImpl.setCompanyId(companyId);
 		resourceTypePermissionImpl.setGroupId(groupId);
 
 		if (name == null) {
-			resourceTypePermissionImpl.setName("");
+			resourceTypePermissionImpl.setName(StringPool.BLANK);
 		}
 		else {
 			resourceTypePermissionImpl.setName(name);
@@ -140,7 +139,8 @@ public class ResourceTypePermissionCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(resourceTypePermissionId);
@@ -150,7 +150,7 @@ public class ResourceTypePermissionCacheModel
 		objectOutput.writeLong(groupId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
@@ -168,5 +168,4 @@ public class ResourceTypePermissionCacheModel
 	public String name;
 	public long roleId;
 	public long actionIds;
-
 }

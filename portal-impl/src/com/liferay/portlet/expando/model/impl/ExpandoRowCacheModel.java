@@ -14,7 +14,10 @@
 
 package com.liferay.portlet.expando.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoRow;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -30,11 +33,12 @@ import java.util.Date;
  * The cache model class for representing ExpandoRow in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see ExpandoRow
  * @generated
  */
-public class ExpandoRowCacheModel
-	implements CacheModel<ExpandoRow>, Externalizable {
-
+@ProviderType
+public class ExpandoRowCacheModel implements CacheModel<ExpandoRow>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -113,7 +117,8 @@ public class ExpandoRowCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(rowId);
 
 		objectOutput.writeLong(companyId);
@@ -129,5 +134,4 @@ public class ExpandoRowCacheModel
 	public long modifiedDate;
 	public long tableId;
 	public long classPK;
-
 }

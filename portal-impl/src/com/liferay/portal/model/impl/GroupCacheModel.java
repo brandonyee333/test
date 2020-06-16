@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -29,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing Group in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see Group
  * @generated
  */
-public class GroupCacheModel
-	implements CacheModel<Group>, Externalizable, MVCCModel {
-
+@ProviderType
+public class GroupCacheModel implements CacheModel<Group>, Externalizable,
+	MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -47,8 +51,7 @@ public class GroupCacheModel
 		GroupCacheModel groupCacheModel = (GroupCacheModel)obj;
 
 		if ((groupId == groupCacheModel.groupId) &&
-			(mvccVersion == groupCacheModel.mvccVersion)) {
-
+				(mvccVersion == groupCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -132,7 +135,7 @@ public class GroupCacheModel
 		groupImpl.setMvccVersion(mvccVersion);
 
 		if (uuid == null) {
-			groupImpl.setUuid("");
+			groupImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			groupImpl.setUuid(uuid);
@@ -147,28 +150,28 @@ public class GroupCacheModel
 		groupImpl.setLiveGroupId(liveGroupId);
 
 		if (treePath == null) {
-			groupImpl.setTreePath("");
+			groupImpl.setTreePath(StringPool.BLANK);
 		}
 		else {
 			groupImpl.setTreePath(treePath);
 		}
 
 		if (groupKey == null) {
-			groupImpl.setGroupKey("");
+			groupImpl.setGroupKey(StringPool.BLANK);
 		}
 		else {
 			groupImpl.setGroupKey(groupKey);
 		}
 
 		if (name == null) {
-			groupImpl.setName("");
+			groupImpl.setName(StringPool.BLANK);
 		}
 		else {
 			groupImpl.setName(name);
 		}
 
 		if (description == null) {
-			groupImpl.setDescription("");
+			groupImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			groupImpl.setDescription(description);
@@ -177,7 +180,7 @@ public class GroupCacheModel
 		groupImpl.setType(type);
 
 		if (typeSettings == null) {
-			groupImpl.setTypeSettings("");
+			groupImpl.setTypeSettings(StringPool.BLANK);
 		}
 		else {
 			groupImpl.setTypeSettings(typeSettings);
@@ -187,7 +190,7 @@ public class GroupCacheModel
 		groupImpl.setMembershipRestriction(membershipRestriction);
 
 		if (friendlyURL == null) {
-			groupImpl.setFriendlyURL("");
+			groupImpl.setFriendlyURL(StringPool.BLANK);
 		}
 		else {
 			groupImpl.setFriendlyURL(friendlyURL);
@@ -204,9 +207,7 @@ public class GroupCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
 		uuid = objectInput.readUTF();
 
@@ -229,7 +230,7 @@ public class GroupCacheModel
 		description = objectInput.readUTF();
 
 		type = objectInput.readInt();
-		typeSettings = (String)objectInput.readObject();
+		typeSettings = objectInput.readUTF();
 
 		manualMembership = objectInput.readBoolean();
 
@@ -246,11 +247,12 @@ public class GroupCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -271,28 +273,28 @@ public class GroupCacheModel
 		objectOutput.writeLong(liveGroupId);
 
 		if (treePath == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(treePath);
 		}
 
 		if (groupKey == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(groupKey);
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -301,10 +303,10 @@ public class GroupCacheModel
 		objectOutput.writeInt(type);
 
 		if (typeSettings == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(typeSettings);
+			objectOutput.writeUTF(typeSettings);
 		}
 
 		objectOutput.writeBoolean(manualMembership);
@@ -312,7 +314,7 @@ public class GroupCacheModel
 		objectOutput.writeInt(membershipRestriction);
 
 		if (friendlyURL == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(friendlyURL);
@@ -349,5 +351,4 @@ public class GroupCacheModel
 	public int remoteStagingGroupCount;
 	public boolean inheritContent;
 	public boolean active;
-
 }

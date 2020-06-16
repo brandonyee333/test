@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.watson.service.persistence.impl;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -22,14 +24,16 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.service.persistence.CompanyProvider;
+import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+
 import com.liferay.watson.exception.NoSuchVehicleAuditException;
 import com.liferay.watson.model.WatsonVehicleAudit;
 import com.liferay.watson.model.impl.WatsonVehicleAuditImpl;
@@ -37,8 +41,6 @@ import com.liferay.watson.model.impl.WatsonVehicleAuditModelImpl;
 import com.liferay.watson.service.persistence.WatsonVehicleAuditPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -57,29 +59,34 @@ import java.util.Set;
  * </p>
  *
  * @author Steven Smith
+ * @see WatsonVehicleAuditPersistence
+ * @see com.liferay.watson.service.persistence.WatsonVehicleAuditUtil
  * @generated
  */
-public class WatsonVehicleAuditPersistenceImpl
-	extends BasePersistenceImpl<WatsonVehicleAudit>
+@ProviderType
+public class WatsonVehicleAuditPersistenceImpl extends BasePersistenceImpl<WatsonVehicleAudit>
 	implements WatsonVehicleAuditPersistence {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use <code>WatsonVehicleAuditUtil</code> to access the watson vehicle audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use {@link WatsonVehicleAuditUtil} to access the watson vehicle audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY =
-		WatsonVehicleAuditImpl.class.getName();
-
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List1";
-
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
+	public static final String FINDER_CLASS_NAME_ENTITY = WatsonVehicleAuditImpl.class.getName();
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List1";
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List2";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonVehicleAuditModelImpl.FINDER_CACHE_ENABLED,
+			WatsonVehicleAuditImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonVehicleAuditModelImpl.FINDER_CACHE_ENABLED,
+			WatsonVehicleAuditImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonVehicleAuditModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
 
 	public WatsonVehicleAuditPersistenceImpl() {
 		setModelClass(WatsonVehicleAudit.class);
@@ -92,8 +99,7 @@ public class WatsonVehicleAuditPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(WatsonVehicleAudit watsonVehicleAudit) {
-		entityCache.putResult(
-			WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonVehicleAuditImpl.class, watsonVehicleAudit.getPrimaryKey(),
 			watsonVehicleAudit);
 
@@ -109,10 +115,9 @@ public class WatsonVehicleAuditPersistenceImpl
 	public void cacheResult(List<WatsonVehicleAudit> watsonVehicleAudits) {
 		for (WatsonVehicleAudit watsonVehicleAudit : watsonVehicleAudits) {
 			if (entityCache.getResult(
-					WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
-					WatsonVehicleAuditImpl.class,
-					watsonVehicleAudit.getPrimaryKey()) == null) {
-
+						WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
+						WatsonVehicleAuditImpl.class,
+						watsonVehicleAudit.getPrimaryKey()) == null) {
 				cacheResult(watsonVehicleAudit);
 			}
 			else {
@@ -125,7 +130,7 @@ public class WatsonVehicleAuditPersistenceImpl
 	 * Clears the cache for all watson vehicle audits.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -141,13 +146,12 @@ public class WatsonVehicleAuditPersistenceImpl
 	 * Clears the cache for the watson vehicle audit.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(WatsonVehicleAudit watsonVehicleAudit) {
-		entityCache.removeResult(
-			WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonVehicleAuditImpl.class, watsonVehicleAudit.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -160,22 +164,8 @@ public class WatsonVehicleAuditPersistenceImpl
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (WatsonVehicleAudit watsonVehicleAudit : watsonVehicleAudits) {
-			entityCache.removeResult(
-				WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonVehicleAuditImpl.class,
-				watsonVehicleAudit.getPrimaryKey());
-		}
-	}
-
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonVehicleAuditImpl.class, primaryKey);
+			entityCache.removeResult(WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonVehicleAuditImpl.class, watsonVehicleAudit.getPrimaryKey());
 		}
 	}
 
@@ -192,7 +182,7 @@ public class WatsonVehicleAuditPersistenceImpl
 		watsonVehicleAudit.setNew(true);
 		watsonVehicleAudit.setPrimaryKey(watsonVehicleAuditId);
 
-		watsonVehicleAudit.setCompanyId(CompanyThreadLocal.getCompanyId());
+		watsonVehicleAudit.setCompanyId(companyProvider.getCompanyId());
 
 		return watsonVehicleAudit;
 	}
@@ -207,7 +197,6 @@ public class WatsonVehicleAuditPersistenceImpl
 	@Override
 	public WatsonVehicleAudit remove(long watsonVehicleAuditId)
 		throws NoSuchVehicleAuditException {
-
 		return remove((Serializable)watsonVehicleAuditId);
 	}
 
@@ -221,32 +210,30 @@ public class WatsonVehicleAuditPersistenceImpl
 	@Override
 	public WatsonVehicleAudit remove(Serializable primaryKey)
 		throws NoSuchVehicleAuditException {
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			WatsonVehicleAudit watsonVehicleAudit =
-				(WatsonVehicleAudit)session.get(
-					WatsonVehicleAuditImpl.class, primaryKey);
+			WatsonVehicleAudit watsonVehicleAudit = (WatsonVehicleAudit)session.get(WatsonVehicleAuditImpl.class,
+					primaryKey);
 
 			if (watsonVehicleAudit == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchVehicleAuditException(
-					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				throw new NoSuchVehicleAuditException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+					primaryKey);
 			}
 
 			return remove(watsonVehicleAudit);
 		}
-		catch (NoSuchVehicleAuditException noSuchEntityException) {
-			throw noSuchEntityException;
+		catch (NoSuchVehicleAuditException nsee) {
+			throw nsee;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -256,6 +243,7 @@ public class WatsonVehicleAuditPersistenceImpl
 	@Override
 	protected WatsonVehicleAudit removeImpl(
 		WatsonVehicleAudit watsonVehicleAudit) {
+		watsonVehicleAudit = toUnwrappedModel(watsonVehicleAudit);
 
 		Session session = null;
 
@@ -263,17 +251,16 @@ public class WatsonVehicleAuditPersistenceImpl
 			session = openSession();
 
 			if (!session.contains(watsonVehicleAudit)) {
-				watsonVehicleAudit = (WatsonVehicleAudit)session.get(
-					WatsonVehicleAuditImpl.class,
-					watsonVehicleAudit.getPrimaryKeyObj());
+				watsonVehicleAudit = (WatsonVehicleAudit)session.get(WatsonVehicleAuditImpl.class,
+						watsonVehicleAudit.getPrimaryKeyObj());
 			}
 
 			if (watsonVehicleAudit != null) {
 				session.delete(watsonVehicleAudit);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -287,33 +274,14 @@ public class WatsonVehicleAuditPersistenceImpl
 	}
 
 	@Override
-	public WatsonVehicleAudit updateImpl(
-		WatsonVehicleAudit watsonVehicleAudit) {
+	public WatsonVehicleAudit updateImpl(WatsonVehicleAudit watsonVehicleAudit) {
+		watsonVehicleAudit = toUnwrappedModel(watsonVehicleAudit);
 
 		boolean isNew = watsonVehicleAudit.isNew();
 
-		if (!(watsonVehicleAudit instanceof WatsonVehicleAuditModelImpl)) {
-			InvocationHandler invocationHandler = null;
+		WatsonVehicleAuditModelImpl watsonVehicleAuditModelImpl = (WatsonVehicleAuditModelImpl)watsonVehicleAudit;
 
-			if (ProxyUtil.isProxyClass(watsonVehicleAudit.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(
-					watsonVehicleAudit);
-
-				throw new IllegalArgumentException(
-					"Implement ModelWrapper in watsonVehicleAudit proxy " +
-						invocationHandler.getClass());
-			}
-
-			throw new IllegalArgumentException(
-				"Implement ModelWrapper in custom WatsonVehicleAudit implementation " +
-					watsonVehicleAudit.getClass());
-		}
-
-		WatsonVehicleAuditModelImpl watsonVehicleAuditModelImpl =
-			(WatsonVehicleAuditModelImpl)watsonVehicleAudit;
-
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -322,8 +290,8 @@ public class WatsonVehicleAuditPersistenceImpl
 				watsonVehicleAudit.setCreateDate(now);
 			}
 			else {
-				watsonVehicleAudit.setCreateDate(
-					serviceContext.getCreateDate(now));
+				watsonVehicleAudit.setCreateDate(serviceContext.getCreateDate(
+						now));
 			}
 		}
 
@@ -332,8 +300,8 @@ public class WatsonVehicleAuditPersistenceImpl
 				watsonVehicleAudit.setModifiedDate(now);
 			}
 			else {
-				watsonVehicleAudit.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+				watsonVehicleAudit.setModifiedDate(serviceContext.getModifiedDate(
+						now));
 			}
 		}
 
@@ -348,12 +316,11 @@ public class WatsonVehicleAuditPersistenceImpl
 				watsonVehicleAudit.setNew(false);
 			}
 			else {
-				watsonVehicleAudit = (WatsonVehicleAudit)session.merge(
-					watsonVehicleAudit);
+				watsonVehicleAudit = (WatsonVehicleAudit)session.merge(watsonVehicleAudit);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -362,13 +329,12 @@ public class WatsonVehicleAuditPersistenceImpl
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
 		if (isNew) {
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(
-			WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonVehicleAuditImpl.class, watsonVehicleAudit.getPrimaryKey(),
 			watsonVehicleAudit, false);
 
@@ -377,8 +343,43 @@ public class WatsonVehicleAuditPersistenceImpl
 		return watsonVehicleAudit;
 	}
 
+	protected WatsonVehicleAudit toUnwrappedModel(
+		WatsonVehicleAudit watsonVehicleAudit) {
+		if (watsonVehicleAudit instanceof WatsonVehicleAuditImpl) {
+			return watsonVehicleAudit;
+		}
+
+		WatsonVehicleAuditImpl watsonVehicleAuditImpl = new WatsonVehicleAuditImpl();
+
+		watsonVehicleAuditImpl.setNew(watsonVehicleAudit.isNew());
+		watsonVehicleAuditImpl.setPrimaryKey(watsonVehicleAudit.getPrimaryKey());
+
+		watsonVehicleAuditImpl.setWatsonVehicleAuditId(watsonVehicleAudit.getWatsonVehicleAuditId());
+		watsonVehicleAuditImpl.setGroupId(watsonVehicleAudit.getGroupId());
+		watsonVehicleAuditImpl.setCompanyId(watsonVehicleAudit.getCompanyId());
+		watsonVehicleAuditImpl.setUserId(watsonVehicleAudit.getUserId());
+		watsonVehicleAuditImpl.setUserName(watsonVehicleAudit.getUserName());
+		watsonVehicleAuditImpl.setCreateDate(watsonVehicleAudit.getCreateDate());
+		watsonVehicleAuditImpl.setModifiedDate(watsonVehicleAudit.getModifiedDate());
+		watsonVehicleAuditImpl.setColorWatsonListTypeId(watsonVehicleAudit.getColorWatsonListTypeId());
+		watsonVehicleAuditImpl.setMakeWatsonListTypeId(watsonVehicleAudit.getMakeWatsonListTypeId());
+		watsonVehicleAuditImpl.setModelWatsonListTypeId(watsonVehicleAudit.getModelWatsonListTypeId());
+		watsonVehicleAuditImpl.setOriginalWatsonVehicleId(watsonVehicleAudit.getOriginalWatsonVehicleId());
+		watsonVehicleAuditImpl.setTypeWatsonListTypeId(watsonVehicleAudit.getTypeWatsonListTypeId());
+		watsonVehicleAuditImpl.setYearWatsonListTypeId(watsonVehicleAudit.getYearWatsonListTypeId());
+		watsonVehicleAuditImpl.setWatsonIncidentId(watsonVehicleAudit.getWatsonIncidentId());
+		watsonVehicleAuditImpl.setWatsonVehicleId(watsonVehicleAudit.getWatsonVehicleId());
+		watsonVehicleAuditImpl.setYear(watsonVehicleAudit.getYear());
+		watsonVehicleAuditImpl.setDescription(watsonVehicleAudit.getDescription());
+		watsonVehicleAuditImpl.setImagePayload(watsonVehicleAudit.getImagePayload());
+		watsonVehicleAuditImpl.setLicensePlate(watsonVehicleAudit.getLicensePlate());
+		watsonVehicleAuditImpl.setStatus(watsonVehicleAudit.getStatus());
+
+		return watsonVehicleAuditImpl;
+	}
+
 	/**
-	 * Returns the watson vehicle audit with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
+	 * Returns the watson vehicle audit with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the watson vehicle audit
 	 * @return the watson vehicle audit
@@ -387,7 +388,6 @@ public class WatsonVehicleAuditPersistenceImpl
 	@Override
 	public WatsonVehicleAudit findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchVehicleAuditException {
-
 		WatsonVehicleAudit watsonVehicleAudit = fetchByPrimaryKey(primaryKey);
 
 		if (watsonVehicleAudit == null) {
@@ -395,15 +395,15 @@ public class WatsonVehicleAuditPersistenceImpl
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchVehicleAuditException(
-				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			throw new NoSuchVehicleAuditException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
 		}
 
 		return watsonVehicleAudit;
 	}
 
 	/**
-	 * Returns the watson vehicle audit with the primary key or throws a <code>NoSuchVehicleAuditException</code> if it could not be found.
+	 * Returns the watson vehicle audit with the primary key or throws a {@link NoSuchVehicleAuditException} if it could not be found.
 	 *
 	 * @param watsonVehicleAuditId the primary key of the watson vehicle audit
 	 * @return the watson vehicle audit
@@ -412,7 +412,6 @@ public class WatsonVehicleAuditPersistenceImpl
 	@Override
 	public WatsonVehicleAudit findByPrimaryKey(long watsonVehicleAuditId)
 		throws NoSuchVehicleAuditException {
-
 		return findByPrimaryKey((Serializable)watsonVehicleAuditId);
 	}
 
@@ -424,16 +423,14 @@ public class WatsonVehicleAuditPersistenceImpl
 	 */
 	@Override
 	public WatsonVehicleAudit fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(
-			WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonVehicleAuditImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonVehicleAuditImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
 		}
 
-		WatsonVehicleAudit watsonVehicleAudit =
-			(WatsonVehicleAudit)serializable;
+		WatsonVehicleAudit watsonVehicleAudit = (WatsonVehicleAudit)serializable;
 
 		if (watsonVehicleAudit == null) {
 			Session session = null;
@@ -441,24 +438,22 @@ public class WatsonVehicleAuditPersistenceImpl
 			try {
 				session = openSession();
 
-				watsonVehicleAudit = (WatsonVehicleAudit)session.get(
-					WatsonVehicleAuditImpl.class, primaryKey);
+				watsonVehicleAudit = (WatsonVehicleAudit)session.get(WatsonVehicleAuditImpl.class,
+						primaryKey);
 
 				if (watsonVehicleAudit != null) {
 					cacheResult(watsonVehicleAudit);
 				}
 				else {
-					entityCache.putResult(
-						WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
 						WatsonVehicleAuditImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception exception) {
-				entityCache.removeResult(
-					WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception e) {
+				entityCache.removeResult(WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonVehicleAuditImpl.class, primaryKey);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -482,21 +477,18 @@ public class WatsonVehicleAuditPersistenceImpl
 	@Override
 	public Map<Serializable, WatsonVehicleAudit> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
-
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, WatsonVehicleAudit> map =
-			new HashMap<Serializable, WatsonVehicleAudit>();
+		Map<Serializable, WatsonVehicleAudit> map = new HashMap<Serializable, WatsonVehicleAudit>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
 
 			Serializable primaryKey = iterator.next();
 
-			WatsonVehicleAudit watsonVehicleAudit = fetchByPrimaryKey(
-				primaryKey);
+			WatsonVehicleAudit watsonVehicleAudit = fetchByPrimaryKey(primaryKey);
 
 			if (watsonVehicleAudit != null) {
 				map.put(primaryKey, watsonVehicleAudit);
@@ -508,9 +500,8 @@ public class WatsonVehicleAuditPersistenceImpl
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(
-				WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonVehicleAuditImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
+					WatsonVehicleAuditImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -530,50 +521,46 @@ public class WatsonVehicleAuditPersistenceImpl
 			return map;
 		}
 
-		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
+				1);
 
-		sb.append(_SQL_SELECT_WATSONVEHICLEAUDIT_WHERE_PKS_IN);
+		query.append(_SQL_SELECT_WATSONVEHICLEAUDIT_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			sb.append((long)primaryKey);
+			query.append((long)primaryKey);
 
-			sb.append(",");
+			query.append(StringPool.COMMA);
 		}
 
-		sb.setIndex(sb.index() - 1);
+		query.setIndex(query.index() - 1);
 
-		sb.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query query = session.createQuery(sql);
+			Query q = session.createQuery(sql);
 
-			for (WatsonVehicleAudit watsonVehicleAudit :
-					(List<WatsonVehicleAudit>)query.list()) {
-
-				map.put(
-					watsonVehicleAudit.getPrimaryKeyObj(), watsonVehicleAudit);
+			for (WatsonVehicleAudit watsonVehicleAudit : (List<WatsonVehicleAudit>)q.list()) {
+				map.put(watsonVehicleAudit.getPrimaryKeyObj(),
+					watsonVehicleAudit);
 
 				cacheResult(watsonVehicleAudit);
 
-				uncachedPrimaryKeys.remove(
-					watsonVehicleAudit.getPrimaryKeyObj());
+				uncachedPrimaryKeys.remove(watsonVehicleAudit.getPrimaryKeyObj());
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(
-					WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonVehicleAuditImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -596,7 +583,7 @@ public class WatsonVehicleAuditPersistenceImpl
 	 * Returns a range of all the watson vehicle audits.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>WatsonVehicleAuditModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WatsonVehicleAuditModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of watson vehicle audits
@@ -612,7 +599,7 @@ public class WatsonVehicleAuditPersistenceImpl
 	 * Returns an ordered range of all the watson vehicle audits.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>WatsonVehicleAuditModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WatsonVehicleAuditModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of watson vehicle audits
@@ -621,10 +608,8 @@ public class WatsonVehicleAuditPersistenceImpl
 	 * @return the ordered range of watson vehicle audits
 	 */
 	@Override
-	public List<WatsonVehicleAudit> findAll(
-		int start, int end,
+	public List<WatsonVehicleAudit> findAll(int start, int end,
 		OrderByComparator<WatsonVehicleAudit> orderByComparator) {
-
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -632,63 +617,62 @@ public class WatsonVehicleAuditPersistenceImpl
 	 * Returns an ordered range of all the watson vehicle audits.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>WatsonVehicleAuditModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WatsonVehicleAuditModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of watson vehicle audits
 	 * @param end the upper bound of the range of watson vehicle audits (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of watson vehicle audits
 	 */
 	@Override
-	public List<WatsonVehicleAudit> findAll(
-		int start, int end,
+	public List<WatsonVehicleAudit> findAll(int start, int end,
 		OrderByComparator<WatsonVehicleAudit> orderByComparator,
-		boolean useFinderCache) {
-
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
-				finderArgs = FINDER_ARGS_EMPTY;
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+			finderArgs = FINDER_ARGS_EMPTY;
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] {start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
 		List<WatsonVehicleAudit> list = null;
 
-		if (useFinderCache) {
-			list = (List<WatsonVehicleAudit>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<WatsonVehicleAudit>)finderCache.getResult(finderPath,
+					finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					2 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(2 +
+						(orderByComparator.getOrderByFields().length * 2));
 
-				sb.append(_SQL_SELECT_WATSONVEHICLEAUDIT);
+				query.append(_SQL_SELECT_WATSONVEHICLEAUDIT);
 
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 
-				sql = sb.toString();
+				sql = query.toString();
 			}
 			else {
 				sql = _SQL_SELECT_WATSONVEHICLEAUDIT;
 
-				sql = sql.concat(WatsonVehicleAuditModelImpl.ORDER_BY_JPQL);
+				if (pagination) {
+					sql = sql.concat(WatsonVehicleAuditModelImpl.ORDER_BY_JPQL);
+				}
 			}
 
 			Session session = null;
@@ -696,23 +680,29 @@ public class WatsonVehicleAuditPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				list = (List<WatsonVehicleAudit>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<WatsonVehicleAudit>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<WatsonVehicleAudit>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -740,8 +730,8 @@ public class WatsonVehicleAuditPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -749,19 +739,18 @@ public class WatsonVehicleAuditPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(
-					_SQL_COUNT_WATSONVEHICLEAUDIT);
+				Query q = session.createQuery(_SQL_COUNT_WATSONVEHICLEAUDIT);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
+					count);
 			}
-			catch (Exception exception) {
-				finderCache.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -780,24 +769,6 @@ public class WatsonVehicleAuditPersistenceImpl
 	 * Initializes the watson vehicle audit persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonVehicleAuditModelImpl.FINDER_CACHE_ENABLED,
-			WatsonVehicleAuditImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonVehicleAuditModelImpl.FINDER_CACHE_ENABLED,
-			WatsonVehicleAuditImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			WatsonVehicleAuditModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonVehicleAuditModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
 	}
 
 	public void destroy() {
@@ -807,27 +778,16 @@ public class WatsonVehicleAuditPersistenceImpl
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@ServiceReference(type = CompanyProviderWrapper.class)
+	protected CompanyProvider companyProvider;
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
-
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-
-	private static final String _SQL_SELECT_WATSONVEHICLEAUDIT =
-		"SELECT watsonVehicleAudit FROM WatsonVehicleAudit watsonVehicleAudit";
-
-	private static final String _SQL_SELECT_WATSONVEHICLEAUDIT_WHERE_PKS_IN =
-		"SELECT watsonVehicleAudit FROM WatsonVehicleAudit watsonVehicleAudit WHERE watsonVehicleAuditId IN (";
-
-	private static final String _SQL_COUNT_WATSONVEHICLEAUDIT =
-		"SELECT COUNT(watsonVehicleAudit) FROM WatsonVehicleAudit watsonVehicleAudit";
-
+	private static final String _SQL_SELECT_WATSONVEHICLEAUDIT = "SELECT watsonVehicleAudit FROM WatsonVehicleAudit watsonVehicleAudit";
+	private static final String _SQL_SELECT_WATSONVEHICLEAUDIT_WHERE_PKS_IN = "SELECT watsonVehicleAudit FROM WatsonVehicleAudit watsonVehicleAudit WHERE watsonVehicleAuditId IN (";
+	private static final String _SQL_COUNT_WATSONVEHICLEAUDIT = "SELECT COUNT(watsonVehicleAudit) FROM WatsonVehicleAudit watsonVehicleAudit";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "watsonVehicleAudit.";
-
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
-		"No WatsonVehicleAudit exists with the primary key ";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		WatsonVehicleAuditPersistenceImpl.class);
-
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No WatsonVehicleAudit exists with the primary key ";
+	private static final Log _log = LogFactoryUtil.getLog(WatsonVehicleAuditPersistenceImpl.class);
 }

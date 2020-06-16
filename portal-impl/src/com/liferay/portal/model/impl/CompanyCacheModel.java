@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -29,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing Company in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see Company
  * @generated
  */
-public class CompanyCacheModel
-	implements CacheModel<Company>, Externalizable, MVCCModel {
-
+@ProviderType
+public class CompanyCacheModel implements CacheModel<Company>, Externalizable,
+	MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -47,8 +51,7 @@ public class CompanyCacheModel
 		CompanyCacheModel companyCacheModel = (CompanyCacheModel)obj;
 
 		if ((companyId == companyCacheModel.companyId) &&
-			(mvccVersion == companyCacheModel.mvccVersion)) {
-
+				(mvccVersion == companyCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -112,28 +115,28 @@ public class CompanyCacheModel
 		companyImpl.setAccountId(accountId);
 
 		if (webId == null) {
-			companyImpl.setWebId("");
+			companyImpl.setWebId(StringPool.BLANK);
 		}
 		else {
 			companyImpl.setWebId(webId);
 		}
 
 		if (key == null) {
-			companyImpl.setKey("");
+			companyImpl.setKey(StringPool.BLANK);
 		}
 		else {
 			companyImpl.setKey(key);
 		}
 
 		if (mx == null) {
-			companyImpl.setMx("");
+			companyImpl.setMx(StringPool.BLANK);
 		}
 		else {
 			companyImpl.setMx(mx);
 		}
 
 		if (homeURL == null) {
-			companyImpl.setHomeURL("");
+			companyImpl.setHomeURL(StringPool.BLANK);
 		}
 		else {
 			companyImpl.setHomeURL(homeURL);
@@ -158,14 +161,13 @@ public class CompanyCacheModel
 	@Override
 	public void readExternal(ObjectInput objectInput)
 		throws ClassNotFoundException, IOException {
-
 		mvccVersion = objectInput.readLong();
 
 		companyId = objectInput.readLong();
 
 		accountId = objectInput.readLong();
 		webId = objectInput.readUTF();
-		key = (String)objectInput.readObject();
+		key = objectInput.readUTF();
 		mx = objectInput.readUTF();
 		homeURL = objectInput.readUTF();
 
@@ -177,14 +179,14 @@ public class CompanyCacheModel
 
 		active = objectInput.readBoolean();
 
-		_companySecurityBag =
-			(CompanyImpl.CompanySecurityBag)objectInput.readObject();
+		_companySecurityBag = (CompanyImpl.CompanySecurityBag)objectInput.readObject();
 		_keyObj = (java.security.Key)objectInput.readObject();
-		_virtualHostname = (String)objectInput.readObject();
+		_virtualHostname = (java.lang.String)objectInput.readObject();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(companyId);
@@ -192,28 +194,28 @@ public class CompanyCacheModel
 		objectOutput.writeLong(accountId);
 
 		if (webId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(webId);
 		}
 
 		if (key == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(key);
+			objectOutput.writeUTF(key);
 		}
 
 		if (mx == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(mx);
 		}
 
 		if (homeURL == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(homeURL);
@@ -245,6 +247,5 @@ public class CompanyCacheModel
 	public boolean active;
 	public CompanyImpl.CompanySecurityBag _companySecurityBag;
 	public java.security.Key _keyObj;
-	public String _virtualHostname;
-
+	public java.lang.String _virtualHostname;
 }

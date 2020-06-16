@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.watson.login.service.persistence.impl;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -23,14 +25,16 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.service.persistence.CompanyProvider;
+import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+
 import com.liferay.watson.login.exception.NoSuchEntryException;
 import com.liferay.watson.login.model.WatsonTokenAuthEntry;
 import com.liferay.watson.login.model.impl.WatsonTokenAuthEntryImpl;
@@ -38,9 +42,6 @@ import com.liferay.watson.login.model.impl.WatsonTokenAuthEntryModelImpl;
 import com.liferay.watson.login.service.persistence.WatsonTokenAuthEntryPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -58,34 +59,46 @@ import java.util.Set;
  * </p>
  *
  * @author Steven Smith
+ * @see WatsonTokenAuthEntryPersistence
+ * @see com.liferay.watson.login.service.persistence.WatsonTokenAuthEntryUtil
  * @generated
  */
-public class WatsonTokenAuthEntryPersistenceImpl
-	extends BasePersistenceImpl<WatsonTokenAuthEntry>
+@ProviderType
+public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<WatsonTokenAuthEntry>
 	implements WatsonTokenAuthEntryPersistence {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use <code>WatsonTokenAuthEntryUtil</code> to access the watson token auth entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use {@link WatsonTokenAuthEntryUtil} to access the watson token auth entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY =
-		WatsonTokenAuthEntryImpl.class.getName();
-
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List1";
-
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathFetchByUserId;
-	private FinderPath _finderPathCountByUserId;
+	public static final String FINDER_CLASS_NAME_ENTITY = WatsonTokenAuthEntryImpl.class.getName();
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List1";
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List2";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
+			WatsonTokenAuthEntryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
+			WatsonTokenAuthEntryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	public static final FinderPath FINDER_PATH_FETCH_BY_USERID = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
+			WatsonTokenAuthEntryImpl.class, FINDER_CLASS_NAME_ENTITY,
+			"fetchByUserId", new String[] { Long.class.getName() },
+			WatsonTokenAuthEntryModelImpl.USERID_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_USERID = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
+			new String[] { Long.class.getName() });
 
 	/**
-	 * Returns the watson token auth entry where userId = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
+	 * Returns the watson token auth entry where userId = &#63; or throws a {@link NoSuchEntryException} if it could not be found.
 	 *
 	 * @param userId the user ID
 	 * @return the matching watson token auth entry
@@ -94,24 +107,23 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	@Override
 	public WatsonTokenAuthEntry findByUserId(long userId)
 		throws NoSuchEntryException {
-
 		WatsonTokenAuthEntry watsonTokenAuthEntry = fetchByUserId(userId);
 
 		if (watsonTokenAuthEntry == null) {
-			StringBundler sb = new StringBundler(4);
+			StringBundler msg = new StringBundler(4);
 
-			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			sb.append("userId=");
-			sb.append(userId);
+			msg.append("userId=");
+			msg.append(userId);
 
-			sb.append("}");
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(sb.toString());
+				_log.debug(msg.toString());
 			}
 
-			throw new NoSuchEntryException(sb.toString());
+			throw new NoSuchEntryException(msg.toString());
 		}
 
 		return watsonTokenAuthEntry;
@@ -132,76 +144,64 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 * Returns the watson token auth entry where userId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param userId the user ID
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the matching watson token auth entry, or <code>null</code> if a matching watson token auth entry could not be found
 	 */
 	@Override
-	public WatsonTokenAuthEntry fetchByUserId(
-		long userId, boolean useFinderCache) {
-
-		Object[] finderArgs = null;
-
-		if (useFinderCache) {
-			finderArgs = new Object[] {userId};
-		}
+	public WatsonTokenAuthEntry fetchByUserId(long userId,
+		boolean retrieveFromCache) {
+		Object[] finderArgs = new Object[] { userId };
 
 		Object result = null;
 
-		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchByUserId, finderArgs, this);
+		if (retrieveFromCache) {
+			result = finderCache.getResult(FINDER_PATH_FETCH_BY_USERID,
+					finderArgs, this);
 		}
 
 		if (result instanceof WatsonTokenAuthEntry) {
-			WatsonTokenAuthEntry watsonTokenAuthEntry =
-				(WatsonTokenAuthEntry)result;
+			WatsonTokenAuthEntry watsonTokenAuthEntry = (WatsonTokenAuthEntry)result;
 
-			if (userId != watsonTokenAuthEntry.getUserId()) {
+			if ((userId != watsonTokenAuthEntry.getUserId())) {
 				result = null;
 			}
 		}
 
 		if (result == null) {
-			StringBundler sb = new StringBundler(3);
+			StringBundler query = new StringBundler(3);
 
-			sb.append(_SQL_SELECT_WATSONTOKENAUTHENTRY_WHERE);
+			query.append(_SQL_SELECT_WATSONTOKENAUTHENTRY_WHERE);
 
-			sb.append(_FINDER_COLUMN_USERID_USERID_2);
+			query.append(_FINDER_COLUMN_USERID_USERID_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(userId);
+				qPos.add(userId);
 
-				List<WatsonTokenAuthEntry> list = query.list();
+				List<WatsonTokenAuthEntry> list = q.list();
 
 				if (list.isEmpty()) {
-					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchByUserId, finderArgs, list);
-					}
+					finderCache.putResult(FINDER_PATH_FETCH_BY_USERID,
+						finderArgs, list);
 				}
 				else {
 					if (list.size() > 1) {
 						Collections.sort(list, Collections.reverseOrder());
 
 						if (_log.isWarnEnabled()) {
-							if (!useFinderCache) {
-								finderArgs = new Object[] {userId};
-							}
-
 							_log.warn(
 								"WatsonTokenAuthEntryPersistenceImpl.fetchByUserId(long, boolean) with parameters (" +
-									StringUtil.merge(finderArgs) +
-										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+								StringUtil.merge(finderArgs) +
+								") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 						}
 					}
 
@@ -210,15 +210,17 @@ public class WatsonTokenAuthEntryPersistenceImpl
 					result = watsonTokenAuthEntry;
 
 					cacheResult(watsonTokenAuthEntry);
+
+					if ((watsonTokenAuthEntry.getUserId() != userId)) {
+						finderCache.putResult(FINDER_PATH_FETCH_BY_USERID,
+							finderArgs, watsonTokenAuthEntry);
+					}
 				}
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(
-						_finderPathFetchByUserId, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_FETCH_BY_USERID, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -242,7 +244,6 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	@Override
 	public WatsonTokenAuthEntry removeByUserId(long userId)
 		throws NoSuchEntryException {
-
 		WatsonTokenAuthEntry watsonTokenAuthEntry = findByUserId(userId);
 
 		return remove(watsonTokenAuthEntry);
@@ -256,40 +257,40 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 */
 	@Override
 	public int countByUserId(long userId) {
-		FinderPath finderPath = _finderPathCountByUserId;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_USERID;
 
-		Object[] finderArgs = new Object[] {userId};
+		Object[] finderArgs = new Object[] { userId };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(2);
+			StringBundler query = new StringBundler(2);
 
-			sb.append(_SQL_COUNT_WATSONTOKENAUTHENTRY_WHERE);
+			query.append(_SQL_COUNT_WATSONTOKENAUTHENTRY_WHERE);
 
-			sb.append(_FINDER_COLUMN_USERID_USERID_2);
+			query.append(_FINDER_COLUMN_USERID_USERID_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(userId);
+				qPos.add(userId);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
+			catch (Exception e) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -299,12 +300,28 @@ public class WatsonTokenAuthEntryPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_USERID_USERID_2 =
-		"watsonTokenAuthEntry.userId = ?";
-
-	private FinderPath _finderPathWithPaginationFindByC_U;
-	private FinderPath _finderPathWithoutPaginationFindByC_U;
-	private FinderPath _finderPathCountByC_U;
+	private static final String _FINDER_COLUMN_USERID_USERID_2 = "watsonTokenAuthEntry.userId = ?";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_C_U = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
+			WatsonTokenAuthEntryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_U",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_U = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
+			WatsonTokenAuthEntryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_U",
+			new String[] { Long.class.getName(), Long.class.getName() },
+			WatsonTokenAuthEntryModelImpl.COMPANYID_COLUMN_BITMASK |
+			WatsonTokenAuthEntryModelImpl.USERID_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_C_U = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_U",
+			new String[] { Long.class.getName(), Long.class.getName() });
 
 	/**
 	 * Returns all the watson token auth entries where companyId = &#63; and userId = &#63;.
@@ -315,15 +332,15 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 */
 	@Override
 	public List<WatsonTokenAuthEntry> findByC_U(long companyId, long userId) {
-		return findByC_U(
-			companyId, userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+		return findByC_U(companyId, userId, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the watson token auth entries where companyId = &#63; and userId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>WatsonTokenAuthEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WatsonTokenAuthEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param companyId the company ID
@@ -333,9 +350,8 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 * @return the range of matching watson token auth entries
 	 */
 	@Override
-	public List<WatsonTokenAuthEntry> findByC_U(
-		long companyId, long userId, int start, int end) {
-
+	public List<WatsonTokenAuthEntry> findByC_U(long companyId, long userId,
+		int start, int end) {
 		return findByC_U(companyId, userId, start, end, null);
 	}
 
@@ -343,7 +359,7 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 * Returns an ordered range of all the watson token auth entries where companyId = &#63; and userId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>WatsonTokenAuthEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WatsonTokenAuthEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param companyId the company ID
@@ -354,19 +370,17 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 * @return the ordered range of matching watson token auth entries
 	 */
 	@Override
-	public List<WatsonTokenAuthEntry> findByC_U(
-		long companyId, long userId, int start, int end,
+	public List<WatsonTokenAuthEntry> findByC_U(long companyId, long userId,
+		int start, int end,
 		OrderByComparator<WatsonTokenAuthEntry> orderByComparator) {
-
-		return findByC_U(
-			companyId, userId, start, end, orderByComparator, true);
+		return findByC_U(companyId, userId, start, end, orderByComparator, true);
 	}
 
 	/**
 	 * Returns an ordered range of all the watson token auth entries where companyId = &#63; and userId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>WatsonTokenAuthEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WatsonTokenAuthEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param companyId the company ID
@@ -374,44 +388,43 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 * @param start the lower bound of the range of watson token auth entries
 	 * @param end the upper bound of the range of watson token auth entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of matching watson token auth entries
 	 */
 	@Override
-	public List<WatsonTokenAuthEntry> findByC_U(
-		long companyId, long userId, int start, int end,
+	public List<WatsonTokenAuthEntry> findByC_U(long companyId, long userId,
+		int start, int end,
 		OrderByComparator<WatsonTokenAuthEntry> orderByComparator,
-		boolean useFinderCache) {
-
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByC_U;
-				finderArgs = new Object[] {companyId, userId};
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_U;
+			finderArgs = new Object[] { companyId, userId };
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByC_U;
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_C_U;
 			finderArgs = new Object[] {
-				companyId, userId, start, end, orderByComparator
-			};
+					companyId, userId,
+					
+					start, end, orderByComparator
+				};
 		}
 
 		List<WatsonTokenAuthEntry> list = null;
 
-		if (useFinderCache) {
-			list = (List<WatsonTokenAuthEntry>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<WatsonTokenAuthEntry>)finderCache.getResult(finderPath,
+					finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (WatsonTokenAuthEntry watsonTokenAuthEntry : list) {
 					if ((companyId != watsonTokenAuthEntry.getCompanyId()) ||
-						(userId != watsonTokenAuthEntry.getUserId())) {
-
+							(userId != watsonTokenAuthEntry.getUserId())) {
 						list = null;
 
 						break;
@@ -421,60 +434,67 @@ public class WatsonTokenAuthEntryPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					4 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(4 +
+						(orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				sb = new StringBundler(4);
+				query = new StringBundler(4);
 			}
 
-			sb.append(_SQL_SELECT_WATSONTOKENAUTHENTRY_WHERE);
+			query.append(_SQL_SELECT_WATSONTOKENAUTHENTRY_WHERE);
 
-			sb.append(_FINDER_COLUMN_C_U_COMPANYID_2);
+			query.append(_FINDER_COLUMN_C_U_COMPANYID_2);
 
-			sb.append(_FINDER_COLUMN_C_U_USERID_2);
+			query.append(_FINDER_COLUMN_C_U_USERID_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 			}
-			else {
-				sb.append(WatsonTokenAuthEntryModelImpl.ORDER_BY_JPQL);
+			else
+			 if (pagination) {
+				query.append(WatsonTokenAuthEntryModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(companyId);
+				qPos.add(companyId);
 
-				queryPos.add(userId);
+				qPos.add(userId);
 
-				list = (List<WatsonTokenAuthEntry>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<WatsonTokenAuthEntry>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<WatsonTokenAuthEntry>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -494,31 +514,29 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 * @throws NoSuchEntryException if a matching watson token auth entry could not be found
 	 */
 	@Override
-	public WatsonTokenAuthEntry findByC_U_First(
-			long companyId, long userId,
-			OrderByComparator<WatsonTokenAuthEntry> orderByComparator)
+	public WatsonTokenAuthEntry findByC_U_First(long companyId, long userId,
+		OrderByComparator<WatsonTokenAuthEntry> orderByComparator)
 		throws NoSuchEntryException {
-
-		WatsonTokenAuthEntry watsonTokenAuthEntry = fetchByC_U_First(
-			companyId, userId, orderByComparator);
+		WatsonTokenAuthEntry watsonTokenAuthEntry = fetchByC_U_First(companyId,
+				userId, orderByComparator);
 
 		if (watsonTokenAuthEntry != null) {
 			return watsonTokenAuthEntry;
 		}
 
-		StringBundler sb = new StringBundler(6);
+		StringBundler msg = new StringBundler(6);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("companyId=");
-		sb.append(companyId);
+		msg.append("companyId=");
+		msg.append(companyId);
 
-		sb.append(", userId=");
-		sb.append(userId);
+		msg.append(", userId=");
+		msg.append(userId);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(sb.toString());
+		throw new NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -530,12 +548,10 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 * @return the first matching watson token auth entry, or <code>null</code> if a matching watson token auth entry could not be found
 	 */
 	@Override
-	public WatsonTokenAuthEntry fetchByC_U_First(
-		long companyId, long userId,
+	public WatsonTokenAuthEntry fetchByC_U_First(long companyId, long userId,
 		OrderByComparator<WatsonTokenAuthEntry> orderByComparator) {
-
-		List<WatsonTokenAuthEntry> list = findByC_U(
-			companyId, userId, 0, 1, orderByComparator);
+		List<WatsonTokenAuthEntry> list = findByC_U(companyId, userId, 0, 1,
+				orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -554,31 +570,29 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 * @throws NoSuchEntryException if a matching watson token auth entry could not be found
 	 */
 	@Override
-	public WatsonTokenAuthEntry findByC_U_Last(
-			long companyId, long userId,
-			OrderByComparator<WatsonTokenAuthEntry> orderByComparator)
+	public WatsonTokenAuthEntry findByC_U_Last(long companyId, long userId,
+		OrderByComparator<WatsonTokenAuthEntry> orderByComparator)
 		throws NoSuchEntryException {
-
-		WatsonTokenAuthEntry watsonTokenAuthEntry = fetchByC_U_Last(
-			companyId, userId, orderByComparator);
+		WatsonTokenAuthEntry watsonTokenAuthEntry = fetchByC_U_Last(companyId,
+				userId, orderByComparator);
 
 		if (watsonTokenAuthEntry != null) {
 			return watsonTokenAuthEntry;
 		}
 
-		StringBundler sb = new StringBundler(6);
+		StringBundler msg = new StringBundler(6);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("companyId=");
-		sb.append(companyId);
+		msg.append("companyId=");
+		msg.append(companyId);
 
-		sb.append(", userId=");
-		sb.append(userId);
+		msg.append(", userId=");
+		msg.append(userId);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(sb.toString());
+		throw new NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -590,18 +604,16 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 * @return the last matching watson token auth entry, or <code>null</code> if a matching watson token auth entry could not be found
 	 */
 	@Override
-	public WatsonTokenAuthEntry fetchByC_U_Last(
-		long companyId, long userId,
+	public WatsonTokenAuthEntry fetchByC_U_Last(long companyId, long userId,
 		OrderByComparator<WatsonTokenAuthEntry> orderByComparator) {
-
 		int count = countByC_U(companyId, userId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<WatsonTokenAuthEntry> list = findByC_U(
-			companyId, userId, count - 1, count, orderByComparator);
+		List<WatsonTokenAuthEntry> list = findByC_U(companyId, userId,
+				count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -622,12 +634,10 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 */
 	@Override
 	public WatsonTokenAuthEntry[] findByC_U_PrevAndNext(
-			long watsonTokenAuthEntryId, long companyId, long userId,
-			OrderByComparator<WatsonTokenAuthEntry> orderByComparator)
+		long watsonTokenAuthEntryId, long companyId, long userId,
+		OrderByComparator<WatsonTokenAuthEntry> orderByComparator)
 		throws NoSuchEntryException {
-
-		WatsonTokenAuthEntry watsonTokenAuthEntry = findByPrimaryKey(
-			watsonTokenAuthEntryId);
+		WatsonTokenAuthEntry watsonTokenAuthEntry = findByPrimaryKey(watsonTokenAuthEntryId);
 
 		Session session = null;
 
@@ -636,132 +646,126 @@ public class WatsonTokenAuthEntryPersistenceImpl
 
 			WatsonTokenAuthEntry[] array = new WatsonTokenAuthEntryImpl[3];
 
-			array[0] = getByC_U_PrevAndNext(
-				session, watsonTokenAuthEntry, companyId, userId,
-				orderByComparator, true);
+			array[0] = getByC_U_PrevAndNext(session, watsonTokenAuthEntry,
+					companyId, userId, orderByComparator, true);
 
 			array[1] = watsonTokenAuthEntry;
 
-			array[2] = getByC_U_PrevAndNext(
-				session, watsonTokenAuthEntry, companyId, userId,
-				orderByComparator, false);
+			array[2] = getByC_U_PrevAndNext(session, watsonTokenAuthEntry,
+					companyId, userId, orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected WatsonTokenAuthEntry getByC_U_PrevAndNext(
-		Session session, WatsonTokenAuthEntry watsonTokenAuthEntry,
-		long companyId, long userId,
+	protected WatsonTokenAuthEntry getByC_U_PrevAndNext(Session session,
+		WatsonTokenAuthEntry watsonTokenAuthEntry, long companyId, long userId,
 		OrderByComparator<WatsonTokenAuthEntry> orderByComparator,
 		boolean previous) {
-
-		StringBundler sb = null;
+		StringBundler query = null;
 
 		if (orderByComparator != null) {
-			sb = new StringBundler(
-				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
+			query = new StringBundler(5 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			sb = new StringBundler(4);
+			query = new StringBundler(4);
 		}
 
-		sb.append(_SQL_SELECT_WATSONTOKENAUTHENTRY_WHERE);
+		query.append(_SQL_SELECT_WATSONTOKENAUTHENTRY_WHERE);
 
-		sb.append(_FINDER_COLUMN_C_U_COMPANYID_2);
+		query.append(_FINDER_COLUMN_C_U_COMPANYID_2);
 
-		sb.append(_FINDER_COLUMN_C_U_USERID_2);
+		query.append(_FINDER_COLUMN_C_U_USERID_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
+				query.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
+						query.append(WHERE_GREATER_THAN);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN);
+						query.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			sb.append(ORDER_BY_CLAUSE);
+			query.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
+						query.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
+						query.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
+						query.append(ORDER_BY_ASC);
 					}
 					else {
-						sb.append(ORDER_BY_DESC);
+						query.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			sb.append(WatsonTokenAuthEntryModelImpl.ORDER_BY_JPQL);
+			query.append(WatsonTokenAuthEntryModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
-		Query query = session.createQuery(sql);
+		Query q = session.createQuery(sql);
 
-		query.setFirstResult(0);
-		query.setMaxResults(2);
+		q.setFirstResult(0);
+		q.setMaxResults(2);
 
-		QueryPos queryPos = QueryPos.getInstance(query);
+		QueryPos qPos = QueryPos.getInstance(q);
 
-		queryPos.add(companyId);
+		qPos.add(companyId);
 
-		queryPos.add(userId);
+		qPos.add(userId);
 
 		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						watsonTokenAuthEntry)) {
+			Object[] values = orderByComparator.getOrderByConditionValues(watsonTokenAuthEntry);
 
-				queryPos.add(orderByConditionValue);
+			for (Object value : values) {
+				qPos.add(value);
 			}
 		}
 
-		List<WatsonTokenAuthEntry> list = query.list();
+		List<WatsonTokenAuthEntry> list = q.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -779,11 +783,8 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 */
 	@Override
 	public void removeByC_U(long companyId, long userId) {
-		for (WatsonTokenAuthEntry watsonTokenAuthEntry :
-				findByC_U(
-					companyId, userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
-
+		for (WatsonTokenAuthEntry watsonTokenAuthEntry : findByC_U(companyId,
+				userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(watsonTokenAuthEntry);
 		}
 	}
@@ -797,44 +798,44 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 */
 	@Override
 	public int countByC_U(long companyId, long userId) {
-		FinderPath finderPath = _finderPathCountByC_U;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_U;
 
-		Object[] finderArgs = new Object[] {companyId, userId};
+		Object[] finderArgs = new Object[] { companyId, userId };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(3);
+			StringBundler query = new StringBundler(3);
 
-			sb.append(_SQL_COUNT_WATSONTOKENAUTHENTRY_WHERE);
+			query.append(_SQL_COUNT_WATSONTOKENAUTHENTRY_WHERE);
 
-			sb.append(_FINDER_COLUMN_C_U_COMPANYID_2);
+			query.append(_FINDER_COLUMN_C_U_COMPANYID_2);
 
-			sb.append(_FINDER_COLUMN_C_U_USERID_2);
+			query.append(_FINDER_COLUMN_C_U_USERID_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(companyId);
+				qPos.add(companyId);
 
-				queryPos.add(userId);
+				qPos.add(userId);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
+			catch (Exception e) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -844,31 +845,10 @@ public class WatsonTokenAuthEntryPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_C_U_COMPANYID_2 =
-		"watsonTokenAuthEntry.companyId = ? AND ";
-
-	private static final String _FINDER_COLUMN_C_U_USERID_2 =
-		"watsonTokenAuthEntry.userId = ?";
+	private static final String _FINDER_COLUMN_C_U_COMPANYID_2 = "watsonTokenAuthEntry.companyId = ? AND ";
+	private static final String _FINDER_COLUMN_C_U_USERID_2 = "watsonTokenAuthEntry.userId = ?";
 
 	public WatsonTokenAuthEntryPersistenceImpl() {
-		Map<String, String> dbColumnNames = new HashMap<String, String>();
-
-		dbColumnNames.put("active", "active_");
-
-		try {
-			Field field = BasePersistenceImpl.class.getDeclaredField(
-				"_dbColumnNames");
-
-			field.setAccessible(true);
-
-			field.set(this, dbColumnNames);
-		}
-		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception, exception);
-			}
-		}
-
 		setModelClass(WatsonTokenAuthEntry.class);
 	}
 
@@ -879,14 +859,12 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(WatsonTokenAuthEntry watsonTokenAuthEntry) {
-		entityCache.putResult(
-			WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonTokenAuthEntryImpl.class,
 			watsonTokenAuthEntry.getPrimaryKey(), watsonTokenAuthEntry);
 
-		finderCache.putResult(
-			_finderPathFetchByUserId,
-			new Object[] {watsonTokenAuthEntry.getUserId()},
+		finderCache.putResult(FINDER_PATH_FETCH_BY_USERID,
+			new Object[] { watsonTokenAuthEntry.getUserId() },
 			watsonTokenAuthEntry);
 
 		watsonTokenAuthEntry.resetOriginalValues();
@@ -899,14 +877,11 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<WatsonTokenAuthEntry> watsonTokenAuthEntries) {
-		for (WatsonTokenAuthEntry watsonTokenAuthEntry :
-				watsonTokenAuthEntries) {
-
+		for (WatsonTokenAuthEntry watsonTokenAuthEntry : watsonTokenAuthEntries) {
 			if (entityCache.getResult(
-					WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-					WatsonTokenAuthEntryImpl.class,
-					watsonTokenAuthEntry.getPrimaryKey()) == null) {
-
+						WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+						WatsonTokenAuthEntryImpl.class,
+						watsonTokenAuthEntry.getPrimaryKey()) == null) {
 				cacheResult(watsonTokenAuthEntry);
 			}
 			else {
@@ -919,7 +894,7 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 * Clears the cache for all watson token auth entries.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -935,21 +910,19 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 * Clears the cache for the watson token auth entry.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(WatsonTokenAuthEntry watsonTokenAuthEntry) {
-		entityCache.removeResult(
-			WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonTokenAuthEntryImpl.class,
-			watsonTokenAuthEntry.getPrimaryKey());
+		entityCache.removeResult(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonTokenAuthEntryImpl.class, watsonTokenAuthEntry.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
-		clearUniqueFindersCache(
-			(WatsonTokenAuthEntryModelImpl)watsonTokenAuthEntry, true);
+		clearUniqueFindersCache((WatsonTokenAuthEntryModelImpl)watsonTokenAuthEntry,
+			true);
 	}
 
 	@Override
@@ -957,67 +930,46 @@ public class WatsonTokenAuthEntryPersistenceImpl
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
-		for (WatsonTokenAuthEntry watsonTokenAuthEntry :
-				watsonTokenAuthEntries) {
-
-			entityCache.removeResult(
-				WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+		for (WatsonTokenAuthEntry watsonTokenAuthEntry : watsonTokenAuthEntries) {
+			entityCache.removeResult(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
 				WatsonTokenAuthEntryImpl.class,
 				watsonTokenAuthEntry.getPrimaryKey());
 
-			clearUniqueFindersCache(
-				(WatsonTokenAuthEntryModelImpl)watsonTokenAuthEntry, true);
-		}
-	}
-
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonTokenAuthEntryImpl.class, primaryKey);
+			clearUniqueFindersCache((WatsonTokenAuthEntryModelImpl)watsonTokenAuthEntry,
+				true);
 		}
 	}
 
 	protected void cacheUniqueFindersCache(
 		WatsonTokenAuthEntryModelImpl watsonTokenAuthEntryModelImpl) {
+		Object[] args = new Object[] { watsonTokenAuthEntryModelImpl.getUserId() };
 
-		Object[] args = new Object[] {
-			watsonTokenAuthEntryModelImpl.getUserId()
-		};
-
-		finderCache.putResult(
-			_finderPathCountByUserId, args, Long.valueOf(1), false);
-		finderCache.putResult(
-			_finderPathFetchByUserId, args, watsonTokenAuthEntryModelImpl,
-			false);
+		finderCache.putResult(FINDER_PATH_COUNT_BY_USERID, args,
+			Long.valueOf(1), false);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_USERID, args,
+			watsonTokenAuthEntryModelImpl, false);
 	}
 
 	protected void clearUniqueFindersCache(
 		WatsonTokenAuthEntryModelImpl watsonTokenAuthEntryModelImpl,
 		boolean clearCurrent) {
-
 		if (clearCurrent) {
 			Object[] args = new Object[] {
-				watsonTokenAuthEntryModelImpl.getUserId()
-			};
+					watsonTokenAuthEntryModelImpl.getUserId()
+				};
 
-			finderCache.removeResult(_finderPathCountByUserId, args);
-			finderCache.removeResult(_finderPathFetchByUserId, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_USERID, args);
 		}
 
 		if ((watsonTokenAuthEntryModelImpl.getColumnBitmask() &
-			 _finderPathFetchByUserId.getColumnBitmask()) != 0) {
-
+				FINDER_PATH_FETCH_BY_USERID.getColumnBitmask()) != 0) {
 			Object[] args = new Object[] {
-				watsonTokenAuthEntryModelImpl.getOriginalUserId()
-			};
+					watsonTokenAuthEntryModelImpl.getOriginalUserId()
+				};
 
-			finderCache.removeResult(_finderPathCountByUserId, args);
-			finderCache.removeResult(_finderPathFetchByUserId, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_USERID, args);
 		}
 	}
 
@@ -1029,13 +981,12 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 */
 	@Override
 	public WatsonTokenAuthEntry create(long watsonTokenAuthEntryId) {
-		WatsonTokenAuthEntry watsonTokenAuthEntry =
-			new WatsonTokenAuthEntryImpl();
+		WatsonTokenAuthEntry watsonTokenAuthEntry = new WatsonTokenAuthEntryImpl();
 
 		watsonTokenAuthEntry.setNew(true);
 		watsonTokenAuthEntry.setPrimaryKey(watsonTokenAuthEntryId);
 
-		watsonTokenAuthEntry.setCompanyId(CompanyThreadLocal.getCompanyId());
+		watsonTokenAuthEntry.setCompanyId(companyProvider.getCompanyId());
 
 		return watsonTokenAuthEntry;
 	}
@@ -1050,7 +1001,6 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	@Override
 	public WatsonTokenAuthEntry remove(long watsonTokenAuthEntryId)
 		throws NoSuchEntryException {
-
 		return remove((Serializable)watsonTokenAuthEntryId);
 	}
 
@@ -1064,32 +1014,30 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	@Override
 	public WatsonTokenAuthEntry remove(Serializable primaryKey)
 		throws NoSuchEntryException {
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			WatsonTokenAuthEntry watsonTokenAuthEntry =
-				(WatsonTokenAuthEntry)session.get(
-					WatsonTokenAuthEntryImpl.class, primaryKey);
+			WatsonTokenAuthEntry watsonTokenAuthEntry = (WatsonTokenAuthEntry)session.get(WatsonTokenAuthEntryImpl.class,
+					primaryKey);
 
 			if (watsonTokenAuthEntry == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchEntryException(
-					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				throw new NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+					primaryKey);
 			}
 
 			return remove(watsonTokenAuthEntry);
 		}
-		catch (NoSuchEntryException noSuchEntityException) {
-			throw noSuchEntityException;
+		catch (NoSuchEntryException nsee) {
+			throw nsee;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -1099,6 +1047,7 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	@Override
 	protected WatsonTokenAuthEntry removeImpl(
 		WatsonTokenAuthEntry watsonTokenAuthEntry) {
+		watsonTokenAuthEntry = toUnwrappedModel(watsonTokenAuthEntry);
 
 		Session session = null;
 
@@ -1106,17 +1055,16 @@ public class WatsonTokenAuthEntryPersistenceImpl
 			session = openSession();
 
 			if (!session.contains(watsonTokenAuthEntry)) {
-				watsonTokenAuthEntry = (WatsonTokenAuthEntry)session.get(
-					WatsonTokenAuthEntryImpl.class,
-					watsonTokenAuthEntry.getPrimaryKeyObj());
+				watsonTokenAuthEntry = (WatsonTokenAuthEntry)session.get(WatsonTokenAuthEntryImpl.class,
+						watsonTokenAuthEntry.getPrimaryKeyObj());
 			}
 
 			if (watsonTokenAuthEntry != null) {
 				session.delete(watsonTokenAuthEntry);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -1132,28 +1080,11 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	@Override
 	public WatsonTokenAuthEntry updateImpl(
 		WatsonTokenAuthEntry watsonTokenAuthEntry) {
+		watsonTokenAuthEntry = toUnwrappedModel(watsonTokenAuthEntry);
 
 		boolean isNew = watsonTokenAuthEntry.isNew();
 
-		if (!(watsonTokenAuthEntry instanceof WatsonTokenAuthEntryModelImpl)) {
-			InvocationHandler invocationHandler = null;
-
-			if (ProxyUtil.isProxyClass(watsonTokenAuthEntry.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(
-					watsonTokenAuthEntry);
-
-				throw new IllegalArgumentException(
-					"Implement ModelWrapper in watsonTokenAuthEntry proxy " +
-						invocationHandler.getClass());
-			}
-
-			throw new IllegalArgumentException(
-				"Implement ModelWrapper in custom WatsonTokenAuthEntry implementation " +
-					watsonTokenAuthEntry.getClass());
-		}
-
-		WatsonTokenAuthEntryModelImpl watsonTokenAuthEntryModelImpl =
-			(WatsonTokenAuthEntryModelImpl)watsonTokenAuthEntry;
+		WatsonTokenAuthEntryModelImpl watsonTokenAuthEntryModelImpl = (WatsonTokenAuthEntryModelImpl)watsonTokenAuthEntry;
 
 		Session session = null;
 
@@ -1166,12 +1097,11 @@ public class WatsonTokenAuthEntryPersistenceImpl
 				watsonTokenAuthEntry.setNew(false);
 			}
 			else {
-				watsonTokenAuthEntry = (WatsonTokenAuthEntry)session.merge(
-					watsonTokenAuthEntry);
+				watsonTokenAuthEntry = (WatsonTokenAuthEntry)session.merge(watsonTokenAuthEntry);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -1182,47 +1112,46 @@ public class WatsonTokenAuthEntryPersistenceImpl
 		if (!WatsonTokenAuthEntryModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else if (isNew) {
+		else
+		 if (isNew) {
 			Object[] args = new Object[] {
-				watsonTokenAuthEntryModelImpl.getCompanyId(),
-				watsonTokenAuthEntryModelImpl.getUserId()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_U, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByC_U, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((watsonTokenAuthEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_U.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					watsonTokenAuthEntryModelImpl.getOriginalCompanyId(),
-					watsonTokenAuthEntryModelImpl.getOriginalUserId()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_U, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_U, args);
-
-				args = new Object[] {
 					watsonTokenAuthEntryModelImpl.getCompanyId(),
 					watsonTokenAuthEntryModelImpl.getUserId()
 				};
 
-				finderCache.removeResult(_finderPathCountByC_U, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_U, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_U, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_U,
+				args);
+
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
+		}
+
+		else {
+			if ((watsonTokenAuthEntryModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_U.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						watsonTokenAuthEntryModelImpl.getOriginalCompanyId(),
+						watsonTokenAuthEntryModelImpl.getOriginalUserId()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_C_U, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_U,
+					args);
+
+				args = new Object[] {
+						watsonTokenAuthEntryModelImpl.getCompanyId(),
+						watsonTokenAuthEntryModelImpl.getUserId()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_C_U, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_U,
+					args);
 			}
 		}
 
-		entityCache.putResult(
-			WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonTokenAuthEntryImpl.class,
 			watsonTokenAuthEntry.getPrimaryKey(), watsonTokenAuthEntry, false);
 
@@ -1234,8 +1163,34 @@ public class WatsonTokenAuthEntryPersistenceImpl
 		return watsonTokenAuthEntry;
 	}
 
+	protected WatsonTokenAuthEntry toUnwrappedModel(
+		WatsonTokenAuthEntry watsonTokenAuthEntry) {
+		if (watsonTokenAuthEntry instanceof WatsonTokenAuthEntryImpl) {
+			return watsonTokenAuthEntry;
+		}
+
+		WatsonTokenAuthEntryImpl watsonTokenAuthEntryImpl = new WatsonTokenAuthEntryImpl();
+
+		watsonTokenAuthEntryImpl.setNew(watsonTokenAuthEntry.isNew());
+		watsonTokenAuthEntryImpl.setPrimaryKey(watsonTokenAuthEntry.getPrimaryKey());
+
+		watsonTokenAuthEntryImpl.setWatsonTokenAuthEntryId(watsonTokenAuthEntry.getWatsonTokenAuthEntryId());
+		watsonTokenAuthEntryImpl.setCompanyId(watsonTokenAuthEntry.getCompanyId());
+		watsonTokenAuthEntryImpl.setUserId(watsonTokenAuthEntry.getUserId());
+		watsonTokenAuthEntryImpl.setUserName(watsonTokenAuthEntry.getUserName());
+		watsonTokenAuthEntryImpl.setCreateDate(watsonTokenAuthEntry.getCreateDate());
+		watsonTokenAuthEntryImpl.setActive(watsonTokenAuthEntry.isActive());
+		watsonTokenAuthEntryImpl.setLoginIP(watsonTokenAuthEntry.getLoginIP());
+		watsonTokenAuthEntryImpl.setToken(watsonTokenAuthEntry.getToken());
+		watsonTokenAuthEntryImpl.setExpirationDate(watsonTokenAuthEntry.getExpirationDate());
+		watsonTokenAuthEntryImpl.setLoginDate(watsonTokenAuthEntry.getLoginDate());
+		watsonTokenAuthEntryImpl.setStatus(watsonTokenAuthEntry.getStatus());
+
+		return watsonTokenAuthEntryImpl;
+	}
+
 	/**
-	 * Returns the watson token auth entry with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
+	 * Returns the watson token auth entry with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the watson token auth entry
 	 * @return the watson token auth entry
@@ -1244,24 +1199,22 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	@Override
 	public WatsonTokenAuthEntry findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchEntryException {
-
-		WatsonTokenAuthEntry watsonTokenAuthEntry = fetchByPrimaryKey(
-			primaryKey);
+		WatsonTokenAuthEntry watsonTokenAuthEntry = fetchByPrimaryKey(primaryKey);
 
 		if (watsonTokenAuthEntry == null) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchEntryException(
-				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			throw new NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
 		}
 
 		return watsonTokenAuthEntry;
 	}
 
 	/**
-	 * Returns the watson token auth entry with the primary key or throws a <code>NoSuchEntryException</code> if it could not be found.
+	 * Returns the watson token auth entry with the primary key or throws a {@link NoSuchEntryException} if it could not be found.
 	 *
 	 * @param watsonTokenAuthEntryId the primary key of the watson token auth entry
 	 * @return the watson token auth entry
@@ -1270,7 +1223,6 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	@Override
 	public WatsonTokenAuthEntry findByPrimaryKey(long watsonTokenAuthEntryId)
 		throws NoSuchEntryException {
-
 		return findByPrimaryKey((Serializable)watsonTokenAuthEntryId);
 	}
 
@@ -1282,16 +1234,14 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 */
 	@Override
 	public WatsonTokenAuthEntry fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(
-			WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonTokenAuthEntryImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonTokenAuthEntryImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
 		}
 
-		WatsonTokenAuthEntry watsonTokenAuthEntry =
-			(WatsonTokenAuthEntry)serializable;
+		WatsonTokenAuthEntry watsonTokenAuthEntry = (WatsonTokenAuthEntry)serializable;
 
 		if (watsonTokenAuthEntry == null) {
 			Session session = null;
@@ -1299,24 +1249,22 @@ public class WatsonTokenAuthEntryPersistenceImpl
 			try {
 				session = openSession();
 
-				watsonTokenAuthEntry = (WatsonTokenAuthEntry)session.get(
-					WatsonTokenAuthEntryImpl.class, primaryKey);
+				watsonTokenAuthEntry = (WatsonTokenAuthEntry)session.get(WatsonTokenAuthEntryImpl.class,
+						primaryKey);
 
 				if (watsonTokenAuthEntry != null) {
 					cacheResult(watsonTokenAuthEntry);
 				}
 				else {
-					entityCache.putResult(
-						WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
 						WatsonTokenAuthEntryImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception exception) {
-				entityCache.removeResult(
-					WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception e) {
+				entityCache.removeResult(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonTokenAuthEntryImpl.class, primaryKey);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1340,21 +1288,18 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	@Override
 	public Map<Serializable, WatsonTokenAuthEntry> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
-
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, WatsonTokenAuthEntry> map =
-			new HashMap<Serializable, WatsonTokenAuthEntry>();
+		Map<Serializable, WatsonTokenAuthEntry> map = new HashMap<Serializable, WatsonTokenAuthEntry>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
 
 			Serializable primaryKey = iterator.next();
 
-			WatsonTokenAuthEntry watsonTokenAuthEntry = fetchByPrimaryKey(
-				primaryKey);
+			WatsonTokenAuthEntry watsonTokenAuthEntry = fetchByPrimaryKey(primaryKey);
 
 			if (watsonTokenAuthEntry != null) {
 				map.put(primaryKey, watsonTokenAuthEntry);
@@ -1366,9 +1311,8 @@ public class WatsonTokenAuthEntryPersistenceImpl
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(
-				WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonTokenAuthEntryImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+					WatsonTokenAuthEntryImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -1388,51 +1332,46 @@ public class WatsonTokenAuthEntryPersistenceImpl
 			return map;
 		}
 
-		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
+				1);
 
-		sb.append(_SQL_SELECT_WATSONTOKENAUTHENTRY_WHERE_PKS_IN);
+		query.append(_SQL_SELECT_WATSONTOKENAUTHENTRY_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			sb.append((long)primaryKey);
+			query.append((long)primaryKey);
 
-			sb.append(",");
+			query.append(StringPool.COMMA);
 		}
 
-		sb.setIndex(sb.index() - 1);
+		query.setIndex(query.index() - 1);
 
-		sb.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query query = session.createQuery(sql);
+			Query q = session.createQuery(sql);
 
-			for (WatsonTokenAuthEntry watsonTokenAuthEntry :
-					(List<WatsonTokenAuthEntry>)query.list()) {
-
-				map.put(
-					watsonTokenAuthEntry.getPrimaryKeyObj(),
+			for (WatsonTokenAuthEntry watsonTokenAuthEntry : (List<WatsonTokenAuthEntry>)q.list()) {
+				map.put(watsonTokenAuthEntry.getPrimaryKeyObj(),
 					watsonTokenAuthEntry);
 
 				cacheResult(watsonTokenAuthEntry);
 
-				uncachedPrimaryKeys.remove(
-					watsonTokenAuthEntry.getPrimaryKeyObj());
+				uncachedPrimaryKeys.remove(watsonTokenAuthEntry.getPrimaryKeyObj());
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(
-					WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonTokenAuthEntryImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -1455,7 +1394,7 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 * Returns a range of all the watson token auth entries.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>WatsonTokenAuthEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WatsonTokenAuthEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of watson token auth entries
@@ -1471,7 +1410,7 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 * Returns an ordered range of all the watson token auth entries.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>WatsonTokenAuthEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WatsonTokenAuthEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of watson token auth entries
@@ -1480,10 +1419,8 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 * @return the ordered range of watson token auth entries
 	 */
 	@Override
-	public List<WatsonTokenAuthEntry> findAll(
-		int start, int end,
+	public List<WatsonTokenAuthEntry> findAll(int start, int end,
 		OrderByComparator<WatsonTokenAuthEntry> orderByComparator) {
-
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -1491,63 +1428,62 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 * Returns an ordered range of all the watson token auth entries.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>WatsonTokenAuthEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WatsonTokenAuthEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of watson token auth entries
 	 * @param end the upper bound of the range of watson token auth entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of watson token auth entries
 	 */
 	@Override
-	public List<WatsonTokenAuthEntry> findAll(
-		int start, int end,
+	public List<WatsonTokenAuthEntry> findAll(int start, int end,
 		OrderByComparator<WatsonTokenAuthEntry> orderByComparator,
-		boolean useFinderCache) {
-
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
-				finderArgs = FINDER_ARGS_EMPTY;
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+			finderArgs = FINDER_ARGS_EMPTY;
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] {start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
 		List<WatsonTokenAuthEntry> list = null;
 
-		if (useFinderCache) {
-			list = (List<WatsonTokenAuthEntry>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<WatsonTokenAuthEntry>)finderCache.getResult(finderPath,
+					finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					2 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(2 +
+						(orderByComparator.getOrderByFields().length * 2));
 
-				sb.append(_SQL_SELECT_WATSONTOKENAUTHENTRY);
+				query.append(_SQL_SELECT_WATSONTOKENAUTHENTRY);
 
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 
-				sql = sb.toString();
+				sql = query.toString();
 			}
 			else {
 				sql = _SQL_SELECT_WATSONTOKENAUTHENTRY;
 
-				sql = sql.concat(WatsonTokenAuthEntryModelImpl.ORDER_BY_JPQL);
+				if (pagination) {
+					sql = sql.concat(WatsonTokenAuthEntryModelImpl.ORDER_BY_JPQL);
+				}
 			}
 
 			Session session = null;
@@ -1555,23 +1491,29 @@ public class WatsonTokenAuthEntryPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				list = (List<WatsonTokenAuthEntry>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<WatsonTokenAuthEntry>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<WatsonTokenAuthEntry>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1599,8 +1541,8 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -1608,19 +1550,18 @@ public class WatsonTokenAuthEntryPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(
-					_SQL_COUNT_WATSONTOKENAUTHENTRY);
+				Query q = session.createQuery(_SQL_COUNT_WATSONTOKENAUTHENTRY);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
+					count);
 			}
-			catch (Exception exception) {
-				finderCache.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1644,63 +1585,6 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 * Initializes the watson token auth entry persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
-			WatsonTokenAuthEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
-			WatsonTokenAuthEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
-
-		_finderPathFetchByUserId = new FinderPath(
-			WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
-			WatsonTokenAuthEntryImpl.class, FINDER_CLASS_NAME_ENTITY,
-			"fetchByUserId", new String[] {Long.class.getName()},
-			WatsonTokenAuthEntryModelImpl.USERID_COLUMN_BITMASK);
-
-		_finderPathCountByUserId = new FinderPath(
-			WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
-			new String[] {Long.class.getName()});
-
-		_finderPathWithPaginationFindByC_U = new FinderPath(
-			WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
-			WatsonTokenAuthEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_U",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByC_U = new FinderPath(
-			WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
-			WatsonTokenAuthEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_U",
-			new String[] {Long.class.getName(), Long.class.getName()},
-			WatsonTokenAuthEntryModelImpl.COMPANYID_COLUMN_BITMASK |
-			WatsonTokenAuthEntryModelImpl.USERID_COLUMN_BITMASK);
-
-		_finderPathCountByC_U = new FinderPath(
-			WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_U",
-			new String[] {Long.class.getName(), Long.class.getName()});
 	}
 
 	public void destroy() {
@@ -1710,40 +1594,22 @@ public class WatsonTokenAuthEntryPersistenceImpl
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@ServiceReference(type = CompanyProviderWrapper.class)
+	protected CompanyProvider companyProvider;
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
-
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-
-	private static final String _SQL_SELECT_WATSONTOKENAUTHENTRY =
-		"SELECT watsonTokenAuthEntry FROM WatsonTokenAuthEntry watsonTokenAuthEntry";
-
-	private static final String _SQL_SELECT_WATSONTOKENAUTHENTRY_WHERE_PKS_IN =
-		"SELECT watsonTokenAuthEntry FROM WatsonTokenAuthEntry watsonTokenAuthEntry WHERE watsonTokenAuthEntryId IN (";
-
-	private static final String _SQL_SELECT_WATSONTOKENAUTHENTRY_WHERE =
-		"SELECT watsonTokenAuthEntry FROM WatsonTokenAuthEntry watsonTokenAuthEntry WHERE ";
-
-	private static final String _SQL_COUNT_WATSONTOKENAUTHENTRY =
-		"SELECT COUNT(watsonTokenAuthEntry) FROM WatsonTokenAuthEntry watsonTokenAuthEntry";
-
-	private static final String _SQL_COUNT_WATSONTOKENAUTHENTRY_WHERE =
-		"SELECT COUNT(watsonTokenAuthEntry) FROM WatsonTokenAuthEntry watsonTokenAuthEntry WHERE ";
-
-	private static final String _ORDER_BY_ENTITY_ALIAS =
-		"watsonTokenAuthEntry.";
-
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
-		"No WatsonTokenAuthEntry exists with the primary key ";
-
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No WatsonTokenAuthEntry exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		WatsonTokenAuthEntryPersistenceImpl.class);
-
-	private static final Set<String> _badColumnNames = SetUtil.fromArray(
-		new String[] {"active"});
-
+	private static final String _SQL_SELECT_WATSONTOKENAUTHENTRY = "SELECT watsonTokenAuthEntry FROM WatsonTokenAuthEntry watsonTokenAuthEntry";
+	private static final String _SQL_SELECT_WATSONTOKENAUTHENTRY_WHERE_PKS_IN = "SELECT watsonTokenAuthEntry FROM WatsonTokenAuthEntry watsonTokenAuthEntry WHERE watsonTokenAuthEntryId IN (";
+	private static final String _SQL_SELECT_WATSONTOKENAUTHENTRY_WHERE = "SELECT watsonTokenAuthEntry FROM WatsonTokenAuthEntry watsonTokenAuthEntry WHERE ";
+	private static final String _SQL_COUNT_WATSONTOKENAUTHENTRY = "SELECT COUNT(watsonTokenAuthEntry) FROM WatsonTokenAuthEntry watsonTokenAuthEntry";
+	private static final String _SQL_COUNT_WATSONTOKENAUTHENTRY_WHERE = "SELECT COUNT(watsonTokenAuthEntry) FROM WatsonTokenAuthEntry watsonTokenAuthEntry WHERE ";
+	private static final String _ORDER_BY_ENTITY_ALIAS = "watsonTokenAuthEntry.";
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No WatsonTokenAuthEntry exists with the primary key ";
+	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No WatsonTokenAuthEntry exists with the key {";
+	private static final Log _log = LogFactoryUtil.getLog(WatsonTokenAuthEntryPersistenceImpl.class);
+	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
+				"active"
+			});
 }

@@ -1,23 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.testray.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.osb.testray.model.TestrayRequirement;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing TestrayRequirement in entity cache.
  *
  * @author Ethan Bustad
+ * @see TestrayRequirement
  * @generated
  */
-public class TestrayRequirementCacheModel
-	implements CacheModel<TestrayRequirement>, Externalizable {
-
+@ProviderType
+public class TestrayRequirementCacheModel implements CacheModel<TestrayRequirement>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +50,9 @@ public class TestrayRequirementCacheModel
 			return false;
 		}
 
-		TestrayRequirementCacheModel testrayRequirementCacheModel =
-			(TestrayRequirementCacheModel)obj;
+		TestrayRequirementCacheModel testrayRequirementCacheModel = (TestrayRequirementCacheModel)obj;
 
-		if (testrayRequirementId ==
-				testrayRequirementCacheModel.testrayRequirementId) {
-
+		if (testrayRequirementId == testrayRequirementCacheModel.testrayRequirementId) {
 			return true;
 		}
 
@@ -113,8 +115,7 @@ public class TestrayRequirementCacheModel
 
 	@Override
 	public TestrayRequirement toEntityModel() {
-		TestrayRequirementImpl testrayRequirementImpl =
-			new TestrayRequirementImpl();
+		TestrayRequirementImpl testrayRequirementImpl = new TestrayRequirementImpl();
 
 		testrayRequirementImpl.setTestrayRequirementId(testrayRequirementId);
 		testrayRequirementImpl.setGroupId(groupId);
@@ -122,7 +123,7 @@ public class TestrayRequirementCacheModel
 		testrayRequirementImpl.setUserId(userId);
 
 		if (userName == null) {
-			testrayRequirementImpl.setUserName("");
+			testrayRequirementImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			testrayRequirementImpl.setUserName(userName);
@@ -146,77 +147,77 @@ public class TestrayRequirementCacheModel
 		testrayRequirementImpl.setTestrayProjectId(testrayProjectId);
 
 		if (key == null) {
-			testrayRequirementImpl.setKey("");
+			testrayRequirementImpl.setKey(StringPool.BLANK);
 		}
 		else {
 			testrayRequirementImpl.setKey(key);
 		}
 
 		if (summary == null) {
-			testrayRequirementImpl.setSummary("");
+			testrayRequirementImpl.setSummary(StringPool.BLANK);
 		}
 		else {
 			testrayRequirementImpl.setSummary(summary);
 		}
 
 		if (components == null) {
-			testrayRequirementImpl.setComponents("");
+			testrayRequirementImpl.setComponents(StringPool.BLANK);
 		}
 		else {
 			testrayRequirementImpl.setComponents(components);
 		}
 
 		if (linkTitle == null) {
-			testrayRequirementImpl.setLinkTitle("");
+			testrayRequirementImpl.setLinkTitle(StringPool.BLANK);
 		}
 		else {
 			testrayRequirementImpl.setLinkTitle(linkTitle);
 		}
 
 		if (linkURL == null) {
-			testrayRequirementImpl.setLinkURL("");
+			testrayRequirementImpl.setLinkURL(StringPool.BLANK);
 		}
 		else {
 			testrayRequirementImpl.setLinkURL(linkURL);
 		}
 
 		if (description == null) {
-			testrayRequirementImpl.setDescription("");
+			testrayRequirementImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			testrayRequirementImpl.setDescription(description);
 		}
 
 		if (descriptionType == null) {
-			testrayRequirementImpl.setDescriptionType("");
+			testrayRequirementImpl.setDescriptionType(StringPool.BLANK);
 		}
 		else {
 			testrayRequirementImpl.setDescriptionType(descriptionType);
 		}
 
 		if (goals == null) {
-			testrayRequirementImpl.setGoals("");
+			testrayRequirementImpl.setGoals(StringPool.BLANK);
 		}
 		else {
 			testrayRequirementImpl.setGoals(goals);
 		}
 
 		if (goalsType == null) {
-			testrayRequirementImpl.setGoalsType("");
+			testrayRequirementImpl.setGoalsType(StringPool.BLANK);
 		}
 		else {
 			testrayRequirementImpl.setGoalsType(goalsType);
 		}
 
 		if (variations == null) {
-			testrayRequirementImpl.setVariations("");
+			testrayRequirementImpl.setVariations(StringPool.BLANK);
 		}
 		else {
 			testrayRequirementImpl.setVariations(variations);
 		}
 
 		if (variationsType == null) {
-			testrayRequirementImpl.setVariationsType("");
+			testrayRequirementImpl.setVariationsType(StringPool.BLANK);
 		}
 		else {
 			testrayRequirementImpl.setVariationsType(variationsType);
@@ -257,7 +258,8 @@ public class TestrayRequirementCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(testrayRequirementId);
 
 		objectOutput.writeLong(groupId);
@@ -267,7 +269,7 @@ public class TestrayRequirementCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -281,77 +283,77 @@ public class TestrayRequirementCacheModel
 		objectOutput.writeLong(testrayProjectId);
 
 		if (key == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(key);
 		}
 
 		if (summary == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(summary);
 		}
 
 		if (components == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(components);
 		}
 
 		if (linkTitle == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(linkTitle);
 		}
 
 		if (linkURL == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(linkURL);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (descriptionType == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(descriptionType);
 		}
 
 		if (goals == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(goals);
 		}
 
 		if (goalsType == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(goalsType);
 		}
 
 		if (variations == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(variations);
 		}
 
 		if (variationsType == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(variationsType);
@@ -378,5 +380,4 @@ public class TestrayRequirementCacheModel
 	public String goalsType;
 	public String variations;
 	public String variationsType;
-
 }

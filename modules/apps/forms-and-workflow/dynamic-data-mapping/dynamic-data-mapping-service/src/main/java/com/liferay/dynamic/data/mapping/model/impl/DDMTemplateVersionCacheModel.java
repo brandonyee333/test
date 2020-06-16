@@ -14,10 +14,14 @@
 
 package com.liferay.dynamic.data.mapping.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.dynamic.data.mapping.model.DDMTemplateVersion;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing DDMTemplateVersion in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see DDMTemplateVersion
  * @generated
  */
-public class DDMTemplateVersionCacheModel
-	implements CacheModel<DDMTemplateVersion>, Externalizable {
-
+@ProviderType
+public class DDMTemplateVersionCacheModel implements CacheModel<DDMTemplateVersion>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +50,9 @@ public class DDMTemplateVersionCacheModel
 			return false;
 		}
 
-		DDMTemplateVersionCacheModel ddmTemplateVersionCacheModel =
-			(DDMTemplateVersionCacheModel)obj;
+		DDMTemplateVersionCacheModel ddmTemplateVersionCacheModel = (DDMTemplateVersionCacheModel)obj;
 
-		if (templateVersionId ==
-				ddmTemplateVersionCacheModel.templateVersionId) {
-
+		if (templateVersionId == ddmTemplateVersionCacheModel.templateVersionId) {
 			return true;
 		}
 
@@ -109,8 +111,7 @@ public class DDMTemplateVersionCacheModel
 
 	@Override
 	public DDMTemplateVersion toEntityModel() {
-		DDMTemplateVersionImpl ddmTemplateVersionImpl =
-			new DDMTemplateVersionImpl();
+		DDMTemplateVersionImpl ddmTemplateVersionImpl = new DDMTemplateVersionImpl();
 
 		ddmTemplateVersionImpl.setTemplateVersionId(templateVersionId);
 		ddmTemplateVersionImpl.setGroupId(groupId);
@@ -118,7 +119,7 @@ public class DDMTemplateVersionCacheModel
 		ddmTemplateVersionImpl.setUserId(userId);
 
 		if (userName == null) {
-			ddmTemplateVersionImpl.setUserName("");
+			ddmTemplateVersionImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			ddmTemplateVersionImpl.setUserName(userName);
@@ -136,35 +137,35 @@ public class DDMTemplateVersionCacheModel
 		ddmTemplateVersionImpl.setTemplateId(templateId);
 
 		if (version == null) {
-			ddmTemplateVersionImpl.setVersion("");
+			ddmTemplateVersionImpl.setVersion(StringPool.BLANK);
 		}
 		else {
 			ddmTemplateVersionImpl.setVersion(version);
 		}
 
 		if (name == null) {
-			ddmTemplateVersionImpl.setName("");
+			ddmTemplateVersionImpl.setName(StringPool.BLANK);
 		}
 		else {
 			ddmTemplateVersionImpl.setName(name);
 		}
 
 		if (description == null) {
-			ddmTemplateVersionImpl.setDescription("");
+			ddmTemplateVersionImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			ddmTemplateVersionImpl.setDescription(description);
 		}
 
 		if (language == null) {
-			ddmTemplateVersionImpl.setLanguage("");
+			ddmTemplateVersionImpl.setLanguage(StringPool.BLANK);
 		}
 		else {
 			ddmTemplateVersionImpl.setLanguage(language);
 		}
 
 		if (script == null) {
-			ddmTemplateVersionImpl.setScript("");
+			ddmTemplateVersionImpl.setScript(StringPool.BLANK);
 		}
 		else {
 			ddmTemplateVersionImpl.setScript(script);
@@ -174,7 +175,7 @@ public class DDMTemplateVersionCacheModel
 		ddmTemplateVersionImpl.setStatusByUserId(statusByUserId);
 
 		if (statusByUserName == null) {
-			ddmTemplateVersionImpl.setStatusByUserName("");
+			ddmTemplateVersionImpl.setStatusByUserName(StringPool.BLANK);
 		}
 		else {
 			ddmTemplateVersionImpl.setStatusByUserName(statusByUserName);
@@ -193,9 +194,7 @@ public class DDMTemplateVersionCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		templateVersionId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -212,10 +211,10 @@ public class DDMTemplateVersionCacheModel
 
 		templateId = objectInput.readLong();
 		version = objectInput.readUTF();
-		name = (String)objectInput.readObject();
-		description = (String)objectInput.readObject();
+		name = objectInput.readUTF();
+		description = objectInput.readUTF();
 		language = objectInput.readUTF();
-		script = (String)objectInput.readObject();
+		script = objectInput.readUTF();
 
 		status = objectInput.readInt();
 
@@ -225,7 +224,8 @@ public class DDMTemplateVersionCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(templateVersionId);
 
 		objectOutput.writeLong(groupId);
@@ -235,7 +235,7 @@ public class DDMTemplateVersionCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -250,38 +250,38 @@ public class DDMTemplateVersionCacheModel
 		objectOutput.writeLong(templateId);
 
 		if (version == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(version);
 		}
 
 		if (name == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(name);
+			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(description);
+			objectOutput.writeUTF(description);
 		}
 
 		if (language == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(language);
 		}
 
 		if (script == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(script);
+			objectOutput.writeUTF(script);
 		}
 
 		objectOutput.writeInt(status);
@@ -289,7 +289,7 @@ public class DDMTemplateVersionCacheModel
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(statusByUserName);
@@ -316,5 +316,4 @@ public class DDMTemplateVersionCacheModel
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
-
 }

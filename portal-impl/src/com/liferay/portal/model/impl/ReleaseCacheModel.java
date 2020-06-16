@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -31,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing Release in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see Release
  * @generated
  */
-public class ReleaseCacheModel
-	implements CacheModel<Release>, Externalizable, MVCCModel {
-
+@ProviderType
+public class ReleaseCacheModel implements CacheModel<Release>, Externalizable,
+	MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -49,8 +53,7 @@ public class ReleaseCacheModel
 		ReleaseCacheModel releaseCacheModel = (ReleaseCacheModel)obj;
 
 		if ((releaseId == releaseCacheModel.releaseId) &&
-			(mvccVersion == releaseCacheModel.mvccVersion)) {
-
+				(mvccVersion == releaseCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -127,14 +130,14 @@ public class ReleaseCacheModel
 		}
 
 		if (servletContextName == null) {
-			releaseImpl.setServletContextName("");
+			releaseImpl.setServletContextName(StringPool.BLANK);
 		}
 		else {
 			releaseImpl.setServletContextName(servletContextName);
 		}
 
 		if (schemaVersion == null) {
-			releaseImpl.setSchemaVersion("");
+			releaseImpl.setSchemaVersion(StringPool.BLANK);
 		}
 		else {
 			releaseImpl.setSchemaVersion(schemaVersion);
@@ -153,7 +156,7 @@ public class ReleaseCacheModel
 		releaseImpl.setState(state);
 
 		if (testString == null) {
-			releaseImpl.setTestString("");
+			releaseImpl.setTestString(StringPool.BLANK);
 		}
 		else {
 			releaseImpl.setTestString(testString);
@@ -184,7 +187,8 @@ public class ReleaseCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(releaseId);
@@ -192,14 +196,14 @@ public class ReleaseCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (servletContextName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(servletContextName);
 		}
 
 		if (schemaVersion == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(schemaVersion);
@@ -213,7 +217,7 @@ public class ReleaseCacheModel
 		objectOutput.writeInt(state);
 
 		if (testString == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(testString);
@@ -231,5 +235,4 @@ public class ReleaseCacheModel
 	public boolean verified;
 	public int state;
 	public String testString;
-
 }

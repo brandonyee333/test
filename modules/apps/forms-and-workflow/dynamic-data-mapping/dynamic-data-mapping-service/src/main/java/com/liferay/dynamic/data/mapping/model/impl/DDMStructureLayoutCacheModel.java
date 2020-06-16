@@ -14,10 +14,14 @@
 
 package com.liferay.dynamic.data.mapping.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.dynamic.data.mapping.model.DDMStructureLayout;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing DDMStructureLayout in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see DDMStructureLayout
  * @generated
  */
-public class DDMStructureLayoutCacheModel
-	implements CacheModel<DDMStructureLayout>, Externalizable {
-
+@ProviderType
+public class DDMStructureLayoutCacheModel implements CacheModel<DDMStructureLayout>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +50,9 @@ public class DDMStructureLayoutCacheModel
 			return false;
 		}
 
-		DDMStructureLayoutCacheModel ddmStructureLayoutCacheModel =
-			(DDMStructureLayoutCacheModel)obj;
+		DDMStructureLayoutCacheModel ddmStructureLayoutCacheModel = (DDMStructureLayoutCacheModel)obj;
 
-		if (structureLayoutId ==
-				ddmStructureLayoutCacheModel.structureLayoutId) {
-
+		if (structureLayoutId == ddmStructureLayoutCacheModel.structureLayoutId) {
 			return true;
 		}
 
@@ -93,11 +95,10 @@ public class DDMStructureLayoutCacheModel
 
 	@Override
 	public DDMStructureLayout toEntityModel() {
-		DDMStructureLayoutImpl ddmStructureLayoutImpl =
-			new DDMStructureLayoutImpl();
+		DDMStructureLayoutImpl ddmStructureLayoutImpl = new DDMStructureLayoutImpl();
 
 		if (uuid == null) {
-			ddmStructureLayoutImpl.setUuid("");
+			ddmStructureLayoutImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			ddmStructureLayoutImpl.setUuid(uuid);
@@ -109,7 +110,7 @@ public class DDMStructureLayoutCacheModel
 		ddmStructureLayoutImpl.setUserId(userId);
 
 		if (userName == null) {
-			ddmStructureLayoutImpl.setUserName("");
+			ddmStructureLayoutImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			ddmStructureLayoutImpl.setUserName(userName);
@@ -132,7 +133,7 @@ public class DDMStructureLayoutCacheModel
 		ddmStructureLayoutImpl.setStructureVersionId(structureVersionId);
 
 		if (definition == null) {
-			ddmStructureLayoutImpl.setDefinition("");
+			ddmStructureLayoutImpl.setDefinition(StringPool.BLANK);
 		}
 		else {
 			ddmStructureLayoutImpl.setDefinition(definition);
@@ -148,7 +149,6 @@ public class DDMStructureLayoutCacheModel
 	@Override
 	public void readExternal(ObjectInput objectInput)
 		throws ClassNotFoundException, IOException {
-
 		uuid = objectInput.readUTF();
 
 		structureLayoutId = objectInput.readLong();
@@ -163,17 +163,16 @@ public class DDMStructureLayoutCacheModel
 		modifiedDate = objectInput.readLong();
 
 		structureVersionId = objectInput.readLong();
-		definition = (String)objectInput.readObject();
+		definition = objectInput.readUTF();
 
-		_ddmFormLayout =
-			(com.liferay.dynamic.data.mapping.model.DDMFormLayout)
-				objectInput.readObject();
+		_ddmFormLayout = (com.liferay.dynamic.data.mapping.model.DDMFormLayout)objectInput.readObject();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -188,7 +187,7 @@ public class DDMStructureLayoutCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -200,10 +199,10 @@ public class DDMStructureLayoutCacheModel
 		objectOutput.writeLong(structureVersionId);
 
 		if (definition == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(definition);
+			objectOutput.writeUTF(definition);
 		}
 
 		objectOutput.writeObject(_ddmFormLayout);
@@ -220,5 +219,4 @@ public class DDMStructureLayoutCacheModel
 	public long structureVersionId;
 	public String definition;
 	public com.liferay.dynamic.data.mapping.model.DDMFormLayout _ddmFormLayout;
-
 }

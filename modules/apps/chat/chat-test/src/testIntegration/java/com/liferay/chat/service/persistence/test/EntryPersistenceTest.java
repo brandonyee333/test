@@ -15,11 +15,13 @@
 package com.liferay.chat.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+
 import com.liferay.chat.exception.NoSuchEntryException;
 import com.liferay.chat.model.Entry;
 import com.liferay.chat.service.EntryLocalServiceUtil;
 import com.liferay.chat.service.persistence.EntryPersistence;
 import com.liferay.chat.service.persistence.EntryUtil;
+
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -32,9 +34,19 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+
+import org.junit.runner.RunWith;
 
 import java.io.Serializable;
 
@@ -45,27 +57,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 /**
  * @generated
  */
 @RunWith(Arquillian.class)
 public class EntryPersistenceTest {
-
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
-			new TransactionalTestRule(
-				Propagation.REQUIRED, "com.liferay.chat.service"));
+	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
+			PersistenceTestRule.INSTANCE,
+			new TransactionalTestRule(Propagation.REQUIRED,
+				"com.liferay.chat.service"));
 
 	@Before
 	public void setUp() {
@@ -104,8 +106,7 @@ public class EntryPersistenceTest {
 
 		_persistence.remove(newEntry);
 
-		Entry existingEntry = _persistence.fetchByPrimaryKey(
-			newEntry.getPrimaryKey());
+		Entry existingEntry = _persistence.fetchByPrimaryKey(newEntry.getPrimaryKey());
 
 		Assert.assertNull(existingEntry);
 	}
@@ -133,16 +134,14 @@ public class EntryPersistenceTest {
 
 		_entries.add(_persistence.update(newEntry));
 
-		Entry existingEntry = _persistence.findByPrimaryKey(
-			newEntry.getPrimaryKey());
+		Entry existingEntry = _persistence.findByPrimaryKey(newEntry.getPrimaryKey());
 
 		Assert.assertEquals(existingEntry.getEntryId(), newEntry.getEntryId());
-		Assert.assertEquals(
-			existingEntry.getCreateDate(), newEntry.getCreateDate());
-		Assert.assertEquals(
-			existingEntry.getFromUserId(), newEntry.getFromUserId());
-		Assert.assertEquals(
-			existingEntry.getToUserId(), newEntry.getToUserId());
+		Assert.assertEquals(existingEntry.getCreateDate(),
+			newEntry.getCreateDate());
+		Assert.assertEquals(existingEntry.getFromUserId(),
+			newEntry.getFromUserId());
+		Assert.assertEquals(existingEntry.getToUserId(), newEntry.getToUserId());
 		Assert.assertEquals(existingEntry.getContent(), newEntry.getContent());
 		Assert.assertEquals(existingEntry.getFlag(), newEntry.getFlag());
 	}
@@ -170,43 +169,42 @@ public class EntryPersistenceTest {
 
 	@Test
 	public void testCountByC_F() throws Exception {
-		_persistence.countByC_F(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+		_persistence.countByC_F(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong());
 
 		_persistence.countByC_F(0L, 0L);
 	}
 
 	@Test
 	public void testCountByC_T() throws Exception {
-		_persistence.countByC_T(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+		_persistence.countByC_T(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong());
 
 		_persistence.countByC_T(0L, 0L);
 	}
 
 	@Test
 	public void testCountByF_T() throws Exception {
-		_persistence.countByF_T(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+		_persistence.countByF_T(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong());
 
 		_persistence.countByF_T(0L, 0L);
 	}
 
 	@Test
 	public void testCountByC_F_T() throws Exception {
-		_persistence.countByC_F_T(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
-			RandomTestUtil.nextLong());
+		_persistence.countByC_F_T(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
 
 		_persistence.countByC_F_T(0L, 0L, 0L);
 	}
 
 	@Test
 	public void testCountByF_T_C() throws Exception {
-		_persistence.countByF_T_C(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(), "");
+		_persistence.countByF_T_C(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong(), StringPool.BLANK);
 
-		_persistence.countByF_T_C(0L, 0L, "null");
+		_persistence.countByF_T_C(0L, 0L, StringPool.NULL);
 
 		_persistence.countByF_T_C(0L, 0L, (String)null);
 	}
@@ -215,8 +213,7 @@ public class EntryPersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		Entry newEntry = addEntry();
 
-		Entry existingEntry = _persistence.findByPrimaryKey(
-			newEntry.getPrimaryKey());
+		Entry existingEntry = _persistence.findByPrimaryKey(newEntry.getPrimaryKey());
 
 		Assert.assertEquals(existingEntry, newEntry);
 	}
@@ -230,22 +227,21 @@ public class EntryPersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
+		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			getOrderByComparator());
 	}
 
 	protected OrderByComparator<Entry> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create(
-			"Chat_Entry", "entryId", true, "createDate", true, "fromUserId",
-			true, "toUserId", true, "content", true, "flag", true);
+		return OrderByComparatorFactoryUtil.create("Chat_Entry", "entryId",
+			true, "createDate", true, "fromUserId", true, "toUserId", true,
+			"content", true, "flag", true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		Entry newEntry = addEntry();
 
-		Entry existingEntry = _persistence.fetchByPrimaryKey(
-			newEntry.getPrimaryKey());
+		Entry existingEntry = _persistence.fetchByPrimaryKey(newEntry.getPrimaryKey());
 
 		Assert.assertEquals(existingEntry, newEntry);
 	}
@@ -262,7 +258,6 @@ public class EntryPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
-
 		Entry newEntry1 = addEntry();
 		Entry newEntry2 = addEntry();
 
@@ -271,8 +266,7 @@ public class EntryPersistenceTest {
 		primaryKeys.add(newEntry1.getPrimaryKey());
 		primaryKeys.add(newEntry2.getPrimaryKey());
 
-		Map<Serializable, Entry> entries = _persistence.fetchByPrimaryKeys(
-			primaryKeys);
+		Map<Serializable, Entry> entries = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(2, entries.size());
 		Assert.assertEquals(newEntry1, entries.get(newEntry1.getPrimaryKey()));
@@ -282,7 +276,6 @@ public class EntryPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
-
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -292,8 +285,7 @@ public class EntryPersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, Entry> entries = _persistence.fetchByPrimaryKeys(
-			primaryKeys);
+		Map<Serializable, Entry> entries = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(entries.isEmpty());
 	}
@@ -301,7 +293,6 @@ public class EntryPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
-
 		Entry newEntry = addEntry();
 
 		long pk = RandomTestUtil.nextLong();
@@ -311,33 +302,32 @@ public class EntryPersistenceTest {
 		primaryKeys.add(newEntry.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, Entry> entries = _persistence.fetchByPrimaryKeys(
-			primaryKeys);
+		Map<Serializable, Entry> entries = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, entries.size());
 		Assert.assertEquals(newEntry, entries.get(newEntry.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
+		throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, Entry> entries = _persistence.fetchByPrimaryKeys(
-			primaryKeys);
+		Map<Serializable, Entry> entries = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(entries.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey()
+		throws Exception {
 		Entry newEntry = addEntry();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newEntry.getPrimaryKey());
 
-		Map<Serializable, Entry> entries = _persistence.fetchByPrimaryKeys(
-			primaryKeys);
+		Map<Serializable, Entry> entries = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, entries.size());
 		Assert.assertEquals(newEntry, entries.get(newEntry.getPrimaryKey()));
@@ -347,19 +337,15 @@ public class EntryPersistenceTest {
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery =
-			EntryLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = EntryLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<Entry>() {
-
+		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<Entry>() {
 				@Override
 				public void performAction(Entry entry) {
 					Assert.assertNotNull(entry);
 
 					count.increment();
 				}
-
 			});
 
 		actionableDynamicQuery.performActions();
@@ -368,14 +354,15 @@ public class EntryPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting()
+		throws Exception {
 		Entry newEntry = addEntry();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			Entry.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(Entry.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("entryId", newEntry.getEntryId()));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("entryId",
+				newEntry.getEntryId()));
 
 		List<Entry> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -388,11 +375,11 @@ public class EntryPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			Entry.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(Entry.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("entryId", RandomTestUtil.nextLong()));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("entryId",
+				RandomTestUtil.nextLong()));
 
 		List<Entry> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -400,18 +387,19 @@ public class EntryPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting() throws Exception {
+	public void testDynamicQueryByProjectionExisting()
+		throws Exception {
 		Entry newEntry = addEntry();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			Entry.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(Entry.class,
+				_dynamicQueryClassLoader);
 
 		dynamicQuery.setProjection(ProjectionFactoryUtil.property("entryId"));
 
 		Object newEntryId = newEntry.getEntryId();
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in("entryId", new Object[] {newEntryId}));
+		dynamicQuery.add(RestrictionsFactoryUtil.in("entryId",
+				new Object[] { newEntryId }));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -424,14 +412,13 @@ public class EntryPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			Entry.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(Entry.class,
+				_dynamicQueryClassLoader);
 
 		dynamicQuery.setProjection(ProjectionFactoryUtil.property("entryId"));
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in(
-				"entryId", new Object[] {RandomTestUtil.nextLong()}));
+		dynamicQuery.add(RestrictionsFactoryUtil.in("entryId",
+				new Object[] { RandomTestUtil.nextLong() }));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -461,5 +448,4 @@ public class EntryPersistenceTest {
 	private List<Entry> _entries = new ArrayList<Entry>();
 	private EntryPersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
-
 }

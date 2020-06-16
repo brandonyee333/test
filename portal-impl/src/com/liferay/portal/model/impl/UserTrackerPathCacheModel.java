@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.UserTrackerPath;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -31,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing UserTrackerPath in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see UserTrackerPath
  * @generated
  */
-public class UserTrackerPathCacheModel
-	implements CacheModel<UserTrackerPath>, Externalizable, MVCCModel {
-
+@ProviderType
+public class UserTrackerPathCacheModel implements CacheModel<UserTrackerPath>,
+	Externalizable, MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -46,13 +50,10 @@ public class UserTrackerPathCacheModel
 			return false;
 		}
 
-		UserTrackerPathCacheModel userTrackerPathCacheModel =
-			(UserTrackerPathCacheModel)obj;
+		UserTrackerPathCacheModel userTrackerPathCacheModel = (UserTrackerPathCacheModel)obj;
 
-		if ((userTrackerPathId ==
-				userTrackerPathCacheModel.userTrackerPathId) &&
-			(mvccVersion == userTrackerPathCacheModel.mvccVersion)) {
-
+		if ((userTrackerPathId == userTrackerPathCacheModel.userTrackerPathId) &&
+				(mvccVersion == userTrackerPathCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -107,7 +108,7 @@ public class UserTrackerPathCacheModel
 		userTrackerPathImpl.setUserTrackerId(userTrackerId);
 
 		if (path == null) {
-			userTrackerPathImpl.setPath("");
+			userTrackerPathImpl.setPath(StringPool.BLANK);
 		}
 		else {
 			userTrackerPathImpl.setPath(path);
@@ -139,7 +140,8 @@ public class UserTrackerPathCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(userTrackerPathId);
@@ -149,7 +151,7 @@ public class UserTrackerPathCacheModel
 		objectOutput.writeLong(userTrackerId);
 
 		if (path == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(path);
@@ -164,5 +166,4 @@ public class UserTrackerPathCacheModel
 	public long userTrackerId;
 	public String path;
 	public long pathDate;
-
 }

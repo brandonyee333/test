@@ -14,6 +14,8 @@
 
 package com.liferay.social.networking.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.social.networking.model.WallEntry;
 import com.liferay.social.networking.service.WallEntryLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.social.networking.service.WallEntryLocalServiceUtil;
  * @see WallEntry
  * @generated
  */
-public abstract class WallEntryBaseImpl
-	extends WallEntryModelImpl implements WallEntry {
-
+@ProviderType
+public abstract class WallEntryBaseImpl extends WallEntryModelImpl
+	implements WallEntry {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a wall entry model instance should use the <code>WallEntry</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a wall entry model instance should use the {@link WallEntry} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class WallEntryBaseImpl
 			WallEntryLocalServiceUtil.updateWallEntry(this);
 		}
 	}
-
 }

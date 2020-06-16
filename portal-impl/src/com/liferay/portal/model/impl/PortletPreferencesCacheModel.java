@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.PortletPreferences;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -29,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing PortletPreferences in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see PortletPreferences
  * @generated
  */
-public class PortletPreferencesCacheModel
-	implements CacheModel<PortletPreferences>, Externalizable, MVCCModel {
-
+@ProviderType
+public class PortletPreferencesCacheModel implements CacheModel<PortletPreferences>,
+	Externalizable, MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -44,13 +48,10 @@ public class PortletPreferencesCacheModel
 			return false;
 		}
 
-		PortletPreferencesCacheModel portletPreferencesCacheModel =
-			(PortletPreferencesCacheModel)obj;
+		PortletPreferencesCacheModel portletPreferencesCacheModel = (PortletPreferencesCacheModel)obj;
 
-		if ((portletPreferencesId ==
-				portletPreferencesCacheModel.portletPreferencesId) &&
-			(mvccVersion == portletPreferencesCacheModel.mvccVersion)) {
-
+		if ((portletPreferencesId == portletPreferencesCacheModel.portletPreferencesId) &&
+				(mvccVersion == portletPreferencesCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -101,8 +102,7 @@ public class PortletPreferencesCacheModel
 
 	@Override
 	public PortletPreferences toEntityModel() {
-		PortletPreferencesImpl portletPreferencesImpl =
-			new PortletPreferencesImpl();
+		PortletPreferencesImpl portletPreferencesImpl = new PortletPreferencesImpl();
 
 		portletPreferencesImpl.setMvccVersion(mvccVersion);
 		portletPreferencesImpl.setPortletPreferencesId(portletPreferencesId);
@@ -112,14 +112,14 @@ public class PortletPreferencesCacheModel
 		portletPreferencesImpl.setPlid(plid);
 
 		if (portletId == null) {
-			portletPreferencesImpl.setPortletId("");
+			portletPreferencesImpl.setPortletId(StringPool.BLANK);
 		}
 		else {
 			portletPreferencesImpl.setPortletId(portletId);
 		}
 
 		if (preferences == null) {
-			portletPreferencesImpl.setPreferences("");
+			portletPreferencesImpl.setPreferences(StringPool.BLANK);
 		}
 		else {
 			portletPreferencesImpl.setPreferences(preferences);
@@ -131,9 +131,7 @@ public class PortletPreferencesCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
 
 		portletPreferencesId = objectInput.readLong();
@@ -146,11 +144,12 @@ public class PortletPreferencesCacheModel
 
 		plid = objectInput.readLong();
 		portletId = objectInput.readUTF();
-		preferences = (String)objectInput.readObject();
+		preferences = objectInput.readUTF();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(portletPreferencesId);
@@ -164,17 +163,17 @@ public class PortletPreferencesCacheModel
 		objectOutput.writeLong(plid);
 
 		if (portletId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(portletId);
 		}
 
 		if (preferences == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(preferences);
+			objectOutput.writeUTF(preferences);
 		}
 	}
 
@@ -186,5 +185,4 @@ public class PortletPreferencesCacheModel
 	public long plid;
 	public String portletId;
 	public String preferences;
-
 }

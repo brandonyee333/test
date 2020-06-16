@@ -14,10 +14,14 @@
 
 package com.liferay.dynamic.data.mapping.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing DDMStructure in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see DDMStructure
  * @generated
  */
-public class DDMStructureCacheModel
-	implements CacheModel<DDMStructure>, Externalizable {
-
+@ProviderType
+public class DDMStructureCacheModel implements CacheModel<DDMStructure>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class DDMStructureCacheModel
 			return false;
 		}
 
-		DDMStructureCacheModel ddmStructureCacheModel =
-			(DDMStructureCacheModel)obj;
+		DDMStructureCacheModel ddmStructureCacheModel = (DDMStructureCacheModel)obj;
 
 		if (structureId == ddmStructureCacheModel.structureId) {
 			return true;
@@ -114,7 +118,7 @@ public class DDMStructureCacheModel
 		DDMStructureImpl ddmStructureImpl = new DDMStructureImpl();
 
 		if (uuid == null) {
-			ddmStructureImpl.setUuid("");
+			ddmStructureImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			ddmStructureImpl.setUuid(uuid);
@@ -126,7 +130,7 @@ public class DDMStructureCacheModel
 		ddmStructureImpl.setUserId(userId);
 
 		if (userName == null) {
-			ddmStructureImpl.setUserName("");
+			ddmStructureImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			ddmStructureImpl.setUserName(userName);
@@ -135,7 +139,7 @@ public class DDMStructureCacheModel
 		ddmStructureImpl.setVersionUserId(versionUserId);
 
 		if (versionUserName == null) {
-			ddmStructureImpl.setVersionUserName("");
+			ddmStructureImpl.setVersionUserName(StringPool.BLANK);
 		}
 		else {
 			ddmStructureImpl.setVersionUserName(versionUserName);
@@ -159,42 +163,42 @@ public class DDMStructureCacheModel
 		ddmStructureImpl.setClassNameId(classNameId);
 
 		if (structureKey == null) {
-			ddmStructureImpl.setStructureKey("");
+			ddmStructureImpl.setStructureKey(StringPool.BLANK);
 		}
 		else {
 			ddmStructureImpl.setStructureKey(structureKey);
 		}
 
 		if (version == null) {
-			ddmStructureImpl.setVersion("");
+			ddmStructureImpl.setVersion(StringPool.BLANK);
 		}
 		else {
 			ddmStructureImpl.setVersion(version);
 		}
 
 		if (name == null) {
-			ddmStructureImpl.setName("");
+			ddmStructureImpl.setName(StringPool.BLANK);
 		}
 		else {
 			ddmStructureImpl.setName(name);
 		}
 
 		if (description == null) {
-			ddmStructureImpl.setDescription("");
+			ddmStructureImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			ddmStructureImpl.setDescription(description);
 		}
 
 		if (definition == null) {
-			ddmStructureImpl.setDefinition("");
+			ddmStructureImpl.setDefinition(StringPool.BLANK);
 		}
 		else {
 			ddmStructureImpl.setDefinition(definition);
 		}
 
 		if (storageType == null) {
-			ddmStructureImpl.setStorageType("");
+			ddmStructureImpl.setStorageType(StringPool.BLANK);
 		}
 		else {
 			ddmStructureImpl.setStorageType(storageType);
@@ -219,7 +223,6 @@ public class DDMStructureCacheModel
 	@Override
 	public void readExternal(ObjectInput objectInput)
 		throws ClassNotFoundException, IOException {
-
 		uuid = objectInput.readUTF();
 
 		structureId = objectInput.readLong();
@@ -242,22 +245,21 @@ public class DDMStructureCacheModel
 		structureKey = objectInput.readUTF();
 		version = objectInput.readUTF();
 		name = objectInput.readUTF();
-		description = (String)objectInput.readObject();
-		definition = (String)objectInput.readObject();
+		description = objectInput.readUTF();
+		definition = objectInput.readUTF();
 		storageType = objectInput.readUTF();
 
 		type = objectInput.readInt();
 		lastPublishDate = objectInput.readLong();
 
-		_ddmForm =
-			(com.liferay.dynamic.data.mapping.model.DDMForm)
-				objectInput.readObject();
+		_ddmForm = (com.liferay.dynamic.data.mapping.model.DDMForm)objectInput.readObject();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -272,7 +274,7 @@ public class DDMStructureCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -281,7 +283,7 @@ public class DDMStructureCacheModel
 		objectOutput.writeLong(versionUserId);
 
 		if (versionUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(versionUserName);
@@ -295,42 +297,42 @@ public class DDMStructureCacheModel
 		objectOutput.writeLong(classNameId);
 
 		if (structureKey == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(structureKey);
 		}
 
 		if (version == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(version);
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(description);
+			objectOutput.writeUTF(description);
 		}
 
 		if (definition == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(definition);
+			objectOutput.writeUTF(definition);
 		}
 
 		if (storageType == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(storageType);
@@ -363,5 +365,4 @@ public class DDMStructureCacheModel
 	public int type;
 	public long lastPublishDate;
 	public com.liferay.dynamic.data.mapping.model.DDMForm _ddmForm;
-
 }

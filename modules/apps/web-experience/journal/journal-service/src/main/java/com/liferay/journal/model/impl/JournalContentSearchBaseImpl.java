@@ -14,6 +14,8 @@
 
 package com.liferay.journal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.journal.model.JournalContentSearch;
 import com.liferay.journal.service.JournalContentSearchLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.journal.service.JournalContentSearchLocalServiceUtil;
  * @see JournalContentSearch
  * @generated
  */
+@ProviderType
 public abstract class JournalContentSearchBaseImpl
 	extends JournalContentSearchModelImpl implements JournalContentSearch {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a journal content search model instance should use the <code>JournalContentSearch</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a journal content search model instance should use the {@link JournalContentSearch} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -43,9 +45,7 @@ public abstract class JournalContentSearchBaseImpl
 			JournalContentSearchLocalServiceUtil.addJournalContentSearch(this);
 		}
 		else {
-			JournalContentSearchLocalServiceUtil.updateJournalContentSearch(
-				this);
+			JournalContentSearchLocalServiceUtil.updateJournalContentSearch(this);
 		}
 	}
-
 }

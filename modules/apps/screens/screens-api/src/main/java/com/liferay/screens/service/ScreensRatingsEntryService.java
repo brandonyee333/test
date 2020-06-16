@@ -34,51 +34,44 @@ import com.liferay.portal.kernel.transaction.Transactional;
  *
  * @author José Manuel Navarro
  * @see ScreensRatingsEntryServiceUtil
+ * @see com.liferay.screens.service.base.ScreensRatingsEntryServiceBaseImpl
+ * @see com.liferay.screens.service.impl.ScreensRatingsEntryServiceImpl
  * @generated
  */
 @AccessControlled
 @JSONWebService
-@OSGiBeanProperties(
-	property = {
-		"json.web.service.context.name=screens",
-		"json.web.service.context.path=ScreensRatingsEntry"
-	},
-	service = ScreensRatingsEntryService.class
-)
+@OSGiBeanProperties(property =  {
+	"json.web.service.context.name=screens", "json.web.service.context.path=ScreensRatingsEntry"}, service = ScreensRatingsEntryService.class)
 @ProviderType
-@Transactional(
-	isolation = Isolation.PORTAL,
-	rollbackFor = {PortalException.class, SystemException.class}
-)
+@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
+	PortalException.class, SystemException.class})
 public interface ScreensRatingsEntryService extends BaseService {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link ScreensRatingsEntryServiceUtil} to access the screens ratings entry remote service. Add custom service methods to <code>com.liferay.screens.service.impl.ScreensRatingsEntryServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link ScreensRatingsEntryServiceUtil} to access the screens ratings entry remote service. Add custom service methods to {@link com.liferay.screens.service.impl.ScreensRatingsEntryServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public JSONObject deleteRatingsEntry(
-			long classPK, String className, int ratingsLength)
+	public JSONObject deleteRatingsEntry(long classPK,
+		java.lang.String className, int ratingsLength)
 		throws PortalException;
-
-	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
-	public String getOSGiServiceIdentifier();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public JSONObject getRatingsEntries(long assetEntryId, int ratingsLength)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public JSONObject getRatingsEntries(
-			long classPK, String className, int ratingsLength)
+	public JSONObject getRatingsEntries(long classPK,
+		java.lang.String className, int ratingsLength)
 		throws PortalException;
 
-	public JSONObject updateRatingsEntry(
-			long classPK, String className, double score, int ratingsLength)
+	public JSONObject updateRatingsEntry(long classPK,
+		java.lang.String className, double score, int ratingsLength)
 		throws PortalException;
 
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
 }

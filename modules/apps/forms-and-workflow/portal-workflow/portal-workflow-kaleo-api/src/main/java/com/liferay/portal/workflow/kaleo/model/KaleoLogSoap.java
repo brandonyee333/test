@@ -14,6 +14,8 @@
 
 package com.liferay.portal.workflow.kaleo.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,8 +28,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
+@ProviderType
 public class KaleoLogSoap implements Serializable {
-
 	public static KaleoLogSoap toSoapModel(KaleoLog model) {
 		KaleoLogSoap soapModel = new KaleoLogSoap();
 
@@ -43,21 +45,17 @@ public class KaleoLogSoap implements Serializable {
 		soapModel.setKaleoDefinitionId(model.getKaleoDefinitionId());
 		soapModel.setKaleoInstanceId(model.getKaleoInstanceId());
 		soapModel.setKaleoInstanceTokenId(model.getKaleoInstanceTokenId());
-		soapModel.setKaleoTaskInstanceTokenId(
-			model.getKaleoTaskInstanceTokenId());
+		soapModel.setKaleoTaskInstanceTokenId(model.getKaleoTaskInstanceTokenId());
 		soapModel.setKaleoNodeName(model.getKaleoNodeName());
-		soapModel.setTerminalKaleoNode(model.isTerminalKaleoNode());
+		soapModel.setTerminalKaleoNode(model.getTerminalKaleoNode());
 		soapModel.setKaleoActionId(model.getKaleoActionId());
 		soapModel.setKaleoActionName(model.getKaleoActionName());
 		soapModel.setKaleoActionDescription(model.getKaleoActionDescription());
 		soapModel.setPreviousKaleoNodeId(model.getPreviousKaleoNodeId());
 		soapModel.setPreviousKaleoNodeName(model.getPreviousKaleoNodeName());
-		soapModel.setPreviousAssigneeClassName(
-			model.getPreviousAssigneeClassName());
-		soapModel.setPreviousAssigneeClassPK(
-			model.getPreviousAssigneeClassPK());
-		soapModel.setCurrentAssigneeClassName(
-			model.getCurrentAssigneeClassName());
+		soapModel.setPreviousAssigneeClassName(model.getPreviousAssigneeClassName());
+		soapModel.setPreviousAssigneeClassPK(model.getPreviousAssigneeClassPK());
+		soapModel.setCurrentAssigneeClassName(model.getCurrentAssigneeClassName());
 		soapModel.setCurrentAssigneeClassPK(model.getCurrentAssigneeClassPK());
 		soapModel.setType(model.getType());
 		soapModel.setComment(model.getComment());
@@ -97,8 +95,7 @@ public class KaleoLogSoap implements Serializable {
 	}
 
 	public static KaleoLogSoap[] toSoapModels(List<KaleoLog> models) {
-		List<KaleoLogSoap> soapModels = new ArrayList<KaleoLogSoap>(
-			models.size());
+		List<KaleoLogSoap> soapModels = new ArrayList<KaleoLogSoap>(models.size());
 
 		for (KaleoLog model : models) {
 			soapModels.add(toSoapModel(model));
@@ -392,5 +389,4 @@ public class KaleoLogSoap implements Serializable {
 	private Date _endDate;
 	private long _duration;
 	private String _workflowContext;
-
 }

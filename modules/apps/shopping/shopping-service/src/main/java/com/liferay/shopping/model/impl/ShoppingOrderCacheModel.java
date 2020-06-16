@@ -14,9 +14,13 @@
 
 package com.liferay.shopping.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.shopping.model.ShoppingOrder;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing ShoppingOrder in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see ShoppingOrder
  * @generated
  */
-public class ShoppingOrderCacheModel
-	implements CacheModel<ShoppingOrder>, Externalizable {
-
+@ProviderType
+public class ShoppingOrderCacheModel implements CacheModel<ShoppingOrder>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class ShoppingOrderCacheModel
 			return false;
 		}
 
-		ShoppingOrderCacheModel shoppingOrderCacheModel =
-			(ShoppingOrderCacheModel)obj;
+		ShoppingOrderCacheModel shoppingOrderCacheModel = (ShoppingOrderCacheModel)obj;
 
 		if (orderId == shoppingOrderCacheModel.orderId) {
 			return true;
@@ -181,7 +185,7 @@ public class ShoppingOrderCacheModel
 		shoppingOrderImpl.setUserId(userId);
 
 		if (userName == null) {
-			shoppingOrderImpl.setUserName("");
+			shoppingOrderImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setUserName(userName);
@@ -202,7 +206,7 @@ public class ShoppingOrderCacheModel
 		}
 
 		if (number == null) {
-			shoppingOrderImpl.setNumber("");
+			shoppingOrderImpl.setNumber(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setNumber(number);
@@ -212,7 +216,7 @@ public class ShoppingOrderCacheModel
 		shoppingOrderImpl.setShipping(shipping);
 
 		if (altShipping == null) {
-			shoppingOrderImpl.setAltShipping("");
+			shoppingOrderImpl.setAltShipping(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setAltShipping(altShipping);
@@ -223,7 +227,7 @@ public class ShoppingOrderCacheModel
 		shoppingOrderImpl.setInsurance(insurance);
 
 		if (couponCodes == null) {
-			shoppingOrderImpl.setCouponCodes("");
+			shoppingOrderImpl.setCouponCodes(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setCouponCodes(couponCodes);
@@ -232,70 +236,70 @@ public class ShoppingOrderCacheModel
 		shoppingOrderImpl.setCouponDiscount(couponDiscount);
 
 		if (billingFirstName == null) {
-			shoppingOrderImpl.setBillingFirstName("");
+			shoppingOrderImpl.setBillingFirstName(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setBillingFirstName(billingFirstName);
 		}
 
 		if (billingLastName == null) {
-			shoppingOrderImpl.setBillingLastName("");
+			shoppingOrderImpl.setBillingLastName(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setBillingLastName(billingLastName);
 		}
 
 		if (billingEmailAddress == null) {
-			shoppingOrderImpl.setBillingEmailAddress("");
+			shoppingOrderImpl.setBillingEmailAddress(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setBillingEmailAddress(billingEmailAddress);
 		}
 
 		if (billingCompany == null) {
-			shoppingOrderImpl.setBillingCompany("");
+			shoppingOrderImpl.setBillingCompany(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setBillingCompany(billingCompany);
 		}
 
 		if (billingStreet == null) {
-			shoppingOrderImpl.setBillingStreet("");
+			shoppingOrderImpl.setBillingStreet(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setBillingStreet(billingStreet);
 		}
 
 		if (billingCity == null) {
-			shoppingOrderImpl.setBillingCity("");
+			shoppingOrderImpl.setBillingCity(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setBillingCity(billingCity);
 		}
 
 		if (billingState == null) {
-			shoppingOrderImpl.setBillingState("");
+			shoppingOrderImpl.setBillingState(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setBillingState(billingState);
 		}
 
 		if (billingZip == null) {
-			shoppingOrderImpl.setBillingZip("");
+			shoppingOrderImpl.setBillingZip(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setBillingZip(billingZip);
 		}
 
 		if (billingCountry == null) {
-			shoppingOrderImpl.setBillingCountry("");
+			shoppingOrderImpl.setBillingCountry(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setBillingCountry(billingCountry);
 		}
 
 		if (billingPhone == null) {
-			shoppingOrderImpl.setBillingPhone("");
+			shoppingOrderImpl.setBillingPhone(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setBillingPhone(billingPhone);
@@ -304,91 +308,91 @@ public class ShoppingOrderCacheModel
 		shoppingOrderImpl.setShipToBilling(shipToBilling);
 
 		if (shippingFirstName == null) {
-			shoppingOrderImpl.setShippingFirstName("");
+			shoppingOrderImpl.setShippingFirstName(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setShippingFirstName(shippingFirstName);
 		}
 
 		if (shippingLastName == null) {
-			shoppingOrderImpl.setShippingLastName("");
+			shoppingOrderImpl.setShippingLastName(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setShippingLastName(shippingLastName);
 		}
 
 		if (shippingEmailAddress == null) {
-			shoppingOrderImpl.setShippingEmailAddress("");
+			shoppingOrderImpl.setShippingEmailAddress(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setShippingEmailAddress(shippingEmailAddress);
 		}
 
 		if (shippingCompany == null) {
-			shoppingOrderImpl.setShippingCompany("");
+			shoppingOrderImpl.setShippingCompany(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setShippingCompany(shippingCompany);
 		}
 
 		if (shippingStreet == null) {
-			shoppingOrderImpl.setShippingStreet("");
+			shoppingOrderImpl.setShippingStreet(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setShippingStreet(shippingStreet);
 		}
 
 		if (shippingCity == null) {
-			shoppingOrderImpl.setShippingCity("");
+			shoppingOrderImpl.setShippingCity(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setShippingCity(shippingCity);
 		}
 
 		if (shippingState == null) {
-			shoppingOrderImpl.setShippingState("");
+			shoppingOrderImpl.setShippingState(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setShippingState(shippingState);
 		}
 
 		if (shippingZip == null) {
-			shoppingOrderImpl.setShippingZip("");
+			shoppingOrderImpl.setShippingZip(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setShippingZip(shippingZip);
 		}
 
 		if (shippingCountry == null) {
-			shoppingOrderImpl.setShippingCountry("");
+			shoppingOrderImpl.setShippingCountry(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setShippingCountry(shippingCountry);
 		}
 
 		if (shippingPhone == null) {
-			shoppingOrderImpl.setShippingPhone("");
+			shoppingOrderImpl.setShippingPhone(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setShippingPhone(shippingPhone);
 		}
 
 		if (ccName == null) {
-			shoppingOrderImpl.setCcName("");
+			shoppingOrderImpl.setCcName(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setCcName(ccName);
 		}
 
 		if (ccType == null) {
-			shoppingOrderImpl.setCcType("");
+			shoppingOrderImpl.setCcType(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setCcType(ccType);
 		}
 
 		if (ccNumber == null) {
-			shoppingOrderImpl.setCcNumber("");
+			shoppingOrderImpl.setCcNumber(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setCcNumber(ccNumber);
@@ -398,28 +402,28 @@ public class ShoppingOrderCacheModel
 		shoppingOrderImpl.setCcExpYear(ccExpYear);
 
 		if (ccVerNumber == null) {
-			shoppingOrderImpl.setCcVerNumber("");
+			shoppingOrderImpl.setCcVerNumber(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setCcVerNumber(ccVerNumber);
 		}
 
 		if (comments == null) {
-			shoppingOrderImpl.setComments("");
+			shoppingOrderImpl.setComments(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setComments(comments);
 		}
 
 		if (ppTxnId == null) {
-			shoppingOrderImpl.setPpTxnId("");
+			shoppingOrderImpl.setPpTxnId(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setPpTxnId(ppTxnId);
 		}
 
 		if (ppPaymentStatus == null) {
-			shoppingOrderImpl.setPpPaymentStatus("");
+			shoppingOrderImpl.setPpPaymentStatus(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setPpPaymentStatus(ppPaymentStatus);
@@ -428,14 +432,14 @@ public class ShoppingOrderCacheModel
 		shoppingOrderImpl.setPpPaymentGross(ppPaymentGross);
 
 		if (ppReceiverEmail == null) {
-			shoppingOrderImpl.setPpReceiverEmail("");
+			shoppingOrderImpl.setPpReceiverEmail(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setPpReceiverEmail(ppReceiverEmail);
 		}
 
 		if (ppPayerEmail == null) {
-			shoppingOrderImpl.setPpPayerEmail("");
+			shoppingOrderImpl.setPpPayerEmail(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderImpl.setPpPayerEmail(ppPayerEmail);
@@ -450,9 +454,7 @@ public class ShoppingOrderCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		orderId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -508,7 +510,7 @@ public class ShoppingOrderCacheModel
 
 		ccExpYear = objectInput.readInt();
 		ccVerNumber = objectInput.readUTF();
-		comments = (String)objectInput.readObject();
+		comments = objectInput.readUTF();
 		ppTxnId = objectInput.readUTF();
 		ppPaymentStatus = objectInput.readUTF();
 
@@ -522,7 +524,8 @@ public class ShoppingOrderCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(orderId);
 
 		objectOutput.writeLong(groupId);
@@ -532,7 +535,7 @@ public class ShoppingOrderCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -542,7 +545,7 @@ public class ShoppingOrderCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (number == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(number);
@@ -553,7 +556,7 @@ public class ShoppingOrderCacheModel
 		objectOutput.writeDouble(shipping);
 
 		if (altShipping == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(altShipping);
@@ -566,7 +569,7 @@ public class ShoppingOrderCacheModel
 		objectOutput.writeDouble(insurance);
 
 		if (couponCodes == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(couponCodes);
@@ -575,70 +578,70 @@ public class ShoppingOrderCacheModel
 		objectOutput.writeDouble(couponDiscount);
 
 		if (billingFirstName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(billingFirstName);
 		}
 
 		if (billingLastName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(billingLastName);
 		}
 
 		if (billingEmailAddress == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(billingEmailAddress);
 		}
 
 		if (billingCompany == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(billingCompany);
 		}
 
 		if (billingStreet == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(billingStreet);
 		}
 
 		if (billingCity == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(billingCity);
 		}
 
 		if (billingState == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(billingState);
 		}
 
 		if (billingZip == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(billingZip);
 		}
 
 		if (billingCountry == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(billingCountry);
 		}
 
 		if (billingPhone == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(billingPhone);
@@ -647,91 +650,91 @@ public class ShoppingOrderCacheModel
 		objectOutput.writeBoolean(shipToBilling);
 
 		if (shippingFirstName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(shippingFirstName);
 		}
 
 		if (shippingLastName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(shippingLastName);
 		}
 
 		if (shippingEmailAddress == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(shippingEmailAddress);
 		}
 
 		if (shippingCompany == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(shippingCompany);
 		}
 
 		if (shippingStreet == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(shippingStreet);
 		}
 
 		if (shippingCity == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(shippingCity);
 		}
 
 		if (shippingState == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(shippingState);
 		}
 
 		if (shippingZip == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(shippingZip);
 		}
 
 		if (shippingCountry == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(shippingCountry);
 		}
 
 		if (shippingPhone == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(shippingPhone);
 		}
 
 		if (ccName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(ccName);
 		}
 
 		if (ccType == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(ccType);
 		}
 
 		if (ccNumber == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(ccNumber);
@@ -742,28 +745,28 @@ public class ShoppingOrderCacheModel
 		objectOutput.writeInt(ccExpYear);
 
 		if (ccVerNumber == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(ccVerNumber);
 		}
 
 		if (comments == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(comments);
+			objectOutput.writeUTF(comments);
 		}
 
 		if (ppTxnId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(ppTxnId);
 		}
 
 		if (ppPaymentStatus == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(ppPaymentStatus);
@@ -772,14 +775,14 @@ public class ShoppingOrderCacheModel
 		objectOutput.writeDouble(ppPaymentGross);
 
 		if (ppReceiverEmail == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(ppReceiverEmail);
 		}
 
 		if (ppPayerEmail == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(ppPayerEmail);
@@ -841,5 +844,4 @@ public class ShoppingOrderCacheModel
 	public String ppPayerEmail;
 	public boolean sendOrderEmail;
 	public boolean sendShippingEmail;
-
 }

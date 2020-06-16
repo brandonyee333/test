@@ -14,10 +14,14 @@
 
 package com.liferay.mobile.device.rules.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.mobile.device.rules.model.MDRRuleGroup;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing MDRRuleGroup in entity cache.
  *
  * @author Edward C. Han
+ * @see MDRRuleGroup
  * @generated
  */
-public class MDRRuleGroupCacheModel
-	implements CacheModel<MDRRuleGroup>, Externalizable {
-
+@ProviderType
+public class MDRRuleGroupCacheModel implements CacheModel<MDRRuleGroup>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class MDRRuleGroupCacheModel
 			return false;
 		}
 
-		MDRRuleGroupCacheModel mdrRuleGroupCacheModel =
-			(MDRRuleGroupCacheModel)obj;
+		MDRRuleGroupCacheModel mdrRuleGroupCacheModel = (MDRRuleGroupCacheModel)obj;
 
 		if (ruleGroupId == mdrRuleGroupCacheModel.ruleGroupId) {
 			return true;
@@ -96,7 +100,7 @@ public class MDRRuleGroupCacheModel
 		MDRRuleGroupImpl mdrRuleGroupImpl = new MDRRuleGroupImpl();
 
 		if (uuid == null) {
-			mdrRuleGroupImpl.setUuid("");
+			mdrRuleGroupImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			mdrRuleGroupImpl.setUuid(uuid);
@@ -108,7 +112,7 @@ public class MDRRuleGroupCacheModel
 		mdrRuleGroupImpl.setUserId(userId);
 
 		if (userName == null) {
-			mdrRuleGroupImpl.setUserName("");
+			mdrRuleGroupImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			mdrRuleGroupImpl.setUserName(userName);
@@ -129,14 +133,14 @@ public class MDRRuleGroupCacheModel
 		}
 
 		if (name == null) {
-			mdrRuleGroupImpl.setName("");
+			mdrRuleGroupImpl.setName(StringPool.BLANK);
 		}
 		else {
 			mdrRuleGroupImpl.setName(name);
 		}
 
 		if (description == null) {
-			mdrRuleGroupImpl.setDescription("");
+			mdrRuleGroupImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			mdrRuleGroupImpl.setDescription(description);
@@ -174,9 +178,10 @@ public class MDRRuleGroupCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -191,7 +196,7 @@ public class MDRRuleGroupCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -201,14 +206,14 @@ public class MDRRuleGroupCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -228,5 +233,4 @@ public class MDRRuleGroupCacheModel
 	public String name;
 	public String description;
 	public long lastPublishDate;
-
 }

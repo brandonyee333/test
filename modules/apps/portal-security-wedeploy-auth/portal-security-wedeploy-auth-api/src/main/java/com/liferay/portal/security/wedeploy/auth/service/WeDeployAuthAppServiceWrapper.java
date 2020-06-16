@@ -14,6 +14,8 @@
 
 package com.liferay.portal.security.wedeploy.auth.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -23,41 +25,37 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see WeDeployAuthAppService
  * @generated
  */
-public class WeDeployAuthAppServiceWrapper
-	implements ServiceWrapper<WeDeployAuthAppService>, WeDeployAuthAppService {
-
+@ProviderType
+public class WeDeployAuthAppServiceWrapper implements WeDeployAuthAppService,
+	ServiceWrapper<WeDeployAuthAppService> {
 	public WeDeployAuthAppServiceWrapper(
 		WeDeployAuthAppService weDeployAuthAppService) {
-
 		_weDeployAuthAppService = weDeployAuthAppService;
 	}
 
 	@Override
-	public com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthApp
-			addWeDeployAuthApp(
-				String name, String redirectURI,
-				com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthApp addWeDeployAuthApp(
+		java.lang.String name, java.lang.String redirectURI,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _weDeployAuthAppService.addWeDeployAuthApp(
-			name, redirectURI, serviceContext);
+		return _weDeployAuthAppService.addWeDeployAuthApp(name, redirectURI,
+			serviceContext);
 	}
 
 	@Override
-	public com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthApp
-			deleteWeDeployAuthApp(long weDeployAuthAppId)
+	public com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthApp deleteWeDeployAuthApp(
+		long weDeployAuthAppId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-
 		return _weDeployAuthAppService.deleteWeDeployAuthApp(weDeployAuthAppId);
 	}
 
 	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
 	@Override
-	public String getOSGiServiceIdentifier() {
+	public java.lang.String getOSGiServiceIdentifier() {
 		return _weDeployAuthAppService.getOSGiServiceIdentifier();
 	}
 
@@ -67,12 +65,9 @@ public class WeDeployAuthAppServiceWrapper
 	}
 
 	@Override
-	public void setWrappedService(
-		WeDeployAuthAppService weDeployAuthAppService) {
-
+	public void setWrappedService(WeDeployAuthAppService weDeployAuthAppService) {
 		_weDeployAuthAppService = weDeployAuthAppService;
 	}
 
 	private WeDeployAuthAppService _weDeployAuthAppService;
-
 }

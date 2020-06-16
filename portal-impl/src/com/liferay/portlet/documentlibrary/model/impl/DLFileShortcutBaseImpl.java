@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.documentlibrary.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.document.library.kernel.model.DLFileShortcut;
 import com.liferay.document.library.kernel.service.DLFileShortcutLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.document.library.kernel.service.DLFileShortcutLocalServiceUti
  * @see DLFileShortcut
  * @generated
  */
-public abstract class DLFileShortcutBaseImpl
-	extends DLFileShortcutModelImpl implements DLFileShortcut {
-
+@ProviderType
+public abstract class DLFileShortcutBaseImpl extends DLFileShortcutModelImpl
+	implements DLFileShortcut {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a document library file shortcut model instance should use the <code>DLFileShortcut</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a document library file shortcut model instance should use the {@link DLFileShortcut} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -55,5 +57,4 @@ public abstract class DLFileShortcutBaseImpl
 
 		DLFileShortcutLocalServiceUtil.updateDLFileShortcut(dlFileShortcut);
 	}
-
 }

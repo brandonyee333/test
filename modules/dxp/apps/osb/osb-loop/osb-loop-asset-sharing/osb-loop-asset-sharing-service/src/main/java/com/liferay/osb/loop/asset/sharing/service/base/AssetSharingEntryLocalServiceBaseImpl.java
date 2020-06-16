@@ -1,23 +1,26 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.loop.asset.sharing.service.base;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.loop.asset.sharing.model.AssetSharingEntry;
 import com.liferay.osb.loop.asset.sharing.service.AssetSharingEntryLocalService;
 import com.liferay.osb.loop.asset.sharing.service.persistence.AssetSharingEntryPK;
 import com.liferay.osb.loop.asset.sharing.service.persistence.AssetSharingEntryPersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -37,10 +40,8 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
-import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
-import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -60,16 +61,17 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.osb.loop.asset.sharing.service.impl.AssetSharingEntryLocalServiceImpl
+ * @see com.liferay.osb.loop.asset.sharing.service.AssetSharingEntryLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class AssetSharingEntryLocalServiceBaseImpl
-	extends BaseLocalServiceImpl
-	implements AssetSharingEntryLocalService, IdentifiableOSGiService {
-
+	extends BaseLocalServiceImpl implements AssetSharingEntryLocalService,
+		IdentifiableOSGiService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AssetSharingEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.loop.asset.sharing.service.AssetSharingEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.osb.loop.asset.sharing.service.AssetSharingEntryLocalServiceUtil} to access the asset sharing entry local service.
 	 */
 
 	/**
@@ -82,7 +84,6 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	@Override
 	public AssetSharingEntry addAssetSharingEntry(
 		AssetSharingEntry assetSharingEntry) {
-
 		assetSharingEntry.setNew(true);
 
 		return assetSharingEntryPersistence.update(assetSharingEntry);
@@ -95,10 +96,8 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	 * @return the new asset sharing entry
 	 */
 	@Override
-	@Transactional(enabled = false)
 	public AssetSharingEntry createAssetSharingEntry(
 		AssetSharingEntryPK assetSharingEntryPK) {
-
 		return assetSharingEntryPersistence.create(assetSharingEntryPK);
 	}
 
@@ -112,9 +111,7 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public AssetSharingEntry deleteAssetSharingEntry(
-			AssetSharingEntryPK assetSharingEntryPK)
-		throws PortalException {
-
+		AssetSharingEntryPK assetSharingEntryPK) throws PortalException {
 		return assetSharingEntryPersistence.remove(assetSharingEntryPK);
 	}
 
@@ -128,7 +125,6 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	@Override
 	public AssetSharingEntry deleteAssetSharingEntry(
 		AssetSharingEntry assetSharingEntry) {
-
 		return assetSharingEntryPersistence.remove(assetSharingEntry);
 	}
 
@@ -136,8 +132,8 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(
-			AssetSharingEntry.class, clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(AssetSharingEntry.class,
+			clazz.getClassLoader());
 	}
 
 	/**
@@ -155,7 +151,7 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.loop.asset.sharing.model.impl.AssetSharingEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.loop.asset.sharing.model.impl.AssetSharingEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -164,18 +160,17 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end) {
-
-		return assetSharingEntryPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
+		return assetSharingEntryPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.loop.asset.sharing.model.impl.AssetSharingEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.loop.asset.sharing.model.impl.AssetSharingEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -185,12 +180,10 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<T> orderByComparator) {
-
-		return assetSharingEntryPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
+		return assetSharingEntryPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end, orderByComparator);
 	}
 
 	/**
@@ -212,19 +205,16 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(
-		DynamicQuery dynamicQuery, Projection projection) {
-
-		return assetSharingEntryPersistence.countWithDynamicQuery(
-			dynamicQuery, projection);
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection) {
+		return assetSharingEntryPersistence.countWithDynamicQuery(dynamicQuery,
+			projection);
 	}
 
 	@Override
 	public AssetSharingEntry fetchAssetSharingEntry(
 		AssetSharingEntryPK assetSharingEntryPK) {
-
-		return assetSharingEntryPersistence.fetchByPrimaryKey(
-			assetSharingEntryPK);
+		return assetSharingEntryPersistence.fetchByPrimaryKey(assetSharingEntryPK);
 	}
 
 	/**
@@ -236,20 +226,15 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	 */
 	@Override
 	public AssetSharingEntry getAssetSharingEntry(
-			AssetSharingEntryPK assetSharingEntryPK)
-		throws PortalException {
-
-		return assetSharingEntryPersistence.findByPrimaryKey(
-			assetSharingEntryPK);
+		AssetSharingEntryPK assetSharingEntryPK) throws PortalException {
+		return assetSharingEntryPersistence.findByPrimaryKey(assetSharingEntryPK);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
-		actionableDynamicQuery.setBaseLocalService(
-			assetSharingEntryLocalService);
+		actionableDynamicQuery.setBaseLocalService(assetSharingEntryLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(AssetSharingEntry.class);
 
@@ -260,14 +245,10 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
 
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
-			new IndexableActionableDynamicQuery();
-
-		indexableActionableDynamicQuery.setBaseLocalService(
-			assetSharingEntryLocalService);
+		indexableActionableDynamicQuery.setBaseLocalService(assetSharingEntryLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(AssetSharingEntry.class);
 
@@ -279,9 +260,7 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-
-		actionableDynamicQuery.setBaseLocalService(
-			assetSharingEntryLocalService);
+		actionableDynamicQuery.setBaseLocalService(assetSharingEntryLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(AssetSharingEntry.class);
 
@@ -295,22 +274,12 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-
-		return assetSharingEntryLocalService.deleteAssetSharingEntry(
-			(AssetSharingEntry)persistedModel);
+		return assetSharingEntryLocalService.deleteAssetSharingEntry((AssetSharingEntry)persistedModel);
 	}
 
-	public BasePersistence<AssetSharingEntry> getBasePersistence() {
-		return assetSharingEntryPersistence;
-	}
-
-	/**
-	 * @throws PortalException
-	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
-
 		return assetSharingEntryPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -318,7 +287,7 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	 * Returns a range of all the asset sharing entries.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.loop.asset.sharing.model.impl.AssetSharingEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.loop.asset.sharing.model.impl.AssetSharingEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of asset sharing entries
@@ -350,7 +319,6 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	@Override
 	public AssetSharingEntry updateAssetSharingEntry(
 		AssetSharingEntry assetSharingEntry) {
-
 		return assetSharingEntryPersistence.update(assetSharingEntry);
 	}
 
@@ -370,7 +338,6 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	 */
 	public void setAssetSharingEntryLocalService(
 		AssetSharingEntryLocalService assetSharingEntryLocalService) {
-
 		this.assetSharingEntryLocalService = assetSharingEntryLocalService;
 	}
 
@@ -390,7 +357,6 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	 */
 	public void setAssetSharingEntryPersistence(
 		AssetSharingEntryPersistence assetSharingEntryPersistence) {
-
 		this.assetSharingEntryPersistence = assetSharingEntryPersistence;
 	}
 
@@ -399,9 +365,7 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -411,9 +375,7 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -422,9 +384,7 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService
-		getClassNameLocalService() {
-
+	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
 		return classNameLocalService;
 	}
 
@@ -434,9 +394,7 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService
-			classNameLocalService) {
-
+		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -456,7 +414,6 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
-
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -465,9 +422,7 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService
-		getResourceLocalService() {
-
+	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
 		return resourceLocalService;
 	}
 
@@ -477,9 +432,7 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService
-			resourceLocalService) {
-
+		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -488,9 +441,7 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService
-		getUserLocalService() {
-
+	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
 		return userLocalService;
 	}
 
@@ -501,7 +452,6 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
-
 		this.userLocalService = userLocalService;
 	}
 
@@ -524,8 +474,7 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register(
-			"com.liferay.osb.loop.asset.sharing.model.AssetSharingEntry",
+		persistedModelLocalServiceRegistry.register("com.liferay.osb.loop.asset.sharing.model.AssetSharingEntry",
 			assetSharingEntryLocalService);
 	}
 
@@ -559,62 +508,39 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	 */
 	protected void runSQL(String sql) {
 		try {
-			DataSource dataSource =
-				assetSharingEntryPersistence.getDataSource();
+			DataSource dataSource = assetSharingEntryPersistence.getDataSource();
 
 			DB db = DBManagerUtil.getDB();
 
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
 	@BeanReference(type = AssetSharingEntryLocalService.class)
 	protected AssetSharingEntryLocalService assetSharingEntryLocalService;
-
 	@BeanReference(type = AssetSharingEntryPersistence.class)
 	protected AssetSharingEntryPersistence assetSharingEntryPersistence;
-
-	@ServiceReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService
-		classNameLocalService;
-
+	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ResourceLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ResourceLocalService
-		resourceLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.UserLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.UserLocalService
-		userLocalService;
-
+	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
+	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
+	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry
-		persistedModelLocalServiceRegistry;
-
+	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }

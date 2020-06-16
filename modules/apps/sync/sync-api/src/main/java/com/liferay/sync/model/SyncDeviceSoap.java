@@ -14,6 +14,8 @@
 
 package com.liferay.sync.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -24,10 +26,11 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.sync.service.http.SyncDeviceServiceSoap}.
  *
  * @author Brian Wing Shun Chan
+ * @see com.liferay.sync.service.http.SyncDeviceServiceSoap
  * @generated
  */
+@ProviderType
 public class SyncDeviceSoap implements Serializable {
-
 	public static SyncDeviceSoap toSoapModel(SyncDevice model) {
 		SyncDeviceSoap soapModel = new SyncDeviceSoap();
 
@@ -75,8 +78,7 @@ public class SyncDeviceSoap implements Serializable {
 	}
 
 	public static SyncDeviceSoap[] toSoapModels(List<SyncDevice> models) {
-		List<SyncDeviceSoap> soapModels = new ArrayList<SyncDeviceSoap>(
-			models.size());
+		List<SyncDeviceSoap> soapModels = new ArrayList<SyncDeviceSoap>(models.size());
 
 		for (SyncDevice model : models) {
 			soapModels.add(toSoapModel(model));
@@ -204,5 +206,4 @@ public class SyncDeviceSoap implements Serializable {
 	private int _featureSet;
 	private String _hostname;
 	private int _status;
-
 }

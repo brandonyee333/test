@@ -14,6 +14,8 @@
 
 package com.liferay.portal.workflow.kaleo.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.workflow.kaleo.model.KaleoCondition;
 import com.liferay.portal.workflow.kaleo.service.KaleoConditionLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.portal.workflow.kaleo.service.KaleoConditionLocalServiceUtil;
  * @see KaleoCondition
  * @generated
  */
-public abstract class KaleoConditionBaseImpl
-	extends KaleoConditionModelImpl implements KaleoCondition {
-
+@ProviderType
+public abstract class KaleoConditionBaseImpl extends KaleoConditionModelImpl
+	implements KaleoCondition {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a kaleo condition model instance should use the <code>KaleoCondition</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a kaleo condition model instance should use the {@link KaleoCondition} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class KaleoConditionBaseImpl
 			KaleoConditionLocalServiceUtil.updateKaleoCondition(this);
 		}
 	}
-
 }

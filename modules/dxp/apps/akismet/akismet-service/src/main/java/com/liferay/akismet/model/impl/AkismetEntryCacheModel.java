@@ -1,23 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.akismet.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.akismet.model.AkismetEntry;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing AkismetEntry in entity cache.
  *
  * @author Jamie Sammons
+ * @see AkismetEntry
  * @generated
  */
-public class AkismetEntryCacheModel
-	implements CacheModel<AkismetEntry>, Externalizable {
-
+@ProviderType
+public class AkismetEntryCacheModel implements CacheModel<AkismetEntry>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class AkismetEntryCacheModel
 			return false;
 		}
 
-		AkismetEntryCacheModel akismetEntryCacheModel =
-			(AkismetEntryCacheModel)obj;
+		AkismetEntryCacheModel akismetEntryCacheModel = (AkismetEntryCacheModel)obj;
 
 		if (akismetEntryId == akismetEntryCacheModel.akismetEntryId) {
 			return true;
@@ -106,42 +110,42 @@ public class AkismetEntryCacheModel
 		akismetEntryImpl.setClassPK(classPK);
 
 		if (type == null) {
-			akismetEntryImpl.setType("");
+			akismetEntryImpl.setType(StringPool.BLANK);
 		}
 		else {
 			akismetEntryImpl.setType(type);
 		}
 
 		if (permalink == null) {
-			akismetEntryImpl.setPermalink("");
+			akismetEntryImpl.setPermalink(StringPool.BLANK);
 		}
 		else {
 			akismetEntryImpl.setPermalink(permalink);
 		}
 
 		if (referrer == null) {
-			akismetEntryImpl.setReferrer("");
+			akismetEntryImpl.setReferrer(StringPool.BLANK);
 		}
 		else {
 			akismetEntryImpl.setReferrer(referrer);
 		}
 
 		if (userAgent == null) {
-			akismetEntryImpl.setUserAgent("");
+			akismetEntryImpl.setUserAgent(StringPool.BLANK);
 		}
 		else {
 			akismetEntryImpl.setUserAgent(userAgent);
 		}
 
 		if (userIP == null) {
-			akismetEntryImpl.setUserIP("");
+			akismetEntryImpl.setUserIP(StringPool.BLANK);
 		}
 		else {
 			akismetEntryImpl.setUserIP(userIP);
 		}
 
 		if (userURL == null) {
-			akismetEntryImpl.setUserURL("");
+			akismetEntryImpl.setUserURL(StringPool.BLANK);
 		}
 		else {
 			akismetEntryImpl.setUserURL(userURL);
@@ -169,7 +173,8 @@ public class AkismetEntryCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(akismetEntryId);
 		objectOutput.writeLong(modifiedDate);
 
@@ -178,42 +183,42 @@ public class AkismetEntryCacheModel
 		objectOutput.writeLong(classPK);
 
 		if (type == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(type);
 		}
 
 		if (permalink == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(permalink);
 		}
 
 		if (referrer == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(referrer);
 		}
 
 		if (userAgent == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userAgent);
 		}
 
 		if (userIP == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userIP);
 		}
 
 		if (userURL == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userURL);
@@ -230,5 +235,4 @@ public class AkismetEntryCacheModel
 	public String userAgent;
 	public String userIP;
 	public String userURL;
-
 }

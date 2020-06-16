@@ -14,9 +14,12 @@
 
 package com.liferay.dynamic.data.mapping.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.dynamic.data.mapping.model.DDMTemplateVersion;
 import com.liferay.dynamic.data.mapping.service.DDMTemplateVersionLocalService;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMTemplateVersionPersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -36,8 +39,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
-import com.liferay.portal.kernel.service.persistence.BasePersistence;
-import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -57,16 +58,17 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.dynamic.data.mapping.service.impl.DDMTemplateVersionLocalServiceImpl
+ * @see com.liferay.dynamic.data.mapping.service.DDMTemplateVersionLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class DDMTemplateVersionLocalServiceBaseImpl
-	extends BaseLocalServiceImpl
-	implements DDMTemplateVersionLocalService, IdentifiableOSGiService {
-
+	extends BaseLocalServiceImpl implements DDMTemplateVersionLocalService,
+		IdentifiableOSGiService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DDMTemplateVersionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.dynamic.data.mapping.service.DDMTemplateVersionLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.dynamic.data.mapping.service.DDMTemplateVersionLocalServiceUtil} to access the ddm template version local service.
 	 */
 
 	/**
@@ -79,7 +81,6 @@ public abstract class DDMTemplateVersionLocalServiceBaseImpl
 	@Override
 	public DDMTemplateVersion addDDMTemplateVersion(
 		DDMTemplateVersion ddmTemplateVersion) {
-
 		ddmTemplateVersion.setNew(true);
 
 		return ddmTemplateVersionPersistence.update(ddmTemplateVersion);
@@ -92,7 +93,6 @@ public abstract class DDMTemplateVersionLocalServiceBaseImpl
 	 * @return the new ddm template version
 	 */
 	@Override
-	@Transactional(enabled = false)
 	public DDMTemplateVersion createDDMTemplateVersion(long templateVersionId) {
 		return ddmTemplateVersionPersistence.create(templateVersionId);
 	}
@@ -108,7 +108,6 @@ public abstract class DDMTemplateVersionLocalServiceBaseImpl
 	@Override
 	public DDMTemplateVersion deleteDDMTemplateVersion(long templateVersionId)
 		throws PortalException {
-
 		return ddmTemplateVersionPersistence.remove(templateVersionId);
 	}
 
@@ -122,7 +121,6 @@ public abstract class DDMTemplateVersionLocalServiceBaseImpl
 	@Override
 	public DDMTemplateVersion deleteDDMTemplateVersion(
 		DDMTemplateVersion ddmTemplateVersion) {
-
 		return ddmTemplateVersionPersistence.remove(ddmTemplateVersion);
 	}
 
@@ -130,8 +128,8 @@ public abstract class DDMTemplateVersionLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(
-			DDMTemplateVersion.class, clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(DDMTemplateVersion.class,
+			clazz.getClassLoader());
 	}
 
 	/**
@@ -149,7 +147,7 @@ public abstract class DDMTemplateVersionLocalServiceBaseImpl
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.dynamic.data.mapping.model.impl.DDMTemplateVersionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.dynamic.data.mapping.model.impl.DDMTemplateVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -158,18 +156,17 @@ public abstract class DDMTemplateVersionLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end) {
-
-		return ddmTemplateVersionPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
+		return ddmTemplateVersionPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.dynamic.data.mapping.model.impl.DDMTemplateVersionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.dynamic.data.mapping.model.impl.DDMTemplateVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -179,12 +176,10 @@ public abstract class DDMTemplateVersionLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<T> orderByComparator) {
-
-		return ddmTemplateVersionPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
+		return ddmTemplateVersionPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end, orderByComparator);
 	}
 
 	/**
@@ -195,8 +190,7 @@ public abstract class DDMTemplateVersionLocalServiceBaseImpl
 	 */
 	@Override
 	public long dynamicQueryCount(DynamicQuery dynamicQuery) {
-		return ddmTemplateVersionPersistence.countWithDynamicQuery(
-			dynamicQuery);
+		return ddmTemplateVersionPersistence.countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
@@ -207,17 +201,15 @@ public abstract class DDMTemplateVersionLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(
-		DynamicQuery dynamicQuery, Projection projection) {
-
-		return ddmTemplateVersionPersistence.countWithDynamicQuery(
-			dynamicQuery, projection);
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection) {
+		return ddmTemplateVersionPersistence.countWithDynamicQuery(dynamicQuery,
+			projection);
 	}
 
 	@Override
 	public DDMTemplateVersion fetchDDMTemplateVersion(long templateVersionId) {
-		return ddmTemplateVersionPersistence.fetchByPrimaryKey(
-			templateVersionId);
+		return ddmTemplateVersionPersistence.fetchByPrimaryKey(templateVersionId);
 	}
 
 	/**
@@ -230,18 +222,14 @@ public abstract class DDMTemplateVersionLocalServiceBaseImpl
 	@Override
 	public DDMTemplateVersion getDDMTemplateVersion(long templateVersionId)
 		throws PortalException {
-
-		return ddmTemplateVersionPersistence.findByPrimaryKey(
-			templateVersionId);
+		return ddmTemplateVersionPersistence.findByPrimaryKey(templateVersionId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
-		actionableDynamicQuery.setBaseLocalService(
-			ddmTemplateVersionLocalService);
+		actionableDynamicQuery.setBaseLocalService(ddmTemplateVersionLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(DDMTemplateVersion.class);
 
@@ -251,14 +239,10 @@ public abstract class DDMTemplateVersionLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
 
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
-			new IndexableActionableDynamicQuery();
-
-		indexableActionableDynamicQuery.setBaseLocalService(
-			ddmTemplateVersionLocalService);
+		indexableActionableDynamicQuery.setBaseLocalService(ddmTemplateVersionLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(DDMTemplateVersion.class);
 
@@ -270,9 +254,7 @@ public abstract class DDMTemplateVersionLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-
-		actionableDynamicQuery.setBaseLocalService(
-			ddmTemplateVersionLocalService);
+		actionableDynamicQuery.setBaseLocalService(ddmTemplateVersionLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(DDMTemplateVersion.class);
 
@@ -285,22 +267,12 @@ public abstract class DDMTemplateVersionLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-
-		return ddmTemplateVersionLocalService.deleteDDMTemplateVersion(
-			(DDMTemplateVersion)persistedModel);
+		return ddmTemplateVersionLocalService.deleteDDMTemplateVersion((DDMTemplateVersion)persistedModel);
 	}
 
-	public BasePersistence<DDMTemplateVersion> getBasePersistence() {
-		return ddmTemplateVersionPersistence;
-	}
-
-	/**
-	 * @throws PortalException
-	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
-
 		return ddmTemplateVersionPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -308,7 +280,7 @@ public abstract class DDMTemplateVersionLocalServiceBaseImpl
 	 * Returns a range of all the ddm template versions.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.dynamic.data.mapping.model.impl.DDMTemplateVersionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.dynamic.data.mapping.model.impl.DDMTemplateVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of ddm template versions
@@ -340,7 +312,6 @@ public abstract class DDMTemplateVersionLocalServiceBaseImpl
 	@Override
 	public DDMTemplateVersion updateDDMTemplateVersion(
 		DDMTemplateVersion ddmTemplateVersion) {
-
 		return ddmTemplateVersionPersistence.update(ddmTemplateVersion);
 	}
 
@@ -360,7 +331,6 @@ public abstract class DDMTemplateVersionLocalServiceBaseImpl
 	 */
 	public void setDDMTemplateVersionLocalService(
 		DDMTemplateVersionLocalService ddmTemplateVersionLocalService) {
-
 		this.ddmTemplateVersionLocalService = ddmTemplateVersionLocalService;
 	}
 
@@ -380,7 +350,6 @@ public abstract class DDMTemplateVersionLocalServiceBaseImpl
 	 */
 	public void setDDMTemplateVersionPersistence(
 		DDMTemplateVersionPersistence ddmTemplateVersionPersistence) {
-
 		this.ddmTemplateVersionPersistence = ddmTemplateVersionPersistence;
 	}
 
@@ -389,9 +358,7 @@ public abstract class DDMTemplateVersionLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -401,15 +368,12 @@ public abstract class DDMTemplateVersionLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register(
-			"com.liferay.dynamic.data.mapping.model.DDMTemplateVersion",
+		persistedModelLocalServiceRegistry.register("com.liferay.dynamic.data.mapping.model.DDMTemplateVersion",
 			ddmTemplateVersionLocalService);
 	}
 
@@ -443,38 +407,29 @@ public abstract class DDMTemplateVersionLocalServiceBaseImpl
 	 */
 	protected void runSQL(String sql) {
 		try {
-			DataSource dataSource =
-				ddmTemplateVersionPersistence.getDataSource();
+			DataSource dataSource = ddmTemplateVersionPersistence.getDataSource();
 
 			DB db = DBManagerUtil.getDB();
 
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
 	@BeanReference(type = DDMTemplateVersionLocalService.class)
 	protected DDMTemplateVersionLocalService ddmTemplateVersionLocalService;
-
 	@BeanReference(type = DDMTemplateVersionPersistence.class)
 	protected DDMTemplateVersionPersistence ddmTemplateVersionPersistence;
-
-	@ServiceReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
+	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry
-		persistedModelLocalServiceRegistry;
-
+	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }

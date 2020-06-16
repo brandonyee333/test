@@ -14,9 +14,12 @@
 
 package com.liferay.shopping.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+
 import com.liferay.shopping.model.ShoppingItemPrice;
 
 import java.io.Externalizable;
@@ -28,11 +31,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing ShoppingItemPrice in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see ShoppingItemPrice
  * @generated
  */
-public class ShoppingItemPriceCacheModel
-	implements CacheModel<ShoppingItemPrice>, Externalizable {
-
+@ProviderType
+public class ShoppingItemPriceCacheModel implements CacheModel<ShoppingItemPrice>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -43,8 +47,7 @@ public class ShoppingItemPriceCacheModel
 			return false;
 		}
 
-		ShoppingItemPriceCacheModel shoppingItemPriceCacheModel =
-			(ShoppingItemPriceCacheModel)obj;
+		ShoppingItemPriceCacheModel shoppingItemPriceCacheModel = (ShoppingItemPriceCacheModel)obj;
 
 		if (itemPriceId == shoppingItemPriceCacheModel.itemPriceId) {
 			return true;
@@ -91,8 +94,7 @@ public class ShoppingItemPriceCacheModel
 
 	@Override
 	public ShoppingItemPrice toEntityModel() {
-		ShoppingItemPriceImpl shoppingItemPriceImpl =
-			new ShoppingItemPriceImpl();
+		ShoppingItemPriceImpl shoppingItemPriceImpl = new ShoppingItemPriceImpl();
 
 		shoppingItemPriceImpl.setItemPriceId(itemPriceId);
 		shoppingItemPriceImpl.setCompanyId(companyId);
@@ -137,7 +139,8 @@ public class ShoppingItemPriceCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(itemPriceId);
 
 		objectOutput.writeLong(companyId);
@@ -172,5 +175,4 @@ public class ShoppingItemPriceCacheModel
 	public double shipping;
 	public boolean useShippingFormula;
 	public int status;
-
 }

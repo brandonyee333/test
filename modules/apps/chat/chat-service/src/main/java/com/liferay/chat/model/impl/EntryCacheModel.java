@@ -14,10 +14,14 @@
 
 package com.liferay.chat.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.chat.model.Entry;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -28,10 +32,11 @@ import java.io.ObjectOutput;
  * The cache model class for representing Entry in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see Entry
  * @generated
  */
+@ProviderType
 public class EntryCacheModel implements CacheModel<Entry>, Externalizable {
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -87,7 +92,7 @@ public class EntryCacheModel implements CacheModel<Entry>, Externalizable {
 		entryImpl.setToUserId(toUserId);
 
 		if (content == null) {
-			entryImpl.setContent("");
+			entryImpl.setContent(StringPool.BLANK);
 		}
 		else {
 			entryImpl.setContent(content);
@@ -115,7 +120,8 @@ public class EntryCacheModel implements CacheModel<Entry>, Externalizable {
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(entryId);
 
 		objectOutput.writeLong(createDate);
@@ -125,7 +131,7 @@ public class EntryCacheModel implements CacheModel<Entry>, Externalizable {
 		objectOutput.writeLong(toUserId);
 
 		if (content == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(content);
@@ -140,5 +146,4 @@ public class EntryCacheModel implements CacheModel<Entry>, Externalizable {
 	public long toUserId;
 	public String content;
 	public int flag;
-
 }

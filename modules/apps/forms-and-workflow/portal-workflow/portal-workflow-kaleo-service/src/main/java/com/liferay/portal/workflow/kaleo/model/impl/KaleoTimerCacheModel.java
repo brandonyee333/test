@@ -14,9 +14,12 @@
 
 package com.liferay.portal.workflow.kaleo.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.workflow.kaleo.model.KaleoTimer;
 
 import java.io.Externalizable;
@@ -30,11 +33,12 @@ import java.util.Date;
  * The cache model class for representing KaleoTimer in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see KaleoTimer
  * @generated
  */
-public class KaleoTimerCacheModel
-	implements CacheModel<KaleoTimer>, Externalizable {
-
+@ProviderType
+public class KaleoTimerCacheModel implements CacheModel<KaleoTimer>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -112,7 +116,7 @@ public class KaleoTimerCacheModel
 		kaleoTimerImpl.setUserId(userId);
 
 		if (userName == null) {
-			kaleoTimerImpl.setUserName("");
+			kaleoTimerImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			kaleoTimerImpl.setUserName(userName);
@@ -133,7 +137,7 @@ public class KaleoTimerCacheModel
 		}
 
 		if (kaleoClassName == null) {
-			kaleoTimerImpl.setKaleoClassName("");
+			kaleoTimerImpl.setKaleoClassName(StringPool.BLANK);
 		}
 		else {
 			kaleoTimerImpl.setKaleoClassName(kaleoClassName);
@@ -143,7 +147,7 @@ public class KaleoTimerCacheModel
 		kaleoTimerImpl.setKaleoDefinitionId(kaleoDefinitionId);
 
 		if (name == null) {
-			kaleoTimerImpl.setName("");
+			kaleoTimerImpl.setName(StringPool.BLANK);
 		}
 		else {
 			kaleoTimerImpl.setName(name);
@@ -152,7 +156,7 @@ public class KaleoTimerCacheModel
 		kaleoTimerImpl.setBlocking(blocking);
 
 		if (description == null) {
-			kaleoTimerImpl.setDescription("");
+			kaleoTimerImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			kaleoTimerImpl.setDescription(description);
@@ -161,7 +165,7 @@ public class KaleoTimerCacheModel
 		kaleoTimerImpl.setDuration(duration);
 
 		if (scale == null) {
-			kaleoTimerImpl.setScale("");
+			kaleoTimerImpl.setScale(StringPool.BLANK);
 		}
 		else {
 			kaleoTimerImpl.setScale(scale);
@@ -170,7 +174,7 @@ public class KaleoTimerCacheModel
 		kaleoTimerImpl.setRecurrenceDuration(recurrenceDuration);
 
 		if (recurrenceScale == null) {
-			kaleoTimerImpl.setRecurrenceScale("");
+			kaleoTimerImpl.setRecurrenceScale(StringPool.BLANK);
 		}
 		else {
 			kaleoTimerImpl.setRecurrenceScale(recurrenceScale);
@@ -211,7 +215,8 @@ public class KaleoTimerCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(kaleoTimerId);
 
 		objectOutput.writeLong(groupId);
@@ -221,7 +226,7 @@ public class KaleoTimerCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -231,7 +236,7 @@ public class KaleoTimerCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (kaleoClassName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(kaleoClassName);
@@ -242,7 +247,7 @@ public class KaleoTimerCacheModel
 		objectOutput.writeLong(kaleoDefinitionId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
@@ -251,7 +256,7 @@ public class KaleoTimerCacheModel
 		objectOutput.writeBoolean(blocking);
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -260,7 +265,7 @@ public class KaleoTimerCacheModel
 		objectOutput.writeDouble(duration);
 
 		if (scale == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(scale);
@@ -269,7 +274,7 @@ public class KaleoTimerCacheModel
 		objectOutput.writeDouble(recurrenceDuration);
 
 		if (recurrenceScale == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(recurrenceScale);
@@ -293,5 +298,4 @@ public class KaleoTimerCacheModel
 	public String scale;
 	public double recurrenceDuration;
 	public String recurrenceScale;
-
 }

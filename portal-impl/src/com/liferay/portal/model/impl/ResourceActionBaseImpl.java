@@ -14,6 +14,8 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.ResourceAction;
 import com.liferay.portal.kernel.service.ResourceActionLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.portal.kernel.service.ResourceActionLocalServiceUtil;
  * @see ResourceAction
  * @generated
  */
-public abstract class ResourceActionBaseImpl
-	extends ResourceActionModelImpl implements ResourceAction {
-
+@ProviderType
+public abstract class ResourceActionBaseImpl extends ResourceActionModelImpl
+	implements ResourceAction {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a resource action model instance should use the <code>ResourceAction</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a resource action model instance should use the {@link ResourceAction} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class ResourceActionBaseImpl
 			ResourceActionLocalServiceUtil.updateResourceAction(this);
 		}
 	}
-
 }

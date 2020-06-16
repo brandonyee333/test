@@ -14,9 +14,13 @@
 
 package com.liferay.social.networking.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.social.networking.model.MeetupsRegistration;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing MeetupsRegistration in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see MeetupsRegistration
  * @generated
  */
-public class MeetupsRegistrationCacheModel
-	implements CacheModel<MeetupsRegistration>, Externalizable {
-
+@ProviderType
+public class MeetupsRegistrationCacheModel implements CacheModel<MeetupsRegistration>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +50,9 @@ public class MeetupsRegistrationCacheModel
 			return false;
 		}
 
-		MeetupsRegistrationCacheModel meetupsRegistrationCacheModel =
-			(MeetupsRegistrationCacheModel)obj;
+		MeetupsRegistrationCacheModel meetupsRegistrationCacheModel = (MeetupsRegistrationCacheModel)obj;
 
-		if (meetupsRegistrationId ==
-				meetupsRegistrationCacheModel.meetupsRegistrationId) {
-
+		if (meetupsRegistrationId == meetupsRegistrationCacheModel.meetupsRegistrationId) {
 			return true;
 		}
 
@@ -91,15 +93,14 @@ public class MeetupsRegistrationCacheModel
 
 	@Override
 	public MeetupsRegistration toEntityModel() {
-		MeetupsRegistrationImpl meetupsRegistrationImpl =
-			new MeetupsRegistrationImpl();
+		MeetupsRegistrationImpl meetupsRegistrationImpl = new MeetupsRegistrationImpl();
 
 		meetupsRegistrationImpl.setMeetupsRegistrationId(meetupsRegistrationId);
 		meetupsRegistrationImpl.setCompanyId(companyId);
 		meetupsRegistrationImpl.setUserId(userId);
 
 		if (userName == null) {
-			meetupsRegistrationImpl.setUserName("");
+			meetupsRegistrationImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			meetupsRegistrationImpl.setUserName(userName);
@@ -122,7 +123,7 @@ public class MeetupsRegistrationCacheModel
 		meetupsRegistrationImpl.setMeetupsEntryId(meetupsEntryId);
 
 		if (comments == null) {
-			meetupsRegistrationImpl.setComments("");
+			meetupsRegistrationImpl.setComments(StringPool.BLANK);
 		}
 		else {
 			meetupsRegistrationImpl.setComments(comments);
@@ -153,7 +154,8 @@ public class MeetupsRegistrationCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(meetupsRegistrationId);
 
 		objectOutput.writeLong(companyId);
@@ -161,7 +163,7 @@ public class MeetupsRegistrationCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -173,7 +175,7 @@ public class MeetupsRegistrationCacheModel
 		objectOutput.writeLong(meetupsEntryId);
 
 		if (comments == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(comments);
@@ -191,5 +193,4 @@ public class MeetupsRegistrationCacheModel
 	public long meetupsEntryId;
 	public String comments;
 	public int status;
-
 }

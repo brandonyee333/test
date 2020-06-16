@@ -1,20 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.testray.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -34,8 +37,8 @@ import java.util.Objects;
  * @see TestrayRun
  * @generated
  */
-public class TestrayRunWrapper implements ModelWrapper<TestrayRun>, TestrayRun {
-
+@ProviderType
+public class TestrayRunWrapper implements TestrayRun, ModelWrapper<TestrayRun> {
 	public TestrayRunWrapper(TestrayRun testrayRun) {
 		_testrayRun = testrayRun;
 	}
@@ -136,14 +139,14 @@ public class TestrayRunWrapper implements ModelWrapper<TestrayRun>, TestrayRun {
 		}
 
 		String externalReferencePK = (String)attributes.get(
-			"externalReferencePK");
+				"externalReferencePK");
 
 		if (externalReferencePK != null) {
 			setExternalReferencePK(externalReferencePK);
 		}
 
 		Integer externalReferenceType = (Integer)attributes.get(
-			"externalReferenceType");
+				"externalReferenceType");
 
 		if (externalReferenceType != null) {
 			setExternalReferenceType(externalReferenceType);
@@ -169,198 +172,13 @@ public class TestrayRunWrapper implements ModelWrapper<TestrayRun>, TestrayRun {
 	}
 
 	@Override
-	public Object clone() {
-		return new TestrayRunWrapper((TestrayRun)_testrayRun.clone());
+	public TestrayRun toEscapedModel() {
+		return new TestrayRunWrapper(_testrayRun.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(TestrayRun testrayRun) {
-		return _testrayRun.compareTo(testrayRun);
-	}
-
-	/**
-	 * Returns the company ID of this testray run.
-	 *
-	 * @return the company ID of this testray run
-	 */
-	@Override
-	public long getCompanyId() {
-		return _testrayRun.getCompanyId();
-	}
-
-	/**
-	 * Returns the create date of this testray run.
-	 *
-	 * @return the create date of this testray run
-	 */
-	@Override
-	public Date getCreateDate() {
-		return _testrayRun.getCreateDate();
-	}
-
-	/**
-	 * Returns the description of this testray run.
-	 *
-	 * @return the description of this testray run
-	 */
-	@Override
-	public String getDescription() {
-		return _testrayRun.getDescription();
-	}
-
-	/**
-	 * Returns the environment hash of this testray run.
-	 *
-	 * @return the environment hash of this testray run
-	 */
-	@Override
-	public String getEnvironmentHash() {
-		return _testrayRun.getEnvironmentHash();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _testrayRun.getExpandoBridge();
-	}
-
-	/**
-	 * Returns the external reference pk of this testray run.
-	 *
-	 * @return the external reference pk of this testray run
-	 */
-	@Override
-	public String getExternalReferencePK() {
-		return _testrayRun.getExternalReferencePK();
-	}
-
-	/**
-	 * Returns the external reference type of this testray run.
-	 *
-	 * @return the external reference type of this testray run
-	 */
-	@Override
-	public int getExternalReferenceType() {
-		return _testrayRun.getExternalReferenceType();
-	}
-
-	/**
-	 * Returns the group ID of this testray run.
-	 *
-	 * @return the group ID of this testray run
-	 */
-	@Override
-	public long getGroupId() {
-		return _testrayRun.getGroupId();
-	}
-
-	/**
-	 * Returns the jenkins job key of this testray run.
-	 *
-	 * @return the jenkins job key of this testray run
-	 */
-	@Override
-	public long getJenkinsJobKey() {
-		return _testrayRun.getJenkinsJobKey();
-	}
-
-	/**
-	 * Returns the modified date of this testray run.
-	 *
-	 * @return the modified date of this testray run
-	 */
-	@Override
-	public Date getModifiedDate() {
-		return _testrayRun.getModifiedDate();
-	}
-
-	/**
-	 * Returns the name of this testray run.
-	 *
-	 * @return the name of this testray run
-	 */
-	@Override
-	public String getName() {
-		return _testrayRun.getName();
-	}
-
-	/**
-	 * Returns the number of this testray run.
-	 *
-	 * @return the number of this testray run
-	 */
-	@Override
-	public long getNumber() {
-		return _testrayRun.getNumber();
-	}
-
-	/**
-	 * Returns the primary key of this testray run.
-	 *
-	 * @return the primary key of this testray run
-	 */
-	@Override
-	public long getPrimaryKey() {
-		return _testrayRun.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _testrayRun.getPrimaryKeyObj();
-	}
-
-	/**
-	 * Returns the testray build ID of this testray run.
-	 *
-	 * @return the testray build ID of this testray run
-	 */
-	@Override
-	public long getTestrayBuildId() {
-		return _testrayRun.getTestrayBuildId();
-	}
-
-	/**
-	 * Returns the testray run ID of this testray run.
-	 *
-	 * @return the testray run ID of this testray run
-	 */
-	@Override
-	public long getTestrayRunId() {
-		return _testrayRun.getTestrayRunId();
-	}
-
-	/**
-	 * Returns the user ID of this testray run.
-	 *
-	 * @return the user ID of this testray run
-	 */
-	@Override
-	public long getUserId() {
-		return _testrayRun.getUserId();
-	}
-
-	/**
-	 * Returns the user name of this testray run.
-	 *
-	 * @return the user name of this testray run
-	 */
-	@Override
-	public String getUserName() {
-		return _testrayRun.getUserName();
-	}
-
-	/**
-	 * Returns the user uuid of this testray run.
-	 *
-	 * @return the user uuid of this testray run
-	 */
-	@Override
-	public String getUserUuid() {
-		return _testrayRun.getUserUuid();
-	}
-
-	@Override
-	public int hashCode() {
-		return _testrayRun.hashCode();
+	public TestrayRun toUnescapedModel() {
+		return new TestrayRunWrapper(_testrayRun.toUnescapedModel());
 	}
 
 	@Override
@@ -379,6 +197,216 @@ public class TestrayRunWrapper implements ModelWrapper<TestrayRun>, TestrayRun {
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _testrayRun.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<TestrayRun> toCacheModel() {
+		return _testrayRun.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(TestrayRun testrayRun) {
+		return _testrayRun.compareTo(testrayRun);
+	}
+
+	/**
+	* Returns the external reference type of this testray run.
+	*
+	* @return the external reference type of this testray run
+	*/
+	@Override
+	public int getExternalReferenceType() {
+		return _testrayRun.getExternalReferenceType();
+	}
+
+	@Override
+	public int hashCode() {
+		return _testrayRun.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _testrayRun.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new TestrayRunWrapper((TestrayRun)_testrayRun.clone());
+	}
+
+	/**
+	* Returns the description of this testray run.
+	*
+	* @return the description of this testray run
+	*/
+	@Override
+	public java.lang.String getDescription() {
+		return _testrayRun.getDescription();
+	}
+
+	/**
+	* Returns the environment hash of this testray run.
+	*
+	* @return the environment hash of this testray run
+	*/
+	@Override
+	public java.lang.String getEnvironmentHash() {
+		return _testrayRun.getEnvironmentHash();
+	}
+
+	/**
+	* Returns the external reference pk of this testray run.
+	*
+	* @return the external reference pk of this testray run
+	*/
+	@Override
+	public java.lang.String getExternalReferencePK() {
+		return _testrayRun.getExternalReferencePK();
+	}
+
+	/**
+	* Returns the name of this testray run.
+	*
+	* @return the name of this testray run
+	*/
+	@Override
+	public java.lang.String getName() {
+		return _testrayRun.getName();
+	}
+
+	/**
+	* Returns the user name of this testray run.
+	*
+	* @return the user name of this testray run
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _testrayRun.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this testray run.
+	*
+	* @return the user uuid of this testray run
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _testrayRun.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _testrayRun.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _testrayRun.toXmlString();
+	}
+
+	/**
+	* Returns the create date of this testray run.
+	*
+	* @return the create date of this testray run
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _testrayRun.getCreateDate();
+	}
+
+	/**
+	* Returns the modified date of this testray run.
+	*
+	* @return the modified date of this testray run
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _testrayRun.getModifiedDate();
+	}
+
+	/**
+	* Returns the company ID of this testray run.
+	*
+	* @return the company ID of this testray run
+	*/
+	@Override
+	public long getCompanyId() {
+		return _testrayRun.getCompanyId();
+	}
+
+	/**
+	* Returns the group ID of this testray run.
+	*
+	* @return the group ID of this testray run
+	*/
+	@Override
+	public long getGroupId() {
+		return _testrayRun.getGroupId();
+	}
+
+	/**
+	* Returns the jenkins job key of this testray run.
+	*
+	* @return the jenkins job key of this testray run
+	*/
+	@Override
+	public long getJenkinsJobKey() {
+		return _testrayRun.getJenkinsJobKey();
+	}
+
+	/**
+	* Returns the number of this testray run.
+	*
+	* @return the number of this testray run
+	*/
+	@Override
+	public long getNumber() {
+		return _testrayRun.getNumber();
+	}
+
+	/**
+	* Returns the primary key of this testray run.
+	*
+	* @return the primary key of this testray run
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _testrayRun.getPrimaryKey();
+	}
+
+	/**
+	* Returns the testray build ID of this testray run.
+	*
+	* @return the testray build ID of this testray run
+	*/
+	@Override
+	public long getTestrayBuildId() {
+		return _testrayRun.getTestrayBuildId();
+	}
+
+	/**
+	* Returns the testray run ID of this testray run.
+	*
+	* @return the testray run ID of this testray run
+	*/
+	@Override
+	public long getTestrayRunId() {
+		return _testrayRun.getTestrayRunId();
+	}
+
+	/**
+	* Returns the user ID of this testray run.
+	*
+	* @return the user ID of this testray run
+	*/
+	@Override
+	public long getUserId() {
+		return _testrayRun.getUserId();
+	}
+
+	@Override
 	public void persist() {
 		_testrayRun.persist();
 	}
@@ -389,50 +417,43 @@ public class TestrayRunWrapper implements ModelWrapper<TestrayRun>, TestrayRun {
 	}
 
 	/**
-	 * Sets the company ID of this testray run.
-	 *
-	 * @param companyId the company ID of this testray run
-	 */
+	* Sets the company ID of this testray run.
+	*
+	* @param companyId the company ID of this testray run
+	*/
 	@Override
 	public void setCompanyId(long companyId) {
 		_testrayRun.setCompanyId(companyId);
 	}
 
 	/**
-	 * Sets the create date of this testray run.
-	 *
-	 * @param createDate the create date of this testray run
-	 */
+	* Sets the create date of this testray run.
+	*
+	* @param createDate the create date of this testray run
+	*/
 	@Override
 	public void setCreateDate(Date createDate) {
 		_testrayRun.setCreateDate(createDate);
 	}
 
 	/**
-	 * Sets the description of this testray run.
-	 *
-	 * @param description the description of this testray run
-	 */
+	* Sets the description of this testray run.
+	*
+	* @param description the description of this testray run
+	*/
 	@Override
-	public void setDescription(String description) {
+	public void setDescription(java.lang.String description) {
 		_testrayRun.setDescription(description);
 	}
 
 	/**
-	 * Sets the environment hash of this testray run.
-	 *
-	 * @param environmentHash the environment hash of this testray run
-	 */
+	* Sets the environment hash of this testray run.
+	*
+	* @param environmentHash the environment hash of this testray run
+	*/
 	@Override
-	public void setEnvironmentHash(String environmentHash) {
+	public void setEnvironmentHash(java.lang.String environmentHash) {
 		_testrayRun.setEnvironmentHash(environmentHash);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-
-		_testrayRun.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -441,67 +462,73 @@ public class TestrayRunWrapper implements ModelWrapper<TestrayRun>, TestrayRun {
 	}
 
 	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_testrayRun.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_testrayRun.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	 * Sets the external reference pk of this testray run.
-	 *
-	 * @param externalReferencePK the external reference pk of this testray run
-	 */
+	* Sets the external reference pk of this testray run.
+	*
+	* @param externalReferencePK the external reference pk of this testray run
+	*/
 	@Override
-	public void setExternalReferencePK(String externalReferencePK) {
+	public void setExternalReferencePK(java.lang.String externalReferencePK) {
 		_testrayRun.setExternalReferencePK(externalReferencePK);
 	}
 
 	/**
-	 * Sets the external reference type of this testray run.
-	 *
-	 * @param externalReferenceType the external reference type of this testray run
-	 */
+	* Sets the external reference type of this testray run.
+	*
+	* @param externalReferenceType the external reference type of this testray run
+	*/
 	@Override
 	public void setExternalReferenceType(int externalReferenceType) {
 		_testrayRun.setExternalReferenceType(externalReferenceType);
 	}
 
 	/**
-	 * Sets the group ID of this testray run.
-	 *
-	 * @param groupId the group ID of this testray run
-	 */
+	* Sets the group ID of this testray run.
+	*
+	* @param groupId the group ID of this testray run
+	*/
 	@Override
 	public void setGroupId(long groupId) {
 		_testrayRun.setGroupId(groupId);
 	}
 
 	/**
-	 * Sets the jenkins job key of this testray run.
-	 *
-	 * @param jenkinsJobKey the jenkins job key of this testray run
-	 */
+	* Sets the jenkins job key of this testray run.
+	*
+	* @param jenkinsJobKey the jenkins job key of this testray run
+	*/
 	@Override
 	public void setJenkinsJobKey(long jenkinsJobKey) {
 		_testrayRun.setJenkinsJobKey(jenkinsJobKey);
 	}
 
 	/**
-	 * Sets the modified date of this testray run.
-	 *
-	 * @param modifiedDate the modified date of this testray run
-	 */
+	* Sets the modified date of this testray run.
+	*
+	* @param modifiedDate the modified date of this testray run
+	*/
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_testrayRun.setModifiedDate(modifiedDate);
 	}
 
 	/**
-	 * Sets the name of this testray run.
-	 *
-	 * @param name the name of this testray run
-	 */
+	* Sets the name of this testray run.
+	*
+	* @param name the name of this testray run
+	*/
 	@Override
-	public void setName(String name) {
+	public void setName(java.lang.String name) {
 		_testrayRun.setName(name);
 	}
 
@@ -511,20 +538,20 @@ public class TestrayRunWrapper implements ModelWrapper<TestrayRun>, TestrayRun {
 	}
 
 	/**
-	 * Sets the number of this testray run.
-	 *
-	 * @param number the number of this testray run
-	 */
+	* Sets the number of this testray run.
+	*
+	* @param number the number of this testray run
+	*/
 	@Override
 	public void setNumber(long number) {
 		_testrayRun.setNumber(number);
 	}
 
 	/**
-	 * Sets the primary key of this testray run.
-	 *
-	 * @param primaryKey the primary key of this testray run
-	 */
+	* Sets the primary key of this testray run.
+	*
+	* @param primaryKey the primary key of this testray run
+	*/
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_testrayRun.setPrimaryKey(primaryKey);
@@ -536,80 +563,53 @@ public class TestrayRunWrapper implements ModelWrapper<TestrayRun>, TestrayRun {
 	}
 
 	/**
-	 * Sets the testray build ID of this testray run.
-	 *
-	 * @param testrayBuildId the testray build ID of this testray run
-	 */
+	* Sets the testray build ID of this testray run.
+	*
+	* @param testrayBuildId the testray build ID of this testray run
+	*/
 	@Override
 	public void setTestrayBuildId(long testrayBuildId) {
 		_testrayRun.setTestrayBuildId(testrayBuildId);
 	}
 
 	/**
-	 * Sets the testray run ID of this testray run.
-	 *
-	 * @param testrayRunId the testray run ID of this testray run
-	 */
+	* Sets the testray run ID of this testray run.
+	*
+	* @param testrayRunId the testray run ID of this testray run
+	*/
 	@Override
 	public void setTestrayRunId(long testrayRunId) {
 		_testrayRun.setTestrayRunId(testrayRunId);
 	}
 
 	/**
-	 * Sets the user ID of this testray run.
-	 *
-	 * @param userId the user ID of this testray run
-	 */
+	* Sets the user ID of this testray run.
+	*
+	* @param userId the user ID of this testray run
+	*/
 	@Override
 	public void setUserId(long userId) {
 		_testrayRun.setUserId(userId);
 	}
 
 	/**
-	 * Sets the user name of this testray run.
-	 *
-	 * @param userName the user name of this testray run
-	 */
+	* Sets the user name of this testray run.
+	*
+	* @param userName the user name of this testray run
+	*/
 	@Override
-	public void setUserName(String userName) {
+	public void setUserName(java.lang.String userName) {
 		_testrayRun.setUserName(userName);
 	}
 
 	/**
-	 * Sets the user uuid of this testray run.
-	 *
-	 * @param userUuid the user uuid of this testray run
-	 */
+	* Sets the user uuid of this testray run.
+	*
+	* @param userUuid the user uuid of this testray run
+	*/
 	@Override
-	public void setUserUuid(String userUuid) {
+	public void setUserUuid(java.lang.String userUuid) {
 		_testrayRun.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<TestrayRun>
-		toCacheModel() {
-
-		return _testrayRun.toCacheModel();
-	}
-
-	@Override
-	public TestrayRun toEscapedModel() {
-		return new TestrayRunWrapper(_testrayRun.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return _testrayRun.toString();
-	}
-
-	@Override
-	public TestrayRun toUnescapedModel() {
-		return new TestrayRunWrapper(_testrayRun.toUnescapedModel());
-	}
-
-	@Override
-	public String toXmlString() {
-		return _testrayRun.toXmlString();
 	}
 
 	@Override
@@ -652,5 +652,4 @@ public class TestrayRunWrapper implements ModelWrapper<TestrayRun>, TestrayRun {
 	}
 
 	private final TestrayRun _testrayRun;
-
 }

@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.watson.service.persistence.impl;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -22,14 +24,16 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.service.persistence.CompanyProvider;
+import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+
 import com.liferay.watson.exception.NoSuchActivityAuditException;
 import com.liferay.watson.model.WatsonActivityAudit;
 import com.liferay.watson.model.impl.WatsonActivityAuditImpl;
@@ -37,8 +41,6 @@ import com.liferay.watson.model.impl.WatsonActivityAuditModelImpl;
 import com.liferay.watson.service.persistence.WatsonActivityAuditPersistence;
 
 import java.io.Serializable;
-
-import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -57,29 +59,34 @@ import java.util.Set;
  * </p>
  *
  * @author Steven Smith
+ * @see WatsonActivityAuditPersistence
+ * @see com.liferay.watson.service.persistence.WatsonActivityAuditUtil
  * @generated
  */
-public class WatsonActivityAuditPersistenceImpl
-	extends BasePersistenceImpl<WatsonActivityAudit>
+@ProviderType
+public class WatsonActivityAuditPersistenceImpl extends BasePersistenceImpl<WatsonActivityAudit>
 	implements WatsonActivityAuditPersistence {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use <code>WatsonActivityAuditUtil</code> to access the watson activity audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use {@link WatsonActivityAuditUtil} to access the watson activity audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY =
-		WatsonActivityAuditImpl.class.getName();
-
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List1";
-
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
+	public static final String FINDER_CLASS_NAME_ENTITY = WatsonActivityAuditImpl.class.getName();
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List1";
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List2";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonActivityAuditModelImpl.FINDER_CACHE_ENABLED,
+			WatsonActivityAuditImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonActivityAuditModelImpl.FINDER_CACHE_ENABLED,
+			WatsonActivityAuditImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonActivityAuditModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
 
 	public WatsonActivityAuditPersistenceImpl() {
 		setModelClass(WatsonActivityAudit.class);
@@ -92,8 +99,7 @@ public class WatsonActivityAuditPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(WatsonActivityAudit watsonActivityAudit) {
-		entityCache.putResult(
-			WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonActivityAuditImpl.class, watsonActivityAudit.getPrimaryKey(),
 			watsonActivityAudit);
 
@@ -109,10 +115,9 @@ public class WatsonActivityAuditPersistenceImpl
 	public void cacheResult(List<WatsonActivityAudit> watsonActivityAudits) {
 		for (WatsonActivityAudit watsonActivityAudit : watsonActivityAudits) {
 			if (entityCache.getResult(
-					WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
-					WatsonActivityAuditImpl.class,
-					watsonActivityAudit.getPrimaryKey()) == null) {
-
+						WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
+						WatsonActivityAuditImpl.class,
+						watsonActivityAudit.getPrimaryKey()) == null) {
 				cacheResult(watsonActivityAudit);
 			}
 			else {
@@ -125,7 +130,7 @@ public class WatsonActivityAuditPersistenceImpl
 	 * Clears the cache for all watson activity audits.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -141,13 +146,12 @@ public class WatsonActivityAuditPersistenceImpl
 	 * Clears the cache for the watson activity audit.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(WatsonActivityAudit watsonActivityAudit) {
-		entityCache.removeResult(
-			WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonActivityAuditImpl.class, watsonActivityAudit.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -160,22 +164,9 @@ public class WatsonActivityAuditPersistenceImpl
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (WatsonActivityAudit watsonActivityAudit : watsonActivityAudits) {
-			entityCache.removeResult(
-				WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
 				WatsonActivityAuditImpl.class,
 				watsonActivityAudit.getPrimaryKey());
-		}
-	}
-
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonActivityAuditImpl.class, primaryKey);
 		}
 	}
 
@@ -192,7 +183,7 @@ public class WatsonActivityAuditPersistenceImpl
 		watsonActivityAudit.setNew(true);
 		watsonActivityAudit.setPrimaryKey(watsonActivityAuditId);
 
-		watsonActivityAudit.setCompanyId(CompanyThreadLocal.getCompanyId());
+		watsonActivityAudit.setCompanyId(companyProvider.getCompanyId());
 
 		return watsonActivityAudit;
 	}
@@ -207,7 +198,6 @@ public class WatsonActivityAuditPersistenceImpl
 	@Override
 	public WatsonActivityAudit remove(long watsonActivityAuditId)
 		throws NoSuchActivityAuditException {
-
 		return remove((Serializable)watsonActivityAuditId);
 	}
 
@@ -221,32 +211,30 @@ public class WatsonActivityAuditPersistenceImpl
 	@Override
 	public WatsonActivityAudit remove(Serializable primaryKey)
 		throws NoSuchActivityAuditException {
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			WatsonActivityAudit watsonActivityAudit =
-				(WatsonActivityAudit)session.get(
-					WatsonActivityAuditImpl.class, primaryKey);
+			WatsonActivityAudit watsonActivityAudit = (WatsonActivityAudit)session.get(WatsonActivityAuditImpl.class,
+					primaryKey);
 
 			if (watsonActivityAudit == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchActivityAuditException(
-					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				throw new NoSuchActivityAuditException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+					primaryKey);
 			}
 
 			return remove(watsonActivityAudit);
 		}
-		catch (NoSuchActivityAuditException noSuchEntityException) {
-			throw noSuchEntityException;
+		catch (NoSuchActivityAuditException nsee) {
+			throw nsee;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -256,6 +244,7 @@ public class WatsonActivityAuditPersistenceImpl
 	@Override
 	protected WatsonActivityAudit removeImpl(
 		WatsonActivityAudit watsonActivityAudit) {
+		watsonActivityAudit = toUnwrappedModel(watsonActivityAudit);
 
 		Session session = null;
 
@@ -263,17 +252,16 @@ public class WatsonActivityAuditPersistenceImpl
 			session = openSession();
 
 			if (!session.contains(watsonActivityAudit)) {
-				watsonActivityAudit = (WatsonActivityAudit)session.get(
-					WatsonActivityAuditImpl.class,
-					watsonActivityAudit.getPrimaryKeyObj());
+				watsonActivityAudit = (WatsonActivityAudit)session.get(WatsonActivityAuditImpl.class,
+						watsonActivityAudit.getPrimaryKeyObj());
 			}
 
 			if (watsonActivityAudit != null) {
 				session.delete(watsonActivityAudit);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -289,31 +277,13 @@ public class WatsonActivityAuditPersistenceImpl
 	@Override
 	public WatsonActivityAudit updateImpl(
 		WatsonActivityAudit watsonActivityAudit) {
+		watsonActivityAudit = toUnwrappedModel(watsonActivityAudit);
 
 		boolean isNew = watsonActivityAudit.isNew();
 
-		if (!(watsonActivityAudit instanceof WatsonActivityAuditModelImpl)) {
-			InvocationHandler invocationHandler = null;
+		WatsonActivityAuditModelImpl watsonActivityAuditModelImpl = (WatsonActivityAuditModelImpl)watsonActivityAudit;
 
-			if (ProxyUtil.isProxyClass(watsonActivityAudit.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(
-					watsonActivityAudit);
-
-				throw new IllegalArgumentException(
-					"Implement ModelWrapper in watsonActivityAudit proxy " +
-						invocationHandler.getClass());
-			}
-
-			throw new IllegalArgumentException(
-				"Implement ModelWrapper in custom WatsonActivityAudit implementation " +
-					watsonActivityAudit.getClass());
-		}
-
-		WatsonActivityAuditModelImpl watsonActivityAuditModelImpl =
-			(WatsonActivityAuditModelImpl)watsonActivityAudit;
-
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -322,8 +292,8 @@ public class WatsonActivityAuditPersistenceImpl
 				watsonActivityAudit.setCreateDate(now);
 			}
 			else {
-				watsonActivityAudit.setCreateDate(
-					serviceContext.getCreateDate(now));
+				watsonActivityAudit.setCreateDate(serviceContext.getCreateDate(
+						now));
 			}
 		}
 
@@ -332,8 +302,8 @@ public class WatsonActivityAuditPersistenceImpl
 				watsonActivityAudit.setModifiedDate(now);
 			}
 			else {
-				watsonActivityAudit.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+				watsonActivityAudit.setModifiedDate(serviceContext.getModifiedDate(
+						now));
 			}
 		}
 
@@ -348,12 +318,11 @@ public class WatsonActivityAuditPersistenceImpl
 				watsonActivityAudit.setNew(false);
 			}
 			else {
-				watsonActivityAudit = (WatsonActivityAudit)session.merge(
-					watsonActivityAudit);
+				watsonActivityAudit = (WatsonActivityAudit)session.merge(watsonActivityAudit);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -362,13 +331,12 @@ public class WatsonActivityAuditPersistenceImpl
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
 		if (isNew) {
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(
-			WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonActivityAuditImpl.class, watsonActivityAudit.getPrimaryKey(),
 			watsonActivityAudit, false);
 
@@ -377,8 +345,38 @@ public class WatsonActivityAuditPersistenceImpl
 		return watsonActivityAudit;
 	}
 
+	protected WatsonActivityAudit toUnwrappedModel(
+		WatsonActivityAudit watsonActivityAudit) {
+		if (watsonActivityAudit instanceof WatsonActivityAuditImpl) {
+			return watsonActivityAudit;
+		}
+
+		WatsonActivityAuditImpl watsonActivityAuditImpl = new WatsonActivityAuditImpl();
+
+		watsonActivityAuditImpl.setNew(watsonActivityAudit.isNew());
+		watsonActivityAuditImpl.setPrimaryKey(watsonActivityAudit.getPrimaryKey());
+
+		watsonActivityAuditImpl.setWatsonActivityAuditId(watsonActivityAudit.getWatsonActivityAuditId());
+		watsonActivityAuditImpl.setGroupId(watsonActivityAudit.getGroupId());
+		watsonActivityAuditImpl.setCompanyId(watsonActivityAudit.getCompanyId());
+		watsonActivityAuditImpl.setUserId(watsonActivityAudit.getUserId());
+		watsonActivityAuditImpl.setUserName(watsonActivityAudit.getUserName());
+		watsonActivityAuditImpl.setCreateDate(watsonActivityAudit.getCreateDate());
+		watsonActivityAuditImpl.setModifiedDate(watsonActivityAudit.getModifiedDate());
+		watsonActivityAuditImpl.setWatsonActivityId(watsonActivityAudit.getWatsonActivityId());
+		watsonActivityAuditImpl.setTypeWatsonListTypeId(watsonActivityAudit.getTypeWatsonListTypeId());
+		watsonActivityAuditImpl.setSubtypeWatsonListTypeId(watsonActivityAudit.getSubtypeWatsonListTypeId());
+		watsonActivityAuditImpl.setWatsonIncidentId(watsonActivityAudit.getWatsonIncidentId());
+		watsonActivityAuditImpl.setNarrative(watsonActivityAudit.getNarrative());
+		watsonActivityAuditImpl.setReportDate(watsonActivityAudit.getReportDate());
+		watsonActivityAuditImpl.setStartDate(watsonActivityAudit.getStartDate());
+		watsonActivityAuditImpl.setStatus(watsonActivityAudit.getStatus());
+
+		return watsonActivityAuditImpl;
+	}
+
 	/**
-	 * Returns the watson activity audit with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
+	 * Returns the watson activity audit with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the watson activity audit
 	 * @return the watson activity audit
@@ -387,7 +385,6 @@ public class WatsonActivityAuditPersistenceImpl
 	@Override
 	public WatsonActivityAudit findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchActivityAuditException {
-
 		WatsonActivityAudit watsonActivityAudit = fetchByPrimaryKey(primaryKey);
 
 		if (watsonActivityAudit == null) {
@@ -395,15 +392,15 @@ public class WatsonActivityAuditPersistenceImpl
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchActivityAuditException(
-				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			throw new NoSuchActivityAuditException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
 		}
 
 		return watsonActivityAudit;
 	}
 
 	/**
-	 * Returns the watson activity audit with the primary key or throws a <code>NoSuchActivityAuditException</code> if it could not be found.
+	 * Returns the watson activity audit with the primary key or throws a {@link NoSuchActivityAuditException} if it could not be found.
 	 *
 	 * @param watsonActivityAuditId the primary key of the watson activity audit
 	 * @return the watson activity audit
@@ -412,7 +409,6 @@ public class WatsonActivityAuditPersistenceImpl
 	@Override
 	public WatsonActivityAudit findByPrimaryKey(long watsonActivityAuditId)
 		throws NoSuchActivityAuditException {
-
 		return findByPrimaryKey((Serializable)watsonActivityAuditId);
 	}
 
@@ -424,16 +420,14 @@ public class WatsonActivityAuditPersistenceImpl
 	 */
 	@Override
 	public WatsonActivityAudit fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(
-			WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonActivityAuditImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonActivityAuditImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
 		}
 
-		WatsonActivityAudit watsonActivityAudit =
-			(WatsonActivityAudit)serializable;
+		WatsonActivityAudit watsonActivityAudit = (WatsonActivityAudit)serializable;
 
 		if (watsonActivityAudit == null) {
 			Session session = null;
@@ -441,24 +435,22 @@ public class WatsonActivityAuditPersistenceImpl
 			try {
 				session = openSession();
 
-				watsonActivityAudit = (WatsonActivityAudit)session.get(
-					WatsonActivityAuditImpl.class, primaryKey);
+				watsonActivityAudit = (WatsonActivityAudit)session.get(WatsonActivityAuditImpl.class,
+						primaryKey);
 
 				if (watsonActivityAudit != null) {
 					cacheResult(watsonActivityAudit);
 				}
 				else {
-					entityCache.putResult(
-						WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
 						WatsonActivityAuditImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception exception) {
-				entityCache.removeResult(
-					WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception e) {
+				entityCache.removeResult(WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonActivityAuditImpl.class, primaryKey);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -482,21 +474,18 @@ public class WatsonActivityAuditPersistenceImpl
 	@Override
 	public Map<Serializable, WatsonActivityAudit> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
-
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, WatsonActivityAudit> map =
-			new HashMap<Serializable, WatsonActivityAudit>();
+		Map<Serializable, WatsonActivityAudit> map = new HashMap<Serializable, WatsonActivityAudit>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
 
 			Serializable primaryKey = iterator.next();
 
-			WatsonActivityAudit watsonActivityAudit = fetchByPrimaryKey(
-				primaryKey);
+			WatsonActivityAudit watsonActivityAudit = fetchByPrimaryKey(primaryKey);
 
 			if (watsonActivityAudit != null) {
 				map.put(primaryKey, watsonActivityAudit);
@@ -508,9 +497,8 @@ public class WatsonActivityAuditPersistenceImpl
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(
-				WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonActivityAuditImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
+					WatsonActivityAuditImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -530,51 +518,46 @@ public class WatsonActivityAuditPersistenceImpl
 			return map;
 		}
 
-		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
+				1);
 
-		sb.append(_SQL_SELECT_WATSONACTIVITYAUDIT_WHERE_PKS_IN);
+		query.append(_SQL_SELECT_WATSONACTIVITYAUDIT_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			sb.append((long)primaryKey);
+			query.append((long)primaryKey);
 
-			sb.append(",");
+			query.append(StringPool.COMMA);
 		}
 
-		sb.setIndex(sb.index() - 1);
+		query.setIndex(query.index() - 1);
 
-		sb.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query query = session.createQuery(sql);
+			Query q = session.createQuery(sql);
 
-			for (WatsonActivityAudit watsonActivityAudit :
-					(List<WatsonActivityAudit>)query.list()) {
-
-				map.put(
-					watsonActivityAudit.getPrimaryKeyObj(),
+			for (WatsonActivityAudit watsonActivityAudit : (List<WatsonActivityAudit>)q.list()) {
+				map.put(watsonActivityAudit.getPrimaryKeyObj(),
 					watsonActivityAudit);
 
 				cacheResult(watsonActivityAudit);
 
-				uncachedPrimaryKeys.remove(
-					watsonActivityAudit.getPrimaryKeyObj());
+				uncachedPrimaryKeys.remove(watsonActivityAudit.getPrimaryKeyObj());
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(
-					WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonActivityAuditImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -597,7 +580,7 @@ public class WatsonActivityAuditPersistenceImpl
 	 * Returns a range of all the watson activity audits.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>WatsonActivityAuditModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WatsonActivityAuditModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of watson activity audits
@@ -613,7 +596,7 @@ public class WatsonActivityAuditPersistenceImpl
 	 * Returns an ordered range of all the watson activity audits.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>WatsonActivityAuditModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WatsonActivityAuditModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of watson activity audits
@@ -622,10 +605,8 @@ public class WatsonActivityAuditPersistenceImpl
 	 * @return the ordered range of watson activity audits
 	 */
 	@Override
-	public List<WatsonActivityAudit> findAll(
-		int start, int end,
+	public List<WatsonActivityAudit> findAll(int start, int end,
 		OrderByComparator<WatsonActivityAudit> orderByComparator) {
-
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -633,63 +614,62 @@ public class WatsonActivityAuditPersistenceImpl
 	 * Returns an ordered range of all the watson activity audits.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>WatsonActivityAuditModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link WatsonActivityAuditModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of watson activity audits
 	 * @param end the upper bound of the range of watson activity audits (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of watson activity audits
 	 */
 	@Override
-	public List<WatsonActivityAudit> findAll(
-		int start, int end,
+	public List<WatsonActivityAudit> findAll(int start, int end,
 		OrderByComparator<WatsonActivityAudit> orderByComparator,
-		boolean useFinderCache) {
-
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
-				finderArgs = FINDER_ARGS_EMPTY;
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+			finderArgs = FINDER_ARGS_EMPTY;
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] {start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
 		List<WatsonActivityAudit> list = null;
 
-		if (useFinderCache) {
-			list = (List<WatsonActivityAudit>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<WatsonActivityAudit>)finderCache.getResult(finderPath,
+					finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					2 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(2 +
+						(orderByComparator.getOrderByFields().length * 2));
 
-				sb.append(_SQL_SELECT_WATSONACTIVITYAUDIT);
+				query.append(_SQL_SELECT_WATSONACTIVITYAUDIT);
 
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 
-				sql = sb.toString();
+				sql = query.toString();
 			}
 			else {
 				sql = _SQL_SELECT_WATSONACTIVITYAUDIT;
 
-				sql = sql.concat(WatsonActivityAuditModelImpl.ORDER_BY_JPQL);
+				if (pagination) {
+					sql = sql.concat(WatsonActivityAuditModelImpl.ORDER_BY_JPQL);
+				}
 			}
 
 			Session session = null;
@@ -697,23 +677,29 @@ public class WatsonActivityAuditPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				list = (List<WatsonActivityAudit>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<WatsonActivityAudit>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<WatsonActivityAudit>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -741,8 +727,8 @@ public class WatsonActivityAuditPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -750,19 +736,18 @@ public class WatsonActivityAuditPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(
-					_SQL_COUNT_WATSONACTIVITYAUDIT);
+				Query q = session.createQuery(_SQL_COUNT_WATSONACTIVITYAUDIT);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
+					count);
 			}
-			catch (Exception exception) {
-				finderCache.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -781,24 +766,6 @@ public class WatsonActivityAuditPersistenceImpl
 	 * Initializes the watson activity audit persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonActivityAuditModelImpl.FINDER_CACHE_ENABLED,
-			WatsonActivityAuditImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonActivityAuditModelImpl.FINDER_CACHE_ENABLED,
-			WatsonActivityAuditImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonActivityAuditModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
 	}
 
 	public void destroy() {
@@ -808,27 +775,16 @@ public class WatsonActivityAuditPersistenceImpl
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@ServiceReference(type = CompanyProviderWrapper.class)
+	protected CompanyProvider companyProvider;
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
-
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-
-	private static final String _SQL_SELECT_WATSONACTIVITYAUDIT =
-		"SELECT watsonActivityAudit FROM WatsonActivityAudit watsonActivityAudit";
-
-	private static final String _SQL_SELECT_WATSONACTIVITYAUDIT_WHERE_PKS_IN =
-		"SELECT watsonActivityAudit FROM WatsonActivityAudit watsonActivityAudit WHERE watsonActivityAuditId IN (";
-
-	private static final String _SQL_COUNT_WATSONACTIVITYAUDIT =
-		"SELECT COUNT(watsonActivityAudit) FROM WatsonActivityAudit watsonActivityAudit";
-
+	private static final String _SQL_SELECT_WATSONACTIVITYAUDIT = "SELECT watsonActivityAudit FROM WatsonActivityAudit watsonActivityAudit";
+	private static final String _SQL_SELECT_WATSONACTIVITYAUDIT_WHERE_PKS_IN = "SELECT watsonActivityAudit FROM WatsonActivityAudit watsonActivityAudit WHERE watsonActivityAuditId IN (";
+	private static final String _SQL_COUNT_WATSONACTIVITYAUDIT = "SELECT COUNT(watsonActivityAudit) FROM WatsonActivityAudit watsonActivityAudit";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "watsonActivityAudit.";
-
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
-		"No WatsonActivityAudit exists with the primary key ";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		WatsonActivityAuditPersistenceImpl.class);
-
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No WatsonActivityAudit exists with the primary key ";
+	private static final Log _log = LogFactoryUtil.getLog(WatsonActivityAuditPersistenceImpl.class);
 }

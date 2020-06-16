@@ -17,7 +17,9 @@ package com.liferay.journal.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
+
 import com.liferay.journal.model.JournalFolder;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -39,52 +41,88 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see JournalFolderServiceUtil
+ * @see com.liferay.journal.service.base.JournalFolderServiceBaseImpl
+ * @see com.liferay.journal.service.impl.JournalFolderServiceImpl
  * @generated
  */
 @AccessControlled
 @JSONWebService
-@OSGiBeanProperties(
-	property = {
-		"json.web.service.context.name=journal",
-		"json.web.service.context.path=JournalFolder"
-	},
-	service = JournalFolderService.class
-)
+@OSGiBeanProperties(property =  {
+	"json.web.service.context.name=journal", "json.web.service.context.path=JournalFolder"}, service = JournalFolderService.class)
 @ProviderType
-@Transactional(
-	isolation = Isolation.PORTAL,
-	rollbackFor = {PortalException.class, SystemException.class}
-)
+@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
+	PortalException.class, SystemException.class})
 public interface JournalFolderService extends BaseService {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link JournalFolderServiceUtil} to access the journal folder remote service. Add custom service methods to <code>com.liferay.journal.service.impl.JournalFolderServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link JournalFolderServiceUtil} to access the journal folder remote service. Add custom service methods to {@link com.liferay.journal.service.impl.JournalFolderServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public JournalFolder addFolder(
-			long groupId, long parentFolderId, String name, String description,
-			ServiceContext serviceContext)
-		throws PortalException;
-
-	public void deleteFolder(long folderId) throws PortalException;
-
-	public void deleteFolder(long folderId, boolean includeTrashedEntries)
-		throws PortalException;
+	public JournalFolder addFolder(long groupId, long parentFolderId,
+		java.lang.String name, java.lang.String description,
+		ServiceContext serviceContext) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public JournalFolder fetchFolder(long folderId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<DDMStructure> getDDMStructures(
-			long[] groupIds, long folderId, int restrictionType)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public JournalFolder getFolder(long folderId) throws PortalException;
 
+	public JournalFolder moveFolder(long folderId, long parentFolderId,
+		ServiceContext serviceContext) throws PortalException;
+
+	public JournalFolder moveFolderFromTrash(long folderId,
+		long parentFolderId, ServiceContext serviceContext)
+		throws PortalException;
+
+	public JournalFolder moveFolderToTrash(long folderId)
+		throws PortalException;
+
+	public JournalFolder updateFolder(long groupId, long folderId,
+		long parentFolderId, java.lang.String name,
+		java.lang.String description, boolean mergeWithParentFolder,
+		ServiceContext serviceContext) throws PortalException;
+
+	public JournalFolder updateFolder(long groupId, long folderId,
+		long parentFolderId, java.lang.String name,
+		java.lang.String description, long[] ddmStructureIds,
+		int restrictionType, boolean mergeWithParentFolder,
+		ServiceContext serviceContext) throws PortalException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<Long> getFolderIds(long groupId, long folderId)
+	public int getFoldersAndArticlesCount(long groupId,
+		List<java.lang.Long> folderIds, int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getFoldersAndArticlesCount(long groupId, long folderId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getFoldersAndArticlesCount(long groupId, long folderId,
+		int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getFoldersAndArticlesCount(long groupId, long userId,
+		long folderId, int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getFoldersCount(long groupId, long parentFolderId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getFoldersCount(long groupId, long parentFolderId, int status);
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DDMStructure> getDDMStructures(long[] groupIds, long folderId,
+		int restrictionType) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<java.lang.Long> getFolderIds(long groupId, long folderId)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -94,104 +132,57 @@ public interface JournalFolderService extends BaseService {
 	public List<JournalFolder> getFolders(long groupId, long parentFolderId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<JournalFolder> getFolders(
-		long groupId, long parentFolderId, int status);
+	public List<JournalFolder> getFolders(long groupId, long parentFolderId,
+		int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<JournalFolder> getFolders(
-		long groupId, long parentFolderId, int start, int end);
+	public List<JournalFolder> getFolders(long groupId, long parentFolderId,
+		int status);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<JournalFolder> getFolders(
-		long groupId, long parentFolderId, int status, int start, int end);
+	public List<JournalFolder> getFolders(long groupId, long parentFolderId,
+		int status, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<Object> getFoldersAndArticles(
-		long groupId, long folderId, int status, int start, int end,
+	public List<java.lang.Object> getFoldersAndArticles(long groupId,
+		long folderId, int start, int end, OrderByComparator<?> obc);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<java.lang.Object> getFoldersAndArticles(long groupId,
+		long folderId, int status, int start, int end, OrderByComparator<?> obc);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<java.lang.Object> getFoldersAndArticles(long groupId,
+		long userId, long folderId, int status, int start, int end,
 		OrderByComparator<?> obc);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<Object> getFoldersAndArticles(
-		long groupId, long folderId, int start, int end,
-		OrderByComparator<?> obc);
+	public List<java.lang.Long> getSubfolderIds(long groupId, long folderId,
+		boolean recurse);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<Object> getFoldersAndArticles(
-		long groupId, long userId, long folderId, int status, int start,
-		int end, OrderByComparator<?> obc);
+	public void deleteFolder(long folderId) throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getFoldersAndArticlesCount(
-		long groupId, List<Long> folderIds, int status);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getFoldersAndArticlesCount(long groupId, long folderId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getFoldersAndArticlesCount(
-		long groupId, long folderId, int status);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getFoldersAndArticlesCount(
-		long groupId, long userId, long folderId, int status);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getFoldersCount(long groupId, long parentFolderId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getFoldersCount(long groupId, long parentFolderId, int status);
+	public void deleteFolder(long folderId, boolean includeTrashedEntries)
+		throws PortalException;
 
 	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
-	public String getOSGiServiceIdentifier();
-
-	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 #getSubfolderIds(List, long, long, boolean)}
-	 */
-	@Deprecated
+	* @deprecated As of Wilberforce (7.0.x), replaced by {@link
+	#getSubfolderIds(List, long, long, boolean)}
+	*/
+	@java.lang.Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public void getSubfolderIds(
-		List<Long> folderIds, long groupId, long folderId);
+	public void getSubfolderIds(List<java.lang.Long> folderIds, long groupId,
+		long folderId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public void getSubfolderIds(
-		List<Long> folderIds, long groupId, long folderId, boolean recurse);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<Long> getSubfolderIds(
-		long groupId, long folderId, boolean recurse);
-
-	public JournalFolder moveFolder(
-			long folderId, long parentFolderId, ServiceContext serviceContext)
-		throws PortalException;
-
-	public JournalFolder moveFolderFromTrash(
-			long folderId, long parentFolderId, ServiceContext serviceContext)
-		throws PortalException;
-
-	public JournalFolder moveFolderToTrash(long folderId)
-		throws PortalException;
+	public void getSubfolderIds(List<java.lang.Long> folderIds, long groupId,
+		long folderId, boolean recurse);
 
 	public void restoreFolderFromTrash(long folderId) throws PortalException;
 
-	public void subscribe(long groupId, long folderId) throws PortalException;
-
-	public void unsubscribe(long groupId, long folderId) throws PortalException;
-
-	public JournalFolder updateFolder(
-			long groupId, long folderId, long parentFolderId, String name,
-			String description, boolean mergeWithParentFolder,
-			ServiceContext serviceContext)
+	public void subscribe(long groupId, long folderId)
 		throws PortalException;
 
-	public JournalFolder updateFolder(
-			long groupId, long folderId, long parentFolderId, String name,
-			String description, long[] ddmStructureIds, int restrictionType,
-			boolean mergeWithParentFolder, ServiceContext serviceContext)
+	public void unsubscribe(long groupId, long folderId)
 		throws PortalException;
-
 }

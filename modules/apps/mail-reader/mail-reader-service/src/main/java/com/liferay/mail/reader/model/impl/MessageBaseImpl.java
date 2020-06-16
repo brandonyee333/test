@@ -14,6 +14,8 @@
 
 package com.liferay.mail.reader.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.mail.reader.model.Message;
 import com.liferay.mail.reader.service.MessageLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.mail.reader.service.MessageLocalServiceUtil;
  * @see Message
  * @generated
  */
-public abstract class MessageBaseImpl
-	extends MessageModelImpl implements Message {
-
+@ProviderType
+public abstract class MessageBaseImpl extends MessageModelImpl
+	implements Message {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a message model instance should use the <code>Message</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a message model instance should use the {@link Message} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class MessageBaseImpl
 			MessageLocalServiceUtil.updateMessage(this);
 		}
 	}
-
 }

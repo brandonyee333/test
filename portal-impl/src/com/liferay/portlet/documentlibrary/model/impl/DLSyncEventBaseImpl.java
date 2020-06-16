@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.documentlibrary.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.document.library.kernel.model.DLSyncEvent;
 import com.liferay.document.library.kernel.service.DLSyncEventLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.document.library.kernel.service.DLSyncEventLocalServiceUtil;
  * @see DLSyncEvent
  * @generated
  */
-public abstract class DLSyncEventBaseImpl
-	extends DLSyncEventModelImpl implements DLSyncEvent {
-
+@ProviderType
+public abstract class DLSyncEventBaseImpl extends DLSyncEventModelImpl
+	implements DLSyncEvent {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a dl sync event model instance should use the <code>DLSyncEvent</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a dl sync event model instance should use the {@link DLSyncEvent} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class DLSyncEventBaseImpl
 			DLSyncEventLocalServiceUtil.updateDLSyncEvent(this);
 		}
 	}
-
 }

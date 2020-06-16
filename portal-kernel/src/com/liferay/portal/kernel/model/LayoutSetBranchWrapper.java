@@ -14,7 +14,10 @@
 
 package com.liferay.portal.kernel.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -33,9 +36,9 @@ import java.util.Objects;
  * @see LayoutSetBranch
  * @generated
  */
-public class LayoutSetBranchWrapper
-	implements LayoutSetBranch, ModelWrapper<LayoutSetBranch> {
-
+@ProviderType
+public class LayoutSetBranchWrapper implements LayoutSetBranch,
+	ModelWrapper<LayoutSetBranch> {
 	public LayoutSetBranchWrapper(LayoutSetBranch layoutSetBranch) {
 		_layoutSetBranch = layoutSetBranch;
 	}
@@ -62,18 +65,18 @@ public class LayoutSetBranchWrapper
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("privateLayout", isPrivateLayout());
+		attributes.put("privateLayout", getPrivateLayout());
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
-		attributes.put("master", isMaster());
+		attributes.put("master", getMaster());
 		attributes.put("logoId", getLogoId());
 		attributes.put("themeId", getThemeId());
 		attributes.put("colorSchemeId", getColorSchemeId());
 		attributes.put("css", getCss());
 		attributes.put("settings", getSettings());
 		attributes.put("layoutSetPrototypeUuid", getLayoutSetPrototypeUuid());
-		attributes.put(
-			"layoutSetPrototypeLinkEnabled", isLayoutSetPrototypeLinkEnabled());
+		attributes.put("layoutSetPrototypeLinkEnabled",
+			getLayoutSetPrototypeLinkEnabled());
 
 		return attributes;
 	}
@@ -183,146 +186,28 @@ public class LayoutSetBranchWrapper
 		}
 
 		String layoutSetPrototypeUuid = (String)attributes.get(
-			"layoutSetPrototypeUuid");
+				"layoutSetPrototypeUuid");
 
 		if (layoutSetPrototypeUuid != null) {
 			setLayoutSetPrototypeUuid(layoutSetPrototypeUuid);
 		}
 
 		Boolean layoutSetPrototypeLinkEnabled = (Boolean)attributes.get(
-			"layoutSetPrototypeLinkEnabled");
+				"layoutSetPrototypeLinkEnabled");
 
 		if (layoutSetPrototypeLinkEnabled != null) {
 			setLayoutSetPrototypeLinkEnabled(layoutSetPrototypeLinkEnabled);
 		}
 	}
 
-	@Override
-	public Object clone() {
-		return new LayoutSetBranchWrapper(
-			(LayoutSetBranch)_layoutSetBranch.clone());
-	}
-
-	@Override
-	public int compareTo(LayoutSetBranch layoutSetBranch) {
-		return _layoutSetBranch.compareTo(layoutSetBranch);
-	}
-
-	@Override
-	public ColorScheme getColorScheme() {
-		return _layoutSetBranch.getColorScheme();
-	}
-
 	/**
-	 * Returns the color scheme ID of this layout set branch.
-	 *
-	 * @return the color scheme ID of this layout set branch
-	 */
-	@Override
-	public String getColorSchemeId() {
-		return _layoutSetBranch.getColorSchemeId();
-	}
-
-	/**
-	 * Returns the company ID of this layout set branch.
-	 *
-	 * @return the company ID of this layout set branch
-	 */
-	@Override
-	public long getCompanyId() {
-		return _layoutSetBranch.getCompanyId();
-	}
-
-	/**
-	 * Returns the create date of this layout set branch.
-	 *
-	 * @return the create date of this layout set branch
-	 */
-	@Override
-	public Date getCreateDate() {
-		return _layoutSetBranch.getCreateDate();
-	}
-
-	/**
-	 * Returns the css of this layout set branch.
-	 *
-	 * @return the css of this layout set branch
-	 */
-	@Override
-	public String getCss() {
-		return _layoutSetBranch.getCss();
-	}
-
-	/**
-	 * Returns the description of this layout set branch.
-	 *
-	 * @return the description of this layout set branch
-	 */
-	@Override
-	public String getDescription() {
-		return _layoutSetBranch.getDescription();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _layoutSetBranch.getExpandoBridge();
-	}
-
-	@Override
-	public Group getGroup()
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _layoutSetBranch.getGroup();
-	}
-
-	/**
-	 * Returns the group ID of this layout set branch.
-	 *
-	 * @return the group ID of this layout set branch
-	 */
-	@Override
-	public long getGroupId() {
-		return _layoutSetBranch.getGroupId();
-	}
-
-	@Override
-	public LayoutSet getLayoutSet() {
-		return _layoutSetBranch.getLayoutSet();
-	}
-
-	/**
-	 * Returns the layout set branch ID of this layout set branch.
-	 *
-	 * @return the layout set branch ID of this layout set branch
-	 */
-	@Override
-	public long getLayoutSetBranchId() {
-		return _layoutSetBranch.getLayoutSetBranchId();
-	}
-
-	/**
-	 * Returns the layout set prototype link enabled of this layout set branch.
-	 *
-	 * @return the layout set prototype link enabled of this layout set branch
-	 */
+	* Returns the layout set prototype link enabled of this layout set branch.
+	*
+	* @return the layout set prototype link enabled of this layout set branch
+	*/
 	@Override
 	public boolean getLayoutSetPrototypeLinkEnabled() {
 		return _layoutSetBranch.getLayoutSetPrototypeLinkEnabled();
-	}
-
-	/**
-	 * Returns the layout set prototype uuid of this layout set branch.
-	 *
-	 * @return the layout set prototype uuid of this layout set branch
-	 */
-	@Override
-	public String getLayoutSetPrototypeUuid() {
-		return _layoutSetBranch.getLayoutSetPrototypeUuid();
-	}
-
-	@Override
-	public long getLiveLogoId() {
-		return _layoutSetBranch.getLiveLogoId();
 	}
 
 	@Override
@@ -331,155 +216,23 @@ public class LayoutSetBranchWrapper
 	}
 
 	/**
-	 * Returns the logo ID of this layout set branch.
-	 *
-	 * @return the logo ID of this layout set branch
-	 */
-	@Override
-	public long getLogoId() {
-		return _layoutSetBranch.getLogoId();
-	}
-
-	/**
-	 * Returns the master of this layout set branch.
-	 *
-	 * @return the master of this layout set branch
-	 */
+	* Returns the master of this layout set branch.
+	*
+	* @return the master of this layout set branch
+	*/
 	@Override
 	public boolean getMaster() {
 		return _layoutSetBranch.getMaster();
 	}
 
 	/**
-	 * Returns the modified date of this layout set branch.
-	 *
-	 * @return the modified date of this layout set branch
-	 */
-	@Override
-	public Date getModifiedDate() {
-		return _layoutSetBranch.getModifiedDate();
-	}
-
-	/**
-	 * Returns the mvcc version of this layout set branch.
-	 *
-	 * @return the mvcc version of this layout set branch
-	 */
-	@Override
-	public long getMvccVersion() {
-		return _layoutSetBranch.getMvccVersion();
-	}
-
-	/**
-	 * Returns the name of this layout set branch.
-	 *
-	 * @return the name of this layout set branch
-	 */
-	@Override
-	public String getName() {
-		return _layoutSetBranch.getName();
-	}
-
-	/**
-	 * Returns the primary key of this layout set branch.
-	 *
-	 * @return the primary key of this layout set branch
-	 */
-	@Override
-	public long getPrimaryKey() {
-		return _layoutSetBranch.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _layoutSetBranch.getPrimaryKeyObj();
-	}
-
-	/**
-	 * Returns the private layout of this layout set branch.
-	 *
-	 * @return the private layout of this layout set branch
-	 */
+	* Returns the private layout of this layout set branch.
+	*
+	* @return the private layout of this layout set branch
+	*/
 	@Override
 	public boolean getPrivateLayout() {
 		return _layoutSetBranch.getPrivateLayout();
-	}
-
-	/**
-	 * Returns the settings of this layout set branch.
-	 *
-	 * @return the settings of this layout set branch
-	 */
-	@Override
-	public String getSettings() {
-		return _layoutSetBranch.getSettings();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.util.UnicodeProperties
-		getSettingsProperties() {
-
-		return _layoutSetBranch.getSettingsProperties();
-	}
-
-	@Override
-	public String getSettingsProperty(String key) {
-		return _layoutSetBranch.getSettingsProperty(key);
-	}
-
-	@Override
-	public Theme getTheme() {
-		return _layoutSetBranch.getTheme();
-	}
-
-	/**
-	 * Returns the theme ID of this layout set branch.
-	 *
-	 * @return the theme ID of this layout set branch
-	 */
-	@Override
-	public String getThemeId() {
-		return _layoutSetBranch.getThemeId();
-	}
-
-	@Override
-	public String getThemeSetting(String key, String device) {
-		return _layoutSetBranch.getThemeSetting(key, device);
-	}
-
-	/**
-	 * Returns the user ID of this layout set branch.
-	 *
-	 * @return the user ID of this layout set branch
-	 */
-	@Override
-	public long getUserId() {
-		return _layoutSetBranch.getUserId();
-	}
-
-	/**
-	 * Returns the user name of this layout set branch.
-	 *
-	 * @return the user name of this layout set branch
-	 */
-	@Override
-	public String getUserName() {
-		return _layoutSetBranch.getUserName();
-	}
-
-	/**
-	 * Returns the user uuid of this layout set branch.
-	 *
-	 * @return the user uuid of this layout set branch
-	 */
-	@Override
-	public String getUserUuid() {
-		return _layoutSetBranch.getUserUuid();
-	}
-
-	@Override
-	public int hashCode() {
-		return _layoutSetBranch.hashCode();
 	}
 
 	@Override
@@ -498,10 +251,10 @@ public class LayoutSetBranchWrapper
 	}
 
 	/**
-	 * Returns <code>true</code> if this layout set branch is layout set prototype link enabled.
-	 *
-	 * @return <code>true</code> if this layout set branch is layout set prototype link enabled; <code>false</code> otherwise
-	 */
+	* Returns <code>true</code> if this layout set branch is layout set prototype link enabled.
+	*
+	* @return <code>true</code> if this layout set branch is layout set prototype link enabled; <code>false</code> otherwise
+	*/
 	@Override
 	public boolean isLayoutSetPrototypeLinkEnabled() {
 		return _layoutSetBranch.isLayoutSetPrototypeLinkEnabled();
@@ -513,10 +266,10 @@ public class LayoutSetBranchWrapper
 	}
 
 	/**
-	 * Returns <code>true</code> if this layout set branch is master.
-	 *
-	 * @return <code>true</code> if this layout set branch is master; <code>false</code> otherwise
-	 */
+	* Returns <code>true</code> if this layout set branch is master.
+	*
+	* @return <code>true</code> if this layout set branch is master; <code>false</code> otherwise
+	*/
 	@Override
 	public boolean isMaster() {
 		return _layoutSetBranch.isMaster();
@@ -528,13 +281,285 @@ public class LayoutSetBranchWrapper
 	}
 
 	/**
-	 * Returns <code>true</code> if this layout set branch is private layout.
-	 *
-	 * @return <code>true</code> if this layout set branch is private layout; <code>false</code> otherwise
-	 */
+	* Returns <code>true</code> if this layout set branch is private layout.
+	*
+	* @return <code>true</code> if this layout set branch is private layout; <code>false</code> otherwise
+	*/
 	@Override
 	public boolean isPrivateLayout() {
 		return _layoutSetBranch.isPrivateLayout();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _layoutSetBranch.getExpandoBridge();
+	}
+
+	@Override
+	public CacheModel<LayoutSetBranch> toCacheModel() {
+		return _layoutSetBranch.toCacheModel();
+	}
+
+	@Override
+	public ColorScheme getColorScheme() {
+		return _layoutSetBranch.getColorScheme();
+	}
+
+	@Override
+	public Group getGroup()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _layoutSetBranch.getGroup();
+	}
+
+	@Override
+	public LayoutSet getLayoutSet() {
+		return _layoutSetBranch.getLayoutSet();
+	}
+
+	@Override
+	public LayoutSetBranch toEscapedModel() {
+		return new LayoutSetBranchWrapper(_layoutSetBranch.toEscapedModel());
+	}
+
+	@Override
+	public LayoutSetBranch toUnescapedModel() {
+		return new LayoutSetBranchWrapper(_layoutSetBranch.toUnescapedModel());
+	}
+
+	@Override
+	public Theme getTheme() {
+		return _layoutSetBranch.getTheme();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.util.UnicodeProperties getSettingsProperties() {
+		return _layoutSetBranch.getSettingsProperties();
+	}
+
+	@Override
+	public int compareTo(LayoutSetBranch layoutSetBranch) {
+		return _layoutSetBranch.compareTo(layoutSetBranch);
+	}
+
+	@Override
+	public int hashCode() {
+		return _layoutSetBranch.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _layoutSetBranch.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new LayoutSetBranchWrapper((LayoutSetBranch)_layoutSetBranch.clone());
+	}
+
+	/**
+	* Returns the color scheme ID of this layout set branch.
+	*
+	* @return the color scheme ID of this layout set branch
+	*/
+	@Override
+	public java.lang.String getColorSchemeId() {
+		return _layoutSetBranch.getColorSchemeId();
+	}
+
+	/**
+	* Returns the css of this layout set branch.
+	*
+	* @return the css of this layout set branch
+	*/
+	@Override
+	public java.lang.String getCss() {
+		return _layoutSetBranch.getCss();
+	}
+
+	/**
+	* Returns the description of this layout set branch.
+	*
+	* @return the description of this layout set branch
+	*/
+	@Override
+	public java.lang.String getDescription() {
+		return _layoutSetBranch.getDescription();
+	}
+
+	/**
+	* Returns the layout set prototype uuid of this layout set branch.
+	*
+	* @return the layout set prototype uuid of this layout set branch
+	*/
+	@Override
+	public java.lang.String getLayoutSetPrototypeUuid() {
+		return _layoutSetBranch.getLayoutSetPrototypeUuid();
+	}
+
+	/**
+	* Returns the name of this layout set branch.
+	*
+	* @return the name of this layout set branch
+	*/
+	@Override
+	public java.lang.String getName() {
+		return _layoutSetBranch.getName();
+	}
+
+	/**
+	* Returns the settings of this layout set branch.
+	*
+	* @return the settings of this layout set branch
+	*/
+	@Override
+	public java.lang.String getSettings() {
+		return _layoutSetBranch.getSettings();
+	}
+
+	@Override
+	public java.lang.String getSettingsProperty(java.lang.String key) {
+		return _layoutSetBranch.getSettingsProperty(key);
+	}
+
+	/**
+	* Returns the theme ID of this layout set branch.
+	*
+	* @return the theme ID of this layout set branch
+	*/
+	@Override
+	public java.lang.String getThemeId() {
+		return _layoutSetBranch.getThemeId();
+	}
+
+	@Override
+	public java.lang.String getThemeSetting(java.lang.String key,
+		java.lang.String device) {
+		return _layoutSetBranch.getThemeSetting(key, device);
+	}
+
+	/**
+	* Returns the user name of this layout set branch.
+	*
+	* @return the user name of this layout set branch
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _layoutSetBranch.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this layout set branch.
+	*
+	* @return the user uuid of this layout set branch
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _layoutSetBranch.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _layoutSetBranch.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _layoutSetBranch.toXmlString();
+	}
+
+	/**
+	* Returns the create date of this layout set branch.
+	*
+	* @return the create date of this layout set branch
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _layoutSetBranch.getCreateDate();
+	}
+
+	/**
+	* Returns the modified date of this layout set branch.
+	*
+	* @return the modified date of this layout set branch
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _layoutSetBranch.getModifiedDate();
+	}
+
+	/**
+	* Returns the company ID of this layout set branch.
+	*
+	* @return the company ID of this layout set branch
+	*/
+	@Override
+	public long getCompanyId() {
+		return _layoutSetBranch.getCompanyId();
+	}
+
+	/**
+	* Returns the group ID of this layout set branch.
+	*
+	* @return the group ID of this layout set branch
+	*/
+	@Override
+	public long getGroupId() {
+		return _layoutSetBranch.getGroupId();
+	}
+
+	/**
+	* Returns the layout set branch ID of this layout set branch.
+	*
+	* @return the layout set branch ID of this layout set branch
+	*/
+	@Override
+	public long getLayoutSetBranchId() {
+		return _layoutSetBranch.getLayoutSetBranchId();
+	}
+
+	@Override
+	public long getLiveLogoId() {
+		return _layoutSetBranch.getLiveLogoId();
+	}
+
+	/**
+	* Returns the logo ID of this layout set branch.
+	*
+	* @return the logo ID of this layout set branch
+	*/
+	@Override
+	public long getLogoId() {
+		return _layoutSetBranch.getLogoId();
+	}
+
+	/**
+	* Returns the mvcc version of this layout set branch.
+	*
+	* @return the mvcc version of this layout set branch
+	*/
+	@Override
+	public long getMvccVersion() {
+		return _layoutSetBranch.getMvccVersion();
+	}
+
+	/**
+	* Returns the primary key of this layout set branch.
+	*
+	* @return the primary key of this layout set branch
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _layoutSetBranch.getPrimaryKey();
+	}
+
+	/**
+	* Returns the user ID of this layout set branch.
+	*
+	* @return the user ID of this layout set branch
+	*/
+	@Override
+	public long getUserId() {
+		return _layoutSetBranch.getUserId();
 	}
 
 	@Override
@@ -548,58 +573,53 @@ public class LayoutSetBranchWrapper
 	}
 
 	/**
-	 * Sets the color scheme ID of this layout set branch.
-	 *
-	 * @param colorSchemeId the color scheme ID of this layout set branch
-	 */
+	* Sets the color scheme ID of this layout set branch.
+	*
+	* @param colorSchemeId the color scheme ID of this layout set branch
+	*/
 	@Override
-	public void setColorSchemeId(String colorSchemeId) {
+	public void setColorSchemeId(java.lang.String colorSchemeId) {
 		_layoutSetBranch.setColorSchemeId(colorSchemeId);
 	}
 
 	/**
-	 * Sets the company ID of this layout set branch.
-	 *
-	 * @param companyId the company ID of this layout set branch
-	 */
+	* Sets the company ID of this layout set branch.
+	*
+	* @param companyId the company ID of this layout set branch
+	*/
 	@Override
 	public void setCompanyId(long companyId) {
 		_layoutSetBranch.setCompanyId(companyId);
 	}
 
 	/**
-	 * Sets the create date of this layout set branch.
-	 *
-	 * @param createDate the create date of this layout set branch
-	 */
+	* Sets the create date of this layout set branch.
+	*
+	* @param createDate the create date of this layout set branch
+	*/
 	@Override
 	public void setCreateDate(Date createDate) {
 		_layoutSetBranch.setCreateDate(createDate);
 	}
 
 	/**
-	 * Sets the css of this layout set branch.
-	 *
-	 * @param css the css of this layout set branch
-	 */
+	* Sets the css of this layout set branch.
+	*
+	* @param css the css of this layout set branch
+	*/
 	@Override
-	public void setCss(String css) {
+	public void setCss(java.lang.String css) {
 		_layoutSetBranch.setCss(css);
 	}
 
 	/**
-	 * Sets the description of this layout set branch.
-	 *
-	 * @param description the description of this layout set branch
-	 */
+	* Sets the description of this layout set branch.
+	*
+	* @param description the description of this layout set branch
+	*/
 	@Override
-	public void setDescription(String description) {
+	public void setDescription(java.lang.String description) {
 		_layoutSetBranch.setDescription(description);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(BaseModel<?> baseModel) {
-		_layoutSetBranch.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -608,100 +628,104 @@ public class LayoutSetBranchWrapper
 	}
 
 	@Override
+	public void setExpandoBridgeAttributes(BaseModel<?> baseModel) {
+		_layoutSetBranch.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_layoutSetBranch.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	 * Sets the group ID of this layout set branch.
-	 *
-	 * @param groupId the group ID of this layout set branch
-	 */
+	* Sets the group ID of this layout set branch.
+	*
+	* @param groupId the group ID of this layout set branch
+	*/
 	@Override
 	public void setGroupId(long groupId) {
 		_layoutSetBranch.setGroupId(groupId);
 	}
 
 	/**
-	 * Sets the layout set branch ID of this layout set branch.
-	 *
-	 * @param layoutSetBranchId the layout set branch ID of this layout set branch
-	 */
+	* Sets the layout set branch ID of this layout set branch.
+	*
+	* @param layoutSetBranchId the layout set branch ID of this layout set branch
+	*/
 	@Override
 	public void setLayoutSetBranchId(long layoutSetBranchId) {
 		_layoutSetBranch.setLayoutSetBranchId(layoutSetBranchId);
 	}
 
 	/**
-	 * Sets whether this layout set branch is layout set prototype link enabled.
-	 *
-	 * @param layoutSetPrototypeLinkEnabled the layout set prototype link enabled of this layout set branch
-	 */
+	* Sets whether this layout set branch is layout set prototype link enabled.
+	*
+	* @param layoutSetPrototypeLinkEnabled the layout set prototype link enabled of this layout set branch
+	*/
 	@Override
 	public void setLayoutSetPrototypeLinkEnabled(
 		boolean layoutSetPrototypeLinkEnabled) {
-
-		_layoutSetBranch.setLayoutSetPrototypeLinkEnabled(
-			layoutSetPrototypeLinkEnabled);
+		_layoutSetBranch.setLayoutSetPrototypeLinkEnabled(layoutSetPrototypeLinkEnabled);
 	}
 
 	/**
-	 * Sets the layout set prototype uuid of this layout set branch.
-	 *
-	 * @param layoutSetPrototypeUuid the layout set prototype uuid of this layout set branch
-	 */
+	* Sets the layout set prototype uuid of this layout set branch.
+	*
+	* @param layoutSetPrototypeUuid the layout set prototype uuid of this layout set branch
+	*/
 	@Override
-	public void setLayoutSetPrototypeUuid(String layoutSetPrototypeUuid) {
+	public void setLayoutSetPrototypeUuid(
+		java.lang.String layoutSetPrototypeUuid) {
 		_layoutSetBranch.setLayoutSetPrototypeUuid(layoutSetPrototypeUuid);
 	}
 
 	/**
-	 * Sets the logo ID of this layout set branch.
-	 *
-	 * @param logoId the logo ID of this layout set branch
-	 */
+	* Sets the logo ID of this layout set branch.
+	*
+	* @param logoId the logo ID of this layout set branch
+	*/
 	@Override
 	public void setLogoId(long logoId) {
 		_layoutSetBranch.setLogoId(logoId);
 	}
 
 	/**
-	 * Sets whether this layout set branch is master.
-	 *
-	 * @param master the master of this layout set branch
-	 */
+	* Sets whether this layout set branch is master.
+	*
+	* @param master the master of this layout set branch
+	*/
 	@Override
 	public void setMaster(boolean master) {
 		_layoutSetBranch.setMaster(master);
 	}
 
 	/**
-	 * Sets the modified date of this layout set branch.
-	 *
-	 * @param modifiedDate the modified date of this layout set branch
-	 */
+	* Sets the modified date of this layout set branch.
+	*
+	* @param modifiedDate the modified date of this layout set branch
+	*/
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_layoutSetBranch.setModifiedDate(modifiedDate);
 	}
 
 	/**
-	 * Sets the mvcc version of this layout set branch.
-	 *
-	 * @param mvccVersion the mvcc version of this layout set branch
-	 */
+	* Sets the mvcc version of this layout set branch.
+	*
+	* @param mvccVersion the mvcc version of this layout set branch
+	*/
 	@Override
 	public void setMvccVersion(long mvccVersion) {
 		_layoutSetBranch.setMvccVersion(mvccVersion);
 	}
 
 	/**
-	 * Sets the name of this layout set branch.
-	 *
-	 * @param name the name of this layout set branch
-	 */
+	* Sets the name of this layout set branch.
+	*
+	* @param name the name of this layout set branch
+	*/
 	@Override
-	public void setName(String name) {
+	public void setName(java.lang.String name) {
 		_layoutSetBranch.setName(name);
 	}
 
@@ -711,10 +735,10 @@ public class LayoutSetBranchWrapper
 	}
 
 	/**
-	 * Sets the primary key of this layout set branch.
-	 *
-	 * @param primaryKey the primary key of this layout set branch
-	 */
+	* Sets the primary key of this layout set branch.
+	*
+	* @param primaryKey the primary key of this layout set branch
+	*/
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_layoutSetBranch.setPrimaryKey(primaryKey);
@@ -726,95 +750,69 @@ public class LayoutSetBranchWrapper
 	}
 
 	/**
-	 * Sets whether this layout set branch is private layout.
-	 *
-	 * @param privateLayout the private layout of this layout set branch
-	 */
+	* Sets whether this layout set branch is private layout.
+	*
+	* @param privateLayout the private layout of this layout set branch
+	*/
 	@Override
 	public void setPrivateLayout(boolean privateLayout) {
 		_layoutSetBranch.setPrivateLayout(privateLayout);
 	}
 
 	/**
-	 * Sets the settings of this layout set branch.
-	 *
-	 * @param settings the settings of this layout set branch
-	 */
+	* Sets the settings of this layout set branch.
+	*
+	* @param settings the settings of this layout set branch
+	*/
 	@Override
-	public void setSettings(String settings) {
+	public void setSettings(java.lang.String settings) {
 		_layoutSetBranch.setSettings(settings);
 	}
 
 	@Override
 	public void setSettingsProperties(
 		com.liferay.portal.kernel.util.UnicodeProperties settingsProperties) {
-
 		_layoutSetBranch.setSettingsProperties(settingsProperties);
 	}
 
 	/**
-	 * Sets the theme ID of this layout set branch.
-	 *
-	 * @param themeId the theme ID of this layout set branch
-	 */
+	* Sets the theme ID of this layout set branch.
+	*
+	* @param themeId the theme ID of this layout set branch
+	*/
 	@Override
-	public void setThemeId(String themeId) {
+	public void setThemeId(java.lang.String themeId) {
 		_layoutSetBranch.setThemeId(themeId);
 	}
 
 	/**
-	 * Sets the user ID of this layout set branch.
-	 *
-	 * @param userId the user ID of this layout set branch
-	 */
+	* Sets the user ID of this layout set branch.
+	*
+	* @param userId the user ID of this layout set branch
+	*/
 	@Override
 	public void setUserId(long userId) {
 		_layoutSetBranch.setUserId(userId);
 	}
 
 	/**
-	 * Sets the user name of this layout set branch.
-	 *
-	 * @param userName the user name of this layout set branch
-	 */
+	* Sets the user name of this layout set branch.
+	*
+	* @param userName the user name of this layout set branch
+	*/
 	@Override
-	public void setUserName(String userName) {
+	public void setUserName(java.lang.String userName) {
 		_layoutSetBranch.setUserName(userName);
 	}
 
 	/**
-	 * Sets the user uuid of this layout set branch.
-	 *
-	 * @param userUuid the user uuid of this layout set branch
-	 */
+	* Sets the user uuid of this layout set branch.
+	*
+	* @param userUuid the user uuid of this layout set branch
+	*/
 	@Override
-	public void setUserUuid(String userUuid) {
+	public void setUserUuid(java.lang.String userUuid) {
 		_layoutSetBranch.setUserUuid(userUuid);
-	}
-
-	@Override
-	public CacheModel<LayoutSetBranch> toCacheModel() {
-		return _layoutSetBranch.toCacheModel();
-	}
-
-	@Override
-	public LayoutSetBranch toEscapedModel() {
-		return new LayoutSetBranchWrapper(_layoutSetBranch.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return _layoutSetBranch.toString();
-	}
-
-	@Override
-	public LayoutSetBranch toUnescapedModel() {
-		return new LayoutSetBranchWrapper(_layoutSetBranch.toUnescapedModel());
-	}
-
-	@Override
-	public String toXmlString() {
-		return _layoutSetBranch.toXmlString();
 	}
 
 	@Override
@@ -827,12 +825,10 @@ public class LayoutSetBranchWrapper
 			return false;
 		}
 
-		LayoutSetBranchWrapper layoutSetBranchWrapper =
-			(LayoutSetBranchWrapper)obj;
+		LayoutSetBranchWrapper layoutSetBranchWrapper = (LayoutSetBranchWrapper)obj;
 
-		if (Objects.equals(
-				_layoutSetBranch, layoutSetBranchWrapper._layoutSetBranch)) {
-
+		if (Objects.equals(_layoutSetBranch,
+					layoutSetBranchWrapper._layoutSetBranch)) {
 			return true;
 		}
 
@@ -860,5 +856,4 @@ public class LayoutSetBranchWrapper
 	}
 
 	private final LayoutSetBranch _layoutSetBranch;
-
 }

@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.service;
 
+import aQute.bnd.annotation.ProviderType;
+
 /**
  * Provides a wrapper for {@link ClassNameService}.
  *
@@ -21,9 +23,9 @@ package com.liferay.portal.kernel.service;
  * @see ClassNameService
  * @generated
  */
-public class ClassNameServiceWrapper
-	implements ClassNameService, ServiceWrapper<ClassNameService> {
-
+@ProviderType
+public class ClassNameServiceWrapper implements ClassNameService,
+	ServiceWrapper<ClassNameService> {
 	public ClassNameServiceWrapper(ClassNameService classNameService) {
 		_classNameService = classNameService;
 	}
@@ -31,22 +33,20 @@ public class ClassNameServiceWrapper
 	@Override
 	public com.liferay.portal.kernel.model.ClassName fetchByClassNameId(
 		long classNameId) {
-
 		return _classNameService.fetchByClassNameId(classNameId);
 	}
 
 	@Override
 	public com.liferay.portal.kernel.model.ClassName fetchClassName(
 		java.lang.String value) {
-
 		return _classNameService.fetchClassName(value);
 	}
 
 	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _classNameService.getOSGiServiceIdentifier();
@@ -63,5 +63,4 @@ public class ClassNameServiceWrapper
 	}
 
 	private ClassNameService _classNameService;
-
 }

@@ -14,9 +14,12 @@
 
 package com.liferay.portal.workflow.kaleo.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstanceToken;
 
 import java.io.Externalizable;
@@ -30,11 +33,12 @@ import java.util.Date;
  * The cache model class for representing KaleoInstanceToken in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see KaleoInstanceToken
  * @generated
  */
-public class KaleoInstanceTokenCacheModel
-	implements CacheModel<KaleoInstanceToken>, Externalizable {
-
+@ProviderType
+public class KaleoInstanceTokenCacheModel implements CacheModel<KaleoInstanceToken>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +49,9 @@ public class KaleoInstanceTokenCacheModel
 			return false;
 		}
 
-		KaleoInstanceTokenCacheModel kaleoInstanceTokenCacheModel =
-			(KaleoInstanceTokenCacheModel)obj;
+		KaleoInstanceTokenCacheModel kaleoInstanceTokenCacheModel = (KaleoInstanceTokenCacheModel)obj;
 
-		if (kaleoInstanceTokenId ==
-				kaleoInstanceTokenCacheModel.kaleoInstanceTokenId) {
-
+		if (kaleoInstanceTokenId == kaleoInstanceTokenCacheModel.kaleoInstanceTokenId) {
 			return true;
 		}
 
@@ -105,8 +106,7 @@ public class KaleoInstanceTokenCacheModel
 
 	@Override
 	public KaleoInstanceToken toEntityModel() {
-		KaleoInstanceTokenImpl kaleoInstanceTokenImpl =
-			new KaleoInstanceTokenImpl();
+		KaleoInstanceTokenImpl kaleoInstanceTokenImpl = new KaleoInstanceTokenImpl();
 
 		kaleoInstanceTokenImpl.setKaleoInstanceTokenId(kaleoInstanceTokenId);
 		kaleoInstanceTokenImpl.setGroupId(groupId);
@@ -114,7 +114,7 @@ public class KaleoInstanceTokenCacheModel
 		kaleoInstanceTokenImpl.setUserId(userId);
 
 		if (userName == null) {
-			kaleoInstanceTokenImpl.setUserName("");
+			kaleoInstanceTokenImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			kaleoInstanceTokenImpl.setUserName(userName);
@@ -136,20 +136,18 @@ public class KaleoInstanceTokenCacheModel
 
 		kaleoInstanceTokenImpl.setKaleoDefinitionId(kaleoDefinitionId);
 		kaleoInstanceTokenImpl.setKaleoInstanceId(kaleoInstanceId);
-		kaleoInstanceTokenImpl.setParentKaleoInstanceTokenId(
-			parentKaleoInstanceTokenId);
+		kaleoInstanceTokenImpl.setParentKaleoInstanceTokenId(parentKaleoInstanceTokenId);
 		kaleoInstanceTokenImpl.setCurrentKaleoNodeId(currentKaleoNodeId);
 
 		if (currentKaleoNodeName == null) {
-			kaleoInstanceTokenImpl.setCurrentKaleoNodeName("");
+			kaleoInstanceTokenImpl.setCurrentKaleoNodeName(StringPool.BLANK);
 		}
 		else {
-			kaleoInstanceTokenImpl.setCurrentKaleoNodeName(
-				currentKaleoNodeName);
+			kaleoInstanceTokenImpl.setCurrentKaleoNodeName(currentKaleoNodeName);
 		}
 
 		if (className == null) {
-			kaleoInstanceTokenImpl.setClassName("");
+			kaleoInstanceTokenImpl.setClassName(StringPool.BLANK);
 		}
 		else {
 			kaleoInstanceTokenImpl.setClassName(className);
@@ -200,7 +198,8 @@ public class KaleoInstanceTokenCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(kaleoInstanceTokenId);
 
 		objectOutput.writeLong(groupId);
@@ -210,7 +209,7 @@ public class KaleoInstanceTokenCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -228,14 +227,14 @@ public class KaleoInstanceTokenCacheModel
 		objectOutput.writeLong(currentKaleoNodeId);
 
 		if (currentKaleoNodeName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(currentKaleoNodeName);
 		}
 
 		if (className == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(className);
@@ -263,5 +262,4 @@ public class KaleoInstanceTokenCacheModel
 	public long classPK;
 	public boolean completed;
 	public long completionDate;
-
 }

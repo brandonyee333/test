@@ -1,24 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.customer.release.notes.jira.service.persistence.impl;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.customer.release.notes.jira.exception.NoSuchJIRAIssueException;
 import com.liferay.osb.customer.release.notes.jira.model.JIRAIssue;
 import com.liferay.osb.customer.release.notes.jira.model.impl.JIRAIssueImpl;
 import com.liferay.osb.customer.release.notes.jira.model.impl.JIRAIssueModelImpl;
 import com.liferay.osb.customer.release.notes.jira.service.persistence.JIRAIssuePersistence;
+
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -31,11 +34,10 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -53,51 +55,34 @@ import java.util.Set;
  * </p>
  *
  * @author Brian Wing Shun Chan
+ * @see JIRAIssuePersistence
+ * @see com.liferay.osb.customer.release.notes.jira.service.persistence.JIRAIssueUtil
  * @generated
  */
-public class JIRAIssuePersistenceImpl
-	extends BasePersistenceImpl<JIRAIssue> implements JIRAIssuePersistence {
-
+@ProviderType
+public class JIRAIssuePersistenceImpl extends BasePersistenceImpl<JIRAIssue>
+	implements JIRAIssuePersistence {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use <code>JIRAIssueUtil</code> to access the jira issue persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use {@link JIRAIssueUtil} to access the jira issue persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY =
-		JIRAIssueImpl.class.getName();
-
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List1";
-
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
+	public static final String FINDER_CLASS_NAME_ENTITY = JIRAIssueImpl.class.getName();
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List1";
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List2";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(JIRAIssueModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAIssueModelImpl.FINDER_CACHE_ENABLED, JIRAIssueImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(JIRAIssueModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAIssueModelImpl.FINDER_CACHE_ENABLED, JIRAIssueImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(JIRAIssueModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAIssueModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
 
 	public JIRAIssuePersistenceImpl() {
-		Map<String, String> dbColumnNames = new HashMap<String, String>();
-
-		dbColumnNames.put("jiraIssueId", "id");
-		dbColumnNames.put("jiraProjectId", "project");
-		dbColumnNames.put("issueNumber", "issuenum");
-		dbColumnNames.put("type", "issuetype");
-
-		try {
-			Field field = BasePersistenceImpl.class.getDeclaredField(
-				"_dbColumnNames");
-
-			field.setAccessible(true);
-
-			field.set(this, dbColumnNames);
-		}
-		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception, exception);
-			}
-		}
-
 		setModelClass(JIRAIssue.class);
 	}
 
@@ -108,9 +93,8 @@ public class JIRAIssuePersistenceImpl
 	 */
 	@Override
 	public void cacheResult(JIRAIssue jiraIssue) {
-		entityCache.putResult(
-			JIRAIssueModelImpl.ENTITY_CACHE_ENABLED, JIRAIssueImpl.class,
-			jiraIssue.getPrimaryKey(), jiraIssue);
+		entityCache.putResult(JIRAIssueModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAIssueImpl.class, jiraIssue.getPrimaryKey(), jiraIssue);
 
 		jiraIssue.resetOriginalValues();
 	}
@@ -123,10 +107,8 @@ public class JIRAIssuePersistenceImpl
 	@Override
 	public void cacheResult(List<JIRAIssue> jiraIssues) {
 		for (JIRAIssue jiraIssue : jiraIssues) {
-			if (entityCache.getResult(
-					JIRAIssueModelImpl.ENTITY_CACHE_ENABLED,
-					JIRAIssueImpl.class, jiraIssue.getPrimaryKey()) == null) {
-
+			if (entityCache.getResult(JIRAIssueModelImpl.ENTITY_CACHE_ENABLED,
+						JIRAIssueImpl.class, jiraIssue.getPrimaryKey()) == null) {
 				cacheResult(jiraIssue);
 			}
 			else {
@@ -139,7 +121,7 @@ public class JIRAIssuePersistenceImpl
 	 * Clears the cache for all jira issues.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -155,14 +137,13 @@ public class JIRAIssuePersistenceImpl
 	 * Clears the cache for the jira issue.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(JIRAIssue jiraIssue) {
-		entityCache.removeResult(
-			JIRAIssueModelImpl.ENTITY_CACHE_ENABLED, JIRAIssueImpl.class,
-			jiraIssue.getPrimaryKey());
+		entityCache.removeResult(JIRAIssueModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAIssueImpl.class, jiraIssue.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -174,21 +155,8 @@ public class JIRAIssuePersistenceImpl
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (JIRAIssue jiraIssue : jiraIssues) {
-			entityCache.removeResult(
-				JIRAIssueModelImpl.ENTITY_CACHE_ENABLED, JIRAIssueImpl.class,
-				jiraIssue.getPrimaryKey());
-		}
-	}
-
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				JIRAIssueModelImpl.ENTITY_CACHE_ENABLED, JIRAIssueImpl.class,
-				primaryKey);
+			entityCache.removeResult(JIRAIssueModelImpl.ENTITY_CACHE_ENABLED,
+				JIRAIssueImpl.class, jiraIssue.getPrimaryKey());
 		}
 	}
 
@@ -230,31 +198,30 @@ public class JIRAIssuePersistenceImpl
 	@Override
 	public JIRAIssue remove(Serializable primaryKey)
 		throws NoSuchJIRAIssueException {
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			JIRAIssue jiraIssue = (JIRAIssue)session.get(
-				JIRAIssueImpl.class, primaryKey);
+			JIRAIssue jiraIssue = (JIRAIssue)session.get(JIRAIssueImpl.class,
+					primaryKey);
 
 			if (jiraIssue == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchJIRAIssueException(
-					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				throw new NoSuchJIRAIssueException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+					primaryKey);
 			}
 
 			return remove(jiraIssue);
 		}
-		catch (NoSuchJIRAIssueException noSuchEntityException) {
-			throw noSuchEntityException;
+		catch (NoSuchJIRAIssueException nsee) {
+			throw nsee;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -263,22 +230,24 @@ public class JIRAIssuePersistenceImpl
 
 	@Override
 	protected JIRAIssue removeImpl(JIRAIssue jiraIssue) {
+		jiraIssue = toUnwrappedModel(jiraIssue);
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(jiraIssue)) {
-				jiraIssue = (JIRAIssue)session.get(
-					JIRAIssueImpl.class, jiraIssue.getPrimaryKeyObj());
+				jiraIssue = (JIRAIssue)session.get(JIRAIssueImpl.class,
+						jiraIssue.getPrimaryKeyObj());
 			}
 
 			if (jiraIssue != null) {
 				session.delete(jiraIssue);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -293,6 +262,8 @@ public class JIRAIssuePersistenceImpl
 
 	@Override
 	public JIRAIssue updateImpl(JIRAIssue jiraIssue) {
+		jiraIssue = toUnwrappedModel(jiraIssue);
+
 		boolean isNew = jiraIssue.isNew();
 
 		Session session = null;
@@ -309,8 +280,8 @@ public class JIRAIssuePersistenceImpl
 				jiraIssue = (JIRAIssue)session.merge(jiraIssue);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -319,22 +290,42 @@ public class JIRAIssuePersistenceImpl
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
 		if (isNew) {
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(
-			JIRAIssueModelImpl.ENTITY_CACHE_ENABLED, JIRAIssueImpl.class,
-			jiraIssue.getPrimaryKey(), jiraIssue, false);
+		entityCache.putResult(JIRAIssueModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAIssueImpl.class, jiraIssue.getPrimaryKey(), jiraIssue, false);
 
 		jiraIssue.resetOriginalValues();
 
 		return jiraIssue;
 	}
 
+	protected JIRAIssue toUnwrappedModel(JIRAIssue jiraIssue) {
+		if (jiraIssue instanceof JIRAIssueImpl) {
+			return jiraIssue;
+		}
+
+		JIRAIssueImpl jiraIssueImpl = new JIRAIssueImpl();
+
+		jiraIssueImpl.setNew(jiraIssue.isNew());
+		jiraIssueImpl.setPrimaryKey(jiraIssue.getPrimaryKey());
+
+		jiraIssueImpl.setJiraIssueId(jiraIssue.getJiraIssueId());
+		jiraIssueImpl.setJiraProjectId(jiraIssue.getJiraProjectId());
+		jiraIssueImpl.setIssueNumber(jiraIssue.getIssueNumber());
+		jiraIssueImpl.setType(jiraIssue.getType());
+		jiraIssueImpl.setSummary(jiraIssue.getSummary());
+		jiraIssueImpl.setDescription(jiraIssue.getDescription());
+		jiraIssueImpl.setPriority(jiraIssue.getPriority());
+
+		return jiraIssueImpl;
+	}
+
 	/**
-	 * Returns the jira issue with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
+	 * Returns the jira issue with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the jira issue
 	 * @return the jira issue
@@ -343,7 +334,6 @@ public class JIRAIssuePersistenceImpl
 	@Override
 	public JIRAIssue findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchJIRAIssueException {
-
 		JIRAIssue jiraIssue = fetchByPrimaryKey(primaryKey);
 
 		if (jiraIssue == null) {
@@ -351,15 +341,15 @@ public class JIRAIssuePersistenceImpl
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchJIRAIssueException(
-				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			throw new NoSuchJIRAIssueException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
 		}
 
 		return jiraIssue;
 	}
 
 	/**
-	 * Returns the jira issue with the primary key or throws a <code>NoSuchJIRAIssueException</code> if it could not be found.
+	 * Returns the jira issue with the primary key or throws a {@link NoSuchJIRAIssueException} if it could not be found.
 	 *
 	 * @param jiraIssueId the primary key of the jira issue
 	 * @return the jira issue
@@ -368,7 +358,6 @@ public class JIRAIssuePersistenceImpl
 	@Override
 	public JIRAIssue findByPrimaryKey(long jiraIssueId)
 		throws NoSuchJIRAIssueException {
-
 		return findByPrimaryKey((Serializable)jiraIssueId);
 	}
 
@@ -380,9 +369,8 @@ public class JIRAIssuePersistenceImpl
 	 */
 	@Override
 	public JIRAIssue fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(
-			JIRAIssueModelImpl.ENTITY_CACHE_ENABLED, JIRAIssueImpl.class,
-			primaryKey);
+		Serializable serializable = entityCache.getResult(JIRAIssueModelImpl.ENTITY_CACHE_ENABLED,
+				JIRAIssueImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -396,24 +384,22 @@ public class JIRAIssuePersistenceImpl
 			try {
 				session = openSession();
 
-				jiraIssue = (JIRAIssue)session.get(
-					JIRAIssueImpl.class, primaryKey);
+				jiraIssue = (JIRAIssue)session.get(JIRAIssueImpl.class,
+						primaryKey);
 
 				if (jiraIssue != null) {
 					cacheResult(jiraIssue);
 				}
 				else {
-					entityCache.putResult(
-						JIRAIssueModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(JIRAIssueModelImpl.ENTITY_CACHE_ENABLED,
 						JIRAIssueImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception exception) {
-				entityCache.removeResult(
-					JIRAIssueModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception e) {
+				entityCache.removeResult(JIRAIssueModelImpl.ENTITY_CACHE_ENABLED,
 					JIRAIssueImpl.class, primaryKey);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -437,13 +423,11 @@ public class JIRAIssuePersistenceImpl
 	@Override
 	public Map<Serializable, JIRAIssue> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
-
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, JIRAIssue> map =
-			new HashMap<Serializable, JIRAIssue>();
+		Map<Serializable, JIRAIssue> map = new HashMap<Serializable, JIRAIssue>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -462,9 +446,8 @@ public class JIRAIssuePersistenceImpl
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(
-				JIRAIssueModelImpl.ENTITY_CACHE_ENABLED, JIRAIssueImpl.class,
-				primaryKey);
+			Serializable serializable = entityCache.getResult(JIRAIssueModelImpl.ENTITY_CACHE_ENABLED,
+					JIRAIssueImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -484,31 +467,31 @@ public class JIRAIssuePersistenceImpl
 			return map;
 		}
 
-		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
+				1);
 
-		sb.append(_SQL_SELECT_JIRAISSUE_WHERE_PKS_IN);
+		query.append(_SQL_SELECT_JIRAISSUE_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			sb.append((long)primaryKey);
+			query.append((long)primaryKey);
 
-			sb.append(",");
+			query.append(StringPool.COMMA);
 		}
 
-		sb.setIndex(sb.index() - 1);
+		query.setIndex(query.index() - 1);
 
-		sb.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query query = session.createQuery(sql);
+			Query q = session.createQuery(sql);
 
-			for (JIRAIssue jiraIssue : (List<JIRAIssue>)query.list()) {
+			for (JIRAIssue jiraIssue : (List<JIRAIssue>)q.list()) {
 				map.put(jiraIssue.getPrimaryKeyObj(), jiraIssue);
 
 				cacheResult(jiraIssue);
@@ -517,13 +500,12 @@ public class JIRAIssuePersistenceImpl
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(
-					JIRAIssueModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(JIRAIssueModelImpl.ENTITY_CACHE_ENABLED,
 					JIRAIssueImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -546,7 +528,7 @@ public class JIRAIssuePersistenceImpl
 	 * Returns a range of all the jira issues.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>JIRAIssueModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JIRAIssueModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of jira issues
@@ -562,7 +544,7 @@ public class JIRAIssuePersistenceImpl
 	 * Returns an ordered range of all the jira issues.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>JIRAIssueModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JIRAIssueModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of jira issues
@@ -571,9 +553,8 @@ public class JIRAIssuePersistenceImpl
 	 * @return the ordered range of jira issues
 	 */
 	@Override
-	public List<JIRAIssue> findAll(
-		int start, int end, OrderByComparator<JIRAIssue> orderByComparator) {
-
+	public List<JIRAIssue> findAll(int start, int end,
+		OrderByComparator<JIRAIssue> orderByComparator) {
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -581,62 +562,62 @@ public class JIRAIssuePersistenceImpl
 	 * Returns an ordered range of all the jira issues.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>JIRAIssueModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JIRAIssueModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of jira issues
 	 * @param end the upper bound of the range of jira issues (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of jira issues
 	 */
 	@Override
-	public List<JIRAIssue> findAll(
-		int start, int end, OrderByComparator<JIRAIssue> orderByComparator,
-		boolean useFinderCache) {
-
+	public List<JIRAIssue> findAll(int start, int end,
+		OrderByComparator<JIRAIssue> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
-				finderArgs = FINDER_ARGS_EMPTY;
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+			finderArgs = FINDER_ARGS_EMPTY;
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] {start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
 		List<JIRAIssue> list = null;
 
-		if (useFinderCache) {
-			list = (List<JIRAIssue>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<JIRAIssue>)finderCache.getResult(finderPath,
+					finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					2 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(2 +
+						(orderByComparator.getOrderByFields().length * 2));
 
-				sb.append(_SQL_SELECT_JIRAISSUE);
+				query.append(_SQL_SELECT_JIRAISSUE);
 
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 
-				sql = sb.toString();
+				sql = query.toString();
 			}
 			else {
 				sql = _SQL_SELECT_JIRAISSUE;
 
-				sql = sql.concat(JIRAIssueModelImpl.ORDER_BY_JPQL);
+				if (pagination) {
+					sql = sql.concat(JIRAIssueModelImpl.ORDER_BY_JPQL);
+				}
 			}
 
 			Session session = null;
@@ -644,23 +625,29 @@ public class JIRAIssuePersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				list = (List<JIRAIssue>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<JIRAIssue>)QueryUtil.list(q, getDialect(),
+							start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<JIRAIssue>)QueryUtil.list(q, getDialect(),
+							start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -688,8 +675,8 @@ public class JIRAIssuePersistenceImpl
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -697,18 +684,18 @@ public class JIRAIssuePersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(_SQL_COUNT_JIRAISSUE);
+				Query q = session.createQuery(_SQL_COUNT_JIRAISSUE);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
+					count);
 			}
-			catch (Exception exception) {
-				finderCache.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -732,22 +719,6 @@ public class JIRAIssuePersistenceImpl
 	 * Initializes the jira issue persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			JIRAIssueModelImpl.ENTITY_CACHE_ENABLED,
-			JIRAIssueModelImpl.FINDER_CACHE_ENABLED, JIRAIssueImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			JIRAIssueModelImpl.ENTITY_CACHE_ENABLED,
-			JIRAIssueModelImpl.FINDER_CACHE_ENABLED, JIRAIssueImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			JIRAIssueModelImpl.ENTITY_CACHE_ENABLED,
-			JIRAIssueModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
 	}
 
 	public void destroy() {
@@ -759,28 +730,15 @@ public class JIRAIssuePersistenceImpl
 
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
-
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-
-	private static final String _SQL_SELECT_JIRAISSUE =
-		"SELECT jiraIssue FROM JIRAIssue jiraIssue";
-
-	private static final String _SQL_SELECT_JIRAISSUE_WHERE_PKS_IN =
-		"SELECT jiraIssue FROM JIRAIssue jiraIssue WHERE id IN (";
-
-	private static final String _SQL_COUNT_JIRAISSUE =
-		"SELECT COUNT(jiraIssue) FROM JIRAIssue jiraIssue";
-
+	private static final String _SQL_SELECT_JIRAISSUE = "SELECT jiraIssue FROM JIRAIssue jiraIssue";
+	private static final String _SQL_SELECT_JIRAISSUE_WHERE_PKS_IN = "SELECT jiraIssue FROM JIRAIssue jiraIssue WHERE id IN (";
+	private static final String _SQL_COUNT_JIRAISSUE = "SELECT COUNT(jiraIssue) FROM JIRAIssue jiraIssue";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "jiraIssue.";
-
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
-		"No JIRAIssue exists with the primary key ";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		JIRAIssuePersistenceImpl.class);
-
-	private static final Set<String> _badColumnNames = SetUtil.fromArray(
-		new String[] {"jiraIssueId", "jiraProjectId", "issueNumber", "type"});
-
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No JIRAIssue exists with the primary key ";
+	private static final Log _log = LogFactoryUtil.getLog(JIRAIssuePersistenceImpl.class);
+	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
+				"jiraIssueId", "jiraProjectId", "issueNumber", "type"
+			});
 }

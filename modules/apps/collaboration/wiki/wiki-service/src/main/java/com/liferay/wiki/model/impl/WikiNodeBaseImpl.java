@@ -14,6 +14,8 @@
 
 package com.liferay.wiki.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.service.WikiNodeLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.wiki.service.WikiNodeLocalServiceUtil;
  * @see WikiNode
  * @generated
  */
-public abstract class WikiNodeBaseImpl
-	extends WikiNodeModelImpl implements WikiNode {
-
+@ProviderType
+public abstract class WikiNodeBaseImpl extends WikiNodeModelImpl
+	implements WikiNode {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a wiki node model instance should use the <code>WikiNode</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a wiki node model instance should use the {@link WikiNode} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class WikiNodeBaseImpl
 			WikiNodeLocalServiceUtil.updateWikiNode(this);
 		}
 	}
-
 }

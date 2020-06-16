@@ -1,22 +1,26 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.watson.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.watson.model.WatsonActivityAudit;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing WatsonActivityAudit in entity cache.
  *
  * @author Steven Smith
+ * @see WatsonActivityAudit
  * @generated
  */
-public class WatsonActivityAuditCacheModel
-	implements CacheModel<WatsonActivityAudit>, Externalizable {
-
+@ProviderType
+public class WatsonActivityAuditCacheModel implements CacheModel<WatsonActivityAudit>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +50,9 @@ public class WatsonActivityAuditCacheModel
 			return false;
 		}
 
-		WatsonActivityAuditCacheModel watsonActivityAuditCacheModel =
-			(WatsonActivityAuditCacheModel)obj;
+		WatsonActivityAuditCacheModel watsonActivityAuditCacheModel = (WatsonActivityAuditCacheModel)obj;
 
-		if (watsonActivityAuditId ==
-				watsonActivityAuditCacheModel.watsonActivityAuditId) {
-
+		if (watsonActivityAuditId == watsonActivityAuditCacheModel.watsonActivityAuditId) {
 			return true;
 		}
 
@@ -103,8 +105,7 @@ public class WatsonActivityAuditCacheModel
 
 	@Override
 	public WatsonActivityAudit toEntityModel() {
-		WatsonActivityAuditImpl watsonActivityAuditImpl =
-			new WatsonActivityAuditImpl();
+		WatsonActivityAuditImpl watsonActivityAuditImpl = new WatsonActivityAuditImpl();
 
 		watsonActivityAuditImpl.setWatsonActivityAuditId(watsonActivityAuditId);
 		watsonActivityAuditImpl.setGroupId(groupId);
@@ -112,7 +113,7 @@ public class WatsonActivityAuditCacheModel
 		watsonActivityAuditImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonActivityAuditImpl.setUserName("");
+			watsonActivityAuditImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			watsonActivityAuditImpl.setUserName(userName);
@@ -134,12 +135,11 @@ public class WatsonActivityAuditCacheModel
 
 		watsonActivityAuditImpl.setWatsonActivityId(watsonActivityId);
 		watsonActivityAuditImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
-		watsonActivityAuditImpl.setSubtypeWatsonListTypeId(
-			subtypeWatsonListTypeId);
+		watsonActivityAuditImpl.setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
 		watsonActivityAuditImpl.setWatsonIncidentId(watsonIncidentId);
 
 		if (narrative == null) {
-			watsonActivityAuditImpl.setNarrative("");
+			watsonActivityAuditImpl.setNarrative(StringPool.BLANK);
 		}
 		else {
 			watsonActivityAuditImpl.setNarrative(narrative);
@@ -194,7 +194,8 @@ public class WatsonActivityAuditCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(watsonActivityAuditId);
 
 		objectOutput.writeLong(groupId);
@@ -204,7 +205,7 @@ public class WatsonActivityAuditCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -222,7 +223,7 @@ public class WatsonActivityAuditCacheModel
 		objectOutput.writeLong(watsonIncidentId);
 
 		if (narrative == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(narrative);
@@ -249,5 +250,4 @@ public class WatsonActivityAuditCacheModel
 	public long reportDate;
 	public long startDate;
 	public int status;
-
 }

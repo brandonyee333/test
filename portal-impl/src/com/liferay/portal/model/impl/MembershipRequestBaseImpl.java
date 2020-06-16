@@ -14,6 +14,8 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.MembershipRequest;
 import com.liferay.portal.kernel.service.MembershipRequestLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.portal.kernel.service.MembershipRequestLocalServiceUtil;
  * @see MembershipRequest
  * @generated
  */
+@ProviderType
 public abstract class MembershipRequestBaseImpl
 	extends MembershipRequestModelImpl implements MembershipRequest {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a membership request model instance should use the <code>MembershipRequest</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a membership request model instance should use the {@link MembershipRequest} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class MembershipRequestBaseImpl
 			MembershipRequestLocalServiceUtil.updateMembershipRequest(this);
 		}
 	}
-
 }

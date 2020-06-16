@@ -14,11 +14,14 @@
 
 package com.liferay.portal.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.PasswordTracker;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -31,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing PasswordTracker in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see PasswordTracker
  * @generated
  */
-public class PasswordTrackerCacheModel
-	implements CacheModel<PasswordTracker>, Externalizable, MVCCModel {
-
+@ProviderType
+public class PasswordTrackerCacheModel implements CacheModel<PasswordTracker>,
+	Externalizable, MVCCModel {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -46,13 +50,10 @@ public class PasswordTrackerCacheModel
 			return false;
 		}
 
-		PasswordTrackerCacheModel passwordTrackerCacheModel =
-			(PasswordTrackerCacheModel)obj;
+		PasswordTrackerCacheModel passwordTrackerCacheModel = (PasswordTrackerCacheModel)obj;
 
-		if ((passwordTrackerId ==
-				passwordTrackerCacheModel.passwordTrackerId) &&
-			(mvccVersion == passwordTrackerCacheModel.mvccVersion)) {
-
+		if ((passwordTrackerId == passwordTrackerCacheModel.passwordTrackerId) &&
+				(mvccVersion == passwordTrackerCacheModel.mvccVersion)) {
 			return true;
 		}
 
@@ -114,7 +115,7 @@ public class PasswordTrackerCacheModel
 		}
 
 		if (password == null) {
-			passwordTrackerImpl.setPassword("");
+			passwordTrackerImpl.setPassword(StringPool.BLANK);
 		}
 		else {
 			passwordTrackerImpl.setPassword(password);
@@ -139,7 +140,8 @@ public class PasswordTrackerCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(passwordTrackerId);
@@ -150,7 +152,7 @@ public class PasswordTrackerCacheModel
 		objectOutput.writeLong(createDate);
 
 		if (password == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(password);
@@ -163,5 +165,4 @@ public class PasswordTrackerCacheModel
 	public long userId;
 	public long createDate;
 	public String password;
-
 }

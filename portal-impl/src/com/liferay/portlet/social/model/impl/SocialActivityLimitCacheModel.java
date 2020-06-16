@@ -14,9 +14,13 @@
 
 package com.liferay.portlet.social.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.social.kernel.model.SocialActivityLimit;
 
 import java.io.Externalizable;
@@ -28,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing SocialActivityLimit in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see SocialActivityLimit
  * @generated
  */
-public class SocialActivityLimitCacheModel
-	implements CacheModel<SocialActivityLimit>, Externalizable {
-
+@ProviderType
+public class SocialActivityLimitCacheModel implements CacheModel<SocialActivityLimit>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -43,8 +48,7 @@ public class SocialActivityLimitCacheModel
 			return false;
 		}
 
-		SocialActivityLimitCacheModel socialActivityLimitCacheModel =
-			(SocialActivityLimitCacheModel)obj;
+		SocialActivityLimitCacheModel socialActivityLimitCacheModel = (SocialActivityLimitCacheModel)obj;
 
 		if (activityLimitId == socialActivityLimitCacheModel.activityLimitId) {
 			return true;
@@ -87,8 +91,7 @@ public class SocialActivityLimitCacheModel
 
 	@Override
 	public SocialActivityLimit toEntityModel() {
-		SocialActivityLimitImpl socialActivityLimitImpl =
-			new SocialActivityLimitImpl();
+		SocialActivityLimitImpl socialActivityLimitImpl = new SocialActivityLimitImpl();
 
 		socialActivityLimitImpl.setActivityLimitId(activityLimitId);
 		socialActivityLimitImpl.setGroupId(groupId);
@@ -99,14 +102,14 @@ public class SocialActivityLimitCacheModel
 		socialActivityLimitImpl.setActivityType(activityType);
 
 		if (activityCounterName == null) {
-			socialActivityLimitImpl.setActivityCounterName("");
+			socialActivityLimitImpl.setActivityCounterName(StringPool.BLANK);
 		}
 		else {
 			socialActivityLimitImpl.setActivityCounterName(activityCounterName);
 		}
 
 		if (value == null) {
-			socialActivityLimitImpl.setValue("");
+			socialActivityLimitImpl.setValue(StringPool.BLANK);
 		}
 		else {
 			socialActivityLimitImpl.setValue(value);
@@ -137,7 +140,8 @@ public class SocialActivityLimitCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(activityLimitId);
 
 		objectOutput.writeLong(groupId);
@@ -153,14 +157,14 @@ public class SocialActivityLimitCacheModel
 		objectOutput.writeInt(activityType);
 
 		if (activityCounterName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(activityCounterName);
 		}
 
 		if (value == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(value);
@@ -176,5 +180,4 @@ public class SocialActivityLimitCacheModel
 	public int activityType;
 	public String activityCounterName;
 	public String value;
-
 }

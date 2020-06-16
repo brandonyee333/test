@@ -14,7 +14,10 @@
 
 package com.liferay.microblogs.service.http;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.microblogs.service.MicroblogsEntryServiceUtil;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -22,20 +25,19 @@ import java.rmi.RemoteException;
 
 /**
  * Provides the SOAP utility for the
- * <code>MicroblogsEntryServiceUtil</code> service
- * utility. The static methods of this class call the same methods of the
- * service utility. However, the signatures are different because it is
- * difficult for SOAP to support certain types.
+ * {@link MicroblogsEntryServiceUtil} service utility. The
+ * static methods of this class calls the same methods of the service utility.
+ * However, the signatures are different because it is difficult for SOAP to
+ * support certain types.
  *
  * <p>
  * ServiceBuilder follows certain rules in translating the methods. For example,
- * if the method in the service utility returns a <code>java.util.List</code>,
- * that is translated to an array of
- * <code>com.liferay.microblogs.model.MicroblogsEntrySoap</code>. If the method in the
- * service utility returns a
- * <code>com.liferay.microblogs.model.MicroblogsEntry</code>, that is translated to a
- * <code>com.liferay.microblogs.model.MicroblogsEntrySoap</code>. Methods that SOAP
- * cannot safely wire are skipped.
+ * if the method in the service utility returns a {@link java.util.List}, that
+ * is translated to an array of {@link com.liferay.microblogs.model.MicroblogsEntrySoap}.
+ * If the method in the service utility returns a
+ * {@link com.liferay.microblogs.model.MicroblogsEntry}, that is translated to a
+ * {@link com.liferay.microblogs.model.MicroblogsEntrySoap}. Methods that SOAP cannot
+ * safely wire are skipped.
  * </p>
  *
  * <p>
@@ -57,240 +59,198 @@ import java.rmi.RemoteException;
  *
  * @author Brian Wing Shun Chan
  * @see MicroblogsEntryServiceHttp
+ * @see com.liferay.microblogs.model.MicroblogsEntrySoap
+ * @see MicroblogsEntryServiceUtil
  * @generated
  */
+@ProviderType
 public class MicroblogsEntryServiceSoap {
-
-	public static com.liferay.microblogs.model.MicroblogsEntrySoap
-			addMicroblogsEntry(
-				long userId, String content, int type,
-				long parentMicroblogsEntryId, int socialRelationType,
-				com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static com.liferay.microblogs.model.MicroblogsEntrySoap addMicroblogsEntry(
+		long userId, java.lang.String content, int type,
+		long parentMicroblogsEntryId, int socialRelationType,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
-
 		try {
-			com.liferay.microblogs.model.MicroblogsEntry returnValue =
-				MicroblogsEntryServiceUtil.addMicroblogsEntry(
-					userId, content, type, parentMicroblogsEntryId,
-					socialRelationType, serviceContext);
+			com.liferay.microblogs.model.MicroblogsEntry returnValue = MicroblogsEntryServiceUtil.addMicroblogsEntry(userId,
+					content, type, parentMicroblogsEntryId, socialRelationType,
+					serviceContext);
 
-			return com.liferay.microblogs.model.MicroblogsEntrySoap.toSoapModel(
-				returnValue);
+			return com.liferay.microblogs.model.MicroblogsEntrySoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.microblogs.model.MicroblogsEntrySoap
-			deleteMicroblogsEntry(long microblogsEntryId)
-		throws RemoteException {
-
+	public static com.liferay.microblogs.model.MicroblogsEntrySoap deleteMicroblogsEntry(
+		long microblogsEntryId) throws RemoteException {
 		try {
-			com.liferay.microblogs.model.MicroblogsEntry returnValue =
-				MicroblogsEntryServiceUtil.deleteMicroblogsEntry(
-					microblogsEntryId);
+			com.liferay.microblogs.model.MicroblogsEntry returnValue = MicroblogsEntryServiceUtil.deleteMicroblogsEntry(microblogsEntryId);
 
-			return com.liferay.microblogs.model.MicroblogsEntrySoap.toSoapModel(
-				returnValue);
+			return com.liferay.microblogs.model.MicroblogsEntrySoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.microblogs.model.MicroblogsEntrySoap[]
-			getMicroblogsEntries(int start, int end)
-		throws RemoteException {
-
+	public static com.liferay.microblogs.model.MicroblogsEntrySoap[] getMicroblogsEntries(
+		int start, int end) throws RemoteException {
 		try {
-			java.util.List<com.liferay.microblogs.model.MicroblogsEntry>
-				returnValue = MicroblogsEntryServiceUtil.getMicroblogsEntries(
+			java.util.List<com.liferay.microblogs.model.MicroblogsEntry> returnValue =
+				MicroblogsEntryServiceUtil.getMicroblogsEntries(start, end);
+
+			return com.liferay.microblogs.model.MicroblogsEntrySoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.microblogs.model.MicroblogsEntrySoap[] getMicroblogsEntries(
+		java.lang.String assetTagName, int start, int end)
+		throws RemoteException {
+		try {
+			java.util.List<com.liferay.microblogs.model.MicroblogsEntry> returnValue =
+				MicroblogsEntryServiceUtil.getMicroblogsEntries(assetTagName,
 					start, end);
 
-			return com.liferay.microblogs.model.MicroblogsEntrySoap.
-				toSoapModels(returnValue);
+			return com.liferay.microblogs.model.MicroblogsEntrySoap.toSoapModels(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
-		}
-	}
-
-	public static com.liferay.microblogs.model.MicroblogsEntrySoap[]
-			getMicroblogsEntries(String assetTagName, int start, int end)
-		throws RemoteException {
-
-		try {
-			java.util.List<com.liferay.microblogs.model.MicroblogsEntry>
-				returnValue = MicroblogsEntryServiceUtil.getMicroblogsEntries(
-					assetTagName, start, end);
-
-			return com.liferay.microblogs.model.MicroblogsEntrySoap.
-				toSoapModels(returnValue);
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static int getMicroblogsEntriesCount() throws RemoteException {
 		try {
-			int returnValue =
-				MicroblogsEntryServiceUtil.getMicroblogsEntriesCount();
+			int returnValue = MicroblogsEntryServiceUtil.getMicroblogsEntriesCount();
 
 			return returnValue;
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static int getMicroblogsEntriesCount(String assetTagName)
+	public static int getMicroblogsEntriesCount(java.lang.String assetTagName)
 		throws RemoteException {
-
 		try {
-			int returnValue =
-				MicroblogsEntryServiceUtil.getMicroblogsEntriesCount(
-					assetTagName);
+			int returnValue = MicroblogsEntryServiceUtil.getMicroblogsEntriesCount(assetTagName);
 
 			return returnValue;
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.microblogs.model.MicroblogsEntrySoap
-			getMicroblogsEntry(long microblogsEntryId)
-		throws RemoteException {
-
+	public static com.liferay.microblogs.model.MicroblogsEntrySoap getMicroblogsEntry(
+		long microblogsEntryId) throws RemoteException {
 		try {
-			com.liferay.microblogs.model.MicroblogsEntry returnValue =
-				MicroblogsEntryServiceUtil.getMicroblogsEntry(
-					microblogsEntryId);
+			com.liferay.microblogs.model.MicroblogsEntry returnValue = MicroblogsEntryServiceUtil.getMicroblogsEntry(microblogsEntryId);
 
-			return com.liferay.microblogs.model.MicroblogsEntrySoap.toSoapModel(
-				returnValue);
+			return com.liferay.microblogs.model.MicroblogsEntrySoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.microblogs.model.MicroblogsEntrySoap[]
-			getUserMicroblogsEntries(
-				long microblogsEntryUserId, int start, int end)
+	public static com.liferay.microblogs.model.MicroblogsEntrySoap[] getUserMicroblogsEntries(
+		long microblogsEntryUserId, int start, int end)
 		throws RemoteException {
-
 		try {
-			java.util.List<com.liferay.microblogs.model.MicroblogsEntry>
-				returnValue =
-					MicroblogsEntryServiceUtil.getUserMicroblogsEntries(
-						microblogsEntryUserId, start, end);
+			java.util.List<com.liferay.microblogs.model.MicroblogsEntry> returnValue =
+				MicroblogsEntryServiceUtil.getUserMicroblogsEntries(microblogsEntryUserId,
+					start, end);
 
-			return com.liferay.microblogs.model.MicroblogsEntrySoap.
-				toSoapModels(returnValue);
+			return com.liferay.microblogs.model.MicroblogsEntrySoap.toSoapModels(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.microblogs.model.MicroblogsEntrySoap[]
-			getUserMicroblogsEntries(
-				long microblogsEntryUserId, int type, int start, int end)
+	public static com.liferay.microblogs.model.MicroblogsEntrySoap[] getUserMicroblogsEntries(
+		long microblogsEntryUserId, int type, int start, int end)
 		throws RemoteException {
-
 		try {
-			java.util.List<com.liferay.microblogs.model.MicroblogsEntry>
-				returnValue =
-					MicroblogsEntryServiceUtil.getUserMicroblogsEntries(
-						microblogsEntryUserId, type, start, end);
+			java.util.List<com.liferay.microblogs.model.MicroblogsEntry> returnValue =
+				MicroblogsEntryServiceUtil.getUserMicroblogsEntries(microblogsEntryUserId,
+					type, start, end);
 
-			return com.liferay.microblogs.model.MicroblogsEntrySoap.
-				toSoapModels(returnValue);
+			return com.liferay.microblogs.model.MicroblogsEntrySoap.toSoapModels(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static int getUserMicroblogsEntriesCount(long microblogsEntryUserId)
 		throws RemoteException {
-
 		try {
-			int returnValue =
-				MicroblogsEntryServiceUtil.getUserMicroblogsEntriesCount(
-					microblogsEntryUserId);
+			int returnValue = MicroblogsEntryServiceUtil.getUserMicroblogsEntriesCount(microblogsEntryUserId);
 
 			return returnValue;
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
 	public static int getUserMicroblogsEntriesCount(
-			long microblogsEntryUserId, int type)
-		throws RemoteException {
-
+		long microblogsEntryUserId, int type) throws RemoteException {
 		try {
-			int returnValue =
-				MicroblogsEntryServiceUtil.getUserMicroblogsEntriesCount(
-					microblogsEntryUserId, type);
+			int returnValue = MicroblogsEntryServiceUtil.getUserMicroblogsEntriesCount(microblogsEntryUserId,
+					type);
 
 			return returnValue;
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	public static com.liferay.microblogs.model.MicroblogsEntrySoap
-			updateMicroblogsEntry(
-				long microblogsEntryId, String content, int socialRelationType,
-				com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static com.liferay.microblogs.model.MicroblogsEntrySoap updateMicroblogsEntry(
+		long microblogsEntryId, java.lang.String content,
+		int socialRelationType,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
-
 		try {
-			com.liferay.microblogs.model.MicroblogsEntry returnValue =
-				MicroblogsEntryServiceUtil.updateMicroblogsEntry(
-					microblogsEntryId, content, socialRelationType,
-					serviceContext);
+			com.liferay.microblogs.model.MicroblogsEntry returnValue = MicroblogsEntryServiceUtil.updateMicroblogsEntry(microblogsEntryId,
+					content, socialRelationType, serviceContext);
 
-			return com.liferay.microblogs.model.MicroblogsEntrySoap.toSoapModel(
-				returnValue);
+			return com.liferay.microblogs.model.MicroblogsEntrySoap.toSoapModel(returnValue);
 		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+		catch (Exception e) {
+			_log.error(e, e);
 
-			throw new RemoteException(exception.getMessage());
+			throw new RemoteException(e.getMessage());
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
-		MicroblogsEntryServiceSoap.class);
-
+	private static Log _log = LogFactoryUtil.getLog(MicroblogsEntryServiceSoap.class);
 }

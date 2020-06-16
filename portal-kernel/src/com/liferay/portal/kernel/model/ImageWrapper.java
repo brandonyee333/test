@@ -14,7 +14,10 @@
 
 package com.liferay.portal.kernel.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -33,8 +36,8 @@ import java.util.Objects;
  * @see Image
  * @generated
  */
+@ProviderType
 public class ImageWrapper implements Image, ModelWrapper<Image> {
-
 	public ImageWrapper(Image image) {
 		_image = image;
 	}
@@ -117,126 +120,6 @@ public class ImageWrapper implements Image, ModelWrapper<Image> {
 	}
 
 	@Override
-	public Object clone() {
-		return new ImageWrapper((Image)_image.clone());
-	}
-
-	@Override
-	public int compareTo(Image image) {
-		return _image.compareTo(image);
-	}
-
-	/**
-	 * Returns the company ID of this image.
-	 *
-	 * @return the company ID of this image
-	 */
-	@Override
-	public long getCompanyId() {
-		return _image.getCompanyId();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _image.getExpandoBridge();
-	}
-
-	/**
-	 * Returns the height of this image.
-	 *
-	 * @return the height of this image
-	 */
-	@Override
-	public int getHeight() {
-		return _image.getHeight();
-	}
-
-	/**
-	 * Returns the image ID of this image.
-	 *
-	 * @return the image ID of this image
-	 */
-	@Override
-	public long getImageId() {
-		return _image.getImageId();
-	}
-
-	/**
-	 * Returns the modified date of this image.
-	 *
-	 * @return the modified date of this image
-	 */
-	@Override
-	public Date getModifiedDate() {
-		return _image.getModifiedDate();
-	}
-
-	/**
-	 * Returns the mvcc version of this image.
-	 *
-	 * @return the mvcc version of this image
-	 */
-	@Override
-	public long getMvccVersion() {
-		return _image.getMvccVersion();
-	}
-
-	/**
-	 * Returns the primary key of this image.
-	 *
-	 * @return the primary key of this image
-	 */
-	@Override
-	public long getPrimaryKey() {
-		return _image.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _image.getPrimaryKeyObj();
-	}
-
-	/**
-	 * Returns the size of this image.
-	 *
-	 * @return the size of this image
-	 */
-	@Override
-	public int getSize() {
-		return _image.getSize();
-	}
-
-	@Override
-	public byte[] getTextObj() {
-		return _image.getTextObj();
-	}
-
-	/**
-	 * Returns the type of this image.
-	 *
-	 * @return the type of this image
-	 */
-	@Override
-	public String getType() {
-		return _image.getType();
-	}
-
-	/**
-	 * Returns the width of this image.
-	 *
-	 * @return the width of this image
-	 */
-	@Override
-	public int getWidth() {
-		return _image.getWidth();
-	}
-
-	@Override
-	public int hashCode() {
-		return _image.hashCode();
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _image.isCachedModel();
 	}
@@ -252,133 +135,13 @@ public class ImageWrapper implements Image, ModelWrapper<Image> {
 	}
 
 	@Override
-	public void persist() {
-		_image.persist();
+	public byte[] getTextObj() {
+		return _image.getTextObj();
 	}
 
 	@Override
-	public void setCachedModel(boolean cachedModel) {
-		_image.setCachedModel(cachedModel);
-	}
-
-	/**
-	 * Sets the company ID of this image.
-	 *
-	 * @param companyId the company ID of this image
-	 */
-	@Override
-	public void setCompanyId(long companyId) {
-		_image.setCompanyId(companyId);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(BaseModel<?> baseModel) {
-		_image.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_image.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-		_image.setExpandoBridgeAttributes(serviceContext);
-	}
-
-	/**
-	 * Sets the height of this image.
-	 *
-	 * @param height the height of this image
-	 */
-	@Override
-	public void setHeight(int height) {
-		_image.setHeight(height);
-	}
-
-	/**
-	 * Sets the image ID of this image.
-	 *
-	 * @param imageId the image ID of this image
-	 */
-	@Override
-	public void setImageId(long imageId) {
-		_image.setImageId(imageId);
-	}
-
-	/**
-	 * Sets the modified date of this image.
-	 *
-	 * @param modifiedDate the modified date of this image
-	 */
-	@Override
-	public void setModifiedDate(Date modifiedDate) {
-		_image.setModifiedDate(modifiedDate);
-	}
-
-	/**
-	 * Sets the mvcc version of this image.
-	 *
-	 * @param mvccVersion the mvcc version of this image
-	 */
-	@Override
-	public void setMvccVersion(long mvccVersion) {
-		_image.setMvccVersion(mvccVersion);
-	}
-
-	@Override
-	public void setNew(boolean n) {
-		_image.setNew(n);
-	}
-
-	/**
-	 * Sets the primary key of this image.
-	 *
-	 * @param primaryKey the primary key of this image
-	 */
-	@Override
-	public void setPrimaryKey(long primaryKey) {
-		_image.setPrimaryKey(primaryKey);
-	}
-
-	@Override
-	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		_image.setPrimaryKeyObj(primaryKeyObj);
-	}
-
-	/**
-	 * Sets the size of this image.
-	 *
-	 * @param size the size of this image
-	 */
-	@Override
-	public void setSize(int size) {
-		_image.setSize(size);
-	}
-
-	@Override
-	public void setTextObj(byte[] textObj) {
-		_image.setTextObj(textObj);
-	}
-
-	/**
-	 * Sets the type of this image.
-	 *
-	 * @param type the type of this image
-	 */
-	@Override
-	public void setType(String type) {
-		_image.setType(type);
-	}
-
-	/**
-	 * Sets the width of this image.
-	 *
-	 * @param width the width of this image
-	 */
-	@Override
-	public void setWidth(int width) {
-		_image.setWidth(width);
+	public ExpandoBridge getExpandoBridge() {
+		return _image.getExpandoBridge();
 	}
 
 	@Override
@@ -392,18 +155,258 @@ public class ImageWrapper implements Image, ModelWrapper<Image> {
 	}
 
 	@Override
-	public String toString() {
-		return _image.toString();
-	}
-
-	@Override
 	public Image toUnescapedModel() {
 		return new ImageWrapper(_image.toUnescapedModel());
 	}
 
 	@Override
-	public String toXmlString() {
+	public int compareTo(Image image) {
+		return _image.compareTo(image);
+	}
+
+	/**
+	* Returns the height of this image.
+	*
+	* @return the height of this image
+	*/
+	@Override
+	public int getHeight() {
+		return _image.getHeight();
+	}
+
+	/**
+	* Returns the size of this image.
+	*
+	* @return the size of this image
+	*/
+	@Override
+	public int getSize() {
+		return _image.getSize();
+	}
+
+	/**
+	* Returns the width of this image.
+	*
+	* @return the width of this image
+	*/
+	@Override
+	public int getWidth() {
+		return _image.getWidth();
+	}
+
+	@Override
+	public int hashCode() {
+		return _image.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _image.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new ImageWrapper((Image)_image.clone());
+	}
+
+	/**
+	* Returns the type of this image.
+	*
+	* @return the type of this image
+	*/
+	@Override
+	public java.lang.String getType() {
+		return _image.getType();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _image.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
 		return _image.toXmlString();
+	}
+
+	/**
+	* Returns the modified date of this image.
+	*
+	* @return the modified date of this image
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _image.getModifiedDate();
+	}
+
+	/**
+	* Returns the company ID of this image.
+	*
+	* @return the company ID of this image
+	*/
+	@Override
+	public long getCompanyId() {
+		return _image.getCompanyId();
+	}
+
+	/**
+	* Returns the image ID of this image.
+	*
+	* @return the image ID of this image
+	*/
+	@Override
+	public long getImageId() {
+		return _image.getImageId();
+	}
+
+	/**
+	* Returns the mvcc version of this image.
+	*
+	* @return the mvcc version of this image
+	*/
+	@Override
+	public long getMvccVersion() {
+		return _image.getMvccVersion();
+	}
+
+	/**
+	* Returns the primary key of this image.
+	*
+	* @return the primary key of this image
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _image.getPrimaryKey();
+	}
+
+	@Override
+	public void persist() {
+		_image.persist();
+	}
+
+	@Override
+	public void setCachedModel(boolean cachedModel) {
+		_image.setCachedModel(cachedModel);
+	}
+
+	/**
+	* Sets the company ID of this image.
+	*
+	* @param companyId the company ID of this image
+	*/
+	@Override
+	public void setCompanyId(long companyId) {
+		_image.setCompanyId(companyId);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_image.setExpandoBridgeAttributes(expandoBridge);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(BaseModel<?> baseModel) {
+		_image.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
+		_image.setExpandoBridgeAttributes(serviceContext);
+	}
+
+	/**
+	* Sets the height of this image.
+	*
+	* @param height the height of this image
+	*/
+	@Override
+	public void setHeight(int height) {
+		_image.setHeight(height);
+	}
+
+	/**
+	* Sets the image ID of this image.
+	*
+	* @param imageId the image ID of this image
+	*/
+	@Override
+	public void setImageId(long imageId) {
+		_image.setImageId(imageId);
+	}
+
+	/**
+	* Sets the modified date of this image.
+	*
+	* @param modifiedDate the modified date of this image
+	*/
+	@Override
+	public void setModifiedDate(Date modifiedDate) {
+		_image.setModifiedDate(modifiedDate);
+	}
+
+	/**
+	* Sets the mvcc version of this image.
+	*
+	* @param mvccVersion the mvcc version of this image
+	*/
+	@Override
+	public void setMvccVersion(long mvccVersion) {
+		_image.setMvccVersion(mvccVersion);
+	}
+
+	@Override
+	public void setNew(boolean n) {
+		_image.setNew(n);
+	}
+
+	/**
+	* Sets the primary key of this image.
+	*
+	* @param primaryKey the primary key of this image
+	*/
+	@Override
+	public void setPrimaryKey(long primaryKey) {
+		_image.setPrimaryKey(primaryKey);
+	}
+
+	@Override
+	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
+		_image.setPrimaryKeyObj(primaryKeyObj);
+	}
+
+	/**
+	* Sets the size of this image.
+	*
+	* @param size the size of this image
+	*/
+	@Override
+	public void setSize(int size) {
+		_image.setSize(size);
+	}
+
+	@Override
+	public void setTextObj(byte[] textObj) {
+		_image.setTextObj(textObj);
+	}
+
+	/**
+	* Sets the type of this image.
+	*
+	* @param type the type of this image
+	*/
+	@Override
+	public void setType(java.lang.String type) {
+		_image.setType(type);
+	}
+
+	/**
+	* Sets the width of this image.
+	*
+	* @param width the width of this image
+	*/
+	@Override
+	public void setWidth(int width) {
+		_image.setWidth(width);
 	}
 
 	@Override
@@ -446,5 +449,4 @@ public class ImageWrapper implements Image, ModelWrapper<Image> {
 	}
 
 	private final Image _image;
-
 }

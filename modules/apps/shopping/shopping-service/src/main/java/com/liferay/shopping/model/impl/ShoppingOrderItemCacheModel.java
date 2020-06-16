@@ -14,9 +14,13 @@
 
 package com.liferay.shopping.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.shopping.model.ShoppingOrderItem;
 
 import java.io.Externalizable;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing ShoppingOrderItem in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see ShoppingOrderItem
  * @generated
  */
-public class ShoppingOrderItemCacheModel
-	implements CacheModel<ShoppingOrderItem>, Externalizable {
-
+@ProviderType
+public class ShoppingOrderItemCacheModel implements CacheModel<ShoppingOrderItem>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class ShoppingOrderItemCacheModel
 			return false;
 		}
 
-		ShoppingOrderItemCacheModel shoppingOrderItemCacheModel =
-			(ShoppingOrderItemCacheModel)obj;
+		ShoppingOrderItemCacheModel shoppingOrderItemCacheModel = (ShoppingOrderItemCacheModel)obj;
 
 		if (orderItemId == shoppingOrderItemCacheModel.orderItemId) {
 			return true;
@@ -93,43 +97,42 @@ public class ShoppingOrderItemCacheModel
 
 	@Override
 	public ShoppingOrderItem toEntityModel() {
-		ShoppingOrderItemImpl shoppingOrderItemImpl =
-			new ShoppingOrderItemImpl();
+		ShoppingOrderItemImpl shoppingOrderItemImpl = new ShoppingOrderItemImpl();
 
 		shoppingOrderItemImpl.setOrderItemId(orderItemId);
 		shoppingOrderItemImpl.setCompanyId(companyId);
 		shoppingOrderItemImpl.setOrderId(orderId);
 
 		if (itemId == null) {
-			shoppingOrderItemImpl.setItemId("");
+			shoppingOrderItemImpl.setItemId(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderItemImpl.setItemId(itemId);
 		}
 
 		if (sku == null) {
-			shoppingOrderItemImpl.setSku("");
+			shoppingOrderItemImpl.setSku(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderItemImpl.setSku(sku);
 		}
 
 		if (name == null) {
-			shoppingOrderItemImpl.setName("");
+			shoppingOrderItemImpl.setName(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderItemImpl.setName(name);
 		}
 
 		if (description == null) {
-			shoppingOrderItemImpl.setDescription("");
+			shoppingOrderItemImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderItemImpl.setDescription(description);
 		}
 
 		if (properties == null) {
-			shoppingOrderItemImpl.setProperties("");
+			shoppingOrderItemImpl.setProperties(StringPool.BLANK);
 		}
 		else {
 			shoppingOrderItemImpl.setProperties(properties);
@@ -151,15 +154,13 @@ public class ShoppingOrderItemCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		orderItemId = objectInput.readLong();
 
 		companyId = objectInput.readLong();
 
 		orderId = objectInput.readLong();
-		itemId = (String)objectInput.readObject();
+		itemId = objectInput.readUTF();
 		sku = objectInput.readUTF();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
@@ -172,7 +173,8 @@ public class ShoppingOrderItemCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(orderItemId);
 
 		objectOutput.writeLong(companyId);
@@ -180,35 +182,35 @@ public class ShoppingOrderItemCacheModel
 		objectOutput.writeLong(orderId);
 
 		if (itemId == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(itemId);
+			objectOutput.writeUTF(itemId);
 		}
 
 		if (sku == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(sku);
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (properties == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(properties);
@@ -231,5 +233,4 @@ public class ShoppingOrderItemCacheModel
 	public double price;
 	public int quantity;
 	public long shippedDate;
-
 }

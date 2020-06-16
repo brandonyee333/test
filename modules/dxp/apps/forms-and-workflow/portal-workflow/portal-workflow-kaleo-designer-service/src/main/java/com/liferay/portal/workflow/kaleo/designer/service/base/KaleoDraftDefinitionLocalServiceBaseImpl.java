@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.portal.workflow.kaleo.designer.service.base;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -33,10 +35,8 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
-import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
-import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -59,16 +59,17 @@ import javax.sql.DataSource;
  *
  * @author Eduardo Lundgren
  * @see com.liferay.portal.workflow.kaleo.designer.service.impl.KaleoDraftDefinitionLocalServiceImpl
+ * @see com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
-	extends BaseLocalServiceImpl
-	implements IdentifiableOSGiService, KaleoDraftDefinitionLocalService {
-
+	extends BaseLocalServiceImpl implements KaleoDraftDefinitionLocalService,
+		IdentifiableOSGiService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>KaleoDraftDefinitionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionLocalServiceUtil} to access the kaleo draft definition local service.
 	 */
 
 	/**
@@ -81,7 +82,6 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	@Override
 	public KaleoDraftDefinition addKaleoDraftDefinition(
 		KaleoDraftDefinition kaleoDraftDefinition) {
-
 		kaleoDraftDefinition.setNew(true);
 
 		return kaleoDraftDefinitionPersistence.update(kaleoDraftDefinition);
@@ -94,10 +94,8 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 * @return the new kaleo draft definition
 	 */
 	@Override
-	@Transactional(enabled = false)
 	public KaleoDraftDefinition createKaleoDraftDefinition(
 		long kaleoDraftDefinitionId) {
-
 		return kaleoDraftDefinitionPersistence.create(kaleoDraftDefinitionId);
 	}
 
@@ -111,9 +109,7 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public KaleoDraftDefinition deleteKaleoDraftDefinition(
-			long kaleoDraftDefinitionId)
-		throws PortalException {
-
+		long kaleoDraftDefinitionId) throws PortalException {
 		return kaleoDraftDefinitionPersistence.remove(kaleoDraftDefinitionId);
 	}
 
@@ -127,9 +123,7 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public KaleoDraftDefinition deleteKaleoDraftDefinition(
-			KaleoDraftDefinition kaleoDraftDefinition)
-		throws PortalException {
-
+		KaleoDraftDefinition kaleoDraftDefinition) throws PortalException {
 		return kaleoDraftDefinitionPersistence.remove(kaleoDraftDefinition);
 	}
 
@@ -137,8 +131,8 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(
-			KaleoDraftDefinition.class, clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(KaleoDraftDefinition.class,
+			clazz.getClassLoader());
 	}
 
 	/**
@@ -149,15 +143,14 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 */
 	@Override
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
-		return kaleoDraftDefinitionPersistence.findWithDynamicQuery(
-			dynamicQuery);
+		return kaleoDraftDefinitionPersistence.findWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portal.workflow.kaleo.designer.model.impl.KaleoDraftDefinitionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.workflow.kaleo.designer.model.impl.KaleoDraftDefinitionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -166,18 +159,17 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end) {
-
-		return kaleoDraftDefinitionPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
+		return kaleoDraftDefinitionPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portal.workflow.kaleo.designer.model.impl.KaleoDraftDefinitionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.workflow.kaleo.designer.model.impl.KaleoDraftDefinitionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -187,12 +179,10 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<T> orderByComparator) {
-
-		return kaleoDraftDefinitionPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
+		return kaleoDraftDefinitionPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end, orderByComparator);
 	}
 
 	/**
@@ -203,8 +193,7 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 */
 	@Override
 	public long dynamicQueryCount(DynamicQuery dynamicQuery) {
-		return kaleoDraftDefinitionPersistence.countWithDynamicQuery(
-			dynamicQuery);
+		return kaleoDraftDefinitionPersistence.countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
@@ -215,19 +204,16 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(
-		DynamicQuery dynamicQuery, Projection projection) {
-
-		return kaleoDraftDefinitionPersistence.countWithDynamicQuery(
-			dynamicQuery, projection);
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection) {
+		return kaleoDraftDefinitionPersistence.countWithDynamicQuery(dynamicQuery,
+			projection);
 	}
 
 	@Override
 	public KaleoDraftDefinition fetchKaleoDraftDefinition(
 		long kaleoDraftDefinitionId) {
-
-		return kaleoDraftDefinitionPersistence.fetchByPrimaryKey(
-			kaleoDraftDefinitionId);
+		return kaleoDraftDefinitionPersistence.fetchByPrimaryKey(kaleoDraftDefinitionId);
 	}
 
 	/**
@@ -239,20 +225,15 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 */
 	@Override
 	public KaleoDraftDefinition getKaleoDraftDefinition(
-			long kaleoDraftDefinitionId)
-		throws PortalException {
-
-		return kaleoDraftDefinitionPersistence.findByPrimaryKey(
-			kaleoDraftDefinitionId);
+		long kaleoDraftDefinitionId) throws PortalException {
+		return kaleoDraftDefinitionPersistence.findByPrimaryKey(kaleoDraftDefinitionId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
-		actionableDynamicQuery.setBaseLocalService(
-			kaleoDraftDefinitionLocalService);
+		actionableDynamicQuery.setBaseLocalService(kaleoDraftDefinitionLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(KaleoDraftDefinition.class);
 
@@ -263,17 +244,12 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
 
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
-			new IndexableActionableDynamicQuery();
-
-		indexableActionableDynamicQuery.setBaseLocalService(
-			kaleoDraftDefinitionLocalService);
+		indexableActionableDynamicQuery.setBaseLocalService(kaleoDraftDefinitionLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
-		indexableActionableDynamicQuery.setModelClass(
-			KaleoDraftDefinition.class);
+		indexableActionableDynamicQuery.setModelClass(KaleoDraftDefinition.class);
 
 		indexableActionableDynamicQuery.setPrimaryKeyPropertyName(
 			"kaleoDraftDefinitionId");
@@ -283,9 +259,7 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-
-		actionableDynamicQuery.setBaseLocalService(
-			kaleoDraftDefinitionLocalService);
+		actionableDynamicQuery.setBaseLocalService(kaleoDraftDefinitionLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(KaleoDraftDefinition.class);
 
@@ -299,22 +273,12 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-
-		return kaleoDraftDefinitionLocalService.deleteKaleoDraftDefinition(
-			(KaleoDraftDefinition)persistedModel);
+		return kaleoDraftDefinitionLocalService.deleteKaleoDraftDefinition((KaleoDraftDefinition)persistedModel);
 	}
 
-	public BasePersistence<KaleoDraftDefinition> getBasePersistence() {
-		return kaleoDraftDefinitionPersistence;
-	}
-
-	/**
-	 * @throws PortalException
-	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
-
 		return kaleoDraftDefinitionPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -322,7 +286,7 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 * Returns a range of all the kaleo draft definitions.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portal.workflow.kaleo.designer.model.impl.KaleoDraftDefinitionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.workflow.kaleo.designer.model.impl.KaleoDraftDefinitionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of kaleo draft definitions
@@ -330,9 +294,8 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 * @return the range of kaleo draft definitions
 	 */
 	@Override
-	public List<KaleoDraftDefinition> getKaleoDraftDefinitions(
-		int start, int end) {
-
+	public List<KaleoDraftDefinition> getKaleoDraftDefinitions(int start,
+		int end) {
 		return kaleoDraftDefinitionPersistence.findAll(start, end);
 	}
 
@@ -356,7 +319,6 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	@Override
 	public KaleoDraftDefinition updateKaleoDraftDefinition(
 		KaleoDraftDefinition kaleoDraftDefinition) {
-
 		return kaleoDraftDefinitionPersistence.update(kaleoDraftDefinition);
 	}
 
@@ -365,9 +327,7 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 *
 	 * @return the kaleo draft definition local service
 	 */
-	public KaleoDraftDefinitionLocalService
-		getKaleoDraftDefinitionLocalService() {
-
+	public KaleoDraftDefinitionLocalService getKaleoDraftDefinitionLocalService() {
 		return kaleoDraftDefinitionLocalService;
 	}
 
@@ -378,9 +338,7 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 */
 	public void setKaleoDraftDefinitionLocalService(
 		KaleoDraftDefinitionLocalService kaleoDraftDefinitionLocalService) {
-
-		this.kaleoDraftDefinitionLocalService =
-			kaleoDraftDefinitionLocalService;
+		this.kaleoDraftDefinitionLocalService = kaleoDraftDefinitionLocalService;
 	}
 
 	/**
@@ -388,9 +346,7 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 *
 	 * @return the kaleo draft definition persistence
 	 */
-	public KaleoDraftDefinitionPersistence
-		getKaleoDraftDefinitionPersistence() {
-
+	public KaleoDraftDefinitionPersistence getKaleoDraftDefinitionPersistence() {
 		return kaleoDraftDefinitionPersistence;
 	}
 
@@ -401,7 +357,6 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 */
 	public void setKaleoDraftDefinitionPersistence(
 		KaleoDraftDefinitionPersistence kaleoDraftDefinitionPersistence) {
-
 		this.kaleoDraftDefinitionPersistence = kaleoDraftDefinitionPersistence;
 	}
 
@@ -410,9 +365,7 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -422,9 +375,7 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -433,9 +384,7 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService
-		getClassNameLocalService() {
-
+	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
 		return classNameLocalService;
 	}
 
@@ -445,9 +394,7 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService
-			classNameLocalService) {
-
+		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -467,7 +414,6 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
-
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -476,9 +422,7 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService
-		getResourceLocalService() {
-
+	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
 		return resourceLocalService;
 	}
 
@@ -488,9 +432,7 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService
-			resourceLocalService) {
-
+		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -499,9 +441,7 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService
-		getUserLocalService() {
-
+	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
 		return userLocalService;
 	}
 
@@ -512,7 +452,6 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
-
 		this.userLocalService = userLocalService;
 	}
 
@@ -535,8 +474,7 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register(
-			"com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition",
+		persistedModelLocalServiceRegistry.register("com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition",
 			kaleoDraftDefinitionLocalService);
 	}
 
@@ -570,62 +508,39 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 */
 	protected void runSQL(String sql) {
 		try {
-			DataSource dataSource =
-				kaleoDraftDefinitionPersistence.getDataSource();
+			DataSource dataSource = kaleoDraftDefinitionPersistence.getDataSource();
 
 			DB db = DBManagerUtil.getDB();
 
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
 	@BeanReference(type = KaleoDraftDefinitionLocalService.class)
 	protected KaleoDraftDefinitionLocalService kaleoDraftDefinitionLocalService;
-
 	@BeanReference(type = KaleoDraftDefinitionPersistence.class)
 	protected KaleoDraftDefinitionPersistence kaleoDraftDefinitionPersistence;
-
-	@ServiceReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService
-		classNameLocalService;
-
+	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ResourceLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ResourceLocalService
-		resourceLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.UserLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.UserLocalService
-		userLocalService;
-
+	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
+	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
+	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry
-		persistedModelLocalServiceRegistry;
-
+	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }

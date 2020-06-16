@@ -14,6 +14,8 @@
 
 package com.liferay.mail.reader.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.mail.reader.model.Attachment;
 import com.liferay.mail.reader.service.AttachmentLocalServiceUtil;
 
@@ -29,13 +31,13 @@ import com.liferay.mail.reader.service.AttachmentLocalServiceUtil;
  * @see Attachment
  * @generated
  */
-public abstract class AttachmentBaseImpl
-	extends AttachmentModelImpl implements Attachment {
-
+@ProviderType
+public abstract class AttachmentBaseImpl extends AttachmentModelImpl
+	implements Attachment {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a attachment model instance should use the <code>Attachment</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a attachment model instance should use the {@link Attachment} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class AttachmentBaseImpl
 			AttachmentLocalServiceUtil.updateAttachment(this);
 		}
 	}
-
 }

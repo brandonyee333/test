@@ -19,6 +19,8 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
 import com.liferay.tasks.model.TasksEntry;
 
 import java.io.Externalizable;
@@ -32,12 +34,12 @@ import java.util.Date;
  * The cache model class for representing TasksEntry in entity cache.
  *
  * @author Ryan Park
+ * @see TasksEntry
  * @generated
  */
 @ProviderType
-public class TasksEntryCacheModel
-	implements CacheModel<TasksEntry>, Externalizable {
-
+public class TasksEntryCacheModel implements CacheModel<TasksEntry>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -109,7 +111,7 @@ public class TasksEntryCacheModel
 		tasksEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			tasksEntryImpl.setUserName("");
+			tasksEntryImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			tasksEntryImpl.setUserName(userName);
@@ -130,7 +132,7 @@ public class TasksEntryCacheModel
 		}
 
 		if (title == null) {
-			tasksEntryImpl.setTitle("");
+			tasksEntryImpl.setTitle(StringPool.BLANK);
 		}
 		else {
 			tasksEntryImpl.setTitle(title);
@@ -187,7 +189,8 @@ public class TasksEntryCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(tasksEntryId);
 
 		objectOutput.writeLong(groupId);
@@ -197,7 +200,7 @@ public class TasksEntryCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -207,7 +210,7 @@ public class TasksEntryCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (title == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(title);
@@ -238,5 +241,4 @@ public class TasksEntryCacheModel
 	public long dueDate;
 	public long finishDate;
 	public int status;
-
 }

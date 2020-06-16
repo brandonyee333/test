@@ -1,15 +1,15 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.email.blacklist.service;
@@ -17,6 +17,7 @@ package com.liferay.osb.email.blacklist.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.mail.kernel.model.MailMessage;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -35,46 +36,39 @@ import com.liferay.portal.kernel.util.SubscriptionSender;
  *
  * @author Jamie Sammons
  * @see BounceableEmailServiceUtil
+ * @see com.liferay.osb.email.blacklist.service.base.BounceableEmailServiceBaseImpl
+ * @see com.liferay.osb.email.blacklist.service.impl.BounceableEmailServiceImpl
  * @generated
  */
 @AccessControlled
 @JSONWebService
-@OSGiBeanProperties(
-	property = {
-		"json.web.service.context.name=osb",
-		"json.web.service.context.path=BounceableEmail"
-	},
-	service = BounceableEmailService.class
-)
+@OSGiBeanProperties(property =  {
+	"json.web.service.context.name=osb", "json.web.service.context.path=BounceableEmail"}, service = BounceableEmailService.class)
 @ProviderType
-@Transactional(
-	isolation = Isolation.PORTAL,
-	rollbackFor = {PortalException.class, SystemException.class}
-)
+@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
+	PortalException.class, SystemException.class})
 public interface BounceableEmailService extends BaseService {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link BounceableEmailServiceUtil} to access the bounceable email remote service. Add custom service methods to <code>com.liferay.osb.email.blacklist.service.impl.BounceableEmailServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link BounceableEmailServiceUtil} to access the bounceable email remote service. Add custom service methods to {@link com.liferay.osb.email.blacklist.service.impl.BounceableEmailServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 
 	/**
-	 * Returns the OSGi service identifier.
-	 *
-	 * @return the OSGi service identifier
-	 */
-	public String getOSGiServiceIdentifier();
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
 
 	public void sendBounceableEmail(MailMessage mailMessage);
 
 	public void sendBounceableEmail(SubscriptionSender subscriptionSender)
-		throws Exception;
+		throws java.lang.Exception;
 
 	@Async
 	public void sendBounceableEmailAsync(MailMessage mailMessage);
 
 	@Async
 	public void sendBounceableEmailAsync(SubscriptionSender subscriptionSender);
-
 }

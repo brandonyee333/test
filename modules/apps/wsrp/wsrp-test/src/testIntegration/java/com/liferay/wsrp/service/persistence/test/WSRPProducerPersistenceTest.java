@@ -15,6 +15,7 @@
 package com.liferay.wsrp.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -28,15 +29,26 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
+
 import com.liferay.wsrp.exception.NoSuchProducerException;
 import com.liferay.wsrp.model.WSRPProducer;
 import com.liferay.wsrp.service.WSRPProducerLocalServiceUtil;
 import com.liferay.wsrp.service.persistence.WSRPProducerPersistence;
 import com.liferay.wsrp.service.persistence.WSRPProducerUtil;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+
+import org.junit.runner.RunWith;
 
 import java.io.Serializable;
 
@@ -48,27 +60,17 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 /**
  * @generated
  */
 @RunWith(Arquillian.class)
 public class WSRPProducerPersistenceTest {
-
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
-			new TransactionalTestRule(
-				Propagation.REQUIRED, "com.liferay.wsrp.service"));
+	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
+			PersistenceTestRule.INSTANCE,
+			new TransactionalTestRule(Propagation.REQUIRED,
+				"com.liferay.wsrp.service"));
 
 	@Before
 	public void setUp() {
@@ -107,8 +109,7 @@ public class WSRPProducerPersistenceTest {
 
 		_persistence.remove(newWSRPProducer);
 
-		WSRPProducer existingWSRPProducer = _persistence.fetchByPrimaryKey(
-			newWSRPProducer.getPrimaryKey());
+		WSRPProducer existingWSRPProducer = _persistence.fetchByPrimaryKey(newWSRPProducer.getPrimaryKey());
 
 		Assert.assertNull(existingWSRPProducer);
 	}
@@ -144,60 +145,56 @@ public class WSRPProducerPersistenceTest {
 
 		_wsrpProducers.add(_persistence.update(newWSRPProducer));
 
-		WSRPProducer existingWSRPProducer = _persistence.findByPrimaryKey(
-			newWSRPProducer.getPrimaryKey());
+		WSRPProducer existingWSRPProducer = _persistence.findByPrimaryKey(newWSRPProducer.getPrimaryKey());
 
-		Assert.assertEquals(
-			existingWSRPProducer.getUuid(), newWSRPProducer.getUuid());
-		Assert.assertEquals(
-			existingWSRPProducer.getWsrpProducerId(),
+		Assert.assertEquals(existingWSRPProducer.getUuid(),
+			newWSRPProducer.getUuid());
+		Assert.assertEquals(existingWSRPProducer.getWsrpProducerId(),
 			newWSRPProducer.getWsrpProducerId());
-		Assert.assertEquals(
-			existingWSRPProducer.getGroupId(), newWSRPProducer.getGroupId());
-		Assert.assertEquals(
-			existingWSRPProducer.getCompanyId(),
+		Assert.assertEquals(existingWSRPProducer.getGroupId(),
+			newWSRPProducer.getGroupId());
+		Assert.assertEquals(existingWSRPProducer.getCompanyId(),
 			newWSRPProducer.getCompanyId());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingWSRPProducer.getCreateDate()),
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingWSRPProducer.getCreateDate()),
 			Time.getShortTimestamp(newWSRPProducer.getCreateDate()));
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingWSRPProducer.getModifiedDate()),
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingWSRPProducer.getModifiedDate()),
 			Time.getShortTimestamp(newWSRPProducer.getModifiedDate()));
-		Assert.assertEquals(
-			existingWSRPProducer.getName(), newWSRPProducer.getName());
-		Assert.assertEquals(
-			existingWSRPProducer.getVersion(), newWSRPProducer.getVersion());
-		Assert.assertEquals(
-			existingWSRPProducer.getPortletIds(),
+		Assert.assertEquals(existingWSRPProducer.getName(),
+			newWSRPProducer.getName());
+		Assert.assertEquals(existingWSRPProducer.getVersion(),
+			newWSRPProducer.getVersion());
+		Assert.assertEquals(existingWSRPProducer.getPortletIds(),
 			newWSRPProducer.getPortletIds());
-		Assert.assertEquals(
-			Time.getShortTimestamp(existingWSRPProducer.getLastPublishDate()),
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingWSRPProducer.getLastPublishDate()),
 			Time.getShortTimestamp(newWSRPProducer.getLastPublishDate()));
 	}
 
 	@Test
 	public void testCountByUuid() throws Exception {
-		_persistence.countByUuid("");
+		_persistence.countByUuid(StringPool.BLANK);
 
-		_persistence.countByUuid("null");
+		_persistence.countByUuid(StringPool.NULL);
 
 		_persistence.countByUuid((String)null);
 	}
 
 	@Test
 	public void testCountByUUID_G() throws Exception {
-		_persistence.countByUUID_G("", RandomTestUtil.nextLong());
+		_persistence.countByUUID_G(StringPool.BLANK, RandomTestUtil.nextLong());
 
-		_persistence.countByUUID_G("null", 0L);
+		_persistence.countByUUID_G(StringPool.NULL, 0L);
 
 		_persistence.countByUUID_G((String)null, 0L);
 	}
 
 	@Test
 	public void testCountByUuid_C() throws Exception {
-		_persistence.countByUuid_C("", RandomTestUtil.nextLong());
+		_persistence.countByUuid_C(StringPool.BLANK, RandomTestUtil.nextLong());
 
-		_persistence.countByUuid_C("null", 0L);
+		_persistence.countByUuid_C(StringPool.NULL, 0L);
 
 		_persistence.countByUuid_C((String)null, 0L);
 	}
@@ -213,8 +210,7 @@ public class WSRPProducerPersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		WSRPProducer newWSRPProducer = addWSRPProducer();
 
-		WSRPProducer existingWSRPProducer = _persistence.findByPrimaryKey(
-			newWSRPProducer.getPrimaryKey());
+		WSRPProducer existingWSRPProducer = _persistence.findByPrimaryKey(newWSRPProducer.getPrimaryKey());
 
 		Assert.assertEquals(existingWSRPProducer, newWSRPProducer);
 	}
@@ -228,24 +224,22 @@ public class WSRPProducerPersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
+		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			getOrderByComparator());
 	}
 
 	protected OrderByComparator<WSRPProducer> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create(
-			"WSRP_WSRPProducer", "uuid", true, "wsrpProducerId", true,
-			"groupId", true, "companyId", true, "createDate", true,
-			"modifiedDate", true, "name", true, "version", true, "portletIds",
-			true, "lastPublishDate", true);
+		return OrderByComparatorFactoryUtil.create("WSRP_WSRPProducer", "uuid",
+			true, "wsrpProducerId", true, "groupId", true, "companyId", true,
+			"createDate", true, "modifiedDate", true, "name", true, "version",
+			true, "portletIds", true, "lastPublishDate", true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		WSRPProducer newWSRPProducer = addWSRPProducer();
 
-		WSRPProducer existingWSRPProducer = _persistence.fetchByPrimaryKey(
-			newWSRPProducer.getPrimaryKey());
+		WSRPProducer existingWSRPProducer = _persistence.fetchByPrimaryKey(newWSRPProducer.getPrimaryKey());
 
 		Assert.assertEquals(existingWSRPProducer, newWSRPProducer);
 	}
@@ -262,7 +256,6 @@ public class WSRPProducerPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
-
 		WSRPProducer newWSRPProducer1 = addWSRPProducer();
 		WSRPProducer newWSRPProducer2 = addWSRPProducer();
 
@@ -271,22 +264,18 @@ public class WSRPProducerPersistenceTest {
 		primaryKeys.add(newWSRPProducer1.getPrimaryKey());
 		primaryKeys.add(newWSRPProducer2.getPrimaryKey());
 
-		Map<Serializable, WSRPProducer> wsrpProducers =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, WSRPProducer> wsrpProducers = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(2, wsrpProducers.size());
-		Assert.assertEquals(
-			newWSRPProducer1,
+		Assert.assertEquals(newWSRPProducer1,
 			wsrpProducers.get(newWSRPProducer1.getPrimaryKey()));
-		Assert.assertEquals(
-			newWSRPProducer2,
+		Assert.assertEquals(newWSRPProducer2,
 			wsrpProducers.get(newWSRPProducer2.getPrimaryKey()));
 	}
 
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
-
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -296,8 +285,7 @@ public class WSRPProducerPersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, WSRPProducer> wsrpProducers =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, WSRPProducer> wsrpProducers = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(wsrpProducers.isEmpty());
 	}
@@ -305,7 +293,6 @@ public class WSRPProducerPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
-
 		WSRPProducer newWSRPProducer = addWSRPProducer();
 
 		long pk = RandomTestUtil.nextLong();
@@ -315,39 +302,36 @@ public class WSRPProducerPersistenceTest {
 		primaryKeys.add(newWSRPProducer.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, WSRPProducer> wsrpProducers =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, WSRPProducer> wsrpProducers = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, wsrpProducers.size());
-		Assert.assertEquals(
-			newWSRPProducer,
+		Assert.assertEquals(newWSRPProducer,
 			wsrpProducers.get(newWSRPProducer.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
+		throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, WSRPProducer> wsrpProducers =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, WSRPProducer> wsrpProducers = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(wsrpProducers.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey()
+		throws Exception {
 		WSRPProducer newWSRPProducer = addWSRPProducer();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newWSRPProducer.getPrimaryKey());
 
-		Map<Serializable, WSRPProducer> wsrpProducers =
-			_persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, WSRPProducer> wsrpProducers = _persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, wsrpProducers.size());
-		Assert.assertEquals(
-			newWSRPProducer,
+		Assert.assertEquals(newWSRPProducer,
 			wsrpProducers.get(newWSRPProducer.getPrimaryKey()));
 	}
 
@@ -355,19 +339,15 @@ public class WSRPProducerPersistenceTest {
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery =
-			WSRPProducerLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = WSRPProducerLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<WSRPProducer>() {
-
+		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<WSRPProducer>() {
 				@Override
 				public void performAction(WSRPProducer wsrpProducer) {
 					Assert.assertNotNull(wsrpProducer);
 
 					count.increment();
 				}
-
 			});
 
 		actionableDynamicQuery.performActions();
@@ -376,18 +356,17 @@ public class WSRPProducerPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting()
+		throws Exception {
 		WSRPProducer newWSRPProducer = addWSRPProducer();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			WSRPProducer.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(WSRPProducer.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq(
-				"wsrpProducerId", newWSRPProducer.getWsrpProducerId()));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("wsrpProducerId",
+				newWSRPProducer.getWsrpProducerId()));
 
-		List<WSRPProducer> result = _persistence.findWithDynamicQuery(
-			dynamicQuery);
+		List<WSRPProducer> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
 		Assert.assertEquals(1, result.size());
 
@@ -398,34 +377,32 @@ public class WSRPProducerPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			WSRPProducer.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(WSRPProducer.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq(
-				"wsrpProducerId", RandomTestUtil.nextLong()));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("wsrpProducerId",
+				RandomTestUtil.nextLong()));
 
-		List<WSRPProducer> result = _persistence.findWithDynamicQuery(
-			dynamicQuery);
+		List<WSRPProducer> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
 		Assert.assertEquals(0, result.size());
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting() throws Exception {
+	public void testDynamicQueryByProjectionExisting()
+		throws Exception {
 		WSRPProducer newWSRPProducer = addWSRPProducer();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			WSRPProducer.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(WSRPProducer.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(
-			ProjectionFactoryUtil.property("wsrpProducerId"));
+		dynamicQuery.setProjection(ProjectionFactoryUtil.property(
+				"wsrpProducerId"));
 
 		Object newWsrpProducerId = newWSRPProducer.getWsrpProducerId();
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in(
-				"wsrpProducerId", new Object[] {newWsrpProducerId}));
+		dynamicQuery.add(RestrictionsFactoryUtil.in("wsrpProducerId",
+				new Object[] { newWsrpProducerId }));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -438,15 +415,14 @@ public class WSRPProducerPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			WSRPProducer.class, _dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(WSRPProducer.class,
+				_dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(
-			ProjectionFactoryUtil.property("wsrpProducerId"));
+		dynamicQuery.setProjection(ProjectionFactoryUtil.property(
+				"wsrpProducerId"));
 
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.in(
-				"wsrpProducerId", new Object[] {RandomTestUtil.nextLong()}));
+		dynamicQuery.add(RestrictionsFactoryUtil.in("wsrpProducerId",
+				new Object[] { RandomTestUtil.nextLong() }));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -459,18 +435,14 @@ public class WSRPProducerPersistenceTest {
 
 		_persistence.clearCache();
 
-		WSRPProducer existingWSRPProducer = _persistence.findByPrimaryKey(
-			newWSRPProducer.getPrimaryKey());
+		WSRPProducer existingWSRPProducer = _persistence.findByPrimaryKey(newWSRPProducer.getPrimaryKey());
 
-		Assert.assertTrue(
-			Objects.equals(
-				existingWSRPProducer.getUuid(),
-				ReflectionTestUtil.invoke(
-					existingWSRPProducer, "getOriginalUuid", new Class<?>[0])));
-		Assert.assertEquals(
-			Long.valueOf(existingWSRPProducer.getGroupId()),
-			ReflectionTestUtil.<Long>invoke(
-				existingWSRPProducer, "getOriginalGroupId", new Class<?>[0]));
+		Assert.assertTrue(Objects.equals(existingWSRPProducer.getUuid(),
+				ReflectionTestUtil.invoke(existingWSRPProducer,
+					"getOriginalUuid", new Class<?>[0])));
+		Assert.assertEquals(Long.valueOf(existingWSRPProducer.getGroupId()),
+			ReflectionTestUtil.<Long>invoke(existingWSRPProducer,
+				"getOriginalGroupId", new Class<?>[0]));
 	}
 
 	protected WSRPProducer addWSRPProducer() throws Exception {
@@ -504,5 +476,4 @@ public class WSRPProducerPersistenceTest {
 	private List<WSRPProducer> _wsrpProducers = new ArrayList<WSRPProducer>();
 	private WSRPProducerPersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
-
 }

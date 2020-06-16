@@ -24,20 +24,19 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see WebDAVPropsModel
+ * @see com.liferay.portal.model.impl.WebDAVPropsImpl
+ * @see com.liferay.portal.model.impl.WebDAVPropsModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.portal.model.impl.WebDAVPropsImpl")
 @ProviderType
-public interface WebDAVProps extends PersistedModel, WebDAVPropsModel {
-
+public interface WebDAVProps extends WebDAVPropsModel, PersistedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to <code>com.liferay.portal.model.impl.WebDAVPropsImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to {@link com.liferay.portal.model.impl.WebDAVPropsImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<WebDAVProps, Long> WEB_DAV_PROPS_ID_ACCESSOR =
-		new Accessor<WebDAVProps, Long>() {
-
+	public static final Accessor<WebDAVProps, Long> WEB_DAV_PROPS_ID_ACCESSOR = new Accessor<WebDAVProps, Long>() {
 			@Override
 			public Long get(WebDAVProps webDAVProps) {
 				return webDAVProps.getWebDavPropsId();
@@ -52,24 +51,23 @@ public interface WebDAVProps extends PersistedModel, WebDAVPropsModel {
 			public Class<WebDAVProps> getTypeClass() {
 				return WebDAVProps.class;
 			}
-
 		};
 
-	public void addProp(String name, String prefix, String uri)
-		throws Exception;
+	public void addProp(java.lang.String name, java.lang.String prefix,
+		java.lang.String uri) throws java.lang.Exception;
 
-	public void addProp(String name, String prefix, String uri, String text)
-		throws Exception;
+	public void addProp(java.lang.String name, java.lang.String prefix,
+		java.lang.String uri, java.lang.String text) throws java.lang.Exception;
 
 	public java.util.Set<com.liferay.portal.kernel.xml.QName> getPropsSet()
-		throws Exception;
+		throws java.lang.Exception;
 
-	public String getText(String name, String prefix, String uri)
-		throws Exception;
+	public java.lang.String getText(java.lang.String name,
+		java.lang.String prefix, java.lang.String uri)
+		throws java.lang.Exception;
 
-	public void removeProp(String name, String prefix, String uri)
-		throws Exception;
+	public void removeProp(java.lang.String name, java.lang.String prefix,
+		java.lang.String uri) throws java.lang.Exception;
 
-	public void store() throws Exception;
-
+	public void store() throws java.lang.Exception;
 }
