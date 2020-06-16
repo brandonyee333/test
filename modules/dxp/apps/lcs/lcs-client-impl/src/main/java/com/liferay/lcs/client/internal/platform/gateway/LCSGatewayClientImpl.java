@@ -136,8 +136,6 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 			}
 
 			_lcsEventManager.publish(LCSEvent.LCS_GATEWAY_UNAVAILABLE);
-
-			return;
 		}
 		else if (lcsEvent == LCSEvent.HANDSHAKE_SUCCESS) {
 			synchronized (this) {
@@ -149,8 +147,6 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 			}
 
 			_lastHandshakeSuccess = System.currentTimeMillis();
-
-			return;
 		}
 		else if (lcsEvent == LCSEvent.SIGN_OFF_SUCCESS) {
 			synchronized (this) {
@@ -162,8 +158,6 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 			}
 
 			_lcsEventManager.publish(LCSEvent.LCS_GATEWAY_UNAVAILABLE);
-
-			return;
 		}
 	}
 

@@ -99,8 +99,6 @@ public class CommandMessageCheckTask extends BaseTask {
 				}
 
 				iterator.remove();
-
-				continue;
 			}
 		}
 

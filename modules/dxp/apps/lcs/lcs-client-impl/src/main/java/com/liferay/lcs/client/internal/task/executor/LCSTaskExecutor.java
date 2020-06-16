@@ -100,7 +100,7 @@ public class LCSTaskExecutor implements LCSEventListener, TaskStatus {
 			(lcsEvent == LCSEvent.LCS_GATEWAY_UNAVAILABLE) ||
 			(lcsEvent == LCSEvent.SIGN_OFF_SUCCESS)) {
 
-			_cancelNonRequiredTasks();
+			_cancelNonrequiredTasks();
 		}
 	}
 
@@ -207,12 +207,12 @@ public class LCSTaskExecutor implements LCSEventListener, TaskStatus {
 	}
 
 	private void _cancelAllTasks() {
-		_cancelNonRequiredTasks();
+		_cancelNonrequiredTasks();
 
 		_cancelTasks(_requiredFutures);
 	}
 
-	private void _cancelNonRequiredTasks() {
+	private void _cancelNonrequiredTasks() {
 		_delayedTaskDefinitions.clear();
 		_repeatableTaskDefinitions.clear();
 
