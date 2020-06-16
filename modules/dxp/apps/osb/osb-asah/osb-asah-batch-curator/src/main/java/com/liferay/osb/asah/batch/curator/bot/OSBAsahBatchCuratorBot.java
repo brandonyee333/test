@@ -235,7 +235,7 @@ public class OSBAsahBatchCuratorBot {
 
 		if (scheduledFuture == null) {
 			throw new IllegalArgumentException(
-				"Unable to unschedule OSB Asah Task with ID " +
+				"Unable to unschedule OSB Asah task " +
 					osbAsahTaskJSONObject.getString("id"));
 		}
 
