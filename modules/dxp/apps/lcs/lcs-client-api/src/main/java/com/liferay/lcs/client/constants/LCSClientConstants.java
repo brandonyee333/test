@@ -27,8 +27,8 @@ public class LCSClientConstants {
 
 	public static final long HEARTBEAT_INTERVAL = Time.MINUTE;
 
-	public static final int LCS_CLIENT_BUILD_NUMBER = 610;
+	public static final int LCS_CLIENT_BUILD_NUMBER = 700;
 
-	public static final String LCS_CLIENT_VERSION = "6.1.0";
+	public static final String LCS_CLIENT_VERSION = "7.0.0";
 
 }
