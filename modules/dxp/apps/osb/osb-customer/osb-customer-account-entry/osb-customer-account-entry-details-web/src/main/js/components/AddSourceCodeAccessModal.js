@@ -7,7 +7,7 @@ import Modal from './Modal';
 
 import {postData} from '../helpers/api';
 import {langSub} from '../helpers/language';
-import {CollabRecord} from './SourceCodeAccess';
+import {CollabRecord} from '../store/sourceCodeAccessCollaborator';
 
 const ERROR_VALIDATION = {
 	emailAddress: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,6}$/i,

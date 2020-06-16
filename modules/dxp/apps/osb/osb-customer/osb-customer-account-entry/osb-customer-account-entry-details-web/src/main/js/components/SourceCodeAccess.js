@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {Map, Record} from 'immutable';
+import {Map} from 'immutable';
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
@@ -7,17 +7,10 @@ import Accordion from './Accordion';
 import AddSourceCodeAccessModal from './AddSourceCodeAccessModal';
 import Button from './Button';
 
+import {CollabRecord} from '../store/sourceCodeAccessCollaborator';
+
 const sortDateByRecency = (a, b) =>
 	new Date(a.createDate) > new Date(b.createDate) ? -1 : 1;
-
-export const CollabRecord = Record({
-	collaboratorId: null,
-	createDate: null,
-	deleteCollaboratorURL: '',
-	emailAddress: '',
-	fullName: '',
-	gitHubUserName: ''
-});
 
 SourceCodeAccess.propTypes = {
 	addCollaboratorURL: PropTypes.string.isRequired,
