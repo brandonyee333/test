@@ -14,6 +14,7 @@ const ERROR_VALIDATION = {
 	fullName: /^[a-z,.'-]+\s[a-z\s,.'-]+$/i,
 	gitHubUserName: /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i
 };
+const GITHUB_URL = 'https://github.com/';
 
 const isValid = field => {
 	return field.value.match(ERROR_VALIDATION[field.name]);
@@ -223,7 +224,7 @@ export default function AddSourceCodeAccessModal({
 						<a
 							aria-label={Liferay.Language.get('github-link')}
 							className="btn-link component-title"
-							href="https://github.com/"
+							href={GITHUB_URL}
 						>
 							{Liferay.Language.get('github')}
 						</a>
@@ -265,7 +266,7 @@ export default function AddSourceCodeAccessModal({
 						<a
 							aria-label={Liferay.Language.get('github-link')}
 							className="btn-link component-title"
-							href="https://github.com/"
+							href={GITHUB_URL}
 						>
 							{Liferay.Language.get('github')}
 						</a>
