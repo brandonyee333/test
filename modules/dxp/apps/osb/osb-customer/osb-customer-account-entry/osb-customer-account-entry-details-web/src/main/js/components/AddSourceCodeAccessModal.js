@@ -143,20 +143,15 @@ export default function AddSourceCodeAccessModal({
 					switch (data.message) {
 						case 'success':
 							addCollaborator();
-
 							setConfirmation('success');
 							break;
 						case 'pending-invitation-limit':
 							addCollaborator();
-
 							setConfirmation('delayed');
 							break;
 						case 'pending-project-status':
-							setCustomError(
-								Liferay.Language.get(
-									'this-request-is-pending-project-status'
-								)
-							);
+							addCollaborator();
+							setConfirmation('project-status');
 							break;
 						case 'duplicate-collaborator':
 							setCustomError(
@@ -288,6 +283,20 @@ ConfirmationDisplay.propTypes = {
 };
 
 function ConfirmationDisplay({confirmationType, onClose}) {
+	const modalWarningHeader = (
+		<>
+			<div className="modal-body-icon warning-full">
+				<svg className="lexicon-icon lexicon-icon-warning-full">
+					<use xlinkHref="#warning-full" />
+				</svg>
+			</div>
+
+			<div className="modal-body-title">
+				{Liferay.Language.get("oh-no-you-can't-be-granted-access-yet")}
+			</div>
+		</>
+	);
+
 	function handleClose() {
 		onClose();
 	}
@@ -333,17 +342,7 @@ function ConfirmationDisplay({confirmationType, onClose}) {
 
 				{confirmationType === 'delayed' && (
 					<>
-						<div className="modal-body-icon warning-full">
-							<svg className="lexicon-icon lexicon-icon-warning-full">
-								<use xlinkHref="#warning-full" />
-							</svg>
-						</div>
-
-						<div className="modal-body-title">
-							{Liferay.Language.get(
-								"oh-no-you-can't-be-granted-access-yet"
-							)}
-						</div>
+						{modalWarningHeader}
 
 						<div className="modal-body-text">
 							{langSub(
@@ -383,6 +382,18 @@ function ConfirmationDisplay({confirmationType, onClose}) {
 									</a>
 								],
 								false
+							)}
+						</div>
+					</>
+				)}
+
+				{confirmationType === 'project-status' && (
+					<>
+						{modalWarningHeader}
+
+						<div className="last-text modal-body-text">
+							{Liferay.Language.get(
+								'this-request-is-pending-project-status'
 							)}
 						</div>
 					</>
