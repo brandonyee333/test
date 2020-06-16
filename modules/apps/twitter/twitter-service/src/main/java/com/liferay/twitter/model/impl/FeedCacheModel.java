@@ -35,16 +35,16 @@ import java.util.Date;
 public class FeedCacheModel implements CacheModel<Feed>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof FeedCacheModel)) {
+		if (!(object instanceof FeedCacheModel)) {
 			return false;
 		}
 
-		FeedCacheModel feedCacheModel = (FeedCacheModel)obj;
+		FeedCacheModel feedCacheModel = (FeedCacheModel)object;
 
 		if (feedId == feedCacheModel.feedId) {
 			return true;

@@ -36,17 +36,17 @@ public class MeetupsEntryCacheModel
 	implements CacheModel<MeetupsEntry>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof MeetupsEntryCacheModel)) {
+		if (!(object instanceof MeetupsEntryCacheModel)) {
 			return false;
 		}
 
 		MeetupsEntryCacheModel meetupsEntryCacheModel =
-			(MeetupsEntryCacheModel)obj;
+			(MeetupsEntryCacheModel)object;
 
 		if (meetupsEntryId == meetupsEntryCacheModel.meetupsEntryId) {
 			return true;

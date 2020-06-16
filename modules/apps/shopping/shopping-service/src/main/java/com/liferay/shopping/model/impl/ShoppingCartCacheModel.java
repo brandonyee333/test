@@ -36,17 +36,17 @@ public class ShoppingCartCacheModel
 	implements CacheModel<ShoppingCart>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof ShoppingCartCacheModel)) {
+		if (!(object instanceof ShoppingCartCacheModel)) {
 			return false;
 		}
 
 		ShoppingCartCacheModel shoppingCartCacheModel =
-			(ShoppingCartCacheModel)obj;
+			(ShoppingCartCacheModel)object;
 
 		if (cartId == shoppingCartCacheModel.cartId) {
 			return true;

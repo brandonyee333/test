@@ -857,16 +857,16 @@ public class MeetupsEntryModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof MeetupsEntry)) {
+		if (!(object instanceof MeetupsEntry)) {
 			return false;
 		}
 
-		MeetupsEntry meetupsEntry = (MeetupsEntry)obj;
+		MeetupsEntry meetupsEntry = (MeetupsEntry)object;
 
 		long primaryKey = meetupsEntry.getPrimaryKey();
 

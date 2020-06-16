@@ -741,16 +741,16 @@ public class ShoppingOrderItemModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof ShoppingOrderItem)) {
+		if (!(object instanceof ShoppingOrderItem)) {
 			return false;
 		}
 
-		ShoppingOrderItem shoppingOrderItem = (ShoppingOrderItem)obj;
+		ShoppingOrderItem shoppingOrderItem = (ShoppingOrderItem)object;
 
 		long primaryKey = shoppingOrderItem.getPrimaryKey();
 

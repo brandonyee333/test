@@ -885,16 +885,16 @@ public class WSRPConsumerModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WSRPConsumer)) {
+		if (!(object instanceof WSRPConsumer)) {
 			return false;
 		}
 
-		WSRPConsumer wsrpConsumer = (WSRPConsumer)obj;
+		WSRPConsumer wsrpConsumer = (WSRPConsumer)object;
 
 		long primaryKey = wsrpConsumer.getPrimaryKey();
 

@@ -755,16 +755,16 @@ public class ShoppingCartModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof ShoppingCart)) {
+		if (!(object instanceof ShoppingCart)) {
 			return false;
 		}
 
-		ShoppingCart shoppingCart = (ShoppingCart)obj;
+		ShoppingCart shoppingCart = (ShoppingCart)object;
 
 		long primaryKey = shoppingCart.getPrimaryKey();
 

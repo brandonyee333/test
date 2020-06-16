@@ -558,16 +558,16 @@ public class ShoppingItemFieldModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof ShoppingItemField)) {
+		if (!(object instanceof ShoppingItemField)) {
 			return false;
 		}
 
-		ShoppingItemField shoppingItemField = (ShoppingItemField)obj;
+		ShoppingItemField shoppingItemField = (ShoppingItemField)object;
 
 		long primaryKey = shoppingItemField.getPrimaryKey();
 

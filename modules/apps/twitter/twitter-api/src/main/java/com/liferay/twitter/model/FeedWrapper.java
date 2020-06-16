@@ -467,16 +467,16 @@ public class FeedWrapper implements Feed, ModelWrapper<Feed> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof FeedWrapper)) {
+		if (!(object instanceof FeedWrapper)) {
 			return false;
 		}
 
-		FeedWrapper feedWrapper = (FeedWrapper)obj;
+		FeedWrapper feedWrapper = (FeedWrapper)object;
 
 		if (Objects.equals(_feed, feedWrapper._feed)) {
 			return true;

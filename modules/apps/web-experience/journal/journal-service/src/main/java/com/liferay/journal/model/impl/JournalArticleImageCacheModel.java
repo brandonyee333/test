@@ -34,17 +34,17 @@ public class JournalArticleImageCacheModel
 	implements CacheModel<JournalArticleImage>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof JournalArticleImageCacheModel)) {
+		if (!(object instanceof JournalArticleImageCacheModel)) {
 			return false;
 		}
 
 		JournalArticleImageCacheModel journalArticleImageCacheModel =
-			(JournalArticleImageCacheModel)obj;
+			(JournalArticleImageCacheModel)object;
 
 		if (articleImageId == journalArticleImageCacheModel.articleImageId) {
 			return true;

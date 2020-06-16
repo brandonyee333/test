@@ -442,17 +442,17 @@ public class JournalArticleImageWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof JournalArticleImageWrapper)) {
+		if (!(object instanceof JournalArticleImageWrapper)) {
 			return false;
 		}
 
 		JournalArticleImageWrapper journalArticleImageWrapper =
-			(JournalArticleImageWrapper)obj;
+			(JournalArticleImageWrapper)object;
 
 		if (Objects.equals(
 				_journalArticleImage,

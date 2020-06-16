@@ -1100,16 +1100,16 @@ public class ShoppingCouponModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof ShoppingCoupon)) {
+		if (!(object instanceof ShoppingCoupon)) {
 			return false;
 		}
 
-		ShoppingCoupon shoppingCoupon = (ShoppingCoupon)obj;
+		ShoppingCoupon shoppingCoupon = (ShoppingCoupon)object;
 
 		long primaryKey = shoppingCoupon.getPrimaryKey();
 

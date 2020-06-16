@@ -585,16 +585,16 @@ public class MeetupsEntryWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof MeetupsEntryWrapper)) {
+		if (!(object instanceof MeetupsEntryWrapper)) {
 			return false;
 		}
 
-		MeetupsEntryWrapper meetupsEntryWrapper = (MeetupsEntryWrapper)obj;
+		MeetupsEntryWrapper meetupsEntryWrapper = (MeetupsEntryWrapper)object;
 
 		if (Objects.equals(_meetupsEntry, meetupsEntryWrapper._meetupsEntry)) {
 			return true;

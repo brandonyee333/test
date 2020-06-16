@@ -36,17 +36,17 @@ public class WSRPConsumerPortletCacheModel
 	implements CacheModel<WSRPConsumerPortlet>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WSRPConsumerPortletCacheModel)) {
+		if (!(object instanceof WSRPConsumerPortletCacheModel)) {
 			return false;
 		}
 
 		WSRPConsumerPortletCacheModel wsrpConsumerPortletCacheModel =
-			(WSRPConsumerPortletCacheModel)obj;
+			(WSRPConsumerPortletCacheModel)object;
 
 		if (wsrpConsumerPortletId ==
 				wsrpConsumerPortletCacheModel.wsrpConsumerPortletId) {

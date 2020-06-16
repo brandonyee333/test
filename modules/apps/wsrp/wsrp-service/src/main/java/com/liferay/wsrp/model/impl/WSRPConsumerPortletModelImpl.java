@@ -716,16 +716,16 @@ public class WSRPConsumerPortletModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WSRPConsumerPortlet)) {
+		if (!(object instanceof WSRPConsumerPortlet)) {
 			return false;
 		}
 
-		WSRPConsumerPortlet wsrpConsumerPortlet = (WSRPConsumerPortlet)obj;
+		WSRPConsumerPortlet wsrpConsumerPortlet = (WSRPConsumerPortlet)object;
 
 		long primaryKey = wsrpConsumerPortlet.getPrimaryKey();
 

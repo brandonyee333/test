@@ -722,16 +722,16 @@ public class WSRPProducerModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WSRPProducer)) {
+		if (!(object instanceof WSRPProducer)) {
 			return false;
 		}
 
-		WSRPProducer wsrpProducer = (WSRPProducer)obj;
+		WSRPProducer wsrpProducer = (WSRPProducer)object;
 
 		long primaryKey = wsrpProducer.getPrimaryKey();
 

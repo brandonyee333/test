@@ -806,16 +806,16 @@ public class UserThreadModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof UserThread)) {
+		if (!(object instanceof UserThread)) {
 			return false;
 		}
 
-		UserThread userThread = (UserThread)obj;
+		UserThread userThread = (UserThread)object;
 
 		long primaryKey = userThread.getPrimaryKey();
 

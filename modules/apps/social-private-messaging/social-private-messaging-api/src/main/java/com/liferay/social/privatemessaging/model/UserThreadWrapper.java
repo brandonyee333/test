@@ -496,16 +496,16 @@ public class UserThreadWrapper implements ModelWrapper<UserThread>, UserThread {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof UserThreadWrapper)) {
+		if (!(object instanceof UserThreadWrapper)) {
 			return false;
 		}
 
-		UserThreadWrapper userThreadWrapper = (UserThreadWrapper)obj;
+		UserThreadWrapper userThreadWrapper = (UserThreadWrapper)object;
 
 		if (Objects.equals(_userThread, userThreadWrapper._userThread)) {
 			return true;

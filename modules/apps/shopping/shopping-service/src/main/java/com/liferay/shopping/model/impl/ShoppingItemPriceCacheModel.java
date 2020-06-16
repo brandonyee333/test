@@ -34,17 +34,17 @@ public class ShoppingItemPriceCacheModel
 	implements CacheModel<ShoppingItemPrice>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof ShoppingItemPriceCacheModel)) {
+		if (!(object instanceof ShoppingItemPriceCacheModel)) {
 			return false;
 		}
 
 		ShoppingItemPriceCacheModel shoppingItemPriceCacheModel =
-			(ShoppingItemPriceCacheModel)obj;
+			(ShoppingItemPriceCacheModel)object;
 
 		if (itemPriceId == shoppingItemPriceCacheModel.itemPriceId) {
 			return true;

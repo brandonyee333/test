@@ -487,17 +487,17 @@ public class ShoppingOrderItemWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof ShoppingOrderItemWrapper)) {
+		if (!(object instanceof ShoppingOrderItemWrapper)) {
 			return false;
 		}
 
 		ShoppingOrderItemWrapper shoppingOrderItemWrapper =
-			(ShoppingOrderItemWrapper)obj;
+			(ShoppingOrderItemWrapper)object;
 
 		if (Objects.equals(
 				_shoppingOrderItem,

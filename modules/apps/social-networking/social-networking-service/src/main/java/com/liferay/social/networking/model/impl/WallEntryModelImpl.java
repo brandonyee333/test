@@ -635,16 +635,16 @@ public class WallEntryModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WallEntry)) {
+		if (!(object instanceof WallEntry)) {
 			return false;
 		}
 
-		WallEntry wallEntry = (WallEntry)obj;
+		WallEntry wallEntry = (WallEntry)object;
 
 		long primaryKey = wallEntry.getPrimaryKey();
 

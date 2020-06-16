@@ -422,16 +422,16 @@ public class WallEntryWrapper implements ModelWrapper<WallEntry>, WallEntry {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WallEntryWrapper)) {
+		if (!(object instanceof WallEntryWrapper)) {
 			return false;
 		}
 
-		WallEntryWrapper wallEntryWrapper = (WallEntryWrapper)obj;
+		WallEntryWrapper wallEntryWrapper = (WallEntryWrapper)object;
 
 		if (Objects.equals(_wallEntry, wallEntryWrapper._wallEntry)) {
 			return true;

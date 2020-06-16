@@ -463,16 +463,16 @@ public class WSRPProducerWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WSRPProducerWrapper)) {
+		if (!(object instanceof WSRPProducerWrapper)) {
 			return false;
 		}
 
-		WSRPProducerWrapper wsrpProducerWrapper = (WSRPProducerWrapper)obj;
+		WSRPProducerWrapper wsrpProducerWrapper = (WSRPProducerWrapper)object;
 
 		if (Objects.equals(_wsrpProducer, wsrpProducerWrapper._wsrpProducer)) {
 			return true;

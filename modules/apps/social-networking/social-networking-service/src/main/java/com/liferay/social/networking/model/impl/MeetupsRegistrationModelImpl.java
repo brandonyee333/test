@@ -714,16 +714,16 @@ public class MeetupsRegistrationModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof MeetupsRegistration)) {
+		if (!(object instanceof MeetupsRegistration)) {
 			return false;
 		}
 
-		MeetupsRegistration meetupsRegistration = (MeetupsRegistration)obj;
+		MeetupsRegistration meetupsRegistration = (MeetupsRegistration)object;
 
 		long primaryKey = meetupsRegistration.getPrimaryKey();
 

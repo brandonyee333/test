@@ -745,16 +745,16 @@ public class JournalArticleImageModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof JournalArticleImage)) {
+		if (!(object instanceof JournalArticleImage)) {
 			return false;
 		}
 
-		JournalArticleImage journalArticleImage = (JournalArticleImage)obj;
+		JournalArticleImage journalArticleImage = (JournalArticleImage)object;
 
 		long primaryKey = journalArticleImage.getPrimaryKey();
 

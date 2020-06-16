@@ -603,16 +603,16 @@ public class WSRPConsumerWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WSRPConsumerWrapper)) {
+		if (!(object instanceof WSRPConsumerWrapper)) {
 			return false;
 		}
 
-		WSRPConsumerWrapper wsrpConsumerWrapper = (WSRPConsumerWrapper)obj;
+		WSRPConsumerWrapper wsrpConsumerWrapper = (WSRPConsumerWrapper)object;
 
 		if (Objects.equals(_wsrpConsumer, wsrpConsumerWrapper._wsrpConsumer)) {
 			return true;

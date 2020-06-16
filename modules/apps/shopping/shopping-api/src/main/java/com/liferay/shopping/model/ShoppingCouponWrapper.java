@@ -719,17 +719,17 @@ public class ShoppingCouponWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof ShoppingCouponWrapper)) {
+		if (!(object instanceof ShoppingCouponWrapper)) {
 			return false;
 		}
 
 		ShoppingCouponWrapper shoppingCouponWrapper =
-			(ShoppingCouponWrapper)obj;
+			(ShoppingCouponWrapper)object;
 
 		if (Objects.equals(
 				_shoppingCoupon, shoppingCouponWrapper._shoppingCoupon)) {

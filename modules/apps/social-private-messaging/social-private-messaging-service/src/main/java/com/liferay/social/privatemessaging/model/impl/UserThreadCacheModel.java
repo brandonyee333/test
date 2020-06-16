@@ -36,16 +36,17 @@ public class UserThreadCacheModel
 	implements CacheModel<UserThread>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof UserThreadCacheModel)) {
+		if (!(object instanceof UserThreadCacheModel)) {
 			return false;
 		}
 
-		UserThreadCacheModel userThreadCacheModel = (UserThreadCacheModel)obj;
+		UserThreadCacheModel userThreadCacheModel =
+			(UserThreadCacheModel)object;
 
 		if (userThreadId == userThreadCacheModel.userThreadId) {
 			return true;

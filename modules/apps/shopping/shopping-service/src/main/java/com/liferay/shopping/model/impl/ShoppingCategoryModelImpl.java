@@ -812,16 +812,16 @@ public class ShoppingCategoryModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof ShoppingCategory)) {
+		if (!(object instanceof ShoppingCategory)) {
 			return false;
 		}
 
-		ShoppingCategory shoppingCategory = (ShoppingCategory)obj;
+		ShoppingCategory shoppingCategory = (ShoppingCategory)object;
 
 		long primaryKey = shoppingCategory.getPrimaryKey();
 

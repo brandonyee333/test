@@ -36,16 +36,16 @@ public class WallEntryCacheModel
 	implements CacheModel<WallEntry>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WallEntryCacheModel)) {
+		if (!(object instanceof WallEntryCacheModel)) {
 			return false;
 		}
 
-		WallEntryCacheModel wallEntryCacheModel = (WallEntryCacheModel)obj;
+		WallEntryCacheModel wallEntryCacheModel = (WallEntryCacheModel)object;
 
 		if (wallEntryId == wallEntryCacheModel.wallEntryId) {
 			return true;

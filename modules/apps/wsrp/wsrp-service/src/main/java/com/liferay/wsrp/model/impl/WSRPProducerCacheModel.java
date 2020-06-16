@@ -36,17 +36,17 @@ public class WSRPProducerCacheModel
 	implements CacheModel<WSRPProducer>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WSRPProducerCacheModel)) {
+		if (!(object instanceof WSRPProducerCacheModel)) {
 			return false;
 		}
 
 		WSRPProducerCacheModel wsrpProducerCacheModel =
-			(WSRPProducerCacheModel)obj;
+			(WSRPProducerCacheModel)object;
 
 		if (wsrpProducerId == wsrpProducerCacheModel.wsrpProducerId) {
 			return true;
