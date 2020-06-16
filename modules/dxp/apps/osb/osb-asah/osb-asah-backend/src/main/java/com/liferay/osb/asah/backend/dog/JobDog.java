@@ -248,6 +248,8 @@ public class JobDog {
 
 		JSONObject jsonObject = _faroInfoElasticsearchInvoker.get("jobs", id);
 
+		String oldTrainingFrequency = jsonObject.getString("trainingFrequency");
+
 		jsonObject.put("name", name);
 		jsonObject.put(
 			"parameters",
@@ -255,7 +257,7 @@ public class JobDog {
 		jsonObject.put("trainingFrequency", jobTrainingFrequency.toString());
 		jsonObject.put("trainingPeriod", jobTrainingPeriod.toString());
 
-		_rescheduleOSBAsahTask(jsonObject);
+		_rescheduleOSBAsahTask(jsonObject, oldTrainingFrequency);
 
 		jsonObject = _faroInfoElasticsearchInvoker.update(
 			"jobs", id, jsonObject);
@@ -345,7 +347,19 @@ public class JobDog {
 			_elasticsearchInvokerFactory.forFaroInfo();
 	}
 
-	private void _rescheduleOSBAsahTask(JSONObject jobJSONObject) {
+	private void _rescheduleOSBAsahTask(
+		JSONObject jobJSONObject, String oldTrainingFrequency) {
+
+		JobTrainingFrequency newJobTrainingFrequency =
+			JobTrainingFrequency.valueOf(
+				jobJSONObject.getString("trainingFrequency"));
+		JobTrainingFrequency oldJobTrainingFrequency =
+			JobTrainingFrequency.valueOf(oldTrainingFrequency);
+
+		if (newJobTrainingFrequency == oldJobTrainingFrequency) {
+			return;
+		}
+
 		_unscheduleOSBAsahTask(jobJSONObject);
 
 		_scheduleOSBAsahTask(jobJSONObject);
