@@ -9,9 +9,6 @@ import Button from './Button';
 
 import {CollaboratorsRecord} from '../store/sourceCodeAccessCollaborator';
 
-const sortDateByRecency = (a, b) =>
-	new Date(a.createDate) > new Date(b.createDate) ? -1 : 1;
-
 SourceCodeAccess.propTypes = {
 	addCollaboratorURL: PropTypes.string.isRequired,
 	collaborators: PropTypes.arrayOf(
@@ -81,6 +78,10 @@ export default function SourceCodeAccess({addCollaboratorURL, collaborators}) {
 
 	function handleDisplayModal() {
 		setShowModal(true);
+	}
+
+	function sortDateByRecency(a, b) {
+		return new Date(a.createDate) > new Date(b.createDate) ? -1 : 1;
 	}
 
 	const sortedCollaborators = [...collaboratorsMap.values()].sort(

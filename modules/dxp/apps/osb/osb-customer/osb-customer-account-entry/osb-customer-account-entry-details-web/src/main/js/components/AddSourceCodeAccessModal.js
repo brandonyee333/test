@@ -78,6 +78,8 @@ export default function AddSourceCodeAccessModal({
 	}
 
 	function validateAllFields() {
+		// Object.values() not supported on IE11 or with the `gradle packageRunTest` task on 7.0.x
+
 		return Object.keys(fields).map(key => fields[key]).every(field => isValid(field));
 	}
 
