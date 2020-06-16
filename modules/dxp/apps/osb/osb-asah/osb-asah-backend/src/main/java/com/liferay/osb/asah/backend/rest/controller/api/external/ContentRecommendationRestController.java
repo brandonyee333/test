@@ -23,6 +23,7 @@ import com.liferay.osb.asah.backend.model.JobStatus;
 import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -37,6 +38,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,6 +56,21 @@ import org.springframework.web.bind.annotation.RestController;
 )
 @RestController
 public class ContentRecommendationRestController extends BaseRestController {
+
+	@GetMapping
+	public ResourceSupport getLinksResourceSupport() {
+		return new ResourceSupport() {
+			{
+				add(
+					Arrays.asList(
+						ControllerLinkBuilder.linkTo(
+							_getModelResultBagResource(null, null)
+						).withRel(
+							"models"
+						)));
+			}
+		};
+	}
 
 	@GetMapping("/models/{modelId}")
 	public Resource<Model> getModelResource(@PathVariable String modelId) {
