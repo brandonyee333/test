@@ -128,22 +128,27 @@ export default function AddSourceCodeAccessModal({
 				'formData'
 			)
 				.then(({data}) => {
+					const addCollaborator = () =>
+						addCollaboratorToMap(
+							CollaboratorsRecord({
+								createDate: data.createDate,
+								deleteURL: data.deleteCollaboratorURL,
+								emailAddress: fields.emailAddress.value,
+								fullName: fields.fullName.value,
+								gitHubUserName: fields.gitHubUserName.value,
+								id: data.collaboratorId
+							})
+						);
+
 					switch (data.message) {
 						case 'success':
-							addCollaboratorToMap(
-								CollaboratorsRecord({
-									collaboratorId: data.collaboratorId,
-									createDate: data.createDate,
-									deleteCollaboratorURL: data.deleteCollaboratorURL,
-									emailAddress: fields.emailAddress.value,
-									fullName: fields.fullName.value,
-									gitHubUserName: fields.gitHubUserName.value
-								})
-							);
+							addCollaborator();
 
 							setConfirmation('success');
 							break;
 						case 'pending-invitation-limit':
+							addCollaborator();
+
 							setConfirmation('delayed');
 							break;
 						case 'pending-project-status':
