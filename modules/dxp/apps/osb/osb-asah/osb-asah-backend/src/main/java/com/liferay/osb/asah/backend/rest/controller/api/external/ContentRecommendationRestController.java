@@ -14,15 +14,36 @@
 
 package com.liferay.osb.asah.backend.rest.controller.api.external;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import com.liferay.osb.asah.backend.dog.JobDog;
+import com.liferay.osb.asah.backend.model.Job;
+import com.liferay.osb.asah.backend.model.JobStatus;
+import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -34,6 +55,32 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ContentRecommendationRestController extends BaseRestController {
 
+	@GetMapping("/models/{modelId}")
+	public Resource<Model> getModelResource(@PathVariable String modelId) {
+		return _toModelResource(_jobDog.getJob(modelId));
+	}
+
+	@GetMapping("/models")
+	public ResultBagResource<Model> getModelResultBagResource(
+		@RequestParam(defaultValue = "0") Integer page,
+		@RequestParam(defaultValue = "") String keywords) {
+
+		ResultBag<Job> jobResultBag = _jobDog.getJobResultBag(
+			keywords, _PAGE_SIZE,
+			new HashMap<String, String>() {
+				{
+					put("column", "id");
+					put("type", "DESC");
+				}
+			},
+			page * _PAGE_SIZE);
+
+		return _toResultBagResource(
+			_getModelResultBagResource(page + 1, keywords), page,
+			_getModelResultBagResource(page - 1, keywords), jobResultBag,
+			this::_toModelResource);
+	}
+
 	@PostMapping("/recommended-items")
 	public String getRecommendedItems(@RequestBody String json)
 		throws Exception {
@@ -43,6 +90,151 @@ public class ContentRecommendationRestController extends BaseRestController {
 		return toItemGetResponse(
 			"recommended-items",
 			DigestUtils.sha1Hex(jsonObject.getString("item")));
+	}
+
+	private ResultBagResource<Model> _getModelResultBagResource(
+		Integer page, String keywords) {
+
+		return ControllerLinkBuilder.methodOn(
+			ContentRecommendationRestController.class
+		).getModelResultBagResource(
+			page, keywords
+		);
+	}
+
+	private <T, R> List<Resource<R>> _toListResource(
+		List<T> results,
+		Function<T, Resource<R>> resultResourceMapperFunction) {
+
+		Stream<T> stream = results.stream();
+
+		return stream.map(
+			resultResourceMapperFunction
+		).collect(
+			Collectors.toList()
+		);
+	}
+
+	private Resource<Model> _toModelResource(Job job) {
+		return new Resource<>(
+			new Model(job, _jobDog.getJobStatus(job.getId())),
+			ControllerLinkBuilder.linkTo(
+				ControllerLinkBuilder.methodOn(
+					ContentRecommendationRestController.class
+				).getModelResource(
+					job.getId()
+				)
+			).withSelfRel());
+	}
+
+	private <T, R> ResultBagResource<R> _toResultBagResource(
+		Object nextPageMethodInvocation, int page,
+		Object prevPageMethodInvocation, ResultBag<T> resultBag,
+		Function<T, Resource<R>> resultResourceMapperFunction) {
+
+		ResultBagResource<R> resultBagResource = new ResultBagResource<>(
+			new ResultBag<>(
+				_toListResource(
+					resultBag.getResults(), resultResourceMapperFunction),
+				resultBag.getTotal()));
+
+		if (((page + 1L) * _PAGE_SIZE) < resultBag.getTotal()) {
+			resultBagResource.add(
+				ControllerLinkBuilder.linkTo(
+					nextPageMethodInvocation
+				).withRel(
+					"next"
+				));
+		}
+
+		if (page > 0) {
+			resultBagResource.add(
+				ControllerLinkBuilder.linkTo(
+					prevPageMethodInvocation
+				).withRel(
+					"prev"
+				));
+		}
+
+		return resultBagResource;
+	}
+
+	private static final int _PAGE_SIZE = 20;
+
+	@Autowired
+	private JobDog _jobDog;
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private static class Model extends Job {
+
+		public Model(Job job, JobStatus jobStatus) {
+			setId(job.getId());
+			setJobParameters(job.getJobParameters());
+			setJobStatus(jobStatus);
+			setJobTrainingFrequency(job.getJobTrainingFrequency());
+			setJobTrainingPeriod(job.getJobTrainingPeriod());
+			setJobType(job.getJobType());
+			setName(job.getName());
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof Model)) {
+				return false;
+			}
+
+			Model model = (Model)obj;
+
+			if (Objects.equals(getId(), model.getId()) &&
+				Objects.equals(getJobParameters(), model.getJobParameters()) &&
+				Objects.equals(
+					getJobTrainingFrequency(),
+					model.getJobTrainingFrequency()) &&
+				Objects.equals(
+					getJobTrainingPeriod(), model.getJobTrainingPeriod()) &&
+				Objects.equals(getJobType(), model.getJobType()) &&
+				Objects.equals(getName(), model.getName()) &&
+				Objects.equals(_jobStatus, model._jobStatus)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@JsonProperty("status")
+		public JobStatus getStatus() {
+			return _jobStatus;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(
+				getId(), getJobParameters(), getJobTrainingFrequency(),
+				getJobTrainingPeriod(), getJobType(), getName(), _jobStatus);
+		}
+
+		public void setJobStatus(JobStatus jobStatus) {
+			_jobStatus = jobStatus;
+		}
+
+		private JobStatus _jobStatus;
+
+	}
+
+	private static class ResultBagResource<T>
+		extends Resource<ResultBag<Resource<T>>> {
+
+		public ResultBagResource(
+			ResultBag<Resource<T>> content, Link... links) {
+
+			super(content, links);
+		}
+
 	}
 
 }
