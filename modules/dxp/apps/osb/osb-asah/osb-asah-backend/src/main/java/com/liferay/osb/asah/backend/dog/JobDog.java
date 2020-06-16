@@ -31,7 +31,6 @@ import com.liferay.osb.asah.backend.model.JobTrainingPeriod;
 import com.liferay.osb.asah.backend.model.JobType;
 import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
@@ -53,11 +52,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.reindex.BulkByScrollResponse;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -100,18 +100,9 @@ public class JobDog {
 	public List<Boolean> deleteJobs(List<String> ids) {
 		List<Boolean> statuses = new ArrayList<>();
 
-		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
-			_faroInfoElasticsearchInvoker.
-				createElasticsearchBulkRequestBuilder();
-
 		for (String id : ids) {
-			elasticsearchBulkRequestBuilder.delete("jobs", id);
+			statuses.add(_deleteJob(id));
 		}
-
-		BulkResponse bulkResponse = elasticsearchBulkRequestBuilder.get();
-
-		bulkResponse.forEach(
-			bulkItemResponse -> statuses.add(!bulkItemResponse.isFailed()));
 
 		return statuses;
 	}
@@ -300,6 +291,27 @@ public class JobDog {
 			));
 
 		return boolQueryBuilder;
+	}
+
+	private boolean _deleteJob(String id) {
+		JSONObject jsonObject = _faroInfoElasticsearchInvoker.get("jobs", id);
+
+		_unscheduleOSBAsahTask(jsonObject);
+
+		BulkByScrollResponse bulkByScrollResponse =
+			_faroInfoElasticsearchInvoker.deleteByQuery(
+				QueryBuilders.termQuery("job.id", jsonObject.getString("id")),
+				true, "job-runs");
+
+		List<BulkItemResponse.Failure> bulkFailures =
+			bulkByScrollResponse.getBulkFailures();
+
+		if (!bulkFailures.isEmpty()) {
+			return false;
+		}
+
+		return _faroInfoElasticsearchInvoker.delete(
+			"jobs", jsonObject.getString("id"));
 	}
 
 	private Job _deserializeJob(String json) {
