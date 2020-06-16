@@ -1,24 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.customer.account.entry.details.service.persistence.impl;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.customer.account.entry.details.exception.NoSuchEventException;
 import com.liferay.osb.customer.account.entry.details.model.Event;
 import com.liferay.osb.customer.account.entry.details.model.impl.EventImpl;
 import com.liferay.osb.customer.account.entry.details.model.impl.EventModelImpl;
 import com.liferay.osb.customer.account.entry.details.service.persistence.EventPersistence;
+
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -31,16 +34,13 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationHandler;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,31 +59,52 @@ import java.util.Set;
  * </p>
  *
  * @author Brian Wing Shun Chan
+ * @see EventPersistence
+ * @see com.liferay.osb.customer.account.entry.details.service.persistence.EventUtil
  * @generated
  */
-public class EventPersistenceImpl
-	extends BasePersistenceImpl<Event> implements EventPersistence {
-
+@ProviderType
+public class EventPersistenceImpl extends BasePersistenceImpl<Event>
+	implements EventPersistence {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use <code>EventUtil</code> to access the event persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use {@link EventUtil} to access the event persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY =
-		EventImpl.class.getName();
-
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List1";
-
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathWithPaginationFindByA_C;
-	private FinderPath _finderPathWithoutPaginationFindByA_C;
-	private FinderPath _finderPathCountByA_C;
+	public static final String FINDER_CLASS_NAME_ENTITY = EventImpl.class.getName();
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List1";
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List2";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(EventModelImpl.ENTITY_CACHE_ENABLED,
+			EventModelImpl.FINDER_CACHE_ENABLED, EventImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(EventModelImpl.ENTITY_CACHE_ENABLED,
+			EventModelImpl.FINDER_CACHE_ENABLED, EventImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(EventModelImpl.ENTITY_CACHE_ENABLED,
+			EventModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_A_C = new FinderPath(EventModelImpl.ENTITY_CACHE_ENABLED,
+			EventModelImpl.FINDER_CACHE_ENABLED, EventImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByA_C",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_A_C = new FinderPath(EventModelImpl.ENTITY_CACHE_ENABLED,
+			EventModelImpl.FINDER_CACHE_ENABLED, EventImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByA_C",
+			new String[] { Long.class.getName(), Long.class.getName() },
+			EventModelImpl.ACCOUNTENTRYID_COLUMN_BITMASK |
+			EventModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			EventModelImpl.OCCURDATE_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_A_C = new FinderPath(EventModelImpl.ENTITY_CACHE_ENABLED,
+			EventModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByA_C",
+			new String[] { Long.class.getName(), Long.class.getName() });
 
 	/**
 	 * Returns all the events where accountEntryId = &#63; and classNameId = &#63;.
@@ -94,16 +115,15 @@ public class EventPersistenceImpl
 	 */
 	@Override
 	public List<Event> findByA_C(long accountEntryId, long classNameId) {
-		return findByA_C(
-			accountEntryId, classNameId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			null);
+		return findByA_C(accountEntryId, classNameId, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the events where accountEntryId = &#63; and classNameId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>EventModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link EventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param accountEntryId the account entry ID
@@ -113,9 +133,8 @@ public class EventPersistenceImpl
 	 * @return the range of matching events
 	 */
 	@Override
-	public List<Event> findByA_C(
-		long accountEntryId, long classNameId, int start, int end) {
-
+	public List<Event> findByA_C(long accountEntryId, long classNameId,
+		int start, int end) {
 		return findByA_C(accountEntryId, classNameId, start, end, null);
 	}
 
@@ -123,7 +142,7 @@ public class EventPersistenceImpl
 	 * Returns an ordered range of all the events where accountEntryId = &#63; and classNameId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>EventModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link EventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param accountEntryId the account entry ID
@@ -134,19 +153,17 @@ public class EventPersistenceImpl
 	 * @return the ordered range of matching events
 	 */
 	@Override
-	public List<Event> findByA_C(
-		long accountEntryId, long classNameId, int start, int end,
-		OrderByComparator<Event> orderByComparator) {
-
-		return findByA_C(
-			accountEntryId, classNameId, start, end, orderByComparator, true);
+	public List<Event> findByA_C(long accountEntryId, long classNameId,
+		int start, int end, OrderByComparator<Event> orderByComparator) {
+		return findByA_C(accountEntryId, classNameId, start, end,
+			orderByComparator, true);
 	}
 
 	/**
 	 * Returns an ordered range of all the events where accountEntryId = &#63; and classNameId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>EventModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link EventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param accountEntryId the account entry ID
@@ -154,43 +171,42 @@ public class EventPersistenceImpl
 	 * @param start the lower bound of the range of events
 	 * @param end the upper bound of the range of events (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of matching events
 	 */
 	@Override
-	public List<Event> findByA_C(
-		long accountEntryId, long classNameId, int start, int end,
-		OrderByComparator<Event> orderByComparator, boolean useFinderCache) {
-
+	public List<Event> findByA_C(long accountEntryId, long classNameId,
+		int start, int end, OrderByComparator<Event> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByA_C;
-				finderArgs = new Object[] {accountEntryId, classNameId};
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_A_C;
+			finderArgs = new Object[] { accountEntryId, classNameId };
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByA_C;
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_A_C;
 			finderArgs = new Object[] {
-				accountEntryId, classNameId, start, end, orderByComparator
-			};
+					accountEntryId, classNameId,
+					
+					start, end, orderByComparator
+				};
 		}
 
 		List<Event> list = null;
 
-		if (useFinderCache) {
-			list = (List<Event>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<Event>)finderCache.getResult(finderPath, finderArgs,
+					this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (Event event : list) {
 					if ((accountEntryId != event.getAccountEntryId()) ||
-						(classNameId != event.getClassNameId())) {
-
+							(classNameId != event.getClassNameId())) {
 						list = null;
 
 						break;
@@ -200,60 +216,67 @@ public class EventPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					4 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(4 +
+						(orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				sb = new StringBundler(4);
+				query = new StringBundler(4);
 			}
 
-			sb.append(_SQL_SELECT_EVENT_WHERE);
+			query.append(_SQL_SELECT_EVENT_WHERE);
 
-			sb.append(_FINDER_COLUMN_A_C_ACCOUNTENTRYID_2);
+			query.append(_FINDER_COLUMN_A_C_ACCOUNTENTRYID_2);
 
-			sb.append(_FINDER_COLUMN_A_C_CLASSNAMEID_2);
+			query.append(_FINDER_COLUMN_A_C_CLASSNAMEID_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 			}
-			else {
-				sb.append(EventModelImpl.ORDER_BY_JPQL);
+			else
+			 if (pagination) {
+				query.append(EventModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(accountEntryId);
+				qPos.add(accountEntryId);
 
-				queryPos.add(classNameId);
+				qPos.add(classNameId);
 
-				list = (List<Event>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<Event>)QueryUtil.list(q, getDialect(), start,
+							end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<Event>)QueryUtil.list(q, getDialect(), start,
+							end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -273,31 +296,28 @@ public class EventPersistenceImpl
 	 * @throws NoSuchEventException if a matching event could not be found
 	 */
 	@Override
-	public Event findByA_C_First(
-			long accountEntryId, long classNameId,
-			OrderByComparator<Event> orderByComparator)
-		throws NoSuchEventException {
-
-		Event event = fetchByA_C_First(
-			accountEntryId, classNameId, orderByComparator);
+	public Event findByA_C_First(long accountEntryId, long classNameId,
+		OrderByComparator<Event> orderByComparator) throws NoSuchEventException {
+		Event event = fetchByA_C_First(accountEntryId, classNameId,
+				orderByComparator);
 
 		if (event != null) {
 			return event;
 		}
 
-		StringBundler sb = new StringBundler(6);
+		StringBundler msg = new StringBundler(6);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("accountEntryId=");
-		sb.append(accountEntryId);
+		msg.append("accountEntryId=");
+		msg.append(accountEntryId);
 
-		sb.append(", classNameId=");
-		sb.append(classNameId);
+		msg.append(", classNameId=");
+		msg.append(classNameId);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEventException(sb.toString());
+		throw new NoSuchEventException(msg.toString());
 	}
 
 	/**
@@ -309,12 +329,10 @@ public class EventPersistenceImpl
 	 * @return the first matching event, or <code>null</code> if a matching event could not be found
 	 */
 	@Override
-	public Event fetchByA_C_First(
-		long accountEntryId, long classNameId,
+	public Event fetchByA_C_First(long accountEntryId, long classNameId,
 		OrderByComparator<Event> orderByComparator) {
-
-		List<Event> list = findByA_C(
-			accountEntryId, classNameId, 0, 1, orderByComparator);
+		List<Event> list = findByA_C(accountEntryId, classNameId, 0, 1,
+				orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -333,31 +351,28 @@ public class EventPersistenceImpl
 	 * @throws NoSuchEventException if a matching event could not be found
 	 */
 	@Override
-	public Event findByA_C_Last(
-			long accountEntryId, long classNameId,
-			OrderByComparator<Event> orderByComparator)
-		throws NoSuchEventException {
-
-		Event event = fetchByA_C_Last(
-			accountEntryId, classNameId, orderByComparator);
+	public Event findByA_C_Last(long accountEntryId, long classNameId,
+		OrderByComparator<Event> orderByComparator) throws NoSuchEventException {
+		Event event = fetchByA_C_Last(accountEntryId, classNameId,
+				orderByComparator);
 
 		if (event != null) {
 			return event;
 		}
 
-		StringBundler sb = new StringBundler(6);
+		StringBundler msg = new StringBundler(6);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("accountEntryId=");
-		sb.append(accountEntryId);
+		msg.append("accountEntryId=");
+		msg.append(accountEntryId);
 
-		sb.append(", classNameId=");
-		sb.append(classNameId);
+		msg.append(", classNameId=");
+		msg.append(classNameId);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEventException(sb.toString());
+		throw new NoSuchEventException(msg.toString());
 	}
 
 	/**
@@ -369,18 +384,16 @@ public class EventPersistenceImpl
 	 * @return the last matching event, or <code>null</code> if a matching event could not be found
 	 */
 	@Override
-	public Event fetchByA_C_Last(
-		long accountEntryId, long classNameId,
+	public Event fetchByA_C_Last(long accountEntryId, long classNameId,
 		OrderByComparator<Event> orderByComparator) {
-
 		int count = countByA_C(accountEntryId, classNameId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<Event> list = findByA_C(
-			accountEntryId, classNameId, count - 1, count, orderByComparator);
+		List<Event> list = findByA_C(accountEntryId, classNameId, count - 1,
+				count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -400,11 +413,9 @@ public class EventPersistenceImpl
 	 * @throws NoSuchEventException if a event with the primary key could not be found
 	 */
 	@Override
-	public Event[] findByA_C_PrevAndNext(
-			long eventId, long accountEntryId, long classNameId,
-			OrderByComparator<Event> orderByComparator)
+	public Event[] findByA_C_PrevAndNext(long eventId, long accountEntryId,
+		long classNameId, OrderByComparator<Event> orderByComparator)
 		throws NoSuchEventException {
-
 		Event event = findByPrimaryKey(eventId);
 
 		Session session = null;
@@ -414,129 +425,125 @@ public class EventPersistenceImpl
 
 			Event[] array = new EventImpl[3];
 
-			array[0] = getByA_C_PrevAndNext(
-				session, event, accountEntryId, classNameId, orderByComparator,
-				true);
+			array[0] = getByA_C_PrevAndNext(session, event, accountEntryId,
+					classNameId, orderByComparator, true);
 
 			array[1] = event;
 
-			array[2] = getByA_C_PrevAndNext(
-				session, event, accountEntryId, classNameId, orderByComparator,
-				false);
+			array[2] = getByA_C_PrevAndNext(session, event, accountEntryId,
+					classNameId, orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected Event getByA_C_PrevAndNext(
-		Session session, Event event, long accountEntryId, long classNameId,
+	protected Event getByA_C_PrevAndNext(Session session, Event event,
+		long accountEntryId, long classNameId,
 		OrderByComparator<Event> orderByComparator, boolean previous) {
-
-		StringBundler sb = null;
+		StringBundler query = null;
 
 		if (orderByComparator != null) {
-			sb = new StringBundler(
-				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
+			query = new StringBundler(5 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			sb = new StringBundler(4);
+			query = new StringBundler(4);
 		}
 
-		sb.append(_SQL_SELECT_EVENT_WHERE);
+		query.append(_SQL_SELECT_EVENT_WHERE);
 
-		sb.append(_FINDER_COLUMN_A_C_ACCOUNTENTRYID_2);
+		query.append(_FINDER_COLUMN_A_C_ACCOUNTENTRYID_2);
 
-		sb.append(_FINDER_COLUMN_A_C_CLASSNAMEID_2);
+		query.append(_FINDER_COLUMN_A_C_CLASSNAMEID_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
+				query.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
+						query.append(WHERE_GREATER_THAN);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN);
+						query.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			sb.append(ORDER_BY_CLAUSE);
+			query.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
+						query.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
+						query.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
+						query.append(ORDER_BY_ASC);
 					}
 					else {
-						sb.append(ORDER_BY_DESC);
+						query.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			sb.append(EventModelImpl.ORDER_BY_JPQL);
+			query.append(EventModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
-		Query query = session.createQuery(sql);
+		Query q = session.createQuery(sql);
 
-		query.setFirstResult(0);
-		query.setMaxResults(2);
+		q.setFirstResult(0);
+		q.setMaxResults(2);
 
-		QueryPos queryPos = QueryPos.getInstance(query);
+		QueryPos qPos = QueryPos.getInstance(q);
 
-		queryPos.add(accountEntryId);
+		qPos.add(accountEntryId);
 
-		queryPos.add(classNameId);
+		qPos.add(classNameId);
 
 		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(event)) {
+			Object[] values = orderByComparator.getOrderByConditionValues(event);
 
-				queryPos.add(orderByConditionValue);
+			for (Object value : values) {
+				qPos.add(value);
 			}
 		}
 
-		List<Event> list = query.list();
+		List<Event> list = q.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -554,11 +561,8 @@ public class EventPersistenceImpl
 	 */
 	@Override
 	public void removeByA_C(long accountEntryId, long classNameId) {
-		for (Event event :
-				findByA_C(
-					accountEntryId, classNameId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
-
+		for (Event event : findByA_C(accountEntryId, classNameId,
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(event);
 		}
 	}
@@ -572,44 +576,44 @@ public class EventPersistenceImpl
 	 */
 	@Override
 	public int countByA_C(long accountEntryId, long classNameId) {
-		FinderPath finderPath = _finderPathCountByA_C;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_A_C;
 
-		Object[] finderArgs = new Object[] {accountEntryId, classNameId};
+		Object[] finderArgs = new Object[] { accountEntryId, classNameId };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(3);
+			StringBundler query = new StringBundler(3);
 
-			sb.append(_SQL_COUNT_EVENT_WHERE);
+			query.append(_SQL_COUNT_EVENT_WHERE);
 
-			sb.append(_FINDER_COLUMN_A_C_ACCOUNTENTRYID_2);
+			query.append(_FINDER_COLUMN_A_C_ACCOUNTENTRYID_2);
 
-			sb.append(_FINDER_COLUMN_A_C_CLASSNAMEID_2);
+			query.append(_FINDER_COLUMN_A_C_CLASSNAMEID_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(accountEntryId);
+				qPos.add(accountEntryId);
 
-				queryPos.add(classNameId);
+				qPos.add(classNameId);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
+			catch (Exception e) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -619,15 +623,28 @@ public class EventPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_A_C_ACCOUNTENTRYID_2 =
-		"event.accountEntryId = ? AND ";
-
-	private static final String _FINDER_COLUMN_A_C_CLASSNAMEID_2 =
-		"event.classNameId = ?";
-
-	private FinderPath _finderPathWithPaginationFindByC_C;
-	private FinderPath _finderPathWithoutPaginationFindByC_C;
-	private FinderPath _finderPathCountByC_C;
+	private static final String _FINDER_COLUMN_A_C_ACCOUNTENTRYID_2 = "event.accountEntryId = ? AND ";
+	private static final String _FINDER_COLUMN_A_C_CLASSNAMEID_2 = "event.classNameId = ?";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_C_C = new FinderPath(EventModelImpl.ENTITY_CACHE_ENABLED,
+			EventModelImpl.FINDER_CACHE_ENABLED, EventImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_C = new FinderPath(EventModelImpl.ENTITY_CACHE_ENABLED,
+			EventModelImpl.FINDER_CACHE_ENABLED, EventImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C",
+			new String[] { Long.class.getName(), Long.class.getName() },
+			EventModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			EventModelImpl.CLASSPK_COLUMN_BITMASK |
+			EventModelImpl.OCCURDATE_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_C_C = new FinderPath(EventModelImpl.ENTITY_CACHE_ENABLED,
+			EventModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
+			new String[] { Long.class.getName(), Long.class.getName() });
 
 	/**
 	 * Returns all the events where classNameId = &#63; and classPK = &#63;.
@@ -638,15 +655,15 @@ public class EventPersistenceImpl
 	 */
 	@Override
 	public List<Event> findByC_C(long classNameId, long classPK) {
-		return findByC_C(
-			classNameId, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+		return findByC_C(classNameId, classPK, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the events where classNameId = &#63; and classPK = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>EventModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link EventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param classNameId the class name ID
@@ -656,9 +673,8 @@ public class EventPersistenceImpl
 	 * @return the range of matching events
 	 */
 	@Override
-	public List<Event> findByC_C(
-		long classNameId, long classPK, int start, int end) {
-
+	public List<Event> findByC_C(long classNameId, long classPK, int start,
+		int end) {
 		return findByC_C(classNameId, classPK, start, end, null);
 	}
 
@@ -666,7 +682,7 @@ public class EventPersistenceImpl
 	 * Returns an ordered range of all the events where classNameId = &#63; and classPK = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>EventModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link EventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param classNameId the class name ID
@@ -677,19 +693,17 @@ public class EventPersistenceImpl
 	 * @return the ordered range of matching events
 	 */
 	@Override
-	public List<Event> findByC_C(
-		long classNameId, long classPK, int start, int end,
-		OrderByComparator<Event> orderByComparator) {
-
-		return findByC_C(
-			classNameId, classPK, start, end, orderByComparator, true);
+	public List<Event> findByC_C(long classNameId, long classPK, int start,
+		int end, OrderByComparator<Event> orderByComparator) {
+		return findByC_C(classNameId, classPK, start, end, orderByComparator,
+			true);
 	}
 
 	/**
 	 * Returns an ordered range of all the events where classNameId = &#63; and classPK = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>EventModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link EventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param classNameId the class name ID
@@ -697,43 +711,42 @@ public class EventPersistenceImpl
 	 * @param start the lower bound of the range of events
 	 * @param end the upper bound of the range of events (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of matching events
 	 */
 	@Override
-	public List<Event> findByC_C(
-		long classNameId, long classPK, int start, int end,
-		OrderByComparator<Event> orderByComparator, boolean useFinderCache) {
-
+	public List<Event> findByC_C(long classNameId, long classPK, int start,
+		int end, OrderByComparator<Event> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByC_C;
-				finderArgs = new Object[] {classNameId, classPK};
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_C;
+			finderArgs = new Object[] { classNameId, classPK };
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByC_C;
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_C_C;
 			finderArgs = new Object[] {
-				classNameId, classPK, start, end, orderByComparator
-			};
+					classNameId, classPK,
+					
+					start, end, orderByComparator
+				};
 		}
 
 		List<Event> list = null;
 
-		if (useFinderCache) {
-			list = (List<Event>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<Event>)finderCache.getResult(finderPath, finderArgs,
+					this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (Event event : list) {
 					if ((classNameId != event.getClassNameId()) ||
-						(classPK != event.getClassPK())) {
-
+							(classPK != event.getClassPK())) {
 						list = null;
 
 						break;
@@ -743,60 +756,67 @@ public class EventPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					4 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(4 +
+						(orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				sb = new StringBundler(4);
+				query = new StringBundler(4);
 			}
 
-			sb.append(_SQL_SELECT_EVENT_WHERE);
+			query.append(_SQL_SELECT_EVENT_WHERE);
 
-			sb.append(_FINDER_COLUMN_C_C_CLASSNAMEID_2);
+			query.append(_FINDER_COLUMN_C_C_CLASSNAMEID_2);
 
-			sb.append(_FINDER_COLUMN_C_C_CLASSPK_2);
+			query.append(_FINDER_COLUMN_C_C_CLASSPK_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 			}
-			else {
-				sb.append(EventModelImpl.ORDER_BY_JPQL);
+			else
+			 if (pagination) {
+				query.append(EventModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(classNameId);
+				qPos.add(classNameId);
 
-				queryPos.add(classPK);
+				qPos.add(classPK);
 
-				list = (List<Event>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<Event>)QueryUtil.list(q, getDialect(), start,
+							end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<Event>)QueryUtil.list(q, getDialect(), start,
+							end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -816,30 +836,27 @@ public class EventPersistenceImpl
 	 * @throws NoSuchEventException if a matching event could not be found
 	 */
 	@Override
-	public Event findByC_C_First(
-			long classNameId, long classPK,
-			OrderByComparator<Event> orderByComparator)
-		throws NoSuchEventException {
-
+	public Event findByC_C_First(long classNameId, long classPK,
+		OrderByComparator<Event> orderByComparator) throws NoSuchEventException {
 		Event event = fetchByC_C_First(classNameId, classPK, orderByComparator);
 
 		if (event != null) {
 			return event;
 		}
 
-		StringBundler sb = new StringBundler(6);
+		StringBundler msg = new StringBundler(6);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("classNameId=");
-		sb.append(classNameId);
+		msg.append("classNameId=");
+		msg.append(classNameId);
 
-		sb.append(", classPK=");
-		sb.append(classPK);
+		msg.append(", classPK=");
+		msg.append(classPK);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEventException(sb.toString());
+		throw new NoSuchEventException(msg.toString());
 	}
 
 	/**
@@ -851,12 +868,10 @@ public class EventPersistenceImpl
 	 * @return the first matching event, or <code>null</code> if a matching event could not be found
 	 */
 	@Override
-	public Event fetchByC_C_First(
-		long classNameId, long classPK,
+	public Event fetchByC_C_First(long classNameId, long classPK,
 		OrderByComparator<Event> orderByComparator) {
-
-		List<Event> list = findByC_C(
-			classNameId, classPK, 0, 1, orderByComparator);
+		List<Event> list = findByC_C(classNameId, classPK, 0, 1,
+				orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -875,30 +890,27 @@ public class EventPersistenceImpl
 	 * @throws NoSuchEventException if a matching event could not be found
 	 */
 	@Override
-	public Event findByC_C_Last(
-			long classNameId, long classPK,
-			OrderByComparator<Event> orderByComparator)
-		throws NoSuchEventException {
-
+	public Event findByC_C_Last(long classNameId, long classPK,
+		OrderByComparator<Event> orderByComparator) throws NoSuchEventException {
 		Event event = fetchByC_C_Last(classNameId, classPK, orderByComparator);
 
 		if (event != null) {
 			return event;
 		}
 
-		StringBundler sb = new StringBundler(6);
+		StringBundler msg = new StringBundler(6);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("classNameId=");
-		sb.append(classNameId);
+		msg.append("classNameId=");
+		msg.append(classNameId);
 
-		sb.append(", classPK=");
-		sb.append(classPK);
+		msg.append(", classPK=");
+		msg.append(classPK);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEventException(sb.toString());
+		throw new NoSuchEventException(msg.toString());
 	}
 
 	/**
@@ -910,18 +922,16 @@ public class EventPersistenceImpl
 	 * @return the last matching event, or <code>null</code> if a matching event could not be found
 	 */
 	@Override
-	public Event fetchByC_C_Last(
-		long classNameId, long classPK,
+	public Event fetchByC_C_Last(long classNameId, long classPK,
 		OrderByComparator<Event> orderByComparator) {
-
 		int count = countByC_C(classNameId, classPK);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<Event> list = findByC_C(
-			classNameId, classPK, count - 1, count, orderByComparator);
+		List<Event> list = findByC_C(classNameId, classPK, count - 1, count,
+				orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -941,11 +951,9 @@ public class EventPersistenceImpl
 	 * @throws NoSuchEventException if a event with the primary key could not be found
 	 */
 	@Override
-	public Event[] findByC_C_PrevAndNext(
-			long eventId, long classNameId, long classPK,
-			OrderByComparator<Event> orderByComparator)
+	public Event[] findByC_C_PrevAndNext(long eventId, long classNameId,
+		long classPK, OrderByComparator<Event> orderByComparator)
 		throws NoSuchEventException {
-
 		Event event = findByPrimaryKey(eventId);
 
 		Session session = null;
@@ -955,127 +963,125 @@ public class EventPersistenceImpl
 
 			Event[] array = new EventImpl[3];
 
-			array[0] = getByC_C_PrevAndNext(
-				session, event, classNameId, classPK, orderByComparator, true);
+			array[0] = getByC_C_PrevAndNext(session, event, classNameId,
+					classPK, orderByComparator, true);
 
 			array[1] = event;
 
-			array[2] = getByC_C_PrevAndNext(
-				session, event, classNameId, classPK, orderByComparator, false);
+			array[2] = getByC_C_PrevAndNext(session, event, classNameId,
+					classPK, orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected Event getByC_C_PrevAndNext(
-		Session session, Event event, long classNameId, long classPK,
+	protected Event getByC_C_PrevAndNext(Session session, Event event,
+		long classNameId, long classPK,
 		OrderByComparator<Event> orderByComparator, boolean previous) {
-
-		StringBundler sb = null;
+		StringBundler query = null;
 
 		if (orderByComparator != null) {
-			sb = new StringBundler(
-				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
+			query = new StringBundler(5 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			sb = new StringBundler(4);
+			query = new StringBundler(4);
 		}
 
-		sb.append(_SQL_SELECT_EVENT_WHERE);
+		query.append(_SQL_SELECT_EVENT_WHERE);
 
-		sb.append(_FINDER_COLUMN_C_C_CLASSNAMEID_2);
+		query.append(_FINDER_COLUMN_C_C_CLASSNAMEID_2);
 
-		sb.append(_FINDER_COLUMN_C_C_CLASSPK_2);
+		query.append(_FINDER_COLUMN_C_C_CLASSPK_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
+				query.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
+						query.append(WHERE_GREATER_THAN);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN);
+						query.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			sb.append(ORDER_BY_CLAUSE);
+			query.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
+						query.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
+						query.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
+						query.append(ORDER_BY_ASC);
 					}
 					else {
-						sb.append(ORDER_BY_DESC);
+						query.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			sb.append(EventModelImpl.ORDER_BY_JPQL);
+			query.append(EventModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
-		Query query = session.createQuery(sql);
+		Query q = session.createQuery(sql);
 
-		query.setFirstResult(0);
-		query.setMaxResults(2);
+		q.setFirstResult(0);
+		q.setMaxResults(2);
 
-		QueryPos queryPos = QueryPos.getInstance(query);
+		QueryPos qPos = QueryPos.getInstance(q);
 
-		queryPos.add(classNameId);
+		qPos.add(classNameId);
 
-		queryPos.add(classPK);
+		qPos.add(classPK);
 
 		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(event)) {
+			Object[] values = orderByComparator.getOrderByConditionValues(event);
 
-				queryPos.add(orderByConditionValue);
+			for (Object value : values) {
+				qPos.add(value);
 			}
 		}
 
-		List<Event> list = query.list();
+		List<Event> list = q.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -1093,11 +1099,8 @@ public class EventPersistenceImpl
 	 */
 	@Override
 	public void removeByC_C(long classNameId, long classPK) {
-		for (Event event :
-				findByC_C(
-					classNameId, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
-
+		for (Event event : findByC_C(classNameId, classPK, QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS, null)) {
 			remove(event);
 		}
 	}
@@ -1111,44 +1114,44 @@ public class EventPersistenceImpl
 	 */
 	@Override
 	public int countByC_C(long classNameId, long classPK) {
-		FinderPath finderPath = _finderPathCountByC_C;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_C;
 
-		Object[] finderArgs = new Object[] {classNameId, classPK};
+		Object[] finderArgs = new Object[] { classNameId, classPK };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(3);
+			StringBundler query = new StringBundler(3);
 
-			sb.append(_SQL_COUNT_EVENT_WHERE);
+			query.append(_SQL_COUNT_EVENT_WHERE);
 
-			sb.append(_FINDER_COLUMN_C_C_CLASSNAMEID_2);
+			query.append(_FINDER_COLUMN_C_C_CLASSNAMEID_2);
 
-			sb.append(_FINDER_COLUMN_C_C_CLASSPK_2);
+			query.append(_FINDER_COLUMN_C_C_CLASSPK_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(classNameId);
+				qPos.add(classNameId);
 
-				queryPos.add(classPK);
+				qPos.add(classPK);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
+			catch (Exception e) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1158,16 +1161,43 @@ public class EventPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_C_C_CLASSNAMEID_2 =
-		"event.classNameId = ? AND ";
-
-	private static final String _FINDER_COLUMN_C_C_CLASSPK_2 =
-		"event.classPK = ?";
-
-	private FinderPath _finderPathWithPaginationFindByC_C_T;
-	private FinderPath _finderPathWithoutPaginationFindByC_C_T;
-	private FinderPath _finderPathCountByC_C_T;
-	private FinderPath _finderPathWithPaginationCountByC_C_T;
+	private static final String _FINDER_COLUMN_C_C_CLASSNAMEID_2 = "event.classNameId = ? AND ";
+	private static final String _FINDER_COLUMN_C_C_CLASSPK_2 = "event.classPK = ?";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_C_C_T = new FinderPath(EventModelImpl.ENTITY_CACHE_ENABLED,
+			EventModelImpl.FINDER_CACHE_ENABLED, EventImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C_T",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				Integer.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_C_T = new FinderPath(EventModelImpl.ENTITY_CACHE_ENABLED,
+			EventModelImpl.FINDER_CACHE_ENABLED, EventImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C_T",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				Integer.class.getName()
+			},
+			EventModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			EventModelImpl.CLASSPK_COLUMN_BITMASK |
+			EventModelImpl.TYPE_COLUMN_BITMASK |
+			EventModelImpl.OCCURDATE_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_C_C_T = new FinderPath(EventModelImpl.ENTITY_CACHE_ENABLED,
+			EventModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C_T",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				Integer.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_COUNT_BY_C_C_T = new FinderPath(EventModelImpl.ENTITY_CACHE_ENABLED,
+			EventModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_C_T",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				Integer.class.getName()
+			});
 
 	/**
 	 * Returns all the events where classNameId = &#63; and classPK = &#63; and type = &#63;.
@@ -1179,16 +1209,15 @@ public class EventPersistenceImpl
 	 */
 	@Override
 	public List<Event> findByC_C_T(long classNameId, long classPK, int type) {
-		return findByC_C_T(
-			classNameId, classPK, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			null);
+		return findByC_C_T(classNameId, classPK, type, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the events where classNameId = &#63; and classPK = &#63; and type = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>EventModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link EventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param classNameId the class name ID
@@ -1199,9 +1228,8 @@ public class EventPersistenceImpl
 	 * @return the range of matching events
 	 */
 	@Override
-	public List<Event> findByC_C_T(
-		long classNameId, long classPK, int type, int start, int end) {
-
+	public List<Event> findByC_C_T(long classNameId, long classPK, int type,
+		int start, int end) {
 		return findByC_C_T(classNameId, classPK, type, start, end, null);
 	}
 
@@ -1209,7 +1237,7 @@ public class EventPersistenceImpl
 	 * Returns an ordered range of all the events where classNameId = &#63; and classPK = &#63; and type = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>EventModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link EventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param classNameId the class name ID
@@ -1221,19 +1249,17 @@ public class EventPersistenceImpl
 	 * @return the ordered range of matching events
 	 */
 	@Override
-	public List<Event> findByC_C_T(
-		long classNameId, long classPK, int type, int start, int end,
-		OrderByComparator<Event> orderByComparator) {
-
-		return findByC_C_T(
-			classNameId, classPK, type, start, end, orderByComparator, true);
+	public List<Event> findByC_C_T(long classNameId, long classPK, int type,
+		int start, int end, OrderByComparator<Event> orderByComparator) {
+		return findByC_C_T(classNameId, classPK, type, start, end,
+			orderByComparator, true);
 	}
 
 	/**
 	 * Returns an ordered range of all the events where classNameId = &#63; and classPK = &#63; and type = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>EventModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link EventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param classNameId the class name ID
@@ -1242,44 +1268,43 @@ public class EventPersistenceImpl
 	 * @param start the lower bound of the range of events
 	 * @param end the upper bound of the range of events (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of matching events
 	 */
 	@Override
-	public List<Event> findByC_C_T(
-		long classNameId, long classPK, int type, int start, int end,
-		OrderByComparator<Event> orderByComparator, boolean useFinderCache) {
-
+	public List<Event> findByC_C_T(long classNameId, long classPK, int type,
+		int start, int end, OrderByComparator<Event> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByC_C_T;
-				finderArgs = new Object[] {classNameId, classPK, type};
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_C_T;
+			finderArgs = new Object[] { classNameId, classPK, type };
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByC_C_T;
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_C_C_T;
 			finderArgs = new Object[] {
-				classNameId, classPK, type, start, end, orderByComparator
-			};
+					classNameId, classPK, type,
+					
+					start, end, orderByComparator
+				};
 		}
 
 		List<Event> list = null;
 
-		if (useFinderCache) {
-			list = (List<Event>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<Event>)finderCache.getResult(finderPath, finderArgs,
+					this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (Event event : list) {
 					if ((classNameId != event.getClassNameId()) ||
-						(classPK != event.getClassPK()) ||
-						(type != event.getType())) {
-
+							(classPK != event.getClassPK()) ||
+							(type != event.getType())) {
 						list = null;
 
 						break;
@@ -1289,64 +1314,71 @@ public class EventPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					5 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(5 +
+						(orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				sb = new StringBundler(5);
+				query = new StringBundler(5);
 			}
 
-			sb.append(_SQL_SELECT_EVENT_WHERE);
+			query.append(_SQL_SELECT_EVENT_WHERE);
 
-			sb.append(_FINDER_COLUMN_C_C_T_CLASSNAMEID_2);
+			query.append(_FINDER_COLUMN_C_C_T_CLASSNAMEID_2);
 
-			sb.append(_FINDER_COLUMN_C_C_T_CLASSPK_2);
+			query.append(_FINDER_COLUMN_C_C_T_CLASSPK_2);
 
-			sb.append(_FINDER_COLUMN_C_C_T_TYPE_2);
+			query.append(_FINDER_COLUMN_C_C_T_TYPE_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 			}
-			else {
-				sb.append(EventModelImpl.ORDER_BY_JPQL);
+			else
+			 if (pagination) {
+				query.append(EventModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(classNameId);
+				qPos.add(classNameId);
 
-				queryPos.add(classPK);
+				qPos.add(classPK);
 
-				queryPos.add(type);
+				qPos.add(type);
 
-				list = (List<Event>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<Event>)QueryUtil.list(q, getDialect(), start,
+							end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<Event>)QueryUtil.list(q, getDialect(), start,
+							end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1367,34 +1399,31 @@ public class EventPersistenceImpl
 	 * @throws NoSuchEventException if a matching event could not be found
 	 */
 	@Override
-	public Event findByC_C_T_First(
-			long classNameId, long classPK, int type,
-			OrderByComparator<Event> orderByComparator)
-		throws NoSuchEventException {
-
-		Event event = fetchByC_C_T_First(
-			classNameId, classPK, type, orderByComparator);
+	public Event findByC_C_T_First(long classNameId, long classPK, int type,
+		OrderByComparator<Event> orderByComparator) throws NoSuchEventException {
+		Event event = fetchByC_C_T_First(classNameId, classPK, type,
+				orderByComparator);
 
 		if (event != null) {
 			return event;
 		}
 
-		StringBundler sb = new StringBundler(8);
+		StringBundler msg = new StringBundler(8);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("classNameId=");
-		sb.append(classNameId);
+		msg.append("classNameId=");
+		msg.append(classNameId);
 
-		sb.append(", classPK=");
-		sb.append(classPK);
+		msg.append(", classPK=");
+		msg.append(classPK);
 
-		sb.append(", type=");
-		sb.append(type);
+		msg.append(", type=");
+		msg.append(type);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEventException(sb.toString());
+		throw new NoSuchEventException(msg.toString());
 	}
 
 	/**
@@ -1407,12 +1436,10 @@ public class EventPersistenceImpl
 	 * @return the first matching event, or <code>null</code> if a matching event could not be found
 	 */
 	@Override
-	public Event fetchByC_C_T_First(
-		long classNameId, long classPK, int type,
+	public Event fetchByC_C_T_First(long classNameId, long classPK, int type,
 		OrderByComparator<Event> orderByComparator) {
-
-		List<Event> list = findByC_C_T(
-			classNameId, classPK, type, 0, 1, orderByComparator);
+		List<Event> list = findByC_C_T(classNameId, classPK, type, 0, 1,
+				orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -1432,34 +1459,31 @@ public class EventPersistenceImpl
 	 * @throws NoSuchEventException if a matching event could not be found
 	 */
 	@Override
-	public Event findByC_C_T_Last(
-			long classNameId, long classPK, int type,
-			OrderByComparator<Event> orderByComparator)
-		throws NoSuchEventException {
-
-		Event event = fetchByC_C_T_Last(
-			classNameId, classPK, type, orderByComparator);
+	public Event findByC_C_T_Last(long classNameId, long classPK, int type,
+		OrderByComparator<Event> orderByComparator) throws NoSuchEventException {
+		Event event = fetchByC_C_T_Last(classNameId, classPK, type,
+				orderByComparator);
 
 		if (event != null) {
 			return event;
 		}
 
-		StringBundler sb = new StringBundler(8);
+		StringBundler msg = new StringBundler(8);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("classNameId=");
-		sb.append(classNameId);
+		msg.append("classNameId=");
+		msg.append(classNameId);
 
-		sb.append(", classPK=");
-		sb.append(classPK);
+		msg.append(", classPK=");
+		msg.append(classPK);
 
-		sb.append(", type=");
-		sb.append(type);
+		msg.append(", type=");
+		msg.append(type);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEventException(sb.toString());
+		throw new NoSuchEventException(msg.toString());
 	}
 
 	/**
@@ -1472,18 +1496,16 @@ public class EventPersistenceImpl
 	 * @return the last matching event, or <code>null</code> if a matching event could not be found
 	 */
 	@Override
-	public Event fetchByC_C_T_Last(
-		long classNameId, long classPK, int type,
+	public Event fetchByC_C_T_Last(long classNameId, long classPK, int type,
 		OrderByComparator<Event> orderByComparator) {
-
 		int count = countByC_C_T(classNameId, classPK, type);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<Event> list = findByC_C_T(
-			classNameId, classPK, type, count - 1, count, orderByComparator);
+		List<Event> list = findByC_C_T(classNameId, classPK, type, count - 1,
+				count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -1504,11 +1526,9 @@ public class EventPersistenceImpl
 	 * @throws NoSuchEventException if a event with the primary key could not be found
 	 */
 	@Override
-	public Event[] findByC_C_T_PrevAndNext(
-			long eventId, long classNameId, long classPK, int type,
-			OrderByComparator<Event> orderByComparator)
+	public Event[] findByC_C_T_PrevAndNext(long eventId, long classNameId,
+		long classPK, int type, OrderByComparator<Event> orderByComparator)
 		throws NoSuchEventException {
-
 		Event event = findByPrimaryKey(eventId);
 
 		Session session = null;
@@ -1518,133 +1538,129 @@ public class EventPersistenceImpl
 
 			Event[] array = new EventImpl[3];
 
-			array[0] = getByC_C_T_PrevAndNext(
-				session, event, classNameId, classPK, type, orderByComparator,
-				true);
+			array[0] = getByC_C_T_PrevAndNext(session, event, classNameId,
+					classPK, type, orderByComparator, true);
 
 			array[1] = event;
 
-			array[2] = getByC_C_T_PrevAndNext(
-				session, event, classNameId, classPK, type, orderByComparator,
-				false);
+			array[2] = getByC_C_T_PrevAndNext(session, event, classNameId,
+					classPK, type, orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected Event getByC_C_T_PrevAndNext(
-		Session session, Event event, long classNameId, long classPK, int type,
+	protected Event getByC_C_T_PrevAndNext(Session session, Event event,
+		long classNameId, long classPK, int type,
 		OrderByComparator<Event> orderByComparator, boolean previous) {
-
-		StringBundler sb = null;
+		StringBundler query = null;
 
 		if (orderByComparator != null) {
-			sb = new StringBundler(
-				6 + (orderByComparator.getOrderByConditionFields().length * 3) +
+			query = new StringBundler(6 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			sb = new StringBundler(5);
+			query = new StringBundler(5);
 		}
 
-		sb.append(_SQL_SELECT_EVENT_WHERE);
+		query.append(_SQL_SELECT_EVENT_WHERE);
 
-		sb.append(_FINDER_COLUMN_C_C_T_CLASSNAMEID_2);
+		query.append(_FINDER_COLUMN_C_C_T_CLASSNAMEID_2);
 
-		sb.append(_FINDER_COLUMN_C_C_T_CLASSPK_2);
+		query.append(_FINDER_COLUMN_C_C_T_CLASSPK_2);
 
-		sb.append(_FINDER_COLUMN_C_C_T_TYPE_2);
+		query.append(_FINDER_COLUMN_C_C_T_TYPE_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
+				query.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
+						query.append(WHERE_GREATER_THAN);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN);
+						query.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			sb.append(ORDER_BY_CLAUSE);
+			query.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
+						query.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
+						query.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
+						query.append(ORDER_BY_ASC);
 					}
 					else {
-						sb.append(ORDER_BY_DESC);
+						query.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			sb.append(EventModelImpl.ORDER_BY_JPQL);
+			query.append(EventModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
-		Query query = session.createQuery(sql);
+		Query q = session.createQuery(sql);
 
-		query.setFirstResult(0);
-		query.setMaxResults(2);
+		q.setFirstResult(0);
+		q.setMaxResults(2);
 
-		QueryPos queryPos = QueryPos.getInstance(query);
+		QueryPos qPos = QueryPos.getInstance(q);
 
-		queryPos.add(classNameId);
+		qPos.add(classNameId);
 
-		queryPos.add(classPK);
+		qPos.add(classPK);
 
-		queryPos.add(type);
+		qPos.add(type);
 
 		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(event)) {
+			Object[] values = orderByComparator.getOrderByConditionValues(event);
 
-				queryPos.add(orderByConditionValue);
+			for (Object value : values) {
+				qPos.add(value);
 			}
 		}
 
-		List<Event> list = query.list();
+		List<Event> list = q.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -1658,7 +1674,7 @@ public class EventPersistenceImpl
 	 * Returns all the events where classNameId = &#63; and classPK = &#63; and type = any &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>EventModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link EventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param classNameId the class name ID
@@ -1667,19 +1683,16 @@ public class EventPersistenceImpl
 	 * @return the matching events
 	 */
 	@Override
-	public List<Event> findByC_C_T(
-		long classNameId, long classPK, int[] types) {
-
-		return findByC_C_T(
-			classNameId, classPK, types, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			null);
+	public List<Event> findByC_C_T(long classNameId, long classPK, int[] types) {
+		return findByC_C_T(classNameId, classPK, types, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the events where classNameId = &#63; and classPK = &#63; and type = any &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>EventModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link EventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param classNameId the class name ID
@@ -1690,9 +1703,8 @@ public class EventPersistenceImpl
 	 * @return the range of matching events
 	 */
 	@Override
-	public List<Event> findByC_C_T(
-		long classNameId, long classPK, int[] types, int start, int end) {
-
+	public List<Event> findByC_C_T(long classNameId, long classPK, int[] types,
+		int start, int end) {
 		return findByC_C_T(classNameId, classPK, types, start, end, null);
 	}
 
@@ -1700,7 +1712,7 @@ public class EventPersistenceImpl
 	 * Returns an ordered range of all the events where classNameId = &#63; and classPK = &#63; and type = any &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>EventModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link EventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param classNameId the class name ID
@@ -1712,19 +1724,17 @@ public class EventPersistenceImpl
 	 * @return the ordered range of matching events
 	 */
 	@Override
-	public List<Event> findByC_C_T(
-		long classNameId, long classPK, int[] types, int start, int end,
-		OrderByComparator<Event> orderByComparator) {
-
-		return findByC_C_T(
-			classNameId, classPK, types, start, end, orderByComparator, true);
+	public List<Event> findByC_C_T(long classNameId, long classPK, int[] types,
+		int start, int end, OrderByComparator<Event> orderByComparator) {
+		return findByC_C_T(classNameId, classPK, types, start, end,
+			orderByComparator, true);
 	}
 
 	/**
 	 * Returns an ordered range of all the events where classNameId = &#63; and classPK = &#63; and type = &#63;, optionally using the finder cache.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>EventModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link EventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param classNameId the class name ID
@@ -1733,14 +1743,13 @@ public class EventPersistenceImpl
 	 * @param start the lower bound of the range of events
 	 * @param end the upper bound of the range of events (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of matching events
 	 */
 	@Override
-	public List<Event> findByC_C_T(
-		long classNameId, long classPK, int[] types, int start, int end,
-		OrderByComparator<Event> orderByComparator, boolean useFinderCache) {
-
+	public List<Event> findByC_C_T(long classNameId, long classPK, int[] types,
+		int start, int end, OrderByComparator<Event> orderByComparator,
+		boolean retrieveFromCache) {
 		if (types == null) {
 			types = new int[0];
 		}
@@ -1751,40 +1760,39 @@ public class EventPersistenceImpl
 		}
 
 		if (types.length == 1) {
-			return findByC_C_T(
-				classNameId, classPK, types[0], start, end, orderByComparator);
+			return findByC_C_T(classNameId, classPK, types[0], start, end,
+				orderByComparator);
 		}
 
+		boolean pagination = true;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderArgs = new Object[] {
+				(orderByComparator == null)) {
+			pagination = false;
+			finderArgs = new Object[] {
 					classNameId, classPK, StringUtil.merge(types)
 				};
-			}
 		}
-		else if (useFinderCache) {
+		else {
 			finderArgs = new Object[] {
-				classNameId, classPK, StringUtil.merge(types), start, end,
-				orderByComparator
-			};
+					classNameId, classPK, StringUtil.merge(types),
+					
+					start, end, orderByComparator
+				};
 		}
 
 		List<Event> list = null;
 
-		if (useFinderCache) {
-			list = (List<Event>)finderCache.getResult(
-				_finderPathWithPaginationFindByC_C_T, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<Event>)finderCache.getResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_C_C_T,
+					finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (Event event : list) {
 					if ((classNameId != event.getClassNameId()) ||
-						(classPK != event.getClassPK()) ||
-						!ArrayUtil.contains(types, event.getType())) {
-
+							(classPK != event.getClassPK()) ||
+							!ArrayUtil.contains(types, event.getType())) {
 						list = null;
 
 						break;
@@ -1794,69 +1802,76 @@ public class EventPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler sb = new StringBundler();
+			StringBundler query = new StringBundler();
 
-			sb.append(_SQL_SELECT_EVENT_WHERE);
+			query.append(_SQL_SELECT_EVENT_WHERE);
 
-			sb.append(_FINDER_COLUMN_C_C_T_CLASSNAMEID_2);
+			query.append(_FINDER_COLUMN_C_C_T_CLASSNAMEID_2);
 
-			sb.append(_FINDER_COLUMN_C_C_T_CLASSPK_2);
+			query.append(_FINDER_COLUMN_C_C_T_CLASSPK_2);
 
 			if (types.length > 0) {
-				sb.append("(");
+				query.append(StringPool.OPEN_PARENTHESIS);
 
-				sb.append(_FINDER_COLUMN_C_C_T_TYPE_7);
+				query.append(_FINDER_COLUMN_C_C_T_TYPE_7);
 
-				sb.append(StringUtil.merge(types));
+				query.append(StringUtil.merge(types));
 
-				sb.append(")");
+				query.append(StringPool.CLOSE_PARENTHESIS);
 
-				sb.append(")");
+				query.append(StringPool.CLOSE_PARENTHESIS);
 			}
 
-			sb.setStringAt(
-				removeConjunction(sb.stringAt(sb.index() - 1)), sb.index() - 1);
+			query.setStringAt(removeConjunction(query.stringAt(query.index() -
+						1)), query.index() - 1);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 			}
-			else {
-				sb.append(EventModelImpl.ORDER_BY_JPQL);
+			else
+			 if (pagination) {
+				query.append(EventModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(classNameId);
+				qPos.add(classNameId);
 
-				queryPos.add(classPK);
+				qPos.add(classPK);
 
-				list = (List<Event>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<Event>)QueryUtil.list(q, getDialect(), start,
+							end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<Event>)QueryUtil.list(q, getDialect(), start,
+							end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByC_C_T, finderArgs, list);
-				}
+				finderCache.putResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_C_C_T,
+					finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(
-						_finderPathWithPaginationFindByC_C_T, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_C_C_T,
+					finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1875,11 +1890,8 @@ public class EventPersistenceImpl
 	 */
 	@Override
 	public void removeByC_C_T(long classNameId, long classPK, int type) {
-		for (Event event :
-				findByC_C_T(
-					classNameId, classPK, type, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
-
+		for (Event event : findByC_C_T(classNameId, classPK, type,
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(event);
 		}
 	}
@@ -1894,48 +1906,48 @@ public class EventPersistenceImpl
 	 */
 	@Override
 	public int countByC_C_T(long classNameId, long classPK, int type) {
-		FinderPath finderPath = _finderPathCountByC_C_T;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_C_T;
 
-		Object[] finderArgs = new Object[] {classNameId, classPK, type};
+		Object[] finderArgs = new Object[] { classNameId, classPK, type };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(4);
+			StringBundler query = new StringBundler(4);
 
-			sb.append(_SQL_COUNT_EVENT_WHERE);
+			query.append(_SQL_COUNT_EVENT_WHERE);
 
-			sb.append(_FINDER_COLUMN_C_C_T_CLASSNAMEID_2);
+			query.append(_FINDER_COLUMN_C_C_T_CLASSNAMEID_2);
 
-			sb.append(_FINDER_COLUMN_C_C_T_CLASSPK_2);
+			query.append(_FINDER_COLUMN_C_C_T_CLASSPK_2);
 
-			sb.append(_FINDER_COLUMN_C_C_T_TYPE_2);
+			query.append(_FINDER_COLUMN_C_C_T_TYPE_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(classNameId);
+				qPos.add(classNameId);
 
-				queryPos.add(classPK);
+				qPos.add(classPK);
 
-				queryPos.add(type);
+				qPos.add(type);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
+			catch (Exception e) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1965,61 +1977,61 @@ public class EventPersistenceImpl
 		}
 
 		Object[] finderArgs = new Object[] {
-			classNameId, classPK, StringUtil.merge(types)
-		};
+				classNameId, classPK, StringUtil.merge(types)
+			};
 
-		Long count = (Long)finderCache.getResult(
-			_finderPathWithPaginationCountByC_C_T, finderArgs, this);
+		Long count = (Long)finderCache.getResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_C_C_T,
+				finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler();
+			StringBundler query = new StringBundler();
 
-			sb.append(_SQL_COUNT_EVENT_WHERE);
+			query.append(_SQL_COUNT_EVENT_WHERE);
 
-			sb.append(_FINDER_COLUMN_C_C_T_CLASSNAMEID_2);
+			query.append(_FINDER_COLUMN_C_C_T_CLASSNAMEID_2);
 
-			sb.append(_FINDER_COLUMN_C_C_T_CLASSPK_2);
+			query.append(_FINDER_COLUMN_C_C_T_CLASSPK_2);
 
 			if (types.length > 0) {
-				sb.append("(");
+				query.append(StringPool.OPEN_PARENTHESIS);
 
-				sb.append(_FINDER_COLUMN_C_C_T_TYPE_7);
+				query.append(_FINDER_COLUMN_C_C_T_TYPE_7);
 
-				sb.append(StringUtil.merge(types));
+				query.append(StringUtil.merge(types));
 
-				sb.append(")");
+				query.append(StringPool.CLOSE_PARENTHESIS);
 
-				sb.append(")");
+				query.append(StringPool.CLOSE_PARENTHESIS);
 			}
 
-			sb.setStringAt(
-				removeConjunction(sb.stringAt(sb.index() - 1)), sb.index() - 1);
+			query.setStringAt(removeConjunction(query.stringAt(query.index() -
+						1)), query.index() - 1);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(classNameId);
+				qPos.add(classNameId);
 
-				queryPos.add(classPK);
+				qPos.add(classPK);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathWithPaginationCountByC_C_T, finderArgs, count);
+				finderCache.putResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_C_C_T,
+					finderArgs, count);
 			}
-			catch (Exception exception) {
-				finderCache.removeResult(
-					_finderPathWithPaginationCountByC_C_T, finderArgs);
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_C_C_T,
+					finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -2029,19 +2041,45 @@ public class EventPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_C_C_T_CLASSNAMEID_2 =
-		"event.classNameId = ? AND ";
-
-	private static final String _FINDER_COLUMN_C_C_T_CLASSPK_2 =
-		"event.classPK = ? AND ";
-
+	private static final String _FINDER_COLUMN_C_C_T_CLASSNAMEID_2 = "event.classNameId = ? AND ";
+	private static final String _FINDER_COLUMN_C_C_T_CLASSPK_2 = "event.classPK = ? AND ";
 	private static final String _FINDER_COLUMN_C_C_T_TYPE_2 = "event.type = ?";
-
 	private static final String _FINDER_COLUMN_C_C_T_TYPE_7 = "event.type IN (";
-
-	private FinderPath _finderPathWithPaginationFindByC_C_T_TC_TC;
-	private FinderPath _finderPathWithoutPaginationFindByC_C_T_TC_TC;
-	private FinderPath _finderPathCountByC_C_T_TC_TC;
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_C_C_T_TC_TC =
+		new FinderPath(EventModelImpl.ENTITY_CACHE_ENABLED,
+			EventModelImpl.FINDER_CACHE_ENABLED, EventImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C_T_TC_TC",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				Integer.class.getName(), Long.class.getName(),
+				Long.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_C_T_TC_TC =
+		new FinderPath(EventModelImpl.ENTITY_CACHE_ENABLED,
+			EventModelImpl.FINDER_CACHE_ENABLED, EventImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C_T_TC_TC",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				Integer.class.getName(), Long.class.getName(),
+				Long.class.getName()
+			},
+			EventModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			EventModelImpl.CLASSPK_COLUMN_BITMASK |
+			EventModelImpl.TYPE_COLUMN_BITMASK |
+			EventModelImpl.TYPECLASSNAMEID_COLUMN_BITMASK |
+			EventModelImpl.TYPECLASSPK_COLUMN_BITMASK |
+			EventModelImpl.OCCURDATE_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_C_C_T_TC_TC = new FinderPath(EventModelImpl.ENTITY_CACHE_ENABLED,
+			EventModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C_T_TC_TC",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				Integer.class.getName(), Long.class.getName(),
+				Long.class.getName()
+			});
 
 	/**
 	 * Returns all the events where classNameId = &#63; and classPK = &#63; and type = &#63; and typeClassNameId = &#63; and typeClassPK = &#63;.
@@ -2054,20 +2092,17 @@ public class EventPersistenceImpl
 	 * @return the matching events
 	 */
 	@Override
-	public List<Event> findByC_C_T_TC_TC(
-		long classNameId, long classPK, int type, long typeClassNameId,
-		long typeClassPK) {
-
-		return findByC_C_T_TC_TC(
-			classNameId, classPK, type, typeClassNameId, typeClassPK,
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	public List<Event> findByC_C_T_TC_TC(long classNameId, long classPK,
+		int type, long typeClassNameId, long typeClassPK) {
+		return findByC_C_T_TC_TC(classNameId, classPK, type, typeClassNameId,
+			typeClassPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the events where classNameId = &#63; and classPK = &#63; and type = &#63; and typeClassNameId = &#63; and typeClassPK = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>EventModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link EventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param classNameId the class name ID
@@ -2080,20 +2115,17 @@ public class EventPersistenceImpl
 	 * @return the range of matching events
 	 */
 	@Override
-	public List<Event> findByC_C_T_TC_TC(
-		long classNameId, long classPK, int type, long typeClassNameId,
-		long typeClassPK, int start, int end) {
-
-		return findByC_C_T_TC_TC(
-			classNameId, classPK, type, typeClassNameId, typeClassPK, start,
-			end, null);
+	public List<Event> findByC_C_T_TC_TC(long classNameId, long classPK,
+		int type, long typeClassNameId, long typeClassPK, int start, int end) {
+		return findByC_C_T_TC_TC(classNameId, classPK, type, typeClassNameId,
+			typeClassPK, start, end, null);
 	}
 
 	/**
 	 * Returns an ordered range of all the events where classNameId = &#63; and classPK = &#63; and type = &#63; and typeClassNameId = &#63; and typeClassPK = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>EventModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link EventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param classNameId the class name ID
@@ -2107,21 +2139,18 @@ public class EventPersistenceImpl
 	 * @return the ordered range of matching events
 	 */
 	@Override
-	public List<Event> findByC_C_T_TC_TC(
-		long classNameId, long classPK, int type, long typeClassNameId,
-		long typeClassPK, int start, int end,
+	public List<Event> findByC_C_T_TC_TC(long classNameId, long classPK,
+		int type, long typeClassNameId, long typeClassPK, int start, int end,
 		OrderByComparator<Event> orderByComparator) {
-
-		return findByC_C_T_TC_TC(
-			classNameId, classPK, type, typeClassNameId, typeClassPK, start,
-			end, orderByComparator, true);
+		return findByC_C_T_TC_TC(classNameId, classPK, type, typeClassNameId,
+			typeClassPK, start, end, orderByComparator, true);
 	}
 
 	/**
 	 * Returns an ordered range of all the events where classNameId = &#63; and classPK = &#63; and type = &#63; and typeClassNameId = &#63; and typeClassPK = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>EventModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link EventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param classNameId the class name ID
@@ -2132,50 +2161,47 @@ public class EventPersistenceImpl
 	 * @param start the lower bound of the range of events
 	 * @param end the upper bound of the range of events (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of matching events
 	 */
 	@Override
-	public List<Event> findByC_C_T_TC_TC(
-		long classNameId, long classPK, int type, long typeClassNameId,
-		long typeClassPK, int start, int end,
-		OrderByComparator<Event> orderByComparator, boolean useFinderCache) {
-
+	public List<Event> findByC_C_T_TC_TC(long classNameId, long classPK,
+		int type, long typeClassNameId, long typeClassPK, int start, int end,
+		OrderByComparator<Event> orderByComparator, boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByC_C_T_TC_TC;
-				finderArgs = new Object[] {
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_C_T_TC_TC;
+			finderArgs = new Object[] {
 					classNameId, classPK, type, typeClassNameId, typeClassPK
 				};
-			}
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByC_C_T_TC_TC;
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_C_C_T_TC_TC;
 			finderArgs = new Object[] {
-				classNameId, classPK, type, typeClassNameId, typeClassPK, start,
-				end, orderByComparator
-			};
+					classNameId, classPK, type, typeClassNameId, typeClassPK,
+					
+					start, end, orderByComparator
+				};
 		}
 
 		List<Event> list = null;
 
-		if (useFinderCache) {
-			list = (List<Event>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<Event>)finderCache.getResult(finderPath, finderArgs,
+					this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (Event event : list) {
 					if ((classNameId != event.getClassNameId()) ||
-						(classPK != event.getClassPK()) ||
-						(type != event.getType()) ||
-						(typeClassNameId != event.getTypeClassNameId()) ||
-						(typeClassPK != event.getTypeClassPK())) {
-
+							(classPK != event.getClassPK()) ||
+							(type != event.getType()) ||
+							(typeClassNameId != event.getTypeClassNameId()) ||
+							(typeClassPK != event.getTypeClassPK())) {
 						list = null;
 
 						break;
@@ -2185,72 +2211,79 @@ public class EventPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					7 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(7 +
+						(orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				sb = new StringBundler(7);
+				query = new StringBundler(7);
 			}
 
-			sb.append(_SQL_SELECT_EVENT_WHERE);
+			query.append(_SQL_SELECT_EVENT_WHERE);
 
-			sb.append(_FINDER_COLUMN_C_C_T_TC_TC_CLASSNAMEID_2);
+			query.append(_FINDER_COLUMN_C_C_T_TC_TC_CLASSNAMEID_2);
 
-			sb.append(_FINDER_COLUMN_C_C_T_TC_TC_CLASSPK_2);
+			query.append(_FINDER_COLUMN_C_C_T_TC_TC_CLASSPK_2);
 
-			sb.append(_FINDER_COLUMN_C_C_T_TC_TC_TYPE_2);
+			query.append(_FINDER_COLUMN_C_C_T_TC_TC_TYPE_2);
 
-			sb.append(_FINDER_COLUMN_C_C_T_TC_TC_TYPECLASSNAMEID_2);
+			query.append(_FINDER_COLUMN_C_C_T_TC_TC_TYPECLASSNAMEID_2);
 
-			sb.append(_FINDER_COLUMN_C_C_T_TC_TC_TYPECLASSPK_2);
+			query.append(_FINDER_COLUMN_C_C_T_TC_TC_TYPECLASSPK_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 			}
-			else {
-				sb.append(EventModelImpl.ORDER_BY_JPQL);
+			else
+			 if (pagination) {
+				query.append(EventModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(classNameId);
+				qPos.add(classNameId);
 
-				queryPos.add(classPK);
+				qPos.add(classPK);
 
-				queryPos.add(type);
+				qPos.add(type);
 
-				queryPos.add(typeClassNameId);
+				qPos.add(typeClassNameId);
 
-				queryPos.add(typeClassPK);
+				qPos.add(typeClassPK);
 
-				list = (List<Event>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<Event>)QueryUtil.list(q, getDialect(), start,
+							end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<Event>)QueryUtil.list(q, getDialect(), start,
+							end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -2273,41 +2306,38 @@ public class EventPersistenceImpl
 	 * @throws NoSuchEventException if a matching event could not be found
 	 */
 	@Override
-	public Event findByC_C_T_TC_TC_First(
-			long classNameId, long classPK, int type, long typeClassNameId,
-			long typeClassPK, OrderByComparator<Event> orderByComparator)
-		throws NoSuchEventException {
-
-		Event event = fetchByC_C_T_TC_TC_First(
-			classNameId, classPK, type, typeClassNameId, typeClassPK,
-			orderByComparator);
+	public Event findByC_C_T_TC_TC_First(long classNameId, long classPK,
+		int type, long typeClassNameId, long typeClassPK,
+		OrderByComparator<Event> orderByComparator) throws NoSuchEventException {
+		Event event = fetchByC_C_T_TC_TC_First(classNameId, classPK, type,
+				typeClassNameId, typeClassPK, orderByComparator);
 
 		if (event != null) {
 			return event;
 		}
 
-		StringBundler sb = new StringBundler(12);
+		StringBundler msg = new StringBundler(12);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("classNameId=");
-		sb.append(classNameId);
+		msg.append("classNameId=");
+		msg.append(classNameId);
 
-		sb.append(", classPK=");
-		sb.append(classPK);
+		msg.append(", classPK=");
+		msg.append(classPK);
 
-		sb.append(", type=");
-		sb.append(type);
+		msg.append(", type=");
+		msg.append(type);
 
-		sb.append(", typeClassNameId=");
-		sb.append(typeClassNameId);
+		msg.append(", typeClassNameId=");
+		msg.append(typeClassNameId);
 
-		sb.append(", typeClassPK=");
-		sb.append(typeClassPK);
+		msg.append(", typeClassPK=");
+		msg.append(typeClassPK);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEventException(sb.toString());
+		throw new NoSuchEventException(msg.toString());
 	}
 
 	/**
@@ -2322,13 +2352,11 @@ public class EventPersistenceImpl
 	 * @return the first matching event, or <code>null</code> if a matching event could not be found
 	 */
 	@Override
-	public Event fetchByC_C_T_TC_TC_First(
-		long classNameId, long classPK, int type, long typeClassNameId,
-		long typeClassPK, OrderByComparator<Event> orderByComparator) {
-
-		List<Event> list = findByC_C_T_TC_TC(
-			classNameId, classPK, type, typeClassNameId, typeClassPK, 0, 1,
-			orderByComparator);
+	public Event fetchByC_C_T_TC_TC_First(long classNameId, long classPK,
+		int type, long typeClassNameId, long typeClassPK,
+		OrderByComparator<Event> orderByComparator) {
+		List<Event> list = findByC_C_T_TC_TC(classNameId, classPK, type,
+				typeClassNameId, typeClassPK, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -2350,41 +2378,38 @@ public class EventPersistenceImpl
 	 * @throws NoSuchEventException if a matching event could not be found
 	 */
 	@Override
-	public Event findByC_C_T_TC_TC_Last(
-			long classNameId, long classPK, int type, long typeClassNameId,
-			long typeClassPK, OrderByComparator<Event> orderByComparator)
-		throws NoSuchEventException {
-
-		Event event = fetchByC_C_T_TC_TC_Last(
-			classNameId, classPK, type, typeClassNameId, typeClassPK,
-			orderByComparator);
+	public Event findByC_C_T_TC_TC_Last(long classNameId, long classPK,
+		int type, long typeClassNameId, long typeClassPK,
+		OrderByComparator<Event> orderByComparator) throws NoSuchEventException {
+		Event event = fetchByC_C_T_TC_TC_Last(classNameId, classPK, type,
+				typeClassNameId, typeClassPK, orderByComparator);
 
 		if (event != null) {
 			return event;
 		}
 
-		StringBundler sb = new StringBundler(12);
+		StringBundler msg = new StringBundler(12);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("classNameId=");
-		sb.append(classNameId);
+		msg.append("classNameId=");
+		msg.append(classNameId);
 
-		sb.append(", classPK=");
-		sb.append(classPK);
+		msg.append(", classPK=");
+		msg.append(classPK);
 
-		sb.append(", type=");
-		sb.append(type);
+		msg.append(", type=");
+		msg.append(type);
 
-		sb.append(", typeClassNameId=");
-		sb.append(typeClassNameId);
+		msg.append(", typeClassNameId=");
+		msg.append(typeClassNameId);
 
-		sb.append(", typeClassPK=");
-		sb.append(typeClassPK);
+		msg.append(", typeClassPK=");
+		msg.append(typeClassPK);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEventException(sb.toString());
+		throw new NoSuchEventException(msg.toString());
 	}
 
 	/**
@@ -2399,20 +2424,19 @@ public class EventPersistenceImpl
 	 * @return the last matching event, or <code>null</code> if a matching event could not be found
 	 */
 	@Override
-	public Event fetchByC_C_T_TC_TC_Last(
-		long classNameId, long classPK, int type, long typeClassNameId,
-		long typeClassPK, OrderByComparator<Event> orderByComparator) {
-
-		int count = countByC_C_T_TC_TC(
-			classNameId, classPK, type, typeClassNameId, typeClassPK);
+	public Event fetchByC_C_T_TC_TC_Last(long classNameId, long classPK,
+		int type, long typeClassNameId, long typeClassPK,
+		OrderByComparator<Event> orderByComparator) {
+		int count = countByC_C_T_TC_TC(classNameId, classPK, type,
+				typeClassNameId, typeClassPK);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<Event> list = findByC_C_T_TC_TC(
-			classNameId, classPK, type, typeClassNameId, typeClassPK, count - 1,
-			count, orderByComparator);
+		List<Event> list = findByC_C_T_TC_TC(classNameId, classPK, type,
+				typeClassNameId, typeClassPK, count - 1, count,
+				orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -2435,12 +2459,10 @@ public class EventPersistenceImpl
 	 * @throws NoSuchEventException if a event with the primary key could not be found
 	 */
 	@Override
-	public Event[] findByC_C_T_TC_TC_PrevAndNext(
-			long eventId, long classNameId, long classPK, int type,
-			long typeClassNameId, long typeClassPK,
-			OrderByComparator<Event> orderByComparator)
+	public Event[] findByC_C_T_TC_TC_PrevAndNext(long eventId,
+		long classNameId, long classPK, int type, long typeClassNameId,
+		long typeClassPK, OrderByComparator<Event> orderByComparator)
 		throws NoSuchEventException {
-
 		Event event = findByPrimaryKey(eventId);
 
 		Session session = null;
@@ -2450,142 +2472,140 @@ public class EventPersistenceImpl
 
 			Event[] array = new EventImpl[3];
 
-			array[0] = getByC_C_T_TC_TC_PrevAndNext(
-				session, event, classNameId, classPK, type, typeClassNameId,
-				typeClassPK, orderByComparator, true);
+			array[0] = getByC_C_T_TC_TC_PrevAndNext(session, event,
+					classNameId, classPK, type, typeClassNameId, typeClassPK,
+					orderByComparator, true);
 
 			array[1] = event;
 
-			array[2] = getByC_C_T_TC_TC_PrevAndNext(
-				session, event, classNameId, classPK, type, typeClassNameId,
-				typeClassPK, orderByComparator, false);
+			array[2] = getByC_C_T_TC_TC_PrevAndNext(session, event,
+					classNameId, classPK, type, typeClassNameId, typeClassPK,
+					orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected Event getByC_C_T_TC_TC_PrevAndNext(
-		Session session, Event event, long classNameId, long classPK, int type,
-		long typeClassNameId, long typeClassPK,
-		OrderByComparator<Event> orderByComparator, boolean previous) {
-
-		StringBundler sb = null;
+	protected Event getByC_C_T_TC_TC_PrevAndNext(Session session, Event event,
+		long classNameId, long classPK, int type, long typeClassNameId,
+		long typeClassPK, OrderByComparator<Event> orderByComparator,
+		boolean previous) {
+		StringBundler query = null;
 
 		if (orderByComparator != null) {
-			sb = new StringBundler(
-				8 + (orderByComparator.getOrderByConditionFields().length * 3) +
+			query = new StringBundler(8 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			sb = new StringBundler(7);
+			query = new StringBundler(7);
 		}
 
-		sb.append(_SQL_SELECT_EVENT_WHERE);
+		query.append(_SQL_SELECT_EVENT_WHERE);
 
-		sb.append(_FINDER_COLUMN_C_C_T_TC_TC_CLASSNAMEID_2);
+		query.append(_FINDER_COLUMN_C_C_T_TC_TC_CLASSNAMEID_2);
 
-		sb.append(_FINDER_COLUMN_C_C_T_TC_TC_CLASSPK_2);
+		query.append(_FINDER_COLUMN_C_C_T_TC_TC_CLASSPK_2);
 
-		sb.append(_FINDER_COLUMN_C_C_T_TC_TC_TYPE_2);
+		query.append(_FINDER_COLUMN_C_C_T_TC_TC_TYPE_2);
 
-		sb.append(_FINDER_COLUMN_C_C_T_TC_TC_TYPECLASSNAMEID_2);
+		query.append(_FINDER_COLUMN_C_C_T_TC_TC_TYPECLASSNAMEID_2);
 
-		sb.append(_FINDER_COLUMN_C_C_T_TC_TC_TYPECLASSPK_2);
+		query.append(_FINDER_COLUMN_C_C_T_TC_TC_TYPECLASSPK_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
+				query.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
+						query.append(WHERE_GREATER_THAN);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN);
+						query.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			sb.append(ORDER_BY_CLAUSE);
+			query.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
+						query.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
+						query.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
+						query.append(ORDER_BY_ASC);
 					}
 					else {
-						sb.append(ORDER_BY_DESC);
+						query.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			sb.append(EventModelImpl.ORDER_BY_JPQL);
+			query.append(EventModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
-		Query query = session.createQuery(sql);
+		Query q = session.createQuery(sql);
 
-		query.setFirstResult(0);
-		query.setMaxResults(2);
+		q.setFirstResult(0);
+		q.setMaxResults(2);
 
-		QueryPos queryPos = QueryPos.getInstance(query);
+		QueryPos qPos = QueryPos.getInstance(q);
 
-		queryPos.add(classNameId);
+		qPos.add(classNameId);
 
-		queryPos.add(classPK);
+		qPos.add(classPK);
 
-		queryPos.add(type);
+		qPos.add(type);
 
-		queryPos.add(typeClassNameId);
+		qPos.add(typeClassNameId);
 
-		queryPos.add(typeClassPK);
+		qPos.add(typeClassPK);
 
 		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(event)) {
+			Object[] values = orderByComparator.getOrderByConditionValues(event);
 
-				queryPos.add(orderByConditionValue);
+			for (Object value : values) {
+				qPos.add(value);
 			}
 		}
 
-		List<Event> list = query.list();
+		List<Event> list = q.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -2605,15 +2625,11 @@ public class EventPersistenceImpl
 	 * @param typeClassPK the type class pk
 	 */
 	@Override
-	public void removeByC_C_T_TC_TC(
-		long classNameId, long classPK, int type, long typeClassNameId,
-		long typeClassPK) {
-
-		for (Event event :
-				findByC_C_T_TC_TC(
-					classNameId, classPK, type, typeClassNameId, typeClassPK,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
-
+	public void removeByC_C_T_TC_TC(long classNameId, long classPK, int type,
+		long typeClassNameId, long typeClassPK) {
+		for (Event event : findByC_C_T_TC_TC(classNameId, classPK, type,
+				typeClassNameId, typeClassPK, QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS, null)) {
 			remove(event);
 		}
 	}
@@ -2629,62 +2645,60 @@ public class EventPersistenceImpl
 	 * @return the number of matching events
 	 */
 	@Override
-	public int countByC_C_T_TC_TC(
-		long classNameId, long classPK, int type, long typeClassNameId,
-		long typeClassPK) {
-
-		FinderPath finderPath = _finderPathCountByC_C_T_TC_TC;
+	public int countByC_C_T_TC_TC(long classNameId, long classPK, int type,
+		long typeClassNameId, long typeClassPK) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_C_T_TC_TC;
 
 		Object[] finderArgs = new Object[] {
-			classNameId, classPK, type, typeClassNameId, typeClassPK
-		};
+				classNameId, classPK, type, typeClassNameId, typeClassPK
+			};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(6);
+			StringBundler query = new StringBundler(6);
 
-			sb.append(_SQL_COUNT_EVENT_WHERE);
+			query.append(_SQL_COUNT_EVENT_WHERE);
 
-			sb.append(_FINDER_COLUMN_C_C_T_TC_TC_CLASSNAMEID_2);
+			query.append(_FINDER_COLUMN_C_C_T_TC_TC_CLASSNAMEID_2);
 
-			sb.append(_FINDER_COLUMN_C_C_T_TC_TC_CLASSPK_2);
+			query.append(_FINDER_COLUMN_C_C_T_TC_TC_CLASSPK_2);
 
-			sb.append(_FINDER_COLUMN_C_C_T_TC_TC_TYPE_2);
+			query.append(_FINDER_COLUMN_C_C_T_TC_TC_TYPE_2);
 
-			sb.append(_FINDER_COLUMN_C_C_T_TC_TC_TYPECLASSNAMEID_2);
+			query.append(_FINDER_COLUMN_C_C_T_TC_TC_TYPECLASSNAMEID_2);
 
-			sb.append(_FINDER_COLUMN_C_C_T_TC_TC_TYPECLASSPK_2);
+			query.append(_FINDER_COLUMN_C_C_T_TC_TC_TYPECLASSPK_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(classNameId);
+				qPos.add(classNameId);
 
-				queryPos.add(classPK);
+				qPos.add(classPK);
 
-				queryPos.add(type);
+				qPos.add(type);
 
-				queryPos.add(typeClassNameId);
+				qPos.add(typeClassNameId);
 
-				queryPos.add(typeClassPK);
+				qPos.add(typeClassPK);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
+			catch (Exception e) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -2694,40 +2708,13 @@ public class EventPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_C_C_T_TC_TC_CLASSNAMEID_2 =
-		"event.classNameId = ? AND ";
-
-	private static final String _FINDER_COLUMN_C_C_T_TC_TC_CLASSPK_2 =
-		"event.classPK = ? AND ";
-
-	private static final String _FINDER_COLUMN_C_C_T_TC_TC_TYPE_2 =
-		"event.type = ? AND ";
-
-	private static final String _FINDER_COLUMN_C_C_T_TC_TC_TYPECLASSNAMEID_2 =
-		"event.typeClassNameId = ? AND ";
-
-	private static final String _FINDER_COLUMN_C_C_T_TC_TC_TYPECLASSPK_2 =
-		"event.typeClassPK = ?";
+	private static final String _FINDER_COLUMN_C_C_T_TC_TC_CLASSNAMEID_2 = "event.classNameId = ? AND ";
+	private static final String _FINDER_COLUMN_C_C_T_TC_TC_CLASSPK_2 = "event.classPK = ? AND ";
+	private static final String _FINDER_COLUMN_C_C_T_TC_TC_TYPE_2 = "event.type = ? AND ";
+	private static final String _FINDER_COLUMN_C_C_T_TC_TC_TYPECLASSNAMEID_2 = "event.typeClassNameId = ? AND ";
+	private static final String _FINDER_COLUMN_C_C_T_TC_TC_TYPECLASSPK_2 = "event.typeClassPK = ?";
 
 	public EventPersistenceImpl() {
-		Map<String, String> dbColumnNames = new HashMap<String, String>();
-
-		dbColumnNames.put("type", "type_");
-
-		try {
-			Field field = BasePersistenceImpl.class.getDeclaredField(
-				"_dbColumnNames");
-
-			field.setAccessible(true);
-
-			field.set(this, dbColumnNames);
-		}
-		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception, exception);
-			}
-		}
-
 		setModelClass(Event.class);
 	}
 
@@ -2738,9 +2725,8 @@ public class EventPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(Event event) {
-		entityCache.putResult(
-			EventModelImpl.ENTITY_CACHE_ENABLED, EventImpl.class,
-			event.getPrimaryKey(), event);
+		entityCache.putResult(EventModelImpl.ENTITY_CACHE_ENABLED,
+			EventImpl.class, event.getPrimaryKey(), event);
 
 		event.resetOriginalValues();
 	}
@@ -2753,10 +2739,8 @@ public class EventPersistenceImpl
 	@Override
 	public void cacheResult(List<Event> events) {
 		for (Event event : events) {
-			if (entityCache.getResult(
-					EventModelImpl.ENTITY_CACHE_ENABLED, EventImpl.class,
-					event.getPrimaryKey()) == null) {
-
+			if (entityCache.getResult(EventModelImpl.ENTITY_CACHE_ENABLED,
+						EventImpl.class, event.getPrimaryKey()) == null) {
 				cacheResult(event);
 			}
 			else {
@@ -2769,7 +2753,7 @@ public class EventPersistenceImpl
 	 * Clears the cache for all events.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2785,14 +2769,13 @@ public class EventPersistenceImpl
 	 * Clears the cache for the event.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(Event event) {
-		entityCache.removeResult(
-			EventModelImpl.ENTITY_CACHE_ENABLED, EventImpl.class,
-			event.getPrimaryKey());
+		entityCache.removeResult(EventModelImpl.ENTITY_CACHE_ENABLED,
+			EventImpl.class, event.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2804,21 +2787,8 @@ public class EventPersistenceImpl
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (Event event : events) {
-			entityCache.removeResult(
-				EventModelImpl.ENTITY_CACHE_ENABLED, EventImpl.class,
-				event.getPrimaryKey());
-		}
-	}
-
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				EventModelImpl.ENTITY_CACHE_ENABLED, EventImpl.class,
-				primaryKey);
+			entityCache.removeResult(EventModelImpl.ENTITY_CACHE_ENABLED,
+				EventImpl.class, event.getPrimaryKey());
 		}
 	}
 
@@ -2871,17 +2841,17 @@ public class EventPersistenceImpl
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchEventException(
-					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				throw new NoSuchEventException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+					primaryKey);
 			}
 
 			return remove(event);
 		}
-		catch (NoSuchEventException noSuchEntityException) {
-			throw noSuchEntityException;
+		catch (NoSuchEventException nsee) {
+			throw nsee;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -2890,22 +2860,24 @@ public class EventPersistenceImpl
 
 	@Override
 	protected Event removeImpl(Event event) {
+		event = toUnwrappedModel(event);
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(event)) {
-				event = (Event)session.get(
-					EventImpl.class, event.getPrimaryKeyObj());
+				event = (Event)session.get(EventImpl.class,
+						event.getPrimaryKeyObj());
 			}
 
 			if (event != null) {
 				session.delete(event);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -2920,23 +2892,9 @@ public class EventPersistenceImpl
 
 	@Override
 	public Event updateImpl(Event event) {
+		event = toUnwrappedModel(event);
+
 		boolean isNew = event.isNew();
-
-		if (!(event instanceof EventModelImpl)) {
-			InvocationHandler invocationHandler = null;
-
-			if (ProxyUtil.isProxyClass(event.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(event);
-
-				throw new IllegalArgumentException(
-					"Implement ModelWrapper in event proxy " +
-						invocationHandler.getClass());
-			}
-
-			throw new IllegalArgumentException(
-				"Implement ModelWrapper in custom Event implementation " +
-					event.getClass());
-		}
 
 		EventModelImpl eventModelImpl = (EventModelImpl)event;
 
@@ -2954,8 +2912,8 @@ public class EventPersistenceImpl
 				event = (Event)session.merge(event);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -2966,157 +2924,180 @@ public class EventPersistenceImpl
 		if (!EventModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else if (isNew) {
+		else
+		 if (isNew) {
 			Object[] args = new Object[] {
-				eventModelImpl.getAccountEntryId(),
-				eventModelImpl.getClassNameId()
-			};
-
-			finderCache.removeResult(_finderPathCountByA_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByA_C, args);
-
-			args = new Object[] {
-				eventModelImpl.getClassNameId(), eventModelImpl.getClassPK()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_C, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByC_C, args);
-
-			args = new Object[] {
-				eventModelImpl.getClassNameId(), eventModelImpl.getClassPK(),
-				eventModelImpl.getType()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_C_T, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByC_C_T, args);
-
-			args = new Object[] {
-				eventModelImpl.getClassNameId(), eventModelImpl.getClassPK(),
-				eventModelImpl.getType(), eventModelImpl.getTypeClassNameId(),
-				eventModelImpl.getTypeClassPK()
-			};
-
-			finderCache.removeResult(_finderPathCountByC_C_T_TC_TC, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByC_C_T_TC_TC, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((eventModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByA_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					eventModelImpl.getOriginalAccountEntryId(),
-					eventModelImpl.getOriginalClassNameId()
-				};
-
-				finderCache.removeResult(_finderPathCountByA_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByA_C, args);
-
-				args = new Object[] {
 					eventModelImpl.getAccountEntryId(),
 					eventModelImpl.getClassNameId()
 				};
 
-				finderCache.removeResult(_finderPathCountByA_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByA_C, args);
-			}
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_A_C, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_A_C,
+				args);
 
-			if ((eventModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_C.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					eventModelImpl.getOriginalClassNameId(),
-					eventModelImpl.getOriginalClassPK()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_C, args);
-
-				args = new Object[] {
+			args = new Object[] {
 					eventModelImpl.getClassNameId(), eventModelImpl.getClassPK()
 				};
 
-				finderCache.removeResult(_finderPathCountByC_C, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_C, args);
-			}
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_C, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_C,
+				args);
 
-			if ((eventModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_C_T.getColumnBitmask()) !=
-					 0) {
-
-				Object[] args = new Object[] {
-					eventModelImpl.getOriginalClassNameId(),
-					eventModelImpl.getOriginalClassPK(),
-					eventModelImpl.getOriginalType()
+			args = new Object[] {
+					eventModelImpl.getClassNameId(), eventModelImpl.getClassPK(),
+					eventModelImpl.getType()
 				};
 
-				finderCache.removeResult(_finderPathCountByC_C_T, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_C_T, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_C_T, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_C_T,
+				args);
 
-				args = new Object[] {
-					eventModelImpl.getClassNameId(),
-					eventModelImpl.getClassPK(), eventModelImpl.getType()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_C_T, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_C_T, args);
-			}
-
-			if ((eventModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByC_C_T_TC_TC.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					eventModelImpl.getOriginalClassNameId(),
-					eventModelImpl.getOriginalClassPK(),
-					eventModelImpl.getOriginalType(),
-					eventModelImpl.getOriginalTypeClassNameId(),
-					eventModelImpl.getOriginalTypeClassPK()
-				};
-
-				finderCache.removeResult(_finderPathCountByC_C_T_TC_TC, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_C_T_TC_TC, args);
-
-				args = new Object[] {
-					eventModelImpl.getClassNameId(),
-					eventModelImpl.getClassPK(), eventModelImpl.getType(),
+			args = new Object[] {
+					eventModelImpl.getClassNameId(), eventModelImpl.getClassPK(),
+					eventModelImpl.getType(),
 					eventModelImpl.getTypeClassNameId(),
 					eventModelImpl.getTypeClassPK()
 				};
 
-				finderCache.removeResult(_finderPathCountByC_C_T_TC_TC, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByC_C_T_TC_TC, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_C_T_TC_TC, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_C_T_TC_TC,
+				args);
+
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
+		}
+
+		else {
+			if ((eventModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_A_C.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						eventModelImpl.getOriginalAccountEntryId(),
+						eventModelImpl.getOriginalClassNameId()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_A_C, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_A_C,
+					args);
+
+				args = new Object[] {
+						eventModelImpl.getAccountEntryId(),
+						eventModelImpl.getClassNameId()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_A_C, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_A_C,
+					args);
+			}
+
+			if ((eventModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_C.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						eventModelImpl.getOriginalClassNameId(),
+						eventModelImpl.getOriginalClassPK()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_C_C, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_C,
+					args);
+
+				args = new Object[] {
+						eventModelImpl.getClassNameId(),
+						eventModelImpl.getClassPK()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_C_C, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_C,
+					args);
+			}
+
+			if ((eventModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_C_T.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						eventModelImpl.getOriginalClassNameId(),
+						eventModelImpl.getOriginalClassPK(),
+						eventModelImpl.getOriginalType()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_C_C_T, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_C_T,
+					args);
+
+				args = new Object[] {
+						eventModelImpl.getClassNameId(),
+						eventModelImpl.getClassPK(), eventModelImpl.getType()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_C_C_T, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_C_T,
+					args);
+			}
+
+			if ((eventModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_C_T_TC_TC.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						eventModelImpl.getOriginalClassNameId(),
+						eventModelImpl.getOriginalClassPK(),
+						eventModelImpl.getOriginalType(),
+						eventModelImpl.getOriginalTypeClassNameId(),
+						eventModelImpl.getOriginalTypeClassPK()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_C_C_T_TC_TC, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_C_T_TC_TC,
+					args);
+
+				args = new Object[] {
+						eventModelImpl.getClassNameId(),
+						eventModelImpl.getClassPK(), eventModelImpl.getType(),
+						eventModelImpl.getTypeClassNameId(),
+						eventModelImpl.getTypeClassPK()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_C_C_T_TC_TC, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_C_T_TC_TC,
+					args);
 			}
 		}
 
-		entityCache.putResult(
-			EventModelImpl.ENTITY_CACHE_ENABLED, EventImpl.class,
-			event.getPrimaryKey(), event, false);
+		entityCache.putResult(EventModelImpl.ENTITY_CACHE_ENABLED,
+			EventImpl.class, event.getPrimaryKey(), event, false);
 
 		event.resetOriginalValues();
 
 		return event;
 	}
 
+	protected Event toUnwrappedModel(Event event) {
+		if (event instanceof EventImpl) {
+			return event;
+		}
+
+		EventImpl eventImpl = new EventImpl();
+
+		eventImpl.setNew(event.isNew());
+		eventImpl.setPrimaryKey(event.getPrimaryKey());
+
+		eventImpl.setEventId(event.getEventId());
+		eventImpl.setUserId(event.getUserId());
+		eventImpl.setUserName(event.getUserName());
+		eventImpl.setCreateDate(event.getCreateDate());
+		eventImpl.setOccurDate(event.getOccurDate());
+		eventImpl.setAccountEntryId(event.getAccountEntryId());
+		eventImpl.setClassNameId(event.getClassNameId());
+		eventImpl.setClassPK(event.getClassPK());
+		eventImpl.setType(event.getType());
+		eventImpl.setTypeClassNameId(event.getTypeClassNameId());
+		eventImpl.setTypeClassPK(event.getTypeClassPK());
+		eventImpl.setTitle(event.getTitle());
+		eventImpl.setSummary(event.getSummary());
+		eventImpl.setAdditionalInfo(event.getAdditionalInfo());
+
+		return eventImpl;
+	}
+
 	/**
-	 * Returns the event with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
+	 * Returns the event with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the event
 	 * @return the event
@@ -3125,7 +3106,6 @@ public class EventPersistenceImpl
 	@Override
 	public Event findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchEventException {
-
 		Event event = fetchByPrimaryKey(primaryKey);
 
 		if (event == null) {
@@ -3133,15 +3113,15 @@ public class EventPersistenceImpl
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchEventException(
-				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			throw new NoSuchEventException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
 		}
 
 		return event;
 	}
 
 	/**
-	 * Returns the event with the primary key or throws a <code>NoSuchEventException</code> if it could not be found.
+	 * Returns the event with the primary key or throws a {@link NoSuchEventException} if it could not be found.
 	 *
 	 * @param eventId the primary key of the event
 	 * @return the event
@@ -3160,8 +3140,8 @@ public class EventPersistenceImpl
 	 */
 	@Override
 	public Event fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(
-			EventModelImpl.ENTITY_CACHE_ENABLED, EventImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(EventModelImpl.ENTITY_CACHE_ENABLED,
+				EventImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -3181,17 +3161,15 @@ public class EventPersistenceImpl
 					cacheResult(event);
 				}
 				else {
-					entityCache.putResult(
-						EventModelImpl.ENTITY_CACHE_ENABLED, EventImpl.class,
-						primaryKey, nullModel);
+					entityCache.putResult(EventModelImpl.ENTITY_CACHE_ENABLED,
+						EventImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception exception) {
-				entityCache.removeResult(
-					EventModelImpl.ENTITY_CACHE_ENABLED, EventImpl.class,
-					primaryKey);
+			catch (Exception e) {
+				entityCache.removeResult(EventModelImpl.ENTITY_CACHE_ENABLED,
+					EventImpl.class, primaryKey);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -3215,7 +3193,6 @@ public class EventPersistenceImpl
 	@Override
 	public Map<Serializable, Event> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
-
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
@@ -3239,9 +3216,8 @@ public class EventPersistenceImpl
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(
-				EventModelImpl.ENTITY_CACHE_ENABLED, EventImpl.class,
-				primaryKey);
+			Serializable serializable = entityCache.getResult(EventModelImpl.ENTITY_CACHE_ENABLED,
+					EventImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -3261,31 +3237,31 @@ public class EventPersistenceImpl
 			return map;
 		}
 
-		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
+				1);
 
-		sb.append(_SQL_SELECT_EVENT_WHERE_PKS_IN);
+		query.append(_SQL_SELECT_EVENT_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			sb.append((long)primaryKey);
+			query.append((long)primaryKey);
 
-			sb.append(",");
+			query.append(StringPool.COMMA);
 		}
 
-		sb.setIndex(sb.index() - 1);
+		query.setIndex(query.index() - 1);
 
-		sb.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query query = session.createQuery(sql);
+			Query q = session.createQuery(sql);
 
-			for (Event event : (List<Event>)query.list()) {
+			for (Event event : (List<Event>)q.list()) {
 				map.put(event.getPrimaryKeyObj(), event);
 
 				cacheResult(event);
@@ -3294,13 +3270,12 @@ public class EventPersistenceImpl
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(
-					EventModelImpl.ENTITY_CACHE_ENABLED, EventImpl.class,
-					primaryKey, nullModel);
+				entityCache.putResult(EventModelImpl.ENTITY_CACHE_ENABLED,
+					EventImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -3323,7 +3298,7 @@ public class EventPersistenceImpl
 	 * Returns a range of all the events.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>EventModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link EventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of events
@@ -3339,7 +3314,7 @@ public class EventPersistenceImpl
 	 * Returns an ordered range of all the events.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>EventModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link EventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of events
@@ -3348,9 +3323,8 @@ public class EventPersistenceImpl
 	 * @return the ordered range of events
 	 */
 	@Override
-	public List<Event> findAll(
-		int start, int end, OrderByComparator<Event> orderByComparator) {
-
+	public List<Event> findAll(int start, int end,
+		OrderByComparator<Event> orderByComparator) {
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -3358,62 +3332,61 @@ public class EventPersistenceImpl
 	 * Returns an ordered range of all the events.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>EventModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link EventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of events
 	 * @param end the upper bound of the range of events (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of events
 	 */
 	@Override
-	public List<Event> findAll(
-		int start, int end, OrderByComparator<Event> orderByComparator,
-		boolean useFinderCache) {
-
+	public List<Event> findAll(int start, int end,
+		OrderByComparator<Event> orderByComparator, boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
-				finderArgs = FINDER_ARGS_EMPTY;
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+			finderArgs = FINDER_ARGS_EMPTY;
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] {start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
 		List<Event> list = null;
 
-		if (useFinderCache) {
-			list = (List<Event>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<Event>)finderCache.getResult(finderPath, finderArgs,
+					this);
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					2 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(2 +
+						(orderByComparator.getOrderByFields().length * 2));
 
-				sb.append(_SQL_SELECT_EVENT);
+				query.append(_SQL_SELECT_EVENT);
 
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 
-				sql = sb.toString();
+				sql = query.toString();
 			}
 			else {
 				sql = _SQL_SELECT_EVENT;
 
-				sql = sql.concat(EventModelImpl.ORDER_BY_JPQL);
+				if (pagination) {
+					sql = sql.concat(EventModelImpl.ORDER_BY_JPQL);
+				}
 			}
 
 			Session session = null;
@@ -3421,23 +3394,29 @@ public class EventPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				list = (List<Event>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<Event>)QueryUtil.list(q, getDialect(), start,
+							end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<Event>)QueryUtil.list(q, getDialect(), start,
+							end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -3465,8 +3444,8 @@ public class EventPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -3474,18 +3453,18 @@ public class EventPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(_SQL_COUNT_EVENT);
+				Query q = session.createQuery(_SQL_COUNT_EVENT);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
+					count);
 			}
-			catch (Exception exception) {
-				finderCache.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -3509,150 +3488,6 @@ public class EventPersistenceImpl
 	 * Initializes the event persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			EventModelImpl.ENTITY_CACHE_ENABLED,
-			EventModelImpl.FINDER_CACHE_ENABLED, EventImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			EventModelImpl.ENTITY_CACHE_ENABLED,
-			EventModelImpl.FINDER_CACHE_ENABLED, EventImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			EventModelImpl.ENTITY_CACHE_ENABLED,
-			EventModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
-
-		_finderPathWithPaginationFindByA_C = new FinderPath(
-			EventModelImpl.ENTITY_CACHE_ENABLED,
-			EventModelImpl.FINDER_CACHE_ENABLED, EventImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByA_C",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByA_C = new FinderPath(
-			EventModelImpl.ENTITY_CACHE_ENABLED,
-			EventModelImpl.FINDER_CACHE_ENABLED, EventImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByA_C",
-			new String[] {Long.class.getName(), Long.class.getName()},
-			EventModelImpl.ACCOUNTENTRYID_COLUMN_BITMASK |
-			EventModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			EventModelImpl.OCCURDATE_COLUMN_BITMASK);
-
-		_finderPathCountByA_C = new FinderPath(
-			EventModelImpl.ENTITY_CACHE_ENABLED,
-			EventModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByA_C",
-			new String[] {Long.class.getName(), Long.class.getName()});
-
-		_finderPathWithPaginationFindByC_C = new FinderPath(
-			EventModelImpl.ENTITY_CACHE_ENABLED,
-			EventModelImpl.FINDER_CACHE_ENABLED, EventImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByC_C = new FinderPath(
-			EventModelImpl.ENTITY_CACHE_ENABLED,
-			EventModelImpl.FINDER_CACHE_ENABLED, EventImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C",
-			new String[] {Long.class.getName(), Long.class.getName()},
-			EventModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			EventModelImpl.CLASSPK_COLUMN_BITMASK |
-			EventModelImpl.OCCURDATE_COLUMN_BITMASK);
-
-		_finderPathCountByC_C = new FinderPath(
-			EventModelImpl.ENTITY_CACHE_ENABLED,
-			EventModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
-			new String[] {Long.class.getName(), Long.class.getName()});
-
-		_finderPathWithPaginationFindByC_C_T = new FinderPath(
-			EventModelImpl.ENTITY_CACHE_ENABLED,
-			EventModelImpl.FINDER_CACHE_ENABLED, EventImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C_T",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByC_C_T = new FinderPath(
-			EventModelImpl.ENTITY_CACHE_ENABLED,
-			EventModelImpl.FINDER_CACHE_ENABLED, EventImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C_T",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Integer.class.getName()
-			},
-			EventModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			EventModelImpl.CLASSPK_COLUMN_BITMASK |
-			EventModelImpl.TYPE_COLUMN_BITMASK |
-			EventModelImpl.OCCURDATE_COLUMN_BITMASK);
-
-		_finderPathCountByC_C_T = new FinderPath(
-			EventModelImpl.ENTITY_CACHE_ENABLED,
-			EventModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C_T",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Integer.class.getName()
-			});
-
-		_finderPathWithPaginationCountByC_C_T = new FinderPath(
-			EventModelImpl.ENTITY_CACHE_ENABLED,
-			EventModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_C_T",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Integer.class.getName()
-			});
-
-		_finderPathWithPaginationFindByC_C_T_TC_TC = new FinderPath(
-			EventModelImpl.ENTITY_CACHE_ENABLED,
-			EventModelImpl.FINDER_CACHE_ENABLED, EventImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C_T_TC_TC",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Integer.class.getName(), Long.class.getName(),
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByC_C_T_TC_TC = new FinderPath(
-			EventModelImpl.ENTITY_CACHE_ENABLED,
-			EventModelImpl.FINDER_CACHE_ENABLED, EventImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C_T_TC_TC",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Integer.class.getName(), Long.class.getName(),
-				Long.class.getName()
-			},
-			EventModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			EventModelImpl.CLASSPK_COLUMN_BITMASK |
-			EventModelImpl.TYPE_COLUMN_BITMASK |
-			EventModelImpl.TYPECLASSNAMEID_COLUMN_BITMASK |
-			EventModelImpl.TYPECLASSPK_COLUMN_BITMASK |
-			EventModelImpl.OCCURDATE_COLUMN_BITMASK);
-
-		_finderPathCountByC_C_T_TC_TC = new FinderPath(
-			EventModelImpl.ENTITY_CACHE_ENABLED,
-			EventModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C_T_TC_TC",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Integer.class.getName(), Long.class.getName(),
-				Long.class.getName()
-			});
 	}
 
 	public void destroy() {
@@ -3664,37 +3499,18 @@ public class EventPersistenceImpl
 
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
-
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-
-	private static final String _SQL_SELECT_EVENT =
-		"SELECT event FROM Event event";
-
-	private static final String _SQL_SELECT_EVENT_WHERE_PKS_IN =
-		"SELECT event FROM Event event WHERE eventId IN (";
-
-	private static final String _SQL_SELECT_EVENT_WHERE =
-		"SELECT event FROM Event event WHERE ";
-
-	private static final String _SQL_COUNT_EVENT =
-		"SELECT COUNT(event) FROM Event event";
-
-	private static final String _SQL_COUNT_EVENT_WHERE =
-		"SELECT COUNT(event) FROM Event event WHERE ";
-
+	private static final String _SQL_SELECT_EVENT = "SELECT event FROM Event event";
+	private static final String _SQL_SELECT_EVENT_WHERE_PKS_IN = "SELECT event FROM Event event WHERE eventId IN (";
+	private static final String _SQL_SELECT_EVENT_WHERE = "SELECT event FROM Event event WHERE ";
+	private static final String _SQL_COUNT_EVENT = "SELECT COUNT(event) FROM Event event";
+	private static final String _SQL_COUNT_EVENT_WHERE = "SELECT COUNT(event) FROM Event event WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "event.";
-
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
-		"No Event exists with the primary key ";
-
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No Event exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		EventPersistenceImpl.class);
-
-	private static final Set<String> _badColumnNames = SetUtil.fromArray(
-		new String[] {"type"});
-
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Event exists with the primary key ";
+	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Event exists with the key {";
+	private static final Log _log = LogFactoryUtil.getLog(EventPersistenceImpl.class);
+	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
+				"type"
+			});
 }

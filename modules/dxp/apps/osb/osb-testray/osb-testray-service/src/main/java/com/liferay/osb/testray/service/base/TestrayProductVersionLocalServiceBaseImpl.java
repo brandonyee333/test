@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.testray.service.base;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.testray.model.TestrayProductVersion;
 import com.liferay.osb.testray.service.TestrayProductVersionLocalService;
@@ -37,6 +39,7 @@ import com.liferay.osb.testray.service.persistence.TestraySubtaskPersistence;
 import com.liferay.osb.testray.service.persistence.TestraySuitePersistence;
 import com.liferay.osb.testray.service.persistence.TestrayTaskPersistence;
 import com.liferay.osb.testray.service.persistence.TestrayTeamPersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -56,10 +59,8 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
-import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
-import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -79,16 +80,17 @@ import javax.sql.DataSource;
  *
  * @author Ethan Bustad
  * @see com.liferay.osb.testray.service.impl.TestrayProductVersionLocalServiceImpl
+ * @see com.liferay.osb.testray.service.TestrayProductVersionLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class TestrayProductVersionLocalServiceBaseImpl
-	extends BaseLocalServiceImpl
-	implements IdentifiableOSGiService, TestrayProductVersionLocalService {
-
+	extends BaseLocalServiceImpl implements TestrayProductVersionLocalService,
+		IdentifiableOSGiService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>TestrayProductVersionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.testray.service.TestrayProductVersionLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.osb.testray.service.TestrayProductVersionLocalServiceUtil} to access the testray product version local service.
 	 */
 
 	/**
@@ -101,7 +103,6 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	@Override
 	public TestrayProductVersion addTestrayProductVersion(
 		TestrayProductVersion testrayProductVersion) {
-
 		testrayProductVersion.setNew(true);
 
 		return testrayProductVersionPersistence.update(testrayProductVersion);
@@ -114,10 +115,8 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @return the new testray product version
 	 */
 	@Override
-	@Transactional(enabled = false)
 	public TestrayProductVersion createTestrayProductVersion(
 		long testrayProductVersionId) {
-
 		return testrayProductVersionPersistence.create(testrayProductVersionId);
 	}
 
@@ -131,9 +130,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public TestrayProductVersion deleteTestrayProductVersion(
-			long testrayProductVersionId)
-		throws PortalException {
-
+		long testrayProductVersionId) throws PortalException {
 		return testrayProductVersionPersistence.remove(testrayProductVersionId);
 	}
 
@@ -147,7 +144,6 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	@Override
 	public TestrayProductVersion deleteTestrayProductVersion(
 		TestrayProductVersion testrayProductVersion) {
-
 		return testrayProductVersionPersistence.remove(testrayProductVersion);
 	}
 
@@ -155,8 +151,8 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(
-			TestrayProductVersion.class, clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(TestrayProductVersion.class,
+			clazz.getClassLoader());
 	}
 
 	/**
@@ -167,15 +163,14 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	@Override
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
-		return testrayProductVersionPersistence.findWithDynamicQuery(
-			dynamicQuery);
+		return testrayProductVersionPersistence.findWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.testray.model.impl.TestrayProductVersionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.testray.model.impl.TestrayProductVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -184,18 +179,17 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end) {
-
-		return testrayProductVersionPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
+		return testrayProductVersionPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.testray.model.impl.TestrayProductVersionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.testray.model.impl.TestrayProductVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -205,12 +199,10 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(
-		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<T> orderByComparator) {
-
-		return testrayProductVersionPersistence.findWithDynamicQuery(
-			dynamicQuery, start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
+		return testrayProductVersionPersistence.findWithDynamicQuery(dynamicQuery,
+			start, end, orderByComparator);
 	}
 
 	/**
@@ -221,8 +213,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	@Override
 	public long dynamicQueryCount(DynamicQuery dynamicQuery) {
-		return testrayProductVersionPersistence.countWithDynamicQuery(
-			dynamicQuery);
+		return testrayProductVersionPersistence.countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
@@ -233,19 +224,16 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(
-		DynamicQuery dynamicQuery, Projection projection) {
-
-		return testrayProductVersionPersistence.countWithDynamicQuery(
-			dynamicQuery, projection);
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection) {
+		return testrayProductVersionPersistence.countWithDynamicQuery(dynamicQuery,
+			projection);
 	}
 
 	@Override
 	public TestrayProductVersion fetchTestrayProductVersion(
 		long testrayProductVersionId) {
-
-		return testrayProductVersionPersistence.fetchByPrimaryKey(
-			testrayProductVersionId);
+		return testrayProductVersionPersistence.fetchByPrimaryKey(testrayProductVersionId);
 	}
 
 	/**
@@ -257,20 +245,15 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	@Override
 	public TestrayProductVersion getTestrayProductVersion(
-			long testrayProductVersionId)
-		throws PortalException {
-
-		return testrayProductVersionPersistence.findByPrimaryKey(
-			testrayProductVersionId);
+		long testrayProductVersionId) throws PortalException {
+		return testrayProductVersionPersistence.findByPrimaryKey(testrayProductVersionId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery =
-			new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
-		actionableDynamicQuery.setBaseLocalService(
-			testrayProductVersionLocalService);
+		actionableDynamicQuery.setBaseLocalService(testrayProductVersionLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(TestrayProductVersion.class);
 
@@ -281,17 +264,12 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
 
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
-			new IndexableActionableDynamicQuery();
-
-		indexableActionableDynamicQuery.setBaseLocalService(
-			testrayProductVersionLocalService);
+		indexableActionableDynamicQuery.setBaseLocalService(testrayProductVersionLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
-		indexableActionableDynamicQuery.setModelClass(
-			TestrayProductVersion.class);
+		indexableActionableDynamicQuery.setModelClass(TestrayProductVersion.class);
 
 		indexableActionableDynamicQuery.setPrimaryKeyPropertyName(
 			"testrayProductVersionId");
@@ -301,9 +279,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-
-		actionableDynamicQuery.setBaseLocalService(
-			testrayProductVersionLocalService);
+		actionableDynamicQuery.setBaseLocalService(testrayProductVersionLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(TestrayProductVersion.class);
 
@@ -317,22 +293,12 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-
-		return testrayProductVersionLocalService.deleteTestrayProductVersion(
-			(TestrayProductVersion)persistedModel);
+		return testrayProductVersionLocalService.deleteTestrayProductVersion((TestrayProductVersion)persistedModel);
 	}
 
-	public BasePersistence<TestrayProductVersion> getBasePersistence() {
-		return testrayProductVersionPersistence;
-	}
-
-	/**
-	 * @throws PortalException
-	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
-
 		return testrayProductVersionPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -340,7 +306,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * Returns a range of all the testray product versions.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.testray.model.impl.TestrayProductVersionModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.testray.model.impl.TestrayProductVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray product versions
@@ -348,9 +314,8 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @return the range of testray product versions
 	 */
 	@Override
-	public List<TestrayProductVersion> getTestrayProductVersions(
-		int start, int end) {
-
+	public List<TestrayProductVersion> getTestrayProductVersions(int start,
+		int end) {
 		return testrayProductVersionPersistence.findAll(start, end);
 	}
 
@@ -374,7 +339,6 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	@Override
 	public TestrayProductVersion updateTestrayProductVersion(
 		TestrayProductVersion testrayProductVersion) {
-
 		return testrayProductVersionPersistence.update(testrayProductVersion);
 	}
 
@@ -383,9 +347,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the testray archive local service
 	 */
-	public com.liferay.osb.testray.service.TestrayArchiveLocalService
-		getTestrayArchiveLocalService() {
-
+	public com.liferay.osb.testray.service.TestrayArchiveLocalService getTestrayArchiveLocalService() {
 		return testrayArchiveLocalService;
 	}
 
@@ -395,9 +357,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @param testrayArchiveLocalService the testray archive local service
 	 */
 	public void setTestrayArchiveLocalService(
-		com.liferay.osb.testray.service.TestrayArchiveLocalService
-			testrayArchiveLocalService) {
-
+		com.liferay.osb.testray.service.TestrayArchiveLocalService testrayArchiveLocalService) {
 		this.testrayArchiveLocalService = testrayArchiveLocalService;
 	}
 
@@ -417,7 +377,6 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	public void setTestrayArchivePersistence(
 		TestrayArchivePersistence testrayArchivePersistence) {
-
 		this.testrayArchivePersistence = testrayArchivePersistence;
 	}
 
@@ -426,9 +385,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the testray assignment local service
 	 */
-	public com.liferay.osb.testray.service.TestrayAssignmentLocalService
-		getTestrayAssignmentLocalService() {
-
+	public com.liferay.osb.testray.service.TestrayAssignmentLocalService getTestrayAssignmentLocalService() {
 		return testrayAssignmentLocalService;
 	}
 
@@ -438,9 +395,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @param testrayAssignmentLocalService the testray assignment local service
 	 */
 	public void setTestrayAssignmentLocalService(
-		com.liferay.osb.testray.service.TestrayAssignmentLocalService
-			testrayAssignmentLocalService) {
-
+		com.liferay.osb.testray.service.TestrayAssignmentLocalService testrayAssignmentLocalService) {
 		this.testrayAssignmentLocalService = testrayAssignmentLocalService;
 	}
 
@@ -460,7 +415,6 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	public void setTestrayAssignmentPersistence(
 		TestrayAssignmentPersistence testrayAssignmentPersistence) {
-
 		this.testrayAssignmentPersistence = testrayAssignmentPersistence;
 	}
 
@@ -469,9 +423,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the testray build local service
 	 */
-	public com.liferay.osb.testray.service.TestrayBuildLocalService
-		getTestrayBuildLocalService() {
-
+	public com.liferay.osb.testray.service.TestrayBuildLocalService getTestrayBuildLocalService() {
 		return testrayBuildLocalService;
 	}
 
@@ -481,9 +433,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @param testrayBuildLocalService the testray build local service
 	 */
 	public void setTestrayBuildLocalService(
-		com.liferay.osb.testray.service.TestrayBuildLocalService
-			testrayBuildLocalService) {
-
+		com.liferay.osb.testray.service.TestrayBuildLocalService testrayBuildLocalService) {
 		this.testrayBuildLocalService = testrayBuildLocalService;
 	}
 
@@ -503,7 +453,6 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	public void setTestrayBuildPersistence(
 		TestrayBuildPersistence testrayBuildPersistence) {
-
 		this.testrayBuildPersistence = testrayBuildPersistence;
 	}
 
@@ -512,9 +461,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the testray case local service
 	 */
-	public com.liferay.osb.testray.service.TestrayCaseLocalService
-		getTestrayCaseLocalService() {
-
+	public com.liferay.osb.testray.service.TestrayCaseLocalService getTestrayCaseLocalService() {
 		return testrayCaseLocalService;
 	}
 
@@ -524,9 +471,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @param testrayCaseLocalService the testray case local service
 	 */
 	public void setTestrayCaseLocalService(
-		com.liferay.osb.testray.service.TestrayCaseLocalService
-			testrayCaseLocalService) {
-
+		com.liferay.osb.testray.service.TestrayCaseLocalService testrayCaseLocalService) {
 		this.testrayCaseLocalService = testrayCaseLocalService;
 	}
 
@@ -546,7 +491,6 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	public void setTestrayCasePersistence(
 		TestrayCasePersistence testrayCasePersistence) {
-
 		this.testrayCasePersistence = testrayCasePersistence;
 	}
 
@@ -555,9 +499,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the testray case result local service
 	 */
-	public com.liferay.osb.testray.service.TestrayCaseResultLocalService
-		getTestrayCaseResultLocalService() {
-
+	public com.liferay.osb.testray.service.TestrayCaseResultLocalService getTestrayCaseResultLocalService() {
 		return testrayCaseResultLocalService;
 	}
 
@@ -567,9 +509,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @param testrayCaseResultLocalService the testray case result local service
 	 */
 	public void setTestrayCaseResultLocalService(
-		com.liferay.osb.testray.service.TestrayCaseResultLocalService
-			testrayCaseResultLocalService) {
-
+		com.liferay.osb.testray.service.TestrayCaseResultLocalService testrayCaseResultLocalService) {
 		this.testrayCaseResultLocalService = testrayCaseResultLocalService;
 	}
 
@@ -589,7 +529,6 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	public void setTestrayCaseResultPersistence(
 		TestrayCaseResultPersistence testrayCaseResultPersistence) {
-
 		this.testrayCaseResultPersistence = testrayCaseResultPersistence;
 	}
 
@@ -598,9 +537,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the testray case result warning local service
 	 */
-	public com.liferay.osb.testray.service.TestrayCaseResultWarningLocalService
-		getTestrayCaseResultWarningLocalService() {
-
+	public com.liferay.osb.testray.service.TestrayCaseResultWarningLocalService getTestrayCaseResultWarningLocalService() {
 		return testrayCaseResultWarningLocalService;
 	}
 
@@ -610,11 +547,8 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @param testrayCaseResultWarningLocalService the testray case result warning local service
 	 */
 	public void setTestrayCaseResultWarningLocalService(
-		com.liferay.osb.testray.service.TestrayCaseResultWarningLocalService
-			testrayCaseResultWarningLocalService) {
-
-		this.testrayCaseResultWarningLocalService =
-			testrayCaseResultWarningLocalService;
+		com.liferay.osb.testray.service.TestrayCaseResultWarningLocalService testrayCaseResultWarningLocalService) {
+		this.testrayCaseResultWarningLocalService = testrayCaseResultWarningLocalService;
 	}
 
 	/**
@@ -622,9 +556,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the testray case result warning persistence
 	 */
-	public TestrayCaseResultWarningPersistence
-		getTestrayCaseResultWarningPersistence() {
-
+	public TestrayCaseResultWarningPersistence getTestrayCaseResultWarningPersistence() {
 		return testrayCaseResultWarningPersistence;
 	}
 
@@ -634,11 +566,8 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @param testrayCaseResultWarningPersistence the testray case result warning persistence
 	 */
 	public void setTestrayCaseResultWarningPersistence(
-		TestrayCaseResultWarningPersistence
-			testrayCaseResultWarningPersistence) {
-
-		this.testrayCaseResultWarningPersistence =
-			testrayCaseResultWarningPersistence;
+		TestrayCaseResultWarningPersistence testrayCaseResultWarningPersistence) {
+		this.testrayCaseResultWarningPersistence = testrayCaseResultWarningPersistence;
 	}
 
 	/**
@@ -646,9 +575,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the testray case type local service
 	 */
-	public com.liferay.osb.testray.service.TestrayCaseTypeLocalService
-		getTestrayCaseTypeLocalService() {
-
+	public com.liferay.osb.testray.service.TestrayCaseTypeLocalService getTestrayCaseTypeLocalService() {
 		return testrayCaseTypeLocalService;
 	}
 
@@ -658,9 +585,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @param testrayCaseTypeLocalService the testray case type local service
 	 */
 	public void setTestrayCaseTypeLocalService(
-		com.liferay.osb.testray.service.TestrayCaseTypeLocalService
-			testrayCaseTypeLocalService) {
-
+		com.liferay.osb.testray.service.TestrayCaseTypeLocalService testrayCaseTypeLocalService) {
 		this.testrayCaseTypeLocalService = testrayCaseTypeLocalService;
 	}
 
@@ -680,7 +605,6 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	public void setTestrayCaseTypePersistence(
 		TestrayCaseTypePersistence testrayCaseTypePersistence) {
-
 		this.testrayCaseTypePersistence = testrayCaseTypePersistence;
 	}
 
@@ -689,9 +613,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the testray component local service
 	 */
-	public com.liferay.osb.testray.service.TestrayComponentLocalService
-		getTestrayComponentLocalService() {
-
+	public com.liferay.osb.testray.service.TestrayComponentLocalService getTestrayComponentLocalService() {
 		return testrayComponentLocalService;
 	}
 
@@ -701,9 +623,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @param testrayComponentLocalService the testray component local service
 	 */
 	public void setTestrayComponentLocalService(
-		com.liferay.osb.testray.service.TestrayComponentLocalService
-			testrayComponentLocalService) {
-
+		com.liferay.osb.testray.service.TestrayComponentLocalService testrayComponentLocalService) {
 		this.testrayComponentLocalService = testrayComponentLocalService;
 	}
 
@@ -723,7 +643,6 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	public void setTestrayComponentPersistence(
 		TestrayComponentPersistence testrayComponentPersistence) {
-
 		this.testrayComponentPersistence = testrayComponentPersistence;
 	}
 
@@ -732,9 +651,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the testray factor local service
 	 */
-	public com.liferay.osb.testray.service.TestrayFactorLocalService
-		getTestrayFactorLocalService() {
-
+	public com.liferay.osb.testray.service.TestrayFactorLocalService getTestrayFactorLocalService() {
 		return testrayFactorLocalService;
 	}
 
@@ -744,9 +661,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @param testrayFactorLocalService the testray factor local service
 	 */
 	public void setTestrayFactorLocalService(
-		com.liferay.osb.testray.service.TestrayFactorLocalService
-			testrayFactorLocalService) {
-
+		com.liferay.osb.testray.service.TestrayFactorLocalService testrayFactorLocalService) {
 		this.testrayFactorLocalService = testrayFactorLocalService;
 	}
 
@@ -766,7 +681,6 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	public void setTestrayFactorPersistence(
 		TestrayFactorPersistence testrayFactorPersistence) {
-
 		this.testrayFactorPersistence = testrayFactorPersistence;
 	}
 
@@ -775,9 +689,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the testray factor category local service
 	 */
-	public com.liferay.osb.testray.service.TestrayFactorCategoryLocalService
-		getTestrayFactorCategoryLocalService() {
-
+	public com.liferay.osb.testray.service.TestrayFactorCategoryLocalService getTestrayFactorCategoryLocalService() {
 		return testrayFactorCategoryLocalService;
 	}
 
@@ -787,11 +699,8 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @param testrayFactorCategoryLocalService the testray factor category local service
 	 */
 	public void setTestrayFactorCategoryLocalService(
-		com.liferay.osb.testray.service.TestrayFactorCategoryLocalService
-			testrayFactorCategoryLocalService) {
-
-		this.testrayFactorCategoryLocalService =
-			testrayFactorCategoryLocalService;
+		com.liferay.osb.testray.service.TestrayFactorCategoryLocalService testrayFactorCategoryLocalService) {
+		this.testrayFactorCategoryLocalService = testrayFactorCategoryLocalService;
 	}
 
 	/**
@@ -799,9 +708,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the testray factor category persistence
 	 */
-	public TestrayFactorCategoryPersistence
-		getTestrayFactorCategoryPersistence() {
-
+	public TestrayFactorCategoryPersistence getTestrayFactorCategoryPersistence() {
 		return testrayFactorCategoryPersistence;
 	}
 
@@ -812,9 +719,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	public void setTestrayFactorCategoryPersistence(
 		TestrayFactorCategoryPersistence testrayFactorCategoryPersistence) {
-
-		this.testrayFactorCategoryPersistence =
-			testrayFactorCategoryPersistence;
+		this.testrayFactorCategoryPersistence = testrayFactorCategoryPersistence;
 	}
 
 	/**
@@ -822,9 +727,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the testray factor option local service
 	 */
-	public com.liferay.osb.testray.service.TestrayFactorOptionLocalService
-		getTestrayFactorOptionLocalService() {
-
+	public com.liferay.osb.testray.service.TestrayFactorOptionLocalService getTestrayFactorOptionLocalService() {
 		return testrayFactorOptionLocalService;
 	}
 
@@ -834,9 +737,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @param testrayFactorOptionLocalService the testray factor option local service
 	 */
 	public void setTestrayFactorOptionLocalService(
-		com.liferay.osb.testray.service.TestrayFactorOptionLocalService
-			testrayFactorOptionLocalService) {
-
+		com.liferay.osb.testray.service.TestrayFactorOptionLocalService testrayFactorOptionLocalService) {
 		this.testrayFactorOptionLocalService = testrayFactorOptionLocalService;
 	}
 
@@ -856,7 +757,6 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	public void setTestrayFactorOptionPersistence(
 		TestrayFactorOptionPersistence testrayFactorOptionPersistence) {
-
 		this.testrayFactorOptionPersistence = testrayFactorOptionPersistence;
 	}
 
@@ -865,9 +765,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the testray issue local service
 	 */
-	public com.liferay.osb.testray.service.TestrayIssueLocalService
-		getTestrayIssueLocalService() {
-
+	public com.liferay.osb.testray.service.TestrayIssueLocalService getTestrayIssueLocalService() {
 		return testrayIssueLocalService;
 	}
 
@@ -877,9 +775,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @param testrayIssueLocalService the testray issue local service
 	 */
 	public void setTestrayIssueLocalService(
-		com.liferay.osb.testray.service.TestrayIssueLocalService
-			testrayIssueLocalService) {
-
+		com.liferay.osb.testray.service.TestrayIssueLocalService testrayIssueLocalService) {
 		this.testrayIssueLocalService = testrayIssueLocalService;
 	}
 
@@ -899,7 +795,6 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	public void setTestrayIssuePersistence(
 		TestrayIssuePersistence testrayIssuePersistence) {
-
 		this.testrayIssuePersistence = testrayIssuePersistence;
 	}
 
@@ -908,9 +803,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the testray product version local service
 	 */
-	public TestrayProductVersionLocalService
-		getTestrayProductVersionLocalService() {
-
+	public TestrayProductVersionLocalService getTestrayProductVersionLocalService() {
 		return testrayProductVersionLocalService;
 	}
 
@@ -921,9 +814,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	public void setTestrayProductVersionLocalService(
 		TestrayProductVersionLocalService testrayProductVersionLocalService) {
-
-		this.testrayProductVersionLocalService =
-			testrayProductVersionLocalService;
+		this.testrayProductVersionLocalService = testrayProductVersionLocalService;
 	}
 
 	/**
@@ -931,9 +822,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the testray product version persistence
 	 */
-	public TestrayProductVersionPersistence
-		getTestrayProductVersionPersistence() {
-
+	public TestrayProductVersionPersistence getTestrayProductVersionPersistence() {
 		return testrayProductVersionPersistence;
 	}
 
@@ -944,9 +833,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	public void setTestrayProductVersionPersistence(
 		TestrayProductVersionPersistence testrayProductVersionPersistence) {
-
-		this.testrayProductVersionPersistence =
-			testrayProductVersionPersistence;
+		this.testrayProductVersionPersistence = testrayProductVersionPersistence;
 	}
 
 	/**
@@ -954,9 +841,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the testray project local service
 	 */
-	public com.liferay.osb.testray.service.TestrayProjectLocalService
-		getTestrayProjectLocalService() {
-
+	public com.liferay.osb.testray.service.TestrayProjectLocalService getTestrayProjectLocalService() {
 		return testrayProjectLocalService;
 	}
 
@@ -966,9 +851,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @param testrayProjectLocalService the testray project local service
 	 */
 	public void setTestrayProjectLocalService(
-		com.liferay.osb.testray.service.TestrayProjectLocalService
-			testrayProjectLocalService) {
-
+		com.liferay.osb.testray.service.TestrayProjectLocalService testrayProjectLocalService) {
 		this.testrayProjectLocalService = testrayProjectLocalService;
 	}
 
@@ -988,7 +871,6 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	public void setTestrayProjectPersistence(
 		TestrayProjectPersistence testrayProjectPersistence) {
-
 		this.testrayProjectPersistence = testrayProjectPersistence;
 	}
 
@@ -997,9 +879,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the testray requirement local service
 	 */
-	public com.liferay.osb.testray.service.TestrayRequirementLocalService
-		getTestrayRequirementLocalService() {
-
+	public com.liferay.osb.testray.service.TestrayRequirementLocalService getTestrayRequirementLocalService() {
 		return testrayRequirementLocalService;
 	}
 
@@ -1009,9 +889,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @param testrayRequirementLocalService the testray requirement local service
 	 */
 	public void setTestrayRequirementLocalService(
-		com.liferay.osb.testray.service.TestrayRequirementLocalService
-			testrayRequirementLocalService) {
-
+		com.liferay.osb.testray.service.TestrayRequirementLocalService testrayRequirementLocalService) {
 		this.testrayRequirementLocalService = testrayRequirementLocalService;
 	}
 
@@ -1031,7 +909,6 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	public void setTestrayRequirementPersistence(
 		TestrayRequirementPersistence testrayRequirementPersistence) {
-
 		this.testrayRequirementPersistence = testrayRequirementPersistence;
 	}
 
@@ -1040,9 +917,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the testray routine local service
 	 */
-	public com.liferay.osb.testray.service.TestrayRoutineLocalService
-		getTestrayRoutineLocalService() {
-
+	public com.liferay.osb.testray.service.TestrayRoutineLocalService getTestrayRoutineLocalService() {
 		return testrayRoutineLocalService;
 	}
 
@@ -1052,9 +927,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @param testrayRoutineLocalService the testray routine local service
 	 */
 	public void setTestrayRoutineLocalService(
-		com.liferay.osb.testray.service.TestrayRoutineLocalService
-			testrayRoutineLocalService) {
-
+		com.liferay.osb.testray.service.TestrayRoutineLocalService testrayRoutineLocalService) {
 		this.testrayRoutineLocalService = testrayRoutineLocalService;
 	}
 
@@ -1074,7 +947,6 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	public void setTestrayRoutinePersistence(
 		TestrayRoutinePersistence testrayRoutinePersistence) {
-
 		this.testrayRoutinePersistence = testrayRoutinePersistence;
 	}
 
@@ -1083,9 +955,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the testray run local service
 	 */
-	public com.liferay.osb.testray.service.TestrayRunLocalService
-		getTestrayRunLocalService() {
-
+	public com.liferay.osb.testray.service.TestrayRunLocalService getTestrayRunLocalService() {
 		return testrayRunLocalService;
 	}
 
@@ -1095,9 +965,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @param testrayRunLocalService the testray run local service
 	 */
 	public void setTestrayRunLocalService(
-		com.liferay.osb.testray.service.TestrayRunLocalService
-			testrayRunLocalService) {
-
+		com.liferay.osb.testray.service.TestrayRunLocalService testrayRunLocalService) {
 		this.testrayRunLocalService = testrayRunLocalService;
 	}
 
@@ -1117,7 +985,6 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	public void setTestrayRunPersistence(
 		TestrayRunPersistence testrayRunPersistence) {
-
 		this.testrayRunPersistence = testrayRunPersistence;
 	}
 
@@ -1126,9 +993,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the testray subtask local service
 	 */
-	public com.liferay.osb.testray.service.TestraySubtaskLocalService
-		getTestraySubtaskLocalService() {
-
+	public com.liferay.osb.testray.service.TestraySubtaskLocalService getTestraySubtaskLocalService() {
 		return testraySubtaskLocalService;
 	}
 
@@ -1138,9 +1003,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @param testraySubtaskLocalService the testray subtask local service
 	 */
 	public void setTestraySubtaskLocalService(
-		com.liferay.osb.testray.service.TestraySubtaskLocalService
-			testraySubtaskLocalService) {
-
+		com.liferay.osb.testray.service.TestraySubtaskLocalService testraySubtaskLocalService) {
 		this.testraySubtaskLocalService = testraySubtaskLocalService;
 	}
 
@@ -1160,7 +1023,6 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	public void setTestraySubtaskPersistence(
 		TestraySubtaskPersistence testraySubtaskPersistence) {
-
 		this.testraySubtaskPersistence = testraySubtaskPersistence;
 	}
 
@@ -1169,9 +1031,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the testray suite local service
 	 */
-	public com.liferay.osb.testray.service.TestraySuiteLocalService
-		getTestraySuiteLocalService() {
-
+	public com.liferay.osb.testray.service.TestraySuiteLocalService getTestraySuiteLocalService() {
 		return testraySuiteLocalService;
 	}
 
@@ -1181,9 +1041,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @param testraySuiteLocalService the testray suite local service
 	 */
 	public void setTestraySuiteLocalService(
-		com.liferay.osb.testray.service.TestraySuiteLocalService
-			testraySuiteLocalService) {
-
+		com.liferay.osb.testray.service.TestraySuiteLocalService testraySuiteLocalService) {
 		this.testraySuiteLocalService = testraySuiteLocalService;
 	}
 
@@ -1203,7 +1061,6 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	public void setTestraySuitePersistence(
 		TestraySuitePersistence testraySuitePersistence) {
-
 		this.testraySuitePersistence = testraySuitePersistence;
 	}
 
@@ -1212,9 +1069,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the testray task local service
 	 */
-	public com.liferay.osb.testray.service.TestrayTaskLocalService
-		getTestrayTaskLocalService() {
-
+	public com.liferay.osb.testray.service.TestrayTaskLocalService getTestrayTaskLocalService() {
 		return testrayTaskLocalService;
 	}
 
@@ -1224,9 +1079,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @param testrayTaskLocalService the testray task local service
 	 */
 	public void setTestrayTaskLocalService(
-		com.liferay.osb.testray.service.TestrayTaskLocalService
-			testrayTaskLocalService) {
-
+		com.liferay.osb.testray.service.TestrayTaskLocalService testrayTaskLocalService) {
 		this.testrayTaskLocalService = testrayTaskLocalService;
 	}
 
@@ -1246,7 +1099,6 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	public void setTestrayTaskPersistence(
 		TestrayTaskPersistence testrayTaskPersistence) {
-
 		this.testrayTaskPersistence = testrayTaskPersistence;
 	}
 
@@ -1255,9 +1107,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the testray team local service
 	 */
-	public com.liferay.osb.testray.service.TestrayTeamLocalService
-		getTestrayTeamLocalService() {
-
+	public com.liferay.osb.testray.service.TestrayTeamLocalService getTestrayTeamLocalService() {
 		return testrayTeamLocalService;
 	}
 
@@ -1267,9 +1117,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @param testrayTeamLocalService the testray team local service
 	 */
 	public void setTestrayTeamLocalService(
-		com.liferay.osb.testray.service.TestrayTeamLocalService
-			testrayTeamLocalService) {
-
+		com.liferay.osb.testray.service.TestrayTeamLocalService testrayTeamLocalService) {
 		this.testrayTeamLocalService = testrayTeamLocalService;
 	}
 
@@ -1289,7 +1137,6 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	public void setTestrayTeamPersistence(
 		TestrayTeamPersistence testrayTeamPersistence) {
-
 		this.testrayTeamPersistence = testrayTeamPersistence;
 	}
 
@@ -1298,9 +1145,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -1310,9 +1155,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -1321,9 +1164,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService
-		getClassNameLocalService() {
-
+	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
 		return classNameLocalService;
 	}
 
@@ -1333,9 +1174,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService
-			classNameLocalService) {
-
+		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -1355,7 +1194,6 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
-
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -1364,9 +1202,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService
-		getResourceLocalService() {
-
+	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
 		return resourceLocalService;
 	}
 
@@ -1376,9 +1212,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService
-			resourceLocalService) {
-
+		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -1387,9 +1221,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService
-		getUserLocalService() {
-
+	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
 		return userLocalService;
 	}
 
@@ -1400,7 +1232,6 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
-
 		this.userLocalService = userLocalService;
 	}
 
@@ -1423,8 +1254,7 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register(
-			"com.liferay.osb.testray.model.TestrayProductVersion",
+		persistedModelLocalServiceRegistry.register("com.liferay.osb.testray.model.TestrayProductVersion",
 			testrayProductVersionLocalService);
 	}
 
@@ -1458,245 +1288,119 @@ public abstract class TestrayProductVersionLocalServiceBaseImpl
 	 */
 	protected void runSQL(String sql) {
 		try {
-			DataSource dataSource =
-				testrayProductVersionPersistence.getDataSource();
+			DataSource dataSource = testrayProductVersionPersistence.getDataSource();
 
 			DB db = DBManagerUtil.getDB();
 
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
-	@BeanReference(
-		type = com.liferay.osb.testray.service.TestrayArchiveLocalService.class
-	)
-	protected com.liferay.osb.testray.service.TestrayArchiveLocalService
-		testrayArchiveLocalService;
-
+	@BeanReference(type = com.liferay.osb.testray.service.TestrayArchiveLocalService.class)
+	protected com.liferay.osb.testray.service.TestrayArchiveLocalService testrayArchiveLocalService;
 	@BeanReference(type = TestrayArchivePersistence.class)
 	protected TestrayArchivePersistence testrayArchivePersistence;
-
-	@BeanReference(
-		type = com.liferay.osb.testray.service.TestrayAssignmentLocalService.class
-	)
-	protected com.liferay.osb.testray.service.TestrayAssignmentLocalService
-		testrayAssignmentLocalService;
-
+	@BeanReference(type = com.liferay.osb.testray.service.TestrayAssignmentLocalService.class)
+	protected com.liferay.osb.testray.service.TestrayAssignmentLocalService testrayAssignmentLocalService;
 	@BeanReference(type = TestrayAssignmentPersistence.class)
 	protected TestrayAssignmentPersistence testrayAssignmentPersistence;
-
-	@BeanReference(
-		type = com.liferay.osb.testray.service.TestrayBuildLocalService.class
-	)
-	protected com.liferay.osb.testray.service.TestrayBuildLocalService
-		testrayBuildLocalService;
-
+	@BeanReference(type = com.liferay.osb.testray.service.TestrayBuildLocalService.class)
+	protected com.liferay.osb.testray.service.TestrayBuildLocalService testrayBuildLocalService;
 	@BeanReference(type = TestrayBuildPersistence.class)
 	protected TestrayBuildPersistence testrayBuildPersistence;
-
-	@BeanReference(
-		type = com.liferay.osb.testray.service.TestrayCaseLocalService.class
-	)
-	protected com.liferay.osb.testray.service.TestrayCaseLocalService
-		testrayCaseLocalService;
-
+	@BeanReference(type = com.liferay.osb.testray.service.TestrayCaseLocalService.class)
+	protected com.liferay.osb.testray.service.TestrayCaseLocalService testrayCaseLocalService;
 	@BeanReference(type = TestrayCasePersistence.class)
 	protected TestrayCasePersistence testrayCasePersistence;
-
-	@BeanReference(
-		type = com.liferay.osb.testray.service.TestrayCaseResultLocalService.class
-	)
-	protected com.liferay.osb.testray.service.TestrayCaseResultLocalService
-		testrayCaseResultLocalService;
-
+	@BeanReference(type = com.liferay.osb.testray.service.TestrayCaseResultLocalService.class)
+	protected com.liferay.osb.testray.service.TestrayCaseResultLocalService testrayCaseResultLocalService;
 	@BeanReference(type = TestrayCaseResultPersistence.class)
 	protected TestrayCaseResultPersistence testrayCaseResultPersistence;
-
-	@BeanReference(
-		type = com.liferay.osb.testray.service.TestrayCaseResultWarningLocalService.class
-	)
-	protected
-		com.liferay.osb.testray.service.TestrayCaseResultWarningLocalService
-			testrayCaseResultWarningLocalService;
-
+	@BeanReference(type = com.liferay.osb.testray.service.TestrayCaseResultWarningLocalService.class)
+	protected com.liferay.osb.testray.service.TestrayCaseResultWarningLocalService testrayCaseResultWarningLocalService;
 	@BeanReference(type = TestrayCaseResultWarningPersistence.class)
-	protected TestrayCaseResultWarningPersistence
-		testrayCaseResultWarningPersistence;
-
-	@BeanReference(
-		type = com.liferay.osb.testray.service.TestrayCaseTypeLocalService.class
-	)
-	protected com.liferay.osb.testray.service.TestrayCaseTypeLocalService
-		testrayCaseTypeLocalService;
-
+	protected TestrayCaseResultWarningPersistence testrayCaseResultWarningPersistence;
+	@BeanReference(type = com.liferay.osb.testray.service.TestrayCaseTypeLocalService.class)
+	protected com.liferay.osb.testray.service.TestrayCaseTypeLocalService testrayCaseTypeLocalService;
 	@BeanReference(type = TestrayCaseTypePersistence.class)
 	protected TestrayCaseTypePersistence testrayCaseTypePersistence;
-
-	@BeanReference(
-		type = com.liferay.osb.testray.service.TestrayComponentLocalService.class
-	)
-	protected com.liferay.osb.testray.service.TestrayComponentLocalService
-		testrayComponentLocalService;
-
+	@BeanReference(type = com.liferay.osb.testray.service.TestrayComponentLocalService.class)
+	protected com.liferay.osb.testray.service.TestrayComponentLocalService testrayComponentLocalService;
 	@BeanReference(type = TestrayComponentPersistence.class)
 	protected TestrayComponentPersistence testrayComponentPersistence;
-
-	@BeanReference(
-		type = com.liferay.osb.testray.service.TestrayFactorLocalService.class
-	)
-	protected com.liferay.osb.testray.service.TestrayFactorLocalService
-		testrayFactorLocalService;
-
+	@BeanReference(type = com.liferay.osb.testray.service.TestrayFactorLocalService.class)
+	protected com.liferay.osb.testray.service.TestrayFactorLocalService testrayFactorLocalService;
 	@BeanReference(type = TestrayFactorPersistence.class)
 	protected TestrayFactorPersistence testrayFactorPersistence;
-
-	@BeanReference(
-		type = com.liferay.osb.testray.service.TestrayFactorCategoryLocalService.class
-	)
-	protected com.liferay.osb.testray.service.TestrayFactorCategoryLocalService
-		testrayFactorCategoryLocalService;
-
+	@BeanReference(type = com.liferay.osb.testray.service.TestrayFactorCategoryLocalService.class)
+	protected com.liferay.osb.testray.service.TestrayFactorCategoryLocalService testrayFactorCategoryLocalService;
 	@BeanReference(type = TestrayFactorCategoryPersistence.class)
 	protected TestrayFactorCategoryPersistence testrayFactorCategoryPersistence;
-
-	@BeanReference(
-		type = com.liferay.osb.testray.service.TestrayFactorOptionLocalService.class
-	)
-	protected com.liferay.osb.testray.service.TestrayFactorOptionLocalService
-		testrayFactorOptionLocalService;
-
+	@BeanReference(type = com.liferay.osb.testray.service.TestrayFactorOptionLocalService.class)
+	protected com.liferay.osb.testray.service.TestrayFactorOptionLocalService testrayFactorOptionLocalService;
 	@BeanReference(type = TestrayFactorOptionPersistence.class)
 	protected TestrayFactorOptionPersistence testrayFactorOptionPersistence;
-
-	@BeanReference(
-		type = com.liferay.osb.testray.service.TestrayIssueLocalService.class
-	)
-	protected com.liferay.osb.testray.service.TestrayIssueLocalService
-		testrayIssueLocalService;
-
+	@BeanReference(type = com.liferay.osb.testray.service.TestrayIssueLocalService.class)
+	protected com.liferay.osb.testray.service.TestrayIssueLocalService testrayIssueLocalService;
 	@BeanReference(type = TestrayIssuePersistence.class)
 	protected TestrayIssuePersistence testrayIssuePersistence;
-
 	@BeanReference(type = TestrayProductVersionLocalService.class)
-	protected TestrayProductVersionLocalService
-		testrayProductVersionLocalService;
-
+	protected TestrayProductVersionLocalService testrayProductVersionLocalService;
 	@BeanReference(type = TestrayProductVersionPersistence.class)
 	protected TestrayProductVersionPersistence testrayProductVersionPersistence;
-
-	@BeanReference(
-		type = com.liferay.osb.testray.service.TestrayProjectLocalService.class
-	)
-	protected com.liferay.osb.testray.service.TestrayProjectLocalService
-		testrayProjectLocalService;
-
+	@BeanReference(type = com.liferay.osb.testray.service.TestrayProjectLocalService.class)
+	protected com.liferay.osb.testray.service.TestrayProjectLocalService testrayProjectLocalService;
 	@BeanReference(type = TestrayProjectPersistence.class)
 	protected TestrayProjectPersistence testrayProjectPersistence;
-
-	@BeanReference(
-		type = com.liferay.osb.testray.service.TestrayRequirementLocalService.class
-	)
-	protected com.liferay.osb.testray.service.TestrayRequirementLocalService
-		testrayRequirementLocalService;
-
+	@BeanReference(type = com.liferay.osb.testray.service.TestrayRequirementLocalService.class)
+	protected com.liferay.osb.testray.service.TestrayRequirementLocalService testrayRequirementLocalService;
 	@BeanReference(type = TestrayRequirementPersistence.class)
 	protected TestrayRequirementPersistence testrayRequirementPersistence;
-
-	@BeanReference(
-		type = com.liferay.osb.testray.service.TestrayRoutineLocalService.class
-	)
-	protected com.liferay.osb.testray.service.TestrayRoutineLocalService
-		testrayRoutineLocalService;
-
+	@BeanReference(type = com.liferay.osb.testray.service.TestrayRoutineLocalService.class)
+	protected com.liferay.osb.testray.service.TestrayRoutineLocalService testrayRoutineLocalService;
 	@BeanReference(type = TestrayRoutinePersistence.class)
 	protected TestrayRoutinePersistence testrayRoutinePersistence;
-
-	@BeanReference(
-		type = com.liferay.osb.testray.service.TestrayRunLocalService.class
-	)
-	protected com.liferay.osb.testray.service.TestrayRunLocalService
-		testrayRunLocalService;
-
+	@BeanReference(type = com.liferay.osb.testray.service.TestrayRunLocalService.class)
+	protected com.liferay.osb.testray.service.TestrayRunLocalService testrayRunLocalService;
 	@BeanReference(type = TestrayRunPersistence.class)
 	protected TestrayRunPersistence testrayRunPersistence;
-
-	@BeanReference(
-		type = com.liferay.osb.testray.service.TestraySubtaskLocalService.class
-	)
-	protected com.liferay.osb.testray.service.TestraySubtaskLocalService
-		testraySubtaskLocalService;
-
+	@BeanReference(type = com.liferay.osb.testray.service.TestraySubtaskLocalService.class)
+	protected com.liferay.osb.testray.service.TestraySubtaskLocalService testraySubtaskLocalService;
 	@BeanReference(type = TestraySubtaskPersistence.class)
 	protected TestraySubtaskPersistence testraySubtaskPersistence;
-
-	@BeanReference(
-		type = com.liferay.osb.testray.service.TestraySuiteLocalService.class
-	)
-	protected com.liferay.osb.testray.service.TestraySuiteLocalService
-		testraySuiteLocalService;
-
+	@BeanReference(type = com.liferay.osb.testray.service.TestraySuiteLocalService.class)
+	protected com.liferay.osb.testray.service.TestraySuiteLocalService testraySuiteLocalService;
 	@BeanReference(type = TestraySuitePersistence.class)
 	protected TestraySuitePersistence testraySuitePersistence;
-
-	@BeanReference(
-		type = com.liferay.osb.testray.service.TestrayTaskLocalService.class
-	)
-	protected com.liferay.osb.testray.service.TestrayTaskLocalService
-		testrayTaskLocalService;
-
+	@BeanReference(type = com.liferay.osb.testray.service.TestrayTaskLocalService.class)
+	protected com.liferay.osb.testray.service.TestrayTaskLocalService testrayTaskLocalService;
 	@BeanReference(type = TestrayTaskPersistence.class)
 	protected TestrayTaskPersistence testrayTaskPersistence;
-
-	@BeanReference(
-		type = com.liferay.osb.testray.service.TestrayTeamLocalService.class
-	)
-	protected com.liferay.osb.testray.service.TestrayTeamLocalService
-		testrayTeamLocalService;
-
+	@BeanReference(type = com.liferay.osb.testray.service.TestrayTeamLocalService.class)
+	protected com.liferay.osb.testray.service.TestrayTeamLocalService testrayTeamLocalService;
 	@BeanReference(type = TestrayTeamPersistence.class)
 	protected TestrayTeamPersistence testrayTeamPersistence;
-
-	@ServiceReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService
-		classNameLocalService;
-
+	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ResourceLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ResourceLocalService
-		resourceLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.UserLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.UserLocalService
-		userLocalService;
-
+	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
+	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
+	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry
-		persistedModelLocalServiceRegistry;
-
+	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }

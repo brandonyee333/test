@@ -1082,16 +1082,17 @@ public class KaleoDraftDefinitionModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof KaleoDraftDefinition)) {
+		if (!(object instanceof KaleoDraftDefinition)) {
 			return false;
 		}
 
-		KaleoDraftDefinition kaleoDraftDefinition = (KaleoDraftDefinition)obj;
+		KaleoDraftDefinition kaleoDraftDefinition =
+			(KaleoDraftDefinition)object;
 
 		long primaryKey = kaleoDraftDefinition.getPrimaryKey();
 

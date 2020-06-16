@@ -610,16 +610,16 @@ public class AuditFormModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof AuditForm)) {
+		if (!(object instanceof AuditForm)) {
 			return false;
 		}
 
-		AuditForm auditForm = (AuditForm)obj;
+		AuditForm auditForm = (AuditForm)object;
 
 		long primaryKey = auditForm.getPrimaryKey();
 

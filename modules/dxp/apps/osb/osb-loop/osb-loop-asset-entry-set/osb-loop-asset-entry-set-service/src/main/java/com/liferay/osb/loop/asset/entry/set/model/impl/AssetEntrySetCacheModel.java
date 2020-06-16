@@ -1,23 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.loop.asset.entry.set.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -28,11 +32,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing AssetEntrySet in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see AssetEntrySet
  * @generated
  */
-public class AssetEntrySetCacheModel
-	implements CacheModel<AssetEntrySet>, Externalizable {
-
+@ProviderType
+public class AssetEntrySetCacheModel implements CacheModel<AssetEntrySet>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -43,8 +48,7 @@ public class AssetEntrySetCacheModel
 			return false;
 		}
 
-		AssetEntrySetCacheModel assetEntrySetCacheModel =
-			(AssetEntrySetCacheModel)obj;
+		AssetEntrySetCacheModel assetEntrySetCacheModel = (AssetEntrySetCacheModel)obj;
 
 		if (assetEntrySetId == assetEntrySetCacheModel.assetEntrySetId) {
 			return true;
@@ -126,7 +130,7 @@ public class AssetEntrySetCacheModel
 		assetEntrySetImpl.setCreatorClassPK(creatorClassPK);
 
 		if (creatorName == null) {
-			assetEntrySetImpl.setCreatorName("");
+			assetEntrySetImpl.setCreatorName(StringPool.BLANK);
 		}
 		else {
 			assetEntrySetImpl.setCreatorName(creatorName);
@@ -137,7 +141,7 @@ public class AssetEntrySetCacheModel
 		assetEntrySetImpl.setLevel(level);
 
 		if (payload == null) {
-			assetEntrySetImpl.setPayload("");
+			assetEntrySetImpl.setPayload(StringPool.BLANK);
 		}
 		else {
 			assetEntrySetImpl.setPayload(payload);
@@ -147,7 +151,7 @@ public class AssetEntrySetCacheModel
 		assetEntrySetImpl.setStickyTime(stickyTime);
 
 		if (title == null) {
-			assetEntrySetImpl.setTitle("");
+			assetEntrySetImpl.setTitle(StringPool.BLANK);
 		}
 		else {
 			assetEntrySetImpl.setTitle(title);
@@ -204,7 +208,8 @@ public class AssetEntrySetCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(assetEntrySetId);
 
 		objectOutput.writeLong(companyId);
@@ -228,7 +233,7 @@ public class AssetEntrySetCacheModel
 		objectOutput.writeLong(creatorClassPK);
 
 		if (creatorName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(creatorName);
@@ -241,7 +246,7 @@ public class AssetEntrySetCacheModel
 		objectOutput.writeInt(level);
 
 		if (payload == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(payload);
@@ -252,7 +257,7 @@ public class AssetEntrySetCacheModel
 		objectOutput.writeLong(stickyTime);
 
 		if (title == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(title);
@@ -284,5 +289,4 @@ public class AssetEntrySetCacheModel
 	public String title;
 	public int type;
 	public int status;
-
 }

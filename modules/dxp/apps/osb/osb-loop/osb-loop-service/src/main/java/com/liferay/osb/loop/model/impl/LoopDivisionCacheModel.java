@@ -1,23 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.loop.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.osb.loop.model.LoopDivision;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing LoopDivision in entity cache.
  *
  * @author Ethan Bustad
+ * @see LoopDivision
  * @generated
  */
-public class LoopDivisionCacheModel
-	implements CacheModel<LoopDivision>, Externalizable {
-
+@ProviderType
+public class LoopDivisionCacheModel implements CacheModel<LoopDivision>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class LoopDivisionCacheModel
 			return false;
 		}
 
-		LoopDivisionCacheModel loopDivisionCacheModel =
-			(LoopDivisionCacheModel)obj;
+		LoopDivisionCacheModel loopDivisionCacheModel = (LoopDivisionCacheModel)obj;
 
 		if (loopDivisionId == loopDivisionCacheModel.loopDivisionId) {
 			return true;
@@ -102,7 +106,7 @@ public class LoopDivisionCacheModel
 		loopDivisionImpl.setUserId(userId);
 
 		if (userName == null) {
-			loopDivisionImpl.setUserName("");
+			loopDivisionImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			loopDivisionImpl.setUserName(userName);
@@ -128,14 +132,14 @@ public class LoopDivisionCacheModel
 		loopDivisionImpl.setSubtype(subtype);
 
 		if (extraData == null) {
-			loopDivisionImpl.setExtraData("");
+			loopDivisionImpl.setExtraData(StringPool.BLANK);
 		}
 		else {
 			loopDivisionImpl.setExtraData(extraData);
 		}
 
 		if (imagePayload == null) {
-			loopDivisionImpl.setImagePayload("");
+			loopDivisionImpl.setImagePayload(StringPool.BLANK);
 		}
 		else {
 			loopDivisionImpl.setImagePayload(imagePayload);
@@ -169,7 +173,8 @@ public class LoopDivisionCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(loopDivisionId);
 
 		objectOutput.writeLong(companyId);
@@ -177,7 +182,7 @@ public class LoopDivisionCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -195,14 +200,14 @@ public class LoopDivisionCacheModel
 		objectOutput.writeInt(subtype);
 
 		if (extraData == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(extraData);
 		}
 
 		if (imagePayload == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(imagePayload);
@@ -221,5 +226,4 @@ public class LoopDivisionCacheModel
 	public int subtype;
 	public String extraData;
 	public String imagePayload;
-
 }

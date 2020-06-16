@@ -734,17 +734,17 @@ public class WatsonActivityWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonActivityWrapper)) {
+		if (!(object instanceof WatsonActivityWrapper)) {
 			return false;
 		}
 
 		WatsonActivityWrapper watsonActivityWrapper =
-			(WatsonActivityWrapper)obj;
+			(WatsonActivityWrapper)object;
 
 		if (Objects.equals(
 				_watsonActivity, watsonActivityWrapper._watsonActivity)) {

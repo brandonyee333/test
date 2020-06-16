@@ -617,17 +617,17 @@ public class WatsonRelationshipWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonRelationshipWrapper)) {
+		if (!(object instanceof WatsonRelationshipWrapper)) {
 			return false;
 		}
 
 		WatsonRelationshipWrapper watsonRelationshipWrapper =
-			(WatsonRelationshipWrapper)obj;
+			(WatsonRelationshipWrapper)object;
 
 		if (Objects.equals(
 				_watsonRelationship,

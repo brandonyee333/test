@@ -36,17 +36,17 @@ public class WatsonHistoryAuditCacheModel
 	implements CacheModel<WatsonHistoryAudit>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonHistoryAuditCacheModel)) {
+		if (!(object instanceof WatsonHistoryAuditCacheModel)) {
 			return false;
 		}
 
 		WatsonHistoryAuditCacheModel watsonHistoryAuditCacheModel =
-			(WatsonHistoryAuditCacheModel)obj;
+			(WatsonHistoryAuditCacheModel)object;
 
 		if (watsonHistoryAuditId ==
 				watsonHistoryAuditCacheModel.watsonHistoryAuditId) {

@@ -1710,16 +1710,16 @@ public class WatsonPersonModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonPerson)) {
+		if (!(object instanceof WatsonPerson)) {
 			return false;
 		}
 
-		WatsonPerson watsonPerson = (WatsonPerson)obj;
+		WatsonPerson watsonPerson = (WatsonPerson)object;
 
 		long primaryKey = watsonPerson.getPrimaryKey();
 

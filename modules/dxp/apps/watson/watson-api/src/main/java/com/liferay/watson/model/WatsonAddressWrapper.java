@@ -1389,16 +1389,17 @@ public class WatsonAddressWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonAddressWrapper)) {
+		if (!(object instanceof WatsonAddressWrapper)) {
 			return false;
 		}
 
-		WatsonAddressWrapper watsonAddressWrapper = (WatsonAddressWrapper)obj;
+		WatsonAddressWrapper watsonAddressWrapper =
+			(WatsonAddressWrapper)object;
 
 		if (Objects.equals(
 				_watsonAddress, watsonAddressWrapper._watsonAddress)) {

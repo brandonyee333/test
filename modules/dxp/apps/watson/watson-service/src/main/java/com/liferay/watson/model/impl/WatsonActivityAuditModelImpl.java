@@ -1045,16 +1045,16 @@ public class WatsonActivityAuditModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonActivityAudit)) {
+		if (!(object instanceof WatsonActivityAudit)) {
 			return false;
 		}
 
-		WatsonActivityAudit watsonActivityAudit = (WatsonActivityAudit)obj;
+		WatsonActivityAudit watsonActivityAudit = (WatsonActivityAudit)object;
 
 		long primaryKey = watsonActivityAudit.getPrimaryKey();
 

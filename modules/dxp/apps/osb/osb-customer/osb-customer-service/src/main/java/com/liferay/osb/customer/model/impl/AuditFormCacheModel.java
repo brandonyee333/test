@@ -36,16 +36,16 @@ public class AuditFormCacheModel
 	implements CacheModel<AuditForm>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof AuditFormCacheModel)) {
+		if (!(object instanceof AuditFormCacheModel)) {
 			return false;
 		}
 
-		AuditFormCacheModel auditFormCacheModel = (AuditFormCacheModel)obj;
+		AuditFormCacheModel auditFormCacheModel = (AuditFormCacheModel)object;
 
 		if (auditFormId == auditFormCacheModel.auditFormId) {
 			return true;

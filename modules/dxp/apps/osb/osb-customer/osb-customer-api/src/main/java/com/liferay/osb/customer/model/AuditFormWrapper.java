@@ -433,16 +433,16 @@ public class AuditFormWrapper implements AuditForm, ModelWrapper<AuditForm> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof AuditFormWrapper)) {
+		if (!(object instanceof AuditFormWrapper)) {
 			return false;
 		}
 
-		AuditFormWrapper auditFormWrapper = (AuditFormWrapper)obj;
+		AuditFormWrapper auditFormWrapper = (AuditFormWrapper)object;
 
 		if (Objects.equals(_auditForm, auditFormWrapper._auditForm)) {
 			return true;

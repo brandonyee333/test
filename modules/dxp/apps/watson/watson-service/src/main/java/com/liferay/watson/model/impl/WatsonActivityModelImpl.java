@@ -989,16 +989,16 @@ public class WatsonActivityModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonActivity)) {
+		if (!(object instanceof WatsonActivity)) {
 			return false;
 		}
 
-		WatsonActivity watsonActivity = (WatsonActivity)obj;
+		WatsonActivity watsonActivity = (WatsonActivity)object;
 
 		long primaryKey = watsonActivity.getPrimaryKey();
 

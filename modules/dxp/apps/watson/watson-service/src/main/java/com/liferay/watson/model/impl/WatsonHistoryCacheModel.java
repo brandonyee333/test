@@ -36,17 +36,17 @@ public class WatsonHistoryCacheModel
 	implements CacheModel<WatsonHistory>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonHistoryCacheModel)) {
+		if (!(object instanceof WatsonHistoryCacheModel)) {
 			return false;
 		}
 
 		WatsonHistoryCacheModel watsonHistoryCacheModel =
-			(WatsonHistoryCacheModel)obj;
+			(WatsonHistoryCacheModel)object;
 
 		if (watsonHistoryId == watsonHistoryCacheModel.watsonHistoryId) {
 			return true;

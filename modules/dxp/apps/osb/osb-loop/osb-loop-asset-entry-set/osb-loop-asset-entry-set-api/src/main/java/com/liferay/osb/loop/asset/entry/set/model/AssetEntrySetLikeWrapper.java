@@ -1,20 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.loop.asset.entry.set.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -33,9 +36,9 @@ import java.util.Objects;
  * @see AssetEntrySetLike
  * @generated
  */
-public class AssetEntrySetLikeWrapper
-	implements AssetEntrySetLike, ModelWrapper<AssetEntrySetLike> {
-
+@ProviderType
+public class AssetEntrySetLikeWrapper implements AssetEntrySetLike,
+	ModelWrapper<AssetEntrySetLike> {
 	public AssetEntrySetLikeWrapper(AssetEntrySetLike assetEntrySetLike) {
 		_assetEntrySetLike = assetEntrySetLike;
 	}
@@ -83,82 +86,13 @@ public class AssetEntrySetLikeWrapper
 	}
 
 	@Override
-	public Object clone() {
-		return new AssetEntrySetLikeWrapper(
-			(AssetEntrySetLike)_assetEntrySetLike.clone());
+	public AssetEntrySetLike toEscapedModel() {
+		return new AssetEntrySetLikeWrapper(_assetEntrySetLike.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(AssetEntrySetLike assetEntrySetLike) {
-		return _assetEntrySetLike.compareTo(assetEntrySetLike);
-	}
-
-	/**
-	 * Returns the asset entry set ID of this asset entry set like.
-	 *
-	 * @return the asset entry set ID of this asset entry set like
-	 */
-	@Override
-	public long getAssetEntrySetId() {
-		return _assetEntrySetLike.getAssetEntrySetId();
-	}
-
-	/**
-	 * Returns the fully qualified class name of this asset entry set like.
-	 *
-	 * @return the fully qualified class name of this asset entry set like
-	 */
-	@Override
-	public String getClassName() {
-		return _assetEntrySetLike.getClassName();
-	}
-
-	/**
-	 * Returns the class name ID of this asset entry set like.
-	 *
-	 * @return the class name ID of this asset entry set like
-	 */
-	@Override
-	public long getClassNameId() {
-		return _assetEntrySetLike.getClassNameId();
-	}
-
-	/**
-	 * Returns the class pk of this asset entry set like.
-	 *
-	 * @return the class pk of this asset entry set like
-	 */
-	@Override
-	public long getClassPK() {
-		return _assetEntrySetLike.getClassPK();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _assetEntrySetLike.getExpandoBridge();
-	}
-
-	/**
-	 * Returns the primary key of this asset entry set like.
-	 *
-	 * @return the primary key of this asset entry set like
-	 */
-	@Override
-	public
-		com.liferay.osb.loop.asset.entry.set.service.persistence.
-			AssetEntrySetLikePK getPrimaryKey() {
-
-		return _assetEntrySetLike.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _assetEntrySetLike.getPrimaryKeyObj();
-	}
-
-	@Override
-	public int hashCode() {
-		return _assetEntrySetLike.hashCode();
+	public AssetEntrySetLike toUnescapedModel() {
+		return new AssetEntrySetLikeWrapper(_assetEntrySetLike.toUnescapedModel());
 	}
 
 	@Override
@@ -177,15 +111,105 @@ public class AssetEntrySetLikeWrapper
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _assetEntrySetLike.getExpandoBridge();
+	}
+
+	/**
+	* Returns the primary key of this asset entry set like.
+	*
+	* @return the primary key of this asset entry set like
+	*/
+	@Override
+	public com.liferay.osb.loop.asset.entry.set.service.persistence.AssetEntrySetLikePK getPrimaryKey() {
+		return _assetEntrySetLike.getPrimaryKey();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<AssetEntrySetLike> toCacheModel() {
+		return _assetEntrySetLike.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(AssetEntrySetLike assetEntrySetLike) {
+		return _assetEntrySetLike.compareTo(assetEntrySetLike);
+	}
+
+	@Override
+	public int hashCode() {
+		return _assetEntrySetLike.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _assetEntrySetLike.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new AssetEntrySetLikeWrapper((AssetEntrySetLike)_assetEntrySetLike.clone());
+	}
+
+	/**
+	* Returns the fully qualified class name of this asset entry set like.
+	*
+	* @return the fully qualified class name of this asset entry set like
+	*/
+	@Override
+	public java.lang.String getClassName() {
+		return _assetEntrySetLike.getClassName();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _assetEntrySetLike.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _assetEntrySetLike.toXmlString();
+	}
+
+	/**
+	* Returns the asset entry set ID of this asset entry set like.
+	*
+	* @return the asset entry set ID of this asset entry set like
+	*/
+	@Override
+	public long getAssetEntrySetId() {
+		return _assetEntrySetLike.getAssetEntrySetId();
+	}
+
+	/**
+	* Returns the class name ID of this asset entry set like.
+	*
+	* @return the class name ID of this asset entry set like
+	*/
+	@Override
+	public long getClassNameId() {
+		return _assetEntrySetLike.getClassNameId();
+	}
+
+	/**
+	* Returns the class pk of this asset entry set like.
+	*
+	* @return the class pk of this asset entry set like
+	*/
+	@Override
+	public long getClassPK() {
+		return _assetEntrySetLike.getClassPK();
+	}
+
+	@Override
 	public void persist() {
 		_assetEntrySetLike.persist();
 	}
 
 	/**
-	 * Sets the asset entry set ID of this asset entry set like.
-	 *
-	 * @param assetEntrySetId the asset entry set ID of this asset entry set like
-	 */
+	* Sets the asset entry set ID of this asset entry set like.
+	*
+	* @param assetEntrySetId the asset entry set ID of this asset entry set like
+	*/
 	@Override
 	public void setAssetEntrySetId(long assetEntrySetId) {
 		_assetEntrySetLike.setAssetEntrySetId(assetEntrySetId);
@@ -197,40 +221,39 @@ public class AssetEntrySetLikeWrapper
 	}
 
 	@Override
-	public void setClassName(String className) {
+	public void setClassName(java.lang.String className) {
 		_assetEntrySetLike.setClassName(className);
 	}
 
 	/**
-	 * Sets the class name ID of this asset entry set like.
-	 *
-	 * @param classNameId the class name ID of this asset entry set like
-	 */
+	* Sets the class name ID of this asset entry set like.
+	*
+	* @param classNameId the class name ID of this asset entry set like
+	*/
 	@Override
 	public void setClassNameId(long classNameId) {
 		_assetEntrySetLike.setClassNameId(classNameId);
 	}
 
 	/**
-	 * Sets the class pk of this asset entry set like.
-	 *
-	 * @param classPK the class pk of this asset entry set like
-	 */
+	* Sets the class pk of this asset entry set like.
+	*
+	* @param classPK the class pk of this asset entry set like
+	*/
 	@Override
 	public void setClassPK(long classPK) {
 		_assetEntrySetLike.setClassPK(classPK);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-
-		_assetEntrySetLike.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_assetEntrySetLike.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_assetEntrySetLike.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_assetEntrySetLike.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -244,50 +267,19 @@ public class AssetEntrySetLikeWrapper
 	}
 
 	/**
-	 * Sets the primary key of this asset entry set like.
-	 *
-	 * @param primaryKey the primary key of this asset entry set like
-	 */
+	* Sets the primary key of this asset entry set like.
+	*
+	* @param primaryKey the primary key of this asset entry set like
+	*/
 	@Override
 	public void setPrimaryKey(
-		com.liferay.osb.loop.asset.entry.set.service.persistence.
-			AssetEntrySetLikePK primaryKey) {
-
+		com.liferay.osb.loop.asset.entry.set.service.persistence.AssetEntrySetLikePK primaryKey) {
 		_assetEntrySetLike.setPrimaryKey(primaryKey);
 	}
 
 	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		_assetEntrySetLike.setPrimaryKeyObj(primaryKeyObj);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<AssetEntrySetLike>
-		toCacheModel() {
-
-		return _assetEntrySetLike.toCacheModel();
-	}
-
-	@Override
-	public AssetEntrySetLike toEscapedModel() {
-		return new AssetEntrySetLikeWrapper(
-			_assetEntrySetLike.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return _assetEntrySetLike.toString();
-	}
-
-	@Override
-	public AssetEntrySetLike toUnescapedModel() {
-		return new AssetEntrySetLikeWrapper(
-			_assetEntrySetLike.toUnescapedModel());
-	}
-
-	@Override
-	public String toXmlString() {
-		return _assetEntrySetLike.toXmlString();
 	}
 
 	@Override
@@ -300,13 +292,10 @@ public class AssetEntrySetLikeWrapper
 			return false;
 		}
 
-		AssetEntrySetLikeWrapper assetEntrySetLikeWrapper =
-			(AssetEntrySetLikeWrapper)obj;
+		AssetEntrySetLikeWrapper assetEntrySetLikeWrapper = (AssetEntrySetLikeWrapper)obj;
 
-		if (Objects.equals(
-				_assetEntrySetLike,
-				assetEntrySetLikeWrapper._assetEntrySetLike)) {
-
+		if (Objects.equals(_assetEntrySetLike,
+					assetEntrySetLikeWrapper._assetEntrySetLike)) {
 			return true;
 		}
 
@@ -334,5 +323,4 @@ public class AssetEntrySetLikeWrapper
 	}
 
 	private final AssetEntrySetLike _assetEntrySetLike;
-
 }

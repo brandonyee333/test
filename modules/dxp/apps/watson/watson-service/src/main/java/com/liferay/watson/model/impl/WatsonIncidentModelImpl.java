@@ -1365,16 +1365,16 @@ public class WatsonIncidentModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonIncident)) {
+		if (!(object instanceof WatsonIncident)) {
 			return false;
 		}
 
-		WatsonIncident watsonIncident = (WatsonIncident)obj;
+		WatsonIncident watsonIncident = (WatsonIncident)object;
 
 		long primaryKey = watsonIncident.getPrimaryKey();
 

@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model;
+
+import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -25,15 +27,14 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
+@ProviderType
 public class ZendeskCategorySoap implements Serializable {
-
 	public static ZendeskCategorySoap toSoapModel(ZendeskCategory model) {
 		ZendeskCategorySoap soapModel = new ZendeskCategorySoap();
 
 		soapModel.setZendeskCategoryId(model.getZendeskCategoryId());
 		soapModel.setDocumentationKey(model.getDocumentationKey());
-		soapModel.setDocumentationOriginalURL(
-			model.getDocumentationOriginalURL());
+		soapModel.setDocumentationOriginalURL(model.getDocumentationOriginalURL());
 		soapModel.setArticleLabels(model.getArticleLabels());
 		soapModel.setRemoteId(model.getRemoteId());
 		soapModel.setRemoteUserSegmentId(model.getRemoteUserSegmentId());
@@ -42,8 +43,7 @@ public class ZendeskCategorySoap implements Serializable {
 	}
 
 	public static ZendeskCategorySoap[] toSoapModels(ZendeskCategory[] models) {
-		ZendeskCategorySoap[] soapModels =
-			new ZendeskCategorySoap[models.length];
+		ZendeskCategorySoap[] soapModels = new ZendeskCategorySoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -54,12 +54,10 @@ public class ZendeskCategorySoap implements Serializable {
 
 	public static ZendeskCategorySoap[][] toSoapModels(
 		ZendeskCategory[][] models) {
-
 		ZendeskCategorySoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels =
-				new ZendeskCategorySoap[models.length][models[0].length];
+			soapModels = new ZendeskCategorySoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new ZendeskCategorySoap[0][0];
@@ -74,9 +72,7 @@ public class ZendeskCategorySoap implements Serializable {
 
 	public static ZendeskCategorySoap[] toSoapModels(
 		List<ZendeskCategory> models) {
-
-		List<ZendeskCategorySoap> soapModels =
-			new ArrayList<ZendeskCategorySoap>(models.size());
+		List<ZendeskCategorySoap> soapModels = new ArrayList<ZendeskCategorySoap>(models.size());
 
 		for (ZendeskCategory model : models) {
 			soapModels.add(toSoapModel(model));
@@ -150,5 +146,4 @@ public class ZendeskCategorySoap implements Serializable {
 	private String _articleLabels;
 	private long _remoteId;
 	private long _remoteUserSegmentId;
-
 }

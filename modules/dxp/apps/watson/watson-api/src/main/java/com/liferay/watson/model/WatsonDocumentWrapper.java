@@ -628,17 +628,17 @@ public class WatsonDocumentWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonDocumentWrapper)) {
+		if (!(object instanceof WatsonDocumentWrapper)) {
 			return false;
 		}
 
 		WatsonDocumentWrapper watsonDocumentWrapper =
-			(WatsonDocumentWrapper)obj;
+			(WatsonDocumentWrapper)object;
 
 		if (Objects.equals(
 				_watsonDocument, watsonDocumentWrapper._watsonDocument)) {

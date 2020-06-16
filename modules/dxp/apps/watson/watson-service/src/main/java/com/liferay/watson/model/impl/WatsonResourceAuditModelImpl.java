@@ -1165,16 +1165,16 @@ public class WatsonResourceAuditModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonResourceAudit)) {
+		if (!(object instanceof WatsonResourceAudit)) {
 			return false;
 		}
 
-		WatsonResourceAudit watsonResourceAudit = (WatsonResourceAudit)obj;
+		WatsonResourceAudit watsonResourceAudit = (WatsonResourceAudit)object;
 
 		long primaryKey = watsonResourceAudit.getPrimaryKey();
 

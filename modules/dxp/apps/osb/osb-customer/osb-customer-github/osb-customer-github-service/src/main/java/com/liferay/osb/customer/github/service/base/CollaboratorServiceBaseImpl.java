@@ -1,15 +1,15 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.customer.github.service.base;
@@ -17,6 +17,7 @@ package com.liferay.osb.customer.github.service.base;
 import com.liferay.osb.customer.github.model.Collaborator;
 import com.liferay.osb.customer.github.service.CollaboratorService;
 import com.liferay.osb.customer.github.service.persistence.CollaboratorPersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -41,16 +42,15 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.osb.customer.github.service.impl.CollaboratorServiceImpl
+ * @see com.liferay.osb.customer.github.service.CollaboratorServiceUtil
  * @generated
  */
-public abstract class CollaboratorServiceBaseImpl
-	extends BaseServiceImpl
+public abstract class CollaboratorServiceBaseImpl extends BaseServiceImpl
 	implements CollaboratorService, IdentifiableOSGiService {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CollaboratorService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.github.service.CollaboratorServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.osb.customer.github.service.CollaboratorServiceUtil} to access the collaborator remote service.
 	 */
 
 	/**
@@ -58,9 +58,7 @@ public abstract class CollaboratorServiceBaseImpl
 	 *
 	 * @return the collaborator local service
 	 */
-	public com.liferay.osb.customer.github.service.CollaboratorLocalService
-		getCollaboratorLocalService() {
-
+	public com.liferay.osb.customer.github.service.CollaboratorLocalService getCollaboratorLocalService() {
 		return collaboratorLocalService;
 	}
 
@@ -70,9 +68,7 @@ public abstract class CollaboratorServiceBaseImpl
 	 * @param collaboratorLocalService the collaborator local service
 	 */
 	public void setCollaboratorLocalService(
-		com.liferay.osb.customer.github.service.CollaboratorLocalService
-			collaboratorLocalService) {
-
+		com.liferay.osb.customer.github.service.CollaboratorLocalService collaboratorLocalService) {
 		this.collaboratorLocalService = collaboratorLocalService;
 	}
 
@@ -90,9 +86,7 @@ public abstract class CollaboratorServiceBaseImpl
 	 *
 	 * @param collaboratorService the collaborator remote service
 	 */
-	public void setCollaboratorService(
-		CollaboratorService collaboratorService) {
-
+	public void setCollaboratorService(CollaboratorService collaboratorService) {
 		this.collaboratorService = collaboratorService;
 	}
 
@@ -112,7 +106,6 @@ public abstract class CollaboratorServiceBaseImpl
 	 */
 	public void setCollaboratorPersistence(
 		CollaboratorPersistence collaboratorPersistence) {
-
 		this.collaboratorPersistence = collaboratorPersistence;
 	}
 
@@ -121,9 +114,7 @@ public abstract class CollaboratorServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -133,9 +124,7 @@ public abstract class CollaboratorServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -144,9 +133,7 @@ public abstract class CollaboratorServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService
-		getClassNameLocalService() {
-
+	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
 		return classNameLocalService;
 	}
 
@@ -156,9 +143,7 @@ public abstract class CollaboratorServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService
-			classNameLocalService) {
-
+		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -167,9 +152,7 @@ public abstract class CollaboratorServiceBaseImpl
 	 *
 	 * @return the class name remote service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameService
-		getClassNameService() {
-
+	public com.liferay.portal.kernel.service.ClassNameService getClassNameService() {
 		return classNameService;
 	}
 
@@ -180,7 +163,6 @@ public abstract class CollaboratorServiceBaseImpl
 	 */
 	public void setClassNameService(
 		com.liferay.portal.kernel.service.ClassNameService classNameService) {
-
 		this.classNameService = classNameService;
 	}
 
@@ -200,7 +182,6 @@ public abstract class CollaboratorServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
-
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -209,9 +190,7 @@ public abstract class CollaboratorServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService
-		getResourceLocalService() {
-
+	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
 		return resourceLocalService;
 	}
 
@@ -221,9 +200,7 @@ public abstract class CollaboratorServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService
-			resourceLocalService) {
-
+		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -232,9 +209,7 @@ public abstract class CollaboratorServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService
-		getUserLocalService() {
-
+	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
 		return userLocalService;
 	}
 
@@ -245,7 +220,6 @@ public abstract class CollaboratorServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
-
 		this.userLocalService = userLocalService;
 	}
 
@@ -265,7 +239,6 @@ public abstract class CollaboratorServiceBaseImpl
 	 */
 	public void setUserService(
 		com.liferay.portal.kernel.service.UserService userService) {
-
 		this.userService = userService;
 	}
 
@@ -325,67 +298,36 @@ public abstract class CollaboratorServiceBaseImpl
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
-	@BeanReference(
-		type = com.liferay.osb.customer.github.service.CollaboratorLocalService.class
-	)
-	protected com.liferay.osb.customer.github.service.CollaboratorLocalService
-		collaboratorLocalService;
-
+	@BeanReference(type = com.liferay.osb.customer.github.service.CollaboratorLocalService.class)
+	protected com.liferay.osb.customer.github.service.CollaboratorLocalService collaboratorLocalService;
 	@BeanReference(type = CollaboratorService.class)
 	protected CollaboratorService collaboratorService;
-
 	@BeanReference(type = CollaboratorPersistence.class)
 	protected CollaboratorPersistence collaboratorPersistence;
-
-	@ServiceReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService
-		classNameLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ClassNameService.class
-	)
-	protected com.liferay.portal.kernel.service.ClassNameService
-		classNameService;
-
+	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameService.class)
+	protected com.liferay.portal.kernel.service.ClassNameService classNameService;
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ResourceLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ResourceLocalService
-		resourceLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.UserLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.UserLocalService
-		userLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.UserService.class
-	)
+	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
+	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
+	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.UserService.class)
 	protected com.liferay.portal.kernel.service.UserService userService;
-
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-
 }

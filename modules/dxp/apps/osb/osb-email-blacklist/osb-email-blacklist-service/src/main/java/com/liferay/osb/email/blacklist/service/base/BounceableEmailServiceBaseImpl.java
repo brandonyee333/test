@@ -1,15 +1,15 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.email.blacklist.service.base;
@@ -17,6 +17,7 @@ package com.liferay.osb.email.blacklist.service.base;
 import com.liferay.osb.email.blacklist.service.BounceableEmailService;
 import com.liferay.osb.email.blacklist.service.persistence.BlacklistEntryPersistence;
 import com.liferay.osb.email.blacklist.service.persistence.BounceEntryPersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -42,16 +43,15 @@ import javax.sql.DataSource;
  *
  * @author Jamie Sammons
  * @see com.liferay.osb.email.blacklist.service.impl.BounceableEmailServiceImpl
+ * @see com.liferay.osb.email.blacklist.service.BounceableEmailServiceUtil
  * @generated
  */
-public abstract class BounceableEmailServiceBaseImpl
-	extends BaseServiceImpl
+public abstract class BounceableEmailServiceBaseImpl extends BaseServiceImpl
 	implements BounceableEmailService, IdentifiableOSGiService {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>BounceableEmailService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.email.blacklist.service.BounceableEmailServiceUtil</code>.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.osb.email.blacklist.service.BounceableEmailServiceUtil} to access the bounceable email remote service.
 	 */
 
 	/**
@@ -59,9 +59,7 @@ public abstract class BounceableEmailServiceBaseImpl
 	 *
 	 * @return the blacklist entry local service
 	 */
-	public com.liferay.osb.email.blacklist.service.BlacklistEntryLocalService
-		getBlacklistEntryLocalService() {
-
+	public com.liferay.osb.email.blacklist.service.BlacklistEntryLocalService getBlacklistEntryLocalService() {
 		return blacklistEntryLocalService;
 	}
 
@@ -71,9 +69,7 @@ public abstract class BounceableEmailServiceBaseImpl
 	 * @param blacklistEntryLocalService the blacklist entry local service
 	 */
 	public void setBlacklistEntryLocalService(
-		com.liferay.osb.email.blacklist.service.BlacklistEntryLocalService
-			blacklistEntryLocalService) {
-
+		com.liferay.osb.email.blacklist.service.BlacklistEntryLocalService blacklistEntryLocalService) {
 		this.blacklistEntryLocalService = blacklistEntryLocalService;
 	}
 
@@ -93,7 +89,6 @@ public abstract class BounceableEmailServiceBaseImpl
 	 */
 	public void setBlacklistEntryPersistence(
 		BlacklistEntryPersistence blacklistEntryPersistence) {
-
 		this.blacklistEntryPersistence = blacklistEntryPersistence;
 	}
 
@@ -113,7 +108,6 @@ public abstract class BounceableEmailServiceBaseImpl
 	 */
 	public void setBounceableEmailService(
 		BounceableEmailService bounceableEmailService) {
-
 		this.bounceableEmailService = bounceableEmailService;
 	}
 
@@ -122,9 +116,7 @@ public abstract class BounceableEmailServiceBaseImpl
 	 *
 	 * @return the bounce entry local service
 	 */
-	public com.liferay.osb.email.blacklist.service.BounceEntryLocalService
-		getBounceEntryLocalService() {
-
+	public com.liferay.osb.email.blacklist.service.BounceEntryLocalService getBounceEntryLocalService() {
 		return bounceEntryLocalService;
 	}
 
@@ -134,9 +126,7 @@ public abstract class BounceableEmailServiceBaseImpl
 	 * @param bounceEntryLocalService the bounce entry local service
 	 */
 	public void setBounceEntryLocalService(
-		com.liferay.osb.email.blacklist.service.BounceEntryLocalService
-			bounceEntryLocalService) {
-
+		com.liferay.osb.email.blacklist.service.BounceEntryLocalService bounceEntryLocalService) {
 		this.bounceEntryLocalService = bounceEntryLocalService;
 	}
 
@@ -156,7 +146,6 @@ public abstract class BounceableEmailServiceBaseImpl
 	 */
 	public void setBounceEntryPersistence(
 		BounceEntryPersistence bounceEntryPersistence) {
-
 		this.bounceEntryPersistence = bounceEntryPersistence;
 	}
 
@@ -165,9 +154,7 @@ public abstract class BounceableEmailServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -177,9 +164,7 @@ public abstract class BounceableEmailServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -188,9 +173,7 @@ public abstract class BounceableEmailServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService
-		getClassNameLocalService() {
-
+	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
 		return classNameLocalService;
 	}
 
@@ -200,9 +183,7 @@ public abstract class BounceableEmailServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService
-			classNameLocalService) {
-
+		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -211,9 +192,7 @@ public abstract class BounceableEmailServiceBaseImpl
 	 *
 	 * @return the class name remote service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameService
-		getClassNameService() {
-
+	public com.liferay.portal.kernel.service.ClassNameService getClassNameService() {
 		return classNameService;
 	}
 
@@ -224,7 +203,6 @@ public abstract class BounceableEmailServiceBaseImpl
 	 */
 	public void setClassNameService(
 		com.liferay.portal.kernel.service.ClassNameService classNameService) {
-
 		this.classNameService = classNameService;
 	}
 
@@ -244,7 +222,6 @@ public abstract class BounceableEmailServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
-
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -253,9 +230,7 @@ public abstract class BounceableEmailServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService
-		getResourceLocalService() {
-
+	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
 		return resourceLocalService;
 	}
 
@@ -265,9 +240,7 @@ public abstract class BounceableEmailServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService
-			resourceLocalService) {
-
+		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -276,9 +249,7 @@ public abstract class BounceableEmailServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService
-		getUserLocalService() {
-
+	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
 		return userLocalService;
 	}
 
@@ -289,7 +260,6 @@ public abstract class BounceableEmailServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
-
 		this.userLocalService = userLocalService;
 	}
 
@@ -309,7 +279,6 @@ public abstract class BounceableEmailServiceBaseImpl
 	 */
 	public void setUserService(
 		com.liferay.portal.kernel.service.UserService userService) {
-
 		this.userService = userService;
 	}
 
@@ -361,76 +330,40 @@ public abstract class BounceableEmailServiceBaseImpl
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
-				dataSource, sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception exception) {
-			throw new SystemException(exception);
+		catch (Exception e) {
+			throw new SystemException(e);
 		}
 	}
 
-	@BeanReference(
-		type = com.liferay.osb.email.blacklist.service.BlacklistEntryLocalService.class
-	)
-	protected com.liferay.osb.email.blacklist.service.BlacklistEntryLocalService
-		blacklistEntryLocalService;
-
+	@BeanReference(type = com.liferay.osb.email.blacklist.service.BlacklistEntryLocalService.class)
+	protected com.liferay.osb.email.blacklist.service.BlacklistEntryLocalService blacklistEntryLocalService;
 	@BeanReference(type = BlacklistEntryPersistence.class)
 	protected BlacklistEntryPersistence blacklistEntryPersistence;
-
 	@BeanReference(type = BounceableEmailService.class)
 	protected BounceableEmailService bounceableEmailService;
-
-	@BeanReference(
-		type = com.liferay.osb.email.blacklist.service.BounceEntryLocalService.class
-	)
-	protected com.liferay.osb.email.blacklist.service.BounceEntryLocalService
-		bounceEntryLocalService;
-
+	@BeanReference(type = com.liferay.osb.email.blacklist.service.BounceEntryLocalService.class)
+	protected com.liferay.osb.email.blacklist.service.BounceEntryLocalService bounceEntryLocalService;
 	@BeanReference(type = BounceEntryPersistence.class)
 	protected BounceEntryPersistence bounceEntryPersistence;
-
-	@ServiceReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
-	protected com.liferay.counter.kernel.service.CounterLocalService
-		counterLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService
-		classNameLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ClassNameService.class
-	)
-	protected com.liferay.portal.kernel.service.ClassNameService
-		classNameService;
-
+	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameService.class)
+	protected com.liferay.portal.kernel.service.ClassNameService classNameService;
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ResourceLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.ResourceLocalService
-		resourceLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.UserLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.UserLocalService
-		userLocalService;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.UserService.class
-	)
+	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
+	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
+	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.UserService.class)
 	protected com.liferay.portal.kernel.service.UserService userService;
-
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-
 }

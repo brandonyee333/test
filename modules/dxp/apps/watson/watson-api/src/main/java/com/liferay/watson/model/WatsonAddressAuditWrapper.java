@@ -1423,17 +1423,17 @@ public class WatsonAddressAuditWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonAddressAuditWrapper)) {
+		if (!(object instanceof WatsonAddressAuditWrapper)) {
 			return false;
 		}
 
 		WatsonAddressAuditWrapper watsonAddressAuditWrapper =
-			(WatsonAddressAuditWrapper)obj;
+			(WatsonAddressAuditWrapper)object;
 
 		if (Objects.equals(
 				_watsonAddressAudit,

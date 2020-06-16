@@ -924,16 +924,16 @@ public class WatsonDocumentAuditModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonDocumentAudit)) {
+		if (!(object instanceof WatsonDocumentAudit)) {
 			return false;
 		}
 
-		WatsonDocumentAudit watsonDocumentAudit = (WatsonDocumentAudit)obj;
+		WatsonDocumentAudit watsonDocumentAudit = (WatsonDocumentAudit)object;
 
 		long primaryKey = watsonDocumentAudit.getPrimaryKey();
 

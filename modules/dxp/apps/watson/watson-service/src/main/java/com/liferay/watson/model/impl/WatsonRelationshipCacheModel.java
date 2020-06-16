@@ -36,17 +36,17 @@ public class WatsonRelationshipCacheModel
 	implements CacheModel<WatsonRelationship>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonRelationshipCacheModel)) {
+		if (!(object instanceof WatsonRelationshipCacheModel)) {
 			return false;
 		}
 
 		WatsonRelationshipCacheModel watsonRelationshipCacheModel =
-			(WatsonRelationshipCacheModel)obj;
+			(WatsonRelationshipCacheModel)object;
 
 		if (watsonRelationshipId ==
 				watsonRelationshipCacheModel.watsonRelationshipId) {

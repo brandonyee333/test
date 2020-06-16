@@ -817,16 +817,16 @@ public class WatsonHistoryAuditModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonHistoryAudit)) {
+		if (!(object instanceof WatsonHistoryAudit)) {
 			return false;
 		}
 
-		WatsonHistoryAudit watsonHistoryAudit = (WatsonHistoryAudit)obj;
+		WatsonHistoryAudit watsonHistoryAudit = (WatsonHistoryAudit)object;
 
 		long primaryKey = watsonHistoryAudit.getPrimaryKey();
 

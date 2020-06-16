@@ -888,17 +888,17 @@ public class WatsonResourceAuditWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonResourceAuditWrapper)) {
+		if (!(object instanceof WatsonResourceAuditWrapper)) {
 			return false;
 		}
 
 		WatsonResourceAuditWrapper watsonResourceAuditWrapper =
-			(WatsonResourceAuditWrapper)obj;
+			(WatsonResourceAuditWrapper)object;
 
 		if (Objects.equals(
 				_watsonResourceAudit,

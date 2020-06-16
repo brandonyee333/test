@@ -1,24 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.loop.service.persistence.impl;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.loop.exception.NoSuchLoopJobTitleException;
 import com.liferay.osb.loop.model.LoopJobTitle;
 import com.liferay.osb.loop.model.impl.LoopJobTitleImpl;
 import com.liferay.osb.loop.model.impl.LoopJobTitleModelImpl;
 import com.liferay.osb.loop.service.persistence.LoopJobTitlePersistence;
+
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -28,18 +31,17 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.service.persistence.CompanyProvider;
+import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
-
-import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -59,34 +61,44 @@ import java.util.Set;
  * </p>
  *
  * @author Ethan Bustad
+ * @see LoopJobTitlePersistence
+ * @see com.liferay.osb.loop.service.persistence.LoopJobTitleUtil
  * @generated
  */
-public class LoopJobTitlePersistenceImpl
-	extends BasePersistenceImpl<LoopJobTitle>
+@ProviderType
+public class LoopJobTitlePersistenceImpl extends BasePersistenceImpl<LoopJobTitle>
 	implements LoopJobTitlePersistence {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use <code>LoopJobTitleUtil</code> to access the loop job title persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use {@link LoopJobTitleUtil} to access the loop job title persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY =
-		LoopJobTitleImpl.class.getName();
-
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List1";
-
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathFetchByName;
-	private FinderPath _finderPathCountByName;
+	public static final String FINDER_CLASS_NAME_ENTITY = LoopJobTitleImpl.class.getName();
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List1";
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List2";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
+			LoopJobTitleModelImpl.FINDER_CACHE_ENABLED, LoopJobTitleImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
+			LoopJobTitleModelImpl.FINDER_CACHE_ENABLED, LoopJobTitleImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
+			LoopJobTitleModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	public static final FinderPath FINDER_PATH_FETCH_BY_NAME = new FinderPath(LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
+			LoopJobTitleModelImpl.FINDER_CACHE_ENABLED, LoopJobTitleImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchByName",
+			new String[] { String.class.getName() },
+			LoopJobTitleModelImpl.NAME_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_NAME = new FinderPath(LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
+			LoopJobTitleModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByName",
+			new String[] { String.class.getName() });
 
 	/**
-	 * Returns the loop job title where name = &#63; or throws a <code>NoSuchLoopJobTitleException</code> if it could not be found.
+	 * Returns the loop job title where name = &#63; or throws a {@link NoSuchLoopJobTitleException} if it could not be found.
 	 *
 	 * @param name the name
 	 * @return the matching loop job title
@@ -95,24 +107,23 @@ public class LoopJobTitlePersistenceImpl
 	@Override
 	public LoopJobTitle findByName(String name)
 		throws NoSuchLoopJobTitleException {
-
 		LoopJobTitle loopJobTitle = fetchByName(name);
 
 		if (loopJobTitle == null) {
-			StringBundler sb = new StringBundler(4);
+			StringBundler msg = new StringBundler(4);
 
-			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			sb.append("name=");
-			sb.append(name);
+			msg.append("name=");
+			msg.append(name);
 
-			sb.append("}");
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(sb.toString());
+				_log.debug(msg.toString());
 			}
 
-			throw new NoSuchLoopJobTitleException(sb.toString());
+			throw new NoSuchLoopJobTitleException(msg.toString());
 		}
 
 		return loopJobTitle;
@@ -133,24 +144,18 @@ public class LoopJobTitlePersistenceImpl
 	 * Returns the loop job title where name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param name the name
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the matching loop job title, or <code>null</code> if a matching loop job title could not be found
 	 */
 	@Override
-	public LoopJobTitle fetchByName(String name, boolean useFinderCache) {
-		name = Objects.toString(name, "");
-
-		Object[] finderArgs = null;
-
-		if (useFinderCache) {
-			finderArgs = new Object[] {name};
-		}
+	public LoopJobTitle fetchByName(String name, boolean retrieveFromCache) {
+		Object[] finderArgs = new Object[] { name };
 
 		Object result = null;
 
-		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchByName, finderArgs, this);
+		if (retrieveFromCache) {
+			result = finderCache.getResult(FINDER_PATH_FETCH_BY_NAME,
+					finderArgs, this);
 		}
 
 		if (result instanceof LoopJobTitle) {
@@ -162,43 +167,44 @@ public class LoopJobTitlePersistenceImpl
 		}
 
 		if (result == null) {
-			StringBundler sb = new StringBundler(3);
+			StringBundler query = new StringBundler(3);
 
-			sb.append(_SQL_SELECT_LOOPJOBTITLE_WHERE);
+			query.append(_SQL_SELECT_LOOPJOBTITLE_WHERE);
 
 			boolean bindName = false;
 
-			if (name.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAME_NAME_3);
+			if (name == null) {
+				query.append(_FINDER_COLUMN_NAME_NAME_1);
+			}
+			else if (name.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_NAME_NAME_3);
 			}
 			else {
 				bindName = true;
 
-				sb.append(_FINDER_COLUMN_NAME_NAME_2);
+				query.append(_FINDER_COLUMN_NAME_NAME_2);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
 				if (bindName) {
-					queryPos.add(name);
+					qPos.add(name);
 				}
 
-				List<LoopJobTitle> list = query.list();
+				List<LoopJobTitle> list = q.list();
 
 				if (list.isEmpty()) {
-					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchByName, finderArgs, list);
-					}
+					finderCache.putResult(FINDER_PATH_FETCH_BY_NAME,
+						finderArgs, list);
 				}
 				else {
 					LoopJobTitle loopJobTitle = list.get(0);
@@ -206,15 +212,18 @@ public class LoopJobTitlePersistenceImpl
 					result = loopJobTitle;
 
 					cacheResult(loopJobTitle);
+
+					if ((loopJobTitle.getName() == null) ||
+							!loopJobTitle.getName().equals(name)) {
+						finderCache.putResult(FINDER_PATH_FETCH_BY_NAME,
+							finderArgs, loopJobTitle);
+					}
 				}
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(
-						_finderPathFetchByName, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_FETCH_BY_NAME, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -238,7 +247,6 @@ public class LoopJobTitlePersistenceImpl
 	@Override
 	public LoopJobTitle removeByName(String name)
 		throws NoSuchLoopJobTitleException {
-
 		LoopJobTitle loopJobTitle = findByName(name);
 
 		return remove(loopJobTitle);
@@ -252,53 +260,54 @@ public class LoopJobTitlePersistenceImpl
 	 */
 	@Override
 	public int countByName(String name) {
-		name = Objects.toString(name, "");
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_NAME;
 
-		FinderPath finderPath = _finderPathCountByName;
-
-		Object[] finderArgs = new Object[] {name};
+		Object[] finderArgs = new Object[] { name };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(2);
+			StringBundler query = new StringBundler(2);
 
-			sb.append(_SQL_COUNT_LOOPJOBTITLE_WHERE);
+			query.append(_SQL_COUNT_LOOPJOBTITLE_WHERE);
 
 			boolean bindName = false;
 
-			if (name.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAME_NAME_3);
+			if (name == null) {
+				query.append(_FINDER_COLUMN_NAME_NAME_1);
+			}
+			else if (name.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_NAME_NAME_3);
 			}
 			else {
 				bindName = true;
 
-				sb.append(_FINDER_COLUMN_NAME_NAME_2);
+				query.append(_FINDER_COLUMN_NAME_NAME_2);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
 				if (bindName) {
-					queryPos.add(name);
+					qPos.add(name);
 				}
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
+			catch (Exception e) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -308,11 +317,9 @@ public class LoopJobTitlePersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_NAME_NAME_2 =
-		"loopJobTitle.name = ?";
-
-	private static final String _FINDER_COLUMN_NAME_NAME_3 =
-		"(loopJobTitle.name IS NULL OR loopJobTitle.name = '')";
+	private static final String _FINDER_COLUMN_NAME_NAME_1 = "loopJobTitle.name IS NULL";
+	private static final String _FINDER_COLUMN_NAME_NAME_2 = "loopJobTitle.name = ?";
+	private static final String _FINDER_COLUMN_NAME_NAME_3 = "(loopJobTitle.name IS NULL OR loopJobTitle.name = '')";
 
 	public LoopJobTitlePersistenceImpl() {
 		setModelClass(LoopJobTitle.class);
@@ -325,13 +332,11 @@ public class LoopJobTitlePersistenceImpl
 	 */
 	@Override
 	public void cacheResult(LoopJobTitle loopJobTitle) {
-		entityCache.putResult(
-			LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED, LoopJobTitleImpl.class,
-			loopJobTitle.getPrimaryKey(), loopJobTitle);
+		entityCache.putResult(LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
+			LoopJobTitleImpl.class, loopJobTitle.getPrimaryKey(), loopJobTitle);
 
-		finderCache.putResult(
-			_finderPathFetchByName, new Object[] {loopJobTitle.getName()},
-			loopJobTitle);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_NAME,
+			new Object[] { loopJobTitle.getName() }, loopJobTitle);
 
 		loopJobTitle.resetOriginalValues();
 	}
@@ -345,10 +350,8 @@ public class LoopJobTitlePersistenceImpl
 	public void cacheResult(List<LoopJobTitle> loopJobTitles) {
 		for (LoopJobTitle loopJobTitle : loopJobTitles) {
 			if (entityCache.getResult(
-					LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
-					LoopJobTitleImpl.class, loopJobTitle.getPrimaryKey()) ==
-						null) {
-
+						LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
+						LoopJobTitleImpl.class, loopJobTitle.getPrimaryKey()) == null) {
 				cacheResult(loopJobTitle);
 			}
 			else {
@@ -361,7 +364,7 @@ public class LoopJobTitlePersistenceImpl
 	 * Clears the cache for all loop job titles.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -377,14 +380,13 @@ public class LoopJobTitlePersistenceImpl
 	 * Clears the cache for the loop job title.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(LoopJobTitle loopJobTitle) {
-		entityCache.removeResult(
-			LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED, LoopJobTitleImpl.class,
-			loopJobTitle.getPrimaryKey());
+		entityCache.removeResult(LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
+			LoopJobTitleImpl.class, loopJobTitle.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -398,56 +400,38 @@ public class LoopJobTitlePersistenceImpl
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (LoopJobTitle loopJobTitle : loopJobTitles) {
-			entityCache.removeResult(
-				LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
 				LoopJobTitleImpl.class, loopJobTitle.getPrimaryKey());
 
 			clearUniqueFindersCache((LoopJobTitleModelImpl)loopJobTitle, true);
 		}
 	}
 
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
-				LoopJobTitleImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		LoopJobTitleModelImpl loopJobTitleModelImpl) {
+		Object[] args = new Object[] { loopJobTitleModelImpl.getName() };
 
-		Object[] args = new Object[] {loopJobTitleModelImpl.getName()};
-
-		finderCache.putResult(
-			_finderPathCountByName, args, Long.valueOf(1), false);
-		finderCache.putResult(
-			_finderPathFetchByName, args, loopJobTitleModelImpl, false);
+		finderCache.putResult(FINDER_PATH_COUNT_BY_NAME, args, Long.valueOf(1),
+			false);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_NAME, args,
+			loopJobTitleModelImpl, false);
 	}
 
 	protected void clearUniqueFindersCache(
 		LoopJobTitleModelImpl loopJobTitleModelImpl, boolean clearCurrent) {
-
 		if (clearCurrent) {
-			Object[] args = new Object[] {loopJobTitleModelImpl.getName()};
+			Object[] args = new Object[] { loopJobTitleModelImpl.getName() };
 
-			finderCache.removeResult(_finderPathCountByName, args);
-			finderCache.removeResult(_finderPathFetchByName, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_NAME, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_NAME, args);
 		}
 
 		if ((loopJobTitleModelImpl.getColumnBitmask() &
-			 _finderPathFetchByName.getColumnBitmask()) != 0) {
+				FINDER_PATH_FETCH_BY_NAME.getColumnBitmask()) != 0) {
+			Object[] args = new Object[] { loopJobTitleModelImpl.getOriginalName() };
 
-			Object[] args = new Object[] {
-				loopJobTitleModelImpl.getOriginalName()
-			};
-
-			finderCache.removeResult(_finderPathCountByName, args);
-			finderCache.removeResult(_finderPathFetchByName, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_NAME, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_NAME, args);
 		}
 	}
 
@@ -464,7 +448,7 @@ public class LoopJobTitlePersistenceImpl
 		loopJobTitle.setNew(true);
 		loopJobTitle.setPrimaryKey(loopJobTitleId);
 
-		loopJobTitle.setCompanyId(CompanyThreadLocal.getCompanyId());
+		loopJobTitle.setCompanyId(companyProvider.getCompanyId());
 
 		return loopJobTitle;
 	}
@@ -479,7 +463,6 @@ public class LoopJobTitlePersistenceImpl
 	@Override
 	public LoopJobTitle remove(long loopJobTitleId)
 		throws NoSuchLoopJobTitleException {
-
 		return remove((Serializable)loopJobTitleId);
 	}
 
@@ -493,31 +476,30 @@ public class LoopJobTitlePersistenceImpl
 	@Override
 	public LoopJobTitle remove(Serializable primaryKey)
 		throws NoSuchLoopJobTitleException {
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			LoopJobTitle loopJobTitle = (LoopJobTitle)session.get(
-				LoopJobTitleImpl.class, primaryKey);
+			LoopJobTitle loopJobTitle = (LoopJobTitle)session.get(LoopJobTitleImpl.class,
+					primaryKey);
 
 			if (loopJobTitle == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchLoopJobTitleException(
-					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				throw new NoSuchLoopJobTitleException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+					primaryKey);
 			}
 
 			return remove(loopJobTitle);
 		}
-		catch (NoSuchLoopJobTitleException noSuchEntityException) {
-			throw noSuchEntityException;
+		catch (NoSuchLoopJobTitleException nsee) {
+			throw nsee;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -526,22 +508,24 @@ public class LoopJobTitlePersistenceImpl
 
 	@Override
 	protected LoopJobTitle removeImpl(LoopJobTitle loopJobTitle) {
+		loopJobTitle = toUnwrappedModel(loopJobTitle);
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(loopJobTitle)) {
-				loopJobTitle = (LoopJobTitle)session.get(
-					LoopJobTitleImpl.class, loopJobTitle.getPrimaryKeyObj());
+				loopJobTitle = (LoopJobTitle)session.get(LoopJobTitleImpl.class,
+						loopJobTitle.getPrimaryKeyObj());
 			}
 
 			if (loopJobTitle != null) {
 				session.delete(loopJobTitle);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -556,30 +540,13 @@ public class LoopJobTitlePersistenceImpl
 
 	@Override
 	public LoopJobTitle updateImpl(LoopJobTitle loopJobTitle) {
+		loopJobTitle = toUnwrappedModel(loopJobTitle);
+
 		boolean isNew = loopJobTitle.isNew();
 
-		if (!(loopJobTitle instanceof LoopJobTitleModelImpl)) {
-			InvocationHandler invocationHandler = null;
+		LoopJobTitleModelImpl loopJobTitleModelImpl = (LoopJobTitleModelImpl)loopJobTitle;
 
-			if (ProxyUtil.isProxyClass(loopJobTitle.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(
-					loopJobTitle);
-
-				throw new IllegalArgumentException(
-					"Implement ModelWrapper in loopJobTitle proxy " +
-						invocationHandler.getClass());
-			}
-
-			throw new IllegalArgumentException(
-				"Implement ModelWrapper in custom LoopJobTitle implementation " +
-					loopJobTitle.getClass());
-		}
-
-		LoopJobTitleModelImpl loopJobTitleModelImpl =
-			(LoopJobTitleModelImpl)loopJobTitle;
-
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -597,8 +564,7 @@ public class LoopJobTitlePersistenceImpl
 				loopJobTitle.setModifiedDate(now);
 			}
 			else {
-				loopJobTitle.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+				loopJobTitle.setModifiedDate(serviceContext.getModifiedDate(now));
 			}
 		}
 
@@ -616,8 +582,8 @@ public class LoopJobTitlePersistenceImpl
 				loopJobTitle = (LoopJobTitle)session.merge(loopJobTitle);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -628,15 +594,16 @@ public class LoopJobTitlePersistenceImpl
 		if (!LoopJobTitleModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else if (isNew) {
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+		else
+		 if (isNew) {
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(
-			LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED, LoopJobTitleImpl.class,
-			loopJobTitle.getPrimaryKey(), loopJobTitle, false);
+		entityCache.putResult(LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
+			LoopJobTitleImpl.class, loopJobTitle.getPrimaryKey(), loopJobTitle,
+			false);
 
 		clearUniqueFindersCache(loopJobTitleModelImpl, false);
 		cacheUniqueFindersCache(loopJobTitleModelImpl);
@@ -646,8 +613,31 @@ public class LoopJobTitlePersistenceImpl
 		return loopJobTitle;
 	}
 
+	protected LoopJobTitle toUnwrappedModel(LoopJobTitle loopJobTitle) {
+		if (loopJobTitle instanceof LoopJobTitleImpl) {
+			return loopJobTitle;
+		}
+
+		LoopJobTitleImpl loopJobTitleImpl = new LoopJobTitleImpl();
+
+		loopJobTitleImpl.setNew(loopJobTitle.isNew());
+		loopJobTitleImpl.setPrimaryKey(loopJobTitle.getPrimaryKey());
+
+		loopJobTitleImpl.setLoopJobTitleId(loopJobTitle.getLoopJobTitleId());
+		loopJobTitleImpl.setCompanyId(loopJobTitle.getCompanyId());
+		loopJobTitleImpl.setUserId(loopJobTitle.getUserId());
+		loopJobTitleImpl.setUserName(loopJobTitle.getUserName());
+		loopJobTitleImpl.setCreateDate(loopJobTitle.getCreateDate());
+		loopJobTitleImpl.setModifiedDate(loopJobTitle.getModifiedDate());
+		loopJobTitleImpl.setName(loopJobTitle.getName());
+		loopJobTitleImpl.setDescription(loopJobTitle.getDescription());
+		loopJobTitleImpl.setStatus(loopJobTitle.getStatus());
+
+		return loopJobTitleImpl;
+	}
+
 	/**
-	 * Returns the loop job title with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
+	 * Returns the loop job title with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the loop job title
 	 * @return the loop job title
@@ -656,7 +646,6 @@ public class LoopJobTitlePersistenceImpl
 	@Override
 	public LoopJobTitle findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchLoopJobTitleException {
-
 		LoopJobTitle loopJobTitle = fetchByPrimaryKey(primaryKey);
 
 		if (loopJobTitle == null) {
@@ -664,15 +653,15 @@ public class LoopJobTitlePersistenceImpl
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchLoopJobTitleException(
-				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			throw new NoSuchLoopJobTitleException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
 		}
 
 		return loopJobTitle;
 	}
 
 	/**
-	 * Returns the loop job title with the primary key or throws a <code>NoSuchLoopJobTitleException</code> if it could not be found.
+	 * Returns the loop job title with the primary key or throws a {@link NoSuchLoopJobTitleException} if it could not be found.
 	 *
 	 * @param loopJobTitleId the primary key of the loop job title
 	 * @return the loop job title
@@ -681,7 +670,6 @@ public class LoopJobTitlePersistenceImpl
 	@Override
 	public LoopJobTitle findByPrimaryKey(long loopJobTitleId)
 		throws NoSuchLoopJobTitleException {
-
 		return findByPrimaryKey((Serializable)loopJobTitleId);
 	}
 
@@ -693,9 +681,8 @@ public class LoopJobTitlePersistenceImpl
 	 */
 	@Override
 	public LoopJobTitle fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(
-			LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED, LoopJobTitleImpl.class,
-			primaryKey);
+		Serializable serializable = entityCache.getResult(LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
+				LoopJobTitleImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -709,24 +696,22 @@ public class LoopJobTitlePersistenceImpl
 			try {
 				session = openSession();
 
-				loopJobTitle = (LoopJobTitle)session.get(
-					LoopJobTitleImpl.class, primaryKey);
+				loopJobTitle = (LoopJobTitle)session.get(LoopJobTitleImpl.class,
+						primaryKey);
 
 				if (loopJobTitle != null) {
 					cacheResult(loopJobTitle);
 				}
 				else {
-					entityCache.putResult(
-						LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
 						LoopJobTitleImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception exception) {
-				entityCache.removeResult(
-					LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception e) {
+				entityCache.removeResult(LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
 					LoopJobTitleImpl.class, primaryKey);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -750,13 +735,11 @@ public class LoopJobTitlePersistenceImpl
 	@Override
 	public Map<Serializable, LoopJobTitle> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
-
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, LoopJobTitle> map =
-			new HashMap<Serializable, LoopJobTitle>();
+		Map<Serializable, LoopJobTitle> map = new HashMap<Serializable, LoopJobTitle>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -775,9 +758,8 @@ public class LoopJobTitlePersistenceImpl
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(
-				LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
-				LoopJobTitleImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
+					LoopJobTitleImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -797,31 +779,31 @@ public class LoopJobTitlePersistenceImpl
 			return map;
 		}
 
-		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
+				1);
 
-		sb.append(_SQL_SELECT_LOOPJOBTITLE_WHERE_PKS_IN);
+		query.append(_SQL_SELECT_LOOPJOBTITLE_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			sb.append((long)primaryKey);
+			query.append((long)primaryKey);
 
-			sb.append(",");
+			query.append(StringPool.COMMA);
 		}
 
-		sb.setIndex(sb.index() - 1);
+		query.setIndex(query.index() - 1);
 
-		sb.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query query = session.createQuery(sql);
+			Query q = session.createQuery(sql);
 
-			for (LoopJobTitle loopJobTitle : (List<LoopJobTitle>)query.list()) {
+			for (LoopJobTitle loopJobTitle : (List<LoopJobTitle>)q.list()) {
 				map.put(loopJobTitle.getPrimaryKeyObj(), loopJobTitle);
 
 				cacheResult(loopJobTitle);
@@ -830,13 +812,12 @@ public class LoopJobTitlePersistenceImpl
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(
-					LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
 					LoopJobTitleImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -859,7 +840,7 @@ public class LoopJobTitlePersistenceImpl
 	 * Returns a range of all the loop job titles.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopJobTitleModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopJobTitleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of loop job titles
@@ -875,7 +856,7 @@ public class LoopJobTitlePersistenceImpl
 	 * Returns an ordered range of all the loop job titles.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopJobTitleModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopJobTitleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of loop job titles
@@ -884,9 +865,8 @@ public class LoopJobTitlePersistenceImpl
 	 * @return the ordered range of loop job titles
 	 */
 	@Override
-	public List<LoopJobTitle> findAll(
-		int start, int end, OrderByComparator<LoopJobTitle> orderByComparator) {
-
+	public List<LoopJobTitle> findAll(int start, int end,
+		OrderByComparator<LoopJobTitle> orderByComparator) {
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -894,62 +874,62 @@ public class LoopJobTitlePersistenceImpl
 	 * Returns an ordered range of all the loop job titles.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopJobTitleModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopJobTitleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of loop job titles
 	 * @param end the upper bound of the range of loop job titles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of loop job titles
 	 */
 	@Override
-	public List<LoopJobTitle> findAll(
-		int start, int end, OrderByComparator<LoopJobTitle> orderByComparator,
-		boolean useFinderCache) {
-
+	public List<LoopJobTitle> findAll(int start, int end,
+		OrderByComparator<LoopJobTitle> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
-				finderArgs = FINDER_ARGS_EMPTY;
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+			finderArgs = FINDER_ARGS_EMPTY;
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] {start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
 		List<LoopJobTitle> list = null;
 
-		if (useFinderCache) {
-			list = (List<LoopJobTitle>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<LoopJobTitle>)finderCache.getResult(finderPath,
+					finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					2 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(2 +
+						(orderByComparator.getOrderByFields().length * 2));
 
-				sb.append(_SQL_SELECT_LOOPJOBTITLE);
+				query.append(_SQL_SELECT_LOOPJOBTITLE);
 
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 
-				sql = sb.toString();
+				sql = query.toString();
 			}
 			else {
 				sql = _SQL_SELECT_LOOPJOBTITLE;
 
-				sql = sql.concat(LoopJobTitleModelImpl.ORDER_BY_JPQL);
+				if (pagination) {
+					sql = sql.concat(LoopJobTitleModelImpl.ORDER_BY_JPQL);
+				}
 			}
 
 			Session session = null;
@@ -957,23 +937,29 @@ public class LoopJobTitlePersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				list = (List<LoopJobTitle>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<LoopJobTitle>)QueryUtil.list(q, getDialect(),
+							start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<LoopJobTitle>)QueryUtil.list(q, getDialect(),
+							start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1001,8 +987,8 @@ public class LoopJobTitlePersistenceImpl
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -1010,18 +996,18 @@ public class LoopJobTitlePersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(_SQL_COUNT_LOOPJOBTITLE);
+				Query q = session.createQuery(_SQL_COUNT_LOOPJOBTITLE);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
+					count);
 			}
-			catch (Exception exception) {
-				finderCache.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1040,35 +1026,6 @@ public class LoopJobTitlePersistenceImpl
 	 * Initializes the loop job title persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
-			LoopJobTitleModelImpl.FINDER_CACHE_ENABLED, LoopJobTitleImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
-			LoopJobTitleModelImpl.FINDER_CACHE_ENABLED, LoopJobTitleImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
-			LoopJobTitleModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
-
-		_finderPathFetchByName = new FinderPath(
-			LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
-			LoopJobTitleModelImpl.FINDER_CACHE_ENABLED, LoopJobTitleImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByName",
-			new String[] {String.class.getName()},
-			LoopJobTitleModelImpl.NAME_COLUMN_BITMASK);
-
-		_finderPathCountByName = new FinderPath(
-			LoopJobTitleModelImpl.ENTITY_CACHE_ENABLED,
-			LoopJobTitleModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByName",
-			new String[] {String.class.getName()});
 	}
 
 	public void destroy() {
@@ -1078,36 +1035,19 @@ public class LoopJobTitlePersistenceImpl
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@ServiceReference(type = CompanyProviderWrapper.class)
+	protected CompanyProvider companyProvider;
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
-
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-
-	private static final String _SQL_SELECT_LOOPJOBTITLE =
-		"SELECT loopJobTitle FROM LoopJobTitle loopJobTitle";
-
-	private static final String _SQL_SELECT_LOOPJOBTITLE_WHERE_PKS_IN =
-		"SELECT loopJobTitle FROM LoopJobTitle loopJobTitle WHERE loopJobTitleId IN (";
-
-	private static final String _SQL_SELECT_LOOPJOBTITLE_WHERE =
-		"SELECT loopJobTitle FROM LoopJobTitle loopJobTitle WHERE ";
-
-	private static final String _SQL_COUNT_LOOPJOBTITLE =
-		"SELECT COUNT(loopJobTitle) FROM LoopJobTitle loopJobTitle";
-
-	private static final String _SQL_COUNT_LOOPJOBTITLE_WHERE =
-		"SELECT COUNT(loopJobTitle) FROM LoopJobTitle loopJobTitle WHERE ";
-
+	private static final String _SQL_SELECT_LOOPJOBTITLE = "SELECT loopJobTitle FROM LoopJobTitle loopJobTitle";
+	private static final String _SQL_SELECT_LOOPJOBTITLE_WHERE_PKS_IN = "SELECT loopJobTitle FROM LoopJobTitle loopJobTitle WHERE loopJobTitleId IN (";
+	private static final String _SQL_SELECT_LOOPJOBTITLE_WHERE = "SELECT loopJobTitle FROM LoopJobTitle loopJobTitle WHERE ";
+	private static final String _SQL_COUNT_LOOPJOBTITLE = "SELECT COUNT(loopJobTitle) FROM LoopJobTitle loopJobTitle";
+	private static final String _SQL_COUNT_LOOPJOBTITLE_WHERE = "SELECT COUNT(loopJobTitle) FROM LoopJobTitle loopJobTitle WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "loopJobTitle.";
-
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
-		"No LoopJobTitle exists with the primary key ";
-
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No LoopJobTitle exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		LoopJobTitlePersistenceImpl.class);
-
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No LoopJobTitle exists with the primary key ";
+	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No LoopJobTitle exists with the key {";
+	private static final Log _log = LogFactoryUtil.getLog(LoopJobTitlePersistenceImpl.class);
 }

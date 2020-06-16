@@ -1,23 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.community.github.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.osb.community.github.model.GitHubContributor;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing GitHubContributor in entity cache.
  *
  * @author Haote Chou
+ * @see GitHubContributor
  * @generated
  */
-public class GitHubContributorCacheModel
-	implements CacheModel<GitHubContributor>, Externalizable {
-
+@ProviderType
+public class GitHubContributorCacheModel implements CacheModel<GitHubContributor>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +50,9 @@ public class GitHubContributorCacheModel
 			return false;
 		}
 
-		GitHubContributorCacheModel gitHubContributorCacheModel =
-			(GitHubContributorCacheModel)obj;
+		GitHubContributorCacheModel gitHubContributorCacheModel = (GitHubContributorCacheModel)obj;
 
-		if (gitHubContributorId ==
-				gitHubContributorCacheModel.gitHubContributorId) {
-
+		if (gitHubContributorId == gitHubContributorCacheModel.gitHubContributorId) {
 			return true;
 		}
 
@@ -95,15 +97,14 @@ public class GitHubContributorCacheModel
 
 	@Override
 	public GitHubContributor toEntityModel() {
-		GitHubContributorImpl gitHubContributorImpl =
-			new GitHubContributorImpl();
+		GitHubContributorImpl gitHubContributorImpl = new GitHubContributorImpl();
 
 		gitHubContributorImpl.setGitHubContributorId(gitHubContributorId);
 		gitHubContributorImpl.setCompanyId(companyId);
 		gitHubContributorImpl.setUserId(userId);
 
 		if (userName == null) {
-			gitHubContributorImpl.setUserName("");
+			gitHubContributorImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			gitHubContributorImpl.setUserName(userName);
@@ -126,14 +127,14 @@ public class GitHubContributorCacheModel
 		gitHubContributorImpl.setGitHubRepositoryId(gitHubRepositoryId);
 
 		if (name == null) {
-			gitHubContributorImpl.setName("");
+			gitHubContributorImpl.setName(StringPool.BLANK);
 		}
 		else {
 			gitHubContributorImpl.setName(name);
 		}
 
 		if (avatarURL == null) {
-			gitHubContributorImpl.setAvatarURL("");
+			gitHubContributorImpl.setAvatarURL(StringPool.BLANK);
 		}
 		else {
 			gitHubContributorImpl.setAvatarURL(avatarURL);
@@ -142,7 +143,7 @@ public class GitHubContributorCacheModel
 		gitHubContributorImpl.setContributions(contributions);
 
 		if (profileURL == null) {
-			gitHubContributorImpl.setProfileURL("");
+			gitHubContributorImpl.setProfileURL(StringPool.BLANK);
 		}
 		else {
 			gitHubContributorImpl.setProfileURL(profileURL);
@@ -173,7 +174,8 @@ public class GitHubContributorCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(gitHubContributorId);
 
 		objectOutput.writeLong(companyId);
@@ -181,7 +183,7 @@ public class GitHubContributorCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -193,14 +195,14 @@ public class GitHubContributorCacheModel
 		objectOutput.writeLong(gitHubRepositoryId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (avatarURL == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(avatarURL);
@@ -209,7 +211,7 @@ public class GitHubContributorCacheModel
 		objectOutput.writeInt(contributions);
 
 		if (profileURL == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(profileURL);
@@ -227,5 +229,4 @@ public class GitHubContributorCacheModel
 	public String avatarURL;
 	public int contributions;
 	public String profileURL;
-
 }

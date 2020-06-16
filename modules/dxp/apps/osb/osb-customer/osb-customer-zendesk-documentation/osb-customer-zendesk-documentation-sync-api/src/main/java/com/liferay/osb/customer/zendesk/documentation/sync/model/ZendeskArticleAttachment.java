@@ -1,15 +1,15 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model;
@@ -25,42 +25,34 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see ZendeskArticleAttachmentModel
+ * @see com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleAttachmentImpl
+ * @see com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleAttachmentModelImpl
  * @generated
  */
-@ImplementationClassName(
-	"com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleAttachmentImpl"
-)
+@ImplementationClassName("com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleAttachmentImpl")
 @ProviderType
-public interface ZendeskArticleAttachment
-	extends PersistedModel, ZendeskArticleAttachmentModel {
-
+public interface ZendeskArticleAttachment extends ZendeskArticleAttachmentModel,
+	PersistedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to <code>com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleAttachmentImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to {@link com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleAttachmentImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<ZendeskArticleAttachment, Long>
-		ZENDESK_ARTICLE_ATTACHMENT_ID_ACCESSOR =
-			new Accessor<ZendeskArticleAttachment, Long>() {
+	public static final Accessor<ZendeskArticleAttachment, Long> ZENDESK_ARTICLE_ATTACHMENT_ID_ACCESSOR =
+		new Accessor<ZendeskArticleAttachment, Long>() {
+			@Override
+			public Long get(ZendeskArticleAttachment zendeskArticleAttachment) {
+				return zendeskArticleAttachment.getZendeskArticleAttachmentId();
+			}
 
-				@Override
-				public Long get(
-					ZendeskArticleAttachment zendeskArticleAttachment) {
+			@Override
+			public Class<Long> getAttributeClass() {
+				return Long.class;
+			}
 
-					return zendeskArticleAttachment.
-						getZendeskArticleAttachmentId();
-				}
-
-				@Override
-				public Class<Long> getAttributeClass() {
-					return Long.class;
-				}
-
-				@Override
-				public Class<ZendeskArticleAttachment> getTypeClass() {
-					return ZendeskArticleAttachment.class;
-				}
-
-			};
-
+			@Override
+			public Class<ZendeskArticleAttachment> getTypeClass() {
+				return ZendeskArticleAttachment.class;
+			}
+		};
 }

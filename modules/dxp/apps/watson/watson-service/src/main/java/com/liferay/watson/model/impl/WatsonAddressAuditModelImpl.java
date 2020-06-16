@@ -1857,16 +1857,16 @@ public class WatsonAddressAuditModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonAddressAudit)) {
+		if (!(object instanceof WatsonAddressAudit)) {
 			return false;
 		}
 
-		WatsonAddressAudit watsonAddressAudit = (WatsonAddressAudit)obj;
+		WatsonAddressAudit watsonAddressAudit = (WatsonAddressAudit)object;
 
 		long primaryKey = watsonAddressAudit.getPrimaryKey();
 

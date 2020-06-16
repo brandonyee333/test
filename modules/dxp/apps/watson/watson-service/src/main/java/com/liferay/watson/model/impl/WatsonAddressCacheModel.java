@@ -36,17 +36,17 @@ public class WatsonAddressCacheModel
 	implements CacheModel<WatsonAddress>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonAddressCacheModel)) {
+		if (!(object instanceof WatsonAddressCacheModel)) {
 			return false;
 		}
 
 		WatsonAddressCacheModel watsonAddressCacheModel =
-			(WatsonAddressCacheModel)obj;
+			(WatsonAddressCacheModel)object;
 
 		if (watsonAddressId == watsonAddressCacheModel.watsonAddressId) {
 			return true;

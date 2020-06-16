@@ -760,16 +760,16 @@ public class WatsonHistoryModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonHistory)) {
+		if (!(object instanceof WatsonHistory)) {
 			return false;
 		}
 
-		WatsonHistory watsonHistory = (WatsonHistory)obj;
+		WatsonHistory watsonHistory = (WatsonHistory)object;
 
 		long primaryKey = watsonHistory.getPrimaryKey();
 

@@ -1,24 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.loop.token.auth.service.persistence.impl;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.loop.token.auth.exception.NoSuchEntryException;
 import com.liferay.osb.loop.token.auth.model.TokenAuthEntry;
 import com.liferay.osb.loop.token.auth.model.impl.TokenAuthEntryImpl;
 import com.liferay.osb.loop.token.auth.model.impl.TokenAuthEntryModelImpl;
 import com.liferay.osb.loop.token.auth.service.persistence.TokenAuthEntryPersistence;
+
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -28,16 +31,15 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.service.persistence.CompanyProvider;
+import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
-
-import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -56,32 +58,55 @@ import java.util.Set;
  * </p>
  *
  * @author Bruno Farache
+ * @see TokenAuthEntryPersistence
+ * @see com.liferay.osb.loop.token.auth.service.persistence.TokenAuthEntryUtil
  * @generated
  */
-public class TokenAuthEntryPersistenceImpl
-	extends BasePersistenceImpl<TokenAuthEntry>
+@ProviderType
+public class TokenAuthEntryPersistenceImpl extends BasePersistenceImpl<TokenAuthEntry>
 	implements TokenAuthEntryPersistence {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use <code>TokenAuthEntryUtil</code> to access the token auth entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use {@link TokenAuthEntryUtil} to access the token auth entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY =
-		TokenAuthEntryImpl.class.getName();
-
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List1";
-
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathWithPaginationFindByUserId;
-	private FinderPath _finderPathWithoutPaginationFindByUserId;
-	private FinderPath _finderPathCountByUserId;
+	public static final String FINDER_CLASS_NAME_ENTITY = TokenAuthEntryImpl.class.getName();
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List1";
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List2";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+			TokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
+			TokenAuthEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+			TokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
+			TokenAuthEntryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+			TokenAuthEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_USERID = new FinderPath(TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+			TokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
+			TokenAuthEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findByUserId",
+			new String[] {
+				Long.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID =
+		new FinderPath(TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+			TokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
+			TokenAuthEntryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUserId",
+			new String[] { Long.class.getName() },
+			TokenAuthEntryModelImpl.USERID_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_USERID = new FinderPath(TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+			TokenAuthEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
+			new String[] { Long.class.getName() });
 
 	/**
 	 * Returns all the token auth entries where userId = &#63;.
@@ -98,7 +123,7 @@ public class TokenAuthEntryPersistenceImpl
 	 * Returns a range of all the token auth entries where userId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TokenAuthEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TokenAuthEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param userId the user ID
@@ -115,7 +140,7 @@ public class TokenAuthEntryPersistenceImpl
 	 * Returns an ordered range of all the token auth entries where userId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TokenAuthEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TokenAuthEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param userId the user ID
@@ -125,10 +150,8 @@ public class TokenAuthEntryPersistenceImpl
 	 * @return the ordered range of matching token auth entries
 	 */
 	@Override
-	public List<TokenAuthEntry> findByUserId(
-		long userId, int start, int end,
+	public List<TokenAuthEntry> findByUserId(long userId, int start, int end,
 		OrderByComparator<TokenAuthEntry> orderByComparator) {
-
 		return findByUserId(userId, start, end, orderByComparator, true);
 	}
 
@@ -136,47 +159,44 @@ public class TokenAuthEntryPersistenceImpl
 	 * Returns an ordered range of all the token auth entries where userId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TokenAuthEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TokenAuthEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param userId the user ID
 	 * @param start the lower bound of the range of token auth entries
 	 * @param end the upper bound of the range of token auth entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of matching token auth entries
 	 */
 	@Override
-	public List<TokenAuthEntry> findByUserId(
-		long userId, int start, int end,
+	public List<TokenAuthEntry> findByUserId(long userId, int start, int end,
 		OrderByComparator<TokenAuthEntry> orderByComparator,
-		boolean useFinderCache) {
-
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByUserId;
-				finderArgs = new Object[] {userId};
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID;
+			finderArgs = new Object[] { userId };
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByUserId;
-			finderArgs = new Object[] {userId, start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_USERID;
+			finderArgs = new Object[] { userId, start, end, orderByComparator };
 		}
 
 		List<TokenAuthEntry> list = null;
 
-		if (useFinderCache) {
-			list = (List<TokenAuthEntry>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<TokenAuthEntry>)finderCache.getResult(finderPath,
+					finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (TokenAuthEntry tokenAuthEntry : list) {
-					if (userId != tokenAuthEntry.getUserId()) {
+					if ((userId != tokenAuthEntry.getUserId())) {
 						list = null;
 
 						break;
@@ -186,56 +206,63 @@ public class TokenAuthEntryPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					3 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(3 +
+						(orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				sb = new StringBundler(3);
+				query = new StringBundler(3);
 			}
 
-			sb.append(_SQL_SELECT_TOKENAUTHENTRY_WHERE);
+			query.append(_SQL_SELECT_TOKENAUTHENTRY_WHERE);
 
-			sb.append(_FINDER_COLUMN_USERID_USERID_2);
+			query.append(_FINDER_COLUMN_USERID_USERID_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 			}
-			else {
-				sb.append(TokenAuthEntryModelImpl.ORDER_BY_JPQL);
+			else
+			 if (pagination) {
+				query.append(TokenAuthEntryModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(userId);
+				qPos.add(userId);
 
-				list = (List<TokenAuthEntry>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<TokenAuthEntry>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<TokenAuthEntry>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -254,27 +281,26 @@ public class TokenAuthEntryPersistenceImpl
 	 * @throws NoSuchEntryException if a matching token auth entry could not be found
 	 */
 	@Override
-	public TokenAuthEntry findByUserId_First(
-			long userId, OrderByComparator<TokenAuthEntry> orderByComparator)
+	public TokenAuthEntry findByUserId_First(long userId,
+		OrderByComparator<TokenAuthEntry> orderByComparator)
 		throws NoSuchEntryException {
-
-		TokenAuthEntry tokenAuthEntry = fetchByUserId_First(
-			userId, orderByComparator);
+		TokenAuthEntry tokenAuthEntry = fetchByUserId_First(userId,
+				orderByComparator);
 
 		if (tokenAuthEntry != null) {
 			return tokenAuthEntry;
 		}
 
-		StringBundler sb = new StringBundler(4);
+		StringBundler msg = new StringBundler(4);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("userId=");
-		sb.append(userId);
+		msg.append("userId=");
+		msg.append(userId);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(sb.toString());
+		throw new NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -285,11 +311,9 @@ public class TokenAuthEntryPersistenceImpl
 	 * @return the first matching token auth entry, or <code>null</code> if a matching token auth entry could not be found
 	 */
 	@Override
-	public TokenAuthEntry fetchByUserId_First(
-		long userId, OrderByComparator<TokenAuthEntry> orderByComparator) {
-
-		List<TokenAuthEntry> list = findByUserId(
-			userId, 0, 1, orderByComparator);
+	public TokenAuthEntry fetchByUserId_First(long userId,
+		OrderByComparator<TokenAuthEntry> orderByComparator) {
+		List<TokenAuthEntry> list = findByUserId(userId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -307,27 +331,26 @@ public class TokenAuthEntryPersistenceImpl
 	 * @throws NoSuchEntryException if a matching token auth entry could not be found
 	 */
 	@Override
-	public TokenAuthEntry findByUserId_Last(
-			long userId, OrderByComparator<TokenAuthEntry> orderByComparator)
+	public TokenAuthEntry findByUserId_Last(long userId,
+		OrderByComparator<TokenAuthEntry> orderByComparator)
 		throws NoSuchEntryException {
-
-		TokenAuthEntry tokenAuthEntry = fetchByUserId_Last(
-			userId, orderByComparator);
+		TokenAuthEntry tokenAuthEntry = fetchByUserId_Last(userId,
+				orderByComparator);
 
 		if (tokenAuthEntry != null) {
 			return tokenAuthEntry;
 		}
 
-		StringBundler sb = new StringBundler(4);
+		StringBundler msg = new StringBundler(4);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("userId=");
-		sb.append(userId);
+		msg.append("userId=");
+		msg.append(userId);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(sb.toString());
+		throw new NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -338,17 +361,16 @@ public class TokenAuthEntryPersistenceImpl
 	 * @return the last matching token auth entry, or <code>null</code> if a matching token auth entry could not be found
 	 */
 	@Override
-	public TokenAuthEntry fetchByUserId_Last(
-		long userId, OrderByComparator<TokenAuthEntry> orderByComparator) {
-
+	public TokenAuthEntry fetchByUserId_Last(long userId,
+		OrderByComparator<TokenAuthEntry> orderByComparator) {
 		int count = countByUserId(userId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<TokenAuthEntry> list = findByUserId(
-			userId, count - 1, count, orderByComparator);
+		List<TokenAuthEntry> list = findByUserId(userId, count - 1, count,
+				orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -367,11 +389,9 @@ public class TokenAuthEntryPersistenceImpl
 	 * @throws NoSuchEntryException if a token auth entry with the primary key could not be found
 	 */
 	@Override
-	public TokenAuthEntry[] findByUserId_PrevAndNext(
-			long tokenAuthEntryId, long userId,
-			OrderByComparator<TokenAuthEntry> orderByComparator)
+	public TokenAuthEntry[] findByUserId_PrevAndNext(long tokenAuthEntryId,
+		long userId, OrderByComparator<TokenAuthEntry> orderByComparator)
 		throws NoSuchEntryException {
-
 		TokenAuthEntry tokenAuthEntry = findByPrimaryKey(tokenAuthEntryId);
 
 		Session session = null;
@@ -381,124 +401,121 @@ public class TokenAuthEntryPersistenceImpl
 
 			TokenAuthEntry[] array = new TokenAuthEntryImpl[3];
 
-			array[0] = getByUserId_PrevAndNext(
-				session, tokenAuthEntry, userId, orderByComparator, true);
+			array[0] = getByUserId_PrevAndNext(session, tokenAuthEntry, userId,
+					orderByComparator, true);
 
 			array[1] = tokenAuthEntry;
 
-			array[2] = getByUserId_PrevAndNext(
-				session, tokenAuthEntry, userId, orderByComparator, false);
+			array[2] = getByUserId_PrevAndNext(session, tokenAuthEntry, userId,
+					orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected TokenAuthEntry getByUserId_PrevAndNext(
-		Session session, TokenAuthEntry tokenAuthEntry, long userId,
+	protected TokenAuthEntry getByUserId_PrevAndNext(Session session,
+		TokenAuthEntry tokenAuthEntry, long userId,
 		OrderByComparator<TokenAuthEntry> orderByComparator, boolean previous) {
-
-		StringBundler sb = null;
+		StringBundler query = null;
 
 		if (orderByComparator != null) {
-			sb = new StringBundler(
-				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+			query = new StringBundler(4 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			sb = new StringBundler(3);
+			query = new StringBundler(3);
 		}
 
-		sb.append(_SQL_SELECT_TOKENAUTHENTRY_WHERE);
+		query.append(_SQL_SELECT_TOKENAUTHENTRY_WHERE);
 
-		sb.append(_FINDER_COLUMN_USERID_USERID_2);
+		query.append(_FINDER_COLUMN_USERID_USERID_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
+				query.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
+						query.append(WHERE_GREATER_THAN);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN);
+						query.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			sb.append(ORDER_BY_CLAUSE);
+			query.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
+						query.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
+						query.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
+						query.append(ORDER_BY_ASC);
 					}
 					else {
-						sb.append(ORDER_BY_DESC);
+						query.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			sb.append(TokenAuthEntryModelImpl.ORDER_BY_JPQL);
+			query.append(TokenAuthEntryModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
-		Query query = session.createQuery(sql);
+		Query q = session.createQuery(sql);
 
-		query.setFirstResult(0);
-		query.setMaxResults(2);
+		q.setFirstResult(0);
+		q.setMaxResults(2);
 
-		QueryPos queryPos = QueryPos.getInstance(query);
+		QueryPos qPos = QueryPos.getInstance(q);
 
-		queryPos.add(userId);
+		qPos.add(userId);
 
 		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						tokenAuthEntry)) {
+			Object[] values = orderByComparator.getOrderByConditionValues(tokenAuthEntry);
 
-				queryPos.add(orderByConditionValue);
+			for (Object value : values) {
+				qPos.add(value);
 			}
 		}
 
-		List<TokenAuthEntry> list = query.list();
+		List<TokenAuthEntry> list = q.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -515,10 +532,8 @@ public class TokenAuthEntryPersistenceImpl
 	 */
 	@Override
 	public void removeByUserId(long userId) {
-		for (TokenAuthEntry tokenAuthEntry :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
-
+		for (TokenAuthEntry tokenAuthEntry : findByUserId(userId,
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(tokenAuthEntry);
 		}
 	}
@@ -531,40 +546,40 @@ public class TokenAuthEntryPersistenceImpl
 	 */
 	@Override
 	public int countByUserId(long userId) {
-		FinderPath finderPath = _finderPathCountByUserId;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_USERID;
 
-		Object[] finderArgs = new Object[] {userId};
+		Object[] finderArgs = new Object[] { userId };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(2);
+			StringBundler query = new StringBundler(2);
 
-			sb.append(_SQL_COUNT_TOKENAUTHENTRY_WHERE);
+			query.append(_SQL_COUNT_TOKENAUTHENTRY_WHERE);
 
-			sb.append(_FINDER_COLUMN_USERID_USERID_2);
+			query.append(_FINDER_COLUMN_USERID_USERID_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(userId);
+				qPos.add(userId);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
+			catch (Exception e) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -574,40 +589,43 @@ public class TokenAuthEntryPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_USERID_USERID_2 =
-		"tokenAuthEntry.userId = ?";
-
-	private FinderPath _finderPathFetchByToken;
-	private FinderPath _finderPathCountByToken;
+	private static final String _FINDER_COLUMN_USERID_USERID_2 = "tokenAuthEntry.userId = ?";
+	public static final FinderPath FINDER_PATH_FETCH_BY_TOKEN = new FinderPath(TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+			TokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
+			TokenAuthEntryImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByToken",
+			new String[] { String.class.getName() },
+			TokenAuthEntryModelImpl.TOKEN_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_TOKEN = new FinderPath(TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+			TokenAuthEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByToken",
+			new String[] { String.class.getName() });
 
 	/**
-	 * Returns the token auth entry where token = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
+	 * Returns the token auth entry where token = &#63; or throws a {@link NoSuchEntryException} if it could not be found.
 	 *
 	 * @param token the token
 	 * @return the matching token auth entry
 	 * @throws NoSuchEntryException if a matching token auth entry could not be found
 	 */
 	@Override
-	public TokenAuthEntry findByToken(String token)
-		throws NoSuchEntryException {
-
+	public TokenAuthEntry findByToken(String token) throws NoSuchEntryException {
 		TokenAuthEntry tokenAuthEntry = fetchByToken(token);
 
 		if (tokenAuthEntry == null) {
-			StringBundler sb = new StringBundler(4);
+			StringBundler msg = new StringBundler(4);
 
-			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			sb.append("token=");
-			sb.append(token);
+			msg.append("token=");
+			msg.append(token);
 
-			sb.append("}");
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(sb.toString());
+				_log.debug(msg.toString());
 			}
 
-			throw new NoSuchEntryException(sb.toString());
+			throw new NoSuchEntryException(msg.toString());
 		}
 
 		return tokenAuthEntry;
@@ -628,24 +646,18 @@ public class TokenAuthEntryPersistenceImpl
 	 * Returns the token auth entry where token = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param token the token
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the matching token auth entry, or <code>null</code> if a matching token auth entry could not be found
 	 */
 	@Override
-	public TokenAuthEntry fetchByToken(String token, boolean useFinderCache) {
-		token = Objects.toString(token, "");
-
-		Object[] finderArgs = null;
-
-		if (useFinderCache) {
-			finderArgs = new Object[] {token};
-		}
+	public TokenAuthEntry fetchByToken(String token, boolean retrieveFromCache) {
+		Object[] finderArgs = new Object[] { token };
 
 		Object result = null;
 
-		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchByToken, finderArgs, this);
+		if (retrieveFromCache) {
+			result = finderCache.getResult(FINDER_PATH_FETCH_BY_TOKEN,
+					finderArgs, this);
 		}
 
 		if (result instanceof TokenAuthEntry) {
@@ -657,43 +669,44 @@ public class TokenAuthEntryPersistenceImpl
 		}
 
 		if (result == null) {
-			StringBundler sb = new StringBundler(3);
+			StringBundler query = new StringBundler(3);
 
-			sb.append(_SQL_SELECT_TOKENAUTHENTRY_WHERE);
+			query.append(_SQL_SELECT_TOKENAUTHENTRY_WHERE);
 
 			boolean bindToken = false;
 
-			if (token.isEmpty()) {
-				sb.append(_FINDER_COLUMN_TOKEN_TOKEN_3);
+			if (token == null) {
+				query.append(_FINDER_COLUMN_TOKEN_TOKEN_1);
+			}
+			else if (token.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_TOKEN_TOKEN_3);
 			}
 			else {
 				bindToken = true;
 
-				sb.append(_FINDER_COLUMN_TOKEN_TOKEN_2);
+				query.append(_FINDER_COLUMN_TOKEN_TOKEN_2);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
 				if (bindToken) {
-					queryPos.add(token);
+					qPos.add(token);
 				}
 
-				List<TokenAuthEntry> list = query.list();
+				List<TokenAuthEntry> list = q.list();
 
 				if (list.isEmpty()) {
-					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchByToken, finderArgs, list);
-					}
+					finderCache.putResult(FINDER_PATH_FETCH_BY_TOKEN,
+						finderArgs, list);
 				}
 				else {
 					TokenAuthEntry tokenAuthEntry = list.get(0);
@@ -701,15 +714,18 @@ public class TokenAuthEntryPersistenceImpl
 					result = tokenAuthEntry;
 
 					cacheResult(tokenAuthEntry);
+
+					if ((tokenAuthEntry.getToken() == null) ||
+							!tokenAuthEntry.getToken().equals(token)) {
+						finderCache.putResult(FINDER_PATH_FETCH_BY_TOKEN,
+							finderArgs, tokenAuthEntry);
+					}
 				}
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(
-						_finderPathFetchByToken, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_FETCH_BY_TOKEN, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -733,7 +749,6 @@ public class TokenAuthEntryPersistenceImpl
 	@Override
 	public TokenAuthEntry removeByToken(String token)
 		throws NoSuchEntryException {
-
 		TokenAuthEntry tokenAuthEntry = findByToken(token);
 
 		return remove(tokenAuthEntry);
@@ -747,53 +762,54 @@ public class TokenAuthEntryPersistenceImpl
 	 */
 	@Override
 	public int countByToken(String token) {
-		token = Objects.toString(token, "");
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_TOKEN;
 
-		FinderPath finderPath = _finderPathCountByToken;
-
-		Object[] finderArgs = new Object[] {token};
+		Object[] finderArgs = new Object[] { token };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(2);
+			StringBundler query = new StringBundler(2);
 
-			sb.append(_SQL_COUNT_TOKENAUTHENTRY_WHERE);
+			query.append(_SQL_COUNT_TOKENAUTHENTRY_WHERE);
 
 			boolean bindToken = false;
 
-			if (token.isEmpty()) {
-				sb.append(_FINDER_COLUMN_TOKEN_TOKEN_3);
+			if (token == null) {
+				query.append(_FINDER_COLUMN_TOKEN_TOKEN_1);
+			}
+			else if (token.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_TOKEN_TOKEN_3);
 			}
 			else {
 				bindToken = true;
 
-				sb.append(_FINDER_COLUMN_TOKEN_TOKEN_2);
+				query.append(_FINDER_COLUMN_TOKEN_TOKEN_2);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
 				if (bindToken) {
-					queryPos.add(token);
+					qPos.add(token);
 				}
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
+			catch (Exception e) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -803,11 +819,9 @@ public class TokenAuthEntryPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_TOKEN_TOKEN_2 =
-		"tokenAuthEntry.token = ?";
-
-	private static final String _FINDER_COLUMN_TOKEN_TOKEN_3 =
-		"(tokenAuthEntry.token IS NULL OR tokenAuthEntry.token = '')";
+	private static final String _FINDER_COLUMN_TOKEN_TOKEN_1 = "tokenAuthEntry.token IS NULL";
+	private static final String _FINDER_COLUMN_TOKEN_TOKEN_2 = "tokenAuthEntry.token = ?";
+	private static final String _FINDER_COLUMN_TOKEN_TOKEN_3 = "(tokenAuthEntry.token IS NULL OR tokenAuthEntry.token = '')";
 
 	public TokenAuthEntryPersistenceImpl() {
 		setModelClass(TokenAuthEntry.class);
@@ -820,14 +834,12 @@ public class TokenAuthEntryPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(TokenAuthEntry tokenAuthEntry) {
-		entityCache.putResult(
-			TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
 			TokenAuthEntryImpl.class, tokenAuthEntry.getPrimaryKey(),
 			tokenAuthEntry);
 
-		finderCache.putResult(
-			_finderPathFetchByToken, new Object[] {tokenAuthEntry.getToken()},
-			tokenAuthEntry);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_TOKEN,
+			new Object[] { tokenAuthEntry.getToken() }, tokenAuthEntry);
 
 		tokenAuthEntry.resetOriginalValues();
 	}
@@ -841,10 +853,8 @@ public class TokenAuthEntryPersistenceImpl
 	public void cacheResult(List<TokenAuthEntry> tokenAuthEntries) {
 		for (TokenAuthEntry tokenAuthEntry : tokenAuthEntries) {
 			if (entityCache.getResult(
-					TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-					TokenAuthEntryImpl.class, tokenAuthEntry.getPrimaryKey()) ==
-						null) {
-
+						TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+						TokenAuthEntryImpl.class, tokenAuthEntry.getPrimaryKey()) == null) {
 				cacheResult(tokenAuthEntry);
 			}
 			else {
@@ -857,7 +867,7 @@ public class TokenAuthEntryPersistenceImpl
 	 * Clears the cache for all token auth entries.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -873,13 +883,12 @@ public class TokenAuthEntryPersistenceImpl
 	 * Clears the cache for the token auth entry.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(TokenAuthEntry tokenAuthEntry) {
-		entityCache.removeResult(
-			TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
 			TokenAuthEntryImpl.class, tokenAuthEntry.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -894,57 +903,41 @@ public class TokenAuthEntryPersistenceImpl
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (TokenAuthEntry tokenAuthEntry : tokenAuthEntries) {
-			entityCache.removeResult(
-				TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
 				TokenAuthEntryImpl.class, tokenAuthEntry.getPrimaryKey());
 
-			clearUniqueFindersCache(
-				(TokenAuthEntryModelImpl)tokenAuthEntry, true);
-		}
-	}
-
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-				TokenAuthEntryImpl.class, primaryKey);
+			clearUniqueFindersCache((TokenAuthEntryModelImpl)tokenAuthEntry,
+				true);
 		}
 	}
 
 	protected void cacheUniqueFindersCache(
 		TokenAuthEntryModelImpl tokenAuthEntryModelImpl) {
+		Object[] args = new Object[] { tokenAuthEntryModelImpl.getToken() };
 
-		Object[] args = new Object[] {tokenAuthEntryModelImpl.getToken()};
-
-		finderCache.putResult(
-			_finderPathCountByToken, args, Long.valueOf(1), false);
-		finderCache.putResult(
-			_finderPathFetchByToken, args, tokenAuthEntryModelImpl, false);
+		finderCache.putResult(FINDER_PATH_COUNT_BY_TOKEN, args,
+			Long.valueOf(1), false);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_TOKEN, args,
+			tokenAuthEntryModelImpl, false);
 	}
 
 	protected void clearUniqueFindersCache(
 		TokenAuthEntryModelImpl tokenAuthEntryModelImpl, boolean clearCurrent) {
-
 		if (clearCurrent) {
-			Object[] args = new Object[] {tokenAuthEntryModelImpl.getToken()};
+			Object[] args = new Object[] { tokenAuthEntryModelImpl.getToken() };
 
-			finderCache.removeResult(_finderPathCountByToken, args);
-			finderCache.removeResult(_finderPathFetchByToken, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_TOKEN, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_TOKEN, args);
 		}
 
 		if ((tokenAuthEntryModelImpl.getColumnBitmask() &
-			 _finderPathFetchByToken.getColumnBitmask()) != 0) {
-
+				FINDER_PATH_FETCH_BY_TOKEN.getColumnBitmask()) != 0) {
 			Object[] args = new Object[] {
-				tokenAuthEntryModelImpl.getOriginalToken()
-			};
+					tokenAuthEntryModelImpl.getOriginalToken()
+				};
 
-			finderCache.removeResult(_finderPathCountByToken, args);
-			finderCache.removeResult(_finderPathFetchByToken, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_TOKEN, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_TOKEN, args);
 		}
 	}
 
@@ -961,7 +954,7 @@ public class TokenAuthEntryPersistenceImpl
 		tokenAuthEntry.setNew(true);
 		tokenAuthEntry.setPrimaryKey(tokenAuthEntryId);
 
-		tokenAuthEntry.setCompanyId(CompanyThreadLocal.getCompanyId());
+		tokenAuthEntry.setCompanyId(companyProvider.getCompanyId());
 
 		return tokenAuthEntry;
 	}
@@ -976,7 +969,6 @@ public class TokenAuthEntryPersistenceImpl
 	@Override
 	public TokenAuthEntry remove(long tokenAuthEntryId)
 		throws NoSuchEntryException {
-
 		return remove((Serializable)tokenAuthEntryId);
 	}
 
@@ -990,31 +982,30 @@ public class TokenAuthEntryPersistenceImpl
 	@Override
 	public TokenAuthEntry remove(Serializable primaryKey)
 		throws NoSuchEntryException {
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			TokenAuthEntry tokenAuthEntry = (TokenAuthEntry)session.get(
-				TokenAuthEntryImpl.class, primaryKey);
+			TokenAuthEntry tokenAuthEntry = (TokenAuthEntry)session.get(TokenAuthEntryImpl.class,
+					primaryKey);
 
 			if (tokenAuthEntry == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchEntryException(
-					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				throw new NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+					primaryKey);
 			}
 
 			return remove(tokenAuthEntry);
 		}
-		catch (NoSuchEntryException noSuchEntityException) {
-			throw noSuchEntityException;
+		catch (NoSuchEntryException nsee) {
+			throw nsee;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -1023,23 +1014,24 @@ public class TokenAuthEntryPersistenceImpl
 
 	@Override
 	protected TokenAuthEntry removeImpl(TokenAuthEntry tokenAuthEntry) {
+		tokenAuthEntry = toUnwrappedModel(tokenAuthEntry);
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(tokenAuthEntry)) {
-				tokenAuthEntry = (TokenAuthEntry)session.get(
-					TokenAuthEntryImpl.class,
-					tokenAuthEntry.getPrimaryKeyObj());
+				tokenAuthEntry = (TokenAuthEntry)session.get(TokenAuthEntryImpl.class,
+						tokenAuthEntry.getPrimaryKeyObj());
 			}
 
 			if (tokenAuthEntry != null) {
 				session.delete(tokenAuthEntry);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -1054,27 +1046,11 @@ public class TokenAuthEntryPersistenceImpl
 
 	@Override
 	public TokenAuthEntry updateImpl(TokenAuthEntry tokenAuthEntry) {
+		tokenAuthEntry = toUnwrappedModel(tokenAuthEntry);
+
 		boolean isNew = tokenAuthEntry.isNew();
 
-		if (!(tokenAuthEntry instanceof TokenAuthEntryModelImpl)) {
-			InvocationHandler invocationHandler = null;
-
-			if (ProxyUtil.isProxyClass(tokenAuthEntry.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(
-					tokenAuthEntry);
-
-				throw new IllegalArgumentException(
-					"Implement ModelWrapper in tokenAuthEntry proxy " +
-						invocationHandler.getClass());
-			}
-
-			throw new IllegalArgumentException(
-				"Implement ModelWrapper in custom TokenAuthEntry implementation " +
-					tokenAuthEntry.getClass());
-		}
-
-		TokenAuthEntryModelImpl tokenAuthEntryModelImpl =
-			(TokenAuthEntryModelImpl)tokenAuthEntry;
+		TokenAuthEntryModelImpl tokenAuthEntryModelImpl = (TokenAuthEntryModelImpl)tokenAuthEntry;
 
 		Session session = null;
 
@@ -1090,8 +1066,8 @@ public class TokenAuthEntryPersistenceImpl
 				tokenAuthEntry = (TokenAuthEntry)session.merge(tokenAuthEntry);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -1102,40 +1078,39 @@ public class TokenAuthEntryPersistenceImpl
 		if (!TokenAuthEntryModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else if (isNew) {
-			Object[] args = new Object[] {tokenAuthEntryModelImpl.getUserId()};
+		else
+		 if (isNew) {
+			Object[] args = new Object[] { tokenAuthEntryModelImpl.getUserId() };
 
-			finderCache.removeResult(_finderPathCountByUserId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByUserId, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
+				args);
 
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
+
 		else {
 			if ((tokenAuthEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByUserId.getColumnBitmask()) !=
-					 0) {
-
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-					tokenAuthEntryModelImpl.getOriginalUserId()
-				};
+						tokenAuthEntryModelImpl.getOriginalUserId()
+					};
 
-				finderCache.removeResult(_finderPathCountByUserId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUserId, args);
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
+					args);
 
-				args = new Object[] {tokenAuthEntryModelImpl.getUserId()};
+				args = new Object[] { tokenAuthEntryModelImpl.getUserId() };
 
-				finderCache.removeResult(_finderPathCountByUserId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByUserId, args);
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
+					args);
 			}
 		}
 
-		entityCache.putResult(
-			TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
 			TokenAuthEntryImpl.class, tokenAuthEntry.getPrimaryKey(),
 			tokenAuthEntry, false);
 
@@ -1147,8 +1122,31 @@ public class TokenAuthEntryPersistenceImpl
 		return tokenAuthEntry;
 	}
 
+	protected TokenAuthEntry toUnwrappedModel(TokenAuthEntry tokenAuthEntry) {
+		if (tokenAuthEntry instanceof TokenAuthEntryImpl) {
+			return tokenAuthEntry;
+		}
+
+		TokenAuthEntryImpl tokenAuthEntryImpl = new TokenAuthEntryImpl();
+
+		tokenAuthEntryImpl.setNew(tokenAuthEntry.isNew());
+		tokenAuthEntryImpl.setPrimaryKey(tokenAuthEntry.getPrimaryKey());
+
+		tokenAuthEntryImpl.setTokenAuthEntryId(tokenAuthEntry.getTokenAuthEntryId());
+		tokenAuthEntryImpl.setCompanyId(tokenAuthEntry.getCompanyId());
+		tokenAuthEntryImpl.setUserId(tokenAuthEntry.getUserId());
+		tokenAuthEntryImpl.setUserName(tokenAuthEntry.getUserName());
+		tokenAuthEntryImpl.setCreateDate(tokenAuthEntry.getCreateDate());
+		tokenAuthEntryImpl.setDevice(tokenAuthEntry.getDevice());
+		tokenAuthEntryImpl.setToken(tokenAuthEntry.getToken());
+		tokenAuthEntryImpl.setLoginDate(tokenAuthEntry.getLoginDate());
+		tokenAuthEntryImpl.setLoginIP(tokenAuthEntry.getLoginIP());
+
+		return tokenAuthEntryImpl;
+	}
+
 	/**
-	 * Returns the token auth entry with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
+	 * Returns the token auth entry with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the token auth entry
 	 * @return the token auth entry
@@ -1157,7 +1155,6 @@ public class TokenAuthEntryPersistenceImpl
 	@Override
 	public TokenAuthEntry findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchEntryException {
-
 		TokenAuthEntry tokenAuthEntry = fetchByPrimaryKey(primaryKey);
 
 		if (tokenAuthEntry == null) {
@@ -1165,15 +1162,15 @@ public class TokenAuthEntryPersistenceImpl
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchEntryException(
-				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			throw new NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
 		}
 
 		return tokenAuthEntry;
 	}
 
 	/**
-	 * Returns the token auth entry with the primary key or throws a <code>NoSuchEntryException</code> if it could not be found.
+	 * Returns the token auth entry with the primary key or throws a {@link NoSuchEntryException} if it could not be found.
 	 *
 	 * @param tokenAuthEntryId the primary key of the token auth entry
 	 * @return the token auth entry
@@ -1182,7 +1179,6 @@ public class TokenAuthEntryPersistenceImpl
 	@Override
 	public TokenAuthEntry findByPrimaryKey(long tokenAuthEntryId)
 		throws NoSuchEntryException {
-
 		return findByPrimaryKey((Serializable)tokenAuthEntryId);
 	}
 
@@ -1194,9 +1190,8 @@ public class TokenAuthEntryPersistenceImpl
 	 */
 	@Override
 	public TokenAuthEntry fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(
-			TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			TokenAuthEntryImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+				TokenAuthEntryImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -1210,24 +1205,22 @@ public class TokenAuthEntryPersistenceImpl
 			try {
 				session = openSession();
 
-				tokenAuthEntry = (TokenAuthEntry)session.get(
-					TokenAuthEntryImpl.class, primaryKey);
+				tokenAuthEntry = (TokenAuthEntry)session.get(TokenAuthEntryImpl.class,
+						primaryKey);
 
 				if (tokenAuthEntry != null) {
 					cacheResult(tokenAuthEntry);
 				}
 				else {
-					entityCache.putResult(
-						TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
 						TokenAuthEntryImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception exception) {
-				entityCache.removeResult(
-					TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception e) {
+				entityCache.removeResult(TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
 					TokenAuthEntryImpl.class, primaryKey);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1251,13 +1244,11 @@ public class TokenAuthEntryPersistenceImpl
 	@Override
 	public Map<Serializable, TokenAuthEntry> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
-
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, TokenAuthEntry> map =
-			new HashMap<Serializable, TokenAuthEntry>();
+		Map<Serializable, TokenAuthEntry> map = new HashMap<Serializable, TokenAuthEntry>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -1276,9 +1267,8 @@ public class TokenAuthEntryPersistenceImpl
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(
-				TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-				TokenAuthEntryImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+					TokenAuthEntryImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -1298,33 +1288,31 @@ public class TokenAuthEntryPersistenceImpl
 			return map;
 		}
 
-		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
+				1);
 
-		sb.append(_SQL_SELECT_TOKENAUTHENTRY_WHERE_PKS_IN);
+		query.append(_SQL_SELECT_TOKENAUTHENTRY_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			sb.append((long)primaryKey);
+			query.append((long)primaryKey);
 
-			sb.append(",");
+			query.append(StringPool.COMMA);
 		}
 
-		sb.setIndex(sb.index() - 1);
+		query.setIndex(query.index() - 1);
 
-		sb.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query query = session.createQuery(sql);
+			Query q = session.createQuery(sql);
 
-			for (TokenAuthEntry tokenAuthEntry :
-					(List<TokenAuthEntry>)query.list()) {
-
+			for (TokenAuthEntry tokenAuthEntry : (List<TokenAuthEntry>)q.list()) {
 				map.put(tokenAuthEntry.getPrimaryKeyObj(), tokenAuthEntry);
 
 				cacheResult(tokenAuthEntry);
@@ -1333,13 +1321,12 @@ public class TokenAuthEntryPersistenceImpl
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(
-					TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
 					TokenAuthEntryImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -1362,7 +1349,7 @@ public class TokenAuthEntryPersistenceImpl
 	 * Returns a range of all the token auth entries.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TokenAuthEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TokenAuthEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of token auth entries
@@ -1378,7 +1365,7 @@ public class TokenAuthEntryPersistenceImpl
 	 * Returns an ordered range of all the token auth entries.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TokenAuthEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TokenAuthEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of token auth entries
@@ -1387,10 +1374,8 @@ public class TokenAuthEntryPersistenceImpl
 	 * @return the ordered range of token auth entries
 	 */
 	@Override
-	public List<TokenAuthEntry> findAll(
-		int start, int end,
+	public List<TokenAuthEntry> findAll(int start, int end,
 		OrderByComparator<TokenAuthEntry> orderByComparator) {
-
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -1398,62 +1383,62 @@ public class TokenAuthEntryPersistenceImpl
 	 * Returns an ordered range of all the token auth entries.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TokenAuthEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TokenAuthEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of token auth entries
 	 * @param end the upper bound of the range of token auth entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of token auth entries
 	 */
 	@Override
-	public List<TokenAuthEntry> findAll(
-		int start, int end, OrderByComparator<TokenAuthEntry> orderByComparator,
-		boolean useFinderCache) {
-
+	public List<TokenAuthEntry> findAll(int start, int end,
+		OrderByComparator<TokenAuthEntry> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
-				finderArgs = FINDER_ARGS_EMPTY;
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+			finderArgs = FINDER_ARGS_EMPTY;
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] {start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
 		List<TokenAuthEntry> list = null;
 
-		if (useFinderCache) {
-			list = (List<TokenAuthEntry>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<TokenAuthEntry>)finderCache.getResult(finderPath,
+					finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					2 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(2 +
+						(orderByComparator.getOrderByFields().length * 2));
 
-				sb.append(_SQL_SELECT_TOKENAUTHENTRY);
+				query.append(_SQL_SELECT_TOKENAUTHENTRY);
 
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 
-				sql = sb.toString();
+				sql = query.toString();
 			}
 			else {
 				sql = _SQL_SELECT_TOKENAUTHENTRY;
 
-				sql = sql.concat(TokenAuthEntryModelImpl.ORDER_BY_JPQL);
+				if (pagination) {
+					sql = sql.concat(TokenAuthEntryModelImpl.ORDER_BY_JPQL);
+				}
 			}
 
 			Session session = null;
@@ -1461,23 +1446,29 @@ public class TokenAuthEntryPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				list = (List<TokenAuthEntry>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<TokenAuthEntry>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<TokenAuthEntry>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1505,8 +1496,8 @@ public class TokenAuthEntryPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -1514,18 +1505,18 @@ public class TokenAuthEntryPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(_SQL_COUNT_TOKENAUTHENTRY);
+				Query q = session.createQuery(_SQL_COUNT_TOKENAUTHENTRY);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
+					count);
 			}
-			catch (Exception exception) {
-				finderCache.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1544,59 +1535,6 @@ public class TokenAuthEntryPersistenceImpl
 	 * Initializes the token auth entry persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			TokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
-			TokenAuthEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			TokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
-			TokenAuthEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findAll", new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			TokenAuthEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
-
-		_finderPathWithPaginationFindByUserId = new FinderPath(
-			TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			TokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
-			TokenAuthEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByUserId",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByUserId = new FinderPath(
-			TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			TokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
-			TokenAuthEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByUserId", new String[] {Long.class.getName()},
-			TokenAuthEntryModelImpl.USERID_COLUMN_BITMASK);
-
-		_finderPathCountByUserId = new FinderPath(
-			TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			TokenAuthEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
-			new String[] {Long.class.getName()});
-
-		_finderPathFetchByToken = new FinderPath(
-			TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			TokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
-			TokenAuthEntryImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByToken",
-			new String[] {String.class.getName()},
-			TokenAuthEntryModelImpl.TOKEN_COLUMN_BITMASK);
-
-		_finderPathCountByToken = new FinderPath(
-			TokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			TokenAuthEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByToken",
-			new String[] {String.class.getName()});
 	}
 
 	public void destroy() {
@@ -1606,36 +1544,19 @@ public class TokenAuthEntryPersistenceImpl
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@ServiceReference(type = CompanyProviderWrapper.class)
+	protected CompanyProvider companyProvider;
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
-
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-
-	private static final String _SQL_SELECT_TOKENAUTHENTRY =
-		"SELECT tokenAuthEntry FROM TokenAuthEntry tokenAuthEntry";
-
-	private static final String _SQL_SELECT_TOKENAUTHENTRY_WHERE_PKS_IN =
-		"SELECT tokenAuthEntry FROM TokenAuthEntry tokenAuthEntry WHERE tokenAuthEntryId IN (";
-
-	private static final String _SQL_SELECT_TOKENAUTHENTRY_WHERE =
-		"SELECT tokenAuthEntry FROM TokenAuthEntry tokenAuthEntry WHERE ";
-
-	private static final String _SQL_COUNT_TOKENAUTHENTRY =
-		"SELECT COUNT(tokenAuthEntry) FROM TokenAuthEntry tokenAuthEntry";
-
-	private static final String _SQL_COUNT_TOKENAUTHENTRY_WHERE =
-		"SELECT COUNT(tokenAuthEntry) FROM TokenAuthEntry tokenAuthEntry WHERE ";
-
+	private static final String _SQL_SELECT_TOKENAUTHENTRY = "SELECT tokenAuthEntry FROM TokenAuthEntry tokenAuthEntry";
+	private static final String _SQL_SELECT_TOKENAUTHENTRY_WHERE_PKS_IN = "SELECT tokenAuthEntry FROM TokenAuthEntry tokenAuthEntry WHERE tokenAuthEntryId IN (";
+	private static final String _SQL_SELECT_TOKENAUTHENTRY_WHERE = "SELECT tokenAuthEntry FROM TokenAuthEntry tokenAuthEntry WHERE ";
+	private static final String _SQL_COUNT_TOKENAUTHENTRY = "SELECT COUNT(tokenAuthEntry) FROM TokenAuthEntry tokenAuthEntry";
+	private static final String _SQL_COUNT_TOKENAUTHENTRY_WHERE = "SELECT COUNT(tokenAuthEntry) FROM TokenAuthEntry tokenAuthEntry WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "tokenAuthEntry.";
-
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
-		"No TokenAuthEntry exists with the primary key ";
-
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No TokenAuthEntry exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		TokenAuthEntryPersistenceImpl.class);
-
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No TokenAuthEntry exists with the primary key ";
+	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No TokenAuthEntry exists with the key {";
+	private static final Log _log = LogFactoryUtil.getLog(TokenAuthEntryPersistenceImpl.class);
 }

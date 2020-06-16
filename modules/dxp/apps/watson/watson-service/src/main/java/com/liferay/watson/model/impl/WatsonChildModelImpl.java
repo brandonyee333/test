@@ -1118,16 +1118,16 @@ public class WatsonChildModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonChild)) {
+		if (!(object instanceof WatsonChild)) {
 			return false;
 		}
 
-		WatsonChild watsonChild = (WatsonChild)obj;
+		WatsonChild watsonChild = (WatsonChild)object;
 
 		long primaryKey = watsonChild.getPrimaryKey();
 

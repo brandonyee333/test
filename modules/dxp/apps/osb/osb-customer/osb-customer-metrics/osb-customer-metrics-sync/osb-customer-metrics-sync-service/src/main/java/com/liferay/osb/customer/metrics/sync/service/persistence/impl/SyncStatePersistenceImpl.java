@@ -1,24 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.customer.metrics.sync.service.persistence.impl;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.customer.metrics.sync.exception.NoSuchSyncStateException;
 import com.liferay.osb.customer.metrics.sync.model.SyncState;
 import com.liferay.osb.customer.metrics.sync.model.impl.SyncStateImpl;
 import com.liferay.osb.customer.metrics.sync.model.impl.SyncStateModelImpl;
 import com.liferay.osb.customer.metrics.sync.service.persistence.SyncStatePersistence;
+
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -30,14 +33,12 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
-
-import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -56,33 +57,44 @@ import java.util.Set;
  * </p>
  *
  * @author Brian Wing Shun Chan
+ * @see SyncStatePersistence
+ * @see com.liferay.osb.customer.metrics.sync.service.persistence.SyncStateUtil
  * @generated
  */
-public class SyncStatePersistenceImpl
-	extends BasePersistenceImpl<SyncState> implements SyncStatePersistence {
-
+@ProviderType
+public class SyncStatePersistenceImpl extends BasePersistenceImpl<SyncState>
+	implements SyncStatePersistence {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use <code>SyncStateUtil</code> to access the sync state persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use {@link SyncStateUtil} to access the sync state persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY =
-		SyncStateImpl.class.getName();
-
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List1";
-
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathFetchByModelName;
-	private FinderPath _finderPathCountByModelName;
+	public static final String FINDER_CLASS_NAME_ENTITY = SyncStateImpl.class.getName();
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List1";
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List2";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(SyncStateModelImpl.ENTITY_CACHE_ENABLED,
+			SyncStateModelImpl.FINDER_CACHE_ENABLED, SyncStateImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(SyncStateModelImpl.ENTITY_CACHE_ENABLED,
+			SyncStateModelImpl.FINDER_CACHE_ENABLED, SyncStateImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(SyncStateModelImpl.ENTITY_CACHE_ENABLED,
+			SyncStateModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	public static final FinderPath FINDER_PATH_FETCH_BY_MODELNAME = new FinderPath(SyncStateModelImpl.ENTITY_CACHE_ENABLED,
+			SyncStateModelImpl.FINDER_CACHE_ENABLED, SyncStateImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchByModelName",
+			new String[] { String.class.getName() },
+			SyncStateModelImpl.MODELNAME_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_MODELNAME = new FinderPath(SyncStateModelImpl.ENTITY_CACHE_ENABLED,
+			SyncStateModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByModelName",
+			new String[] { String.class.getName() });
 
 	/**
-	 * Returns the sync state where modelName = &#63; or throws a <code>NoSuchSyncStateException</code> if it could not be found.
+	 * Returns the sync state where modelName = &#63; or throws a {@link NoSuchSyncStateException} if it could not be found.
 	 *
 	 * @param modelName the model name
 	 * @return the matching sync state
@@ -91,24 +103,23 @@ public class SyncStatePersistenceImpl
 	@Override
 	public SyncState findByModelName(String modelName)
 		throws NoSuchSyncStateException {
-
 		SyncState syncState = fetchByModelName(modelName);
 
 		if (syncState == null) {
-			StringBundler sb = new StringBundler(4);
+			StringBundler msg = new StringBundler(4);
 
-			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			sb.append("modelName=");
-			sb.append(modelName);
+			msg.append("modelName=");
+			msg.append(modelName);
 
-			sb.append("}");
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(sb.toString());
+				_log.debug(msg.toString());
 			}
 
-			throw new NoSuchSyncStateException(sb.toString());
+			throw new NoSuchSyncStateException(msg.toString());
 		}
 
 		return syncState;
@@ -129,26 +140,19 @@ public class SyncStatePersistenceImpl
 	 * Returns the sync state where modelName = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param modelName the model name
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the matching sync state, or <code>null</code> if a matching sync state could not be found
 	 */
 	@Override
-	public SyncState fetchByModelName(
-		String modelName, boolean useFinderCache) {
-
-		modelName = Objects.toString(modelName, "");
-
-		Object[] finderArgs = null;
-
-		if (useFinderCache) {
-			finderArgs = new Object[] {modelName};
-		}
+	public SyncState fetchByModelName(String modelName,
+		boolean retrieveFromCache) {
+		Object[] finderArgs = new Object[] { modelName };
 
 		Object result = null;
 
-		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchByModelName, finderArgs, this);
+		if (retrieveFromCache) {
+			result = finderCache.getResult(FINDER_PATH_FETCH_BY_MODELNAME,
+					finderArgs, this);
 		}
 
 		if (result instanceof SyncState) {
@@ -160,57 +164,54 @@ public class SyncStatePersistenceImpl
 		}
 
 		if (result == null) {
-			StringBundler sb = new StringBundler(3);
+			StringBundler query = new StringBundler(3);
 
-			sb.append(_SQL_SELECT_SYNCSTATE_WHERE);
+			query.append(_SQL_SELECT_SYNCSTATE_WHERE);
 
 			boolean bindModelName = false;
 
-			if (modelName.isEmpty()) {
-				sb.append(_FINDER_COLUMN_MODELNAME_MODELNAME_3);
+			if (modelName == null) {
+				query.append(_FINDER_COLUMN_MODELNAME_MODELNAME_1);
+			}
+			else if (modelName.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_MODELNAME_MODELNAME_3);
 			}
 			else {
 				bindModelName = true;
 
-				sb.append(_FINDER_COLUMN_MODELNAME_MODELNAME_2);
+				query.append(_FINDER_COLUMN_MODELNAME_MODELNAME_2);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
 				if (bindModelName) {
-					queryPos.add(modelName);
+					qPos.add(modelName);
 				}
 
-				List<SyncState> list = query.list();
+				List<SyncState> list = q.list();
 
 				if (list.isEmpty()) {
-					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchByModelName, finderArgs, list);
-					}
+					finderCache.putResult(FINDER_PATH_FETCH_BY_MODELNAME,
+						finderArgs, list);
 				}
 				else {
 					if (list.size() > 1) {
 						Collections.sort(list, Collections.reverseOrder());
 
 						if (_log.isWarnEnabled()) {
-							if (!useFinderCache) {
-								finderArgs = new Object[] {modelName};
-							}
-
 							_log.warn(
 								"SyncStatePersistenceImpl.fetchByModelName(String, boolean) with parameters (" +
-									StringUtil.merge(finderArgs) +
-										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+								StringUtil.merge(finderArgs) +
+								") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 						}
 					}
 
@@ -219,15 +220,19 @@ public class SyncStatePersistenceImpl
 					result = syncState;
 
 					cacheResult(syncState);
+
+					if ((syncState.getModelName() == null) ||
+							!syncState.getModelName().equals(modelName)) {
+						finderCache.putResult(FINDER_PATH_FETCH_BY_MODELNAME,
+							finderArgs, syncState);
+					}
 				}
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(
-						_finderPathFetchByModelName, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_FETCH_BY_MODELNAME,
+					finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -251,7 +256,6 @@ public class SyncStatePersistenceImpl
 	@Override
 	public SyncState removeByModelName(String modelName)
 		throws NoSuchSyncStateException {
-
 		SyncState syncState = findByModelName(modelName);
 
 		return remove(syncState);
@@ -265,53 +269,54 @@ public class SyncStatePersistenceImpl
 	 */
 	@Override
 	public int countByModelName(String modelName) {
-		modelName = Objects.toString(modelName, "");
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_MODELNAME;
 
-		FinderPath finderPath = _finderPathCountByModelName;
-
-		Object[] finderArgs = new Object[] {modelName};
+		Object[] finderArgs = new Object[] { modelName };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(2);
+			StringBundler query = new StringBundler(2);
 
-			sb.append(_SQL_COUNT_SYNCSTATE_WHERE);
+			query.append(_SQL_COUNT_SYNCSTATE_WHERE);
 
 			boolean bindModelName = false;
 
-			if (modelName.isEmpty()) {
-				sb.append(_FINDER_COLUMN_MODELNAME_MODELNAME_3);
+			if (modelName == null) {
+				query.append(_FINDER_COLUMN_MODELNAME_MODELNAME_1);
+			}
+			else if (modelName.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_MODELNAME_MODELNAME_3);
 			}
 			else {
 				bindModelName = true;
 
-				sb.append(_FINDER_COLUMN_MODELNAME_MODELNAME_2);
+				query.append(_FINDER_COLUMN_MODELNAME_MODELNAME_2);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
 				if (bindModelName) {
-					queryPos.add(modelName);
+					qPos.add(modelName);
 				}
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
+			catch (Exception e) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -321,11 +326,9 @@ public class SyncStatePersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_MODELNAME_MODELNAME_2 =
-		"syncState.modelName = ?";
-
-	private static final String _FINDER_COLUMN_MODELNAME_MODELNAME_3 =
-		"(syncState.modelName IS NULL OR syncState.modelName = '')";
+	private static final String _FINDER_COLUMN_MODELNAME_MODELNAME_1 = "syncState.modelName IS NULL";
+	private static final String _FINDER_COLUMN_MODELNAME_MODELNAME_2 = "syncState.modelName = ?";
+	private static final String _FINDER_COLUMN_MODELNAME_MODELNAME_3 = "(syncState.modelName IS NULL OR syncState.modelName = '')";
 
 	public SyncStatePersistenceImpl() {
 		setModelClass(SyncState.class);
@@ -338,13 +341,11 @@ public class SyncStatePersistenceImpl
 	 */
 	@Override
 	public void cacheResult(SyncState syncState) {
-		entityCache.putResult(
-			SyncStateModelImpl.ENTITY_CACHE_ENABLED, SyncStateImpl.class,
-			syncState.getPrimaryKey(), syncState);
+		entityCache.putResult(SyncStateModelImpl.ENTITY_CACHE_ENABLED,
+			SyncStateImpl.class, syncState.getPrimaryKey(), syncState);
 
-		finderCache.putResult(
-			_finderPathFetchByModelName,
-			new Object[] {syncState.getModelName()}, syncState);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_MODELNAME,
+			new Object[] { syncState.getModelName() }, syncState);
 
 		syncState.resetOriginalValues();
 	}
@@ -357,10 +358,8 @@ public class SyncStatePersistenceImpl
 	@Override
 	public void cacheResult(List<SyncState> syncStates) {
 		for (SyncState syncState : syncStates) {
-			if (entityCache.getResult(
-					SyncStateModelImpl.ENTITY_CACHE_ENABLED,
-					SyncStateImpl.class, syncState.getPrimaryKey()) == null) {
-
+			if (entityCache.getResult(SyncStateModelImpl.ENTITY_CACHE_ENABLED,
+						SyncStateImpl.class, syncState.getPrimaryKey()) == null) {
 				cacheResult(syncState);
 			}
 			else {
@@ -373,7 +372,7 @@ public class SyncStatePersistenceImpl
 	 * Clears the cache for all sync states.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -389,14 +388,13 @@ public class SyncStatePersistenceImpl
 	 * Clears the cache for the sync state.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(SyncState syncState) {
-		entityCache.removeResult(
-			SyncStateModelImpl.ENTITY_CACHE_ENABLED, SyncStateImpl.class,
-			syncState.getPrimaryKey());
+		entityCache.removeResult(SyncStateModelImpl.ENTITY_CACHE_ENABLED,
+			SyncStateImpl.class, syncState.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -410,56 +408,40 @@ public class SyncStatePersistenceImpl
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (SyncState syncState : syncStates) {
-			entityCache.removeResult(
-				SyncStateModelImpl.ENTITY_CACHE_ENABLED, SyncStateImpl.class,
-				syncState.getPrimaryKey());
+			entityCache.removeResult(SyncStateModelImpl.ENTITY_CACHE_ENABLED,
+				SyncStateImpl.class, syncState.getPrimaryKey());
 
 			clearUniqueFindersCache((SyncStateModelImpl)syncState, true);
 		}
 	}
 
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				SyncStateModelImpl.ENTITY_CACHE_ENABLED, SyncStateImpl.class,
-				primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		SyncStateModelImpl syncStateModelImpl) {
+		Object[] args = new Object[] { syncStateModelImpl.getModelName() };
 
-		Object[] args = new Object[] {syncStateModelImpl.getModelName()};
-
-		finderCache.putResult(
-			_finderPathCountByModelName, args, Long.valueOf(1), false);
-		finderCache.putResult(
-			_finderPathFetchByModelName, args, syncStateModelImpl, false);
+		finderCache.putResult(FINDER_PATH_COUNT_BY_MODELNAME, args,
+			Long.valueOf(1), false);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_MODELNAME, args,
+			syncStateModelImpl, false);
 	}
 
 	protected void clearUniqueFindersCache(
 		SyncStateModelImpl syncStateModelImpl, boolean clearCurrent) {
-
 		if (clearCurrent) {
-			Object[] args = new Object[] {syncStateModelImpl.getModelName()};
+			Object[] args = new Object[] { syncStateModelImpl.getModelName() };
 
-			finderCache.removeResult(_finderPathCountByModelName, args);
-			finderCache.removeResult(_finderPathFetchByModelName, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_MODELNAME, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_MODELNAME, args);
 		}
 
 		if ((syncStateModelImpl.getColumnBitmask() &
-			 _finderPathFetchByModelName.getColumnBitmask()) != 0) {
-
+				FINDER_PATH_FETCH_BY_MODELNAME.getColumnBitmask()) != 0) {
 			Object[] args = new Object[] {
-				syncStateModelImpl.getOriginalModelName()
-			};
+					syncStateModelImpl.getOriginalModelName()
+				};
 
-			finderCache.removeResult(_finderPathCountByModelName, args);
-			finderCache.removeResult(_finderPathFetchByModelName, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_MODELNAME, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_MODELNAME, args);
 		}
 	}
 
@@ -501,31 +483,30 @@ public class SyncStatePersistenceImpl
 	@Override
 	public SyncState remove(Serializable primaryKey)
 		throws NoSuchSyncStateException {
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			SyncState syncState = (SyncState)session.get(
-				SyncStateImpl.class, primaryKey);
+			SyncState syncState = (SyncState)session.get(SyncStateImpl.class,
+					primaryKey);
 
 			if (syncState == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchSyncStateException(
-					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				throw new NoSuchSyncStateException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+					primaryKey);
 			}
 
 			return remove(syncState);
 		}
-		catch (NoSuchSyncStateException noSuchEntityException) {
-			throw noSuchEntityException;
+		catch (NoSuchSyncStateException nsee) {
+			throw nsee;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -534,22 +515,24 @@ public class SyncStatePersistenceImpl
 
 	@Override
 	protected SyncState removeImpl(SyncState syncState) {
+		syncState = toUnwrappedModel(syncState);
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(syncState)) {
-				syncState = (SyncState)session.get(
-					SyncStateImpl.class, syncState.getPrimaryKeyObj());
+				syncState = (SyncState)session.get(SyncStateImpl.class,
+						syncState.getPrimaryKeyObj());
 			}
 
 			if (syncState != null) {
 				session.delete(syncState);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -564,23 +547,9 @@ public class SyncStatePersistenceImpl
 
 	@Override
 	public SyncState updateImpl(SyncState syncState) {
+		syncState = toUnwrappedModel(syncState);
+
 		boolean isNew = syncState.isNew();
-
-		if (!(syncState instanceof SyncStateModelImpl)) {
-			InvocationHandler invocationHandler = null;
-
-			if (ProxyUtil.isProxyClass(syncState.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(syncState);
-
-				throw new IllegalArgumentException(
-					"Implement ModelWrapper in syncState proxy " +
-						invocationHandler.getClass());
-			}
-
-			throw new IllegalArgumentException(
-				"Implement ModelWrapper in custom SyncState implementation " +
-					syncState.getClass());
-		}
 
 		SyncStateModelImpl syncStateModelImpl = (SyncStateModelImpl)syncState;
 
@@ -598,8 +567,8 @@ public class SyncStatePersistenceImpl
 				syncState = (SyncState)session.merge(syncState);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -610,15 +579,15 @@ public class SyncStatePersistenceImpl
 		if (!SyncStateModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else if (isNew) {
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+		else
+		 if (isNew) {
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(
-			SyncStateModelImpl.ENTITY_CACHE_ENABLED, SyncStateImpl.class,
-			syncState.getPrimaryKey(), syncState, false);
+		entityCache.putResult(SyncStateModelImpl.ENTITY_CACHE_ENABLED,
+			SyncStateImpl.class, syncState.getPrimaryKey(), syncState, false);
 
 		clearUniqueFindersCache(syncStateModelImpl, false);
 		cacheUniqueFindersCache(syncStateModelImpl);
@@ -628,8 +597,25 @@ public class SyncStatePersistenceImpl
 		return syncState;
 	}
 
+	protected SyncState toUnwrappedModel(SyncState syncState) {
+		if (syncState instanceof SyncStateImpl) {
+			return syncState;
+		}
+
+		SyncStateImpl syncStateImpl = new SyncStateImpl();
+
+		syncStateImpl.setNew(syncState.isNew());
+		syncStateImpl.setPrimaryKey(syncState.getPrimaryKey());
+
+		syncStateImpl.setSyncStateId(syncState.getSyncStateId());
+		syncStateImpl.setModelName(syncState.getModelName());
+		syncStateImpl.setLastRunTime(syncState.getLastRunTime());
+
+		return syncStateImpl;
+	}
+
 	/**
-	 * Returns the sync state with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
+	 * Returns the sync state with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the sync state
 	 * @return the sync state
@@ -638,7 +624,6 @@ public class SyncStatePersistenceImpl
 	@Override
 	public SyncState findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchSyncStateException {
-
 		SyncState syncState = fetchByPrimaryKey(primaryKey);
 
 		if (syncState == null) {
@@ -646,15 +631,15 @@ public class SyncStatePersistenceImpl
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchSyncStateException(
-				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			throw new NoSuchSyncStateException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
 		}
 
 		return syncState;
 	}
 
 	/**
-	 * Returns the sync state with the primary key or throws a <code>NoSuchSyncStateException</code> if it could not be found.
+	 * Returns the sync state with the primary key or throws a {@link NoSuchSyncStateException} if it could not be found.
 	 *
 	 * @param syncStateId the primary key of the sync state
 	 * @return the sync state
@@ -663,7 +648,6 @@ public class SyncStatePersistenceImpl
 	@Override
 	public SyncState findByPrimaryKey(long syncStateId)
 		throws NoSuchSyncStateException {
-
 		return findByPrimaryKey((Serializable)syncStateId);
 	}
 
@@ -675,9 +659,8 @@ public class SyncStatePersistenceImpl
 	 */
 	@Override
 	public SyncState fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(
-			SyncStateModelImpl.ENTITY_CACHE_ENABLED, SyncStateImpl.class,
-			primaryKey);
+		Serializable serializable = entityCache.getResult(SyncStateModelImpl.ENTITY_CACHE_ENABLED,
+				SyncStateImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -691,24 +674,22 @@ public class SyncStatePersistenceImpl
 			try {
 				session = openSession();
 
-				syncState = (SyncState)session.get(
-					SyncStateImpl.class, primaryKey);
+				syncState = (SyncState)session.get(SyncStateImpl.class,
+						primaryKey);
 
 				if (syncState != null) {
 					cacheResult(syncState);
 				}
 				else {
-					entityCache.putResult(
-						SyncStateModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(SyncStateModelImpl.ENTITY_CACHE_ENABLED,
 						SyncStateImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception exception) {
-				entityCache.removeResult(
-					SyncStateModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception e) {
+				entityCache.removeResult(SyncStateModelImpl.ENTITY_CACHE_ENABLED,
 					SyncStateImpl.class, primaryKey);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -732,13 +713,11 @@ public class SyncStatePersistenceImpl
 	@Override
 	public Map<Serializable, SyncState> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
-
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, SyncState> map =
-			new HashMap<Serializable, SyncState>();
+		Map<Serializable, SyncState> map = new HashMap<Serializable, SyncState>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -757,9 +736,8 @@ public class SyncStatePersistenceImpl
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(
-				SyncStateModelImpl.ENTITY_CACHE_ENABLED, SyncStateImpl.class,
-				primaryKey);
+			Serializable serializable = entityCache.getResult(SyncStateModelImpl.ENTITY_CACHE_ENABLED,
+					SyncStateImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -779,31 +757,31 @@ public class SyncStatePersistenceImpl
 			return map;
 		}
 
-		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
+				1);
 
-		sb.append(_SQL_SELECT_SYNCSTATE_WHERE_PKS_IN);
+		query.append(_SQL_SELECT_SYNCSTATE_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			sb.append((long)primaryKey);
+			query.append((long)primaryKey);
 
-			sb.append(",");
+			query.append(StringPool.COMMA);
 		}
 
-		sb.setIndex(sb.index() - 1);
+		query.setIndex(query.index() - 1);
 
-		sb.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query query = session.createQuery(sql);
+			Query q = session.createQuery(sql);
 
-			for (SyncState syncState : (List<SyncState>)query.list()) {
+			for (SyncState syncState : (List<SyncState>)q.list()) {
 				map.put(syncState.getPrimaryKeyObj(), syncState);
 
 				cacheResult(syncState);
@@ -812,13 +790,12 @@ public class SyncStatePersistenceImpl
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(
-					SyncStateModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(SyncStateModelImpl.ENTITY_CACHE_ENABLED,
 					SyncStateImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -841,7 +818,7 @@ public class SyncStatePersistenceImpl
 	 * Returns a range of all the sync states.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SyncStateModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SyncStateModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of sync states
@@ -857,7 +834,7 @@ public class SyncStatePersistenceImpl
 	 * Returns an ordered range of all the sync states.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SyncStateModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SyncStateModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of sync states
@@ -866,9 +843,8 @@ public class SyncStatePersistenceImpl
 	 * @return the ordered range of sync states
 	 */
 	@Override
-	public List<SyncState> findAll(
-		int start, int end, OrderByComparator<SyncState> orderByComparator) {
-
+	public List<SyncState> findAll(int start, int end,
+		OrderByComparator<SyncState> orderByComparator) {
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -876,62 +852,62 @@ public class SyncStatePersistenceImpl
 	 * Returns an ordered range of all the sync states.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SyncStateModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SyncStateModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of sync states
 	 * @param end the upper bound of the range of sync states (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of sync states
 	 */
 	@Override
-	public List<SyncState> findAll(
-		int start, int end, OrderByComparator<SyncState> orderByComparator,
-		boolean useFinderCache) {
-
+	public List<SyncState> findAll(int start, int end,
+		OrderByComparator<SyncState> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
-				finderArgs = FINDER_ARGS_EMPTY;
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+			finderArgs = FINDER_ARGS_EMPTY;
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] {start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
 		List<SyncState> list = null;
 
-		if (useFinderCache) {
-			list = (List<SyncState>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<SyncState>)finderCache.getResult(finderPath,
+					finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					2 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(2 +
+						(orderByComparator.getOrderByFields().length * 2));
 
-				sb.append(_SQL_SELECT_SYNCSTATE);
+				query.append(_SQL_SELECT_SYNCSTATE);
 
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 
-				sql = sb.toString();
+				sql = query.toString();
 			}
 			else {
 				sql = _SQL_SELECT_SYNCSTATE;
 
-				sql = sql.concat(SyncStateModelImpl.ORDER_BY_JPQL);
+				if (pagination) {
+					sql = sql.concat(SyncStateModelImpl.ORDER_BY_JPQL);
+				}
 			}
 
 			Session session = null;
@@ -939,23 +915,29 @@ public class SyncStatePersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				list = (List<SyncState>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<SyncState>)QueryUtil.list(q, getDialect(),
+							start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<SyncState>)QueryUtil.list(q, getDialect(),
+							start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -983,8 +965,8 @@ public class SyncStatePersistenceImpl
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -992,18 +974,18 @@ public class SyncStatePersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(_SQL_COUNT_SYNCSTATE);
+				Query q = session.createQuery(_SQL_COUNT_SYNCSTATE);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
+					count);
 			}
-			catch (Exception exception) {
-				finderCache.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1022,35 +1004,6 @@ public class SyncStatePersistenceImpl
 	 * Initializes the sync state persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			SyncStateModelImpl.ENTITY_CACHE_ENABLED,
-			SyncStateModelImpl.FINDER_CACHE_ENABLED, SyncStateImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			SyncStateModelImpl.ENTITY_CACHE_ENABLED,
-			SyncStateModelImpl.FINDER_CACHE_ENABLED, SyncStateImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			SyncStateModelImpl.ENTITY_CACHE_ENABLED,
-			SyncStateModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
-
-		_finderPathFetchByModelName = new FinderPath(
-			SyncStateModelImpl.ENTITY_CACHE_ENABLED,
-			SyncStateModelImpl.FINDER_CACHE_ENABLED, SyncStateImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByModelName",
-			new String[] {String.class.getName()},
-			SyncStateModelImpl.MODELNAME_COLUMN_BITMASK);
-
-		_finderPathCountByModelName = new FinderPath(
-			SyncStateModelImpl.ENTITY_CACHE_ENABLED,
-			SyncStateModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByModelName",
-			new String[] {String.class.getName()});
 	}
 
 	public void destroy() {
@@ -1062,34 +1015,15 @@ public class SyncStatePersistenceImpl
 
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
-
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-
-	private static final String _SQL_SELECT_SYNCSTATE =
-		"SELECT syncState FROM SyncState syncState";
-
-	private static final String _SQL_SELECT_SYNCSTATE_WHERE_PKS_IN =
-		"SELECT syncState FROM SyncState syncState WHERE syncStateId IN (";
-
-	private static final String _SQL_SELECT_SYNCSTATE_WHERE =
-		"SELECT syncState FROM SyncState syncState WHERE ";
-
-	private static final String _SQL_COUNT_SYNCSTATE =
-		"SELECT COUNT(syncState) FROM SyncState syncState";
-
-	private static final String _SQL_COUNT_SYNCSTATE_WHERE =
-		"SELECT COUNT(syncState) FROM SyncState syncState WHERE ";
-
+	private static final String _SQL_SELECT_SYNCSTATE = "SELECT syncState FROM SyncState syncState";
+	private static final String _SQL_SELECT_SYNCSTATE_WHERE_PKS_IN = "SELECT syncState FROM SyncState syncState WHERE syncStateId IN (";
+	private static final String _SQL_SELECT_SYNCSTATE_WHERE = "SELECT syncState FROM SyncState syncState WHERE ";
+	private static final String _SQL_COUNT_SYNCSTATE = "SELECT COUNT(syncState) FROM SyncState syncState";
+	private static final String _SQL_COUNT_SYNCSTATE_WHERE = "SELECT COUNT(syncState) FROM SyncState syncState WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "syncState.";
-
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
-		"No SyncState exists with the primary key ";
-
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No SyncState exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		SyncStatePersistenceImpl.class);
-
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No SyncState exists with the primary key ";
+	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No SyncState exists with the key {";
+	private static final Log _log = LogFactoryUtil.getLog(SyncStatePersistenceImpl.class);
 }

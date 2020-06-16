@@ -1,18 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.community.github.model.impl;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.community.github.model.GitHubRepository;
 import com.liferay.osb.community.github.service.GitHubRepositoryLocalServiceUtil;
@@ -29,13 +31,13 @@ import com.liferay.osb.community.github.service.GitHubRepositoryLocalServiceUtil
  * @see GitHubRepository
  * @generated
  */
-public abstract class GitHubRepositoryBaseImpl
-	extends GitHubRepositoryModelImpl implements GitHubRepository {
-
+@ProviderType
+public abstract class GitHubRepositoryBaseImpl extends GitHubRepositoryModelImpl
+	implements GitHubRepository {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a git hub repository model instance should use the <code>GitHubRepository</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a git hub repository model instance should use the {@link GitHubRepository} interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -46,5 +48,4 @@ public abstract class GitHubRepositoryBaseImpl
 			GitHubRepositoryLocalServiceUtil.updateGitHubRepository(this);
 		}
 	}
-
 }

@@ -1516,16 +1516,16 @@ public class WatsonReportModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonReport)) {
+		if (!(object instanceof WatsonReport)) {
 			return false;
 		}
 
-		WatsonReport watsonReport = (WatsonReport)obj;
+		WatsonReport watsonReport = (WatsonReport)object;
 
 		long primaryKey = watsonReport.getPrimaryKey();
 

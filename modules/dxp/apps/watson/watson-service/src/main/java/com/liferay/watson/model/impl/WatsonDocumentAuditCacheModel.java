@@ -36,17 +36,17 @@ public class WatsonDocumentAuditCacheModel
 	implements CacheModel<WatsonDocumentAudit>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonDocumentAuditCacheModel)) {
+		if (!(object instanceof WatsonDocumentAuditCacheModel)) {
 			return false;
 		}
 
 		WatsonDocumentAuditCacheModel watsonDocumentAuditCacheModel =
-			(WatsonDocumentAuditCacheModel)obj;
+			(WatsonDocumentAuditCacheModel)object;
 
 		if (watsonDocumentAuditId ==
 				watsonDocumentAuditCacheModel.watsonDocumentAuditId) {

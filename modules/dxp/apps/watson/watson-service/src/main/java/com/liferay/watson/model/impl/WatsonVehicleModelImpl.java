@@ -1181,16 +1181,16 @@ public class WatsonVehicleModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonVehicle)) {
+		if (!(object instanceof WatsonVehicle)) {
 			return false;
 		}
 
-		WatsonVehicle watsonVehicle = (WatsonVehicle)obj;
+		WatsonVehicle watsonVehicle = (WatsonVehicle)object;
 
 		long primaryKey = watsonVehicle.getPrimaryKey();
 

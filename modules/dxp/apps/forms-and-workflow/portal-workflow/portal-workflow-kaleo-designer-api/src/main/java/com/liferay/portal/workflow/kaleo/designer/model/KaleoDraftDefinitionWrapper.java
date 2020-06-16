@@ -683,17 +683,17 @@ public class KaleoDraftDefinitionWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof KaleoDraftDefinitionWrapper)) {
+		if (!(object instanceof KaleoDraftDefinitionWrapper)) {
 			return false;
 		}
 
 		KaleoDraftDefinitionWrapper kaleoDraftDefinitionWrapper =
-			(KaleoDraftDefinitionWrapper)obj;
+			(KaleoDraftDefinitionWrapper)object;
 
 		if (Objects.equals(
 				_kaleoDraftDefinition,

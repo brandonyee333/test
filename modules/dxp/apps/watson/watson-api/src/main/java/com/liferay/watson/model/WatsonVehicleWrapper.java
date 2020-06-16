@@ -874,16 +874,17 @@ public class WatsonVehicleWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonVehicleWrapper)) {
+		if (!(object instanceof WatsonVehicleWrapper)) {
 			return false;
 		}
 
-		WatsonVehicleWrapper watsonVehicleWrapper = (WatsonVehicleWrapper)obj;
+		WatsonVehicleWrapper watsonVehicleWrapper =
+			(WatsonVehicleWrapper)object;
 
 		if (Objects.equals(
 				_watsonVehicle, watsonVehicleWrapper._watsonVehicle)) {

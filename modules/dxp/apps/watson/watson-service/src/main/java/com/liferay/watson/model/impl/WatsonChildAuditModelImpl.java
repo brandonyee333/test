@@ -1169,16 +1169,16 @@ public class WatsonChildAuditModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonChildAudit)) {
+		if (!(object instanceof WatsonChildAudit)) {
 			return false;
 		}
 
-		WatsonChildAudit watsonChildAudit = (WatsonChildAudit)obj;
+		WatsonChildAudit watsonChildAudit = (WatsonChildAudit)object;
 
 		long primaryKey = watsonChildAudit.getPrimaryKey();
 

@@ -1318,16 +1318,16 @@ public class WatsonPersonWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonPersonWrapper)) {
+		if (!(object instanceof WatsonPersonWrapper)) {
 			return false;
 		}
 
-		WatsonPersonWrapper watsonPersonWrapper = (WatsonPersonWrapper)obj;
+		WatsonPersonWrapper watsonPersonWrapper = (WatsonPersonWrapper)object;
 
 		if (Objects.equals(_watsonPerson, watsonPersonWrapper._watsonPerson)) {
 			return true;

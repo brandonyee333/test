@@ -36,17 +36,17 @@ public class WatsonActivityCacheModel
 	implements CacheModel<WatsonActivity>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonActivityCacheModel)) {
+		if (!(object instanceof WatsonActivityCacheModel)) {
 			return false;
 		}
 
 		WatsonActivityCacheModel watsonActivityCacheModel =
-			(WatsonActivityCacheModel)obj;
+			(WatsonActivityCacheModel)object;
 
 		if (watsonActivityId == watsonActivityCacheModel.watsonActivityId) {
 			return true;

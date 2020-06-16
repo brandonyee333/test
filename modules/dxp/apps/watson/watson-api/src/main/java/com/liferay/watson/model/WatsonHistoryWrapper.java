@@ -546,16 +546,17 @@ public class WatsonHistoryWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonHistoryWrapper)) {
+		if (!(object instanceof WatsonHistoryWrapper)) {
 			return false;
 		}
 
-		WatsonHistoryWrapper watsonHistoryWrapper = (WatsonHistoryWrapper)obj;
+		WatsonHistoryWrapper watsonHistoryWrapper =
+			(WatsonHistoryWrapper)object;
 
 		if (Objects.equals(
 				_watsonHistory, watsonHistoryWrapper._watsonHistory)) {

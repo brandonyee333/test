@@ -1,24 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.loop.service.persistence.impl;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.loop.exception.NoSuchLoopExternalReferenceRelException;
 import com.liferay.osb.loop.model.LoopExternalReferenceRel;
 import com.liferay.osb.loop.model.impl.LoopExternalReferenceRelImpl;
 import com.liferay.osb.loop.model.impl.LoopExternalReferenceRelModelImpl;
 import com.liferay.osb.loop.service.persistence.LoopExternalReferenceRelPersistence;
+
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -30,13 +33,11 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
-
-import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -55,34 +56,48 @@ import java.util.Set;
  * </p>
  *
  * @author Ethan Bustad
+ * @see LoopExternalReferenceRelPersistence
+ * @see com.liferay.osb.loop.service.persistence.LoopExternalReferenceRelUtil
  * @generated
  */
-public class LoopExternalReferenceRelPersistenceImpl
-	extends BasePersistenceImpl<LoopExternalReferenceRel>
+@ProviderType
+public class LoopExternalReferenceRelPersistenceImpl extends BasePersistenceImpl<LoopExternalReferenceRel>
 	implements LoopExternalReferenceRelPersistence {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use <code>LoopExternalReferenceRelUtil</code> to access the loop external reference rel persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use {@link LoopExternalReferenceRelUtil} to access the loop external reference rel persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY =
-		LoopExternalReferenceRelImpl.class.getName();
-
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List1";
-
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathFetchByERP_ESN;
-	private FinderPath _finderPathCountByERP_ESN;
+	public static final String FINDER_CLASS_NAME_ENTITY = LoopExternalReferenceRelImpl.class.getName();
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List1";
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List2";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
+			LoopExternalReferenceRelModelImpl.FINDER_CACHE_ENABLED,
+			LoopExternalReferenceRelImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
+			LoopExternalReferenceRelModelImpl.FINDER_CACHE_ENABLED,
+			LoopExternalReferenceRelImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
+			LoopExternalReferenceRelModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	public static final FinderPath FINDER_PATH_FETCH_BY_ERP_ESN = new FinderPath(LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
+			LoopExternalReferenceRelModelImpl.FINDER_CACHE_ENABLED,
+			LoopExternalReferenceRelImpl.class, FINDER_CLASS_NAME_ENTITY,
+			"fetchByERP_ESN",
+			new String[] { String.class.getName(), String.class.getName() },
+			LoopExternalReferenceRelModelImpl.EXTERNALREFERENCENAME_COLUMN_BITMASK |
+			LoopExternalReferenceRelModelImpl.EXTERNALREFERENCEPK_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_ERP_ESN = new FinderPath(LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
+			LoopExternalReferenceRelModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByERP_ESN",
+			new String[] { String.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the loop external reference rel where externalReferenceName = &#63; and externalReferencePK = &#63; or throws a <code>NoSuchLoopExternalReferenceRelException</code> if it could not be found.
+	 * Returns the loop external reference rel where externalReferenceName = &#63; and externalReferencePK = &#63; or throws a {@link NoSuchLoopExternalReferenceRelException} if it could not be found.
 	 *
 	 * @param externalReferenceName the external reference name
 	 * @param externalReferencePK the external reference pk
@@ -91,30 +106,29 @@ public class LoopExternalReferenceRelPersistenceImpl
 	 */
 	@Override
 	public LoopExternalReferenceRel findByERP_ESN(
-			String externalReferenceName, String externalReferencePK)
+		String externalReferenceName, String externalReferencePK)
 		throws NoSuchLoopExternalReferenceRelException {
-
-		LoopExternalReferenceRel loopExternalReferenceRel = fetchByERP_ESN(
-			externalReferenceName, externalReferencePK);
+		LoopExternalReferenceRel loopExternalReferenceRel = fetchByERP_ESN(externalReferenceName,
+				externalReferencePK);
 
 		if (loopExternalReferenceRel == null) {
-			StringBundler sb = new StringBundler(6);
+			StringBundler msg = new StringBundler(6);
 
-			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			sb.append("externalReferenceName=");
-			sb.append(externalReferenceName);
+			msg.append("externalReferenceName=");
+			msg.append(externalReferenceName);
 
-			sb.append(", externalReferencePK=");
-			sb.append(externalReferencePK);
+			msg.append(", externalReferencePK=");
+			msg.append(externalReferencePK);
 
-			sb.append("}");
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(sb.toString());
+				_log.debug(msg.toString());
 			}
 
-			throw new NoSuchLoopExternalReferenceRelException(sb.toString());
+			throw new NoSuchLoopExternalReferenceRelException(msg.toString());
 		}
 
 		return loopExternalReferenceRel;
@@ -130,7 +144,6 @@ public class LoopExternalReferenceRelPersistenceImpl
 	@Override
 	public LoopExternalReferenceRel fetchByERP_ESN(
 		String externalReferenceName, String externalReferencePK) {
-
 		return fetchByERP_ESN(externalReferenceName, externalReferencePK, true);
 	}
 
@@ -139,117 +152,116 @@ public class LoopExternalReferenceRelPersistenceImpl
 	 *
 	 * @param externalReferenceName the external reference name
 	 * @param externalReferencePK the external reference pk
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the matching loop external reference rel, or <code>null</code> if a matching loop external reference rel could not be found
 	 */
 	@Override
 	public LoopExternalReferenceRel fetchByERP_ESN(
 		String externalReferenceName, String externalReferencePK,
-		boolean useFinderCache) {
-
-		externalReferenceName = Objects.toString(externalReferenceName, "");
-		externalReferencePK = Objects.toString(externalReferencePK, "");
-
-		Object[] finderArgs = null;
-
-		if (useFinderCache) {
-			finderArgs = new Object[] {
+		boolean retrieveFromCache) {
+		Object[] finderArgs = new Object[] {
 				externalReferenceName, externalReferencePK
 			};
-		}
 
 		Object result = null;
 
-		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchByERP_ESN, finderArgs, this);
+		if (retrieveFromCache) {
+			result = finderCache.getResult(FINDER_PATH_FETCH_BY_ERP_ESN,
+					finderArgs, this);
 		}
 
 		if (result instanceof LoopExternalReferenceRel) {
-			LoopExternalReferenceRel loopExternalReferenceRel =
-				(LoopExternalReferenceRel)result;
+			LoopExternalReferenceRel loopExternalReferenceRel = (LoopExternalReferenceRel)result;
 
-			if (!Objects.equals(
-					externalReferenceName,
-					loopExternalReferenceRel.getExternalReferenceName()) ||
-				!Objects.equals(
-					externalReferencePK,
-					loopExternalReferenceRel.getExternalReferencePK())) {
-
+			if (!Objects.equals(externalReferenceName,
+						loopExternalReferenceRel.getExternalReferenceName()) ||
+					!Objects.equals(externalReferencePK,
+						loopExternalReferenceRel.getExternalReferencePK())) {
 				result = null;
 			}
 		}
 
 		if (result == null) {
-			StringBundler sb = new StringBundler(4);
+			StringBundler query = new StringBundler(4);
 
-			sb.append(_SQL_SELECT_LOOPEXTERNALREFERENCEREL_WHERE);
+			query.append(_SQL_SELECT_LOOPEXTERNALREFERENCEREL_WHERE);
 
 			boolean bindExternalReferenceName = false;
 
-			if (externalReferenceName.isEmpty()) {
-				sb.append(_FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCENAME_3);
+			if (externalReferenceName == null) {
+				query.append(_FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCENAME_1);
+			}
+			else if (externalReferenceName.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCENAME_3);
 			}
 			else {
 				bindExternalReferenceName = true;
 
-				sb.append(_FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCENAME_2);
+				query.append(_FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCENAME_2);
 			}
 
 			boolean bindExternalReferencePK = false;
 
-			if (externalReferencePK.isEmpty()) {
-				sb.append(_FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCEPK_3);
+			if (externalReferencePK == null) {
+				query.append(_FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCEPK_1);
+			}
+			else if (externalReferencePK.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCEPK_3);
 			}
 			else {
 				bindExternalReferencePK = true;
 
-				sb.append(_FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCEPK_2);
+				query.append(_FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCEPK_2);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
 				if (bindExternalReferenceName) {
-					queryPos.add(externalReferenceName);
+					qPos.add(externalReferenceName);
 				}
 
 				if (bindExternalReferencePK) {
-					queryPos.add(externalReferencePK);
+					qPos.add(externalReferencePK);
 				}
 
-				List<LoopExternalReferenceRel> list = query.list();
+				List<LoopExternalReferenceRel> list = q.list();
 
 				if (list.isEmpty()) {
-					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchByERP_ESN, finderArgs, list);
-					}
+					finderCache.putResult(FINDER_PATH_FETCH_BY_ERP_ESN,
+						finderArgs, list);
 				}
 				else {
-					LoopExternalReferenceRel loopExternalReferenceRel =
-						list.get(0);
+					LoopExternalReferenceRel loopExternalReferenceRel = list.get(0);
 
 					result = loopExternalReferenceRel;
 
 					cacheResult(loopExternalReferenceRel);
+
+					if ((loopExternalReferenceRel.getExternalReferenceName() == null) ||
+							!loopExternalReferenceRel.getExternalReferenceName()
+														 .equals(externalReferenceName) ||
+							(loopExternalReferenceRel.getExternalReferencePK() == null) ||
+							!loopExternalReferenceRel.getExternalReferencePK()
+														 .equals(externalReferencePK)) {
+						finderCache.putResult(FINDER_PATH_FETCH_BY_ERP_ESN,
+							finderArgs, loopExternalReferenceRel);
+					}
 				}
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(
-						_finderPathFetchByERP_ESN, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_FETCH_BY_ERP_ESN,
+					finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -273,11 +285,10 @@ public class LoopExternalReferenceRelPersistenceImpl
 	 */
 	@Override
 	public LoopExternalReferenceRel removeByERP_ESN(
-			String externalReferenceName, String externalReferencePK)
+		String externalReferenceName, String externalReferencePK)
 		throws NoSuchLoopExternalReferenceRelException {
-
-		LoopExternalReferenceRel loopExternalReferenceRel = findByERP_ESN(
-			externalReferenceName, externalReferencePK);
+		LoopExternalReferenceRel loopExternalReferenceRel = findByERP_ESN(externalReferenceName,
+				externalReferencePK);
 
 		return remove(loopExternalReferenceRel);
 	}
@@ -290,74 +301,76 @@ public class LoopExternalReferenceRelPersistenceImpl
 	 * @return the number of matching loop external reference rels
 	 */
 	@Override
-	public int countByERP_ESN(
-		String externalReferenceName, String externalReferencePK) {
-
-		externalReferenceName = Objects.toString(externalReferenceName, "");
-		externalReferencePK = Objects.toString(externalReferencePK, "");
-
-		FinderPath finderPath = _finderPathCountByERP_ESN;
+	public int countByERP_ESN(String externalReferenceName,
+		String externalReferencePK) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_ERP_ESN;
 
 		Object[] finderArgs = new Object[] {
-			externalReferenceName, externalReferencePK
-		};
+				externalReferenceName, externalReferencePK
+			};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(3);
+			StringBundler query = new StringBundler(3);
 
-			sb.append(_SQL_COUNT_LOOPEXTERNALREFERENCEREL_WHERE);
+			query.append(_SQL_COUNT_LOOPEXTERNALREFERENCEREL_WHERE);
 
 			boolean bindExternalReferenceName = false;
 
-			if (externalReferenceName.isEmpty()) {
-				sb.append(_FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCENAME_3);
+			if (externalReferenceName == null) {
+				query.append(_FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCENAME_1);
+			}
+			else if (externalReferenceName.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCENAME_3);
 			}
 			else {
 				bindExternalReferenceName = true;
 
-				sb.append(_FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCENAME_2);
+				query.append(_FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCENAME_2);
 			}
 
 			boolean bindExternalReferencePK = false;
 
-			if (externalReferencePK.isEmpty()) {
-				sb.append(_FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCEPK_3);
+			if (externalReferencePK == null) {
+				query.append(_FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCEPK_1);
+			}
+			else if (externalReferencePK.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCEPK_3);
 			}
 			else {
 				bindExternalReferencePK = true;
 
-				sb.append(_FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCEPK_2);
+				query.append(_FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCEPK_2);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
 				if (bindExternalReferenceName) {
-					queryPos.add(externalReferenceName);
+					qPos.add(externalReferenceName);
 				}
 
 				if (bindExternalReferencePK) {
-					queryPos.add(externalReferencePK);
+					qPos.add(externalReferencePK);
 				}
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
+			catch (Exception e) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -367,17 +380,12 @@ public class LoopExternalReferenceRelPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCENAME_2 =
-		"loopExternalReferenceRel.externalReferenceName = ? AND ";
-
-	private static final String _FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCENAME_3 =
-		"(loopExternalReferenceRel.externalReferenceName IS NULL OR loopExternalReferenceRel.externalReferenceName = '') AND ";
-
-	private static final String _FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCEPK_2 =
-		"loopExternalReferenceRel.externalReferencePK = ?";
-
-	private static final String _FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCEPK_3 =
-		"(loopExternalReferenceRel.externalReferencePK IS NULL OR loopExternalReferenceRel.externalReferencePK = '')";
+	private static final String _FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCENAME_1 = "loopExternalReferenceRel.externalReferenceName IS NULL AND ";
+	private static final String _FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCENAME_2 = "loopExternalReferenceRel.externalReferenceName = ? AND ";
+	private static final String _FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCENAME_3 = "(loopExternalReferenceRel.externalReferenceName IS NULL OR loopExternalReferenceRel.externalReferenceName = '') AND ";
+	private static final String _FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCEPK_1 = "loopExternalReferenceRel.externalReferencePK IS NULL";
+	private static final String _FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCEPK_2 = "loopExternalReferenceRel.externalReferencePK = ?";
+	private static final String _FINDER_COLUMN_ERP_ESN_EXTERNALREFERENCEPK_3 = "(loopExternalReferenceRel.externalReferencePK IS NULL OR loopExternalReferenceRel.externalReferencePK = '')";
 
 	public LoopExternalReferenceRelPersistenceImpl() {
 		setModelClass(LoopExternalReferenceRel.class);
@@ -390,18 +398,15 @@ public class LoopExternalReferenceRelPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(LoopExternalReferenceRel loopExternalReferenceRel) {
-		entityCache.putResult(
-			LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
 			LoopExternalReferenceRelImpl.class,
 			loopExternalReferenceRel.getPrimaryKey(), loopExternalReferenceRel);
 
-		finderCache.putResult(
-			_finderPathFetchByERP_ESN,
+		finderCache.putResult(FINDER_PATH_FETCH_BY_ERP_ESN,
 			new Object[] {
 				loopExternalReferenceRel.getExternalReferenceName(),
 				loopExternalReferenceRel.getExternalReferencePK()
-			},
-			loopExternalReferenceRel);
+			}, loopExternalReferenceRel);
 
 		loopExternalReferenceRel.resetOriginalValues();
 	}
@@ -414,15 +419,11 @@ public class LoopExternalReferenceRelPersistenceImpl
 	@Override
 	public void cacheResult(
 		List<LoopExternalReferenceRel> loopExternalReferenceRels) {
-
-		for (LoopExternalReferenceRel loopExternalReferenceRel :
-				loopExternalReferenceRels) {
-
+		for (LoopExternalReferenceRel loopExternalReferenceRel : loopExternalReferenceRels) {
 			if (entityCache.getResult(
-					LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
-					LoopExternalReferenceRelImpl.class,
-					loopExternalReferenceRel.getPrimaryKey()) == null) {
-
+						LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
+						LoopExternalReferenceRelImpl.class,
+						loopExternalReferenceRel.getPrimaryKey()) == null) {
 				cacheResult(loopExternalReferenceRel);
 			}
 			else {
@@ -435,7 +436,7 @@ public class LoopExternalReferenceRelPersistenceImpl
 	 * Clears the cache for all loop external reference rels.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -451,97 +452,73 @@ public class LoopExternalReferenceRelPersistenceImpl
 	 * Clears the cache for the loop external reference rel.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(LoopExternalReferenceRel loopExternalReferenceRel) {
-		entityCache.removeResult(
-			LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
 			LoopExternalReferenceRelImpl.class,
 			loopExternalReferenceRel.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
-		clearUniqueFindersCache(
-			(LoopExternalReferenceRelModelImpl)loopExternalReferenceRel, true);
+		clearUniqueFindersCache((LoopExternalReferenceRelModelImpl)loopExternalReferenceRel,
+			true);
 	}
 
 	@Override
 	public void clearCache(
 		List<LoopExternalReferenceRel> loopExternalReferenceRels) {
-
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
-		for (LoopExternalReferenceRel loopExternalReferenceRel :
-				loopExternalReferenceRels) {
-
-			entityCache.removeResult(
-				LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
+		for (LoopExternalReferenceRel loopExternalReferenceRel : loopExternalReferenceRels) {
+			entityCache.removeResult(LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
 				LoopExternalReferenceRelImpl.class,
 				loopExternalReferenceRel.getPrimaryKey());
 
-			clearUniqueFindersCache(
-				(LoopExternalReferenceRelModelImpl)loopExternalReferenceRel,
+			clearUniqueFindersCache((LoopExternalReferenceRelModelImpl)loopExternalReferenceRel,
 				true);
-		}
-	}
-
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
-				LoopExternalReferenceRelImpl.class, primaryKey);
 		}
 	}
 
 	protected void cacheUniqueFindersCache(
 		LoopExternalReferenceRelModelImpl loopExternalReferenceRelModelImpl) {
-
 		Object[] args = new Object[] {
-			loopExternalReferenceRelModelImpl.getExternalReferenceName(),
-			loopExternalReferenceRelModelImpl.getExternalReferencePK()
-		};
+				loopExternalReferenceRelModelImpl.getExternalReferenceName(),
+				loopExternalReferenceRelModelImpl.getExternalReferencePK()
+			};
 
-		finderCache.putResult(
-			_finderPathCountByERP_ESN, args, Long.valueOf(1), false);
-		finderCache.putResult(
-			_finderPathFetchByERP_ESN, args, loopExternalReferenceRelModelImpl,
-			false);
+		finderCache.putResult(FINDER_PATH_COUNT_BY_ERP_ESN, args,
+			Long.valueOf(1), false);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_ERP_ESN, args,
+			loopExternalReferenceRelModelImpl, false);
 	}
 
 	protected void clearUniqueFindersCache(
 		LoopExternalReferenceRelModelImpl loopExternalReferenceRelModelImpl,
 		boolean clearCurrent) {
-
 		if (clearCurrent) {
 			Object[] args = new Object[] {
-				loopExternalReferenceRelModelImpl.getExternalReferenceName(),
-				loopExternalReferenceRelModelImpl.getExternalReferencePK()
-			};
+					loopExternalReferenceRelModelImpl.getExternalReferenceName(),
+					loopExternalReferenceRelModelImpl.getExternalReferencePK()
+				};
 
-			finderCache.removeResult(_finderPathCountByERP_ESN, args);
-			finderCache.removeResult(_finderPathFetchByERP_ESN, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_ERP_ESN, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_ERP_ESN, args);
 		}
 
 		if ((loopExternalReferenceRelModelImpl.getColumnBitmask() &
-			 _finderPathFetchByERP_ESN.getColumnBitmask()) != 0) {
-
+				FINDER_PATH_FETCH_BY_ERP_ESN.getColumnBitmask()) != 0) {
 			Object[] args = new Object[] {
-				loopExternalReferenceRelModelImpl.
-					getOriginalExternalReferenceName(),
-				loopExternalReferenceRelModelImpl.
-					getOriginalExternalReferencePK()
-			};
+					loopExternalReferenceRelModelImpl.getOriginalExternalReferenceName(),
+					loopExternalReferenceRelModelImpl.getOriginalExternalReferencePK()
+				};
 
-			finderCache.removeResult(_finderPathCountByERP_ESN, args);
-			finderCache.removeResult(_finderPathFetchByERP_ESN, args);
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_ERP_ESN, args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_ERP_ESN, args);
 		}
 	}
 
@@ -553,8 +530,7 @@ public class LoopExternalReferenceRelPersistenceImpl
 	 */
 	@Override
 	public LoopExternalReferenceRel create(long loopExternalReferenceRelId) {
-		LoopExternalReferenceRel loopExternalReferenceRel =
-			new LoopExternalReferenceRelImpl();
+		LoopExternalReferenceRel loopExternalReferenceRel = new LoopExternalReferenceRelImpl();
 
 		loopExternalReferenceRel.setNew(true);
 		loopExternalReferenceRel.setPrimaryKey(loopExternalReferenceRelId);
@@ -572,7 +548,6 @@ public class LoopExternalReferenceRelPersistenceImpl
 	@Override
 	public LoopExternalReferenceRel remove(long loopExternalReferenceRelId)
 		throws NoSuchLoopExternalReferenceRelException {
-
 		return remove((Serializable)loopExternalReferenceRelId);
 	}
 
@@ -586,32 +561,30 @@ public class LoopExternalReferenceRelPersistenceImpl
 	@Override
 	public LoopExternalReferenceRel remove(Serializable primaryKey)
 		throws NoSuchLoopExternalReferenceRelException {
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			LoopExternalReferenceRel loopExternalReferenceRel =
-				(LoopExternalReferenceRel)session.get(
-					LoopExternalReferenceRelImpl.class, primaryKey);
+			LoopExternalReferenceRel loopExternalReferenceRel = (LoopExternalReferenceRel)session.get(LoopExternalReferenceRelImpl.class,
+					primaryKey);
 
 			if (loopExternalReferenceRel == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchLoopExternalReferenceRelException(
-					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				throw new NoSuchLoopExternalReferenceRelException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+					primaryKey);
 			}
 
 			return remove(loopExternalReferenceRel);
 		}
-		catch (NoSuchLoopExternalReferenceRelException noSuchEntityException) {
-			throw noSuchEntityException;
+		catch (NoSuchLoopExternalReferenceRelException nsee) {
+			throw nsee;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -621,6 +594,7 @@ public class LoopExternalReferenceRelPersistenceImpl
 	@Override
 	protected LoopExternalReferenceRel removeImpl(
 		LoopExternalReferenceRel loopExternalReferenceRel) {
+		loopExternalReferenceRel = toUnwrappedModel(loopExternalReferenceRel);
 
 		Session session = null;
 
@@ -628,9 +602,7 @@ public class LoopExternalReferenceRelPersistenceImpl
 			session = openSession();
 
 			if (!session.contains(loopExternalReferenceRel)) {
-				loopExternalReferenceRel =
-					(LoopExternalReferenceRel)session.get(
-						LoopExternalReferenceRelImpl.class,
+				loopExternalReferenceRel = (LoopExternalReferenceRel)session.get(LoopExternalReferenceRelImpl.class,
 						loopExternalReferenceRel.getPrimaryKeyObj());
 			}
 
@@ -638,8 +610,8 @@ public class LoopExternalReferenceRelPersistenceImpl
 				session.delete(loopExternalReferenceRel);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -655,30 +627,11 @@ public class LoopExternalReferenceRelPersistenceImpl
 	@Override
 	public LoopExternalReferenceRel updateImpl(
 		LoopExternalReferenceRel loopExternalReferenceRel) {
+		loopExternalReferenceRel = toUnwrappedModel(loopExternalReferenceRel);
 
 		boolean isNew = loopExternalReferenceRel.isNew();
 
-		if (!(loopExternalReferenceRel instanceof
-				LoopExternalReferenceRelModelImpl)) {
-
-			InvocationHandler invocationHandler = null;
-
-			if (ProxyUtil.isProxyClass(loopExternalReferenceRel.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(
-					loopExternalReferenceRel);
-
-				throw new IllegalArgumentException(
-					"Implement ModelWrapper in loopExternalReferenceRel proxy " +
-						invocationHandler.getClass());
-			}
-
-			throw new IllegalArgumentException(
-				"Implement ModelWrapper in custom LoopExternalReferenceRel implementation " +
-					loopExternalReferenceRel.getClass());
-		}
-
-		LoopExternalReferenceRelModelImpl loopExternalReferenceRelModelImpl =
-			(LoopExternalReferenceRelModelImpl)loopExternalReferenceRel;
+		LoopExternalReferenceRelModelImpl loopExternalReferenceRelModelImpl = (LoopExternalReferenceRelModelImpl)loopExternalReferenceRel;
 
 		Session session = null;
 
@@ -691,13 +644,11 @@ public class LoopExternalReferenceRelPersistenceImpl
 				loopExternalReferenceRel.setNew(false);
 			}
 			else {
-				loopExternalReferenceRel =
-					(LoopExternalReferenceRel)session.merge(
-						loopExternalReferenceRel);
+				loopExternalReferenceRel = (LoopExternalReferenceRel)session.merge(loopExternalReferenceRel);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -708,14 +659,14 @@ public class LoopExternalReferenceRelPersistenceImpl
 		if (!LoopExternalReferenceRelModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else if (isNew) {
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+		else
+		 if (isNew) {
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(
-			LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
 			LoopExternalReferenceRelImpl.class,
 			loopExternalReferenceRel.getPrimaryKey(), loopExternalReferenceRel,
 			false);
@@ -728,8 +679,28 @@ public class LoopExternalReferenceRelPersistenceImpl
 		return loopExternalReferenceRel;
 	}
 
+	protected LoopExternalReferenceRel toUnwrappedModel(
+		LoopExternalReferenceRel loopExternalReferenceRel) {
+		if (loopExternalReferenceRel instanceof LoopExternalReferenceRelImpl) {
+			return loopExternalReferenceRel;
+		}
+
+		LoopExternalReferenceRelImpl loopExternalReferenceRelImpl = new LoopExternalReferenceRelImpl();
+
+		loopExternalReferenceRelImpl.setNew(loopExternalReferenceRel.isNew());
+		loopExternalReferenceRelImpl.setPrimaryKey(loopExternalReferenceRel.getPrimaryKey());
+
+		loopExternalReferenceRelImpl.setLoopExternalReferenceRelId(loopExternalReferenceRel.getLoopExternalReferenceRelId());
+		loopExternalReferenceRelImpl.setClassNameId(loopExternalReferenceRel.getClassNameId());
+		loopExternalReferenceRelImpl.setClassPK(loopExternalReferenceRel.getClassPK());
+		loopExternalReferenceRelImpl.setExternalReferenceName(loopExternalReferenceRel.getExternalReferenceName());
+		loopExternalReferenceRelImpl.setExternalReferencePK(loopExternalReferenceRel.getExternalReferencePK());
+
+		return loopExternalReferenceRelImpl;
+	}
+
 	/**
-	 * Returns the loop external reference rel with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
+	 * Returns the loop external reference rel with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the loop external reference rel
 	 * @return the loop external reference rel
@@ -738,24 +709,22 @@ public class LoopExternalReferenceRelPersistenceImpl
 	@Override
 	public LoopExternalReferenceRel findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchLoopExternalReferenceRelException {
-
-		LoopExternalReferenceRel loopExternalReferenceRel = fetchByPrimaryKey(
-			primaryKey);
+		LoopExternalReferenceRel loopExternalReferenceRel = fetchByPrimaryKey(primaryKey);
 
 		if (loopExternalReferenceRel == null) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchLoopExternalReferenceRelException(
-				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			throw new NoSuchLoopExternalReferenceRelException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
 		}
 
 		return loopExternalReferenceRel;
 	}
 
 	/**
-	 * Returns the loop external reference rel with the primary key or throws a <code>NoSuchLoopExternalReferenceRelException</code> if it could not be found.
+	 * Returns the loop external reference rel with the primary key or throws a {@link NoSuchLoopExternalReferenceRelException} if it could not be found.
 	 *
 	 * @param loopExternalReferenceRelId the primary key of the loop external reference rel
 	 * @return the loop external reference rel
@@ -763,9 +732,8 @@ public class LoopExternalReferenceRelPersistenceImpl
 	 */
 	@Override
 	public LoopExternalReferenceRel findByPrimaryKey(
-			long loopExternalReferenceRelId)
+		long loopExternalReferenceRelId)
 		throws NoSuchLoopExternalReferenceRelException {
-
 		return findByPrimaryKey((Serializable)loopExternalReferenceRelId);
 	}
 
@@ -777,16 +745,14 @@ public class LoopExternalReferenceRelPersistenceImpl
 	 */
 	@Override
 	public LoopExternalReferenceRel fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(
-			LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
-			LoopExternalReferenceRelImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
+				LoopExternalReferenceRelImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
 		}
 
-		LoopExternalReferenceRel loopExternalReferenceRel =
-			(LoopExternalReferenceRel)serializable;
+		LoopExternalReferenceRel loopExternalReferenceRel = (LoopExternalReferenceRel)serializable;
 
 		if (loopExternalReferenceRel == null) {
 			Session session = null;
@@ -794,26 +760,23 @@ public class LoopExternalReferenceRelPersistenceImpl
 			try {
 				session = openSession();
 
-				loopExternalReferenceRel =
-					(LoopExternalReferenceRel)session.get(
-						LoopExternalReferenceRelImpl.class, primaryKey);
+				loopExternalReferenceRel = (LoopExternalReferenceRel)session.get(LoopExternalReferenceRelImpl.class,
+						primaryKey);
 
 				if (loopExternalReferenceRel != null) {
 					cacheResult(loopExternalReferenceRel);
 				}
 				else {
-					entityCache.putResult(
-						LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
 						LoopExternalReferenceRelImpl.class, primaryKey,
 						nullModel);
 				}
 			}
-			catch (Exception exception) {
-				entityCache.removeResult(
-					LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception e) {
+				entityCache.removeResult(LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
 					LoopExternalReferenceRelImpl.class, primaryKey);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -832,28 +795,24 @@ public class LoopExternalReferenceRelPersistenceImpl
 	@Override
 	public LoopExternalReferenceRel fetchByPrimaryKey(
 		long loopExternalReferenceRelId) {
-
 		return fetchByPrimaryKey((Serializable)loopExternalReferenceRelId);
 	}
 
 	@Override
 	public Map<Serializable, LoopExternalReferenceRel> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
-
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, LoopExternalReferenceRel> map =
-			new HashMap<Serializable, LoopExternalReferenceRel>();
+		Map<Serializable, LoopExternalReferenceRel> map = new HashMap<Serializable, LoopExternalReferenceRel>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
 
 			Serializable primaryKey = iterator.next();
 
-			LoopExternalReferenceRel loopExternalReferenceRel =
-				fetchByPrimaryKey(primaryKey);
+			LoopExternalReferenceRel loopExternalReferenceRel = fetchByPrimaryKey(primaryKey);
 
 			if (loopExternalReferenceRel != null) {
 				map.put(primaryKey, loopExternalReferenceRel);
@@ -865,9 +824,8 @@ public class LoopExternalReferenceRelPersistenceImpl
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(
-				LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
-				LoopExternalReferenceRelImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
+					LoopExternalReferenceRelImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -887,51 +845,46 @@ public class LoopExternalReferenceRelPersistenceImpl
 			return map;
 		}
 
-		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
+				1);
 
-		sb.append(_SQL_SELECT_LOOPEXTERNALREFERENCEREL_WHERE_PKS_IN);
+		query.append(_SQL_SELECT_LOOPEXTERNALREFERENCEREL_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			sb.append((long)primaryKey);
+			query.append((long)primaryKey);
 
-			sb.append(",");
+			query.append(StringPool.COMMA);
 		}
 
-		sb.setIndex(sb.index() - 1);
+		query.setIndex(query.index() - 1);
 
-		sb.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query query = session.createQuery(sql);
+			Query q = session.createQuery(sql);
 
-			for (LoopExternalReferenceRel loopExternalReferenceRel :
-					(List<LoopExternalReferenceRel>)query.list()) {
-
-				map.put(
-					loopExternalReferenceRel.getPrimaryKeyObj(),
+			for (LoopExternalReferenceRel loopExternalReferenceRel : (List<LoopExternalReferenceRel>)q.list()) {
+				map.put(loopExternalReferenceRel.getPrimaryKeyObj(),
 					loopExternalReferenceRel);
 
 				cacheResult(loopExternalReferenceRel);
 
-				uncachedPrimaryKeys.remove(
-					loopExternalReferenceRel.getPrimaryKeyObj());
+				uncachedPrimaryKeys.remove(loopExternalReferenceRel.getPrimaryKeyObj());
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(
-					LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
 					LoopExternalReferenceRelImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -954,7 +907,7 @@ public class LoopExternalReferenceRelPersistenceImpl
 	 * Returns a range of all the loop external reference rels.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopExternalReferenceRelModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopExternalReferenceRelModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of loop external reference rels
@@ -970,7 +923,7 @@ public class LoopExternalReferenceRelPersistenceImpl
 	 * Returns an ordered range of all the loop external reference rels.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopExternalReferenceRelModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopExternalReferenceRelModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of loop external reference rels
@@ -979,10 +932,8 @@ public class LoopExternalReferenceRelPersistenceImpl
 	 * @return the ordered range of loop external reference rels
 	 */
 	@Override
-	public List<LoopExternalReferenceRel> findAll(
-		int start, int end,
+	public List<LoopExternalReferenceRel> findAll(int start, int end,
 		OrderByComparator<LoopExternalReferenceRel> orderByComparator) {
-
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -990,64 +941,62 @@ public class LoopExternalReferenceRelPersistenceImpl
 	 * Returns an ordered range of all the loop external reference rels.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopExternalReferenceRelModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopExternalReferenceRelModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of loop external reference rels
 	 * @param end the upper bound of the range of loop external reference rels (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of loop external reference rels
 	 */
 	@Override
-	public List<LoopExternalReferenceRel> findAll(
-		int start, int end,
+	public List<LoopExternalReferenceRel> findAll(int start, int end,
 		OrderByComparator<LoopExternalReferenceRel> orderByComparator,
-		boolean useFinderCache) {
-
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
-				finderArgs = FINDER_ARGS_EMPTY;
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+			finderArgs = FINDER_ARGS_EMPTY;
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] {start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
 		List<LoopExternalReferenceRel> list = null;
 
-		if (useFinderCache) {
-			list = (List<LoopExternalReferenceRel>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<LoopExternalReferenceRel>)finderCache.getResult(finderPath,
+					finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					2 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(2 +
+						(orderByComparator.getOrderByFields().length * 2));
 
-				sb.append(_SQL_SELECT_LOOPEXTERNALREFERENCEREL);
+				query.append(_SQL_SELECT_LOOPEXTERNALREFERENCEREL);
 
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 
-				sql = sb.toString();
+				sql = query.toString();
 			}
 			else {
 				sql = _SQL_SELECT_LOOPEXTERNALREFERENCEREL;
 
-				sql = sql.concat(
-					LoopExternalReferenceRelModelImpl.ORDER_BY_JPQL);
+				if (pagination) {
+					sql = sql.concat(LoopExternalReferenceRelModelImpl.ORDER_BY_JPQL);
+				}
 			}
 
 			Session session = null;
@@ -1055,23 +1004,29 @@ public class LoopExternalReferenceRelPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				list = (List<LoopExternalReferenceRel>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<LoopExternalReferenceRel>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<LoopExternalReferenceRel>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1099,8 +1054,8 @@ public class LoopExternalReferenceRelPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -1108,19 +1063,18 @@ public class LoopExternalReferenceRelPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(
-					_SQL_COUNT_LOOPEXTERNALREFERENCEREL);
+				Query q = session.createQuery(_SQL_COUNT_LOOPEXTERNALREFERENCEREL);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
+					count);
 			}
-			catch (Exception exception) {
-				finderCache.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1139,41 +1093,6 @@ public class LoopExternalReferenceRelPersistenceImpl
 	 * Initializes the loop external reference rel persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
-			LoopExternalReferenceRelModelImpl.FINDER_CACHE_ENABLED,
-			LoopExternalReferenceRelImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
-			LoopExternalReferenceRelModelImpl.FINDER_CACHE_ENABLED,
-			LoopExternalReferenceRelImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
-			LoopExternalReferenceRelModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
-
-		_finderPathFetchByERP_ESN = new FinderPath(
-			LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
-			LoopExternalReferenceRelModelImpl.FINDER_CACHE_ENABLED,
-			LoopExternalReferenceRelImpl.class, FINDER_CLASS_NAME_ENTITY,
-			"fetchByERP_ESN",
-			new String[] {String.class.getName(), String.class.getName()},
-			LoopExternalReferenceRelModelImpl.
-				EXTERNALREFERENCENAME_COLUMN_BITMASK |
-			LoopExternalReferenceRelModelImpl.
-				EXTERNALREFERENCEPK_COLUMN_BITMASK);
-
-		_finderPathCountByERP_ESN = new FinderPath(
-			LoopExternalReferenceRelModelImpl.ENTITY_CACHE_ENABLED,
-			LoopExternalReferenceRelModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByERP_ESN",
-			new String[] {String.class.getName(), String.class.getName()});
 	}
 
 	public void destroy() {
@@ -1185,36 +1104,16 @@ public class LoopExternalReferenceRelPersistenceImpl
 
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
-
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-
-	private static final String _SQL_SELECT_LOOPEXTERNALREFERENCEREL =
-		"SELECT loopExternalReferenceRel FROM LoopExternalReferenceRel loopExternalReferenceRel";
-
-	private static final String
-		_SQL_SELECT_LOOPEXTERNALREFERENCEREL_WHERE_PKS_IN =
-			"SELECT loopExternalReferenceRel FROM LoopExternalReferenceRel loopExternalReferenceRel WHERE loopExternalReferenceRelId IN (";
-
-	private static final String _SQL_SELECT_LOOPEXTERNALREFERENCEREL_WHERE =
-		"SELECT loopExternalReferenceRel FROM LoopExternalReferenceRel loopExternalReferenceRel WHERE ";
-
-	private static final String _SQL_COUNT_LOOPEXTERNALREFERENCEREL =
-		"SELECT COUNT(loopExternalReferenceRel) FROM LoopExternalReferenceRel loopExternalReferenceRel";
-
-	private static final String _SQL_COUNT_LOOPEXTERNALREFERENCEREL_WHERE =
-		"SELECT COUNT(loopExternalReferenceRel) FROM LoopExternalReferenceRel loopExternalReferenceRel WHERE ";
-
-	private static final String _ORDER_BY_ENTITY_ALIAS =
-		"loopExternalReferenceRel.";
-
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
-		"No LoopExternalReferenceRel exists with the primary key ";
-
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No LoopExternalReferenceRel exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		LoopExternalReferenceRelPersistenceImpl.class);
-
+	private static final String _SQL_SELECT_LOOPEXTERNALREFERENCEREL = "SELECT loopExternalReferenceRel FROM LoopExternalReferenceRel loopExternalReferenceRel";
+	private static final String _SQL_SELECT_LOOPEXTERNALREFERENCEREL_WHERE_PKS_IN =
+		"SELECT loopExternalReferenceRel FROM LoopExternalReferenceRel loopExternalReferenceRel WHERE loopExternalReferenceRelId IN (";
+	private static final String _SQL_SELECT_LOOPEXTERNALREFERENCEREL_WHERE = "SELECT loopExternalReferenceRel FROM LoopExternalReferenceRel loopExternalReferenceRel WHERE ";
+	private static final String _SQL_COUNT_LOOPEXTERNALREFERENCEREL = "SELECT COUNT(loopExternalReferenceRel) FROM LoopExternalReferenceRel loopExternalReferenceRel";
+	private static final String _SQL_COUNT_LOOPEXTERNALREFERENCEREL_WHERE = "SELECT COUNT(loopExternalReferenceRel) FROM LoopExternalReferenceRel loopExternalReferenceRel WHERE ";
+	private static final String _ORDER_BY_ENTITY_ALIAS = "loopExternalReferenceRel.";
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No LoopExternalReferenceRel exists with the primary key ";
+	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No LoopExternalReferenceRel exists with the key {";
+	private static final Log _log = LogFactoryUtil.getLog(LoopExternalReferenceRelPersistenceImpl.class);
 }

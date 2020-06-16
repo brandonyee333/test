@@ -1,24 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.testray.service.persistence.impl;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.testray.exception.NoSuchTestrayCaseResultWarningException;
 import com.liferay.osb.testray.model.TestrayCaseResultWarning;
 import com.liferay.osb.testray.model.impl.TestrayCaseResultWarningImpl;
 import com.liferay.osb.testray.model.impl.TestrayCaseResultWarningModelImpl;
 import com.liferay.osb.testray.service.persistence.TestrayCaseResultWarningPersistence;
+
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -28,18 +31,17 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.service.persistence.CompanyProvider;
+import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
-
-import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -58,32 +60,57 @@ import java.util.Set;
  * </p>
  *
  * @author Ethan Bustad
+ * @see TestrayCaseResultWarningPersistence
+ * @see com.liferay.osb.testray.service.persistence.TestrayCaseResultWarningUtil
  * @generated
  */
-public class TestrayCaseResultWarningPersistenceImpl
-	extends BasePersistenceImpl<TestrayCaseResultWarning>
+@ProviderType
+public class TestrayCaseResultWarningPersistenceImpl extends BasePersistenceImpl<TestrayCaseResultWarning>
 	implements TestrayCaseResultWarningPersistence {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use <code>TestrayCaseResultWarningUtil</code> to access the testray case result warning persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use {@link TestrayCaseResultWarningUtil} to access the testray case result warning persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY =
-		TestrayCaseResultWarningImpl.class.getName();
-
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List1";
-
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathWithPaginationFindByTestrayCaseResultId;
-	private FinderPath _finderPathWithoutPaginationFindByTestrayCaseResultId;
-	private FinderPath _finderPathCountByTestrayCaseResultId;
+	public static final String FINDER_CLASS_NAME_ENTITY = TestrayCaseResultWarningImpl.class.getName();
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List1";
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List2";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayCaseResultWarningModelImpl.FINDER_CACHE_ENABLED,
+			TestrayCaseResultWarningImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayCaseResultWarningModelImpl.FINDER_CACHE_ENABLED,
+			TestrayCaseResultWarningImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayCaseResultWarningModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_TESTRAYCASERESULTID =
+		new FinderPath(TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayCaseResultWarningModelImpl.FINDER_CACHE_ENABLED,
+			TestrayCaseResultWarningImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findByTestrayCaseResultId",
+			new String[] {
+				Long.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_TESTRAYCASERESULTID =
+		new FinderPath(TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayCaseResultWarningModelImpl.FINDER_CACHE_ENABLED,
+			TestrayCaseResultWarningImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"findByTestrayCaseResultId", new String[] { Long.class.getName() },
+			TestrayCaseResultWarningModelImpl.TESTRAYCASERESULTID_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_TESTRAYCASERESULTID = new FinderPath(TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayCaseResultWarningModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"countByTestrayCaseResultId", new String[] { Long.class.getName() });
 
 	/**
 	 * Returns all the testray case result warnings where testrayCaseResultId = &#63;.
@@ -94,16 +121,15 @@ public class TestrayCaseResultWarningPersistenceImpl
 	@Override
 	public List<TestrayCaseResultWarning> findByTestrayCaseResultId(
 		long testrayCaseResultId) {
-
-		return findByTestrayCaseResultId(
-			testrayCaseResultId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+		return findByTestrayCaseResultId(testrayCaseResultId,
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the testray case result warnings where testrayCaseResultId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayCaseResultWarningModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestrayCaseResultWarningModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param testrayCaseResultId the testray case result ID
@@ -114,7 +140,6 @@ public class TestrayCaseResultWarningPersistenceImpl
 	@Override
 	public List<TestrayCaseResultWarning> findByTestrayCaseResultId(
 		long testrayCaseResultId, int start, int end) {
-
 		return findByTestrayCaseResultId(testrayCaseResultId, start, end, null);
 	}
 
@@ -122,7 +147,7 @@ public class TestrayCaseResultWarningPersistenceImpl
 	 * Returns an ordered range of all the testray case result warnings where testrayCaseResultId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayCaseResultWarningModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestrayCaseResultWarningModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param testrayCaseResultId the testray case result ID
@@ -135,61 +160,57 @@ public class TestrayCaseResultWarningPersistenceImpl
 	public List<TestrayCaseResultWarning> findByTestrayCaseResultId(
 		long testrayCaseResultId, int start, int end,
 		OrderByComparator<TestrayCaseResultWarning> orderByComparator) {
-
-		return findByTestrayCaseResultId(
-			testrayCaseResultId, start, end, orderByComparator, true);
+		return findByTestrayCaseResultId(testrayCaseResultId, start, end,
+			orderByComparator, true);
 	}
 
 	/**
 	 * Returns an ordered range of all the testray case result warnings where testrayCaseResultId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayCaseResultWarningModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestrayCaseResultWarningModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param testrayCaseResultId the testray case result ID
 	 * @param start the lower bound of the range of testray case result warnings
 	 * @param end the upper bound of the range of testray case result warnings (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of matching testray case result warnings
 	 */
 	@Override
 	public List<TestrayCaseResultWarning> findByTestrayCaseResultId(
 		long testrayCaseResultId, int start, int end,
 		OrderByComparator<TestrayCaseResultWarning> orderByComparator,
-		boolean useFinderCache) {
-
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath =
-					_finderPathWithoutPaginationFindByTestrayCaseResultId;
-				finderArgs = new Object[] {testrayCaseResultId};
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_TESTRAYCASERESULTID;
+			finderArgs = new Object[] { testrayCaseResultId };
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByTestrayCaseResultId;
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_TESTRAYCASERESULTID;
 			finderArgs = new Object[] {
-				testrayCaseResultId, start, end, orderByComparator
-			};
+					testrayCaseResultId,
+					
+					start, end, orderByComparator
+				};
 		}
 
 		List<TestrayCaseResultWarning> list = null;
 
-		if (useFinderCache) {
-			list = (List<TestrayCaseResultWarning>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<TestrayCaseResultWarning>)finderCache.getResult(finderPath,
+					finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (TestrayCaseResultWarning testrayCaseResultWarning : list) {
-					if (testrayCaseResultId !=
-							testrayCaseResultWarning.getTestrayCaseResultId()) {
-
+					if ((testrayCaseResultId != testrayCaseResultWarning.getTestrayCaseResultId())) {
 						list = null;
 
 						break;
@@ -199,56 +220,63 @@ public class TestrayCaseResultWarningPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					3 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(3 +
+						(orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				sb = new StringBundler(3);
+				query = new StringBundler(3);
 			}
 
-			sb.append(_SQL_SELECT_TESTRAYCASERESULTWARNING_WHERE);
+			query.append(_SQL_SELECT_TESTRAYCASERESULTWARNING_WHERE);
 
-			sb.append(_FINDER_COLUMN_TESTRAYCASERESULTID_TESTRAYCASERESULTID_2);
+			query.append(_FINDER_COLUMN_TESTRAYCASERESULTID_TESTRAYCASERESULTID_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 			}
-			else {
-				sb.append(TestrayCaseResultWarningModelImpl.ORDER_BY_JPQL);
+			else
+			 if (pagination) {
+				query.append(TestrayCaseResultWarningModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(testrayCaseResultId);
+				qPos.add(testrayCaseResultId);
 
-				list = (List<TestrayCaseResultWarning>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<TestrayCaseResultWarning>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<TestrayCaseResultWarning>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -268,28 +296,26 @@ public class TestrayCaseResultWarningPersistenceImpl
 	 */
 	@Override
 	public TestrayCaseResultWarning findByTestrayCaseResultId_First(
-			long testrayCaseResultId,
-			OrderByComparator<TestrayCaseResultWarning> orderByComparator)
+		long testrayCaseResultId,
+		OrderByComparator<TestrayCaseResultWarning> orderByComparator)
 		throws NoSuchTestrayCaseResultWarningException {
-
-		TestrayCaseResultWarning testrayCaseResultWarning =
-			fetchByTestrayCaseResultId_First(
-				testrayCaseResultId, orderByComparator);
+		TestrayCaseResultWarning testrayCaseResultWarning = fetchByTestrayCaseResultId_First(testrayCaseResultId,
+				orderByComparator);
 
 		if (testrayCaseResultWarning != null) {
 			return testrayCaseResultWarning;
 		}
 
-		StringBundler sb = new StringBundler(4);
+		StringBundler msg = new StringBundler(4);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("testrayCaseResultId=");
-		sb.append(testrayCaseResultId);
+		msg.append("testrayCaseResultId=");
+		msg.append(testrayCaseResultId);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchTestrayCaseResultWarningException(sb.toString());
+		throw new NoSuchTestrayCaseResultWarningException(msg.toString());
 	}
 
 	/**
@@ -303,9 +329,8 @@ public class TestrayCaseResultWarningPersistenceImpl
 	public TestrayCaseResultWarning fetchByTestrayCaseResultId_First(
 		long testrayCaseResultId,
 		OrderByComparator<TestrayCaseResultWarning> orderByComparator) {
-
-		List<TestrayCaseResultWarning> list = findByTestrayCaseResultId(
-			testrayCaseResultId, 0, 1, orderByComparator);
+		List<TestrayCaseResultWarning> list = findByTestrayCaseResultId(testrayCaseResultId,
+				0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -324,28 +349,26 @@ public class TestrayCaseResultWarningPersistenceImpl
 	 */
 	@Override
 	public TestrayCaseResultWarning findByTestrayCaseResultId_Last(
-			long testrayCaseResultId,
-			OrderByComparator<TestrayCaseResultWarning> orderByComparator)
+		long testrayCaseResultId,
+		OrderByComparator<TestrayCaseResultWarning> orderByComparator)
 		throws NoSuchTestrayCaseResultWarningException {
-
-		TestrayCaseResultWarning testrayCaseResultWarning =
-			fetchByTestrayCaseResultId_Last(
-				testrayCaseResultId, orderByComparator);
+		TestrayCaseResultWarning testrayCaseResultWarning = fetchByTestrayCaseResultId_Last(testrayCaseResultId,
+				orderByComparator);
 
 		if (testrayCaseResultWarning != null) {
 			return testrayCaseResultWarning;
 		}
 
-		StringBundler sb = new StringBundler(4);
+		StringBundler msg = new StringBundler(4);
 
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("testrayCaseResultId=");
-		sb.append(testrayCaseResultId);
+		msg.append("testrayCaseResultId=");
+		msg.append(testrayCaseResultId);
 
-		sb.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchTestrayCaseResultWarningException(sb.toString());
+		throw new NoSuchTestrayCaseResultWarningException(msg.toString());
 	}
 
 	/**
@@ -359,15 +382,14 @@ public class TestrayCaseResultWarningPersistenceImpl
 	public TestrayCaseResultWarning fetchByTestrayCaseResultId_Last(
 		long testrayCaseResultId,
 		OrderByComparator<TestrayCaseResultWarning> orderByComparator) {
-
 		int count = countByTestrayCaseResultId(testrayCaseResultId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<TestrayCaseResultWarning> list = findByTestrayCaseResultId(
-			testrayCaseResultId, count - 1, count, orderByComparator);
+		List<TestrayCaseResultWarning> list = findByTestrayCaseResultId(testrayCaseResultId,
+				count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -387,35 +409,32 @@ public class TestrayCaseResultWarningPersistenceImpl
 	 */
 	@Override
 	public TestrayCaseResultWarning[] findByTestrayCaseResultId_PrevAndNext(
-			long testrayCaseResultWarningId, long testrayCaseResultId,
-			OrderByComparator<TestrayCaseResultWarning> orderByComparator)
+		long testrayCaseResultWarningId, long testrayCaseResultId,
+		OrderByComparator<TestrayCaseResultWarning> orderByComparator)
 		throws NoSuchTestrayCaseResultWarningException {
-
-		TestrayCaseResultWarning testrayCaseResultWarning = findByPrimaryKey(
-			testrayCaseResultWarningId);
+		TestrayCaseResultWarning testrayCaseResultWarning = findByPrimaryKey(testrayCaseResultWarningId);
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			TestrayCaseResultWarning[] array =
-				new TestrayCaseResultWarningImpl[3];
+			TestrayCaseResultWarning[] array = new TestrayCaseResultWarningImpl[3];
 
-			array[0] = getByTestrayCaseResultId_PrevAndNext(
-				session, testrayCaseResultWarning, testrayCaseResultId,
-				orderByComparator, true);
+			array[0] = getByTestrayCaseResultId_PrevAndNext(session,
+					testrayCaseResultWarning, testrayCaseResultId,
+					orderByComparator, true);
 
 			array[1] = testrayCaseResultWarning;
 
-			array[2] = getByTestrayCaseResultId_PrevAndNext(
-				session, testrayCaseResultWarning, testrayCaseResultId,
-				orderByComparator, false);
+			array[2] = getByTestrayCaseResultId_PrevAndNext(session,
+					testrayCaseResultWarning, testrayCaseResultId,
+					orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -427,103 +446,100 @@ public class TestrayCaseResultWarningPersistenceImpl
 		long testrayCaseResultId,
 		OrderByComparator<TestrayCaseResultWarning> orderByComparator,
 		boolean previous) {
-
-		StringBundler sb = null;
+		StringBundler query = null;
 
 		if (orderByComparator != null) {
-			sb = new StringBundler(
-				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+			query = new StringBundler(4 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			sb = new StringBundler(3);
+			query = new StringBundler(3);
 		}
 
-		sb.append(_SQL_SELECT_TESTRAYCASERESULTWARNING_WHERE);
+		query.append(_SQL_SELECT_TESTRAYCASERESULTWARNING_WHERE);
 
-		sb.append(_FINDER_COLUMN_TESTRAYCASERESULTID_TESTRAYCASERESULTID_2);
+		query.append(_FINDER_COLUMN_TESTRAYCASERESULTID_TESTRAYCASERESULTID_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
+				query.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
+						query.append(WHERE_GREATER_THAN);
 					}
 					else {
-						sb.append(WHERE_LESSER_THAN);
+						query.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			sb.append(ORDER_BY_CLAUSE);
+			query.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
+						query.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
+						query.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
+						query.append(ORDER_BY_ASC);
 					}
 					else {
-						sb.append(ORDER_BY_DESC);
+						query.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			sb.append(TestrayCaseResultWarningModelImpl.ORDER_BY_JPQL);
+			query.append(TestrayCaseResultWarningModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
-		Query query = session.createQuery(sql);
+		Query q = session.createQuery(sql);
 
-		query.setFirstResult(0);
-		query.setMaxResults(2);
+		q.setFirstResult(0);
+		q.setMaxResults(2);
 
-		QueryPos queryPos = QueryPos.getInstance(query);
+		QueryPos qPos = QueryPos.getInstance(q);
 
-		queryPos.add(testrayCaseResultId);
+		qPos.add(testrayCaseResultId);
 
 		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						testrayCaseResultWarning)) {
+			Object[] values = orderByComparator.getOrderByConditionValues(testrayCaseResultWarning);
 
-				queryPos.add(orderByConditionValue);
+			for (Object value : values) {
+				qPos.add(value);
 			}
 		}
 
-		List<TestrayCaseResultWarning> list = query.list();
+		List<TestrayCaseResultWarning> list = q.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -540,11 +556,8 @@ public class TestrayCaseResultWarningPersistenceImpl
 	 */
 	@Override
 	public void removeByTestrayCaseResultId(long testrayCaseResultId) {
-		for (TestrayCaseResultWarning testrayCaseResultWarning :
-				findByTestrayCaseResultId(
-					testrayCaseResultId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
-
+		for (TestrayCaseResultWarning testrayCaseResultWarning : findByTestrayCaseResultId(
+				testrayCaseResultId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(testrayCaseResultWarning);
 		}
 	}
@@ -557,40 +570,40 @@ public class TestrayCaseResultWarningPersistenceImpl
 	 */
 	@Override
 	public int countByTestrayCaseResultId(long testrayCaseResultId) {
-		FinderPath finderPath = _finderPathCountByTestrayCaseResultId;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_TESTRAYCASERESULTID;
 
-		Object[] finderArgs = new Object[] {testrayCaseResultId};
+		Object[] finderArgs = new Object[] { testrayCaseResultId };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(2);
+			StringBundler query = new StringBundler(2);
 
-			sb.append(_SQL_COUNT_TESTRAYCASERESULTWARNING_WHERE);
+			query.append(_SQL_COUNT_TESTRAYCASERESULTWARNING_WHERE);
 
-			sb.append(_FINDER_COLUMN_TESTRAYCASERESULTID_TESTRAYCASERESULTID_2);
+			query.append(_FINDER_COLUMN_TESTRAYCASERESULTID_TESTRAYCASERESULTID_2);
 
-			String sql = sb.toString();
+			String sql = query.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				QueryPos queryPos = QueryPos.getInstance(query);
+				QueryPos qPos = QueryPos.getInstance(q);
 
-				queryPos.add(testrayCaseResultId);
+				qPos.add(testrayCaseResultId);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception exception) {
+			catch (Exception e) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -600,9 +613,8 @@ public class TestrayCaseResultWarningPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String
-		_FINDER_COLUMN_TESTRAYCASERESULTID_TESTRAYCASERESULTID_2 =
-			"testrayCaseResultWarning.testrayCaseResultId = ?";
+	private static final String _FINDER_COLUMN_TESTRAYCASERESULTID_TESTRAYCASERESULTID_2 =
+		"testrayCaseResultWarning.testrayCaseResultId = ?";
 
 	public TestrayCaseResultWarningPersistenceImpl() {
 		setModelClass(TestrayCaseResultWarning.class);
@@ -615,8 +627,7 @@ public class TestrayCaseResultWarningPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(TestrayCaseResultWarning testrayCaseResultWarning) {
-		entityCache.putResult(
-			TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
 			TestrayCaseResultWarningImpl.class,
 			testrayCaseResultWarning.getPrimaryKey(), testrayCaseResultWarning);
 
@@ -631,15 +642,11 @@ public class TestrayCaseResultWarningPersistenceImpl
 	@Override
 	public void cacheResult(
 		List<TestrayCaseResultWarning> testrayCaseResultWarnings) {
-
-		for (TestrayCaseResultWarning testrayCaseResultWarning :
-				testrayCaseResultWarnings) {
-
+		for (TestrayCaseResultWarning testrayCaseResultWarning : testrayCaseResultWarnings) {
 			if (entityCache.getResult(
-					TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
-					TestrayCaseResultWarningImpl.class,
-					testrayCaseResultWarning.getPrimaryKey()) == null) {
-
+						TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
+						TestrayCaseResultWarningImpl.class,
+						testrayCaseResultWarning.getPrimaryKey()) == null) {
 				cacheResult(testrayCaseResultWarning);
 			}
 			else {
@@ -652,7 +659,7 @@ public class TestrayCaseResultWarningPersistenceImpl
 	 * Clears the cache for all testray case result warnings.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -668,13 +675,12 @@ public class TestrayCaseResultWarningPersistenceImpl
 	 * Clears the cache for the testray case result warning.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(TestrayCaseResultWarning testrayCaseResultWarning) {
-		entityCache.removeResult(
-			TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
 			TestrayCaseResultWarningImpl.class,
 			testrayCaseResultWarning.getPrimaryKey());
 
@@ -685,29 +691,13 @@ public class TestrayCaseResultWarningPersistenceImpl
 	@Override
 	public void clearCache(
 		List<TestrayCaseResultWarning> testrayCaseResultWarnings) {
-
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
-		for (TestrayCaseResultWarning testrayCaseResultWarning :
-				testrayCaseResultWarnings) {
-
-			entityCache.removeResult(
-				TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
+		for (TestrayCaseResultWarning testrayCaseResultWarning : testrayCaseResultWarnings) {
+			entityCache.removeResult(TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
 				TestrayCaseResultWarningImpl.class,
 				testrayCaseResultWarning.getPrimaryKey());
-		}
-	}
-
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
-				TestrayCaseResultWarningImpl.class, primaryKey);
 		}
 	}
 
@@ -719,14 +709,12 @@ public class TestrayCaseResultWarningPersistenceImpl
 	 */
 	@Override
 	public TestrayCaseResultWarning create(long testrayCaseResultWarningId) {
-		TestrayCaseResultWarning testrayCaseResultWarning =
-			new TestrayCaseResultWarningImpl();
+		TestrayCaseResultWarning testrayCaseResultWarning = new TestrayCaseResultWarningImpl();
 
 		testrayCaseResultWarning.setNew(true);
 		testrayCaseResultWarning.setPrimaryKey(testrayCaseResultWarningId);
 
-		testrayCaseResultWarning.setCompanyId(
-			CompanyThreadLocal.getCompanyId());
+		testrayCaseResultWarning.setCompanyId(companyProvider.getCompanyId());
 
 		return testrayCaseResultWarning;
 	}
@@ -741,7 +729,6 @@ public class TestrayCaseResultWarningPersistenceImpl
 	@Override
 	public TestrayCaseResultWarning remove(long testrayCaseResultWarningId)
 		throws NoSuchTestrayCaseResultWarningException {
-
 		return remove((Serializable)testrayCaseResultWarningId);
 	}
 
@@ -755,32 +742,30 @@ public class TestrayCaseResultWarningPersistenceImpl
 	@Override
 	public TestrayCaseResultWarning remove(Serializable primaryKey)
 		throws NoSuchTestrayCaseResultWarningException {
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			TestrayCaseResultWarning testrayCaseResultWarning =
-				(TestrayCaseResultWarning)session.get(
-					TestrayCaseResultWarningImpl.class, primaryKey);
+			TestrayCaseResultWarning testrayCaseResultWarning = (TestrayCaseResultWarning)session.get(TestrayCaseResultWarningImpl.class,
+					primaryKey);
 
 			if (testrayCaseResultWarning == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchTestrayCaseResultWarningException(
-					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				throw new NoSuchTestrayCaseResultWarningException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+					primaryKey);
 			}
 
 			return remove(testrayCaseResultWarning);
 		}
-		catch (NoSuchTestrayCaseResultWarningException noSuchEntityException) {
-			throw noSuchEntityException;
+		catch (NoSuchTestrayCaseResultWarningException nsee) {
+			throw nsee;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -790,6 +775,7 @@ public class TestrayCaseResultWarningPersistenceImpl
 	@Override
 	protected TestrayCaseResultWarning removeImpl(
 		TestrayCaseResultWarning testrayCaseResultWarning) {
+		testrayCaseResultWarning = toUnwrappedModel(testrayCaseResultWarning);
 
 		Session session = null;
 
@@ -797,9 +783,7 @@ public class TestrayCaseResultWarningPersistenceImpl
 			session = openSession();
 
 			if (!session.contains(testrayCaseResultWarning)) {
-				testrayCaseResultWarning =
-					(TestrayCaseResultWarning)session.get(
-						TestrayCaseResultWarningImpl.class,
+				testrayCaseResultWarning = (TestrayCaseResultWarning)session.get(TestrayCaseResultWarningImpl.class,
 						testrayCaseResultWarning.getPrimaryKeyObj());
 			}
 
@@ -807,8 +791,8 @@ public class TestrayCaseResultWarningPersistenceImpl
 				session.delete(testrayCaseResultWarning);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -824,33 +808,13 @@ public class TestrayCaseResultWarningPersistenceImpl
 	@Override
 	public TestrayCaseResultWarning updateImpl(
 		TestrayCaseResultWarning testrayCaseResultWarning) {
+		testrayCaseResultWarning = toUnwrappedModel(testrayCaseResultWarning);
 
 		boolean isNew = testrayCaseResultWarning.isNew();
 
-		if (!(testrayCaseResultWarning instanceof
-				TestrayCaseResultWarningModelImpl)) {
+		TestrayCaseResultWarningModelImpl testrayCaseResultWarningModelImpl = (TestrayCaseResultWarningModelImpl)testrayCaseResultWarning;
 
-			InvocationHandler invocationHandler = null;
-
-			if (ProxyUtil.isProxyClass(testrayCaseResultWarning.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(
-					testrayCaseResultWarning);
-
-				throw new IllegalArgumentException(
-					"Implement ModelWrapper in testrayCaseResultWarning proxy " +
-						invocationHandler.getClass());
-			}
-
-			throw new IllegalArgumentException(
-				"Implement ModelWrapper in custom TestrayCaseResultWarning implementation " +
-					testrayCaseResultWarning.getClass());
-		}
-
-		TestrayCaseResultWarningModelImpl testrayCaseResultWarningModelImpl =
-			(TestrayCaseResultWarningModelImpl)testrayCaseResultWarning;
-
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -859,8 +823,8 @@ public class TestrayCaseResultWarningPersistenceImpl
 				testrayCaseResultWarning.setCreateDate(now);
 			}
 			else {
-				testrayCaseResultWarning.setCreateDate(
-					serviceContext.getCreateDate(now));
+				testrayCaseResultWarning.setCreateDate(serviceContext.getCreateDate(
+						now));
 			}
 		}
 
@@ -869,8 +833,8 @@ public class TestrayCaseResultWarningPersistenceImpl
 				testrayCaseResultWarning.setModifiedDate(now);
 			}
 			else {
-				testrayCaseResultWarning.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+				testrayCaseResultWarning.setModifiedDate(serviceContext.getModifiedDate(
+						now));
 			}
 		}
 
@@ -885,13 +849,11 @@ public class TestrayCaseResultWarningPersistenceImpl
 				testrayCaseResultWarning.setNew(false);
 			}
 			else {
-				testrayCaseResultWarning =
-					(TestrayCaseResultWarning)session.merge(
-						testrayCaseResultWarning);
+				testrayCaseResultWarning = (TestrayCaseResultWarning)session.merge(testrayCaseResultWarning);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -902,50 +864,46 @@ public class TestrayCaseResultWarningPersistenceImpl
 		if (!TestrayCaseResultWarningModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else if (isNew) {
+		else
+		 if (isNew) {
 			Object[] args = new Object[] {
-				testrayCaseResultWarningModelImpl.getTestrayCaseResultId()
-			};
-
-			finderCache.removeResult(
-				_finderPathCountByTestrayCaseResultId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByTestrayCaseResultId, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((testrayCaseResultWarningModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByTestrayCaseResultId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					testrayCaseResultWarningModelImpl.
-						getOriginalTestrayCaseResultId()
-				};
-
-				finderCache.removeResult(
-					_finderPathCountByTestrayCaseResultId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByTestrayCaseResultId,
-					args);
-
-				args = new Object[] {
 					testrayCaseResultWarningModelImpl.getTestrayCaseResultId()
 				};
 
-				finderCache.removeResult(
-					_finderPathCountByTestrayCaseResultId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByTestrayCaseResultId,
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_TESTRAYCASERESULTID,
+				args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_TESTRAYCASERESULTID,
+				args);
+
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
+		}
+
+		else {
+			if ((testrayCaseResultWarningModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_TESTRAYCASERESULTID.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						testrayCaseResultWarningModelImpl.getOriginalTestrayCaseResultId()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_TESTRAYCASERESULTID,
+					args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_TESTRAYCASERESULTID,
+					args);
+
+				args = new Object[] {
+						testrayCaseResultWarningModelImpl.getTestrayCaseResultId()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_TESTRAYCASERESULTID,
+					args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_TESTRAYCASERESULTID,
 					args);
 			}
 		}
 
-		entityCache.putResult(
-			TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
 			TestrayCaseResultWarningImpl.class,
 			testrayCaseResultWarning.getPrimaryKey(), testrayCaseResultWarning,
 			false);
@@ -955,8 +913,32 @@ public class TestrayCaseResultWarningPersistenceImpl
 		return testrayCaseResultWarning;
 	}
 
+	protected TestrayCaseResultWarning toUnwrappedModel(
+		TestrayCaseResultWarning testrayCaseResultWarning) {
+		if (testrayCaseResultWarning instanceof TestrayCaseResultWarningImpl) {
+			return testrayCaseResultWarning;
+		}
+
+		TestrayCaseResultWarningImpl testrayCaseResultWarningImpl = new TestrayCaseResultWarningImpl();
+
+		testrayCaseResultWarningImpl.setNew(testrayCaseResultWarning.isNew());
+		testrayCaseResultWarningImpl.setPrimaryKey(testrayCaseResultWarning.getPrimaryKey());
+
+		testrayCaseResultWarningImpl.setTestrayCaseResultWarningId(testrayCaseResultWarning.getTestrayCaseResultWarningId());
+		testrayCaseResultWarningImpl.setGroupId(testrayCaseResultWarning.getGroupId());
+		testrayCaseResultWarningImpl.setCompanyId(testrayCaseResultWarning.getCompanyId());
+		testrayCaseResultWarningImpl.setUserId(testrayCaseResultWarning.getUserId());
+		testrayCaseResultWarningImpl.setUserName(testrayCaseResultWarning.getUserName());
+		testrayCaseResultWarningImpl.setCreateDate(testrayCaseResultWarning.getCreateDate());
+		testrayCaseResultWarningImpl.setModifiedDate(testrayCaseResultWarning.getModifiedDate());
+		testrayCaseResultWarningImpl.setTestrayCaseResultId(testrayCaseResultWarning.getTestrayCaseResultId());
+		testrayCaseResultWarningImpl.setContent(testrayCaseResultWarning.getContent());
+
+		return testrayCaseResultWarningImpl;
+	}
+
 	/**
-	 * Returns the testray case result warning with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
+	 * Returns the testray case result warning with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the testray case result warning
 	 * @return the testray case result warning
@@ -965,24 +947,22 @@ public class TestrayCaseResultWarningPersistenceImpl
 	@Override
 	public TestrayCaseResultWarning findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchTestrayCaseResultWarningException {
-
-		TestrayCaseResultWarning testrayCaseResultWarning = fetchByPrimaryKey(
-			primaryKey);
+		TestrayCaseResultWarning testrayCaseResultWarning = fetchByPrimaryKey(primaryKey);
 
 		if (testrayCaseResultWarning == null) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchTestrayCaseResultWarningException(
-				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			throw new NoSuchTestrayCaseResultWarningException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
 		}
 
 		return testrayCaseResultWarning;
 	}
 
 	/**
-	 * Returns the testray case result warning with the primary key or throws a <code>NoSuchTestrayCaseResultWarningException</code> if it could not be found.
+	 * Returns the testray case result warning with the primary key or throws a {@link NoSuchTestrayCaseResultWarningException} if it could not be found.
 	 *
 	 * @param testrayCaseResultWarningId the primary key of the testray case result warning
 	 * @return the testray case result warning
@@ -990,9 +970,8 @@ public class TestrayCaseResultWarningPersistenceImpl
 	 */
 	@Override
 	public TestrayCaseResultWarning findByPrimaryKey(
-			long testrayCaseResultWarningId)
+		long testrayCaseResultWarningId)
 		throws NoSuchTestrayCaseResultWarningException {
-
 		return findByPrimaryKey((Serializable)testrayCaseResultWarningId);
 	}
 
@@ -1004,16 +983,14 @@ public class TestrayCaseResultWarningPersistenceImpl
 	 */
 	@Override
 	public TestrayCaseResultWarning fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(
-			TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayCaseResultWarningImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
+				TestrayCaseResultWarningImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
 		}
 
-		TestrayCaseResultWarning testrayCaseResultWarning =
-			(TestrayCaseResultWarning)serializable;
+		TestrayCaseResultWarning testrayCaseResultWarning = (TestrayCaseResultWarning)serializable;
 
 		if (testrayCaseResultWarning == null) {
 			Session session = null;
@@ -1021,26 +998,23 @@ public class TestrayCaseResultWarningPersistenceImpl
 			try {
 				session = openSession();
 
-				testrayCaseResultWarning =
-					(TestrayCaseResultWarning)session.get(
-						TestrayCaseResultWarningImpl.class, primaryKey);
+				testrayCaseResultWarning = (TestrayCaseResultWarning)session.get(TestrayCaseResultWarningImpl.class,
+						primaryKey);
 
 				if (testrayCaseResultWarning != null) {
 					cacheResult(testrayCaseResultWarning);
 				}
 				else {
-					entityCache.putResult(
-						TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
 						TestrayCaseResultWarningImpl.class, primaryKey,
 						nullModel);
 				}
 			}
-			catch (Exception exception) {
-				entityCache.removeResult(
-					TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception e) {
+				entityCache.removeResult(TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
 					TestrayCaseResultWarningImpl.class, primaryKey);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1059,28 +1033,24 @@ public class TestrayCaseResultWarningPersistenceImpl
 	@Override
 	public TestrayCaseResultWarning fetchByPrimaryKey(
 		long testrayCaseResultWarningId) {
-
 		return fetchByPrimaryKey((Serializable)testrayCaseResultWarningId);
 	}
 
 	@Override
 	public Map<Serializable, TestrayCaseResultWarning> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
-
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, TestrayCaseResultWarning> map =
-			new HashMap<Serializable, TestrayCaseResultWarning>();
+		Map<Serializable, TestrayCaseResultWarning> map = new HashMap<Serializable, TestrayCaseResultWarning>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
 
 			Serializable primaryKey = iterator.next();
 
-			TestrayCaseResultWarning testrayCaseResultWarning =
-				fetchByPrimaryKey(primaryKey);
+			TestrayCaseResultWarning testrayCaseResultWarning = fetchByPrimaryKey(primaryKey);
 
 			if (testrayCaseResultWarning != null) {
 				map.put(primaryKey, testrayCaseResultWarning);
@@ -1092,9 +1062,8 @@ public class TestrayCaseResultWarningPersistenceImpl
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(
-				TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
-				TestrayCaseResultWarningImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
+					TestrayCaseResultWarningImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -1114,51 +1083,46 @@ public class TestrayCaseResultWarningPersistenceImpl
 			return map;
 		}
 
-		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
+				1);
 
-		sb.append(_SQL_SELECT_TESTRAYCASERESULTWARNING_WHERE_PKS_IN);
+		query.append(_SQL_SELECT_TESTRAYCASERESULTWARNING_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			sb.append((long)primaryKey);
+			query.append((long)primaryKey);
 
-			sb.append(",");
+			query.append(StringPool.COMMA);
 		}
 
-		sb.setIndex(sb.index() - 1);
+		query.setIndex(query.index() - 1);
 
-		sb.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query query = session.createQuery(sql);
+			Query q = session.createQuery(sql);
 
-			for (TestrayCaseResultWarning testrayCaseResultWarning :
-					(List<TestrayCaseResultWarning>)query.list()) {
-
-				map.put(
-					testrayCaseResultWarning.getPrimaryKeyObj(),
+			for (TestrayCaseResultWarning testrayCaseResultWarning : (List<TestrayCaseResultWarning>)q.list()) {
+				map.put(testrayCaseResultWarning.getPrimaryKeyObj(),
 					testrayCaseResultWarning);
 
 				cacheResult(testrayCaseResultWarning);
 
-				uncachedPrimaryKeys.remove(
-					testrayCaseResultWarning.getPrimaryKeyObj());
+				uncachedPrimaryKeys.remove(testrayCaseResultWarning.getPrimaryKeyObj());
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(
-					TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
 					TestrayCaseResultWarningImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -1181,7 +1145,7 @@ public class TestrayCaseResultWarningPersistenceImpl
 	 * Returns a range of all the testray case result warnings.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayCaseResultWarningModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestrayCaseResultWarningModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray case result warnings
@@ -1197,7 +1161,7 @@ public class TestrayCaseResultWarningPersistenceImpl
 	 * Returns an ordered range of all the testray case result warnings.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayCaseResultWarningModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestrayCaseResultWarningModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray case result warnings
@@ -1206,10 +1170,8 @@ public class TestrayCaseResultWarningPersistenceImpl
 	 * @return the ordered range of testray case result warnings
 	 */
 	@Override
-	public List<TestrayCaseResultWarning> findAll(
-		int start, int end,
+	public List<TestrayCaseResultWarning> findAll(int start, int end,
 		OrderByComparator<TestrayCaseResultWarning> orderByComparator) {
-
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -1217,64 +1179,62 @@ public class TestrayCaseResultWarningPersistenceImpl
 	 * Returns an ordered range of all the testray case result warnings.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayCaseResultWarningModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestrayCaseResultWarningModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray case result warnings
 	 * @param end the upper bound of the range of testray case result warnings (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of testray case result warnings
 	 */
 	@Override
-	public List<TestrayCaseResultWarning> findAll(
-		int start, int end,
+	public List<TestrayCaseResultWarning> findAll(int start, int end,
 		OrderByComparator<TestrayCaseResultWarning> orderByComparator,
-		boolean useFinderCache) {
-
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
-				finderArgs = FINDER_ARGS_EMPTY;
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+			finderArgs = FINDER_ARGS_EMPTY;
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] {start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
 		List<TestrayCaseResultWarning> list = null;
 
-		if (useFinderCache) {
-			list = (List<TestrayCaseResultWarning>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<TestrayCaseResultWarning>)finderCache.getResult(finderPath,
+					finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					2 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(2 +
+						(orderByComparator.getOrderByFields().length * 2));
 
-				sb.append(_SQL_SELECT_TESTRAYCASERESULTWARNING);
+				query.append(_SQL_SELECT_TESTRAYCASERESULTWARNING);
 
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 
-				sql = sb.toString();
+				sql = query.toString();
 			}
 			else {
 				sql = _SQL_SELECT_TESTRAYCASERESULTWARNING;
 
-				sql = sql.concat(
-					TestrayCaseResultWarningModelImpl.ORDER_BY_JPQL);
+				if (pagination) {
+					sql = sql.concat(TestrayCaseResultWarningModelImpl.ORDER_BY_JPQL);
+				}
 			}
 
 			Session session = null;
@@ -1282,23 +1242,29 @@ public class TestrayCaseResultWarningPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				list = (List<TestrayCaseResultWarning>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<TestrayCaseResultWarning>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<TestrayCaseResultWarning>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1326,8 +1292,8 @@ public class TestrayCaseResultWarningPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -1335,19 +1301,18 @@ public class TestrayCaseResultWarningPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(
-					_SQL_COUNT_TESTRAYCASERESULTWARNING);
+				Query q = session.createQuery(_SQL_COUNT_TESTRAYCASERESULTWARNING);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
+					count);
 			}
-			catch (Exception exception) {
-				finderCache.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -1366,49 +1331,6 @@ public class TestrayCaseResultWarningPersistenceImpl
 	 * Initializes the testray case result warning persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayCaseResultWarningModelImpl.FINDER_CACHE_ENABLED,
-			TestrayCaseResultWarningImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayCaseResultWarningModelImpl.FINDER_CACHE_ENABLED,
-			TestrayCaseResultWarningImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayCaseResultWarningModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
-
-		_finderPathWithPaginationFindByTestrayCaseResultId = new FinderPath(
-			TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayCaseResultWarningModelImpl.FINDER_CACHE_ENABLED,
-			TestrayCaseResultWarningImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByTestrayCaseResultId",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByTestrayCaseResultId = new FinderPath(
-			TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayCaseResultWarningModelImpl.FINDER_CACHE_ENABLED,
-			TestrayCaseResultWarningImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByTestrayCaseResultId", new String[] {Long.class.getName()},
-			TestrayCaseResultWarningModelImpl.
-				TESTRAYCASERESULTID_COLUMN_BITMASK);
-
-		_finderPathCountByTestrayCaseResultId = new FinderPath(
-			TestrayCaseResultWarningModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayCaseResultWarningModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByTestrayCaseResultId", new String[] {Long.class.getName()});
 	}
 
 	public void destroy() {
@@ -1418,38 +1340,20 @@ public class TestrayCaseResultWarningPersistenceImpl
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
+	@ServiceReference(type = CompanyProviderWrapper.class)
+	protected CompanyProvider companyProvider;
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
-
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-
-	private static final String _SQL_SELECT_TESTRAYCASERESULTWARNING =
-		"SELECT testrayCaseResultWarning FROM TestrayCaseResultWarning testrayCaseResultWarning";
-
-	private static final String
-		_SQL_SELECT_TESTRAYCASERESULTWARNING_WHERE_PKS_IN =
-			"SELECT testrayCaseResultWarning FROM TestrayCaseResultWarning testrayCaseResultWarning WHERE testrayCaseResultWarningId IN (";
-
-	private static final String _SQL_SELECT_TESTRAYCASERESULTWARNING_WHERE =
-		"SELECT testrayCaseResultWarning FROM TestrayCaseResultWarning testrayCaseResultWarning WHERE ";
-
-	private static final String _SQL_COUNT_TESTRAYCASERESULTWARNING =
-		"SELECT COUNT(testrayCaseResultWarning) FROM TestrayCaseResultWarning testrayCaseResultWarning";
-
-	private static final String _SQL_COUNT_TESTRAYCASERESULTWARNING_WHERE =
-		"SELECT COUNT(testrayCaseResultWarning) FROM TestrayCaseResultWarning testrayCaseResultWarning WHERE ";
-
-	private static final String _ORDER_BY_ENTITY_ALIAS =
-		"testrayCaseResultWarning.";
-
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
-		"No TestrayCaseResultWarning exists with the primary key ";
-
-	private static final String _NO_SUCH_ENTITY_WITH_KEY =
-		"No TestrayCaseResultWarning exists with the key {";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		TestrayCaseResultWarningPersistenceImpl.class);
-
+	private static final String _SQL_SELECT_TESTRAYCASERESULTWARNING = "SELECT testrayCaseResultWarning FROM TestrayCaseResultWarning testrayCaseResultWarning";
+	private static final String _SQL_SELECT_TESTRAYCASERESULTWARNING_WHERE_PKS_IN =
+		"SELECT testrayCaseResultWarning FROM TestrayCaseResultWarning testrayCaseResultWarning WHERE testrayCaseResultWarningId IN (";
+	private static final String _SQL_SELECT_TESTRAYCASERESULTWARNING_WHERE = "SELECT testrayCaseResultWarning FROM TestrayCaseResultWarning testrayCaseResultWarning WHERE ";
+	private static final String _SQL_COUNT_TESTRAYCASERESULTWARNING = "SELECT COUNT(testrayCaseResultWarning) FROM TestrayCaseResultWarning testrayCaseResultWarning";
+	private static final String _SQL_COUNT_TESTRAYCASERESULTWARNING_WHERE = "SELECT COUNT(testrayCaseResultWarning) FROM TestrayCaseResultWarning testrayCaseResultWarning WHERE ";
+	private static final String _ORDER_BY_ENTITY_ALIAS = "testrayCaseResultWarning.";
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No TestrayCaseResultWarning exists with the primary key ";
+	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No TestrayCaseResultWarning exists with the key {";
+	private static final Log _log = LogFactoryUtil.getLog(TestrayCaseResultWarningPersistenceImpl.class);
 }

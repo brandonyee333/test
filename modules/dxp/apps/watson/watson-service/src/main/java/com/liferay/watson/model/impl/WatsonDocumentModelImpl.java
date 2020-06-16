@@ -864,16 +864,16 @@ public class WatsonDocumentModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonDocument)) {
+		if (!(object instanceof WatsonDocument)) {
 			return false;
 		}
 
-		WatsonDocument watsonDocument = (WatsonDocument)obj;
+		WatsonDocument watsonDocument = (WatsonDocument)object;
 
 		long primaryKey = watsonDocument.getPrimaryKey();
 

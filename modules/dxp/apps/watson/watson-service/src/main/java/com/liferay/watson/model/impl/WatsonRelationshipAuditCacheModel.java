@@ -36,17 +36,17 @@ public class WatsonRelationshipAuditCacheModel
 	implements CacheModel<WatsonRelationshipAudit>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonRelationshipAuditCacheModel)) {
+		if (!(object instanceof WatsonRelationshipAuditCacheModel)) {
 			return false;
 		}
 
 		WatsonRelationshipAuditCacheModel watsonRelationshipAuditCacheModel =
-			(WatsonRelationshipAuditCacheModel)obj;
+			(WatsonRelationshipAuditCacheModel)object;
 
 		if (watsonRelationshipAuditId ==
 				watsonRelationshipAuditCacheModel.watsonRelationshipAuditId) {

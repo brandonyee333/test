@@ -952,17 +952,17 @@ public class WatsonRelationshipAuditModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonRelationshipAudit)) {
+		if (!(object instanceof WatsonRelationshipAudit)) {
 			return false;
 		}
 
 		WatsonRelationshipAudit watsonRelationshipAudit =
-			(WatsonRelationshipAudit)obj;
+			(WatsonRelationshipAudit)object;
 
 		long primaryKey = watsonRelationshipAudit.getPrimaryKey();
 

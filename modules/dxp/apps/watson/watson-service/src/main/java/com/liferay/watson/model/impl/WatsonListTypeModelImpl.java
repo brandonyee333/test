@@ -879,16 +879,16 @@ public class WatsonListTypeModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonListType)) {
+		if (!(object instanceof WatsonListType)) {
 			return false;
 		}
 
-		WatsonListType watsonListType = (WatsonListType)obj;
+		WatsonListType watsonListType = (WatsonListType)object;
 
 		long primaryKey = watsonListType.getPrimaryKey();
 

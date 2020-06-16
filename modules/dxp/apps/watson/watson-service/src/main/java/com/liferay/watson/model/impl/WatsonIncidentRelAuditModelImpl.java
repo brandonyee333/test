@@ -796,17 +796,17 @@ public class WatsonIncidentRelAuditModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonIncidentRelAudit)) {
+		if (!(object instanceof WatsonIncidentRelAudit)) {
 			return false;
 		}
 
 		WatsonIncidentRelAudit watsonIncidentRelAudit =
-			(WatsonIncidentRelAudit)obj;
+			(WatsonIncidentRelAudit)object;
 
 		long primaryKey = watsonIncidentRelAudit.getPrimaryKey();
 

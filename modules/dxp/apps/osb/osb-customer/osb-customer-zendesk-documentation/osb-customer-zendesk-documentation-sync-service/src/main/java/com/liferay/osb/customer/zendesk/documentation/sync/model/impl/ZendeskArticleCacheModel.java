@@ -1,23 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing ZendeskArticle in entity cache.
  *
  * @author Brian Wing Shun Chan
+ * @see ZendeskArticle
  * @generated
  */
-public class ZendeskArticleCacheModel
-	implements CacheModel<ZendeskArticle>, Externalizable {
-
+@ProviderType
+public class ZendeskArticleCacheModel implements CacheModel<ZendeskArticle>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,8 +50,7 @@ public class ZendeskArticleCacheModel
 			return false;
 		}
 
-		ZendeskArticleCacheModel zendeskArticleCacheModel =
-			(ZendeskArticleCacheModel)obj;
+		ZendeskArticleCacheModel zendeskArticleCacheModel = (ZendeskArticleCacheModel)obj;
 
 		if (zendeskArticleId == zendeskArticleCacheModel.zendeskArticleId) {
 			return true;
@@ -108,47 +112,44 @@ public class ZendeskArticleCacheModel
 		zendeskArticleImpl.setZendeskSectionId(zendeskSectionId);
 
 		if (documentationKey == null) {
-			zendeskArticleImpl.setDocumentationKey("");
+			zendeskArticleImpl.setDocumentationKey(StringPool.BLANK);
 		}
 		else {
 			zendeskArticleImpl.setDocumentationKey(documentationKey);
 		}
 
 		if (documentationOriginalURL == null) {
-			zendeskArticleImpl.setDocumentationOriginalURL("");
+			zendeskArticleImpl.setDocumentationOriginalURL(StringPool.BLANK);
 		}
 		else {
-			zendeskArticleImpl.setDocumentationOriginalURL(
-				documentationOriginalURL);
+			zendeskArticleImpl.setDocumentationOriginalURL(documentationOriginalURL);
 		}
 
 		if (previousArticleDocumentationKey == null) {
-			zendeskArticleImpl.setPreviousArticleDocumentationKey("");
+			zendeskArticleImpl.setPreviousArticleDocumentationKey(StringPool.BLANK);
 		}
 		else {
-			zendeskArticleImpl.setPreviousArticleDocumentationKey(
-				previousArticleDocumentationKey);
+			zendeskArticleImpl.setPreviousArticleDocumentationKey(previousArticleDocumentationKey);
 		}
 
 		if (nextArticleDocumentationKey == null) {
-			zendeskArticleImpl.setNextArticleDocumentationKey("");
+			zendeskArticleImpl.setNextArticleDocumentationKey(StringPool.BLANK);
 		}
 		else {
-			zendeskArticleImpl.setNextArticleDocumentationKey(
-				nextArticleDocumentationKey);
+			zendeskArticleImpl.setNextArticleDocumentationKey(nextArticleDocumentationKey);
 		}
 
 		zendeskArticleImpl.setRemoteId(remoteId);
 
 		if (remoteHtmlURL == null) {
-			zendeskArticleImpl.setRemoteHtmlURL("");
+			zendeskArticleImpl.setRemoteHtmlURL(StringPool.BLANK);
 		}
 		else {
 			zendeskArticleImpl.setRemoteHtmlURL(remoteHtmlURL);
 		}
 
 		if (remoteTitle == null) {
-			zendeskArticleImpl.setRemoteTitle("");
+			zendeskArticleImpl.setRemoteTitle(StringPool.BLANK);
 		}
 		else {
 			zendeskArticleImpl.setRemoteTitle(remoteTitle);
@@ -178,7 +179,8 @@ public class ZendeskArticleCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(zendeskArticleId);
 		objectOutput.writeLong(modifiedDate);
 
@@ -187,28 +189,28 @@ public class ZendeskArticleCacheModel
 		objectOutput.writeLong(zendeskSectionId);
 
 		if (documentationKey == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(documentationKey);
 		}
 
 		if (documentationOriginalURL == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(documentationOriginalURL);
 		}
 
 		if (previousArticleDocumentationKey == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(previousArticleDocumentationKey);
 		}
 
 		if (nextArticleDocumentationKey == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(nextArticleDocumentationKey);
@@ -217,14 +219,14 @@ public class ZendeskArticleCacheModel
 		objectOutput.writeLong(remoteId);
 
 		if (remoteHtmlURL == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(remoteHtmlURL);
 		}
 
 		if (remoteTitle == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(remoteTitle);
@@ -242,5 +244,4 @@ public class ZendeskArticleCacheModel
 	public long remoteId;
 	public String remoteHtmlURL;
 	public String remoteTitle;
-
 }

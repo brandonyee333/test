@@ -507,17 +507,17 @@ public class WatsonIncidentRelWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonIncidentRelWrapper)) {
+		if (!(object instanceof WatsonIncidentRelWrapper)) {
 			return false;
 		}
 
 		WatsonIncidentRelWrapper watsonIncidentRelWrapper =
-			(WatsonIncidentRelWrapper)obj;
+			(WatsonIncidentRelWrapper)object;
 
 		if (Objects.equals(
 				_watsonIncidentRel,

@@ -856,17 +856,17 @@ public class WatsonResourceWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonResourceWrapper)) {
+		if (!(object instanceof WatsonResourceWrapper)) {
 			return false;
 		}
 
 		WatsonResourceWrapper watsonResourceWrapper =
-			(WatsonResourceWrapper)obj;
+			(WatsonResourceWrapper)object;
 
 		if (Objects.equals(
 				_watsonResource, watsonResourceWrapper._watsonResource)) {

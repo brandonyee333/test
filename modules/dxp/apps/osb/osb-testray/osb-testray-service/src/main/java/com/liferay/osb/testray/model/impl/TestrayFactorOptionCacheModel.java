@@ -1,23 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.testray.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.osb.testray.model.TestrayFactorOption;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing TestrayFactorOption in entity cache.
  *
  * @author Ethan Bustad
+ * @see TestrayFactorOption
  * @generated
  */
-public class TestrayFactorOptionCacheModel
-	implements CacheModel<TestrayFactorOption>, Externalizable {
-
+@ProviderType
+public class TestrayFactorOptionCacheModel implements CacheModel<TestrayFactorOption>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,12 +50,9 @@ public class TestrayFactorOptionCacheModel
 			return false;
 		}
 
-		TestrayFactorOptionCacheModel testrayFactorOptionCacheModel =
-			(TestrayFactorOptionCacheModel)obj;
+		TestrayFactorOptionCacheModel testrayFactorOptionCacheModel = (TestrayFactorOptionCacheModel)obj;
 
-		if (testrayFactorOptionId ==
-				testrayFactorOptionCacheModel.testrayFactorOptionId) {
-
+		if (testrayFactorOptionId == testrayFactorOptionCacheModel.testrayFactorOptionId) {
 			return true;
 		}
 
@@ -91,8 +93,7 @@ public class TestrayFactorOptionCacheModel
 
 	@Override
 	public TestrayFactorOption toEntityModel() {
-		TestrayFactorOptionImpl testrayFactorOptionImpl =
-			new TestrayFactorOptionImpl();
+		TestrayFactorOptionImpl testrayFactorOptionImpl = new TestrayFactorOptionImpl();
 
 		testrayFactorOptionImpl.setTestrayFactorOptionId(testrayFactorOptionId);
 		testrayFactorOptionImpl.setGroupId(groupId);
@@ -100,7 +101,7 @@ public class TestrayFactorOptionCacheModel
 		testrayFactorOptionImpl.setUserId(userId);
 
 		if (userName == null) {
-			testrayFactorOptionImpl.setUserName("");
+			testrayFactorOptionImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			testrayFactorOptionImpl.setUserName(userName);
@@ -120,11 +121,10 @@ public class TestrayFactorOptionCacheModel
 			testrayFactorOptionImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		testrayFactorOptionImpl.setTestrayFactorCategoryId(
-			testrayFactorCategoryId);
+		testrayFactorOptionImpl.setTestrayFactorCategoryId(testrayFactorCategoryId);
 
 		if (name == null) {
-			testrayFactorOptionImpl.setName("");
+			testrayFactorOptionImpl.setName(StringPool.BLANK);
 		}
 		else {
 			testrayFactorOptionImpl.setName(name);
@@ -153,7 +153,8 @@ public class TestrayFactorOptionCacheModel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		objectOutput.writeLong(testrayFactorOptionId);
 
 		objectOutput.writeLong(groupId);
@@ -163,7 +164,7 @@ public class TestrayFactorOptionCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -175,7 +176,7 @@ public class TestrayFactorOptionCacheModel
 		objectOutput.writeLong(testrayFactorCategoryId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
@@ -191,5 +192,4 @@ public class TestrayFactorOptionCacheModel
 	public long modifiedDate;
 	public long testrayFactorCategoryId;
 	public String name;
-
 }

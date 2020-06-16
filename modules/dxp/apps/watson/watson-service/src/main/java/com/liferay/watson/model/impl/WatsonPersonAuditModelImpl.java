@@ -1773,16 +1773,16 @@ public class WatsonPersonAuditModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonPersonAudit)) {
+		if (!(object instanceof WatsonPersonAudit)) {
 			return false;
 		}
 
-		WatsonPersonAudit watsonPersonAudit = (WatsonPersonAudit)obj;
+		WatsonPersonAudit watsonPersonAudit = (WatsonPersonAudit)object;
 
 		long primaryKey = watsonPersonAudit.getPrimaryKey();
 

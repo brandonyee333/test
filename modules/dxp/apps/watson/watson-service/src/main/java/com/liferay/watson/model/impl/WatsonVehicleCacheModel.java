@@ -36,17 +36,17 @@ public class WatsonVehicleCacheModel
 	implements CacheModel<WatsonVehicle>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonVehicleCacheModel)) {
+		if (!(object instanceof WatsonVehicleCacheModel)) {
 			return false;
 		}
 
 		WatsonVehicleCacheModel watsonVehicleCacheModel =
-			(WatsonVehicleCacheModel)obj;
+			(WatsonVehicleCacheModel)object;
 
 		if (watsonVehicleId == watsonVehicleCacheModel.watsonVehicleId) {
 			return true;

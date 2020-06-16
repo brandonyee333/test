@@ -1574,16 +1574,16 @@ public class WatsonReportAuditModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonReportAudit)) {
+		if (!(object instanceof WatsonReportAudit)) {
 			return false;
 		}
 
-		WatsonReportAudit watsonReportAudit = (WatsonReportAudit)obj;
+		WatsonReportAudit watsonReportAudit = (WatsonReportAudit)object;
 
 		long primaryKey = watsonReportAudit.getPrimaryKey();
 

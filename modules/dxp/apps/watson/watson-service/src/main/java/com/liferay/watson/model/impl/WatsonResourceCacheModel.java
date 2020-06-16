@@ -36,17 +36,17 @@ public class WatsonResourceCacheModel
 	implements CacheModel<WatsonResource>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonResourceCacheModel)) {
+		if (!(object instanceof WatsonResourceCacheModel)) {
 			return false;
 		}
 
 		WatsonResourceCacheModel watsonResourceCacheModel =
-			(WatsonResourceCacheModel)obj;
+			(WatsonResourceCacheModel)object;
 
 		if (watsonResourceId == watsonResourceCacheModel.watsonResourceId) {
 			return true;

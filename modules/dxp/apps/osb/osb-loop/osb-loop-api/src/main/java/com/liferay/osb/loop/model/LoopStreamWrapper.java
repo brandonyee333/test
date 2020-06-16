@@ -1,20 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.loop.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -33,8 +36,8 @@ import java.util.Objects;
  * @see LoopStream
  * @generated
  */
+@ProviderType
 public class LoopStreamWrapper implements LoopStream, ModelWrapper<LoopStream> {
-
 	public LoopStreamWrapper(LoopStream loopStream) {
 		_loopStream = loopStream;
 	}
@@ -89,78 +92,13 @@ public class LoopStreamWrapper implements LoopStream, ModelWrapper<LoopStream> {
 	}
 
 	@Override
-	public Object clone() {
-		return new LoopStreamWrapper((LoopStream)_loopStream.clone());
+	public LoopStream toEscapedModel() {
+		return new LoopStreamWrapper(_loopStream.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(LoopStream loopStream) {
-		return _loopStream.compareTo(loopStream);
-	}
-
-	/**
-	 * Returns the description of this loop stream.
-	 *
-	 * @return the description of this loop stream
-	 */
-	@Override
-	public String getDescription() {
-		return _loopStream.getDescription();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _loopStream.getExpandoBridge();
-	}
-
-	/**
-	 * Returns the loop person ID of this loop stream.
-	 *
-	 * @return the loop person ID of this loop stream
-	 */
-	@Override
-	public long getLoopPersonId() {
-		return _loopStream.getLoopPersonId();
-	}
-
-	/**
-	 * Returns the loop stream ID of this loop stream.
-	 *
-	 * @return the loop stream ID of this loop stream
-	 */
-	@Override
-	public long getLoopStreamId() {
-		return _loopStream.getLoopStreamId();
-	}
-
-	/**
-	 * Returns the name of this loop stream.
-	 *
-	 * @return the name of this loop stream
-	 */
-	@Override
-	public String getName() {
-		return _loopStream.getName();
-	}
-
-	/**
-	 * Returns the primary key of this loop stream.
-	 *
-	 * @return the primary key of this loop stream
-	 */
-	@Override
-	public long getPrimaryKey() {
-		return _loopStream.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _loopStream.getPrimaryKeyObj();
-	}
-
-	@Override
-	public int hashCode() {
-		return _loopStream.hashCode();
+	public LoopStream toUnescapedModel() {
+		return new LoopStreamWrapper(_loopStream.toUnescapedModel());
 	}
 
 	@Override
@@ -179,6 +117,96 @@ public class LoopStreamWrapper implements LoopStream, ModelWrapper<LoopStream> {
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _loopStream.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<LoopStream> toCacheModel() {
+		return _loopStream.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(LoopStream loopStream) {
+		return _loopStream.compareTo(loopStream);
+	}
+
+	@Override
+	public int hashCode() {
+		return _loopStream.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _loopStream.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new LoopStreamWrapper((LoopStream)_loopStream.clone());
+	}
+
+	/**
+	* Returns the description of this loop stream.
+	*
+	* @return the description of this loop stream
+	*/
+	@Override
+	public java.lang.String getDescription() {
+		return _loopStream.getDescription();
+	}
+
+	/**
+	* Returns the name of this loop stream.
+	*
+	* @return the name of this loop stream
+	*/
+	@Override
+	public java.lang.String getName() {
+		return _loopStream.getName();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _loopStream.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _loopStream.toXmlString();
+	}
+
+	/**
+	* Returns the loop person ID of this loop stream.
+	*
+	* @return the loop person ID of this loop stream
+	*/
+	@Override
+	public long getLoopPersonId() {
+		return _loopStream.getLoopPersonId();
+	}
+
+	/**
+	* Returns the loop stream ID of this loop stream.
+	*
+	* @return the loop stream ID of this loop stream
+	*/
+	@Override
+	public long getLoopStreamId() {
+		return _loopStream.getLoopStreamId();
+	}
+
+	/**
+	* Returns the primary key of this loop stream.
+	*
+	* @return the primary key of this loop stream
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _loopStream.getPrimaryKey();
+	}
+
+	@Override
 	public void persist() {
 		_loopStream.persist();
 	}
@@ -189,20 +217,13 @@ public class LoopStreamWrapper implements LoopStream, ModelWrapper<LoopStream> {
 	}
 
 	/**
-	 * Sets the description of this loop stream.
-	 *
-	 * @param description the description of this loop stream
-	 */
+	* Sets the description of this loop stream.
+	*
+	* @param description the description of this loop stream
+	*/
 	@Override
-	public void setDescription(String description) {
+	public void setDescription(java.lang.String description) {
 		_loopStream.setDescription(description);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-
-		_loopStream.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -211,37 +232,43 @@ public class LoopStreamWrapper implements LoopStream, ModelWrapper<LoopStream> {
 	}
 
 	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_loopStream.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_loopStream.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	 * Sets the loop person ID of this loop stream.
-	 *
-	 * @param loopPersonId the loop person ID of this loop stream
-	 */
+	* Sets the loop person ID of this loop stream.
+	*
+	* @param loopPersonId the loop person ID of this loop stream
+	*/
 	@Override
 	public void setLoopPersonId(long loopPersonId) {
 		_loopStream.setLoopPersonId(loopPersonId);
 	}
 
 	/**
-	 * Sets the loop stream ID of this loop stream.
-	 *
-	 * @param loopStreamId the loop stream ID of this loop stream
-	 */
+	* Sets the loop stream ID of this loop stream.
+	*
+	* @param loopStreamId the loop stream ID of this loop stream
+	*/
 	@Override
 	public void setLoopStreamId(long loopStreamId) {
 		_loopStream.setLoopStreamId(loopStreamId);
 	}
 
 	/**
-	 * Sets the name of this loop stream.
-	 *
-	 * @param name the name of this loop stream
-	 */
+	* Sets the name of this loop stream.
+	*
+	* @param name the name of this loop stream
+	*/
 	@Override
-	public void setName(String name) {
+	public void setName(java.lang.String name) {
 		_loopStream.setName(name);
 	}
 
@@ -251,10 +278,10 @@ public class LoopStreamWrapper implements LoopStream, ModelWrapper<LoopStream> {
 	}
 
 	/**
-	 * Sets the primary key of this loop stream.
-	 *
-	 * @param primaryKey the primary key of this loop stream
-	 */
+	* Sets the primary key of this loop stream.
+	*
+	* @param primaryKey the primary key of this loop stream
+	*/
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_loopStream.setPrimaryKey(primaryKey);
@@ -263,33 +290,6 @@ public class LoopStreamWrapper implements LoopStream, ModelWrapper<LoopStream> {
 	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		_loopStream.setPrimaryKeyObj(primaryKeyObj);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<LoopStream>
-		toCacheModel() {
-
-		return _loopStream.toCacheModel();
-	}
-
-	@Override
-	public LoopStream toEscapedModel() {
-		return new LoopStreamWrapper(_loopStream.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return _loopStream.toString();
-	}
-
-	@Override
-	public LoopStream toUnescapedModel() {
-		return new LoopStreamWrapper(_loopStream.toUnescapedModel());
-	}
-
-	@Override
-	public String toXmlString() {
-		return _loopStream.toXmlString();
 	}
 
 	@Override
@@ -332,5 +332,4 @@ public class LoopStreamWrapper implements LoopStream, ModelWrapper<LoopStream> {
 	}
 
 	private final LoopStream _loopStream;
-
 }

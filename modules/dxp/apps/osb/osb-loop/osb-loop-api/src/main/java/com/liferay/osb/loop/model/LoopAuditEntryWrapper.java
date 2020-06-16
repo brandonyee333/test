@@ -1,20 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.loop.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -34,9 +37,9 @@ import java.util.Objects;
  * @see LoopAuditEntry
  * @generated
  */
-public class LoopAuditEntryWrapper
-	implements LoopAuditEntry, ModelWrapper<LoopAuditEntry> {
-
+@ProviderType
+public class LoopAuditEntryWrapper implements LoopAuditEntry,
+	ModelWrapper<LoopAuditEntry> {
 	public LoopAuditEntryWrapper(LoopAuditEntry loopAuditEntry) {
 		_loopAuditEntry = loopAuditEntry;
 	}
@@ -126,149 +129,13 @@ public class LoopAuditEntryWrapper
 	}
 
 	@Override
-	public Object clone() {
-		return new LoopAuditEntryWrapper(
-			(LoopAuditEntry)_loopAuditEntry.clone());
+	public LoopAuditEntry toEscapedModel() {
+		return new LoopAuditEntryWrapper(_loopAuditEntry.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(LoopAuditEntry loopAuditEntry) {
-		return _loopAuditEntry.compareTo(loopAuditEntry);
-	}
-
-	/**
-	 * Returns the fully qualified class name of this loop audit entry.
-	 *
-	 * @return the fully qualified class name of this loop audit entry
-	 */
-	@Override
-	public String getClassName() {
-		return _loopAuditEntry.getClassName();
-	}
-
-	/**
-	 * Returns the class name ID of this loop audit entry.
-	 *
-	 * @return the class name ID of this loop audit entry
-	 */
-	@Override
-	public long getClassNameId() {
-		return _loopAuditEntry.getClassNameId();
-	}
-
-	/**
-	 * Returns the class pk of this loop audit entry.
-	 *
-	 * @return the class pk of this loop audit entry
-	 */
-	@Override
-	public long getClassPK() {
-		return _loopAuditEntry.getClassPK();
-	}
-
-	/**
-	 * Returns the company ID of this loop audit entry.
-	 *
-	 * @return the company ID of this loop audit entry
-	 */
-	@Override
-	public long getCompanyId() {
-		return _loopAuditEntry.getCompanyId();
-	}
-
-	/**
-	 * Returns the create date of this loop audit entry.
-	 *
-	 * @return the create date of this loop audit entry
-	 */
-	@Override
-	public Date getCreateDate() {
-		return _loopAuditEntry.getCreateDate();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _loopAuditEntry.getExpandoBridge();
-	}
-
-	/**
-	 * Returns the loop audit entry ID of this loop audit entry.
-	 *
-	 * @return the loop audit entry ID of this loop audit entry
-	 */
-	@Override
-	public long getLoopAuditEntryId() {
-		return _loopAuditEntry.getLoopAuditEntryId();
-	}
-
-	/**
-	 * Returns the modified date of this loop audit entry.
-	 *
-	 * @return the modified date of this loop audit entry
-	 */
-	@Override
-	public Date getModifiedDate() {
-		return _loopAuditEntry.getModifiedDate();
-	}
-
-	/**
-	 * Returns the name of this loop audit entry.
-	 *
-	 * @return the name of this loop audit entry
-	 */
-	@Override
-	public String getName() {
-		return _loopAuditEntry.getName();
-	}
-
-	/**
-	 * Returns the primary key of this loop audit entry.
-	 *
-	 * @return the primary key of this loop audit entry
-	 */
-	@Override
-	public long getPrimaryKey() {
-		return _loopAuditEntry.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _loopAuditEntry.getPrimaryKeyObj();
-	}
-
-	/**
-	 * Returns the user ID of this loop audit entry.
-	 *
-	 * @return the user ID of this loop audit entry
-	 */
-	@Override
-	public long getUserId() {
-		return _loopAuditEntry.getUserId();
-	}
-
-	/**
-	 * Returns the user name of this loop audit entry.
-	 *
-	 * @return the user name of this loop audit entry
-	 */
-	@Override
-	public String getUserName() {
-		return _loopAuditEntry.getUserName();
-	}
-
-	/**
-	 * Returns the user uuid of this loop audit entry.
-	 *
-	 * @return the user uuid of this loop audit entry
-	 */
-	@Override
-	public String getUserUuid() {
-		return _loopAuditEntry.getUserUuid();
-	}
-
-	@Override
-	public int hashCode() {
-		return _loopAuditEntry.hashCode();
+	public LoopAuditEntry toUnescapedModel() {
+		return new LoopAuditEntryWrapper(_loopAuditEntry.toUnescapedModel());
 	}
 
 	@Override
@@ -287,6 +154,166 @@ public class LoopAuditEntryWrapper
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _loopAuditEntry.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<LoopAuditEntry> toCacheModel() {
+		return _loopAuditEntry.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(LoopAuditEntry loopAuditEntry) {
+		return _loopAuditEntry.compareTo(loopAuditEntry);
+	}
+
+	@Override
+	public int hashCode() {
+		return _loopAuditEntry.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _loopAuditEntry.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new LoopAuditEntryWrapper((LoopAuditEntry)_loopAuditEntry.clone());
+	}
+
+	/**
+	* Returns the fully qualified class name of this loop audit entry.
+	*
+	* @return the fully qualified class name of this loop audit entry
+	*/
+	@Override
+	public java.lang.String getClassName() {
+		return _loopAuditEntry.getClassName();
+	}
+
+	/**
+	* Returns the name of this loop audit entry.
+	*
+	* @return the name of this loop audit entry
+	*/
+	@Override
+	public java.lang.String getName() {
+		return _loopAuditEntry.getName();
+	}
+
+	/**
+	* Returns the user name of this loop audit entry.
+	*
+	* @return the user name of this loop audit entry
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _loopAuditEntry.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this loop audit entry.
+	*
+	* @return the user uuid of this loop audit entry
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _loopAuditEntry.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _loopAuditEntry.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _loopAuditEntry.toXmlString();
+	}
+
+	/**
+	* Returns the create date of this loop audit entry.
+	*
+	* @return the create date of this loop audit entry
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _loopAuditEntry.getCreateDate();
+	}
+
+	/**
+	* Returns the modified date of this loop audit entry.
+	*
+	* @return the modified date of this loop audit entry
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _loopAuditEntry.getModifiedDate();
+	}
+
+	/**
+	* Returns the class name ID of this loop audit entry.
+	*
+	* @return the class name ID of this loop audit entry
+	*/
+	@Override
+	public long getClassNameId() {
+		return _loopAuditEntry.getClassNameId();
+	}
+
+	/**
+	* Returns the class pk of this loop audit entry.
+	*
+	* @return the class pk of this loop audit entry
+	*/
+	@Override
+	public long getClassPK() {
+		return _loopAuditEntry.getClassPK();
+	}
+
+	/**
+	* Returns the company ID of this loop audit entry.
+	*
+	* @return the company ID of this loop audit entry
+	*/
+	@Override
+	public long getCompanyId() {
+		return _loopAuditEntry.getCompanyId();
+	}
+
+	/**
+	* Returns the loop audit entry ID of this loop audit entry.
+	*
+	* @return the loop audit entry ID of this loop audit entry
+	*/
+	@Override
+	public long getLoopAuditEntryId() {
+		return _loopAuditEntry.getLoopAuditEntryId();
+	}
+
+	/**
+	* Returns the primary key of this loop audit entry.
+	*
+	* @return the primary key of this loop audit entry
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _loopAuditEntry.getPrimaryKey();
+	}
+
+	/**
+	* Returns the user ID of this loop audit entry.
+	*
+	* @return the user ID of this loop audit entry
+	*/
+	@Override
+	public long getUserId() {
+		return _loopAuditEntry.getUserId();
+	}
+
+	@Override
 	public void persist() {
 		_loopAuditEntry.persist();
 	}
@@ -297,55 +324,48 @@ public class LoopAuditEntryWrapper
 	}
 
 	@Override
-	public void setClassName(String className) {
+	public void setClassName(java.lang.String className) {
 		_loopAuditEntry.setClassName(className);
 	}
 
 	/**
-	 * Sets the class name ID of this loop audit entry.
-	 *
-	 * @param classNameId the class name ID of this loop audit entry
-	 */
+	* Sets the class name ID of this loop audit entry.
+	*
+	* @param classNameId the class name ID of this loop audit entry
+	*/
 	@Override
 	public void setClassNameId(long classNameId) {
 		_loopAuditEntry.setClassNameId(classNameId);
 	}
 
 	/**
-	 * Sets the class pk of this loop audit entry.
-	 *
-	 * @param classPK the class pk of this loop audit entry
-	 */
+	* Sets the class pk of this loop audit entry.
+	*
+	* @param classPK the class pk of this loop audit entry
+	*/
 	@Override
 	public void setClassPK(long classPK) {
 		_loopAuditEntry.setClassPK(classPK);
 	}
 
 	/**
-	 * Sets the company ID of this loop audit entry.
-	 *
-	 * @param companyId the company ID of this loop audit entry
-	 */
+	* Sets the company ID of this loop audit entry.
+	*
+	* @param companyId the company ID of this loop audit entry
+	*/
 	@Override
 	public void setCompanyId(long companyId) {
 		_loopAuditEntry.setCompanyId(companyId);
 	}
 
 	/**
-	 * Sets the create date of this loop audit entry.
-	 *
-	 * @param createDate the create date of this loop audit entry
-	 */
+	* Sets the create date of this loop audit entry.
+	*
+	* @param createDate the create date of this loop audit entry
+	*/
 	@Override
 	public void setCreateDate(Date createDate) {
 		_loopAuditEntry.setCreateDate(createDate);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-
-		_loopAuditEntry.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -354,37 +374,43 @@ public class LoopAuditEntryWrapper
 	}
 
 	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_loopAuditEntry.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_loopAuditEntry.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	 * Sets the loop audit entry ID of this loop audit entry.
-	 *
-	 * @param loopAuditEntryId the loop audit entry ID of this loop audit entry
-	 */
+	* Sets the loop audit entry ID of this loop audit entry.
+	*
+	* @param loopAuditEntryId the loop audit entry ID of this loop audit entry
+	*/
 	@Override
 	public void setLoopAuditEntryId(long loopAuditEntryId) {
 		_loopAuditEntry.setLoopAuditEntryId(loopAuditEntryId);
 	}
 
 	/**
-	 * Sets the modified date of this loop audit entry.
-	 *
-	 * @param modifiedDate the modified date of this loop audit entry
-	 */
+	* Sets the modified date of this loop audit entry.
+	*
+	* @param modifiedDate the modified date of this loop audit entry
+	*/
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_loopAuditEntry.setModifiedDate(modifiedDate);
 	}
 
 	/**
-	 * Sets the name of this loop audit entry.
-	 *
-	 * @param name the name of this loop audit entry
-	 */
+	* Sets the name of this loop audit entry.
+	*
+	* @param name the name of this loop audit entry
+	*/
 	@Override
-	public void setName(String name) {
+	public void setName(java.lang.String name) {
 		_loopAuditEntry.setName(name);
 	}
 
@@ -394,10 +420,10 @@ public class LoopAuditEntryWrapper
 	}
 
 	/**
-	 * Sets the primary key of this loop audit entry.
-	 *
-	 * @param primaryKey the primary key of this loop audit entry
-	 */
+	* Sets the primary key of this loop audit entry.
+	*
+	* @param primaryKey the primary key of this loop audit entry
+	*/
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_loopAuditEntry.setPrimaryKey(primaryKey);
@@ -409,60 +435,33 @@ public class LoopAuditEntryWrapper
 	}
 
 	/**
-	 * Sets the user ID of this loop audit entry.
-	 *
-	 * @param userId the user ID of this loop audit entry
-	 */
+	* Sets the user ID of this loop audit entry.
+	*
+	* @param userId the user ID of this loop audit entry
+	*/
 	@Override
 	public void setUserId(long userId) {
 		_loopAuditEntry.setUserId(userId);
 	}
 
 	/**
-	 * Sets the user name of this loop audit entry.
-	 *
-	 * @param userName the user name of this loop audit entry
-	 */
+	* Sets the user name of this loop audit entry.
+	*
+	* @param userName the user name of this loop audit entry
+	*/
 	@Override
-	public void setUserName(String userName) {
+	public void setUserName(java.lang.String userName) {
 		_loopAuditEntry.setUserName(userName);
 	}
 
 	/**
-	 * Sets the user uuid of this loop audit entry.
-	 *
-	 * @param userUuid the user uuid of this loop audit entry
-	 */
+	* Sets the user uuid of this loop audit entry.
+	*
+	* @param userUuid the user uuid of this loop audit entry
+	*/
 	@Override
-	public void setUserUuid(String userUuid) {
+	public void setUserUuid(java.lang.String userUuid) {
 		_loopAuditEntry.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<LoopAuditEntry>
-		toCacheModel() {
-
-		return _loopAuditEntry.toCacheModel();
-	}
-
-	@Override
-	public LoopAuditEntry toEscapedModel() {
-		return new LoopAuditEntryWrapper(_loopAuditEntry.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return _loopAuditEntry.toString();
-	}
-
-	@Override
-	public LoopAuditEntry toUnescapedModel() {
-		return new LoopAuditEntryWrapper(_loopAuditEntry.toUnescapedModel());
-	}
-
-	@Override
-	public String toXmlString() {
-		return _loopAuditEntry.toXmlString();
 	}
 
 	@Override
@@ -475,12 +474,10 @@ public class LoopAuditEntryWrapper
 			return false;
 		}
 
-		LoopAuditEntryWrapper loopAuditEntryWrapper =
-			(LoopAuditEntryWrapper)obj;
+		LoopAuditEntryWrapper loopAuditEntryWrapper = (LoopAuditEntryWrapper)obj;
 
-		if (Objects.equals(
-				_loopAuditEntry, loopAuditEntryWrapper._loopAuditEntry)) {
-
+		if (Objects.equals(_loopAuditEntry,
+					loopAuditEntryWrapper._loopAuditEntry)) {
 			return true;
 		}
 
@@ -508,5 +505,4 @@ public class LoopAuditEntryWrapper
 	}
 
 	private final LoopAuditEntry _loopAuditEntry;
-
 }

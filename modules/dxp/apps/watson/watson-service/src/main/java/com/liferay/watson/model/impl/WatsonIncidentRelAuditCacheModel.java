@@ -36,17 +36,17 @@ public class WatsonIncidentRelAuditCacheModel
 	implements CacheModel<WatsonIncidentRelAudit>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonIncidentRelAuditCacheModel)) {
+		if (!(object instanceof WatsonIncidentRelAuditCacheModel)) {
 			return false;
 		}
 
 		WatsonIncidentRelAuditCacheModel watsonIncidentRelAuditCacheModel =
-			(WatsonIncidentRelAuditCacheModel)obj;
+			(WatsonIncidentRelAuditCacheModel)object;
 
 		if (watsonIncidentRelAuditId ==
 				watsonIncidentRelAuditCacheModel.watsonIncidentRelAuditId) {

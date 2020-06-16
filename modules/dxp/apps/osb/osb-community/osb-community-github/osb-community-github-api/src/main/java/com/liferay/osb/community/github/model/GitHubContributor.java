@@ -1,15 +1,15 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.community.github.model;
@@ -25,39 +25,33 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Haote Chou
  * @see GitHubContributorModel
+ * @see com.liferay.osb.community.github.model.impl.GitHubContributorImpl
+ * @see com.liferay.osb.community.github.model.impl.GitHubContributorModelImpl
  * @generated
  */
-@ImplementationClassName(
-	"com.liferay.osb.community.github.model.impl.GitHubContributorImpl"
-)
+@ImplementationClassName("com.liferay.osb.community.github.model.impl.GitHubContributorImpl")
 @ProviderType
-public interface GitHubContributor
-	extends GitHubContributorModel, PersistedModel {
-
+public interface GitHubContributor extends GitHubContributorModel, PersistedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to <code>com.liferay.osb.community.github.model.impl.GitHubContributorImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to {@link com.liferay.osb.community.github.model.impl.GitHubContributorImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<GitHubContributor, Long>
-		GIT_HUB_CONTRIBUTOR_ID_ACCESSOR =
-			new Accessor<GitHubContributor, Long>() {
+	public static final Accessor<GitHubContributor, Long> GIT_HUB_CONTRIBUTOR_ID_ACCESSOR =
+		new Accessor<GitHubContributor, Long>() {
+			@Override
+			public Long get(GitHubContributor gitHubContributor) {
+				return gitHubContributor.getGitHubContributorId();
+			}
 
-				@Override
-				public Long get(GitHubContributor gitHubContributor) {
-					return gitHubContributor.getGitHubContributorId();
-				}
+			@Override
+			public Class<Long> getAttributeClass() {
+				return Long.class;
+			}
 
-				@Override
-				public Class<Long> getAttributeClass() {
-					return Long.class;
-				}
-
-				@Override
-				public Class<GitHubContributor> getTypeClass() {
-					return GitHubContributor.class;
-				}
-
-			};
-
+			@Override
+			public Class<GitHubContributor> getTypeClass() {
+				return GitHubContributor.class;
+			}
+		};
 }

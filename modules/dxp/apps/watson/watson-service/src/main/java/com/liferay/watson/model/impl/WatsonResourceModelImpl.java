@@ -1107,16 +1107,16 @@ public class WatsonResourceModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonResource)) {
+		if (!(object instanceof WatsonResource)) {
 			return false;
 		}
 
-		WatsonResource watsonResource = (WatsonResource)obj;
+		WatsonResource watsonResource = (WatsonResource)object;
 
 		long primaryKey = watsonResource.getPrimaryKey();
 

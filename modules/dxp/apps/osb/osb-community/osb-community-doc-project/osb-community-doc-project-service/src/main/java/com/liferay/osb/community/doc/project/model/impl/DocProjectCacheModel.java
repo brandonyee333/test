@@ -1,23 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.community.doc.project.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.osb.community.doc.project.model.DocProject;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.util.Date;
  * The cache model class for representing DocProject in entity cache.
  *
  * @author Ryan Park
+ * @see DocProject
  * @generated
  */
-public class DocProjectCacheModel
-	implements CacheModel<DocProject>, Externalizable {
-
+@ProviderType
+public class DocProjectCacheModel implements CacheModel<DocProject>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -103,7 +108,7 @@ public class DocProjectCacheModel
 		DocProjectImpl docProjectImpl = new DocProjectImpl();
 
 		if (uuid == null) {
-			docProjectImpl.setUuid("");
+			docProjectImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			docProjectImpl.setUuid(uuid);
@@ -115,7 +120,7 @@ public class DocProjectCacheModel
 		docProjectImpl.setUserId(userId);
 
 		if (userName == null) {
-			docProjectImpl.setUserName("");
+			docProjectImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			docProjectImpl.setUserName(userName);
@@ -136,21 +141,21 @@ public class DocProjectCacheModel
 		}
 
 		if (name == null) {
-			docProjectImpl.setName("");
+			docProjectImpl.setName(StringPool.BLANK);
 		}
 		else {
 			docProjectImpl.setName(name);
 		}
 
 		if (description == null) {
-			docProjectImpl.setDescription("");
+			docProjectImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			docProjectImpl.setDescription(description);
 		}
 
 		if (iconFileName == null) {
-			docProjectImpl.setIconFileName("");
+			docProjectImpl.setIconFileName(StringPool.BLANK);
 		}
 		else {
 			docProjectImpl.setIconFileName(iconFileName);
@@ -159,14 +164,14 @@ public class DocProjectCacheModel
 		docProjectImpl.setUnlisted(unlisted);
 
 		if (type == null) {
-			docProjectImpl.setType("");
+			docProjectImpl.setType(StringPool.BLANK);
 		}
 		else {
 			docProjectImpl.setType(type);
 		}
 
 		if (typeSettings == null) {
-			docProjectImpl.setTypeSettings("");
+			docProjectImpl.setTypeSettings(StringPool.BLANK);
 		}
 		else {
 			docProjectImpl.setTypeSettings(typeSettings);
@@ -180,9 +185,7 @@ public class DocProjectCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
-
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
 
 		docProjectId = objectInput.readLong();
@@ -201,15 +204,16 @@ public class DocProjectCacheModel
 
 		unlisted = objectInput.readBoolean();
 		type = objectInput.readUTF();
-		typeSettings = (String)objectInput.readObject();
+		typeSettings = objectInput.readUTF();
 
 		status = objectInput.readInt();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -224,7 +228,7 @@ public class DocProjectCacheModel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -234,21 +238,21 @@ public class DocProjectCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (iconFileName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(iconFileName);
@@ -257,17 +261,17 @@ public class DocProjectCacheModel
 		objectOutput.writeBoolean(unlisted);
 
 		if (type == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(type);
 		}
 
 		if (typeSettings == null) {
-			objectOutput.writeObject("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeObject(typeSettings);
+			objectOutput.writeUTF(typeSettings);
 		}
 
 		objectOutput.writeInt(status);
@@ -288,5 +292,4 @@ public class DocProjectCacheModel
 	public String type;
 	public String typeSettings;
 	public int status;
-
 }

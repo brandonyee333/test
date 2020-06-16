@@ -1044,17 +1044,17 @@ public class WatsonIncidentAuditWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonIncidentAuditWrapper)) {
+		if (!(object instanceof WatsonIncidentAuditWrapper)) {
 			return false;
 		}
 
 		WatsonIncidentAuditWrapper watsonIncidentAuditWrapper =
-			(WatsonIncidentAuditWrapper)obj;
+			(WatsonIncidentAuditWrapper)object;
 
 		if (Objects.equals(
 				_watsonIncidentAudit,

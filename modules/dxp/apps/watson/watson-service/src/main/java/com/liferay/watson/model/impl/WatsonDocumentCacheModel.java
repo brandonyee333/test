@@ -36,17 +36,17 @@ public class WatsonDocumentCacheModel
 	implements CacheModel<WatsonDocument>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonDocumentCacheModel)) {
+		if (!(object instanceof WatsonDocumentCacheModel)) {
 			return false;
 		}
 
 		WatsonDocumentCacheModel watsonDocumentCacheModel =
-			(WatsonDocumentCacheModel)obj;
+			(WatsonDocumentCacheModel)object;
 
 		if (watsonDocumentId == watsonDocumentCacheModel.watsonDocumentId) {
 			return true;

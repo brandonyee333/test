@@ -758,17 +758,17 @@ public class WatsonListTypeRelWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonListTypeRelWrapper)) {
+		if (!(object instanceof WatsonListTypeRelWrapper)) {
 			return false;
 		}
 
 		WatsonListTypeRelWrapper watsonListTypeRelWrapper =
-			(WatsonListTypeRelWrapper)obj;
+			(WatsonListTypeRelWrapper)object;
 
 		if (Objects.equals(
 				_watsonListTypeRel,

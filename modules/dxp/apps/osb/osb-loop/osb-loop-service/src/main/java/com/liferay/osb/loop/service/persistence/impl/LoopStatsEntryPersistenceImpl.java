@@ -1,24 +1,27 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.loop.service.persistence.impl;
+
+import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.loop.exception.NoSuchLoopStatsEntryException;
 import com.liferay.osb.loop.model.LoopStatsEntry;
 import com.liferay.osb.loop.model.impl.LoopStatsEntryImpl;
 import com.liferay.osb.loop.model.impl.LoopStatsEntryModelImpl;
 import com.liferay.osb.loop.service.persistence.LoopStatsEntryPersistence;
+
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -30,6 +33,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
@@ -50,29 +54,34 @@ import java.util.Set;
  * </p>
  *
  * @author Ethan Bustad
+ * @see LoopStatsEntryPersistence
+ * @see com.liferay.osb.loop.service.persistence.LoopStatsEntryUtil
  * @generated
  */
-public class LoopStatsEntryPersistenceImpl
-	extends BasePersistenceImpl<LoopStatsEntry>
+@ProviderType
+public class LoopStatsEntryPersistenceImpl extends BasePersistenceImpl<LoopStatsEntry>
 	implements LoopStatsEntryPersistence {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use <code>LoopStatsEntryUtil</code> to access the loop stats entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use {@link LoopStatsEntryUtil} to access the loop stats entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY =
-		LoopStatsEntryImpl.class.getName();
-
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List1";
-
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
-		FINDER_CLASS_NAME_ENTITY + ".List2";
-
-	private FinderPath _finderPathWithPaginationFindAll;
-	private FinderPath _finderPathWithoutPaginationFindAll;
-	private FinderPath _finderPathCountAll;
+	public static final String FINDER_CLASS_NAME_ENTITY = LoopStatsEntryImpl.class.getName();
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List1";
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
+		".List2";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
+			LoopStatsEntryModelImpl.FINDER_CACHE_ENABLED,
+			LoopStatsEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
+			LoopStatsEntryModelImpl.FINDER_CACHE_ENABLED,
+			LoopStatsEntryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
+			LoopStatsEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
 
 	public LoopStatsEntryPersistenceImpl() {
 		setModelClass(LoopStatsEntry.class);
@@ -85,8 +94,7 @@ public class LoopStatsEntryPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(LoopStatsEntry loopStatsEntry) {
-		entityCache.putResult(
-			LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			LoopStatsEntryImpl.class, loopStatsEntry.getPrimaryKey(),
 			loopStatsEntry);
 
@@ -102,10 +110,8 @@ public class LoopStatsEntryPersistenceImpl
 	public void cacheResult(List<LoopStatsEntry> loopStatsEntries) {
 		for (LoopStatsEntry loopStatsEntry : loopStatsEntries) {
 			if (entityCache.getResult(
-					LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
-					LoopStatsEntryImpl.class, loopStatsEntry.getPrimaryKey()) ==
-						null) {
-
+						LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
+						LoopStatsEntryImpl.class, loopStatsEntry.getPrimaryKey()) == null) {
 				cacheResult(loopStatsEntry);
 			}
 			else {
@@ -118,7 +124,7 @@ public class LoopStatsEntryPersistenceImpl
 	 * Clears the cache for all loop stats entries.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -134,13 +140,12 @@ public class LoopStatsEntryPersistenceImpl
 	 * Clears the cache for the loop stats entry.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
+	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(LoopStatsEntry loopStatsEntry) {
-		entityCache.removeResult(
-			LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			LoopStatsEntryImpl.class, loopStatsEntry.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -153,21 +158,8 @@ public class LoopStatsEntryPersistenceImpl
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (LoopStatsEntry loopStatsEntry : loopStatsEntries) {
-			entityCache.removeResult(
-				LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
 				LoopStatsEntryImpl.class, loopStatsEntry.getPrimaryKey());
-		}
-	}
-
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
-				LoopStatsEntryImpl.class, primaryKey);
 		}
 	}
 
@@ -197,7 +189,6 @@ public class LoopStatsEntryPersistenceImpl
 	@Override
 	public LoopStatsEntry remove(long loopStatsEntryId)
 		throws NoSuchLoopStatsEntryException {
-
 		return remove((Serializable)loopStatsEntryId);
 	}
 
@@ -211,31 +202,30 @@ public class LoopStatsEntryPersistenceImpl
 	@Override
 	public LoopStatsEntry remove(Serializable primaryKey)
 		throws NoSuchLoopStatsEntryException {
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			LoopStatsEntry loopStatsEntry = (LoopStatsEntry)session.get(
-				LoopStatsEntryImpl.class, primaryKey);
+			LoopStatsEntry loopStatsEntry = (LoopStatsEntry)session.get(LoopStatsEntryImpl.class,
+					primaryKey);
 
 			if (loopStatsEntry == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchLoopStatsEntryException(
-					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				throw new NoSuchLoopStatsEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+					primaryKey);
 			}
 
 			return remove(loopStatsEntry);
 		}
-		catch (NoSuchLoopStatsEntryException noSuchEntityException) {
-			throw noSuchEntityException;
+		catch (NoSuchLoopStatsEntryException nsee) {
+			throw nsee;
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -244,23 +234,24 @@ public class LoopStatsEntryPersistenceImpl
 
 	@Override
 	protected LoopStatsEntry removeImpl(LoopStatsEntry loopStatsEntry) {
+		loopStatsEntry = toUnwrappedModel(loopStatsEntry);
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(loopStatsEntry)) {
-				loopStatsEntry = (LoopStatsEntry)session.get(
-					LoopStatsEntryImpl.class,
-					loopStatsEntry.getPrimaryKeyObj());
+				loopStatsEntry = (LoopStatsEntry)session.get(LoopStatsEntryImpl.class,
+						loopStatsEntry.getPrimaryKeyObj());
 			}
 
 			if (loopStatsEntry != null) {
 				session.delete(loopStatsEntry);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -275,6 +266,8 @@ public class LoopStatsEntryPersistenceImpl
 
 	@Override
 	public LoopStatsEntry updateImpl(LoopStatsEntry loopStatsEntry) {
+		loopStatsEntry = toUnwrappedModel(loopStatsEntry);
+
 		boolean isNew = loopStatsEntry.isNew();
 
 		Session session = null;
@@ -291,8 +284,8 @@ public class LoopStatsEntryPersistenceImpl
 				loopStatsEntry = (LoopStatsEntry)session.merge(loopStatsEntry);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -301,13 +294,12 @@ public class LoopStatsEntryPersistenceImpl
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
 		if (isNew) {
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(
-			LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
 			LoopStatsEntryImpl.class, loopStatsEntry.getPrimaryKey(),
 			loopStatsEntry, false);
 
@@ -316,8 +308,27 @@ public class LoopStatsEntryPersistenceImpl
 		return loopStatsEntry;
 	}
 
+	protected LoopStatsEntry toUnwrappedModel(LoopStatsEntry loopStatsEntry) {
+		if (loopStatsEntry instanceof LoopStatsEntryImpl) {
+			return loopStatsEntry;
+		}
+
+		LoopStatsEntryImpl loopStatsEntryImpl = new LoopStatsEntryImpl();
+
+		loopStatsEntryImpl.setNew(loopStatsEntry.isNew());
+		loopStatsEntryImpl.setPrimaryKey(loopStatsEntry.getPrimaryKey());
+
+		loopStatsEntryImpl.setLoopStatsEntryId(loopStatsEntry.getLoopStatsEntryId());
+		loopStatsEntryImpl.setModifiedTime(loopStatsEntry.getModifiedTime());
+		loopStatsEntryImpl.setClassNameId(loopStatsEntry.getClassNameId());
+		loopStatsEntryImpl.setClassPK(loopStatsEntry.getClassPK());
+		loopStatsEntryImpl.setScore(loopStatsEntry.getScore());
+
+		return loopStatsEntryImpl;
+	}
+
 	/**
-	 * Returns the loop stats entry with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
+	 * Returns the loop stats entry with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the loop stats entry
 	 * @return the loop stats entry
@@ -326,7 +337,6 @@ public class LoopStatsEntryPersistenceImpl
 	@Override
 	public LoopStatsEntry findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchLoopStatsEntryException {
-
 		LoopStatsEntry loopStatsEntry = fetchByPrimaryKey(primaryKey);
 
 		if (loopStatsEntry == null) {
@@ -334,15 +344,15 @@ public class LoopStatsEntryPersistenceImpl
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchLoopStatsEntryException(
-				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			throw new NoSuchLoopStatsEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
 		}
 
 		return loopStatsEntry;
 	}
 
 	/**
-	 * Returns the loop stats entry with the primary key or throws a <code>NoSuchLoopStatsEntryException</code> if it could not be found.
+	 * Returns the loop stats entry with the primary key or throws a {@link NoSuchLoopStatsEntryException} if it could not be found.
 	 *
 	 * @param loopStatsEntryId the primary key of the loop stats entry
 	 * @return the loop stats entry
@@ -351,7 +361,6 @@ public class LoopStatsEntryPersistenceImpl
 	@Override
 	public LoopStatsEntry findByPrimaryKey(long loopStatsEntryId)
 		throws NoSuchLoopStatsEntryException {
-
 		return findByPrimaryKey((Serializable)loopStatsEntryId);
 	}
 
@@ -363,9 +372,8 @@ public class LoopStatsEntryPersistenceImpl
 	 */
 	@Override
 	public LoopStatsEntry fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(
-			LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			LoopStatsEntryImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
+				LoopStatsEntryImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -379,24 +387,22 @@ public class LoopStatsEntryPersistenceImpl
 			try {
 				session = openSession();
 
-				loopStatsEntry = (LoopStatsEntry)session.get(
-					LoopStatsEntryImpl.class, primaryKey);
+				loopStatsEntry = (LoopStatsEntry)session.get(LoopStatsEntryImpl.class,
+						primaryKey);
 
 				if (loopStatsEntry != null) {
 					cacheResult(loopStatsEntry);
 				}
 				else {
-					entityCache.putResult(
-						LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
 						LoopStatsEntryImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception exception) {
-				entityCache.removeResult(
-					LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception e) {
+				entityCache.removeResult(LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
 					LoopStatsEntryImpl.class, primaryKey);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -420,13 +426,11 @@ public class LoopStatsEntryPersistenceImpl
 	@Override
 	public Map<Serializable, LoopStatsEntry> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
-
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, LoopStatsEntry> map =
-			new HashMap<Serializable, LoopStatsEntry>();
+		Map<Serializable, LoopStatsEntry> map = new HashMap<Serializable, LoopStatsEntry>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -445,9 +449,8 @@ public class LoopStatsEntryPersistenceImpl
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(
-				LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
-				LoopStatsEntryImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
+					LoopStatsEntryImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -467,33 +470,31 @@ public class LoopStatsEntryPersistenceImpl
 			return map;
 		}
 
-		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
+				1);
 
-		sb.append(_SQL_SELECT_LOOPSTATSENTRY_WHERE_PKS_IN);
+		query.append(_SQL_SELECT_LOOPSTATSENTRY_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			sb.append((long)primaryKey);
+			query.append((long)primaryKey);
 
-			sb.append(",");
+			query.append(StringPool.COMMA);
 		}
 
-		sb.setIndex(sb.index() - 1);
+		query.setIndex(query.index() - 1);
 
-		sb.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
-		String sql = sb.toString();
+		String sql = query.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query query = session.createQuery(sql);
+			Query q = session.createQuery(sql);
 
-			for (LoopStatsEntry loopStatsEntry :
-					(List<LoopStatsEntry>)query.list()) {
-
+			for (LoopStatsEntry loopStatsEntry : (List<LoopStatsEntry>)q.list()) {
 				map.put(loopStatsEntry.getPrimaryKeyObj(), loopStatsEntry);
 
 				cacheResult(loopStatsEntry);
@@ -502,13 +503,12 @@ public class LoopStatsEntryPersistenceImpl
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(
-					LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
 					LoopStatsEntryImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception exception) {
-			throw processException(exception);
+		catch (Exception e) {
+			throw processException(e);
 		}
 		finally {
 			closeSession(session);
@@ -531,7 +531,7 @@ public class LoopStatsEntryPersistenceImpl
 	 * Returns a range of all the loop stats entries.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopStatsEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopStatsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of loop stats entries
@@ -547,7 +547,7 @@ public class LoopStatsEntryPersistenceImpl
 	 * Returns an ordered range of all the loop stats entries.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopStatsEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopStatsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of loop stats entries
@@ -556,10 +556,8 @@ public class LoopStatsEntryPersistenceImpl
 	 * @return the ordered range of loop stats entries
 	 */
 	@Override
-	public List<LoopStatsEntry> findAll(
-		int start, int end,
+	public List<LoopStatsEntry> findAll(int start, int end,
 		OrderByComparator<LoopStatsEntry> orderByComparator) {
-
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -567,62 +565,62 @@ public class LoopStatsEntryPersistenceImpl
 	 * Returns an ordered range of all the loop stats entries.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopStatsEntryModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopStatsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of loop stats entries
 	 * @param end the upper bound of the range of loop stats entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
+	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the ordered range of loop stats entries
 	 */
 	@Override
-	public List<LoopStatsEntry> findAll(
-		int start, int end, OrderByComparator<LoopStatsEntry> orderByComparator,
-		boolean useFinderCache) {
-
+	public List<LoopStatsEntry> findAll(int start, int end,
+		OrderByComparator<LoopStatsEntry> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
-				finderArgs = FINDER_ARGS_EMPTY;
-			}
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+			finderArgs = FINDER_ARGS_EMPTY;
 		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] {start, end, orderByComparator};
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
 		List<LoopStatsEntry> list = null;
 
-		if (useFinderCache) {
-			list = (List<LoopStatsEntry>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if (retrieveFromCache) {
+			list = (List<LoopStatsEntry>)finderCache.getResult(finderPath,
+					finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler sb = null;
+			StringBundler query = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				sb = new StringBundler(
-					2 + (orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(2 +
+						(orderByComparator.getOrderByFields().length * 2));
 
-				sb.append(_SQL_SELECT_LOOPSTATSENTRY);
+				query.append(_SQL_SELECT_LOOPSTATSENTRY);
 
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
 
-				sql = sb.toString();
+				sql = query.toString();
 			}
 			else {
 				sql = _SQL_SELECT_LOOPSTATSENTRY;
 
-				sql = sql.concat(LoopStatsEntryModelImpl.ORDER_BY_JPQL);
+				if (pagination) {
+					sql = sql.concat(LoopStatsEntryModelImpl.ORDER_BY_JPQL);
+				}
 			}
 
 			Session session = null;
@@ -630,23 +628,29 @@ public class LoopStatsEntryPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(sql);
+				Query q = session.createQuery(sql);
 
-				list = (List<LoopStatsEntry>)QueryUtil.list(
-					query, getDialect(), start, end);
+				if (!pagination) {
+					list = (List<LoopStatsEntry>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<LoopStatsEntry>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -674,8 +678,8 @@ public class LoopStatsEntryPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -683,18 +687,18 @@ public class LoopStatsEntryPersistenceImpl
 			try {
 				session = openSession();
 
-				Query query = session.createQuery(_SQL_COUNT_LOOPSTATSENTRY);
+				Query q = session.createQuery(_SQL_COUNT_LOOPSTATSENTRY);
 
-				count = (Long)query.uniqueResult();
+				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
+					count);
 			}
-			catch (Exception exception) {
-				finderCache.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY);
 
-				throw processException(exception);
+				throw processException(e);
 			}
 			finally {
 				closeSession(session);
@@ -713,23 +717,6 @@ public class LoopStatsEntryPersistenceImpl
 	 * Initializes the loop stats entry persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(
-			LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			LoopStatsEntryModelImpl.FINDER_CACHE_ENABLED,
-			LoopStatsEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
-
-		_finderPathWithoutPaginationFindAll = new FinderPath(
-			LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			LoopStatsEntryModelImpl.FINDER_CACHE_ENABLED,
-			LoopStatsEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findAll", new String[0]);
-
-		_finderPathCountAll = new FinderPath(
-			LoopStatsEntryModelImpl.ENTITY_CACHE_ENABLED,
-			LoopStatsEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
 	}
 
 	public void destroy() {
@@ -741,25 +728,12 @@ public class LoopStatsEntryPersistenceImpl
 
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
-
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-
-	private static final String _SQL_SELECT_LOOPSTATSENTRY =
-		"SELECT loopStatsEntry FROM LoopStatsEntry loopStatsEntry";
-
-	private static final String _SQL_SELECT_LOOPSTATSENTRY_WHERE_PKS_IN =
-		"SELECT loopStatsEntry FROM LoopStatsEntry loopStatsEntry WHERE loopStatsEntryId IN (";
-
-	private static final String _SQL_COUNT_LOOPSTATSENTRY =
-		"SELECT COUNT(loopStatsEntry) FROM LoopStatsEntry loopStatsEntry";
-
+	private static final String _SQL_SELECT_LOOPSTATSENTRY = "SELECT loopStatsEntry FROM LoopStatsEntry loopStatsEntry";
+	private static final String _SQL_SELECT_LOOPSTATSENTRY_WHERE_PKS_IN = "SELECT loopStatsEntry FROM LoopStatsEntry loopStatsEntry WHERE loopStatsEntryId IN (";
+	private static final String _SQL_COUNT_LOOPSTATSENTRY = "SELECT COUNT(loopStatsEntry) FROM LoopStatsEntry loopStatsEntry";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "loopStatsEntry.";
-
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
-		"No LoopStatsEntry exists with the primary key ";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		LoopStatsEntryPersistenceImpl.class);
-
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No LoopStatsEntry exists with the primary key ";
+	private static final Log _log = LogFactoryUtil.getLog(LoopStatsEntryPersistenceImpl.class);
 }

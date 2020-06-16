@@ -820,16 +820,16 @@ public class WatsonChildWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonChildWrapper)) {
+		if (!(object instanceof WatsonChildWrapper)) {
 			return false;
 		}
 
-		WatsonChildWrapper watsonChildWrapper = (WatsonChildWrapper)obj;
+		WatsonChildWrapper watsonChildWrapper = (WatsonChildWrapper)object;
 
 		if (Objects.equals(_watsonChild, watsonChildWrapper._watsonChild)) {
 			return true;

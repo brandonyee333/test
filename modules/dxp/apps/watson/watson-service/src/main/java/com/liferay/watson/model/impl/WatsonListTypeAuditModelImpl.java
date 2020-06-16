@@ -934,16 +934,16 @@ public class WatsonListTypeAuditModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof WatsonListTypeAudit)) {
+		if (!(object instanceof WatsonListTypeAudit)) {
 			return false;
 		}
 
-		WatsonListTypeAudit watsonListTypeAudit = (WatsonListTypeAudit)obj;
+		WatsonListTypeAudit watsonListTypeAudit = (WatsonListTypeAudit)object;
 
 		long primaryKey = watsonListTypeAudit.getPrimaryKey();
 
