@@ -1,30 +1,26 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.portal.workflow.kaleo.forms.service.base;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.dynamic.data.lists.service.persistence.DDLRecordPersistence;
 import com.liferay.dynamic.data.lists.service.persistence.DDLRecordSetPersistence;
-
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
-
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -45,10 +41,12 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.service.persistence.WorkflowDefinitionLinkPersistence;
 import com.liferay.portal.kernel.service.persistence.WorkflowInstanceLinkPersistence;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -73,17 +71,16 @@ import javax.sql.DataSource;
  *
  * @author Marcellus Tavares
  * @see com.liferay.portal.workflow.kaleo.forms.service.impl.KaleoProcessLocalServiceImpl
- * @see com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessLocalServiceUtil
  * @generated
  */
-@ProviderType
 public abstract class KaleoProcessLocalServiceBaseImpl
-	extends BaseLocalServiceImpl implements KaleoProcessLocalService,
-		IdentifiableOSGiService {
+	extends BaseLocalServiceImpl
+	implements IdentifiableOSGiService, KaleoProcessLocalService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessLocalServiceUtil} to access the kaleo process local service.
+	 * Never modify or reference this class directly. Use <code>KaleoProcessLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -107,6 +104,7 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 * @return the new kaleo process
 	 */
 	@Override
+	@Transactional(enabled = false)
 	public KaleoProcess createKaleoProcess(long kaleoProcessId) {
 		return kaleoProcessPersistence.create(kaleoProcessId);
 	}
@@ -122,6 +120,7 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	@Override
 	public KaleoProcess deleteKaleoProcess(long kaleoProcessId)
 		throws PortalException {
+
 		return kaleoProcessPersistence.remove(kaleoProcessId);
 	}
 
@@ -136,6 +135,7 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	@Override
 	public KaleoProcess deleteKaleoProcess(KaleoProcess kaleoProcess)
 		throws PortalException {
+
 		return kaleoProcessPersistence.remove(kaleoProcess);
 	}
 
@@ -143,8 +143,8 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(KaleoProcess.class,
-			clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(
+			KaleoProcess.class, clazz.getClassLoader());
 	}
 
 	/**
@@ -162,7 +162,7 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.workflow.kaleo.forms.model.impl.KaleoProcessModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portal.workflow.kaleo.forms.model.impl.KaleoProcessModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -171,17 +171,18 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end) {
-		return kaleoProcessPersistence.findWithDynamicQuery(dynamicQuery,
-			start, end);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
+
+		return kaleoProcessPersistence.findWithDynamicQuery(
+			dynamicQuery, start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.workflow.kaleo.forms.model.impl.KaleoProcessModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portal.workflow.kaleo.forms.model.impl.KaleoProcessModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -191,10 +192,12 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end, OrderByComparator<T> orderByComparator) {
-		return kaleoProcessPersistence.findWithDynamicQuery(dynamicQuery,
-			start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
+
+		return kaleoProcessPersistence.findWithDynamicQuery(
+			dynamicQuery, start, end, orderByComparator);
 	}
 
 	/**
@@ -216,10 +219,11 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection) {
-		return kaleoProcessPersistence.countWithDynamicQuery(dynamicQuery,
-			projection);
+	public long dynamicQueryCount(
+		DynamicQuery dynamicQuery, Projection projection) {
+
+		return kaleoProcessPersistence.countWithDynamicQuery(
+			dynamicQuery, projection);
 	}
 
 	@Override
@@ -235,8 +239,9 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 * @return the matching kaleo process, or <code>null</code> if a matching kaleo process could not be found
 	 */
 	@Override
-	public KaleoProcess fetchKaleoProcessByUuidAndGroupId(String uuid,
-		long groupId) {
+	public KaleoProcess fetchKaleoProcessByUuidAndGroupId(
+		String uuid, long groupId) {
+
 		return kaleoProcessPersistence.fetchByUUID_G(uuid, groupId);
 	}
 
@@ -250,12 +255,14 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	@Override
 	public KaleoProcess getKaleoProcess(long kaleoProcessId)
 		throws PortalException {
+
 		return kaleoProcessPersistence.findByPrimaryKey(kaleoProcessId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			new DefaultActionableDynamicQuery();
 
 		actionableDynamicQuery.setBaseLocalService(kaleoProcessLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
@@ -267,10 +274,14 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
+	public IndexableActionableDynamicQuery
+		getIndexableActionableDynamicQuery() {
 
-		indexableActionableDynamicQuery.setBaseLocalService(kaleoProcessLocalService);
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
+			new IndexableActionableDynamicQuery();
+
+		indexableActionableDynamicQuery.setBaseLocalService(
+			kaleoProcessLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(KaleoProcess.class);
 
@@ -282,6 +293,7 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
+
 		actionableDynamicQuery.setBaseLocalService(kaleoProcessLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(KaleoProcess.class);
@@ -292,49 +304,64 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	@Override
 	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
 		final PortletDataContext portletDataContext) {
-		final ExportActionableDynamicQuery exportActionableDynamicQuery = new ExportActionableDynamicQuery() {
+
+		final ExportActionableDynamicQuery exportActionableDynamicQuery =
+			new ExportActionableDynamicQuery() {
+
 				@Override
 				public long performCount() throws PortalException {
-					ManifestSummary manifestSummary = portletDataContext.getManifestSummary();
+					ManifestSummary manifestSummary =
+						portletDataContext.getManifestSummary();
 
 					StagedModelType stagedModelType = getStagedModelType();
 
 					long modelAdditionCount = super.performCount();
 
-					manifestSummary.addModelAdditionCount(stagedModelType,
-						modelAdditionCount);
+					manifestSummary.addModelAdditionCount(
+						stagedModelType, modelAdditionCount);
 
-					long modelDeletionCount = ExportImportHelperUtil.getModelDeletionCount(portletDataContext,
-							stagedModelType);
+					long modelDeletionCount =
+						ExportImportHelperUtil.getModelDeletionCount(
+							portletDataContext, stagedModelType);
 
-					manifestSummary.addModelDeletionCount(stagedModelType,
-						modelDeletionCount);
+					manifestSummary.addModelDeletionCount(
+						stagedModelType, modelDeletionCount);
 
 					return modelAdditionCount;
 				}
+
 			};
 
 		initActionableDynamicQuery(exportActionableDynamicQuery);
 
-		exportActionableDynamicQuery.setAddCriteriaMethod(new ActionableDynamicQuery.AddCriteriaMethod() {
+		exportActionableDynamicQuery.setAddCriteriaMethod(
+			new ActionableDynamicQuery.AddCriteriaMethod() {
+
 				@Override
 				public void addCriteria(DynamicQuery dynamicQuery) {
-					portletDataContext.addDateRangeCriteria(dynamicQuery,
-						"modifiedDate");
+					portletDataContext.addDateRangeCriteria(
+						dynamicQuery, "modifiedDate");
 				}
+
 			});
 
-		exportActionableDynamicQuery.setCompanyId(portletDataContext.getCompanyId());
+		exportActionableDynamicQuery.setCompanyId(
+			portletDataContext.getCompanyId());
 
-		exportActionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<KaleoProcess>() {
+		exportActionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<KaleoProcess>() {
+
 				@Override
 				public void performAction(KaleoProcess kaleoProcess)
 					throws PortalException {
-					StagedModelDataHandlerUtil.exportStagedModel(portletDataContext,
-						kaleoProcess);
+
+					StagedModelDataHandlerUtil.exportStagedModel(
+						portletDataContext, kaleoProcess);
 				}
+
 			});
-		exportActionableDynamicQuery.setStagedModelType(new StagedModelType(
+		exportActionableDynamicQuery.setStagedModelType(
+			new StagedModelType(
 				PortalUtil.getClassNameId(KaleoProcess.class.getName())));
 
 		return exportActionableDynamicQuery;
@@ -346,12 +373,22 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-		return kaleoProcessLocalService.deleteKaleoProcess((KaleoProcess)persistedModel);
+
+		return kaleoProcessLocalService.deleteKaleoProcess(
+			(KaleoProcess)persistedModel);
 	}
 
+	public BasePersistence<KaleoProcess> getBasePersistence() {
+		return kaleoProcessPersistence;
+	}
+
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
+
 		return kaleoProcessPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -363,8 +400,9 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 * @return the matching kaleo processes, or an empty list if no matches were found
 	 */
 	@Override
-	public List<KaleoProcess> getKaleoProcessesByUuidAndCompanyId(String uuid,
-		long companyId) {
+	public List<KaleoProcess> getKaleoProcessesByUuidAndCompanyId(
+		String uuid, long companyId) {
+
 		return kaleoProcessPersistence.findByUuid_C(uuid, companyId);
 	}
 
@@ -379,11 +417,12 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 * @return the range of matching kaleo processes, or an empty list if no matches were found
 	 */
 	@Override
-	public List<KaleoProcess> getKaleoProcessesByUuidAndCompanyId(String uuid,
-		long companyId, int start, int end,
+	public List<KaleoProcess> getKaleoProcessesByUuidAndCompanyId(
+		String uuid, long companyId, int start, int end,
 		OrderByComparator<KaleoProcess> orderByComparator) {
-		return kaleoProcessPersistence.findByUuid_C(uuid, companyId, start,
-			end, orderByComparator);
+
+		return kaleoProcessPersistence.findByUuid_C(
+			uuid, companyId, start, end, orderByComparator);
 	}
 
 	/**
@@ -395,8 +434,10 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 * @throws PortalException if a matching kaleo process could not be found
 	 */
 	@Override
-	public KaleoProcess getKaleoProcessByUuidAndGroupId(String uuid,
-		long groupId) throws PortalException {
+	public KaleoProcess getKaleoProcessByUuidAndGroupId(
+			String uuid, long groupId)
+		throws PortalException {
+
 		return kaleoProcessPersistence.findByUUID_G(uuid, groupId);
 	}
 
@@ -404,7 +445,7 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 * Returns a range of all the kaleo processes.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.workflow.kaleo.forms.model.impl.KaleoProcessModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portal.workflow.kaleo.forms.model.impl.KaleoProcessModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of kaleo processes
@@ -454,6 +495,7 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 */
 	public void setKaleoProcessLocalService(
 		KaleoProcessLocalService kaleoProcessLocalService) {
+
 		this.kaleoProcessLocalService = kaleoProcessLocalService;
 	}
 
@@ -473,6 +515,7 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 */
 	public void setKaleoProcessPersistence(
 		KaleoProcessPersistence kaleoProcessPersistence) {
+
 		this.kaleoProcessPersistence = kaleoProcessPersistence;
 	}
 
@@ -499,7 +542,10 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 *
 	 * @return the kaleo process link local service
 	 */
-	public com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessLinkLocalService getKaleoProcessLinkLocalService() {
+	public
+		com.liferay.portal.workflow.kaleo.forms.service.
+			KaleoProcessLinkLocalService getKaleoProcessLinkLocalService() {
+
 		return kaleoProcessLinkLocalService;
 	}
 
@@ -509,7 +555,9 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 * @param kaleoProcessLinkLocalService the kaleo process link local service
 	 */
 	public void setKaleoProcessLinkLocalService(
-		com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessLinkLocalService kaleoProcessLinkLocalService) {
+		com.liferay.portal.workflow.kaleo.forms.service.
+			KaleoProcessLinkLocalService kaleoProcessLinkLocalService) {
+
 		this.kaleoProcessLinkLocalService = kaleoProcessLinkLocalService;
 	}
 
@@ -529,6 +577,7 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 */
 	public void setKaleoProcessLinkPersistence(
 		KaleoProcessLinkPersistence kaleoProcessLinkPersistence) {
+
 		this.kaleoProcessLinkPersistence = kaleoProcessLinkPersistence;
 	}
 
@@ -537,7 +586,9 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
+	public com.liferay.counter.kernel.service.CounterLocalService
+		getCounterLocalService() {
+
 		return counterLocalService;
 	}
 
@@ -547,7 +598,9 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
+		com.liferay.counter.kernel.service.CounterLocalService
+			counterLocalService) {
+
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -556,7 +609,9 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 *
 	 * @return the ddl record local service
 	 */
-	public com.liferay.dynamic.data.lists.service.DDLRecordLocalService getDDLRecordLocalService() {
+	public com.liferay.dynamic.data.lists.service.DDLRecordLocalService
+		getDDLRecordLocalService() {
+
 		return ddlRecordLocalService;
 	}
 
@@ -566,7 +621,9 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 * @param ddlRecordLocalService the ddl record local service
 	 */
 	public void setDDLRecordLocalService(
-		com.liferay.dynamic.data.lists.service.DDLRecordLocalService ddlRecordLocalService) {
+		com.liferay.dynamic.data.lists.service.DDLRecordLocalService
+			ddlRecordLocalService) {
+
 		this.ddlRecordLocalService = ddlRecordLocalService;
 	}
 
@@ -586,6 +643,7 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 */
 	public void setDDLRecordPersistence(
 		DDLRecordPersistence ddlRecordPersistence) {
+
 		this.ddlRecordPersistence = ddlRecordPersistence;
 	}
 
@@ -594,7 +652,9 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 *
 	 * @return the ddl record set local service
 	 */
-	public com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService getDDLRecordSetLocalService() {
+	public com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService
+		getDDLRecordSetLocalService() {
+
 		return ddlRecordSetLocalService;
 	}
 
@@ -604,7 +664,9 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 * @param ddlRecordSetLocalService the ddl record set local service
 	 */
 	public void setDDLRecordSetLocalService(
-		com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService ddlRecordSetLocalService) {
+		com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService
+			ddlRecordSetLocalService) {
+
 		this.ddlRecordSetLocalService = ddlRecordSetLocalService;
 	}
 
@@ -624,6 +686,7 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 */
 	public void setDDLRecordSetPersistence(
 		DDLRecordSetPersistence ddlRecordSetPersistence) {
+
 		this.ddlRecordSetPersistence = ddlRecordSetPersistence;
 	}
 
@@ -632,7 +695,9 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
+	public com.liferay.portal.kernel.service.ClassNameLocalService
+		getClassNameLocalService() {
+
 		return classNameLocalService;
 	}
 
@@ -642,7 +707,9 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
+		com.liferay.portal.kernel.service.ClassNameLocalService
+			classNameLocalService) {
+
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -662,6 +729,7 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
+
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -670,7 +738,9 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
+	public com.liferay.portal.kernel.service.ResourceLocalService
+		getResourceLocalService() {
+
 		return resourceLocalService;
 	}
 
@@ -680,7 +750,9 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
+		com.liferay.portal.kernel.service.ResourceLocalService
+			resourceLocalService) {
+
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -689,7 +761,9 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
+	public com.liferay.portal.kernel.service.UserLocalService
+		getUserLocalService() {
+
 		return userLocalService;
 	}
 
@@ -700,6 +774,7 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
+
 		this.userLocalService = userLocalService;
 	}
 
@@ -726,7 +801,9 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 *
 	 * @return the workflow definition link local service
 	 */
-	public com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService getWorkflowDefinitionLinkLocalService() {
+	public com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService
+		getWorkflowDefinitionLinkLocalService() {
+
 		return workflowDefinitionLinkLocalService;
 	}
 
@@ -736,8 +813,11 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 * @param workflowDefinitionLinkLocalService the workflow definition link local service
 	 */
 	public void setWorkflowDefinitionLinkLocalService(
-		com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService workflowDefinitionLinkLocalService) {
-		this.workflowDefinitionLinkLocalService = workflowDefinitionLinkLocalService;
+		com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService
+			workflowDefinitionLinkLocalService) {
+
+		this.workflowDefinitionLinkLocalService =
+			workflowDefinitionLinkLocalService;
 	}
 
 	/**
@@ -745,7 +825,9 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 *
 	 * @return the workflow definition link persistence
 	 */
-	public WorkflowDefinitionLinkPersistence getWorkflowDefinitionLinkPersistence() {
+	public WorkflowDefinitionLinkPersistence
+		getWorkflowDefinitionLinkPersistence() {
+
 		return workflowDefinitionLinkPersistence;
 	}
 
@@ -756,7 +838,9 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 */
 	public void setWorkflowDefinitionLinkPersistence(
 		WorkflowDefinitionLinkPersistence workflowDefinitionLinkPersistence) {
-		this.workflowDefinitionLinkPersistence = workflowDefinitionLinkPersistence;
+
+		this.workflowDefinitionLinkPersistence =
+			workflowDefinitionLinkPersistence;
 	}
 
 	/**
@@ -764,7 +848,9 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 *
 	 * @return the workflow instance link local service
 	 */
-	public com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService getWorkflowInstanceLinkLocalService() {
+	public com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService
+		getWorkflowInstanceLinkLocalService() {
+
 		return workflowInstanceLinkLocalService;
 	}
 
@@ -774,8 +860,11 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 * @param workflowInstanceLinkLocalService the workflow instance link local service
 	 */
 	public void setWorkflowInstanceLinkLocalService(
-		com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService workflowInstanceLinkLocalService) {
-		this.workflowInstanceLinkLocalService = workflowInstanceLinkLocalService;
+		com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService
+			workflowInstanceLinkLocalService) {
+
+		this.workflowInstanceLinkLocalService =
+			workflowInstanceLinkLocalService;
 	}
 
 	/**
@@ -783,7 +872,9 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 *
 	 * @return the workflow instance link persistence
 	 */
-	public WorkflowInstanceLinkPersistence getWorkflowInstanceLinkPersistence() {
+	public WorkflowInstanceLinkPersistence
+		getWorkflowInstanceLinkPersistence() {
+
 		return workflowInstanceLinkPersistence;
 	}
 
@@ -794,11 +885,13 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 	 */
 	public void setWorkflowInstanceLinkPersistence(
 		WorkflowInstanceLinkPersistence workflowInstanceLinkPersistence) {
+
 		this.workflowInstanceLinkPersistence = workflowInstanceLinkPersistence;
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register("com.liferay.portal.workflow.kaleo.forms.model.KaleoProcess",
+		persistedModelLocalServiceRegistry.register(
+			"com.liferay.portal.workflow.kaleo.forms.model.KaleoProcess",
 			kaleoProcessLocalService);
 	}
 
@@ -839,54 +932,105 @@ public abstract class KaleoProcessLocalServiceBaseImpl
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
-					sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
+				dataSource, sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception e) {
-			throw new SystemException(e);
+		catch (Exception exception) {
+			throw new SystemException(exception);
 		}
 	}
 
 	@BeanReference(type = KaleoProcessLocalService.class)
 	protected KaleoProcessLocalService kaleoProcessLocalService;
+
 	@BeanReference(type = KaleoProcessPersistence.class)
 	protected KaleoProcessPersistence kaleoProcessPersistence;
+
 	@BeanReference(type = KaleoProcessFinder.class)
 	protected KaleoProcessFinder kaleoProcessFinder;
-	@BeanReference(type = com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessLinkLocalService.class)
-	protected com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessLinkLocalService kaleoProcessLinkLocalService;
+
+	@BeanReference(
+		type = com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessLinkLocalService.class
+	)
+	protected
+		com.liferay.portal.workflow.kaleo.forms.service.
+			KaleoProcessLinkLocalService kaleoProcessLinkLocalService;
+
 	@BeanReference(type = KaleoProcessLinkPersistence.class)
 	protected KaleoProcessLinkPersistence kaleoProcessLinkPersistence;
-	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
-	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
-	@ServiceReference(type = com.liferay.dynamic.data.lists.service.DDLRecordLocalService.class)
-	protected com.liferay.dynamic.data.lists.service.DDLRecordLocalService ddlRecordLocalService;
+
+	@ServiceReference(
+		type = com.liferay.counter.kernel.service.CounterLocalService.class
+	)
+	protected com.liferay.counter.kernel.service.CounterLocalService
+		counterLocalService;
+
+	@ServiceReference(
+		type = com.liferay.dynamic.data.lists.service.DDLRecordLocalService.class
+	)
+	protected com.liferay.dynamic.data.lists.service.DDLRecordLocalService
+		ddlRecordLocalService;
+
 	@ServiceReference(type = DDLRecordPersistence.class)
 	protected DDLRecordPersistence ddlRecordPersistence;
-	@ServiceReference(type = com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService.class)
-	protected com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService ddlRecordSetLocalService;
+
+	@ServiceReference(
+		type = com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService.class
+	)
+	protected com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService
+		ddlRecordSetLocalService;
+
 	@ServiceReference(type = DDLRecordSetPersistence.class)
 	protected DDLRecordSetPersistence ddlRecordSetPersistence;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService
+		classNameLocalService;
+
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
-	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
-	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ResourceLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ResourceLocalService
+		resourceLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.UserLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.UserLocalService
+		userLocalService;
+
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-	@ServiceReference(type = com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService.class)
-	protected com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService workflowDefinitionLinkLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService.class
+	)
+	protected
+		com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService
+			workflowDefinitionLinkLocalService;
+
 	@ServiceReference(type = WorkflowDefinitionLinkPersistence.class)
-	protected WorkflowDefinitionLinkPersistence workflowDefinitionLinkPersistence;
-	@ServiceReference(type = com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService.class)
-	protected com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService workflowInstanceLinkLocalService;
+	protected WorkflowDefinitionLinkPersistence
+		workflowDefinitionLinkPersistence;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService
+		workflowInstanceLinkLocalService;
+
 	@ServiceReference(type = WorkflowInstanceLinkPersistence.class)
 	protected WorkflowInstanceLinkPersistence workflowInstanceLinkPersistence;
+
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
+	protected PersistedModelLocalServiceRegistry
+		persistedModelLocalServiceRegistry;
+
 }

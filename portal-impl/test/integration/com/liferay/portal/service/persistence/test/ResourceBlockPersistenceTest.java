@@ -32,17 +32,9 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
-
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
 
 import java.io.Serializable;
 
@@ -54,14 +46,23 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+
 /**
  * @generated
  */
 public class ResourceBlockPersistenceTest {
+
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
-			PersistenceTestRule.INSTANCE,
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
 			new TransactionalTestRule(Propagation.REQUIRED));
 
 	@Before
@@ -101,7 +102,8 @@ public class ResourceBlockPersistenceTest {
 
 		_persistence.remove(newResourceBlock);
 
-		ResourceBlock existingResourceBlock = _persistence.fetchByPrimaryKey(newResourceBlock.getPrimaryKey());
+		ResourceBlock existingResourceBlock = _persistence.fetchByPrimaryKey(
+			newResourceBlock.getPrimaryKey());
 
 		Assert.assertNull(existingResourceBlock);
 	}
@@ -131,49 +133,55 @@ public class ResourceBlockPersistenceTest {
 
 		_resourceBlocks.add(_persistence.update(newResourceBlock));
 
-		ResourceBlock existingResourceBlock = _persistence.findByPrimaryKey(newResourceBlock.getPrimaryKey());
+		ResourceBlock existingResourceBlock = _persistence.findByPrimaryKey(
+			newResourceBlock.getPrimaryKey());
 
-		Assert.assertEquals(existingResourceBlock.getMvccVersion(),
+		Assert.assertEquals(
+			existingResourceBlock.getMvccVersion(),
 			newResourceBlock.getMvccVersion());
-		Assert.assertEquals(existingResourceBlock.getResourceBlockId(),
+		Assert.assertEquals(
+			existingResourceBlock.getResourceBlockId(),
 			newResourceBlock.getResourceBlockId());
-		Assert.assertEquals(existingResourceBlock.getCompanyId(),
+		Assert.assertEquals(
+			existingResourceBlock.getCompanyId(),
 			newResourceBlock.getCompanyId());
-		Assert.assertEquals(existingResourceBlock.getGroupId(),
-			newResourceBlock.getGroupId());
-		Assert.assertEquals(existingResourceBlock.getName(),
-			newResourceBlock.getName());
-		Assert.assertEquals(existingResourceBlock.getPermissionsHash(),
+		Assert.assertEquals(
+			existingResourceBlock.getGroupId(), newResourceBlock.getGroupId());
+		Assert.assertEquals(
+			existingResourceBlock.getName(), newResourceBlock.getName());
+		Assert.assertEquals(
+			existingResourceBlock.getPermissionsHash(),
 			newResourceBlock.getPermissionsHash());
-		Assert.assertEquals(existingResourceBlock.getReferenceCount(),
+		Assert.assertEquals(
+			existingResourceBlock.getReferenceCount(),
 			newResourceBlock.getReferenceCount());
 	}
 
 	@Test
 	public void testCountByC_N() throws Exception {
-		_persistence.countByC_N(RandomTestUtil.nextLong(), StringPool.BLANK);
+		_persistence.countByC_N(RandomTestUtil.nextLong(), "");
 
-		_persistence.countByC_N(0L, StringPool.NULL);
+		_persistence.countByC_N(0L, "null");
 
 		_persistence.countByC_N(0L, (String)null);
 	}
 
 	@Test
 	public void testCountByC_G_N() throws Exception {
-		_persistence.countByC_G_N(RandomTestUtil.nextLong(),
-			RandomTestUtil.nextLong(), StringPool.BLANK);
+		_persistence.countByC_G_N(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(), "");
 
-		_persistence.countByC_G_N(0L, 0L, StringPool.NULL);
+		_persistence.countByC_G_N(0L, 0L, "null");
 
 		_persistence.countByC_G_N(0L, 0L, (String)null);
 	}
 
 	@Test
 	public void testCountByC_G_N_P() throws Exception {
-		_persistence.countByC_G_N_P(RandomTestUtil.nextLong(),
-			RandomTestUtil.nextLong(), StringPool.BLANK, StringPool.BLANK);
+		_persistence.countByC_G_N_P(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(), "", "");
 
-		_persistence.countByC_G_N_P(0L, 0L, StringPool.NULL, StringPool.NULL);
+		_persistence.countByC_G_N_P(0L, 0L, "null", "null");
 
 		_persistence.countByC_G_N_P(0L, 0L, (String)null, (String)null);
 	}
@@ -182,7 +190,8 @@ public class ResourceBlockPersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		ResourceBlock newResourceBlock = addResourceBlock();
 
-		ResourceBlock existingResourceBlock = _persistence.findByPrimaryKey(newResourceBlock.getPrimaryKey());
+		ResourceBlock existingResourceBlock = _persistence.findByPrimaryKey(
+			newResourceBlock.getPrimaryKey());
 
 		Assert.assertEquals(existingResourceBlock, newResourceBlock);
 	}
@@ -196,22 +205,23 @@ public class ResourceBlockPersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			getOrderByComparator());
+		_persistence.findAll(
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
 	}
 
 	protected OrderByComparator<ResourceBlock> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create("ResourceBlock",
-			"mvccVersion", true, "resourceBlockId", true, "companyId", true,
-			"groupId", true, "name", true, "permissionsHash", true,
-			"referenceCount", true);
+		return OrderByComparatorFactoryUtil.create(
+			"ResourceBlock", "mvccVersion", true, "resourceBlockId", true,
+			"companyId", true, "groupId", true, "name", true, "permissionsHash",
+			true, "referenceCount", true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		ResourceBlock newResourceBlock = addResourceBlock();
 
-		ResourceBlock existingResourceBlock = _persistence.fetchByPrimaryKey(newResourceBlock.getPrimaryKey());
+		ResourceBlock existingResourceBlock = _persistence.fetchByPrimaryKey(
+			newResourceBlock.getPrimaryKey());
 
 		Assert.assertEquals(existingResourceBlock, newResourceBlock);
 	}
@@ -228,6 +238,7 @@ public class ResourceBlockPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
+
 		ResourceBlock newResourceBlock1 = addResourceBlock();
 		ResourceBlock newResourceBlock2 = addResourceBlock();
 
@@ -236,18 +247,22 @@ public class ResourceBlockPersistenceTest {
 		primaryKeys.add(newResourceBlock1.getPrimaryKey());
 		primaryKeys.add(newResourceBlock2.getPrimaryKey());
 
-		Map<Serializable, ResourceBlock> resourceBlocks = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ResourceBlock> resourceBlocks =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(2, resourceBlocks.size());
-		Assert.assertEquals(newResourceBlock1,
+		Assert.assertEquals(
+			newResourceBlock1,
 			resourceBlocks.get(newResourceBlock1.getPrimaryKey()));
-		Assert.assertEquals(newResourceBlock2,
+		Assert.assertEquals(
+			newResourceBlock2,
 			resourceBlocks.get(newResourceBlock2.getPrimaryKey()));
 	}
 
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
+
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -257,7 +272,8 @@ public class ResourceBlockPersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, ResourceBlock> resourceBlocks = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ResourceBlock> resourceBlocks =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(resourceBlocks.isEmpty());
 	}
@@ -265,6 +281,7 @@ public class ResourceBlockPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
+
 		ResourceBlock newResourceBlock = addResourceBlock();
 
 		long pk = RandomTestUtil.nextLong();
@@ -274,36 +291,39 @@ public class ResourceBlockPersistenceTest {
 		primaryKeys.add(newResourceBlock.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, ResourceBlock> resourceBlocks = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ResourceBlock> resourceBlocks =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, resourceBlocks.size());
-		Assert.assertEquals(newResourceBlock,
+		Assert.assertEquals(
+			newResourceBlock,
 			resourceBlocks.get(newResourceBlock.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, ResourceBlock> resourceBlocks = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ResourceBlock> resourceBlocks =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(resourceBlocks.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
 		ResourceBlock newResourceBlock = addResourceBlock();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newResourceBlock.getPrimaryKey());
 
-		Map<Serializable, ResourceBlock> resourceBlocks = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ResourceBlock> resourceBlocks =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, resourceBlocks.size());
-		Assert.assertEquals(newResourceBlock,
+		Assert.assertEquals(
+			newResourceBlock,
 			resourceBlocks.get(newResourceBlock.getPrimaryKey()));
 	}
 
@@ -311,15 +331,19 @@ public class ResourceBlockPersistenceTest {
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery = ResourceBlockLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			ResourceBlockLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<ResourceBlock>() {
+		actionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<ResourceBlock>() {
+
 				@Override
 				public void performAction(ResourceBlock resourceBlock) {
 					Assert.assertNotNull(resourceBlock);
 
 					count.increment();
 				}
+
 			});
 
 		actionableDynamicQuery.performActions();
@@ -328,17 +352,18 @@ public class ResourceBlockPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting()
-		throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
 		ResourceBlock newResourceBlock = addResourceBlock();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(ResourceBlock.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			ResourceBlock.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("resourceBlockId",
-				newResourceBlock.getResourceBlockId()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"resourceBlockId", newResourceBlock.getResourceBlockId()));
 
-		List<ResourceBlock> result = _persistence.findWithDynamicQuery(dynamicQuery);
+		List<ResourceBlock> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
 
 		Assert.assertEquals(1, result.size());
 
@@ -349,32 +374,34 @@ public class ResourceBlockPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(ResourceBlock.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			ResourceBlock.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("resourceBlockId",
-				RandomTestUtil.nextLong()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"resourceBlockId", RandomTestUtil.nextLong()));
 
-		List<ResourceBlock> result = _persistence.findWithDynamicQuery(dynamicQuery);
+		List<ResourceBlock> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
 
 		Assert.assertEquals(0, result.size());
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting()
-		throws Exception {
+	public void testDynamicQueryByProjectionExisting() throws Exception {
 		ResourceBlock newResourceBlock = addResourceBlock();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(ResourceBlock.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			ResourceBlock.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property(
-				"resourceBlockId"));
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.property("resourceBlockId"));
 
 		Object newResourceBlockId = newResourceBlock.getResourceBlockId();
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("resourceBlockId",
-				new Object[] { newResourceBlockId }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"resourceBlockId", new Object[] {newResourceBlockId}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -387,14 +414,15 @@ public class ResourceBlockPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(ResourceBlock.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			ResourceBlock.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property(
-				"resourceBlockId"));
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.property("resourceBlockId"));
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("resourceBlockId",
-				new Object[] { RandomTestUtil.nextLong() }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"resourceBlockId", new Object[] {RandomTestUtil.nextLong()}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -407,21 +435,30 @@ public class ResourceBlockPersistenceTest {
 
 		_persistence.clearCache();
 
-		ResourceBlock existingResourceBlock = _persistence.findByPrimaryKey(newResourceBlock.getPrimaryKey());
+		ResourceBlock existingResourceBlock = _persistence.findByPrimaryKey(
+			newResourceBlock.getPrimaryKey());
 
-		Assert.assertEquals(Long.valueOf(existingResourceBlock.getCompanyId()),
-			ReflectionTestUtil.<Long>invoke(existingResourceBlock,
-				"getOriginalCompanyId", new Class<?>[0]));
-		Assert.assertEquals(Long.valueOf(existingResourceBlock.getGroupId()),
-			ReflectionTestUtil.<Long>invoke(existingResourceBlock,
-				"getOriginalGroupId", new Class<?>[0]));
-		Assert.assertTrue(Objects.equals(existingResourceBlock.getName(),
-				ReflectionTestUtil.invoke(existingResourceBlock,
-					"getOriginalName", new Class<?>[0])));
-		Assert.assertTrue(Objects.equals(
+		Assert.assertEquals(
+			Long.valueOf(existingResourceBlock.getCompanyId()),
+			ReflectionTestUtil.<Long>invoke(
+				existingResourceBlock, "getOriginalCompanyId",
+				new Class<?>[0]));
+		Assert.assertEquals(
+			Long.valueOf(existingResourceBlock.getGroupId()),
+			ReflectionTestUtil.<Long>invoke(
+				existingResourceBlock, "getOriginalGroupId", new Class<?>[0]));
+		Assert.assertTrue(
+			Objects.equals(
+				existingResourceBlock.getName(),
+				ReflectionTestUtil.invoke(
+					existingResourceBlock, "getOriginalName",
+					new Class<?>[0])));
+		Assert.assertTrue(
+			Objects.equals(
 				existingResourceBlock.getPermissionsHash(),
-				ReflectionTestUtil.invoke(existingResourceBlock,
-					"getOriginalPermissionsHash", new Class<?>[0])));
+				ReflectionTestUtil.invoke(
+					existingResourceBlock, "getOriginalPermissionsHash",
+					new Class<?>[0])));
 	}
 
 	protected ResourceBlock addResourceBlock() throws Exception {
@@ -446,7 +483,9 @@ public class ResourceBlockPersistenceTest {
 		return resourceBlock;
 	}
 
-	private List<ResourceBlock> _resourceBlocks = new ArrayList<ResourceBlock>();
+	private List<ResourceBlock> _resourceBlocks =
+		new ArrayList<ResourceBlock>();
 	private ResourceBlockPersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
+
 }

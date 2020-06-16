@@ -1,26 +1,22 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.watson.login.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-
 import com.liferay.watson.login.model.WatsonTokenAuthEntry;
 
 import java.io.Externalizable;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing WatsonTokenAuthEntry in entity cache.
  *
  * @author Steven Smith
- * @see WatsonTokenAuthEntry
  * @generated
  */
-@ProviderType
-public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAuthEntry>,
-	Externalizable {
+public class WatsonTokenAuthEntryCacheModel
+	implements CacheModel<WatsonTokenAuthEntry>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,9 +45,12 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 			return false;
 		}
 
-		WatsonTokenAuthEntryCacheModel watsonTokenAuthEntryCacheModel = (WatsonTokenAuthEntryCacheModel)obj;
+		WatsonTokenAuthEntryCacheModel watsonTokenAuthEntryCacheModel =
+			(WatsonTokenAuthEntryCacheModel)obj;
 
-		if (watsonTokenAuthEntryId == watsonTokenAuthEntryCacheModel.watsonTokenAuthEntryId) {
+		if (watsonTokenAuthEntryId ==
+				watsonTokenAuthEntryCacheModel.watsonTokenAuthEntryId) {
+
 			return true;
 		}
 
@@ -97,14 +95,16 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 
 	@Override
 	public WatsonTokenAuthEntry toEntityModel() {
-		WatsonTokenAuthEntryImpl watsonTokenAuthEntryImpl = new WatsonTokenAuthEntryImpl();
+		WatsonTokenAuthEntryImpl watsonTokenAuthEntryImpl =
+			new WatsonTokenAuthEntryImpl();
 
-		watsonTokenAuthEntryImpl.setWatsonTokenAuthEntryId(watsonTokenAuthEntryId);
+		watsonTokenAuthEntryImpl.setWatsonTokenAuthEntryId(
+			watsonTokenAuthEntryId);
 		watsonTokenAuthEntryImpl.setCompanyId(companyId);
 		watsonTokenAuthEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonTokenAuthEntryImpl.setUserName(StringPool.BLANK);
+			watsonTokenAuthEntryImpl.setUserName("");
 		}
 		else {
 			watsonTokenAuthEntryImpl.setUserName(userName);
@@ -120,14 +120,14 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 		watsonTokenAuthEntryImpl.setActive(active);
 
 		if (loginIP == null) {
-			watsonTokenAuthEntryImpl.setLoginIP(StringPool.BLANK);
+			watsonTokenAuthEntryImpl.setLoginIP("");
 		}
 		else {
 			watsonTokenAuthEntryImpl.setLoginIP(loginIP);
 		}
 
 		if (token == null) {
-			watsonTokenAuthEntryImpl.setToken(StringPool.BLANK);
+			watsonTokenAuthEntryImpl.setToken("");
 		}
 		else {
 			watsonTokenAuthEntryImpl.setToken(token);
@@ -137,7 +137,8 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 			watsonTokenAuthEntryImpl.setExpirationDate(null);
 		}
 		else {
-			watsonTokenAuthEntryImpl.setExpirationDate(new Date(expirationDate));
+			watsonTokenAuthEntryImpl.setExpirationDate(
+				new Date(expirationDate));
 		}
 
 		if (loginDate == Long.MIN_VALUE) {
@@ -174,8 +175,7 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonTokenAuthEntryId);
 
 		objectOutput.writeLong(companyId);
@@ -183,7 +183,7 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -194,14 +194,14 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 		objectOutput.writeBoolean(active);
 
 		if (loginIP == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(loginIP);
 		}
 
 		if (token == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(token);
@@ -224,4 +224,5 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 	public long expirationDate;
 	public long loginDate;
 	public int status;
+
 }

@@ -16,17 +16,46 @@ package com.liferay.portlet.documentlibrary.service.persistence.impl;
 
 import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.document.library.kernel.service.persistence.DLFileEntryTypePersistence;
-
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 
+import java.lang.reflect.Field;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
  * @author Brian Wing Shun Chan
  * @generated
  */
-public class DLFileEntryTypeFinderBaseImpl extends BasePersistenceImpl<DLFileEntryType> {
+public class DLFileEntryTypeFinderBaseImpl
+	extends BasePersistenceImpl<DLFileEntryType> {
+
+	public DLFileEntryTypeFinderBaseImpl() {
+		setModelClass(DLFileEntryType.class);
+
+		Map<String, String> dbColumnNames = new HashMap<String, String>();
+
+		dbColumnNames.put("uuid", "uuid_");
+
+		try {
+			Field field = BasePersistenceImpl.class.getDeclaredField(
+				"_dbColumnNames");
+
+			field.setAccessible(true);
+
+			field.set(this, dbColumnNames);
+		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(exception, exception);
+			}
+		}
+	}
+
 	@Override
 	public Set<String> getBadColumnNames() {
 		return getDLFileEntryTypePersistence().getBadColumnNames();
@@ -48,9 +77,14 @@ public class DLFileEntryTypeFinderBaseImpl extends BasePersistenceImpl<DLFileEnt
 	 */
 	public void setDLFileEntryTypePersistence(
 		DLFileEntryTypePersistence dlFileEntryTypePersistence) {
+
 		this.dlFileEntryTypePersistence = dlFileEntryTypePersistence;
 	}
 
 	@BeanReference(type = DLFileEntryTypePersistence.class)
 	protected DLFileEntryTypePersistence dlFileEntryTypePersistence;
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		DLFileEntryTypeFinderBaseImpl.class);
+
 }

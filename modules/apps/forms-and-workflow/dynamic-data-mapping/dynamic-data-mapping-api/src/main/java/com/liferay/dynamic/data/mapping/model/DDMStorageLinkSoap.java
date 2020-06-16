@@ -14,8 +14,6 @@
 
 package com.liferay.dynamic.data.mapping.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -27,8 +25,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class DDMStorageLinkSoap implements Serializable {
+
 	public static DDMStorageLinkSoap toSoapModel(DDMStorageLink model) {
 		DDMStorageLinkSoap soapModel = new DDMStorageLinkSoap();
 
@@ -52,11 +50,14 @@ public class DDMStorageLinkSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static DDMStorageLinkSoap[][] toSoapModels(DDMStorageLink[][] models) {
+	public static DDMStorageLinkSoap[][] toSoapModels(
+		DDMStorageLink[][] models) {
+
 		DDMStorageLinkSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new DDMStorageLinkSoap[models.length][models[0].length];
+			soapModels =
+				new DDMStorageLinkSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new DDMStorageLinkSoap[0][0];
@@ -69,8 +70,11 @@ public class DDMStorageLinkSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static DDMStorageLinkSoap[] toSoapModels(List<DDMStorageLink> models) {
-		List<DDMStorageLinkSoap> soapModels = new ArrayList<DDMStorageLinkSoap>(models.size());
+	public static DDMStorageLinkSoap[] toSoapModels(
+		List<DDMStorageLink> models) {
+
+		List<DDMStorageLinkSoap> soapModels = new ArrayList<DDMStorageLinkSoap>(
+			models.size());
 
 		for (DDMStorageLink model : models) {
 			soapModels.add(toSoapModel(model));
@@ -144,4 +148,5 @@ public class DDMStorageLinkSoap implements Serializable {
 	private long _classNameId;
 	private long _classPK;
 	private long _structureId;
+
 }

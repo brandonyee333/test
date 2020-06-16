@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,11 +34,12 @@ import java.util.Objects;
  * @see TestrayProductVersion
  * @generated
  */
-@ProviderType
-public class TestrayProductVersionWrapper implements TestrayProductVersion,
-	ModelWrapper<TestrayProductVersion> {
+public class TestrayProductVersionWrapper
+	implements ModelWrapper<TestrayProductVersion>, TestrayProductVersion {
+
 	public TestrayProductVersionWrapper(
 		TestrayProductVersion testrayProductVersion) {
+
 		_testrayProductVersion = testrayProductVersion;
 	}
 
@@ -75,7 +73,7 @@ public class TestrayProductVersionWrapper implements TestrayProductVersion,
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
 		Long testrayProductVersionId = (Long)attributes.get(
-				"testrayProductVersionId");
+			"testrayProductVersionId");
 
 		if (testrayProductVersionId != null) {
 			setTestrayProductVersionId(testrayProductVersionId);
@@ -131,13 +129,139 @@ public class TestrayProductVersionWrapper implements TestrayProductVersion,
 	}
 
 	@Override
-	public TestrayProductVersion toEscapedModel() {
-		return new TestrayProductVersionWrapper(_testrayProductVersion.toEscapedModel());
+	public Object clone() {
+		return new TestrayProductVersionWrapper(
+			(TestrayProductVersion)_testrayProductVersion.clone());
 	}
 
 	@Override
-	public TestrayProductVersion toUnescapedModel() {
-		return new TestrayProductVersionWrapper(_testrayProductVersion.toUnescapedModel());
+	public int compareTo(TestrayProductVersion testrayProductVersion) {
+		return _testrayProductVersion.compareTo(testrayProductVersion);
+	}
+
+	/**
+	 * Returns the company ID of this testray product version.
+	 *
+	 * @return the company ID of this testray product version
+	 */
+	@Override
+	public long getCompanyId() {
+		return _testrayProductVersion.getCompanyId();
+	}
+
+	/**
+	 * Returns the create date of this testray product version.
+	 *
+	 * @return the create date of this testray product version
+	 */
+	@Override
+	public Date getCreateDate() {
+		return _testrayProductVersion.getCreateDate();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _testrayProductVersion.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the group ID of this testray product version.
+	 *
+	 * @return the group ID of this testray product version
+	 */
+	@Override
+	public long getGroupId() {
+		return _testrayProductVersion.getGroupId();
+	}
+
+	/**
+	 * Returns the modified date of this testray product version.
+	 *
+	 * @return the modified date of this testray product version
+	 */
+	@Override
+	public Date getModifiedDate() {
+		return _testrayProductVersion.getModifiedDate();
+	}
+
+	/**
+	 * Returns the name of this testray product version.
+	 *
+	 * @return the name of this testray product version
+	 */
+	@Override
+	public String getName() {
+		return _testrayProductVersion.getName();
+	}
+
+	/**
+	 * Returns the primary key of this testray product version.
+	 *
+	 * @return the primary key of this testray product version
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _testrayProductVersion.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _testrayProductVersion.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the testray product version ID of this testray product version.
+	 *
+	 * @return the testray product version ID of this testray product version
+	 */
+	@Override
+	public long getTestrayProductVersionId() {
+		return _testrayProductVersion.getTestrayProductVersionId();
+	}
+
+	/**
+	 * Returns the testray project ID of this testray product version.
+	 *
+	 * @return the testray project ID of this testray product version
+	 */
+	@Override
+	public long getTestrayProjectId() {
+		return _testrayProductVersion.getTestrayProjectId();
+	}
+
+	/**
+	 * Returns the user ID of this testray product version.
+	 *
+	 * @return the user ID of this testray product version
+	 */
+	@Override
+	public long getUserId() {
+		return _testrayProductVersion.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this testray product version.
+	 *
+	 * @return the user name of this testray product version
+	 */
+	@Override
+	public String getUserName() {
+		return _testrayProductVersion.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this testray product version.
+	 *
+	 * @return the user uuid of this testray product version
+	 */
+	@Override
+	public String getUserUuid() {
+		return _testrayProductVersion.getUserUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _testrayProductVersion.hashCode();
 	}
 
 	@Override
@@ -156,156 +280,6 @@ public class TestrayProductVersionWrapper implements TestrayProductVersion,
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _testrayProductVersion.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<TestrayProductVersion> toCacheModel() {
-		return _testrayProductVersion.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(TestrayProductVersion testrayProductVersion) {
-		return _testrayProductVersion.compareTo(testrayProductVersion);
-	}
-
-	@Override
-	public int hashCode() {
-		return _testrayProductVersion.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _testrayProductVersion.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new TestrayProductVersionWrapper((TestrayProductVersion)_testrayProductVersion.clone());
-	}
-
-	/**
-	* Returns the name of this testray product version.
-	*
-	* @return the name of this testray product version
-	*/
-	@Override
-	public java.lang.String getName() {
-		return _testrayProductVersion.getName();
-	}
-
-	/**
-	* Returns the user name of this testray product version.
-	*
-	* @return the user name of this testray product version
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _testrayProductVersion.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this testray product version.
-	*
-	* @return the user uuid of this testray product version
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _testrayProductVersion.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _testrayProductVersion.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _testrayProductVersion.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this testray product version.
-	*
-	* @return the create date of this testray product version
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _testrayProductVersion.getCreateDate();
-	}
-
-	/**
-	* Returns the modified date of this testray product version.
-	*
-	* @return the modified date of this testray product version
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _testrayProductVersion.getModifiedDate();
-	}
-
-	/**
-	* Returns the company ID of this testray product version.
-	*
-	* @return the company ID of this testray product version
-	*/
-	@Override
-	public long getCompanyId() {
-		return _testrayProductVersion.getCompanyId();
-	}
-
-	/**
-	* Returns the group ID of this testray product version.
-	*
-	* @return the group ID of this testray product version
-	*/
-	@Override
-	public long getGroupId() {
-		return _testrayProductVersion.getGroupId();
-	}
-
-	/**
-	* Returns the primary key of this testray product version.
-	*
-	* @return the primary key of this testray product version
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _testrayProductVersion.getPrimaryKey();
-	}
-
-	/**
-	* Returns the testray product version ID of this testray product version.
-	*
-	* @return the testray product version ID of this testray product version
-	*/
-	@Override
-	public long getTestrayProductVersionId() {
-		return _testrayProductVersion.getTestrayProductVersionId();
-	}
-
-	/**
-	* Returns the testray project ID of this testray product version.
-	*
-	* @return the testray project ID of this testray product version
-	*/
-	@Override
-	public long getTestrayProjectId() {
-		return _testrayProductVersion.getTestrayProjectId();
-	}
-
-	/**
-	* Returns the user ID of this testray product version.
-	*
-	* @return the user ID of this testray product version
-	*/
-	@Override
-	public long getUserId() {
-		return _testrayProductVersion.getUserId();
-	}
-
-	@Override
 	public void persist() {
 		_testrayProductVersion.persist();
 	}
@@ -316,23 +290,30 @@ public class TestrayProductVersionWrapper implements TestrayProductVersion,
 	}
 
 	/**
-	* Sets the company ID of this testray product version.
-	*
-	* @param companyId the company ID of this testray product version
-	*/
+	 * Sets the company ID of this testray product version.
+	 *
+	 * @param companyId the company ID of this testray product version
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_testrayProductVersion.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this testray product version.
-	*
-	* @param createDate the create date of this testray product version
-	*/
+	 * Sets the create date of this testray product version.
+	 *
+	 * @param createDate the create date of this testray product version
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_testrayProductVersion.setCreateDate(createDate);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_testrayProductVersion.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -341,43 +322,37 @@ public class TestrayProductVersionWrapper implements TestrayProductVersion,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_testrayProductVersion.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_testrayProductVersion.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the group ID of this testray product version.
-	*
-	* @param groupId the group ID of this testray product version
-	*/
+	 * Sets the group ID of this testray product version.
+	 *
+	 * @param groupId the group ID of this testray product version
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_testrayProductVersion.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the modified date of this testray product version.
-	*
-	* @param modifiedDate the modified date of this testray product version
-	*/
+	 * Sets the modified date of this testray product version.
+	 *
+	 * @param modifiedDate the modified date of this testray product version
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_testrayProductVersion.setModifiedDate(modifiedDate);
 	}
 
 	/**
-	* Sets the name of this testray product version.
-	*
-	* @param name the name of this testray product version
-	*/
+	 * Sets the name of this testray product version.
+	 *
+	 * @param name the name of this testray product version
+	 */
 	@Override
-	public void setName(java.lang.String name) {
+	public void setName(String name) {
 		_testrayProductVersion.setName(name);
 	}
 
@@ -387,10 +362,10 @@ public class TestrayProductVersionWrapper implements TestrayProductVersion,
 	}
 
 	/**
-	* Sets the primary key of this testray product version.
-	*
-	* @param primaryKey the primary key of this testray product version
-	*/
+	 * Sets the primary key of this testray product version.
+	 *
+	 * @param primaryKey the primary key of this testray product version
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_testrayProductVersion.setPrimaryKey(primaryKey);
@@ -402,53 +377,83 @@ public class TestrayProductVersionWrapper implements TestrayProductVersion,
 	}
 
 	/**
-	* Sets the testray product version ID of this testray product version.
-	*
-	* @param testrayProductVersionId the testray product version ID of this testray product version
-	*/
+	 * Sets the testray product version ID of this testray product version.
+	 *
+	 * @param testrayProductVersionId the testray product version ID of this testray product version
+	 */
 	@Override
 	public void setTestrayProductVersionId(long testrayProductVersionId) {
-		_testrayProductVersion.setTestrayProductVersionId(testrayProductVersionId);
+		_testrayProductVersion.setTestrayProductVersionId(
+			testrayProductVersionId);
 	}
 
 	/**
-	* Sets the testray project ID of this testray product version.
-	*
-	* @param testrayProjectId the testray project ID of this testray product version
-	*/
+	 * Sets the testray project ID of this testray product version.
+	 *
+	 * @param testrayProjectId the testray project ID of this testray product version
+	 */
 	@Override
 	public void setTestrayProjectId(long testrayProjectId) {
 		_testrayProductVersion.setTestrayProjectId(testrayProjectId);
 	}
 
 	/**
-	* Sets the user ID of this testray product version.
-	*
-	* @param userId the user ID of this testray product version
-	*/
+	 * Sets the user ID of this testray product version.
+	 *
+	 * @param userId the user ID of this testray product version
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_testrayProductVersion.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this testray product version.
-	*
-	* @param userName the user name of this testray product version
-	*/
+	 * Sets the user name of this testray product version.
+	 *
+	 * @param userName the user name of this testray product version
+	 */
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_testrayProductVersion.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this testray product version.
-	*
-	* @param userUuid the user uuid of this testray product version
-	*/
+	 * Sets the user uuid of this testray product version.
+	 *
+	 * @param userUuid the user uuid of this testray product version
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_testrayProductVersion.setUserUuid(userUuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<TestrayProductVersion>
+		toCacheModel() {
+
+		return _testrayProductVersion.toCacheModel();
+	}
+
+	@Override
+	public TestrayProductVersion toEscapedModel() {
+		return new TestrayProductVersionWrapper(
+			_testrayProductVersion.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _testrayProductVersion.toString();
+	}
+
+	@Override
+	public TestrayProductVersion toUnescapedModel() {
+		return new TestrayProductVersionWrapper(
+			_testrayProductVersion.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _testrayProductVersion.toXmlString();
 	}
 
 	@Override
@@ -461,10 +466,13 @@ public class TestrayProductVersionWrapper implements TestrayProductVersion,
 			return false;
 		}
 
-		TestrayProductVersionWrapper testrayProductVersionWrapper = (TestrayProductVersionWrapper)obj;
+		TestrayProductVersionWrapper testrayProductVersionWrapper =
+			(TestrayProductVersionWrapper)obj;
 
-		if (Objects.equals(_testrayProductVersion,
-					testrayProductVersionWrapper._testrayProductVersion)) {
+		if (Objects.equals(
+				_testrayProductVersion,
+				testrayProductVersionWrapper._testrayProductVersion)) {
+
 			return true;
 		}
 
@@ -492,4 +500,5 @@ public class TestrayProductVersionWrapper implements TestrayProductVersion,
 	}
 
 	private final TestrayProductVersion _testrayProductVersion;
+
 }

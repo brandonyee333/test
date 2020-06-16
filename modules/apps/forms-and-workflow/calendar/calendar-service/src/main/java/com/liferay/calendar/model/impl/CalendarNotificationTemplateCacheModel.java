@@ -14,14 +14,10 @@
 
 package com.liferay.calendar.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.calendar.model.CalendarNotificationTemplate;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing CalendarNotificationTemplate in entity cache.
  *
  * @author Eduardo Lundgren
- * @see CalendarNotificationTemplate
  * @generated
  */
-@ProviderType
-public class CalendarNotificationTemplateCacheModel implements CacheModel<CalendarNotificationTemplate>,
-	Externalizable {
+public class CalendarNotificationTemplateCacheModel
+	implements CacheModel<CalendarNotificationTemplate>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,10 +45,14 @@ public class CalendarNotificationTemplateCacheModel implements CacheModel<Calend
 			return false;
 		}
 
-		CalendarNotificationTemplateCacheModel calendarNotificationTemplateCacheModel =
-			(CalendarNotificationTemplateCacheModel)obj;
+		CalendarNotificationTemplateCacheModel
+			calendarNotificationTemplateCacheModel =
+				(CalendarNotificationTemplateCacheModel)obj;
 
-		if (calendarNotificationTemplateId == calendarNotificationTemplateCacheModel.calendarNotificationTemplateId) {
+		if (calendarNotificationTemplateId ==
+				calendarNotificationTemplateCacheModel.
+					calendarNotificationTemplateId) {
+
 			return true;
 		}
 
@@ -106,22 +105,24 @@ public class CalendarNotificationTemplateCacheModel implements CacheModel<Calend
 
 	@Override
 	public CalendarNotificationTemplate toEntityModel() {
-		CalendarNotificationTemplateImpl calendarNotificationTemplateImpl = new CalendarNotificationTemplateImpl();
+		CalendarNotificationTemplateImpl calendarNotificationTemplateImpl =
+			new CalendarNotificationTemplateImpl();
 
 		if (uuid == null) {
-			calendarNotificationTemplateImpl.setUuid(StringPool.BLANK);
+			calendarNotificationTemplateImpl.setUuid("");
 		}
 		else {
 			calendarNotificationTemplateImpl.setUuid(uuid);
 		}
 
-		calendarNotificationTemplateImpl.setCalendarNotificationTemplateId(calendarNotificationTemplateId);
+		calendarNotificationTemplateImpl.setCalendarNotificationTemplateId(
+			calendarNotificationTemplateId);
 		calendarNotificationTemplateImpl.setGroupId(groupId);
 		calendarNotificationTemplateImpl.setCompanyId(companyId);
 		calendarNotificationTemplateImpl.setUserId(userId);
 
 		if (userName == null) {
-			calendarNotificationTemplateImpl.setUserName(StringPool.BLANK);
+			calendarNotificationTemplateImpl.setUserName("");
 		}
 		else {
 			calendarNotificationTemplateImpl.setUserName(userName);
@@ -131,49 +132,53 @@ public class CalendarNotificationTemplateCacheModel implements CacheModel<Calend
 			calendarNotificationTemplateImpl.setCreateDate(null);
 		}
 		else {
-			calendarNotificationTemplateImpl.setCreateDate(new Date(createDate));
+			calendarNotificationTemplateImpl.setCreateDate(
+				new Date(createDate));
 		}
 
 		if (modifiedDate == Long.MIN_VALUE) {
 			calendarNotificationTemplateImpl.setModifiedDate(null);
 		}
 		else {
-			calendarNotificationTemplateImpl.setModifiedDate(new Date(
-					modifiedDate));
+			calendarNotificationTemplateImpl.setModifiedDate(
+				new Date(modifiedDate));
 		}
 
 		calendarNotificationTemplateImpl.setCalendarId(calendarId);
 
 		if (notificationType == null) {
-			calendarNotificationTemplateImpl.setNotificationType(StringPool.BLANK);
+			calendarNotificationTemplateImpl.setNotificationType("");
 		}
 		else {
-			calendarNotificationTemplateImpl.setNotificationType(notificationType);
+			calendarNotificationTemplateImpl.setNotificationType(
+				notificationType);
 		}
 
 		if (notificationTypeSettings == null) {
-			calendarNotificationTemplateImpl.setNotificationTypeSettings(StringPool.BLANK);
+			calendarNotificationTemplateImpl.setNotificationTypeSettings("");
 		}
 		else {
-			calendarNotificationTemplateImpl.setNotificationTypeSettings(notificationTypeSettings);
+			calendarNotificationTemplateImpl.setNotificationTypeSettings(
+				notificationTypeSettings);
 		}
 
 		if (notificationTemplateType == null) {
-			calendarNotificationTemplateImpl.setNotificationTemplateType(StringPool.BLANK);
+			calendarNotificationTemplateImpl.setNotificationTemplateType("");
 		}
 		else {
-			calendarNotificationTemplateImpl.setNotificationTemplateType(notificationTemplateType);
+			calendarNotificationTemplateImpl.setNotificationTemplateType(
+				notificationTemplateType);
 		}
 
 		if (subject == null) {
-			calendarNotificationTemplateImpl.setSubject(StringPool.BLANK);
+			calendarNotificationTemplateImpl.setSubject("");
 		}
 		else {
 			calendarNotificationTemplateImpl.setSubject(subject);
 		}
 
 		if (body == null) {
-			calendarNotificationTemplateImpl.setBody(StringPool.BLANK);
+			calendarNotificationTemplateImpl.setBody("");
 		}
 		else {
 			calendarNotificationTemplateImpl.setBody(body);
@@ -183,8 +188,8 @@ public class CalendarNotificationTemplateCacheModel implements CacheModel<Calend
 			calendarNotificationTemplateImpl.setLastPublishDate(null);
 		}
 		else {
-			calendarNotificationTemplateImpl.setLastPublishDate(new Date(
-					lastPublishDate));
+			calendarNotificationTemplateImpl.setLastPublishDate(
+				new Date(lastPublishDate));
 		}
 
 		calendarNotificationTemplateImpl.resetOriginalValues();
@@ -193,7 +198,9 @@ public class CalendarNotificationTemplateCacheModel implements CacheModel<Calend
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		uuid = objectInput.readUTF();
 
 		calendarNotificationTemplateId = objectInput.readLong();
@@ -212,15 +219,14 @@ public class CalendarNotificationTemplateCacheModel implements CacheModel<Calend
 		notificationTypeSettings = objectInput.readUTF();
 		notificationTemplateType = objectInput.readUTF();
 		subject = objectInput.readUTF();
-		body = objectInput.readUTF();
+		body = (String)objectInput.readObject();
 		lastPublishDate = objectInput.readLong();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -235,7 +241,7 @@ public class CalendarNotificationTemplateCacheModel implements CacheModel<Calend
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -247,38 +253,38 @@ public class CalendarNotificationTemplateCacheModel implements CacheModel<Calend
 		objectOutput.writeLong(calendarId);
 
 		if (notificationType == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(notificationType);
 		}
 
 		if (notificationTypeSettings == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(notificationTypeSettings);
 		}
 
 		if (notificationTemplateType == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(notificationTemplateType);
 		}
 
 		if (subject == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(subject);
 		}
 
 		if (body == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(body);
+			objectOutput.writeObject(body);
 		}
 
 		objectOutput.writeLong(lastPublishDate);
@@ -299,4 +305,5 @@ public class CalendarNotificationTemplateCacheModel implements CacheModel<Calend
 	public String subject;
 	public String body;
 	public long lastPublishDate;
+
 }

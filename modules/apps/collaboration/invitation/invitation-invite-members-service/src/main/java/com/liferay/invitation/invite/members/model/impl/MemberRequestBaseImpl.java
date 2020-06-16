@@ -14,8 +14,6 @@
 
 package com.liferay.invitation.invite.members.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.invitation.invite.members.model.MemberRequest;
 import com.liferay.invitation.invite.members.service.MemberRequestLocalServiceUtil;
 
@@ -31,13 +29,13 @@ import com.liferay.invitation.invite.members.service.MemberRequestLocalServiceUt
  * @see MemberRequest
  * @generated
  */
-@ProviderType
-public abstract class MemberRequestBaseImpl extends MemberRequestModelImpl
-	implements MemberRequest {
+public abstract class MemberRequestBaseImpl
+	extends MemberRequestModelImpl implements MemberRequest {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a member request model instance should use the {@link MemberRequest} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a member request model instance should use the <code>MemberRequest</code> interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -48,4 +46,5 @@ public abstract class MemberRequestBaseImpl extends MemberRequestModelImpl
 			MemberRequestLocalServiceUtil.updateMemberRequest(this);
 		}
 	}
+
 }

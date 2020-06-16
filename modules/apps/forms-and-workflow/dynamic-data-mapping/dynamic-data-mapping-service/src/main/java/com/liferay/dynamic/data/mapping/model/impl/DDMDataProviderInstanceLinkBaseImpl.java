@@ -14,8 +14,6 @@
 
 package com.liferay.dynamic.data.mapping.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.dynamic.data.mapping.model.DDMDataProviderInstanceLink;
 import com.liferay.dynamic.data.mapping.service.DDMDataProviderInstanceLinkLocalServiceUtil;
 
@@ -31,22 +29,25 @@ import com.liferay.dynamic.data.mapping.service.DDMDataProviderInstanceLinkLocal
  * @see DDMDataProviderInstanceLink
  * @generated
  */
-@ProviderType
 public abstract class DDMDataProviderInstanceLinkBaseImpl
 	extends DDMDataProviderInstanceLinkModelImpl
 	implements DDMDataProviderInstanceLink {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a ddm data provider instance link model instance should use the {@link DDMDataProviderInstanceLink} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a ddm data provider instance link model instance should use the <code>DDMDataProviderInstanceLink</code> interface instead.
 	 */
 	@Override
 	public void persist() {
 		if (this.isNew()) {
-			DDMDataProviderInstanceLinkLocalServiceUtil.addDDMDataProviderInstanceLink(this);
+			DDMDataProviderInstanceLinkLocalServiceUtil.
+				addDDMDataProviderInstanceLink(this);
 		}
 		else {
-			DDMDataProviderInstanceLinkLocalServiceUtil.updateDDMDataProviderInstanceLink(this);
+			DDMDataProviderInstanceLinkLocalServiceUtil.
+				updateDDMDataProviderInstanceLink(this);
 		}
 	}
+
 }

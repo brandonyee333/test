@@ -14,13 +14,9 @@
 
 package com.liferay.shopping.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-
 import com.liferay.shopping.model.ShoppingItem;
 
 import java.io.Externalizable;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing ShoppingItem in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see ShoppingItem
  * @generated
  */
-@ProviderType
-public class ShoppingItemCacheModel implements CacheModel<ShoppingItem>,
-	Externalizable {
+public class ShoppingItemCacheModel
+	implements CacheModel<ShoppingItem>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,7 +45,8 @@ public class ShoppingItemCacheModel implements CacheModel<ShoppingItem>,
 			return false;
 		}
 
-		ShoppingItemCacheModel shoppingItemCacheModel = (ShoppingItemCacheModel)obj;
+		ShoppingItemCacheModel shoppingItemCacheModel =
+			(ShoppingItemCacheModel)obj;
 
 		if (itemId == shoppingItemCacheModel.itemId) {
 			return true;
@@ -151,7 +147,7 @@ public class ShoppingItemCacheModel implements CacheModel<ShoppingItem>,
 		shoppingItemImpl.setUserId(userId);
 
 		if (userName == null) {
-			shoppingItemImpl.setUserName(StringPool.BLANK);
+			shoppingItemImpl.setUserName("");
 		}
 		else {
 			shoppingItemImpl.setUserName(userName);
@@ -174,28 +170,28 @@ public class ShoppingItemCacheModel implements CacheModel<ShoppingItem>,
 		shoppingItemImpl.setCategoryId(categoryId);
 
 		if (sku == null) {
-			shoppingItemImpl.setSku(StringPool.BLANK);
+			shoppingItemImpl.setSku("");
 		}
 		else {
 			shoppingItemImpl.setSku(sku);
 		}
 
 		if (name == null) {
-			shoppingItemImpl.setName(StringPool.BLANK);
+			shoppingItemImpl.setName("");
 		}
 		else {
 			shoppingItemImpl.setName(name);
 		}
 
 		if (description == null) {
-			shoppingItemImpl.setDescription(StringPool.BLANK);
+			shoppingItemImpl.setDescription("");
 		}
 		else {
 			shoppingItemImpl.setDescription(description);
 		}
 
 		if (properties == null) {
-			shoppingItemImpl.setProperties(StringPool.BLANK);
+			shoppingItemImpl.setProperties("");
 		}
 		else {
 			shoppingItemImpl.setProperties(properties);
@@ -204,7 +200,7 @@ public class ShoppingItemCacheModel implements CacheModel<ShoppingItem>,
 		shoppingItemImpl.setFields(fields);
 
 		if (fieldsQuantities == null) {
-			shoppingItemImpl.setFieldsQuantities(StringPool.BLANK);
+			shoppingItemImpl.setFieldsQuantities("");
 		}
 		else {
 			shoppingItemImpl.setFieldsQuantities(fieldsQuantities);
@@ -225,7 +221,7 @@ public class ShoppingItemCacheModel implements CacheModel<ShoppingItem>,
 		shoppingItemImpl.setSmallImageId(smallImageId);
 
 		if (smallImageURL == null) {
-			shoppingItemImpl.setSmallImageURL(StringPool.BLANK);
+			shoppingItemImpl.setSmallImageURL("");
 		}
 		else {
 			shoppingItemImpl.setSmallImageURL(smallImageURL);
@@ -235,7 +231,7 @@ public class ShoppingItemCacheModel implements CacheModel<ShoppingItem>,
 		shoppingItemImpl.setMediumImageId(mediumImageId);
 
 		if (mediumImageURL == null) {
-			shoppingItemImpl.setMediumImageURL(StringPool.BLANK);
+			shoppingItemImpl.setMediumImageURL("");
 		}
 		else {
 			shoppingItemImpl.setMediumImageURL(mediumImageURL);
@@ -245,7 +241,7 @@ public class ShoppingItemCacheModel implements CacheModel<ShoppingItem>,
 		shoppingItemImpl.setLargeImageId(largeImageId);
 
 		if (largeImageURL == null) {
-			shoppingItemImpl.setLargeImageURL(StringPool.BLANK);
+			shoppingItemImpl.setLargeImageURL("");
 		}
 		else {
 			shoppingItemImpl.setLargeImageURL(largeImageURL);
@@ -317,8 +313,7 @@ public class ShoppingItemCacheModel implements CacheModel<ShoppingItem>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(itemId);
 
 		objectOutput.writeLong(groupId);
@@ -328,7 +323,7 @@ public class ShoppingItemCacheModel implements CacheModel<ShoppingItem>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -340,28 +335,28 @@ public class ShoppingItemCacheModel implements CacheModel<ShoppingItem>,
 		objectOutput.writeLong(categoryId);
 
 		if (sku == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(sku);
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (properties == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(properties);
@@ -370,7 +365,7 @@ public class ShoppingItemCacheModel implements CacheModel<ShoppingItem>,
 		objectOutput.writeBoolean(fields);
 
 		if (fieldsQuantities == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(fieldsQuantities);
@@ -403,7 +398,7 @@ public class ShoppingItemCacheModel implements CacheModel<ShoppingItem>,
 		objectOutput.writeLong(smallImageId);
 
 		if (smallImageURL == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(smallImageURL);
@@ -414,7 +409,7 @@ public class ShoppingItemCacheModel implements CacheModel<ShoppingItem>,
 		objectOutput.writeLong(mediumImageId);
 
 		if (mediumImageURL == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(mediumImageURL);
@@ -425,7 +420,7 @@ public class ShoppingItemCacheModel implements CacheModel<ShoppingItem>,
 		objectOutput.writeLong(largeImageId);
 
 		if (largeImageURL == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(largeImageURL);
@@ -466,4 +461,5 @@ public class ShoppingItemCacheModel implements CacheModel<ShoppingItem>,
 	public boolean largeImage;
 	public long largeImageId;
 	public String largeImageURL;
+
 }

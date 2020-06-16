@@ -14,10 +14,7 @@
 
 package com.liferay.contacts.service.http;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.contacts.service.EntryServiceUtil;
-
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
@@ -27,10 +24,11 @@ import com.liferay.portal.kernel.util.MethodKey;
 
 /**
  * Provides the HTTP utility for the
- * {@link EntryServiceUtil} service utility. The
+ * <code>EntryServiceUtil</code> service
+ * utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it requires an additional
- * {@link HttpPrincipal} parameter.
+ * <code>HttpPrincipal</code> parameter.
  *
  * <p>
  * The benefits of using the HTTP utility is that it is fast and allows for
@@ -49,48 +47,55 @@ import com.liferay.portal.kernel.util.MethodKey;
  *
  * @author Brian Wing Shun Chan
  * @see EntryServiceSoap
- * @see HttpPrincipal
- * @see EntryServiceUtil
  * @generated
  */
-@ProviderType
 public class EntryServiceHttp {
-	public static com.liferay.portal.kernel.json.JSONArray searchUsersAndContacts(
-		HttpPrincipal httpPrincipal, long companyId, java.lang.String keywords,
-		int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(EntryServiceUtil.class,
-					"searchUsersAndContacts",
-					_searchUsersAndContactsParameterTypes1);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					companyId, keywords, start, end);
+	public static com.liferay.portal.kernel.json.JSONArray
+			searchUsersAndContacts(
+				HttpPrincipal httpPrincipal, long companyId, String keywords,
+				int start, int end)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				EntryServiceUtil.class, "searchUsersAndContacts",
+				_searchUsersAndContactsParameterTypes1);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, companyId, keywords, start, end);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.portal.kernel.json.JSONArray)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(EntryServiceHttp.class);
-	private static final Class<?>[] _searchUsersAndContactsParameterTypes1 = new Class[] {
-			long.class, java.lang.String.class, int.class, int.class
-		};
+
+	private static final Class<?>[] _searchUsersAndContactsParameterTypes1 =
+		new Class[] {long.class, String.class, int.class, int.class};
+
 }

@@ -14,10 +14,7 @@
 
 package com.liferay.portlet.messageboards.service.http;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.message.boards.kernel.service.MBBanServiceUtil;
-
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -25,19 +22,20 @@ import java.rmi.RemoteException;
 
 /**
  * Provides the SOAP utility for the
- * {@link MBBanServiceUtil} service utility. The
- * static methods of this class calls the same methods of the service utility.
- * However, the signatures are different because it is difficult for SOAP to
- * support certain types.
+ * <code>MBBanServiceUtil</code> service
+ * utility. The static methods of this class call the same methods of the
+ * service utility. However, the signatures are different because it is
+ * difficult for SOAP to support certain types.
  *
  * <p>
  * ServiceBuilder follows certain rules in translating the methods. For example,
- * if the method in the service utility returns a {@link java.util.List}, that
- * is translated to an array of {@link com.liferay.message.boards.kernel.model.MBBanSoap}.
- * If the method in the service utility returns a
- * {@link com.liferay.message.boards.kernel.model.MBBan}, that is translated to a
- * {@link com.liferay.message.boards.kernel.model.MBBanSoap}. Methods that SOAP cannot
- * safely wire are skipped.
+ * if the method in the service utility returns a <code>java.util.List</code>,
+ * that is translated to an array of
+ * <code>com.liferay.message.boards.kernel.model.MBBanSoap</code>. If the method in the
+ * service utility returns a
+ * <code>com.liferay.message.boards.kernel.model.MBBan</code>, that is translated to a
+ * <code>com.liferay.message.boards.kernel.model.MBBanSoap</code>. Methods that SOAP
+ * cannot safely wire are skipped.
  * </p>
  *
  * <p>
@@ -59,41 +57,44 @@ import java.rmi.RemoteException;
  *
  * @author Brian Wing Shun Chan
  * @see MBBanServiceHttp
- * @see com.liferay.message.boards.kernel.model.MBBanSoap
- * @see MBBanServiceUtil
  * @generated
  */
-@ProviderType
 public class MBBanServiceSoap {
+
 	public static com.liferay.message.boards.kernel.model.MBBanSoap addBan(
-		long banUserId,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+			long banUserId,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
+
 		try {
-			com.liferay.message.boards.kernel.model.MBBan returnValue = MBBanServiceUtil.addBan(banUserId,
-					serviceContext);
+			com.liferay.message.boards.kernel.model.MBBan returnValue =
+				MBBanServiceUtil.addBan(banUserId, serviceContext);
 
-			return com.liferay.message.boards.kernel.model.MBBanSoap.toSoapModel(returnValue);
+			return com.liferay.message.boards.kernel.model.MBBanSoap.
+				toSoapModel(returnValue);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-			throw new RemoteException(e.getMessage());
+			throw new RemoteException(exception.getMessage());
 		}
 	}
 
-	public static void deleteBan(long banUserId,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static void deleteBan(
+			long banUserId,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
+
 		try {
 			MBBanServiceUtil.deleteBan(banUserId, serviceContext);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-			throw new RemoteException(e.getMessage());
+			throw new RemoteException(exception.getMessage());
 		}
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(MBBanServiceSoap.class);
+
 }

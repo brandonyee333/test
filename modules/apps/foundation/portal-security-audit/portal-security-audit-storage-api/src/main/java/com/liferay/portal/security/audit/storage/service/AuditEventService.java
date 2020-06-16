@@ -38,65 +38,75 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see AuditEventServiceUtil
- * @see com.liferay.portal.security.audit.storage.service.base.AuditEventServiceBaseImpl
- * @see com.liferay.portal.security.audit.storage.service.impl.AuditEventServiceImpl
  * @generated
  */
 @AccessControlled
 @JSONWebService
-@OSGiBeanProperties(property =  {
-	"json.web.service.context.name=audit", "json.web.service.context.path=AuditEvent"}, service = AuditEventService.class)
+@OSGiBeanProperties(
+	property = {
+		"json.web.service.context.name=audit",
+		"json.web.service.context.path=AuditEvent"
+	},
+	service = AuditEventService.class
+)
 @ProviderType
-@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
-	PortalException.class, SystemException.class})
+@Transactional(
+	isolation = Isolation.PORTAL,
+	rollbackFor = {PortalException.class, SystemException.class}
+)
 public interface AuditEventService extends BaseService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link AuditEventServiceUtil} to access the audit event remote service. Add custom service methods to {@link com.liferay.portal.security.audit.storage.service.impl.AuditEventServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link AuditEventServiceUtil} to access the audit event remote service. Add custom service methods to <code>com.liferay.portal.security.audit.storage.service.impl.AuditEventServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getAuditEventsCount(long companyId) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getAuditEventsCount(long companyId, long userId,
-		java.lang.String userName, Date createDateGT, Date createDateLT,
-		java.lang.String eventType, java.lang.String className,
-		java.lang.String classPK, java.lang.String clientHost,
-		java.lang.String clientIP, java.lang.String serverName, int serverPort,
-		java.lang.String sessionID, boolean andSearch)
-		throws PortalException;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AuditEvent> getAuditEvents(long companyId, int start, int end)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AuditEvent> getAuditEvents(long companyId, int start, int end,
-		OrderByComparator orderByComparator) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AuditEvent> getAuditEvents(long companyId, long userId,
-		java.lang.String userName, Date createDateGT, Date createDateLT,
-		java.lang.String eventType, java.lang.String className,
-		java.lang.String classPK, java.lang.String clientHost,
-		java.lang.String clientIP, java.lang.String serverName, int serverPort,
-		java.lang.String sessionID, boolean andSearch, int start, int end)
+	public List<AuditEvent> getAuditEvents(
+			long companyId, int start, int end,
+			OrderByComparator orderByComparator)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AuditEvent> getAuditEvents(long companyId, long userId,
-		java.lang.String userName, Date createDateGT, Date createDateLT,
-		java.lang.String eventType, java.lang.String className,
-		java.lang.String classPK, java.lang.String clientHost,
-		java.lang.String clientIP, java.lang.String serverName, int serverPort,
-		java.lang.String sessionID, boolean andSearch, int start, int end,
-		OrderByComparator orderByComparator) throws PortalException;
+	public List<AuditEvent> getAuditEvents(
+			long companyId, long userId, String userName, Date createDateGT,
+			Date createDateLT, String eventType, String className,
+			String classPK, String clientHost, String clientIP,
+			String serverName, int serverPort, String sessionID,
+			boolean andSearch, int start, int end)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AuditEvent> getAuditEvents(
+			long companyId, long userId, String userName, Date createDateGT,
+			Date createDateLT, String eventType, String className,
+			String classPK, String clientHost, String clientIP,
+			String serverName, int serverPort, String sessionID,
+			boolean andSearch, int start, int end,
+			OrderByComparator orderByComparator)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getAuditEventsCount(long companyId) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getAuditEventsCount(
+			long companyId, long userId, String userName, Date createDateGT,
+			Date createDateLT, String eventType, String className,
+			String classPK, String clientHost, String clientIP,
+			String serverName, int serverPort, String sessionID,
+			boolean andSearch)
+		throws PortalException;
+
+	/**
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
+	public String getOSGiServiceIdentifier();
+
 }

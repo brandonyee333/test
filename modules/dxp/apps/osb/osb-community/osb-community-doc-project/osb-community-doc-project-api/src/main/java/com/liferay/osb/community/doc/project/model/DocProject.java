@@ -1,15 +1,15 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.community.doc.project.model;
@@ -25,19 +25,22 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Ryan Park
  * @see DocProjectModel
- * @see com.liferay.osb.community.doc.project.model.impl.DocProjectImpl
- * @see com.liferay.osb.community.doc.project.model.impl.DocProjectModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.osb.community.doc.project.model.impl.DocProjectImpl")
+@ImplementationClassName(
+	"com.liferay.osb.community.doc.project.model.impl.DocProjectImpl"
+)
 @ProviderType
 public interface DocProject extends DocProjectModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.osb.community.doc.project.model.impl.DocProjectImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.osb.community.doc.project.model.impl.DocProjectImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<DocProject, Long> DOC_PROJECT_ID_ACCESSOR = new Accessor<DocProject, Long>() {
+	public static final Accessor<DocProject, Long> DOC_PROJECT_ID_ACCESSOR =
+		new Accessor<DocProject, Long>() {
+
 			@Override
 			public Long get(DocProject docProject) {
 				return docProject.getDocProjectId();
@@ -52,10 +55,12 @@ public interface DocProject extends DocProjectModel, PersistedModel {
 			public Class<DocProject> getTypeClass() {
 				return DocProject.class;
 			}
+
 		};
 
 	public DocProjectTypeSettings getDocProjectTypeSettings();
 
 	public java.io.InputStream getIconInputStream()
 		throws com.liferay.portal.kernel.exception.PortalException;
+
 }

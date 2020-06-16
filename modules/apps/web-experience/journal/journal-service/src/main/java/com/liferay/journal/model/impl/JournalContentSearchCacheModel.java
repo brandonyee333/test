@@ -14,14 +14,10 @@
 
 package com.liferay.journal.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.journal.model.JournalContentSearch;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -32,12 +28,11 @@ import java.io.ObjectOutput;
  * The cache model class for representing JournalContentSearch in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see JournalContentSearch
  * @generated
  */
-@ProviderType
-public class JournalContentSearchCacheModel implements CacheModel<JournalContentSearch>,
-	Externalizable {
+public class JournalContentSearchCacheModel
+	implements CacheModel<JournalContentSearch>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,7 +43,8 @@ public class JournalContentSearchCacheModel implements CacheModel<JournalContent
 			return false;
 		}
 
-		JournalContentSearchCacheModel journalContentSearchCacheModel = (JournalContentSearchCacheModel)obj;
+		JournalContentSearchCacheModel journalContentSearchCacheModel =
+			(JournalContentSearchCacheModel)obj;
 
 		if (contentSearchId == journalContentSearchCacheModel.contentSearchId) {
 			return true;
@@ -87,7 +83,8 @@ public class JournalContentSearchCacheModel implements CacheModel<JournalContent
 
 	@Override
 	public JournalContentSearch toEntityModel() {
-		JournalContentSearchImpl journalContentSearchImpl = new JournalContentSearchImpl();
+		JournalContentSearchImpl journalContentSearchImpl =
+			new JournalContentSearchImpl();
 
 		journalContentSearchImpl.setContentSearchId(contentSearchId);
 		journalContentSearchImpl.setGroupId(groupId);
@@ -96,14 +93,14 @@ public class JournalContentSearchCacheModel implements CacheModel<JournalContent
 		journalContentSearchImpl.setLayoutId(layoutId);
 
 		if (portletId == null) {
-			journalContentSearchImpl.setPortletId(StringPool.BLANK);
+			journalContentSearchImpl.setPortletId("");
 		}
 		else {
 			journalContentSearchImpl.setPortletId(portletId);
 		}
 
 		if (articleId == null) {
-			journalContentSearchImpl.setArticleId(StringPool.BLANK);
+			journalContentSearchImpl.setArticleId("");
 		}
 		else {
 			journalContentSearchImpl.setArticleId(articleId);
@@ -130,8 +127,7 @@ public class JournalContentSearchCacheModel implements CacheModel<JournalContent
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(contentSearchId);
 
 		objectOutput.writeLong(groupId);
@@ -143,14 +139,14 @@ public class JournalContentSearchCacheModel implements CacheModel<JournalContent
 		objectOutput.writeLong(layoutId);
 
 		if (portletId == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(portletId);
 		}
 
 		if (articleId == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(articleId);
@@ -164,4 +160,5 @@ public class JournalContentSearchCacheModel implements CacheModel<JournalContent
 	public long layoutId;
 	public String portletId;
 	public String articleId;
+
 }

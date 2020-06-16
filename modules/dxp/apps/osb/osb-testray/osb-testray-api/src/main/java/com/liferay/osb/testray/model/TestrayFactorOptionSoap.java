@@ -1,20 +1,18 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.model;
-
-import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -28,9 +26,11 @@ import java.util.List;
  * @author Ethan Bustad
  * @generated
  */
-@ProviderType
 public class TestrayFactorOptionSoap implements Serializable {
-	public static TestrayFactorOptionSoap toSoapModel(TestrayFactorOption model) {
+
+	public static TestrayFactorOptionSoap toSoapModel(
+		TestrayFactorOption model) {
+
 		TestrayFactorOptionSoap soapModel = new TestrayFactorOptionSoap();
 
 		soapModel.setTestrayFactorOptionId(model.getTestrayFactorOptionId());
@@ -40,7 +40,8 @@ public class TestrayFactorOptionSoap implements Serializable {
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
-		soapModel.setTestrayFactorCategoryId(model.getTestrayFactorCategoryId());
+		soapModel.setTestrayFactorCategoryId(
+			model.getTestrayFactorCategoryId());
 		soapModel.setName(model.getName());
 
 		return soapModel;
@@ -48,7 +49,9 @@ public class TestrayFactorOptionSoap implements Serializable {
 
 	public static TestrayFactorOptionSoap[] toSoapModels(
 		TestrayFactorOption[] models) {
-		TestrayFactorOptionSoap[] soapModels = new TestrayFactorOptionSoap[models.length];
+
+		TestrayFactorOptionSoap[] soapModels =
+			new TestrayFactorOptionSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -59,10 +62,12 @@ public class TestrayFactorOptionSoap implements Serializable {
 
 	public static TestrayFactorOptionSoap[][] toSoapModels(
 		TestrayFactorOption[][] models) {
+
 		TestrayFactorOptionSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new TestrayFactorOptionSoap[models.length][models[0].length];
+			soapModels =
+				new TestrayFactorOptionSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new TestrayFactorOptionSoap[0][0];
@@ -77,13 +82,16 @@ public class TestrayFactorOptionSoap implements Serializable {
 
 	public static TestrayFactorOptionSoap[] toSoapModels(
 		List<TestrayFactorOption> models) {
-		List<TestrayFactorOptionSoap> soapModels = new ArrayList<TestrayFactorOptionSoap>(models.size());
+
+		List<TestrayFactorOptionSoap> soapModels =
+			new ArrayList<TestrayFactorOptionSoap>(models.size());
 
 		for (TestrayFactorOption model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new TestrayFactorOptionSoap[soapModels.size()]);
+		return soapModels.toArray(
+			new TestrayFactorOptionSoap[soapModels.size()]);
 	}
 
 	public TestrayFactorOptionSoap() {
@@ -178,4 +186,5 @@ public class TestrayFactorOptionSoap implements Serializable {
 	private Date _modifiedDate;
 	private long _testrayFactorCategoryId;
 	private String _name;
+
 }

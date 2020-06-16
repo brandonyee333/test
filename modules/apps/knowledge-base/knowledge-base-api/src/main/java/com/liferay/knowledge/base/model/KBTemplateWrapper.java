@@ -14,12 +14,8 @@
 
 package com.liferay.knowledge.base.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.exportimport.kernel.lar.StagedModelType;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -39,8 +35,8 @@ import java.util.Objects;
  * @see KBTemplate
  * @generated
  */
-@ProviderType
 public class KBTemplateWrapper implements KBTemplate, ModelWrapper<KBTemplate> {
+
 	public KBTemplateWrapper(KBTemplate kbTemplate) {
 		_kbTemplate = kbTemplate;
 	}
@@ -144,13 +140,158 @@ public class KBTemplateWrapper implements KBTemplate, ModelWrapper<KBTemplate> {
 	}
 
 	@Override
-	public KBTemplate toEscapedModel() {
-		return new KBTemplateWrapper(_kbTemplate.toEscapedModel());
+	public Object clone() {
+		return new KBTemplateWrapper((KBTemplate)_kbTemplate.clone());
 	}
 
 	@Override
-	public KBTemplate toUnescapedModel() {
-		return new KBTemplateWrapper(_kbTemplate.toUnescapedModel());
+	public int compareTo(KBTemplate kbTemplate) {
+		return _kbTemplate.compareTo(kbTemplate);
+	}
+
+	/**
+	 * Returns the company ID of this kb template.
+	 *
+	 * @return the company ID of this kb template
+	 */
+	@Override
+	public long getCompanyId() {
+		return _kbTemplate.getCompanyId();
+	}
+
+	/**
+	 * Returns the content of this kb template.
+	 *
+	 * @return the content of this kb template
+	 */
+	@Override
+	public String getContent() {
+		return _kbTemplate.getContent();
+	}
+
+	/**
+	 * Returns the create date of this kb template.
+	 *
+	 * @return the create date of this kb template
+	 */
+	@Override
+	public Date getCreateDate() {
+		return _kbTemplate.getCreateDate();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _kbTemplate.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the group ID of this kb template.
+	 *
+	 * @return the group ID of this kb template
+	 */
+	@Override
+	public long getGroupId() {
+		return _kbTemplate.getGroupId();
+	}
+
+	/**
+	 * Returns the kb template ID of this kb template.
+	 *
+	 * @return the kb template ID of this kb template
+	 */
+	@Override
+	public long getKbTemplateId() {
+		return _kbTemplate.getKbTemplateId();
+	}
+
+	/**
+	 * Returns the last publish date of this kb template.
+	 *
+	 * @return the last publish date of this kb template
+	 */
+	@Override
+	public Date getLastPublishDate() {
+		return _kbTemplate.getLastPublishDate();
+	}
+
+	/**
+	 * Returns the modified date of this kb template.
+	 *
+	 * @return the modified date of this kb template
+	 */
+	@Override
+	public Date getModifiedDate() {
+		return _kbTemplate.getModifiedDate();
+	}
+
+	/**
+	 * Returns the primary key of this kb template.
+	 *
+	 * @return the primary key of this kb template
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _kbTemplate.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _kbTemplate.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the title of this kb template.
+	 *
+	 * @return the title of this kb template
+	 */
+	@Override
+	public String getTitle() {
+		return _kbTemplate.getTitle();
+	}
+
+	/**
+	 * Returns the user ID of this kb template.
+	 *
+	 * @return the user ID of this kb template
+	 */
+	@Override
+	public long getUserId() {
+		return _kbTemplate.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this kb template.
+	 *
+	 * @return the user name of this kb template
+	 */
+	@Override
+	public String getUserName() {
+		return _kbTemplate.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this kb template.
+	 *
+	 * @return the user uuid of this kb template
+	 */
+	@Override
+	public String getUserUuid() {
+		return _kbTemplate.getUserUuid();
+	}
+
+	/**
+	 * Returns the uuid of this kb template.
+	 *
+	 * @return the uuid of this kb template
+	 */
+	@Override
+	public String getUuid() {
+		return _kbTemplate.getUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _kbTemplate.hashCode();
 	}
 
 	@Override
@@ -169,176 +310,6 @@ public class KBTemplateWrapper implements KBTemplate, ModelWrapper<KBTemplate> {
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _kbTemplate.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<KBTemplate> toCacheModel() {
-		return _kbTemplate.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(KBTemplate kbTemplate) {
-		return _kbTemplate.compareTo(kbTemplate);
-	}
-
-	@Override
-	public int hashCode() {
-		return _kbTemplate.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _kbTemplate.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new KBTemplateWrapper((KBTemplate)_kbTemplate.clone());
-	}
-
-	/**
-	* Returns the content of this kb template.
-	*
-	* @return the content of this kb template
-	*/
-	@Override
-	public java.lang.String getContent() {
-		return _kbTemplate.getContent();
-	}
-
-	/**
-	* Returns the title of this kb template.
-	*
-	* @return the title of this kb template
-	*/
-	@Override
-	public java.lang.String getTitle() {
-		return _kbTemplate.getTitle();
-	}
-
-	/**
-	* Returns the user name of this kb template.
-	*
-	* @return the user name of this kb template
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _kbTemplate.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this kb template.
-	*
-	* @return the user uuid of this kb template
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _kbTemplate.getUserUuid();
-	}
-
-	/**
-	* Returns the uuid of this kb template.
-	*
-	* @return the uuid of this kb template
-	*/
-	@Override
-	public java.lang.String getUuid() {
-		return _kbTemplate.getUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _kbTemplate.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _kbTemplate.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this kb template.
-	*
-	* @return the create date of this kb template
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _kbTemplate.getCreateDate();
-	}
-
-	/**
-	* Returns the last publish date of this kb template.
-	*
-	* @return the last publish date of this kb template
-	*/
-	@Override
-	public Date getLastPublishDate() {
-		return _kbTemplate.getLastPublishDate();
-	}
-
-	/**
-	* Returns the modified date of this kb template.
-	*
-	* @return the modified date of this kb template
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _kbTemplate.getModifiedDate();
-	}
-
-	/**
-	* Returns the company ID of this kb template.
-	*
-	* @return the company ID of this kb template
-	*/
-	@Override
-	public long getCompanyId() {
-		return _kbTemplate.getCompanyId();
-	}
-
-	/**
-	* Returns the group ID of this kb template.
-	*
-	* @return the group ID of this kb template
-	*/
-	@Override
-	public long getGroupId() {
-		return _kbTemplate.getGroupId();
-	}
-
-	/**
-	* Returns the kb template ID of this kb template.
-	*
-	* @return the kb template ID of this kb template
-	*/
-	@Override
-	public long getKbTemplateId() {
-		return _kbTemplate.getKbTemplateId();
-	}
-
-	/**
-	* Returns the primary key of this kb template.
-	*
-	* @return the primary key of this kb template
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _kbTemplate.getPrimaryKey();
-	}
-
-	/**
-	* Returns the user ID of this kb template.
-	*
-	* @return the user ID of this kb template
-	*/
-	@Override
-	public long getUserId() {
-		return _kbTemplate.getUserId();
-	}
-
-	@Override
 	public void persist() {
 		_kbTemplate.persist();
 	}
@@ -349,33 +320,40 @@ public class KBTemplateWrapper implements KBTemplate, ModelWrapper<KBTemplate> {
 	}
 
 	/**
-	* Sets the company ID of this kb template.
-	*
-	* @param companyId the company ID of this kb template
-	*/
+	 * Sets the company ID of this kb template.
+	 *
+	 * @param companyId the company ID of this kb template
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_kbTemplate.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the content of this kb template.
-	*
-	* @param content the content of this kb template
-	*/
+	 * Sets the content of this kb template.
+	 *
+	 * @param content the content of this kb template
+	 */
 	@Override
-	public void setContent(java.lang.String content) {
+	public void setContent(String content) {
 		_kbTemplate.setContent(content);
 	}
 
 	/**
-	* Sets the create date of this kb template.
-	*
-	* @param createDate the create date of this kb template
-	*/
+	 * Sets the create date of this kb template.
+	 *
+	 * @param createDate the create date of this kb template
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_kbTemplate.setCreateDate(createDate);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_kbTemplate.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -384,51 +362,45 @@ public class KBTemplateWrapper implements KBTemplate, ModelWrapper<KBTemplate> {
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_kbTemplate.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_kbTemplate.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the group ID of this kb template.
-	*
-	* @param groupId the group ID of this kb template
-	*/
+	 * Sets the group ID of this kb template.
+	 *
+	 * @param groupId the group ID of this kb template
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_kbTemplate.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the kb template ID of this kb template.
-	*
-	* @param kbTemplateId the kb template ID of this kb template
-	*/
+	 * Sets the kb template ID of this kb template.
+	 *
+	 * @param kbTemplateId the kb template ID of this kb template
+	 */
 	@Override
 	public void setKbTemplateId(long kbTemplateId) {
 		_kbTemplate.setKbTemplateId(kbTemplateId);
 	}
 
 	/**
-	* Sets the last publish date of this kb template.
-	*
-	* @param lastPublishDate the last publish date of this kb template
-	*/
+	 * Sets the last publish date of this kb template.
+	 *
+	 * @param lastPublishDate the last publish date of this kb template
+	 */
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
 		_kbTemplate.setLastPublishDate(lastPublishDate);
 	}
 
 	/**
-	* Sets the modified date of this kb template.
-	*
-	* @param modifiedDate the modified date of this kb template
-	*/
+	 * Sets the modified date of this kb template.
+	 *
+	 * @param modifiedDate the modified date of this kb template
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_kbTemplate.setModifiedDate(modifiedDate);
@@ -440,10 +412,10 @@ public class KBTemplateWrapper implements KBTemplate, ModelWrapper<KBTemplate> {
 	}
 
 	/**
-	* Sets the primary key of this kb template.
-	*
-	* @param primaryKey the primary key of this kb template
-	*/
+	 * Sets the primary key of this kb template.
+	 *
+	 * @param primaryKey the primary key of this kb template
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_kbTemplate.setPrimaryKey(primaryKey);
@@ -455,53 +427,80 @@ public class KBTemplateWrapper implements KBTemplate, ModelWrapper<KBTemplate> {
 	}
 
 	/**
-	* Sets the title of this kb template.
-	*
-	* @param title the title of this kb template
-	*/
+	 * Sets the title of this kb template.
+	 *
+	 * @param title the title of this kb template
+	 */
 	@Override
-	public void setTitle(java.lang.String title) {
+	public void setTitle(String title) {
 		_kbTemplate.setTitle(title);
 	}
 
 	/**
-	* Sets the user ID of this kb template.
-	*
-	* @param userId the user ID of this kb template
-	*/
+	 * Sets the user ID of this kb template.
+	 *
+	 * @param userId the user ID of this kb template
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_kbTemplate.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this kb template.
-	*
-	* @param userName the user name of this kb template
-	*/
+	 * Sets the user name of this kb template.
+	 *
+	 * @param userName the user name of this kb template
+	 */
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_kbTemplate.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this kb template.
-	*
-	* @param userUuid the user uuid of this kb template
-	*/
+	 * Sets the user uuid of this kb template.
+	 *
+	 * @param userUuid the user uuid of this kb template
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_kbTemplate.setUserUuid(userUuid);
 	}
 
 	/**
-	* Sets the uuid of this kb template.
-	*
-	* @param uuid the uuid of this kb template
-	*/
+	 * Sets the uuid of this kb template.
+	 *
+	 * @param uuid the uuid of this kb template
+	 */
 	@Override
-	public void setUuid(java.lang.String uuid) {
+	public void setUuid(String uuid) {
 		_kbTemplate.setUuid(uuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<KBTemplate>
+		toCacheModel() {
+
+		return _kbTemplate.toCacheModel();
+	}
+
+	@Override
+	public KBTemplate toEscapedModel() {
+		return new KBTemplateWrapper(_kbTemplate.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _kbTemplate.toString();
+	}
+
+	@Override
+	public KBTemplate toUnescapedModel() {
+		return new KBTemplateWrapper(_kbTemplate.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _kbTemplate.toXmlString();
 	}
 
 	@Override
@@ -549,4 +548,5 @@ public class KBTemplateWrapper implements KBTemplate, ModelWrapper<KBTemplate> {
 	}
 
 	private final KBTemplate _kbTemplate;
+
 }

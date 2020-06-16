@@ -14,14 +14,10 @@
 
 package com.liferay.dynamic.data.mapping.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.dynamic.data.mapping.model.DDMStructureVersion;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing DDMStructureVersion in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see DDMStructureVersion
  * @generated
  */
-@ProviderType
-public class DDMStructureVersionCacheModel implements CacheModel<DDMStructureVersion>,
-	Externalizable {
+public class DDMStructureVersionCacheModel
+	implements CacheModel<DDMStructureVersion>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,9 +45,12 @@ public class DDMStructureVersionCacheModel implements CacheModel<DDMStructureVer
 			return false;
 		}
 
-		DDMStructureVersionCacheModel ddmStructureVersionCacheModel = (DDMStructureVersionCacheModel)obj;
+		DDMStructureVersionCacheModel ddmStructureVersionCacheModel =
+			(DDMStructureVersionCacheModel)obj;
 
-		if (structureVersionId == ddmStructureVersionCacheModel.structureVersionId) {
+		if (structureVersionId ==
+				ddmStructureVersionCacheModel.structureVersionId) {
+
 			return true;
 		}
 
@@ -111,7 +109,8 @@ public class DDMStructureVersionCacheModel implements CacheModel<DDMStructureVer
 
 	@Override
 	public DDMStructureVersion toEntityModel() {
-		DDMStructureVersionImpl ddmStructureVersionImpl = new DDMStructureVersionImpl();
+		DDMStructureVersionImpl ddmStructureVersionImpl =
+			new DDMStructureVersionImpl();
 
 		ddmStructureVersionImpl.setStructureVersionId(structureVersionId);
 		ddmStructureVersionImpl.setGroupId(groupId);
@@ -119,7 +118,7 @@ public class DDMStructureVersionCacheModel implements CacheModel<DDMStructureVer
 		ddmStructureVersionImpl.setUserId(userId);
 
 		if (userName == null) {
-			ddmStructureVersionImpl.setUserName(StringPool.BLANK);
+			ddmStructureVersionImpl.setUserName("");
 		}
 		else {
 			ddmStructureVersionImpl.setUserName(userName);
@@ -135,7 +134,7 @@ public class DDMStructureVersionCacheModel implements CacheModel<DDMStructureVer
 		ddmStructureVersionImpl.setStructureId(structureId);
 
 		if (version == null) {
-			ddmStructureVersionImpl.setVersion(StringPool.BLANK);
+			ddmStructureVersionImpl.setVersion("");
 		}
 		else {
 			ddmStructureVersionImpl.setVersion(version);
@@ -144,28 +143,28 @@ public class DDMStructureVersionCacheModel implements CacheModel<DDMStructureVer
 		ddmStructureVersionImpl.setParentStructureId(parentStructureId);
 
 		if (name == null) {
-			ddmStructureVersionImpl.setName(StringPool.BLANK);
+			ddmStructureVersionImpl.setName("");
 		}
 		else {
 			ddmStructureVersionImpl.setName(name);
 		}
 
 		if (description == null) {
-			ddmStructureVersionImpl.setDescription(StringPool.BLANK);
+			ddmStructureVersionImpl.setDescription("");
 		}
 		else {
 			ddmStructureVersionImpl.setDescription(description);
 		}
 
 		if (definition == null) {
-			ddmStructureVersionImpl.setDefinition(StringPool.BLANK);
+			ddmStructureVersionImpl.setDefinition("");
 		}
 		else {
 			ddmStructureVersionImpl.setDefinition(definition);
 		}
 
 		if (storageType == null) {
-			ddmStructureVersionImpl.setStorageType(StringPool.BLANK);
+			ddmStructureVersionImpl.setStorageType("");
 		}
 		else {
 			ddmStructureVersionImpl.setStorageType(storageType);
@@ -176,7 +175,7 @@ public class DDMStructureVersionCacheModel implements CacheModel<DDMStructureVer
 		ddmStructureVersionImpl.setStatusByUserId(statusByUserId);
 
 		if (statusByUserName == null) {
-			ddmStructureVersionImpl.setStatusByUserName(StringPool.BLANK);
+			ddmStructureVersionImpl.setStatusByUserName("");
 		}
 		else {
 			ddmStructureVersionImpl.setStatusByUserName(statusByUserName);
@@ -199,6 +198,7 @@ public class DDMStructureVersionCacheModel implements CacheModel<DDMStructureVer
 	@Override
 	public void readExternal(ObjectInput objectInput)
 		throws ClassNotFoundException, IOException {
+
 		structureVersionId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -214,8 +214,8 @@ public class DDMStructureVersionCacheModel implements CacheModel<DDMStructureVer
 
 		parentStructureId = objectInput.readLong();
 		name = objectInput.readUTF();
-		description = objectInput.readUTF();
-		definition = objectInput.readUTF();
+		description = (String)objectInput.readObject();
+		definition = (String)objectInput.readObject();
 		storageType = objectInput.readUTF();
 
 		type = objectInput.readInt();
@@ -226,12 +226,13 @@ public class DDMStructureVersionCacheModel implements CacheModel<DDMStructureVer
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
 
-		_ddmForm = (com.liferay.dynamic.data.mapping.model.DDMForm)objectInput.readObject();
+		_ddmForm =
+			(com.liferay.dynamic.data.mapping.model.DDMForm)
+				objectInput.readObject();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(structureVersionId);
 
 		objectOutput.writeLong(groupId);
@@ -241,7 +242,7 @@ public class DDMStructureVersionCacheModel implements CacheModel<DDMStructureVer
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -252,7 +253,7 @@ public class DDMStructureVersionCacheModel implements CacheModel<DDMStructureVer
 		objectOutput.writeLong(structureId);
 
 		if (version == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(version);
@@ -261,28 +262,28 @@ public class DDMStructureVersionCacheModel implements CacheModel<DDMStructureVer
 		objectOutput.writeLong(parentStructureId);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(description);
+			objectOutput.writeObject(description);
 		}
 
 		if (definition == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(definition);
+			objectOutput.writeObject(definition);
 		}
 
 		if (storageType == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(storageType);
@@ -295,7 +296,7 @@ public class DDMStructureVersionCacheModel implements CacheModel<DDMStructureVer
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(statusByUserName);
@@ -325,4 +326,5 @@ public class DDMStructureVersionCacheModel implements CacheModel<DDMStructureVer
 	public String statusByUserName;
 	public long statusDate;
 	public com.liferay.dynamic.data.mapping.model.DDMForm _ddmForm;
+
 }

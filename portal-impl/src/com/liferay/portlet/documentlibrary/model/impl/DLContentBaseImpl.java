@@ -14,8 +14,6 @@
 
 package com.liferay.portlet.documentlibrary.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.document.library.kernel.model.DLContent;
 import com.liferay.document.library.kernel.service.DLContentLocalServiceUtil;
 
@@ -31,13 +29,13 @@ import com.liferay.document.library.kernel.service.DLContentLocalServiceUtil;
  * @see DLContent
  * @generated
  */
-@ProviderType
-public abstract class DLContentBaseImpl extends DLContentModelImpl
-	implements DLContent {
+public abstract class DLContentBaseImpl
+	extends DLContentModelImpl implements DLContent {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a document library content model instance should use the {@link DLContent} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a document library content model instance should use the <code>DLContent</code> interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -48,4 +46,5 @@ public abstract class DLContentBaseImpl extends DLContentModelImpl
 			DLContentLocalServiceUtil.updateDLContent(this);
 		}
 	}
+
 }

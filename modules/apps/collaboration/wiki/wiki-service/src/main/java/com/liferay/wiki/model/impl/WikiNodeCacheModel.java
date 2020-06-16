@@ -14,13 +14,9 @@
 
 package com.liferay.wiki.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-
 import com.liferay.wiki.model.WikiNode;
 
 import java.io.Externalizable;
@@ -34,11 +30,11 @@ import java.util.Date;
  * The cache model class for representing WikiNode in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see WikiNode
  * @generated
  */
-@ProviderType
-public class WikiNodeCacheModel implements CacheModel<WikiNode>, Externalizable {
+public class WikiNodeCacheModel
+	implements CacheModel<WikiNode>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -109,7 +105,7 @@ public class WikiNodeCacheModel implements CacheModel<WikiNode>, Externalizable 
 		WikiNodeImpl wikiNodeImpl = new WikiNodeImpl();
 
 		if (uuid == null) {
-			wikiNodeImpl.setUuid(StringPool.BLANK);
+			wikiNodeImpl.setUuid("");
 		}
 		else {
 			wikiNodeImpl.setUuid(uuid);
@@ -121,7 +117,7 @@ public class WikiNodeCacheModel implements CacheModel<WikiNode>, Externalizable 
 		wikiNodeImpl.setUserId(userId);
 
 		if (userName == null) {
-			wikiNodeImpl.setUserName(StringPool.BLANK);
+			wikiNodeImpl.setUserName("");
 		}
 		else {
 			wikiNodeImpl.setUserName(userName);
@@ -142,14 +138,14 @@ public class WikiNodeCacheModel implements CacheModel<WikiNode>, Externalizable 
 		}
 
 		if (name == null) {
-			wikiNodeImpl.setName(StringPool.BLANK);
+			wikiNodeImpl.setName("");
 		}
 		else {
 			wikiNodeImpl.setName(name);
 		}
 
 		if (description == null) {
-			wikiNodeImpl.setDescription(StringPool.BLANK);
+			wikiNodeImpl.setDescription("");
 		}
 		else {
 			wikiNodeImpl.setDescription(description);
@@ -173,7 +169,7 @@ public class WikiNodeCacheModel implements CacheModel<WikiNode>, Externalizable 
 		wikiNodeImpl.setStatusByUserId(statusByUserId);
 
 		if (statusByUserName == null) {
-			wikiNodeImpl.setStatusByUserName(StringPool.BLANK);
+			wikiNodeImpl.setStatusByUserName("");
 		}
 		else {
 			wikiNodeImpl.setStatusByUserName(statusByUserName);
@@ -218,10 +214,9 @@ public class WikiNodeCacheModel implements CacheModel<WikiNode>, Externalizable 
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -236,7 +231,7 @@ public class WikiNodeCacheModel implements CacheModel<WikiNode>, Externalizable 
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -246,14 +241,14 @@ public class WikiNodeCacheModel implements CacheModel<WikiNode>, Externalizable 
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -267,7 +262,7 @@ public class WikiNodeCacheModel implements CacheModel<WikiNode>, Externalizable 
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(statusByUserName);
@@ -292,4 +287,5 @@ public class WikiNodeCacheModel implements CacheModel<WikiNode>, Externalizable 
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
+
 }

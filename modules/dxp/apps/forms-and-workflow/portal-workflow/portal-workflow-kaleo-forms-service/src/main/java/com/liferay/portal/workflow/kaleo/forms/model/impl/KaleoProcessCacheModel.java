@@ -1,25 +1,22 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.portal.workflow.kaleo.forms.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.workflow.kaleo.forms.model.KaleoProcess;
 
 import java.io.Externalizable;
@@ -33,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing KaleoProcess in entity cache.
  *
  * @author Marcellus Tavares
- * @see KaleoProcess
  * @generated
  */
-@ProviderType
-public class KaleoProcessCacheModel implements CacheModel<KaleoProcess>,
-	Externalizable {
+public class KaleoProcessCacheModel
+	implements CacheModel<KaleoProcess>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -49,7 +45,8 @@ public class KaleoProcessCacheModel implements CacheModel<KaleoProcess>,
 			return false;
 		}
 
-		KaleoProcessCacheModel kaleoProcessCacheModel = (KaleoProcessCacheModel)obj;
+		KaleoProcessCacheModel kaleoProcessCacheModel =
+			(KaleoProcessCacheModel)obj;
 
 		if (kaleoProcessId == kaleoProcessCacheModel.kaleoProcessId) {
 			return true;
@@ -101,7 +98,7 @@ public class KaleoProcessCacheModel implements CacheModel<KaleoProcess>,
 		KaleoProcessImpl kaleoProcessImpl = new KaleoProcessImpl();
 
 		if (uuid == null) {
-			kaleoProcessImpl.setUuid(StringPool.BLANK);
+			kaleoProcessImpl.setUuid("");
 		}
 		else {
 			kaleoProcessImpl.setUuid(uuid);
@@ -113,7 +110,7 @@ public class KaleoProcessCacheModel implements CacheModel<KaleoProcess>,
 		kaleoProcessImpl.setUserId(userId);
 
 		if (userName == null) {
-			kaleoProcessImpl.setUserName(StringPool.BLANK);
+			kaleoProcessImpl.setUserName("");
 		}
 		else {
 			kaleoProcessImpl.setUserName(userName);
@@ -137,13 +134,14 @@ public class KaleoProcessCacheModel implements CacheModel<KaleoProcess>,
 		kaleoProcessImpl.setDDMTemplateId(DDMTemplateId);
 
 		if (workflowDefinitionName == null) {
-			kaleoProcessImpl.setWorkflowDefinitionName(StringPool.BLANK);
+			kaleoProcessImpl.setWorkflowDefinitionName("");
 		}
 		else {
 			kaleoProcessImpl.setWorkflowDefinitionName(workflowDefinitionName);
 		}
 
-		kaleoProcessImpl.setWorkflowDefinitionVersion(workflowDefinitionVersion);
+		kaleoProcessImpl.setWorkflowDefinitionVersion(
+			workflowDefinitionVersion);
 
 		kaleoProcessImpl.resetOriginalValues();
 
@@ -174,10 +172,9 @@ public class KaleoProcessCacheModel implements CacheModel<KaleoProcess>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -192,7 +189,7 @@ public class KaleoProcessCacheModel implements CacheModel<KaleoProcess>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -206,7 +203,7 @@ public class KaleoProcessCacheModel implements CacheModel<KaleoProcess>,
 		objectOutput.writeLong(DDMTemplateId);
 
 		if (workflowDefinitionName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(workflowDefinitionName);
@@ -227,4 +224,5 @@ public class KaleoProcessCacheModel implements CacheModel<KaleoProcess>,
 	public long DDMTemplateId;
 	public String workflowDefinitionName;
 	public int workflowDefinitionVersion;
+
 }

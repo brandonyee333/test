@@ -14,8 +14,6 @@
 
 package com.liferay.mail.reader.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.mail.reader.model.Account;
 import com.liferay.mail.reader.service.AccountLocalServiceUtil;
 
@@ -31,13 +29,13 @@ import com.liferay.mail.reader.service.AccountLocalServiceUtil;
  * @see Account
  * @generated
  */
-@ProviderType
-public abstract class AccountBaseImpl extends AccountModelImpl
-	implements Account {
+public abstract class AccountBaseImpl
+	extends AccountModelImpl implements Account {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a account model instance should use the {@link Account} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a account model instance should use the <code>Account</code> interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -48,4 +46,5 @@ public abstract class AccountBaseImpl extends AccountModelImpl
 			AccountLocalServiceUtil.updateAccount(this);
 		}
 	}
+
 }

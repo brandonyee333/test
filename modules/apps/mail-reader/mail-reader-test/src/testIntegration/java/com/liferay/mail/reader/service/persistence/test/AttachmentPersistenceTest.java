@@ -15,13 +15,11 @@
 package com.liferay.mail.reader.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-
 import com.liferay.mail.reader.exception.NoSuchAttachmentException;
 import com.liferay.mail.reader.model.Attachment;
 import com.liferay.mail.reader.service.AttachmentLocalServiceUtil;
 import com.liferay.mail.reader.service.persistence.AttachmentPersistence;
 import com.liferay.mail.reader.service.persistence.AttachmentUtil;
-
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -38,15 +36,6 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-
-import org.junit.runner.RunWith;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -56,17 +45,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 /**
  * @generated
  */
 @RunWith(Arquillian.class)
 public class AttachmentPersistenceTest {
+
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
-			PersistenceTestRule.INSTANCE,
-			new TransactionalTestRule(Propagation.REQUIRED,
-				"com.liferay.mail.reader.service"));
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
+			new TransactionalTestRule(
+				Propagation.REQUIRED, "com.liferay.mail.reader.service"));
 
 	@Before
 	public void setUp() {
@@ -105,7 +104,8 @@ public class AttachmentPersistenceTest {
 
 		_persistence.remove(newAttachment);
 
-		Attachment existingAttachment = _persistence.fetchByPrimaryKey(newAttachment.getPrimaryKey());
+		Attachment existingAttachment = _persistence.fetchByPrimaryKey(
+			newAttachment.getPrimaryKey());
 
 		Assert.assertNull(existingAttachment);
 	}
@@ -139,26 +139,29 @@ public class AttachmentPersistenceTest {
 
 		_attachments.add(_persistence.update(newAttachment));
 
-		Attachment existingAttachment = _persistence.findByPrimaryKey(newAttachment.getPrimaryKey());
+		Attachment existingAttachment = _persistence.findByPrimaryKey(
+			newAttachment.getPrimaryKey());
 
-		Assert.assertEquals(existingAttachment.getAttachmentId(),
+		Assert.assertEquals(
+			existingAttachment.getAttachmentId(),
 			newAttachment.getAttachmentId());
-		Assert.assertEquals(existingAttachment.getCompanyId(),
-			newAttachment.getCompanyId());
-		Assert.assertEquals(existingAttachment.getUserId(),
-			newAttachment.getUserId());
-		Assert.assertEquals(existingAttachment.getAccountId(),
-			newAttachment.getAccountId());
-		Assert.assertEquals(existingAttachment.getFolderId(),
-			newAttachment.getFolderId());
-		Assert.assertEquals(existingAttachment.getMessageId(),
-			newAttachment.getMessageId());
-		Assert.assertEquals(existingAttachment.getContentPath(),
+		Assert.assertEquals(
+			existingAttachment.getCompanyId(), newAttachment.getCompanyId());
+		Assert.assertEquals(
+			existingAttachment.getUserId(), newAttachment.getUserId());
+		Assert.assertEquals(
+			existingAttachment.getAccountId(), newAttachment.getAccountId());
+		Assert.assertEquals(
+			existingAttachment.getFolderId(), newAttachment.getFolderId());
+		Assert.assertEquals(
+			existingAttachment.getMessageId(), newAttachment.getMessageId());
+		Assert.assertEquals(
+			existingAttachment.getContentPath(),
 			newAttachment.getContentPath());
-		Assert.assertEquals(existingAttachment.getFileName(),
-			newAttachment.getFileName());
-		Assert.assertEquals(existingAttachment.getSize(),
-			newAttachment.getSize());
+		Assert.assertEquals(
+			existingAttachment.getFileName(), newAttachment.getFileName());
+		Assert.assertEquals(
+			existingAttachment.getSize(), newAttachment.getSize());
 	}
 
 	@Test
@@ -172,7 +175,8 @@ public class AttachmentPersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		Attachment newAttachment = addAttachment();
 
-		Attachment existingAttachment = _persistence.findByPrimaryKey(newAttachment.getPrimaryKey());
+		Attachment existingAttachment = _persistence.findByPrimaryKey(
+			newAttachment.getPrimaryKey());
 
 		Assert.assertEquals(existingAttachment, newAttachment);
 	}
@@ -186,22 +190,23 @@ public class AttachmentPersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			getOrderByComparator());
+		_persistence.findAll(
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
 	}
 
 	protected OrderByComparator<Attachment> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create("Mail_Attachment",
-			"attachmentId", true, "companyId", true, "userId", true,
-			"accountId", true, "folderId", true, "messageId", true,
-			"contentPath", true, "fileName", true, "size", true);
+		return OrderByComparatorFactoryUtil.create(
+			"Mail_Attachment", "attachmentId", true, "companyId", true,
+			"userId", true, "accountId", true, "folderId", true, "messageId",
+			true, "contentPath", true, "fileName", true, "size", true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		Attachment newAttachment = addAttachment();
 
-		Attachment existingAttachment = _persistence.fetchByPrimaryKey(newAttachment.getPrimaryKey());
+		Attachment existingAttachment = _persistence.fetchByPrimaryKey(
+			newAttachment.getPrimaryKey());
 
 		Assert.assertEquals(existingAttachment, newAttachment);
 	}
@@ -218,6 +223,7 @@ public class AttachmentPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
+
 		Attachment newAttachment1 = addAttachment();
 		Attachment newAttachment2 = addAttachment();
 
@@ -226,18 +232,20 @@ public class AttachmentPersistenceTest {
 		primaryKeys.add(newAttachment1.getPrimaryKey());
 		primaryKeys.add(newAttachment2.getPrimaryKey());
 
-		Map<Serializable, Attachment> attachments = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, Attachment> attachments =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(2, attachments.size());
-		Assert.assertEquals(newAttachment1,
-			attachments.get(newAttachment1.getPrimaryKey()));
-		Assert.assertEquals(newAttachment2,
-			attachments.get(newAttachment2.getPrimaryKey()));
+		Assert.assertEquals(
+			newAttachment1, attachments.get(newAttachment1.getPrimaryKey()));
+		Assert.assertEquals(
+			newAttachment2, attachments.get(newAttachment2.getPrimaryKey()));
 	}
 
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
+
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -247,7 +255,8 @@ public class AttachmentPersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, Attachment> attachments = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, Attachment> attachments =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(attachments.isEmpty());
 	}
@@ -255,6 +264,7 @@ public class AttachmentPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
+
 		Attachment newAttachment = addAttachment();
 
 		long pk = RandomTestUtil.nextLong();
@@ -264,52 +274,57 @@ public class AttachmentPersistenceTest {
 		primaryKeys.add(newAttachment.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, Attachment> attachments = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, Attachment> attachments =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, attachments.size());
-		Assert.assertEquals(newAttachment,
-			attachments.get(newAttachment.getPrimaryKey()));
+		Assert.assertEquals(
+			newAttachment, attachments.get(newAttachment.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, Attachment> attachments = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, Attachment> attachments =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(attachments.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
 		Attachment newAttachment = addAttachment();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newAttachment.getPrimaryKey());
 
-		Map<Serializable, Attachment> attachments = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, Attachment> attachments =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, attachments.size());
-		Assert.assertEquals(newAttachment,
-			attachments.get(newAttachment.getPrimaryKey()));
+		Assert.assertEquals(
+			newAttachment, attachments.get(newAttachment.getPrimaryKey()));
 	}
 
 	@Test
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery = AttachmentLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			AttachmentLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<Attachment>() {
+		actionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<Attachment>() {
+
 				@Override
 				public void performAction(Attachment attachment) {
 					Assert.assertNotNull(attachment);
 
 					count.increment();
 				}
+
 			});
 
 		actionableDynamicQuery.performActions();
@@ -318,17 +333,18 @@ public class AttachmentPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting()
-		throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
 		Attachment newAttachment = addAttachment();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(Attachment.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Attachment.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("attachmentId",
-				newAttachment.getAttachmentId()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"attachmentId", newAttachment.getAttachmentId()));
 
-		List<Attachment> result = _persistence.findWithDynamicQuery(dynamicQuery);
+		List<Attachment> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
 
 		Assert.assertEquals(1, result.size());
 
@@ -339,32 +355,34 @@ public class AttachmentPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(Attachment.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Attachment.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("attachmentId",
-				RandomTestUtil.nextLong()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"attachmentId", RandomTestUtil.nextLong()));
 
-		List<Attachment> result = _persistence.findWithDynamicQuery(dynamicQuery);
+		List<Attachment> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
 
 		Assert.assertEquals(0, result.size());
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting()
-		throws Exception {
+	public void testDynamicQueryByProjectionExisting() throws Exception {
 		Attachment newAttachment = addAttachment();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(Attachment.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Attachment.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property(
-				"attachmentId"));
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.property("attachmentId"));
 
 		Object newAttachmentId = newAttachment.getAttachmentId();
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("attachmentId",
-				new Object[] { newAttachmentId }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"attachmentId", new Object[] {newAttachmentId}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -377,14 +395,15 @@ public class AttachmentPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(Attachment.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Attachment.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property(
-				"attachmentId"));
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.property("attachmentId"));
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("attachmentId",
-				new Object[] { RandomTestUtil.nextLong() }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"attachmentId", new Object[] {RandomTestUtil.nextLong()}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -420,4 +439,5 @@ public class AttachmentPersistenceTest {
 	private List<Attachment> _attachments = new ArrayList<Attachment>();
 	private AttachmentPersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
+
 }

@@ -1,20 +1,18 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.watson.model;
-
-import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -28,8 +26,8 @@ import java.util.List;
  * @author Steven Smith
  * @generated
  */
-@ProviderType
 public class WatsonChildAuditSoap implements Serializable {
+
 	public static WatsonChildAuditSoap toSoapModel(WatsonChildAudit model) {
 		WatsonChildAuditSoap soapModel = new WatsonChildAuditSoap();
 
@@ -41,13 +39,18 @@ public class WatsonChildAuditSoap implements Serializable {
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setBirthCountryId(model.getBirthCountryId());
-		soapModel.setCitizenshipWatsonListTypeId(model.getCitizenshipWatsonListTypeId());
-		soapModel.setCountryWatsonListTypeId(model.getCountryWatsonListTypeId());
-		soapModel.setDischargeWatsonListTypeId(model.getDischargeWatsonListTypeId());
-		soapModel.setEthnicityWatsonListTypeId(model.getEthnicityWatsonListTypeId());
+		soapModel.setCitizenshipWatsonListTypeId(
+			model.getCitizenshipWatsonListTypeId());
+		soapModel.setCountryWatsonListTypeId(
+			model.getCountryWatsonListTypeId());
+		soapModel.setDischargeWatsonListTypeId(
+			model.getDischargeWatsonListTypeId());
+		soapModel.setEthnicityWatsonListTypeId(
+			model.getEthnicityWatsonListTypeId());
 		soapModel.setOriginalWatsonPersonId(model.getOriginalWatsonPersonId());
 		soapModel.setSexWatsonListTypeId(model.getSexWatsonListTypeId());
-		soapModel.setSourceSubtypeWatsonListTypeId(model.getSourceSubtypeWatsonListTypeId());
+		soapModel.setSourceSubtypeWatsonListTypeId(
+			model.getSourceSubtypeWatsonListTypeId());
 		soapModel.setSourceWatsonListTypeId(model.getSourceWatsonListTypeId());
 		soapModel.setTypeWatsonListTypeId(model.getTypeWatsonListTypeId());
 		soapModel.setWatsonChildId(model.getWatsonChildId());
@@ -60,8 +63,11 @@ public class WatsonChildAuditSoap implements Serializable {
 		return soapModel;
 	}
 
-	public static WatsonChildAuditSoap[] toSoapModels(WatsonChildAudit[] models) {
-		WatsonChildAuditSoap[] soapModels = new WatsonChildAuditSoap[models.length];
+	public static WatsonChildAuditSoap[] toSoapModels(
+		WatsonChildAudit[] models) {
+
+		WatsonChildAuditSoap[] soapModels =
+			new WatsonChildAuditSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -72,10 +78,12 @@ public class WatsonChildAuditSoap implements Serializable {
 
 	public static WatsonChildAuditSoap[][] toSoapModels(
 		WatsonChildAudit[][] models) {
+
 		WatsonChildAuditSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new WatsonChildAuditSoap[models.length][models[0].length];
+			soapModels =
+				new WatsonChildAuditSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonChildAuditSoap[0][0];
@@ -90,7 +98,9 @@ public class WatsonChildAuditSoap implements Serializable {
 
 	public static WatsonChildAuditSoap[] toSoapModels(
 		List<WatsonChildAudit> models) {
-		List<WatsonChildAuditSoap> soapModels = new ArrayList<WatsonChildAuditSoap>(models.size());
+
+		List<WatsonChildAuditSoap> soapModels =
+			new ArrayList<WatsonChildAuditSoap>(models.size());
 
 		for (WatsonChildAudit model : models) {
 			soapModels.add(toSoapModel(model));
@@ -178,7 +188,9 @@ public class WatsonChildAuditSoap implements Serializable {
 		return _citizenshipWatsonListTypeId;
 	}
 
-	public void setCitizenshipWatsonListTypeId(long citizenshipWatsonListTypeId) {
+	public void setCitizenshipWatsonListTypeId(
+		long citizenshipWatsonListTypeId) {
+
 		_citizenshipWatsonListTypeId = citizenshipWatsonListTypeId;
 	}
 
@@ -228,6 +240,7 @@ public class WatsonChildAuditSoap implements Serializable {
 
 	public void setSourceSubtypeWatsonListTypeId(
 		long sourceSubtypeWatsonListTypeId) {
+
 		_sourceSubtypeWatsonListTypeId = sourceSubtypeWatsonListTypeId;
 	}
 
@@ -318,4 +331,5 @@ public class WatsonChildAuditSoap implements Serializable {
 	private Date _dateFollowUp;
 	private String _source;
 	private int _status;
+
 }

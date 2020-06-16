@@ -1,26 +1,22 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-
 import com.liferay.watson.model.WatsonIncidentRel;
 
 import java.io.Externalizable;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing WatsonIncidentRel in entity cache.
  *
  * @author Steven Smith
- * @see WatsonIncidentRel
  * @generated
  */
-@ProviderType
-public class WatsonIncidentRelCacheModel implements CacheModel<WatsonIncidentRel>,
-	Externalizable {
+public class WatsonIncidentRelCacheModel
+	implements CacheModel<WatsonIncidentRel>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,9 +45,12 @@ public class WatsonIncidentRelCacheModel implements CacheModel<WatsonIncidentRel
 			return false;
 		}
 
-		WatsonIncidentRelCacheModel watsonIncidentRelCacheModel = (WatsonIncidentRelCacheModel)obj;
+		WatsonIncidentRelCacheModel watsonIncidentRelCacheModel =
+			(WatsonIncidentRelCacheModel)obj;
 
-		if (watsonIncidentRelId == watsonIncidentRelCacheModel.watsonIncidentRelId) {
+		if (watsonIncidentRelId ==
+				watsonIncidentRelCacheModel.watsonIncidentRelId) {
+
 			return true;
 		}
 
@@ -97,7 +95,8 @@ public class WatsonIncidentRelCacheModel implements CacheModel<WatsonIncidentRel
 
 	@Override
 	public WatsonIncidentRel toEntityModel() {
-		WatsonIncidentRelImpl watsonIncidentRelImpl = new WatsonIncidentRelImpl();
+		WatsonIncidentRelImpl watsonIncidentRelImpl =
+			new WatsonIncidentRelImpl();
 
 		watsonIncidentRelImpl.setWatsonIncidentRelId(watsonIncidentRelId);
 		watsonIncidentRelImpl.setGroupId(groupId);
@@ -105,7 +104,7 @@ public class WatsonIncidentRelCacheModel implements CacheModel<WatsonIncidentRel
 		watsonIncidentRelImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonIncidentRelImpl.setUserName(StringPool.BLANK);
+			watsonIncidentRelImpl.setUserName("");
 		}
 		else {
 			watsonIncidentRelImpl.setUserName(userName);
@@ -129,7 +128,7 @@ public class WatsonIncidentRelCacheModel implements CacheModel<WatsonIncidentRel
 		watsonIncidentRelImpl.setWatsonIncidentId2(watsonIncidentId2);
 
 		if (type == null) {
-			watsonIncidentRelImpl.setType(StringPool.BLANK);
+			watsonIncidentRelImpl.setType("");
 		}
 		else {
 			watsonIncidentRelImpl.setType(type);
@@ -164,8 +163,7 @@ public class WatsonIncidentRelCacheModel implements CacheModel<WatsonIncidentRel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonIncidentRelId);
 
 		objectOutput.writeLong(groupId);
@@ -175,7 +173,7 @@ public class WatsonIncidentRelCacheModel implements CacheModel<WatsonIncidentRel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -189,7 +187,7 @@ public class WatsonIncidentRelCacheModel implements CacheModel<WatsonIncidentRel
 		objectOutput.writeLong(watsonIncidentId2);
 
 		if (type == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(type);
@@ -209,4 +207,5 @@ public class WatsonIncidentRelCacheModel implements CacheModel<WatsonIncidentRel
 	public long watsonIncidentId2;
 	public String type;
 	public int status;
+
 }

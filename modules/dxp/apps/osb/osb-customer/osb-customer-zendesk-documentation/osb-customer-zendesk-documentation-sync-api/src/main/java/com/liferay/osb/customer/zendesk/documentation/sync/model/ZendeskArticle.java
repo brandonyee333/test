@@ -1,15 +1,15 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model;
@@ -25,20 +25,22 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see ZendeskArticleModel
- * @see com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleImpl
- * @see com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleImpl")
+@ImplementationClassName(
+	"com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleImpl"
+)
 @ProviderType
-public interface ZendeskArticle extends ZendeskArticleModel, PersistedModel {
+public interface ZendeskArticle extends PersistedModel, ZendeskArticleModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<ZendeskArticle, Long> ZENDESK_ARTICLE_ID_ACCESSOR =
-		new Accessor<ZendeskArticle, Long>() {
+	public static final Accessor<ZendeskArticle, Long>
+		ZENDESK_ARTICLE_ID_ACCESSOR = new Accessor<ZendeskArticle, Long>() {
+
 			@Override
 			public Long get(ZendeskArticle zendeskArticle) {
 				return zendeskArticle.getZendeskArticleId();
@@ -53,7 +55,9 @@ public interface ZendeskArticle extends ZendeskArticleModel, PersistedModel {
 			public Class<ZendeskArticle> getTypeClass() {
 				return ZendeskArticle.class;
 			}
+
 		};
 
-	public java.lang.String getRemoteHtmlURL(java.lang.String zendeskLocale);
+	public String getRemoteHtmlURL(String zendeskLocale);
+
 }

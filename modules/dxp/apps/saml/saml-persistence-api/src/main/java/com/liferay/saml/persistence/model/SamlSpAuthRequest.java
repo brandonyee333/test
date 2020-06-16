@@ -1,15 +1,15 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.saml.persistence.model;
@@ -25,33 +25,39 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Mika Koivisto
  * @see SamlSpAuthRequestModel
- * @see com.liferay.saml.persistence.model.impl.SamlSpAuthRequestImpl
- * @see com.liferay.saml.persistence.model.impl.SamlSpAuthRequestModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.saml.persistence.model.impl.SamlSpAuthRequestImpl")
+@ImplementationClassName(
+	"com.liferay.saml.persistence.model.impl.SamlSpAuthRequestImpl"
+)
 @ProviderType
-public interface SamlSpAuthRequest extends SamlSpAuthRequestModel, PersistedModel {
+public interface SamlSpAuthRequest
+	extends PersistedModel, SamlSpAuthRequestModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.saml.persistence.model.impl.SamlSpAuthRequestImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.saml.persistence.model.impl.SamlSpAuthRequestImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<SamlSpAuthRequest, Long> SAML_SP_AUTHN_REQUEST_ID_ACCESSOR =
-		new Accessor<SamlSpAuthRequest, Long>() {
-			@Override
-			public Long get(SamlSpAuthRequest samlSpAuthRequest) {
-				return samlSpAuthRequest.getSamlSpAuthnRequestId();
-			}
+	public static final Accessor<SamlSpAuthRequest, Long>
+		SAML_SP_AUTHN_REQUEST_ID_ACCESSOR =
+			new Accessor<SamlSpAuthRequest, Long>() {
 
-			@Override
-			public Class<Long> getAttributeClass() {
-				return Long.class;
-			}
+				@Override
+				public Long get(SamlSpAuthRequest samlSpAuthRequest) {
+					return samlSpAuthRequest.getSamlSpAuthnRequestId();
+				}
 
-			@Override
-			public Class<SamlSpAuthRequest> getTypeClass() {
-				return SamlSpAuthRequest.class;
-			}
-		};
+				@Override
+				public Class<Long> getAttributeClass() {
+					return Long.class;
+				}
+
+				@Override
+				public Class<SamlSpAuthRequest> getTypeClass() {
+					return SamlSpAuthRequest.class;
+				}
+
+			};
+
 }

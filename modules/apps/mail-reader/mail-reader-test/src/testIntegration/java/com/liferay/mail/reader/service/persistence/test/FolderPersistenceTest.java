@@ -15,13 +15,11 @@
 package com.liferay.mail.reader.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-
 import com.liferay.mail.reader.exception.NoSuchFolderException;
 import com.liferay.mail.reader.model.Folder;
 import com.liferay.mail.reader.service.FolderLocalServiceUtil;
 import com.liferay.mail.reader.service.persistence.FolderPersistence;
 import com.liferay.mail.reader.service.persistence.FolderUtil;
-
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -35,20 +33,10 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
-
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-
-import org.junit.runner.RunWith;
 
 import java.io.Serializable;
 
@@ -60,17 +48,27 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 /**
  * @generated
  */
 @RunWith(Arquillian.class)
 public class FolderPersistenceTest {
+
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
-			PersistenceTestRule.INSTANCE,
-			new TransactionalTestRule(Propagation.REQUIRED,
-				"com.liferay.mail.reader.service"));
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
+			new TransactionalTestRule(
+				Propagation.REQUIRED, "com.liferay.mail.reader.service"));
 
 	@Before
 	public void setUp() {
@@ -109,7 +107,8 @@ public class FolderPersistenceTest {
 
 		_persistence.remove(newFolder);
 
-		Folder existingFolder = _persistence.fetchByPrimaryKey(newFolder.getPrimaryKey());
+		Folder existingFolder = _persistence.fetchByPrimaryKey(
+			newFolder.getPrimaryKey());
 
 		Assert.assertNull(existingFolder);
 	}
@@ -145,28 +144,30 @@ public class FolderPersistenceTest {
 
 		_folders.add(_persistence.update(newFolder));
 
-		Folder existingFolder = _persistence.findByPrimaryKey(newFolder.getPrimaryKey());
+		Folder existingFolder = _persistence.findByPrimaryKey(
+			newFolder.getPrimaryKey());
 
-		Assert.assertEquals(existingFolder.getFolderId(),
-			newFolder.getFolderId());
-		Assert.assertEquals(existingFolder.getCompanyId(),
-			newFolder.getCompanyId());
+		Assert.assertEquals(
+			existingFolder.getFolderId(), newFolder.getFolderId());
+		Assert.assertEquals(
+			existingFolder.getCompanyId(), newFolder.getCompanyId());
 		Assert.assertEquals(existingFolder.getUserId(), newFolder.getUserId());
-		Assert.assertEquals(existingFolder.getUserName(),
-			newFolder.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingFolder.getCreateDate()),
+		Assert.assertEquals(
+			existingFolder.getUserName(), newFolder.getUserName());
+		Assert.assertEquals(
+			Time.getShortTimestamp(existingFolder.getCreateDate()),
 			Time.getShortTimestamp(newFolder.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingFolder.getModifiedDate()),
+		Assert.assertEquals(
+			Time.getShortTimestamp(existingFolder.getModifiedDate()),
 			Time.getShortTimestamp(newFolder.getModifiedDate()));
-		Assert.assertEquals(existingFolder.getAccountId(),
-			newFolder.getAccountId());
-		Assert.assertEquals(existingFolder.getFullName(),
-			newFolder.getFullName());
-		Assert.assertEquals(existingFolder.getDisplayName(),
-			newFolder.getDisplayName());
-		Assert.assertEquals(existingFolder.getRemoteMessageCount(),
+		Assert.assertEquals(
+			existingFolder.getAccountId(), newFolder.getAccountId());
+		Assert.assertEquals(
+			existingFolder.getFullName(), newFolder.getFullName());
+		Assert.assertEquals(
+			existingFolder.getDisplayName(), newFolder.getDisplayName());
+		Assert.assertEquals(
+			existingFolder.getRemoteMessageCount(),
 			newFolder.getRemoteMessageCount());
 	}
 
@@ -179,9 +180,9 @@ public class FolderPersistenceTest {
 
 	@Test
 	public void testCountByA_F() throws Exception {
-		_persistence.countByA_F(RandomTestUtil.nextLong(), StringPool.BLANK);
+		_persistence.countByA_F(RandomTestUtil.nextLong(), "");
 
-		_persistence.countByA_F(0L, StringPool.NULL);
+		_persistence.countByA_F(0L, "null");
 
 		_persistence.countByA_F(0L, (String)null);
 	}
@@ -190,7 +191,8 @@ public class FolderPersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		Folder newFolder = addFolder();
 
-		Folder existingFolder = _persistence.findByPrimaryKey(newFolder.getPrimaryKey());
+		Folder existingFolder = _persistence.findByPrimaryKey(
+			newFolder.getPrimaryKey());
 
 		Assert.assertEquals(existingFolder, newFolder);
 	}
@@ -204,22 +206,24 @@ public class FolderPersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			getOrderByComparator());
+		_persistence.findAll(
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
 	}
 
 	protected OrderByComparator<Folder> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create("Mail_Folder", "folderId",
-			true, "companyId", true, "userId", true, "userName", true,
-			"createDate", true, "modifiedDate", true, "accountId", true,
-			"fullName", true, "displayName", true, "remoteMessageCount", true);
+		return OrderByComparatorFactoryUtil.create(
+			"Mail_Folder", "folderId", true, "companyId", true, "userId", true,
+			"userName", true, "createDate", true, "modifiedDate", true,
+			"accountId", true, "fullName", true, "displayName", true,
+			"remoteMessageCount", true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		Folder newFolder = addFolder();
 
-		Folder existingFolder = _persistence.fetchByPrimaryKey(newFolder.getPrimaryKey());
+		Folder existingFolder = _persistence.fetchByPrimaryKey(
+			newFolder.getPrimaryKey());
 
 		Assert.assertEquals(existingFolder, newFolder);
 	}
@@ -236,6 +240,7 @@ public class FolderPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
+
 		Folder newFolder1 = addFolder();
 		Folder newFolder2 = addFolder();
 
@@ -244,16 +249,20 @@ public class FolderPersistenceTest {
 		primaryKeys.add(newFolder1.getPrimaryKey());
 		primaryKeys.add(newFolder2.getPrimaryKey());
 
-		Map<Serializable, Folder> folders = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, Folder> folders = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertEquals(2, folders.size());
-		Assert.assertEquals(newFolder1, folders.get(newFolder1.getPrimaryKey()));
-		Assert.assertEquals(newFolder2, folders.get(newFolder2.getPrimaryKey()));
+		Assert.assertEquals(
+			newFolder1, folders.get(newFolder1.getPrimaryKey()));
+		Assert.assertEquals(
+			newFolder2, folders.get(newFolder2.getPrimaryKey()));
 	}
 
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
+
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -263,7 +272,8 @@ public class FolderPersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, Folder> folders = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, Folder> folders = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertTrue(folders.isEmpty());
 	}
@@ -271,6 +281,7 @@ public class FolderPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
+
 		Folder newFolder = addFolder();
 
 		long pk = RandomTestUtil.nextLong();
@@ -280,32 +291,33 @@ public class FolderPersistenceTest {
 		primaryKeys.add(newFolder.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, Folder> folders = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, Folder> folders = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertEquals(1, folders.size());
 		Assert.assertEquals(newFolder, folders.get(newFolder.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, Folder> folders = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, Folder> folders = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertTrue(folders.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
 		Folder newFolder = addFolder();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newFolder.getPrimaryKey());
 
-		Map<Serializable, Folder> folders = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, Folder> folders = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertEquals(1, folders.size());
 		Assert.assertEquals(newFolder, folders.get(newFolder.getPrimaryKey()));
@@ -315,15 +327,19 @@ public class FolderPersistenceTest {
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery = FolderLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			FolderLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<Folder>() {
+		actionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<Folder>() {
+
 				@Override
 				public void performAction(Folder folder) {
 					Assert.assertNotNull(folder);
 
 					count.increment();
 				}
+
 			});
 
 		actionableDynamicQuery.performActions();
@@ -332,15 +348,14 @@ public class FolderPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting()
-		throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
 		Folder newFolder = addFolder();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(Folder.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Folder.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("folderId",
-				newFolder.getFolderId()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("folderId", newFolder.getFolderId()));
 
 		List<Folder> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -353,11 +368,11 @@ public class FolderPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(Folder.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Folder.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("folderId",
-				RandomTestUtil.nextLong()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("folderId", RandomTestUtil.nextLong()));
 
 		List<Folder> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -365,19 +380,18 @@ public class FolderPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting()
-		throws Exception {
+	public void testDynamicQueryByProjectionExisting() throws Exception {
 		Folder newFolder = addFolder();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(Folder.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Folder.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.setProjection(ProjectionFactoryUtil.property("folderId"));
 
 		Object newFolderId = newFolder.getFolderId();
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("folderId",
-				new Object[] { newFolderId }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in("folderId", new Object[] {newFolderId}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -390,13 +404,14 @@ public class FolderPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(Folder.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Folder.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.setProjection(ProjectionFactoryUtil.property("folderId"));
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("folderId",
-				new Object[] { RandomTestUtil.nextLong() }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"folderId", new Object[] {RandomTestUtil.nextLong()}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -409,14 +424,18 @@ public class FolderPersistenceTest {
 
 		_persistence.clearCache();
 
-		Folder existingFolder = _persistence.findByPrimaryKey(newFolder.getPrimaryKey());
+		Folder existingFolder = _persistence.findByPrimaryKey(
+			newFolder.getPrimaryKey());
 
-		Assert.assertEquals(Long.valueOf(existingFolder.getAccountId()),
-			ReflectionTestUtil.<Long>invoke(existingFolder,
-				"getOriginalAccountId", new Class<?>[0]));
-		Assert.assertTrue(Objects.equals(existingFolder.getFullName(),
-				ReflectionTestUtil.invoke(existingFolder,
-					"getOriginalFullName", new Class<?>[0])));
+		Assert.assertEquals(
+			Long.valueOf(existingFolder.getAccountId()),
+			ReflectionTestUtil.<Long>invoke(
+				existingFolder, "getOriginalAccountId", new Class<?>[0]));
+		Assert.assertTrue(
+			Objects.equals(
+				existingFolder.getFullName(),
+				ReflectionTestUtil.invoke(
+					existingFolder, "getOriginalFullName", new Class<?>[0])));
 	}
 
 	protected Folder addFolder() throws Exception {
@@ -450,4 +469,5 @@ public class FolderPersistenceTest {
 	private List<Folder> _folders = new ArrayList<Folder>();
 	private FolderPersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
+
 }

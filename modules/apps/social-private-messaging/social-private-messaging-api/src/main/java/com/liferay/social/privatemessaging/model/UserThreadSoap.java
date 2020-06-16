@@ -14,8 +14,6 @@
 
 package com.liferay.social.privatemessaging.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,11 +24,10 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.social.privatemessaging.service.http.UserThreadServiceSoap}.
  *
  * @author Brian Wing Shun Chan
- * @see com.liferay.social.privatemessaging.service.http.UserThreadServiceSoap
  * @generated
  */
-@ProviderType
 public class UserThreadSoap implements Serializable {
+
 	public static UserThreadSoap toSoapModel(UserThread model) {
 		UserThreadSoap soapModel = new UserThreadSoap();
 
@@ -42,8 +39,8 @@ public class UserThreadSoap implements Serializable {
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setMbThreadId(model.getMbThreadId());
 		soapModel.setTopMBMessageId(model.getTopMBMessageId());
-		soapModel.setRead(model.getRead());
-		soapModel.setDeleted(model.getDeleted());
+		soapModel.setRead(model.isRead());
+		soapModel.setDeleted(model.isDeleted());
 
 		return soapModel;
 	}
@@ -76,7 +73,8 @@ public class UserThreadSoap implements Serializable {
 	}
 
 	public static UserThreadSoap[] toSoapModels(List<UserThread> models) {
-		List<UserThreadSoap> soapModels = new ArrayList<UserThreadSoap>(models.size());
+		List<UserThreadSoap> soapModels = new ArrayList<UserThreadSoap>(
+			models.size());
 
 		for (UserThread model : models) {
 			soapModels.add(toSoapModel(model));
@@ -194,4 +192,5 @@ public class UserThreadSoap implements Serializable {
 	private long _topMBMessageId;
 	private boolean _read;
 	private boolean _deleted;
+
 }

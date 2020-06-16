@@ -1,20 +1,18 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.watson.model;
-
-import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -28,8 +26,8 @@ import java.util.List;
  * @author Steven Smith
  * @generated
  */
-@ProviderType
 public class WatsonReportAuditSoap implements Serializable {
+
 	public static WatsonReportAuditSoap toSoapModel(WatsonReportAudit model) {
 		WatsonReportAuditSoap soapModel = new WatsonReportAuditSoap();
 
@@ -59,7 +57,9 @@ public class WatsonReportAuditSoap implements Serializable {
 
 	public static WatsonReportAuditSoap[] toSoapModels(
 		WatsonReportAudit[] models) {
-		WatsonReportAuditSoap[] soapModels = new WatsonReportAuditSoap[models.length];
+
+		WatsonReportAuditSoap[] soapModels =
+			new WatsonReportAuditSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -70,10 +70,12 @@ public class WatsonReportAuditSoap implements Serializable {
 
 	public static WatsonReportAuditSoap[][] toSoapModels(
 		WatsonReportAudit[][] models) {
+
 		WatsonReportAuditSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new WatsonReportAuditSoap[models.length][models[0].length];
+			soapModels =
+				new WatsonReportAuditSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonReportAuditSoap[0][0];
@@ -88,7 +90,9 @@ public class WatsonReportAuditSoap implements Serializable {
 
 	public static WatsonReportAuditSoap[] toSoapModels(
 		List<WatsonReportAudit> models) {
-		List<WatsonReportAuditSoap> soapModels = new ArrayList<WatsonReportAuditSoap>(models.size());
+
+		List<WatsonReportAuditSoap> soapModels =
+			new ArrayList<WatsonReportAuditSoap>(models.size());
 
 		for (WatsonReportAudit model : models) {
 			soapModels.add(toSoapModel(model));
@@ -288,4 +292,5 @@ public class WatsonReportAuditSoap implements Serializable {
 	private Date _reportDate;
 	private int _key;
 	private int _status;
+
 }

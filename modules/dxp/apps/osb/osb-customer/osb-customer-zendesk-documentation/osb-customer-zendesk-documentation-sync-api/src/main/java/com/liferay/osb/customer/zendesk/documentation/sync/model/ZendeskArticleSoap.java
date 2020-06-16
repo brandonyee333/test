@@ -1,20 +1,18 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model;
-
-import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -28,8 +26,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class ZendeskArticleSoap implements Serializable {
+
 	public static ZendeskArticleSoap toSoapModel(ZendeskArticle model) {
 		ZendeskArticleSoap soapModel = new ZendeskArticleSoap();
 
@@ -38,9 +36,12 @@ public class ZendeskArticleSoap implements Serializable {
 		soapModel.setZendeskCategoryId(model.getZendeskCategoryId());
 		soapModel.setZendeskSectionId(model.getZendeskSectionId());
 		soapModel.setDocumentationKey(model.getDocumentationKey());
-		soapModel.setDocumentationOriginalURL(model.getDocumentationOriginalURL());
-		soapModel.setPreviousArticleDocumentationKey(model.getPreviousArticleDocumentationKey());
-		soapModel.setNextArticleDocumentationKey(model.getNextArticleDocumentationKey());
+		soapModel.setDocumentationOriginalURL(
+			model.getDocumentationOriginalURL());
+		soapModel.setPreviousArticleDocumentationKey(
+			model.getPreviousArticleDocumentationKey());
+		soapModel.setNextArticleDocumentationKey(
+			model.getNextArticleDocumentationKey());
 		soapModel.setRemoteId(model.getRemoteId());
 		soapModel.setRemoteHtmlURL(model.getRemoteHtmlURL());
 		soapModel.setRemoteTitle(model.getRemoteTitle());
@@ -58,11 +59,14 @@ public class ZendeskArticleSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static ZendeskArticleSoap[][] toSoapModels(ZendeskArticle[][] models) {
+	public static ZendeskArticleSoap[][] toSoapModels(
+		ZendeskArticle[][] models) {
+
 		ZendeskArticleSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new ZendeskArticleSoap[models.length][models[0].length];
+			soapModels =
+				new ZendeskArticleSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new ZendeskArticleSoap[0][0];
@@ -75,8 +79,11 @@ public class ZendeskArticleSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static ZendeskArticleSoap[] toSoapModels(List<ZendeskArticle> models) {
-		List<ZendeskArticleSoap> soapModels = new ArrayList<ZendeskArticleSoap>(models.size());
+	public static ZendeskArticleSoap[] toSoapModels(
+		List<ZendeskArticle> models) {
+
+		List<ZendeskArticleSoap> soapModels = new ArrayList<ZendeskArticleSoap>(
+			models.size());
 
 		for (ZendeskArticle model : models) {
 			soapModels.add(toSoapModel(model));
@@ -150,6 +157,7 @@ public class ZendeskArticleSoap implements Serializable {
 
 	public void setPreviousArticleDocumentationKey(
 		String previousArticleDocumentationKey) {
+
 		_previousArticleDocumentationKey = previousArticleDocumentationKey;
 	}
 
@@ -159,6 +167,7 @@ public class ZendeskArticleSoap implements Serializable {
 
 	public void setNextArticleDocumentationKey(
 		String nextArticleDocumentationKey) {
+
 		_nextArticleDocumentationKey = nextArticleDocumentationKey;
 	}
 
@@ -197,4 +206,5 @@ public class ZendeskArticleSoap implements Serializable {
 	private long _remoteId;
 	private String _remoteHtmlURL;
 	private String _remoteTitle;
+
 }

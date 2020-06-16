@@ -14,12 +14,8 @@
 
 package com.liferay.journal.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.exportimport.kernel.lar.StagedModelType;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -39,9 +35,9 @@ import java.util.Objects;
  * @see JournalArticle
  * @generated
  */
-@ProviderType
-public class JournalArticleWrapper implements JournalArticle,
-	ModelWrapper<JournalArticle> {
+public class JournalArticleWrapper
+	implements JournalArticle, ModelWrapper<JournalArticle> {
+
 	public JournalArticleWrapper(JournalArticle journalArticle) {
 		_journalArticle = journalArticle;
 	}
@@ -85,8 +81,8 @@ public class JournalArticleWrapper implements JournalArticle,
 		attributes.put("displayDate", getDisplayDate());
 		attributes.put("expirationDate", getExpirationDate());
 		attributes.put("reviewDate", getReviewDate());
-		attributes.put("indexable", getIndexable());
-		attributes.put("smallImage", getSmallImage());
+		attributes.put("indexable", isIndexable());
+		attributes.put("smallImage", isSmallImage());
 		attributes.put("smallImageId", getSmallImageId());
 		attributes.put("smallImageURL", getSmallImageURL());
 		attributes.put("lastPublishDate", getLastPublishDate());
@@ -306,45 +302,679 @@ public class JournalArticleWrapper implements JournalArticle,
 	}
 
 	@Override
-	public JournalArticle toEscapedModel() {
-		return new JournalArticleWrapper(_journalArticle.toEscapedModel());
+	public String buildTreePath()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _journalArticle.buildTreePath();
 	}
 
 	@Override
-	public JournalArticle toUnescapedModel() {
-		return new JournalArticleWrapper(_journalArticle.toUnescapedModel());
+	public Object clone() {
+		return new JournalArticleWrapper(
+			(JournalArticle)_journalArticle.clone());
+	}
+
+	@Override
+	public int compareTo(JournalArticle journalArticle) {
+		return _journalArticle.compareTo(journalArticle);
+	}
+
+	/**
+	 * Returns the article ID of this journal article.
+	 *
+	 * @return the article ID of this journal article
+	 */
+	@Override
+	public String getArticleId() {
+		return _journalArticle.getArticleId();
+	}
+
+	@Override
+	public long getArticleImageId(
+		String elInstanceId, String elName, String languageId) {
+
+		return _journalArticle.getArticleImageId(
+			elInstanceId, elName, languageId);
+	}
+
+	@Override
+	public String getArticleImageURL(
+		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay) {
+
+		return _journalArticle.getArticleImageURL(themeDisplay);
 	}
 
 	@Override
 	public JournalArticleResource getArticleResource()
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return _journalArticle.getArticleResource();
+	}
+
+	@Override
+	public String getArticleResourceUuid()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _journalArticle.getArticleResourceUuid();
+	}
+
+	@Override
+	public String[] getAvailableLanguageIds() {
+		return _journalArticle.getAvailableLanguageIds();
+	}
+
+	/**
+	 * Returns the fully qualified class name of this journal article.
+	 *
+	 * @return the fully qualified class name of this journal article
+	 */
+	@Override
+	public String getClassName() {
+		return _journalArticle.getClassName();
+	}
+
+	/**
+	 * Returns the class name ID of this journal article.
+	 *
+	 * @return the class name ID of this journal article
+	 */
+	@Override
+	public long getClassNameId() {
+		return _journalArticle.getClassNameId();
+	}
+
+	/**
+	 * Returns the class pk of this journal article.
+	 *
+	 * @return the class pk of this journal article
+	 */
+	@Override
+	public long getClassPK() {
+		return _journalArticle.getClassPK();
+	}
+
+	/**
+	 * Returns the company ID of this journal article.
+	 *
+	 * @return the company ID of this journal article
+	 */
+	@Override
+	public long getCompanyId() {
+		return _journalArticle.getCompanyId();
+	}
+
+	/**
+	 * Returns the content of this journal article.
+	 *
+	 * @return the content of this journal article
+	 */
+	@Override
+	public String getContent() {
+		return _journalArticle.getContent();
+	}
+
+	@Override
+	public String getContentByLocale(String languageId) {
+		return _journalArticle.getContentByLocale(languageId);
+	}
+
+	/**
+	 * Returns the create date of this journal article.
+	 *
+	 * @return the create date of this journal article
+	 */
+	@Override
+	public Date getCreateDate() {
+		return _journalArticle.getCreateDate();
+	}
+
+	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMStructure getDDMStructure()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _journalArticle.getDDMStructure();
+	}
+
+	/**
+	 * Returns the ddm structure key of this journal article.
+	 *
+	 * @return the ddm structure key of this journal article
+	 */
+	@Override
+	public String getDDMStructureKey() {
+		return _journalArticle.getDDMStructureKey();
+	}
+
+	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMTemplate getDDMTemplate()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _journalArticle.getDDMTemplate();
+	}
+
+	/**
+	 * Returns the ddm template key of this journal article.
+	 *
+	 * @return the ddm template key of this journal article
+	 */
+	@Override
+	public String getDDMTemplateKey() {
+		return _journalArticle.getDDMTemplateKey();
+	}
+
+	@Override
+	public String getDefaultLanguageId() {
+		return _journalArticle.getDefaultLanguageId();
+	}
+
+	/**
+	 * Returns the description of this journal article.
+	 *
+	 * @return the description of this journal article
+	 */
+	@Override
+	public String getDescription() {
+		return _journalArticle.getDescription();
+	}
+
+	/**
+	 * Returns the localized description of this journal article in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the locale of the language
+	 * @return the localized description of this journal article
+	 */
+	@Override
+	public String getDescription(java.util.Locale locale) {
+		return _journalArticle.getDescription(locale);
+	}
+
+	/**
+	 * Returns the localized description of this journal article in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the local of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized description of this journal article. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	 */
+	@Override
+	public String getDescription(java.util.Locale locale, boolean useDefault) {
+		return _journalArticle.getDescription(locale, useDefault);
+	}
+
+	/**
+	 * Returns the localized description of this journal article in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @return the localized description of this journal article
+	 */
+	@Override
+	public String getDescription(String languageId) {
+		return _journalArticle.getDescription(languageId);
+	}
+
+	/**
+	 * Returns the localized description of this journal article in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized description of this journal article
+	 */
+	@Override
+	public String getDescription(String languageId, boolean useDefault) {
+		return _journalArticle.getDescription(languageId, useDefault);
+	}
+
+	@Override
+	public String getDescriptionCurrentLanguageId() {
+		return _journalArticle.getDescriptionCurrentLanguageId();
+	}
+
+	@Override
+	public String getDescriptionCurrentValue() {
+		return _journalArticle.getDescriptionCurrentValue();
+	}
+
+	/**
+	 * Returns a map of the locales and localized descriptions of this journal article.
+	 *
+	 * @return the locales and localized descriptions of this journal article
+	 */
+	@Override
+	public Map<java.util.Locale, String> getDescriptionMap() {
+		return _journalArticle.getDescriptionMap();
+	}
+
+	/**
+	 * Returns the display date of this journal article.
+	 *
+	 * @return the display date of this journal article
+	 */
+	@Override
+	public Date getDisplayDate() {
+		return _journalArticle.getDisplayDate();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.xml.Document getDocument() {
+		return _journalArticle.getDocument();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _journalArticle.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the expiration date of this journal article.
+	 *
+	 * @return the expiration date of this journal article
+	 */
+	@Override
+	public Date getExpirationDate() {
+		return _journalArticle.getExpirationDate();
 	}
 
 	@Override
 	public JournalFolder getFolder()
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return _journalArticle.getFolder();
 	}
 
 	/**
-	* Returns the indexable of this journal article.
-	*
-	* @return the indexable of this journal article
-	*/
+	 * Returns the folder ID of this journal article.
+	 *
+	 * @return the folder ID of this journal article
+	 */
+	@Override
+	public long getFolderId() {
+		return _journalArticle.getFolderId();
+	}
+
+	/**
+	 * Returns the group ID of this journal article.
+	 *
+	 * @return the group ID of this journal article
+	 */
+	@Override
+	public long getGroupId() {
+		return _journalArticle.getGroupId();
+	}
+
+	/**
+	 * Returns the ID of this journal article.
+	 *
+	 * @return the ID of this journal article
+	 */
+	@Override
+	public long getId() {
+		return _journalArticle.getId();
+	}
+
+	/**
+	 * Returns the indexable of this journal article.
+	 *
+	 * @return the indexable of this journal article
+	 */
 	@Override
 	public boolean getIndexable() {
 		return _journalArticle.getIndexable();
 	}
 
 	/**
-	* Returns the small image of this journal article.
-	*
-	* @return the small image of this journal article
-	*/
+	 * Returns the last publish date of this journal article.
+	 *
+	 * @return the last publish date of this journal article
+	 */
+	@Override
+	public Date getLastPublishDate() {
+		return _journalArticle.getLastPublishDate();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.Layout getLayout() {
+		return _journalArticle.getLayout();
+	}
+
+	/**
+	 * Returns the layout uuid of this journal article.
+	 *
+	 * @return the layout uuid of this journal article
+	 */
+	@Override
+	public String getLayoutUuid() {
+		return _journalArticle.getLayoutUuid();
+	}
+
+	/**
+	 * Returns the modified date of this journal article.
+	 *
+	 * @return the modified date of this journal article
+	 */
+	@Override
+	public Date getModifiedDate() {
+		return _journalArticle.getModifiedDate();
+	}
+
+	/**
+	 * Returns the primary key of this journal article.
+	 *
+	 * @return the primary key of this journal article
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _journalArticle.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _journalArticle.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the resource prim key of this journal article.
+	 *
+	 * @return the resource prim key of this journal article
+	 */
+	@Override
+	public long getResourcePrimKey() {
+		return _journalArticle.getResourcePrimKey();
+	}
+
+	/**
+	 * Returns the review date of this journal article.
+	 *
+	 * @return the review date of this journal article
+	 */
+	@Override
+	public Date getReviewDate() {
+		return _journalArticle.getReviewDate();
+	}
+
+	/**
+	 * Returns the small image of this journal article.
+	 *
+	 * @return the small image of this journal article
+	 */
 	@Override
 	public boolean getSmallImage() {
 		return _journalArticle.getSmallImage();
+	}
+
+	/**
+	 * Returns the small image ID of this journal article.
+	 *
+	 * @return the small image ID of this journal article
+	 */
+	@Override
+	public long getSmallImageId() {
+		return _journalArticle.getSmallImageId();
+	}
+
+	@Override
+	public String getSmallImageType()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _journalArticle.getSmallImageType();
+	}
+
+	/**
+	 * Returns the small image url of this journal article.
+	 *
+	 * @return the small image url of this journal article
+	 */
+	@Override
+	public String getSmallImageURL() {
+		return _journalArticle.getSmallImageURL();
+	}
+
+	/**
+	 * Returns the status of this journal article.
+	 *
+	 * @return the status of this journal article
+	 */
+	@Override
+	public int getStatus() {
+		return _journalArticle.getStatus();
+	}
+
+	/**
+	 * Returns the status by user ID of this journal article.
+	 *
+	 * @return the status by user ID of this journal article
+	 */
+	@Override
+	public long getStatusByUserId() {
+		return _journalArticle.getStatusByUserId();
+	}
+
+	/**
+	 * Returns the status by user name of this journal article.
+	 *
+	 * @return the status by user name of this journal article
+	 */
+	@Override
+	public String getStatusByUserName() {
+		return _journalArticle.getStatusByUserName();
+	}
+
+	/**
+	 * Returns the status by user uuid of this journal article.
+	 *
+	 * @return the status by user uuid of this journal article
+	 */
+	@Override
+	public String getStatusByUserUuid() {
+		return _journalArticle.getStatusByUserUuid();
+	}
+
+	/**
+	 * Returns the status date of this journal article.
+	 *
+	 * @return the status date of this journal article
+	 */
+	@Override
+	public Date getStatusDate() {
+		return _journalArticle.getStatusDate();
+	}
+
+	/**
+	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
+	 #getDDMStructureKey()}
+	 */
+	@Deprecated
+	@Override
+	public String getStructureId() {
+		return _journalArticle.getStructureId();
+	}
+
+	/**
+	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
+	 #getDDMTemplateKey()}
+	 */
+	@Deprecated
+	@Override
+	public String getTemplateId() {
+		return _journalArticle.getTemplateId();
+	}
+
+	/**
+	 * Returns the title of this journal article.
+	 *
+	 * @return the title of this journal article
+	 */
+	@Override
+	public String getTitle() {
+		return _journalArticle.getTitle();
+	}
+
+	/**
+	 * Returns the localized title of this journal article in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the locale of the language
+	 * @return the localized title of this journal article
+	 */
+	@Override
+	public String getTitle(java.util.Locale locale) {
+		return _journalArticle.getTitle(locale);
+	}
+
+	/**
+	 * Returns the localized title of this journal article in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the local of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized title of this journal article. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	 */
+	@Override
+	public String getTitle(java.util.Locale locale, boolean useDefault) {
+		return _journalArticle.getTitle(locale, useDefault);
+	}
+
+	/**
+	 * Returns the localized title of this journal article in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @return the localized title of this journal article
+	 */
+	@Override
+	public String getTitle(String languageId) {
+		return _journalArticle.getTitle(languageId);
+	}
+
+	/**
+	 * Returns the localized title of this journal article in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized title of this journal article
+	 */
+	@Override
+	public String getTitle(String languageId, boolean useDefault) {
+		return _journalArticle.getTitle(languageId, useDefault);
+	}
+
+	@Override
+	public String getTitleCurrentLanguageId() {
+		return _journalArticle.getTitleCurrentLanguageId();
+	}
+
+	@Override
+	public String getTitleCurrentValue() {
+		return _journalArticle.getTitleCurrentValue();
+	}
+
+	/**
+	 * Returns a map of the locales and localized titles of this journal article.
+	 *
+	 * @return the locales and localized titles of this journal article
+	 */
+	@Override
+	public Map<java.util.Locale, String> getTitleMap() {
+		return _journalArticle.getTitleMap();
+	}
+
+	/**
+	 * Returns the trash entry created when this journal article was moved to the Recycle Bin. The trash entry may belong to one of the ancestors of this journal article.
+	 *
+	 * @return the trash entry created when this journal article was moved to the Recycle Bin
+	 */
+	@Override
+	public com.liferay.trash.kernel.model.TrashEntry getTrashEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _journalArticle.getTrashEntry();
+	}
+
+	/**
+	 * Returns the class primary key of the trash entry for this journal article.
+	 *
+	 * @return the class primary key of the trash entry for this journal article
+	 */
+	@Override
+	public long getTrashEntryClassPK() {
+		return _journalArticle.getTrashEntryClassPK();
+	}
+
+	/**
+	 * Returns the trash handler for this journal article.
+	 *
+	 * @return the trash handler for this journal article
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
+	 */
+	@Deprecated
+	@Override
+	public com.liferay.portal.kernel.trash.TrashHandler getTrashHandler() {
+		return _journalArticle.getTrashHandler();
+	}
+
+	/**
+	 * Returns the tree path of this journal article.
+	 *
+	 * @return the tree path of this journal article
+	 */
+	@Override
+	public String getTreePath() {
+		return _journalArticle.getTreePath();
+	}
+
+	/**
+	 * Returns the url title of this journal article.
+	 *
+	 * @return the url title of this journal article
+	 */
+	@Override
+	public String getUrlTitle() {
+		return _journalArticle.getUrlTitle();
+	}
+
+	/**
+	 * Returns the user ID of this journal article.
+	 *
+	 * @return the user ID of this journal article
+	 */
+	@Override
+	public long getUserId() {
+		return _journalArticle.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this journal article.
+	 *
+	 * @return the user name of this journal article
+	 */
+	@Override
+	public String getUserName() {
+		return _journalArticle.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this journal article.
+	 *
+	 * @return the user uuid of this journal article
+	 */
+	@Override
+	public String getUserUuid() {
+		return _journalArticle.getUserUuid();
+	}
+
+	/**
+	 * Returns the uuid of this journal article.
+	 *
+	 * @return the uuid of this journal article
+	 */
+	@Override
+	public String getUuid() {
+		return _journalArticle.getUuid();
+	}
+
+	/**
+	 * Returns the version of this journal article.
+	 *
+	 * @return the version of this journal article
+	 */
+	@Override
+	public double getVersion() {
+		return _journalArticle.getVersion();
 	}
 
 	@Override
@@ -352,11 +982,16 @@ public class JournalArticleWrapper implements JournalArticle,
 		return _journalArticle.hasApprovedVersion();
 	}
 
+	@Override
+	public int hashCode() {
+		return _journalArticle.hashCode();
+	}
+
 	/**
-	* Returns <code>true</code> if this journal article is approved.
-	*
-	* @return <code>true</code> if this journal article is approved; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this journal article is approved.
+	 *
+	 * @return <code>true</code> if this journal article is approved; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isApproved() {
 		return _journalArticle.isApproved();
@@ -368,20 +1003,20 @@ public class JournalArticleWrapper implements JournalArticle,
 	}
 
 	/**
-	* Returns <code>true</code> if this journal article is denied.
-	*
-	* @return <code>true</code> if this journal article is denied; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this journal article is denied.
+	 *
+	 * @return <code>true</code> if this journal article is denied; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isDenied() {
 		return _journalArticle.isDenied();
 	}
 
 	/**
-	* Returns <code>true</code> if this journal article is a draft.
-	*
-	* @return <code>true</code> if this journal article is a draft; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this journal article is a draft.
+	 *
+	 * @return <code>true</code> if this journal article is a draft; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isDraft() {
 		return _journalArticle.isDraft();
@@ -393,30 +1028,60 @@ public class JournalArticleWrapper implements JournalArticle,
 	}
 
 	/**
-	* Returns <code>true</code> if this journal article is expired.
-	*
-	* @return <code>true</code> if this journal article is expired; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this journal article is expired.
+	 *
+	 * @return <code>true</code> if this journal article is expired; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isExpired() {
 		return _journalArticle.isExpired();
 	}
 
 	/**
-	* Returns <code>true</code> if this journal article is in the Recycle Bin.
-	*
-	* @return <code>true</code> if this journal article is in the Recycle Bin; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this journal article is inactive.
+	 *
+	 * @return <code>true</code> if this journal article is inactive; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isInactive() {
+		return _journalArticle.isInactive();
+	}
+
+	/**
+	 * Returns <code>true</code> if this journal article is incomplete.
+	 *
+	 * @return <code>true</code> if this journal article is incomplete; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isIncomplete() {
+		return _journalArticle.isIncomplete();
+	}
+
+	/**
+	 * Returns <code>true</code> if this journal article is indexable.
+	 *
+	 * @return <code>true</code> if this journal article is indexable; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isIndexable() {
+		return _journalArticle.isIndexable();
+	}
+
+	/**
+	 * Returns <code>true</code> if this journal article is in the Recycle Bin.
+	 *
+	 * @return <code>true</code> if this journal article is in the Recycle Bin; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isInTrash() {
 		return _journalArticle.isInTrash();
 	}
 
 	/**
-	* Returns <code>true</code> if the parent of this journal article is in the Recycle Bin.
-	*
-	* @return <code>true</code> if the parent of this journal article is in the Recycle Bin; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if the parent of this journal article is in the Recycle Bin.
+	 *
+	 * @return <code>true</code> if the parent of this journal article is in the Recycle Bin; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isInTrashContainer() {
 		return _journalArticle.isInTrashContainer();
@@ -432,46 +1097,16 @@ public class JournalArticleWrapper implements JournalArticle,
 		return _journalArticle.isInTrashImplicitly();
 	}
 
-	/**
-	* Returns <code>true</code> if this journal article is inactive.
-	*
-	* @return <code>true</code> if this journal article is inactive; <code>false</code> otherwise
-	*/
-	@Override
-	public boolean isInactive() {
-		return _journalArticle.isInactive();
-	}
-
-	/**
-	* Returns <code>true</code> if this journal article is incomplete.
-	*
-	* @return <code>true</code> if this journal article is incomplete; <code>false</code> otherwise
-	*/
-	@Override
-	public boolean isIncomplete() {
-		return _journalArticle.isIncomplete();
-	}
-
-	/**
-	* Returns <code>true</code> if this journal article is indexable.
-	*
-	* @return <code>true</code> if this journal article is indexable; <code>false</code> otherwise
-	*/
-	@Override
-	public boolean isIndexable() {
-		return _journalArticle.isIndexable();
-	}
-
 	@Override
 	public boolean isNew() {
 		return _journalArticle.isNew();
 	}
 
 	/**
-	* Returns <code>true</code> if this journal article is pending.
-	*
-	* @return <code>true</code> if this journal article is pending; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this journal article is pending.
+	 *
+	 * @return <code>true</code> if this journal article is pending; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isPending() {
 		return _journalArticle.isPending();
@@ -483,686 +1118,32 @@ public class JournalArticleWrapper implements JournalArticle,
 	}
 
 	/**
-	* Returns <code>true</code> if this journal article is scheduled.
-	*
-	* @return <code>true</code> if this journal article is scheduled; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this journal article is scheduled.
+	 *
+	 * @return <code>true</code> if this journal article is scheduled; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isScheduled() {
 		return _journalArticle.isScheduled();
 	}
 
 	/**
-	* Returns <code>true</code> if this journal article is small image.
-	*
-	* @return <code>true</code> if this journal article is small image; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this journal article is small image.
+	 *
+	 * @return <code>true</code> if this journal article is small image; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isSmallImage() {
 		return _journalArticle.isSmallImage();
 	}
 
 	/**
-	* @deprecated As of Wilberforce (7.0.x), with no direct replacement
-	*/
+	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement
+	 */
 	@Deprecated
 	@Override
 	public boolean isTemplateDriven() {
 		return _journalArticle.isTemplateDriven();
-	}
-
-	@Override
-	public com.liferay.dynamic.data.mapping.model.DDMStructure getDDMStructure()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _journalArticle.getDDMStructure();
-	}
-
-	@Override
-	public com.liferay.dynamic.data.mapping.model.DDMTemplate getDDMTemplate()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _journalArticle.getDDMTemplate();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _journalArticle.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<JournalArticle> toCacheModel() {
-		return _journalArticle.toCacheModel();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.Layout getLayout() {
-		return _journalArticle.getLayout();
-	}
-
-	/**
-	* Returns the trash handler for this journal article.
-	*
-	* @return the trash handler for this journal article
-	*/
-	@Override
-	public com.liferay.portal.kernel.trash.TrashHandler getTrashHandler() {
-		return _journalArticle.getTrashHandler();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.xml.Document getDocument() {
-		return _journalArticle.getDocument();
-	}
-
-	/**
-	* Returns the trash entry created when this journal article was moved to the Recycle Bin. The trash entry may belong to one of the ancestors of this journal article.
-	*
-	* @return the trash entry created when this journal article was moved to the Recycle Bin
-	*/
-	@Override
-	public com.liferay.trash.kernel.model.TrashEntry getTrashEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _journalArticle.getTrashEntry();
-	}
-
-	/**
-	* Returns the version of this journal article.
-	*
-	* @return the version of this journal article
-	*/
-	@Override
-	public double getVersion() {
-		return _journalArticle.getVersion();
-	}
-
-	@Override
-	public int compareTo(JournalArticle journalArticle) {
-		return _journalArticle.compareTo(journalArticle);
-	}
-
-	/**
-	* Returns the status of this journal article.
-	*
-	* @return the status of this journal article
-	*/
-	@Override
-	public int getStatus() {
-		return _journalArticle.getStatus();
-	}
-
-	@Override
-	public int hashCode() {
-		return _journalArticle.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _journalArticle.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new JournalArticleWrapper((JournalArticle)_journalArticle.clone());
-	}
-
-	@Override
-	public java.lang.String buildTreePath()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _journalArticle.buildTreePath();
-	}
-
-	/**
-	* Returns the article ID of this journal article.
-	*
-	* @return the article ID of this journal article
-	*/
-	@Override
-	public java.lang.String getArticleId() {
-		return _journalArticle.getArticleId();
-	}
-
-	@Override
-	public java.lang.String getArticleImageURL(
-		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay) {
-		return _journalArticle.getArticleImageURL(themeDisplay);
-	}
-
-	@Override
-	public java.lang.String getArticleResourceUuid()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _journalArticle.getArticleResourceUuid();
-	}
-
-	/**
-	* Returns the fully qualified class name of this journal article.
-	*
-	* @return the fully qualified class name of this journal article
-	*/
-	@Override
-	public java.lang.String getClassName() {
-		return _journalArticle.getClassName();
-	}
-
-	/**
-	* Returns the content of this journal article.
-	*
-	* @return the content of this journal article
-	*/
-	@Override
-	public java.lang.String getContent() {
-		return _journalArticle.getContent();
-	}
-
-	@Override
-	public java.lang.String getContentByLocale(java.lang.String languageId) {
-		return _journalArticle.getContentByLocale(languageId);
-	}
-
-	/**
-	* Returns the ddm structure key of this journal article.
-	*
-	* @return the ddm structure key of this journal article
-	*/
-	@Override
-	public java.lang.String getDDMStructureKey() {
-		return _journalArticle.getDDMStructureKey();
-	}
-
-	/**
-	* Returns the ddm template key of this journal article.
-	*
-	* @return the ddm template key of this journal article
-	*/
-	@Override
-	public java.lang.String getDDMTemplateKey() {
-		return _journalArticle.getDDMTemplateKey();
-	}
-
-	@Override
-	public java.lang.String getDefaultLanguageId() {
-		return _journalArticle.getDefaultLanguageId();
-	}
-
-	/**
-	* Returns the description of this journal article.
-	*
-	* @return the description of this journal article
-	*/
-	@Override
-	public java.lang.String getDescription() {
-		return _journalArticle.getDescription();
-	}
-
-	/**
-	* Returns the localized description of this journal article in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @return the localized description of this journal article
-	*/
-	@Override
-	public java.lang.String getDescription(java.lang.String languageId) {
-		return _journalArticle.getDescription(languageId);
-	}
-
-	/**
-	* Returns the localized description of this journal article in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized description of this journal article
-	*/
-	@Override
-	public java.lang.String getDescription(java.lang.String languageId,
-		boolean useDefault) {
-		return _journalArticle.getDescription(languageId, useDefault);
-	}
-
-	/**
-	* Returns the localized description of this journal article in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param locale the locale of the language
-	* @return the localized description of this journal article
-	*/
-	@Override
-	public java.lang.String getDescription(java.util.Locale locale) {
-		return _journalArticle.getDescription(locale);
-	}
-
-	/**
-	* Returns the localized description of this journal article in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param locale the local of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized description of this journal article. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
-	*/
-	@Override
-	public java.lang.String getDescription(java.util.Locale locale,
-		boolean useDefault) {
-		return _journalArticle.getDescription(locale, useDefault);
-	}
-
-	@Override
-	public java.lang.String getDescriptionCurrentLanguageId() {
-		return _journalArticle.getDescriptionCurrentLanguageId();
-	}
-
-	@Override
-	public java.lang.String getDescriptionCurrentValue() {
-		return _journalArticle.getDescriptionCurrentValue();
-	}
-
-	/**
-	* Returns the layout uuid of this journal article.
-	*
-	* @return the layout uuid of this journal article
-	*/
-	@Override
-	public java.lang.String getLayoutUuid() {
-		return _journalArticle.getLayoutUuid();
-	}
-
-	@Override
-	public java.lang.String getSmallImageType()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _journalArticle.getSmallImageType();
-	}
-
-	/**
-	* Returns the small image url of this journal article.
-	*
-	* @return the small image url of this journal article
-	*/
-	@Override
-	public java.lang.String getSmallImageURL() {
-		return _journalArticle.getSmallImageURL();
-	}
-
-	/**
-	* Returns the status by user name of this journal article.
-	*
-	* @return the status by user name of this journal article
-	*/
-	@Override
-	public java.lang.String getStatusByUserName() {
-		return _journalArticle.getStatusByUserName();
-	}
-
-	/**
-	* Returns the status by user uuid of this journal article.
-	*
-	* @return the status by user uuid of this journal article
-	*/
-	@Override
-	public java.lang.String getStatusByUserUuid() {
-		return _journalArticle.getStatusByUserUuid();
-	}
-
-	/**
-	* @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	#getDDMStructureKey()}
-	*/
-	@Deprecated
-	@Override
-	public java.lang.String getStructureId() {
-		return _journalArticle.getStructureId();
-	}
-
-	/**
-	* @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	#getDDMTemplateKey()}
-	*/
-	@Deprecated
-	@Override
-	public java.lang.String getTemplateId() {
-		return _journalArticle.getTemplateId();
-	}
-
-	/**
-	* Returns the title of this journal article.
-	*
-	* @return the title of this journal article
-	*/
-	@Override
-	public java.lang.String getTitle() {
-		return _journalArticle.getTitle();
-	}
-
-	/**
-	* Returns the localized title of this journal article in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @return the localized title of this journal article
-	*/
-	@Override
-	public java.lang.String getTitle(java.lang.String languageId) {
-		return _journalArticle.getTitle(languageId);
-	}
-
-	/**
-	* Returns the localized title of this journal article in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized title of this journal article
-	*/
-	@Override
-	public java.lang.String getTitle(java.lang.String languageId,
-		boolean useDefault) {
-		return _journalArticle.getTitle(languageId, useDefault);
-	}
-
-	/**
-	* Returns the localized title of this journal article in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param locale the locale of the language
-	* @return the localized title of this journal article
-	*/
-	@Override
-	public java.lang.String getTitle(java.util.Locale locale) {
-		return _journalArticle.getTitle(locale);
-	}
-
-	/**
-	* Returns the localized title of this journal article in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param locale the local of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized title of this journal article. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
-	*/
-	@Override
-	public java.lang.String getTitle(java.util.Locale locale, boolean useDefault) {
-		return _journalArticle.getTitle(locale, useDefault);
-	}
-
-	@Override
-	public java.lang.String getTitleCurrentLanguageId() {
-		return _journalArticle.getTitleCurrentLanguageId();
-	}
-
-	@Override
-	public java.lang.String getTitleCurrentValue() {
-		return _journalArticle.getTitleCurrentValue();
-	}
-
-	/**
-	* Returns the tree path of this journal article.
-	*
-	* @return the tree path of this journal article
-	*/
-	@Override
-	public java.lang.String getTreePath() {
-		return _journalArticle.getTreePath();
-	}
-
-	/**
-	* Returns the url title of this journal article.
-	*
-	* @return the url title of this journal article
-	*/
-	@Override
-	public java.lang.String getUrlTitle() {
-		return _journalArticle.getUrlTitle();
-	}
-
-	/**
-	* Returns the user name of this journal article.
-	*
-	* @return the user name of this journal article
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _journalArticle.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this journal article.
-	*
-	* @return the user uuid of this journal article
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _journalArticle.getUserUuid();
-	}
-
-	/**
-	* Returns the uuid of this journal article.
-	*
-	* @return the uuid of this journal article
-	*/
-	@Override
-	public java.lang.String getUuid() {
-		return _journalArticle.getUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _journalArticle.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _journalArticle.toXmlString();
-	}
-
-	@Override
-	public java.lang.String[] getAvailableLanguageIds() {
-		return _journalArticle.getAvailableLanguageIds();
-	}
-
-	/**
-	* Returns the create date of this journal article.
-	*
-	* @return the create date of this journal article
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _journalArticle.getCreateDate();
-	}
-
-	/**
-	* Returns the display date of this journal article.
-	*
-	* @return the display date of this journal article
-	*/
-	@Override
-	public Date getDisplayDate() {
-		return _journalArticle.getDisplayDate();
-	}
-
-	/**
-	* Returns the expiration date of this journal article.
-	*
-	* @return the expiration date of this journal article
-	*/
-	@Override
-	public Date getExpirationDate() {
-		return _journalArticle.getExpirationDate();
-	}
-
-	/**
-	* Returns the last publish date of this journal article.
-	*
-	* @return the last publish date of this journal article
-	*/
-	@Override
-	public Date getLastPublishDate() {
-		return _journalArticle.getLastPublishDate();
-	}
-
-	/**
-	* Returns the modified date of this journal article.
-	*
-	* @return the modified date of this journal article
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _journalArticle.getModifiedDate();
-	}
-
-	/**
-	* Returns the review date of this journal article.
-	*
-	* @return the review date of this journal article
-	*/
-	@Override
-	public Date getReviewDate() {
-		return _journalArticle.getReviewDate();
-	}
-
-	/**
-	* Returns the status date of this journal article.
-	*
-	* @return the status date of this journal article
-	*/
-	@Override
-	public Date getStatusDate() {
-		return _journalArticle.getStatusDate();
-	}
-
-	/**
-	* Returns a map of the locales and localized descriptions of this journal article.
-	*
-	* @return the locales and localized descriptions of this journal article
-	*/
-	@Override
-	public Map<java.util.Locale, java.lang.String> getDescriptionMap() {
-		return _journalArticle.getDescriptionMap();
-	}
-
-	/**
-	* Returns a map of the locales and localized titles of this journal article.
-	*
-	* @return the locales and localized titles of this journal article
-	*/
-	@Override
-	public Map<java.util.Locale, java.lang.String> getTitleMap() {
-		return _journalArticle.getTitleMap();
-	}
-
-	@Override
-	public long getArticleImageId(java.lang.String elInstanceId,
-		java.lang.String elName, java.lang.String languageId) {
-		return _journalArticle.getArticleImageId(elInstanceId, elName,
-			languageId);
-	}
-
-	/**
-	* Returns the class name ID of this journal article.
-	*
-	* @return the class name ID of this journal article
-	*/
-	@Override
-	public long getClassNameId() {
-		return _journalArticle.getClassNameId();
-	}
-
-	/**
-	* Returns the class pk of this journal article.
-	*
-	* @return the class pk of this journal article
-	*/
-	@Override
-	public long getClassPK() {
-		return _journalArticle.getClassPK();
-	}
-
-	/**
-	* Returns the company ID of this journal article.
-	*
-	* @return the company ID of this journal article
-	*/
-	@Override
-	public long getCompanyId() {
-		return _journalArticle.getCompanyId();
-	}
-
-	/**
-	* Returns the folder ID of this journal article.
-	*
-	* @return the folder ID of this journal article
-	*/
-	@Override
-	public long getFolderId() {
-		return _journalArticle.getFolderId();
-	}
-
-	/**
-	* Returns the group ID of this journal article.
-	*
-	* @return the group ID of this journal article
-	*/
-	@Override
-	public long getGroupId() {
-		return _journalArticle.getGroupId();
-	}
-
-	/**
-	* Returns the ID of this journal article.
-	*
-	* @return the ID of this journal article
-	*/
-	@Override
-	public long getId() {
-		return _journalArticle.getId();
-	}
-
-	/**
-	* Returns the primary key of this journal article.
-	*
-	* @return the primary key of this journal article
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _journalArticle.getPrimaryKey();
-	}
-
-	/**
-	* Returns the resource prim key of this journal article.
-	*
-	* @return the resource prim key of this journal article
-	*/
-	@Override
-	public long getResourcePrimKey() {
-		return _journalArticle.getResourcePrimKey();
-	}
-
-	/**
-	* Returns the small image ID of this journal article.
-	*
-	* @return the small image ID of this journal article
-	*/
-	@Override
-	public long getSmallImageId() {
-		return _journalArticle.getSmallImageId();
-	}
-
-	/**
-	* Returns the status by user ID of this journal article.
-	*
-	* @return the status by user ID of this journal article
-	*/
-	@Override
-	public long getStatusByUserId() {
-		return _journalArticle.getStatusByUserId();
-	}
-
-	/**
-	* Returns the class primary key of the trash entry for this journal article.
-	*
-	* @return the class primary key of the trash entry for this journal article
-	*/
-	@Override
-	public long getTrashEntryClassPK() {
-		return _journalArticle.getTrashEntryClassPK();
-	}
-
-	/**
-	* Returns the user ID of this journal article.
-	*
-	* @return the user ID of this journal article
-	*/
-	@Override
-	public long getUserId() {
-		return _journalArticle.getUserId();
 	}
 
 	@Override
@@ -1173,23 +1154,25 @@ public class JournalArticleWrapper implements JournalArticle,
 	@Override
 	public void prepareLocalizedFieldsForImport()
 		throws com.liferay.portal.kernel.exception.LocaleException {
+
 		_journalArticle.prepareLocalizedFieldsForImport();
 	}
 
 	@Override
 	public void prepareLocalizedFieldsForImport(
-		java.util.Locale defaultImportLocale)
+			java.util.Locale defaultImportLocale)
 		throws com.liferay.portal.kernel.exception.LocaleException {
+
 		_journalArticle.prepareLocalizedFieldsForImport(defaultImportLocale);
 	}
 
 	/**
-	* Sets the article ID of this journal article.
-	*
-	* @param articleId the article ID of this journal article
-	*/
+	 * Sets the article ID of this journal article.
+	 *
+	 * @param articleId the article ID of this journal article
+	 */
 	@Override
-	public void setArticleId(java.lang.String articleId) {
+	public void setArticleId(String articleId) {
 		_journalArticle.setArticleId(articleId);
 	}
 
@@ -1199,154 +1182,157 @@ public class JournalArticleWrapper implements JournalArticle,
 	}
 
 	@Override
-	public void setClassName(java.lang.String className) {
+	public void setClassName(String className) {
 		_journalArticle.setClassName(className);
 	}
 
 	/**
-	* Sets the class name ID of this journal article.
-	*
-	* @param classNameId the class name ID of this journal article
-	*/
+	 * Sets the class name ID of this journal article.
+	 *
+	 * @param classNameId the class name ID of this journal article
+	 */
 	@Override
 	public void setClassNameId(long classNameId) {
 		_journalArticle.setClassNameId(classNameId);
 	}
 
 	/**
-	* Sets the class pk of this journal article.
-	*
-	* @param classPK the class pk of this journal article
-	*/
+	 * Sets the class pk of this journal article.
+	 *
+	 * @param classPK the class pk of this journal article
+	 */
 	@Override
 	public void setClassPK(long classPK) {
 		_journalArticle.setClassPK(classPK);
 	}
 
 	/**
-	* Sets the company ID of this journal article.
-	*
-	* @param companyId the company ID of this journal article
-	*/
+	 * Sets the company ID of this journal article.
+	 *
+	 * @param companyId the company ID of this journal article
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_journalArticle.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the content of this journal article.
-	*
-	* @param content the content of this journal article
-	*/
+	 * Sets the content of this journal article.
+	 *
+	 * @param content the content of this journal article
+	 */
 	@Override
-	public void setContent(java.lang.String content) {
+	public void setContent(String content) {
 		_journalArticle.setContent(content);
 	}
 
 	/**
-	* Sets the create date of this journal article.
-	*
-	* @param createDate the create date of this journal article
-	*/
+	 * Sets the create date of this journal article.
+	 *
+	 * @param createDate the create date of this journal article
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_journalArticle.setCreateDate(createDate);
 	}
 
 	/**
-	* Sets the ddm structure key of this journal article.
-	*
-	* @param DDMStructureKey the ddm structure key of this journal article
-	*/
+	 * Sets the ddm structure key of this journal article.
+	 *
+	 * @param DDMStructureKey the ddm structure key of this journal article
+	 */
 	@Override
-	public void setDDMStructureKey(java.lang.String DDMStructureKey) {
+	public void setDDMStructureKey(String DDMStructureKey) {
 		_journalArticle.setDDMStructureKey(DDMStructureKey);
 	}
 
 	/**
-	* Sets the ddm template key of this journal article.
-	*
-	* @param DDMTemplateKey the ddm template key of this journal article
-	*/
+	 * Sets the ddm template key of this journal article.
+	 *
+	 * @param DDMTemplateKey the ddm template key of this journal article
+	 */
 	@Override
-	public void setDDMTemplateKey(java.lang.String DDMTemplateKey) {
+	public void setDDMTemplateKey(String DDMTemplateKey) {
 		_journalArticle.setDDMTemplateKey(DDMTemplateKey);
 	}
 
 	@Override
-	public void setDefaultLanguageId(java.lang.String defaultLanguageId) {
+	public void setDefaultLanguageId(String defaultLanguageId) {
 		_journalArticle.setDefaultLanguageId(defaultLanguageId);
 	}
 
 	/**
-	* Sets the description of this journal article.
-	*
-	* @param description the description of this journal article
-	*/
+	 * Sets the description of this journal article.
+	 *
+	 * @param description the description of this journal article
+	 */
 	@Override
-	public void setDescription(java.lang.String description) {
+	public void setDescription(String description) {
 		_journalArticle.setDescription(description);
 	}
 
 	/**
-	* Sets the localized description of this journal article in the language.
-	*
-	* @param description the localized description of this journal article
-	* @param locale the locale of the language
-	*/
+	 * Sets the localized description of this journal article in the language.
+	 *
+	 * @param description the localized description of this journal article
+	 * @param locale the locale of the language
+	 */
 	@Override
-	public void setDescription(java.lang.String description,
-		java.util.Locale locale) {
+	public void setDescription(String description, java.util.Locale locale) {
 		_journalArticle.setDescription(description, locale);
 	}
 
 	/**
-	* Sets the localized description of this journal article in the language, and sets the default locale.
-	*
-	* @param description the localized description of this journal article
-	* @param locale the locale of the language
-	* @param defaultLocale the default locale
-	*/
+	 * Sets the localized description of this journal article in the language, and sets the default locale.
+	 *
+	 * @param description the localized description of this journal article
+	 * @param locale the locale of the language
+	 * @param defaultLocale the default locale
+	 */
 	@Override
-	public void setDescription(java.lang.String description,
-		java.util.Locale locale, java.util.Locale defaultLocale) {
+	public void setDescription(
+		String description, java.util.Locale locale,
+		java.util.Locale defaultLocale) {
+
 		_journalArticle.setDescription(description, locale, defaultLocale);
 	}
 
 	@Override
-	public void setDescriptionCurrentLanguageId(java.lang.String languageId) {
+	public void setDescriptionCurrentLanguageId(String languageId) {
 		_journalArticle.setDescriptionCurrentLanguageId(languageId);
 	}
 
 	/**
-	* Sets the localized descriptions of this journal article from the map of locales and localized descriptions.
-	*
-	* @param descriptionMap the locales and localized descriptions of this journal article
-	*/
+	 * Sets the localized descriptions of this journal article from the map of locales and localized descriptions.
+	 *
+	 * @param descriptionMap the locales and localized descriptions of this journal article
+	 */
 	@Override
 	public void setDescriptionMap(
-		Map<java.util.Locale, java.lang.String> descriptionMap) {
+		Map<java.util.Locale, String> descriptionMap) {
+
 		_journalArticle.setDescriptionMap(descriptionMap);
 	}
 
 	/**
-	* Sets the localized descriptions of this journal article from the map of locales and localized descriptions, and sets the default locale.
-	*
-	* @param descriptionMap the locales and localized descriptions of this journal article
-	* @param defaultLocale the default locale
-	*/
+	 * Sets the localized descriptions of this journal article from the map of locales and localized descriptions, and sets the default locale.
+	 *
+	 * @param descriptionMap the locales and localized descriptions of this journal article
+	 * @param defaultLocale the default locale
+	 */
 	@Override
 	public void setDescriptionMap(
-		Map<java.util.Locale, java.lang.String> descriptionMap,
+		Map<java.util.Locale, String> descriptionMap,
 		java.util.Locale defaultLocale) {
+
 		_journalArticle.setDescriptionMap(descriptionMap, defaultLocale);
 	}
 
 	/**
-	* Sets the display date of this journal article.
-	*
-	* @param displayDate the display date of this journal article
-	*/
+	 * Sets the display date of this journal article.
+	 *
+	 * @param displayDate the display date of this journal article
+	 */
 	@Override
 	public void setDisplayDate(Date displayDate) {
 		_journalArticle.setDisplayDate(displayDate);
@@ -1358,14 +1344,15 @@ public class JournalArticleWrapper implements JournalArticle,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_journalArticle.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_journalArticle.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_journalArticle.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_journalArticle.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -1374,80 +1361,80 @@ public class JournalArticleWrapper implements JournalArticle,
 	}
 
 	/**
-	* Sets the expiration date of this journal article.
-	*
-	* @param expirationDate the expiration date of this journal article
-	*/
+	 * Sets the expiration date of this journal article.
+	 *
+	 * @param expirationDate the expiration date of this journal article
+	 */
 	@Override
 	public void setExpirationDate(Date expirationDate) {
 		_journalArticle.setExpirationDate(expirationDate);
 	}
 
 	/**
-	* Sets the folder ID of this journal article.
-	*
-	* @param folderId the folder ID of this journal article
-	*/
+	 * Sets the folder ID of this journal article.
+	 *
+	 * @param folderId the folder ID of this journal article
+	 */
 	@Override
 	public void setFolderId(long folderId) {
 		_journalArticle.setFolderId(folderId);
 	}
 
 	/**
-	* Sets the group ID of this journal article.
-	*
-	* @param groupId the group ID of this journal article
-	*/
+	 * Sets the group ID of this journal article.
+	 *
+	 * @param groupId the group ID of this journal article
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_journalArticle.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the ID of this journal article.
-	*
-	* @param id the ID of this journal article
-	*/
+	 * Sets the ID of this journal article.
+	 *
+	 * @param id the ID of this journal article
+	 */
 	@Override
 	public void setId(long id) {
 		_journalArticle.setId(id);
 	}
 
 	/**
-	* Sets whether this journal article is indexable.
-	*
-	* @param indexable the indexable of this journal article
-	*/
+	 * Sets whether this journal article is indexable.
+	 *
+	 * @param indexable the indexable of this journal article
+	 */
 	@Override
 	public void setIndexable(boolean indexable) {
 		_journalArticle.setIndexable(indexable);
 	}
 
 	/**
-	* Sets the last publish date of this journal article.
-	*
-	* @param lastPublishDate the last publish date of this journal article
-	*/
+	 * Sets the last publish date of this journal article.
+	 *
+	 * @param lastPublishDate the last publish date of this journal article
+	 */
 	@Override
 	public void setLastPublishDate(Date lastPublishDate) {
 		_journalArticle.setLastPublishDate(lastPublishDate);
 	}
 
 	/**
-	* Sets the layout uuid of this journal article.
-	*
-	* @param layoutUuid the layout uuid of this journal article
-	*/
+	 * Sets the layout uuid of this journal article.
+	 *
+	 * @param layoutUuid the layout uuid of this journal article
+	 */
 	@Override
-	public void setLayoutUuid(java.lang.String layoutUuid) {
+	public void setLayoutUuid(String layoutUuid) {
 		_journalArticle.setLayoutUuid(layoutUuid);
 	}
 
 	/**
-	* Sets the modified date of this journal article.
-	*
-	* @param modifiedDate the modified date of this journal article
-	*/
+	 * Sets the modified date of this journal article.
+	 *
+	 * @param modifiedDate the modified date of this journal article
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_journalArticle.setModifiedDate(modifiedDate);
@@ -1459,10 +1446,10 @@ public class JournalArticleWrapper implements JournalArticle,
 	}
 
 	/**
-	* Sets the primary key of this journal article.
-	*
-	* @param primaryKey the primary key of this journal article
-	*/
+	 * Sets the primary key of this journal article.
+	 *
+	 * @param primaryKey the primary key of this journal article
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_journalArticle.setPrimaryKey(primaryKey);
@@ -1474,263 +1461,293 @@ public class JournalArticleWrapper implements JournalArticle,
 	}
 
 	/**
-	* Sets the resource prim key of this journal article.
-	*
-	* @param resourcePrimKey the resource prim key of this journal article
-	*/
+	 * Sets the resource prim key of this journal article.
+	 *
+	 * @param resourcePrimKey the resource prim key of this journal article
+	 */
 	@Override
 	public void setResourcePrimKey(long resourcePrimKey) {
 		_journalArticle.setResourcePrimKey(resourcePrimKey);
 	}
 
 	/**
-	* Sets the review date of this journal article.
-	*
-	* @param reviewDate the review date of this journal article
-	*/
+	 * Sets the review date of this journal article.
+	 *
+	 * @param reviewDate the review date of this journal article
+	 */
 	@Override
 	public void setReviewDate(Date reviewDate) {
 		_journalArticle.setReviewDate(reviewDate);
 	}
 
 	/**
-	* Sets whether this journal article is small image.
-	*
-	* @param smallImage the small image of this journal article
-	*/
+	 * Sets whether this journal article is small image.
+	 *
+	 * @param smallImage the small image of this journal article
+	 */
 	@Override
 	public void setSmallImage(boolean smallImage) {
 		_journalArticle.setSmallImage(smallImage);
 	}
 
 	/**
-	* Sets the small image ID of this journal article.
-	*
-	* @param smallImageId the small image ID of this journal article
-	*/
+	 * Sets the small image ID of this journal article.
+	 *
+	 * @param smallImageId the small image ID of this journal article
+	 */
 	@Override
 	public void setSmallImageId(long smallImageId) {
 		_journalArticle.setSmallImageId(smallImageId);
 	}
 
 	@Override
-	public void setSmallImageType(java.lang.String smallImageType) {
+	public void setSmallImageType(String smallImageType) {
 		_journalArticle.setSmallImageType(smallImageType);
 	}
 
 	/**
-	* Sets the small image url of this journal article.
-	*
-	* @param smallImageURL the small image url of this journal article
-	*/
+	 * Sets the small image url of this journal article.
+	 *
+	 * @param smallImageURL the small image url of this journal article
+	 */
 	@Override
-	public void setSmallImageURL(java.lang.String smallImageURL) {
+	public void setSmallImageURL(String smallImageURL) {
 		_journalArticle.setSmallImageURL(smallImageURL);
 	}
 
 	/**
-	* Sets the status of this journal article.
-	*
-	* @param status the status of this journal article
-	*/
+	 * Sets the status of this journal article.
+	 *
+	 * @param status the status of this journal article
+	 */
 	@Override
 	public void setStatus(int status) {
 		_journalArticle.setStatus(status);
 	}
 
 	/**
-	* Sets the status by user ID of this journal article.
-	*
-	* @param statusByUserId the status by user ID of this journal article
-	*/
+	 * Sets the status by user ID of this journal article.
+	 *
+	 * @param statusByUserId the status by user ID of this journal article
+	 */
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
 		_journalArticle.setStatusByUserId(statusByUserId);
 	}
 
 	/**
-	* Sets the status by user name of this journal article.
-	*
-	* @param statusByUserName the status by user name of this journal article
-	*/
+	 * Sets the status by user name of this journal article.
+	 *
+	 * @param statusByUserName the status by user name of this journal article
+	 */
 	@Override
-	public void setStatusByUserName(java.lang.String statusByUserName) {
+	public void setStatusByUserName(String statusByUserName) {
 		_journalArticle.setStatusByUserName(statusByUserName);
 	}
 
 	/**
-	* Sets the status by user uuid of this journal article.
-	*
-	* @param statusByUserUuid the status by user uuid of this journal article
-	*/
+	 * Sets the status by user uuid of this journal article.
+	 *
+	 * @param statusByUserUuid the status by user uuid of this journal article
+	 */
 	@Override
-	public void setStatusByUserUuid(java.lang.String statusByUserUuid) {
+	public void setStatusByUserUuid(String statusByUserUuid) {
 		_journalArticle.setStatusByUserUuid(statusByUserUuid);
 	}
 
 	/**
-	* Sets the status date of this journal article.
-	*
-	* @param statusDate the status date of this journal article
-	*/
+	 * Sets the status date of this journal article.
+	 *
+	 * @param statusDate the status date of this journal article
+	 */
 	@Override
 	public void setStatusDate(Date statusDate) {
 		_journalArticle.setStatusDate(statusDate);
 	}
 
 	/**
-	* @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	#setDDMStructureKey(String)}
-	*/
+	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
+	 #setDDMStructureKey(String)}
+	 */
 	@Deprecated
 	@Override
-	public void setStructureId(java.lang.String ddmStructureKey) {
+	public void setStructureId(String ddmStructureKey) {
 		_journalArticle.setStructureId(ddmStructureKey);
 	}
 
 	/**
-	* @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	#setDDMTemplateKey(String)}
-	*/
+	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
+	 #setDDMTemplateKey(String)}
+	 */
 	@Deprecated
 	@Override
-	public void setTemplateId(java.lang.String ddmTemplateKey) {
+	public void setTemplateId(String ddmTemplateKey) {
 		_journalArticle.setTemplateId(ddmTemplateKey);
 	}
 
 	/**
-	* Sets the title of this journal article.
-	*
-	* @param title the title of this journal article
-	*/
+	 * Sets the title of this journal article.
+	 *
+	 * @param title the title of this journal article
+	 */
 	@Override
-	public void setTitle(java.lang.String title) {
+	public void setTitle(String title) {
 		_journalArticle.setTitle(title);
 	}
 
 	/**
-	* Sets the localized title of this journal article in the language.
-	*
-	* @param title the localized title of this journal article
-	* @param locale the locale of the language
-	*/
+	 * Sets the localized title of this journal article in the language.
+	 *
+	 * @param title the localized title of this journal article
+	 * @param locale the locale of the language
+	 */
 	@Override
-	public void setTitle(java.lang.String title, java.util.Locale locale) {
+	public void setTitle(String title, java.util.Locale locale) {
 		_journalArticle.setTitle(title, locale);
 	}
 
 	/**
-	* Sets the localized title of this journal article in the language, and sets the default locale.
-	*
-	* @param title the localized title of this journal article
-	* @param locale the locale of the language
-	* @param defaultLocale the default locale
-	*/
+	 * Sets the localized title of this journal article in the language, and sets the default locale.
+	 *
+	 * @param title the localized title of this journal article
+	 * @param locale the locale of the language
+	 * @param defaultLocale the default locale
+	 */
 	@Override
-	public void setTitle(java.lang.String title, java.util.Locale locale,
-		java.util.Locale defaultLocale) {
+	public void setTitle(
+		String title, java.util.Locale locale, java.util.Locale defaultLocale) {
+
 		_journalArticle.setTitle(title, locale, defaultLocale);
 	}
 
 	@Override
-	public void setTitleCurrentLanguageId(java.lang.String languageId) {
+	public void setTitleCurrentLanguageId(String languageId) {
 		_journalArticle.setTitleCurrentLanguageId(languageId);
 	}
 
 	/**
-	* Sets the localized titles of this journal article from the map of locales and localized titles.
-	*
-	* @param titleMap the locales and localized titles of this journal article
-	*/
+	 * Sets the localized titles of this journal article from the map of locales and localized titles.
+	 *
+	 * @param titleMap the locales and localized titles of this journal article
+	 */
 	@Override
-	public void setTitleMap(Map<java.util.Locale, java.lang.String> titleMap) {
+	public void setTitleMap(Map<java.util.Locale, String> titleMap) {
 		_journalArticle.setTitleMap(titleMap);
 	}
 
 	/**
-	* Sets the localized titles of this journal article from the map of locales and localized titles, and sets the default locale.
-	*
-	* @param titleMap the locales and localized titles of this journal article
-	* @param defaultLocale the default locale
-	*/
+	 * Sets the localized titles of this journal article from the map of locales and localized titles, and sets the default locale.
+	 *
+	 * @param titleMap the locales and localized titles of this journal article
+	 * @param defaultLocale the default locale
+	 */
 	@Override
-	public void setTitleMap(Map<java.util.Locale, java.lang.String> titleMap,
+	public void setTitleMap(
+		Map<java.util.Locale, String> titleMap,
 		java.util.Locale defaultLocale) {
+
 		_journalArticle.setTitleMap(titleMap, defaultLocale);
 	}
 
 	/**
-	* Sets the tree path of this journal article.
-	*
-	* @param treePath the tree path of this journal article
-	*/
+	 * Sets the tree path of this journal article.
+	 *
+	 * @param treePath the tree path of this journal article
+	 */
 	@Override
-	public void setTreePath(java.lang.String treePath) {
+	public void setTreePath(String treePath) {
 		_journalArticle.setTreePath(treePath);
 	}
 
 	/**
-	* Sets the url title of this journal article.
-	*
-	* @param urlTitle the url title of this journal article
-	*/
+	 * Sets the url title of this journal article.
+	 *
+	 * @param urlTitle the url title of this journal article
+	 */
 	@Override
-	public void setUrlTitle(java.lang.String urlTitle) {
+	public void setUrlTitle(String urlTitle) {
 		_journalArticle.setUrlTitle(urlTitle);
 	}
 
 	/**
-	* Sets the user ID of this journal article.
-	*
-	* @param userId the user ID of this journal article
-	*/
+	 * Sets the user ID of this journal article.
+	 *
+	 * @param userId the user ID of this journal article
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_journalArticle.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this journal article.
-	*
-	* @param userName the user name of this journal article
-	*/
+	 * Sets the user name of this journal article.
+	 *
+	 * @param userName the user name of this journal article
+	 */
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_journalArticle.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this journal article.
-	*
-	* @param userUuid the user uuid of this journal article
-	*/
+	 * Sets the user uuid of this journal article.
+	 *
+	 * @param userUuid the user uuid of this journal article
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_journalArticle.setUserUuid(userUuid);
 	}
 
 	/**
-	* Sets the uuid of this journal article.
-	*
-	* @param uuid the uuid of this journal article
-	*/
+	 * Sets the uuid of this journal article.
+	 *
+	 * @param uuid the uuid of this journal article
+	 */
 	@Override
-	public void setUuid(java.lang.String uuid) {
+	public void setUuid(String uuid) {
 		_journalArticle.setUuid(uuid);
 	}
 
 	/**
-	* Sets the version of this journal article.
-	*
-	* @param version the version of this journal article
-	*/
+	 * Sets the version of this journal article.
+	 *
+	 * @param version the version of this journal article
+	 */
 	@Override
 	public void setVersion(double version) {
 		_journalArticle.setVersion(version);
 	}
 
 	@Override
-	public void updateTreePath(java.lang.String treePath) {
+	public com.liferay.portal.kernel.model.CacheModel<JournalArticle>
+		toCacheModel() {
+
+		return _journalArticle.toCacheModel();
+	}
+
+	@Override
+	public JournalArticle toEscapedModel() {
+		return new JournalArticleWrapper(_journalArticle.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _journalArticle.toString();
+	}
+
+	@Override
+	public JournalArticle toUnescapedModel() {
+		return new JournalArticleWrapper(_journalArticle.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _journalArticle.toXmlString();
+	}
+
+	@Override
+	public void updateTreePath(String treePath) {
 		_journalArticle.updateTreePath(treePath);
 	}
 
@@ -1744,10 +1761,12 @@ public class JournalArticleWrapper implements JournalArticle,
 			return false;
 		}
 
-		JournalArticleWrapper journalArticleWrapper = (JournalArticleWrapper)obj;
+		JournalArticleWrapper journalArticleWrapper =
+			(JournalArticleWrapper)obj;
 
-		if (Objects.equals(_journalArticle,
-					journalArticleWrapper._journalArticle)) {
+		if (Objects.equals(
+				_journalArticle, journalArticleWrapper._journalArticle)) {
+
 			return true;
 		}
 
@@ -1780,4 +1799,5 @@ public class JournalArticleWrapper implements JournalArticle,
 	}
 
 	private final JournalArticle _journalArticle;
+
 }

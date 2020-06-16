@@ -14,8 +14,6 @@
 
 package com.liferay.portlet.blogs.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.blogs.kernel.model.BlogsStatsUser;
 import com.liferay.blogs.kernel.service.BlogsStatsUserLocalServiceUtil;
 
@@ -31,13 +29,13 @@ import com.liferay.blogs.kernel.service.BlogsStatsUserLocalServiceUtil;
  * @see BlogsStatsUser
  * @generated
  */
-@ProviderType
-public abstract class BlogsStatsUserBaseImpl extends BlogsStatsUserModelImpl
-	implements BlogsStatsUser {
+public abstract class BlogsStatsUserBaseImpl
+	extends BlogsStatsUserModelImpl implements BlogsStatsUser {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a blogs stats user model instance should use the {@link BlogsStatsUser} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a blogs stats user model instance should use the <code>BlogsStatsUser</code> interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -48,4 +46,5 @@ public abstract class BlogsStatsUserBaseImpl extends BlogsStatsUserModelImpl
 			BlogsStatsUserLocalServiceUtil.updateBlogsStatsUser(this);
 		}
 	}
+
 }

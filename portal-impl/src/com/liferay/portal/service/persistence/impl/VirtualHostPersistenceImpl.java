@@ -14,12 +14,7 @@
 
 package com.liferay.portal.service.persistence.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
-import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
@@ -30,17 +25,18 @@ import com.liferay.portal.kernel.exception.NoSuchVirtualHostException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.VirtualHost;
-import com.liferay.portal.kernel.service.persistence.CompanyProvider;
-import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.VirtualHostPersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.impl.VirtualHostImpl;
 import com.liferay.portal.model.impl.VirtualHostModelImpl;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -59,44 +55,33 @@ import java.util.Set;
  * </p>
  *
  * @author Brian Wing Shun Chan
- * @see VirtualHostPersistence
- * @see com.liferay.portal.kernel.service.persistence.VirtualHostUtil
  * @generated
  */
-@ProviderType
-public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
-	implements VirtualHostPersistence {
+public class VirtualHostPersistenceImpl
+	extends BasePersistenceImpl<VirtualHost> implements VirtualHostPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link VirtualHostUtil} to access the virtual host persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use <code>VirtualHostUtil</code> to access the virtual host persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = VirtualHostImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
-			VirtualHostModelImpl.FINDER_CACHE_ENABLED, VirtualHostImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
-			VirtualHostModelImpl.FINDER_CACHE_ENABLED, VirtualHostImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
-			VirtualHostModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
-	public static final FinderPath FINDER_PATH_FETCH_BY_HOSTNAME = new FinderPath(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
-			VirtualHostModelImpl.FINDER_CACHE_ENABLED, VirtualHostImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByHostname",
-			new String[] { String.class.getName() },
-			VirtualHostModelImpl.HOSTNAME_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_HOSTNAME = new FinderPath(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
-			VirtualHostModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByHostname",
-			new String[] { String.class.getName() });
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		VirtualHostImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
+	private FinderPath _finderPathFetchByHostname;
+	private FinderPath _finderPathCountByHostname;
 
 	/**
-	 * Returns the virtual host where hostname = &#63; or throws a {@link NoSuchVirtualHostException} if it could not be found.
+	 * Returns the virtual host where hostname = &#63; or throws a <code>NoSuchVirtualHostException</code> if it could not be found.
 	 *
 	 * @param hostname the hostname
 	 * @return the matching virtual host
@@ -105,23 +90,24 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	@Override
 	public VirtualHost findByHostname(String hostname)
 		throws NoSuchVirtualHostException {
+
 		VirtualHost virtualHost = fetchByHostname(hostname);
 
 		if (virtualHost == null) {
-			StringBundler msg = new StringBundler(4);
+			StringBundler sb = new StringBundler(4);
 
-			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			msg.append("hostname=");
-			msg.append(hostname);
+			sb.append("hostname=");
+			sb.append(hostname);
 
-			msg.append(StringPool.CLOSE_CURLY_BRACE);
+			sb.append("}");
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(msg.toString());
+				_log.debug(sb.toString());
 			}
 
-			throw new NoSuchVirtualHostException(msg.toString());
+			throw new NoSuchVirtualHostException(sb.toString());
 		}
 
 		return virtualHost;
@@ -142,19 +128,26 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	 * Returns the virtual host where hostname = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param hostname the hostname
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching virtual host, or <code>null</code> if a matching virtual host could not be found
 	 */
 	@Override
-	public VirtualHost fetchByHostname(String hostname,
-		boolean retrieveFromCache) {
-		Object[] finderArgs = new Object[] { hostname };
+	public VirtualHost fetchByHostname(
+		String hostname, boolean useFinderCache) {
+
+		hostname = Objects.toString(hostname, "");
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {hostname};
+		}
 
 		Object result = null;
 
-		if (retrieveFromCache) {
-			result = finderCache.getResult(FINDER_PATH_FETCH_BY_HOSTNAME,
-					finderArgs, this);
+		if (useFinderCache) {
+			result = FinderCacheUtil.getResult(
+				_finderPathFetchByHostname, finderArgs, this);
 		}
 
 		if (result instanceof VirtualHost) {
@@ -166,44 +159,43 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 		}
 
 		if (result == null) {
-			StringBundler query = new StringBundler(3);
+			StringBundler sb = new StringBundler(3);
 
-			query.append(_SQL_SELECT_VIRTUALHOST_WHERE);
+			sb.append(_SQL_SELECT_VIRTUALHOST_WHERE);
 
 			boolean bindHostname = false;
 
-			if (hostname == null) {
-				query.append(_FINDER_COLUMN_HOSTNAME_HOSTNAME_1);
-			}
-			else if (hostname.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_HOSTNAME_HOSTNAME_3);
+			if (hostname.isEmpty()) {
+				sb.append(_FINDER_COLUMN_HOSTNAME_HOSTNAME_3);
 			}
 			else {
 				bindHostname = true;
 
-				query.append(_FINDER_COLUMN_HOSTNAME_HOSTNAME_2);
+				sb.append(_FINDER_COLUMN_HOSTNAME_HOSTNAME_2);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
 				if (bindHostname) {
-					qPos.add(hostname);
+					queryPos.add(hostname);
 				}
 
-				List<VirtualHost> list = q.list();
+				List<VirtualHost> list = query.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(FINDER_PATH_FETCH_BY_HOSTNAME,
-						finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(
+							_finderPathFetchByHostname, finderArgs, list);
+					}
 				}
 				else {
 					VirtualHost virtualHost = list.get(0);
@@ -211,19 +203,15 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 					result = virtualHost;
 
 					cacheResult(virtualHost);
-
-					if ((virtualHost.getHostname() == null) ||
-							!virtualHost.getHostname().equals(hostname)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_HOSTNAME,
-							finderArgs, virtualHost);
-					}
 				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_FETCH_BY_HOSTNAME,
-					finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					FinderCacheUtil.removeResult(
+						_finderPathFetchByHostname, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -247,6 +235,7 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	@Override
 	public VirtualHost removeByHostname(String hostname)
 		throws NoSuchVirtualHostException {
+
 		VirtualHost virtualHost = findByHostname(hostname);
 
 		return remove(virtualHost);
@@ -260,54 +249,54 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	 */
 	@Override
 	public int countByHostname(String hostname) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_HOSTNAME;
+		hostname = Objects.toString(hostname, "");
 
-		Object[] finderArgs = new Object[] { hostname };
+		FinderPath finderPath = _finderPathCountByHostname;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Object[] finderArgs = new Object[] {hostname};
+
+		Long count = (Long)FinderCacheUtil.getResult(
+			finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(2);
+			StringBundler sb = new StringBundler(2);
 
-			query.append(_SQL_COUNT_VIRTUALHOST_WHERE);
+			sb.append(_SQL_COUNT_VIRTUALHOST_WHERE);
 
 			boolean bindHostname = false;
 
-			if (hostname == null) {
-				query.append(_FINDER_COLUMN_HOSTNAME_HOSTNAME_1);
-			}
-			else if (hostname.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_HOSTNAME_HOSTNAME_3);
+			if (hostname.isEmpty()) {
+				sb.append(_FINDER_COLUMN_HOSTNAME_HOSTNAME_3);
 			}
 			else {
 				bindHostname = true;
 
-				query.append(_FINDER_COLUMN_HOSTNAME_HOSTNAME_2);
+				sb.append(_FINDER_COLUMN_HOSTNAME_HOSTNAME_2);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
 				if (bindHostname) {
-					qPos.add(hostname);
+					queryPos.add(hostname);
 				}
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				FinderCacheUtil.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -317,22 +306,17 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_HOSTNAME_HOSTNAME_1 = "virtualHost.hostname IS NULL";
-	private static final String _FINDER_COLUMN_HOSTNAME_HOSTNAME_2 = "virtualHost.hostname = ?";
-	private static final String _FINDER_COLUMN_HOSTNAME_HOSTNAME_3 = "(virtualHost.hostname IS NULL OR virtualHost.hostname = '')";
-	public static final FinderPath FINDER_PATH_FETCH_BY_C_L = new FinderPath(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
-			VirtualHostModelImpl.FINDER_CACHE_ENABLED, VirtualHostImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByC_L",
-			new String[] { Long.class.getName(), Long.class.getName() },
-			VirtualHostModelImpl.COMPANYID_COLUMN_BITMASK |
-			VirtualHostModelImpl.LAYOUTSETID_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_C_L = new FinderPath(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
-			VirtualHostModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_L",
-			new String[] { Long.class.getName(), Long.class.getName() });
+	private static final String _FINDER_COLUMN_HOSTNAME_HOSTNAME_2 =
+		"virtualHost.hostname = ?";
+
+	private static final String _FINDER_COLUMN_HOSTNAME_HOSTNAME_3 =
+		"(virtualHost.hostname IS NULL OR virtualHost.hostname = '')";
+
+	private FinderPath _finderPathFetchByC_L;
+	private FinderPath _finderPathCountByC_L;
 
 	/**
-	 * Returns the virtual host where companyId = &#63; and layoutSetId = &#63; or throws a {@link NoSuchVirtualHostException} if it could not be found.
+	 * Returns the virtual host where companyId = &#63; and layoutSetId = &#63; or throws a <code>NoSuchVirtualHostException</code> if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param layoutSetId the layout set ID
@@ -342,26 +326,27 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	@Override
 	public VirtualHost findByC_L(long companyId, long layoutSetId)
 		throws NoSuchVirtualHostException {
+
 		VirtualHost virtualHost = fetchByC_L(companyId, layoutSetId);
 
 		if (virtualHost == null) {
-			StringBundler msg = new StringBundler(6);
+			StringBundler sb = new StringBundler(6);
 
-			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			msg.append("companyId=");
-			msg.append(companyId);
+			sb.append("companyId=");
+			sb.append(companyId);
 
-			msg.append(", layoutSetId=");
-			msg.append(layoutSetId);
+			sb.append(", layoutSetId=");
+			sb.append(layoutSetId);
 
-			msg.append(StringPool.CLOSE_CURLY_BRACE);
+			sb.append("}");
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(msg.toString());
+				_log.debug(sb.toString());
 			}
 
-			throw new NoSuchVirtualHostException(msg.toString());
+			throw new NoSuchVirtualHostException(sb.toString());
 		}
 
 		return virtualHost;
@@ -384,59 +369,67 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	 *
 	 * @param companyId the company ID
 	 * @param layoutSetId the layout set ID
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching virtual host, or <code>null</code> if a matching virtual host could not be found
 	 */
 	@Override
-	public VirtualHost fetchByC_L(long companyId, long layoutSetId,
-		boolean retrieveFromCache) {
-		Object[] finderArgs = new Object[] { companyId, layoutSetId };
+	public VirtualHost fetchByC_L(
+		long companyId, long layoutSetId, boolean useFinderCache) {
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {companyId, layoutSetId};
+		}
 
 		Object result = null;
 
-		if (retrieveFromCache) {
-			result = finderCache.getResult(FINDER_PATH_FETCH_BY_C_L,
-					finderArgs, this);
+		if (useFinderCache) {
+			result = FinderCacheUtil.getResult(
+				_finderPathFetchByC_L, finderArgs, this);
 		}
 
 		if (result instanceof VirtualHost) {
 			VirtualHost virtualHost = (VirtualHost)result;
 
 			if ((companyId != virtualHost.getCompanyId()) ||
-					(layoutSetId != virtualHost.getLayoutSetId())) {
+				(layoutSetId != virtualHost.getLayoutSetId())) {
+
 				result = null;
 			}
 		}
 
 		if (result == null) {
-			StringBundler query = new StringBundler(4);
+			StringBundler sb = new StringBundler(4);
 
-			query.append(_SQL_SELECT_VIRTUALHOST_WHERE);
+			sb.append(_SQL_SELECT_VIRTUALHOST_WHERE);
 
-			query.append(_FINDER_COLUMN_C_L_COMPANYID_2);
+			sb.append(_FINDER_COLUMN_C_L_COMPANYID_2);
 
-			query.append(_FINDER_COLUMN_C_L_LAYOUTSETID_2);
+			sb.append(_FINDER_COLUMN_C_L_LAYOUTSETID_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(companyId);
+				queryPos.add(companyId);
 
-				qPos.add(layoutSetId);
+				queryPos.add(layoutSetId);
 
-				List<VirtualHost> list = q.list();
+				List<VirtualHost> list = query.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(FINDER_PATH_FETCH_BY_C_L, finderArgs,
-						list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(
+							_finderPathFetchByC_L, finderArgs, list);
+					}
 				}
 				else {
 					VirtualHost virtualHost = list.get(0);
@@ -444,18 +437,15 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 					result = virtualHost;
 
 					cacheResult(virtualHost);
-
-					if ((virtualHost.getCompanyId() != companyId) ||
-							(virtualHost.getLayoutSetId() != layoutSetId)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_C_L,
-							finderArgs, virtualHost);
-					}
 				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_FETCH_BY_C_L, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					FinderCacheUtil.removeResult(
+						_finderPathFetchByC_L, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -480,6 +470,7 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	@Override
 	public VirtualHost removeByC_L(long companyId, long layoutSetId)
 		throws NoSuchVirtualHostException {
+
 		VirtualHost virtualHost = findByC_L(companyId, layoutSetId);
 
 		return remove(virtualHost);
@@ -494,44 +485,45 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	 */
 	@Override
 	public int countByC_L(long companyId, long layoutSetId) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_L;
+		FinderPath finderPath = _finderPathCountByC_L;
 
-		Object[] finderArgs = new Object[] { companyId, layoutSetId };
+		Object[] finderArgs = new Object[] {companyId, layoutSetId};
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = (Long)FinderCacheUtil.getResult(
+			finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(3);
+			StringBundler sb = new StringBundler(3);
 
-			query.append(_SQL_COUNT_VIRTUALHOST_WHERE);
+			sb.append(_SQL_COUNT_VIRTUALHOST_WHERE);
 
-			query.append(_FINDER_COLUMN_C_L_COMPANYID_2);
+			sb.append(_FINDER_COLUMN_C_L_COMPANYID_2);
 
-			query.append(_FINDER_COLUMN_C_L_LAYOUTSETID_2);
+			sb.append(_FINDER_COLUMN_C_L_LAYOUTSETID_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(companyId);
+				queryPos.add(companyId);
 
-				qPos.add(layoutSetId);
+				queryPos.add(layoutSetId);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				FinderCacheUtil.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -541,8 +533,11 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_C_L_COMPANYID_2 = "virtualHost.companyId = ? AND ";
-	private static final String _FINDER_COLUMN_C_L_LAYOUTSETID_2 = "virtualHost.layoutSetId = ?";
+	private static final String _FINDER_COLUMN_C_L_COMPANYID_2 =
+		"virtualHost.companyId = ? AND ";
+
+	private static final String _FINDER_COLUMN_C_L_LAYOUTSETID_2 =
+		"virtualHost.layoutSetId = ?";
 
 	public VirtualHostPersistenceImpl() {
 		setModelClass(VirtualHost.class);
@@ -555,16 +550,20 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	 */
 	@Override
 	public void cacheResult(VirtualHost virtualHost) {
-		entityCache.putResult(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
-			VirtualHostImpl.class, virtualHost.getPrimaryKey(), virtualHost);
+		EntityCacheUtil.putResult(
+			VirtualHostModelImpl.ENTITY_CACHE_ENABLED, VirtualHostImpl.class,
+			virtualHost.getPrimaryKey(), virtualHost);
 
-		finderCache.putResult(FINDER_PATH_FETCH_BY_HOSTNAME,
-			new Object[] { virtualHost.getHostname() }, virtualHost);
+		FinderCacheUtil.putResult(
+			_finderPathFetchByHostname,
+			new Object[] {virtualHost.getHostname()}, virtualHost);
 
-		finderCache.putResult(FINDER_PATH_FETCH_BY_C_L,
+		FinderCacheUtil.putResult(
+			_finderPathFetchByC_L,
 			new Object[] {
 				virtualHost.getCompanyId(), virtualHost.getLayoutSetId()
-			}, virtualHost);
+			},
+			virtualHost);
 
 		virtualHost.resetOriginalValues();
 	}
@@ -577,9 +576,11 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	@Override
 	public void cacheResult(List<VirtualHost> virtualHosts) {
 		for (VirtualHost virtualHost : virtualHosts) {
-			if (entityCache.getResult(
-						VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
-						VirtualHostImpl.class, virtualHost.getPrimaryKey()) == null) {
+			if (EntityCacheUtil.getResult(
+					VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
+					VirtualHostImpl.class, virtualHost.getPrimaryKey()) ==
+						null) {
+
 				cacheResult(virtualHost);
 			}
 			else {
@@ -592,107 +593,125 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	 * Clears the cache for all virtual hosts.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>com.liferay.portal.kernel.dao.orm.EntityCache</code> and <code>com.liferay.portal.kernel.dao.orm.FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache() {
-		entityCache.clearCache(VirtualHostImpl.class);
+		EntityCacheUtil.clearCache(VirtualHostImpl.class);
 
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
 	 * Clears the cache for the virtual host.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>com.liferay.portal.kernel.dao.orm.EntityCache</code> and <code>com.liferay.portal.kernel.dao.orm.FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(VirtualHost virtualHost) {
-		entityCache.removeResult(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
-			VirtualHostImpl.class, virtualHost.getPrimaryKey());
+		EntityCacheUtil.removeResult(
+			VirtualHostModelImpl.ENTITY_CACHE_ENABLED, VirtualHostImpl.class,
+			virtualHost.getPrimaryKey());
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		clearUniqueFindersCache((VirtualHostModelImpl)virtualHost, true);
 	}
 
 	@Override
 	public void clearCache(List<VirtualHost> virtualHosts) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (VirtualHost virtualHost : virtualHosts) {
-			entityCache.removeResult(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
+			EntityCacheUtil.removeResult(
+				VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
 				VirtualHostImpl.class, virtualHost.getPrimaryKey());
 
 			clearUniqueFindersCache((VirtualHostModelImpl)virtualHost, true);
 		}
 	}
 
+	public void clearCache(Set<Serializable> primaryKeys) {
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (Serializable primaryKey : primaryKeys) {
+			EntityCacheUtil.removeResult(
+				VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
+				VirtualHostImpl.class, primaryKey);
+		}
+	}
+
 	protected void cacheUniqueFindersCache(
 		VirtualHostModelImpl virtualHostModelImpl) {
-		Object[] args = new Object[] { virtualHostModelImpl.getHostname() };
 
-		finderCache.putResult(FINDER_PATH_COUNT_BY_HOSTNAME, args,
-			Long.valueOf(1), false);
-		finderCache.putResult(FINDER_PATH_FETCH_BY_HOSTNAME, args,
-			virtualHostModelImpl, false);
+		Object[] args = new Object[] {virtualHostModelImpl.getHostname()};
+
+		FinderCacheUtil.putResult(
+			_finderPathCountByHostname, args, Long.valueOf(1), false);
+		FinderCacheUtil.putResult(
+			_finderPathFetchByHostname, args, virtualHostModelImpl, false);
 
 		args = new Object[] {
-				virtualHostModelImpl.getCompanyId(),
-				virtualHostModelImpl.getLayoutSetId()
-			};
+			virtualHostModelImpl.getCompanyId(),
+			virtualHostModelImpl.getLayoutSetId()
+		};
 
-		finderCache.putResult(FINDER_PATH_COUNT_BY_C_L, args, Long.valueOf(1),
-			false);
-		finderCache.putResult(FINDER_PATH_FETCH_BY_C_L, args,
-			virtualHostModelImpl, false);
+		FinderCacheUtil.putResult(
+			_finderPathCountByC_L, args, Long.valueOf(1), false);
+		FinderCacheUtil.putResult(
+			_finderPathFetchByC_L, args, virtualHostModelImpl, false);
 	}
 
 	protected void clearUniqueFindersCache(
 		VirtualHostModelImpl virtualHostModelImpl, boolean clearCurrent) {
-		if (clearCurrent) {
-			Object[] args = new Object[] { virtualHostModelImpl.getHostname() };
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_HOSTNAME, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_HOSTNAME, args);
+		if (clearCurrent) {
+			Object[] args = new Object[] {virtualHostModelImpl.getHostname()};
+
+			FinderCacheUtil.removeResult(_finderPathCountByHostname, args);
+			FinderCacheUtil.removeResult(_finderPathFetchByHostname, args);
 		}
 
 		if ((virtualHostModelImpl.getColumnBitmask() &
-				FINDER_PATH_FETCH_BY_HOSTNAME.getColumnBitmask()) != 0) {
-			Object[] args = new Object[] {
-					virtualHostModelImpl.getOriginalHostname()
-				};
+			 _finderPathFetchByHostname.getColumnBitmask()) != 0) {
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_HOSTNAME, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_HOSTNAME, args);
+			Object[] args = new Object[] {
+				virtualHostModelImpl.getOriginalHostname()
+			};
+
+			FinderCacheUtil.removeResult(_finderPathCountByHostname, args);
+			FinderCacheUtil.removeResult(_finderPathFetchByHostname, args);
 		}
 
 		if (clearCurrent) {
 			Object[] args = new Object[] {
-					virtualHostModelImpl.getCompanyId(),
-					virtualHostModelImpl.getLayoutSetId()
-				};
+				virtualHostModelImpl.getCompanyId(),
+				virtualHostModelImpl.getLayoutSetId()
+			};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_L, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_C_L, args);
+			FinderCacheUtil.removeResult(_finderPathCountByC_L, args);
+			FinderCacheUtil.removeResult(_finderPathFetchByC_L, args);
 		}
 
 		if ((virtualHostModelImpl.getColumnBitmask() &
-				FINDER_PATH_FETCH_BY_C_L.getColumnBitmask()) != 0) {
-			Object[] args = new Object[] {
-					virtualHostModelImpl.getOriginalCompanyId(),
-					virtualHostModelImpl.getOriginalLayoutSetId()
-				};
+			 _finderPathFetchByC_L.getColumnBitmask()) != 0) {
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_L, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_C_L, args);
+			Object[] args = new Object[] {
+				virtualHostModelImpl.getOriginalCompanyId(),
+				virtualHostModelImpl.getOriginalLayoutSetId()
+			};
+
+			FinderCacheUtil.removeResult(_finderPathCountByC_L, args);
+			FinderCacheUtil.removeResult(_finderPathFetchByC_L, args);
 		}
 	}
 
@@ -709,7 +728,7 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 		virtualHost.setNew(true);
 		virtualHost.setPrimaryKey(virtualHostId);
 
-		virtualHost.setCompanyId(companyProvider.getCompanyId());
+		virtualHost.setCompanyId(CompanyThreadLocal.getCompanyId());
 
 		return virtualHost;
 	}
@@ -724,6 +743,7 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	@Override
 	public VirtualHost remove(long virtualHostId)
 		throws NoSuchVirtualHostException {
+
 		return remove((Serializable)virtualHostId);
 	}
 
@@ -737,30 +757,31 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	@Override
 	public VirtualHost remove(Serializable primaryKey)
 		throws NoSuchVirtualHostException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			VirtualHost virtualHost = (VirtualHost)session.get(VirtualHostImpl.class,
-					primaryKey);
+			VirtualHost virtualHost = (VirtualHost)session.get(
+				VirtualHostImpl.class, primaryKey);
 
 			if (virtualHost == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchVirtualHostException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchVirtualHostException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(virtualHost);
 		}
-		catch (NoSuchVirtualHostException nsee) {
-			throw nsee;
+		catch (NoSuchVirtualHostException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -769,24 +790,22 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 
 	@Override
 	protected VirtualHost removeImpl(VirtualHost virtualHost) {
-		virtualHost = toUnwrappedModel(virtualHost);
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(virtualHost)) {
-				virtualHost = (VirtualHost)session.get(VirtualHostImpl.class,
-						virtualHost.getPrimaryKeyObj());
+				virtualHost = (VirtualHost)session.get(
+					VirtualHostImpl.class, virtualHost.getPrimaryKeyObj());
 			}
 
 			if (virtualHost != null) {
 				session.delete(virtualHost);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -801,11 +820,26 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 
 	@Override
 	public VirtualHost updateImpl(VirtualHost virtualHost) {
-		virtualHost = toUnwrappedModel(virtualHost);
-
 		boolean isNew = virtualHost.isNew();
 
-		VirtualHostModelImpl virtualHostModelImpl = (VirtualHostModelImpl)virtualHost;
+		if (!(virtualHost instanceof VirtualHostModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(virtualHost.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(virtualHost);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in virtualHost proxy " +
+						invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom VirtualHost implementation " +
+					virtualHost.getClass());
+		}
+
+		VirtualHostModelImpl virtualHostModelImpl =
+			(VirtualHostModelImpl)virtualHost;
 
 		Session session = null;
 
@@ -821,28 +855,29 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 				virtualHost = (VirtualHost)session.merge(virtualHost);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
 		if (!VirtualHostModelImpl.COLUMN_BITMASK_ENABLED) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			FinderCacheUtil.clearCache(
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else
-		 if (isNew) {
-			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
-				FINDER_ARGS_EMPTY);
+		else if (isNew) {
+			FinderCacheUtil.removeResult(
+				_finderPathCountAll, FINDER_ARGS_EMPTY);
+			FinderCacheUtil.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
-			VirtualHostImpl.class, virtualHost.getPrimaryKey(), virtualHost,
-			false);
+		EntityCacheUtil.putResult(
+			VirtualHostModelImpl.ENTITY_CACHE_ENABLED, VirtualHostImpl.class,
+			virtualHost.getPrimaryKey(), virtualHost, false);
 
 		clearUniqueFindersCache(virtualHostModelImpl, false);
 		cacheUniqueFindersCache(virtualHostModelImpl);
@@ -852,27 +887,8 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 		return virtualHost;
 	}
 
-	protected VirtualHost toUnwrappedModel(VirtualHost virtualHost) {
-		if (virtualHost instanceof VirtualHostImpl) {
-			return virtualHost;
-		}
-
-		VirtualHostImpl virtualHostImpl = new VirtualHostImpl();
-
-		virtualHostImpl.setNew(virtualHost.isNew());
-		virtualHostImpl.setPrimaryKey(virtualHost.getPrimaryKey());
-
-		virtualHostImpl.setMvccVersion(virtualHost.getMvccVersion());
-		virtualHostImpl.setVirtualHostId(virtualHost.getVirtualHostId());
-		virtualHostImpl.setCompanyId(virtualHost.getCompanyId());
-		virtualHostImpl.setLayoutSetId(virtualHost.getLayoutSetId());
-		virtualHostImpl.setHostname(virtualHost.getHostname());
-
-		return virtualHostImpl;
-	}
-
 	/**
-	 * Returns the virtual host with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the virtual host with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the virtual host
 	 * @return the virtual host
@@ -881,6 +897,7 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	@Override
 	public VirtualHost findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchVirtualHostException {
+
 		VirtualHost virtualHost = fetchByPrimaryKey(primaryKey);
 
 		if (virtualHost == null) {
@@ -888,15 +905,15 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchVirtualHostException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchVirtualHostException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return virtualHost;
 	}
 
 	/**
-	 * Returns the virtual host with the primary key or throws a {@link NoSuchVirtualHostException} if it could not be found.
+	 * Returns the virtual host with the primary key or throws a <code>NoSuchVirtualHostException</code> if it could not be found.
 	 *
 	 * @param virtualHostId the primary key of the virtual host
 	 * @return the virtual host
@@ -905,6 +922,7 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	@Override
 	public VirtualHost findByPrimaryKey(long virtualHostId)
 		throws NoSuchVirtualHostException {
+
 		return findByPrimaryKey((Serializable)virtualHostId);
 	}
 
@@ -916,8 +934,9 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	 */
 	@Override
 	public VirtualHost fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
-				VirtualHostImpl.class, primaryKey);
+		Serializable serializable = EntityCacheUtil.getResult(
+			VirtualHostModelImpl.ENTITY_CACHE_ENABLED, VirtualHostImpl.class,
+			primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -931,22 +950,24 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 			try {
 				session = openSession();
 
-				virtualHost = (VirtualHost)session.get(VirtualHostImpl.class,
-						primaryKey);
+				virtualHost = (VirtualHost)session.get(
+					VirtualHostImpl.class, primaryKey);
 
 				if (virtualHost != null) {
 					cacheResult(virtualHost);
 				}
 				else {
-					entityCache.putResult(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
+					EntityCacheUtil.putResult(
+						VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
 						VirtualHostImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
-				entityCache.removeResult(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception exception) {
+				EntityCacheUtil.removeResult(
+					VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
 					VirtualHostImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -970,11 +991,13 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	@Override
 	public Map<Serializable, VirtualHost> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, VirtualHost> map = new HashMap<Serializable, VirtualHost>();
+		Map<Serializable, VirtualHost> map =
+			new HashMap<Serializable, VirtualHost>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -993,8 +1016,9 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
-					VirtualHostImpl.class, primaryKey);
+			Serializable serializable = EntityCacheUtil.getResult(
+				VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
+				VirtualHostImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -1014,31 +1038,31 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler sb = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
-		query.append(_SQL_SELECT_VIRTUALHOST_WHERE_PKS_IN);
+		sb.append(_SQL_SELECT_VIRTUALHOST_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append((long)primaryKey);
+			sb.append((long)primaryKey);
 
-			query.append(StringPool.COMMA);
+			sb.append(",");
 		}
 
-		query.setIndex(query.index() - 1);
+		sb.setIndex(sb.index() - 1);
 
-		query.append(StringPool.CLOSE_PARENTHESIS);
+		sb.append(")");
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query q = session.createQuery(sql);
+			Query query = session.createQuery(sql);
 
-			for (VirtualHost virtualHost : (List<VirtualHost>)q.list()) {
+			for (VirtualHost virtualHost : (List<VirtualHost>)query.list()) {
 				map.put(virtualHost.getPrimaryKeyObj(), virtualHost);
 
 				cacheResult(virtualHost);
@@ -1047,12 +1071,13 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
+				EntityCacheUtil.putResult(
+					VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
 					VirtualHostImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1075,7 +1100,7 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	 * Returns a range of all the virtual hosts.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link VirtualHostModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>VirtualHostModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of virtual hosts
@@ -1091,7 +1116,7 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	 * Returns an ordered range of all the virtual hosts.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link VirtualHostModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>VirtualHostModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of virtual hosts
@@ -1100,8 +1125,9 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	 * @return the ordered range of virtual hosts
 	 */
 	@Override
-	public List<VirtualHost> findAll(int start, int end,
-		OrderByComparator<VirtualHost> orderByComparator) {
+	public List<VirtualHost> findAll(
+		int start, int end, OrderByComparator<VirtualHost> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -1109,62 +1135,62 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	 * Returns an ordered range of all the virtual hosts.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link VirtualHostModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>VirtualHostModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of virtual hosts
 	 * @param end the upper bound of the range of virtual hosts (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of virtual hosts
 	 */
 	@Override
-	public List<VirtualHost> findAll(int start, int end,
-		OrderByComparator<VirtualHost> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+	public List<VirtualHost> findAll(
+		int start, int end, OrderByComparator<VirtualHost> orderByComparator,
+		boolean useFinderCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-			finderArgs = FINDER_ARGS_EMPTY;
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-			finderArgs = new Object[] { start, end, orderByComparator };
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindAll;
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<VirtualHost> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<VirtualHost>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<VirtualHost>)FinderCacheUtil.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
-				query.append(_SQL_SELECT_VIRTUALHOST);
+				sb.append(_SQL_SELECT_VIRTUALHOST);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
-				sql = query.toString();
+				sql = sb.toString();
 			}
 			else {
 				sql = _SQL_SELECT_VIRTUALHOST;
 
-				if (pagination) {
-					sql = sql.concat(VirtualHostModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(VirtualHostModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -1172,29 +1198,23 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<VirtualHost>)QueryUtil.list(q, getDialect(),
-							start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<VirtualHost>)QueryUtil.list(q, getDialect(),
-							start, end);
-				}
+				list = (List<VirtualHost>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					FinderCacheUtil.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1222,8 +1242,8 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)FinderCacheUtil.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -1231,18 +1251,18 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(_SQL_COUNT_VIRTUALHOST);
+				Query query = session.createQuery(_SQL_COUNT_VIRTUALHOST);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
-					count);
+				FinderCacheUtil.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
-					FINDER_ARGS_EMPTY);
+			catch (Exception exception) {
+				FinderCacheUtil.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1261,26 +1281,82 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	 * Initializes the virtual host persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(
+			VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
+			VirtualHostModelImpl.FINDER_CACHE_ENABLED, VirtualHostImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
+			VirtualHostModelImpl.FINDER_CACHE_ENABLED, VirtualHostImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+			new String[0]);
+
+		_finderPathCountAll = new FinderPath(
+			VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
+			VirtualHostModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
+
+		_finderPathFetchByHostname = new FinderPath(
+			VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
+			VirtualHostModelImpl.FINDER_CACHE_ENABLED, VirtualHostImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchByHostname",
+			new String[] {String.class.getName()},
+			VirtualHostModelImpl.HOSTNAME_COLUMN_BITMASK);
+
+		_finderPathCountByHostname = new FinderPath(
+			VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
+			VirtualHostModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByHostname",
+			new String[] {String.class.getName()});
+
+		_finderPathFetchByC_L = new FinderPath(
+			VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
+			VirtualHostModelImpl.FINDER_CACHE_ENABLED, VirtualHostImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchByC_L",
+			new String[] {Long.class.getName(), Long.class.getName()},
+			VirtualHostModelImpl.COMPANYID_COLUMN_BITMASK |
+			VirtualHostModelImpl.LAYOUTSETID_COLUMN_BITMASK);
+
+		_finderPathCountByC_L = new FinderPath(
+			VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
+			VirtualHostModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_L",
+			new String[] {Long.class.getName(), Long.class.getName()});
 	}
 
 	public void destroy() {
-		entityCache.removeCache(VirtualHostImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		EntityCacheUtil.removeCache(VirtualHostImpl.class.getName());
+		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@BeanReference(type = CompanyProviderWrapper.class)
-	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
-	private static final String _SQL_SELECT_VIRTUALHOST = "SELECT virtualHost FROM VirtualHost virtualHost";
-	private static final String _SQL_SELECT_VIRTUALHOST_WHERE_PKS_IN = "SELECT virtualHost FROM VirtualHost virtualHost WHERE virtualHostId IN (";
-	private static final String _SQL_SELECT_VIRTUALHOST_WHERE = "SELECT virtualHost FROM VirtualHost virtualHost WHERE ";
-	private static final String _SQL_COUNT_VIRTUALHOST = "SELECT COUNT(virtualHost) FROM VirtualHost virtualHost";
-	private static final String _SQL_COUNT_VIRTUALHOST_WHERE = "SELECT COUNT(virtualHost) FROM VirtualHost virtualHost WHERE ";
+	private static final String _SQL_SELECT_VIRTUALHOST =
+		"SELECT virtualHost FROM VirtualHost virtualHost";
+
+	private static final String _SQL_SELECT_VIRTUALHOST_WHERE_PKS_IN =
+		"SELECT virtualHost FROM VirtualHost virtualHost WHERE virtualHostId IN (";
+
+	private static final String _SQL_SELECT_VIRTUALHOST_WHERE =
+		"SELECT virtualHost FROM VirtualHost virtualHost WHERE ";
+
+	private static final String _SQL_COUNT_VIRTUALHOST =
+		"SELECT COUNT(virtualHost) FROM VirtualHost virtualHost";
+
+	private static final String _SQL_COUNT_VIRTUALHOST_WHERE =
+		"SELECT COUNT(virtualHost) FROM VirtualHost virtualHost WHERE ";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "virtualHost.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No VirtualHost exists with the primary key ";
-	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No VirtualHost exists with the key {";
-	private static final Log _log = LogFactoryUtil.getLog(VirtualHostPersistenceImpl.class);
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No VirtualHost exists with the primary key ";
+
+	private static final String _NO_SUCH_ENTITY_WITH_KEY =
+		"No VirtualHost exists with the key {";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		VirtualHostPersistenceImpl.class);
+
 }

@@ -14,13 +14,9 @@
 
 package com.liferay.portlet.trash.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-
 import com.liferay.trash.kernel.model.TrashEntry;
 
 import java.io.Externalizable;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing TrashEntry in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see TrashEntry
  * @generated
  */
-@ProviderType
-public class TrashEntryCacheModel implements CacheModel<TrashEntry>,
-	Externalizable {
+public class TrashEntryCacheModel
+	implements CacheModel<TrashEntry>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -105,7 +100,7 @@ public class TrashEntryCacheModel implements CacheModel<TrashEntry>,
 		trashEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			trashEntryImpl.setUserName(StringPool.BLANK);
+			trashEntryImpl.setUserName("");
 		}
 		else {
 			trashEntryImpl.setUserName(userName);
@@ -123,7 +118,7 @@ public class TrashEntryCacheModel implements CacheModel<TrashEntry>,
 		trashEntryImpl.setSystemEventSetKey(systemEventSetKey);
 
 		if (typeSettings == null) {
-			trashEntryImpl.setTypeSettings(StringPool.BLANK);
+			trashEntryImpl.setTypeSettings("");
 		}
 		else {
 			trashEntryImpl.setTypeSettings(typeSettings);
@@ -137,7 +132,9 @@ public class TrashEntryCacheModel implements CacheModel<TrashEntry>,
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		entryId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -153,14 +150,13 @@ public class TrashEntryCacheModel implements CacheModel<TrashEntry>,
 		classPK = objectInput.readLong();
 
 		systemEventSetKey = objectInput.readLong();
-		typeSettings = objectInput.readUTF();
+		typeSettings = (String)objectInput.readObject();
 
 		status = objectInput.readInt();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(entryId);
 
 		objectOutput.writeLong(groupId);
@@ -170,7 +166,7 @@ public class TrashEntryCacheModel implements CacheModel<TrashEntry>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -185,10 +181,10 @@ public class TrashEntryCacheModel implements CacheModel<TrashEntry>,
 		objectOutput.writeLong(systemEventSetKey);
 
 		if (typeSettings == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(typeSettings);
+			objectOutput.writeObject(typeSettings);
 		}
 
 		objectOutput.writeInt(status);
@@ -205,4 +201,5 @@ public class TrashEntryCacheModel implements CacheModel<TrashEntry>,
 	public long systemEventSetKey;
 	public String typeSettings;
 	public int status;
+
 }

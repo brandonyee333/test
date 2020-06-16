@@ -1,20 +1,18 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.sharepoint.rest.oauth2.service.base;
-
-import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -35,12 +33,13 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
-
 import com.liferay.sharepoint.rest.oauth2.model.SharepointOAuth2TokenEntry;
 import com.liferay.sharepoint.rest.oauth2.service.SharepointOAuth2TokenEntryLocalService;
 import com.liferay.sharepoint.rest.oauth2.service.persistence.SharepointOAuth2TokenEntryPersistence;
@@ -60,17 +59,16 @@ import javax.sql.DataSource;
  *
  * @author Adolfo Pérez
  * @see com.liferay.sharepoint.rest.oauth2.service.impl.SharepointOAuth2TokenEntryLocalServiceImpl
- * @see com.liferay.sharepoint.rest.oauth2.service.SharepointOAuth2TokenEntryLocalServiceUtil
  * @generated
  */
-@ProviderType
 public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	extends BaseLocalServiceImpl
-	implements SharepointOAuth2TokenEntryLocalService, IdentifiableOSGiService {
+	implements IdentifiableOSGiService, SharepointOAuth2TokenEntryLocalService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link com.liferay.sharepoint.rest.oauth2.service.SharepointOAuth2TokenEntryLocalServiceUtil} to access the sharepoint o auth2 token entry local service.
+	 * Never modify or reference this class directly. Use <code>SharepointOAuth2TokenEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.sharepoint.rest.oauth2.service.SharepointOAuth2TokenEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -83,9 +81,11 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	@Override
 	public SharepointOAuth2TokenEntry addSharepointOAuth2TokenEntry(
 		SharepointOAuth2TokenEntry sharepointOAuth2TokenEntry) {
+
 		sharepointOAuth2TokenEntry.setNew(true);
 
-		return sharepointOAuth2TokenEntryPersistence.update(sharepointOAuth2TokenEntry);
+		return sharepointOAuth2TokenEntryPersistence.update(
+			sharepointOAuth2TokenEntry);
 	}
 
 	/**
@@ -95,9 +95,12 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	 * @return the new sharepoint o auth2 token entry
 	 */
 	@Override
+	@Transactional(enabled = false)
 	public SharepointOAuth2TokenEntry createSharepointOAuth2TokenEntry(
 		long sharepointOAuth2TokenEntryId) {
-		return sharepointOAuth2TokenEntryPersistence.create(sharepointOAuth2TokenEntryId);
+
+		return sharepointOAuth2TokenEntryPersistence.create(
+			sharepointOAuth2TokenEntryId);
 	}
 
 	/**
@@ -110,8 +113,11 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public SharepointOAuth2TokenEntry deleteSharepointOAuth2TokenEntry(
-		long sharepointOAuth2TokenEntryId) throws PortalException {
-		return sharepointOAuth2TokenEntryPersistence.remove(sharepointOAuth2TokenEntryId);
+			long sharepointOAuth2TokenEntryId)
+		throws PortalException {
+
+		return sharepointOAuth2TokenEntryPersistence.remove(
+			sharepointOAuth2TokenEntryId);
 	}
 
 	/**
@@ -124,15 +130,17 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	@Override
 	public SharepointOAuth2TokenEntry deleteSharepointOAuth2TokenEntry(
 		SharepointOAuth2TokenEntry sharepointOAuth2TokenEntry) {
-		return sharepointOAuth2TokenEntryPersistence.remove(sharepointOAuth2TokenEntry);
+
+		return sharepointOAuth2TokenEntryPersistence.remove(
+			sharepointOAuth2TokenEntry);
 	}
 
 	@Override
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(SharepointOAuth2TokenEntry.class,
-			clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(
+			SharepointOAuth2TokenEntry.class, clazz.getClassLoader());
 	}
 
 	/**
@@ -143,14 +151,15 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	 */
 	@Override
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
-		return sharepointOAuth2TokenEntryPersistence.findWithDynamicQuery(dynamicQuery);
+		return sharepointOAuth2TokenEntryPersistence.findWithDynamicQuery(
+			dynamicQuery);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.sharepoint.rest.oauth2.model.impl.SharepointOAuth2TokenEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.sharepoint.rest.oauth2.model.impl.SharepointOAuth2TokenEntryModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -159,17 +168,18 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end) {
-		return sharepointOAuth2TokenEntryPersistence.findWithDynamicQuery(dynamicQuery,
-			start, end);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
+
+		return sharepointOAuth2TokenEntryPersistence.findWithDynamicQuery(
+			dynamicQuery, start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.sharepoint.rest.oauth2.model.impl.SharepointOAuth2TokenEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.sharepoint.rest.oauth2.model.impl.SharepointOAuth2TokenEntryModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -179,10 +189,12 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end, OrderByComparator<T> orderByComparator) {
-		return sharepointOAuth2TokenEntryPersistence.findWithDynamicQuery(dynamicQuery,
-			start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
+
+		return sharepointOAuth2TokenEntryPersistence.findWithDynamicQuery(
+			dynamicQuery, start, end, orderByComparator);
 	}
 
 	/**
@@ -193,7 +205,8 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	 */
 	@Override
 	public long dynamicQueryCount(DynamicQuery dynamicQuery) {
-		return sharepointOAuth2TokenEntryPersistence.countWithDynamicQuery(dynamicQuery);
+		return sharepointOAuth2TokenEntryPersistence.countWithDynamicQuery(
+			dynamicQuery);
 	}
 
 	/**
@@ -204,16 +217,19 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection) {
-		return sharepointOAuth2TokenEntryPersistence.countWithDynamicQuery(dynamicQuery,
-			projection);
+	public long dynamicQueryCount(
+		DynamicQuery dynamicQuery, Projection projection) {
+
+		return sharepointOAuth2TokenEntryPersistence.countWithDynamicQuery(
+			dynamicQuery, projection);
 	}
 
 	@Override
 	public SharepointOAuth2TokenEntry fetchSharepointOAuth2TokenEntry(
 		long sharepointOAuth2TokenEntryId) {
-		return sharepointOAuth2TokenEntryPersistence.fetchByPrimaryKey(sharepointOAuth2TokenEntryId);
+
+		return sharepointOAuth2TokenEntryPersistence.fetchByPrimaryKey(
+			sharepointOAuth2TokenEntryId);
 	}
 
 	/**
@@ -225,15 +241,20 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	 */
 	@Override
 	public SharepointOAuth2TokenEntry getSharepointOAuth2TokenEntry(
-		long sharepointOAuth2TokenEntryId) throws PortalException {
-		return sharepointOAuth2TokenEntryPersistence.findByPrimaryKey(sharepointOAuth2TokenEntryId);
+			long sharepointOAuth2TokenEntryId)
+		throws PortalException {
+
+		return sharepointOAuth2TokenEntryPersistence.findByPrimaryKey(
+			sharepointOAuth2TokenEntryId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			new DefaultActionableDynamicQuery();
 
-		actionableDynamicQuery.setBaseLocalService(sharepointOAuth2TokenEntryLocalService);
+		actionableDynamicQuery.setBaseLocalService(
+			sharepointOAuth2TokenEntryLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(SharepointOAuth2TokenEntry.class);
 
@@ -244,12 +265,17 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
+	public IndexableActionableDynamicQuery
+		getIndexableActionableDynamicQuery() {
 
-		indexableActionableDynamicQuery.setBaseLocalService(sharepointOAuth2TokenEntryLocalService);
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
+			new IndexableActionableDynamicQuery();
+
+		indexableActionableDynamicQuery.setBaseLocalService(
+			sharepointOAuth2TokenEntryLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
-		indexableActionableDynamicQuery.setModelClass(SharepointOAuth2TokenEntry.class);
+		indexableActionableDynamicQuery.setModelClass(
+			SharepointOAuth2TokenEntry.class);
 
 		indexableActionableDynamicQuery.setPrimaryKeyPropertyName(
 			"sharepointOAuth2TokenEntryId");
@@ -259,7 +285,9 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-		actionableDynamicQuery.setBaseLocalService(sharepointOAuth2TokenEntryLocalService);
+
+		actionableDynamicQuery.setBaseLocalService(
+			sharepointOAuth2TokenEntryLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(SharepointOAuth2TokenEntry.class);
 
@@ -273,20 +301,32 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-		return sharepointOAuth2TokenEntryLocalService.deleteSharepointOAuth2TokenEntry((SharepointOAuth2TokenEntry)persistedModel);
+
+		return sharepointOAuth2TokenEntryLocalService.
+			deleteSharepointOAuth2TokenEntry(
+				(SharepointOAuth2TokenEntry)persistedModel);
 	}
 
+	public BasePersistence<SharepointOAuth2TokenEntry> getBasePersistence() {
+		return sharepointOAuth2TokenEntryPersistence;
+	}
+
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
-		return sharepointOAuth2TokenEntryPersistence.findByPrimaryKey(primaryKeyObj);
+
+		return sharepointOAuth2TokenEntryPersistence.findByPrimaryKey(
+			primaryKeyObj);
 	}
 
 	/**
 	 * Returns a range of all the sharepoint o auth2 token entries.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.sharepoint.rest.oauth2.model.impl.SharepointOAuth2TokenEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.sharepoint.rest.oauth2.model.impl.SharepointOAuth2TokenEntryModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of sharepoint o auth2 token entries
@@ -296,6 +336,7 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	@Override
 	public List<SharepointOAuth2TokenEntry> getSharepointOAuth2TokenEntries(
 		int start, int end) {
+
 		return sharepointOAuth2TokenEntryPersistence.findAll(start, end);
 	}
 
@@ -319,7 +360,9 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	@Override
 	public SharepointOAuth2TokenEntry updateSharepointOAuth2TokenEntry(
 		SharepointOAuth2TokenEntry sharepointOAuth2TokenEntry) {
-		return sharepointOAuth2TokenEntryPersistence.update(sharepointOAuth2TokenEntry);
+
+		return sharepointOAuth2TokenEntryPersistence.update(
+			sharepointOAuth2TokenEntry);
 	}
 
 	/**
@@ -327,7 +370,9 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	 *
 	 * @return the sharepoint o auth2 token entry local service
 	 */
-	public SharepointOAuth2TokenEntryLocalService getSharepointOAuth2TokenEntryLocalService() {
+	public SharepointOAuth2TokenEntryLocalService
+		getSharepointOAuth2TokenEntryLocalService() {
+
 		return sharepointOAuth2TokenEntryLocalService;
 	}
 
@@ -337,8 +382,11 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	 * @param sharepointOAuth2TokenEntryLocalService the sharepoint o auth2 token entry local service
 	 */
 	public void setSharepointOAuth2TokenEntryLocalService(
-		SharepointOAuth2TokenEntryLocalService sharepointOAuth2TokenEntryLocalService) {
-		this.sharepointOAuth2TokenEntryLocalService = sharepointOAuth2TokenEntryLocalService;
+		SharepointOAuth2TokenEntryLocalService
+			sharepointOAuth2TokenEntryLocalService) {
+
+		this.sharepointOAuth2TokenEntryLocalService =
+			sharepointOAuth2TokenEntryLocalService;
 	}
 
 	/**
@@ -346,7 +394,9 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	 *
 	 * @return the sharepoint o auth2 token entry persistence
 	 */
-	public SharepointOAuth2TokenEntryPersistence getSharepointOAuth2TokenEntryPersistence() {
+	public SharepointOAuth2TokenEntryPersistence
+		getSharepointOAuth2TokenEntryPersistence() {
+
 		return sharepointOAuth2TokenEntryPersistence;
 	}
 
@@ -356,8 +406,11 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	 * @param sharepointOAuth2TokenEntryPersistence the sharepoint o auth2 token entry persistence
 	 */
 	public void setSharepointOAuth2TokenEntryPersistence(
-		SharepointOAuth2TokenEntryPersistence sharepointOAuth2TokenEntryPersistence) {
-		this.sharepointOAuth2TokenEntryPersistence = sharepointOAuth2TokenEntryPersistence;
+		SharepointOAuth2TokenEntryPersistence
+			sharepointOAuth2TokenEntryPersistence) {
+
+		this.sharepointOAuth2TokenEntryPersistence =
+			sharepointOAuth2TokenEntryPersistence;
 	}
 
 	/**
@@ -365,7 +418,9 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
+	public com.liferay.counter.kernel.service.CounterLocalService
+		getCounterLocalService() {
+
 		return counterLocalService;
 	}
 
@@ -375,7 +430,9 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
+		com.liferay.counter.kernel.service.CounterLocalService
+			counterLocalService) {
+
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -384,7 +441,9 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
+	public com.liferay.portal.kernel.service.ClassNameLocalService
+		getClassNameLocalService() {
+
 		return classNameLocalService;
 	}
 
@@ -394,7 +453,9 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
+		com.liferay.portal.kernel.service.ClassNameLocalService
+			classNameLocalService) {
+
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -414,6 +475,7 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
+
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -422,7 +484,9 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
+	public com.liferay.portal.kernel.service.ResourceLocalService
+		getResourceLocalService() {
+
 		return resourceLocalService;
 	}
 
@@ -432,7 +496,9 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
+		com.liferay.portal.kernel.service.ResourceLocalService
+			resourceLocalService) {
+
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -441,7 +507,9 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
+	public com.liferay.portal.kernel.service.UserLocalService
+		getUserLocalService() {
+
 		return userLocalService;
 	}
 
@@ -452,6 +520,7 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
+
 		this.userLocalService = userLocalService;
 	}
 
@@ -474,7 +543,8 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register("com.liferay.sharepoint.rest.oauth2.model.SharepointOAuth2TokenEntry",
+		persistedModelLocalServiceRegistry.register(
+			"com.liferay.sharepoint.rest.oauth2.model.SharepointOAuth2TokenEntry",
 			sharepointOAuth2TokenEntryLocalService);
 	}
 
@@ -508,39 +578,64 @@ public abstract class SharepointOAuth2TokenEntryLocalServiceBaseImpl
 	 */
 	protected void runSQL(String sql) {
 		try {
-			DataSource dataSource = sharepointOAuth2TokenEntryPersistence.getDataSource();
+			DataSource dataSource =
+				sharepointOAuth2TokenEntryPersistence.getDataSource();
 
 			DB db = DBManagerUtil.getDB();
 
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
-					sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
+				dataSource, sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception e) {
-			throw new SystemException(e);
+		catch (Exception exception) {
+			throw new SystemException(exception);
 		}
 	}
 
 	@BeanReference(type = SharepointOAuth2TokenEntryLocalService.class)
-	protected SharepointOAuth2TokenEntryLocalService sharepointOAuth2TokenEntryLocalService;
+	protected SharepointOAuth2TokenEntryLocalService
+		sharepointOAuth2TokenEntryLocalService;
+
 	@BeanReference(type = SharepointOAuth2TokenEntryPersistence.class)
-	protected SharepointOAuth2TokenEntryPersistence sharepointOAuth2TokenEntryPersistence;
-	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
-	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
+	protected SharepointOAuth2TokenEntryPersistence
+		sharepointOAuth2TokenEntryPersistence;
+
+	@ServiceReference(
+		type = com.liferay.counter.kernel.service.CounterLocalService.class
+	)
+	protected com.liferay.counter.kernel.service.CounterLocalService
+		counterLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService
+		classNameLocalService;
+
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
-	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
-	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ResourceLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ResourceLocalService
+		resourceLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.UserLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.UserLocalService
+		userLocalService;
+
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
+
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
+	protected PersistedModelLocalServiceRegistry
+		persistedModelLocalServiceRegistry;
+
 }

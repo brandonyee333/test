@@ -14,52 +14,64 @@
 
 package com.liferay.contacts.service;
 
-import aQute.bnd.annotation.ProviderType;
-
-import com.liferay.osgi.util.ServiceTrackerFactory;
-
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * Provides the remote service utility for Entry. This utility wraps
- * {@link com.liferay.contacts.service.impl.EntryServiceImpl} and is the
- * primary access point for service operations in application layer code running
- * on a remote server. Methods of this service are expected to have security
- * checks based on the propagated JAAS credentials because this service can be
+ * <code>com.liferay.contacts.service.impl.EntryServiceImpl</code> and is an
+ * access point for service operations in application layer code running on a
+ * remote server. Methods of this service are expected to have security checks
+ * based on the propagated JAAS credentials because this service can be
  * accessed remotely.
  *
  * @author Brian Wing Shun Chan
  * @see EntryService
- * @see com.liferay.contacts.service.base.EntryServiceBaseImpl
- * @see com.liferay.contacts.service.impl.EntryServiceImpl
  * @generated
  */
-@ProviderType
 public class EntryServiceUtil {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this class directly. Add custom service methods to {@link com.liferay.contacts.service.impl.EntryServiceImpl} and rerun ServiceBuilder to regenerate this class.
+	 * Never modify this class directly. Add custom service methods to <code>com.liferay.contacts.service.impl.EntryServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.kernel.json.JSONArray searchUsersAndContacts(
-		long companyId, java.lang.String keywords, int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .searchUsersAndContacts(companyId, keywords, start, end);
-	}
 
 	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
+	public static String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static com.liferay.portal.kernel.json.JSONArray
+			searchUsersAndContacts(
+				long companyId, String keywords, int start, int end)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().searchUsersAndContacts(
+			companyId, keywords, start, end);
 	}
 
 	public static EntryService getService() {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker<EntryService, EntryService> _serviceTracker = ServiceTrackerFactory.open(EntryService.class);
+	private static ServiceTracker<EntryService, EntryService> _serviceTracker;
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(EntryService.class);
+
+		ServiceTracker<EntryService, EntryService> serviceTracker =
+			new ServiceTracker<EntryService, EntryService>(
+				bundle.getBundleContext(), EntryService.class, null);
+
+		serviceTracker.open();
+
+		_serviceTracker = serviceTracker;
+	}
+
 }

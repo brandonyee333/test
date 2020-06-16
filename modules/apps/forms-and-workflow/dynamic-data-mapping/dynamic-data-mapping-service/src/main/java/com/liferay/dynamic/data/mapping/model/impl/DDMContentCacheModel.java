@@ -14,14 +14,10 @@
 
 package com.liferay.dynamic.data.mapping.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.dynamic.data.mapping.model.DDMContent;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing DDMContent in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see DDMContent
  * @generated
  */
-@ProviderType
-public class DDMContentCacheModel implements CacheModel<DDMContent>,
-	Externalizable {
+public class DDMContentCacheModel
+	implements CacheModel<DDMContent>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -100,7 +95,7 @@ public class DDMContentCacheModel implements CacheModel<DDMContent>,
 		DDMContentImpl ddmContentImpl = new DDMContentImpl();
 
 		if (uuid == null) {
-			ddmContentImpl.setUuid(StringPool.BLANK);
+			ddmContentImpl.setUuid("");
 		}
 		else {
 			ddmContentImpl.setUuid(uuid);
@@ -112,7 +107,7 @@ public class DDMContentCacheModel implements CacheModel<DDMContent>,
 		ddmContentImpl.setUserId(userId);
 
 		if (userName == null) {
-			ddmContentImpl.setUserName(StringPool.BLANK);
+			ddmContentImpl.setUserName("");
 		}
 		else {
 			ddmContentImpl.setUserName(userName);
@@ -133,21 +128,21 @@ public class DDMContentCacheModel implements CacheModel<DDMContent>,
 		}
 
 		if (name == null) {
-			ddmContentImpl.setName(StringPool.BLANK);
+			ddmContentImpl.setName("");
 		}
 		else {
 			ddmContentImpl.setName(name);
 		}
 
 		if (description == null) {
-			ddmContentImpl.setDescription(StringPool.BLANK);
+			ddmContentImpl.setDescription("");
 		}
 		else {
 			ddmContentImpl.setDescription(description);
 		}
 
 		if (data == null) {
-			ddmContentImpl.setData(StringPool.BLANK);
+			ddmContentImpl.setData("");
 		}
 		else {
 			ddmContentImpl.setData(data);
@@ -159,7 +154,9 @@ public class DDMContentCacheModel implements CacheModel<DDMContent>,
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		uuid = objectInput.readUTF();
 
 		contentId = objectInput.readLong();
@@ -174,14 +171,13 @@ public class DDMContentCacheModel implements CacheModel<DDMContent>,
 		modifiedDate = objectInput.readLong();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
-		data = objectInput.readUTF();
+		data = (String)objectInput.readObject();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -196,7 +192,7 @@ public class DDMContentCacheModel implements CacheModel<DDMContent>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -206,24 +202,24 @@ public class DDMContentCacheModel implements CacheModel<DDMContent>,
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (data == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(data);
+			objectOutput.writeObject(data);
 		}
 	}
 
@@ -238,4 +234,5 @@ public class DDMContentCacheModel implements CacheModel<DDMContent>,
 	public String name;
 	public String description;
 	public String data;
+
 }

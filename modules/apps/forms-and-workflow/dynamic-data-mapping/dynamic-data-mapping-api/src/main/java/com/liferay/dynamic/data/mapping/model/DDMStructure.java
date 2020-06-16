@@ -25,19 +25,22 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see DDMStructureModel
- * @see com.liferay.dynamic.data.mapping.model.impl.DDMStructureImpl
- * @see com.liferay.dynamic.data.mapping.model.impl.DDMStructureModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.dynamic.data.mapping.model.impl.DDMStructureImpl")
+@ImplementationClassName(
+	"com.liferay.dynamic.data.mapping.model.impl.DDMStructureImpl"
+)
 @ProviderType
 public interface DDMStructure extends DDMStructureModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.dynamic.data.mapping.model.impl.DDMStructureImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.dynamic.data.mapping.model.impl.DDMStructureImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<DDMStructure, Long> STRUCTURE_ID_ACCESSOR = new Accessor<DDMStructure, Long>() {
+	public static final Accessor<DDMStructure, Long> STRUCTURE_ID_ACCESSOR =
+		new Accessor<DDMStructure, Long>() {
+
 			@Override
 			public Long get(DDMStructure ddmStructure) {
 				return ddmStructure.getStructureId();
@@ -52,18 +55,18 @@ public interface DDMStructure extends DDMStructureModel, PersistedModel {
 			public Class<DDMStructure> getTypeClass() {
 				return DDMStructure.class;
 			}
+
 		};
 
 	public DDMForm createFullHierarchyDDMForm()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.util.List<java.lang.String> getChildrenFieldNames(
-		java.lang.String fieldName)
+	public java.util.List<String> getChildrenFieldNames(String fieldName)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public DDMForm getDDMForm();
 
-	public DDMFormField getDDMFormField(java.lang.String fieldName)
+	public DDMFormField getDDMFormField(String fieldName)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.util.List<DDMFormField> getDDMFormFields(
@@ -72,80 +75,76 @@ public interface DDMStructure extends DDMStructureModel, PersistedModel {
 	public DDMFormLayout getDDMFormLayout()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.lang.String getFieldDataType(java.lang.String fieldName)
+	public String getFieldDataType(String fieldName)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.lang.String getFieldLabel(java.lang.String fieldName,
-		java.util.Locale locale)
+	public String getFieldLabel(String fieldName, java.util.Locale locale)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.lang.String getFieldLabel(java.lang.String fieldName,
-		java.lang.String locale)
+	public String getFieldLabel(String fieldName, String locale)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.util.Set<java.lang.String> getFieldNames();
+	public java.util.Set<String> getFieldNames();
 
-	public java.lang.String getFieldProperty(java.lang.String fieldName,
-		java.lang.String property)
+	public String getFieldProperty(String fieldName, String property)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public boolean getFieldRepeatable(java.lang.String fieldName)
+	public boolean getFieldRepeatable(String fieldName)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public boolean getFieldRequired(java.lang.String fieldName)
+	public boolean getFieldRequired(String fieldName)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.lang.String getFieldTip(java.lang.String fieldName,
-		java.util.Locale locale)
+	public String getFieldTip(String fieldName, java.util.Locale locale)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.lang.String getFieldTip(java.lang.String fieldName,
-		java.lang.String locale)
+	public String getFieldTip(String fieldName, String locale)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.lang.String getFieldType(java.lang.String fieldName)
+	public String getFieldType(String fieldName)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public DDMForm getFullHierarchyDDMForm();
 
-	public java.util.Map<java.lang.String, DDMFormField> getFullHierarchyDDMFormFieldsMap(
+	public java.util.Map<String, DDMFormField> getFullHierarchyDDMFormFieldsMap(
 		boolean includeNestedDDMFormFields);
 
 	public DDMStructureVersion getLatestStructureVersion()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.util.List<java.lang.String> getRootFieldNames();
+	public java.util.List<String> getRootFieldNames();
 
 	public DDMStructureVersion getStructureVersion()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.util.List<DDMTemplate> getTemplates();
 
-	public java.lang.String getUnambiguousName(
-		java.util.List<DDMStructure> structures, long groupId,
-		java.util.Locale locale)
+	public String getUnambiguousName(
+			java.util.List<DDMStructure> structures, long groupId,
+			java.util.Locale locale)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	/**
-	* Returns the WebDAV URL to access the structure.
-	*
-	* @param themeDisplay the theme display needed to build the URL. It can
-	set HTTPS access, the server name, the server port, the path
-	context, and the scope group.
-	* @param webDAVToken the WebDAV token for the URL
-	* @return the WebDAV URL
-	*/
-	public java.lang.String getWebDavURL(
+	 * Returns the WebDAV URL to access the structure.
+	 *
+	 * @param themeDisplay the theme display needed to build the URL. It can
+	 set HTTPS access, the server name, the server port, the path
+	 context, and the scope group.
+	 * @param webDAVToken the WebDAV token for the URL
+	 * @return the WebDAV URL
+	 */
+	public String getWebDavURL(
 		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay,
-		java.lang.String webDAVToken);
+		String webDAVToken);
 
-	public boolean hasField(java.lang.String fieldName);
+	public boolean hasField(String fieldName);
 
-	public boolean isFieldRepeatable(java.lang.String fieldName)
+	public boolean isFieldRepeatable(String fieldName)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public boolean isFieldTransient(java.lang.String fieldName)
+	public boolean isFieldTransient(String fieldName)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public void setDDMForm(DDMForm ddmForm);
+
 }

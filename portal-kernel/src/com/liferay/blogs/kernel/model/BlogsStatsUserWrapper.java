@@ -14,10 +14,7 @@
 
 package com.liferay.blogs.kernel.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,9 +34,9 @@ import java.util.Objects;
  * @see BlogsStatsUser
  * @generated
  */
-@ProviderType
-public class BlogsStatsUserWrapper implements BlogsStatsUser,
-	ModelWrapper<BlogsStatsUser> {
+public class BlogsStatsUserWrapper
+	implements BlogsStatsUser, ModelWrapper<BlogsStatsUser> {
+
 	public BlogsStatsUserWrapper(BlogsStatsUser blogsStatsUser) {
 		_blogsStatsUser = blogsStatsUser;
 	}
@@ -110,7 +107,7 @@ public class BlogsStatsUserWrapper implements BlogsStatsUser,
 		}
 
 		Integer ratingsTotalEntries = (Integer)attributes.get(
-				"ratingsTotalEntries");
+			"ratingsTotalEntries");
 
 		if (ratingsTotalEntries != null) {
 			setRatingsTotalEntries(ratingsTotalEntries);
@@ -123,11 +120,157 @@ public class BlogsStatsUserWrapper implements BlogsStatsUser,
 		}
 
 		Double ratingsAverageScore = (Double)attributes.get(
-				"ratingsAverageScore");
+			"ratingsAverageScore");
 
 		if (ratingsAverageScore != null) {
 			setRatingsAverageScore(ratingsAverageScore);
 		}
+	}
+
+	@Override
+	public Object clone() {
+		return new BlogsStatsUserWrapper(
+			(BlogsStatsUser)_blogsStatsUser.clone());
+	}
+
+	@Override
+	public int compareTo(BlogsStatsUser blogsStatsUser) {
+		return _blogsStatsUser.compareTo(blogsStatsUser);
+	}
+
+	/**
+	 * Returns the company ID of this blogs stats user.
+	 *
+	 * @return the company ID of this blogs stats user
+	 */
+	@Override
+	public long getCompanyId() {
+		return _blogsStatsUser.getCompanyId();
+	}
+
+	/**
+	 * Returns the entry count of this blogs stats user.
+	 *
+	 * @return the entry count of this blogs stats user
+	 */
+	@Override
+	public int getEntryCount() {
+		return _blogsStatsUser.getEntryCount();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _blogsStatsUser.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the group ID of this blogs stats user.
+	 *
+	 * @return the group ID of this blogs stats user
+	 */
+	@Override
+	public long getGroupId() {
+		return _blogsStatsUser.getGroupId();
+	}
+
+	/**
+	 * Returns the last post date of this blogs stats user.
+	 *
+	 * @return the last post date of this blogs stats user
+	 */
+	@Override
+	public Date getLastPostDate() {
+		return _blogsStatsUser.getLastPostDate();
+	}
+
+	/**
+	 * Returns the primary key of this blogs stats user.
+	 *
+	 * @return the primary key of this blogs stats user
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _blogsStatsUser.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _blogsStatsUser.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the ratings average score of this blogs stats user.
+	 *
+	 * @return the ratings average score of this blogs stats user
+	 */
+	@Override
+	public double getRatingsAverageScore() {
+		return _blogsStatsUser.getRatingsAverageScore();
+	}
+
+	/**
+	 * Returns the ratings total entries of this blogs stats user.
+	 *
+	 * @return the ratings total entries of this blogs stats user
+	 */
+	@Override
+	public int getRatingsTotalEntries() {
+		return _blogsStatsUser.getRatingsTotalEntries();
+	}
+
+	/**
+	 * Returns the ratings total score of this blogs stats user.
+	 *
+	 * @return the ratings total score of this blogs stats user
+	 */
+	@Override
+	public double getRatingsTotalScore() {
+		return _blogsStatsUser.getRatingsTotalScore();
+	}
+
+	/**
+	 * Returns the stats user ID of this blogs stats user.
+	 *
+	 * @return the stats user ID of this blogs stats user
+	 */
+	@Override
+	public long getStatsUserId() {
+		return _blogsStatsUser.getStatsUserId();
+	}
+
+	/**
+	 * Returns the stats user uuid of this blogs stats user.
+	 *
+	 * @return the stats user uuid of this blogs stats user
+	 */
+	@Override
+	public String getStatsUserUuid() {
+		return _blogsStatsUser.getStatsUserUuid();
+	}
+
+	/**
+	 * Returns the user ID of this blogs stats user.
+	 *
+	 * @return the user ID of this blogs stats user
+	 */
+	@Override
+	public long getUserId() {
+		return _blogsStatsUser.getUserId();
+	}
+
+	/**
+	 * Returns the user uuid of this blogs stats user.
+	 *
+	 * @return the user uuid of this blogs stats user
+	 */
+	@Override
+	public String getUserUuid() {
+		return _blogsStatsUser.getUserUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _blogsStatsUser.hashCode();
 	}
 
 	@Override
@@ -146,176 +289,6 @@ public class BlogsStatsUserWrapper implements BlogsStatsUser,
 	}
 
 	@Override
-	public BlogsStatsUser toEscapedModel() {
-		return new BlogsStatsUserWrapper(_blogsStatsUser.toEscapedModel());
-	}
-
-	@Override
-	public BlogsStatsUser toUnescapedModel() {
-		return new BlogsStatsUserWrapper(_blogsStatsUser.toUnescapedModel());
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _blogsStatsUser.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<BlogsStatsUser> toCacheModel() {
-		return _blogsStatsUser.toCacheModel();
-	}
-
-	/**
-	* Returns the ratings average score of this blogs stats user.
-	*
-	* @return the ratings average score of this blogs stats user
-	*/
-	@Override
-	public double getRatingsAverageScore() {
-		return _blogsStatsUser.getRatingsAverageScore();
-	}
-
-	/**
-	* Returns the ratings total score of this blogs stats user.
-	*
-	* @return the ratings total score of this blogs stats user
-	*/
-	@Override
-	public double getRatingsTotalScore() {
-		return _blogsStatsUser.getRatingsTotalScore();
-	}
-
-	@Override
-	public int compareTo(BlogsStatsUser blogsStatsUser) {
-		return _blogsStatsUser.compareTo(blogsStatsUser);
-	}
-
-	/**
-	* Returns the entry count of this blogs stats user.
-	*
-	* @return the entry count of this blogs stats user
-	*/
-	@Override
-	public int getEntryCount() {
-		return _blogsStatsUser.getEntryCount();
-	}
-
-	/**
-	* Returns the ratings total entries of this blogs stats user.
-	*
-	* @return the ratings total entries of this blogs stats user
-	*/
-	@Override
-	public int getRatingsTotalEntries() {
-		return _blogsStatsUser.getRatingsTotalEntries();
-	}
-
-	@Override
-	public int hashCode() {
-		return _blogsStatsUser.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _blogsStatsUser.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new BlogsStatsUserWrapper((BlogsStatsUser)_blogsStatsUser.clone());
-	}
-
-	/**
-	* Returns the stats user uuid of this blogs stats user.
-	*
-	* @return the stats user uuid of this blogs stats user
-	*/
-	@Override
-	public java.lang.String getStatsUserUuid() {
-		return _blogsStatsUser.getStatsUserUuid();
-	}
-
-	/**
-	* Returns the user uuid of this blogs stats user.
-	*
-	* @return the user uuid of this blogs stats user
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _blogsStatsUser.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _blogsStatsUser.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _blogsStatsUser.toXmlString();
-	}
-
-	/**
-	* Returns the last post date of this blogs stats user.
-	*
-	* @return the last post date of this blogs stats user
-	*/
-	@Override
-	public Date getLastPostDate() {
-		return _blogsStatsUser.getLastPostDate();
-	}
-
-	/**
-	* Returns the company ID of this blogs stats user.
-	*
-	* @return the company ID of this blogs stats user
-	*/
-	@Override
-	public long getCompanyId() {
-		return _blogsStatsUser.getCompanyId();
-	}
-
-	/**
-	* Returns the group ID of this blogs stats user.
-	*
-	* @return the group ID of this blogs stats user
-	*/
-	@Override
-	public long getGroupId() {
-		return _blogsStatsUser.getGroupId();
-	}
-
-	/**
-	* Returns the primary key of this blogs stats user.
-	*
-	* @return the primary key of this blogs stats user
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _blogsStatsUser.getPrimaryKey();
-	}
-
-	/**
-	* Returns the stats user ID of this blogs stats user.
-	*
-	* @return the stats user ID of this blogs stats user
-	*/
-	@Override
-	public long getStatsUserId() {
-		return _blogsStatsUser.getStatsUserId();
-	}
-
-	/**
-	* Returns the user ID of this blogs stats user.
-	*
-	* @return the user ID of this blogs stats user
-	*/
-	@Override
-	public long getUserId() {
-		return _blogsStatsUser.getUserId();
-	}
-
-	@Override
 	public void persist() {
 		_blogsStatsUser.persist();
 	}
@@ -326,23 +299,30 @@ public class BlogsStatsUserWrapper implements BlogsStatsUser,
 	}
 
 	/**
-	* Sets the company ID of this blogs stats user.
-	*
-	* @param companyId the company ID of this blogs stats user
-	*/
+	 * Sets the company ID of this blogs stats user.
+	 *
+	 * @param companyId the company ID of this blogs stats user
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_blogsStatsUser.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the entry count of this blogs stats user.
-	*
-	* @param entryCount the entry count of this blogs stats user
-	*/
+	 * Sets the entry count of this blogs stats user.
+	 *
+	 * @param entryCount the entry count of this blogs stats user
+	 */
 	@Override
 	public void setEntryCount(int entryCount) {
 		_blogsStatsUser.setEntryCount(entryCount);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_blogsStatsUser.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -351,31 +331,25 @@ public class BlogsStatsUserWrapper implements BlogsStatsUser,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_blogsStatsUser.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_blogsStatsUser.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the group ID of this blogs stats user.
-	*
-	* @param groupId the group ID of this blogs stats user
-	*/
+	 * Sets the group ID of this blogs stats user.
+	 *
+	 * @param groupId the group ID of this blogs stats user
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_blogsStatsUser.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the last post date of this blogs stats user.
-	*
-	* @param lastPostDate the last post date of this blogs stats user
-	*/
+	 * Sets the last post date of this blogs stats user.
+	 *
+	 * @param lastPostDate the last post date of this blogs stats user
+	 */
 	@Override
 	public void setLastPostDate(Date lastPostDate) {
 		_blogsStatsUser.setLastPostDate(lastPostDate);
@@ -387,10 +361,10 @@ public class BlogsStatsUserWrapper implements BlogsStatsUser,
 	}
 
 	/**
-	* Sets the primary key of this blogs stats user.
-	*
-	* @param primaryKey the primary key of this blogs stats user
-	*/
+	 * Sets the primary key of this blogs stats user.
+	 *
+	 * @param primaryKey the primary key of this blogs stats user
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_blogsStatsUser.setPrimaryKey(primaryKey);
@@ -402,73 +376,100 @@ public class BlogsStatsUserWrapper implements BlogsStatsUser,
 	}
 
 	/**
-	* Sets the ratings average score of this blogs stats user.
-	*
-	* @param ratingsAverageScore the ratings average score of this blogs stats user
-	*/
+	 * Sets the ratings average score of this blogs stats user.
+	 *
+	 * @param ratingsAverageScore the ratings average score of this blogs stats user
+	 */
 	@Override
 	public void setRatingsAverageScore(double ratingsAverageScore) {
 		_blogsStatsUser.setRatingsAverageScore(ratingsAverageScore);
 	}
 
 	/**
-	* Sets the ratings total entries of this blogs stats user.
-	*
-	* @param ratingsTotalEntries the ratings total entries of this blogs stats user
-	*/
+	 * Sets the ratings total entries of this blogs stats user.
+	 *
+	 * @param ratingsTotalEntries the ratings total entries of this blogs stats user
+	 */
 	@Override
 	public void setRatingsTotalEntries(int ratingsTotalEntries) {
 		_blogsStatsUser.setRatingsTotalEntries(ratingsTotalEntries);
 	}
 
 	/**
-	* Sets the ratings total score of this blogs stats user.
-	*
-	* @param ratingsTotalScore the ratings total score of this blogs stats user
-	*/
+	 * Sets the ratings total score of this blogs stats user.
+	 *
+	 * @param ratingsTotalScore the ratings total score of this blogs stats user
+	 */
 	@Override
 	public void setRatingsTotalScore(double ratingsTotalScore) {
 		_blogsStatsUser.setRatingsTotalScore(ratingsTotalScore);
 	}
 
 	/**
-	* Sets the stats user ID of this blogs stats user.
-	*
-	* @param statsUserId the stats user ID of this blogs stats user
-	*/
+	 * Sets the stats user ID of this blogs stats user.
+	 *
+	 * @param statsUserId the stats user ID of this blogs stats user
+	 */
 	@Override
 	public void setStatsUserId(long statsUserId) {
 		_blogsStatsUser.setStatsUserId(statsUserId);
 	}
 
 	/**
-	* Sets the stats user uuid of this blogs stats user.
-	*
-	* @param statsUserUuid the stats user uuid of this blogs stats user
-	*/
+	 * Sets the stats user uuid of this blogs stats user.
+	 *
+	 * @param statsUserUuid the stats user uuid of this blogs stats user
+	 */
 	@Override
-	public void setStatsUserUuid(java.lang.String statsUserUuid) {
+	public void setStatsUserUuid(String statsUserUuid) {
 		_blogsStatsUser.setStatsUserUuid(statsUserUuid);
 	}
 
 	/**
-	* Sets the user ID of this blogs stats user.
-	*
-	* @param userId the user ID of this blogs stats user
-	*/
+	 * Sets the user ID of this blogs stats user.
+	 *
+	 * @param userId the user ID of this blogs stats user
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_blogsStatsUser.setUserId(userId);
 	}
 
 	/**
-	* Sets the user uuid of this blogs stats user.
-	*
-	* @param userUuid the user uuid of this blogs stats user
-	*/
+	 * Sets the user uuid of this blogs stats user.
+	 *
+	 * @param userUuid the user uuid of this blogs stats user
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_blogsStatsUser.setUserUuid(userUuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<BlogsStatsUser>
+		toCacheModel() {
+
+		return _blogsStatsUser.toCacheModel();
+	}
+
+	@Override
+	public BlogsStatsUser toEscapedModel() {
+		return new BlogsStatsUserWrapper(_blogsStatsUser.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _blogsStatsUser.toString();
+	}
+
+	@Override
+	public BlogsStatsUser toUnescapedModel() {
+		return new BlogsStatsUserWrapper(_blogsStatsUser.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _blogsStatsUser.toXmlString();
 	}
 
 	@Override
@@ -481,10 +482,12 @@ public class BlogsStatsUserWrapper implements BlogsStatsUser,
 			return false;
 		}
 
-		BlogsStatsUserWrapper blogsStatsUserWrapper = (BlogsStatsUserWrapper)obj;
+		BlogsStatsUserWrapper blogsStatsUserWrapper =
+			(BlogsStatsUserWrapper)obj;
 
-		if (Objects.equals(_blogsStatsUser,
-					blogsStatsUserWrapper._blogsStatsUser)) {
+		if (Objects.equals(
+				_blogsStatsUser, blogsStatsUserWrapper._blogsStatsUser)) {
+
 			return true;
 		}
 
@@ -512,4 +515,5 @@ public class BlogsStatsUserWrapper implements BlogsStatsUser,
 	}
 
 	private final BlogsStatsUser _blogsStatsUser;
+
 }

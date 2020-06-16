@@ -14,14 +14,10 @@
 
 package com.liferay.portlet.documentlibrary.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.document.library.kernel.model.DLFileShortcut;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing DLFileShortcut in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see DLFileShortcut
  * @generated
  */
-@ProviderType
-public class DLFileShortcutCacheModel implements CacheModel<DLFileShortcut>,
-	Externalizable {
+public class DLFileShortcutCacheModel
+	implements CacheModel<DLFileShortcut>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,7 +45,8 @@ public class DLFileShortcutCacheModel implements CacheModel<DLFileShortcut>,
 			return false;
 		}
 
-		DLFileShortcutCacheModel dlFileShortcutCacheModel = (DLFileShortcutCacheModel)obj;
+		DLFileShortcutCacheModel dlFileShortcutCacheModel =
+			(DLFileShortcutCacheModel)obj;
 
 		if (fileShortcutId == dlFileShortcutCacheModel.fileShortcutId) {
 			return true;
@@ -114,7 +110,7 @@ public class DLFileShortcutCacheModel implements CacheModel<DLFileShortcut>,
 		DLFileShortcutImpl dlFileShortcutImpl = new DLFileShortcutImpl();
 
 		if (uuid == null) {
-			dlFileShortcutImpl.setUuid(StringPool.BLANK);
+			dlFileShortcutImpl.setUuid("");
 		}
 		else {
 			dlFileShortcutImpl.setUuid(uuid);
@@ -126,7 +122,7 @@ public class DLFileShortcutCacheModel implements CacheModel<DLFileShortcut>,
 		dlFileShortcutImpl.setUserId(userId);
 
 		if (userName == null) {
-			dlFileShortcutImpl.setUserName(StringPool.BLANK);
+			dlFileShortcutImpl.setUserName("");
 		}
 		else {
 			dlFileShortcutImpl.setUserName(userName);
@@ -151,7 +147,7 @@ public class DLFileShortcutCacheModel implements CacheModel<DLFileShortcut>,
 		dlFileShortcutImpl.setToFileEntryId(toFileEntryId);
 
 		if (treePath == null) {
-			dlFileShortcutImpl.setTreePath(StringPool.BLANK);
+			dlFileShortcutImpl.setTreePath("");
 		}
 		else {
 			dlFileShortcutImpl.setTreePath(treePath);
@@ -170,7 +166,7 @@ public class DLFileShortcutCacheModel implements CacheModel<DLFileShortcut>,
 		dlFileShortcutImpl.setStatusByUserId(statusByUserId);
 
 		if (statusByUserName == null) {
-			dlFileShortcutImpl.setStatusByUserName(StringPool.BLANK);
+			dlFileShortcutImpl.setStatusByUserName("");
 		}
 		else {
 			dlFileShortcutImpl.setStatusByUserName(statusByUserName);
@@ -221,10 +217,9 @@ public class DLFileShortcutCacheModel implements CacheModel<DLFileShortcut>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -239,7 +234,7 @@ public class DLFileShortcutCacheModel implements CacheModel<DLFileShortcut>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -255,7 +250,7 @@ public class DLFileShortcutCacheModel implements CacheModel<DLFileShortcut>,
 		objectOutput.writeLong(toFileEntryId);
 
 		if (treePath == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(treePath);
@@ -269,7 +264,7 @@ public class DLFileShortcutCacheModel implements CacheModel<DLFileShortcut>,
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(statusByUserName);
@@ -296,4 +291,5 @@ public class DLFileShortcutCacheModel implements CacheModel<DLFileShortcut>,
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
+
 }

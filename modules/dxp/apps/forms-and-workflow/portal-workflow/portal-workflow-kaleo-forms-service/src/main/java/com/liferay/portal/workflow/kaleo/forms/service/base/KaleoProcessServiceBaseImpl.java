@@ -1,22 +1,21 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.portal.workflow.kaleo.forms.service.base;
 
 import com.liferay.dynamic.data.lists.service.persistence.DDLRecordPersistence;
 import com.liferay.dynamic.data.lists.service.persistence.DDLRecordSetPersistence;
-
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -48,15 +47,16 @@ import javax.sql.DataSource;
  *
  * @author Marcellus Tavares
  * @see com.liferay.portal.workflow.kaleo.forms.service.impl.KaleoProcessServiceImpl
- * @see com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessServiceUtil
  * @generated
  */
-public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
-	implements KaleoProcessService, IdentifiableOSGiService {
+public abstract class KaleoProcessServiceBaseImpl
+	extends BaseServiceImpl
+	implements IdentifiableOSGiService, KaleoProcessService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessServiceUtil} to access the kaleo process remote service.
+	 * Never modify or reference this class directly. Use <code>KaleoProcessService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessServiceUtil</code>.
 	 */
 
 	/**
@@ -64,7 +64,10 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the kaleo process local service
 	 */
-	public com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessLocalService getKaleoProcessLocalService() {
+	public
+		com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessLocalService
+			getKaleoProcessLocalService() {
+
 		return kaleoProcessLocalService;
 	}
 
@@ -74,7 +77,9 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 * @param kaleoProcessLocalService the kaleo process local service
 	 */
 	public void setKaleoProcessLocalService(
-		com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessLocalService kaleoProcessLocalService) {
+		com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessLocalService
+			kaleoProcessLocalService) {
+
 		this.kaleoProcessLocalService = kaleoProcessLocalService;
 	}
 
@@ -92,7 +97,9 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @param kaleoProcessService the kaleo process remote service
 	 */
-	public void setKaleoProcessService(KaleoProcessService kaleoProcessService) {
+	public void setKaleoProcessService(
+		KaleoProcessService kaleoProcessService) {
+
 		this.kaleoProcessService = kaleoProcessService;
 	}
 
@@ -112,6 +119,7 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 */
 	public void setKaleoProcessPersistence(
 		KaleoProcessPersistence kaleoProcessPersistence) {
+
 		this.kaleoProcessPersistence = kaleoProcessPersistence;
 	}
 
@@ -138,7 +146,10 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the kaleo process link local service
 	 */
-	public com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessLinkLocalService getKaleoProcessLinkLocalService() {
+	public
+		com.liferay.portal.workflow.kaleo.forms.service.
+			KaleoProcessLinkLocalService getKaleoProcessLinkLocalService() {
+
 		return kaleoProcessLinkLocalService;
 	}
 
@@ -148,7 +159,9 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 * @param kaleoProcessLinkLocalService the kaleo process link local service
 	 */
 	public void setKaleoProcessLinkLocalService(
-		com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessLinkLocalService kaleoProcessLinkLocalService) {
+		com.liferay.portal.workflow.kaleo.forms.service.
+			KaleoProcessLinkLocalService kaleoProcessLinkLocalService) {
+
 		this.kaleoProcessLinkLocalService = kaleoProcessLinkLocalService;
 	}
 
@@ -168,6 +181,7 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 */
 	public void setKaleoProcessLinkPersistence(
 		KaleoProcessLinkPersistence kaleoProcessLinkPersistence) {
+
 		this.kaleoProcessLinkPersistence = kaleoProcessLinkPersistence;
 	}
 
@@ -176,7 +190,9 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
+	public com.liferay.counter.kernel.service.CounterLocalService
+		getCounterLocalService() {
+
 		return counterLocalService;
 	}
 
@@ -186,7 +202,9 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
+		com.liferay.counter.kernel.service.CounterLocalService
+			counterLocalService) {
+
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -195,7 +213,9 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the ddl record local service
 	 */
-	public com.liferay.dynamic.data.lists.service.DDLRecordLocalService getDDLRecordLocalService() {
+	public com.liferay.dynamic.data.lists.service.DDLRecordLocalService
+		getDDLRecordLocalService() {
+
 		return ddlRecordLocalService;
 	}
 
@@ -205,7 +225,9 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 * @param ddlRecordLocalService the ddl record local service
 	 */
 	public void setDDLRecordLocalService(
-		com.liferay.dynamic.data.lists.service.DDLRecordLocalService ddlRecordLocalService) {
+		com.liferay.dynamic.data.lists.service.DDLRecordLocalService
+			ddlRecordLocalService) {
+
 		this.ddlRecordLocalService = ddlRecordLocalService;
 	}
 
@@ -214,7 +236,9 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the ddl record remote service
 	 */
-	public com.liferay.dynamic.data.lists.service.DDLRecordService getDDLRecordService() {
+	public com.liferay.dynamic.data.lists.service.DDLRecordService
+		getDDLRecordService() {
+
 		return ddlRecordService;
 	}
 
@@ -224,7 +248,9 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 * @param ddlRecordService the ddl record remote service
 	 */
 	public void setDDLRecordService(
-		com.liferay.dynamic.data.lists.service.DDLRecordService ddlRecordService) {
+		com.liferay.dynamic.data.lists.service.DDLRecordService
+			ddlRecordService) {
+
 		this.ddlRecordService = ddlRecordService;
 	}
 
@@ -244,6 +270,7 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 */
 	public void setDDLRecordPersistence(
 		DDLRecordPersistence ddlRecordPersistence) {
+
 		this.ddlRecordPersistence = ddlRecordPersistence;
 	}
 
@@ -252,7 +279,9 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the ddl record set local service
 	 */
-	public com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService getDDLRecordSetLocalService() {
+	public com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService
+		getDDLRecordSetLocalService() {
+
 		return ddlRecordSetLocalService;
 	}
 
@@ -262,7 +291,9 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 * @param ddlRecordSetLocalService the ddl record set local service
 	 */
 	public void setDDLRecordSetLocalService(
-		com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService ddlRecordSetLocalService) {
+		com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService
+			ddlRecordSetLocalService) {
+
 		this.ddlRecordSetLocalService = ddlRecordSetLocalService;
 	}
 
@@ -271,7 +302,9 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the ddl record set remote service
 	 */
-	public com.liferay.dynamic.data.lists.service.DDLRecordSetService getDDLRecordSetService() {
+	public com.liferay.dynamic.data.lists.service.DDLRecordSetService
+		getDDLRecordSetService() {
+
 		return ddlRecordSetService;
 	}
 
@@ -281,7 +314,9 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 * @param ddlRecordSetService the ddl record set remote service
 	 */
 	public void setDDLRecordSetService(
-		com.liferay.dynamic.data.lists.service.DDLRecordSetService ddlRecordSetService) {
+		com.liferay.dynamic.data.lists.service.DDLRecordSetService
+			ddlRecordSetService) {
+
 		this.ddlRecordSetService = ddlRecordSetService;
 	}
 
@@ -301,6 +336,7 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 */
 	public void setDDLRecordSetPersistence(
 		DDLRecordSetPersistence ddlRecordSetPersistence) {
+
 		this.ddlRecordSetPersistence = ddlRecordSetPersistence;
 	}
 
@@ -309,7 +345,9 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
+	public com.liferay.portal.kernel.service.ClassNameLocalService
+		getClassNameLocalService() {
+
 		return classNameLocalService;
 	}
 
@@ -319,7 +357,9 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
+		com.liferay.portal.kernel.service.ClassNameLocalService
+			classNameLocalService) {
+
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -328,7 +368,9 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the class name remote service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameService getClassNameService() {
+	public com.liferay.portal.kernel.service.ClassNameService
+		getClassNameService() {
+
 		return classNameService;
 	}
 
@@ -339,6 +381,7 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 */
 	public void setClassNameService(
 		com.liferay.portal.kernel.service.ClassNameService classNameService) {
+
 		this.classNameService = classNameService;
 	}
 
@@ -358,6 +401,7 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
+
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -366,7 +410,9 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
+	public com.liferay.portal.kernel.service.ResourceLocalService
+		getResourceLocalService() {
+
 		return resourceLocalService;
 	}
 
@@ -376,7 +422,9 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
+		com.liferay.portal.kernel.service.ResourceLocalService
+			resourceLocalService) {
+
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -385,7 +433,9 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
+	public com.liferay.portal.kernel.service.UserLocalService
+		getUserLocalService() {
+
 		return userLocalService;
 	}
 
@@ -396,6 +446,7 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
+
 		this.userLocalService = userLocalService;
 	}
 
@@ -415,6 +466,7 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 */
 	public void setUserService(
 		com.liferay.portal.kernel.service.UserService userService) {
+
 		this.userService = userService;
 	}
 
@@ -441,7 +493,9 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the workflow definition link local service
 	 */
-	public com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService getWorkflowDefinitionLinkLocalService() {
+	public com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService
+		getWorkflowDefinitionLinkLocalService() {
+
 		return workflowDefinitionLinkLocalService;
 	}
 
@@ -451,8 +505,11 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 * @param workflowDefinitionLinkLocalService the workflow definition link local service
 	 */
 	public void setWorkflowDefinitionLinkLocalService(
-		com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService workflowDefinitionLinkLocalService) {
-		this.workflowDefinitionLinkLocalService = workflowDefinitionLinkLocalService;
+		com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService
+			workflowDefinitionLinkLocalService) {
+
+		this.workflowDefinitionLinkLocalService =
+			workflowDefinitionLinkLocalService;
 	}
 
 	/**
@@ -460,7 +517,9 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the workflow definition link persistence
 	 */
-	public WorkflowDefinitionLinkPersistence getWorkflowDefinitionLinkPersistence() {
+	public WorkflowDefinitionLinkPersistence
+		getWorkflowDefinitionLinkPersistence() {
+
 		return workflowDefinitionLinkPersistence;
 	}
 
@@ -471,7 +530,9 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 */
 	public void setWorkflowDefinitionLinkPersistence(
 		WorkflowDefinitionLinkPersistence workflowDefinitionLinkPersistence) {
-		this.workflowDefinitionLinkPersistence = workflowDefinitionLinkPersistence;
+
+		this.workflowDefinitionLinkPersistence =
+			workflowDefinitionLinkPersistence;
 	}
 
 	/**
@@ -479,7 +540,9 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the workflow instance link local service
 	 */
-	public com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService getWorkflowInstanceLinkLocalService() {
+	public com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService
+		getWorkflowInstanceLinkLocalService() {
+
 		return workflowInstanceLinkLocalService;
 	}
 
@@ -489,8 +552,11 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 * @param workflowInstanceLinkLocalService the workflow instance link local service
 	 */
 	public void setWorkflowInstanceLinkLocalService(
-		com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService workflowInstanceLinkLocalService) {
-		this.workflowInstanceLinkLocalService = workflowInstanceLinkLocalService;
+		com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService
+			workflowInstanceLinkLocalService) {
+
+		this.workflowInstanceLinkLocalService =
+			workflowInstanceLinkLocalService;
 	}
 
 	/**
@@ -498,7 +564,9 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the workflow instance link persistence
 	 */
-	public WorkflowInstanceLinkPersistence getWorkflowInstanceLinkPersistence() {
+	public WorkflowInstanceLinkPersistence
+		getWorkflowInstanceLinkPersistence() {
+
 		return workflowInstanceLinkPersistence;
 	}
 
@@ -509,6 +577,7 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 	 */
 	public void setWorkflowInstanceLinkPersistence(
 		WorkflowInstanceLinkPersistence workflowInstanceLinkPersistence) {
+
 		this.workflowInstanceLinkPersistence = workflowInstanceLinkPersistence;
 	}
 
@@ -550,62 +619,131 @@ public abstract class KaleoProcessServiceBaseImpl extends BaseServiceImpl
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
-					sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
+				dataSource, sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception e) {
-			throw new SystemException(e);
+		catch (Exception exception) {
+			throw new SystemException(exception);
 		}
 	}
 
-	@BeanReference(type = com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessLocalService.class)
-	protected com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessLocalService kaleoProcessLocalService;
+	@BeanReference(
+		type = com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessLocalService.class
+	)
+	protected
+		com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessLocalService
+			kaleoProcessLocalService;
+
 	@BeanReference(type = KaleoProcessService.class)
 	protected KaleoProcessService kaleoProcessService;
+
 	@BeanReference(type = KaleoProcessPersistence.class)
 	protected KaleoProcessPersistence kaleoProcessPersistence;
+
 	@BeanReference(type = KaleoProcessFinder.class)
 	protected KaleoProcessFinder kaleoProcessFinder;
-	@BeanReference(type = com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessLinkLocalService.class)
-	protected com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessLinkLocalService kaleoProcessLinkLocalService;
+
+	@BeanReference(
+		type = com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessLinkLocalService.class
+	)
+	protected
+		com.liferay.portal.workflow.kaleo.forms.service.
+			KaleoProcessLinkLocalService kaleoProcessLinkLocalService;
+
 	@BeanReference(type = KaleoProcessLinkPersistence.class)
 	protected KaleoProcessLinkPersistence kaleoProcessLinkPersistence;
-	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
-	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
-	@ServiceReference(type = com.liferay.dynamic.data.lists.service.DDLRecordLocalService.class)
-	protected com.liferay.dynamic.data.lists.service.DDLRecordLocalService ddlRecordLocalService;
-	@ServiceReference(type = com.liferay.dynamic.data.lists.service.DDLRecordService.class)
-	protected com.liferay.dynamic.data.lists.service.DDLRecordService ddlRecordService;
+
+	@ServiceReference(
+		type = com.liferay.counter.kernel.service.CounterLocalService.class
+	)
+	protected com.liferay.counter.kernel.service.CounterLocalService
+		counterLocalService;
+
+	@ServiceReference(
+		type = com.liferay.dynamic.data.lists.service.DDLRecordLocalService.class
+	)
+	protected com.liferay.dynamic.data.lists.service.DDLRecordLocalService
+		ddlRecordLocalService;
+
+	@ServiceReference(
+		type = com.liferay.dynamic.data.lists.service.DDLRecordService.class
+	)
+	protected com.liferay.dynamic.data.lists.service.DDLRecordService
+		ddlRecordService;
+
 	@ServiceReference(type = DDLRecordPersistence.class)
 	protected DDLRecordPersistence ddlRecordPersistence;
-	@ServiceReference(type = com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService.class)
-	protected com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService ddlRecordSetLocalService;
-	@ServiceReference(type = com.liferay.dynamic.data.lists.service.DDLRecordSetService.class)
-	protected com.liferay.dynamic.data.lists.service.DDLRecordSetService ddlRecordSetService;
+
+	@ServiceReference(
+		type = com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService.class
+	)
+	protected com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService
+		ddlRecordSetLocalService;
+
+	@ServiceReference(
+		type = com.liferay.dynamic.data.lists.service.DDLRecordSetService.class
+	)
+	protected com.liferay.dynamic.data.lists.service.DDLRecordSetService
+		ddlRecordSetService;
+
 	@ServiceReference(type = DDLRecordSetPersistence.class)
 	protected DDLRecordSetPersistence ddlRecordSetPersistence;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameService.class)
-	protected com.liferay.portal.kernel.service.ClassNameService classNameService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService
+		classNameLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ClassNameService.class
+	)
+	protected com.liferay.portal.kernel.service.ClassNameService
+		classNameService;
+
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
-	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
-	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.UserService.class)
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ResourceLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ResourceLocalService
+		resourceLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.UserLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.UserLocalService
+		userLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.UserService.class
+	)
 	protected com.liferay.portal.kernel.service.UserService userService;
+
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-	@ServiceReference(type = com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService.class)
-	protected com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService workflowDefinitionLinkLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService.class
+	)
+	protected
+		com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService
+			workflowDefinitionLinkLocalService;
+
 	@ServiceReference(type = WorkflowDefinitionLinkPersistence.class)
-	protected WorkflowDefinitionLinkPersistence workflowDefinitionLinkPersistence;
-	@ServiceReference(type = com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService.class)
-	protected com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService workflowInstanceLinkLocalService;
+	protected WorkflowDefinitionLinkPersistence
+		workflowDefinitionLinkPersistence;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService
+		workflowInstanceLinkLocalService;
+
 	@ServiceReference(type = WorkflowInstanceLinkPersistence.class)
 	protected WorkflowInstanceLinkPersistence workflowInstanceLinkPersistence;
+
 }

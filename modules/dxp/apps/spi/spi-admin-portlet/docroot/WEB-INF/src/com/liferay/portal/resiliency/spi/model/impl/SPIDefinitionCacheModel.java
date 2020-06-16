@@ -1,25 +1,22 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.portal.resiliency.spi.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.resiliency.spi.model.SPIDefinition;
 
 import java.io.Externalizable;
@@ -33,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing SPIDefinition in entity cache.
  *
  * @author Michael C. Han
- * @see SPIDefinition
  * @generated
  */
-@ProviderType
-public class SPIDefinitionCacheModel implements CacheModel<SPIDefinition>,
-	Externalizable {
+public class SPIDefinitionCacheModel
+	implements CacheModel<SPIDefinition>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -49,7 +45,8 @@ public class SPIDefinitionCacheModel implements CacheModel<SPIDefinition>,
 			return false;
 		}
 
-		SPIDefinitionCacheModel spiDefinitionCacheModel = (SPIDefinitionCacheModel)obj;
+		SPIDefinitionCacheModel spiDefinitionCacheModel =
+			(SPIDefinitionCacheModel)obj;
 
 		if (spiDefinitionId == spiDefinitionCacheModel.spiDefinitionId) {
 			return true;
@@ -113,7 +110,7 @@ public class SPIDefinitionCacheModel implements CacheModel<SPIDefinition>,
 		spiDefinitionImpl.setUserId(userId);
 
 		if (userName == null) {
-			spiDefinitionImpl.setUserName(StringPool.BLANK);
+			spiDefinitionImpl.setUserName("");
 		}
 		else {
 			spiDefinitionImpl.setUserName(userName);
@@ -134,14 +131,14 @@ public class SPIDefinitionCacheModel implements CacheModel<SPIDefinition>,
 		}
 
 		if (name == null) {
-			spiDefinitionImpl.setName(StringPool.BLANK);
+			spiDefinitionImpl.setName("");
 		}
 		else {
 			spiDefinitionImpl.setName(name);
 		}
 
 		if (connectorAddress == null) {
-			spiDefinitionImpl.setConnectorAddress(StringPool.BLANK);
+			spiDefinitionImpl.setConnectorAddress("");
 		}
 		else {
 			spiDefinitionImpl.setConnectorAddress(connectorAddress);
@@ -150,35 +147,35 @@ public class SPIDefinitionCacheModel implements CacheModel<SPIDefinition>,
 		spiDefinitionImpl.setConnectorPort(connectorPort);
 
 		if (description == null) {
-			spiDefinitionImpl.setDescription(StringPool.BLANK);
+			spiDefinitionImpl.setDescription("");
 		}
 		else {
 			spiDefinitionImpl.setDescription(description);
 		}
 
 		if (jvmArguments == null) {
-			spiDefinitionImpl.setJvmArguments(StringPool.BLANK);
+			spiDefinitionImpl.setJvmArguments("");
 		}
 		else {
 			spiDefinitionImpl.setJvmArguments(jvmArguments);
 		}
 
 		if (portletIds == null) {
-			spiDefinitionImpl.setPortletIds(StringPool.BLANK);
+			spiDefinitionImpl.setPortletIds("");
 		}
 		else {
 			spiDefinitionImpl.setPortletIds(portletIds);
 		}
 
 		if (servletContextNames == null) {
-			spiDefinitionImpl.setServletContextNames(StringPool.BLANK);
+			spiDefinitionImpl.setServletContextNames("");
 		}
 		else {
 			spiDefinitionImpl.setServletContextNames(servletContextNames);
 		}
 
 		if (typeSettings == null) {
-			spiDefinitionImpl.setTypeSettings(StringPool.BLANK);
+			spiDefinitionImpl.setTypeSettings("");
 		}
 		else {
 			spiDefinitionImpl.setTypeSettings(typeSettings);
@@ -187,7 +184,7 @@ public class SPIDefinitionCacheModel implements CacheModel<SPIDefinition>,
 		spiDefinitionImpl.setStatus(status);
 
 		if (statusMessage == null) {
-			spiDefinitionImpl.setStatusMessage(StringPool.BLANK);
+			spiDefinitionImpl.setStatusMessage("");
 		}
 		else {
 			spiDefinitionImpl.setStatusMessage(statusMessage);
@@ -199,7 +196,9 @@ public class SPIDefinitionCacheModel implements CacheModel<SPIDefinition>,
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		spiDefinitionId = objectInput.readLong();
 
 		companyId = objectInput.readLong();
@@ -216,15 +215,14 @@ public class SPIDefinitionCacheModel implements CacheModel<SPIDefinition>,
 		jvmArguments = objectInput.readUTF();
 		portletIds = objectInput.readUTF();
 		servletContextNames = objectInput.readUTF();
-		typeSettings = objectInput.readUTF();
+		typeSettings = (String)objectInput.readObject();
 
 		status = objectInput.readInt();
 		statusMessage = objectInput.readUTF();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(spiDefinitionId);
 
 		objectOutput.writeLong(companyId);
@@ -232,7 +230,7 @@ public class SPIDefinitionCacheModel implements CacheModel<SPIDefinition>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -242,14 +240,14 @@ public class SPIDefinitionCacheModel implements CacheModel<SPIDefinition>,
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (connectorAddress == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(connectorAddress);
@@ -258,44 +256,44 @@ public class SPIDefinitionCacheModel implements CacheModel<SPIDefinition>,
 		objectOutput.writeInt(connectorPort);
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (jvmArguments == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(jvmArguments);
 		}
 
 		if (portletIds == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(portletIds);
 		}
 
 		if (servletContextNames == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(servletContextNames);
 		}
 
 		if (typeSettings == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(typeSettings);
+			objectOutput.writeObject(typeSettings);
 		}
 
 		objectOutput.writeInt(status);
 
 		if (statusMessage == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(statusMessage);
@@ -318,4 +316,5 @@ public class SPIDefinitionCacheModel implements CacheModel<SPIDefinition>,
 	public String typeSettings;
 	public int status;
 	public String statusMessage;
+
 }

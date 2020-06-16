@@ -1,21 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.saml.persistence.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -29,26 +28,15 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
-
 import com.liferay.saml.persistence.exception.NoSuchIdpSpSessionException;
 import com.liferay.saml.persistence.model.SamlIdpSpSession;
 import com.liferay.saml.persistence.service.SamlIdpSpSessionLocalServiceUtil;
 import com.liferay.saml.persistence.service.persistence.SamlIdpSpSessionPersistence;
 import com.liferay.saml.persistence.service.persistence.SamlIdpSpSessionUtil;
-
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-
-import org.junit.runner.RunWith;
 
 import java.io.Serializable;
 
@@ -60,17 +48,27 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 /**
  * @generated
  */
 @RunWith(Arquillian.class)
 public class SamlIdpSpSessionPersistenceTest {
+
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
-			PersistenceTestRule.INSTANCE,
-			new TransactionalTestRule(Propagation.REQUIRED,
-				"com.liferay.saml.persistence.service"));
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
+			new TransactionalTestRule(
+				Propagation.REQUIRED, "com.liferay.saml.persistence.service"));
 
 	@Before
 	public void setUp() {
@@ -109,7 +107,8 @@ public class SamlIdpSpSessionPersistenceTest {
 
 		_persistence.remove(newSamlIdpSpSession);
 
-		SamlIdpSpSession existingSamlIdpSpSession = _persistence.fetchByPrimaryKey(newSamlIdpSpSession.getPrimaryKey());
+		SamlIdpSpSession existingSamlIdpSpSession =
+			_persistence.fetchByPrimaryKey(newSamlIdpSpSession.getPrimaryKey());
 
 		Assert.assertNull(existingSamlIdpSpSession);
 	}
@@ -145,29 +144,38 @@ public class SamlIdpSpSessionPersistenceTest {
 
 		_samlIdpSpSessions.add(_persistence.update(newSamlIdpSpSession));
 
-		SamlIdpSpSession existingSamlIdpSpSession = _persistence.findByPrimaryKey(newSamlIdpSpSession.getPrimaryKey());
+		SamlIdpSpSession existingSamlIdpSpSession =
+			_persistence.findByPrimaryKey(newSamlIdpSpSession.getPrimaryKey());
 
-		Assert.assertEquals(existingSamlIdpSpSession.getSamlIdpSpSessionId(),
+		Assert.assertEquals(
+			existingSamlIdpSpSession.getSamlIdpSpSessionId(),
 			newSamlIdpSpSession.getSamlIdpSpSessionId());
-		Assert.assertEquals(existingSamlIdpSpSession.getCompanyId(),
+		Assert.assertEquals(
+			existingSamlIdpSpSession.getCompanyId(),
 			newSamlIdpSpSession.getCompanyId());
-		Assert.assertEquals(existingSamlIdpSpSession.getUserId(),
+		Assert.assertEquals(
+			existingSamlIdpSpSession.getUserId(),
 			newSamlIdpSpSession.getUserId());
-		Assert.assertEquals(existingSamlIdpSpSession.getUserName(),
+		Assert.assertEquals(
+			existingSamlIdpSpSession.getUserName(),
 			newSamlIdpSpSession.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingSamlIdpSpSession.getCreateDate()),
+		Assert.assertEquals(
+			Time.getShortTimestamp(existingSamlIdpSpSession.getCreateDate()),
 			Time.getShortTimestamp(newSamlIdpSpSession.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingSamlIdpSpSession.getModifiedDate()),
+		Assert.assertEquals(
+			Time.getShortTimestamp(existingSamlIdpSpSession.getModifiedDate()),
 			Time.getShortTimestamp(newSamlIdpSpSession.getModifiedDate()));
-		Assert.assertEquals(existingSamlIdpSpSession.getSamlIdpSsoSessionId(),
+		Assert.assertEquals(
+			existingSamlIdpSpSession.getSamlIdpSsoSessionId(),
 			newSamlIdpSpSession.getSamlIdpSsoSessionId());
-		Assert.assertEquals(existingSamlIdpSpSession.getSamlSpEntityId(),
+		Assert.assertEquals(
+			existingSamlIdpSpSession.getSamlSpEntityId(),
 			newSamlIdpSpSession.getSamlSpEntityId());
-		Assert.assertEquals(existingSamlIdpSpSession.getNameIdFormat(),
+		Assert.assertEquals(
+			existingSamlIdpSpSession.getNameIdFormat(),
 			newSamlIdpSpSession.getNameIdFormat());
-		Assert.assertEquals(existingSamlIdpSpSession.getNameIdValue(),
+		Assert.assertEquals(
+			existingSamlIdpSpSession.getNameIdValue(),
 			newSamlIdpSpSession.getNameIdValue());
 	}
 
@@ -187,10 +195,9 @@ public class SamlIdpSpSessionPersistenceTest {
 
 	@Test
 	public void testCountBySISSI_SSEI() throws Exception {
-		_persistence.countBySISSI_SSEI(RandomTestUtil.nextLong(),
-			StringPool.BLANK);
+		_persistence.countBySISSI_SSEI(RandomTestUtil.nextLong(), "");
 
-		_persistence.countBySISSI_SSEI(0L, StringPool.NULL);
+		_persistence.countBySISSI_SSEI(0L, "null");
 
 		_persistence.countBySISSI_SSEI(0L, (String)null);
 	}
@@ -199,7 +206,8 @@ public class SamlIdpSpSessionPersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		SamlIdpSpSession newSamlIdpSpSession = addSamlIdpSpSession();
 
-		SamlIdpSpSession existingSamlIdpSpSession = _persistence.findByPrimaryKey(newSamlIdpSpSession.getPrimaryKey());
+		SamlIdpSpSession existingSamlIdpSpSession =
+			_persistence.findByPrimaryKey(newSamlIdpSpSession.getPrimaryKey());
 
 		Assert.assertEquals(existingSamlIdpSpSession, newSamlIdpSpSession);
 	}
@@ -213,23 +221,24 @@ public class SamlIdpSpSessionPersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			getOrderByComparator());
+		_persistence.findAll(
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
 	}
 
 	protected OrderByComparator<SamlIdpSpSession> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create("SamlIdpSpSession",
-			"samlIdpSpSessionId", true, "companyId", true, "userId", true,
-			"userName", true, "createDate", true, "modifiedDate", true,
-			"samlIdpSsoSessionId", true, "samlSpEntityId", true,
-			"nameIdFormat", true, "nameIdValue", true);
+		return OrderByComparatorFactoryUtil.create(
+			"SamlIdpSpSession", "samlIdpSpSessionId", true, "companyId", true,
+			"userId", true, "userName", true, "createDate", true,
+			"modifiedDate", true, "samlIdpSsoSessionId", true, "samlSpEntityId",
+			true, "nameIdFormat", true, "nameIdValue", true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		SamlIdpSpSession newSamlIdpSpSession = addSamlIdpSpSession();
 
-		SamlIdpSpSession existingSamlIdpSpSession = _persistence.fetchByPrimaryKey(newSamlIdpSpSession.getPrimaryKey());
+		SamlIdpSpSession existingSamlIdpSpSession =
+			_persistence.fetchByPrimaryKey(newSamlIdpSpSession.getPrimaryKey());
 
 		Assert.assertEquals(existingSamlIdpSpSession, newSamlIdpSpSession);
 	}
@@ -238,7 +247,8 @@ public class SamlIdpSpSessionPersistenceTest {
 	public void testFetchByPrimaryKeyMissing() throws Exception {
 		long pk = RandomTestUtil.nextLong();
 
-		SamlIdpSpSession missingSamlIdpSpSession = _persistence.fetchByPrimaryKey(pk);
+		SamlIdpSpSession missingSamlIdpSpSession =
+			_persistence.fetchByPrimaryKey(pk);
 
 		Assert.assertNull(missingSamlIdpSpSession);
 	}
@@ -246,6 +256,7 @@ public class SamlIdpSpSessionPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
+
 		SamlIdpSpSession newSamlIdpSpSession1 = addSamlIdpSpSession();
 		SamlIdpSpSession newSamlIdpSpSession2 = addSamlIdpSpSession();
 
@@ -254,18 +265,22 @@ public class SamlIdpSpSessionPersistenceTest {
 		primaryKeys.add(newSamlIdpSpSession1.getPrimaryKey());
 		primaryKeys.add(newSamlIdpSpSession2.getPrimaryKey());
 
-		Map<Serializable, SamlIdpSpSession> samlIdpSpSessions = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, SamlIdpSpSession> samlIdpSpSessions =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(2, samlIdpSpSessions.size());
-		Assert.assertEquals(newSamlIdpSpSession1,
+		Assert.assertEquals(
+			newSamlIdpSpSession1,
 			samlIdpSpSessions.get(newSamlIdpSpSession1.getPrimaryKey()));
-		Assert.assertEquals(newSamlIdpSpSession2,
+		Assert.assertEquals(
+			newSamlIdpSpSession2,
 			samlIdpSpSessions.get(newSamlIdpSpSession2.getPrimaryKey()));
 	}
 
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
+
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -275,7 +290,8 @@ public class SamlIdpSpSessionPersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, SamlIdpSpSession> samlIdpSpSessions = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, SamlIdpSpSession> samlIdpSpSessions =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(samlIdpSpSessions.isEmpty());
 	}
@@ -283,6 +299,7 @@ public class SamlIdpSpSessionPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
+
 		SamlIdpSpSession newSamlIdpSpSession = addSamlIdpSpSession();
 
 		long pk = RandomTestUtil.nextLong();
@@ -292,36 +309,39 @@ public class SamlIdpSpSessionPersistenceTest {
 		primaryKeys.add(newSamlIdpSpSession.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, SamlIdpSpSession> samlIdpSpSessions = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, SamlIdpSpSession> samlIdpSpSessions =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, samlIdpSpSessions.size());
-		Assert.assertEquals(newSamlIdpSpSession,
+		Assert.assertEquals(
+			newSamlIdpSpSession,
 			samlIdpSpSessions.get(newSamlIdpSpSession.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, SamlIdpSpSession> samlIdpSpSessions = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, SamlIdpSpSession> samlIdpSpSessions =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(samlIdpSpSessions.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
 		SamlIdpSpSession newSamlIdpSpSession = addSamlIdpSpSession();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newSamlIdpSpSession.getPrimaryKey());
 
-		Map<Serializable, SamlIdpSpSession> samlIdpSpSessions = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, SamlIdpSpSession> samlIdpSpSessions =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, samlIdpSpSessions.size());
-		Assert.assertEquals(newSamlIdpSpSession,
+		Assert.assertEquals(
+			newSamlIdpSpSession,
 			samlIdpSpSessions.get(newSamlIdpSpSession.getPrimaryKey()));
 	}
 
@@ -329,15 +349,19 @@ public class SamlIdpSpSessionPersistenceTest {
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery = SamlIdpSpSessionLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			SamlIdpSpSessionLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<SamlIdpSpSession>() {
+		actionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<SamlIdpSpSession>() {
+
 				@Override
 				public void performAction(SamlIdpSpSession samlIdpSpSession) {
 					Assert.assertNotNull(samlIdpSpSession);
 
 					count.increment();
 				}
+
 			});
 
 		actionableDynamicQuery.performActions();
@@ -346,17 +370,19 @@ public class SamlIdpSpSessionPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting()
-		throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
 		SamlIdpSpSession newSamlIdpSpSession = addSamlIdpSpSession();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(SamlIdpSpSession.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			SamlIdpSpSession.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("samlIdpSpSessionId",
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"samlIdpSpSessionId",
 				newSamlIdpSpSession.getSamlIdpSpSessionId()));
 
-		List<SamlIdpSpSession> result = _persistence.findWithDynamicQuery(dynamicQuery);
+		List<SamlIdpSpSession> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
 
 		Assert.assertEquals(1, result.size());
 
@@ -367,32 +393,35 @@ public class SamlIdpSpSessionPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(SamlIdpSpSession.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			SamlIdpSpSession.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("samlIdpSpSessionId",
-				RandomTestUtil.nextLong()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"samlIdpSpSessionId", RandomTestUtil.nextLong()));
 
-		List<SamlIdpSpSession> result = _persistence.findWithDynamicQuery(dynamicQuery);
+		List<SamlIdpSpSession> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
 
 		Assert.assertEquals(0, result.size());
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting()
-		throws Exception {
+	public void testDynamicQueryByProjectionExisting() throws Exception {
 		SamlIdpSpSession newSamlIdpSpSession = addSamlIdpSpSession();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(SamlIdpSpSession.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			SamlIdpSpSession.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property(
-				"samlIdpSpSessionId"));
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.property("samlIdpSpSessionId"));
 
-		Object newSamlIdpSpSessionId = newSamlIdpSpSession.getSamlIdpSpSessionId();
+		Object newSamlIdpSpSessionId =
+			newSamlIdpSpSession.getSamlIdpSpSessionId();
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("samlIdpSpSessionId",
-				new Object[] { newSamlIdpSpSessionId }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"samlIdpSpSessionId", new Object[] {newSamlIdpSpSessionId}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -405,14 +434,16 @@ public class SamlIdpSpSessionPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(SamlIdpSpSession.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			SamlIdpSpSession.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property(
-				"samlIdpSpSessionId"));
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.property("samlIdpSpSessionId"));
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("samlIdpSpSessionId",
-				new Object[] { RandomTestUtil.nextLong() }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"samlIdpSpSessionId",
+				new Object[] {RandomTestUtil.nextLong()}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -425,16 +456,20 @@ public class SamlIdpSpSessionPersistenceTest {
 
 		_persistence.clearCache();
 
-		SamlIdpSpSession existingSamlIdpSpSession = _persistence.findByPrimaryKey(newSamlIdpSpSession.getPrimaryKey());
+		SamlIdpSpSession existingSamlIdpSpSession =
+			_persistence.findByPrimaryKey(newSamlIdpSpSession.getPrimaryKey());
 
-		Assert.assertEquals(Long.valueOf(
-				existingSamlIdpSpSession.getSamlIdpSsoSessionId()),
-			ReflectionTestUtil.<Long>invoke(existingSamlIdpSpSession,
-				"getOriginalSamlIdpSsoSessionId", new Class<?>[0]));
-		Assert.assertTrue(Objects.equals(
+		Assert.assertEquals(
+			Long.valueOf(existingSamlIdpSpSession.getSamlIdpSsoSessionId()),
+			ReflectionTestUtil.<Long>invoke(
+				existingSamlIdpSpSession, "getOriginalSamlIdpSsoSessionId",
+				new Class<?>[0]));
+		Assert.assertTrue(
+			Objects.equals(
 				existingSamlIdpSpSession.getSamlSpEntityId(),
-				ReflectionTestUtil.invoke(existingSamlIdpSpSession,
-					"getOriginalSamlSpEntityId", new Class<?>[0])));
+				ReflectionTestUtil.invoke(
+					existingSamlIdpSpSession, "getOriginalSamlSpEntityId",
+					new Class<?>[0])));
 	}
 
 	protected SamlIdpSpSession addSamlIdpSpSession() throws Exception {
@@ -465,7 +500,9 @@ public class SamlIdpSpSessionPersistenceTest {
 		return samlIdpSpSession;
 	}
 
-	private List<SamlIdpSpSession> _samlIdpSpSessions = new ArrayList<SamlIdpSpSession>();
+	private List<SamlIdpSpSession> _samlIdpSpSessions =
+		new ArrayList<SamlIdpSpSession>();
 	private SamlIdpSpSessionPersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
+
 }

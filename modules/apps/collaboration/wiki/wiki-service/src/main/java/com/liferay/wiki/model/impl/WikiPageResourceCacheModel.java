@@ -14,13 +14,9 @@
 
 package com.liferay.wiki.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-
 import com.liferay.wiki.model.WikiPageResource;
 
 import java.io.Externalizable;
@@ -32,12 +28,11 @@ import java.io.ObjectOutput;
  * The cache model class for representing WikiPageResource in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see WikiPageResource
  * @generated
  */
-@ProviderType
-public class WikiPageResourceCacheModel implements CacheModel<WikiPageResource>,
-	Externalizable {
+public class WikiPageResourceCacheModel
+	implements CacheModel<WikiPageResource>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,7 +43,8 @@ public class WikiPageResourceCacheModel implements CacheModel<WikiPageResource>,
 			return false;
 		}
 
-		WikiPageResourceCacheModel wikiPageResourceCacheModel = (WikiPageResourceCacheModel)obj;
+		WikiPageResourceCacheModel wikiPageResourceCacheModel =
+			(WikiPageResourceCacheModel)obj;
 
 		if (resourcePrimKey == wikiPageResourceCacheModel.resourcePrimKey) {
 			return true;
@@ -88,7 +84,7 @@ public class WikiPageResourceCacheModel implements CacheModel<WikiPageResource>,
 		WikiPageResourceImpl wikiPageResourceImpl = new WikiPageResourceImpl();
 
 		if (uuid == null) {
-			wikiPageResourceImpl.setUuid(StringPool.BLANK);
+			wikiPageResourceImpl.setUuid("");
 		}
 		else {
 			wikiPageResourceImpl.setUuid(uuid);
@@ -100,7 +96,7 @@ public class WikiPageResourceCacheModel implements CacheModel<WikiPageResource>,
 		wikiPageResourceImpl.setNodeId(nodeId);
 
 		if (title == null) {
-			wikiPageResourceImpl.setTitle(StringPool.BLANK);
+			wikiPageResourceImpl.setTitle("");
 		}
 		else {
 			wikiPageResourceImpl.setTitle(title);
@@ -126,10 +122,9 @@ public class WikiPageResourceCacheModel implements CacheModel<WikiPageResource>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -144,7 +139,7 @@ public class WikiPageResourceCacheModel implements CacheModel<WikiPageResource>,
 		objectOutput.writeLong(nodeId);
 
 		if (title == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(title);
@@ -157,4 +152,5 @@ public class WikiPageResourceCacheModel implements CacheModel<WikiPageResource>,
 	public long companyId;
 	public long nodeId;
 	public String title;
+
 }

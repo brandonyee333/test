@@ -14,12 +14,9 @@
 
 package com.liferay.portal.workflow.kaleo.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignmentInstance;
 
 import java.io.Externalizable;
@@ -33,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing KaleoTaskAssignmentInstance in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see KaleoTaskAssignmentInstance
  * @generated
  */
-@ProviderType
-public class KaleoTaskAssignmentInstanceCacheModel implements CacheModel<KaleoTaskAssignmentInstance>,
-	Externalizable {
+public class KaleoTaskAssignmentInstanceCacheModel
+	implements CacheModel<KaleoTaskAssignmentInstance>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -49,10 +45,14 @@ public class KaleoTaskAssignmentInstanceCacheModel implements CacheModel<KaleoTa
 			return false;
 		}
 
-		KaleoTaskAssignmentInstanceCacheModel kaleoTaskAssignmentInstanceCacheModel =
-			(KaleoTaskAssignmentInstanceCacheModel)obj;
+		KaleoTaskAssignmentInstanceCacheModel
+			kaleoTaskAssignmentInstanceCacheModel =
+				(KaleoTaskAssignmentInstanceCacheModel)obj;
 
-		if (kaleoTaskAssignmentInstanceId == kaleoTaskAssignmentInstanceCacheModel.kaleoTaskAssignmentInstanceId) {
+		if (kaleoTaskAssignmentInstanceId ==
+				kaleoTaskAssignmentInstanceCacheModel.
+					kaleoTaskAssignmentInstanceId) {
+
 			return true;
 		}
 
@@ -109,15 +109,17 @@ public class KaleoTaskAssignmentInstanceCacheModel implements CacheModel<KaleoTa
 
 	@Override
 	public KaleoTaskAssignmentInstance toEntityModel() {
-		KaleoTaskAssignmentInstanceImpl kaleoTaskAssignmentInstanceImpl = new KaleoTaskAssignmentInstanceImpl();
+		KaleoTaskAssignmentInstanceImpl kaleoTaskAssignmentInstanceImpl =
+			new KaleoTaskAssignmentInstanceImpl();
 
-		kaleoTaskAssignmentInstanceImpl.setKaleoTaskAssignmentInstanceId(kaleoTaskAssignmentInstanceId);
+		kaleoTaskAssignmentInstanceImpl.setKaleoTaskAssignmentInstanceId(
+			kaleoTaskAssignmentInstanceId);
 		kaleoTaskAssignmentInstanceImpl.setGroupId(groupId);
 		kaleoTaskAssignmentInstanceImpl.setCompanyId(companyId);
 		kaleoTaskAssignmentInstanceImpl.setUserId(userId);
 
 		if (userName == null) {
-			kaleoTaskAssignmentInstanceImpl.setUserName(StringPool.BLANK);
+			kaleoTaskAssignmentInstanceImpl.setUserName("");
 		}
 		else {
 			kaleoTaskAssignmentInstanceImpl.setUserName(userName);
@@ -134,28 +136,31 @@ public class KaleoTaskAssignmentInstanceCacheModel implements CacheModel<KaleoTa
 			kaleoTaskAssignmentInstanceImpl.setModifiedDate(null);
 		}
 		else {
-			kaleoTaskAssignmentInstanceImpl.setModifiedDate(new Date(
-					modifiedDate));
+			kaleoTaskAssignmentInstanceImpl.setModifiedDate(
+				new Date(modifiedDate));
 		}
 
 		kaleoTaskAssignmentInstanceImpl.setKaleoDefinitionId(kaleoDefinitionId);
 		kaleoTaskAssignmentInstanceImpl.setKaleoInstanceId(kaleoInstanceId);
-		kaleoTaskAssignmentInstanceImpl.setKaleoInstanceTokenId(kaleoInstanceTokenId);
-		kaleoTaskAssignmentInstanceImpl.setKaleoTaskInstanceTokenId(kaleoTaskInstanceTokenId);
+		kaleoTaskAssignmentInstanceImpl.setKaleoInstanceTokenId(
+			kaleoInstanceTokenId);
+		kaleoTaskAssignmentInstanceImpl.setKaleoTaskInstanceTokenId(
+			kaleoTaskInstanceTokenId);
 		kaleoTaskAssignmentInstanceImpl.setKaleoTaskId(kaleoTaskId);
 
 		if (kaleoTaskName == null) {
-			kaleoTaskAssignmentInstanceImpl.setKaleoTaskName(StringPool.BLANK);
+			kaleoTaskAssignmentInstanceImpl.setKaleoTaskName("");
 		}
 		else {
 			kaleoTaskAssignmentInstanceImpl.setKaleoTaskName(kaleoTaskName);
 		}
 
 		if (assigneeClassName == null) {
-			kaleoTaskAssignmentInstanceImpl.setAssigneeClassName(StringPool.BLANK);
+			kaleoTaskAssignmentInstanceImpl.setAssigneeClassName("");
 		}
 		else {
-			kaleoTaskAssignmentInstanceImpl.setAssigneeClassName(assigneeClassName);
+			kaleoTaskAssignmentInstanceImpl.setAssigneeClassName(
+				assigneeClassName);
 		}
 
 		kaleoTaskAssignmentInstanceImpl.setAssigneeClassPK(assigneeClassPK);
@@ -165,8 +170,8 @@ public class KaleoTaskAssignmentInstanceCacheModel implements CacheModel<KaleoTa
 			kaleoTaskAssignmentInstanceImpl.setCompletionDate(null);
 		}
 		else {
-			kaleoTaskAssignmentInstanceImpl.setCompletionDate(new Date(
-					completionDate));
+			kaleoTaskAssignmentInstanceImpl.setCompletionDate(
+				new Date(completionDate));
 		}
 
 		kaleoTaskAssignmentInstanceImpl.resetOriginalValues();
@@ -206,8 +211,7 @@ public class KaleoTaskAssignmentInstanceCacheModel implements CacheModel<KaleoTa
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(kaleoTaskAssignmentInstanceId);
 
 		objectOutput.writeLong(groupId);
@@ -217,7 +221,7 @@ public class KaleoTaskAssignmentInstanceCacheModel implements CacheModel<KaleoTa
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -237,14 +241,14 @@ public class KaleoTaskAssignmentInstanceCacheModel implements CacheModel<KaleoTa
 		objectOutput.writeLong(kaleoTaskId);
 
 		if (kaleoTaskName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(kaleoTaskName);
 		}
 
 		if (assigneeClassName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(assigneeClassName);
@@ -273,4 +277,5 @@ public class KaleoTaskAssignmentInstanceCacheModel implements CacheModel<KaleoTa
 	public long assigneeClassPK;
 	public boolean completed;
 	public long completionDate;
+
 }

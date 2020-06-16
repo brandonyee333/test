@@ -14,8 +14,7 @@
 
 package com.liferay.portal.service.base;
 
-import aQute.bnd.annotation.ProviderType;
-
+import com.liferay.counter.kernel.service.persistence.CounterPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -37,6 +36,7 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.CompanyPersistence;
 import com.liferay.portal.kernel.service.persistence.ResourceActionPersistence;
 import com.liferay.portal.kernel.service.persistence.ResourceBlockFinder;
@@ -46,6 +46,7 @@ import com.liferay.portal.kernel.service.persistence.ResourcePermissionFinder;
 import com.liferay.portal.kernel.service.persistence.ResourcePermissionPersistence;
 import com.liferay.portal.kernel.service.persistence.ResourceTypePermissionFinder;
 import com.liferay.portal.kernel.service.persistence.ResourceTypePermissionPersistence;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -64,17 +65,16 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.portal.service.impl.ResourceActionLocalServiceImpl
- * @see com.liferay.portal.kernel.service.ResourceActionLocalServiceUtil
  * @generated
  */
-@ProviderType
 public abstract class ResourceActionLocalServiceBaseImpl
-	extends BaseLocalServiceImpl implements ResourceActionLocalService,
-		IdentifiableOSGiService {
+	extends BaseLocalServiceImpl
+	implements IdentifiableOSGiService, ResourceActionLocalService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link com.liferay.portal.kernel.service.ResourceActionLocalServiceUtil} to access the resource action local service.
+	 * Never modify or reference this class directly. Use <code>ResourceActionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.ResourceActionLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -98,6 +98,7 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 * @return the new resource action
 	 */
 	@Override
+	@Transactional(enabled = false)
 	public ResourceAction createResourceAction(long resourceActionId) {
 		return resourceActionPersistence.create(resourceActionId);
 	}
@@ -113,6 +114,7 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	@Override
 	public ResourceAction deleteResourceAction(long resourceActionId)
 		throws PortalException {
+
 		return resourceActionPersistence.remove(resourceActionId);
 	}
 
@@ -132,8 +134,8 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(ResourceAction.class,
-			clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(
+			ResourceAction.class, clazz.getClassLoader());
 	}
 
 	/**
@@ -151,7 +153,7 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.ResourceActionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portal.model.impl.ResourceActionModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -160,17 +162,18 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end) {
-		return resourceActionPersistence.findWithDynamicQuery(dynamicQuery,
-			start, end);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
+
+		return resourceActionPersistence.findWithDynamicQuery(
+			dynamicQuery, start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.ResourceActionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portal.model.impl.ResourceActionModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -180,10 +183,12 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end, OrderByComparator<T> orderByComparator) {
-		return resourceActionPersistence.findWithDynamicQuery(dynamicQuery,
-			start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
+
+		return resourceActionPersistence.findWithDynamicQuery(
+			dynamicQuery, start, end, orderByComparator);
 	}
 
 	/**
@@ -205,10 +210,11 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection) {
-		return resourceActionPersistence.countWithDynamicQuery(dynamicQuery,
-			projection);
+	public long dynamicQueryCount(
+		DynamicQuery dynamicQuery, Projection projection) {
+
+		return resourceActionPersistence.countWithDynamicQuery(
+			dynamicQuery, projection);
 	}
 
 	@Override
@@ -226,12 +232,14 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	@Override
 	public ResourceAction getResourceAction(long resourceActionId)
 		throws PortalException {
+
 		return resourceActionPersistence.findByPrimaryKey(resourceActionId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			new DefaultActionableDynamicQuery();
 
 		actionableDynamicQuery.setBaseLocalService(resourceActionLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
@@ -243,10 +251,14 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
+	public IndexableActionableDynamicQuery
+		getIndexableActionableDynamicQuery() {
 
-		indexableActionableDynamicQuery.setBaseLocalService(resourceActionLocalService);
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
+			new IndexableActionableDynamicQuery();
+
+		indexableActionableDynamicQuery.setBaseLocalService(
+			resourceActionLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(ResourceAction.class);
 
@@ -258,6 +270,7 @@ public abstract class ResourceActionLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
+
 		actionableDynamicQuery.setBaseLocalService(resourceActionLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(ResourceAction.class);
@@ -271,12 +284,22 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-		return resourceActionLocalService.deleteResourceAction((ResourceAction)persistedModel);
+
+		return resourceActionLocalService.deleteResourceAction(
+			(ResourceAction)persistedModel);
 	}
 
+	public BasePersistence<ResourceAction> getBasePersistence() {
+		return resourceActionPersistence;
+	}
+
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
+
 		return resourceActionPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -284,7 +307,7 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 * Returns a range of all the resource actions.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.ResourceActionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portal.model.impl.ResourceActionModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of resource actions
@@ -334,6 +357,7 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 */
 	public void setResourceActionLocalService(
 		ResourceActionLocalService resourceActionLocalService) {
+
 		this.resourceActionLocalService = resourceActionLocalService;
 	}
 
@@ -353,6 +377,7 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 */
 	public void setResourceActionPersistence(
 		ResourceActionPersistence resourceActionPersistence) {
+
 		this.resourceActionPersistence = resourceActionPersistence;
 	}
 
@@ -361,7 +386,9 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
+	public com.liferay.counter.kernel.service.CounterLocalService
+		getCounterLocalService() {
+
 		return counterLocalService;
 	}
 
@@ -371,8 +398,28 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
+		com.liferay.counter.kernel.service.CounterLocalService
+			counterLocalService) {
+
 		this.counterLocalService = counterLocalService;
+	}
+
+	/**
+	 * Returns the counter persistence.
+	 *
+	 * @return the counter persistence
+	 */
+	public CounterPersistence getCounterPersistence() {
+		return counterPersistence;
+	}
+
+	/**
+	 * Sets the counter persistence.
+	 *
+	 * @param counterPersistence the counter persistence
+	 */
+	public void setCounterPersistence(CounterPersistence counterPersistence) {
+		this.counterPersistence = counterPersistence;
 	}
 
 	/**
@@ -380,7 +427,9 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 *
 	 * @return the company local service
 	 */
-	public com.liferay.portal.kernel.service.CompanyLocalService getCompanyLocalService() {
+	public com.liferay.portal.kernel.service.CompanyLocalService
+		getCompanyLocalService() {
+
 		return companyLocalService;
 	}
 
@@ -390,7 +439,9 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 * @param companyLocalService the company local service
 	 */
 	public void setCompanyLocalService(
-		com.liferay.portal.kernel.service.CompanyLocalService companyLocalService) {
+		com.liferay.portal.kernel.service.CompanyLocalService
+			companyLocalService) {
+
 		this.companyLocalService = companyLocalService;
 	}
 
@@ -417,7 +468,9 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 *
 	 * @return the resource block local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceBlockLocalService getResourceBlockLocalService() {
+	public com.liferay.portal.kernel.service.ResourceBlockLocalService
+		getResourceBlockLocalService() {
+
 		return resourceBlockLocalService;
 	}
 
@@ -427,7 +480,9 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 * @param resourceBlockLocalService the resource block local service
 	 */
 	public void setResourceBlockLocalService(
-		com.liferay.portal.kernel.service.ResourceBlockLocalService resourceBlockLocalService) {
+		com.liferay.portal.kernel.service.ResourceBlockLocalService
+			resourceBlockLocalService) {
+
 		this.resourceBlockLocalService = resourceBlockLocalService;
 	}
 
@@ -447,6 +502,7 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 */
 	public void setResourceBlockPersistence(
 		ResourceBlockPersistence resourceBlockPersistence) {
+
 		this.resourceBlockPersistence = resourceBlockPersistence;
 	}
 
@@ -464,7 +520,9 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 *
 	 * @param resourceBlockFinder the resource block finder
 	 */
-	public void setResourceBlockFinder(ResourceBlockFinder resourceBlockFinder) {
+	public void setResourceBlockFinder(
+		ResourceBlockFinder resourceBlockFinder) {
+
 		this.resourceBlockFinder = resourceBlockFinder;
 	}
 
@@ -473,7 +531,9 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 *
 	 * @return the resource block permission local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceBlockPermissionLocalService getResourceBlockPermissionLocalService() {
+	public com.liferay.portal.kernel.service.ResourceBlockPermissionLocalService
+		getResourceBlockPermissionLocalService() {
+
 		return resourceBlockPermissionLocalService;
 	}
 
@@ -483,8 +543,11 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 * @param resourceBlockPermissionLocalService the resource block permission local service
 	 */
 	public void setResourceBlockPermissionLocalService(
-		com.liferay.portal.kernel.service.ResourceBlockPermissionLocalService resourceBlockPermissionLocalService) {
-		this.resourceBlockPermissionLocalService = resourceBlockPermissionLocalService;
+		com.liferay.portal.kernel.service.ResourceBlockPermissionLocalService
+			resourceBlockPermissionLocalService) {
+
+		this.resourceBlockPermissionLocalService =
+			resourceBlockPermissionLocalService;
 	}
 
 	/**
@@ -492,7 +555,9 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 *
 	 * @return the resource block permission persistence
 	 */
-	public ResourceBlockPermissionPersistence getResourceBlockPermissionPersistence() {
+	public ResourceBlockPermissionPersistence
+		getResourceBlockPermissionPersistence() {
+
 		return resourceBlockPermissionPersistence;
 	}
 
@@ -503,7 +568,9 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 */
 	public void setResourceBlockPermissionPersistence(
 		ResourceBlockPermissionPersistence resourceBlockPermissionPersistence) {
-		this.resourceBlockPermissionPersistence = resourceBlockPermissionPersistence;
+
+		this.resourceBlockPermissionPersistence =
+			resourceBlockPermissionPersistence;
 	}
 
 	/**
@@ -511,7 +578,9 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 *
 	 * @return the resource permission local service
 	 */
-	public com.liferay.portal.kernel.service.ResourcePermissionLocalService getResourcePermissionLocalService() {
+	public com.liferay.portal.kernel.service.ResourcePermissionLocalService
+		getResourcePermissionLocalService() {
+
 		return resourcePermissionLocalService;
 	}
 
@@ -521,7 +590,9 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 * @param resourcePermissionLocalService the resource permission local service
 	 */
 	public void setResourcePermissionLocalService(
-		com.liferay.portal.kernel.service.ResourcePermissionLocalService resourcePermissionLocalService) {
+		com.liferay.portal.kernel.service.ResourcePermissionLocalService
+			resourcePermissionLocalService) {
+
 		this.resourcePermissionLocalService = resourcePermissionLocalService;
 	}
 
@@ -541,6 +612,7 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 */
 	public void setResourcePermissionPersistence(
 		ResourcePermissionPersistence resourcePermissionPersistence) {
+
 		this.resourcePermissionPersistence = resourcePermissionPersistence;
 	}
 
@@ -560,6 +632,7 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 */
 	public void setResourcePermissionFinder(
 		ResourcePermissionFinder resourcePermissionFinder) {
+
 		this.resourcePermissionFinder = resourcePermissionFinder;
 	}
 
@@ -568,7 +641,9 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 *
 	 * @return the resource type permission local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceTypePermissionLocalService getResourceTypePermissionLocalService() {
+	public com.liferay.portal.kernel.service.ResourceTypePermissionLocalService
+		getResourceTypePermissionLocalService() {
+
 		return resourceTypePermissionLocalService;
 	}
 
@@ -578,8 +653,11 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 * @param resourceTypePermissionLocalService the resource type permission local service
 	 */
 	public void setResourceTypePermissionLocalService(
-		com.liferay.portal.kernel.service.ResourceTypePermissionLocalService resourceTypePermissionLocalService) {
-		this.resourceTypePermissionLocalService = resourceTypePermissionLocalService;
+		com.liferay.portal.kernel.service.ResourceTypePermissionLocalService
+			resourceTypePermissionLocalService) {
+
+		this.resourceTypePermissionLocalService =
+			resourceTypePermissionLocalService;
 	}
 
 	/**
@@ -587,7 +665,9 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 *
 	 * @return the resource type permission persistence
 	 */
-	public ResourceTypePermissionPersistence getResourceTypePermissionPersistence() {
+	public ResourceTypePermissionPersistence
+		getResourceTypePermissionPersistence() {
+
 		return resourceTypePermissionPersistence;
 	}
 
@@ -598,7 +678,9 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 */
 	public void setResourceTypePermissionPersistence(
 		ResourceTypePermissionPersistence resourceTypePermissionPersistence) {
-		this.resourceTypePermissionPersistence = resourceTypePermissionPersistence;
+
+		this.resourceTypePermissionPersistence =
+			resourceTypePermissionPersistence;
 	}
 
 	/**
@@ -617,11 +699,13 @@ public abstract class ResourceActionLocalServiceBaseImpl
 	 */
 	public void setResourceTypePermissionFinder(
 		ResourceTypePermissionFinder resourceTypePermissionFinder) {
+
 		this.resourceTypePermissionFinder = resourceTypePermissionFinder;
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register("com.liferay.portal.kernel.model.ResourceAction",
+		persistedModelLocalServiceRegistry.register(
+			"com.liferay.portal.kernel.model.ResourceAction",
 			resourceActionLocalService);
 	}
 
@@ -662,48 +746,91 @@ public abstract class ResourceActionLocalServiceBaseImpl
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
-					sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
+				dataSource, sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception e) {
-			throw new SystemException(e);
+		catch (Exception exception) {
+			throw new SystemException(exception);
 		}
 	}
 
 	@BeanReference(type = ResourceActionLocalService.class)
 	protected ResourceActionLocalService resourceActionLocalService;
+
 	@BeanReference(type = ResourceActionPersistence.class)
 	protected ResourceActionPersistence resourceActionPersistence;
-	@BeanReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
-	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
-	@BeanReference(type = com.liferay.portal.kernel.service.CompanyLocalService.class)
-	protected com.liferay.portal.kernel.service.CompanyLocalService companyLocalService;
+
+	@BeanReference(
+		type = com.liferay.counter.kernel.service.CounterLocalService.class
+	)
+	protected com.liferay.counter.kernel.service.CounterLocalService
+		counterLocalService;
+
+	@BeanReference(type = CounterPersistence.class)
+	protected CounterPersistence counterPersistence;
+
+	@BeanReference(
+		type = com.liferay.portal.kernel.service.CompanyLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.CompanyLocalService
+		companyLocalService;
+
 	@BeanReference(type = CompanyPersistence.class)
 	protected CompanyPersistence companyPersistence;
-	@BeanReference(type = com.liferay.portal.kernel.service.ResourceBlockLocalService.class)
-	protected com.liferay.portal.kernel.service.ResourceBlockLocalService resourceBlockLocalService;
+
+	@BeanReference(
+		type = com.liferay.portal.kernel.service.ResourceBlockLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ResourceBlockLocalService
+		resourceBlockLocalService;
+
 	@BeanReference(type = ResourceBlockPersistence.class)
 	protected ResourceBlockPersistence resourceBlockPersistence;
+
 	@BeanReference(type = ResourceBlockFinder.class)
 	protected ResourceBlockFinder resourceBlockFinder;
-	@BeanReference(type = com.liferay.portal.kernel.service.ResourceBlockPermissionLocalService.class)
-	protected com.liferay.portal.kernel.service.ResourceBlockPermissionLocalService resourceBlockPermissionLocalService;
+
+	@BeanReference(
+		type = com.liferay.portal.kernel.service.ResourceBlockPermissionLocalService.class
+	)
+	protected
+		com.liferay.portal.kernel.service.ResourceBlockPermissionLocalService
+			resourceBlockPermissionLocalService;
+
 	@BeanReference(type = ResourceBlockPermissionPersistence.class)
-	protected ResourceBlockPermissionPersistence resourceBlockPermissionPersistence;
-	@BeanReference(type = com.liferay.portal.kernel.service.ResourcePermissionLocalService.class)
-	protected com.liferay.portal.kernel.service.ResourcePermissionLocalService resourcePermissionLocalService;
+	protected ResourceBlockPermissionPersistence
+		resourceBlockPermissionPersistence;
+
+	@BeanReference(
+		type = com.liferay.portal.kernel.service.ResourcePermissionLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ResourcePermissionLocalService
+		resourcePermissionLocalService;
+
 	@BeanReference(type = ResourcePermissionPersistence.class)
 	protected ResourcePermissionPersistence resourcePermissionPersistence;
+
 	@BeanReference(type = ResourcePermissionFinder.class)
 	protected ResourcePermissionFinder resourcePermissionFinder;
-	@BeanReference(type = com.liferay.portal.kernel.service.ResourceTypePermissionLocalService.class)
-	protected com.liferay.portal.kernel.service.ResourceTypePermissionLocalService resourceTypePermissionLocalService;
+
+	@BeanReference(
+		type = com.liferay.portal.kernel.service.ResourceTypePermissionLocalService.class
+	)
+	protected
+		com.liferay.portal.kernel.service.ResourceTypePermissionLocalService
+			resourceTypePermissionLocalService;
+
 	@BeanReference(type = ResourceTypePermissionPersistence.class)
-	protected ResourceTypePermissionPersistence resourceTypePermissionPersistence;
+	protected ResourceTypePermissionPersistence
+		resourceTypePermissionPersistence;
+
 	@BeanReference(type = ResourceTypePermissionFinder.class)
 	protected ResourceTypePermissionFinder resourceTypePermissionFinder;
+
 	@BeanReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
+	protected PersistedModelLocalServiceRegistry
+		persistedModelLocalServiceRegistry;
+
 }

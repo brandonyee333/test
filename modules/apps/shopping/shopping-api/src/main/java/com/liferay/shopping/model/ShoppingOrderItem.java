@@ -25,20 +25,23 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see ShoppingOrderItemModel
- * @see com.liferay.shopping.model.impl.ShoppingOrderItemImpl
- * @see com.liferay.shopping.model.impl.ShoppingOrderItemModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.shopping.model.impl.ShoppingOrderItemImpl")
+@ImplementationClassName(
+	"com.liferay.shopping.model.impl.ShoppingOrderItemImpl"
+)
 @ProviderType
-public interface ShoppingOrderItem extends ShoppingOrderItemModel, PersistedModel {
+public interface ShoppingOrderItem
+	extends PersistedModel, ShoppingOrderItemModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.shopping.model.impl.ShoppingOrderItemImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.shopping.model.impl.ShoppingOrderItemImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<ShoppingOrderItem, Long> ORDER_ITEM_ID_ACCESSOR =
-		new Accessor<ShoppingOrderItem, Long>() {
+	public static final Accessor<ShoppingOrderItem, Long>
+		ORDER_ITEM_ID_ACCESSOR = new Accessor<ShoppingOrderItem, Long>() {
+
 			@Override
 			public Long get(ShoppingOrderItem shoppingOrderItem) {
 				return shoppingOrderItem.getOrderItemId();
@@ -53,5 +56,7 @@ public interface ShoppingOrderItem extends ShoppingOrderItemModel, PersistedMode
 			public Class<ShoppingOrderItem> getTypeClass() {
 				return ShoppingOrderItem.class;
 			}
+
 		};
+
 }

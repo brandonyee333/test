@@ -16,7 +16,6 @@ package com.liferay.tasks.service.persistence.impl;
 
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
-
 import com.liferay.tasks.model.TasksEntry;
 import com.liferay.tasks.service.persistence.TasksEntryPersistence;
 
@@ -25,6 +24,11 @@ import com.liferay.tasks.service.persistence.TasksEntryPersistence;
  * @generated
  */
 public class TasksEntryFinderBaseImpl extends BasePersistenceImpl<TasksEntry> {
+
+	public TasksEntryFinderBaseImpl() {
+		setModelClass(TasksEntry.class);
+	}
+
 	/**
 	 * Returns the tasks entry persistence.
 	 *
@@ -41,9 +45,11 @@ public class TasksEntryFinderBaseImpl extends BasePersistenceImpl<TasksEntry> {
 	 */
 	public void setTasksEntryPersistence(
 		TasksEntryPersistence tasksEntryPersistence) {
+
 		this.tasksEntryPersistence = tasksEntryPersistence;
 	}
 
 	@BeanReference(type = TasksEntryPersistence.class)
 	protected TasksEntryPersistence tasksEntryPersistence;
+
 }

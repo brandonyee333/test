@@ -14,14 +14,10 @@
 
 package com.liferay.portlet.blogs.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.blogs.kernel.model.BlogsEntry;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing BlogsEntry in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see BlogsEntry
  * @generated
  */
-@ProviderType
-public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
-	Externalizable {
+public class BlogsEntryCacheModel
+	implements CacheModel<BlogsEntry>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -136,7 +131,7 @@ public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
 		BlogsEntryImpl blogsEntryImpl = new BlogsEntryImpl();
 
 		if (uuid == null) {
-			blogsEntryImpl.setUuid(StringPool.BLANK);
+			blogsEntryImpl.setUuid("");
 		}
 		else {
 			blogsEntryImpl.setUuid(uuid);
@@ -148,7 +143,7 @@ public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
 		blogsEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			blogsEntryImpl.setUserName(StringPool.BLANK);
+			blogsEntryImpl.setUserName("");
 		}
 		else {
 			blogsEntryImpl.setUserName(userName);
@@ -169,35 +164,35 @@ public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
 		}
 
 		if (title == null) {
-			blogsEntryImpl.setTitle(StringPool.BLANK);
+			blogsEntryImpl.setTitle("");
 		}
 		else {
 			blogsEntryImpl.setTitle(title);
 		}
 
 		if (subtitle == null) {
-			blogsEntryImpl.setSubtitle(StringPool.BLANK);
+			blogsEntryImpl.setSubtitle("");
 		}
 		else {
 			blogsEntryImpl.setSubtitle(subtitle);
 		}
 
 		if (urlTitle == null) {
-			blogsEntryImpl.setUrlTitle(StringPool.BLANK);
+			blogsEntryImpl.setUrlTitle("");
 		}
 		else {
 			blogsEntryImpl.setUrlTitle(urlTitle);
 		}
 
 		if (description == null) {
-			blogsEntryImpl.setDescription(StringPool.BLANK);
+			blogsEntryImpl.setDescription("");
 		}
 		else {
 			blogsEntryImpl.setDescription(description);
 		}
 
 		if (content == null) {
-			blogsEntryImpl.setContent(StringPool.BLANK);
+			blogsEntryImpl.setContent("");
 		}
 		else {
 			blogsEntryImpl.setContent(content);
@@ -214,14 +209,14 @@ public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
 		blogsEntryImpl.setAllowTrackbacks(allowTrackbacks);
 
 		if (trackbacks == null) {
-			blogsEntryImpl.setTrackbacks(StringPool.BLANK);
+			blogsEntryImpl.setTrackbacks("");
 		}
 		else {
 			blogsEntryImpl.setTrackbacks(trackbacks);
 		}
 
 		if (coverImageCaption == null) {
-			blogsEntryImpl.setCoverImageCaption(StringPool.BLANK);
+			blogsEntryImpl.setCoverImageCaption("");
 		}
 		else {
 			blogsEntryImpl.setCoverImageCaption(coverImageCaption);
@@ -230,7 +225,7 @@ public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
 		blogsEntryImpl.setCoverImageFileEntryId(coverImageFileEntryId);
 
 		if (coverImageURL == null) {
-			blogsEntryImpl.setCoverImageURL(StringPool.BLANK);
+			blogsEntryImpl.setCoverImageURL("");
 		}
 		else {
 			blogsEntryImpl.setCoverImageURL(coverImageURL);
@@ -241,7 +236,7 @@ public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
 		blogsEntryImpl.setSmallImageId(smallImageId);
 
 		if (smallImageURL == null) {
-			blogsEntryImpl.setSmallImageURL(StringPool.BLANK);
+			blogsEntryImpl.setSmallImageURL("");
 		}
 		else {
 			blogsEntryImpl.setSmallImageURL(smallImageURL);
@@ -258,7 +253,7 @@ public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
 		blogsEntryImpl.setStatusByUserId(statusByUserId);
 
 		if (statusByUserName == null) {
-			blogsEntryImpl.setStatusByUserName(StringPool.BLANK);
+			blogsEntryImpl.setStatusByUserName("");
 		}
 		else {
 			blogsEntryImpl.setStatusByUserName(statusByUserName);
@@ -277,7 +272,9 @@ public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		uuid = objectInput.readUTF();
 
 		entryId = objectInput.readLong();
@@ -294,13 +291,13 @@ public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
 		subtitle = objectInput.readUTF();
 		urlTitle = objectInput.readUTF();
 		description = objectInput.readUTF();
-		content = objectInput.readUTF();
+		content = (String)objectInput.readObject();
 		displayDate = objectInput.readLong();
 
 		allowPingbacks = objectInput.readBoolean();
 
 		allowTrackbacks = objectInput.readBoolean();
-		trackbacks = objectInput.readUTF();
+		trackbacks = (String)objectInput.readObject();
 		coverImageCaption = objectInput.readUTF();
 
 		coverImageFileEntryId = objectInput.readLong();
@@ -322,10 +319,9 @@ public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -340,7 +336,7 @@ public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -350,38 +346,38 @@ public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
 		objectOutput.writeLong(modifiedDate);
 
 		if (title == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(title);
 		}
 
 		if (subtitle == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(subtitle);
 		}
 
 		if (urlTitle == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(urlTitle);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (content == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(content);
+			objectOutput.writeObject(content);
 		}
 
 		objectOutput.writeLong(displayDate);
@@ -391,14 +387,14 @@ public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
 		objectOutput.writeBoolean(allowTrackbacks);
 
 		if (trackbacks == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(trackbacks);
+			objectOutput.writeObject(trackbacks);
 		}
 
 		if (coverImageCaption == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(coverImageCaption);
@@ -407,7 +403,7 @@ public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
 		objectOutput.writeLong(coverImageFileEntryId);
 
 		if (coverImageURL == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(coverImageURL);
@@ -420,7 +416,7 @@ public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
 		objectOutput.writeLong(smallImageId);
 
 		if (smallImageURL == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(smallImageURL);
@@ -433,7 +429,7 @@ public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(statusByUserName);
@@ -471,4 +467,5 @@ public class BlogsEntryCacheModel implements CacheModel<BlogsEntry>,
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
+
 }

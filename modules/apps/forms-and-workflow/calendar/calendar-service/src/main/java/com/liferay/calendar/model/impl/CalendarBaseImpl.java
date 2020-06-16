@@ -14,8 +14,6 @@
 
 package com.liferay.calendar.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.calendar.model.Calendar;
 import com.liferay.calendar.service.CalendarLocalServiceUtil;
 
@@ -31,13 +29,13 @@ import com.liferay.calendar.service.CalendarLocalServiceUtil;
  * @see Calendar
  * @generated
  */
-@ProviderType
-public abstract class CalendarBaseImpl extends CalendarModelImpl
-	implements Calendar {
+public abstract class CalendarBaseImpl
+	extends CalendarModelImpl implements Calendar {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a calendar model instance should use the {@link Calendar} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a calendar model instance should use the <code>Calendar</code> interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -48,4 +46,5 @@ public abstract class CalendarBaseImpl extends CalendarModelImpl
 			CalendarLocalServiceUtil.updateCalendar(this);
 		}
 	}
+
 }

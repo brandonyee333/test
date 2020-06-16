@@ -14,14 +14,10 @@
 
 package com.liferay.invitation.invite.members.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.invitation.invite.members.model.MemberRequest;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing MemberRequest in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see MemberRequest
  * @generated
  */
-@ProviderType
-public class MemberRequestCacheModel implements CacheModel<MemberRequest>,
-	Externalizable {
+public class MemberRequestCacheModel
+	implements CacheModel<MemberRequest>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,7 +45,8 @@ public class MemberRequestCacheModel implements CacheModel<MemberRequest>,
 			return false;
 		}
 
-		MemberRequestCacheModel memberRequestCacheModel = (MemberRequestCacheModel)obj;
+		MemberRequestCacheModel memberRequestCacheModel =
+			(MemberRequestCacheModel)obj;
 
 		if (memberRequestId == memberRequestCacheModel.memberRequestId) {
 			return true;
@@ -107,7 +103,7 @@ public class MemberRequestCacheModel implements CacheModel<MemberRequest>,
 		memberRequestImpl.setUserId(userId);
 
 		if (userName == null) {
-			memberRequestImpl.setUserName(StringPool.BLANK);
+			memberRequestImpl.setUserName("");
 		}
 		else {
 			memberRequestImpl.setUserName(userName);
@@ -128,7 +124,7 @@ public class MemberRequestCacheModel implements CacheModel<MemberRequest>,
 		}
 
 		if (key == null) {
-			memberRequestImpl.setKey(StringPool.BLANK);
+			memberRequestImpl.setKey("");
 		}
 		else {
 			memberRequestImpl.setKey(key);
@@ -168,8 +164,7 @@ public class MemberRequestCacheModel implements CacheModel<MemberRequest>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(memberRequestId);
 
 		objectOutput.writeLong(groupId);
@@ -179,7 +174,7 @@ public class MemberRequestCacheModel implements CacheModel<MemberRequest>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -189,7 +184,7 @@ public class MemberRequestCacheModel implements CacheModel<MemberRequest>,
 		objectOutput.writeLong(modifiedDate);
 
 		if (key == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(key);
@@ -216,4 +211,5 @@ public class MemberRequestCacheModel implements CacheModel<MemberRequest>,
 	public long invitedRoleId;
 	public long invitedTeamId;
 	public int status;
+
 }

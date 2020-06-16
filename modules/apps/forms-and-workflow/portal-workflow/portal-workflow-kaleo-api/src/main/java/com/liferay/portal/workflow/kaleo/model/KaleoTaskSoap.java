@@ -14,8 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -28,8 +26,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class KaleoTaskSoap implements Serializable {
+
 	public static KaleoTaskSoap toSoapModel(KaleoTask model) {
 		KaleoTaskSoap soapModel = new KaleoTaskSoap();
 
@@ -76,7 +74,8 @@ public class KaleoTaskSoap implements Serializable {
 	}
 
 	public static KaleoTaskSoap[] toSoapModels(List<KaleoTask> models) {
-		List<KaleoTaskSoap> soapModels = new ArrayList<KaleoTaskSoap>(models.size());
+		List<KaleoTaskSoap> soapModels = new ArrayList<KaleoTaskSoap>(
+			models.size());
 
 		for (KaleoTask model : models) {
 			soapModels.add(toSoapModel(model));
@@ -195,4 +194,5 @@ public class KaleoTaskSoap implements Serializable {
 	private long _kaleoNodeId;
 	private String _name;
 	private String _description;
+
 }

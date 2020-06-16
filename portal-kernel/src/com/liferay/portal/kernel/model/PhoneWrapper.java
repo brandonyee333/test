@@ -14,12 +14,8 @@
 
 package com.liferay.portal.kernel.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.exportimport.kernel.lar.StagedModelType;
-
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -38,8 +34,8 @@ import java.util.Objects;
  * @see Phone
  * @generated
  */
-@ProviderType
-public class PhoneWrapper implements Phone, ModelWrapper<Phone> {
+public class PhoneWrapper implements ModelWrapper<Phone>, Phone {
+
 	public PhoneWrapper(Phone phone) {
 		_phone = phone;
 	}
@@ -71,7 +67,7 @@ public class PhoneWrapper implements Phone, ModelWrapper<Phone> {
 		attributes.put("number", getNumber());
 		attributes.put("extension", getExtension());
 		attributes.put("typeId", getTypeId());
-		attributes.put("primary", getPrimary());
+		attributes.put("primary", isPrimary());
 
 		return attributes;
 	}
@@ -163,14 +159,206 @@ public class PhoneWrapper implements Phone, ModelWrapper<Phone> {
 		}
 	}
 
+	@Override
+	public Object clone() {
+		return new PhoneWrapper((Phone)_phone.clone());
+	}
+
+	@Override
+	public int compareTo(Phone phone) {
+		return _phone.compareTo(phone);
+	}
+
 	/**
-	* Returns the primary of this phone.
-	*
-	* @return the primary of this phone
-	*/
+	 * Returns the fully qualified class name of this phone.
+	 *
+	 * @return the fully qualified class name of this phone
+	 */
+	@Override
+	public String getClassName() {
+		return _phone.getClassName();
+	}
+
+	/**
+	 * Returns the class name ID of this phone.
+	 *
+	 * @return the class name ID of this phone
+	 */
+	@Override
+	public long getClassNameId() {
+		return _phone.getClassNameId();
+	}
+
+	/**
+	 * Returns the class pk of this phone.
+	 *
+	 * @return the class pk of this phone
+	 */
+	@Override
+	public long getClassPK() {
+		return _phone.getClassPK();
+	}
+
+	/**
+	 * Returns the company ID of this phone.
+	 *
+	 * @return the company ID of this phone
+	 */
+	@Override
+	public long getCompanyId() {
+		return _phone.getCompanyId();
+	}
+
+	/**
+	 * Returns the create date of this phone.
+	 *
+	 * @return the create date of this phone
+	 */
+	@Override
+	public Date getCreateDate() {
+		return _phone.getCreateDate();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _phone.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the extension of this phone.
+	 *
+	 * @return the extension of this phone
+	 */
+	@Override
+	public String getExtension() {
+		return _phone.getExtension();
+	}
+
+	/**
+	 * Returns the modified date of this phone.
+	 *
+	 * @return the modified date of this phone
+	 */
+	@Override
+	public Date getModifiedDate() {
+		return _phone.getModifiedDate();
+	}
+
+	/**
+	 * Returns the mvcc version of this phone.
+	 *
+	 * @return the mvcc version of this phone
+	 */
+	@Override
+	public long getMvccVersion() {
+		return _phone.getMvccVersion();
+	}
+
+	/**
+	 * Returns the number of this phone.
+	 *
+	 * @return the number of this phone
+	 */
+	@Override
+	public String getNumber() {
+		return _phone.getNumber();
+	}
+
+	/**
+	 * Returns the phone ID of this phone.
+	 *
+	 * @return the phone ID of this phone
+	 */
+	@Override
+	public long getPhoneId() {
+		return _phone.getPhoneId();
+	}
+
+	/**
+	 * Returns the primary of this phone.
+	 *
+	 * @return the primary of this phone
+	 */
 	@Override
 	public boolean getPrimary() {
 		return _phone.getPrimary();
+	}
+
+	/**
+	 * Returns the primary key of this phone.
+	 *
+	 * @return the primary key of this phone
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _phone.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _phone.getPrimaryKeyObj();
+	}
+
+	@Override
+	public ListType getType()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _phone.getType();
+	}
+
+	/**
+	 * Returns the type ID of this phone.
+	 *
+	 * @return the type ID of this phone
+	 */
+	@Override
+	public long getTypeId() {
+		return _phone.getTypeId();
+	}
+
+	/**
+	 * Returns the user ID of this phone.
+	 *
+	 * @return the user ID of this phone
+	 */
+	@Override
+	public long getUserId() {
+		return _phone.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this phone.
+	 *
+	 * @return the user name of this phone
+	 */
+	@Override
+	public String getUserName() {
+		return _phone.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this phone.
+	 *
+	 * @return the user uuid of this phone
+	 */
+	@Override
+	public String getUserUuid() {
+		return _phone.getUserUuid();
+	}
+
+	/**
+	 * Returns the uuid of this phone.
+	 *
+	 * @return the uuid of this phone
+	 */
+	@Override
+	public String getUuid() {
+		return _phone.getUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _phone.hashCode();
 	}
 
 	@Override
@@ -189,229 +377,13 @@ public class PhoneWrapper implements Phone, ModelWrapper<Phone> {
 	}
 
 	/**
-	* Returns <code>true</code> if this phone is primary.
-	*
-	* @return <code>true</code> if this phone is primary; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this phone is primary.
+	 *
+	 * @return <code>true</code> if this phone is primary; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isPrimary() {
 		return _phone.isPrimary();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _phone.getExpandoBridge();
-	}
-
-	@Override
-	public CacheModel<Phone> toCacheModel() {
-		return _phone.toCacheModel();
-	}
-
-	@Override
-	public ListType getType()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _phone.getType();
-	}
-
-	@Override
-	public Phone toEscapedModel() {
-		return new PhoneWrapper(_phone.toEscapedModel());
-	}
-
-	@Override
-	public Phone toUnescapedModel() {
-		return new PhoneWrapper(_phone.toUnescapedModel());
-	}
-
-	@Override
-	public int compareTo(Phone phone) {
-		return _phone.compareTo(phone);
-	}
-
-	@Override
-	public int hashCode() {
-		return _phone.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _phone.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new PhoneWrapper((Phone)_phone.clone());
-	}
-
-	/**
-	* Returns the fully qualified class name of this phone.
-	*
-	* @return the fully qualified class name of this phone
-	*/
-	@Override
-	public java.lang.String getClassName() {
-		return _phone.getClassName();
-	}
-
-	/**
-	* Returns the extension of this phone.
-	*
-	* @return the extension of this phone
-	*/
-	@Override
-	public java.lang.String getExtension() {
-		return _phone.getExtension();
-	}
-
-	/**
-	* Returns the number of this phone.
-	*
-	* @return the number of this phone
-	*/
-	@Override
-	public java.lang.String getNumber() {
-		return _phone.getNumber();
-	}
-
-	/**
-	* Returns the user name of this phone.
-	*
-	* @return the user name of this phone
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _phone.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this phone.
-	*
-	* @return the user uuid of this phone
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _phone.getUserUuid();
-	}
-
-	/**
-	* Returns the uuid of this phone.
-	*
-	* @return the uuid of this phone
-	*/
-	@Override
-	public java.lang.String getUuid() {
-		return _phone.getUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _phone.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _phone.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this phone.
-	*
-	* @return the create date of this phone
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _phone.getCreateDate();
-	}
-
-	/**
-	* Returns the modified date of this phone.
-	*
-	* @return the modified date of this phone
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _phone.getModifiedDate();
-	}
-
-	/**
-	* Returns the class name ID of this phone.
-	*
-	* @return the class name ID of this phone
-	*/
-	@Override
-	public long getClassNameId() {
-		return _phone.getClassNameId();
-	}
-
-	/**
-	* Returns the class pk of this phone.
-	*
-	* @return the class pk of this phone
-	*/
-	@Override
-	public long getClassPK() {
-		return _phone.getClassPK();
-	}
-
-	/**
-	* Returns the company ID of this phone.
-	*
-	* @return the company ID of this phone
-	*/
-	@Override
-	public long getCompanyId() {
-		return _phone.getCompanyId();
-	}
-
-	/**
-	* Returns the mvcc version of this phone.
-	*
-	* @return the mvcc version of this phone
-	*/
-	@Override
-	public long getMvccVersion() {
-		return _phone.getMvccVersion();
-	}
-
-	/**
-	* Returns the phone ID of this phone.
-	*
-	* @return the phone ID of this phone
-	*/
-	@Override
-	public long getPhoneId() {
-		return _phone.getPhoneId();
-	}
-
-	/**
-	* Returns the primary key of this phone.
-	*
-	* @return the primary key of this phone
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _phone.getPrimaryKey();
-	}
-
-	/**
-	* Returns the type ID of this phone.
-	*
-	* @return the type ID of this phone
-	*/
-	@Override
-	public long getTypeId() {
-		return _phone.getTypeId();
-	}
-
-	/**
-	* Returns the user ID of this phone.
-	*
-	* @return the user ID of this phone
-	*/
-	@Override
-	public long getUserId() {
-		return _phone.getUserId();
 	}
 
 	@Override
@@ -425,53 +397,48 @@ public class PhoneWrapper implements Phone, ModelWrapper<Phone> {
 	}
 
 	@Override
-	public void setClassName(java.lang.String className) {
+	public void setClassName(String className) {
 		_phone.setClassName(className);
 	}
 
 	/**
-	* Sets the class name ID of this phone.
-	*
-	* @param classNameId the class name ID of this phone
-	*/
+	 * Sets the class name ID of this phone.
+	 *
+	 * @param classNameId the class name ID of this phone
+	 */
 	@Override
 	public void setClassNameId(long classNameId) {
 		_phone.setClassNameId(classNameId);
 	}
 
 	/**
-	* Sets the class pk of this phone.
-	*
-	* @param classPK the class pk of this phone
-	*/
+	 * Sets the class pk of this phone.
+	 *
+	 * @param classPK the class pk of this phone
+	 */
 	@Override
 	public void setClassPK(long classPK) {
 		_phone.setClassPK(classPK);
 	}
 
 	/**
-	* Sets the company ID of this phone.
-	*
-	* @param companyId the company ID of this phone
-	*/
+	 * Sets the company ID of this phone.
+	 *
+	 * @param companyId the company ID of this phone
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_phone.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this phone.
-	*
-	* @param createDate the create date of this phone
-	*/
+	 * Sets the create date of this phone.
+	 *
+	 * @param createDate the create date of this phone
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_phone.setCreateDate(createDate);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_phone.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -480,35 +447,40 @@ public class PhoneWrapper implements Phone, ModelWrapper<Phone> {
 	}
 
 	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_phone.setExpandoBridgeAttributes(expandoBridge);
+	}
+
+	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_phone.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the extension of this phone.
-	*
-	* @param extension the extension of this phone
-	*/
+	 * Sets the extension of this phone.
+	 *
+	 * @param extension the extension of this phone
+	 */
 	@Override
-	public void setExtension(java.lang.String extension) {
+	public void setExtension(String extension) {
 		_phone.setExtension(extension);
 	}
 
 	/**
-	* Sets the modified date of this phone.
-	*
-	* @param modifiedDate the modified date of this phone
-	*/
+	 * Sets the modified date of this phone.
+	 *
+	 * @param modifiedDate the modified date of this phone
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_phone.setModifiedDate(modifiedDate);
 	}
 
 	/**
-	* Sets the mvcc version of this phone.
-	*
-	* @param mvccVersion the mvcc version of this phone
-	*/
+	 * Sets the mvcc version of this phone.
+	 *
+	 * @param mvccVersion the mvcc version of this phone
+	 */
 	@Override
 	public void setMvccVersion(long mvccVersion) {
 		_phone.setMvccVersion(mvccVersion);
@@ -520,40 +492,40 @@ public class PhoneWrapper implements Phone, ModelWrapper<Phone> {
 	}
 
 	/**
-	* Sets the number of this phone.
-	*
-	* @param number the number of this phone
-	*/
+	 * Sets the number of this phone.
+	 *
+	 * @param number the number of this phone
+	 */
 	@Override
-	public void setNumber(java.lang.String number) {
+	public void setNumber(String number) {
 		_phone.setNumber(number);
 	}
 
 	/**
-	* Sets the phone ID of this phone.
-	*
-	* @param phoneId the phone ID of this phone
-	*/
+	 * Sets the phone ID of this phone.
+	 *
+	 * @param phoneId the phone ID of this phone
+	 */
 	@Override
 	public void setPhoneId(long phoneId) {
 		_phone.setPhoneId(phoneId);
 	}
 
 	/**
-	* Sets whether this phone is primary.
-	*
-	* @param primary the primary of this phone
-	*/
+	 * Sets whether this phone is primary.
+	 *
+	 * @param primary the primary of this phone
+	 */
 	@Override
 	public void setPrimary(boolean primary) {
 		_phone.setPrimary(primary);
 	}
 
 	/**
-	* Sets the primary key of this phone.
-	*
-	* @param primaryKey the primary key of this phone
-	*/
+	 * Sets the primary key of this phone.
+	 *
+	 * @param primaryKey the primary key of this phone
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_phone.setPrimaryKey(primaryKey);
@@ -565,53 +537,78 @@ public class PhoneWrapper implements Phone, ModelWrapper<Phone> {
 	}
 
 	/**
-	* Sets the type ID of this phone.
-	*
-	* @param typeId the type ID of this phone
-	*/
+	 * Sets the type ID of this phone.
+	 *
+	 * @param typeId the type ID of this phone
+	 */
 	@Override
 	public void setTypeId(long typeId) {
 		_phone.setTypeId(typeId);
 	}
 
 	/**
-	* Sets the user ID of this phone.
-	*
-	* @param userId the user ID of this phone
-	*/
+	 * Sets the user ID of this phone.
+	 *
+	 * @param userId the user ID of this phone
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_phone.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this phone.
-	*
-	* @param userName the user name of this phone
-	*/
+	 * Sets the user name of this phone.
+	 *
+	 * @param userName the user name of this phone
+	 */
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_phone.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this phone.
-	*
-	* @param userUuid the user uuid of this phone
-	*/
+	 * Sets the user uuid of this phone.
+	 *
+	 * @param userUuid the user uuid of this phone
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_phone.setUserUuid(userUuid);
 	}
 
 	/**
-	* Sets the uuid of this phone.
-	*
-	* @param uuid the uuid of this phone
-	*/
+	 * Sets the uuid of this phone.
+	 *
+	 * @param uuid the uuid of this phone
+	 */
 	@Override
-	public void setUuid(java.lang.String uuid) {
+	public void setUuid(String uuid) {
 		_phone.setUuid(uuid);
+	}
+
+	@Override
+	public CacheModel<Phone> toCacheModel() {
+		return _phone.toCacheModel();
+	}
+
+	@Override
+	public Phone toEscapedModel() {
+		return new PhoneWrapper(_phone.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _phone.toString();
+	}
+
+	@Override
+	public Phone toUnescapedModel() {
+		return new PhoneWrapper(_phone.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _phone.toXmlString();
 	}
 
 	@Override
@@ -659,4 +656,5 @@ public class PhoneWrapper implements Phone, ModelWrapper<Phone> {
 	}
 
 	private final Phone _phone;
+
 }

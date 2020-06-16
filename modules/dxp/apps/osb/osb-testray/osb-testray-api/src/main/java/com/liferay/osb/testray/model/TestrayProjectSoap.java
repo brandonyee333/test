@@ -1,20 +1,18 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.model;
-
-import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -28,8 +26,8 @@ import java.util.List;
  * @author Ethan Bustad
  * @generated
  */
-@ProviderType
 public class TestrayProjectSoap implements Serializable {
+
 	public static TestrayProjectSoap toSoapModel(TestrayProject model) {
 		TestrayProjectSoap soapModel = new TestrayProjectSoap();
 
@@ -56,11 +54,14 @@ public class TestrayProjectSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static TestrayProjectSoap[][] toSoapModels(TestrayProject[][] models) {
+	public static TestrayProjectSoap[][] toSoapModels(
+		TestrayProject[][] models) {
+
 		TestrayProjectSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new TestrayProjectSoap[models.length][models[0].length];
+			soapModels =
+				new TestrayProjectSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new TestrayProjectSoap[0][0];
@@ -73,8 +74,11 @@ public class TestrayProjectSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static TestrayProjectSoap[] toSoapModels(List<TestrayProject> models) {
-		List<TestrayProjectSoap> soapModels = new ArrayList<TestrayProjectSoap>(models.size());
+	public static TestrayProjectSoap[] toSoapModels(
+		List<TestrayProject> models) {
+
+		List<TestrayProjectSoap> soapModels = new ArrayList<TestrayProjectSoap>(
+			models.size());
 
 		for (TestrayProject model : models) {
 			soapModels.add(toSoapModel(model));
@@ -175,4 +179,5 @@ public class TestrayProjectSoap implements Serializable {
 	private Date _modifiedDate;
 	private String _name;
 	private String _description;
+
 }

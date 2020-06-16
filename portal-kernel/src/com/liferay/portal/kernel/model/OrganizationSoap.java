@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,11 +24,10 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.portal.service.http.OrganizationServiceSoap}.
  *
  * @author Brian Wing Shun Chan
- * @see com.liferay.portal.service.http.OrganizationServiceSoap
  * @generated
  */
-@ProviderType
 public class OrganizationSoap implements Serializable {
+
 	public static OrganizationSoap toSoapModel(Organization model) {
 		OrganizationSoap soapModel = new OrganizationSoap();
 
@@ -46,7 +43,7 @@ public class OrganizationSoap implements Serializable {
 		soapModel.setTreePath(model.getTreePath());
 		soapModel.setName(model.getName());
 		soapModel.setType(model.getType());
-		soapModel.setRecursable(model.getRecursable());
+		soapModel.setRecursable(model.isRecursable());
 		soapModel.setRegionId(model.getRegionId());
 		soapModel.setCountryId(model.getCountryId());
 		soapModel.setStatusId(model.getStatusId());
@@ -84,7 +81,8 @@ public class OrganizationSoap implements Serializable {
 	}
 
 	public static OrganizationSoap[] toSoapModels(List<Organization> models) {
-		List<OrganizationSoap> soapModels = new ArrayList<OrganizationSoap>(models.size());
+		List<OrganizationSoap> soapModels = new ArrayList<OrganizationSoap>(
+			models.size());
 
 		for (Organization model : models) {
 			soapModels.add(toSoapModel(model));
@@ -270,4 +268,5 @@ public class OrganizationSoap implements Serializable {
 	private long _statusId;
 	private String _comments;
 	private long _logoId;
+
 }

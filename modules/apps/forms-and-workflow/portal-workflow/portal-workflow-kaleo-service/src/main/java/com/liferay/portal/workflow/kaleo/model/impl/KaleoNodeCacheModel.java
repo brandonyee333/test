@@ -14,12 +14,9 @@
 
 package com.liferay.portal.workflow.kaleo.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.workflow.kaleo.model.KaleoNode;
 
 import java.io.Externalizable;
@@ -33,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing KaleoNode in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see KaleoNode
  * @generated
  */
-@ProviderType
-public class KaleoNodeCacheModel implements CacheModel<KaleoNode>,
-	Externalizable {
+public class KaleoNodeCacheModel
+	implements CacheModel<KaleoNode>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -110,7 +106,7 @@ public class KaleoNodeCacheModel implements CacheModel<KaleoNode>,
 		kaleoNodeImpl.setUserId(userId);
 
 		if (userName == null) {
-			kaleoNodeImpl.setUserName(StringPool.BLANK);
+			kaleoNodeImpl.setUserName("");
 		}
 		else {
 			kaleoNodeImpl.setUserName(userName);
@@ -133,28 +129,28 @@ public class KaleoNodeCacheModel implements CacheModel<KaleoNode>,
 		kaleoNodeImpl.setKaleoDefinitionId(kaleoDefinitionId);
 
 		if (name == null) {
-			kaleoNodeImpl.setName(StringPool.BLANK);
+			kaleoNodeImpl.setName("");
 		}
 		else {
 			kaleoNodeImpl.setName(name);
 		}
 
 		if (metadata == null) {
-			kaleoNodeImpl.setMetadata(StringPool.BLANK);
+			kaleoNodeImpl.setMetadata("");
 		}
 		else {
 			kaleoNodeImpl.setMetadata(metadata);
 		}
 
 		if (description == null) {
-			kaleoNodeImpl.setDescription(StringPool.BLANK);
+			kaleoNodeImpl.setDescription("");
 		}
 		else {
 			kaleoNodeImpl.setDescription(description);
 		}
 
 		if (type == null) {
-			kaleoNodeImpl.setType(StringPool.BLANK);
+			kaleoNodeImpl.setType("");
 		}
 		else {
 			kaleoNodeImpl.setType(type);
@@ -193,8 +189,7 @@ public class KaleoNodeCacheModel implements CacheModel<KaleoNode>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(kaleoNodeId);
 
 		objectOutput.writeLong(groupId);
@@ -204,7 +199,7 @@ public class KaleoNodeCacheModel implements CacheModel<KaleoNode>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -216,28 +211,28 @@ public class KaleoNodeCacheModel implements CacheModel<KaleoNode>,
 		objectOutput.writeLong(kaleoDefinitionId);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (metadata == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(metadata);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (type == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(type);
@@ -262,4 +257,5 @@ public class KaleoNodeCacheModel implements CacheModel<KaleoNode>,
 	public String type;
 	public boolean initial;
 	public boolean terminal;
+
 }

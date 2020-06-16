@@ -1,26 +1,22 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-
 import com.liferay.watson.model.WatsonVehicle;
 
 import java.io.Externalizable;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing WatsonVehicle in entity cache.
  *
  * @author Steven Smith
- * @see WatsonVehicle
  * @generated
  */
-@ProviderType
-public class WatsonVehicleCacheModel implements CacheModel<WatsonVehicle>,
-	Externalizable {
+public class WatsonVehicleCacheModel
+	implements CacheModel<WatsonVehicle>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,7 +45,8 @@ public class WatsonVehicleCacheModel implements CacheModel<WatsonVehicle>,
 			return false;
 		}
 
-		WatsonVehicleCacheModel watsonVehicleCacheModel = (WatsonVehicleCacheModel)obj;
+		WatsonVehicleCacheModel watsonVehicleCacheModel =
+			(WatsonVehicleCacheModel)obj;
 
 		if (watsonVehicleId == watsonVehicleCacheModel.watsonVehicleId) {
 			return true;
@@ -121,7 +117,7 @@ public class WatsonVehicleCacheModel implements CacheModel<WatsonVehicle>,
 		watsonVehicleImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonVehicleImpl.setUserName(StringPool.BLANK);
+			watsonVehicleImpl.setUserName("");
 		}
 		else {
 			watsonVehicleImpl.setUserName(userName);
@@ -151,21 +147,21 @@ public class WatsonVehicleCacheModel implements CacheModel<WatsonVehicle>,
 		watsonVehicleImpl.setYear(year);
 
 		if (description == null) {
-			watsonVehicleImpl.setDescription(StringPool.BLANK);
+			watsonVehicleImpl.setDescription("");
 		}
 		else {
 			watsonVehicleImpl.setDescription(description);
 		}
 
 		if (imagePayload == null) {
-			watsonVehicleImpl.setImagePayload(StringPool.BLANK);
+			watsonVehicleImpl.setImagePayload("");
 		}
 		else {
 			watsonVehicleImpl.setImagePayload(imagePayload);
 		}
 
 		if (licensePlate == null) {
-			watsonVehicleImpl.setLicensePlate(StringPool.BLANK);
+			watsonVehicleImpl.setLicensePlate("");
 		}
 		else {
 			watsonVehicleImpl.setLicensePlate(licensePlate);
@@ -179,7 +175,9 @@ public class WatsonVehicleCacheModel implements CacheModel<WatsonVehicle>,
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		watsonVehicleId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -207,15 +205,14 @@ public class WatsonVehicleCacheModel implements CacheModel<WatsonVehicle>,
 
 		year = objectInput.readInt();
 		description = objectInput.readUTF();
-		imagePayload = objectInput.readUTF();
+		imagePayload = (String)objectInput.readObject();
 		licensePlate = objectInput.readUTF();
 
 		status = objectInput.readInt();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonVehicleId);
 
 		objectOutput.writeLong(groupId);
@@ -225,7 +222,7 @@ public class WatsonVehicleCacheModel implements CacheModel<WatsonVehicle>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -251,21 +248,21 @@ public class WatsonVehicleCacheModel implements CacheModel<WatsonVehicle>,
 		objectOutput.writeInt(year);
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (imagePayload == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(imagePayload);
+			objectOutput.writeObject(imagePayload);
 		}
 
 		if (licensePlate == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(licensePlate);
@@ -293,4 +290,5 @@ public class WatsonVehicleCacheModel implements CacheModel<WatsonVehicle>,
 	public String imagePayload;
 	public String licensePlate;
 	public int status;
+
 }

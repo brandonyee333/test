@@ -1,20 +1,18 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.model;
-
-import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -28,13 +26,15 @@ import java.util.List;
  * @author Ethan Bustad
  * @generated
  */
-@ProviderType
 public class TestrayFactorCategorySoap implements Serializable {
+
 	public static TestrayFactorCategorySoap toSoapModel(
 		TestrayFactorCategory model) {
+
 		TestrayFactorCategorySoap soapModel = new TestrayFactorCategorySoap();
 
-		soapModel.setTestrayFactorCategoryId(model.getTestrayFactorCategoryId());
+		soapModel.setTestrayFactorCategoryId(
+			model.getTestrayFactorCategoryId());
 		soapModel.setGroupId(model.getGroupId());
 		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserId(model.getUserId());
@@ -48,7 +48,9 @@ public class TestrayFactorCategorySoap implements Serializable {
 
 	public static TestrayFactorCategorySoap[] toSoapModels(
 		TestrayFactorCategory[] models) {
-		TestrayFactorCategorySoap[] soapModels = new TestrayFactorCategorySoap[models.length];
+
+		TestrayFactorCategorySoap[] soapModels =
+			new TestrayFactorCategorySoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -59,10 +61,12 @@ public class TestrayFactorCategorySoap implements Serializable {
 
 	public static TestrayFactorCategorySoap[][] toSoapModels(
 		TestrayFactorCategory[][] models) {
+
 		TestrayFactorCategorySoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new TestrayFactorCategorySoap[models.length][models[0].length];
+			soapModels =
+				new TestrayFactorCategorySoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new TestrayFactorCategorySoap[0][0];
@@ -77,13 +81,16 @@ public class TestrayFactorCategorySoap implements Serializable {
 
 	public static TestrayFactorCategorySoap[] toSoapModels(
 		List<TestrayFactorCategory> models) {
-		List<TestrayFactorCategorySoap> soapModels = new ArrayList<TestrayFactorCategorySoap>(models.size());
+
+		List<TestrayFactorCategorySoap> soapModels =
+			new ArrayList<TestrayFactorCategorySoap>(models.size());
 
 		for (TestrayFactorCategory model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new TestrayFactorCategorySoap[soapModels.size()]);
+		return soapModels.toArray(
+			new TestrayFactorCategorySoap[soapModels.size()]);
 	}
 
 	public TestrayFactorCategorySoap() {
@@ -169,4 +176,5 @@ public class TestrayFactorCategorySoap implements Serializable {
 	private Date _createDate;
 	private Date _modifiedDate;
 	private String _name;
+
 }

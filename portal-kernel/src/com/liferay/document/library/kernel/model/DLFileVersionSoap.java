@@ -14,8 +14,6 @@
 
 package com.liferay.document.library.kernel.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,11 +24,10 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.portlet.documentlibrary.service.http.DLFileVersionServiceSoap}.
  *
  * @author Brian Wing Shun Chan
- * @see com.liferay.portlet.documentlibrary.service.http.DLFileVersionServiceSoap
  * @generated
  */
-@ProviderType
 public class DLFileVersionSoap implements Serializable {
+
 	public static DLFileVersionSoap toSoapModel(DLFileVersion model) {
 		DLFileVersionSoap soapModel = new DLFileVersionSoap();
 
@@ -94,7 +91,8 @@ public class DLFileVersionSoap implements Serializable {
 	}
 
 	public static DLFileVersionSoap[] toSoapModels(List<DLFileVersion> models) {
-		List<DLFileVersionSoap> soapModels = new ArrayList<DLFileVersionSoap>(models.size());
+		List<DLFileVersionSoap> soapModels = new ArrayList<DLFileVersionSoap>(
+			models.size());
 
 		for (DLFileVersion model : models) {
 			soapModels.add(toSoapModel(model));
@@ -366,4 +364,5 @@ public class DLFileVersionSoap implements Serializable {
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
+
 }

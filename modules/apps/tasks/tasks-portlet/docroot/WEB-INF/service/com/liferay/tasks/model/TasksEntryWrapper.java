@@ -17,7 +17,6 @@ package com.liferay.tasks.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -39,6 +38,7 @@ import java.util.Objects;
  */
 @ProviderType
 public class TasksEntryWrapper implements TasksEntry, ModelWrapper<TasksEntry> {
+
 	public TasksEntryWrapper(TasksEntry tasksEntry) {
 		_tasksEntry = tasksEntry;
 	}
@@ -163,6 +163,231 @@ public class TasksEntryWrapper implements TasksEntry, ModelWrapper<TasksEntry> {
 	}
 
 	@Override
+	public Object clone() {
+		return new TasksEntryWrapper((TasksEntry)_tasksEntry.clone());
+	}
+
+	@Override
+	public int compareTo(TasksEntry tasksEntry) {
+		return _tasksEntry.compareTo(tasksEntry);
+	}
+
+	@Override
+	public String getAssigneeFullName() {
+		return _tasksEntry.getAssigneeFullName();
+	}
+
+	/**
+	 * Returns the assignee user ID of this tasks entry.
+	 *
+	 * @return the assignee user ID of this tasks entry
+	 */
+	@Override
+	public long getAssigneeUserId() {
+		return _tasksEntry.getAssigneeUserId();
+	}
+
+	/**
+	 * Returns the assignee user uuid of this tasks entry.
+	 *
+	 * @return the assignee user uuid of this tasks entry
+	 */
+	@Override
+	public String getAssigneeUserUuid() {
+		return _tasksEntry.getAssigneeUserUuid();
+	}
+
+	/**
+	 * Returns the company ID of this tasks entry.
+	 *
+	 * @return the company ID of this tasks entry
+	 */
+	@Override
+	public long getCompanyId() {
+		return _tasksEntry.getCompanyId();
+	}
+
+	/**
+	 * Returns the create date of this tasks entry.
+	 *
+	 * @return the create date of this tasks entry
+	 */
+	@Override
+	public Date getCreateDate() {
+		return _tasksEntry.getCreateDate();
+	}
+
+	/**
+	 * Returns the due date of this tasks entry.
+	 *
+	 * @return the due date of this tasks entry
+	 */
+	@Override
+	public Date getDueDate() {
+		return _tasksEntry.getDueDate();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _tasksEntry.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the finish date of this tasks entry.
+	 *
+	 * @return the finish date of this tasks entry
+	 */
+	@Override
+	public Date getFinishDate() {
+		return _tasksEntry.getFinishDate();
+	}
+
+	/**
+	 * Returns the group ID of this tasks entry.
+	 *
+	 * @return the group ID of this tasks entry
+	 */
+	@Override
+	public long getGroupId() {
+		return _tasksEntry.getGroupId();
+	}
+
+	/**
+	 * Returns the modified date of this tasks entry.
+	 *
+	 * @return the modified date of this tasks entry
+	 */
+	@Override
+	public Date getModifiedDate() {
+		return _tasksEntry.getModifiedDate();
+	}
+
+	/**
+	 * Returns the primary key of this tasks entry.
+	 *
+	 * @return the primary key of this tasks entry
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _tasksEntry.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _tasksEntry.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the priority of this tasks entry.
+	 *
+	 * @return the priority of this tasks entry
+	 */
+	@Override
+	public int getPriority() {
+		return _tasksEntry.getPriority();
+	}
+
+	@Override
+	public String getPriorityLabel() {
+		return _tasksEntry.getPriorityLabel();
+	}
+
+	@Override
+	public String getReporterFullName() {
+		return _tasksEntry.getReporterFullName();
+	}
+
+	/**
+	 * Returns the resolver user ID of this tasks entry.
+	 *
+	 * @return the resolver user ID of this tasks entry
+	 */
+	@Override
+	public long getResolverUserId() {
+		return _tasksEntry.getResolverUserId();
+	}
+
+	/**
+	 * Returns the resolver user uuid of this tasks entry.
+	 *
+	 * @return the resolver user uuid of this tasks entry
+	 */
+	@Override
+	public String getResolverUserUuid() {
+		return _tasksEntry.getResolverUserUuid();
+	}
+
+	/**
+	 * Returns the status of this tasks entry.
+	 *
+	 * @return the status of this tasks entry
+	 */
+	@Override
+	public int getStatus() {
+		return _tasksEntry.getStatus();
+	}
+
+	@Override
+	public String getStatusLabel() {
+		return _tasksEntry.getStatusLabel();
+	}
+
+	/**
+	 * Returns the tasks entry ID of this tasks entry.
+	 *
+	 * @return the tasks entry ID of this tasks entry
+	 */
+	@Override
+	public long getTasksEntryId() {
+		return _tasksEntry.getTasksEntryId();
+	}
+
+	/**
+	 * Returns the title of this tasks entry.
+	 *
+	 * @return the title of this tasks entry
+	 */
+	@Override
+	public String getTitle() {
+		return _tasksEntry.getTitle();
+	}
+
+	/**
+	 * Returns the user ID of this tasks entry.
+	 *
+	 * @return the user ID of this tasks entry
+	 */
+	@Override
+	public long getUserId() {
+		return _tasksEntry.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this tasks entry.
+	 *
+	 * @return the user name of this tasks entry
+	 */
+	@Override
+	public String getUserName() {
+		return _tasksEntry.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this tasks entry.
+	 *
+	 * @return the user uuid of this tasks entry
+	 */
+	@Override
+	public String getUserUuid() {
+		return _tasksEntry.getUserUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _tasksEntry.hashCode();
+	}
+
+	@Override
 	public boolean isCachedModel() {
 		return _tasksEntry.isCachedModel();
 	}
@@ -178,277 +403,27 @@ public class TasksEntryWrapper implements TasksEntry, ModelWrapper<TasksEntry> {
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _tasksEntry.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<TasksEntry> toCacheModel() {
-		return _tasksEntry.toCacheModel();
-	}
-
-	@Override
-	public TasksEntry toEscapedModel() {
-		return new TasksEntryWrapper(_tasksEntry.toEscapedModel());
-	}
-
-	@Override
-	public TasksEntry toUnescapedModel() {
-		return new TasksEntryWrapper(_tasksEntry.toUnescapedModel());
-	}
-
-	@Override
-	public int compareTo(TasksEntry tasksEntry) {
-		return _tasksEntry.compareTo(tasksEntry);
-	}
-
-	/**
-	* Returns the priority of this tasks entry.
-	*
-	* @return the priority of this tasks entry
-	*/
-	@Override
-	public int getPriority() {
-		return _tasksEntry.getPriority();
-	}
-
-	/**
-	* Returns the status of this tasks entry.
-	*
-	* @return the status of this tasks entry
-	*/
-	@Override
-	public int getStatus() {
-		return _tasksEntry.getStatus();
-	}
-
-	@Override
-	public int hashCode() {
-		return _tasksEntry.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _tasksEntry.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new TasksEntryWrapper((TasksEntry)_tasksEntry.clone());
-	}
-
-	@Override
-	public java.lang.String getAssigneeFullName() {
-		return _tasksEntry.getAssigneeFullName();
-	}
-
-	/**
-	* Returns the assignee user uuid of this tasks entry.
-	*
-	* @return the assignee user uuid of this tasks entry
-	*/
-	@Override
-	public java.lang.String getAssigneeUserUuid() {
-		return _tasksEntry.getAssigneeUserUuid();
-	}
-
-	@Override
-	public java.lang.String getPriorityLabel() {
-		return _tasksEntry.getPriorityLabel();
-	}
-
-	@Override
-	public java.lang.String getReporterFullName() {
-		return _tasksEntry.getReporterFullName();
-	}
-
-	/**
-	* Returns the resolver user uuid of this tasks entry.
-	*
-	* @return the resolver user uuid of this tasks entry
-	*/
-	@Override
-	public java.lang.String getResolverUserUuid() {
-		return _tasksEntry.getResolverUserUuid();
-	}
-
-	@Override
-	public java.lang.String getStatusLabel() {
-		return _tasksEntry.getStatusLabel();
-	}
-
-	/**
-	* Returns the title of this tasks entry.
-	*
-	* @return the title of this tasks entry
-	*/
-	@Override
-	public java.lang.String getTitle() {
-		return _tasksEntry.getTitle();
-	}
-
-	/**
-	* Returns the user name of this tasks entry.
-	*
-	* @return the user name of this tasks entry
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _tasksEntry.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this tasks entry.
-	*
-	* @return the user uuid of this tasks entry
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _tasksEntry.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _tasksEntry.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _tasksEntry.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this tasks entry.
-	*
-	* @return the create date of this tasks entry
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _tasksEntry.getCreateDate();
-	}
-
-	/**
-	* Returns the due date of this tasks entry.
-	*
-	* @return the due date of this tasks entry
-	*/
-	@Override
-	public Date getDueDate() {
-		return _tasksEntry.getDueDate();
-	}
-
-	/**
-	* Returns the finish date of this tasks entry.
-	*
-	* @return the finish date of this tasks entry
-	*/
-	@Override
-	public Date getFinishDate() {
-		return _tasksEntry.getFinishDate();
-	}
-
-	/**
-	* Returns the modified date of this tasks entry.
-	*
-	* @return the modified date of this tasks entry
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _tasksEntry.getModifiedDate();
-	}
-
-	/**
-	* Returns the assignee user ID of this tasks entry.
-	*
-	* @return the assignee user ID of this tasks entry
-	*/
-	@Override
-	public long getAssigneeUserId() {
-		return _tasksEntry.getAssigneeUserId();
-	}
-
-	/**
-	* Returns the company ID of this tasks entry.
-	*
-	* @return the company ID of this tasks entry
-	*/
-	@Override
-	public long getCompanyId() {
-		return _tasksEntry.getCompanyId();
-	}
-
-	/**
-	* Returns the group ID of this tasks entry.
-	*
-	* @return the group ID of this tasks entry
-	*/
-	@Override
-	public long getGroupId() {
-		return _tasksEntry.getGroupId();
-	}
-
-	/**
-	* Returns the primary key of this tasks entry.
-	*
-	* @return the primary key of this tasks entry
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _tasksEntry.getPrimaryKey();
-	}
-
-	/**
-	* Returns the resolver user ID of this tasks entry.
-	*
-	* @return the resolver user ID of this tasks entry
-	*/
-	@Override
-	public long getResolverUserId() {
-		return _tasksEntry.getResolverUserId();
-	}
-
-	/**
-	* Returns the tasks entry ID of this tasks entry.
-	*
-	* @return the tasks entry ID of this tasks entry
-	*/
-	@Override
-	public long getTasksEntryId() {
-		return _tasksEntry.getTasksEntryId();
-	}
-
-	/**
-	* Returns the user ID of this tasks entry.
-	*
-	* @return the user ID of this tasks entry
-	*/
-	@Override
-	public long getUserId() {
-		return _tasksEntry.getUserId();
-	}
-
-	@Override
 	public void persist() {
 		_tasksEntry.persist();
 	}
 
 	/**
-	* Sets the assignee user ID of this tasks entry.
-	*
-	* @param assigneeUserId the assignee user ID of this tasks entry
-	*/
+	 * Sets the assignee user ID of this tasks entry.
+	 *
+	 * @param assigneeUserId the assignee user ID of this tasks entry
+	 */
 	@Override
 	public void setAssigneeUserId(long assigneeUserId) {
 		_tasksEntry.setAssigneeUserId(assigneeUserId);
 	}
 
 	/**
-	* Sets the assignee user uuid of this tasks entry.
-	*
-	* @param assigneeUserUuid the assignee user uuid of this tasks entry
-	*/
+	 * Sets the assignee user uuid of this tasks entry.
+	 *
+	 * @param assigneeUserUuid the assignee user uuid of this tasks entry
+	 */
 	@Override
-	public void setAssigneeUserUuid(java.lang.String assigneeUserUuid) {
+	public void setAssigneeUserUuid(String assigneeUserUuid) {
 		_tasksEntry.setAssigneeUserUuid(assigneeUserUuid);
 	}
 
@@ -458,33 +433,40 @@ public class TasksEntryWrapper implements TasksEntry, ModelWrapper<TasksEntry> {
 	}
 
 	/**
-	* Sets the company ID of this tasks entry.
-	*
-	* @param companyId the company ID of this tasks entry
-	*/
+	 * Sets the company ID of this tasks entry.
+	 *
+	 * @param companyId the company ID of this tasks entry
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_tasksEntry.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this tasks entry.
-	*
-	* @param createDate the create date of this tasks entry
-	*/
+	 * Sets the create date of this tasks entry.
+	 *
+	 * @param createDate the create date of this tasks entry
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_tasksEntry.setCreateDate(createDate);
 	}
 
 	/**
-	* Sets the due date of this tasks entry.
-	*
-	* @param dueDate the due date of this tasks entry
-	*/
+	 * Sets the due date of this tasks entry.
+	 *
+	 * @param dueDate the due date of this tasks entry
+	 */
 	@Override
 	public void setDueDate(Date dueDate) {
 		_tasksEntry.setDueDate(dueDate);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_tasksEntry.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -493,41 +475,35 @@ public class TasksEntryWrapper implements TasksEntry, ModelWrapper<TasksEntry> {
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_tasksEntry.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_tasksEntry.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the finish date of this tasks entry.
-	*
-	* @param finishDate the finish date of this tasks entry
-	*/
+	 * Sets the finish date of this tasks entry.
+	 *
+	 * @param finishDate the finish date of this tasks entry
+	 */
 	@Override
 	public void setFinishDate(Date finishDate) {
 		_tasksEntry.setFinishDate(finishDate);
 	}
 
 	/**
-	* Sets the group ID of this tasks entry.
-	*
-	* @param groupId the group ID of this tasks entry
-	*/
+	 * Sets the group ID of this tasks entry.
+	 *
+	 * @param groupId the group ID of this tasks entry
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_tasksEntry.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the modified date of this tasks entry.
-	*
-	* @param modifiedDate the modified date of this tasks entry
-	*/
+	 * Sets the modified date of this tasks entry.
+	 *
+	 * @param modifiedDate the modified date of this tasks entry
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_tasksEntry.setModifiedDate(modifiedDate);
@@ -539,10 +515,10 @@ public class TasksEntryWrapper implements TasksEntry, ModelWrapper<TasksEntry> {
 	}
 
 	/**
-	* Sets the primary key of this tasks entry.
-	*
-	* @param primaryKey the primary key of this tasks entry
-	*/
+	 * Sets the primary key of this tasks entry.
+	 *
+	 * @param primaryKey the primary key of this tasks entry
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_tasksEntry.setPrimaryKey(primaryKey);
@@ -554,93 +530,120 @@ public class TasksEntryWrapper implements TasksEntry, ModelWrapper<TasksEntry> {
 	}
 
 	/**
-	* Sets the priority of this tasks entry.
-	*
-	* @param priority the priority of this tasks entry
-	*/
+	 * Sets the priority of this tasks entry.
+	 *
+	 * @param priority the priority of this tasks entry
+	 */
 	@Override
 	public void setPriority(int priority) {
 		_tasksEntry.setPriority(priority);
 	}
 
 	/**
-	* Sets the resolver user ID of this tasks entry.
-	*
-	* @param resolverUserId the resolver user ID of this tasks entry
-	*/
+	 * Sets the resolver user ID of this tasks entry.
+	 *
+	 * @param resolverUserId the resolver user ID of this tasks entry
+	 */
 	@Override
 	public void setResolverUserId(long resolverUserId) {
 		_tasksEntry.setResolverUserId(resolverUserId);
 	}
 
 	/**
-	* Sets the resolver user uuid of this tasks entry.
-	*
-	* @param resolverUserUuid the resolver user uuid of this tasks entry
-	*/
+	 * Sets the resolver user uuid of this tasks entry.
+	 *
+	 * @param resolverUserUuid the resolver user uuid of this tasks entry
+	 */
 	@Override
-	public void setResolverUserUuid(java.lang.String resolverUserUuid) {
+	public void setResolverUserUuid(String resolverUserUuid) {
 		_tasksEntry.setResolverUserUuid(resolverUserUuid);
 	}
 
 	/**
-	* Sets the status of this tasks entry.
-	*
-	* @param status the status of this tasks entry
-	*/
+	 * Sets the status of this tasks entry.
+	 *
+	 * @param status the status of this tasks entry
+	 */
 	@Override
 	public void setStatus(int status) {
 		_tasksEntry.setStatus(status);
 	}
 
 	/**
-	* Sets the tasks entry ID of this tasks entry.
-	*
-	* @param tasksEntryId the tasks entry ID of this tasks entry
-	*/
+	 * Sets the tasks entry ID of this tasks entry.
+	 *
+	 * @param tasksEntryId the tasks entry ID of this tasks entry
+	 */
 	@Override
 	public void setTasksEntryId(long tasksEntryId) {
 		_tasksEntry.setTasksEntryId(tasksEntryId);
 	}
 
 	/**
-	* Sets the title of this tasks entry.
-	*
-	* @param title the title of this tasks entry
-	*/
+	 * Sets the title of this tasks entry.
+	 *
+	 * @param title the title of this tasks entry
+	 */
 	@Override
-	public void setTitle(java.lang.String title) {
+	public void setTitle(String title) {
 		_tasksEntry.setTitle(title);
 	}
 
 	/**
-	* Sets the user ID of this tasks entry.
-	*
-	* @param userId the user ID of this tasks entry
-	*/
+	 * Sets the user ID of this tasks entry.
+	 *
+	 * @param userId the user ID of this tasks entry
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_tasksEntry.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this tasks entry.
-	*
-	* @param userName the user name of this tasks entry
-	*/
+	 * Sets the user name of this tasks entry.
+	 *
+	 * @param userName the user name of this tasks entry
+	 */
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_tasksEntry.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this tasks entry.
-	*
-	* @param userUuid the user uuid of this tasks entry
-	*/
+	 * Sets the user uuid of this tasks entry.
+	 *
+	 * @param userUuid the user uuid of this tasks entry
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_tasksEntry.setUserUuid(userUuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<TasksEntry>
+		toCacheModel() {
+
+		return _tasksEntry.toCacheModel();
+	}
+
+	@Override
+	public TasksEntry toEscapedModel() {
+		return new TasksEntryWrapper(_tasksEntry.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _tasksEntry.toString();
+	}
+
+	@Override
+	public TasksEntry toUnescapedModel() {
+		return new TasksEntryWrapper(_tasksEntry.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _tasksEntry.toXmlString();
 	}
 
 	@Override
@@ -683,4 +686,5 @@ public class TasksEntryWrapper implements TasksEntry, ModelWrapper<TasksEntry> {
 	}
 
 	private final TasksEntry _tasksEntry;
+
 }

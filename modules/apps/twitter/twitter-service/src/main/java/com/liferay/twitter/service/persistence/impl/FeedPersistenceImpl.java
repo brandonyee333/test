@@ -14,8 +14,6 @@
 
 package com.liferay.twitter.service.persistence.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -25,17 +23,15 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.service.persistence.CompanyProvider;
-import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
-
 import com.liferay.twitter.exception.NoSuchFeedException;
 import com.liferay.twitter.model.Feed;
 import com.liferay.twitter.model.impl.FeedImpl;
@@ -43,6 +39,8 @@ import com.liferay.twitter.model.impl.FeedModelImpl;
 import com.liferay.twitter.service.persistence.FeedPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -62,45 +60,33 @@ import java.util.Set;
  * </p>
  *
  * @author Brian Wing Shun Chan
- * @see FeedPersistence
- * @see com.liferay.twitter.service.persistence.FeedUtil
  * @generated
  */
-@ProviderType
-public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
-	implements FeedPersistence {
+public class FeedPersistenceImpl
+	extends BasePersistenceImpl<Feed> implements FeedPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link FeedUtil} to access the feed persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use <code>FeedUtil</code> to access the feed persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = FeedImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(FeedModelImpl.ENTITY_CACHE_ENABLED,
-			FeedModelImpl.FINDER_CACHE_ENABLED, FeedImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(FeedModelImpl.ENTITY_CACHE_ENABLED,
-			FeedModelImpl.FINDER_CACHE_ENABLED, FeedImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(FeedModelImpl.ENTITY_CACHE_ENABLED,
-			FeedModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
-	public static final FinderPath FINDER_PATH_FETCH_BY_U_TSN = new FinderPath(FeedModelImpl.ENTITY_CACHE_ENABLED,
-			FeedModelImpl.FINDER_CACHE_ENABLED, FeedImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByU_TSN",
-			new String[] { Long.class.getName(), String.class.getName() },
-			FeedModelImpl.USERID_COLUMN_BITMASK |
-			FeedModelImpl.TWITTERSCREENNAME_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_U_TSN = new FinderPath(FeedModelImpl.ENTITY_CACHE_ENABLED,
-			FeedModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_TSN",
-			new String[] { Long.class.getName(), String.class.getName() });
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		FeedImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
+	private FinderPath _finderPathFetchByU_TSN;
+	private FinderPath _finderPathCountByU_TSN;
 
 	/**
-	 * Returns the feed where userId = &#63; and twitterScreenName = &#63; or throws a {@link NoSuchFeedException} if it could not be found.
+	 * Returns the feed where userId = &#63; and twitterScreenName = &#63; or throws a <code>NoSuchFeedException</code> if it could not be found.
 	 *
 	 * @param userId the user ID
 	 * @param twitterScreenName the twitter screen name
@@ -110,26 +96,27 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 	@Override
 	public Feed findByU_TSN(long userId, String twitterScreenName)
 		throws NoSuchFeedException {
+
 		Feed feed = fetchByU_TSN(userId, twitterScreenName);
 
 		if (feed == null) {
-			StringBundler msg = new StringBundler(6);
+			StringBundler sb = new StringBundler(6);
 
-			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			msg.append("userId=");
-			msg.append(userId);
+			sb.append("userId=");
+			sb.append(userId);
 
-			msg.append(", twitterScreenName=");
-			msg.append(twitterScreenName);
+			sb.append(", twitterScreenName=");
+			sb.append(twitterScreenName);
 
-			msg.append(StringPool.CLOSE_CURLY_BRACE);
+			sb.append("}");
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(msg.toString());
+				_log.debug(sb.toString());
 			}
 
-			throw new NoSuchFeedException(msg.toString());
+			throw new NoSuchFeedException(sb.toString());
 		}
 
 		return feed;
@@ -152,84 +139,97 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 	 *
 	 * @param userId the user ID
 	 * @param twitterScreenName the twitter screen name
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching feed, or <code>null</code> if a matching feed could not be found
 	 */
 	@Override
-	public Feed fetchByU_TSN(long userId, String twitterScreenName,
-		boolean retrieveFromCache) {
-		Object[] finderArgs = new Object[] { userId, twitterScreenName };
+	public Feed fetchByU_TSN(
+		long userId, String twitterScreenName, boolean useFinderCache) {
+
+		twitterScreenName = Objects.toString(twitterScreenName, "");
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {userId, twitterScreenName};
+		}
 
 		Object result = null;
 
-		if (retrieveFromCache) {
-			result = finderCache.getResult(FINDER_PATH_FETCH_BY_U_TSN,
-					finderArgs, this);
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByU_TSN, finderArgs, this);
 		}
 
 		if (result instanceof Feed) {
 			Feed feed = (Feed)result;
 
 			if ((userId != feed.getUserId()) ||
-					!Objects.equals(twitterScreenName,
-						feed.getTwitterScreenName())) {
+				!Objects.equals(
+					twitterScreenName, feed.getTwitterScreenName())) {
+
 				result = null;
 			}
 		}
 
 		if (result == null) {
-			StringBundler query = new StringBundler(4);
+			StringBundler sb = new StringBundler(4);
 
-			query.append(_SQL_SELECT_FEED_WHERE);
+			sb.append(_SQL_SELECT_FEED_WHERE);
 
-			query.append(_FINDER_COLUMN_U_TSN_USERID_2);
+			sb.append(_FINDER_COLUMN_U_TSN_USERID_2);
 
 			boolean bindTwitterScreenName = false;
 
-			if (twitterScreenName == null) {
-				query.append(_FINDER_COLUMN_U_TSN_TWITTERSCREENNAME_1);
-			}
-			else if (twitterScreenName.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_U_TSN_TWITTERSCREENNAME_3);
+			if (twitterScreenName.isEmpty()) {
+				sb.append(_FINDER_COLUMN_U_TSN_TWITTERSCREENNAME_3);
 			}
 			else {
 				bindTwitterScreenName = true;
 
-				query.append(_FINDER_COLUMN_U_TSN_TWITTERSCREENNAME_2);
+				sb.append(_FINDER_COLUMN_U_TSN_TWITTERSCREENNAME_2);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(userId);
+				queryPos.add(userId);
 
 				if (bindTwitterScreenName) {
-					qPos.add(twitterScreenName);
+					queryPos.add(twitterScreenName);
 				}
 
-				List<Feed> list = q.list();
+				List<Feed> list = query.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(FINDER_PATH_FETCH_BY_U_TSN,
-						finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByU_TSN, finderArgs, list);
+					}
 				}
 				else {
 					if (list.size() > 1) {
 						Collections.sort(list, Collections.reverseOrder());
 
 						if (_log.isWarnEnabled()) {
+							if (!useFinderCache) {
+								finderArgs = new Object[] {
+									userId, twitterScreenName
+								};
+							}
+
 							_log.warn(
 								"FeedPersistenceImpl.fetchByU_TSN(long, String, boolean) with parameters (" +
-								StringUtil.merge(finderArgs) +
-								") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+									StringUtil.merge(finderArgs) +
+										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 						}
 					}
 
@@ -238,20 +238,15 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 					result = feed;
 
 					cacheResult(feed);
-
-					if ((feed.getUserId() != userId) ||
-							(feed.getTwitterScreenName() == null) ||
-							!feed.getTwitterScreenName()
-									 .equals(twitterScreenName)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_U_TSN,
-							finderArgs, feed);
-					}
 				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_FETCH_BY_U_TSN, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(
+						_finderPathFetchByU_TSN, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -276,6 +271,7 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 	@Override
 	public Feed removeByU_TSN(long userId, String twitterScreenName)
 		throws NoSuchFeedException {
+
 		Feed feed = findByU_TSN(userId, twitterScreenName);
 
 		return remove(feed);
@@ -290,58 +286,57 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 	 */
 	@Override
 	public int countByU_TSN(long userId, String twitterScreenName) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_U_TSN;
+		twitterScreenName = Objects.toString(twitterScreenName, "");
 
-		Object[] finderArgs = new Object[] { userId, twitterScreenName };
+		FinderPath finderPath = _finderPathCountByU_TSN;
+
+		Object[] finderArgs = new Object[] {userId, twitterScreenName};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(3);
+			StringBundler sb = new StringBundler(3);
 
-			query.append(_SQL_COUNT_FEED_WHERE);
+			sb.append(_SQL_COUNT_FEED_WHERE);
 
-			query.append(_FINDER_COLUMN_U_TSN_USERID_2);
+			sb.append(_FINDER_COLUMN_U_TSN_USERID_2);
 
 			boolean bindTwitterScreenName = false;
 
-			if (twitterScreenName == null) {
-				query.append(_FINDER_COLUMN_U_TSN_TWITTERSCREENNAME_1);
-			}
-			else if (twitterScreenName.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_U_TSN_TWITTERSCREENNAME_3);
+			if (twitterScreenName.isEmpty()) {
+				sb.append(_FINDER_COLUMN_U_TSN_TWITTERSCREENNAME_3);
 			}
 			else {
 				bindTwitterScreenName = true;
 
-				query.append(_FINDER_COLUMN_U_TSN_TWITTERSCREENNAME_2);
+				sb.append(_FINDER_COLUMN_U_TSN_TWITTERSCREENNAME_2);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(userId);
+				queryPos.add(userId);
 
 				if (bindTwitterScreenName) {
-					qPos.add(twitterScreenName);
+					queryPos.add(twitterScreenName);
 				}
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -351,10 +346,14 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_U_TSN_USERID_2 = "feed.userId = ? AND ";
-	private static final String _FINDER_COLUMN_U_TSN_TWITTERSCREENNAME_1 = "feed.twitterScreenName IS NULL";
-	private static final String _FINDER_COLUMN_U_TSN_TWITTERSCREENNAME_2 = "feed.twitterScreenName = ?";
-	private static final String _FINDER_COLUMN_U_TSN_TWITTERSCREENNAME_3 = "(feed.twitterScreenName IS NULL OR feed.twitterScreenName = '')";
+	private static final String _FINDER_COLUMN_U_TSN_USERID_2 =
+		"feed.userId = ? AND ";
+
+	private static final String _FINDER_COLUMN_U_TSN_TWITTERSCREENNAME_2 =
+		"feed.twitterScreenName = ?";
+
+	private static final String _FINDER_COLUMN_U_TSN_TWITTERSCREENNAME_3 =
+		"(feed.twitterScreenName IS NULL OR feed.twitterScreenName = '')";
 
 	public FeedPersistenceImpl() {
 		setModelClass(Feed.class);
@@ -367,11 +366,13 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 	 */
 	@Override
 	public void cacheResult(Feed feed) {
-		entityCache.putResult(FeedModelImpl.ENTITY_CACHE_ENABLED,
-			FeedImpl.class, feed.getPrimaryKey(), feed);
+		entityCache.putResult(
+			FeedModelImpl.ENTITY_CACHE_ENABLED, FeedImpl.class,
+			feed.getPrimaryKey(), feed);
 
-		finderCache.putResult(FINDER_PATH_FETCH_BY_U_TSN,
-			new Object[] { feed.getUserId(), feed.getTwitterScreenName() }, feed);
+		finderCache.putResult(
+			_finderPathFetchByU_TSN,
+			new Object[] {feed.getUserId(), feed.getTwitterScreenName()}, feed);
 
 		feed.resetOriginalValues();
 	}
@@ -384,8 +385,10 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 	@Override
 	public void cacheResult(List<Feed> feeds) {
 		for (Feed feed : feeds) {
-			if (entityCache.getResult(FeedModelImpl.ENTITY_CACHE_ENABLED,
-						FeedImpl.class, feed.getPrimaryKey()) == null) {
+			if (entityCache.getResult(
+					FeedModelImpl.ENTITY_CACHE_ENABLED, FeedImpl.class,
+					feed.getPrimaryKey()) == null) {
+
 				cacheResult(feed);
 			}
 			else {
@@ -398,7 +401,7 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 	 * Clears the cache for all feeds.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -414,13 +417,14 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 	 * Clears the cache for the feed.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(Feed feed) {
-		entityCache.removeResult(FeedModelImpl.ENTITY_CACHE_ENABLED,
-			FeedImpl.class, feed.getPrimaryKey());
+		entityCache.removeResult(
+			FeedModelImpl.ENTITY_CACHE_ENABLED, FeedImpl.class,
+			feed.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -434,45 +438,58 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (Feed feed : feeds) {
-			entityCache.removeResult(FeedModelImpl.ENTITY_CACHE_ENABLED,
-				FeedImpl.class, feed.getPrimaryKey());
+			entityCache.removeResult(
+				FeedModelImpl.ENTITY_CACHE_ENABLED, FeedImpl.class,
+				feed.getPrimaryKey());
 
 			clearUniqueFindersCache((FeedModelImpl)feed, true);
 		}
 	}
 
+	public void clearCache(Set<Serializable> primaryKeys) {
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (Serializable primaryKey : primaryKeys) {
+			entityCache.removeResult(
+				FeedModelImpl.ENTITY_CACHE_ENABLED, FeedImpl.class, primaryKey);
+		}
+	}
+
 	protected void cacheUniqueFindersCache(FeedModelImpl feedModelImpl) {
 		Object[] args = new Object[] {
+			feedModelImpl.getUserId(), feedModelImpl.getTwitterScreenName()
+		};
+
+		finderCache.putResult(
+			_finderPathCountByU_TSN, args, Long.valueOf(1), false);
+		finderCache.putResult(
+			_finderPathFetchByU_TSN, args, feedModelImpl, false);
+	}
+
+	protected void clearUniqueFindersCache(
+		FeedModelImpl feedModelImpl, boolean clearCurrent) {
+
+		if (clearCurrent) {
+			Object[] args = new Object[] {
 				feedModelImpl.getUserId(), feedModelImpl.getTwitterScreenName()
 			};
 
-		finderCache.putResult(FINDER_PATH_COUNT_BY_U_TSN, args,
-			Long.valueOf(1), false);
-		finderCache.putResult(FINDER_PATH_FETCH_BY_U_TSN, args, feedModelImpl,
-			false);
-	}
-
-	protected void clearUniqueFindersCache(FeedModelImpl feedModelImpl,
-		boolean clearCurrent) {
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-					feedModelImpl.getUserId(),
-					feedModelImpl.getTwitterScreenName()
-				};
-
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_U_TSN, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_U_TSN, args);
+			finderCache.removeResult(_finderPathCountByU_TSN, args);
+			finderCache.removeResult(_finderPathFetchByU_TSN, args);
 		}
 
 		if ((feedModelImpl.getColumnBitmask() &
-				FINDER_PATH_FETCH_BY_U_TSN.getColumnBitmask()) != 0) {
-			Object[] args = new Object[] {
-					feedModelImpl.getOriginalUserId(),
-					feedModelImpl.getOriginalTwitterScreenName()
-				};
+			 _finderPathFetchByU_TSN.getColumnBitmask()) != 0) {
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_U_TSN, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_U_TSN, args);
+			Object[] args = new Object[] {
+				feedModelImpl.getOriginalUserId(),
+				feedModelImpl.getOriginalTwitterScreenName()
+			};
+
+			finderCache.removeResult(_finderPathCountByU_TSN, args);
+			finderCache.removeResult(_finderPathFetchByU_TSN, args);
 		}
 	}
 
@@ -489,7 +506,7 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 		feed.setNew(true);
 		feed.setPrimaryKey(feedId);
 
-		feed.setCompanyId(companyProvider.getCompanyId());
+		feed.setCompanyId(CompanyThreadLocal.getCompanyId());
 
 		return feed;
 	}
@@ -527,17 +544,17 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchFeedException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchFeedException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(feed);
 		}
-		catch (NoSuchFeedException nsee) {
-			throw nsee;
+		catch (NoSuchFeedException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -546,23 +563,22 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 
 	@Override
 	protected Feed removeImpl(Feed feed) {
-		feed = toUnwrappedModel(feed);
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(feed)) {
-				feed = (Feed)session.get(FeedImpl.class, feed.getPrimaryKeyObj());
+				feed = (Feed)session.get(
+					FeedImpl.class, feed.getPrimaryKeyObj());
 			}
 
 			if (feed != null) {
 				session.delete(feed);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -577,13 +593,28 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 
 	@Override
 	public Feed updateImpl(Feed feed) {
-		feed = toUnwrappedModel(feed);
-
 		boolean isNew = feed.isNew();
+
+		if (!(feed instanceof FeedModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(feed.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(feed);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in feed proxy " +
+						invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom Feed implementation " +
+					feed.getClass());
+		}
 
 		FeedModelImpl feedModelImpl = (FeedModelImpl)feed;
 
-		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -619,8 +650,8 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 				feed = (Feed)session.merge(feed);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -631,15 +662,15 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 		if (!FeedModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else
-		 if (isNew) {
-			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
-				FINDER_ARGS_EMPTY);
+		else if (isNew) {
+			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(FeedModelImpl.ENTITY_CACHE_ENABLED,
-			FeedImpl.class, feed.getPrimaryKey(), feed, false);
+		entityCache.putResult(
+			FeedModelImpl.ENTITY_CACHE_ENABLED, FeedImpl.class,
+			feed.getPrimaryKey(), feed, false);
 
 		clearUniqueFindersCache(feedModelImpl, false);
 		cacheUniqueFindersCache(feedModelImpl);
@@ -649,31 +680,8 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 		return feed;
 	}
 
-	protected Feed toUnwrappedModel(Feed feed) {
-		if (feed instanceof FeedImpl) {
-			return feed;
-		}
-
-		FeedImpl feedImpl = new FeedImpl();
-
-		feedImpl.setNew(feed.isNew());
-		feedImpl.setPrimaryKey(feed.getPrimaryKey());
-
-		feedImpl.setFeedId(feed.getFeedId());
-		feedImpl.setCompanyId(feed.getCompanyId());
-		feedImpl.setUserId(feed.getUserId());
-		feedImpl.setUserName(feed.getUserName());
-		feedImpl.setCreateDate(feed.getCreateDate());
-		feedImpl.setModifiedDate(feed.getModifiedDate());
-		feedImpl.setTwitterUserId(feed.getTwitterUserId());
-		feedImpl.setTwitterScreenName(feed.getTwitterScreenName());
-		feedImpl.setLastStatusId(feed.getLastStatusId());
-
-		return feedImpl;
-	}
-
 	/**
-	 * Returns the feed with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the feed with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the feed
 	 * @return the feed
@@ -682,6 +690,7 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 	@Override
 	public Feed findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchFeedException {
+
 		Feed feed = fetchByPrimaryKey(primaryKey);
 
 		if (feed == null) {
@@ -689,15 +698,15 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchFeedException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchFeedException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return feed;
 	}
 
 	/**
-	 * Returns the feed with the primary key or throws a {@link NoSuchFeedException} if it could not be found.
+	 * Returns the feed with the primary key or throws a <code>NoSuchFeedException</code> if it could not be found.
 	 *
 	 * @param feedId the primary key of the feed
 	 * @return the feed
@@ -716,8 +725,8 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 	 */
 	@Override
 	public Feed fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(FeedModelImpl.ENTITY_CACHE_ENABLED,
-				FeedImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			FeedModelImpl.ENTITY_CACHE_ENABLED, FeedImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -737,15 +746,17 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 					cacheResult(feed);
 				}
 				else {
-					entityCache.putResult(FeedModelImpl.ENTITY_CACHE_ENABLED,
-						FeedImpl.class, primaryKey, nullModel);
+					entityCache.putResult(
+						FeedModelImpl.ENTITY_CACHE_ENABLED, FeedImpl.class,
+						primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
-				entityCache.removeResult(FeedModelImpl.ENTITY_CACHE_ENABLED,
-					FeedImpl.class, primaryKey);
+			catch (Exception exception) {
+				entityCache.removeResult(
+					FeedModelImpl.ENTITY_CACHE_ENABLED, FeedImpl.class,
+					primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -769,6 +780,7 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 	@Override
 	public Map<Serializable, Feed> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
@@ -792,8 +804,8 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(FeedModelImpl.ENTITY_CACHE_ENABLED,
-					FeedImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				FeedModelImpl.ENTITY_CACHE_ENABLED, FeedImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -813,31 +825,31 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler sb = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
-		query.append(_SQL_SELECT_FEED_WHERE_PKS_IN);
+		sb.append(_SQL_SELECT_FEED_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append((long)primaryKey);
+			sb.append((long)primaryKey);
 
-			query.append(StringPool.COMMA);
+			sb.append(",");
 		}
 
-		query.setIndex(query.index() - 1);
+		sb.setIndex(sb.index() - 1);
 
-		query.append(StringPool.CLOSE_PARENTHESIS);
+		sb.append(")");
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query q = session.createQuery(sql);
+			Query query = session.createQuery(sql);
 
-			for (Feed feed : (List<Feed>)q.list()) {
+			for (Feed feed : (List<Feed>)query.list()) {
 				map.put(feed.getPrimaryKeyObj(), feed);
 
 				cacheResult(feed);
@@ -846,12 +858,13 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(FeedModelImpl.ENTITY_CACHE_ENABLED,
-					FeedImpl.class, primaryKey, nullModel);
+				entityCache.putResult(
+					FeedModelImpl.ENTITY_CACHE_ENABLED, FeedImpl.class,
+					primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -874,7 +887,7 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 	 * Returns a range of all the feeds.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link FeedModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>FeedModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of feeds
@@ -890,7 +903,7 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 	 * Returns an ordered range of all the feeds.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link FeedModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>FeedModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of feeds
@@ -899,8 +912,9 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 	 * @return the ordered range of feeds
 	 */
 	@Override
-	public List<Feed> findAll(int start, int end,
-		OrderByComparator<Feed> orderByComparator) {
+	public List<Feed> findAll(
+		int start, int end, OrderByComparator<Feed> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -908,61 +922,62 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 	 * Returns an ordered range of all the feeds.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link FeedModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>FeedModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of feeds
 	 * @param end the upper bound of the range of feeds (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of feeds
 	 */
 	@Override
-	public List<Feed> findAll(int start, int end,
-		OrderByComparator<Feed> orderByComparator, boolean retrieveFromCache) {
-		boolean pagination = true;
+	public List<Feed> findAll(
+		int start, int end, OrderByComparator<Feed> orderByComparator,
+		boolean useFinderCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-			finderArgs = FINDER_ARGS_EMPTY;
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-			finderArgs = new Object[] { start, end, orderByComparator };
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindAll;
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<Feed> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<Feed>)finderCache.getResult(finderPath, finderArgs,
-					this);
+		if (useFinderCache) {
+			list = (List<Feed>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
-				query.append(_SQL_SELECT_FEED);
+				sb.append(_SQL_SELECT_FEED);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
-				sql = query.toString();
+				sql = sb.toString();
 			}
 			else {
 				sql = _SQL_SELECT_FEED;
 
-				if (pagination) {
-					sql = sql.concat(FeedModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(FeedModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -970,29 +985,23 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<Feed>)QueryUtil.list(q, getDialect(), start,
-							end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<Feed>)QueryUtil.list(q, getDialect(), start,
-							end);
-				}
+				list = (List<Feed>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1020,8 +1029,8 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -1029,18 +1038,18 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(_SQL_COUNT_FEED);
+				Query query = session.createQuery(_SQL_COUNT_FEED);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
-					FINDER_ARGS_EMPTY);
+			catch (Exception exception) {
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1059,6 +1068,36 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 	 * Initializes the feed persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(
+			FeedModelImpl.ENTITY_CACHE_ENABLED,
+			FeedModelImpl.FINDER_CACHE_ENABLED, FeedImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			FeedModelImpl.ENTITY_CACHE_ENABLED,
+			FeedModelImpl.FINDER_CACHE_ENABLED, FeedImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+			new String[0]);
+
+		_finderPathCountAll = new FinderPath(
+			FeedModelImpl.ENTITY_CACHE_ENABLED,
+			FeedModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
+
+		_finderPathFetchByU_TSN = new FinderPath(
+			FeedModelImpl.ENTITY_CACHE_ENABLED,
+			FeedModelImpl.FINDER_CACHE_ENABLED, FeedImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchByU_TSN",
+			new String[] {Long.class.getName(), String.class.getName()},
+			FeedModelImpl.USERID_COLUMN_BITMASK |
+			FeedModelImpl.TWITTERSCREENNAME_COLUMN_BITMASK);
+
+		_finderPathCountByU_TSN = new FinderPath(
+			FeedModelImpl.ENTITY_CACHE_ENABLED,
+			FeedModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_TSN",
+			new String[] {Long.class.getName(), String.class.getName()});
 	}
 
 	public void destroy() {
@@ -1068,19 +1107,35 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@ServiceReference(type = CompanyProviderWrapper.class)
-	protected CompanyProvider companyProvider;
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
+
 	private static final String _SQL_SELECT_FEED = "SELECT feed FROM Feed feed";
-	private static final String _SQL_SELECT_FEED_WHERE_PKS_IN = "SELECT feed FROM Feed feed WHERE feedId IN (";
-	private static final String _SQL_SELECT_FEED_WHERE = "SELECT feed FROM Feed feed WHERE ";
-	private static final String _SQL_COUNT_FEED = "SELECT COUNT(feed) FROM Feed feed";
-	private static final String _SQL_COUNT_FEED_WHERE = "SELECT COUNT(feed) FROM Feed feed WHERE ";
+
+	private static final String _SQL_SELECT_FEED_WHERE_PKS_IN =
+		"SELECT feed FROM Feed feed WHERE feedId IN (";
+
+	private static final String _SQL_SELECT_FEED_WHERE =
+		"SELECT feed FROM Feed feed WHERE ";
+
+	private static final String _SQL_COUNT_FEED =
+		"SELECT COUNT(feed) FROM Feed feed";
+
+	private static final String _SQL_COUNT_FEED_WHERE =
+		"SELECT COUNT(feed) FROM Feed feed WHERE ";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "feed.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Feed exists with the primary key ";
-	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Feed exists with the key {";
-	private static final Log _log = LogFactoryUtil.getLog(FeedPersistenceImpl.class);
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No Feed exists with the primary key ";
+
+	private static final String _NO_SUCH_ENTITY_WITH_KEY =
+		"No Feed exists with the key {";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		FeedPersistenceImpl.class);
+
 }

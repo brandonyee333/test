@@ -14,14 +14,10 @@
 
 package com.liferay.mobile.device.rules.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.mobile.device.rules.model.MDRRuleGroupInstance;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing MDRRuleGroupInstance in entity cache.
  *
  * @author Edward C. Han
- * @see MDRRuleGroupInstance
  * @generated
  */
-@ProviderType
-public class MDRRuleGroupInstanceCacheModel implements CacheModel<MDRRuleGroupInstance>,
-	Externalizable {
+public class MDRRuleGroupInstanceCacheModel
+	implements CacheModel<MDRRuleGroupInstance>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,9 +45,12 @@ public class MDRRuleGroupInstanceCacheModel implements CacheModel<MDRRuleGroupIn
 			return false;
 		}
 
-		MDRRuleGroupInstanceCacheModel mdrRuleGroupInstanceCacheModel = (MDRRuleGroupInstanceCacheModel)obj;
+		MDRRuleGroupInstanceCacheModel mdrRuleGroupInstanceCacheModel =
+			(MDRRuleGroupInstanceCacheModel)obj;
 
-		if (ruleGroupInstanceId == mdrRuleGroupInstanceCacheModel.ruleGroupInstanceId) {
+		if (ruleGroupInstanceId ==
+				mdrRuleGroupInstanceCacheModel.ruleGroupInstanceId) {
+
 			return true;
 		}
 
@@ -101,10 +99,11 @@ public class MDRRuleGroupInstanceCacheModel implements CacheModel<MDRRuleGroupIn
 
 	@Override
 	public MDRRuleGroupInstance toEntityModel() {
-		MDRRuleGroupInstanceImpl mdrRuleGroupInstanceImpl = new MDRRuleGroupInstanceImpl();
+		MDRRuleGroupInstanceImpl mdrRuleGroupInstanceImpl =
+			new MDRRuleGroupInstanceImpl();
 
 		if (uuid == null) {
-			mdrRuleGroupInstanceImpl.setUuid(StringPool.BLANK);
+			mdrRuleGroupInstanceImpl.setUuid("");
 		}
 		else {
 			mdrRuleGroupInstanceImpl.setUuid(uuid);
@@ -116,7 +115,7 @@ public class MDRRuleGroupInstanceCacheModel implements CacheModel<MDRRuleGroupIn
 		mdrRuleGroupInstanceImpl.setUserId(userId);
 
 		if (userName == null) {
-			mdrRuleGroupInstanceImpl.setUserName(StringPool.BLANK);
+			mdrRuleGroupInstanceImpl.setUserName("");
 		}
 		else {
 			mdrRuleGroupInstanceImpl.setUserName(userName);
@@ -145,8 +144,8 @@ public class MDRRuleGroupInstanceCacheModel implements CacheModel<MDRRuleGroupIn
 			mdrRuleGroupInstanceImpl.setLastPublishDate(null);
 		}
 		else {
-			mdrRuleGroupInstanceImpl.setLastPublishDate(new Date(
-					lastPublishDate));
+			mdrRuleGroupInstanceImpl.setLastPublishDate(
+				new Date(lastPublishDate));
 		}
 
 		mdrRuleGroupInstanceImpl.resetOriginalValues();
@@ -180,10 +179,9 @@ public class MDRRuleGroupInstanceCacheModel implements CacheModel<MDRRuleGroupIn
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -198,7 +196,7 @@ public class MDRRuleGroupInstanceCacheModel implements CacheModel<MDRRuleGroupIn
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -230,4 +228,5 @@ public class MDRRuleGroupInstanceCacheModel implements CacheModel<MDRRuleGroupIn
 	public long ruleGroupId;
 	public int priority;
 	public long lastPublishDate;
+
 }

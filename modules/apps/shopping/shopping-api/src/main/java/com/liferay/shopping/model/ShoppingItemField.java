@@ -25,20 +25,23 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see ShoppingItemFieldModel
- * @see com.liferay.shopping.model.impl.ShoppingItemFieldImpl
- * @see com.liferay.shopping.model.impl.ShoppingItemFieldModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.shopping.model.impl.ShoppingItemFieldImpl")
+@ImplementationClassName(
+	"com.liferay.shopping.model.impl.ShoppingItemFieldImpl"
+)
 @ProviderType
-public interface ShoppingItemField extends ShoppingItemFieldModel, PersistedModel {
+public interface ShoppingItemField
+	extends PersistedModel, ShoppingItemFieldModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.shopping.model.impl.ShoppingItemFieldImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.shopping.model.impl.ShoppingItemFieldImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<ShoppingItemField, Long> ITEM_FIELD_ID_ACCESSOR =
-		new Accessor<ShoppingItemField, Long>() {
+	public static final Accessor<ShoppingItemField, Long>
+		ITEM_FIELD_ID_ACCESSOR = new Accessor<ShoppingItemField, Long>() {
+
 			@Override
 			public Long get(ShoppingItemField shoppingItemField) {
 				return shoppingItemField.getItemFieldId();
@@ -53,9 +56,11 @@ public interface ShoppingItemField extends ShoppingItemFieldModel, PersistedMode
 			public Class<ShoppingItemField> getTypeClass() {
 				return ShoppingItemField.class;
 			}
+
 		};
 
-	public java.lang.String[] getValuesArray();
+	public String[] getValuesArray();
 
-	public void setValuesArray(java.lang.String[] valuesArray);
+	public void setValuesArray(String[] valuesArray);
+
 }

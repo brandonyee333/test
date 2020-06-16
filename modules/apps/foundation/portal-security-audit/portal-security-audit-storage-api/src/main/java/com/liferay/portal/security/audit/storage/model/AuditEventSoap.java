@@ -14,8 +14,6 @@
 
 package com.liferay.portal.security.audit.storage.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,11 +24,10 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.portal.security.audit.storage.service.http.AuditEventServiceSoap}.
  *
  * @author Brian Wing Shun Chan
- * @see com.liferay.portal.security.audit.storage.service.http.AuditEventServiceSoap
  * @generated
  */
-@ProviderType
 public class AuditEventSoap implements Serializable {
+
 	public static AuditEventSoap toSoapModel(AuditEvent model) {
 		AuditEventSoap soapModel = new AuditEventSoap();
 
@@ -81,7 +78,8 @@ public class AuditEventSoap implements Serializable {
 	}
 
 	public static AuditEventSoap[] toSoapModels(List<AuditEvent> models) {
-		List<AuditEventSoap> soapModels = new ArrayList<AuditEventSoap>(models.size());
+		List<AuditEventSoap> soapModels = new ArrayList<AuditEventSoap>(
+			models.size());
 
 		for (AuditEvent model : models) {
 			soapModels.add(toSoapModel(model));
@@ -236,4 +234,5 @@ public class AuditEventSoap implements Serializable {
 	private int _serverPort;
 	private String _sessionID;
 	private String _additionalInfo;
+
 }

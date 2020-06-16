@@ -14,8 +14,6 @@
 
 package com.liferay.counter.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.counter.kernel.model.Counter;
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 
@@ -31,13 +29,13 @@ import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
  * @see Counter
  * @generated
  */
-@ProviderType
-public abstract class CounterBaseImpl extends CounterModelImpl
-	implements Counter {
+public abstract class CounterBaseImpl
+	extends CounterModelImpl implements Counter {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a counter model instance should use the {@link Counter} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a counter model instance should use the <code>Counter</code> interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -48,4 +46,5 @@ public abstract class CounterBaseImpl extends CounterModelImpl
 			CounterLocalServiceUtil.updateCounter(this);
 		}
 	}
+
 }

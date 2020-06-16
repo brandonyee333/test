@@ -14,8 +14,6 @@
 
 package com.liferay.contacts.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,11 +24,10 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.contacts.service.http.EntryServiceSoap}.
  *
  * @author Brian Wing Shun Chan
- * @see com.liferay.contacts.service.http.EntryServiceSoap
  * @generated
  */
-@ProviderType
 public class EntrySoap implements Serializable {
+
 	public static EntrySoap toSoapModel(Entry model) {
 		EntrySoap soapModel = new EntrySoap();
 
@@ -186,4 +183,5 @@ public class EntrySoap implements Serializable {
 	private String _fullName;
 	private String _emailAddress;
 	private String _comments;
+
 }

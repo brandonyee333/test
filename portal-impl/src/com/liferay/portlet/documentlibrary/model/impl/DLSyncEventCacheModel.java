@@ -14,14 +14,10 @@
 
 package com.liferay.portlet.documentlibrary.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.document.library.kernel.model.DLSyncEvent;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -32,12 +28,11 @@ import java.io.ObjectOutput;
  * The cache model class for representing DLSyncEvent in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see DLSyncEvent
  * @generated
  */
-@ProviderType
-public class DLSyncEventCacheModel implements CacheModel<DLSyncEvent>,
-	Externalizable {
+public class DLSyncEventCacheModel
+	implements CacheModel<DLSyncEvent>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,7 +43,8 @@ public class DLSyncEventCacheModel implements CacheModel<DLSyncEvent>,
 			return false;
 		}
 
-		DLSyncEventCacheModel dlSyncEventCacheModel = (DLSyncEventCacheModel)obj;
+		DLSyncEventCacheModel dlSyncEventCacheModel =
+			(DLSyncEventCacheModel)obj;
 
 		if (syncEventId == dlSyncEventCacheModel.syncEventId) {
 			return true;
@@ -92,14 +88,14 @@ public class DLSyncEventCacheModel implements CacheModel<DLSyncEvent>,
 		dlSyncEventImpl.setModifiedTime(modifiedTime);
 
 		if (event == null) {
-			dlSyncEventImpl.setEvent(StringPool.BLANK);
+			dlSyncEventImpl.setEvent("");
 		}
 		else {
 			dlSyncEventImpl.setEvent(event);
 		}
 
 		if (type == null) {
-			dlSyncEventImpl.setType(StringPool.BLANK);
+			dlSyncEventImpl.setType("");
 		}
 		else {
 			dlSyncEventImpl.setType(type);
@@ -126,8 +122,7 @@ public class DLSyncEventCacheModel implements CacheModel<DLSyncEvent>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(syncEventId);
 
 		objectOutput.writeLong(companyId);
@@ -135,14 +130,14 @@ public class DLSyncEventCacheModel implements CacheModel<DLSyncEvent>,
 		objectOutput.writeLong(modifiedTime);
 
 		if (event == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(event);
 		}
 
 		if (type == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(type);
@@ -157,4 +152,5 @@ public class DLSyncEventCacheModel implements CacheModel<DLSyncEvent>,
 	public String event;
 	public String type;
 	public long typePK;
+
 }

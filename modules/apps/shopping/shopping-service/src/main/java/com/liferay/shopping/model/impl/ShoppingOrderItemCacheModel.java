@@ -14,13 +14,9 @@
 
 package com.liferay.shopping.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-
 import com.liferay.shopping.model.ShoppingOrderItem;
 
 import java.io.Externalizable;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing ShoppingOrderItem in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see ShoppingOrderItem
  * @generated
  */
-@ProviderType
-public class ShoppingOrderItemCacheModel implements CacheModel<ShoppingOrderItem>,
-	Externalizable {
+public class ShoppingOrderItemCacheModel
+	implements CacheModel<ShoppingOrderItem>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,7 +45,8 @@ public class ShoppingOrderItemCacheModel implements CacheModel<ShoppingOrderItem
 			return false;
 		}
 
-		ShoppingOrderItemCacheModel shoppingOrderItemCacheModel = (ShoppingOrderItemCacheModel)obj;
+		ShoppingOrderItemCacheModel shoppingOrderItemCacheModel =
+			(ShoppingOrderItemCacheModel)obj;
 
 		if (orderItemId == shoppingOrderItemCacheModel.orderItemId) {
 			return true;
@@ -97,42 +93,43 @@ public class ShoppingOrderItemCacheModel implements CacheModel<ShoppingOrderItem
 
 	@Override
 	public ShoppingOrderItem toEntityModel() {
-		ShoppingOrderItemImpl shoppingOrderItemImpl = new ShoppingOrderItemImpl();
+		ShoppingOrderItemImpl shoppingOrderItemImpl =
+			new ShoppingOrderItemImpl();
 
 		shoppingOrderItemImpl.setOrderItemId(orderItemId);
 		shoppingOrderItemImpl.setCompanyId(companyId);
 		shoppingOrderItemImpl.setOrderId(orderId);
 
 		if (itemId == null) {
-			shoppingOrderItemImpl.setItemId(StringPool.BLANK);
+			shoppingOrderItemImpl.setItemId("");
 		}
 		else {
 			shoppingOrderItemImpl.setItemId(itemId);
 		}
 
 		if (sku == null) {
-			shoppingOrderItemImpl.setSku(StringPool.BLANK);
+			shoppingOrderItemImpl.setSku("");
 		}
 		else {
 			shoppingOrderItemImpl.setSku(sku);
 		}
 
 		if (name == null) {
-			shoppingOrderItemImpl.setName(StringPool.BLANK);
+			shoppingOrderItemImpl.setName("");
 		}
 		else {
 			shoppingOrderItemImpl.setName(name);
 		}
 
 		if (description == null) {
-			shoppingOrderItemImpl.setDescription(StringPool.BLANK);
+			shoppingOrderItemImpl.setDescription("");
 		}
 		else {
 			shoppingOrderItemImpl.setDescription(description);
 		}
 
 		if (properties == null) {
-			shoppingOrderItemImpl.setProperties(StringPool.BLANK);
+			shoppingOrderItemImpl.setProperties("");
 		}
 		else {
 			shoppingOrderItemImpl.setProperties(properties);
@@ -154,13 +151,15 @@ public class ShoppingOrderItemCacheModel implements CacheModel<ShoppingOrderItem
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		orderItemId = objectInput.readLong();
 
 		companyId = objectInput.readLong();
 
 		orderId = objectInput.readLong();
-		itemId = objectInput.readUTF();
+		itemId = (String)objectInput.readObject();
 		sku = objectInput.readUTF();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
@@ -173,8 +172,7 @@ public class ShoppingOrderItemCacheModel implements CacheModel<ShoppingOrderItem
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(orderItemId);
 
 		objectOutput.writeLong(companyId);
@@ -182,35 +180,35 @@ public class ShoppingOrderItemCacheModel implements CacheModel<ShoppingOrderItem
 		objectOutput.writeLong(orderId);
 
 		if (itemId == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(itemId);
+			objectOutput.writeObject(itemId);
 		}
 
 		if (sku == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(sku);
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (properties == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(properties);
@@ -233,4 +231,5 @@ public class ShoppingOrderItemCacheModel implements CacheModel<ShoppingOrderItem
 	public double price;
 	public int quantity;
 	public long shippedDate;
+
 }

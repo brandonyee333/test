@@ -14,8 +14,6 @@
 
 package com.liferay.calendar.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.calendar.model.CalendarNotificationTemplate;
 import com.liferay.calendar.service.CalendarNotificationTemplateLocalServiceUtil;
 
@@ -31,22 +29,25 @@ import com.liferay.calendar.service.CalendarNotificationTemplateLocalServiceUtil
  * @see CalendarNotificationTemplate
  * @generated
  */
-@ProviderType
 public abstract class CalendarNotificationTemplateBaseImpl
 	extends CalendarNotificationTemplateModelImpl
 	implements CalendarNotificationTemplate {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a calendar notification template model instance should use the {@link CalendarNotificationTemplate} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a calendar notification template model instance should use the <code>CalendarNotificationTemplate</code> interface instead.
 	 */
 	@Override
 	public void persist() {
 		if (this.isNew()) {
-			CalendarNotificationTemplateLocalServiceUtil.addCalendarNotificationTemplate(this);
+			CalendarNotificationTemplateLocalServiceUtil.
+				addCalendarNotificationTemplate(this);
 		}
 		else {
-			CalendarNotificationTemplateLocalServiceUtil.updateCalendarNotificationTemplate(this);
+			CalendarNotificationTemplateLocalServiceUtil.
+				updateCalendarNotificationTemplate(this);
 		}
 	}
+
 }

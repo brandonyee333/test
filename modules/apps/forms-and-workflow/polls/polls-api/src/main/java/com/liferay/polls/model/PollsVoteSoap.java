@@ -14,8 +14,6 @@
 
 package com.liferay.polls.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,11 +24,10 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.polls.service.http.PollsVoteServiceSoap}.
  *
  * @author Brian Wing Shun Chan
- * @see com.liferay.polls.service.http.PollsVoteServiceSoap
  * @generated
  */
-@ProviderType
 public class PollsVoteSoap implements Serializable {
+
 	public static PollsVoteSoap toSoapModel(PollsVote model) {
 		PollsVoteSoap soapModel = new PollsVoteSoap();
 
@@ -78,7 +75,8 @@ public class PollsVoteSoap implements Serializable {
 	}
 
 	public static PollsVoteSoap[] toSoapModels(List<PollsVote> models) {
-		List<PollsVoteSoap> soapModels = new ArrayList<PollsVoteSoap>(models.size());
+		List<PollsVoteSoap> soapModels = new ArrayList<PollsVoteSoap>(
+			models.size());
 
 		for (PollsVote model : models) {
 			soapModels.add(toSoapModel(model));
@@ -206,4 +204,5 @@ public class PollsVoteSoap implements Serializable {
 	private long _choiceId;
 	private Date _lastPublishDate;
 	private Date _voteDate;
+
 }

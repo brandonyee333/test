@@ -48,191 +48,187 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see KaleoTransitionLocalServiceUtil
- * @see com.liferay.portal.workflow.kaleo.service.base.KaleoTransitionLocalServiceBaseImpl
- * @see com.liferay.portal.workflow.kaleo.service.impl.KaleoTransitionLocalServiceImpl
  * @generated
  */
 @ProviderType
-@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
-	PortalException.class, SystemException.class})
-public interface KaleoTransitionLocalService extends BaseLocalService,
-	PersistedModelLocalService {
+@Transactional(
+	isolation = Isolation.PORTAL,
+	rollbackFor = {PortalException.class, SystemException.class}
+)
+public interface KaleoTransitionLocalService
+	extends BaseLocalService, PersistedModelLocalService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link KaleoTransitionLocalServiceUtil} to access the kaleo transition local service. Add custom service methods to {@link com.liferay.portal.workflow.kaleo.service.impl.KaleoTransitionLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link KaleoTransitionLocalServiceUtil} to access the kaleo transition local service. Add custom service methods to <code>com.liferay.portal.workflow.kaleo.service.impl.KaleoTransitionLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
-	* @throws PortalException
-	*/
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Adds the kaleo transition to the database. Also notifies the appropriate model listeners.
-	*
-	* @param kaleoTransition the kaleo transition
-	* @return the kaleo transition that was added
-	*/
+	 * Adds the kaleo transition to the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param kaleoTransition the kaleo transition
+	 * @return the kaleo transition that was added
+	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public KaleoTransition addKaleoTransition(KaleoTransition kaleoTransition);
 
-	public KaleoTransition addKaleoTransition(long kaleoDefinitionId,
-		long kaleoNodeId, Transition transition, KaleoNode sourceKaleoNode,
-		KaleoNode targetKaleoNode, ServiceContext serviceContext)
+	public KaleoTransition addKaleoTransition(
+			long kaleoDefinitionId, long kaleoNodeId, Transition transition,
+			KaleoNode sourceKaleoNode, KaleoNode targetKaleoNode,
+			ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
-	* Creates a new kaleo transition with the primary key. Does not add the kaleo transition to the database.
-	*
-	* @param kaleoTransitionId the primary key for the new kaleo transition
-	* @return the new kaleo transition
-	*/
+	 * Creates a new kaleo transition with the primary key. Does not add the kaleo transition to the database.
+	 *
+	 * @param kaleoTransitionId the primary key for the new kaleo transition
+	 * @return the new kaleo transition
+	 */
+	@Transactional(enabled = false)
 	public KaleoTransition createKaleoTransition(long kaleoTransitionId);
 
+	public void deleteCompanyKaleoTransitions(long companyId);
+
+	public void deleteKaleoDefinitionKaleoTransitions(long kaleoDefinitionId);
+
 	/**
-	* Deletes the kaleo transition from the database. Also notifies the appropriate model listeners.
-	*
-	* @param kaleoTransition the kaleo transition
-	* @return the kaleo transition that was removed
-	*/
+	 * Deletes the kaleo transition from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param kaleoTransition the kaleo transition
+	 * @return the kaleo transition that was removed
+	 */
 	@Indexable(type = IndexableType.DELETE)
 	public KaleoTransition deleteKaleoTransition(
 		KaleoTransition kaleoTransition);
 
 	/**
-	* Deletes the kaleo transition with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param kaleoTransitionId the primary key of the kaleo transition
-	* @return the kaleo transition that was removed
-	* @throws PortalException if a kaleo transition with the primary key could not be found
-	*/
+	 * Deletes the kaleo transition with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param kaleoTransitionId the primary key of the kaleo transition
+	 * @return the kaleo transition that was removed
+	 * @throws PortalException if a kaleo transition with the primary key could not be found
+	 */
 	@Indexable(type = IndexableType.DELETE)
 	public KaleoTransition deleteKaleoTransition(long kaleoTransitionId)
 		throws PortalException;
 
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DynamicQuery dynamicQuery();
+
+	/**
+	 * Performs a dynamic query on the database and returns the matching rows.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the matching rows
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery);
+
+	/**
+	 * Performs a dynamic query on the database and returns a range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portal.workflow.kaleo.model.impl.KaleoTransitionModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @return the range of matching rows
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end);
+
+	/**
+	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portal.workflow.kaleo.model.impl.KaleoTransitionModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching rows
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator);
+
+	/**
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the number of rows matching the dynamic query
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param projection the projection to apply to the query
+	 * @return the number of rows matching the dynamic query
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long dynamicQueryCount(
+		DynamicQuery dynamicQuery, Projection projection);
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public KaleoTransition fetchKaleoTransition(long kaleoTransitionId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public KaleoTransition getDefaultKaleoTransition(long kaleoNodeId)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KaleoTransition getKaleoTransition(long kaleoNodeId,
-		java.lang.String name) throws PortalException;
-
-	/**
-	* Returns the kaleo transition with the primary key.
-	*
-	* @param kaleoTransitionId the primary key of the kaleo transition
-	* @return the kaleo transition
-	* @throws PortalException if a kaleo transition with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KaleoTransition getKaleoTransition(long kaleoTransitionId)
-		throws PortalException;
-
-	/**
-	* Updates the kaleo transition in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param kaleoTransition the kaleo transition
-	* @return the kaleo transition that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public KaleoTransition updateKaleoTransition(
-		KaleoTransition kaleoTransition);
-
-	/**
-	* Returns the number of kaleo transitions.
-	*
-	* @return the number of kaleo transitions
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getKaleoTransitionsCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getKaleoTransitionsCount(long kaleoNodeId);
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
-	/**
-	* Performs a dynamic query on the database and returns the matching rows.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the matching rows
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery);
-
-	/**
-	* Performs a dynamic query on the database and returns a range of the matching rows.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.workflow.kaleo.model.impl.KaleoTransitionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param dynamicQuery the dynamic query
-	* @param start the lower bound of the range of model instances
-	* @param end the upper bound of the range of model instances (not inclusive)
-	* @return the range of matching rows
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end);
-
-	/**
-	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.workflow.kaleo.model.impl.KaleoTransitionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param dynamicQuery the dynamic query
-	* @param start the lower bound of the range of model instances
-	* @param end the upper bound of the range of model instances (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching rows
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end, OrderByComparator<T> orderByComparator);
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<KaleoTransition> getKaleoDefinitionKaleoTransitions(
 		long kaleoDefinitionId);
 
 	/**
-	* Returns a range of all the kaleo transitions.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.workflow.kaleo.model.impl.KaleoTransitionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of kaleo transitions
-	* @param end the upper bound of the range of kaleo transitions (not inclusive)
-	* @return the range of kaleo transitions
-	*/
+	 * Returns the kaleo transition with the primary key.
+	 *
+	 * @param kaleoTransitionId the primary key of the kaleo transition
+	 * @return the kaleo transition
+	 * @throws PortalException if a kaleo transition with the primary key could not be found
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public KaleoTransition getKaleoTransition(long kaleoTransitionId)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public KaleoTransition getKaleoTransition(long kaleoNodeId, String name)
+		throws PortalException;
+
+	/**
+	 * Returns a range of all the kaleo transitions.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.portal.workflow.kaleo.model.impl.KaleoTransitionModelImpl</code>.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of kaleo transitions
+	 * @param end the upper bound of the range of kaleo transitions (not inclusive)
+	 * @return the range of kaleo transitions
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<KaleoTransition> getKaleoTransitions(int start, int end);
 
@@ -240,26 +236,39 @@ public interface KaleoTransitionLocalService extends BaseLocalService,
 	public List<KaleoTransition> getKaleoTransitions(long kaleoNodeId);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
+	 * Returns the number of kaleo transitions.
+	 *
+	 * @return the number of kaleo transitions
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	public int getKaleoTransitionsCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getKaleoTransitionsCount(long kaleoNodeId);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
+	public String getOSGiServiceIdentifier();
+
+	/**
+	 * @throws PortalException
+	 */
+	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
 
-	public void deleteCompanyKaleoTransitions(long companyId);
+	/**
+	 * Updates the kaleo transition in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * @param kaleoTransition the kaleo transition
+	 * @return the kaleo transition that was updated
+	 */
+	@Indexable(type = IndexableType.REINDEX)
+	public KaleoTransition updateKaleoTransition(
+		KaleoTransition kaleoTransition);
 
-	public void deleteKaleoDefinitionKaleoTransitions(long kaleoDefinitionId);
 }

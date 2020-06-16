@@ -30,19 +30,11 @@ import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
-
 import com.liferay.trash.kernel.exception.NoSuchVersionException;
 import com.liferay.trash.kernel.model.TrashVersion;
 import com.liferay.trash.kernel.service.TrashVersionLocalServiceUtil;
 import com.liferay.trash.kernel.service.persistence.TrashVersionPersistence;
 import com.liferay.trash.kernel.service.persistence.TrashVersionUtil;
-
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
 
 import java.io.Serializable;
 
@@ -53,14 +45,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+
 /**
  * @generated
  */
 public class TrashVersionPersistenceTest {
+
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
-			PersistenceTestRule.INSTANCE,
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
 			new TransactionalTestRule(Propagation.REQUIRED));
 
 	@Before
@@ -100,7 +101,8 @@ public class TrashVersionPersistenceTest {
 
 		_persistence.remove(newTrashVersion);
 
-		TrashVersion existingTrashVersion = _persistence.fetchByPrimaryKey(newTrashVersion.getPrimaryKey());
+		TrashVersion existingTrashVersion = _persistence.fetchByPrimaryKey(
+			newTrashVersion.getPrimaryKey());
 
 		Assert.assertNull(existingTrashVersion);
 	}
@@ -130,22 +132,27 @@ public class TrashVersionPersistenceTest {
 
 		_trashVersions.add(_persistence.update(newTrashVersion));
 
-		TrashVersion existingTrashVersion = _persistence.findByPrimaryKey(newTrashVersion.getPrimaryKey());
+		TrashVersion existingTrashVersion = _persistence.findByPrimaryKey(
+			newTrashVersion.getPrimaryKey());
 
-		Assert.assertEquals(existingTrashVersion.getVersionId(),
+		Assert.assertEquals(
+			existingTrashVersion.getVersionId(),
 			newTrashVersion.getVersionId());
-		Assert.assertEquals(existingTrashVersion.getCompanyId(),
+		Assert.assertEquals(
+			existingTrashVersion.getCompanyId(),
 			newTrashVersion.getCompanyId());
-		Assert.assertEquals(existingTrashVersion.getEntryId(),
-			newTrashVersion.getEntryId());
-		Assert.assertEquals(existingTrashVersion.getClassNameId(),
+		Assert.assertEquals(
+			existingTrashVersion.getEntryId(), newTrashVersion.getEntryId());
+		Assert.assertEquals(
+			existingTrashVersion.getClassNameId(),
 			newTrashVersion.getClassNameId());
-		Assert.assertEquals(existingTrashVersion.getClassPK(),
-			newTrashVersion.getClassPK());
-		Assert.assertEquals(existingTrashVersion.getTypeSettings(),
+		Assert.assertEquals(
+			existingTrashVersion.getClassPK(), newTrashVersion.getClassPK());
+		Assert.assertEquals(
+			existingTrashVersion.getTypeSettings(),
 			newTrashVersion.getTypeSettings());
-		Assert.assertEquals(existingTrashVersion.getStatus(),
-			newTrashVersion.getStatus());
+		Assert.assertEquals(
+			existingTrashVersion.getStatus(), newTrashVersion.getStatus());
 	}
 
 	@Test
@@ -157,16 +164,16 @@ public class TrashVersionPersistenceTest {
 
 	@Test
 	public void testCountByE_C() throws Exception {
-		_persistence.countByE_C(RandomTestUtil.nextLong(),
-			RandomTestUtil.nextLong());
+		_persistence.countByE_C(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
 
 		_persistence.countByE_C(0L, 0L);
 	}
 
 	@Test
 	public void testCountByC_C() throws Exception {
-		_persistence.countByC_C(RandomTestUtil.nextLong(),
-			RandomTestUtil.nextLong());
+		_persistence.countByC_C(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
 
 		_persistence.countByC_C(0L, 0L);
 	}
@@ -175,7 +182,8 @@ public class TrashVersionPersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		TrashVersion newTrashVersion = addTrashVersion();
 
-		TrashVersion existingTrashVersion = _persistence.findByPrimaryKey(newTrashVersion.getPrimaryKey());
+		TrashVersion existingTrashVersion = _persistence.findByPrimaryKey(
+			newTrashVersion.getPrimaryKey());
 
 		Assert.assertEquals(existingTrashVersion, newTrashVersion);
 	}
@@ -189,21 +197,22 @@ public class TrashVersionPersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			getOrderByComparator());
+		_persistence.findAll(
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
 	}
 
 	protected OrderByComparator<TrashVersion> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create("TrashVersion", "versionId",
-			true, "companyId", true, "entryId", true, "classNameId", true,
-			"classPK", true, "status", true);
+		return OrderByComparatorFactoryUtil.create(
+			"TrashVersion", "versionId", true, "companyId", true, "entryId",
+			true, "classNameId", true, "classPK", true, "status", true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		TrashVersion newTrashVersion = addTrashVersion();
 
-		TrashVersion existingTrashVersion = _persistence.fetchByPrimaryKey(newTrashVersion.getPrimaryKey());
+		TrashVersion existingTrashVersion = _persistence.fetchByPrimaryKey(
+			newTrashVersion.getPrimaryKey());
 
 		Assert.assertEquals(existingTrashVersion, newTrashVersion);
 	}
@@ -220,6 +229,7 @@ public class TrashVersionPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
+
 		TrashVersion newTrashVersion1 = addTrashVersion();
 		TrashVersion newTrashVersion2 = addTrashVersion();
 
@@ -228,18 +238,22 @@ public class TrashVersionPersistenceTest {
 		primaryKeys.add(newTrashVersion1.getPrimaryKey());
 		primaryKeys.add(newTrashVersion2.getPrimaryKey());
 
-		Map<Serializable, TrashVersion> trashVersions = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, TrashVersion> trashVersions =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(2, trashVersions.size());
-		Assert.assertEquals(newTrashVersion1,
+		Assert.assertEquals(
+			newTrashVersion1,
 			trashVersions.get(newTrashVersion1.getPrimaryKey()));
-		Assert.assertEquals(newTrashVersion2,
+		Assert.assertEquals(
+			newTrashVersion2,
 			trashVersions.get(newTrashVersion2.getPrimaryKey()));
 	}
 
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
+
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -249,7 +263,8 @@ public class TrashVersionPersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, TrashVersion> trashVersions = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, TrashVersion> trashVersions =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(trashVersions.isEmpty());
 	}
@@ -257,6 +272,7 @@ public class TrashVersionPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
+
 		TrashVersion newTrashVersion = addTrashVersion();
 
 		long pk = RandomTestUtil.nextLong();
@@ -266,36 +282,39 @@ public class TrashVersionPersistenceTest {
 		primaryKeys.add(newTrashVersion.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, TrashVersion> trashVersions = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, TrashVersion> trashVersions =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, trashVersions.size());
-		Assert.assertEquals(newTrashVersion,
+		Assert.assertEquals(
+			newTrashVersion,
 			trashVersions.get(newTrashVersion.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, TrashVersion> trashVersions = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, TrashVersion> trashVersions =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(trashVersions.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
 		TrashVersion newTrashVersion = addTrashVersion();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newTrashVersion.getPrimaryKey());
 
-		Map<Serializable, TrashVersion> trashVersions = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, TrashVersion> trashVersions =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, trashVersions.size());
-		Assert.assertEquals(newTrashVersion,
+		Assert.assertEquals(
+			newTrashVersion,
 			trashVersions.get(newTrashVersion.getPrimaryKey()));
 	}
 
@@ -303,15 +322,19 @@ public class TrashVersionPersistenceTest {
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery = TrashVersionLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			TrashVersionLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<TrashVersion>() {
+		actionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<TrashVersion>() {
+
 				@Override
 				public void performAction(TrashVersion trashVersion) {
 					Assert.assertNotNull(trashVersion);
 
 					count.increment();
 				}
+
 			});
 
 		actionableDynamicQuery.performActions();
@@ -320,17 +343,18 @@ public class TrashVersionPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting()
-		throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
 		TrashVersion newTrashVersion = addTrashVersion();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(TrashVersion.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			TrashVersion.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("versionId",
-				newTrashVersion.getVersionId()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"versionId", newTrashVersion.getVersionId()));
 
-		List<TrashVersion> result = _persistence.findWithDynamicQuery(dynamicQuery);
+		List<TrashVersion> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
 
 		Assert.assertEquals(1, result.size());
 
@@ -341,31 +365,32 @@ public class TrashVersionPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(TrashVersion.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			TrashVersion.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("versionId",
-				RandomTestUtil.nextLong()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("versionId", RandomTestUtil.nextLong()));
 
-		List<TrashVersion> result = _persistence.findWithDynamicQuery(dynamicQuery);
+		List<TrashVersion> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
 
 		Assert.assertEquals(0, result.size());
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting()
-		throws Exception {
+	public void testDynamicQueryByProjectionExisting() throws Exception {
 		TrashVersion newTrashVersion = addTrashVersion();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(TrashVersion.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			TrashVersion.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.setProjection(ProjectionFactoryUtil.property("versionId"));
 
 		Object newVersionId = newTrashVersion.getVersionId();
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("versionId",
-				new Object[] { newVersionId }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"versionId", new Object[] {newVersionId}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -378,13 +403,14 @@ public class TrashVersionPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(TrashVersion.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			TrashVersion.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.setProjection(ProjectionFactoryUtil.property("versionId"));
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("versionId",
-				new Object[] { RandomTestUtil.nextLong() }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"versionId", new Object[] {RandomTestUtil.nextLong()}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -397,14 +423,18 @@ public class TrashVersionPersistenceTest {
 
 		_persistence.clearCache();
 
-		TrashVersion existingTrashVersion = _persistence.findByPrimaryKey(newTrashVersion.getPrimaryKey());
+		TrashVersion existingTrashVersion = _persistence.findByPrimaryKey(
+			newTrashVersion.getPrimaryKey());
 
-		Assert.assertEquals(Long.valueOf(existingTrashVersion.getClassNameId()),
-			ReflectionTestUtil.<Long>invoke(existingTrashVersion,
-				"getOriginalClassNameId", new Class<?>[0]));
-		Assert.assertEquals(Long.valueOf(existingTrashVersion.getClassPK()),
-			ReflectionTestUtil.<Long>invoke(existingTrashVersion,
-				"getOriginalClassPK", new Class<?>[0]));
+		Assert.assertEquals(
+			Long.valueOf(existingTrashVersion.getClassNameId()),
+			ReflectionTestUtil.<Long>invoke(
+				existingTrashVersion, "getOriginalClassNameId",
+				new Class<?>[0]));
+		Assert.assertEquals(
+			Long.valueOf(existingTrashVersion.getClassPK()),
+			ReflectionTestUtil.<Long>invoke(
+				existingTrashVersion, "getOriginalClassPK", new Class<?>[0]));
 	}
 
 	protected TrashVersion addTrashVersion() throws Exception {
@@ -432,4 +462,5 @@ public class TrashVersionPersistenceTest {
 	private List<TrashVersion> _trashVersions = new ArrayList<TrashVersion>();
 	private TrashVersionPersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
+
 }

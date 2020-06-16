@@ -1,20 +1,18 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.saml.persistence.model;
-
-import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -28,9 +26,11 @@ import java.util.List;
  * @author Mika Koivisto
  * @generated
  */
-@ProviderType
 public class SamlSpIdpConnectionSoap implements Serializable {
-	public static SamlSpIdpConnectionSoap toSoapModel(SamlSpIdpConnection model) {
+
+	public static SamlSpIdpConnectionSoap toSoapModel(
+		SamlSpIdpConnection model) {
+
 		SamlSpIdpConnectionSoap soapModel = new SamlSpIdpConnectionSoap();
 
 		soapModel.setSamlSpIdpConnectionId(model.getSamlSpIdpConnectionId());
@@ -40,17 +40,18 @@ public class SamlSpIdpConnectionSoap implements Serializable {
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setSamlIdpEntityId(model.getSamlIdpEntityId());
-		soapModel.setAssertionSignatureRequired(model.getAssertionSignatureRequired());
+		soapModel.setAssertionSignatureRequired(
+			model.isAssertionSignatureRequired());
 		soapModel.setClockSkew(model.getClockSkew());
-		soapModel.setEnabled(model.getEnabled());
-		soapModel.setForceAuthn(model.getForceAuthn());
-		soapModel.setLdapImportEnabled(model.getLdapImportEnabled());
+		soapModel.setEnabled(model.isEnabled());
+		soapModel.setForceAuthn(model.isForceAuthn());
+		soapModel.setLdapImportEnabled(model.isLdapImportEnabled());
 		soapModel.setMetadataUrl(model.getMetadataUrl());
 		soapModel.setMetadataXml(model.getMetadataXml());
 		soapModel.setMetadataUpdatedDate(model.getMetadataUpdatedDate());
 		soapModel.setName(model.getName());
 		soapModel.setNameIdFormat(model.getNameIdFormat());
-		soapModel.setSignAuthnRequest(model.getSignAuthnRequest());
+		soapModel.setSignAuthnRequest(model.isSignAuthnRequest());
 		soapModel.setUserAttributeMappings(model.getUserAttributeMappings());
 
 		return soapModel;
@@ -58,7 +59,9 @@ public class SamlSpIdpConnectionSoap implements Serializable {
 
 	public static SamlSpIdpConnectionSoap[] toSoapModels(
 		SamlSpIdpConnection[] models) {
-		SamlSpIdpConnectionSoap[] soapModels = new SamlSpIdpConnectionSoap[models.length];
+
+		SamlSpIdpConnectionSoap[] soapModels =
+			new SamlSpIdpConnectionSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -69,10 +72,12 @@ public class SamlSpIdpConnectionSoap implements Serializable {
 
 	public static SamlSpIdpConnectionSoap[][] toSoapModels(
 		SamlSpIdpConnection[][] models) {
+
 		SamlSpIdpConnectionSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new SamlSpIdpConnectionSoap[models.length][models[0].length];
+			soapModels =
+				new SamlSpIdpConnectionSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new SamlSpIdpConnectionSoap[0][0];
@@ -87,13 +92,16 @@ public class SamlSpIdpConnectionSoap implements Serializable {
 
 	public static SamlSpIdpConnectionSoap[] toSoapModels(
 		List<SamlSpIdpConnection> models) {
-		List<SamlSpIdpConnectionSoap> soapModels = new ArrayList<SamlSpIdpConnectionSoap>(models.size());
+
+		List<SamlSpIdpConnectionSoap> soapModels =
+			new ArrayList<SamlSpIdpConnectionSoap>(models.size());
 
 		for (SamlSpIdpConnection model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new SamlSpIdpConnectionSoap[soapModels.size()]);
+		return soapModels.toArray(
+			new SamlSpIdpConnectionSoap[soapModels.size()]);
 	}
 
 	public SamlSpIdpConnectionSoap() {
@@ -173,6 +181,7 @@ public class SamlSpIdpConnectionSoap implements Serializable {
 
 	public void setAssertionSignatureRequired(
 		boolean assertionSignatureRequired) {
+
 		_assertionSignatureRequired = assertionSignatureRequired;
 	}
 
@@ -299,4 +308,5 @@ public class SamlSpIdpConnectionSoap implements Serializable {
 	private String _nameIdFormat;
 	private boolean _signAuthnRequest;
 	private String _userAttributeMappings;
+
 }

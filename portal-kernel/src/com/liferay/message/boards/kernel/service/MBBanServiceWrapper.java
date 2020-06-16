@@ -14,8 +14,6 @@
 
 package com.liferay.message.boards.kernel.service;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -25,36 +23,39 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see MBBanService
  * @generated
  */
-@ProviderType
-public class MBBanServiceWrapper implements MBBanService,
-	ServiceWrapper<MBBanService> {
+public class MBBanServiceWrapper
+	implements MBBanService, ServiceWrapper<MBBanService> {
+
 	public MBBanServiceWrapper(MBBanService mbBanService) {
 		_mbBanService = mbBanService;
 	}
 
 	@Override
 	public com.liferay.message.boards.kernel.model.MBBan addBan(
-		long banUserId,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+			long banUserId,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return _mbBanService.addBan(banUserId, serviceContext);
 	}
 
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _mbBanService.getOSGiServiceIdentifier();
+	public void deleteBan(
+			long banUserId,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_mbBanService.deleteBan(banUserId, serviceContext);
 	}
 
+	/**
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
 	@Override
-	public void deleteBan(long banUserId,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_mbBanService.deleteBan(banUserId, serviceContext);
+	public String getOSGiServiceIdentifier() {
+		return _mbBanService.getOSGiServiceIdentifier();
 	}
 
 	@Override
@@ -68,4 +69,5 @@ public class MBBanServiceWrapper implements MBBanService,
 	}
 
 	private MBBanService _mbBanService;
+
 }

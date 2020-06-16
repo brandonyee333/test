@@ -14,13 +14,9 @@
 
 package com.liferay.social.networking.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-
 import com.liferay.social.networking.model.MeetupsEntry;
 
 import java.io.Externalizable;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing MeetupsEntry in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see MeetupsEntry
  * @generated
  */
-@ProviderType
-public class MeetupsEntryCacheModel implements CacheModel<MeetupsEntry>,
-	Externalizable {
+public class MeetupsEntryCacheModel
+	implements CacheModel<MeetupsEntry>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,7 +45,8 @@ public class MeetupsEntryCacheModel implements CacheModel<MeetupsEntry>,
 			return false;
 		}
 
-		MeetupsEntryCacheModel meetupsEntryCacheModel = (MeetupsEntryCacheModel)obj;
+		MeetupsEntryCacheModel meetupsEntryCacheModel =
+			(MeetupsEntryCacheModel)obj;
 
 		if (meetupsEntryId == meetupsEntryCacheModel.meetupsEntryId) {
 			return true;
@@ -110,7 +106,7 @@ public class MeetupsEntryCacheModel implements CacheModel<MeetupsEntry>,
 		meetupsEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			meetupsEntryImpl.setUserName(StringPool.BLANK);
+			meetupsEntryImpl.setUserName("");
 		}
 		else {
 			meetupsEntryImpl.setUserName(userName);
@@ -131,14 +127,14 @@ public class MeetupsEntryCacheModel implements CacheModel<MeetupsEntry>,
 		}
 
 		if (title == null) {
-			meetupsEntryImpl.setTitle(StringPool.BLANK);
+			meetupsEntryImpl.setTitle("");
 		}
 		else {
 			meetupsEntryImpl.setTitle(title);
 		}
 
 		if (description == null) {
-			meetupsEntryImpl.setDescription(StringPool.BLANK);
+			meetupsEntryImpl.setDescription("");
 		}
 		else {
 			meetupsEntryImpl.setDescription(description);
@@ -193,8 +189,7 @@ public class MeetupsEntryCacheModel implements CacheModel<MeetupsEntry>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(meetupsEntryId);
 
 		objectOutput.writeLong(companyId);
@@ -202,7 +197,7 @@ public class MeetupsEntryCacheModel implements CacheModel<MeetupsEntry>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -212,14 +207,14 @@ public class MeetupsEntryCacheModel implements CacheModel<MeetupsEntry>,
 		objectOutput.writeLong(modifiedDate);
 
 		if (title == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(title);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -251,4 +246,5 @@ public class MeetupsEntryCacheModel implements CacheModel<MeetupsEntry>,
 	public int maxAttendees;
 	public double price;
 	public long thumbnailId;
+
 }

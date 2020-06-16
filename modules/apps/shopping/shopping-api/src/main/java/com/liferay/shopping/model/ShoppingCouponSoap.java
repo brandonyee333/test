@@ -14,8 +14,6 @@
 
 package com.liferay.shopping.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,11 +24,10 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.shopping.service.http.ShoppingCouponServiceSoap}.
  *
  * @author Brian Wing Shun Chan
- * @see com.liferay.shopping.service.http.ShoppingCouponServiceSoap
  * @generated
  */
-@ProviderType
 public class ShoppingCouponSoap implements Serializable {
+
 	public static ShoppingCouponSoap toSoapModel(ShoppingCoupon model) {
 		ShoppingCouponSoap soapModel = new ShoppingCouponSoap();
 
@@ -46,7 +43,7 @@ public class ShoppingCouponSoap implements Serializable {
 		soapModel.setDescription(model.getDescription());
 		soapModel.setStartDate(model.getStartDate());
 		soapModel.setEndDate(model.getEndDate());
-		soapModel.setActive(model.getActive());
+		soapModel.setActive(model.isActive());
 		soapModel.setLimitCategories(model.getLimitCategories());
 		soapModel.setLimitSkus(model.getLimitSkus());
 		soapModel.setMinOrder(model.getMinOrder());
@@ -66,11 +63,14 @@ public class ShoppingCouponSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static ShoppingCouponSoap[][] toSoapModels(ShoppingCoupon[][] models) {
+	public static ShoppingCouponSoap[][] toSoapModels(
+		ShoppingCoupon[][] models) {
+
 		ShoppingCouponSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new ShoppingCouponSoap[models.length][models[0].length];
+			soapModels =
+				new ShoppingCouponSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new ShoppingCouponSoap[0][0];
@@ -83,8 +83,11 @@ public class ShoppingCouponSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static ShoppingCouponSoap[] toSoapModels(List<ShoppingCoupon> models) {
-		List<ShoppingCouponSoap> soapModels = new ArrayList<ShoppingCouponSoap>(models.size());
+	public static ShoppingCouponSoap[] toSoapModels(
+		List<ShoppingCoupon> models) {
+
+		List<ShoppingCouponSoap> soapModels = new ArrayList<ShoppingCouponSoap>(
+			models.size());
 
 		for (ShoppingCoupon model : models) {
 			soapModels.add(toSoapModel(model));
@@ -270,4 +273,5 @@ public class ShoppingCouponSoap implements Serializable {
 	private double _minOrder;
 	private double _discount;
 	private String _discountType;
+
 }

@@ -14,10 +14,7 @@
 
 package com.liferay.portal.kernel.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -35,8 +32,8 @@ import java.util.Objects;
  * @see ListType
  * @generated
  */
-@ProviderType
 public class ListTypeWrapper implements ListType, ModelWrapper<ListType> {
+
 	public ListTypeWrapper(ListType listType) {
 		_listType = listType;
 	}
@@ -91,6 +88,81 @@ public class ListTypeWrapper implements ListType, ModelWrapper<ListType> {
 	}
 
 	@Override
+	public Object clone() {
+		return new ListTypeWrapper((ListType)_listType.clone());
+	}
+
+	@Override
+	public int compareTo(ListType listType) {
+		return _listType.compareTo(listType);
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _listType.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the list type ID of this list type.
+	 *
+	 * @return the list type ID of this list type
+	 */
+	@Override
+	public long getListTypeId() {
+		return _listType.getListTypeId();
+	}
+
+	/**
+	 * Returns the mvcc version of this list type.
+	 *
+	 * @return the mvcc version of this list type
+	 */
+	@Override
+	public long getMvccVersion() {
+		return _listType.getMvccVersion();
+	}
+
+	/**
+	 * Returns the name of this list type.
+	 *
+	 * @return the name of this list type
+	 */
+	@Override
+	public String getName() {
+		return _listType.getName();
+	}
+
+	/**
+	 * Returns the primary key of this list type.
+	 *
+	 * @return the primary key of this list type
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _listType.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _listType.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the type of this list type.
+	 *
+	 * @return the type of this list type
+	 */
+	@Override
+	public String getType() {
+		return _listType.getType();
+	}
+
+	@Override
+	public int hashCode() {
+		return _listType.hashCode();
+	}
+
+	@Override
 	public boolean isCachedModel() {
 		return _listType.isCachedModel();
 	}
@@ -106,8 +178,88 @@ public class ListTypeWrapper implements ListType, ModelWrapper<ListType> {
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _listType.getExpandoBridge();
+	public void persist() {
+		_listType.persist();
+	}
+
+	@Override
+	public void setCachedModel(boolean cachedModel) {
+		_listType.setCachedModel(cachedModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(BaseModel<?> baseModel) {
+		_listType.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_listType.setExpandoBridgeAttributes(expandoBridge);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
+		_listType.setExpandoBridgeAttributes(serviceContext);
+	}
+
+	/**
+	 * Sets the list type ID of this list type.
+	 *
+	 * @param listTypeId the list type ID of this list type
+	 */
+	@Override
+	public void setListTypeId(long listTypeId) {
+		_listType.setListTypeId(listTypeId);
+	}
+
+	/**
+	 * Sets the mvcc version of this list type.
+	 *
+	 * @param mvccVersion the mvcc version of this list type
+	 */
+	@Override
+	public void setMvccVersion(long mvccVersion) {
+		_listType.setMvccVersion(mvccVersion);
+	}
+
+	/**
+	 * Sets the name of this list type.
+	 *
+	 * @param name the name of this list type
+	 */
+	@Override
+	public void setName(String name) {
+		_listType.setName(name);
+	}
+
+	@Override
+	public void setNew(boolean n) {
+		_listType.setNew(n);
+	}
+
+	/**
+	 * Sets the primary key of this list type.
+	 *
+	 * @param primaryKey the primary key of this list type
+	 */
+	@Override
+	public void setPrimaryKey(long primaryKey) {
+		_listType.setPrimaryKey(primaryKey);
+	}
+
+	@Override
+	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
+		_listType.setPrimaryKeyObj(primaryKeyObj);
+	}
+
+	/**
+	 * Sets the type of this list type.
+	 *
+	 * @param type the type of this list type
+	 */
+	@Override
+	public void setType(String type) {
+		_listType.setType(type);
 	}
 
 	@Override
@@ -121,173 +273,18 @@ public class ListTypeWrapper implements ListType, ModelWrapper<ListType> {
 	}
 
 	@Override
+	public String toString() {
+		return _listType.toString();
+	}
+
+	@Override
 	public ListType toUnescapedModel() {
 		return new ListTypeWrapper(_listType.toUnescapedModel());
 	}
 
 	@Override
-	public int compareTo(ListType listType) {
-		return _listType.compareTo(listType);
-	}
-
-	@Override
-	public int hashCode() {
-		return _listType.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _listType.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new ListTypeWrapper((ListType)_listType.clone());
-	}
-
-	/**
-	* Returns the name of this list type.
-	*
-	* @return the name of this list type
-	*/
-	@Override
-	public java.lang.String getName() {
-		return _listType.getName();
-	}
-
-	/**
-	* Returns the type of this list type.
-	*
-	* @return the type of this list type
-	*/
-	@Override
-	public java.lang.String getType() {
-		return _listType.getType();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _listType.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _listType.toXmlString();
-	}
-
-	/**
-	* Returns the list type ID of this list type.
-	*
-	* @return the list type ID of this list type
-	*/
-	@Override
-	public long getListTypeId() {
-		return _listType.getListTypeId();
-	}
-
-	/**
-	* Returns the mvcc version of this list type.
-	*
-	* @return the mvcc version of this list type
-	*/
-	@Override
-	public long getMvccVersion() {
-		return _listType.getMvccVersion();
-	}
-
-	/**
-	* Returns the primary key of this list type.
-	*
-	* @return the primary key of this list type
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _listType.getPrimaryKey();
-	}
-
-	@Override
-	public void persist() {
-		_listType.persist();
-	}
-
-	@Override
-	public void setCachedModel(boolean cachedModel) {
-		_listType.setCachedModel(cachedModel);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_listType.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(BaseModel<?> baseModel) {
-		_listType.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-		_listType.setExpandoBridgeAttributes(serviceContext);
-	}
-
-	/**
-	* Sets the list type ID of this list type.
-	*
-	* @param listTypeId the list type ID of this list type
-	*/
-	@Override
-	public void setListTypeId(long listTypeId) {
-		_listType.setListTypeId(listTypeId);
-	}
-
-	/**
-	* Sets the mvcc version of this list type.
-	*
-	* @param mvccVersion the mvcc version of this list type
-	*/
-	@Override
-	public void setMvccVersion(long mvccVersion) {
-		_listType.setMvccVersion(mvccVersion);
-	}
-
-	/**
-	* Sets the name of this list type.
-	*
-	* @param name the name of this list type
-	*/
-	@Override
-	public void setName(java.lang.String name) {
-		_listType.setName(name);
-	}
-
-	@Override
-	public void setNew(boolean n) {
-		_listType.setNew(n);
-	}
-
-	/**
-	* Sets the primary key of this list type.
-	*
-	* @param primaryKey the primary key of this list type
-	*/
-	@Override
-	public void setPrimaryKey(long primaryKey) {
-		_listType.setPrimaryKey(primaryKey);
-	}
-
-	@Override
-	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		_listType.setPrimaryKeyObj(primaryKeyObj);
-	}
-
-	/**
-	* Sets the type of this list type.
-	*
-	* @param type the type of this list type
-	*/
-	@Override
-	public void setType(java.lang.String type) {
-		_listType.setType(type);
 	}
 
 	@Override
@@ -330,4 +327,5 @@ public class ListTypeWrapper implements ListType, ModelWrapper<ListType> {
 	}
 
 	private final ListType _listType;
+
 }

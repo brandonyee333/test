@@ -1,15 +1,15 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.customer.zendesk.documentation.sync.service;
@@ -17,7 +17,6 @@ package com.liferay.osb.customer.zendesk.documentation.sync.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection;
-
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
@@ -48,193 +47,189 @@ import java.util.Map;
  *
  * @author Brian Wing Shun Chan
  * @see ZendeskSectionLocalServiceUtil
- * @see com.liferay.osb.customer.zendesk.documentation.sync.service.base.ZendeskSectionLocalServiceBaseImpl
- * @see com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskSectionLocalServiceImpl
  * @generated
  */
 @ProviderType
-@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
-	PortalException.class, SystemException.class})
-public interface ZendeskSectionLocalService extends BaseLocalService,
-	PersistedModelLocalService {
+@Transactional(
+	isolation = Isolation.PORTAL,
+	rollbackFor = {PortalException.class, SystemException.class}
+)
+public interface ZendeskSectionLocalService
+	extends BaseLocalService, PersistedModelLocalService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link ZendeskSectionLocalServiceUtil} to access the zendesk section local service. Add custom service methods to {@link com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskSectionLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link ZendeskSectionLocalServiceUtil} to access the zendesk section local service. Add custom service methods to <code>com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskSectionLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public ZendeskSection addZendeskSection(
+			long zendeskCategoryId, String documentationKey,
+			Map<Locale, String> remoteNameMap, int position)
+		throws PortalException;
 
 	/**
-	* Adds the zendesk section to the database. Also notifies the appropriate model listeners.
-	*
-	* @param zendeskSection the zendesk section
-	* @return the zendesk section that was added
-	*/
+	 * Adds the zendesk section to the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param zendeskSection the zendesk section
+	 * @return the zendesk section that was added
+	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public ZendeskSection addZendeskSection(ZendeskSection zendeskSection);
 
-	public ZendeskSection addZendeskSection(long zendeskCategoryId,
-		java.lang.String documentationKey,
-		Map<Locale, java.lang.String> remoteNameMap, int position)
-		throws PortalException;
-
 	/**
-	* Creates a new zendesk section with the primary key. Does not add the zendesk section to the database.
-	*
-	* @param zendeskSectionId the primary key for the new zendesk section
-	* @return the new zendesk section
-	*/
+	 * Creates a new zendesk section with the primary key. Does not add the zendesk section to the database.
+	 *
+	 * @param zendeskSectionId the primary key for the new zendesk section
+	 * @return the new zendesk section
+	 */
+	@Transactional(enabled = false)
 	public ZendeskSection createZendeskSection(long zendeskSectionId);
 
 	/**
-	* Deletes the zendesk section from the database. Also notifies the appropriate model listeners.
-	*
-	* @param zendeskSection the zendesk section
-	* @return the zendesk section that was removed
-	* @throws PortalException
-	*/
-	@Indexable(type = IndexableType.DELETE)
-	public ZendeskSection deleteZendeskSection(ZendeskSection zendeskSection)
+	 * @throws PortalException
+	 */
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
 	/**
-	* Deletes the zendesk section with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param zendeskSectionId the primary key of the zendesk section
-	* @return the zendesk section that was removed
-	* @throws PortalException if a zendesk section with the primary key could not be found
-	*/
+	 * Deletes the zendesk section with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param zendeskSectionId the primary key of the zendesk section
+	 * @return the zendesk section that was removed
+	 * @throws PortalException if a zendesk section with the primary key could not be found
+	 */
 	@Indexable(type = IndexableType.DELETE)
 	public ZendeskSection deleteZendeskSection(long zendeskSectionId)
 		throws PortalException;
 
+	/**
+	 * Deletes the zendesk section from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param zendeskSection the zendesk section
+	 * @return the zendesk section that was removed
+	 * @throws PortalException
+	 */
+	@Indexable(type = IndexableType.DELETE)
+	public ZendeskSection deleteZendeskSection(ZendeskSection zendeskSection)
+		throws PortalException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ZendeskSection fetchZendeskSection(long zendeskCategoryId,
-		java.lang.String documentationKey);
+	public DynamicQuery dynamicQuery();
+
+	/**
+	 * Performs a dynamic query on the database and returns the matching rows.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the matching rows
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery);
+
+	/**
+	 * Performs a dynamic query on the database and returns a range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskSectionModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @return the range of matching rows
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end);
+
+	/**
+	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskSectionModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching rows
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator);
+
+	/**
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the number of rows matching the dynamic query
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param projection the projection to apply to the query
+	 * @return the number of rows matching the dynamic query
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long dynamicQueryCount(
+		DynamicQuery dynamicQuery, Projection projection);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ZendeskSection fetchZendeskSection(long zendeskSectionId);
 
-	/**
-	* Returns the zendesk section with the primary key.
-	*
-	* @param zendeskSectionId the primary key of the zendesk section
-	* @return the zendesk section
-	* @throws PortalException if a zendesk section with the primary key could not be found
-	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ZendeskSection getZendeskSection(long zendeskSectionId)
-		throws PortalException;
-
-	/**
-	* Updates the zendesk section in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param zendeskSection the zendesk section
-	* @return the zendesk section that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public ZendeskSection updateZendeskSection(ZendeskSection zendeskSection);
-
-	public ZendeskSection updateZendeskSection(long zendeskSectionId,
-		long zendeskCategoryId, java.lang.String documentationKey,
-		Map<Locale, java.lang.String> remoteNameMap, int position)
-		throws PortalException;
-
-	public ZendeskSection updateZendeskSectionTranslation(
-		long zendeskSectionId, Locale locale, java.lang.String remoteName)
-		throws PortalException;
+	public ZendeskSection fetchZendeskSection(
+		long zendeskCategoryId, String documentationKey);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
-	* @throws PortalException
-	*/
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
+	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
 	/**
-	* Returns the number of zendesk sections.
-	*
-	* @return the number of zendesk sections
-	*/
+	 * Returns the zendesk section with the primary key.
+	 *
+	 * @param zendeskSectionId the primary key of the zendesk section
+	 * @return the zendesk section
+	 * @throws PortalException if a zendesk section with the primary key could not be found
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getZendeskSectionsCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getZendeskSectionsCount(long zendeskCategoryId);
+	public ZendeskSection getZendeskSection(long zendeskSectionId)
+		throws PortalException;
 
 	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
-	/**
-	* Performs a dynamic query on the database and returns the matching rows.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the matching rows
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery);
-
-	/**
-	* Performs a dynamic query on the database and returns a range of the matching rows.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskSectionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param dynamicQuery the dynamic query
-	* @param start the lower bound of the range of model instances
-	* @param end the upper bound of the range of model instances (not inclusive)
-	* @return the range of matching rows
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end);
-
-	/**
-	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskSectionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param dynamicQuery the dynamic query
-	* @param start the lower bound of the range of model instances
-	* @param end the upper bound of the range of model instances (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching rows
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end, OrderByComparator<T> orderByComparator);
-
-	/**
-	* Returns a range of all the zendesk sections.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskSectionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of zendesk sections
-	* @param end the upper bound of the range of zendesk sections (not inclusive)
-	* @return the range of zendesk sections
-	*/
+	 * Returns a range of all the zendesk sections.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskSectionModelImpl</code>.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of zendesk sections
+	 * @param end the upper bound of the range of zendesk sections (not inclusive)
+	 * @return the range of zendesk sections
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<ZendeskSection> getZendeskSections(int start, int end);
 
@@ -242,22 +237,33 @@ public interface ZendeskSectionLocalService extends BaseLocalService,
 	public List<ZendeskSection> getZendeskSections(long zendeskCategoryId);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
+	 * Returns the number of zendesk sections.
+	 *
+	 * @return the number of zendesk sections
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	public int getZendeskSectionsCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getZendeskSectionsCount(long zendeskCategoryId);
+
+	public ZendeskSection updateZendeskSection(
+			long zendeskSectionId, long zendeskCategoryId,
+			String documentationKey, Map<Locale, String> remoteNameMap,
+			int position)
+		throws PortalException;
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	 * Updates the zendesk section in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * @param zendeskSection the zendesk section
+	 * @return the zendesk section that was updated
+	 */
+	@Indexable(type = IndexableType.REINDEX)
+	public ZendeskSection updateZendeskSection(ZendeskSection zendeskSection);
+
+	public ZendeskSection updateZendeskSectionTranslation(
+			long zendeskSectionId, Locale locale, String remoteName)
+		throws PortalException;
+
 }

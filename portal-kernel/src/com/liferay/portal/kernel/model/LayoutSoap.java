@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,11 +24,10 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.portal.service.http.LayoutServiceSoap}.
  *
  * @author Brian Wing Shun Chan
- * @see com.liferay.portal.service.http.LayoutServiceSoap
  * @generated
  */
-@ProviderType
 public class LayoutSoap implements Serializable {
+
 	public static LayoutSoap toSoapModel(Layout model) {
 		LayoutSoap soapModel = new LayoutSoap();
 
@@ -43,7 +40,7 @@ public class LayoutSoap implements Serializable {
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
-		soapModel.setPrivateLayout(model.getPrivateLayout());
+		soapModel.setPrivateLayout(model.isPrivateLayout());
 		soapModel.setLayoutId(model.getLayoutId());
 		soapModel.setParentLayoutId(model.getParentLayoutId());
 		soapModel.setName(model.getName());
@@ -53,7 +50,7 @@ public class LayoutSoap implements Serializable {
 		soapModel.setRobots(model.getRobots());
 		soapModel.setType(model.getType());
 		soapModel.setTypeSettings(model.getTypeSettings());
-		soapModel.setHidden(model.getHidden());
+		soapModel.setHidden(model.isHidden());
 		soapModel.setFriendlyURL(model.getFriendlyURL());
 		soapModel.setIconImageId(model.getIconImageId());
 		soapModel.setThemeId(model.getThemeId());
@@ -61,8 +58,10 @@ public class LayoutSoap implements Serializable {
 		soapModel.setCss(model.getCss());
 		soapModel.setPriority(model.getPriority());
 		soapModel.setLayoutPrototypeUuid(model.getLayoutPrototypeUuid());
-		soapModel.setLayoutPrototypeLinkEnabled(model.getLayoutPrototypeLinkEnabled());
-		soapModel.setSourcePrototypeLayoutUuid(model.getSourcePrototypeLayoutUuid());
+		soapModel.setLayoutPrototypeLinkEnabled(
+			model.isLayoutPrototypeLinkEnabled());
+		soapModel.setSourcePrototypeLayoutUuid(
+			model.getSourcePrototypeLayoutUuid());
 		soapModel.setLastPublishDate(model.getLastPublishDate());
 
 		return soapModel;
@@ -350,6 +349,7 @@ public class LayoutSoap implements Serializable {
 
 	public void setLayoutPrototypeLinkEnabled(
 		boolean layoutPrototypeLinkEnabled) {
+
 		_layoutPrototypeLinkEnabled = layoutPrototypeLinkEnabled;
 	}
 
@@ -399,4 +399,5 @@ public class LayoutSoap implements Serializable {
 	private boolean _layoutPrototypeLinkEnabled;
 	private String _sourcePrototypeLayoutUuid;
 	private Date _lastPublishDate;
+
 }

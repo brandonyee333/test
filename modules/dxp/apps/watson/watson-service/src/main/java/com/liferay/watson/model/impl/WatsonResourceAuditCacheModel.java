@@ -1,26 +1,22 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-
 import com.liferay.watson.model.WatsonResourceAudit;
 
 import java.io.Externalizable;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing WatsonResourceAudit in entity cache.
  *
  * @author Steven Smith
- * @see WatsonResourceAudit
  * @generated
  */
-@ProviderType
-public class WatsonResourceAuditCacheModel implements CacheModel<WatsonResourceAudit>,
-	Externalizable {
+public class WatsonResourceAuditCacheModel
+	implements CacheModel<WatsonResourceAudit>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,9 +45,12 @@ public class WatsonResourceAuditCacheModel implements CacheModel<WatsonResourceA
 			return false;
 		}
 
-		WatsonResourceAuditCacheModel watsonResourceAuditCacheModel = (WatsonResourceAuditCacheModel)obj;
+		WatsonResourceAuditCacheModel watsonResourceAuditCacheModel =
+			(WatsonResourceAuditCacheModel)obj;
 
-		if (watsonResourceAuditId == watsonResourceAuditCacheModel.watsonResourceAuditId) {
+		if (watsonResourceAuditId ==
+				watsonResourceAuditCacheModel.watsonResourceAuditId) {
+
 			return true;
 		}
 
@@ -105,7 +103,8 @@ public class WatsonResourceAuditCacheModel implements CacheModel<WatsonResourceA
 
 	@Override
 	public WatsonResourceAudit toEntityModel() {
-		WatsonResourceAuditImpl watsonResourceAuditImpl = new WatsonResourceAuditImpl();
+		WatsonResourceAuditImpl watsonResourceAuditImpl =
+			new WatsonResourceAuditImpl();
 
 		watsonResourceAuditImpl.setWatsonResourceAuditId(watsonResourceAuditId);
 		watsonResourceAuditImpl.setGroupId(groupId);
@@ -113,7 +112,7 @@ public class WatsonResourceAuditCacheModel implements CacheModel<WatsonResourceA
 		watsonResourceAuditImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonResourceAuditImpl.setUserName(StringPool.BLANK);
+			watsonResourceAuditImpl.setUserName("");
 		}
 		else {
 			watsonResourceAuditImpl.setUserName(userName);
@@ -133,27 +132,28 @@ public class WatsonResourceAuditCacheModel implements CacheModel<WatsonResourceA
 			watsonResourceAuditImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		watsonResourceAuditImpl.setOriginalWatsonResourceId(originalWatsonResourceId);
+		watsonResourceAuditImpl.setOriginalWatsonResourceId(
+			originalWatsonResourceId);
 		watsonResourceAuditImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
 		watsonResourceAuditImpl.setWatsonIncidentId(watsonIncidentId);
 		watsonResourceAuditImpl.setWatsonResourceId(watsonResourceId);
 
 		if (name == null) {
-			watsonResourceAuditImpl.setName(StringPool.BLANK);
+			watsonResourceAuditImpl.setName("");
 		}
 		else {
 			watsonResourceAuditImpl.setName(name);
 		}
 
 		if (description == null) {
-			watsonResourceAuditImpl.setDescription(StringPool.BLANK);
+			watsonResourceAuditImpl.setDescription("");
 		}
 		else {
 			watsonResourceAuditImpl.setDescription(description);
 		}
 
 		if (imagePayload == null) {
-			watsonResourceAuditImpl.setImagePayload(StringPool.BLANK);
+			watsonResourceAuditImpl.setImagePayload("");
 		}
 		else {
 			watsonResourceAuditImpl.setImagePayload(imagePayload);
@@ -167,7 +167,9 @@ public class WatsonResourceAuditCacheModel implements CacheModel<WatsonResourceA
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		watsonResourceAuditId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -188,14 +190,13 @@ public class WatsonResourceAuditCacheModel implements CacheModel<WatsonResourceA
 		watsonResourceId = objectInput.readLong();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
-		imagePayload = objectInput.readUTF();
+		imagePayload = (String)objectInput.readObject();
 
 		status = objectInput.readInt();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonResourceAuditId);
 
 		objectOutput.writeLong(groupId);
@@ -205,7 +206,7 @@ public class WatsonResourceAuditCacheModel implements CacheModel<WatsonResourceA
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -223,24 +224,24 @@ public class WatsonResourceAuditCacheModel implements CacheModel<WatsonResourceA
 		objectOutput.writeLong(watsonResourceId);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (imagePayload == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(imagePayload);
+			objectOutput.writeObject(imagePayload);
 		}
 
 		objectOutput.writeInt(status);
@@ -261,4 +262,5 @@ public class WatsonResourceAuditCacheModel implements CacheModel<WatsonResourceA
 	public String description;
 	public String imagePayload;
 	public int status;
+
 }

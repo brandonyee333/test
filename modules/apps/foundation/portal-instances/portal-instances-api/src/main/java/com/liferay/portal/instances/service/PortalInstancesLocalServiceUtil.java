@@ -14,73 +14,37 @@
 
 package com.liferay.portal.instances.service;
 
-import aQute.bnd.annotation.ProviderType;
-
-import com.liferay.osgi.util.ServiceTrackerFactory;
-
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * Provides the local service utility for PortalInstances. This utility wraps
- * {@link com.liferay.portal.instances.service.impl.PortalInstancesLocalServiceImpl} and is the
- * primary access point for service operations in application layer code running
+ * <code>com.liferay.portal.instances.service.impl.PortalInstancesLocalServiceImpl</code> and
+ * is an access point for service operations in application layer code running
  * on the local server. Methods of this service will not have security checks
  * based on the propagated JAAS credentials because this service can only be
  * accessed from within the same VM.
  *
  * @author Michael C. Han
  * @see PortalInstancesLocalService
- * @see com.liferay.portal.instances.service.base.PortalInstancesLocalServiceBaseImpl
- * @see com.liferay.portal.instances.service.impl.PortalInstancesLocalServiceImpl
  * @generated
  */
-@ProviderType
 public class PortalInstancesLocalServiceUtil {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.instances.service.impl.PortalInstancesLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
+	 * Never modify this class directly. Add custom service methods to <code>com.liferay.portal.instances.service.impl.PortalInstancesLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static boolean isAutoLoginIgnoreHost(java.lang.String host) {
-		return getService().isAutoLoginIgnoreHost(host);
-	}
-
-	public static boolean isAutoLoginIgnorePath(java.lang.String path) {
-		return getService().isAutoLoginIgnorePath(path);
-	}
-
-	public static boolean isCompanyActive(long companyId) {
-		return getService().isCompanyActive(companyId);
-	}
-
-	public static boolean isVirtualHostsIgnoreHost(java.lang.String host) {
-		return getService().isVirtualHostsIgnoreHost(host);
-	}
-
-	public static boolean isVirtualHostsIgnorePath(java.lang.String path) {
-		return getService().isVirtualHostsIgnorePath(path);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
-	}
-
-	public static java.lang.String[] getWebIds() {
-		return getService().getWebIds();
+	public static void addCompanyId(long companyId) {
+		getService().addCompanyId(companyId);
 	}
 
 	public static long getCompanyId(
 		javax.servlet.http.HttpServletRequest request) {
-		return getService().getCompanyId(request);
-	}
 
-	public static long getDefaultCompanyId() {
-		return getService().getDefaultCompanyId();
+		return getService().getCompanyId(request);
 	}
 
 	public static long[] getCompanyIds() {
@@ -91,13 +55,47 @@ public class PortalInstancesLocalServiceUtil {
 		return getService().getCompanyIdsBySQL();
 	}
 
-	public static void addCompanyId(long companyId) {
-		getService().addCompanyId(companyId);
+	public static long getDefaultCompanyId() {
+		return getService().getDefaultCompanyId();
+	}
+
+	/**
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
+	public static String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static String[] getWebIds() {
+		return getService().getWebIds();
 	}
 
 	public static void initializePortalInstance(
-		javax.servlet.ServletContext servletContext, java.lang.String webId) {
+		javax.servlet.ServletContext servletContext, String webId) {
+
 		getService().initializePortalInstance(servletContext, webId);
+	}
+
+	public static boolean isAutoLoginIgnoreHost(String host) {
+		return getService().isAutoLoginIgnoreHost(host);
+	}
+
+	public static boolean isAutoLoginIgnorePath(String path) {
+		return getService().isAutoLoginIgnorePath(path);
+	}
+
+	public static boolean isCompanyActive(long companyId) {
+		return getService().isCompanyActive(companyId);
+	}
+
+	public static boolean isVirtualHostsIgnoreHost(String host) {
+		return getService().isVirtualHostsIgnoreHost(host);
+	}
+
+	public static boolean isVirtualHostsIgnorePath(String path) {
+		return getService().isVirtualHostsIgnorePath(path);
 	}
 
 	public static void reload(javax.servlet.ServletContext servletContext) {
@@ -116,6 +114,24 @@ public class PortalInstancesLocalServiceUtil {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker<PortalInstancesLocalService, PortalInstancesLocalService> _serviceTracker =
-		ServiceTrackerFactory.open(PortalInstancesLocalService.class);
+	private static ServiceTracker
+		<PortalInstancesLocalService, PortalInstancesLocalService>
+			_serviceTracker;
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(
+			PortalInstancesLocalService.class);
+
+		ServiceTracker<PortalInstancesLocalService, PortalInstancesLocalService>
+			serviceTracker =
+				new ServiceTracker
+					<PortalInstancesLocalService, PortalInstancesLocalService>(
+						bundle.getBundleContext(),
+						PortalInstancesLocalService.class, null);
+
+		serviceTracker.open();
+
+		_serviceTracker = serviceTracker;
+	}
+
 }

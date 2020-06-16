@@ -14,8 +14,6 @@
 
 package com.liferay.blogs.kernel.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -28,8 +26,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class BlogsStatsUserSoap implements Serializable {
+
 	public static BlogsStatsUserSoap toSoapModel(BlogsStatsUser model) {
 		BlogsStatsUserSoap soapModel = new BlogsStatsUserSoap();
 
@@ -56,11 +54,14 @@ public class BlogsStatsUserSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static BlogsStatsUserSoap[][] toSoapModels(BlogsStatsUser[][] models) {
+	public static BlogsStatsUserSoap[][] toSoapModels(
+		BlogsStatsUser[][] models) {
+
 		BlogsStatsUserSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new BlogsStatsUserSoap[models.length][models[0].length];
+			soapModels =
+				new BlogsStatsUserSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new BlogsStatsUserSoap[0][0];
@@ -73,8 +74,11 @@ public class BlogsStatsUserSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static BlogsStatsUserSoap[] toSoapModels(List<BlogsStatsUser> models) {
-		List<BlogsStatsUserSoap> soapModels = new ArrayList<BlogsStatsUserSoap>(models.size());
+	public static BlogsStatsUserSoap[] toSoapModels(
+		List<BlogsStatsUser> models) {
+
+		List<BlogsStatsUserSoap> soapModels = new ArrayList<BlogsStatsUserSoap>(
+			models.size());
 
 		for (BlogsStatsUser model : models) {
 			soapModels.add(toSoapModel(model));
@@ -175,4 +179,5 @@ public class BlogsStatsUserSoap implements Serializable {
 	private int _ratingsTotalEntries;
 	private double _ratingsTotalScore;
 	private double _ratingsAverageScore;
+
 }

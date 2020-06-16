@@ -14,8 +14,6 @@
 
 package com.liferay.invitation.invite.members.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -28,8 +26,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class MemberRequestSoap implements Serializable {
+
 	public static MemberRequestSoap toSoapModel(MemberRequest model) {
 		MemberRequestSoap soapModel = new MemberRequestSoap();
 
@@ -77,7 +75,8 @@ public class MemberRequestSoap implements Serializable {
 	}
 
 	public static MemberRequestSoap[] toSoapModels(List<MemberRequest> models) {
-		List<MemberRequestSoap> soapModels = new ArrayList<MemberRequestSoap>(models.size());
+		List<MemberRequestSoap> soapModels = new ArrayList<MemberRequestSoap>(
+			models.size());
 
 		for (MemberRequest model : models) {
 			soapModels.add(toSoapModel(model));
@@ -205,4 +204,5 @@ public class MemberRequestSoap implements Serializable {
 	private long _invitedRoleId;
 	private long _invitedTeamId;
 	private int _status;
+
 }

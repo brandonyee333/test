@@ -14,14 +14,11 @@
 
 package com.liferay.analytics.message.storage.service.persistence.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.analytics.message.storage.exception.NoSuchMessageException;
 import com.liferay.analytics.message.storage.model.AnalyticsMessage;
 import com.liferay.analytics.message.storage.model.impl.AnalyticsMessageImpl;
 import com.liferay.analytics.message.storage.model.impl.AnalyticsMessageModelImpl;
 import com.liferay.analytics.message.storage.service.persistence.AnalyticsMessagePersistence;
-
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -31,15 +28,16 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.service.persistence.CompanyProvider;
-import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -57,56 +55,32 @@ import java.util.Set;
  * </p>
  *
  * @author Brian Wing Shun Chan
- * @see AnalyticsMessagePersistence
- * @see com.liferay.analytics.message.storage.service.persistence.AnalyticsMessageUtil
  * @generated
  */
-@ProviderType
-public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<AnalyticsMessage>
+public class AnalyticsMessagePersistenceImpl
+	extends BasePersistenceImpl<AnalyticsMessage>
 	implements AnalyticsMessagePersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link AnalyticsMessageUtil} to access the analytics message persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use <code>AnalyticsMessageUtil</code> to access the analytics message persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = AnalyticsMessageImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
-			AnalyticsMessageModelImpl.FINDER_CACHE_ENABLED,
-			AnalyticsMessageImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
-			AnalyticsMessageModelImpl.FINDER_CACHE_ENABLED,
-			AnalyticsMessageImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
-			AnalyticsMessageModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_COMPANYID =
-		new FinderPath(AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
-			AnalyticsMessageModelImpl.FINDER_CACHE_ENABLED,
-			AnalyticsMessageImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByCompanyId",
-			new String[] {
-				Long.class.getName(),
-				
-			Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID =
-		new FinderPath(AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
-			AnalyticsMessageModelImpl.FINDER_CACHE_ENABLED,
-			AnalyticsMessageImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
-			new String[] { Long.class.getName() },
-			AnalyticsMessageModelImpl.COMPANYID_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_COMPANYID = new FinderPath(AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
-			AnalyticsMessageModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
-			new String[] { Long.class.getName() });
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		AnalyticsMessageImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
+	private FinderPath _finderPathWithPaginationFindByCompanyId;
+	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+	private FinderPath _finderPathCountByCompanyId;
 
 	/**
 	 * Returns all the analytics messages where companyId = &#63;.
@@ -116,15 +90,15 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	 */
 	@Override
 	public List<AnalyticsMessage> findByCompanyId(long companyId) {
-		return findByCompanyId(companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			null);
+		return findByCompanyId(
+			companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the analytics messages where companyId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AnalyticsMessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsMessageModelImpl</code>.
 	 * </p>
 	 *
 	 * @param companyId the company ID
@@ -133,8 +107,9 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	 * @return the range of matching analytics messages
 	 */
 	@Override
-	public List<AnalyticsMessage> findByCompanyId(long companyId, int start,
-		int end) {
+	public List<AnalyticsMessage> findByCompanyId(
+		long companyId, int start, int end) {
+
 		return findByCompanyId(companyId, start, end, null);
 	}
 
@@ -142,7 +117,7 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	 * Returns an ordered range of all the analytics messages where companyId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AnalyticsMessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsMessageModelImpl</code>.
 	 * </p>
 	 *
 	 * @param companyId the company ID
@@ -152,8 +127,10 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	 * @return the ordered range of matching analytics messages
 	 */
 	@Override
-	public List<AnalyticsMessage> findByCompanyId(long companyId, int start,
-		int end, OrderByComparator<AnalyticsMessage> orderByComparator) {
+	public List<AnalyticsMessage> findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<AnalyticsMessage> orderByComparator) {
+
 		return findByCompanyId(companyId, start, end, orderByComparator, true);
 	}
 
@@ -161,44 +138,49 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	 * Returns an ordered range of all the analytics messages where companyId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AnalyticsMessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsMessageModelImpl</code>.
 	 * </p>
 	 *
 	 * @param companyId the company ID
 	 * @param start the lower bound of the range of analytics messages
 	 * @param end the upper bound of the range of analytics messages (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching analytics messages
 	 */
 	@Override
-	public List<AnalyticsMessage> findByCompanyId(long companyId, int start,
-		int end, OrderByComparator<AnalyticsMessage> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+	public List<AnalyticsMessage> findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<AnalyticsMessage> orderByComparator,
+		boolean useFinderCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID;
-			finderArgs = new Object[] { companyId };
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByCompanyId;
+				finderArgs = new Object[] {companyId};
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_COMPANYID;
-			finderArgs = new Object[] { companyId, start, end, orderByComparator };
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByCompanyId;
+			finderArgs = new Object[] {
+				companyId, start, end, orderByComparator
+			};
 		}
 
 		List<AnalyticsMessage> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<AnalyticsMessage>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<AnalyticsMessage>)finderCache.getResult(
+				finderPath, finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (AnalyticsMessage analyticsMessage : list) {
-					if ((companyId != analyticsMessage.getCompanyId())) {
+					if (companyId != analyticsMessage.getCompanyId()) {
 						list = null;
 
 						break;
@@ -208,63 +190,56 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(3 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				query = new StringBundler(3);
+				sb = new StringBundler(3);
 			}
 
-			query.append(_SQL_SELECT_ANALYTICSMESSAGE_WHERE);
+			sb.append(_SQL_SELECT_ANALYTICSMESSAGE_WHERE);
 
-			query.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+			sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else
-			 if (pagination) {
-				query.append(AnalyticsMessageModelImpl.ORDER_BY_JPQL);
+			else {
+				sb.append(AnalyticsMessageModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(companyId);
+				queryPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<AnalyticsMessage>)QueryUtil.list(q,
-							getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<AnalyticsMessage>)QueryUtil.list(q,
-							getDialect(), start, end);
-				}
+				list = (List<AnalyticsMessage>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -283,26 +258,28 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	 * @throws NoSuchMessageException if a matching analytics message could not be found
 	 */
 	@Override
-	public AnalyticsMessage findByCompanyId_First(long companyId,
-		OrderByComparator<AnalyticsMessage> orderByComparator)
+	public AnalyticsMessage findByCompanyId_First(
+			long companyId,
+			OrderByComparator<AnalyticsMessage> orderByComparator)
 		throws NoSuchMessageException {
-		AnalyticsMessage analyticsMessage = fetchByCompanyId_First(companyId,
-				orderByComparator);
+
+		AnalyticsMessage analyticsMessage = fetchByCompanyId_First(
+			companyId, orderByComparator);
 
 		if (analyticsMessage != null) {
 			return analyticsMessage;
 		}
 
-		StringBundler msg = new StringBundler(4);
+		StringBundler sb = new StringBundler(4);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("companyId=");
-		msg.append(companyId);
+		sb.append("companyId=");
+		sb.append(companyId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		sb.append("}");
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new NoSuchMessageException(sb.toString());
 	}
 
 	/**
@@ -313,10 +290,11 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	 * @return the first matching analytics message, or <code>null</code> if a matching analytics message could not be found
 	 */
 	@Override
-	public AnalyticsMessage fetchByCompanyId_First(long companyId,
-		OrderByComparator<AnalyticsMessage> orderByComparator) {
-		List<AnalyticsMessage> list = findByCompanyId(companyId, 0, 1,
-				orderByComparator);
+	public AnalyticsMessage fetchByCompanyId_First(
+		long companyId, OrderByComparator<AnalyticsMessage> orderByComparator) {
+
+		List<AnalyticsMessage> list = findByCompanyId(
+			companyId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -334,26 +312,28 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	 * @throws NoSuchMessageException if a matching analytics message could not be found
 	 */
 	@Override
-	public AnalyticsMessage findByCompanyId_Last(long companyId,
-		OrderByComparator<AnalyticsMessage> orderByComparator)
+	public AnalyticsMessage findByCompanyId_Last(
+			long companyId,
+			OrderByComparator<AnalyticsMessage> orderByComparator)
 		throws NoSuchMessageException {
-		AnalyticsMessage analyticsMessage = fetchByCompanyId_Last(companyId,
-				orderByComparator);
+
+		AnalyticsMessage analyticsMessage = fetchByCompanyId_Last(
+			companyId, orderByComparator);
 
 		if (analyticsMessage != null) {
 			return analyticsMessage;
 		}
 
-		StringBundler msg = new StringBundler(4);
+		StringBundler sb = new StringBundler(4);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("companyId=");
-		msg.append(companyId);
+		sb.append("companyId=");
+		sb.append(companyId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		sb.append("}");
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new NoSuchMessageException(sb.toString());
 	}
 
 	/**
@@ -364,16 +344,17 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	 * @return the last matching analytics message, or <code>null</code> if a matching analytics message could not be found
 	 */
 	@Override
-	public AnalyticsMessage fetchByCompanyId_Last(long companyId,
-		OrderByComparator<AnalyticsMessage> orderByComparator) {
+	public AnalyticsMessage fetchByCompanyId_Last(
+		long companyId, OrderByComparator<AnalyticsMessage> orderByComparator) {
+
 		int count = countByCompanyId(companyId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<AnalyticsMessage> list = findByCompanyId(companyId, count - 1,
-				count, orderByComparator);
+		List<AnalyticsMessage> list = findByCompanyId(
+			companyId, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -393,10 +374,12 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	 */
 	@Override
 	public AnalyticsMessage[] findByCompanyId_PrevAndNext(
-		long analyticsMessageId, long companyId,
-		OrderByComparator<AnalyticsMessage> orderByComparator)
+			long analyticsMessageId, long companyId,
+			OrderByComparator<AnalyticsMessage> orderByComparator)
 		throws NoSuchMessageException {
-		AnalyticsMessage analyticsMessage = findByPrimaryKey(analyticsMessageId);
+
+		AnalyticsMessage analyticsMessage = findByPrimaryKey(
+			analyticsMessageId);
 
 		Session session = null;
 
@@ -405,121 +388,125 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 
 			AnalyticsMessage[] array = new AnalyticsMessageImpl[3];
 
-			array[0] = getByCompanyId_PrevAndNext(session, analyticsMessage,
-					companyId, orderByComparator, true);
+			array[0] = getByCompanyId_PrevAndNext(
+				session, analyticsMessage, companyId, orderByComparator, true);
 
 			array[1] = analyticsMessage;
 
-			array[2] = getByCompanyId_PrevAndNext(session, analyticsMessage,
-					companyId, orderByComparator, false);
+			array[2] = getByCompanyId_PrevAndNext(
+				session, analyticsMessage, companyId, orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected AnalyticsMessage getByCompanyId_PrevAndNext(Session session,
-		AnalyticsMessage analyticsMessage, long companyId,
-		OrderByComparator<AnalyticsMessage> orderByComparator, boolean previous) {
-		StringBundler query = null;
+	protected AnalyticsMessage getByCompanyId_PrevAndNext(
+		Session session, AnalyticsMessage analyticsMessage, long companyId,
+		OrderByComparator<AnalyticsMessage> orderByComparator,
+		boolean previous) {
+
+		StringBundler sb = null;
 
 		if (orderByComparator != null) {
-			query = new StringBundler(4 +
-					(orderByComparator.getOrderByConditionFields().length * 3) +
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			query = new StringBundler(3);
+			sb = new StringBundler(3);
 		}
 
-		query.append(_SQL_SELECT_ANALYTICSMESSAGE_WHERE);
+		sb.append(_SQL_SELECT_ANALYTICSMESSAGE_WHERE);
 
-		query.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				query.append(WHERE_AND);
+				sb.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByConditionFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN);
+						sb.append(WHERE_GREATER_THAN);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN);
+						sb.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			query.append(ORDER_BY_CLAUSE);
+			sb.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC_HAS_NEXT);
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						query.append(ORDER_BY_DESC_HAS_NEXT);
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC);
+						sb.append(ORDER_BY_ASC);
 					}
 					else {
-						query.append(ORDER_BY_DESC);
+						sb.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			query.append(AnalyticsMessageModelImpl.ORDER_BY_JPQL);
+			sb.append(AnalyticsMessageModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
-		Query q = session.createQuery(sql);
+		Query query = session.createQuery(sql);
 
-		q.setFirstResult(0);
-		q.setMaxResults(2);
+		query.setFirstResult(0);
+		query.setMaxResults(2);
 
-		QueryPos qPos = QueryPos.getInstance(q);
+		QueryPos queryPos = QueryPos.getInstance(query);
 
-		qPos.add(companyId);
+		queryPos.add(companyId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(analyticsMessage);
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(
+						analyticsMessage)) {
 
-			for (Object value : values) {
-				qPos.add(value);
+				queryPos.add(orderByConditionValue);
 			}
 		}
 
-		List<AnalyticsMessage> list = q.list();
+		List<AnalyticsMessage> list = query.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -536,8 +523,10 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	 */
 	@Override
 	public void removeByCompanyId(long companyId) {
-		for (AnalyticsMessage analyticsMessage : findByCompanyId(companyId,
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+		for (AnalyticsMessage analyticsMessage :
+				findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+
 			remove(analyticsMessage);
 		}
 	}
@@ -550,40 +539,40 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	 */
 	@Override
 	public int countByCompanyId(long companyId) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_COMPANYID;
+		FinderPath finderPath = _finderPathCountByCompanyId;
 
-		Object[] finderArgs = new Object[] { companyId };
+		Object[] finderArgs = new Object[] {companyId};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(2);
+			StringBundler sb = new StringBundler(2);
 
-			query.append(_SQL_COUNT_ANALYTICSMESSAGE_WHERE);
+			sb.append(_SQL_COUNT_ANALYTICSMESSAGE_WHERE);
 
-			query.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+			sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(companyId);
+				queryPos.add(companyId);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -593,7 +582,8 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2 = "analyticsMessage.companyId = ?";
+	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2 =
+		"analyticsMessage.companyId = ?";
 
 	public AnalyticsMessagePersistenceImpl() {
 		setModelClass(AnalyticsMessage.class);
@@ -606,7 +596,8 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	 */
 	@Override
 	public void cacheResult(AnalyticsMessage analyticsMessage) {
-		entityCache.putResult(AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
 			AnalyticsMessageImpl.class, analyticsMessage.getPrimaryKey(),
 			analyticsMessage);
 
@@ -622,9 +613,10 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	public void cacheResult(List<AnalyticsMessage> analyticsMessages) {
 		for (AnalyticsMessage analyticsMessage : analyticsMessages) {
 			if (entityCache.getResult(
-						AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
-						AnalyticsMessageImpl.class,
-						analyticsMessage.getPrimaryKey()) == null) {
+					AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
+					AnalyticsMessageImpl.class,
+					analyticsMessage.getPrimaryKey()) == null) {
+
 				cacheResult(analyticsMessage);
 			}
 			else {
@@ -637,7 +629,7 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	 * Clears the cache for all analytics messages.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -653,12 +645,13 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	 * Clears the cache for the analytics message.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(AnalyticsMessage analyticsMessage) {
-		entityCache.removeResult(AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(
+			AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
 			AnalyticsMessageImpl.class, analyticsMessage.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -671,8 +664,21 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (AnalyticsMessage analyticsMessage : analyticsMessages) {
-			entityCache.removeResult(AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(
+				AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
 				AnalyticsMessageImpl.class, analyticsMessage.getPrimaryKey());
+		}
+	}
+
+	public void clearCache(Set<Serializable> primaryKeys) {
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (Serializable primaryKey : primaryKeys) {
+			entityCache.removeResult(
+				AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
+				AnalyticsMessageImpl.class, primaryKey);
 		}
 	}
 
@@ -689,7 +695,7 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 		analyticsMessage.setNew(true);
 		analyticsMessage.setPrimaryKey(analyticsMessageId);
 
-		analyticsMessage.setCompanyId(companyProvider.getCompanyId());
+		analyticsMessage.setCompanyId(CompanyThreadLocal.getCompanyId());
 
 		return analyticsMessage;
 	}
@@ -704,6 +710,7 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	@Override
 	public AnalyticsMessage remove(long analyticsMessageId)
 		throws NoSuchMessageException {
+
 		return remove((Serializable)analyticsMessageId);
 	}
 
@@ -717,30 +724,31 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	@Override
 	public AnalyticsMessage remove(Serializable primaryKey)
 		throws NoSuchMessageException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			AnalyticsMessage analyticsMessage = (AnalyticsMessage)session.get(AnalyticsMessageImpl.class,
-					primaryKey);
+			AnalyticsMessage analyticsMessage = (AnalyticsMessage)session.get(
+				AnalyticsMessageImpl.class, primaryKey);
 
 			if (analyticsMessage == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchMessageException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchMessageException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(analyticsMessage);
 		}
-		catch (NoSuchMessageException nsee) {
-			throw nsee;
+		catch (NoSuchMessageException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -749,24 +757,23 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 
 	@Override
 	protected AnalyticsMessage removeImpl(AnalyticsMessage analyticsMessage) {
-		analyticsMessage = toUnwrappedModel(analyticsMessage);
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(analyticsMessage)) {
-				analyticsMessage = (AnalyticsMessage)session.get(AnalyticsMessageImpl.class,
-						analyticsMessage.getPrimaryKeyObj());
+				analyticsMessage = (AnalyticsMessage)session.get(
+					AnalyticsMessageImpl.class,
+					analyticsMessage.getPrimaryKeyObj());
 			}
 
 			if (analyticsMessage != null) {
 				session.delete(analyticsMessage);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -781,11 +788,27 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 
 	@Override
 	public AnalyticsMessage updateImpl(AnalyticsMessage analyticsMessage) {
-		analyticsMessage = toUnwrappedModel(analyticsMessage);
-
 		boolean isNew = analyticsMessage.isNew();
 
-		AnalyticsMessageModelImpl analyticsMessageModelImpl = (AnalyticsMessageModelImpl)analyticsMessage;
+		if (!(analyticsMessage instanceof AnalyticsMessageModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(analyticsMessage.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(
+					analyticsMessage);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in analyticsMessage proxy " +
+						invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom AnalyticsMessage implementation " +
+					analyticsMessage.getClass());
+		}
+
+		AnalyticsMessageModelImpl analyticsMessageModelImpl =
+			(AnalyticsMessageModelImpl)analyticsMessage;
 
 		Session session = null;
 
@@ -805,8 +828,8 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 			session.flush();
 			session.clear();
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -817,41 +840,42 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 		if (!AnalyticsMessageModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else
-		 if (isNew) {
+		else if (isNew) {
 			Object[] args = new Object[] {
-					analyticsMessageModelImpl.getCompanyId()
-				};
+				analyticsMessageModelImpl.getCompanyId()
+			};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPANYID, args);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
-				args);
+			finderCache.removeResult(_finderPathCountByCompanyId, args);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindByCompanyId, args);
 
-			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
-				FINDER_ARGS_EMPTY);
+			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
-
 		else {
 			if ((analyticsMessageModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID.getColumnBitmask()) != 0) {
+				 _finderPathWithoutPaginationFindByCompanyId.
+					 getColumnBitmask()) != 0) {
+
 				Object[] args = new Object[] {
-						analyticsMessageModelImpl.getOriginalCompanyId()
-					};
+					analyticsMessageModelImpl.getOriginalCompanyId()
+				};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPANYID, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
-					args);
+				finderCache.removeResult(_finderPathCountByCompanyId, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByCompanyId, args);
 
-				args = new Object[] { analyticsMessageModelImpl.getCompanyId() };
+				args = new Object[] {analyticsMessageModelImpl.getCompanyId()};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPANYID, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
-					args);
+				finderCache.removeResult(_finderPathCountByCompanyId, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByCompanyId, args);
 			}
 		}
 
-		entityCache.putResult(AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
 			AnalyticsMessageImpl.class, analyticsMessage.getPrimaryKey(),
 			analyticsMessage, false);
 
@@ -860,30 +884,8 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 		return analyticsMessage;
 	}
 
-	protected AnalyticsMessage toUnwrappedModel(
-		AnalyticsMessage analyticsMessage) {
-		if (analyticsMessage instanceof AnalyticsMessageImpl) {
-			return analyticsMessage;
-		}
-
-		AnalyticsMessageImpl analyticsMessageImpl = new AnalyticsMessageImpl();
-
-		analyticsMessageImpl.setNew(analyticsMessage.isNew());
-		analyticsMessageImpl.setPrimaryKey(analyticsMessage.getPrimaryKey());
-
-		analyticsMessageImpl.setMvccVersion(analyticsMessage.getMvccVersion());
-		analyticsMessageImpl.setAnalyticsMessageId(analyticsMessage.getAnalyticsMessageId());
-		analyticsMessageImpl.setCompanyId(analyticsMessage.getCompanyId());
-		analyticsMessageImpl.setUserId(analyticsMessage.getUserId());
-		analyticsMessageImpl.setUserName(analyticsMessage.getUserName());
-		analyticsMessageImpl.setCreateDate(analyticsMessage.getCreateDate());
-		analyticsMessageImpl.setBody(analyticsMessage.getBody());
-
-		return analyticsMessageImpl;
-	}
-
 	/**
-	 * Returns the analytics message with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the analytics message with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the analytics message
 	 * @return the analytics message
@@ -892,6 +894,7 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	@Override
 	public AnalyticsMessage findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchMessageException {
+
 		AnalyticsMessage analyticsMessage = fetchByPrimaryKey(primaryKey);
 
 		if (analyticsMessage == null) {
@@ -899,15 +902,15 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchMessageException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchMessageException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return analyticsMessage;
 	}
 
 	/**
-	 * Returns the analytics message with the primary key or throws a {@link NoSuchMessageException} if it could not be found.
+	 * Returns the analytics message with the primary key or throws a <code>NoSuchMessageException</code> if it could not be found.
 	 *
 	 * @param analyticsMessageId the primary key of the analytics message
 	 * @return the analytics message
@@ -916,6 +919,7 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	@Override
 	public AnalyticsMessage findByPrimaryKey(long analyticsMessageId)
 		throws NoSuchMessageException {
+
 		return findByPrimaryKey((Serializable)analyticsMessageId);
 	}
 
@@ -927,8 +931,9 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	 */
 	@Override
 	public AnalyticsMessage fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
-				AnalyticsMessageImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
+			AnalyticsMessageImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -942,22 +947,24 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 			try {
 				session = openSession();
 
-				analyticsMessage = (AnalyticsMessage)session.get(AnalyticsMessageImpl.class,
-						primaryKey);
+				analyticsMessage = (AnalyticsMessage)session.get(
+					AnalyticsMessageImpl.class, primaryKey);
 
 				if (analyticsMessage != null) {
 					cacheResult(analyticsMessage);
 				}
 				else {
-					entityCache.putResult(AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
 						AnalyticsMessageImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
-				entityCache.removeResult(AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception exception) {
+				entityCache.removeResult(
+					AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
 					AnalyticsMessageImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -981,11 +988,13 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	@Override
 	public Map<Serializable, AnalyticsMessage> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, AnalyticsMessage> map = new HashMap<Serializable, AnalyticsMessage>();
+		Map<Serializable, AnalyticsMessage> map =
+			new HashMap<Serializable, AnalyticsMessage>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -1004,8 +1013,9 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
-					AnalyticsMessageImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
+				AnalyticsMessageImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -1025,31 +1035,33 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler sb = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
-		query.append(_SQL_SELECT_ANALYTICSMESSAGE_WHERE_PKS_IN);
+		sb.append(_SQL_SELECT_ANALYTICSMESSAGE_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append((long)primaryKey);
+			sb.append((long)primaryKey);
 
-			query.append(StringPool.COMMA);
+			sb.append(",");
 		}
 
-		query.setIndex(query.index() - 1);
+		sb.setIndex(sb.index() - 1);
 
-		query.append(StringPool.CLOSE_PARENTHESIS);
+		sb.append(")");
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query q = session.createQuery(sql);
+			Query query = session.createQuery(sql);
 
-			for (AnalyticsMessage analyticsMessage : (List<AnalyticsMessage>)q.list()) {
+			for (AnalyticsMessage analyticsMessage :
+					(List<AnalyticsMessage>)query.list()) {
+
 				map.put(analyticsMessage.getPrimaryKeyObj(), analyticsMessage);
 
 				cacheResult(analyticsMessage);
@@ -1058,12 +1070,13 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
 					AnalyticsMessageImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1086,7 +1099,7 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	 * Returns a range of all the analytics messages.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AnalyticsMessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsMessageModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of analytics messages
@@ -1102,7 +1115,7 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	 * Returns an ordered range of all the analytics messages.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AnalyticsMessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsMessageModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of analytics messages
@@ -1111,8 +1124,10 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	 * @return the ordered range of analytics messages
 	 */
 	@Override
-	public List<AnalyticsMessage> findAll(int start, int end,
+	public List<AnalyticsMessage> findAll(
+		int start, int end,
 		OrderByComparator<AnalyticsMessage> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -1120,62 +1135,63 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	 * Returns an ordered range of all the analytics messages.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AnalyticsMessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsMessageModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of analytics messages
 	 * @param end the upper bound of the range of analytics messages (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of analytics messages
 	 */
 	@Override
-	public List<AnalyticsMessage> findAll(int start, int end,
+	public List<AnalyticsMessage> findAll(
+		int start, int end,
 		OrderByComparator<AnalyticsMessage> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+		boolean useFinderCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-			finderArgs = FINDER_ARGS_EMPTY;
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-			finderArgs = new Object[] { start, end, orderByComparator };
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindAll;
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<AnalyticsMessage> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<AnalyticsMessage>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<AnalyticsMessage>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
-				query.append(_SQL_SELECT_ANALYTICSMESSAGE);
+				sb.append(_SQL_SELECT_ANALYTICSMESSAGE);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
-				sql = query.toString();
+				sql = sb.toString();
 			}
 			else {
 				sql = _SQL_SELECT_ANALYTICSMESSAGE;
 
-				if (pagination) {
-					sql = sql.concat(AnalyticsMessageModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(AnalyticsMessageModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -1183,29 +1199,23 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<AnalyticsMessage>)QueryUtil.list(q,
-							getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<AnalyticsMessage>)QueryUtil.list(q,
-							getDialect(), start, end);
-				}
+				list = (List<AnalyticsMessage>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1233,8 +1243,8 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -1242,18 +1252,18 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(_SQL_COUNT_ANALYTICSMESSAGE);
+				Query query = session.createQuery(_SQL_COUNT_ANALYTICSMESSAGE);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
-					FINDER_ARGS_EMPTY);
+			catch (Exception exception) {
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1272,6 +1282,48 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 	 * Initializes the analytics message persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(
+			AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
+			AnalyticsMessageModelImpl.FINDER_CACHE_ENABLED,
+			AnalyticsMessageImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
+			AnalyticsMessageModelImpl.FINDER_CACHE_ENABLED,
+			AnalyticsMessageImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+			new String[0]);
+
+		_finderPathCountAll = new FinderPath(
+			AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
+			AnalyticsMessageModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByCompanyId = new FinderPath(
+			AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
+			AnalyticsMessageModelImpl.FINDER_CACHE_ENABLED,
+			AnalyticsMessageImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findByCompanyId",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			});
+
+		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
+			AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
+			AnalyticsMessageModelImpl.FINDER_CACHE_ENABLED,
+			AnalyticsMessageImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
+			new String[] {Long.class.getName()},
+			AnalyticsMessageModelImpl.COMPANYID_COLUMN_BITMASK);
+
+		_finderPathCountByCompanyId = new FinderPath(
+			AnalyticsMessageModelImpl.ENTITY_CACHE_ENABLED,
+			AnalyticsMessageModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
+			new String[] {Long.class.getName()});
 	}
 
 	public void destroy() {
@@ -1281,19 +1333,36 @@ public class AnalyticsMessagePersistenceImpl extends BasePersistenceImpl<Analyti
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@ServiceReference(type = CompanyProviderWrapper.class)
-	protected CompanyProvider companyProvider;
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_ANALYTICSMESSAGE = "SELECT analyticsMessage FROM AnalyticsMessage analyticsMessage";
-	private static final String _SQL_SELECT_ANALYTICSMESSAGE_WHERE_PKS_IN = "SELECT analyticsMessage FROM AnalyticsMessage analyticsMessage WHERE analyticsMessageId IN (";
-	private static final String _SQL_SELECT_ANALYTICSMESSAGE_WHERE = "SELECT analyticsMessage FROM AnalyticsMessage analyticsMessage WHERE ";
-	private static final String _SQL_COUNT_ANALYTICSMESSAGE = "SELECT COUNT(analyticsMessage) FROM AnalyticsMessage analyticsMessage";
-	private static final String _SQL_COUNT_ANALYTICSMESSAGE_WHERE = "SELECT COUNT(analyticsMessage) FROM AnalyticsMessage analyticsMessage WHERE ";
+
+	private static final String _SQL_SELECT_ANALYTICSMESSAGE =
+		"SELECT analyticsMessage FROM AnalyticsMessage analyticsMessage";
+
+	private static final String _SQL_SELECT_ANALYTICSMESSAGE_WHERE_PKS_IN =
+		"SELECT analyticsMessage FROM AnalyticsMessage analyticsMessage WHERE analyticsMessageId IN (";
+
+	private static final String _SQL_SELECT_ANALYTICSMESSAGE_WHERE =
+		"SELECT analyticsMessage FROM AnalyticsMessage analyticsMessage WHERE ";
+
+	private static final String _SQL_COUNT_ANALYTICSMESSAGE =
+		"SELECT COUNT(analyticsMessage) FROM AnalyticsMessage analyticsMessage";
+
+	private static final String _SQL_COUNT_ANALYTICSMESSAGE_WHERE =
+		"SELECT COUNT(analyticsMessage) FROM AnalyticsMessage analyticsMessage WHERE ";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "analyticsMessage.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No AnalyticsMessage exists with the primary key ";
-	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No AnalyticsMessage exists with the key {";
-	private static final Log _log = LogFactoryUtil.getLog(AnalyticsMessagePersistenceImpl.class);
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No AnalyticsMessage exists with the primary key ";
+
+	private static final String _NO_SUCH_ENTITY_WITH_KEY =
+		"No AnalyticsMessage exists with the key {";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AnalyticsMessagePersistenceImpl.class);
+
 }

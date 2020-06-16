@@ -14,13 +14,9 @@
 
 package com.liferay.shopping.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-
 import com.liferay.shopping.model.ShoppingCart;
 
 import java.io.Externalizable;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing ShoppingCart in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see ShoppingCart
  * @generated
  */
-@ProviderType
-public class ShoppingCartCacheModel implements CacheModel<ShoppingCart>,
-	Externalizable {
+public class ShoppingCartCacheModel
+	implements CacheModel<ShoppingCart>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,7 +45,8 @@ public class ShoppingCartCacheModel implements CacheModel<ShoppingCart>,
 			return false;
 		}
 
-		ShoppingCartCacheModel shoppingCartCacheModel = (ShoppingCartCacheModel)obj;
+		ShoppingCartCacheModel shoppingCartCacheModel =
+			(ShoppingCartCacheModel)obj;
 
 		if (cartId == shoppingCartCacheModel.cartId) {
 			return true;
@@ -105,7 +101,7 @@ public class ShoppingCartCacheModel implements CacheModel<ShoppingCart>,
 		shoppingCartImpl.setUserId(userId);
 
 		if (userName == null) {
-			shoppingCartImpl.setUserName(StringPool.BLANK);
+			shoppingCartImpl.setUserName("");
 		}
 		else {
 			shoppingCartImpl.setUserName(userName);
@@ -126,14 +122,14 @@ public class ShoppingCartCacheModel implements CacheModel<ShoppingCart>,
 		}
 
 		if (itemIds == null) {
-			shoppingCartImpl.setItemIds(StringPool.BLANK);
+			shoppingCartImpl.setItemIds("");
 		}
 		else {
 			shoppingCartImpl.setItemIds(itemIds);
 		}
 
 		if (couponCodes == null) {
-			shoppingCartImpl.setCouponCodes(StringPool.BLANK);
+			shoppingCartImpl.setCouponCodes("");
 		}
 		else {
 			shoppingCartImpl.setCouponCodes(couponCodes);
@@ -148,7 +144,9 @@ public class ShoppingCartCacheModel implements CacheModel<ShoppingCart>,
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		cartId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -159,7 +157,7 @@ public class ShoppingCartCacheModel implements CacheModel<ShoppingCart>,
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
-		itemIds = objectInput.readUTF();
+		itemIds = (String)objectInput.readObject();
 		couponCodes = objectInput.readUTF();
 
 		altShipping = objectInput.readInt();
@@ -168,8 +166,7 @@ public class ShoppingCartCacheModel implements CacheModel<ShoppingCart>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(cartId);
 
 		objectOutput.writeLong(groupId);
@@ -179,7 +176,7 @@ public class ShoppingCartCacheModel implements CacheModel<ShoppingCart>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -189,14 +186,14 @@ public class ShoppingCartCacheModel implements CacheModel<ShoppingCart>,
 		objectOutput.writeLong(modifiedDate);
 
 		if (itemIds == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(itemIds);
+			objectOutput.writeObject(itemIds);
 		}
 
 		if (couponCodes == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(couponCodes);
@@ -218,4 +215,5 @@ public class ShoppingCartCacheModel implements CacheModel<ShoppingCart>,
 	public String couponCodes;
 	public int altShipping;
 	public boolean insure;
+
 }

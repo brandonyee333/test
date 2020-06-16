@@ -14,8 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.workflow.kaleo.model.KaleoTimer;
 import com.liferay.portal.workflow.kaleo.service.KaleoTimerLocalServiceUtil;
 
@@ -31,13 +29,13 @@ import com.liferay.portal.workflow.kaleo.service.KaleoTimerLocalServiceUtil;
  * @see KaleoTimer
  * @generated
  */
-@ProviderType
-public abstract class KaleoTimerBaseImpl extends KaleoTimerModelImpl
-	implements KaleoTimer {
+public abstract class KaleoTimerBaseImpl
+	extends KaleoTimerModelImpl implements KaleoTimer {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a kaleo timer model instance should use the {@link KaleoTimer} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a kaleo timer model instance should use the <code>KaleoTimer</code> interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -48,4 +46,5 @@ public abstract class KaleoTimerBaseImpl extends KaleoTimerModelImpl
 			KaleoTimerLocalServiceUtil.updateKaleoTimer(this);
 		}
 	}
+
 }

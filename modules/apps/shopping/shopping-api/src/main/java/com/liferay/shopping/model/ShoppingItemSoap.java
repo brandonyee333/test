@@ -14,8 +14,6 @@
 
 package com.liferay.shopping.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,11 +24,10 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.shopping.service.http.ShoppingItemServiceSoap}.
  *
  * @author Brian Wing Shun Chan
- * @see com.liferay.shopping.service.http.ShoppingItemServiceSoap
  * @generated
  */
-@ProviderType
 public class ShoppingItemSoap implements Serializable {
+
 	public static ShoppingItemSoap toSoapModel(ShoppingItem model) {
 		ShoppingItemSoap soapModel = new ShoppingItemSoap();
 
@@ -46,26 +43,26 @@ public class ShoppingItemSoap implements Serializable {
 		soapModel.setName(model.getName());
 		soapModel.setDescription(model.getDescription());
 		soapModel.setProperties(model.getProperties());
-		soapModel.setFields(model.getFields());
+		soapModel.setFields(model.isFields());
 		soapModel.setFieldsQuantities(model.getFieldsQuantities());
 		soapModel.setMinQuantity(model.getMinQuantity());
 		soapModel.setMaxQuantity(model.getMaxQuantity());
 		soapModel.setPrice(model.getPrice());
 		soapModel.setDiscount(model.getDiscount());
-		soapModel.setTaxable(model.getTaxable());
+		soapModel.setTaxable(model.isTaxable());
 		soapModel.setShipping(model.getShipping());
-		soapModel.setUseShippingFormula(model.getUseShippingFormula());
-		soapModel.setRequiresShipping(model.getRequiresShipping());
+		soapModel.setUseShippingFormula(model.isUseShippingFormula());
+		soapModel.setRequiresShipping(model.isRequiresShipping());
 		soapModel.setStockQuantity(model.getStockQuantity());
-		soapModel.setFeatured(model.getFeatured());
-		soapModel.setSale(model.getSale());
-		soapModel.setSmallImage(model.getSmallImage());
+		soapModel.setFeatured(model.isFeatured());
+		soapModel.setSale(model.isSale());
+		soapModel.setSmallImage(model.isSmallImage());
 		soapModel.setSmallImageId(model.getSmallImageId());
 		soapModel.setSmallImageURL(model.getSmallImageURL());
-		soapModel.setMediumImage(model.getMediumImage());
+		soapModel.setMediumImage(model.isMediumImage());
 		soapModel.setMediumImageId(model.getMediumImageId());
 		soapModel.setMediumImageURL(model.getMediumImageURL());
-		soapModel.setLargeImage(model.getLargeImage());
+		soapModel.setLargeImage(model.isLargeImage());
 		soapModel.setLargeImageId(model.getLargeImageId());
 		soapModel.setLargeImageURL(model.getLargeImageURL());
 
@@ -100,7 +97,8 @@ public class ShoppingItemSoap implements Serializable {
 	}
 
 	public static ShoppingItemSoap[] toSoapModels(List<ShoppingItem> models) {
-		List<ShoppingItemSoap> soapModels = new ArrayList<ShoppingItemSoap>(models.size());
+		List<ShoppingItemSoap> soapModels = new ArrayList<ShoppingItemSoap>(
+			models.size());
 
 		for (ShoppingItem model : models) {
 			soapModels.add(toSoapModel(model));
@@ -462,4 +460,5 @@ public class ShoppingItemSoap implements Serializable {
 	private boolean _largeImage;
 	private long _largeImageId;
 	private String _largeImageURL;
+
 }

@@ -24,20 +24,20 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see ResourceBlockModel
- * @see com.liferay.portal.model.impl.ResourceBlockImpl
- * @see com.liferay.portal.model.impl.ResourceBlockModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.portal.model.impl.ResourceBlockImpl")
 @ProviderType
-public interface ResourceBlock extends ResourceBlockModel, PermissionedModel {
+public interface ResourceBlock extends PermissionedModel, ResourceBlockModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.portal.model.impl.ResourceBlockImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.portal.model.impl.ResourceBlockImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<ResourceBlock, Long> RESOURCE_BLOCK_ID_ACCESSOR =
-		new Accessor<ResourceBlock, Long>() {
+	public static final Accessor<ResourceBlock, Long>
+		RESOURCE_BLOCK_ID_ACCESSOR = new Accessor<ResourceBlock, Long>() {
+
 			@Override
 			public Long get(ResourceBlock resourceBlock) {
 				return resourceBlock.getResourceBlockId();
@@ -52,5 +52,7 @@ public interface ResourceBlock extends ResourceBlockModel, PermissionedModel {
 			public Class<ResourceBlock> getTypeClass() {
 				return ResourceBlock.class;
 			}
+
 		};
+
 }

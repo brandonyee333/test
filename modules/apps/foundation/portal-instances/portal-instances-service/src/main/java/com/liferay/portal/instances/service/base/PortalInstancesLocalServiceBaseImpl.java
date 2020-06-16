@@ -14,8 +14,6 @@
 
 package com.liferay.portal.instances.service.base;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.instances.service.PortalInstancesLocalService;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -40,17 +38,16 @@ import javax.sql.DataSource;
  *
  * @author Michael C. Han
  * @see com.liferay.portal.instances.service.impl.PortalInstancesLocalServiceImpl
- * @see com.liferay.portal.instances.service.PortalInstancesLocalServiceUtil
  * @generated
  */
-@ProviderType
 public abstract class PortalInstancesLocalServiceBaseImpl
-	extends BaseLocalServiceImpl implements PortalInstancesLocalService,
-		IdentifiableOSGiService {
+	extends BaseLocalServiceImpl
+	implements IdentifiableOSGiService, PortalInstancesLocalService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link com.liferay.portal.instances.service.PortalInstancesLocalServiceUtil} to access the portal instances local service.
+	 * Never modify or reference this class directly. Use <code>PortalInstancesLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.instances.service.PortalInstancesLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -69,6 +66,7 @@ public abstract class PortalInstancesLocalServiceBaseImpl
 	 */
 	public void setPortalInstancesLocalService(
 		PortalInstancesLocalService portalInstancesLocalService) {
+
 		this.portalInstancesLocalService = portalInstancesLocalService;
 	}
 
@@ -77,7 +75,9 @@ public abstract class PortalInstancesLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
+	public com.liferay.counter.kernel.service.CounterLocalService
+		getCounterLocalService() {
+
 		return counterLocalService;
 	}
 
@@ -87,7 +87,9 @@ public abstract class PortalInstancesLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
+		com.liferay.counter.kernel.service.CounterLocalService
+			counterLocalService) {
+
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -121,18 +123,23 @@ public abstract class PortalInstancesLocalServiceBaseImpl
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
-					sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
+				dataSource, sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception e) {
-			throw new SystemException(e);
+		catch (Exception exception) {
+			throw new SystemException(exception);
 		}
 	}
 
 	@BeanReference(type = PortalInstancesLocalService.class)
 	protected PortalInstancesLocalService portalInstancesLocalService;
-	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
-	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
+
+	@ServiceReference(
+		type = com.liferay.counter.kernel.service.CounterLocalService.class
+	)
+	protected com.liferay.counter.kernel.service.CounterLocalService
+		counterLocalService;
+
 }

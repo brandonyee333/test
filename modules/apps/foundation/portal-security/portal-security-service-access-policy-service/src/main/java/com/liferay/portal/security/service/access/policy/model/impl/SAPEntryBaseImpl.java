@@ -14,8 +14,6 @@
 
 package com.liferay.portal.security.service.access.policy.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.security.service.access.policy.model.SAPEntry;
 import com.liferay.portal.security.service.access.policy.service.SAPEntryLocalServiceUtil;
 
@@ -31,13 +29,13 @@ import com.liferay.portal.security.service.access.policy.service.SAPEntryLocalSe
  * @see SAPEntry
  * @generated
  */
-@ProviderType
-public abstract class SAPEntryBaseImpl extends SAPEntryModelImpl
-	implements SAPEntry {
+public abstract class SAPEntryBaseImpl
+	extends SAPEntryModelImpl implements SAPEntry {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a sap entry model instance should use the {@link SAPEntry} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a sap entry model instance should use the <code>SAPEntry</code> interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -48,4 +46,5 @@ public abstract class SAPEntryBaseImpl extends SAPEntryModelImpl
 			SAPEntryLocalServiceUtil.updateSAPEntry(this);
 		}
 	}
+
 }

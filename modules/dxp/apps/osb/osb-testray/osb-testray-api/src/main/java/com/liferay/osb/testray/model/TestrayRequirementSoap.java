@@ -1,20 +1,18 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.model;
-
-import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -28,8 +26,8 @@ import java.util.List;
  * @author Ethan Bustad
  * @generated
  */
-@ProviderType
 public class TestrayRequirementSoap implements Serializable {
+
 	public static TestrayRequirementSoap toSoapModel(TestrayRequirement model) {
 		TestrayRequirementSoap soapModel = new TestrayRequirementSoap();
 
@@ -59,7 +57,9 @@ public class TestrayRequirementSoap implements Serializable {
 
 	public static TestrayRequirementSoap[] toSoapModels(
 		TestrayRequirement[] models) {
-		TestrayRequirementSoap[] soapModels = new TestrayRequirementSoap[models.length];
+
+		TestrayRequirementSoap[] soapModels =
+			new TestrayRequirementSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -70,10 +70,12 @@ public class TestrayRequirementSoap implements Serializable {
 
 	public static TestrayRequirementSoap[][] toSoapModels(
 		TestrayRequirement[][] models) {
+
 		TestrayRequirementSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new TestrayRequirementSoap[models.length][models[0].length];
+			soapModels =
+				new TestrayRequirementSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new TestrayRequirementSoap[0][0];
@@ -88,13 +90,16 @@ public class TestrayRequirementSoap implements Serializable {
 
 	public static TestrayRequirementSoap[] toSoapModels(
 		List<TestrayRequirement> models) {
-		List<TestrayRequirementSoap> soapModels = new ArrayList<TestrayRequirementSoap>(models.size());
+
+		List<TestrayRequirementSoap> soapModels =
+			new ArrayList<TestrayRequirementSoap>(models.size());
 
 		for (TestrayRequirement model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new TestrayRequirementSoap[soapModels.size()]);
+		return soapModels.toArray(
+			new TestrayRequirementSoap[soapModels.size()]);
 	}
 
 	public TestrayRequirementSoap() {
@@ -288,4 +293,5 @@ public class TestrayRequirementSoap implements Serializable {
 	private String _goalsType;
 	private String _variations;
 	private String _variationsType;
+
 }

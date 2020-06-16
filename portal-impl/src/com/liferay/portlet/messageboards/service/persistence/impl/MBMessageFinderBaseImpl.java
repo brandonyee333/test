@@ -16,10 +16,15 @@ package com.liferay.portlet.messageboards.service.persistence.impl;
 
 import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.message.boards.kernel.service.persistence.MBMessagePersistence;
-
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 
+import java.lang.reflect.Field;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -27,6 +32,29 @@ import java.util.Set;
  * @generated
  */
 public class MBMessageFinderBaseImpl extends BasePersistenceImpl<MBMessage> {
+
+	public MBMessageFinderBaseImpl() {
+		setModelClass(MBMessage.class);
+
+		Map<String, String> dbColumnNames = new HashMap<String, String>();
+
+		dbColumnNames.put("uuid", "uuid_");
+
+		try {
+			Field field = BasePersistenceImpl.class.getDeclaredField(
+				"_dbColumnNames");
+
+			field.setAccessible(true);
+
+			field.set(this, dbColumnNames);
+		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(exception, exception);
+			}
+		}
+	}
+
 	@Override
 	public Set<String> getBadColumnNames() {
 		return getMBMessagePersistence().getBadColumnNames();
@@ -48,9 +76,14 @@ public class MBMessageFinderBaseImpl extends BasePersistenceImpl<MBMessage> {
 	 */
 	public void setMBMessagePersistence(
 		MBMessagePersistence mbMessagePersistence) {
+
 		this.mbMessagePersistence = mbMessagePersistence;
 	}
 
 	@BeanReference(type = MBMessagePersistence.class)
 	protected MBMessagePersistence mbMessagePersistence;
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		MBMessageFinderBaseImpl.class);
+
 }

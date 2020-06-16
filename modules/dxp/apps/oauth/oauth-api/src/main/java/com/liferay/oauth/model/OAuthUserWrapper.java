@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.oauth.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,8 +34,8 @@ import java.util.Objects;
  * @see OAuthUser
  * @generated
  */
-@ProviderType
-public class OAuthUserWrapper implements OAuthUser, ModelWrapper<OAuthUser> {
+public class OAuthUserWrapper implements ModelWrapper<OAuthUser>, OAuthUser {
+
 	public OAuthUserWrapper(OAuthUser oAuthUser) {
 		_oAuthUser = oAuthUser;
 	}
@@ -128,13 +125,148 @@ public class OAuthUserWrapper implements OAuthUser, ModelWrapper<OAuthUser> {
 	}
 
 	@Override
-	public OAuthUser toEscapedModel() {
-		return new OAuthUserWrapper(_oAuthUser.toEscapedModel());
+	public Object clone() {
+		return new OAuthUserWrapper((OAuthUser)_oAuthUser.clone());
 	}
 
 	@Override
-	public OAuthUser toUnescapedModel() {
-		return new OAuthUserWrapper(_oAuthUser.toUnescapedModel());
+	public int compareTo(OAuthUser oAuthUser) {
+		return _oAuthUser.compareTo(oAuthUser);
+	}
+
+	/**
+	 * Returns the access secret of this o auth user.
+	 *
+	 * @return the access secret of this o auth user
+	 */
+	@Override
+	public String getAccessSecret() {
+		return _oAuthUser.getAccessSecret();
+	}
+
+	/**
+	 * Returns the access token of this o auth user.
+	 *
+	 * @return the access token of this o auth user
+	 */
+	@Override
+	public String getAccessToken() {
+		return _oAuthUser.getAccessToken();
+	}
+
+	/**
+	 * Returns the company ID of this o auth user.
+	 *
+	 * @return the company ID of this o auth user
+	 */
+	@Override
+	public long getCompanyId() {
+		return _oAuthUser.getCompanyId();
+	}
+
+	/**
+	 * Returns the create date of this o auth user.
+	 *
+	 * @return the create date of this o auth user
+	 */
+	@Override
+	public Date getCreateDate() {
+		return _oAuthUser.getCreateDate();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _oAuthUser.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the modified date of this o auth user.
+	 *
+	 * @return the modified date of this o auth user
+	 */
+	@Override
+	public Date getModifiedDate() {
+		return _oAuthUser.getModifiedDate();
+	}
+
+	/**
+	 * Returns the o auth application ID of this o auth user.
+	 *
+	 * @return the o auth application ID of this o auth user
+	 */
+	@Override
+	public long getOAuthApplicationId() {
+		return _oAuthUser.getOAuthApplicationId();
+	}
+
+	/**
+	 * Returns the o auth user ID of this o auth user.
+	 *
+	 * @return the o auth user ID of this o auth user
+	 */
+	@Override
+	public long getOAuthUserId() {
+		return _oAuthUser.getOAuthUserId();
+	}
+
+	/**
+	 * Returns the o auth user uuid of this o auth user.
+	 *
+	 * @return the o auth user uuid of this o auth user
+	 */
+	@Override
+	public String getOAuthUserUuid() {
+		return _oAuthUser.getOAuthUserUuid();
+	}
+
+	/**
+	 * Returns the primary key of this o auth user.
+	 *
+	 * @return the primary key of this o auth user
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _oAuthUser.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _oAuthUser.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the user ID of this o auth user.
+	 *
+	 * @return the user ID of this o auth user
+	 */
+	@Override
+	public long getUserId() {
+		return _oAuthUser.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this o auth user.
+	 *
+	 * @return the user name of this o auth user
+	 */
+	@Override
+	public String getUserName() {
+		return _oAuthUser.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this o auth user.
+	 *
+	 * @return the user uuid of this o auth user
+	 */
+	@Override
+	public String getUserUuid() {
+		return _oAuthUser.getUserUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _oAuthUser.hashCode();
 	}
 
 	@Override
@@ -153,187 +285,27 @@ public class OAuthUserWrapper implements OAuthUser, ModelWrapper<OAuthUser> {
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _oAuthUser.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<OAuthUser> toCacheModel() {
-		return _oAuthUser.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(OAuthUser oAuthUser) {
-		return _oAuthUser.compareTo(oAuthUser);
-	}
-
-	@Override
-	public int hashCode() {
-		return _oAuthUser.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _oAuthUser.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new OAuthUserWrapper((OAuthUser)_oAuthUser.clone());
-	}
-
-	/**
-	* Returns the access secret of this o auth user.
-	*
-	* @return the access secret of this o auth user
-	*/
-	@Override
-	public java.lang.String getAccessSecret() {
-		return _oAuthUser.getAccessSecret();
-	}
-
-	/**
-	* Returns the access token of this o auth user.
-	*
-	* @return the access token of this o auth user
-	*/
-	@Override
-	public java.lang.String getAccessToken() {
-		return _oAuthUser.getAccessToken();
-	}
-
-	/**
-	* Returns the o auth user uuid of this o auth user.
-	*
-	* @return the o auth user uuid of this o auth user
-	*/
-	@Override
-	public java.lang.String getOAuthUserUuid() {
-		return _oAuthUser.getOAuthUserUuid();
-	}
-
-	/**
-	* Returns the user name of this o auth user.
-	*
-	* @return the user name of this o auth user
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _oAuthUser.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this o auth user.
-	*
-	* @return the user uuid of this o auth user
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _oAuthUser.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _oAuthUser.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _oAuthUser.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this o auth user.
-	*
-	* @return the create date of this o auth user
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _oAuthUser.getCreateDate();
-	}
-
-	/**
-	* Returns the modified date of this o auth user.
-	*
-	* @return the modified date of this o auth user
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _oAuthUser.getModifiedDate();
-	}
-
-	/**
-	* Returns the company ID of this o auth user.
-	*
-	* @return the company ID of this o auth user
-	*/
-	@Override
-	public long getCompanyId() {
-		return _oAuthUser.getCompanyId();
-	}
-
-	/**
-	* Returns the o auth application ID of this o auth user.
-	*
-	* @return the o auth application ID of this o auth user
-	*/
-	@Override
-	public long getOAuthApplicationId() {
-		return _oAuthUser.getOAuthApplicationId();
-	}
-
-	/**
-	* Returns the o auth user ID of this o auth user.
-	*
-	* @return the o auth user ID of this o auth user
-	*/
-	@Override
-	public long getOAuthUserId() {
-		return _oAuthUser.getOAuthUserId();
-	}
-
-	/**
-	* Returns the primary key of this o auth user.
-	*
-	* @return the primary key of this o auth user
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _oAuthUser.getPrimaryKey();
-	}
-
-	/**
-	* Returns the user ID of this o auth user.
-	*
-	* @return the user ID of this o auth user
-	*/
-	@Override
-	public long getUserId() {
-		return _oAuthUser.getUserId();
-	}
-
-	@Override
 	public void persist() {
 		_oAuthUser.persist();
 	}
 
 	/**
-	* Sets the access secret of this o auth user.
-	*
-	* @param accessSecret the access secret of this o auth user
-	*/
+	 * Sets the access secret of this o auth user.
+	 *
+	 * @param accessSecret the access secret of this o auth user
+	 */
 	@Override
-	public void setAccessSecret(java.lang.String accessSecret) {
+	public void setAccessSecret(String accessSecret) {
 		_oAuthUser.setAccessSecret(accessSecret);
 	}
 
 	/**
-	* Sets the access token of this o auth user.
-	*
-	* @param accessToken the access token of this o auth user
-	*/
+	 * Sets the access token of this o auth user.
+	 *
+	 * @param accessToken the access token of this o auth user
+	 */
 	@Override
-	public void setAccessToken(java.lang.String accessToken) {
+	public void setAccessToken(String accessToken) {
 		_oAuthUser.setAccessToken(accessToken);
 	}
 
@@ -343,23 +315,30 @@ public class OAuthUserWrapper implements OAuthUser, ModelWrapper<OAuthUser> {
 	}
 
 	/**
-	* Sets the company ID of this o auth user.
-	*
-	* @param companyId the company ID of this o auth user
-	*/
+	 * Sets the company ID of this o auth user.
+	 *
+	 * @param companyId the company ID of this o auth user
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_oAuthUser.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this o auth user.
-	*
-	* @param createDate the create date of this o auth user
-	*/
+	 * Sets the create date of this o auth user.
+	 *
+	 * @param createDate the create date of this o auth user
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_oAuthUser.setCreateDate(createDate);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_oAuthUser.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -368,21 +347,15 @@ public class OAuthUserWrapper implements OAuthUser, ModelWrapper<OAuthUser> {
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_oAuthUser.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_oAuthUser.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the modified date of this o auth user.
-	*
-	* @param modifiedDate the modified date of this o auth user
-	*/
+	 * Sets the modified date of this o auth user.
+	 *
+	 * @param modifiedDate the modified date of this o auth user
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_oAuthUser.setModifiedDate(modifiedDate);
@@ -394,40 +367,40 @@ public class OAuthUserWrapper implements OAuthUser, ModelWrapper<OAuthUser> {
 	}
 
 	/**
-	* Sets the o auth application ID of this o auth user.
-	*
-	* @param oAuthApplicationId the o auth application ID of this o auth user
-	*/
+	 * Sets the o auth application ID of this o auth user.
+	 *
+	 * @param oAuthApplicationId the o auth application ID of this o auth user
+	 */
 	@Override
 	public void setOAuthApplicationId(long oAuthApplicationId) {
 		_oAuthUser.setOAuthApplicationId(oAuthApplicationId);
 	}
 
 	/**
-	* Sets the o auth user ID of this o auth user.
-	*
-	* @param oAuthUserId the o auth user ID of this o auth user
-	*/
+	 * Sets the o auth user ID of this o auth user.
+	 *
+	 * @param oAuthUserId the o auth user ID of this o auth user
+	 */
 	@Override
 	public void setOAuthUserId(long oAuthUserId) {
 		_oAuthUser.setOAuthUserId(oAuthUserId);
 	}
 
 	/**
-	* Sets the o auth user uuid of this o auth user.
-	*
-	* @param oAuthUserUuid the o auth user uuid of this o auth user
-	*/
+	 * Sets the o auth user uuid of this o auth user.
+	 *
+	 * @param oAuthUserUuid the o auth user uuid of this o auth user
+	 */
 	@Override
-	public void setOAuthUserUuid(java.lang.String oAuthUserUuid) {
+	public void setOAuthUserUuid(String oAuthUserUuid) {
 		_oAuthUser.setOAuthUserUuid(oAuthUserUuid);
 	}
 
 	/**
-	* Sets the primary key of this o auth user.
-	*
-	* @param primaryKey the primary key of this o auth user
-	*/
+	 * Sets the primary key of this o auth user.
+	 *
+	 * @param primaryKey the primary key of this o auth user
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_oAuthUser.setPrimaryKey(primaryKey);
@@ -439,33 +412,60 @@ public class OAuthUserWrapper implements OAuthUser, ModelWrapper<OAuthUser> {
 	}
 
 	/**
-	* Sets the user ID of this o auth user.
-	*
-	* @param userId the user ID of this o auth user
-	*/
+	 * Sets the user ID of this o auth user.
+	 *
+	 * @param userId the user ID of this o auth user
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_oAuthUser.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this o auth user.
-	*
-	* @param userName the user name of this o auth user
-	*/
+	 * Sets the user name of this o auth user.
+	 *
+	 * @param userName the user name of this o auth user
+	 */
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_oAuthUser.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this o auth user.
-	*
-	* @param userUuid the user uuid of this o auth user
-	*/
+	 * Sets the user uuid of this o auth user.
+	 *
+	 * @param userUuid the user uuid of this o auth user
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_oAuthUser.setUserUuid(userUuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<OAuthUser>
+		toCacheModel() {
+
+		return _oAuthUser.toCacheModel();
+	}
+
+	@Override
+	public OAuthUser toEscapedModel() {
+		return new OAuthUserWrapper(_oAuthUser.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _oAuthUser.toString();
+	}
+
+	@Override
+	public OAuthUser toUnescapedModel() {
+		return new OAuthUserWrapper(_oAuthUser.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _oAuthUser.toXmlString();
 	}
 
 	@Override
@@ -508,4 +508,5 @@ public class OAuthUserWrapper implements OAuthUser, ModelWrapper<OAuthUser> {
 	}
 
 	private final OAuthUser _oAuthUser;
+
 }

@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.loop.model.LoopStatsEntry;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -31,12 +28,11 @@ import java.io.ObjectOutput;
  * The cache model class for representing LoopStatsEntry in entity cache.
  *
  * @author Ethan Bustad
- * @see LoopStatsEntry
  * @generated
  */
-@ProviderType
-public class LoopStatsEntryCacheModel implements CacheModel<LoopStatsEntry>,
-	Externalizable {
+public class LoopStatsEntryCacheModel
+	implements CacheModel<LoopStatsEntry>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -47,7 +43,8 @@ public class LoopStatsEntryCacheModel implements CacheModel<LoopStatsEntry>,
 			return false;
 		}
 
-		LoopStatsEntryCacheModel loopStatsEntryCacheModel = (LoopStatsEntryCacheModel)obj;
+		LoopStatsEntryCacheModel loopStatsEntryCacheModel =
+			(LoopStatsEntryCacheModel)obj;
 
 		if (loopStatsEntryId == loopStatsEntryCacheModel.loopStatsEntryId) {
 			return true;
@@ -109,8 +106,7 @@ public class LoopStatsEntryCacheModel implements CacheModel<LoopStatsEntry>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(loopStatsEntryId);
 
 		objectOutput.writeLong(modifiedTime);
@@ -127,4 +123,5 @@ public class LoopStatsEntryCacheModel implements CacheModel<LoopStatsEntry>,
 	public long classNameId;
 	public long classPK;
 	public double score;
+
 }

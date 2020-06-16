@@ -14,12 +14,7 @@
 
 package com.liferay.portal.service.persistence.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
-import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
@@ -30,18 +25,20 @@ import com.liferay.portal.kernel.exception.NoSuchPluginSettingException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.PluginSetting;
-import com.liferay.portal.kernel.service.persistence.CompanyProvider;
-import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.PluginSettingPersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.impl.PluginSettingImpl;
 import com.liferay.portal.model.impl.PluginSettingModelImpl;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -60,55 +57,32 @@ import java.util.Set;
  * </p>
  *
  * @author Brian Wing Shun Chan
- * @see PluginSettingPersistence
- * @see com.liferay.portal.kernel.service.persistence.PluginSettingUtil
  * @generated
  */
-@ProviderType
-public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSetting>
+public class PluginSettingPersistenceImpl
+	extends BasePersistenceImpl<PluginSetting>
 	implements PluginSettingPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link PluginSettingUtil} to access the plugin setting persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use <code>PluginSettingUtil</code> to access the plugin setting persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = PluginSettingImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-			PluginSettingModelImpl.FINDER_CACHE_ENABLED,
-			PluginSettingImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-			PluginSettingModelImpl.FINDER_CACHE_ENABLED,
-			PluginSettingImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-			PluginSettingModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_COMPANYID =
-		new FinderPath(PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-			PluginSettingModelImpl.FINDER_CACHE_ENABLED,
-			PluginSettingImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByCompanyId",
-			new String[] {
-				Long.class.getName(),
-				
-			Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID =
-		new FinderPath(PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-			PluginSettingModelImpl.FINDER_CACHE_ENABLED,
-			PluginSettingImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByCompanyId", new String[] { Long.class.getName() },
-			PluginSettingModelImpl.COMPANYID_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_COMPANYID = new FinderPath(PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-			PluginSettingModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
-			new String[] { Long.class.getName() });
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		PluginSettingImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
+	private FinderPath _finderPathWithPaginationFindByCompanyId;
+	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+	private FinderPath _finderPathCountByCompanyId;
 
 	/**
 	 * Returns all the plugin settings where companyId = &#63;.
@@ -118,15 +92,15 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 */
 	@Override
 	public List<PluginSetting> findByCompanyId(long companyId) {
-		return findByCompanyId(companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			null);
+		return findByCompanyId(
+			companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the plugin settings where companyId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link PluginSettingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>PluginSettingModelImpl</code>.
 	 * </p>
 	 *
 	 * @param companyId the company ID
@@ -135,8 +109,9 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 * @return the range of matching plugin settings
 	 */
 	@Override
-	public List<PluginSetting> findByCompanyId(long companyId, int start,
-		int end) {
+	public List<PluginSetting> findByCompanyId(
+		long companyId, int start, int end) {
+
 		return findByCompanyId(companyId, start, end, null);
 	}
 
@@ -144,7 +119,7 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 * Returns an ordered range of all the plugin settings where companyId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link PluginSettingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>PluginSettingModelImpl</code>.
 	 * </p>
 	 *
 	 * @param companyId the company ID
@@ -154,8 +129,10 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 * @return the ordered range of matching plugin settings
 	 */
 	@Override
-	public List<PluginSetting> findByCompanyId(long companyId, int start,
-		int end, OrderByComparator<PluginSetting> orderByComparator) {
+	public List<PluginSetting> findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<PluginSetting> orderByComparator) {
+
 		return findByCompanyId(companyId, start, end, orderByComparator, true);
 	}
 
@@ -163,44 +140,49 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 * Returns an ordered range of all the plugin settings where companyId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link PluginSettingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>PluginSettingModelImpl</code>.
 	 * </p>
 	 *
 	 * @param companyId the company ID
 	 * @param start the lower bound of the range of plugin settings
 	 * @param end the upper bound of the range of plugin settings (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching plugin settings
 	 */
 	@Override
-	public List<PluginSetting> findByCompanyId(long companyId, int start,
-		int end, OrderByComparator<PluginSetting> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+	public List<PluginSetting> findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<PluginSetting> orderByComparator,
+		boolean useFinderCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID;
-			finderArgs = new Object[] { companyId };
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByCompanyId;
+				finderArgs = new Object[] {companyId};
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_COMPANYID;
-			finderArgs = new Object[] { companyId, start, end, orderByComparator };
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByCompanyId;
+			finderArgs = new Object[] {
+				companyId, start, end, orderByComparator
+			};
 		}
 
 		List<PluginSetting> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<PluginSetting>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<PluginSetting>)FinderCacheUtil.getResult(
+				finderPath, finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (PluginSetting pluginSetting : list) {
-					if ((companyId != pluginSetting.getCompanyId())) {
+					if (companyId != pluginSetting.getCompanyId()) {
 						list = null;
 
 						break;
@@ -210,63 +192,56 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(3 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				query = new StringBundler(3);
+				sb = new StringBundler(3);
 			}
 
-			query.append(_SQL_SELECT_PLUGINSETTING_WHERE);
+			sb.append(_SQL_SELECT_PLUGINSETTING_WHERE);
 
-			query.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+			sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else
-			 if (pagination) {
-				query.append(PluginSettingModelImpl.ORDER_BY_JPQL);
+			else {
+				sb.append(PluginSettingModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(companyId);
+				queryPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<PluginSetting>)QueryUtil.list(q, getDialect(),
-							start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<PluginSetting>)QueryUtil.list(q, getDialect(),
-							start, end);
-				}
+				list = (List<PluginSetting>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					FinderCacheUtil.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -285,26 +260,27 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 * @throws NoSuchPluginSettingException if a matching plugin setting could not be found
 	 */
 	@Override
-	public PluginSetting findByCompanyId_First(long companyId,
-		OrderByComparator<PluginSetting> orderByComparator)
+	public PluginSetting findByCompanyId_First(
+			long companyId, OrderByComparator<PluginSetting> orderByComparator)
 		throws NoSuchPluginSettingException {
-		PluginSetting pluginSetting = fetchByCompanyId_First(companyId,
-				orderByComparator);
+
+		PluginSetting pluginSetting = fetchByCompanyId_First(
+			companyId, orderByComparator);
 
 		if (pluginSetting != null) {
 			return pluginSetting;
 		}
 
-		StringBundler msg = new StringBundler(4);
+		StringBundler sb = new StringBundler(4);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("companyId=");
-		msg.append(companyId);
+		sb.append("companyId=");
+		sb.append(companyId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		sb.append("}");
 
-		throw new NoSuchPluginSettingException(msg.toString());
+		throw new NoSuchPluginSettingException(sb.toString());
 	}
 
 	/**
@@ -315,10 +291,11 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 * @return the first matching plugin setting, or <code>null</code> if a matching plugin setting could not be found
 	 */
 	@Override
-	public PluginSetting fetchByCompanyId_First(long companyId,
-		OrderByComparator<PluginSetting> orderByComparator) {
-		List<PluginSetting> list = findByCompanyId(companyId, 0, 1,
-				orderByComparator);
+	public PluginSetting fetchByCompanyId_First(
+		long companyId, OrderByComparator<PluginSetting> orderByComparator) {
+
+		List<PluginSetting> list = findByCompanyId(
+			companyId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -336,26 +313,27 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 * @throws NoSuchPluginSettingException if a matching plugin setting could not be found
 	 */
 	@Override
-	public PluginSetting findByCompanyId_Last(long companyId,
-		OrderByComparator<PluginSetting> orderByComparator)
+	public PluginSetting findByCompanyId_Last(
+			long companyId, OrderByComparator<PluginSetting> orderByComparator)
 		throws NoSuchPluginSettingException {
-		PluginSetting pluginSetting = fetchByCompanyId_Last(companyId,
-				orderByComparator);
+
+		PluginSetting pluginSetting = fetchByCompanyId_Last(
+			companyId, orderByComparator);
 
 		if (pluginSetting != null) {
 			return pluginSetting;
 		}
 
-		StringBundler msg = new StringBundler(4);
+		StringBundler sb = new StringBundler(4);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("companyId=");
-		msg.append(companyId);
+		sb.append("companyId=");
+		sb.append(companyId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		sb.append("}");
 
-		throw new NoSuchPluginSettingException(msg.toString());
+		throw new NoSuchPluginSettingException(sb.toString());
 	}
 
 	/**
@@ -366,16 +344,17 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 * @return the last matching plugin setting, or <code>null</code> if a matching plugin setting could not be found
 	 */
 	@Override
-	public PluginSetting fetchByCompanyId_Last(long companyId,
-		OrderByComparator<PluginSetting> orderByComparator) {
+	public PluginSetting fetchByCompanyId_Last(
+		long companyId, OrderByComparator<PluginSetting> orderByComparator) {
+
 		int count = countByCompanyId(companyId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<PluginSetting> list = findByCompanyId(companyId, count - 1, count,
-				orderByComparator);
+		List<PluginSetting> list = findByCompanyId(
+			companyId, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -394,9 +373,11 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 * @throws NoSuchPluginSettingException if a plugin setting with the primary key could not be found
 	 */
 	@Override
-	public PluginSetting[] findByCompanyId_PrevAndNext(long pluginSettingId,
-		long companyId, OrderByComparator<PluginSetting> orderByComparator)
+	public PluginSetting[] findByCompanyId_PrevAndNext(
+			long pluginSettingId, long companyId,
+			OrderByComparator<PluginSetting> orderByComparator)
 		throws NoSuchPluginSettingException {
+
 		PluginSetting pluginSetting = findByPrimaryKey(pluginSettingId);
 
 		Session session = null;
@@ -406,121 +387,124 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 
 			PluginSetting[] array = new PluginSettingImpl[3];
 
-			array[0] = getByCompanyId_PrevAndNext(session, pluginSetting,
-					companyId, orderByComparator, true);
+			array[0] = getByCompanyId_PrevAndNext(
+				session, pluginSetting, companyId, orderByComparator, true);
 
 			array[1] = pluginSetting;
 
-			array[2] = getByCompanyId_PrevAndNext(session, pluginSetting,
-					companyId, orderByComparator, false);
+			array[2] = getByCompanyId_PrevAndNext(
+				session, pluginSetting, companyId, orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected PluginSetting getByCompanyId_PrevAndNext(Session session,
-		PluginSetting pluginSetting, long companyId,
+	protected PluginSetting getByCompanyId_PrevAndNext(
+		Session session, PluginSetting pluginSetting, long companyId,
 		OrderByComparator<PluginSetting> orderByComparator, boolean previous) {
-		StringBundler query = null;
+
+		StringBundler sb = null;
 
 		if (orderByComparator != null) {
-			query = new StringBundler(4 +
-					(orderByComparator.getOrderByConditionFields().length * 3) +
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			query = new StringBundler(3);
+			sb = new StringBundler(3);
 		}
 
-		query.append(_SQL_SELECT_PLUGINSETTING_WHERE);
+		sb.append(_SQL_SELECT_PLUGINSETTING_WHERE);
 
-		query.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				query.append(WHERE_AND);
+				sb.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByConditionFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN);
+						sb.append(WHERE_GREATER_THAN);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN);
+						sb.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			query.append(ORDER_BY_CLAUSE);
+			sb.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC_HAS_NEXT);
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						query.append(ORDER_BY_DESC_HAS_NEXT);
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC);
+						sb.append(ORDER_BY_ASC);
 					}
 					else {
-						query.append(ORDER_BY_DESC);
+						sb.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			query.append(PluginSettingModelImpl.ORDER_BY_JPQL);
+			sb.append(PluginSettingModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
-		Query q = session.createQuery(sql);
+		Query query = session.createQuery(sql);
 
-		q.setFirstResult(0);
-		q.setMaxResults(2);
+		query.setFirstResult(0);
+		query.setMaxResults(2);
 
-		QueryPos qPos = QueryPos.getInstance(q);
+		QueryPos queryPos = QueryPos.getInstance(query);
 
-		qPos.add(companyId);
+		queryPos.add(companyId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(pluginSetting);
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(
+						pluginSetting)) {
 
-			for (Object value : values) {
-				qPos.add(value);
+				queryPos.add(orderByConditionValue);
 			}
 		}
 
-		List<PluginSetting> list = q.list();
+		List<PluginSetting> list = query.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -537,8 +521,10 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 */
 	@Override
 	public void removeByCompanyId(long companyId) {
-		for (PluginSetting pluginSetting : findByCompanyId(companyId,
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+		for (PluginSetting pluginSetting :
+				findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+
 			remove(pluginSetting);
 		}
 	}
@@ -551,40 +537,41 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 */
 	@Override
 	public int countByCompanyId(long companyId) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_COMPANYID;
+		FinderPath finderPath = _finderPathCountByCompanyId;
 
-		Object[] finderArgs = new Object[] { companyId };
+		Object[] finderArgs = new Object[] {companyId};
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = (Long)FinderCacheUtil.getResult(
+			finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(2);
+			StringBundler sb = new StringBundler(2);
 
-			query.append(_SQL_COUNT_PLUGINSETTING_WHERE);
+			sb.append(_SQL_COUNT_PLUGINSETTING_WHERE);
 
-			query.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+			sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(companyId);
+				queryPos.add(companyId);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				FinderCacheUtil.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -594,27 +581,14 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2 = "pluginSetting.companyId = ?";
-	public static final FinderPath FINDER_PATH_FETCH_BY_C_I_T = new FinderPath(PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-			PluginSettingModelImpl.FINDER_CACHE_ENABLED,
-			PluginSettingImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByC_I_T",
-			new String[] {
-				Long.class.getName(), String.class.getName(),
-				String.class.getName()
-			},
-			PluginSettingModelImpl.COMPANYID_COLUMN_BITMASK |
-			PluginSettingModelImpl.PLUGINID_COLUMN_BITMASK |
-			PluginSettingModelImpl.PLUGINTYPE_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_C_I_T = new FinderPath(PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-			PluginSettingModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_I_T",
-			new String[] {
-				Long.class.getName(), String.class.getName(),
-				String.class.getName()
-			});
+	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2 =
+		"pluginSetting.companyId = ?";
+
+	private FinderPath _finderPathFetchByC_I_T;
+	private FinderPath _finderPathCountByC_I_T;
 
 	/**
-	 * Returns the plugin setting where companyId = &#63; and pluginId = &#63; and pluginType = &#63; or throws a {@link NoSuchPluginSettingException} if it could not be found.
+	 * Returns the plugin setting where companyId = &#63; and pluginId = &#63; and pluginType = &#63; or throws a <code>NoSuchPluginSettingException</code> if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param pluginId the plugin ID
@@ -623,32 +597,34 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 * @throws NoSuchPluginSettingException if a matching plugin setting could not be found
 	 */
 	@Override
-	public PluginSetting findByC_I_T(long companyId, String pluginId,
-		String pluginType) throws NoSuchPluginSettingException {
-		PluginSetting pluginSetting = fetchByC_I_T(companyId, pluginId,
-				pluginType);
+	public PluginSetting findByC_I_T(
+			long companyId, String pluginId, String pluginType)
+		throws NoSuchPluginSettingException {
+
+		PluginSetting pluginSetting = fetchByC_I_T(
+			companyId, pluginId, pluginType);
 
 		if (pluginSetting == null) {
-			StringBundler msg = new StringBundler(8);
+			StringBundler sb = new StringBundler(8);
 
-			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			msg.append("companyId=");
-			msg.append(companyId);
+			sb.append("companyId=");
+			sb.append(companyId);
 
-			msg.append(", pluginId=");
-			msg.append(pluginId);
+			sb.append(", pluginId=");
+			sb.append(pluginId);
 
-			msg.append(", pluginType=");
-			msg.append(pluginType);
+			sb.append(", pluginType=");
+			sb.append(pluginType);
 
-			msg.append(StringPool.CLOSE_CURLY_BRACE);
+			sb.append("}");
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(msg.toString());
+				_log.debug(sb.toString());
 			}
 
-			throw new NoSuchPluginSettingException(msg.toString());
+			throw new NoSuchPluginSettingException(sb.toString());
 		}
 
 		return pluginSetting;
@@ -663,8 +639,9 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 * @return the matching plugin setting, or <code>null</code> if a matching plugin setting could not be found
 	 */
 	@Override
-	public PluginSetting fetchByC_I_T(long companyId, String pluginId,
-		String pluginType) {
+	public PluginSetting fetchByC_I_T(
+		long companyId, String pluginId, String pluginType) {
+
 		return fetchByC_I_T(companyId, pluginId, pluginType, true);
 	}
 
@@ -674,92 +651,98 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 * @param companyId the company ID
 	 * @param pluginId the plugin ID
 	 * @param pluginType the plugin type
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching plugin setting, or <code>null</code> if a matching plugin setting could not be found
 	 */
 	@Override
-	public PluginSetting fetchByC_I_T(long companyId, String pluginId,
-		String pluginType, boolean retrieveFromCache) {
-		Object[] finderArgs = new Object[] { companyId, pluginId, pluginType };
+	public PluginSetting fetchByC_I_T(
+		long companyId, String pluginId, String pluginType,
+		boolean useFinderCache) {
+
+		pluginId = Objects.toString(pluginId, "");
+		pluginType = Objects.toString(pluginType, "");
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {companyId, pluginId, pluginType};
+		}
 
 		Object result = null;
 
-		if (retrieveFromCache) {
-			result = finderCache.getResult(FINDER_PATH_FETCH_BY_C_I_T,
-					finderArgs, this);
+		if (useFinderCache) {
+			result = FinderCacheUtil.getResult(
+				_finderPathFetchByC_I_T, finderArgs, this);
 		}
 
 		if (result instanceof PluginSetting) {
 			PluginSetting pluginSetting = (PluginSetting)result;
 
 			if ((companyId != pluginSetting.getCompanyId()) ||
-					!Objects.equals(pluginId, pluginSetting.getPluginId()) ||
-					!Objects.equals(pluginType, pluginSetting.getPluginType())) {
+				!Objects.equals(pluginId, pluginSetting.getPluginId()) ||
+				!Objects.equals(pluginType, pluginSetting.getPluginType())) {
+
 				result = null;
 			}
 		}
 
 		if (result == null) {
-			StringBundler query = new StringBundler(5);
+			StringBundler sb = new StringBundler(5);
 
-			query.append(_SQL_SELECT_PLUGINSETTING_WHERE);
+			sb.append(_SQL_SELECT_PLUGINSETTING_WHERE);
 
-			query.append(_FINDER_COLUMN_C_I_T_COMPANYID_2);
+			sb.append(_FINDER_COLUMN_C_I_T_COMPANYID_2);
 
 			boolean bindPluginId = false;
 
-			if (pluginId == null) {
-				query.append(_FINDER_COLUMN_C_I_T_PLUGINID_1);
-			}
-			else if (pluginId.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_C_I_T_PLUGINID_3);
+			if (pluginId.isEmpty()) {
+				sb.append(_FINDER_COLUMN_C_I_T_PLUGINID_3);
 			}
 			else {
 				bindPluginId = true;
 
-				query.append(_FINDER_COLUMN_C_I_T_PLUGINID_2);
+				sb.append(_FINDER_COLUMN_C_I_T_PLUGINID_2);
 			}
 
 			boolean bindPluginType = false;
 
-			if (pluginType == null) {
-				query.append(_FINDER_COLUMN_C_I_T_PLUGINTYPE_1);
-			}
-			else if (pluginType.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_C_I_T_PLUGINTYPE_3);
+			if (pluginType.isEmpty()) {
+				sb.append(_FINDER_COLUMN_C_I_T_PLUGINTYPE_3);
 			}
 			else {
 				bindPluginType = true;
 
-				query.append(_FINDER_COLUMN_C_I_T_PLUGINTYPE_2);
+				sb.append(_FINDER_COLUMN_C_I_T_PLUGINTYPE_2);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(companyId);
+				queryPos.add(companyId);
 
 				if (bindPluginId) {
-					qPos.add(pluginId);
+					queryPos.add(pluginId);
 				}
 
 				if (bindPluginType) {
-					qPos.add(pluginType);
+					queryPos.add(pluginType);
 				}
 
-				List<PluginSetting> list = q.list();
+				List<PluginSetting> list = query.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(FINDER_PATH_FETCH_BY_C_I_T,
-						finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(
+							_finderPathFetchByC_I_T, finderArgs, list);
+					}
 				}
 				else {
 					PluginSetting pluginSetting = list.get(0);
@@ -767,21 +750,15 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 					result = pluginSetting;
 
 					cacheResult(pluginSetting);
-
-					if ((pluginSetting.getCompanyId() != companyId) ||
-							(pluginSetting.getPluginId() == null) ||
-							!pluginSetting.getPluginId().equals(pluginId) ||
-							(pluginSetting.getPluginType() == null) ||
-							!pluginSetting.getPluginType().equals(pluginType)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_C_I_T,
-							finderArgs, pluginSetting);
-					}
 				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_FETCH_BY_C_I_T, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					FinderCacheUtil.removeResult(
+						_finderPathFetchByC_I_T, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -805,10 +782,12 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 * @return the plugin setting that was removed
 	 */
 	@Override
-	public PluginSetting removeByC_I_T(long companyId, String pluginId,
-		String pluginType) throws NoSuchPluginSettingException {
-		PluginSetting pluginSetting = findByC_I_T(companyId, pluginId,
-				pluginType);
+	public PluginSetting removeByC_I_T(
+			long companyId, String pluginId, String pluginType)
+		throws NoSuchPluginSettingException {
+
+		PluginSetting pluginSetting = findByC_I_T(
+			companyId, pluginId, pluginType);
 
 		return remove(pluginSetting);
 	}
@@ -822,77 +801,77 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 * @return the number of matching plugin settings
 	 */
 	@Override
-	public int countByC_I_T(long companyId, String pluginId, String pluginType) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_I_T;
+	public int countByC_I_T(
+		long companyId, String pluginId, String pluginType) {
 
-		Object[] finderArgs = new Object[] { companyId, pluginId, pluginType };
+		pluginId = Objects.toString(pluginId, "");
+		pluginType = Objects.toString(pluginType, "");
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		FinderPath finderPath = _finderPathCountByC_I_T;
+
+		Object[] finderArgs = new Object[] {companyId, pluginId, pluginType};
+
+		Long count = (Long)FinderCacheUtil.getResult(
+			finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(4);
+			StringBundler sb = new StringBundler(4);
 
-			query.append(_SQL_COUNT_PLUGINSETTING_WHERE);
+			sb.append(_SQL_COUNT_PLUGINSETTING_WHERE);
 
-			query.append(_FINDER_COLUMN_C_I_T_COMPANYID_2);
+			sb.append(_FINDER_COLUMN_C_I_T_COMPANYID_2);
 
 			boolean bindPluginId = false;
 
-			if (pluginId == null) {
-				query.append(_FINDER_COLUMN_C_I_T_PLUGINID_1);
-			}
-			else if (pluginId.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_C_I_T_PLUGINID_3);
+			if (pluginId.isEmpty()) {
+				sb.append(_FINDER_COLUMN_C_I_T_PLUGINID_3);
 			}
 			else {
 				bindPluginId = true;
 
-				query.append(_FINDER_COLUMN_C_I_T_PLUGINID_2);
+				sb.append(_FINDER_COLUMN_C_I_T_PLUGINID_2);
 			}
 
 			boolean bindPluginType = false;
 
-			if (pluginType == null) {
-				query.append(_FINDER_COLUMN_C_I_T_PLUGINTYPE_1);
-			}
-			else if (pluginType.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_C_I_T_PLUGINTYPE_3);
+			if (pluginType.isEmpty()) {
+				sb.append(_FINDER_COLUMN_C_I_T_PLUGINTYPE_3);
 			}
 			else {
 				bindPluginType = true;
 
-				query.append(_FINDER_COLUMN_C_I_T_PLUGINTYPE_2);
+				sb.append(_FINDER_COLUMN_C_I_T_PLUGINTYPE_2);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(companyId);
+				queryPos.add(companyId);
 
 				if (bindPluginId) {
-					qPos.add(pluginId);
+					queryPos.add(pluginId);
 				}
 
 				if (bindPluginType) {
-					qPos.add(pluginType);
+					queryPos.add(pluginType);
 				}
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				FinderCacheUtil.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -902,15 +881,40 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_C_I_T_COMPANYID_2 = "pluginSetting.companyId = ? AND ";
-	private static final String _FINDER_COLUMN_C_I_T_PLUGINID_1 = "pluginSetting.pluginId IS NULL AND ";
-	private static final String _FINDER_COLUMN_C_I_T_PLUGINID_2 = "pluginSetting.pluginId = ? AND ";
-	private static final String _FINDER_COLUMN_C_I_T_PLUGINID_3 = "(pluginSetting.pluginId IS NULL OR pluginSetting.pluginId = '') AND ";
-	private static final String _FINDER_COLUMN_C_I_T_PLUGINTYPE_1 = "pluginSetting.pluginType IS NULL";
-	private static final String _FINDER_COLUMN_C_I_T_PLUGINTYPE_2 = "pluginSetting.pluginType = ?";
-	private static final String _FINDER_COLUMN_C_I_T_PLUGINTYPE_3 = "(pluginSetting.pluginType IS NULL OR pluginSetting.pluginType = '')";
+	private static final String _FINDER_COLUMN_C_I_T_COMPANYID_2 =
+		"pluginSetting.companyId = ? AND ";
+
+	private static final String _FINDER_COLUMN_C_I_T_PLUGINID_2 =
+		"pluginSetting.pluginId = ? AND ";
+
+	private static final String _FINDER_COLUMN_C_I_T_PLUGINID_3 =
+		"(pluginSetting.pluginId IS NULL OR pluginSetting.pluginId = '') AND ";
+
+	private static final String _FINDER_COLUMN_C_I_T_PLUGINTYPE_2 =
+		"pluginSetting.pluginType = ?";
+
+	private static final String _FINDER_COLUMN_C_I_T_PLUGINTYPE_3 =
+		"(pluginSetting.pluginType IS NULL OR pluginSetting.pluginType = '')";
 
 	public PluginSettingPersistenceImpl() {
+		Map<String, String> dbColumnNames = new HashMap<String, String>();
+
+		dbColumnNames.put("active", "active_");
+
+		try {
+			Field field = BasePersistenceImpl.class.getDeclaredField(
+				"_dbColumnNames");
+
+			field.setAccessible(true);
+
+			field.set(this, dbColumnNames);
+		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(exception, exception);
+			}
+		}
+
 		setModelClass(PluginSetting.class);
 	}
 
@@ -921,15 +925,18 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 */
 	@Override
 	public void cacheResult(PluginSetting pluginSetting) {
-		entityCache.putResult(PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
+		EntityCacheUtil.putResult(
+			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
 			PluginSettingImpl.class, pluginSetting.getPrimaryKey(),
 			pluginSetting);
 
-		finderCache.putResult(FINDER_PATH_FETCH_BY_C_I_T,
+		FinderCacheUtil.putResult(
+			_finderPathFetchByC_I_T,
 			new Object[] {
 				pluginSetting.getCompanyId(), pluginSetting.getPluginId(),
 				pluginSetting.getPluginType()
-			}, pluginSetting);
+			},
+			pluginSetting);
 
 		pluginSetting.resetOriginalValues();
 	}
@@ -942,9 +949,11 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	@Override
 	public void cacheResult(List<PluginSetting> pluginSettings) {
 		for (PluginSetting pluginSetting : pluginSettings) {
-			if (entityCache.getResult(
-						PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-						PluginSettingImpl.class, pluginSetting.getPrimaryKey()) == null) {
+			if (EntityCacheUtil.getResult(
+					PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
+					PluginSettingImpl.class, pluginSetting.getPrimaryKey()) ==
+						null) {
+
 				cacheResult(pluginSetting);
 			}
 			else {
@@ -957,86 +966,104 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 * Clears the cache for all plugin settings.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>com.liferay.portal.kernel.dao.orm.EntityCache</code> and <code>com.liferay.portal.kernel.dao.orm.FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache() {
-		entityCache.clearCache(PluginSettingImpl.class);
+		EntityCacheUtil.clearCache(PluginSettingImpl.class);
 
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
 	 * Clears the cache for the plugin setting.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>com.liferay.portal.kernel.dao.orm.EntityCache</code> and <code>com.liferay.portal.kernel.dao.orm.FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(PluginSetting pluginSetting) {
-		entityCache.removeResult(PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
+		EntityCacheUtil.removeResult(
+			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
 			PluginSettingImpl.class, pluginSetting.getPrimaryKey());
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		clearUniqueFindersCache((PluginSettingModelImpl)pluginSetting, true);
 	}
 
 	@Override
 	public void clearCache(List<PluginSetting> pluginSettings) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (PluginSetting pluginSetting : pluginSettings) {
-			entityCache.removeResult(PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
+			EntityCacheUtil.removeResult(
+				PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
 				PluginSettingImpl.class, pluginSetting.getPrimaryKey());
 
-			clearUniqueFindersCache((PluginSettingModelImpl)pluginSetting, true);
+			clearUniqueFindersCache(
+				(PluginSettingModelImpl)pluginSetting, true);
+		}
+	}
+
+	public void clearCache(Set<Serializable> primaryKeys) {
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (Serializable primaryKey : primaryKeys) {
+			EntityCacheUtil.removeResult(
+				PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
+				PluginSettingImpl.class, primaryKey);
 		}
 	}
 
 	protected void cacheUniqueFindersCache(
 		PluginSettingModelImpl pluginSettingModelImpl) {
+
 		Object[] args = new Object[] {
+			pluginSettingModelImpl.getCompanyId(),
+			pluginSettingModelImpl.getPluginId(),
+			pluginSettingModelImpl.getPluginType()
+		};
+
+		FinderCacheUtil.putResult(
+			_finderPathCountByC_I_T, args, Long.valueOf(1), false);
+		FinderCacheUtil.putResult(
+			_finderPathFetchByC_I_T, args, pluginSettingModelImpl, false);
+	}
+
+	protected void clearUniqueFindersCache(
+		PluginSettingModelImpl pluginSettingModelImpl, boolean clearCurrent) {
+
+		if (clearCurrent) {
+			Object[] args = new Object[] {
 				pluginSettingModelImpl.getCompanyId(),
 				pluginSettingModelImpl.getPluginId(),
 				pluginSettingModelImpl.getPluginType()
 			};
 
-		finderCache.putResult(FINDER_PATH_COUNT_BY_C_I_T, args,
-			Long.valueOf(1), false);
-		finderCache.putResult(FINDER_PATH_FETCH_BY_C_I_T, args,
-			pluginSettingModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		PluginSettingModelImpl pluginSettingModelImpl, boolean clearCurrent) {
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-					pluginSettingModelImpl.getCompanyId(),
-					pluginSettingModelImpl.getPluginId(),
-					pluginSettingModelImpl.getPluginType()
-				};
-
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_I_T, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_C_I_T, args);
+			FinderCacheUtil.removeResult(_finderPathCountByC_I_T, args);
+			FinderCacheUtil.removeResult(_finderPathFetchByC_I_T, args);
 		}
 
 		if ((pluginSettingModelImpl.getColumnBitmask() &
-				FINDER_PATH_FETCH_BY_C_I_T.getColumnBitmask()) != 0) {
-			Object[] args = new Object[] {
-					pluginSettingModelImpl.getOriginalCompanyId(),
-					pluginSettingModelImpl.getOriginalPluginId(),
-					pluginSettingModelImpl.getOriginalPluginType()
-				};
+			 _finderPathFetchByC_I_T.getColumnBitmask()) != 0) {
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_I_T, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_C_I_T, args);
+			Object[] args = new Object[] {
+				pluginSettingModelImpl.getOriginalCompanyId(),
+				pluginSettingModelImpl.getOriginalPluginId(),
+				pluginSettingModelImpl.getOriginalPluginType()
+			};
+
+			FinderCacheUtil.removeResult(_finderPathCountByC_I_T, args);
+			FinderCacheUtil.removeResult(_finderPathFetchByC_I_T, args);
 		}
 	}
 
@@ -1053,7 +1080,7 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 		pluginSetting.setNew(true);
 		pluginSetting.setPrimaryKey(pluginSettingId);
 
-		pluginSetting.setCompanyId(companyProvider.getCompanyId());
+		pluginSetting.setCompanyId(CompanyThreadLocal.getCompanyId());
 
 		return pluginSetting;
 	}
@@ -1068,6 +1095,7 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	@Override
 	public PluginSetting remove(long pluginSettingId)
 		throws NoSuchPluginSettingException {
+
 		return remove((Serializable)pluginSettingId);
 	}
 
@@ -1081,30 +1109,31 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	@Override
 	public PluginSetting remove(Serializable primaryKey)
 		throws NoSuchPluginSettingException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			PluginSetting pluginSetting = (PluginSetting)session.get(PluginSettingImpl.class,
-					primaryKey);
+			PluginSetting pluginSetting = (PluginSetting)session.get(
+				PluginSettingImpl.class, primaryKey);
 
 			if (pluginSetting == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchPluginSettingException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchPluginSettingException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(pluginSetting);
 		}
-		catch (NoSuchPluginSettingException nsee) {
-			throw nsee;
+		catch (NoSuchPluginSettingException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1113,24 +1142,22 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 
 	@Override
 	protected PluginSetting removeImpl(PluginSetting pluginSetting) {
-		pluginSetting = toUnwrappedModel(pluginSetting);
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(pluginSetting)) {
-				pluginSetting = (PluginSetting)session.get(PluginSettingImpl.class,
-						pluginSetting.getPrimaryKeyObj());
+				pluginSetting = (PluginSetting)session.get(
+					PluginSettingImpl.class, pluginSetting.getPrimaryKeyObj());
 			}
 
 			if (pluginSetting != null) {
 				session.delete(pluginSetting);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1145,11 +1172,27 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 
 	@Override
 	public PluginSetting updateImpl(PluginSetting pluginSetting) {
-		pluginSetting = toUnwrappedModel(pluginSetting);
-
 		boolean isNew = pluginSetting.isNew();
 
-		PluginSettingModelImpl pluginSettingModelImpl = (PluginSettingModelImpl)pluginSetting;
+		if (!(pluginSetting instanceof PluginSettingModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(pluginSetting.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(
+					pluginSetting);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in pluginSetting proxy " +
+						invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom PluginSetting implementation " +
+					pluginSetting.getClass());
+		}
+
+		PluginSettingModelImpl pluginSettingModelImpl =
+			(PluginSettingModelImpl)pluginSetting;
 
 		Session session = null;
 
@@ -1165,51 +1208,56 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 				pluginSetting = (PluginSetting)session.merge(pluginSetting);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
 		if (!PluginSettingModelImpl.COLUMN_BITMASK_ENABLED) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			FinderCacheUtil.clearCache(
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else
-		 if (isNew) {
-			Object[] args = new Object[] { pluginSettingModelImpl.getCompanyId() };
+		else if (isNew) {
+			Object[] args = new Object[] {
+				pluginSettingModelImpl.getCompanyId()
+			};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPANYID, args);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
-				args);
+			FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
+			FinderCacheUtil.removeResult(
+				_finderPathWithoutPaginationFindByCompanyId, args);
 
-			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
-				FINDER_ARGS_EMPTY);
+			FinderCacheUtil.removeResult(
+				_finderPathCountAll, FINDER_ARGS_EMPTY);
+			FinderCacheUtil.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
-
 		else {
 			if ((pluginSettingModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID.getColumnBitmask()) != 0) {
+				 _finderPathWithoutPaginationFindByCompanyId.
+					 getColumnBitmask()) != 0) {
+
 				Object[] args = new Object[] {
-						pluginSettingModelImpl.getOriginalCompanyId()
-					};
+					pluginSettingModelImpl.getOriginalCompanyId()
+				};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPANYID, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
-					args);
+				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
+				FinderCacheUtil.removeResult(
+					_finderPathWithoutPaginationFindByCompanyId, args);
 
-				args = new Object[] { pluginSettingModelImpl.getCompanyId() };
+				args = new Object[] {pluginSettingModelImpl.getCompanyId()};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPANYID, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
-					args);
+				FinderCacheUtil.removeResult(_finderPathCountByCompanyId, args);
+				FinderCacheUtil.removeResult(
+					_finderPathWithoutPaginationFindByCompanyId, args);
 			}
 		}
 
-		entityCache.putResult(PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
+		EntityCacheUtil.putResult(
+			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
 			PluginSettingImpl.class, pluginSetting.getPrimaryKey(),
 			pluginSetting, false);
 
@@ -1221,29 +1269,8 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 		return pluginSetting;
 	}
 
-	protected PluginSetting toUnwrappedModel(PluginSetting pluginSetting) {
-		if (pluginSetting instanceof PluginSettingImpl) {
-			return pluginSetting;
-		}
-
-		PluginSettingImpl pluginSettingImpl = new PluginSettingImpl();
-
-		pluginSettingImpl.setNew(pluginSetting.isNew());
-		pluginSettingImpl.setPrimaryKey(pluginSetting.getPrimaryKey());
-
-		pluginSettingImpl.setMvccVersion(pluginSetting.getMvccVersion());
-		pluginSettingImpl.setPluginSettingId(pluginSetting.getPluginSettingId());
-		pluginSettingImpl.setCompanyId(pluginSetting.getCompanyId());
-		pluginSettingImpl.setPluginId(pluginSetting.getPluginId());
-		pluginSettingImpl.setPluginType(pluginSetting.getPluginType());
-		pluginSettingImpl.setRoles(pluginSetting.getRoles());
-		pluginSettingImpl.setActive(pluginSetting.isActive());
-
-		return pluginSettingImpl;
-	}
-
 	/**
-	 * Returns the plugin setting with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the plugin setting with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the plugin setting
 	 * @return the plugin setting
@@ -1252,6 +1279,7 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	@Override
 	public PluginSetting findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchPluginSettingException {
+
 		PluginSetting pluginSetting = fetchByPrimaryKey(primaryKey);
 
 		if (pluginSetting == null) {
@@ -1259,15 +1287,15 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchPluginSettingException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchPluginSettingException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return pluginSetting;
 	}
 
 	/**
-	 * Returns the plugin setting with the primary key or throws a {@link NoSuchPluginSettingException} if it could not be found.
+	 * Returns the plugin setting with the primary key or throws a <code>NoSuchPluginSettingException</code> if it could not be found.
 	 *
 	 * @param pluginSettingId the primary key of the plugin setting
 	 * @return the plugin setting
@@ -1276,6 +1304,7 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	@Override
 	public PluginSetting findByPrimaryKey(long pluginSettingId)
 		throws NoSuchPluginSettingException {
+
 		return findByPrimaryKey((Serializable)pluginSettingId);
 	}
 
@@ -1287,8 +1316,9 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 */
 	@Override
 	public PluginSetting fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-				PluginSettingImpl.class, primaryKey);
+		Serializable serializable = EntityCacheUtil.getResult(
+			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
+			PluginSettingImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -1302,22 +1332,24 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 			try {
 				session = openSession();
 
-				pluginSetting = (PluginSetting)session.get(PluginSettingImpl.class,
-						primaryKey);
+				pluginSetting = (PluginSetting)session.get(
+					PluginSettingImpl.class, primaryKey);
 
 				if (pluginSetting != null) {
 					cacheResult(pluginSetting);
 				}
 				else {
-					entityCache.putResult(PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
+					EntityCacheUtil.putResult(
+						PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
 						PluginSettingImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
-				entityCache.removeResult(PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception exception) {
+				EntityCacheUtil.removeResult(
+					PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
 					PluginSettingImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1341,11 +1373,13 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	@Override
 	public Map<Serializable, PluginSetting> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, PluginSetting> map = new HashMap<Serializable, PluginSetting>();
+		Map<Serializable, PluginSetting> map =
+			new HashMap<Serializable, PluginSetting>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -1364,8 +1398,9 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
-					PluginSettingImpl.class, primaryKey);
+			Serializable serializable = EntityCacheUtil.getResult(
+				PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
+				PluginSettingImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -1385,31 +1420,33 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler sb = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
-		query.append(_SQL_SELECT_PLUGINSETTING_WHERE_PKS_IN);
+		sb.append(_SQL_SELECT_PLUGINSETTING_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append((long)primaryKey);
+			sb.append((long)primaryKey);
 
-			query.append(StringPool.COMMA);
+			sb.append(",");
 		}
 
-		query.setIndex(query.index() - 1);
+		sb.setIndex(sb.index() - 1);
 
-		query.append(StringPool.CLOSE_PARENTHESIS);
+		sb.append(")");
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query q = session.createQuery(sql);
+			Query query = session.createQuery(sql);
 
-			for (PluginSetting pluginSetting : (List<PluginSetting>)q.list()) {
+			for (PluginSetting pluginSetting :
+					(List<PluginSetting>)query.list()) {
+
 				map.put(pluginSetting.getPrimaryKeyObj(), pluginSetting);
 
 				cacheResult(pluginSetting);
@@ -1418,12 +1455,13 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
+				EntityCacheUtil.putResult(
+					PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
 					PluginSettingImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1446,7 +1484,7 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 * Returns a range of all the plugin settings.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link PluginSettingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>PluginSettingModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of plugin settings
@@ -1462,7 +1500,7 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 * Returns an ordered range of all the plugin settings.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link PluginSettingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>PluginSettingModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of plugin settings
@@ -1471,8 +1509,10 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 * @return the ordered range of plugin settings
 	 */
 	@Override
-	public List<PluginSetting> findAll(int start, int end,
+	public List<PluginSetting> findAll(
+		int start, int end,
 		OrderByComparator<PluginSetting> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -1480,62 +1520,62 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 * Returns an ordered range of all the plugin settings.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link PluginSettingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>PluginSettingModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of plugin settings
 	 * @param end the upper bound of the range of plugin settings (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of plugin settings
 	 */
 	@Override
-	public List<PluginSetting> findAll(int start, int end,
-		OrderByComparator<PluginSetting> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+	public List<PluginSetting> findAll(
+		int start, int end, OrderByComparator<PluginSetting> orderByComparator,
+		boolean useFinderCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-			finderArgs = FINDER_ARGS_EMPTY;
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-			finderArgs = new Object[] { start, end, orderByComparator };
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindAll;
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<PluginSetting> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<PluginSetting>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<PluginSetting>)FinderCacheUtil.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
-				query.append(_SQL_SELECT_PLUGINSETTING);
+				sb.append(_SQL_SELECT_PLUGINSETTING);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
-				sql = query.toString();
+				sql = sb.toString();
 			}
 			else {
 				sql = _SQL_SELECT_PLUGINSETTING;
 
-				if (pagination) {
-					sql = sql.concat(PluginSettingModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(PluginSettingModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -1543,29 +1583,23 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<PluginSetting>)QueryUtil.list(q, getDialect(),
-							start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<PluginSetting>)QueryUtil.list(q, getDialect(),
-							start, end);
-				}
+				list = (List<PluginSetting>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					FinderCacheUtil.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1593,8 +1627,8 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)FinderCacheUtil.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -1602,18 +1636,18 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(_SQL_COUNT_PLUGINSETTING);
+				Query query = session.createQuery(_SQL_COUNT_PLUGINSETTING);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
-					count);
+				FinderCacheUtil.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
-					FINDER_ARGS_EMPTY);
+			catch (Exception exception) {
+				FinderCacheUtil.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1637,29 +1671,103 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 * Initializes the plugin setting persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(
+			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
+			PluginSettingModelImpl.FINDER_CACHE_ENABLED,
+			PluginSettingImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
+			PluginSettingModelImpl.FINDER_CACHE_ENABLED,
+			PluginSettingImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"findAll", new String[0]);
+
+		_finderPathCountAll = new FinderPath(
+			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
+			PluginSettingModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByCompanyId = new FinderPath(
+			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
+			PluginSettingModelImpl.FINDER_CACHE_ENABLED,
+			PluginSettingImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findByCompanyId",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			});
+
+		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
+			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
+			PluginSettingModelImpl.FINDER_CACHE_ENABLED,
+			PluginSettingImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"findByCompanyId", new String[] {Long.class.getName()},
+			PluginSettingModelImpl.COMPANYID_COLUMN_BITMASK);
+
+		_finderPathCountByCompanyId = new FinderPath(
+			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
+			PluginSettingModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
+			new String[] {Long.class.getName()});
+
+		_finderPathFetchByC_I_T = new FinderPath(
+			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
+			PluginSettingModelImpl.FINDER_CACHE_ENABLED,
+			PluginSettingImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByC_I_T",
+			new String[] {
+				Long.class.getName(), String.class.getName(),
+				String.class.getName()
+			},
+			PluginSettingModelImpl.COMPANYID_COLUMN_BITMASK |
+			PluginSettingModelImpl.PLUGINID_COLUMN_BITMASK |
+			PluginSettingModelImpl.PLUGINTYPE_COLUMN_BITMASK);
+
+		_finderPathCountByC_I_T = new FinderPath(
+			PluginSettingModelImpl.ENTITY_CACHE_ENABLED,
+			PluginSettingModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_I_T",
+			new String[] {
+				Long.class.getName(), String.class.getName(),
+				String.class.getName()
+			});
 	}
 
 	public void destroy() {
-		entityCache.removeCache(PluginSettingImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		EntityCacheUtil.removeCache(PluginSettingImpl.class.getName());
+		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@BeanReference(type = CompanyProviderWrapper.class)
-	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
-	private static final String _SQL_SELECT_PLUGINSETTING = "SELECT pluginSetting FROM PluginSetting pluginSetting";
-	private static final String _SQL_SELECT_PLUGINSETTING_WHERE_PKS_IN = "SELECT pluginSetting FROM PluginSetting pluginSetting WHERE pluginSettingId IN (";
-	private static final String _SQL_SELECT_PLUGINSETTING_WHERE = "SELECT pluginSetting FROM PluginSetting pluginSetting WHERE ";
-	private static final String _SQL_COUNT_PLUGINSETTING = "SELECT COUNT(pluginSetting) FROM PluginSetting pluginSetting";
-	private static final String _SQL_COUNT_PLUGINSETTING_WHERE = "SELECT COUNT(pluginSetting) FROM PluginSetting pluginSetting WHERE ";
+	private static final String _SQL_SELECT_PLUGINSETTING =
+		"SELECT pluginSetting FROM PluginSetting pluginSetting";
+
+	private static final String _SQL_SELECT_PLUGINSETTING_WHERE_PKS_IN =
+		"SELECT pluginSetting FROM PluginSetting pluginSetting WHERE pluginSettingId IN (";
+
+	private static final String _SQL_SELECT_PLUGINSETTING_WHERE =
+		"SELECT pluginSetting FROM PluginSetting pluginSetting WHERE ";
+
+	private static final String _SQL_COUNT_PLUGINSETTING =
+		"SELECT COUNT(pluginSetting) FROM PluginSetting pluginSetting";
+
+	private static final String _SQL_COUNT_PLUGINSETTING_WHERE =
+		"SELECT COUNT(pluginSetting) FROM PluginSetting pluginSetting WHERE ";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "pluginSetting.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No PluginSetting exists with the primary key ";
-	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No PluginSetting exists with the key {";
-	private static final Log _log = LogFactoryUtil.getLog(PluginSettingPersistenceImpl.class);
-	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"active"
-			});
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No PluginSetting exists with the primary key ";
+
+	private static final String _NO_SUCH_ENTITY_WITH_KEY =
+		"No PluginSetting exists with the key {";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		PluginSettingPersistenceImpl.class);
+
+	private static final Set<String> _badColumnNames = SetUtil.fromArray(
+		new String[] {"active"});
+
 }

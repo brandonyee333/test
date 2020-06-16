@@ -14,8 +14,6 @@
 
 package com.liferay.journal.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -27,10 +25,11 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class JournalArticleResourceSoap implements Serializable {
+
 	public static JournalArticleResourceSoap toSoapModel(
 		JournalArticleResource model) {
+
 		JournalArticleResourceSoap soapModel = new JournalArticleResourceSoap();
 
 		soapModel.setUuid(model.getUuid());
@@ -44,7 +43,9 @@ public class JournalArticleResourceSoap implements Serializable {
 
 	public static JournalArticleResourceSoap[] toSoapModels(
 		JournalArticleResource[] models) {
-		JournalArticleResourceSoap[] soapModels = new JournalArticleResourceSoap[models.length];
+
+		JournalArticleResourceSoap[] soapModels =
+			new JournalArticleResourceSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -55,10 +56,12 @@ public class JournalArticleResourceSoap implements Serializable {
 
 	public static JournalArticleResourceSoap[][] toSoapModels(
 		JournalArticleResource[][] models) {
+
 		JournalArticleResourceSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new JournalArticleResourceSoap[models.length][models[0].length];
+			soapModels =
+				new JournalArticleResourceSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new JournalArticleResourceSoap[0][0];
@@ -73,13 +76,16 @@ public class JournalArticleResourceSoap implements Serializable {
 
 	public static JournalArticleResourceSoap[] toSoapModels(
 		List<JournalArticleResource> models) {
-		List<JournalArticleResourceSoap> soapModels = new ArrayList<JournalArticleResourceSoap>(models.size());
+
+		List<JournalArticleResourceSoap> soapModels =
+			new ArrayList<JournalArticleResourceSoap>(models.size());
 
 		for (JournalArticleResource model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new JournalArticleResourceSoap[soapModels.size()]);
+		return soapModels.toArray(
+			new JournalArticleResourceSoap[soapModels.size()]);
 	}
 
 	public JournalArticleResourceSoap() {
@@ -138,4 +144,5 @@ public class JournalArticleResourceSoap implements Serializable {
 	private long _groupId;
 	private long _companyId;
 	private String _articleId;
+
 }

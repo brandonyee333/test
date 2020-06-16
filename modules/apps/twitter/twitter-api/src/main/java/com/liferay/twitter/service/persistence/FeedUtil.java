@@ -14,22 +14,23 @@
 
 package com.liferay.twitter.service.persistence;
 
-import aQute.bnd.annotation.ProviderType;
-
-import com.liferay.osgi.util.ServiceTrackerFactory;
-
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
-
 import com.liferay.twitter.model.Feed;
 
-import org.osgi.util.tracker.ServiceTracker;
+import java.io.Serializable;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
- * The persistence utility for the feed service. This utility wraps {@link com.liferay.twitter.service.persistence.impl.FeedPersistenceImpl} and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
+ * The persistence utility for the feed service. This utility wraps <code>com.liferay.twitter.service.persistence.impl.FeedPersistenceImpl</code> and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
  *
  * <p>
  * Caching information and settings can be found in <code>portal.properties</code>
@@ -37,11 +38,10 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see FeedPersistence
- * @see com.liferay.twitter.service.persistence.impl.FeedPersistenceImpl
  * @generated
  */
-@ProviderType
 public class FeedUtil {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -70,6 +70,15 @@ public class FeedUtil {
 	}
 
 	/**
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#fetchByPrimaryKeys(Set)
+	 */
+	public static Map<Serializable, Feed> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys) {
+
+		return getPersistence().fetchByPrimaryKeys(primaryKeys);
+	}
+
+	/**
 	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<Feed> findWithDynamicQuery(DynamicQuery dynamicQuery) {
@@ -79,19 +88,21 @@ public class FeedUtil {
 	/**
 	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
-	public static List<Feed> findWithDynamicQuery(DynamicQuery dynamicQuery,
-		int start, int end) {
+	public static List<Feed> findWithDynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
+
 		return getPersistence().findWithDynamicQuery(dynamicQuery, start, end);
 	}
 
 	/**
 	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
-	public static List<Feed> findWithDynamicQuery(DynamicQuery dynamicQuery,
-		int start, int end, OrderByComparator<Feed> orderByComparator) {
-		return getPersistence()
-				   .findWithDynamicQuery(dynamicQuery, start, end,
-			orderByComparator);
+	public static List<Feed> findWithDynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<Feed> orderByComparator) {
+
+		return getPersistence().findWithDynamicQuery(
+			dynamicQuery, start, end, orderByComparator);
 	}
 
 	/**
@@ -109,107 +120,107 @@ public class FeedUtil {
 	}
 
 	/**
-	* Returns the feed where userId = &#63; and twitterScreenName = &#63; or throws a {@link NoSuchFeedException} if it could not be found.
-	*
-	* @param userId the user ID
-	* @param twitterScreenName the twitter screen name
-	* @return the matching feed
-	* @throws NoSuchFeedException if a matching feed could not be found
-	*/
-	public static Feed findByU_TSN(long userId,
-		java.lang.String twitterScreenName)
+	 * Returns the feed where userId = &#63; and twitterScreenName = &#63; or throws a <code>NoSuchFeedException</code> if it could not be found.
+	 *
+	 * @param userId the user ID
+	 * @param twitterScreenName the twitter screen name
+	 * @return the matching feed
+	 * @throws NoSuchFeedException if a matching feed could not be found
+	 */
+	public static Feed findByU_TSN(long userId, String twitterScreenName)
 		throws com.liferay.twitter.exception.NoSuchFeedException {
+
 		return getPersistence().findByU_TSN(userId, twitterScreenName);
 	}
 
 	/**
-	* Returns the feed where userId = &#63; and twitterScreenName = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-	*
-	* @param userId the user ID
-	* @param twitterScreenName the twitter screen name
-	* @return the matching feed, or <code>null</code> if a matching feed could not be found
-	*/
-	public static Feed fetchByU_TSN(long userId,
-		java.lang.String twitterScreenName) {
+	 * Returns the feed where userId = &#63; and twitterScreenName = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param userId the user ID
+	 * @param twitterScreenName the twitter screen name
+	 * @return the matching feed, or <code>null</code> if a matching feed could not be found
+	 */
+	public static Feed fetchByU_TSN(long userId, String twitterScreenName) {
 		return getPersistence().fetchByU_TSN(userId, twitterScreenName);
 	}
 
 	/**
-	* Returns the feed where userId = &#63; and twitterScreenName = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-	*
-	* @param userId the user ID
-	* @param twitterScreenName the twitter screen name
-	* @param retrieveFromCache whether to retrieve from the finder cache
-	* @return the matching feed, or <code>null</code> if a matching feed could not be found
-	*/
-	public static Feed fetchByU_TSN(long userId,
-		java.lang.String twitterScreenName, boolean retrieveFromCache) {
-		return getPersistence()
-				   .fetchByU_TSN(userId, twitterScreenName, retrieveFromCache);
+	 * Returns the feed where userId = &#63; and twitterScreenName = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param userId the user ID
+	 * @param twitterScreenName the twitter screen name
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching feed, or <code>null</code> if a matching feed could not be found
+	 */
+	public static Feed fetchByU_TSN(
+		long userId, String twitterScreenName, boolean useFinderCache) {
+
+		return getPersistence().fetchByU_TSN(
+			userId, twitterScreenName, useFinderCache);
 	}
 
 	/**
-	* Removes the feed where userId = &#63; and twitterScreenName = &#63; from the database.
-	*
-	* @param userId the user ID
-	* @param twitterScreenName the twitter screen name
-	* @return the feed that was removed
-	*/
-	public static Feed removeByU_TSN(long userId,
-		java.lang.String twitterScreenName)
+	 * Removes the feed where userId = &#63; and twitterScreenName = &#63; from the database.
+	 *
+	 * @param userId the user ID
+	 * @param twitterScreenName the twitter screen name
+	 * @return the feed that was removed
+	 */
+	public static Feed removeByU_TSN(long userId, String twitterScreenName)
 		throws com.liferay.twitter.exception.NoSuchFeedException {
+
 		return getPersistence().removeByU_TSN(userId, twitterScreenName);
 	}
 
 	/**
-	* Returns the number of feeds where userId = &#63; and twitterScreenName = &#63;.
-	*
-	* @param userId the user ID
-	* @param twitterScreenName the twitter screen name
-	* @return the number of matching feeds
-	*/
-	public static int countByU_TSN(long userId,
-		java.lang.String twitterScreenName) {
+	 * Returns the number of feeds where userId = &#63; and twitterScreenName = &#63;.
+	 *
+	 * @param userId the user ID
+	 * @param twitterScreenName the twitter screen name
+	 * @return the number of matching feeds
+	 */
+	public static int countByU_TSN(long userId, String twitterScreenName) {
 		return getPersistence().countByU_TSN(userId, twitterScreenName);
 	}
 
 	/**
-	* Caches the feed in the entity cache if it is enabled.
-	*
-	* @param feed the feed
-	*/
+	 * Caches the feed in the entity cache if it is enabled.
+	 *
+	 * @param feed the feed
+	 */
 	public static void cacheResult(Feed feed) {
 		getPersistence().cacheResult(feed);
 	}
 
 	/**
-	* Caches the feeds in the entity cache if it is enabled.
-	*
-	* @param feeds the feeds
-	*/
+	 * Caches the feeds in the entity cache if it is enabled.
+	 *
+	 * @param feeds the feeds
+	 */
 	public static void cacheResult(List<Feed> feeds) {
 		getPersistence().cacheResult(feeds);
 	}
 
 	/**
-	* Creates a new feed with the primary key. Does not add the feed to the database.
-	*
-	* @param feedId the primary key for the new feed
-	* @return the new feed
-	*/
+	 * Creates a new feed with the primary key. Does not add the feed to the database.
+	 *
+	 * @param feedId the primary key for the new feed
+	 * @return the new feed
+	 */
 	public static Feed create(long feedId) {
 		return getPersistence().create(feedId);
 	}
 
 	/**
-	* Removes the feed with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param feedId the primary key of the feed
-	* @return the feed that was removed
-	* @throws NoSuchFeedException if a feed with the primary key could not be found
-	*/
+	 * Removes the feed with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param feedId the primary key of the feed
+	 * @return the feed that was removed
+	 * @throws NoSuchFeedException if a feed with the primary key could not be found
+	 */
 	public static Feed remove(long feedId)
 		throws com.liferay.twitter.exception.NoSuchFeedException {
+
 		return getPersistence().remove(feedId);
 	}
 
@@ -218,104 +229,103 @@ public class FeedUtil {
 	}
 
 	/**
-	* Returns the feed with the primary key or throws a {@link NoSuchFeedException} if it could not be found.
-	*
-	* @param feedId the primary key of the feed
-	* @return the feed
-	* @throws NoSuchFeedException if a feed with the primary key could not be found
-	*/
+	 * Returns the feed with the primary key or throws a <code>NoSuchFeedException</code> if it could not be found.
+	 *
+	 * @param feedId the primary key of the feed
+	 * @return the feed
+	 * @throws NoSuchFeedException if a feed with the primary key could not be found
+	 */
 	public static Feed findByPrimaryKey(long feedId)
 		throws com.liferay.twitter.exception.NoSuchFeedException {
+
 		return getPersistence().findByPrimaryKey(feedId);
 	}
 
 	/**
-	* Returns the feed with the primary key or returns <code>null</code> if it could not be found.
-	*
-	* @param feedId the primary key of the feed
-	* @return the feed, or <code>null</code> if a feed with the primary key could not be found
-	*/
+	 * Returns the feed with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param feedId the primary key of the feed
+	 * @return the feed, or <code>null</code> if a feed with the primary key could not be found
+	 */
 	public static Feed fetchByPrimaryKey(long feedId) {
 		return getPersistence().fetchByPrimaryKey(feedId);
 	}
 
-	public static java.util.Map<java.io.Serializable, Feed> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys) {
-		return getPersistence().fetchByPrimaryKeys(primaryKeys);
-	}
-
 	/**
-	* Returns all the feeds.
-	*
-	* @return the feeds
-	*/
+	 * Returns all the feeds.
+	 *
+	 * @return the feeds
+	 */
 	public static List<Feed> findAll() {
 		return getPersistence().findAll();
 	}
 
 	/**
-	* Returns a range of all the feeds.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link FeedModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of feeds
-	* @param end the upper bound of the range of feeds (not inclusive)
-	* @return the range of feeds
-	*/
+	 * Returns a range of all the feeds.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>FeedModelImpl</code>.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of feeds
+	 * @param end the upper bound of the range of feeds (not inclusive)
+	 * @return the range of feeds
+	 */
 	public static List<Feed> findAll(int start, int end) {
 		return getPersistence().findAll(start, end);
 	}
 
 	/**
-	* Returns an ordered range of all the feeds.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link FeedModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of feeds
-	* @param end the upper bound of the range of feeds (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of feeds
-	*/
-	public static List<Feed> findAll(int start, int end,
-		OrderByComparator<Feed> orderByComparator) {
+	 * Returns an ordered range of all the feeds.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>FeedModelImpl</code>.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of feeds
+	 * @param end the upper bound of the range of feeds (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of feeds
+	 */
+	public static List<Feed> findAll(
+		int start, int end, OrderByComparator<Feed> orderByComparator) {
+
 		return getPersistence().findAll(start, end, orderByComparator);
 	}
 
 	/**
-	* Returns an ordered range of all the feeds.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link FeedModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of feeds
-	* @param end the upper bound of the range of feeds (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @param retrieveFromCache whether to retrieve from the finder cache
-	* @return the ordered range of feeds
-	*/
-	public static List<Feed> findAll(int start, int end,
-		OrderByComparator<Feed> orderByComparator, boolean retrieveFromCache) {
-		return getPersistence()
-				   .findAll(start, end, orderByComparator, retrieveFromCache);
+	 * Returns an ordered range of all the feeds.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>FeedModelImpl</code>.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of feeds
+	 * @param end the upper bound of the range of feeds (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of feeds
+	 */
+	public static List<Feed> findAll(
+		int start, int end, OrderByComparator<Feed> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findAll(
+			start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
-	* Removes all the feeds from the database.
-	*/
+	 * Removes all the feeds from the database.
+	 */
 	public static void removeAll() {
 		getPersistence().removeAll();
 	}
 
 	/**
-	* Returns the number of feeds.
-	*
-	* @return the number of feeds
-	*/
+	 * Returns the number of feeds.
+	 *
+	 * @return the number of feeds
+	 */
 	public static int countAll() {
 		return getPersistence().countAll();
 	}
@@ -324,6 +334,19 @@ public class FeedUtil {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker<FeedPersistence, FeedPersistence> _serviceTracker =
-		ServiceTrackerFactory.open(FeedPersistence.class);
+	private static ServiceTracker<FeedPersistence, FeedPersistence>
+		_serviceTracker;
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(FeedPersistence.class);
+
+		ServiceTracker<FeedPersistence, FeedPersistence> serviceTracker =
+			new ServiceTracker<FeedPersistence, FeedPersistence>(
+				bundle.getBundleContext(), FeedPersistence.class, null);
+
+		serviceTracker.open();
+
+		_serviceTracker = serviceTracker;
+	}
+
 }

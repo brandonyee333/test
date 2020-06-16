@@ -14,8 +14,6 @@
 
 package com.liferay.social.networking.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -28,9 +26,11 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class MeetupsRegistrationSoap implements Serializable {
-	public static MeetupsRegistrationSoap toSoapModel(MeetupsRegistration model) {
+
+	public static MeetupsRegistrationSoap toSoapModel(
+		MeetupsRegistration model) {
+
 		MeetupsRegistrationSoap soapModel = new MeetupsRegistrationSoap();
 
 		soapModel.setMeetupsRegistrationId(model.getMeetupsRegistrationId());
@@ -48,7 +48,9 @@ public class MeetupsRegistrationSoap implements Serializable {
 
 	public static MeetupsRegistrationSoap[] toSoapModels(
 		MeetupsRegistration[] models) {
-		MeetupsRegistrationSoap[] soapModels = new MeetupsRegistrationSoap[models.length];
+
+		MeetupsRegistrationSoap[] soapModels =
+			new MeetupsRegistrationSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -59,10 +61,12 @@ public class MeetupsRegistrationSoap implements Serializable {
 
 	public static MeetupsRegistrationSoap[][] toSoapModels(
 		MeetupsRegistration[][] models) {
+
 		MeetupsRegistrationSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new MeetupsRegistrationSoap[models.length][models[0].length];
+			soapModels =
+				new MeetupsRegistrationSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new MeetupsRegistrationSoap[0][0];
@@ -77,13 +81,16 @@ public class MeetupsRegistrationSoap implements Serializable {
 
 	public static MeetupsRegistrationSoap[] toSoapModels(
 		List<MeetupsRegistration> models) {
-		List<MeetupsRegistrationSoap> soapModels = new ArrayList<MeetupsRegistrationSoap>(models.size());
+
+		List<MeetupsRegistrationSoap> soapModels =
+			new ArrayList<MeetupsRegistrationSoap>(models.size());
 
 		for (MeetupsRegistration model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new MeetupsRegistrationSoap[soapModels.size()]);
+		return soapModels.toArray(
+			new MeetupsRegistrationSoap[soapModels.size()]);
 	}
 
 	public MeetupsRegistrationSoap() {
@@ -178,4 +185,5 @@ public class MeetupsRegistrationSoap implements Serializable {
 	private long _meetupsEntryId;
 	private String _comments;
 	private int _status;
+
 }

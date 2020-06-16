@@ -14,8 +14,6 @@
 
 package com.liferay.portlet.messageboards.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.message.boards.kernel.model.MBThread;
 import com.liferay.message.boards.kernel.service.MBThreadLocalServiceUtil;
 
@@ -31,13 +29,13 @@ import com.liferay.message.boards.kernel.service.MBThreadLocalServiceUtil;
  * @see MBThread
  * @generated
  */
-@ProviderType
-public abstract class MBThreadBaseImpl extends MBThreadModelImpl
-	implements MBThread {
+public abstract class MBThreadBaseImpl
+	extends MBThreadModelImpl implements MBThread {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a message boards thread model instance should use the {@link MBThread} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a message boards thread model instance should use the <code>MBThread</code> interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -48,4 +46,5 @@ public abstract class MBThreadBaseImpl extends MBThreadModelImpl
 			MBThreadLocalServiceUtil.updateMBThread(this);
 		}
 	}
+
 }

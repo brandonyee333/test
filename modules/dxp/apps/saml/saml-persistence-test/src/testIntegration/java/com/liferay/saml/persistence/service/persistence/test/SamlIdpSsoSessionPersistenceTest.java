@@ -1,21 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.saml.persistence.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -29,26 +28,15 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
-
 import com.liferay.saml.persistence.exception.NoSuchIdpSsoSessionException;
 import com.liferay.saml.persistence.model.SamlIdpSsoSession;
 import com.liferay.saml.persistence.service.SamlIdpSsoSessionLocalServiceUtil;
 import com.liferay.saml.persistence.service.persistence.SamlIdpSsoSessionPersistence;
 import com.liferay.saml.persistence.service.persistence.SamlIdpSsoSessionUtil;
-
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-
-import org.junit.runner.RunWith;
 
 import java.io.Serializable;
 
@@ -60,17 +48,27 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 /**
  * @generated
  */
 @RunWith(Arquillian.class)
 public class SamlIdpSsoSessionPersistenceTest {
+
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
-			PersistenceTestRule.INSTANCE,
-			new TransactionalTestRule(Propagation.REQUIRED,
-				"com.liferay.saml.persistence.service"));
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
+			new TransactionalTestRule(
+				Propagation.REQUIRED, "com.liferay.saml.persistence.service"));
 
 	@Before
 	public void setUp() {
@@ -109,7 +107,9 @@ public class SamlIdpSsoSessionPersistenceTest {
 
 		_persistence.remove(newSamlIdpSsoSession);
 
-		SamlIdpSsoSession existingSamlIdpSsoSession = _persistence.fetchByPrimaryKey(newSamlIdpSsoSession.getPrimaryKey());
+		SamlIdpSsoSession existingSamlIdpSsoSession =
+			_persistence.fetchByPrimaryKey(
+				newSamlIdpSsoSession.getPrimaryKey());
 
 		Assert.assertNull(existingSamlIdpSsoSession);
 	}
@@ -135,27 +135,34 @@ public class SamlIdpSsoSessionPersistenceTest {
 
 		newSamlIdpSsoSession.setModifiedDate(RandomTestUtil.nextDate());
 
-		newSamlIdpSsoSession.setSamlIdpSsoSessionKey(RandomTestUtil.randomString());
+		newSamlIdpSsoSession.setSamlIdpSsoSessionKey(
+			RandomTestUtil.randomString());
 
 		_samlIdpSsoSessions.add(_persistence.update(newSamlIdpSsoSession));
 
-		SamlIdpSsoSession existingSamlIdpSsoSession = _persistence.findByPrimaryKey(newSamlIdpSsoSession.getPrimaryKey());
+		SamlIdpSsoSession existingSamlIdpSsoSession =
+			_persistence.findByPrimaryKey(newSamlIdpSsoSession.getPrimaryKey());
 
-		Assert.assertEquals(existingSamlIdpSsoSession.getSamlIdpSsoSessionId(),
+		Assert.assertEquals(
+			existingSamlIdpSsoSession.getSamlIdpSsoSessionId(),
 			newSamlIdpSsoSession.getSamlIdpSsoSessionId());
-		Assert.assertEquals(existingSamlIdpSsoSession.getCompanyId(),
+		Assert.assertEquals(
+			existingSamlIdpSsoSession.getCompanyId(),
 			newSamlIdpSsoSession.getCompanyId());
-		Assert.assertEquals(existingSamlIdpSsoSession.getUserId(),
+		Assert.assertEquals(
+			existingSamlIdpSsoSession.getUserId(),
 			newSamlIdpSsoSession.getUserId());
-		Assert.assertEquals(existingSamlIdpSsoSession.getUserName(),
+		Assert.assertEquals(
+			existingSamlIdpSsoSession.getUserName(),
 			newSamlIdpSsoSession.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingSamlIdpSsoSession.getCreateDate()),
+		Assert.assertEquals(
+			Time.getShortTimestamp(existingSamlIdpSsoSession.getCreateDate()),
 			Time.getShortTimestamp(newSamlIdpSsoSession.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingSamlIdpSsoSession.getModifiedDate()),
+		Assert.assertEquals(
+			Time.getShortTimestamp(existingSamlIdpSsoSession.getModifiedDate()),
 			Time.getShortTimestamp(newSamlIdpSsoSession.getModifiedDate()));
-		Assert.assertEquals(existingSamlIdpSsoSession.getSamlIdpSsoSessionKey(),
+		Assert.assertEquals(
+			existingSamlIdpSsoSession.getSamlIdpSsoSessionKey(),
 			newSamlIdpSsoSession.getSamlIdpSsoSessionKey());
 	}
 
@@ -168,9 +175,9 @@ public class SamlIdpSsoSessionPersistenceTest {
 
 	@Test
 	public void testCountBySamlIdpSsoSessionKey() throws Exception {
-		_persistence.countBySamlIdpSsoSessionKey(StringPool.BLANK);
+		_persistence.countBySamlIdpSsoSessionKey("");
 
-		_persistence.countBySamlIdpSsoSessionKey(StringPool.NULL);
+		_persistence.countBySamlIdpSsoSessionKey("null");
 
 		_persistence.countBySamlIdpSsoSessionKey((String)null);
 	}
@@ -179,7 +186,8 @@ public class SamlIdpSsoSessionPersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		SamlIdpSsoSession newSamlIdpSsoSession = addSamlIdpSsoSession();
 
-		SamlIdpSsoSession existingSamlIdpSsoSession = _persistence.findByPrimaryKey(newSamlIdpSsoSession.getPrimaryKey());
+		SamlIdpSsoSession existingSamlIdpSsoSession =
+			_persistence.findByPrimaryKey(newSamlIdpSsoSession.getPrimaryKey());
 
 		Assert.assertEquals(existingSamlIdpSsoSession, newSamlIdpSsoSession);
 	}
@@ -193,22 +201,24 @@ public class SamlIdpSsoSessionPersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			getOrderByComparator());
+		_persistence.findAll(
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
 	}
 
 	protected OrderByComparator<SamlIdpSsoSession> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create("SamlIdpSsoSession",
-			"samlIdpSsoSessionId", true, "companyId", true, "userId", true,
-			"userName", true, "createDate", true, "modifiedDate", true,
-			"samlIdpSsoSessionKey", true);
+		return OrderByComparatorFactoryUtil.create(
+			"SamlIdpSsoSession", "samlIdpSsoSessionId", true, "companyId", true,
+			"userId", true, "userName", true, "createDate", true,
+			"modifiedDate", true, "samlIdpSsoSessionKey", true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		SamlIdpSsoSession newSamlIdpSsoSession = addSamlIdpSsoSession();
 
-		SamlIdpSsoSession existingSamlIdpSsoSession = _persistence.fetchByPrimaryKey(newSamlIdpSsoSession.getPrimaryKey());
+		SamlIdpSsoSession existingSamlIdpSsoSession =
+			_persistence.fetchByPrimaryKey(
+				newSamlIdpSsoSession.getPrimaryKey());
 
 		Assert.assertEquals(existingSamlIdpSsoSession, newSamlIdpSsoSession);
 	}
@@ -217,7 +227,8 @@ public class SamlIdpSsoSessionPersistenceTest {
 	public void testFetchByPrimaryKeyMissing() throws Exception {
 		long pk = RandomTestUtil.nextLong();
 
-		SamlIdpSsoSession missingSamlIdpSsoSession = _persistence.fetchByPrimaryKey(pk);
+		SamlIdpSsoSession missingSamlIdpSsoSession =
+			_persistence.fetchByPrimaryKey(pk);
 
 		Assert.assertNull(missingSamlIdpSsoSession);
 	}
@@ -225,6 +236,7 @@ public class SamlIdpSsoSessionPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
+
 		SamlIdpSsoSession newSamlIdpSsoSession1 = addSamlIdpSsoSession();
 		SamlIdpSsoSession newSamlIdpSsoSession2 = addSamlIdpSsoSession();
 
@@ -233,18 +245,22 @@ public class SamlIdpSsoSessionPersistenceTest {
 		primaryKeys.add(newSamlIdpSsoSession1.getPrimaryKey());
 		primaryKeys.add(newSamlIdpSsoSession2.getPrimaryKey());
 
-		Map<Serializable, SamlIdpSsoSession> samlIdpSsoSessions = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, SamlIdpSsoSession> samlIdpSsoSessions =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(2, samlIdpSsoSessions.size());
-		Assert.assertEquals(newSamlIdpSsoSession1,
+		Assert.assertEquals(
+			newSamlIdpSsoSession1,
 			samlIdpSsoSessions.get(newSamlIdpSsoSession1.getPrimaryKey()));
-		Assert.assertEquals(newSamlIdpSsoSession2,
+		Assert.assertEquals(
+			newSamlIdpSsoSession2,
 			samlIdpSsoSessions.get(newSamlIdpSsoSession2.getPrimaryKey()));
 	}
 
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
+
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -254,7 +270,8 @@ public class SamlIdpSsoSessionPersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, SamlIdpSsoSession> samlIdpSsoSessions = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, SamlIdpSsoSession> samlIdpSsoSessions =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(samlIdpSsoSessions.isEmpty());
 	}
@@ -262,6 +279,7 @@ public class SamlIdpSsoSessionPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
+
 		SamlIdpSsoSession newSamlIdpSsoSession = addSamlIdpSsoSession();
 
 		long pk = RandomTestUtil.nextLong();
@@ -271,36 +289,39 @@ public class SamlIdpSsoSessionPersistenceTest {
 		primaryKeys.add(newSamlIdpSsoSession.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, SamlIdpSsoSession> samlIdpSsoSessions = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, SamlIdpSsoSession> samlIdpSsoSessions =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, samlIdpSsoSessions.size());
-		Assert.assertEquals(newSamlIdpSsoSession,
+		Assert.assertEquals(
+			newSamlIdpSsoSession,
 			samlIdpSsoSessions.get(newSamlIdpSsoSession.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, SamlIdpSsoSession> samlIdpSsoSessions = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, SamlIdpSsoSession> samlIdpSsoSessions =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(samlIdpSsoSessions.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
 		SamlIdpSsoSession newSamlIdpSsoSession = addSamlIdpSsoSession();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newSamlIdpSsoSession.getPrimaryKey());
 
-		Map<Serializable, SamlIdpSsoSession> samlIdpSsoSessions = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, SamlIdpSsoSession> samlIdpSsoSessions =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, samlIdpSsoSessions.size());
-		Assert.assertEquals(newSamlIdpSsoSession,
+		Assert.assertEquals(
+			newSamlIdpSsoSession,
 			samlIdpSsoSessions.get(newSamlIdpSsoSession.getPrimaryKey()));
 	}
 
@@ -308,15 +329,20 @@ public class SamlIdpSsoSessionPersistenceTest {
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery = SamlIdpSsoSessionLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			SamlIdpSsoSessionLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<SamlIdpSsoSession>() {
+		actionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod
+				<SamlIdpSsoSession>() {
+
 				@Override
 				public void performAction(SamlIdpSsoSession samlIdpSsoSession) {
 					Assert.assertNotNull(samlIdpSsoSession);
 
 					count.increment();
 				}
+
 			});
 
 		actionableDynamicQuery.performActions();
@@ -325,17 +351,19 @@ public class SamlIdpSsoSessionPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting()
-		throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
 		SamlIdpSsoSession newSamlIdpSsoSession = addSamlIdpSsoSession();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(SamlIdpSsoSession.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			SamlIdpSsoSession.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("samlIdpSsoSessionId",
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"samlIdpSsoSessionId",
 				newSamlIdpSsoSession.getSamlIdpSsoSessionId()));
 
-		List<SamlIdpSsoSession> result = _persistence.findWithDynamicQuery(dynamicQuery);
+		List<SamlIdpSsoSession> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
 
 		Assert.assertEquals(1, result.size());
 
@@ -346,32 +374,35 @@ public class SamlIdpSsoSessionPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(SamlIdpSsoSession.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			SamlIdpSsoSession.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("samlIdpSsoSessionId",
-				RandomTestUtil.nextLong()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"samlIdpSsoSessionId", RandomTestUtil.nextLong()));
 
-		List<SamlIdpSsoSession> result = _persistence.findWithDynamicQuery(dynamicQuery);
+		List<SamlIdpSsoSession> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
 
 		Assert.assertEquals(0, result.size());
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting()
-		throws Exception {
+	public void testDynamicQueryByProjectionExisting() throws Exception {
 		SamlIdpSsoSession newSamlIdpSsoSession = addSamlIdpSsoSession();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(SamlIdpSsoSession.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			SamlIdpSsoSession.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property(
-				"samlIdpSsoSessionId"));
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.property("samlIdpSsoSessionId"));
 
-		Object newSamlIdpSsoSessionId = newSamlIdpSsoSession.getSamlIdpSsoSessionId();
+		Object newSamlIdpSsoSessionId =
+			newSamlIdpSsoSession.getSamlIdpSsoSessionId();
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("samlIdpSsoSessionId",
-				new Object[] { newSamlIdpSsoSessionId }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"samlIdpSsoSessionId", new Object[] {newSamlIdpSsoSessionId}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -379,19 +410,22 @@ public class SamlIdpSsoSessionPersistenceTest {
 
 		Object existingSamlIdpSsoSessionId = result.get(0);
 
-		Assert.assertEquals(existingSamlIdpSsoSessionId, newSamlIdpSsoSessionId);
+		Assert.assertEquals(
+			existingSamlIdpSsoSessionId, newSamlIdpSsoSessionId);
 	}
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(SamlIdpSsoSession.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			SamlIdpSsoSession.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property(
-				"samlIdpSsoSessionId"));
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.property("samlIdpSsoSessionId"));
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("samlIdpSsoSessionId",
-				new Object[] { RandomTestUtil.nextLong() }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"samlIdpSsoSessionId",
+				new Object[] {RandomTestUtil.nextLong()}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -404,16 +438,18 @@ public class SamlIdpSsoSessionPersistenceTest {
 
 		_persistence.clearCache();
 
-		SamlIdpSsoSession existingSamlIdpSsoSession = _persistence.findByPrimaryKey(newSamlIdpSsoSession.getPrimaryKey());
+		SamlIdpSsoSession existingSamlIdpSsoSession =
+			_persistence.findByPrimaryKey(newSamlIdpSsoSession.getPrimaryKey());
 
-		Assert.assertTrue(Objects.equals(
+		Assert.assertTrue(
+			Objects.equals(
 				existingSamlIdpSsoSession.getSamlIdpSsoSessionKey(),
-				ReflectionTestUtil.invoke(existingSamlIdpSsoSession,
+				ReflectionTestUtil.invoke(
+					existingSamlIdpSsoSession,
 					"getOriginalSamlIdpSsoSessionKey", new Class<?>[0])));
 	}
 
-	protected SamlIdpSsoSession addSamlIdpSsoSession()
-		throws Exception {
+	protected SamlIdpSsoSession addSamlIdpSsoSession() throws Exception {
 		long pk = RandomTestUtil.nextLong();
 
 		SamlIdpSsoSession samlIdpSsoSession = _persistence.create(pk);
@@ -428,14 +464,17 @@ public class SamlIdpSsoSessionPersistenceTest {
 
 		samlIdpSsoSession.setModifiedDate(RandomTestUtil.nextDate());
 
-		samlIdpSsoSession.setSamlIdpSsoSessionKey(RandomTestUtil.randomString());
+		samlIdpSsoSession.setSamlIdpSsoSessionKey(
+			RandomTestUtil.randomString());
 
 		_samlIdpSsoSessions.add(_persistence.update(samlIdpSsoSession));
 
 		return samlIdpSsoSession;
 	}
 
-	private List<SamlIdpSsoSession> _samlIdpSsoSessions = new ArrayList<SamlIdpSsoSession>();
+	private List<SamlIdpSsoSession> _samlIdpSsoSessions =
+		new ArrayList<SamlIdpSsoSession>();
 	private SamlIdpSsoSessionPersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
+
 }

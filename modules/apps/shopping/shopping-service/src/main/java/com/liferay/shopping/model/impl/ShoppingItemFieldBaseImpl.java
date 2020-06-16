@@ -14,8 +14,6 @@
 
 package com.liferay.shopping.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.shopping.model.ShoppingItemField;
 import com.liferay.shopping.service.ShoppingItemFieldLocalServiceUtil;
 
@@ -31,13 +29,13 @@ import com.liferay.shopping.service.ShoppingItemFieldLocalServiceUtil;
  * @see ShoppingItemField
  * @generated
  */
-@ProviderType
 public abstract class ShoppingItemFieldBaseImpl
 	extends ShoppingItemFieldModelImpl implements ShoppingItemField {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a shopping item field model instance should use the {@link ShoppingItemField} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a shopping item field model instance should use the <code>ShoppingItemField</code> interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -48,4 +46,5 @@ public abstract class ShoppingItemFieldBaseImpl
 			ShoppingItemFieldLocalServiceUtil.updateShoppingItemField(this);
 		}
 	}
+
 }

@@ -14,10 +14,7 @@
 
 package com.liferay.portal.kernel.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -35,9 +32,9 @@ import java.util.Objects;
  * @see BrowserTracker
  * @generated
  */
-@ProviderType
-public class BrowserTrackerWrapper implements BrowserTracker,
-	ModelWrapper<BrowserTracker> {
+public class BrowserTrackerWrapper
+	implements BrowserTracker, ModelWrapper<BrowserTracker> {
+
 	public BrowserTrackerWrapper(BrowserTracker browserTracker) {
 		_browserTracker = browserTracker;
 	}
@@ -99,6 +96,102 @@ public class BrowserTrackerWrapper implements BrowserTracker,
 	}
 
 	@Override
+	public Object clone() {
+		return new BrowserTrackerWrapper(
+			(BrowserTracker)_browserTracker.clone());
+	}
+
+	@Override
+	public int compareTo(BrowserTracker browserTracker) {
+		return _browserTracker.compareTo(browserTracker);
+	}
+
+	/**
+	 * Returns the browser key of this browser tracker.
+	 *
+	 * @return the browser key of this browser tracker
+	 */
+	@Override
+	public long getBrowserKey() {
+		return _browserTracker.getBrowserKey();
+	}
+
+	/**
+	 * Returns the browser tracker ID of this browser tracker.
+	 *
+	 * @return the browser tracker ID of this browser tracker
+	 */
+	@Override
+	public long getBrowserTrackerId() {
+		return _browserTracker.getBrowserTrackerId();
+	}
+
+	/**
+	 * Returns the company ID of this browser tracker.
+	 *
+	 * @return the company ID of this browser tracker
+	 */
+	@Override
+	public long getCompanyId() {
+		return _browserTracker.getCompanyId();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _browserTracker.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the mvcc version of this browser tracker.
+	 *
+	 * @return the mvcc version of this browser tracker
+	 */
+	@Override
+	public long getMvccVersion() {
+		return _browserTracker.getMvccVersion();
+	}
+
+	/**
+	 * Returns the primary key of this browser tracker.
+	 *
+	 * @return the primary key of this browser tracker
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _browserTracker.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _browserTracker.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the user ID of this browser tracker.
+	 *
+	 * @return the user ID of this browser tracker
+	 */
+	@Override
+	public long getUserId() {
+		return _browserTracker.getUserId();
+	}
+
+	/**
+	 * Returns the user uuid of this browser tracker.
+	 *
+	 * @return the user uuid of this browser tracker
+	 */
+	@Override
+	public String getUserUuid() {
+		return _browserTracker.getUserUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _browserTracker.hashCode();
+	}
+
+	@Override
 	public boolean isCachedModel() {
 		return _browserTracker.isCachedModel();
 	}
@@ -114,145 +207,25 @@ public class BrowserTrackerWrapper implements BrowserTracker,
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _browserTracker.getExpandoBridge();
-	}
-
-	@Override
-	public BrowserTracker toEscapedModel() {
-		return new BrowserTrackerWrapper(_browserTracker.toEscapedModel());
-	}
-
-	@Override
-	public BrowserTracker toUnescapedModel() {
-		return new BrowserTrackerWrapper(_browserTracker.toUnescapedModel());
-	}
-
-	@Override
-	public CacheModel<BrowserTracker> toCacheModel() {
-		return _browserTracker.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(BrowserTracker browserTracker) {
-		return _browserTracker.compareTo(browserTracker);
-	}
-
-	@Override
-	public int hashCode() {
-		return _browserTracker.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _browserTracker.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new BrowserTrackerWrapper((BrowserTracker)_browserTracker.clone());
-	}
-
-	/**
-	* Returns the user uuid of this browser tracker.
-	*
-	* @return the user uuid of this browser tracker
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _browserTracker.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _browserTracker.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _browserTracker.toXmlString();
-	}
-
-	/**
-	* Returns the browser key of this browser tracker.
-	*
-	* @return the browser key of this browser tracker
-	*/
-	@Override
-	public long getBrowserKey() {
-		return _browserTracker.getBrowserKey();
-	}
-
-	/**
-	* Returns the browser tracker ID of this browser tracker.
-	*
-	* @return the browser tracker ID of this browser tracker
-	*/
-	@Override
-	public long getBrowserTrackerId() {
-		return _browserTracker.getBrowserTrackerId();
-	}
-
-	/**
-	* Returns the company ID of this browser tracker.
-	*
-	* @return the company ID of this browser tracker
-	*/
-	@Override
-	public long getCompanyId() {
-		return _browserTracker.getCompanyId();
-	}
-
-	/**
-	* Returns the mvcc version of this browser tracker.
-	*
-	* @return the mvcc version of this browser tracker
-	*/
-	@Override
-	public long getMvccVersion() {
-		return _browserTracker.getMvccVersion();
-	}
-
-	/**
-	* Returns the primary key of this browser tracker.
-	*
-	* @return the primary key of this browser tracker
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _browserTracker.getPrimaryKey();
-	}
-
-	/**
-	* Returns the user ID of this browser tracker.
-	*
-	* @return the user ID of this browser tracker
-	*/
-	@Override
-	public long getUserId() {
-		return _browserTracker.getUserId();
-	}
-
-	@Override
 	public void persist() {
 		_browserTracker.persist();
 	}
 
 	/**
-	* Sets the browser key of this browser tracker.
-	*
-	* @param browserKey the browser key of this browser tracker
-	*/
+	 * Sets the browser key of this browser tracker.
+	 *
+	 * @param browserKey the browser key of this browser tracker
+	 */
 	@Override
 	public void setBrowserKey(long browserKey) {
 		_browserTracker.setBrowserKey(browserKey);
 	}
 
 	/**
-	* Sets the browser tracker ID of this browser tracker.
-	*
-	* @param browserTrackerId the browser tracker ID of this browser tracker
-	*/
+	 * Sets the browser tracker ID of this browser tracker.
+	 *
+	 * @param browserTrackerId the browser tracker ID of this browser tracker
+	 */
 	@Override
 	public void setBrowserTrackerId(long browserTrackerId) {
 		_browserTracker.setBrowserTrackerId(browserTrackerId);
@@ -264,18 +237,13 @@ public class BrowserTrackerWrapper implements BrowserTracker,
 	}
 
 	/**
-	* Sets the company ID of this browser tracker.
-	*
-	* @param companyId the company ID of this browser tracker
-	*/
+	 * Sets the company ID of this browser tracker.
+	 *
+	 * @param companyId the company ID of this browser tracker
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_browserTracker.setCompanyId(companyId);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_browserTracker.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -284,15 +252,20 @@ public class BrowserTrackerWrapper implements BrowserTracker,
 	}
 
 	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_browserTracker.setExpandoBridgeAttributes(expandoBridge);
+	}
+
+	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_browserTracker.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the mvcc version of this browser tracker.
-	*
-	* @param mvccVersion the mvcc version of this browser tracker
-	*/
+	 * Sets the mvcc version of this browser tracker.
+	 *
+	 * @param mvccVersion the mvcc version of this browser tracker
+	 */
 	@Override
 	public void setMvccVersion(long mvccVersion) {
 		_browserTracker.setMvccVersion(mvccVersion);
@@ -304,10 +277,10 @@ public class BrowserTrackerWrapper implements BrowserTracker,
 	}
 
 	/**
-	* Sets the primary key of this browser tracker.
-	*
-	* @param primaryKey the primary key of this browser tracker
-	*/
+	 * Sets the primary key of this browser tracker.
+	 *
+	 * @param primaryKey the primary key of this browser tracker
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_browserTracker.setPrimaryKey(primaryKey);
@@ -319,23 +292,48 @@ public class BrowserTrackerWrapper implements BrowserTracker,
 	}
 
 	/**
-	* Sets the user ID of this browser tracker.
-	*
-	* @param userId the user ID of this browser tracker
-	*/
+	 * Sets the user ID of this browser tracker.
+	 *
+	 * @param userId the user ID of this browser tracker
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_browserTracker.setUserId(userId);
 	}
 
 	/**
-	* Sets the user uuid of this browser tracker.
-	*
-	* @param userUuid the user uuid of this browser tracker
-	*/
+	 * Sets the user uuid of this browser tracker.
+	 *
+	 * @param userUuid the user uuid of this browser tracker
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_browserTracker.setUserUuid(userUuid);
+	}
+
+	@Override
+	public CacheModel<BrowserTracker> toCacheModel() {
+		return _browserTracker.toCacheModel();
+	}
+
+	@Override
+	public BrowserTracker toEscapedModel() {
+		return new BrowserTrackerWrapper(_browserTracker.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _browserTracker.toString();
+	}
+
+	@Override
+	public BrowserTracker toUnescapedModel() {
+		return new BrowserTrackerWrapper(_browserTracker.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _browserTracker.toXmlString();
 	}
 
 	@Override
@@ -348,10 +346,12 @@ public class BrowserTrackerWrapper implements BrowserTracker,
 			return false;
 		}
 
-		BrowserTrackerWrapper browserTrackerWrapper = (BrowserTrackerWrapper)obj;
+		BrowserTrackerWrapper browserTrackerWrapper =
+			(BrowserTrackerWrapper)obj;
 
-		if (Objects.equals(_browserTracker,
-					browserTrackerWrapper._browserTracker)) {
+		if (Objects.equals(
+				_browserTracker, browserTrackerWrapper._browserTracker)) {
+
 			return true;
 		}
 
@@ -379,4 +379,5 @@ public class BrowserTrackerWrapper implements BrowserTracker,
 	}
 
 	private final BrowserTracker _browserTracker;
+
 }

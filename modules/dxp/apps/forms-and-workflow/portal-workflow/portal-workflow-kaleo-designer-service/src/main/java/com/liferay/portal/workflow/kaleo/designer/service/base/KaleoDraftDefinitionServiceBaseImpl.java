@@ -1,15 +1,15 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.portal.workflow.kaleo.designer.service.base;
@@ -41,16 +41,16 @@ import javax.sql.DataSource;
  *
  * @author Eduardo Lundgren
  * @see com.liferay.portal.workflow.kaleo.designer.service.impl.KaleoDraftDefinitionServiceImpl
- * @see com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionServiceUtil
  * @generated
  */
 public abstract class KaleoDraftDefinitionServiceBaseImpl
-	extends BaseServiceImpl implements KaleoDraftDefinitionService,
-		IdentifiableOSGiService {
+	extends BaseServiceImpl
+	implements IdentifiableOSGiService, KaleoDraftDefinitionService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionServiceUtil} to access the kaleo draft definition remote service.
+	 * Never modify or reference this class directly. Use <code>KaleoDraftDefinitionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionServiceUtil</code>.
 	 */
 
 	/**
@@ -58,7 +58,9 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 	 *
 	 * @return the kaleo draft definition local service
 	 */
-	public com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionLocalService getKaleoDraftDefinitionLocalService() {
+	public com.liferay.portal.workflow.kaleo.designer.service.
+		KaleoDraftDefinitionLocalService getKaleoDraftDefinitionLocalService() {
+
 		return kaleoDraftDefinitionLocalService;
 	}
 
@@ -68,8 +70,11 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 	 * @param kaleoDraftDefinitionLocalService the kaleo draft definition local service
 	 */
 	public void setKaleoDraftDefinitionLocalService(
-		com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionLocalService kaleoDraftDefinitionLocalService) {
-		this.kaleoDraftDefinitionLocalService = kaleoDraftDefinitionLocalService;
+		com.liferay.portal.workflow.kaleo.designer.service.
+			KaleoDraftDefinitionLocalService kaleoDraftDefinitionLocalService) {
+
+		this.kaleoDraftDefinitionLocalService =
+			kaleoDraftDefinitionLocalService;
 	}
 
 	/**
@@ -88,6 +93,7 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 	 */
 	public void setKaleoDraftDefinitionService(
 		KaleoDraftDefinitionService kaleoDraftDefinitionService) {
+
 		this.kaleoDraftDefinitionService = kaleoDraftDefinitionService;
 	}
 
@@ -96,7 +102,9 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 	 *
 	 * @return the kaleo draft definition persistence
 	 */
-	public KaleoDraftDefinitionPersistence getKaleoDraftDefinitionPersistence() {
+	public KaleoDraftDefinitionPersistence
+		getKaleoDraftDefinitionPersistence() {
+
 		return kaleoDraftDefinitionPersistence;
 	}
 
@@ -107,6 +115,7 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 	 */
 	public void setKaleoDraftDefinitionPersistence(
 		KaleoDraftDefinitionPersistence kaleoDraftDefinitionPersistence) {
+
 		this.kaleoDraftDefinitionPersistence = kaleoDraftDefinitionPersistence;
 	}
 
@@ -115,7 +124,9 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
+	public com.liferay.counter.kernel.service.CounterLocalService
+		getCounterLocalService() {
+
 		return counterLocalService;
 	}
 
@@ -125,7 +136,9 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
+		com.liferay.counter.kernel.service.CounterLocalService
+			counterLocalService) {
+
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -134,7 +147,9 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
+	public com.liferay.portal.kernel.service.ClassNameLocalService
+		getClassNameLocalService() {
+
 		return classNameLocalService;
 	}
 
@@ -144,7 +159,9 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
+		com.liferay.portal.kernel.service.ClassNameLocalService
+			classNameLocalService) {
+
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -153,7 +170,9 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 	 *
 	 * @return the class name remote service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameService getClassNameService() {
+	public com.liferay.portal.kernel.service.ClassNameService
+		getClassNameService() {
+
 		return classNameService;
 	}
 
@@ -164,6 +183,7 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 	 */
 	public void setClassNameService(
 		com.liferay.portal.kernel.service.ClassNameService classNameService) {
+
 		this.classNameService = classNameService;
 	}
 
@@ -183,6 +203,7 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
+
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -191,7 +212,9 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
+	public com.liferay.portal.kernel.service.ResourceLocalService
+		getResourceLocalService() {
+
 		return resourceLocalService;
 	}
 
@@ -201,7 +224,9 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
+		com.liferay.portal.kernel.service.ResourceLocalService
+			resourceLocalService) {
+
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -210,7 +235,9 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
+	public com.liferay.portal.kernel.service.UserLocalService
+		getUserLocalService() {
+
 		return userLocalService;
 	}
 
@@ -221,6 +248,7 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
+
 		this.userLocalService = userLocalService;
 	}
 
@@ -240,6 +268,7 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 	 */
 	public void setUserService(
 		com.liferay.portal.kernel.service.UserService userService) {
+
 		this.userService = userService;
 	}
 
@@ -292,43 +321,75 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 	 */
 	protected void runSQL(String sql) {
 		try {
-			DataSource dataSource = kaleoDraftDefinitionPersistence.getDataSource();
+			DataSource dataSource =
+				kaleoDraftDefinitionPersistence.getDataSource();
 
 			DB db = DBManagerUtil.getDB();
 
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
-					sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
+				dataSource, sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception e) {
-			throw new SystemException(e);
+		catch (Exception exception) {
+			throw new SystemException(exception);
 		}
 	}
 
-	@BeanReference(type = com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionLocalService.class)
-	protected com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionLocalService kaleoDraftDefinitionLocalService;
+	@BeanReference(
+		type = com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionLocalService.class
+	)
+	protected com.liferay.portal.workflow.kaleo.designer.service.
+		KaleoDraftDefinitionLocalService kaleoDraftDefinitionLocalService;
+
 	@BeanReference(type = KaleoDraftDefinitionService.class)
 	protected KaleoDraftDefinitionService kaleoDraftDefinitionService;
+
 	@BeanReference(type = KaleoDraftDefinitionPersistence.class)
 	protected KaleoDraftDefinitionPersistence kaleoDraftDefinitionPersistence;
-	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
-	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameService.class)
-	protected com.liferay.portal.kernel.service.ClassNameService classNameService;
+
+	@ServiceReference(
+		type = com.liferay.counter.kernel.service.CounterLocalService.class
+	)
+	protected com.liferay.counter.kernel.service.CounterLocalService
+		counterLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService
+		classNameLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ClassNameService.class
+	)
+	protected com.liferay.portal.kernel.service.ClassNameService
+		classNameService;
+
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
-	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
-	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.UserService.class)
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ResourceLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ResourceLocalService
+		resourceLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.UserLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.UserLocalService
+		userLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.UserService.class
+	)
 	protected com.liferay.portal.kernel.service.UserService userService;
+
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
+
 }

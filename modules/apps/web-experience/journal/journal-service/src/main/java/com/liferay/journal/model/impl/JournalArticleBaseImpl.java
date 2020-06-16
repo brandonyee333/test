@@ -14,8 +14,6 @@
 
 package com.liferay.journal.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalServiceUtil;
 
@@ -31,13 +29,13 @@ import com.liferay.journal.service.JournalArticleLocalServiceUtil;
  * @see JournalArticle
  * @generated
  */
-@ProviderType
-public abstract class JournalArticleBaseImpl extends JournalArticleModelImpl
-	implements JournalArticle {
+public abstract class JournalArticleBaseImpl
+	extends JournalArticleModelImpl implements JournalArticle {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a journal article model instance should use the {@link JournalArticle} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a journal article model instance should use the <code>JournalArticle</code> interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -57,4 +55,5 @@ public abstract class JournalArticleBaseImpl extends JournalArticleModelImpl
 
 		JournalArticleLocalServiceUtil.updateJournalArticle(journalArticle);
 	}
+
 }

@@ -37,49 +37,24 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Michael C. Han
  * @see PortalInstancesLocalServiceUtil
- * @see com.liferay.portal.instances.service.base.PortalInstancesLocalServiceBaseImpl
- * @see com.liferay.portal.instances.service.impl.PortalInstancesLocalServiceImpl
  * @generated
  */
 @ProviderType
-@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
-	PortalException.class, SystemException.class})
+@Transactional(
+	isolation = Isolation.PORTAL,
+	rollbackFor = {PortalException.class, SystemException.class}
+)
 public interface PortalInstancesLocalService extends BaseLocalService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link PortalInstancesLocalServiceUtil} to access the portal instances local service. Add custom service methods to {@link com.liferay.portal.instances.service.impl.PortalInstancesLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link PortalInstancesLocalServiceUtil} to access the portal instances local service. Add custom service methods to <code>com.liferay.portal.instances.service.impl.PortalInstancesLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean isAutoLoginIgnoreHost(java.lang.String host);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean isAutoLoginIgnorePath(java.lang.String path);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean isCompanyActive(long companyId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean isVirtualHostsIgnoreHost(java.lang.String host);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean isVirtualHostsIgnorePath(java.lang.String path);
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.lang.String[] getWebIds();
+	public void addCompanyId(long companyId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long getCompanyId(HttpServletRequest request);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long getDefaultCompanyId();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long[] getCompanyIds();
@@ -87,10 +62,36 @@ public interface PortalInstancesLocalService extends BaseLocalService {
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long[] getCompanyIdsBySQL() throws SQLException;
 
-	public void addCompanyId(long companyId);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long getDefaultCompanyId();
 
-	public void initializePortalInstance(ServletContext servletContext,
-		java.lang.String webId);
+	/**
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
+	public String getOSGiServiceIdentifier();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public String[] getWebIds();
+
+	public void initializePortalInstance(
+		ServletContext servletContext, String webId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean isAutoLoginIgnoreHost(String host);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean isAutoLoginIgnorePath(String path);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean isCompanyActive(long companyId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean isVirtualHostsIgnoreHost(String host);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean isVirtualHostsIgnorePath(String path);
 
 	public void reload(ServletContext servletContext);
 
@@ -98,4 +99,5 @@ public interface PortalInstancesLocalService extends BaseLocalService {
 
 	@Clusterable
 	public void synchronizePortalInstances();
+
 }

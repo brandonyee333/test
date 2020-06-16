@@ -15,7 +15,6 @@
 package com.liferay.social.privatemessaging.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -33,21 +32,11 @@ import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
-
 import com.liferay.social.privatemessaging.exception.NoSuchUserThreadException;
 import com.liferay.social.privatemessaging.model.UserThread;
 import com.liferay.social.privatemessaging.service.UserThreadLocalServiceUtil;
 import com.liferay.social.privatemessaging.service.persistence.UserThreadPersistence;
 import com.liferay.social.privatemessaging.service.persistence.UserThreadUtil;
-
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-
-import org.junit.runner.RunWith;
 
 import java.io.Serializable;
 
@@ -58,16 +47,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 /**
  * @generated
  */
 @RunWith(Arquillian.class)
 public class UserThreadPersistenceTest {
+
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
-			PersistenceTestRule.INSTANCE,
-			new TransactionalTestRule(Propagation.REQUIRED,
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
+			new TransactionalTestRule(
+				Propagation.REQUIRED,
 				"com.liferay.social.privatemessaging.service"));
 
 	@Before
@@ -107,7 +107,8 @@ public class UserThreadPersistenceTest {
 
 		_persistence.remove(newUserThread);
 
-		UserThread existingUserThread = _persistence.fetchByPrimaryKey(newUserThread.getPrimaryKey());
+		UserThread existingUserThread = _persistence.fetchByPrimaryKey(
+			newUserThread.getPrimaryKey());
 
 		Assert.assertNull(existingUserThread);
 	}
@@ -143,30 +144,33 @@ public class UserThreadPersistenceTest {
 
 		_userThreads.add(_persistence.update(newUserThread));
 
-		UserThread existingUserThread = _persistence.findByPrimaryKey(newUserThread.getPrimaryKey());
+		UserThread existingUserThread = _persistence.findByPrimaryKey(
+			newUserThread.getPrimaryKey());
 
-		Assert.assertEquals(existingUserThread.getUserThreadId(),
+		Assert.assertEquals(
+			existingUserThread.getUserThreadId(),
 			newUserThread.getUserThreadId());
-		Assert.assertEquals(existingUserThread.getCompanyId(),
-			newUserThread.getCompanyId());
-		Assert.assertEquals(existingUserThread.getUserId(),
-			newUserThread.getUserId());
-		Assert.assertEquals(existingUserThread.getUserName(),
-			newUserThread.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingUserThread.getCreateDate()),
+		Assert.assertEquals(
+			existingUserThread.getCompanyId(), newUserThread.getCompanyId());
+		Assert.assertEquals(
+			existingUserThread.getUserId(), newUserThread.getUserId());
+		Assert.assertEquals(
+			existingUserThread.getUserName(), newUserThread.getUserName());
+		Assert.assertEquals(
+			Time.getShortTimestamp(existingUserThread.getCreateDate()),
 			Time.getShortTimestamp(newUserThread.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingUserThread.getModifiedDate()),
+		Assert.assertEquals(
+			Time.getShortTimestamp(existingUserThread.getModifiedDate()),
 			Time.getShortTimestamp(newUserThread.getModifiedDate()));
-		Assert.assertEquals(existingUserThread.getMbThreadId(),
-			newUserThread.getMbThreadId());
-		Assert.assertEquals(existingUserThread.getTopMBMessageId(),
+		Assert.assertEquals(
+			existingUserThread.getMbThreadId(), newUserThread.getMbThreadId());
+		Assert.assertEquals(
+			existingUserThread.getTopMBMessageId(),
 			newUserThread.getTopMBMessageId());
-		Assert.assertEquals(existingUserThread.getRead(),
-			newUserThread.getRead());
-		Assert.assertEquals(existingUserThread.getDeleted(),
-			newUserThread.getDeleted());
+		Assert.assertEquals(
+			existingUserThread.isRead(), newUserThread.isRead());
+		Assert.assertEquals(
+			existingUserThread.isDeleted(), newUserThread.isDeleted());
 	}
 
 	@Test
@@ -185,34 +189,36 @@ public class UserThreadPersistenceTest {
 
 	@Test
 	public void testCountByU_M() throws Exception {
-		_persistence.countByU_M(RandomTestUtil.nextLong(),
-			RandomTestUtil.nextLong());
+		_persistence.countByU_M(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
 
 		_persistence.countByU_M(0L, 0L);
 	}
 
 	@Test
 	public void testCountByU_D() throws Exception {
-		_persistence.countByU_D(RandomTestUtil.nextLong(),
-			RandomTestUtil.randomBoolean());
+		_persistence.countByU_D(
+			RandomTestUtil.nextLong(), RandomTestUtil.randomBoolean());
 
 		_persistence.countByU_D(0L, RandomTestUtil.randomBoolean());
 	}
 
 	@Test
 	public void testCountByU_R_D() throws Exception {
-		_persistence.countByU_R_D(RandomTestUtil.nextLong(),
-			RandomTestUtil.randomBoolean(), RandomTestUtil.randomBoolean());
-
-		_persistence.countByU_R_D(0L, RandomTestUtil.randomBoolean(),
+		_persistence.countByU_R_D(
+			RandomTestUtil.nextLong(), RandomTestUtil.randomBoolean(),
 			RandomTestUtil.randomBoolean());
+
+		_persistence.countByU_R_D(
+			0L, RandomTestUtil.randomBoolean(), RandomTestUtil.randomBoolean());
 	}
 
 	@Test
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		UserThread newUserThread = addUserThread();
 
-		UserThread existingUserThread = _persistence.findByPrimaryKey(newUserThread.getPrimaryKey());
+		UserThread existingUserThread = _persistence.findByPrimaryKey(
+			newUserThread.getPrimaryKey());
 
 		Assert.assertEquals(existingUserThread, newUserThread);
 	}
@@ -226,23 +232,24 @@ public class UserThreadPersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			getOrderByComparator());
+		_persistence.findAll(
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
 	}
 
 	protected OrderByComparator<UserThread> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create("PM_UserThread",
-			"userThreadId", true, "companyId", true, "userId", true,
-			"userName", true, "createDate", true, "modifiedDate", true,
-			"mbThreadId", true, "topMBMessageId", true, "read", true,
-			"deleted", true);
+		return OrderByComparatorFactoryUtil.create(
+			"PM_UserThread", "userThreadId", true, "companyId", true, "userId",
+			true, "userName", true, "createDate", true, "modifiedDate", true,
+			"mbThreadId", true, "topMBMessageId", true, "read", true, "deleted",
+			true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		UserThread newUserThread = addUserThread();
 
-		UserThread existingUserThread = _persistence.fetchByPrimaryKey(newUserThread.getPrimaryKey());
+		UserThread existingUserThread = _persistence.fetchByPrimaryKey(
+			newUserThread.getPrimaryKey());
 
 		Assert.assertEquals(existingUserThread, newUserThread);
 	}
@@ -259,6 +266,7 @@ public class UserThreadPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
+
 		UserThread newUserThread1 = addUserThread();
 		UserThread newUserThread2 = addUserThread();
 
@@ -267,18 +275,20 @@ public class UserThreadPersistenceTest {
 		primaryKeys.add(newUserThread1.getPrimaryKey());
 		primaryKeys.add(newUserThread2.getPrimaryKey());
 
-		Map<Serializable, UserThread> userThreads = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, UserThread> userThreads =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(2, userThreads.size());
-		Assert.assertEquals(newUserThread1,
-			userThreads.get(newUserThread1.getPrimaryKey()));
-		Assert.assertEquals(newUserThread2,
-			userThreads.get(newUserThread2.getPrimaryKey()));
+		Assert.assertEquals(
+			newUserThread1, userThreads.get(newUserThread1.getPrimaryKey()));
+		Assert.assertEquals(
+			newUserThread2, userThreads.get(newUserThread2.getPrimaryKey()));
 	}
 
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
+
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -288,7 +298,8 @@ public class UserThreadPersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, UserThread> userThreads = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, UserThread> userThreads =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(userThreads.isEmpty());
 	}
@@ -296,6 +307,7 @@ public class UserThreadPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
+
 		UserThread newUserThread = addUserThread();
 
 		long pk = RandomTestUtil.nextLong();
@@ -305,52 +317,57 @@ public class UserThreadPersistenceTest {
 		primaryKeys.add(newUserThread.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, UserThread> userThreads = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, UserThread> userThreads =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, userThreads.size());
-		Assert.assertEquals(newUserThread,
-			userThreads.get(newUserThread.getPrimaryKey()));
+		Assert.assertEquals(
+			newUserThread, userThreads.get(newUserThread.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, UserThread> userThreads = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, UserThread> userThreads =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(userThreads.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
 		UserThread newUserThread = addUserThread();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newUserThread.getPrimaryKey());
 
-		Map<Serializable, UserThread> userThreads = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, UserThread> userThreads =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, userThreads.size());
-		Assert.assertEquals(newUserThread,
-			userThreads.get(newUserThread.getPrimaryKey()));
+		Assert.assertEquals(
+			newUserThread, userThreads.get(newUserThread.getPrimaryKey()));
 	}
 
 	@Test
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery = UserThreadLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			UserThreadLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<UserThread>() {
+		actionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<UserThread>() {
+
 				@Override
 				public void performAction(UserThread userThread) {
 					Assert.assertNotNull(userThread);
 
 					count.increment();
 				}
+
 			});
 
 		actionableDynamicQuery.performActions();
@@ -359,17 +376,18 @@ public class UserThreadPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting()
-		throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
 		UserThread newUserThread = addUserThread();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(UserThread.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			UserThread.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("userThreadId",
-				newUserThread.getUserThreadId()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"userThreadId", newUserThread.getUserThreadId()));
 
-		List<UserThread> result = _persistence.findWithDynamicQuery(dynamicQuery);
+		List<UserThread> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
 
 		Assert.assertEquals(1, result.size());
 
@@ -380,32 +398,34 @@ public class UserThreadPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(UserThread.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			UserThread.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("userThreadId",
-				RandomTestUtil.nextLong()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"userThreadId", RandomTestUtil.nextLong()));
 
-		List<UserThread> result = _persistence.findWithDynamicQuery(dynamicQuery);
+		List<UserThread> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
 
 		Assert.assertEquals(0, result.size());
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting()
-		throws Exception {
+	public void testDynamicQueryByProjectionExisting() throws Exception {
 		UserThread newUserThread = addUserThread();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(UserThread.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			UserThread.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property(
-				"userThreadId"));
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.property("userThreadId"));
 
 		Object newUserThreadId = newUserThread.getUserThreadId();
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("userThreadId",
-				new Object[] { newUserThreadId }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"userThreadId", new Object[] {newUserThreadId}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -418,14 +438,15 @@ public class UserThreadPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(UserThread.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			UserThread.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property(
-				"userThreadId"));
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.property("userThreadId"));
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("userThreadId",
-				new Object[] { RandomTestUtil.nextLong() }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"userThreadId", new Object[] {RandomTestUtil.nextLong()}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -438,14 +459,17 @@ public class UserThreadPersistenceTest {
 
 		_persistence.clearCache();
 
-		UserThread existingUserThread = _persistence.findByPrimaryKey(newUserThread.getPrimaryKey());
+		UserThread existingUserThread = _persistence.findByPrimaryKey(
+			newUserThread.getPrimaryKey());
 
-		Assert.assertEquals(Long.valueOf(existingUserThread.getUserId()),
-			ReflectionTestUtil.<Long>invoke(existingUserThread,
-				"getOriginalUserId", new Class<?>[0]));
-		Assert.assertEquals(Long.valueOf(existingUserThread.getMbThreadId()),
-			ReflectionTestUtil.<Long>invoke(existingUserThread,
-				"getOriginalMbThreadId", new Class<?>[0]));
+		Assert.assertEquals(
+			Long.valueOf(existingUserThread.getUserId()),
+			ReflectionTestUtil.<Long>invoke(
+				existingUserThread, "getOriginalUserId", new Class<?>[0]));
+		Assert.assertEquals(
+			Long.valueOf(existingUserThread.getMbThreadId()),
+			ReflectionTestUtil.<Long>invoke(
+				existingUserThread, "getOriginalMbThreadId", new Class<?>[0]));
 	}
 
 	protected UserThread addUserThread() throws Exception {
@@ -479,4 +503,5 @@ public class UserThreadPersistenceTest {
 	private List<UserThread> _userThreads = new ArrayList<UserThread>();
 	private UserThreadPersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
+
 }

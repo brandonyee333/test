@@ -35,44 +35,52 @@ import com.liferay.portal.kernel.transaction.Transactional;
  *
  * @author José Manuel Navarro
  * @see ScreensCommentServiceUtil
- * @see com.liferay.screens.service.base.ScreensCommentServiceBaseImpl
- * @see com.liferay.screens.service.impl.ScreensCommentServiceImpl
  * @generated
  */
 @AccessControlled
 @JSONWebService
-@OSGiBeanProperties(property =  {
-	"json.web.service.context.name=screens", "json.web.service.context.path=ScreensComment"}, service = ScreensCommentService.class)
+@OSGiBeanProperties(
+	property = {
+		"json.web.service.context.name=screens",
+		"json.web.service.context.path=ScreensComment"
+	},
+	service = ScreensCommentService.class
+)
 @ProviderType
-@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
-	PortalException.class, SystemException.class})
+@Transactional(
+	isolation = Isolation.PORTAL,
+	rollbackFor = {PortalException.class, SystemException.class}
+)
 public interface ScreensCommentService extends BaseService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link ScreensCommentServiceUtil} to access the screens comment remote service. Add custom service methods to {@link com.liferay.screens.service.impl.ScreensCommentServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link ScreensCommentServiceUtil} to access the screens comment remote service. Add custom service methods to <code>com.liferay.screens.service.impl.ScreensCommentServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public JSONArray getComments(java.lang.String className, long classPK,
-		int start, int end) throws PortalException;
-
-	public JSONObject addComment(java.lang.String className, long classPK,
-		java.lang.String body) throws PortalException;
+	public JSONObject addComment(String className, long classPK, String body)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public JSONObject getComment(long commentId) throws PortalException;
 
-	public JSONObject updateComment(long commentId, java.lang.String body)
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public JSONArray getComments(
+			String className, long classPK, int start, int end)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getCommentsCount(java.lang.String className, long classPK)
+	public int getCommentsCount(String className, long classPK)
 		throws PortalException;
 
 	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
+	public String getOSGiServiceIdentifier();
+
+	public JSONObject updateComment(long commentId, String body)
+		throws PortalException;
+
 }

@@ -14,8 +14,6 @@
 
 package com.liferay.shopping.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -28,8 +26,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class ShoppingOrderItemSoap implements Serializable {
+
 	public static ShoppingOrderItemSoap toSoapModel(ShoppingOrderItem model) {
 		ShoppingOrderItemSoap soapModel = new ShoppingOrderItemSoap();
 
@@ -50,7 +48,9 @@ public class ShoppingOrderItemSoap implements Serializable {
 
 	public static ShoppingOrderItemSoap[] toSoapModels(
 		ShoppingOrderItem[] models) {
-		ShoppingOrderItemSoap[] soapModels = new ShoppingOrderItemSoap[models.length];
+
+		ShoppingOrderItemSoap[] soapModels =
+			new ShoppingOrderItemSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -61,10 +61,12 @@ public class ShoppingOrderItemSoap implements Serializable {
 
 	public static ShoppingOrderItemSoap[][] toSoapModels(
 		ShoppingOrderItem[][] models) {
+
 		ShoppingOrderItemSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new ShoppingOrderItemSoap[models.length][models[0].length];
+			soapModels =
+				new ShoppingOrderItemSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new ShoppingOrderItemSoap[0][0];
@@ -79,7 +81,9 @@ public class ShoppingOrderItemSoap implements Serializable {
 
 	public static ShoppingOrderItemSoap[] toSoapModels(
 		List<ShoppingOrderItem> models) {
-		List<ShoppingOrderItemSoap> soapModels = new ArrayList<ShoppingOrderItemSoap>(models.size());
+
+		List<ShoppingOrderItemSoap> soapModels =
+			new ArrayList<ShoppingOrderItemSoap>(models.size());
 
 		for (ShoppingOrderItem model : models) {
 			soapModels.add(toSoapModel(model));
@@ -198,4 +202,5 @@ public class ShoppingOrderItemSoap implements Serializable {
 	private double _price;
 	private int _quantity;
 	private Date _shippedDate;
+
 }

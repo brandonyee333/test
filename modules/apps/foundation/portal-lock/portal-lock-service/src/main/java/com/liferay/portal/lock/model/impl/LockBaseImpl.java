@@ -14,8 +14,6 @@
 
 package com.liferay.portal.lock.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.lock.model.Lock;
 import com.liferay.portal.lock.service.LockLocalServiceUtil;
 
@@ -31,12 +29,12 @@ import com.liferay.portal.lock.service.LockLocalServiceUtil;
  * @see Lock
  * @generated
  */
-@ProviderType
 public abstract class LockBaseImpl extends LockModelImpl implements Lock {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a lock model instance should use the {@link Lock} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a lock model instance should use the <code>Lock</code> interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -47,4 +45,5 @@ public abstract class LockBaseImpl extends LockModelImpl implements Lock {
 			LockLocalServiceUtil.updateLock(this);
 		}
 	}
+
 }

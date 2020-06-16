@@ -15,7 +15,6 @@
 package com.liferay.social.networking.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -33,21 +32,11 @@ import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
-
 import com.liferay.social.networking.exception.NoSuchMeetupsEntryException;
 import com.liferay.social.networking.model.MeetupsEntry;
 import com.liferay.social.networking.service.MeetupsEntryLocalServiceUtil;
 import com.liferay.social.networking.service.persistence.MeetupsEntryPersistence;
 import com.liferay.social.networking.service.persistence.MeetupsEntryUtil;
-
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-
-import org.junit.runner.RunWith;
 
 import java.io.Serializable;
 
@@ -58,17 +47,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 /**
  * @generated
  */
 @RunWith(Arquillian.class)
 public class MeetupsEntryPersistenceTest {
+
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
-			PersistenceTestRule.INSTANCE,
-			new TransactionalTestRule(Propagation.REQUIRED,
-				"com.liferay.social.networking.service"));
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
+			new TransactionalTestRule(
+				Propagation.REQUIRED, "com.liferay.social.networking.service"));
 
 	@Before
 	public void setUp() {
@@ -107,7 +106,8 @@ public class MeetupsEntryPersistenceTest {
 
 		_persistence.remove(newMeetupsEntry);
 
-		MeetupsEntry existingMeetupsEntry = _persistence.fetchByPrimaryKey(newMeetupsEntry.getPrimaryKey());
+		MeetupsEntry existingMeetupsEntry = _persistence.fetchByPrimaryKey(
+			newMeetupsEntry.getPrimaryKey());
 
 		Assert.assertNull(existingMeetupsEntry);
 	}
@@ -151,39 +151,46 @@ public class MeetupsEntryPersistenceTest {
 
 		_meetupsEntries.add(_persistence.update(newMeetupsEntry));
 
-		MeetupsEntry existingMeetupsEntry = _persistence.findByPrimaryKey(newMeetupsEntry.getPrimaryKey());
+		MeetupsEntry existingMeetupsEntry = _persistence.findByPrimaryKey(
+			newMeetupsEntry.getPrimaryKey());
 
-		Assert.assertEquals(existingMeetupsEntry.getMeetupsEntryId(),
+		Assert.assertEquals(
+			existingMeetupsEntry.getMeetupsEntryId(),
 			newMeetupsEntry.getMeetupsEntryId());
-		Assert.assertEquals(existingMeetupsEntry.getCompanyId(),
+		Assert.assertEquals(
+			existingMeetupsEntry.getCompanyId(),
 			newMeetupsEntry.getCompanyId());
-		Assert.assertEquals(existingMeetupsEntry.getUserId(),
-			newMeetupsEntry.getUserId());
-		Assert.assertEquals(existingMeetupsEntry.getUserName(),
-			newMeetupsEntry.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMeetupsEntry.getCreateDate()),
+		Assert.assertEquals(
+			existingMeetupsEntry.getUserId(), newMeetupsEntry.getUserId());
+		Assert.assertEquals(
+			existingMeetupsEntry.getUserName(), newMeetupsEntry.getUserName());
+		Assert.assertEquals(
+			Time.getShortTimestamp(existingMeetupsEntry.getCreateDate()),
 			Time.getShortTimestamp(newMeetupsEntry.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMeetupsEntry.getModifiedDate()),
+		Assert.assertEquals(
+			Time.getShortTimestamp(existingMeetupsEntry.getModifiedDate()),
 			Time.getShortTimestamp(newMeetupsEntry.getModifiedDate()));
-		Assert.assertEquals(existingMeetupsEntry.getTitle(),
-			newMeetupsEntry.getTitle());
-		Assert.assertEquals(existingMeetupsEntry.getDescription(),
+		Assert.assertEquals(
+			existingMeetupsEntry.getTitle(), newMeetupsEntry.getTitle());
+		Assert.assertEquals(
+			existingMeetupsEntry.getDescription(),
 			newMeetupsEntry.getDescription());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMeetupsEntry.getStartDate()),
+		Assert.assertEquals(
+			Time.getShortTimestamp(existingMeetupsEntry.getStartDate()),
 			Time.getShortTimestamp(newMeetupsEntry.getStartDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMeetupsEntry.getEndDate()),
+		Assert.assertEquals(
+			Time.getShortTimestamp(existingMeetupsEntry.getEndDate()),
 			Time.getShortTimestamp(newMeetupsEntry.getEndDate()));
-		Assert.assertEquals(existingMeetupsEntry.getTotalAttendees(),
+		Assert.assertEquals(
+			existingMeetupsEntry.getTotalAttendees(),
 			newMeetupsEntry.getTotalAttendees());
-		Assert.assertEquals(existingMeetupsEntry.getMaxAttendees(),
+		Assert.assertEquals(
+			existingMeetupsEntry.getMaxAttendees(),
 			newMeetupsEntry.getMaxAttendees());
-		AssertUtils.assertEquals(existingMeetupsEntry.getPrice(),
-			newMeetupsEntry.getPrice());
-		Assert.assertEquals(existingMeetupsEntry.getThumbnailId(),
+		AssertUtils.assertEquals(
+			existingMeetupsEntry.getPrice(), newMeetupsEntry.getPrice());
+		Assert.assertEquals(
+			existingMeetupsEntry.getThumbnailId(),
 			newMeetupsEntry.getThumbnailId());
 	}
 
@@ -205,7 +212,8 @@ public class MeetupsEntryPersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		MeetupsEntry newMeetupsEntry = addMeetupsEntry();
 
-		MeetupsEntry existingMeetupsEntry = _persistence.findByPrimaryKey(newMeetupsEntry.getPrimaryKey());
+		MeetupsEntry existingMeetupsEntry = _persistence.findByPrimaryKey(
+			newMeetupsEntry.getPrimaryKey());
 
 		Assert.assertEquals(existingMeetupsEntry, newMeetupsEntry);
 	}
@@ -219,24 +227,25 @@ public class MeetupsEntryPersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			getOrderByComparator());
+		_persistence.findAll(
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
 	}
 
 	protected OrderByComparator<MeetupsEntry> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create("SN_MeetupsEntry",
-			"meetupsEntryId", true, "companyId", true, "userId", true,
-			"userName", true, "createDate", true, "modifiedDate", true,
-			"title", true, "description", true, "startDate", true, "endDate",
-			true, "totalAttendees", true, "maxAttendees", true, "price", true,
-			"thumbnailId", true);
+		return OrderByComparatorFactoryUtil.create(
+			"SN_MeetupsEntry", "meetupsEntryId", true, "companyId", true,
+			"userId", true, "userName", true, "createDate", true,
+			"modifiedDate", true, "title", true, "description", true,
+			"startDate", true, "endDate", true, "totalAttendees", true,
+			"maxAttendees", true, "price", true, "thumbnailId", true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		MeetupsEntry newMeetupsEntry = addMeetupsEntry();
 
-		MeetupsEntry existingMeetupsEntry = _persistence.fetchByPrimaryKey(newMeetupsEntry.getPrimaryKey());
+		MeetupsEntry existingMeetupsEntry = _persistence.fetchByPrimaryKey(
+			newMeetupsEntry.getPrimaryKey());
 
 		Assert.assertEquals(existingMeetupsEntry, newMeetupsEntry);
 	}
@@ -253,6 +262,7 @@ public class MeetupsEntryPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
+
 		MeetupsEntry newMeetupsEntry1 = addMeetupsEntry();
 		MeetupsEntry newMeetupsEntry2 = addMeetupsEntry();
 
@@ -261,18 +271,22 @@ public class MeetupsEntryPersistenceTest {
 		primaryKeys.add(newMeetupsEntry1.getPrimaryKey());
 		primaryKeys.add(newMeetupsEntry2.getPrimaryKey());
 
-		Map<Serializable, MeetupsEntry> meetupsEntries = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, MeetupsEntry> meetupsEntries =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(2, meetupsEntries.size());
-		Assert.assertEquals(newMeetupsEntry1,
+		Assert.assertEquals(
+			newMeetupsEntry1,
 			meetupsEntries.get(newMeetupsEntry1.getPrimaryKey()));
-		Assert.assertEquals(newMeetupsEntry2,
+		Assert.assertEquals(
+			newMeetupsEntry2,
 			meetupsEntries.get(newMeetupsEntry2.getPrimaryKey()));
 	}
 
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
+
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -282,7 +296,8 @@ public class MeetupsEntryPersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, MeetupsEntry> meetupsEntries = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, MeetupsEntry> meetupsEntries =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(meetupsEntries.isEmpty());
 	}
@@ -290,6 +305,7 @@ public class MeetupsEntryPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
+
 		MeetupsEntry newMeetupsEntry = addMeetupsEntry();
 
 		long pk = RandomTestUtil.nextLong();
@@ -299,36 +315,39 @@ public class MeetupsEntryPersistenceTest {
 		primaryKeys.add(newMeetupsEntry.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, MeetupsEntry> meetupsEntries = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, MeetupsEntry> meetupsEntries =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, meetupsEntries.size());
-		Assert.assertEquals(newMeetupsEntry,
+		Assert.assertEquals(
+			newMeetupsEntry,
 			meetupsEntries.get(newMeetupsEntry.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, MeetupsEntry> meetupsEntries = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, MeetupsEntry> meetupsEntries =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(meetupsEntries.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
 		MeetupsEntry newMeetupsEntry = addMeetupsEntry();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newMeetupsEntry.getPrimaryKey());
 
-		Map<Serializable, MeetupsEntry> meetupsEntries = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, MeetupsEntry> meetupsEntries =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, meetupsEntries.size());
-		Assert.assertEquals(newMeetupsEntry,
+		Assert.assertEquals(
+			newMeetupsEntry,
 			meetupsEntries.get(newMeetupsEntry.getPrimaryKey()));
 	}
 
@@ -336,15 +355,19 @@ public class MeetupsEntryPersistenceTest {
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery = MeetupsEntryLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			MeetupsEntryLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<MeetupsEntry>() {
+		actionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<MeetupsEntry>() {
+
 				@Override
 				public void performAction(MeetupsEntry meetupsEntry) {
 					Assert.assertNotNull(meetupsEntry);
 
 					count.increment();
 				}
+
 			});
 
 		actionableDynamicQuery.performActions();
@@ -353,17 +376,18 @@ public class MeetupsEntryPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting()
-		throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
 		MeetupsEntry newMeetupsEntry = addMeetupsEntry();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(MeetupsEntry.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			MeetupsEntry.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("meetupsEntryId",
-				newMeetupsEntry.getMeetupsEntryId()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"meetupsEntryId", newMeetupsEntry.getMeetupsEntryId()));
 
-		List<MeetupsEntry> result = _persistence.findWithDynamicQuery(dynamicQuery);
+		List<MeetupsEntry> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
 
 		Assert.assertEquals(1, result.size());
 
@@ -374,32 +398,34 @@ public class MeetupsEntryPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(MeetupsEntry.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			MeetupsEntry.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("meetupsEntryId",
-				RandomTestUtil.nextLong()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"meetupsEntryId", RandomTestUtil.nextLong()));
 
-		List<MeetupsEntry> result = _persistence.findWithDynamicQuery(dynamicQuery);
+		List<MeetupsEntry> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
 
 		Assert.assertEquals(0, result.size());
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting()
-		throws Exception {
+	public void testDynamicQueryByProjectionExisting() throws Exception {
 		MeetupsEntry newMeetupsEntry = addMeetupsEntry();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(MeetupsEntry.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			MeetupsEntry.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property(
-				"meetupsEntryId"));
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.property("meetupsEntryId"));
 
 		Object newMeetupsEntryId = newMeetupsEntry.getMeetupsEntryId();
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("meetupsEntryId",
-				new Object[] { newMeetupsEntryId }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"meetupsEntryId", new Object[] {newMeetupsEntryId}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -412,14 +438,15 @@ public class MeetupsEntryPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(MeetupsEntry.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			MeetupsEntry.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property(
-				"meetupsEntryId"));
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.property("meetupsEntryId"));
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("meetupsEntryId",
-				new Object[] { RandomTestUtil.nextLong() }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"meetupsEntryId", new Object[] {RandomTestUtil.nextLong()}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -465,4 +492,5 @@ public class MeetupsEntryPersistenceTest {
 	private List<MeetupsEntry> _meetupsEntries = new ArrayList<MeetupsEntry>();
 	private MeetupsEntryPersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
+
 }

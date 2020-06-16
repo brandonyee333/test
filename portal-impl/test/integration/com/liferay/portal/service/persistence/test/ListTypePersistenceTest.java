@@ -32,17 +32,9 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
-
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
 
 import java.io.Serializable;
 
@@ -54,14 +46,23 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+
 /**
  * @generated
  */
 public class ListTypePersistenceTest {
+
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
-			PersistenceTestRule.INSTANCE,
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
 			new TransactionalTestRule(Propagation.REQUIRED));
 
 	@Before
@@ -101,7 +102,8 @@ public class ListTypePersistenceTest {
 
 		_persistence.remove(newListType);
 
-		ListType existingListType = _persistence.fetchByPrimaryKey(newListType.getPrimaryKey());
+		ListType existingListType = _persistence.fetchByPrimaryKey(
+			newListType.getPrimaryKey());
 
 		Assert.assertNull(existingListType);
 	}
@@ -125,30 +127,31 @@ public class ListTypePersistenceTest {
 
 		_listTypes.add(_persistence.update(newListType));
 
-		ListType existingListType = _persistence.findByPrimaryKey(newListType.getPrimaryKey());
+		ListType existingListType = _persistence.findByPrimaryKey(
+			newListType.getPrimaryKey());
 
-		Assert.assertEquals(existingListType.getMvccVersion(),
-			newListType.getMvccVersion());
-		Assert.assertEquals(existingListType.getListTypeId(),
-			newListType.getListTypeId());
+		Assert.assertEquals(
+			existingListType.getMvccVersion(), newListType.getMvccVersion());
+		Assert.assertEquals(
+			existingListType.getListTypeId(), newListType.getListTypeId());
 		Assert.assertEquals(existingListType.getName(), newListType.getName());
 		Assert.assertEquals(existingListType.getType(), newListType.getType());
 	}
 
 	@Test
 	public void testCountByType() throws Exception {
-		_persistence.countByType(StringPool.BLANK);
+		_persistence.countByType("");
 
-		_persistence.countByType(StringPool.NULL);
+		_persistence.countByType("null");
 
 		_persistence.countByType((String)null);
 	}
 
 	@Test
 	public void testCountByN_T() throws Exception {
-		_persistence.countByN_T(StringPool.BLANK, StringPool.BLANK);
+		_persistence.countByN_T("", "");
 
-		_persistence.countByN_T(StringPool.NULL, StringPool.NULL);
+		_persistence.countByN_T("null", "null");
 
 		_persistence.countByN_T((String)null, (String)null);
 	}
@@ -157,7 +160,8 @@ public class ListTypePersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		ListType newListType = addListType();
 
-		ListType existingListType = _persistence.findByPrimaryKey(newListType.getPrimaryKey());
+		ListType existingListType = _persistence.findByPrimaryKey(
+			newListType.getPrimaryKey());
 
 		Assert.assertEquals(existingListType, newListType);
 	}
@@ -171,20 +175,22 @@ public class ListTypePersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			getOrderByComparator());
+		_persistence.findAll(
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
 	}
 
 	protected OrderByComparator<ListType> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create("ListType", "mvccVersion",
-			true, "listTypeId", true, "name", true, "type", true);
+		return OrderByComparatorFactoryUtil.create(
+			"ListType", "mvccVersion", true, "listTypeId", true, "name", true,
+			"type", true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		ListType newListType = addListType();
 
-		ListType existingListType = _persistence.fetchByPrimaryKey(newListType.getPrimaryKey());
+		ListType existingListType = _persistence.fetchByPrimaryKey(
+			newListType.getPrimaryKey());
 
 		Assert.assertEquals(existingListType, newListType);
 	}
@@ -201,6 +207,7 @@ public class ListTypePersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
+
 		ListType newListType1 = addListType();
 		ListType newListType2 = addListType();
 
@@ -209,18 +216,20 @@ public class ListTypePersistenceTest {
 		primaryKeys.add(newListType1.getPrimaryKey());
 		primaryKeys.add(newListType2.getPrimaryKey());
 
-		Map<Serializable, ListType> listTypes = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ListType> listTypes = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertEquals(2, listTypes.size());
-		Assert.assertEquals(newListType1,
-			listTypes.get(newListType1.getPrimaryKey()));
-		Assert.assertEquals(newListType2,
-			listTypes.get(newListType2.getPrimaryKey()));
+		Assert.assertEquals(
+			newListType1, listTypes.get(newListType1.getPrimaryKey()));
+		Assert.assertEquals(
+			newListType2, listTypes.get(newListType2.getPrimaryKey()));
 	}
 
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
+
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -230,7 +239,8 @@ public class ListTypePersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, ListType> listTypes = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ListType> listTypes = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertTrue(listTypes.isEmpty());
 	}
@@ -238,6 +248,7 @@ public class ListTypePersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
+
 		ListType newListType = addListType();
 
 		long pk = RandomTestUtil.nextLong();
@@ -247,52 +258,57 @@ public class ListTypePersistenceTest {
 		primaryKeys.add(newListType.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, ListType> listTypes = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ListType> listTypes = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertEquals(1, listTypes.size());
-		Assert.assertEquals(newListType,
-			listTypes.get(newListType.getPrimaryKey()));
+		Assert.assertEquals(
+			newListType, listTypes.get(newListType.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, ListType> listTypes = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ListType> listTypes = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertTrue(listTypes.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
 		ListType newListType = addListType();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newListType.getPrimaryKey());
 
-		Map<Serializable, ListType> listTypes = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ListType> listTypes = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertEquals(1, listTypes.size());
-		Assert.assertEquals(newListType,
-			listTypes.get(newListType.getPrimaryKey()));
+		Assert.assertEquals(
+			newListType, listTypes.get(newListType.getPrimaryKey()));
 	}
 
 	@Test
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery = ListTypeLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			ListTypeLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<ListType>() {
+		actionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<ListType>() {
+
 				@Override
 				public void performAction(ListType listType) {
 					Assert.assertNotNull(listType);
 
 					count.increment();
 				}
+
 			});
 
 		actionableDynamicQuery.performActions();
@@ -301,15 +317,15 @@ public class ListTypePersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting()
-		throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
 		ListType newListType = addListType();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(ListType.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			ListType.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("listTypeId",
-				newListType.getListTypeId()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"listTypeId", newListType.getListTypeId()));
 
 		List<ListType> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -322,11 +338,12 @@ public class ListTypePersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(ListType.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			ListType.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("listTypeId",
-				RandomTestUtil.nextLong()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"listTypeId", RandomTestUtil.nextLong()));
 
 		List<ListType> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -334,19 +351,20 @@ public class ListTypePersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting()
-		throws Exception {
+	public void testDynamicQueryByProjectionExisting() throws Exception {
 		ListType newListType = addListType();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(ListType.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			ListType.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property("listTypeId"));
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.property("listTypeId"));
 
 		Object newListTypeId = newListType.getListTypeId();
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("listTypeId",
-				new Object[] { newListTypeId }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"listTypeId", new Object[] {newListTypeId}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -359,13 +377,15 @@ public class ListTypePersistenceTest {
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(ListType.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			ListType.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property("listTypeId"));
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.property("listTypeId"));
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("listTypeId",
-				new Object[] { RandomTestUtil.nextLong() }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"listTypeId", new Object[] {RandomTestUtil.nextLong()}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -378,14 +398,19 @@ public class ListTypePersistenceTest {
 
 		_persistence.clearCache();
 
-		ListType existingListType = _persistence.findByPrimaryKey(newListType.getPrimaryKey());
+		ListType existingListType = _persistence.findByPrimaryKey(
+			newListType.getPrimaryKey());
 
-		Assert.assertTrue(Objects.equals(existingListType.getName(),
-				ReflectionTestUtil.invoke(existingListType, "getOriginalName",
-					new Class<?>[0])));
-		Assert.assertTrue(Objects.equals(existingListType.getType(),
-				ReflectionTestUtil.invoke(existingListType, "getOriginalType",
-					new Class<?>[0])));
+		Assert.assertTrue(
+			Objects.equals(
+				existingListType.getName(),
+				ReflectionTestUtil.invoke(
+					existingListType, "getOriginalName", new Class<?>[0])));
+		Assert.assertTrue(
+			Objects.equals(
+				existingListType.getType(),
+				ReflectionTestUtil.invoke(
+					existingListType, "getOriginalType", new Class<?>[0])));
 	}
 
 	protected ListType addListType() throws Exception {
@@ -407,4 +432,5 @@ public class ListTypePersistenceTest {
 	private List<ListType> _listTypes = new ArrayList<ListType>();
 	private ListTypePersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
+
 }

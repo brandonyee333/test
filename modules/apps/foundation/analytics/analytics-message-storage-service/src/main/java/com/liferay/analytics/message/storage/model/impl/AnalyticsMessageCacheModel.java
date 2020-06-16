@@ -14,15 +14,11 @@
 
 package com.liferay.analytics.message.storage.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.analytics.message.storage.model.AnalyticsMessage;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -35,12 +31,11 @@ import java.util.Date;
  * The cache model class for representing AnalyticsMessage in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see AnalyticsMessage
  * @generated
  */
-@ProviderType
-public class AnalyticsMessageCacheModel implements CacheModel<AnalyticsMessage>,
-	Externalizable, MVCCModel {
+public class AnalyticsMessageCacheModel
+	implements CacheModel<AnalyticsMessage>, Externalizable, MVCCModel {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -51,10 +46,13 @@ public class AnalyticsMessageCacheModel implements CacheModel<AnalyticsMessage>,
 			return false;
 		}
 
-		AnalyticsMessageCacheModel analyticsMessageCacheModel = (AnalyticsMessageCacheModel)obj;
+		AnalyticsMessageCacheModel analyticsMessageCacheModel =
+			(AnalyticsMessageCacheModel)obj;
 
-		if ((analyticsMessageId == analyticsMessageCacheModel.analyticsMessageId) &&
-				(mvccVersion == analyticsMessageCacheModel.mvccVersion)) {
+		if ((analyticsMessageId ==
+				analyticsMessageCacheModel.analyticsMessageId) &&
+			(mvccVersion == analyticsMessageCacheModel.mvccVersion)) {
+
 			return true;
 		}
 
@@ -108,7 +106,7 @@ public class AnalyticsMessageCacheModel implements CacheModel<AnalyticsMessage>,
 		analyticsMessageImpl.setUserId(userId);
 
 		if (userName == null) {
-			analyticsMessageImpl.setUserName(StringPool.BLANK);
+			analyticsMessageImpl.setUserName("");
 		}
 		else {
 			analyticsMessageImpl.setUserName(userName);
@@ -140,8 +138,7 @@ public class AnalyticsMessageCacheModel implements CacheModel<AnalyticsMessage>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(analyticsMessageId);
@@ -151,7 +148,7 @@ public class AnalyticsMessageCacheModel implements CacheModel<AnalyticsMessage>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -166,4 +163,5 @@ public class AnalyticsMessageCacheModel implements CacheModel<AnalyticsMessage>,
 	public long userId;
 	public String userName;
 	public long createDate;
+
 }

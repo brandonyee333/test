@@ -14,12 +14,9 @@
 
 package com.liferay.portal.workflow.kaleo.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.workflow.kaleo.model.KaleoNotificationRecipient;
 
 import java.io.Externalizable;
@@ -33,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing KaleoNotificationRecipient in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see KaleoNotificationRecipient
  * @generated
  */
-@ProviderType
-public class KaleoNotificationRecipientCacheModel implements CacheModel<KaleoNotificationRecipient>,
-	Externalizable {
+public class KaleoNotificationRecipientCacheModel
+	implements CacheModel<KaleoNotificationRecipient>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -49,10 +45,14 @@ public class KaleoNotificationRecipientCacheModel implements CacheModel<KaleoNot
 			return false;
 		}
 
-		KaleoNotificationRecipientCacheModel kaleoNotificationRecipientCacheModel =
-			(KaleoNotificationRecipientCacheModel)obj;
+		KaleoNotificationRecipientCacheModel
+			kaleoNotificationRecipientCacheModel =
+				(KaleoNotificationRecipientCacheModel)obj;
 
-		if (kaleoNotificationRecipientId == kaleoNotificationRecipientCacheModel.kaleoNotificationRecipientId) {
+		if (kaleoNotificationRecipientId ==
+				kaleoNotificationRecipientCacheModel.
+					kaleoNotificationRecipientId) {
+
 			return true;
 		}
 
@@ -109,15 +109,17 @@ public class KaleoNotificationRecipientCacheModel implements CacheModel<KaleoNot
 
 	@Override
 	public KaleoNotificationRecipient toEntityModel() {
-		KaleoNotificationRecipientImpl kaleoNotificationRecipientImpl = new KaleoNotificationRecipientImpl();
+		KaleoNotificationRecipientImpl kaleoNotificationRecipientImpl =
+			new KaleoNotificationRecipientImpl();
 
-		kaleoNotificationRecipientImpl.setKaleoNotificationRecipientId(kaleoNotificationRecipientId);
+		kaleoNotificationRecipientImpl.setKaleoNotificationRecipientId(
+			kaleoNotificationRecipientId);
 		kaleoNotificationRecipientImpl.setGroupId(groupId);
 		kaleoNotificationRecipientImpl.setCompanyId(companyId);
 		kaleoNotificationRecipientImpl.setUserId(userId);
 
 		if (userName == null) {
-			kaleoNotificationRecipientImpl.setUserName(StringPool.BLANK);
+			kaleoNotificationRecipientImpl.setUserName("");
 		}
 		else {
 			kaleoNotificationRecipientImpl.setUserName(userName);
@@ -134,56 +136,61 @@ public class KaleoNotificationRecipientCacheModel implements CacheModel<KaleoNot
 			kaleoNotificationRecipientImpl.setModifiedDate(null);
 		}
 		else {
-			kaleoNotificationRecipientImpl.setModifiedDate(new Date(
-					modifiedDate));
+			kaleoNotificationRecipientImpl.setModifiedDate(
+				new Date(modifiedDate));
 		}
 
 		kaleoNotificationRecipientImpl.setKaleoDefinitionId(kaleoDefinitionId);
-		kaleoNotificationRecipientImpl.setKaleoNotificationId(kaleoNotificationId);
+		kaleoNotificationRecipientImpl.setKaleoNotificationId(
+			kaleoNotificationId);
 
 		if (recipientClassName == null) {
-			kaleoNotificationRecipientImpl.setRecipientClassName(StringPool.BLANK);
+			kaleoNotificationRecipientImpl.setRecipientClassName("");
 		}
 		else {
-			kaleoNotificationRecipientImpl.setRecipientClassName(recipientClassName);
+			kaleoNotificationRecipientImpl.setRecipientClassName(
+				recipientClassName);
 		}
 
 		kaleoNotificationRecipientImpl.setRecipientClassPK(recipientClassPK);
 		kaleoNotificationRecipientImpl.setRecipientRoleType(recipientRoleType);
 
 		if (recipientScript == null) {
-			kaleoNotificationRecipientImpl.setRecipientScript(StringPool.BLANK);
+			kaleoNotificationRecipientImpl.setRecipientScript("");
 		}
 		else {
 			kaleoNotificationRecipientImpl.setRecipientScript(recipientScript);
 		}
 
 		if (recipientScriptLanguage == null) {
-			kaleoNotificationRecipientImpl.setRecipientScriptLanguage(StringPool.BLANK);
+			kaleoNotificationRecipientImpl.setRecipientScriptLanguage("");
 		}
 		else {
-			kaleoNotificationRecipientImpl.setRecipientScriptLanguage(recipientScriptLanguage);
+			kaleoNotificationRecipientImpl.setRecipientScriptLanguage(
+				recipientScriptLanguage);
 		}
 
 		if (recipientScriptContexts == null) {
-			kaleoNotificationRecipientImpl.setRecipientScriptContexts(StringPool.BLANK);
+			kaleoNotificationRecipientImpl.setRecipientScriptContexts("");
 		}
 		else {
-			kaleoNotificationRecipientImpl.setRecipientScriptContexts(recipientScriptContexts);
+			kaleoNotificationRecipientImpl.setRecipientScriptContexts(
+				recipientScriptContexts);
 		}
 
 		if (address == null) {
-			kaleoNotificationRecipientImpl.setAddress(StringPool.BLANK);
+			kaleoNotificationRecipientImpl.setAddress("");
 		}
 		else {
 			kaleoNotificationRecipientImpl.setAddress(address);
 		}
 
 		if (notificationReceptionType == null) {
-			kaleoNotificationRecipientImpl.setNotificationReceptionType(StringPool.BLANK);
+			kaleoNotificationRecipientImpl.setNotificationReceptionType("");
 		}
 		else {
-			kaleoNotificationRecipientImpl.setNotificationReceptionType(notificationReceptionType);
+			kaleoNotificationRecipientImpl.setNotificationReceptionType(
+				notificationReceptionType);
 		}
 
 		kaleoNotificationRecipientImpl.resetOriginalValues();
@@ -192,7 +199,9 @@ public class KaleoNotificationRecipientCacheModel implements CacheModel<KaleoNot
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		kaleoNotificationRecipientId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -212,7 +221,7 @@ public class KaleoNotificationRecipientCacheModel implements CacheModel<KaleoNot
 		recipientClassPK = objectInput.readLong();
 
 		recipientRoleType = objectInput.readInt();
-		recipientScript = objectInput.readUTF();
+		recipientScript = (String)objectInput.readObject();
 		recipientScriptLanguage = objectInput.readUTF();
 		recipientScriptContexts = objectInput.readUTF();
 		address = objectInput.readUTF();
@@ -220,8 +229,7 @@ public class KaleoNotificationRecipientCacheModel implements CacheModel<KaleoNot
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(kaleoNotificationRecipientId);
 
 		objectOutput.writeLong(groupId);
@@ -231,7 +239,7 @@ public class KaleoNotificationRecipientCacheModel implements CacheModel<KaleoNot
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -245,7 +253,7 @@ public class KaleoNotificationRecipientCacheModel implements CacheModel<KaleoNot
 		objectOutput.writeLong(kaleoNotificationId);
 
 		if (recipientClassName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(recipientClassName);
@@ -256,35 +264,35 @@ public class KaleoNotificationRecipientCacheModel implements CacheModel<KaleoNot
 		objectOutput.writeInt(recipientRoleType);
 
 		if (recipientScript == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(recipientScript);
+			objectOutput.writeObject(recipientScript);
 		}
 
 		if (recipientScriptLanguage == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(recipientScriptLanguage);
 		}
 
 		if (recipientScriptContexts == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(recipientScriptContexts);
 		}
 
 		if (address == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(address);
 		}
 
 		if (notificationReceptionType == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(notificationReceptionType);
@@ -308,4 +316,5 @@ public class KaleoNotificationRecipientCacheModel implements CacheModel<KaleoNot
 	public String recipientScriptContexts;
 	public String address;
 	public String notificationReceptionType;
+
 }

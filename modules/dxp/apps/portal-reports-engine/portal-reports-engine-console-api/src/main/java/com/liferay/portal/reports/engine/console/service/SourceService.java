@@ -1,15 +1,15 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.portal.reports.engine.console.service;
@@ -40,53 +40,61 @@ import java.util.Map;
  *
  * @author Brian Wing Shun Chan
  * @see SourceServiceUtil
- * @see com.liferay.portal.reports.engine.console.service.base.SourceServiceBaseImpl
- * @see com.liferay.portal.reports.engine.console.service.impl.SourceServiceImpl
  * @generated
  */
 @AccessControlled
 @JSONWebService
-@OSGiBeanProperties(property =  {
-	"json.web.service.context.name=reports", "json.web.service.context.path=Source"}, service = SourceService.class)
+@OSGiBeanProperties(
+	property = {
+		"json.web.service.context.name=reports",
+		"json.web.service.context.path=Source"
+	},
+	service = SourceService.class
+)
 @ProviderType
-@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
-	PortalException.class, SystemException.class})
+@Transactional(
+	isolation = Isolation.PORTAL,
+	rollbackFor = {PortalException.class, SystemException.class}
+)
 public interface SourceService extends BaseService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link SourceServiceUtil} to access the source remote service. Add custom service methods to {@link com.liferay.portal.reports.engine.console.service.impl.SourceServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link SourceServiceUtil} to access the source remote service. Add custom service methods to <code>com.liferay.portal.reports.engine.console.service.impl.SourceServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public Source addSource(long groupId,
-		Map<Locale, java.lang.String> nameMap,
-		java.lang.String driverClassName, java.lang.String driverUrl,
-		java.lang.String driverUserName, java.lang.String driverPassword,
-		ServiceContext serviceContext) throws PortalException;
+	public Source addSource(
+			long groupId, Map<Locale, String> nameMap, String driverClassName,
+			String driverUrl, String driverUserName, String driverPassword,
+			ServiceContext serviceContext)
+		throws PortalException;
 
 	public Source deleteSource(long sourceId) throws PortalException;
+
+	/**
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
+	public String getOSGiServiceIdentifier();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Source getSource(long sourceId) throws PortalException;
 
-	public Source updateSource(long sourceId,
-		Map<Locale, java.lang.String> nameMap,
-		java.lang.String driverClassName, java.lang.String driverUrl,
-		java.lang.String driverUserName, java.lang.String driverPassword,
-		ServiceContext serviceContext) throws PortalException;
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Source> getSources(
+			long groupId, String name, String driverUrl, boolean andSearch,
+			int start, int end, OrderByComparator orderByComparator)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getSourcesCount(long groupId, java.lang.String name,
-		java.lang.String driverUrl, boolean andSearch);
+	public int getSourcesCount(
+		long groupId, String name, String driverUrl, boolean andSearch);
 
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public Source updateSource(
+			long sourceId, Map<Locale, String> nameMap, String driverClassName,
+			String driverUrl, String driverUserName, String driverPassword,
+			ServiceContext serviceContext)
+		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<Source> getSources(long groupId, java.lang.String name,
-		java.lang.String driverUrl, boolean andSearch, int start, int end,
-		OrderByComparator orderByComparator) throws PortalException;
 }

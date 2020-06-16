@@ -36,13 +36,6 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -52,14 +45,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+
 /**
  * @generated
  */
 public class ResourceBlockPermissionPersistenceTest {
+
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
-			PersistenceTestRule.INSTANCE,
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
 			new TransactionalTestRule(Propagation.REQUIRED));
 
 	@Before
@@ -73,7 +75,8 @@ public class ResourceBlockPermissionPersistenceTest {
 
 	@After
 	public void tearDown() throws Exception {
-		Iterator<ResourceBlockPermission> iterator = _resourceBlockPermissions.iterator();
+		Iterator<ResourceBlockPermission> iterator =
+			_resourceBlockPermissions.iterator();
 
 		while (iterator.hasNext()) {
 			_persistence.remove(iterator.next());
@@ -86,7 +89,8 @@ public class ResourceBlockPermissionPersistenceTest {
 	public void testCreate() throws Exception {
 		long pk = RandomTestUtil.nextLong();
 
-		ResourceBlockPermission resourceBlockPermission = _persistence.create(pk);
+		ResourceBlockPermission resourceBlockPermission = _persistence.create(
+			pk);
 
 		Assert.assertNotNull(resourceBlockPermission);
 
@@ -95,11 +99,14 @@ public class ResourceBlockPermissionPersistenceTest {
 
 	@Test
 	public void testRemove() throws Exception {
-		ResourceBlockPermission newResourceBlockPermission = addResourceBlockPermission();
+		ResourceBlockPermission newResourceBlockPermission =
+			addResourceBlockPermission();
 
 		_persistence.remove(newResourceBlockPermission);
 
-		ResourceBlockPermission existingResourceBlockPermission = _persistence.fetchByPrimaryKey(newResourceBlockPermission.getPrimaryKey());
+		ResourceBlockPermission existingResourceBlockPermission =
+			_persistence.fetchByPrimaryKey(
+				newResourceBlockPermission.getPrimaryKey());
 
 		Assert.assertNull(existingResourceBlockPermission);
 	}
@@ -113,34 +120,44 @@ public class ResourceBlockPermissionPersistenceTest {
 	public void testUpdateExisting() throws Exception {
 		long pk = RandomTestUtil.nextLong();
 
-		ResourceBlockPermission newResourceBlockPermission = _persistence.create(pk);
+		ResourceBlockPermission newResourceBlockPermission =
+			_persistence.create(pk);
 
 		newResourceBlockPermission.setMvccVersion(RandomTestUtil.nextLong());
 
 		newResourceBlockPermission.setCompanyId(RandomTestUtil.nextLong());
 
-		newResourceBlockPermission.setResourceBlockId(RandomTestUtil.nextLong());
+		newResourceBlockPermission.setResourceBlockId(
+			RandomTestUtil.nextLong());
 
 		newResourceBlockPermission.setRoleId(RandomTestUtil.nextLong());
 
 		newResourceBlockPermission.setActionIds(RandomTestUtil.nextLong());
 
-		_resourceBlockPermissions.add(_persistence.update(
-				newResourceBlockPermission));
+		_resourceBlockPermissions.add(
+			_persistence.update(newResourceBlockPermission));
 
-		ResourceBlockPermission existingResourceBlockPermission = _persistence.findByPrimaryKey(newResourceBlockPermission.getPrimaryKey());
+		ResourceBlockPermission existingResourceBlockPermission =
+			_persistence.findByPrimaryKey(
+				newResourceBlockPermission.getPrimaryKey());
 
-		Assert.assertEquals(existingResourceBlockPermission.getMvccVersion(),
+		Assert.assertEquals(
+			existingResourceBlockPermission.getMvccVersion(),
 			newResourceBlockPermission.getMvccVersion());
-		Assert.assertEquals(existingResourceBlockPermission.getResourceBlockPermissionId(),
+		Assert.assertEquals(
+			existingResourceBlockPermission.getResourceBlockPermissionId(),
 			newResourceBlockPermission.getResourceBlockPermissionId());
-		Assert.assertEquals(existingResourceBlockPermission.getCompanyId(),
+		Assert.assertEquals(
+			existingResourceBlockPermission.getCompanyId(),
 			newResourceBlockPermission.getCompanyId());
-		Assert.assertEquals(existingResourceBlockPermission.getResourceBlockId(),
+		Assert.assertEquals(
+			existingResourceBlockPermission.getResourceBlockId(),
 			newResourceBlockPermission.getResourceBlockId());
-		Assert.assertEquals(existingResourceBlockPermission.getRoleId(),
+		Assert.assertEquals(
+			existingResourceBlockPermission.getRoleId(),
 			newResourceBlockPermission.getRoleId());
-		Assert.assertEquals(existingResourceBlockPermission.getActionIds(),
+		Assert.assertEquals(
+			existingResourceBlockPermission.getActionIds(),
 			newResourceBlockPermission.getActionIds());
 	}
 
@@ -160,20 +177,23 @@ public class ResourceBlockPermissionPersistenceTest {
 
 	@Test
 	public void testCountByR_R() throws Exception {
-		_persistence.countByR_R(RandomTestUtil.nextLong(),
-			RandomTestUtil.nextLong());
+		_persistence.countByR_R(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
 
 		_persistence.countByR_R(0L, 0L);
 	}
 
 	@Test
 	public void testFindByPrimaryKeyExisting() throws Exception {
-		ResourceBlockPermission newResourceBlockPermission = addResourceBlockPermission();
+		ResourceBlockPermission newResourceBlockPermission =
+			addResourceBlockPermission();
 
-		ResourceBlockPermission existingResourceBlockPermission = _persistence.findByPrimaryKey(newResourceBlockPermission.getPrimaryKey());
+		ResourceBlockPermission existingResourceBlockPermission =
+			_persistence.findByPrimaryKey(
+				newResourceBlockPermission.getPrimaryKey());
 
-		Assert.assertEquals(existingResourceBlockPermission,
-			newResourceBlockPermission);
+		Assert.assertEquals(
+			existingResourceBlockPermission, newResourceBlockPermission);
 	}
 
 	@Test(expected = NoSuchResourceBlockPermissionException.class)
@@ -185,32 +205,38 @@ public class ResourceBlockPermissionPersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			getOrderByComparator());
+		_persistence.findAll(
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
 	}
 
-	protected OrderByComparator<ResourceBlockPermission> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create("ResourceBlockPermission",
-			"mvccVersion", true, "resourceBlockPermissionId", true,
-			"companyId", true, "resourceBlockId", true, "roleId", true,
-			"actionIds", true);
+	protected OrderByComparator<ResourceBlockPermission>
+		getOrderByComparator() {
+
+		return OrderByComparatorFactoryUtil.create(
+			"ResourceBlockPermission", "mvccVersion", true,
+			"resourceBlockPermissionId", true, "companyId", true,
+			"resourceBlockId", true, "roleId", true, "actionIds", true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
-		ResourceBlockPermission newResourceBlockPermission = addResourceBlockPermission();
+		ResourceBlockPermission newResourceBlockPermission =
+			addResourceBlockPermission();
 
-		ResourceBlockPermission existingResourceBlockPermission = _persistence.fetchByPrimaryKey(newResourceBlockPermission.getPrimaryKey());
+		ResourceBlockPermission existingResourceBlockPermission =
+			_persistence.fetchByPrimaryKey(
+				newResourceBlockPermission.getPrimaryKey());
 
-		Assert.assertEquals(existingResourceBlockPermission,
-			newResourceBlockPermission);
+		Assert.assertEquals(
+			existingResourceBlockPermission, newResourceBlockPermission);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
 		long pk = RandomTestUtil.nextLong();
 
-		ResourceBlockPermission missingResourceBlockPermission = _persistence.fetchByPrimaryKey(pk);
+		ResourceBlockPermission missingResourceBlockPermission =
+			_persistence.fetchByPrimaryKey(pk);
 
 		Assert.assertNull(missingResourceBlockPermission);
 	}
@@ -218,21 +244,27 @@ public class ResourceBlockPermissionPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
-		ResourceBlockPermission newResourceBlockPermission1 = addResourceBlockPermission();
-		ResourceBlockPermission newResourceBlockPermission2 = addResourceBlockPermission();
+
+		ResourceBlockPermission newResourceBlockPermission1 =
+			addResourceBlockPermission();
+		ResourceBlockPermission newResourceBlockPermission2 =
+			addResourceBlockPermission();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newResourceBlockPermission1.getPrimaryKey());
 		primaryKeys.add(newResourceBlockPermission2.getPrimaryKey());
 
-		Map<Serializable, ResourceBlockPermission> resourceBlockPermissions = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ResourceBlockPermission> resourceBlockPermissions =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(2, resourceBlockPermissions.size());
-		Assert.assertEquals(newResourceBlockPermission1,
+		Assert.assertEquals(
+			newResourceBlockPermission1,
 			resourceBlockPermissions.get(
 				newResourceBlockPermission1.getPrimaryKey()));
-		Assert.assertEquals(newResourceBlockPermission2,
+		Assert.assertEquals(
+			newResourceBlockPermission2,
 			resourceBlockPermissions.get(
 				newResourceBlockPermission2.getPrimaryKey()));
 	}
@@ -240,6 +272,7 @@ public class ResourceBlockPermissionPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
+
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -249,7 +282,8 @@ public class ResourceBlockPermissionPersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, ResourceBlockPermission> resourceBlockPermissions = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ResourceBlockPermission> resourceBlockPermissions =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(resourceBlockPermissions.isEmpty());
 	}
@@ -257,7 +291,9 @@ public class ResourceBlockPermissionPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
-		ResourceBlockPermission newResourceBlockPermission = addResourceBlockPermission();
+
+		ResourceBlockPermission newResourceBlockPermission =
+			addResourceBlockPermission();
 
 		long pk = RandomTestUtil.nextLong();
 
@@ -266,37 +302,41 @@ public class ResourceBlockPermissionPersistenceTest {
 		primaryKeys.add(newResourceBlockPermission.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, ResourceBlockPermission> resourceBlockPermissions = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ResourceBlockPermission> resourceBlockPermissions =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, resourceBlockPermissions.size());
-		Assert.assertEquals(newResourceBlockPermission,
+		Assert.assertEquals(
+			newResourceBlockPermission,
 			resourceBlockPermissions.get(
 				newResourceBlockPermission.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, ResourceBlockPermission> resourceBlockPermissions = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ResourceBlockPermission> resourceBlockPermissions =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(resourceBlockPermissions.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey()
-		throws Exception {
-		ResourceBlockPermission newResourceBlockPermission = addResourceBlockPermission();
+	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
+		ResourceBlockPermission newResourceBlockPermission =
+			addResourceBlockPermission();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newResourceBlockPermission.getPrimaryKey());
 
-		Map<Serializable, ResourceBlockPermission> resourceBlockPermissions = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, ResourceBlockPermission> resourceBlockPermissions =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, resourceBlockPermissions.size());
-		Assert.assertEquals(newResourceBlockPermission,
+		Assert.assertEquals(
+			newResourceBlockPermission,
 			resourceBlockPermissions.get(
 				newResourceBlockPermission.getPrimaryKey()));
 	}
@@ -305,16 +345,22 @@ public class ResourceBlockPermissionPersistenceTest {
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery = ResourceBlockPermissionLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			ResourceBlockPermissionLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<ResourceBlockPermission>() {
+		actionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod
+				<ResourceBlockPermission>() {
+
 				@Override
 				public void performAction(
 					ResourceBlockPermission resourceBlockPermission) {
+
 					Assert.assertNotNull(resourceBlockPermission);
 
 					count.increment();
 				}
+
 			});
 
 		actionableDynamicQuery.performActions();
@@ -323,56 +369,62 @@ public class ResourceBlockPermissionPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting()
-		throws Exception {
-		ResourceBlockPermission newResourceBlockPermission = addResourceBlockPermission();
+	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
+		ResourceBlockPermission newResourceBlockPermission =
+			addResourceBlockPermission();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(ResourceBlockPermission.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			ResourceBlockPermission.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq(
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
 				"resourceBlockPermissionId",
 				newResourceBlockPermission.getResourceBlockPermissionId()));
 
-		List<ResourceBlockPermission> result = _persistence.findWithDynamicQuery(dynamicQuery);
+		List<ResourceBlockPermission> result =
+			_persistence.findWithDynamicQuery(dynamicQuery);
 
 		Assert.assertEquals(1, result.size());
 
 		ResourceBlockPermission existingResourceBlockPermission = result.get(0);
 
-		Assert.assertEquals(existingResourceBlockPermission,
-			newResourceBlockPermission);
+		Assert.assertEquals(
+			existingResourceBlockPermission, newResourceBlockPermission);
 	}
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(ResourceBlockPermission.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			ResourceBlockPermission.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq(
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
 				"resourceBlockPermissionId", RandomTestUtil.nextLong()));
 
-		List<ResourceBlockPermission> result = _persistence.findWithDynamicQuery(dynamicQuery);
+		List<ResourceBlockPermission> result =
+			_persistence.findWithDynamicQuery(dynamicQuery);
 
 		Assert.assertEquals(0, result.size());
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting()
-		throws Exception {
-		ResourceBlockPermission newResourceBlockPermission = addResourceBlockPermission();
+	public void testDynamicQueryByProjectionExisting() throws Exception {
+		ResourceBlockPermission newResourceBlockPermission =
+			addResourceBlockPermission();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(ResourceBlockPermission.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			ResourceBlockPermission.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property(
-				"resourceBlockPermissionId"));
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.property("resourceBlockPermissionId"));
 
-		Object newResourceBlockPermissionId = newResourceBlockPermission.getResourceBlockPermissionId();
+		Object newResourceBlockPermissionId =
+			newResourceBlockPermission.getResourceBlockPermissionId();
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in(
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
 				"resourceBlockPermissionId",
-				new Object[] { newResourceBlockPermissionId }));
+				new Object[] {newResourceBlockPermissionId}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -380,21 +432,22 @@ public class ResourceBlockPermissionPersistenceTest {
 
 		Object existingResourceBlockPermissionId = result.get(0);
 
-		Assert.assertEquals(existingResourceBlockPermissionId,
-			newResourceBlockPermissionId);
+		Assert.assertEquals(
+			existingResourceBlockPermissionId, newResourceBlockPermissionId);
 	}
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(ResourceBlockPermission.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			ResourceBlockPermission.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property(
-				"resourceBlockPermissionId"));
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.property("resourceBlockPermissionId"));
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in(
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
 				"resourceBlockPermissionId",
-				new Object[] { RandomTestUtil.nextLong() }));
+				new Object[] {RandomTestUtil.nextLong()}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -403,27 +456,34 @@ public class ResourceBlockPermissionPersistenceTest {
 
 	@Test
 	public void testResetOriginalValues() throws Exception {
-		ResourceBlockPermission newResourceBlockPermission = addResourceBlockPermission();
+		ResourceBlockPermission newResourceBlockPermission =
+			addResourceBlockPermission();
 
 		_persistence.clearCache();
 
-		ResourceBlockPermission existingResourceBlockPermission = _persistence.findByPrimaryKey(newResourceBlockPermission.getPrimaryKey());
+		ResourceBlockPermission existingResourceBlockPermission =
+			_persistence.findByPrimaryKey(
+				newResourceBlockPermission.getPrimaryKey());
 
-		Assert.assertEquals(Long.valueOf(
-				existingResourceBlockPermission.getResourceBlockId()),
-			ReflectionTestUtil.<Long>invoke(existingResourceBlockPermission,
-				"getOriginalResourceBlockId", new Class<?>[0]));
-		Assert.assertEquals(Long.valueOf(
-				existingResourceBlockPermission.getRoleId()),
-			ReflectionTestUtil.<Long>invoke(existingResourceBlockPermission,
-				"getOriginalRoleId", new Class<?>[0]));
+		Assert.assertEquals(
+			Long.valueOf(existingResourceBlockPermission.getResourceBlockId()),
+			ReflectionTestUtil.<Long>invoke(
+				existingResourceBlockPermission, "getOriginalResourceBlockId",
+				new Class<?>[0]));
+		Assert.assertEquals(
+			Long.valueOf(existingResourceBlockPermission.getRoleId()),
+			ReflectionTestUtil.<Long>invoke(
+				existingResourceBlockPermission, "getOriginalRoleId",
+				new Class<?>[0]));
 	}
 
 	protected ResourceBlockPermission addResourceBlockPermission()
 		throws Exception {
+
 		long pk = RandomTestUtil.nextLong();
 
-		ResourceBlockPermission resourceBlockPermission = _persistence.create(pk);
+		ResourceBlockPermission resourceBlockPermission = _persistence.create(
+			pk);
 
 		resourceBlockPermission.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -435,13 +495,15 @@ public class ResourceBlockPermissionPersistenceTest {
 
 		resourceBlockPermission.setActionIds(RandomTestUtil.nextLong());
 
-		_resourceBlockPermissions.add(_persistence.update(
-				resourceBlockPermission));
+		_resourceBlockPermissions.add(
+			_persistence.update(resourceBlockPermission));
 
 		return resourceBlockPermission;
 	}
 
-	private List<ResourceBlockPermission> _resourceBlockPermissions = new ArrayList<ResourceBlockPermission>();
+	private List<ResourceBlockPermission> _resourceBlockPermissions =
+		new ArrayList<ResourceBlockPermission>();
 	private ResourceBlockPermissionPersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
+
 }

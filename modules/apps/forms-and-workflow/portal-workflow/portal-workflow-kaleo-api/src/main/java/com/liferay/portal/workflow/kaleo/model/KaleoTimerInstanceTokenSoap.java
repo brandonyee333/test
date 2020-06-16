@@ -14,8 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -28,13 +26,16 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class KaleoTimerInstanceTokenSoap implements Serializable {
+
 	public static KaleoTimerInstanceTokenSoap toSoapModel(
 		KaleoTimerInstanceToken model) {
-		KaleoTimerInstanceTokenSoap soapModel = new KaleoTimerInstanceTokenSoap();
 
-		soapModel.setKaleoTimerInstanceTokenId(model.getKaleoTimerInstanceTokenId());
+		KaleoTimerInstanceTokenSoap soapModel =
+			new KaleoTimerInstanceTokenSoap();
+
+		soapModel.setKaleoTimerInstanceTokenId(
+			model.getKaleoTimerInstanceTokenId());
 		soapModel.setGroupId(model.getGroupId());
 		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserId(model.getUserId());
@@ -46,12 +47,13 @@ public class KaleoTimerInstanceTokenSoap implements Serializable {
 		soapModel.setKaleoDefinitionId(model.getKaleoDefinitionId());
 		soapModel.setKaleoInstanceId(model.getKaleoInstanceId());
 		soapModel.setKaleoInstanceTokenId(model.getKaleoInstanceTokenId());
-		soapModel.setKaleoTaskInstanceTokenId(model.getKaleoTaskInstanceTokenId());
+		soapModel.setKaleoTaskInstanceTokenId(
+			model.getKaleoTaskInstanceTokenId());
 		soapModel.setKaleoTimerId(model.getKaleoTimerId());
 		soapModel.setKaleoTimerName(model.getKaleoTimerName());
-		soapModel.setBlocking(model.getBlocking());
+		soapModel.setBlocking(model.isBlocking());
 		soapModel.setCompletionUserId(model.getCompletionUserId());
-		soapModel.setCompleted(model.getCompleted());
+		soapModel.setCompleted(model.isCompleted());
 		soapModel.setCompletionDate(model.getCompletionDate());
 		soapModel.setWorkflowContext(model.getWorkflowContext());
 
@@ -60,7 +62,9 @@ public class KaleoTimerInstanceTokenSoap implements Serializable {
 
 	public static KaleoTimerInstanceTokenSoap[] toSoapModels(
 		KaleoTimerInstanceToken[] models) {
-		KaleoTimerInstanceTokenSoap[] soapModels = new KaleoTimerInstanceTokenSoap[models.length];
+
+		KaleoTimerInstanceTokenSoap[] soapModels =
+			new KaleoTimerInstanceTokenSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -71,10 +75,13 @@ public class KaleoTimerInstanceTokenSoap implements Serializable {
 
 	public static KaleoTimerInstanceTokenSoap[][] toSoapModels(
 		KaleoTimerInstanceToken[][] models) {
+
 		KaleoTimerInstanceTokenSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new KaleoTimerInstanceTokenSoap[models.length][models[0].length];
+			soapModels =
+				new KaleoTimerInstanceTokenSoap
+					[models.length][models[0].length];
 		}
 		else {
 			soapModels = new KaleoTimerInstanceTokenSoap[0][0];
@@ -89,13 +96,16 @@ public class KaleoTimerInstanceTokenSoap implements Serializable {
 
 	public static KaleoTimerInstanceTokenSoap[] toSoapModels(
 		List<KaleoTimerInstanceToken> models) {
-		List<KaleoTimerInstanceTokenSoap> soapModels = new ArrayList<KaleoTimerInstanceTokenSoap>(models.size());
+
+		List<KaleoTimerInstanceTokenSoap> soapModels =
+			new ArrayList<KaleoTimerInstanceTokenSoap>(models.size());
 
 		for (KaleoTimerInstanceToken model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new KaleoTimerInstanceTokenSoap[soapModels.size()]);
+		return soapModels.toArray(
+			new KaleoTimerInstanceTokenSoap[soapModels.size()]);
 	}
 
 	public KaleoTimerInstanceTokenSoap() {
@@ -297,4 +307,5 @@ public class KaleoTimerInstanceTokenSoap implements Serializable {
 	private boolean _completed;
 	private Date _completionDate;
 	private String _workflowContext;
+
 }

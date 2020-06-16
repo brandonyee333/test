@@ -14,14 +14,11 @@
 
 package com.liferay.mail.reader.service.persistence.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.mail.reader.exception.NoSuchAccountException;
 import com.liferay.mail.reader.model.Account;
 import com.liferay.mail.reader.model.impl.AccountImpl;
 import com.liferay.mail.reader.model.impl.AccountModelImpl;
 import com.liferay.mail.reader.service.persistence.AccountPersistence;
-
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -31,19 +28,21 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.service.persistence.CompanyProvider;
-import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -63,52 +62,31 @@ import java.util.Set;
  * </p>
  *
  * @author Brian Wing Shun Chan
- * @see AccountPersistence
- * @see com.liferay.mail.reader.service.persistence.AccountUtil
  * @generated
  */
-@ProviderType
-public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
-	implements AccountPersistence {
+public class AccountPersistenceImpl
+	extends BasePersistenceImpl<Account> implements AccountPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link AccountUtil} to access the account persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use <code>AccountUtil</code> to access the account persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = AccountImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(AccountModelImpl.ENTITY_CACHE_ENABLED,
-			AccountModelImpl.FINDER_CACHE_ENABLED, AccountImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(AccountModelImpl.ENTITY_CACHE_ENABLED,
-			AccountModelImpl.FINDER_CACHE_ENABLED, AccountImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(AccountModelImpl.ENTITY_CACHE_ENABLED,
-			AccountModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_USERID = new FinderPath(AccountModelImpl.ENTITY_CACHE_ENABLED,
-			AccountModelImpl.FINDER_CACHE_ENABLED, AccountImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUserId",
-			new String[] {
-				Long.class.getName(),
-				
-			Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID =
-		new FinderPath(AccountModelImpl.ENTITY_CACHE_ENABLED,
-			AccountModelImpl.FINDER_CACHE_ENABLED, AccountImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUserId",
-			new String[] { Long.class.getName() },
-			AccountModelImpl.USERID_COLUMN_BITMASK |
-			AccountModelImpl.ADDRESS_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_USERID = new FinderPath(AccountModelImpl.ENTITY_CACHE_ENABLED,
-			AccountModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
-			new String[] { Long.class.getName() });
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		AccountImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
+	private FinderPath _finderPathWithPaginationFindByUserId;
+	private FinderPath _finderPathWithoutPaginationFindByUserId;
+	private FinderPath _finderPathCountByUserId;
 
 	/**
 	 * Returns all the accounts where userId = &#63;.
@@ -125,7 +103,7 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 * Returns a range of all the accounts where userId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AccountModelImpl</code>.
 	 * </p>
 	 *
 	 * @param userId the user ID
@@ -142,7 +120,7 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 * Returns an ordered range of all the accounts where userId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AccountModelImpl</code>.
 	 * </p>
 	 *
 	 * @param userId the user ID
@@ -152,8 +130,10 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 * @return the ordered range of matching accounts
 	 */
 	@Override
-	public List<Account> findByUserId(long userId, int start, int end,
+	public List<Account> findByUserId(
+		long userId, int start, int end,
 		OrderByComparator<Account> orderByComparator) {
+
 		return findByUserId(userId, start, end, orderByComparator, true);
 	}
 
@@ -161,43 +141,46 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 * Returns an ordered range of all the accounts where userId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AccountModelImpl</code>.
 	 * </p>
 	 *
 	 * @param userId the user ID
 	 * @param start the lower bound of the range of accounts
 	 * @param end the upper bound of the range of accounts (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching accounts
 	 */
 	@Override
-	public List<Account> findByUserId(long userId, int start, int end,
-		OrderByComparator<Account> orderByComparator, boolean retrieveFromCache) {
-		boolean pagination = true;
+	public List<Account> findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<Account> orderByComparator, boolean useFinderCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID;
-			finderArgs = new Object[] { userId };
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByUserId;
+				finderArgs = new Object[] {userId};
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_USERID;
-			finderArgs = new Object[] { userId, start, end, orderByComparator };
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByUserId;
+			finderArgs = new Object[] {userId, start, end, orderByComparator};
 		}
 
 		List<Account> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<Account>)finderCache.getResult(finderPath, finderArgs,
-					this);
+		if (useFinderCache) {
+			list = (List<Account>)finderCache.getResult(
+				finderPath, finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (Account account : list) {
-					if ((userId != account.getUserId())) {
+					if (userId != account.getUserId()) {
 						list = null;
 
 						break;
@@ -207,63 +190,56 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(3 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				query = new StringBundler(3);
+				sb = new StringBundler(3);
 			}
 
-			query.append(_SQL_SELECT_ACCOUNT_WHERE);
+			sb.append(_SQL_SELECT_ACCOUNT_WHERE);
 
-			query.append(_FINDER_COLUMN_USERID_USERID_2);
+			sb.append(_FINDER_COLUMN_USERID_USERID_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else
-			 if (pagination) {
-				query.append(AccountModelImpl.ORDER_BY_JPQL);
+			else {
+				sb.append(AccountModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(userId);
+				queryPos.add(userId);
 
-				if (!pagination) {
-					list = (List<Account>)QueryUtil.list(q, getDialect(),
-							start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<Account>)QueryUtil.list(q, getDialect(),
-							start, end);
-				}
+				list = (List<Account>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -282,25 +258,26 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 * @throws NoSuchAccountException if a matching account could not be found
 	 */
 	@Override
-	public Account findByUserId_First(long userId,
-		OrderByComparator<Account> orderByComparator)
+	public Account findByUserId_First(
+			long userId, OrderByComparator<Account> orderByComparator)
 		throws NoSuchAccountException {
+
 		Account account = fetchByUserId_First(userId, orderByComparator);
 
 		if (account != null) {
 			return account;
 		}
 
-		StringBundler msg = new StringBundler(4);
+		StringBundler sb = new StringBundler(4);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("userId=");
-		msg.append(userId);
+		sb.append("userId=");
+		sb.append(userId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		sb.append("}");
 
-		throw new NoSuchAccountException(msg.toString());
+		throw new NoSuchAccountException(sb.toString());
 	}
 
 	/**
@@ -311,8 +288,9 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 * @return the first matching account, or <code>null</code> if a matching account could not be found
 	 */
 	@Override
-	public Account fetchByUserId_First(long userId,
-		OrderByComparator<Account> orderByComparator) {
+	public Account fetchByUserId_First(
+		long userId, OrderByComparator<Account> orderByComparator) {
+
 		List<Account> list = findByUserId(userId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -331,25 +309,26 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 * @throws NoSuchAccountException if a matching account could not be found
 	 */
 	@Override
-	public Account findByUserId_Last(long userId,
-		OrderByComparator<Account> orderByComparator)
+	public Account findByUserId_Last(
+			long userId, OrderByComparator<Account> orderByComparator)
 		throws NoSuchAccountException {
+
 		Account account = fetchByUserId_Last(userId, orderByComparator);
 
 		if (account != null) {
 			return account;
 		}
 
-		StringBundler msg = new StringBundler(4);
+		StringBundler sb = new StringBundler(4);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("userId=");
-		msg.append(userId);
+		sb.append("userId=");
+		sb.append(userId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		sb.append("}");
 
-		throw new NoSuchAccountException(msg.toString());
+		throw new NoSuchAccountException(sb.toString());
 	}
 
 	/**
@@ -360,16 +339,17 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 * @return the last matching account, or <code>null</code> if a matching account could not be found
 	 */
 	@Override
-	public Account fetchByUserId_Last(long userId,
-		OrderByComparator<Account> orderByComparator) {
+	public Account fetchByUserId_Last(
+		long userId, OrderByComparator<Account> orderByComparator) {
+
 		int count = countByUserId(userId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<Account> list = findByUserId(userId, count - 1, count,
-				orderByComparator);
+		List<Account> list = findByUserId(
+			userId, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -388,9 +368,11 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 * @throws NoSuchAccountException if a account with the primary key could not be found
 	 */
 	@Override
-	public Account[] findByUserId_PrevAndNext(long accountId, long userId,
-		OrderByComparator<Account> orderByComparator)
+	public Account[] findByUserId_PrevAndNext(
+			long accountId, long userId,
+			OrderByComparator<Account> orderByComparator)
 		throws NoSuchAccountException {
+
 		Account account = findByPrimaryKey(accountId);
 
 		Session session = null;
@@ -400,121 +382,123 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 
 			Account[] array = new AccountImpl[3];
 
-			array[0] = getByUserId_PrevAndNext(session, account, userId,
-					orderByComparator, true);
+			array[0] = getByUserId_PrevAndNext(
+				session, account, userId, orderByComparator, true);
 
 			array[1] = account;
 
-			array[2] = getByUserId_PrevAndNext(session, account, userId,
-					orderByComparator, false);
+			array[2] = getByUserId_PrevAndNext(
+				session, account, userId, orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected Account getByUserId_PrevAndNext(Session session, Account account,
-		long userId, OrderByComparator<Account> orderByComparator,
-		boolean previous) {
-		StringBundler query = null;
+	protected Account getByUserId_PrevAndNext(
+		Session session, Account account, long userId,
+		OrderByComparator<Account> orderByComparator, boolean previous) {
+
+		StringBundler sb = null;
 
 		if (orderByComparator != null) {
-			query = new StringBundler(4 +
-					(orderByComparator.getOrderByConditionFields().length * 3) +
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			query = new StringBundler(3);
+			sb = new StringBundler(3);
 		}
 
-		query.append(_SQL_SELECT_ACCOUNT_WHERE);
+		sb.append(_SQL_SELECT_ACCOUNT_WHERE);
 
-		query.append(_FINDER_COLUMN_USERID_USERID_2);
+		sb.append(_FINDER_COLUMN_USERID_USERID_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				query.append(WHERE_AND);
+				sb.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByConditionFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN);
+						sb.append(WHERE_GREATER_THAN);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN);
+						sb.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			query.append(ORDER_BY_CLAUSE);
+			sb.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC_HAS_NEXT);
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						query.append(ORDER_BY_DESC_HAS_NEXT);
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC);
+						sb.append(ORDER_BY_ASC);
 					}
 					else {
-						query.append(ORDER_BY_DESC);
+						sb.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			query.append(AccountModelImpl.ORDER_BY_JPQL);
+			sb.append(AccountModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
-		Query q = session.createQuery(sql);
+		Query query = session.createQuery(sql);
 
-		q.setFirstResult(0);
-		q.setMaxResults(2);
+		query.setFirstResult(0);
+		query.setMaxResults(2);
 
-		QueryPos qPos = QueryPos.getInstance(q);
+		QueryPos queryPos = QueryPos.getInstance(query);
 
-		qPos.add(userId);
+		queryPos.add(userId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(account);
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(account)) {
 
-			for (Object value : values) {
-				qPos.add(value);
+				queryPos.add(orderByConditionValue);
 			}
 		}
 
-		List<Account> list = q.list();
+		List<Account> list = query.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -531,8 +515,10 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 */
 	@Override
 	public void removeByUserId(long userId) {
-		for (Account account : findByUserId(userId, QueryUtil.ALL_POS,
-				QueryUtil.ALL_POS, null)) {
+		for (Account account :
+				findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+
 			remove(account);
 		}
 	}
@@ -545,40 +531,40 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 */
 	@Override
 	public int countByUserId(long userId) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_USERID;
+		FinderPath finderPath = _finderPathCountByUserId;
 
-		Object[] finderArgs = new Object[] { userId };
+		Object[] finderArgs = new Object[] {userId};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(2);
+			StringBundler sb = new StringBundler(2);
 
-			query.append(_SQL_COUNT_ACCOUNT_WHERE);
+			sb.append(_SQL_COUNT_ACCOUNT_WHERE);
 
-			query.append(_FINDER_COLUMN_USERID_USERID_2);
+			sb.append(_FINDER_COLUMN_USERID_USERID_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(userId);
+				queryPos.add(userId);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -588,20 +574,14 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_USERID_USERID_2 = "account.userId = ?";
-	public static final FinderPath FINDER_PATH_FETCH_BY_U_A = new FinderPath(AccountModelImpl.ENTITY_CACHE_ENABLED,
-			AccountModelImpl.FINDER_CACHE_ENABLED, AccountImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByU_A",
-			new String[] { Long.class.getName(), String.class.getName() },
-			AccountModelImpl.USERID_COLUMN_BITMASK |
-			AccountModelImpl.ADDRESS_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_U_A = new FinderPath(AccountModelImpl.ENTITY_CACHE_ENABLED,
-			AccountModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_A",
-			new String[] { Long.class.getName(), String.class.getName() });
+	private static final String _FINDER_COLUMN_USERID_USERID_2 =
+		"account.userId = ?";
+
+	private FinderPath _finderPathFetchByU_A;
+	private FinderPath _finderPathCountByU_A;
 
 	/**
-	 * Returns the account where userId = &#63; and address = &#63; or throws a {@link NoSuchAccountException} if it could not be found.
+	 * Returns the account where userId = &#63; and address = &#63; or throws a <code>NoSuchAccountException</code> if it could not be found.
 	 *
 	 * @param userId the user ID
 	 * @param address the address
@@ -611,26 +591,27 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	@Override
 	public Account findByU_A(long userId, String address)
 		throws NoSuchAccountException {
+
 		Account account = fetchByU_A(userId, address);
 
 		if (account == null) {
-			StringBundler msg = new StringBundler(6);
+			StringBundler sb = new StringBundler(6);
 
-			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			msg.append("userId=");
-			msg.append(userId);
+			sb.append("userId=");
+			sb.append(userId);
 
-			msg.append(", address=");
-			msg.append(address);
+			sb.append(", address=");
+			sb.append(address);
 
-			msg.append(StringPool.CLOSE_CURLY_BRACE);
+			sb.append("}");
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(msg.toString());
+				_log.debug(sb.toString());
 			}
 
-			throw new NoSuchAccountException(msg.toString());
+			throw new NoSuchAccountException(sb.toString());
 		}
 
 		return account;
@@ -653,83 +634,94 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 *
 	 * @param userId the user ID
 	 * @param address the address
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching account, or <code>null</code> if a matching account could not be found
 	 */
 	@Override
-	public Account fetchByU_A(long userId, String address,
-		boolean retrieveFromCache) {
-		Object[] finderArgs = new Object[] { userId, address };
+	public Account fetchByU_A(
+		long userId, String address, boolean useFinderCache) {
+
+		address = Objects.toString(address, "");
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {userId, address};
+		}
 
 		Object result = null;
 
-		if (retrieveFromCache) {
-			result = finderCache.getResult(FINDER_PATH_FETCH_BY_U_A,
-					finderArgs, this);
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByU_A, finderArgs, this);
 		}
 
 		if (result instanceof Account) {
 			Account account = (Account)result;
 
 			if ((userId != account.getUserId()) ||
-					!Objects.equals(address, account.getAddress())) {
+				!Objects.equals(address, account.getAddress())) {
+
 				result = null;
 			}
 		}
 
 		if (result == null) {
-			StringBundler query = new StringBundler(4);
+			StringBundler sb = new StringBundler(4);
 
-			query.append(_SQL_SELECT_ACCOUNT_WHERE);
+			sb.append(_SQL_SELECT_ACCOUNT_WHERE);
 
-			query.append(_FINDER_COLUMN_U_A_USERID_2);
+			sb.append(_FINDER_COLUMN_U_A_USERID_2);
 
 			boolean bindAddress = false;
 
-			if (address == null) {
-				query.append(_FINDER_COLUMN_U_A_ADDRESS_1);
-			}
-			else if (address.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_U_A_ADDRESS_3);
+			if (address.isEmpty()) {
+				sb.append(_FINDER_COLUMN_U_A_ADDRESS_3);
 			}
 			else {
 				bindAddress = true;
 
-				query.append(_FINDER_COLUMN_U_A_ADDRESS_2);
+				sb.append(_FINDER_COLUMN_U_A_ADDRESS_2);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(userId);
+				queryPos.add(userId);
 
 				if (bindAddress) {
-					qPos.add(address);
+					queryPos.add(address);
 				}
 
-				List<Account> list = q.list();
+				List<Account> list = query.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(FINDER_PATH_FETCH_BY_U_A, finderArgs,
-						list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByU_A, finderArgs, list);
+					}
 				}
 				else {
 					if (list.size() > 1) {
 						Collections.sort(list, Collections.reverseOrder());
 
 						if (_log.isWarnEnabled()) {
+							if (!useFinderCache) {
+								finderArgs = new Object[] {userId, address};
+							}
+
 							_log.warn(
 								"AccountPersistenceImpl.fetchByU_A(long, String, boolean) with parameters (" +
-								StringUtil.merge(finderArgs) +
-								") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+									StringUtil.merge(finderArgs) +
+										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 						}
 					}
 
@@ -738,19 +730,14 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 					result = account;
 
 					cacheResult(account);
-
-					if ((account.getUserId() != userId) ||
-							(account.getAddress() == null) ||
-							!account.getAddress().equals(address)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_U_A,
-							finderArgs, account);
-					}
 				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_FETCH_BY_U_A, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(_finderPathFetchByU_A, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -775,6 +762,7 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	@Override
 	public Account removeByU_A(long userId, String address)
 		throws NoSuchAccountException {
+
 		Account account = findByU_A(userId, address);
 
 		return remove(account);
@@ -789,58 +777,57 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 */
 	@Override
 	public int countByU_A(long userId, String address) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_U_A;
+		address = Objects.toString(address, "");
 
-		Object[] finderArgs = new Object[] { userId, address };
+		FinderPath finderPath = _finderPathCountByU_A;
+
+		Object[] finderArgs = new Object[] {userId, address};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(3);
+			StringBundler sb = new StringBundler(3);
 
-			query.append(_SQL_COUNT_ACCOUNT_WHERE);
+			sb.append(_SQL_COUNT_ACCOUNT_WHERE);
 
-			query.append(_FINDER_COLUMN_U_A_USERID_2);
+			sb.append(_FINDER_COLUMN_U_A_USERID_2);
 
 			boolean bindAddress = false;
 
-			if (address == null) {
-				query.append(_FINDER_COLUMN_U_A_ADDRESS_1);
-			}
-			else if (address.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_U_A_ADDRESS_3);
+			if (address.isEmpty()) {
+				sb.append(_FINDER_COLUMN_U_A_ADDRESS_3);
 			}
 			else {
 				bindAddress = true;
 
-				query.append(_FINDER_COLUMN_U_A_ADDRESS_2);
+				sb.append(_FINDER_COLUMN_U_A_ADDRESS_2);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(userId);
+				queryPos.add(userId);
 
 				if (bindAddress) {
-					qPos.add(address);
+					queryPos.add(address);
 				}
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -850,12 +837,34 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_U_A_USERID_2 = "account.userId = ? AND ";
-	private static final String _FINDER_COLUMN_U_A_ADDRESS_1 = "account.address IS NULL";
-	private static final String _FINDER_COLUMN_U_A_ADDRESS_2 = "account.address = ?";
-	private static final String _FINDER_COLUMN_U_A_ADDRESS_3 = "(account.address IS NULL OR account.address = '')";
+	private static final String _FINDER_COLUMN_U_A_USERID_2 =
+		"account.userId = ? AND ";
+
+	private static final String _FINDER_COLUMN_U_A_ADDRESS_2 =
+		"account.address = ?";
+
+	private static final String _FINDER_COLUMN_U_A_ADDRESS_3 =
+		"(account.address IS NULL OR account.address = '')";
 
 	public AccountPersistenceImpl() {
+		Map<String, String> dbColumnNames = new HashMap<String, String>();
+
+		dbColumnNames.put("password", "password_");
+
+		try {
+			Field field = BasePersistenceImpl.class.getDeclaredField(
+				"_dbColumnNames");
+
+			field.setAccessible(true);
+
+			field.set(this, dbColumnNames);
+		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(exception, exception);
+			}
+		}
+
 		setModelClass(Account.class);
 	}
 
@@ -866,11 +875,13 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 */
 	@Override
 	public void cacheResult(Account account) {
-		entityCache.putResult(AccountModelImpl.ENTITY_CACHE_ENABLED,
-			AccountImpl.class, account.getPrimaryKey(), account);
+		entityCache.putResult(
+			AccountModelImpl.ENTITY_CACHE_ENABLED, AccountImpl.class,
+			account.getPrimaryKey(), account);
 
-		finderCache.putResult(FINDER_PATH_FETCH_BY_U_A,
-			new Object[] { account.getUserId(), account.getAddress() }, account);
+		finderCache.putResult(
+			_finderPathFetchByU_A,
+			new Object[] {account.getUserId(), account.getAddress()}, account);
 
 		account.resetOriginalValues();
 	}
@@ -883,8 +894,10 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	@Override
 	public void cacheResult(List<Account> accounts) {
 		for (Account account : accounts) {
-			if (entityCache.getResult(AccountModelImpl.ENTITY_CACHE_ENABLED,
-						AccountImpl.class, account.getPrimaryKey()) == null) {
+			if (entityCache.getResult(
+					AccountModelImpl.ENTITY_CACHE_ENABLED, AccountImpl.class,
+					account.getPrimaryKey()) == null) {
+
 				cacheResult(account);
 			}
 			else {
@@ -897,7 +910,7 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 * Clears the cache for all accounts.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -913,13 +926,14 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 * Clears the cache for the account.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(Account account) {
-		entityCache.removeResult(AccountModelImpl.ENTITY_CACHE_ENABLED,
-			AccountImpl.class, account.getPrimaryKey());
+		entityCache.removeResult(
+			AccountModelImpl.ENTITY_CACHE_ENABLED, AccountImpl.class,
+			account.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -933,44 +947,59 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (Account account : accounts) {
-			entityCache.removeResult(AccountModelImpl.ENTITY_CACHE_ENABLED,
-				AccountImpl.class, account.getPrimaryKey());
+			entityCache.removeResult(
+				AccountModelImpl.ENTITY_CACHE_ENABLED, AccountImpl.class,
+				account.getPrimaryKey());
 
 			clearUniqueFindersCache((AccountModelImpl)account, true);
 		}
 	}
 
+	public void clearCache(Set<Serializable> primaryKeys) {
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (Serializable primaryKey : primaryKeys) {
+			entityCache.removeResult(
+				AccountModelImpl.ENTITY_CACHE_ENABLED, AccountImpl.class,
+				primaryKey);
+		}
+	}
+
 	protected void cacheUniqueFindersCache(AccountModelImpl accountModelImpl) {
 		Object[] args = new Object[] {
+			accountModelImpl.getUserId(), accountModelImpl.getAddress()
+		};
+
+		finderCache.putResult(
+			_finderPathCountByU_A, args, Long.valueOf(1), false);
+		finderCache.putResult(
+			_finderPathFetchByU_A, args, accountModelImpl, false);
+	}
+
+	protected void clearUniqueFindersCache(
+		AccountModelImpl accountModelImpl, boolean clearCurrent) {
+
+		if (clearCurrent) {
+			Object[] args = new Object[] {
 				accountModelImpl.getUserId(), accountModelImpl.getAddress()
 			};
 
-		finderCache.putResult(FINDER_PATH_COUNT_BY_U_A, args, Long.valueOf(1),
-			false);
-		finderCache.putResult(FINDER_PATH_FETCH_BY_U_A, args, accountModelImpl,
-			false);
-	}
-
-	protected void clearUniqueFindersCache(AccountModelImpl accountModelImpl,
-		boolean clearCurrent) {
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-					accountModelImpl.getUserId(), accountModelImpl.getAddress()
-				};
-
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_U_A, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_U_A, args);
+			finderCache.removeResult(_finderPathCountByU_A, args);
+			finderCache.removeResult(_finderPathFetchByU_A, args);
 		}
 
 		if ((accountModelImpl.getColumnBitmask() &
-				FINDER_PATH_FETCH_BY_U_A.getColumnBitmask()) != 0) {
-			Object[] args = new Object[] {
-					accountModelImpl.getOriginalUserId(),
-					accountModelImpl.getOriginalAddress()
-				};
+			 _finderPathFetchByU_A.getColumnBitmask()) != 0) {
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_U_A, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_U_A, args);
+			Object[] args = new Object[] {
+				accountModelImpl.getOriginalUserId(),
+				accountModelImpl.getOriginalAddress()
+			};
+
+			finderCache.removeResult(_finderPathCountByU_A, args);
+			finderCache.removeResult(_finderPathFetchByU_A, args);
 		}
 	}
 
@@ -987,7 +1016,7 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 		account.setNew(true);
 		account.setPrimaryKey(accountId);
 
-		account.setCompanyId(companyProvider.getCompanyId());
+		account.setCompanyId(CompanyThreadLocal.getCompanyId());
 
 		return account;
 	}
@@ -1014,29 +1043,31 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	@Override
 	public Account remove(Serializable primaryKey)
 		throws NoSuchAccountException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Account account = (Account)session.get(AccountImpl.class, primaryKey);
+			Account account = (Account)session.get(
+				AccountImpl.class, primaryKey);
 
 			if (account == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchAccountException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchAccountException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(account);
 		}
-		catch (NoSuchAccountException nsee) {
-			throw nsee;
+		catch (NoSuchAccountException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1045,24 +1076,22 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 
 	@Override
 	protected Account removeImpl(Account account) {
-		account = toUnwrappedModel(account);
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(account)) {
-				account = (Account)session.get(AccountImpl.class,
-						account.getPrimaryKeyObj());
+				account = (Account)session.get(
+					AccountImpl.class, account.getPrimaryKeyObj());
 			}
 
 			if (account != null) {
 				session.delete(account);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1077,13 +1106,28 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 
 	@Override
 	public Account updateImpl(Account account) {
-		account = toUnwrappedModel(account);
-
 		boolean isNew = account.isNew();
+
+		if (!(account instanceof AccountModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(account.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(account);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in account proxy " +
+						invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom Account implementation " +
+					account.getClass());
+		}
 
 		AccountModelImpl accountModelImpl = (AccountModelImpl)account;
 
-		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -1119,8 +1163,8 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 				account = (Account)session.merge(account);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1131,40 +1175,41 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 		if (!AccountModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else
-		 if (isNew) {
-			Object[] args = new Object[] { accountModelImpl.getUserId() };
+		else if (isNew) {
+			Object[] args = new Object[] {accountModelImpl.getUserId()};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
-				args);
+			finderCache.removeResult(_finderPathCountByUserId, args);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindByUserId, args);
 
-			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
-				FINDER_ARGS_EMPTY);
+			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
-
 		else {
 			if ((accountModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID.getColumnBitmask()) != 0) {
+				 _finderPathWithoutPaginationFindByUserId.getColumnBitmask()) !=
+					 0) {
+
 				Object[] args = new Object[] {
-						accountModelImpl.getOriginalUserId()
-					};
+					accountModelImpl.getOriginalUserId()
+				};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
-					args);
+				finderCache.removeResult(_finderPathCountByUserId, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByUserId, args);
 
-				args = new Object[] { accountModelImpl.getUserId() };
+				args = new Object[] {accountModelImpl.getUserId()};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
-					args);
+				finderCache.removeResult(_finderPathCountByUserId, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByUserId, args);
 			}
 		}
 
-		entityCache.putResult(AccountModelImpl.ENTITY_CACHE_ENABLED,
-			AccountImpl.class, account.getPrimaryKey(), account, false);
+		entityCache.putResult(
+			AccountModelImpl.ENTITY_CACHE_ENABLED, AccountImpl.class,
+			account.getPrimaryKey(), account, false);
 
 		clearUniqueFindersCache(accountModelImpl, false);
 		cacheUniqueFindersCache(accountModelImpl);
@@ -1174,48 +1219,8 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 		return account;
 	}
 
-	protected Account toUnwrappedModel(Account account) {
-		if (account instanceof AccountImpl) {
-			return account;
-		}
-
-		AccountImpl accountImpl = new AccountImpl();
-
-		accountImpl.setNew(account.isNew());
-		accountImpl.setPrimaryKey(account.getPrimaryKey());
-
-		accountImpl.setAccountId(account.getAccountId());
-		accountImpl.setCompanyId(account.getCompanyId());
-		accountImpl.setUserId(account.getUserId());
-		accountImpl.setUserName(account.getUserName());
-		accountImpl.setCreateDate(account.getCreateDate());
-		accountImpl.setModifiedDate(account.getModifiedDate());
-		accountImpl.setAddress(account.getAddress());
-		accountImpl.setPersonalName(account.getPersonalName());
-		accountImpl.setProtocol(account.getProtocol());
-		accountImpl.setIncomingHostName(account.getIncomingHostName());
-		accountImpl.setIncomingPort(account.getIncomingPort());
-		accountImpl.setIncomingSecure(account.isIncomingSecure());
-		accountImpl.setOutgoingHostName(account.getOutgoingHostName());
-		accountImpl.setOutgoingPort(account.getOutgoingPort());
-		accountImpl.setOutgoingSecure(account.isOutgoingSecure());
-		accountImpl.setLogin(account.getLogin());
-		accountImpl.setPassword(account.getPassword());
-		accountImpl.setSavePassword(account.isSavePassword());
-		accountImpl.setSignature(account.getSignature());
-		accountImpl.setUseSignature(account.isUseSignature());
-		accountImpl.setFolderPrefix(account.getFolderPrefix());
-		accountImpl.setInboxFolderId(account.getInboxFolderId());
-		accountImpl.setDraftFolderId(account.getDraftFolderId());
-		accountImpl.setSentFolderId(account.getSentFolderId());
-		accountImpl.setTrashFolderId(account.getTrashFolderId());
-		accountImpl.setDefaultSender(account.isDefaultSender());
-
-		return accountImpl;
-	}
-
 	/**
-	 * Returns the account with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the account with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the account
 	 * @return the account
@@ -1224,6 +1229,7 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	@Override
 	public Account findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchAccountException {
+
 		Account account = fetchByPrimaryKey(primaryKey);
 
 		if (account == null) {
@@ -1231,15 +1237,15 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchAccountException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchAccountException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return account;
 	}
 
 	/**
-	 * Returns the account with the primary key or throws a {@link NoSuchAccountException} if it could not be found.
+	 * Returns the account with the primary key or throws a <code>NoSuchAccountException</code> if it could not be found.
 	 *
 	 * @param accountId the primary key of the account
 	 * @return the account
@@ -1248,6 +1254,7 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	@Override
 	public Account findByPrimaryKey(long accountId)
 		throws NoSuchAccountException {
+
 		return findByPrimaryKey((Serializable)accountId);
 	}
 
@@ -1259,8 +1266,9 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 */
 	@Override
 	public Account fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(AccountModelImpl.ENTITY_CACHE_ENABLED,
-				AccountImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			AccountModelImpl.ENTITY_CACHE_ENABLED, AccountImpl.class,
+			primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -1280,15 +1288,17 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 					cacheResult(account);
 				}
 				else {
-					entityCache.putResult(AccountModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						AccountModelImpl.ENTITY_CACHE_ENABLED,
 						AccountImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
-				entityCache.removeResult(AccountModelImpl.ENTITY_CACHE_ENABLED,
-					AccountImpl.class, primaryKey);
+			catch (Exception exception) {
+				entityCache.removeResult(
+					AccountModelImpl.ENTITY_CACHE_ENABLED, AccountImpl.class,
+					primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1312,6 +1322,7 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	@Override
 	public Map<Serializable, Account> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
@@ -1335,8 +1346,9 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(AccountModelImpl.ENTITY_CACHE_ENABLED,
-					AccountImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				AccountModelImpl.ENTITY_CACHE_ENABLED, AccountImpl.class,
+				primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -1356,31 +1368,31 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler sb = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
-		query.append(_SQL_SELECT_ACCOUNT_WHERE_PKS_IN);
+		sb.append(_SQL_SELECT_ACCOUNT_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append((long)primaryKey);
+			sb.append((long)primaryKey);
 
-			query.append(StringPool.COMMA);
+			sb.append(",");
 		}
 
-		query.setIndex(query.index() - 1);
+		sb.setIndex(sb.index() - 1);
 
-		query.append(StringPool.CLOSE_PARENTHESIS);
+		sb.append(")");
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query q = session.createQuery(sql);
+			Query query = session.createQuery(sql);
 
-			for (Account account : (List<Account>)q.list()) {
+			for (Account account : (List<Account>)query.list()) {
 				map.put(account.getPrimaryKeyObj(), account);
 
 				cacheResult(account);
@@ -1389,12 +1401,13 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(AccountModelImpl.ENTITY_CACHE_ENABLED,
-					AccountImpl.class, primaryKey, nullModel);
+				entityCache.putResult(
+					AccountModelImpl.ENTITY_CACHE_ENABLED, AccountImpl.class,
+					primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1417,7 +1430,7 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 * Returns a range of all the accounts.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AccountModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of accounts
@@ -1433,7 +1446,7 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 * Returns an ordered range of all the accounts.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AccountModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of accounts
@@ -1442,8 +1455,9 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 * @return the ordered range of accounts
 	 */
 	@Override
-	public List<Account> findAll(int start, int end,
-		OrderByComparator<Account> orderByComparator) {
+	public List<Account> findAll(
+		int start, int end, OrderByComparator<Account> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -1451,61 +1465,62 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 * Returns an ordered range of all the accounts.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AccountModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of accounts
 	 * @param end the upper bound of the range of accounts (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of accounts
 	 */
 	@Override
-	public List<Account> findAll(int start, int end,
-		OrderByComparator<Account> orderByComparator, boolean retrieveFromCache) {
-		boolean pagination = true;
+	public List<Account> findAll(
+		int start, int end, OrderByComparator<Account> orderByComparator,
+		boolean useFinderCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-			finderArgs = FINDER_ARGS_EMPTY;
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-			finderArgs = new Object[] { start, end, orderByComparator };
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindAll;
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<Account> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<Account>)finderCache.getResult(finderPath, finderArgs,
-					this);
+		if (useFinderCache) {
+			list = (List<Account>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
-				query.append(_SQL_SELECT_ACCOUNT);
+				sb.append(_SQL_SELECT_ACCOUNT);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
-				sql = query.toString();
+				sql = sb.toString();
 			}
 			else {
 				sql = _SQL_SELECT_ACCOUNT;
 
-				if (pagination) {
-					sql = sql.concat(AccountModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(AccountModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -1513,29 +1528,23 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<Account>)QueryUtil.list(q, getDialect(),
-							start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<Account>)QueryUtil.list(q, getDialect(),
-							start, end);
-				}
+				list = (List<Account>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1563,8 +1572,8 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -1572,18 +1581,18 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(_SQL_COUNT_ACCOUNT);
+				Query query = session.createQuery(_SQL_COUNT_ACCOUNT);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
-					FINDER_ARGS_EMPTY);
+			catch (Exception exception) {
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1607,6 +1616,59 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 * Initializes the account persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(
+			AccountModelImpl.ENTITY_CACHE_ENABLED,
+			AccountModelImpl.FINDER_CACHE_ENABLED, AccountImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			AccountModelImpl.ENTITY_CACHE_ENABLED,
+			AccountModelImpl.FINDER_CACHE_ENABLED, AccountImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+			new String[0]);
+
+		_finderPathCountAll = new FinderPath(
+			AccountModelImpl.ENTITY_CACHE_ENABLED,
+			AccountModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByUserId = new FinderPath(
+			AccountModelImpl.ENTITY_CACHE_ENABLED,
+			AccountModelImpl.FINDER_CACHE_ENABLED, AccountImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUserId",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			});
+
+		_finderPathWithoutPaginationFindByUserId = new FinderPath(
+			AccountModelImpl.ENTITY_CACHE_ENABLED,
+			AccountModelImpl.FINDER_CACHE_ENABLED, AccountImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUserId",
+			new String[] {Long.class.getName()},
+			AccountModelImpl.USERID_COLUMN_BITMASK |
+			AccountModelImpl.ADDRESS_COLUMN_BITMASK);
+
+		_finderPathCountByUserId = new FinderPath(
+			AccountModelImpl.ENTITY_CACHE_ENABLED,
+			AccountModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
+			new String[] {Long.class.getName()});
+
+		_finderPathFetchByU_A = new FinderPath(
+			AccountModelImpl.ENTITY_CACHE_ENABLED,
+			AccountModelImpl.FINDER_CACHE_ENABLED, AccountImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchByU_A",
+			new String[] {Long.class.getName(), String.class.getName()},
+			AccountModelImpl.USERID_COLUMN_BITMASK |
+			AccountModelImpl.ADDRESS_COLUMN_BITMASK);
+
+		_finderPathCountByU_A = new FinderPath(
+			AccountModelImpl.ENTITY_CACHE_ENABLED,
+			AccountModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_A",
+			new String[] {Long.class.getName(), String.class.getName()});
 	}
 
 	public void destroy() {
@@ -1616,22 +1678,39 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@ServiceReference(type = CompanyProviderWrapper.class)
-	protected CompanyProvider companyProvider;
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_ACCOUNT = "SELECT account FROM Account account";
-	private static final String _SQL_SELECT_ACCOUNT_WHERE_PKS_IN = "SELECT account FROM Account account WHERE accountId IN (";
-	private static final String _SQL_SELECT_ACCOUNT_WHERE = "SELECT account FROM Account account WHERE ";
-	private static final String _SQL_COUNT_ACCOUNT = "SELECT COUNT(account) FROM Account account";
-	private static final String _SQL_COUNT_ACCOUNT_WHERE = "SELECT COUNT(account) FROM Account account WHERE ";
+
+	private static final String _SQL_SELECT_ACCOUNT =
+		"SELECT account FROM Account account";
+
+	private static final String _SQL_SELECT_ACCOUNT_WHERE_PKS_IN =
+		"SELECT account FROM Account account WHERE accountId IN (";
+
+	private static final String _SQL_SELECT_ACCOUNT_WHERE =
+		"SELECT account FROM Account account WHERE ";
+
+	private static final String _SQL_COUNT_ACCOUNT =
+		"SELECT COUNT(account) FROM Account account";
+
+	private static final String _SQL_COUNT_ACCOUNT_WHERE =
+		"SELECT COUNT(account) FROM Account account WHERE ";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "account.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Account exists with the primary key ";
-	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Account exists with the key {";
-	private static final Log _log = LogFactoryUtil.getLog(AccountPersistenceImpl.class);
-	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"password"
-			});
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No Account exists with the primary key ";
+
+	private static final String _NO_SUCH_ENTITY_WITH_KEY =
+		"No Account exists with the key {";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AccountPersistenceImpl.class);
+
+	private static final Set<String> _badColumnNames = SetUtil.fromArray(
+		new String[] {"password"});
+
 }

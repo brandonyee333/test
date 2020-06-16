@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -36,12 +33,13 @@ import java.util.Objects;
  * @see LoopParticipantAssignment
  * @generated
  */
-@ProviderType
 public class LoopParticipantAssignmentWrapper
 	implements LoopParticipantAssignment,
-		ModelWrapper<LoopParticipantAssignment> {
+			   ModelWrapper<LoopParticipantAssignment> {
+
 	public LoopParticipantAssignmentWrapper(
 		LoopParticipantAssignment loopParticipantAssignment) {
+
 		_loopParticipantAssignment = loopParticipantAssignment;
 	}
 
@@ -59,8 +57,8 @@ public class LoopParticipantAssignmentWrapper
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("loopParticipantAssignmentId",
-			getLoopParticipantAssignmentId());
+		attributes.put(
+			"loopParticipantAssignmentId", getLoopParticipantAssignmentId());
 		attributes.put("loopDivisionId", getLoopDivisionId());
 		attributes.put("loopPersonId", getLoopPersonId());
 		attributes.put("description", getDescription());
@@ -72,7 +70,7 @@ public class LoopParticipantAssignmentWrapper
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
 		Long loopParticipantAssignmentId = (Long)attributes.get(
-				"loopParticipantAssignmentId");
+			"loopParticipantAssignmentId");
 
 		if (loopParticipantAssignmentId != null) {
 			setLoopParticipantAssignmentId(loopParticipantAssignmentId);
@@ -104,13 +102,89 @@ public class LoopParticipantAssignmentWrapper
 	}
 
 	@Override
-	public LoopParticipantAssignment toEscapedModel() {
-		return new LoopParticipantAssignmentWrapper(_loopParticipantAssignment.toEscapedModel());
+	public Object clone() {
+		return new LoopParticipantAssignmentWrapper(
+			(LoopParticipantAssignment)_loopParticipantAssignment.clone());
 	}
 
 	@Override
-	public LoopParticipantAssignment toUnescapedModel() {
-		return new LoopParticipantAssignmentWrapper(_loopParticipantAssignment.toUnescapedModel());
+	public int compareTo(LoopParticipantAssignment loopParticipantAssignment) {
+		return _loopParticipantAssignment.compareTo(loopParticipantAssignment);
+	}
+
+	/**
+	 * Returns the description of this loop participant assignment.
+	 *
+	 * @return the description of this loop participant assignment
+	 */
+	@Override
+	public String getDescription() {
+		return _loopParticipantAssignment.getDescription();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _loopParticipantAssignment.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the loop division ID of this loop participant assignment.
+	 *
+	 * @return the loop division ID of this loop participant assignment
+	 */
+	@Override
+	public long getLoopDivisionId() {
+		return _loopParticipantAssignment.getLoopDivisionId();
+	}
+
+	/**
+	 * Returns the loop participant assignment ID of this loop participant assignment.
+	 *
+	 * @return the loop participant assignment ID of this loop participant assignment
+	 */
+	@Override
+	public long getLoopParticipantAssignmentId() {
+		return _loopParticipantAssignment.getLoopParticipantAssignmentId();
+	}
+
+	/**
+	 * Returns the loop person ID of this loop participant assignment.
+	 *
+	 * @return the loop person ID of this loop participant assignment
+	 */
+	@Override
+	public long getLoopPersonId() {
+		return _loopParticipantAssignment.getLoopPersonId();
+	}
+
+	/**
+	 * Returns the primary key of this loop participant assignment.
+	 *
+	 * @return the primary key of this loop participant assignment
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _loopParticipantAssignment.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _loopParticipantAssignment.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the type of this loop participant assignment.
+	 *
+	 * @return the type of this loop participant assignment
+	 */
+	@Override
+	public int getType() {
+		return _loopParticipantAssignment.getType();
+	}
+
+	@Override
+	public int hashCode() {
+		return _loopParticipantAssignment.hashCode();
 	}
 
 	@Override
@@ -129,106 +203,6 @@ public class LoopParticipantAssignmentWrapper
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _loopParticipantAssignment.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<LoopParticipantAssignment> toCacheModel() {
-		return _loopParticipantAssignment.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(LoopParticipantAssignment loopParticipantAssignment) {
-		return _loopParticipantAssignment.compareTo(loopParticipantAssignment);
-	}
-
-	/**
-	* Returns the type of this loop participant assignment.
-	*
-	* @return the type of this loop participant assignment
-	*/
-	@Override
-	public int getType() {
-		return _loopParticipantAssignment.getType();
-	}
-
-	@Override
-	public int hashCode() {
-		return _loopParticipantAssignment.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _loopParticipantAssignment.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new LoopParticipantAssignmentWrapper((LoopParticipantAssignment)_loopParticipantAssignment.clone());
-	}
-
-	/**
-	* Returns the description of this loop participant assignment.
-	*
-	* @return the description of this loop participant assignment
-	*/
-	@Override
-	public java.lang.String getDescription() {
-		return _loopParticipantAssignment.getDescription();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _loopParticipantAssignment.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _loopParticipantAssignment.toXmlString();
-	}
-
-	/**
-	* Returns the loop division ID of this loop participant assignment.
-	*
-	* @return the loop division ID of this loop participant assignment
-	*/
-	@Override
-	public long getLoopDivisionId() {
-		return _loopParticipantAssignment.getLoopDivisionId();
-	}
-
-	/**
-	* Returns the loop participant assignment ID of this loop participant assignment.
-	*
-	* @return the loop participant assignment ID of this loop participant assignment
-	*/
-	@Override
-	public long getLoopParticipantAssignmentId() {
-		return _loopParticipantAssignment.getLoopParticipantAssignmentId();
-	}
-
-	/**
-	* Returns the loop person ID of this loop participant assignment.
-	*
-	* @return the loop person ID of this loop participant assignment
-	*/
-	@Override
-	public long getLoopPersonId() {
-		return _loopParticipantAssignment.getLoopPersonId();
-	}
-
-	/**
-	* Returns the primary key of this loop participant assignment.
-	*
-	* @return the primary key of this loop participant assignment
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _loopParticipantAssignment.getPrimaryKey();
-	}
-
-	@Override
 	public void persist() {
 		_loopParticipantAssignment.persist();
 	}
@@ -239,13 +213,20 @@ public class LoopParticipantAssignmentWrapper
 	}
 
 	/**
-	* Sets the description of this loop participant assignment.
-	*
-	* @param description the description of this loop participant assignment
-	*/
+	 * Sets the description of this loop participant assignment.
+	 *
+	 * @param description the description of this loop participant assignment
+	 */
 	@Override
-	public void setDescription(java.lang.String description) {
+	public void setDescription(String description) {
 		_loopParticipantAssignment.setDescription(description);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_loopParticipantAssignment.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -254,41 +235,38 @@ public class LoopParticipantAssignmentWrapper
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_loopParticipantAssignment.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_loopParticipantAssignment.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the loop division ID of this loop participant assignment.
-	*
-	* @param loopDivisionId the loop division ID of this loop participant assignment
-	*/
+	 * Sets the loop division ID of this loop participant assignment.
+	 *
+	 * @param loopDivisionId the loop division ID of this loop participant assignment
+	 */
 	@Override
 	public void setLoopDivisionId(long loopDivisionId) {
 		_loopParticipantAssignment.setLoopDivisionId(loopDivisionId);
 	}
 
 	/**
-	* Sets the loop participant assignment ID of this loop participant assignment.
-	*
-	* @param loopParticipantAssignmentId the loop participant assignment ID of this loop participant assignment
-	*/
+	 * Sets the loop participant assignment ID of this loop participant assignment.
+	 *
+	 * @param loopParticipantAssignmentId the loop participant assignment ID of this loop participant assignment
+	 */
 	@Override
-	public void setLoopParticipantAssignmentId(long loopParticipantAssignmentId) {
-		_loopParticipantAssignment.setLoopParticipantAssignmentId(loopParticipantAssignmentId);
+	public void setLoopParticipantAssignmentId(
+		long loopParticipantAssignmentId) {
+
+		_loopParticipantAssignment.setLoopParticipantAssignmentId(
+			loopParticipantAssignmentId);
 	}
 
 	/**
-	* Sets the loop person ID of this loop participant assignment.
-	*
-	* @param loopPersonId the loop person ID of this loop participant assignment
-	*/
+	 * Sets the loop person ID of this loop participant assignment.
+	 *
+	 * @param loopPersonId the loop person ID of this loop participant assignment
+	 */
 	@Override
 	public void setLoopPersonId(long loopPersonId) {
 		_loopParticipantAssignment.setLoopPersonId(loopPersonId);
@@ -300,10 +278,10 @@ public class LoopParticipantAssignmentWrapper
 	}
 
 	/**
-	* Sets the primary key of this loop participant assignment.
-	*
-	* @param primaryKey the primary key of this loop participant assignment
-	*/
+	 * Sets the primary key of this loop participant assignment.
+	 *
+	 * @param primaryKey the primary key of this loop participant assignment
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_loopParticipantAssignment.setPrimaryKey(primaryKey);
@@ -315,13 +293,42 @@ public class LoopParticipantAssignmentWrapper
 	}
 
 	/**
-	* Sets the type of this loop participant assignment.
-	*
-	* @param type the type of this loop participant assignment
-	*/
+	 * Sets the type of this loop participant assignment.
+	 *
+	 * @param type the type of this loop participant assignment
+	 */
 	@Override
 	public void setType(int type) {
 		_loopParticipantAssignment.setType(type);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<LoopParticipantAssignment>
+		toCacheModel() {
+
+		return _loopParticipantAssignment.toCacheModel();
+	}
+
+	@Override
+	public LoopParticipantAssignment toEscapedModel() {
+		return new LoopParticipantAssignmentWrapper(
+			_loopParticipantAssignment.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _loopParticipantAssignment.toString();
+	}
+
+	@Override
+	public LoopParticipantAssignment toUnescapedModel() {
+		return new LoopParticipantAssignmentWrapper(
+			_loopParticipantAssignment.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _loopParticipantAssignment.toXmlString();
 	}
 
 	@Override
@@ -334,10 +341,13 @@ public class LoopParticipantAssignmentWrapper
 			return false;
 		}
 
-		LoopParticipantAssignmentWrapper loopParticipantAssignmentWrapper = (LoopParticipantAssignmentWrapper)obj;
+		LoopParticipantAssignmentWrapper loopParticipantAssignmentWrapper =
+			(LoopParticipantAssignmentWrapper)obj;
 
-		if (Objects.equals(_loopParticipantAssignment,
-					loopParticipantAssignmentWrapper._loopParticipantAssignment)) {
+		if (Objects.equals(
+				_loopParticipantAssignment,
+				loopParticipantAssignmentWrapper._loopParticipantAssignment)) {
+
 			return true;
 		}
 
@@ -365,4 +375,5 @@ public class LoopParticipantAssignmentWrapper
 	}
 
 	private final LoopParticipantAssignment _loopParticipantAssignment;
+
 }

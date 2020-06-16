@@ -14,8 +14,6 @@
 
 package com.liferay.contacts.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.contacts.model.Entry;
 import com.liferay.contacts.service.EntryLocalServiceUtil;
 
@@ -31,12 +29,12 @@ import com.liferay.contacts.service.EntryLocalServiceUtil;
  * @see Entry
  * @generated
  */
-@ProviderType
 public abstract class EntryBaseImpl extends EntryModelImpl implements Entry {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a entry model instance should use the {@link Entry} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a entry model instance should use the <code>Entry</code> interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -47,4 +45,5 @@ public abstract class EntryBaseImpl extends EntryModelImpl implements Entry {
 			EntryLocalServiceUtil.updateEntry(this);
 		}
 	}
+
 }

@@ -32,23 +32,27 @@ import com.liferay.portal.kernel.transaction.Transactional;
  *
  * @author Brian Wing Shun Chan
  * @see MembershipRequestServiceUtil
- * @see com.liferay.portal.service.base.MembershipRequestServiceBaseImpl
- * @see com.liferay.portal.service.impl.MembershipRequestServiceImpl
  * @generated
  */
 @AccessControlled
 @JSONWebService
 @ProviderType
-@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
-	PortalException.class, SystemException.class})
+@Transactional(
+	isolation = Isolation.PORTAL,
+	rollbackFor = {PortalException.class, SystemException.class}
+)
 public interface MembershipRequestService extends BaseService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link MembershipRequestServiceUtil} to access the membership request remote service. Add custom service methods to {@link com.liferay.portal.service.impl.MembershipRequestServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link MembershipRequestServiceUtil} to access the membership request remote service. Add custom service methods to <code>com.liferay.portal.service.impl.MembershipRequestServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public MembershipRequest addMembershipRequest(long groupId,
-		java.lang.String comments, ServiceContext serviceContext)
+	public MembershipRequest addMembershipRequest(
+			long groupId, String comments, ServiceContext serviceContext)
+		throws PortalException;
+
+	public void deleteMembershipRequests(long groupId, long statusId)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -56,16 +60,15 @@ public interface MembershipRequestService extends BaseService {
 		throws PortalException;
 
 	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
+	public String getOSGiServiceIdentifier();
 
-	public void deleteMembershipRequests(long groupId, long statusId)
+	public void updateStatus(
+			long membershipRequestId, String reviewComments, long statusId,
+			ServiceContext serviceContext)
 		throws PortalException;
 
-	public void updateStatus(long membershipRequestId,
-		java.lang.String reviewComments, long statusId,
-		ServiceContext serviceContext) throws PortalException;
 }

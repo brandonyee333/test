@@ -14,8 +14,6 @@
 
 package com.liferay.portal.instances.service;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -25,63 +23,24 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see PortalInstancesLocalService
  * @generated
  */
-@ProviderType
 public class PortalInstancesLocalServiceWrapper
 	implements PortalInstancesLocalService,
-		ServiceWrapper<PortalInstancesLocalService> {
+			   ServiceWrapper<PortalInstancesLocalService> {
+
 	public PortalInstancesLocalServiceWrapper(
 		PortalInstancesLocalService portalInstancesLocalService) {
+
 		_portalInstancesLocalService = portalInstancesLocalService;
 	}
 
 	@Override
-	public boolean isAutoLoginIgnoreHost(java.lang.String host) {
-		return _portalInstancesLocalService.isAutoLoginIgnoreHost(host);
-	}
-
-	@Override
-	public boolean isAutoLoginIgnorePath(java.lang.String path) {
-		return _portalInstancesLocalService.isAutoLoginIgnorePath(path);
-	}
-
-	@Override
-	public boolean isCompanyActive(long companyId) {
-		return _portalInstancesLocalService.isCompanyActive(companyId);
-	}
-
-	@Override
-	public boolean isVirtualHostsIgnoreHost(java.lang.String host) {
-		return _portalInstancesLocalService.isVirtualHostsIgnoreHost(host);
-	}
-
-	@Override
-	public boolean isVirtualHostsIgnorePath(java.lang.String path) {
-		return _portalInstancesLocalService.isVirtualHostsIgnorePath(path);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _portalInstancesLocalService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public java.lang.String[] getWebIds() {
-		return _portalInstancesLocalService.getWebIds();
+	public void addCompanyId(long companyId) {
+		_portalInstancesLocalService.addCompanyId(companyId);
 	}
 
 	@Override
 	public long getCompanyId(javax.servlet.http.HttpServletRequest request) {
 		return _portalInstancesLocalService.getCompanyId(request);
-	}
-
-	@Override
-	public long getDefaultCompanyId() {
-		return _portalInstancesLocalService.getDefaultCompanyId();
 	}
 
 	@Override
@@ -95,15 +54,56 @@ public class PortalInstancesLocalServiceWrapper
 	}
 
 	@Override
-	public void addCompanyId(long companyId) {
-		_portalInstancesLocalService.addCompanyId(companyId);
+	public long getDefaultCompanyId() {
+		return _portalInstancesLocalService.getDefaultCompanyId();
+	}
+
+	/**
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
+	@Override
+	public String getOSGiServiceIdentifier() {
+		return _portalInstancesLocalService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public String[] getWebIds() {
+		return _portalInstancesLocalService.getWebIds();
 	}
 
 	@Override
 	public void initializePortalInstance(
-		javax.servlet.ServletContext servletContext, java.lang.String webId) {
-		_portalInstancesLocalService.initializePortalInstance(servletContext,
-			webId);
+		javax.servlet.ServletContext servletContext, String webId) {
+
+		_portalInstancesLocalService.initializePortalInstance(
+			servletContext, webId);
+	}
+
+	@Override
+	public boolean isAutoLoginIgnoreHost(String host) {
+		return _portalInstancesLocalService.isAutoLoginIgnoreHost(host);
+	}
+
+	@Override
+	public boolean isAutoLoginIgnorePath(String path) {
+		return _portalInstancesLocalService.isAutoLoginIgnorePath(path);
+	}
+
+	@Override
+	public boolean isCompanyActive(long companyId) {
+		return _portalInstancesLocalService.isCompanyActive(companyId);
+	}
+
+	@Override
+	public boolean isVirtualHostsIgnoreHost(String host) {
+		return _portalInstancesLocalService.isVirtualHostsIgnoreHost(host);
+	}
+
+	@Override
+	public boolean isVirtualHostsIgnorePath(String path) {
+		return _portalInstancesLocalService.isVirtualHostsIgnorePath(path);
 	}
 
 	@Override
@@ -129,8 +129,10 @@ public class PortalInstancesLocalServiceWrapper
 	@Override
 	public void setWrappedService(
 		PortalInstancesLocalService portalInstancesLocalService) {
+
 		_portalInstancesLocalService = portalInstancesLocalService;
 	}
 
 	private PortalInstancesLocalService _portalInstancesLocalService;
+
 }

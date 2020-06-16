@@ -1,27 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.community.github.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.community.github.model.GitHubRepository;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing GitHubRepository in entity cache.
  *
  * @author Haote Chou
- * @see GitHubRepository
  * @generated
  */
-@ProviderType
-public class GitHubRepositoryCacheModel implements CacheModel<GitHubRepository>,
-	Externalizable {
+public class GitHubRepositoryCacheModel
+	implements CacheModel<GitHubRepository>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,9 +45,12 @@ public class GitHubRepositoryCacheModel implements CacheModel<GitHubRepository>,
 			return false;
 		}
 
-		GitHubRepositoryCacheModel gitHubRepositoryCacheModel = (GitHubRepositoryCacheModel)obj;
+		GitHubRepositoryCacheModel gitHubRepositoryCacheModel =
+			(GitHubRepositoryCacheModel)obj;
 
-		if (gitHubRepositoryId == gitHubRepositoryCacheModel.gitHubRepositoryId) {
+		if (gitHubRepositoryId ==
+				gitHubRepositoryCacheModel.gitHubRepositoryId) {
+
 			return true;
 		}
 
@@ -108,7 +106,7 @@ public class GitHubRepositoryCacheModel implements CacheModel<GitHubRepository>,
 		gitHubRepositoryImpl.setUserId(userId);
 
 		if (userName == null) {
-			gitHubRepositoryImpl.setUserName(StringPool.BLANK);
+			gitHubRepositoryImpl.setUserName("");
 		}
 		else {
 			gitHubRepositoryImpl.setUserName(userName);
@@ -129,14 +127,14 @@ public class GitHubRepositoryCacheModel implements CacheModel<GitHubRepository>,
 		}
 
 		if (owner == null) {
-			gitHubRepositoryImpl.setOwner(StringPool.BLANK);
+			gitHubRepositoryImpl.setOwner("");
 		}
 		else {
 			gitHubRepositoryImpl.setOwner(owner);
 		}
 
 		if (name == null) {
-			gitHubRepositoryImpl.setName(StringPool.BLANK);
+			gitHubRepositoryImpl.setName("");
 		}
 		else {
 			gitHubRepositoryImpl.setName(name);
@@ -147,7 +145,7 @@ public class GitHubRepositoryCacheModel implements CacheModel<GitHubRepository>,
 		gitHubRepositoryImpl.setStars(stars);
 
 		if (url == null) {
-			gitHubRepositoryImpl.setUrl(StringPool.BLANK);
+			gitHubRepositoryImpl.setUrl("");
 		}
 		else {
 			gitHubRepositoryImpl.setUrl(url);
@@ -157,8 +155,8 @@ public class GitHubRepositoryCacheModel implements CacheModel<GitHubRepository>,
 			gitHubRepositoryImpl.setRepositoryCreateDate(null);
 		}
 		else {
-			gitHubRepositoryImpl.setRepositoryCreateDate(new Date(
-					repositoryCreateDate));
+			gitHubRepositoryImpl.setRepositoryCreateDate(
+				new Date(repositoryCreateDate));
 		}
 
 		gitHubRepositoryImpl.resetOriginalValues();
@@ -189,8 +187,7 @@ public class GitHubRepositoryCacheModel implements CacheModel<GitHubRepository>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(gitHubRepositoryId);
 
 		objectOutput.writeLong(companyId);
@@ -198,7 +195,7 @@ public class GitHubRepositoryCacheModel implements CacheModel<GitHubRepository>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -208,14 +205,14 @@ public class GitHubRepositoryCacheModel implements CacheModel<GitHubRepository>,
 		objectOutput.writeLong(modifiedDate);
 
 		if (owner == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(owner);
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
@@ -228,7 +225,7 @@ public class GitHubRepositoryCacheModel implements CacheModel<GitHubRepository>,
 		objectOutput.writeInt(stars);
 
 		if (url == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(url);
@@ -250,4 +247,5 @@ public class GitHubRepositoryCacheModel implements CacheModel<GitHubRepository>,
 	public int stars;
 	public String url;
 	public long repositoryCreateDate;
+
 }

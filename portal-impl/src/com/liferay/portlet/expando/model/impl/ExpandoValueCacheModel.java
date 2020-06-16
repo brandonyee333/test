@@ -14,14 +14,10 @@
 
 package com.liferay.portlet.expando.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoValue;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -32,12 +28,11 @@ import java.io.ObjectOutput;
  * The cache model class for representing ExpandoValue in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see ExpandoValue
  * @generated
  */
-@ProviderType
-public class ExpandoValueCacheModel implements CacheModel<ExpandoValue>,
-	Externalizable {
+public class ExpandoValueCacheModel
+	implements CacheModel<ExpandoValue>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,7 +43,8 @@ public class ExpandoValueCacheModel implements CacheModel<ExpandoValue>,
 			return false;
 		}
 
-		ExpandoValueCacheModel expandoValueCacheModel = (ExpandoValueCacheModel)obj;
+		ExpandoValueCacheModel expandoValueCacheModel =
+			(ExpandoValueCacheModel)obj;
 
 		if (valueId == expandoValueCacheModel.valueId) {
 			return true;
@@ -100,7 +96,7 @@ public class ExpandoValueCacheModel implements CacheModel<ExpandoValue>,
 		expandoValueImpl.setClassPK(classPK);
 
 		if (data == null) {
-			expandoValueImpl.setData(StringPool.BLANK);
+			expandoValueImpl.setData("");
 		}
 		else {
 			expandoValueImpl.setData(data);
@@ -112,7 +108,9 @@ public class ExpandoValueCacheModel implements CacheModel<ExpandoValue>,
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		valueId = objectInput.readLong();
 
 		companyId = objectInput.readLong();
@@ -126,12 +124,11 @@ public class ExpandoValueCacheModel implements CacheModel<ExpandoValue>,
 		classNameId = objectInput.readLong();
 
 		classPK = objectInput.readLong();
-		data = objectInput.readUTF();
+		data = (String)objectInput.readObject();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(valueId);
 
 		objectOutput.writeLong(companyId);
@@ -147,10 +144,10 @@ public class ExpandoValueCacheModel implements CacheModel<ExpandoValue>,
 		objectOutput.writeLong(classPK);
 
 		if (data == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(data);
+			objectOutput.writeObject(data);
 		}
 	}
 
@@ -162,4 +159,5 @@ public class ExpandoValueCacheModel implements CacheModel<ExpandoValue>,
 	public long classNameId;
 	public long classPK;
 	public String data;
+
 }

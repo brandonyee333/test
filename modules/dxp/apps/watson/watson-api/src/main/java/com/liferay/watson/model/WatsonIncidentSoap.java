@@ -1,20 +1,18 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.watson.model;
-
-import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -28,8 +26,8 @@ import java.util.List;
  * @author Steven Smith
  * @generated
  */
-@ProviderType
 public class WatsonIncidentSoap implements Serializable {
+
 	public static WatsonIncidentSoap toSoapModel(WatsonIncident model) {
 		WatsonIncidentSoap soapModel = new WatsonIncidentSoap();
 
@@ -40,10 +38,12 @@ public class WatsonIncidentSoap implements Serializable {
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
-		soapModel.setExternalCaseWatsonListTypeId(model.getExternalCaseWatsonListTypeId());
+		soapModel.setExternalCaseWatsonListTypeId(
+			model.getExternalCaseWatsonListTypeId());
 		soapModel.setSourceWatsonListTypeId(model.getSourceWatsonListTypeId());
 		soapModel.setTypeWatsonListTypeId(model.getTypeWatsonListTypeId());
-		soapModel.setSubtypeWatsonListTypeId(model.getSubtypeWatsonListTypeId());
+		soapModel.setSubtypeWatsonListTypeId(
+			model.getSubtypeWatsonListTypeId());
 		soapModel.setAudienceAdultCount(model.getAudienceAdultCount());
 		soapModel.setAudienceChildCount(model.getAudienceChildCount());
 		soapModel.setVictimAdultCount(model.getVictimAdultCount());
@@ -71,11 +71,14 @@ public class WatsonIncidentSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static WatsonIncidentSoap[][] toSoapModels(WatsonIncident[][] models) {
+	public static WatsonIncidentSoap[][] toSoapModels(
+		WatsonIncident[][] models) {
+
 		WatsonIncidentSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new WatsonIncidentSoap[models.length][models[0].length];
+			soapModels =
+				new WatsonIncidentSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonIncidentSoap[0][0];
@@ -88,8 +91,11 @@ public class WatsonIncidentSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static WatsonIncidentSoap[] toSoapModels(List<WatsonIncident> models) {
-		List<WatsonIncidentSoap> soapModels = new ArrayList<WatsonIncidentSoap>(models.size());
+	public static WatsonIncidentSoap[] toSoapModels(
+		List<WatsonIncident> models) {
+
+		List<WatsonIncidentSoap> soapModels = new ArrayList<WatsonIncidentSoap>(
+			models.size());
 
 		for (WatsonIncident model : models) {
 			soapModels.add(toSoapModel(model));
@@ -171,6 +177,7 @@ public class WatsonIncidentSoap implements Serializable {
 
 	public void setExternalCaseWatsonListTypeId(
 		long externalCaseWatsonListTypeId) {
+
 		_externalCaseWatsonListTypeId = externalCaseWatsonListTypeId;
 	}
 
@@ -326,4 +333,5 @@ public class WatsonIncidentSoap implements Serializable {
 	private double _expenses;
 	private int _incidentStatus;
 	private int _status;
+
 }

@@ -22,19 +22,24 @@ import aQute.bnd.annotation.ProviderType;
  */
 @ProviderType
 public interface BlogsStatsUserFinder {
+
 	public int countByOrganizationId(long organizationId);
 
-	public int countByOrganizationIds(
-		java.util.List<java.lang.Long> organizationIds);
+	public int countByOrganizationIds(java.util.List<Long> organizationIds);
 
-	public java.util.List<com.liferay.blogs.kernel.model.BlogsStatsUser> findByGroupIds(
-		long companyId, long groupId, int start, int end);
+	public java.util.List<com.liferay.blogs.kernel.model.BlogsStatsUser>
+		findByGroupIds(long companyId, long groupId, int start, int end);
 
-	public java.util.List<com.liferay.blogs.kernel.model.BlogsStatsUser> findByOrganizationId(
-		long organizationId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.blogs.kernel.model.BlogsStatsUser> obc);
+	public java.util.List<com.liferay.blogs.kernel.model.BlogsStatsUser>
+		findByOrganizationId(
+			long organizationId, int start, int end,
+			com.liferay.portal.kernel.util.OrderByComparator
+				<com.liferay.blogs.kernel.model.BlogsStatsUser> obc);
 
-	public java.util.List<com.liferay.blogs.kernel.model.BlogsStatsUser> findByOrganizationIds(
-		java.util.List<java.lang.Long> organizationIds, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.blogs.kernel.model.BlogsStatsUser> obc);
+	public java.util.List<com.liferay.blogs.kernel.model.BlogsStatsUser>
+		findByOrganizationIds(
+			java.util.List<Long> organizationIds, int start, int end,
+			com.liferay.portal.kernel.util.OrderByComparator
+				<com.liferay.blogs.kernel.model.BlogsStatsUser> obc);
+
 }

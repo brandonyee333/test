@@ -14,50 +14,54 @@
 
 package com.liferay.blogs.kernel.service.persistence;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class BlogsStatsUserFinderUtil {
+
 	public static int countByOrganizationId(long organizationId) {
 		return getFinder().countByOrganizationId(organizationId);
 	}
 
 	public static int countByOrganizationIds(
-		java.util.List<java.lang.Long> organizationIds) {
+		java.util.List<Long> organizationIds) {
+
 		return getFinder().countByOrganizationIds(organizationIds);
 	}
 
-	public static java.util.List<com.liferay.blogs.kernel.model.BlogsStatsUser> findByGroupIds(
-		long companyId, long groupId, int start, int end) {
+	public static java.util.List<com.liferay.blogs.kernel.model.BlogsStatsUser>
+		findByGroupIds(long companyId, long groupId, int start, int end) {
+
 		return getFinder().findByGroupIds(companyId, groupId, start, end);
 	}
 
-	public static java.util.List<com.liferay.blogs.kernel.model.BlogsStatsUser> findByOrganizationId(
-		long organizationId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.blogs.kernel.model.BlogsStatsUser> obc) {
-		return getFinder().findByOrganizationId(organizationId, start, end, obc);
+	public static java.util.List<com.liferay.blogs.kernel.model.BlogsStatsUser>
+		findByOrganizationId(
+			long organizationId, int start, int end,
+			com.liferay.portal.kernel.util.OrderByComparator
+				<com.liferay.blogs.kernel.model.BlogsStatsUser> obc) {
+
+		return getFinder().findByOrganizationId(
+			organizationId, start, end, obc);
 	}
 
-	public static java.util.List<com.liferay.blogs.kernel.model.BlogsStatsUser> findByOrganizationIds(
-		java.util.List<java.lang.Long> organizationIds, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.blogs.kernel.model.BlogsStatsUser> obc) {
-		return getFinder()
-				   .findByOrganizationIds(organizationIds, start, end, obc);
+	public static java.util.List<com.liferay.blogs.kernel.model.BlogsStatsUser>
+		findByOrganizationIds(
+			java.util.List<Long> organizationIds, int start, int end,
+			com.liferay.portal.kernel.util.OrderByComparator
+				<com.liferay.blogs.kernel.model.BlogsStatsUser> obc) {
+
+		return getFinder().findByOrganizationIds(
+			organizationIds, start, end, obc);
 	}
 
 	public static BlogsStatsUserFinder getFinder() {
 		if (_finder == null) {
-			_finder = (BlogsStatsUserFinder)PortalBeanLocatorUtil.locate(BlogsStatsUserFinder.class.getName());
-
-			ReferenceRegistry.registerReference(BlogsStatsUserFinderUtil.class,
-				"_finder");
+			_finder = (BlogsStatsUserFinder)PortalBeanLocatorUtil.locate(
+				BlogsStatsUserFinder.class.getName());
 		}
 
 		return _finder;
@@ -65,10 +69,8 @@ public class BlogsStatsUserFinderUtil {
 
 	public void setFinder(BlogsStatsUserFinder finder) {
 		_finder = finder;
-
-		ReferenceRegistry.registerReference(BlogsStatsUserFinderUtil.class,
-			"_finder");
 	}
 
 	private static BlogsStatsUserFinder _finder;
+
 }

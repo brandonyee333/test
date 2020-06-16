@@ -25,34 +25,37 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see WSRPConsumerPortletModel
- * @see com.liferay.wsrp.model.impl.WSRPConsumerPortletImpl
- * @see com.liferay.wsrp.model.impl.WSRPConsumerPortletModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.wsrp.model.impl.WSRPConsumerPortletImpl")
 @ProviderType
-public interface WSRPConsumerPortlet extends WSRPConsumerPortletModel,
-	PersistedModel {
+public interface WSRPConsumerPortlet
+	extends PersistedModel, WSRPConsumerPortletModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.wsrp.model.impl.WSRPConsumerPortletImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.wsrp.model.impl.WSRPConsumerPortletImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<WSRPConsumerPortlet, Long> WSRP_CONSUMER_PORTLET_ID_ACCESSOR =
-		new Accessor<WSRPConsumerPortlet, Long>() {
-			@Override
-			public Long get(WSRPConsumerPortlet wsrpConsumerPortlet) {
-				return wsrpConsumerPortlet.getWsrpConsumerPortletId();
-			}
+	public static final Accessor<WSRPConsumerPortlet, Long>
+		WSRP_CONSUMER_PORTLET_ID_ACCESSOR =
+			new Accessor<WSRPConsumerPortlet, Long>() {
 
-			@Override
-			public Class<Long> getAttributeClass() {
-				return Long.class;
-			}
+				@Override
+				public Long get(WSRPConsumerPortlet wsrpConsumerPortlet) {
+					return wsrpConsumerPortlet.getWsrpConsumerPortletId();
+				}
 
-			@Override
-			public Class<WSRPConsumerPortlet> getTypeClass() {
-				return WSRPConsumerPortlet.class;
-			}
-		};
+				@Override
+				public Class<Long> getAttributeClass() {
+					return Long.class;
+				}
+
+				@Override
+				public Class<WSRPConsumerPortlet> getTypeClass() {
+					return WSRPConsumerPortlet.class;
+				}
+
+			};
+
 }

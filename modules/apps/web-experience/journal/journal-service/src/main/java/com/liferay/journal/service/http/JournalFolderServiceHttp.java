@@ -14,10 +14,7 @@
 
 package com.liferay.journal.service.http;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.journal.service.JournalFolderServiceUtil;
-
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
@@ -27,10 +24,11 @@ import com.liferay.portal.kernel.util.MethodKey;
 
 /**
  * Provides the HTTP utility for the
- * {@link JournalFolderServiceUtil} service utility. The
+ * <code>JournalFolderServiceUtil</code> service
+ * utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it requires an additional
- * {@link HttpPrincipal} parameter.
+ * <code>HttpPrincipal</code> parameter.
  *
  * <p>
  * The benefits of using the HTTP utility is that it is fast and allows for
@@ -49,232 +47,295 @@ import com.liferay.portal.kernel.util.MethodKey;
  *
  * @author Brian Wing Shun Chan
  * @see JournalFolderServiceSoap
- * @see HttpPrincipal
- * @see JournalFolderServiceUtil
  * @generated
  */
-@ProviderType
 public class JournalFolderServiceHttp {
-	public static com.liferay.journal.model.JournalFolder addFolder(
-		HttpPrincipal httpPrincipal, long groupId, long parentFolderId,
-		java.lang.String name, java.lang.String description,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"addFolder", _addFolderParameterTypes0);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					parentFolderId, name, description, serviceContext);
+	public static com.liferay.journal.model.JournalFolder addFolder(
+			HttpPrincipal httpPrincipal, long groupId, long parentFolderId,
+			String name, String description,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "addFolder",
+				_addFolderParameterTypes0);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, groupId, parentFolderId, name, description,
+				serviceContext);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.journal.model.JournalFolder)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
 	public static void deleteFolder(HttpPrincipal httpPrincipal, long folderId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"deleteFolder", _deleteFolderParameterTypes1);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, folderId);
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "deleteFolder",
+				_deleteFolderParameterTypes1);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, folderId);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static void deleteFolder(HttpPrincipal httpPrincipal, long folderId,
-		boolean includeTrashedEntries)
+	public static void deleteFolder(
+			HttpPrincipal httpPrincipal, long folderId,
+			boolean includeTrashedEntries)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"deleteFolder", _deleteFolderParameterTypes2);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					folderId, includeTrashedEntries);
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "deleteFolder",
+				_deleteFolderParameterTypes2);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, folderId, includeTrashedEntries);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
 	public static com.liferay.journal.model.JournalFolder fetchFolder(
-		HttpPrincipal httpPrincipal, long folderId)
+			HttpPrincipal httpPrincipal, long folderId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"fetchFolder", _fetchFolderParameterTypes3);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, folderId);
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "fetchFolder",
+				_fetchFolderParameterTypes3);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, folderId);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.journal.model.JournalFolder)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static java.util.List<com.liferay.dynamic.data.mapping.model.DDMStructure> getDDMStructures(
-		HttpPrincipal httpPrincipal, long[] groupIds, long folderId,
-		int restrictionType)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"getDDMStructures", _getDDMStructuresParameterTypes4);
+	public static java.util.List
+		<com.liferay.dynamic.data.mapping.model.DDMStructure> getDDMStructures(
+				HttpPrincipal httpPrincipal, long[] groupIds, long folderId,
+				int restrictionType)
+			throws com.liferay.portal.kernel.exception.PortalException {
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					groupIds, folderId, restrictionType);
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "getDDMStructures",
+				_getDDMStructuresParameterTypes4);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, groupIds, folderId, restrictionType);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
-			return (java.util.List<com.liferay.dynamic.data.mapping.model.DDMStructure>)returnObj;
+			return (java.util.List
+				<com.liferay.dynamic.data.mapping.model.DDMStructure>)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
 	public static com.liferay.journal.model.JournalFolder getFolder(
-		HttpPrincipal httpPrincipal, long folderId)
+			HttpPrincipal httpPrincipal, long folderId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"getFolder", _getFolderParameterTypes5);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, folderId);
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "getFolder",
+				_getFolderParameterTypes5);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, folderId);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.journal.model.JournalFolder)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static java.util.List<java.lang.Long> getFolderIds(
-		HttpPrincipal httpPrincipal, long groupId, long folderId)
+	public static java.util.List<Long> getFolderIds(
+			HttpPrincipal httpPrincipal, long groupId, long folderId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"getFolderIds", _getFolderIdsParameterTypes6);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					folderId);
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "getFolderIds",
+				_getFolderIdsParameterTypes6);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, groupId, folderId);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
-			return (java.util.List<java.lang.Long>)returnObj;
+			return (java.util.List<Long>)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static java.util.List<com.liferay.journal.model.JournalFolder> getFolders(
-		HttpPrincipal httpPrincipal, long groupId) {
+	public static java.util.List<com.liferay.journal.model.JournalFolder>
+		getFolders(HttpPrincipal httpPrincipal, long groupId) {
+
 		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"getFolders", _getFoldersParameterTypes7);
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "getFolders",
+				_getFoldersParameterTypes7);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, groupId);
 
@@ -283,821 +344,981 @@ public class JournalFolderServiceHttp {
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			catch (Exception exception) {
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
-			return (java.util.List<com.liferay.journal.model.JournalFolder>)returnObj;
+			return (java.util.List<com.liferay.journal.model.JournalFolder>)
+				returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static java.util.List<com.liferay.journal.model.JournalFolder> getFolders(
-		HttpPrincipal httpPrincipal, long groupId, long parentFolderId) {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"getFolders", _getFoldersParameterTypes8);
+	public static java.util.List<com.liferay.journal.model.JournalFolder>
+		getFolders(
+			HttpPrincipal httpPrincipal, long groupId, long parentFolderId) {
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					parentFolderId);
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "getFolders",
+				_getFoldersParameterTypes8);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, groupId, parentFolderId);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			catch (Exception exception) {
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
-			return (java.util.List<com.liferay.journal.model.JournalFolder>)returnObj;
+			return (java.util.List<com.liferay.journal.model.JournalFolder>)
+				returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static java.util.List<com.liferay.journal.model.JournalFolder> getFolders(
-		HttpPrincipal httpPrincipal, long groupId, long parentFolderId,
-		int status) {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"getFolders", _getFoldersParameterTypes9);
+	public static java.util.List<com.liferay.journal.model.JournalFolder>
+		getFolders(
+			HttpPrincipal httpPrincipal, long groupId, long parentFolderId,
+			int status) {
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					parentFolderId, status);
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "getFolders",
+				_getFoldersParameterTypes9);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, groupId, parentFolderId, status);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			catch (Exception exception) {
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
-			return (java.util.List<com.liferay.journal.model.JournalFolder>)returnObj;
+			return (java.util.List<com.liferay.journal.model.JournalFolder>)
+				returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static java.util.List<com.liferay.journal.model.JournalFolder> getFolders(
-		HttpPrincipal httpPrincipal, long groupId, long parentFolderId,
-		int start, int end) {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"getFolders", _getFoldersParameterTypes10);
+	public static java.util.List<com.liferay.journal.model.JournalFolder>
+		getFolders(
+			HttpPrincipal httpPrincipal, long groupId, long parentFolderId,
+			int start, int end) {
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					parentFolderId, start, end);
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "getFolders",
+				_getFoldersParameterTypes10);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, groupId, parentFolderId, start, end);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			catch (Exception exception) {
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
-			return (java.util.List<com.liferay.journal.model.JournalFolder>)returnObj;
+			return (java.util.List<com.liferay.journal.model.JournalFolder>)
+				returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static java.util.List<com.liferay.journal.model.JournalFolder> getFolders(
-		HttpPrincipal httpPrincipal, long groupId, long parentFolderId,
-		int status, int start, int end) {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"getFolders", _getFoldersParameterTypes11);
+	public static java.util.List<com.liferay.journal.model.JournalFolder>
+		getFolders(
+			HttpPrincipal httpPrincipal, long groupId, long parentFolderId,
+			int status, int start, int end) {
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					parentFolderId, status, start, end);
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "getFolders",
+				_getFoldersParameterTypes11);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, groupId, parentFolderId, status, start, end);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			catch (Exception exception) {
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
-			return (java.util.List<com.liferay.journal.model.JournalFolder>)returnObj;
+			return (java.util.List<com.liferay.journal.model.JournalFolder>)
+				returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static java.util.List<java.lang.Object> getFoldersAndArticles(
+	public static java.util.List<Object> getFoldersAndArticles(
 		HttpPrincipal httpPrincipal, long groupId, long folderId, int status,
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<?> obc) {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"getFoldersAndArticles",
-					_getFoldersAndArticlesParameterTypes12);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					folderId, status, start, end, obc);
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "getFoldersAndArticles",
+				_getFoldersAndArticlesParameterTypes12);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, groupId, folderId, status, start, end, obc);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			catch (Exception exception) {
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
-			return (java.util.List<java.lang.Object>)returnObj;
+			return (java.util.List<Object>)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static java.util.List<java.lang.Object> getFoldersAndArticles(
+	public static java.util.List<Object> getFoldersAndArticles(
 		HttpPrincipal httpPrincipal, long groupId, long folderId, int start,
 		int end, com.liferay.portal.kernel.util.OrderByComparator<?> obc) {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"getFoldersAndArticles",
-					_getFoldersAndArticlesParameterTypes13);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					folderId, start, end, obc);
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "getFoldersAndArticles",
+				_getFoldersAndArticlesParameterTypes13);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, groupId, folderId, start, end, obc);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			catch (Exception exception) {
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
-			return (java.util.List<java.lang.Object>)returnObj;
+			return (java.util.List<Object>)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static java.util.List<java.lang.Object> getFoldersAndArticles(
+	public static java.util.List<Object> getFoldersAndArticles(
 		HttpPrincipal httpPrincipal, long groupId, long userId, long folderId,
 		int status, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<?> obc) {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"getFoldersAndArticles",
-					_getFoldersAndArticlesParameterTypes14);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					userId, folderId, status, start, end, obc);
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "getFoldersAndArticles",
+				_getFoldersAndArticlesParameterTypes14);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, groupId, userId, folderId, status, start, end, obc);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			catch (Exception exception) {
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
-			return (java.util.List<java.lang.Object>)returnObj;
+			return (java.util.List<Object>)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static int getFoldersAndArticlesCount(HttpPrincipal httpPrincipal,
-		long groupId, java.util.List<java.lang.Long> folderIds, int status) {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"getFoldersAndArticlesCount",
-					_getFoldersAndArticlesCountParameterTypes15);
+	public static int getFoldersAndArticlesCount(
+		HttpPrincipal httpPrincipal, long groupId,
+		java.util.List<Long> folderIds, int status) {
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					folderIds, status);
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "getFoldersAndArticlesCount",
+				_getFoldersAndArticlesCountParameterTypes15);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, groupId, folderIds, status);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			catch (Exception exception) {
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return ((Integer)returnObj).intValue();
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static int getFoldersAndArticlesCount(HttpPrincipal httpPrincipal,
+	public static int getFoldersAndArticlesCount(
+		HttpPrincipal httpPrincipal, long groupId, long folderId) {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "getFoldersAndArticlesCount",
+				_getFoldersAndArticlesCountParameterTypes16);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, groupId, folderId);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+
+			return ((Integer)returnObj).intValue();
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
+	public static int getFoldersAndArticlesCount(
+		HttpPrincipal httpPrincipal, long groupId, long folderId, int status) {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "getFoldersAndArticlesCount",
+				_getFoldersAndArticlesCountParameterTypes17);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, groupId, folderId, status);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+
+			return ((Integer)returnObj).intValue();
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
+	public static int getFoldersAndArticlesCount(
+		HttpPrincipal httpPrincipal, long groupId, long userId, long folderId,
+		int status) {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "getFoldersAndArticlesCount",
+				_getFoldersAndArticlesCountParameterTypes18);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, groupId, userId, folderId, status);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+
+			return ((Integer)returnObj).intValue();
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
+	public static int getFoldersCount(
+		HttpPrincipal httpPrincipal, long groupId, long parentFolderId) {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "getFoldersCount",
+				_getFoldersCountParameterTypes19);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, groupId, parentFolderId);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+
+			return ((Integer)returnObj).intValue();
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
+	public static int getFoldersCount(
+		HttpPrincipal httpPrincipal, long groupId, long parentFolderId,
+		int status) {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "getFoldersCount",
+				_getFoldersCountParameterTypes20);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, groupId, parentFolderId, status);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+
+			return ((Integer)returnObj).intValue();
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
+	public static void getSubfolderIds(
+		HttpPrincipal httpPrincipal, java.util.List<Long> folderIds,
 		long groupId, long folderId) {
+
 		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"getFoldersAndArticlesCount",
-					_getFoldersAndArticlesCountParameterTypes16);
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "getSubfolderIds",
+				_getSubfolderIdsParameterTypes21);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					folderId);
-
-			Object returnObj = null;
-
-			try {
-				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception e) {
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
-			}
-
-			return ((Integer)returnObj).intValue();
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
-
-			throw se;
-		}
-	}
-
-	public static int getFoldersAndArticlesCount(HttpPrincipal httpPrincipal,
-		long groupId, long folderId, int status) {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"getFoldersAndArticlesCount",
-					_getFoldersAndArticlesCountParameterTypes17);
-
-			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					folderId, status);
-
-			Object returnObj = null;
-
-			try {
-				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception e) {
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
-			}
-
-			return ((Integer)returnObj).intValue();
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
-
-			throw se;
-		}
-	}
-
-	public static int getFoldersAndArticlesCount(HttpPrincipal httpPrincipal,
-		long groupId, long userId, long folderId, int status) {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"getFoldersAndArticlesCount",
-					_getFoldersAndArticlesCountParameterTypes18);
-
-			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					userId, folderId, status);
-
-			Object returnObj = null;
-
-			try {
-				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception e) {
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
-			}
-
-			return ((Integer)returnObj).intValue();
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
-
-			throw se;
-		}
-	}
-
-	public static int getFoldersCount(HttpPrincipal httpPrincipal,
-		long groupId, long parentFolderId) {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"getFoldersCount", _getFoldersCountParameterTypes19);
-
-			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					parentFolderId);
-
-			Object returnObj = null;
-
-			try {
-				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception e) {
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
-			}
-
-			return ((Integer)returnObj).intValue();
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
-
-			throw se;
-		}
-	}
-
-	public static int getFoldersCount(HttpPrincipal httpPrincipal,
-		long groupId, long parentFolderId, int status) {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"getFoldersCount", _getFoldersCountParameterTypes20);
-
-			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					parentFolderId, status);
-
-			Object returnObj = null;
-
-			try {
-				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception e) {
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
-			}
-
-			return ((Integer)returnObj).intValue();
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
-
-			throw se;
-		}
-	}
-
-	public static void getSubfolderIds(HttpPrincipal httpPrincipal,
-		java.util.List<java.lang.Long> folderIds, long groupId, long folderId) {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"getSubfolderIds", _getSubfolderIdsParameterTypes21);
-
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					folderIds, groupId, folderId);
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, folderIds, groupId, folderId);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			catch (Exception exception) {
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static void getSubfolderIds(HttpPrincipal httpPrincipal,
-		java.util.List<java.lang.Long> folderIds, long groupId, long folderId,
-		boolean recurse) {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"getSubfolderIds", _getSubfolderIdsParameterTypes22);
+	public static void getSubfolderIds(
+		HttpPrincipal httpPrincipal, java.util.List<Long> folderIds,
+		long groupId, long folderId, boolean recurse) {
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					folderIds, groupId, folderId, recurse);
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "getSubfolderIds",
+				_getSubfolderIdsParameterTypes22);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, folderIds, groupId, folderId, recurse);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			catch (Exception exception) {
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static java.util.List<java.lang.Long> getSubfolderIds(
+	public static java.util.List<Long> getSubfolderIds(
 		HttpPrincipal httpPrincipal, long groupId, long folderId,
 		boolean recurse) {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"getSubfolderIds", _getSubfolderIdsParameterTypes23);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					folderId, recurse);
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "getSubfolderIds",
+				_getSubfolderIdsParameterTypes23);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, groupId, folderId, recurse);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			catch (Exception exception) {
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
-			return (java.util.List<java.lang.Long>)returnObj;
+			return (java.util.List<Long>)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
 	public static com.liferay.journal.model.JournalFolder moveFolder(
-		HttpPrincipal httpPrincipal, long folderId, long parentFolderId,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+			HttpPrincipal httpPrincipal, long folderId, long parentFolderId,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"moveFolder", _moveFolderParameterTypes24);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					folderId, parentFolderId, serviceContext);
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "moveFolder",
+				_moveFolderParameterTypes24);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, folderId, parentFolderId, serviceContext);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.journal.model.JournalFolder)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
 	public static com.liferay.journal.model.JournalFolder moveFolderFromTrash(
-		HttpPrincipal httpPrincipal, long folderId, long parentFolderId,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+			HttpPrincipal httpPrincipal, long folderId, long parentFolderId,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"moveFolderFromTrash", _moveFolderFromTrashParameterTypes25);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					folderId, parentFolderId, serviceContext);
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "moveFolderFromTrash",
+				_moveFolderFromTrashParameterTypes25);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, folderId, parentFolderId, serviceContext);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.journal.model.JournalFolder)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
 	public static com.liferay.journal.model.JournalFolder moveFolderToTrash(
-		HttpPrincipal httpPrincipal, long folderId)
+			HttpPrincipal httpPrincipal, long folderId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"moveFolderToTrash", _moveFolderToTrashParameterTypes26);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, folderId);
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "moveFolderToTrash",
+				_moveFolderToTrashParameterTypes26);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, folderId);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.journal.model.JournalFolder)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static void restoreFolderFromTrash(HttpPrincipal httpPrincipal,
-		long folderId)
+	public static void restoreFolderFromTrash(
+			HttpPrincipal httpPrincipal, long folderId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"restoreFolderFromTrash",
-					_restoreFolderFromTrashParameterTypes27);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, folderId);
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "restoreFolderFromTrash",
+				_restoreFolderFromTrashParameterTypes27);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, folderId);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static void subscribe(HttpPrincipal httpPrincipal, long groupId,
-		long folderId)
+	public static void subscribe(
+			HttpPrincipal httpPrincipal, long groupId, long folderId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"subscribe", _subscribeParameterTypes28);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					folderId);
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "subscribe",
+				_subscribeParameterTypes28);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, groupId, folderId);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static void unsubscribe(HttpPrincipal httpPrincipal, long groupId,
-		long folderId)
+	public static void unsubscribe(
+			HttpPrincipal httpPrincipal, long groupId, long folderId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"unsubscribe", _unsubscribeParameterTypes29);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					folderId);
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "unsubscribe",
+				_unsubscribeParameterTypes29);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, groupId, folderId);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
 	public static com.liferay.journal.model.JournalFolder updateFolder(
-		HttpPrincipal httpPrincipal, long groupId, long folderId,
-		long parentFolderId, java.lang.String name,
-		java.lang.String description, boolean mergeWithParentFolder,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+			HttpPrincipal httpPrincipal, long groupId, long folderId,
+			long parentFolderId, String name, String description,
+			boolean mergeWithParentFolder,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"updateFolder", _updateFolderParameterTypes30);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					folderId, parentFolderId, name, description,
-					mergeWithParentFolder, serviceContext);
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "updateFolder",
+				_updateFolderParameterTypes30);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, groupId, folderId, parentFolderId, name, description,
+				mergeWithParentFolder, serviceContext);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.journal.model.JournalFolder)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
 	public static com.liferay.journal.model.JournalFolder updateFolder(
-		HttpPrincipal httpPrincipal, long groupId, long folderId,
-		long parentFolderId, java.lang.String name,
-		java.lang.String description, long[] ddmStructureIds,
-		int restrictionType, boolean mergeWithParentFolder,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+			HttpPrincipal httpPrincipal, long groupId, long folderId,
+			long parentFolderId, String name, String description,
+			long[] ddmStructureIds, int restrictionType,
+			boolean mergeWithParentFolder,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(JournalFolderServiceUtil.class,
-					"updateFolder", _updateFolderParameterTypes31);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					folderId, parentFolderId, name, description,
-					ddmStructureIds, restrictionType, mergeWithParentFolder,
-					serviceContext);
+		try {
+			MethodKey methodKey = new MethodKey(
+				JournalFolderServiceUtil.class, "updateFolder",
+				_updateFolderParameterTypes31);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, groupId, folderId, parentFolderId, name, description,
+				ddmStructureIds, restrictionType, mergeWithParentFolder,
+				serviceContext);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.journal.model.JournalFolder)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(JournalFolderServiceHttp.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		JournalFolderServiceHttp.class);
+
 	private static final Class<?>[] _addFolderParameterTypes0 = new Class[] {
-			long.class, long.class, java.lang.String.class,
-			java.lang.String.class,
-			com.liferay.portal.kernel.service.ServiceContext.class
-		};
+		long.class, long.class, String.class, String.class,
+		com.liferay.portal.kernel.service.ServiceContext.class
+	};
 	private static final Class<?>[] _deleteFolderParameterTypes1 = new Class[] {
-			long.class
-		};
+		long.class
+	};
 	private static final Class<?>[] _deleteFolderParameterTypes2 = new Class[] {
-			long.class, boolean.class
-		};
+		long.class, boolean.class
+	};
 	private static final Class<?>[] _fetchFolderParameterTypes3 = new Class[] {
-			long.class
-		};
-	private static final Class<?>[] _getDDMStructuresParameterTypes4 = new Class[] {
-			long[].class, long.class, int.class
-		};
+		long.class
+	};
+	private static final Class<?>[] _getDDMStructuresParameterTypes4 =
+		new Class[] {long[].class, long.class, int.class};
 	private static final Class<?>[] _getFolderParameterTypes5 = new Class[] {
-			long.class
-		};
+		long.class
+	};
 	private static final Class<?>[] _getFolderIdsParameterTypes6 = new Class[] {
-			long.class, long.class
-		};
+		long.class, long.class
+	};
 	private static final Class<?>[] _getFoldersParameterTypes7 = new Class[] {
-			long.class
-		};
+		long.class
+	};
 	private static final Class<?>[] _getFoldersParameterTypes8 = new Class[] {
-			long.class, long.class
-		};
+		long.class, long.class
+	};
 	private static final Class<?>[] _getFoldersParameterTypes9 = new Class[] {
-			long.class, long.class, int.class
-		};
+		long.class, long.class, int.class
+	};
 	private static final Class<?>[] _getFoldersParameterTypes10 = new Class[] {
-			long.class, long.class, int.class, int.class
-		};
+		long.class, long.class, int.class, int.class
+	};
 	private static final Class<?>[] _getFoldersParameterTypes11 = new Class[] {
-			long.class, long.class, int.class, int.class, int.class
-		};
-	private static final Class<?>[] _getFoldersAndArticlesParameterTypes12 = new Class[] {
+		long.class, long.class, int.class, int.class, int.class
+	};
+	private static final Class<?>[] _getFoldersAndArticlesParameterTypes12 =
+		new Class[] {
 			long.class, long.class, int.class, int.class, int.class,
 			com.liferay.portal.kernel.util.OrderByComparator.class
 		};
-	private static final Class<?>[] _getFoldersAndArticlesParameterTypes13 = new Class[] {
+	private static final Class<?>[] _getFoldersAndArticlesParameterTypes13 =
+		new Class[] {
 			long.class, long.class, int.class, int.class,
 			com.liferay.portal.kernel.util.OrderByComparator.class
 		};
-	private static final Class<?>[] _getFoldersAndArticlesParameterTypes14 = new Class[] {
+	private static final Class<?>[] _getFoldersAndArticlesParameterTypes14 =
+		new Class[] {
 			long.class, long.class, long.class, int.class, int.class, int.class,
 			com.liferay.portal.kernel.util.OrderByComparator.class
 		};
-	private static final Class<?>[] _getFoldersAndArticlesCountParameterTypes15 = new Class[] {
+	private static final Class<?>[]
+		_getFoldersAndArticlesCountParameterTypes15 = new Class[] {
 			long.class, java.util.List.class, int.class
 		};
-	private static final Class<?>[] _getFoldersAndArticlesCountParameterTypes16 = new Class[] {
+	private static final Class<?>[]
+		_getFoldersAndArticlesCountParameterTypes16 = new Class[] {
 			long.class, long.class
 		};
-	private static final Class<?>[] _getFoldersAndArticlesCountParameterTypes17 = new Class[] {
+	private static final Class<?>[]
+		_getFoldersAndArticlesCountParameterTypes17 = new Class[] {
 			long.class, long.class, int.class
 		};
-	private static final Class<?>[] _getFoldersAndArticlesCountParameterTypes18 = new Class[] {
+	private static final Class<?>[]
+		_getFoldersAndArticlesCountParameterTypes18 = new Class[] {
 			long.class, long.class, long.class, int.class
 		};
-	private static final Class<?>[] _getFoldersCountParameterTypes19 = new Class[] {
-			long.class, long.class
-		};
-	private static final Class<?>[] _getFoldersCountParameterTypes20 = new Class[] {
-			long.class, long.class, int.class
-		};
-	private static final Class<?>[] _getSubfolderIdsParameterTypes21 = new Class[] {
-			java.util.List.class, long.class, long.class
-		};
-	private static final Class<?>[] _getSubfolderIdsParameterTypes22 = new Class[] {
+	private static final Class<?>[] _getFoldersCountParameterTypes19 =
+		new Class[] {long.class, long.class};
+	private static final Class<?>[] _getFoldersCountParameterTypes20 =
+		new Class[] {long.class, long.class, int.class};
+	private static final Class<?>[] _getSubfolderIdsParameterTypes21 =
+		new Class[] {java.util.List.class, long.class, long.class};
+	private static final Class<?>[] _getSubfolderIdsParameterTypes22 =
+		new Class[] {
 			java.util.List.class, long.class, long.class, boolean.class
 		};
-	private static final Class<?>[] _getSubfolderIdsParameterTypes23 = new Class[] {
-			long.class, long.class, boolean.class
-		};
+	private static final Class<?>[] _getSubfolderIdsParameterTypes23 =
+		new Class[] {long.class, long.class, boolean.class};
 	private static final Class<?>[] _moveFolderParameterTypes24 = new Class[] {
+		long.class, long.class,
+		com.liferay.portal.kernel.service.ServiceContext.class
+	};
+	private static final Class<?>[] _moveFolderFromTrashParameterTypes25 =
+		new Class[] {
 			long.class, long.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
-	private static final Class<?>[] _moveFolderFromTrashParameterTypes25 = new Class[] {
-			long.class, long.class,
-			com.liferay.portal.kernel.service.ServiceContext.class
-		};
-	private static final Class<?>[] _moveFolderToTrashParameterTypes26 = new Class[] {
-			long.class
-		};
-	private static final Class<?>[] _restoreFolderFromTrashParameterTypes27 = new Class[] {
-			long.class
-		};
+	private static final Class<?>[] _moveFolderToTrashParameterTypes26 =
+		new Class[] {long.class};
+	private static final Class<?>[] _restoreFolderFromTrashParameterTypes27 =
+		new Class[] {long.class};
 	private static final Class<?>[] _subscribeParameterTypes28 = new Class[] {
-			long.class, long.class
-		};
+		long.class, long.class
+	};
 	private static final Class<?>[] _unsubscribeParameterTypes29 = new Class[] {
-			long.class, long.class
-		};
-	private static final Class<?>[] _updateFolderParameterTypes30 = new Class[] {
-			long.class, long.class, long.class, java.lang.String.class,
-			java.lang.String.class, boolean.class,
+		long.class, long.class
+	};
+	private static final Class<?>[] _updateFolderParameterTypes30 =
+		new Class[] {
+			long.class, long.class, long.class, String.class, String.class,
+			boolean.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
-	private static final Class<?>[] _updateFolderParameterTypes31 = new Class[] {
-			long.class, long.class, long.class, java.lang.String.class,
-			java.lang.String.class, long[].class, int.class, boolean.class,
+	private static final Class<?>[] _updateFolderParameterTypes31 =
+		new Class[] {
+			long.class, long.class, long.class, String.class, String.class,
+			long[].class, int.class, boolean.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
+
 }

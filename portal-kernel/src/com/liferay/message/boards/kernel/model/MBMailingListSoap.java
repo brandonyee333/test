@@ -14,8 +14,6 @@
 
 package com.liferay.message.boards.kernel.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -28,8 +26,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class MBMailingListSoap implements Serializable {
+
 	public static MBMailingListSoap toSoapModel(MBMailingList model) {
 		MBMailingListSoap soapModel = new MBMailingListSoap();
 
@@ -46,19 +44,19 @@ public class MBMailingListSoap implements Serializable {
 		soapModel.setInProtocol(model.getInProtocol());
 		soapModel.setInServerName(model.getInServerName());
 		soapModel.setInServerPort(model.getInServerPort());
-		soapModel.setInUseSSL(model.getInUseSSL());
+		soapModel.setInUseSSL(model.isInUseSSL());
 		soapModel.setInUserName(model.getInUserName());
 		soapModel.setInPassword(model.getInPassword());
 		soapModel.setInReadInterval(model.getInReadInterval());
 		soapModel.setOutEmailAddress(model.getOutEmailAddress());
-		soapModel.setOutCustom(model.getOutCustom());
+		soapModel.setOutCustom(model.isOutCustom());
 		soapModel.setOutServerName(model.getOutServerName());
 		soapModel.setOutServerPort(model.getOutServerPort());
-		soapModel.setOutUseSSL(model.getOutUseSSL());
+		soapModel.setOutUseSSL(model.isOutUseSSL());
 		soapModel.setOutUserName(model.getOutUserName());
 		soapModel.setOutPassword(model.getOutPassword());
-		soapModel.setAllowAnonymous(model.getAllowAnonymous());
-		soapModel.setActive(model.getActive());
+		soapModel.setAllowAnonymous(model.isAllowAnonymous());
+		soapModel.setActive(model.isActive());
 
 		return soapModel;
 	}
@@ -91,7 +89,8 @@ public class MBMailingListSoap implements Serializable {
 	}
 
 	public static MBMailingListSoap[] toSoapModels(List<MBMailingList> models) {
-		List<MBMailingListSoap> soapModels = new ArrayList<MBMailingListSoap>(models.size());
+		List<MBMailingListSoap> soapModels = new ArrayList<MBMailingListSoap>(
+			models.size());
 
 		for (MBMailingList model : models) {
 			soapModels.add(toSoapModel(model));
@@ -365,4 +364,5 @@ public class MBMailingListSoap implements Serializable {
 	private String _outPassword;
 	private boolean _allowAnonymous;
 	private boolean _active;
+
 }

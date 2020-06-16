@@ -14,10 +14,7 @@
 
 package com.liferay.shopping.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -36,9 +33,9 @@ import java.util.Objects;
  * @see ShoppingItemField
  * @generated
  */
-@ProviderType
-public class ShoppingItemFieldWrapper implements ShoppingItemField,
-	ModelWrapper<ShoppingItemField> {
+public class ShoppingItemFieldWrapper
+	implements ModelWrapper<ShoppingItemField>, ShoppingItemField {
+
 	public ShoppingItemFieldWrapper(ShoppingItemField shoppingItemField) {
 		_shoppingItemField = shoppingItemField;
 	}
@@ -107,13 +104,104 @@ public class ShoppingItemFieldWrapper implements ShoppingItemField,
 	}
 
 	@Override
-	public ShoppingItemField toEscapedModel() {
-		return new ShoppingItemFieldWrapper(_shoppingItemField.toEscapedModel());
+	public Object clone() {
+		return new ShoppingItemFieldWrapper(
+			(ShoppingItemField)_shoppingItemField.clone());
 	}
 
 	@Override
-	public ShoppingItemField toUnescapedModel() {
-		return new ShoppingItemFieldWrapper(_shoppingItemField.toUnescapedModel());
+	public int compareTo(ShoppingItemField shoppingItemField) {
+		return _shoppingItemField.compareTo(shoppingItemField);
+	}
+
+	/**
+	 * Returns the company ID of this shopping item field.
+	 *
+	 * @return the company ID of this shopping item field
+	 */
+	@Override
+	public long getCompanyId() {
+		return _shoppingItemField.getCompanyId();
+	}
+
+	/**
+	 * Returns the description of this shopping item field.
+	 *
+	 * @return the description of this shopping item field
+	 */
+	@Override
+	public String getDescription() {
+		return _shoppingItemField.getDescription();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _shoppingItemField.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the item field ID of this shopping item field.
+	 *
+	 * @return the item field ID of this shopping item field
+	 */
+	@Override
+	public long getItemFieldId() {
+		return _shoppingItemField.getItemFieldId();
+	}
+
+	/**
+	 * Returns the item ID of this shopping item field.
+	 *
+	 * @return the item ID of this shopping item field
+	 */
+	@Override
+	public long getItemId() {
+		return _shoppingItemField.getItemId();
+	}
+
+	/**
+	 * Returns the name of this shopping item field.
+	 *
+	 * @return the name of this shopping item field
+	 */
+	@Override
+	public String getName() {
+		return _shoppingItemField.getName();
+	}
+
+	/**
+	 * Returns the primary key of this shopping item field.
+	 *
+	 * @return the primary key of this shopping item field
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _shoppingItemField.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _shoppingItemField.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the values of this shopping item field.
+	 *
+	 * @return the values of this shopping item field
+	 */
+	@Override
+	public String getValues() {
+		return _shoppingItemField.getValues();
+	}
+
+	@Override
+	public String[] getValuesArray() {
+		return _shoppingItemField.getValuesArray();
+	}
+
+	@Override
+	public int hashCode() {
+		return _shoppingItemField.hashCode();
 	}
 
 	@Override
@@ -132,121 +220,6 @@ public class ShoppingItemFieldWrapper implements ShoppingItemField,
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _shoppingItemField.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<ShoppingItemField> toCacheModel() {
-		return _shoppingItemField.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(ShoppingItemField shoppingItemField) {
-		return _shoppingItemField.compareTo(shoppingItemField);
-	}
-
-	@Override
-	public int hashCode() {
-		return _shoppingItemField.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _shoppingItemField.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new ShoppingItemFieldWrapper((ShoppingItemField)_shoppingItemField.clone());
-	}
-
-	/**
-	* Returns the description of this shopping item field.
-	*
-	* @return the description of this shopping item field
-	*/
-	@Override
-	public java.lang.String getDescription() {
-		return _shoppingItemField.getDescription();
-	}
-
-	/**
-	* Returns the name of this shopping item field.
-	*
-	* @return the name of this shopping item field
-	*/
-	@Override
-	public java.lang.String getName() {
-		return _shoppingItemField.getName();
-	}
-
-	/**
-	* Returns the values of this shopping item field.
-	*
-	* @return the values of this shopping item field
-	*/
-	@Override
-	public java.lang.String getValues() {
-		return _shoppingItemField.getValues();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _shoppingItemField.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _shoppingItemField.toXmlString();
-	}
-
-	@Override
-	public java.lang.String[] getValuesArray() {
-		return _shoppingItemField.getValuesArray();
-	}
-
-	/**
-	* Returns the company ID of this shopping item field.
-	*
-	* @return the company ID of this shopping item field
-	*/
-	@Override
-	public long getCompanyId() {
-		return _shoppingItemField.getCompanyId();
-	}
-
-	/**
-	* Returns the item field ID of this shopping item field.
-	*
-	* @return the item field ID of this shopping item field
-	*/
-	@Override
-	public long getItemFieldId() {
-		return _shoppingItemField.getItemFieldId();
-	}
-
-	/**
-	* Returns the item ID of this shopping item field.
-	*
-	* @return the item ID of this shopping item field
-	*/
-	@Override
-	public long getItemId() {
-		return _shoppingItemField.getItemId();
-	}
-
-	/**
-	* Returns the primary key of this shopping item field.
-	*
-	* @return the primary key of this shopping item field
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _shoppingItemField.getPrimaryKey();
-	}
-
-	@Override
 	public void persist() {
 		_shoppingItemField.persist();
 	}
@@ -257,23 +230,30 @@ public class ShoppingItemFieldWrapper implements ShoppingItemField,
 	}
 
 	/**
-	* Sets the company ID of this shopping item field.
-	*
-	* @param companyId the company ID of this shopping item field
-	*/
+	 * Sets the company ID of this shopping item field.
+	 *
+	 * @param companyId the company ID of this shopping item field
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_shoppingItemField.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the description of this shopping item field.
-	*
-	* @param description the description of this shopping item field
-	*/
+	 * Sets the description of this shopping item field.
+	 *
+	 * @param description the description of this shopping item field
+	 */
 	@Override
-	public void setDescription(java.lang.String description) {
+	public void setDescription(String description) {
 		_shoppingItemField.setDescription(description);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_shoppingItemField.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -282,43 +262,37 @@ public class ShoppingItemFieldWrapper implements ShoppingItemField,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_shoppingItemField.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_shoppingItemField.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the item field ID of this shopping item field.
-	*
-	* @param itemFieldId the item field ID of this shopping item field
-	*/
+	 * Sets the item field ID of this shopping item field.
+	 *
+	 * @param itemFieldId the item field ID of this shopping item field
+	 */
 	@Override
 	public void setItemFieldId(long itemFieldId) {
 		_shoppingItemField.setItemFieldId(itemFieldId);
 	}
 
 	/**
-	* Sets the item ID of this shopping item field.
-	*
-	* @param itemId the item ID of this shopping item field
-	*/
+	 * Sets the item ID of this shopping item field.
+	 *
+	 * @param itemId the item ID of this shopping item field
+	 */
 	@Override
 	public void setItemId(long itemId) {
 		_shoppingItemField.setItemId(itemId);
 	}
 
 	/**
-	* Sets the name of this shopping item field.
-	*
-	* @param name the name of this shopping item field
-	*/
+	 * Sets the name of this shopping item field.
+	 *
+	 * @param name the name of this shopping item field
+	 */
 	@Override
-	public void setName(java.lang.String name) {
+	public void setName(String name) {
 		_shoppingItemField.setName(name);
 	}
 
@@ -328,10 +302,10 @@ public class ShoppingItemFieldWrapper implements ShoppingItemField,
 	}
 
 	/**
-	* Sets the primary key of this shopping item field.
-	*
-	* @param primaryKey the primary key of this shopping item field
-	*/
+	 * Sets the primary key of this shopping item field.
+	 *
+	 * @param primaryKey the primary key of this shopping item field
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_shoppingItemField.setPrimaryKey(primaryKey);
@@ -343,18 +317,47 @@ public class ShoppingItemFieldWrapper implements ShoppingItemField,
 	}
 
 	/**
-	* Sets the values of this shopping item field.
-	*
-	* @param values the values of this shopping item field
-	*/
+	 * Sets the values of this shopping item field.
+	 *
+	 * @param values the values of this shopping item field
+	 */
 	@Override
-	public void setValues(java.lang.String values) {
+	public void setValues(String values) {
 		_shoppingItemField.setValues(values);
 	}
 
 	@Override
-	public void setValuesArray(java.lang.String[] valuesArray) {
+	public void setValuesArray(String[] valuesArray) {
 		_shoppingItemField.setValuesArray(valuesArray);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<ShoppingItemField>
+		toCacheModel() {
+
+		return _shoppingItemField.toCacheModel();
+	}
+
+	@Override
+	public ShoppingItemField toEscapedModel() {
+		return new ShoppingItemFieldWrapper(
+			_shoppingItemField.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _shoppingItemField.toString();
+	}
+
+	@Override
+	public ShoppingItemField toUnescapedModel() {
+		return new ShoppingItemFieldWrapper(
+			_shoppingItemField.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _shoppingItemField.toXmlString();
 	}
 
 	@Override
@@ -367,10 +370,13 @@ public class ShoppingItemFieldWrapper implements ShoppingItemField,
 			return false;
 		}
 
-		ShoppingItemFieldWrapper shoppingItemFieldWrapper = (ShoppingItemFieldWrapper)obj;
+		ShoppingItemFieldWrapper shoppingItemFieldWrapper =
+			(ShoppingItemFieldWrapper)obj;
 
-		if (Objects.equals(_shoppingItemField,
-					shoppingItemFieldWrapper._shoppingItemField)) {
+		if (Objects.equals(
+				_shoppingItemField,
+				shoppingItemFieldWrapper._shoppingItemField)) {
+
 			return true;
 		}
 
@@ -398,4 +404,5 @@ public class ShoppingItemFieldWrapper implements ShoppingItemField,
 	}
 
 	private final ShoppingItemField _shoppingItemField;
+
 }

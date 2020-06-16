@@ -14,8 +14,6 @@
 
 package com.liferay.shopping.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -28,8 +26,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class ShoppingCartSoap implements Serializable {
+
 	public static ShoppingCartSoap toSoapModel(ShoppingCart model) {
 		ShoppingCartSoap soapModel = new ShoppingCartSoap();
 
@@ -43,7 +41,7 @@ public class ShoppingCartSoap implements Serializable {
 		soapModel.setItemIds(model.getItemIds());
 		soapModel.setCouponCodes(model.getCouponCodes());
 		soapModel.setAltShipping(model.getAltShipping());
-		soapModel.setInsure(model.getInsure());
+		soapModel.setInsure(model.isInsure());
 
 		return soapModel;
 	}
@@ -76,7 +74,8 @@ public class ShoppingCartSoap implements Serializable {
 	}
 
 	public static ShoppingCartSoap[] toSoapModels(List<ShoppingCart> models) {
-		List<ShoppingCartSoap> soapModels = new ArrayList<ShoppingCartSoap>(models.size());
+		List<ShoppingCartSoap> soapModels = new ArrayList<ShoppingCartSoap>(
+			models.size());
 
 		for (ShoppingCart model : models) {
 			soapModels.add(toSoapModel(model));
@@ -199,4 +198,5 @@ public class ShoppingCartSoap implements Serializable {
 	private String _couponCodes;
 	private int _altShipping;
 	private boolean _insure;
+
 }

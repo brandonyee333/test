@@ -14,14 +14,10 @@
 
 package com.liferay.dynamic.data.lists.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing DDLRecordSet in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see DDLRecordSet
  * @generated
  */
-@ProviderType
-public class DDLRecordSetCacheModel implements CacheModel<DDLRecordSet>,
-	Externalizable {
+public class DDLRecordSetCacheModel
+	implements CacheModel<DDLRecordSet>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,7 +45,8 @@ public class DDLRecordSetCacheModel implements CacheModel<DDLRecordSet>,
 			return false;
 		}
 
-		DDLRecordSetCacheModel ddlRecordSetCacheModel = (DDLRecordSetCacheModel)obj;
+		DDLRecordSetCacheModel ddlRecordSetCacheModel =
+			(DDLRecordSetCacheModel)obj;
 
 		if (recordSetId == ddlRecordSetCacheModel.recordSetId) {
 			return true;
@@ -110,7 +106,7 @@ public class DDLRecordSetCacheModel implements CacheModel<DDLRecordSet>,
 		DDLRecordSetImpl ddlRecordSetImpl = new DDLRecordSetImpl();
 
 		if (uuid == null) {
-			ddlRecordSetImpl.setUuid(StringPool.BLANK);
+			ddlRecordSetImpl.setUuid("");
 		}
 		else {
 			ddlRecordSetImpl.setUuid(uuid);
@@ -122,7 +118,7 @@ public class DDLRecordSetCacheModel implements CacheModel<DDLRecordSet>,
 		ddlRecordSetImpl.setUserId(userId);
 
 		if (userName == null) {
-			ddlRecordSetImpl.setUserName(StringPool.BLANK);
+			ddlRecordSetImpl.setUserName("");
 		}
 		else {
 			ddlRecordSetImpl.setUserName(userName);
@@ -145,21 +141,21 @@ public class DDLRecordSetCacheModel implements CacheModel<DDLRecordSet>,
 		ddlRecordSetImpl.setDDMStructureId(DDMStructureId);
 
 		if (recordSetKey == null) {
-			ddlRecordSetImpl.setRecordSetKey(StringPool.BLANK);
+			ddlRecordSetImpl.setRecordSetKey("");
 		}
 		else {
 			ddlRecordSetImpl.setRecordSetKey(recordSetKey);
 		}
 
 		if (name == null) {
-			ddlRecordSetImpl.setName(StringPool.BLANK);
+			ddlRecordSetImpl.setName("");
 		}
 		else {
 			ddlRecordSetImpl.setName(name);
 		}
 
 		if (description == null) {
-			ddlRecordSetImpl.setDescription(StringPool.BLANK);
+			ddlRecordSetImpl.setDescription("");
 		}
 		else {
 			ddlRecordSetImpl.setDescription(description);
@@ -169,7 +165,7 @@ public class DDLRecordSetCacheModel implements CacheModel<DDLRecordSet>,
 		ddlRecordSetImpl.setScope(scope);
 
 		if (settings == null) {
-			ddlRecordSetImpl.setSettings(StringPool.BLANK);
+			ddlRecordSetImpl.setSettings("");
 		}
 		else {
 			ddlRecordSetImpl.setSettings(settings);
@@ -192,6 +188,7 @@ public class DDLRecordSetCacheModel implements CacheModel<DDLRecordSet>,
 	@Override
 	public void readExternal(ObjectInput objectInput)
 		throws ClassNotFoundException, IOException {
+
 		uuid = objectInput.readUTF();
 
 		recordSetId = objectInput.readLong();
@@ -213,17 +210,18 @@ public class DDLRecordSetCacheModel implements CacheModel<DDLRecordSet>,
 		minDisplayRows = objectInput.readInt();
 
 		scope = objectInput.readInt();
-		settings = objectInput.readUTF();
+		settings = (String)objectInput.readObject();
 		lastPublishDate = objectInput.readLong();
 
-		_ddmFormValues = (com.liferay.dynamic.data.mapping.storage.DDMFormValues)objectInput.readObject();
+		_ddmFormValues =
+			(com.liferay.dynamic.data.mapping.storage.DDMFormValues)
+				objectInput.readObject();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -238,7 +236,7 @@ public class DDLRecordSetCacheModel implements CacheModel<DDLRecordSet>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -250,21 +248,21 @@ public class DDLRecordSetCacheModel implements CacheModel<DDLRecordSet>,
 		objectOutput.writeLong(DDMStructureId);
 
 		if (recordSetKey == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(recordSetKey);
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -275,10 +273,10 @@ public class DDLRecordSetCacheModel implements CacheModel<DDLRecordSet>,
 		objectOutput.writeInt(scope);
 
 		if (settings == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(settings);
+			objectOutput.writeObject(settings);
 		}
 
 		objectOutput.writeLong(lastPublishDate);
@@ -302,5 +300,7 @@ public class DDLRecordSetCacheModel implements CacheModel<DDLRecordSet>,
 	public int scope;
 	public String settings;
 	public long lastPublishDate;
-	public com.liferay.dynamic.data.mapping.storage.DDMFormValues _ddmFormValues;
+	public com.liferay.dynamic.data.mapping.storage.DDMFormValues
+		_ddmFormValues;
+
 }

@@ -14,10 +14,7 @@
 
 package com.liferay.calendar.service.http;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.calendar.service.CalendarBookingServiceUtil;
-
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
@@ -27,10 +24,11 @@ import com.liferay.portal.kernel.util.MethodKey;
 
 /**
  * Provides the HTTP utility for the
- * {@link CalendarBookingServiceUtil} service utility. The
+ * <code>CalendarBookingServiceUtil</code> service
+ * utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it requires an additional
- * {@link HttpPrincipal} parameter.
+ * <code>HttpPrincipal</code> parameter.
  *
  * <p>
  * The benefits of using the HTTP utility is that it is fast and allows for
@@ -49,1371 +47,1644 @@ import com.liferay.portal.kernel.util.MethodKey;
  *
  * @author Eduardo Lundgren
  * @see CalendarBookingServiceSoap
- * @see HttpPrincipal
- * @see CalendarBookingServiceUtil
  * @generated
  */
-@ProviderType
 public class CalendarBookingServiceHttp {
-	public static com.liferay.calendar.model.CalendarBooking addCalendarBooking(
-		HttpPrincipal httpPrincipal, long calendarId, long[] childCalendarIds,
-		long parentCalendarBookingId,
-		java.util.Map<java.util.Locale, java.lang.String> titleMap,
-		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
-		java.lang.String location, int startTimeYear, int startTimeMonth,
-		int startTimeDay, int startTimeHour, int startTimeMinute,
-		int endTimeYear, int endTimeMonth, int endTimeDay, int endTimeHour,
-		int endTimeMinute, java.lang.String timeZoneId, boolean allDay,
-		java.lang.String recurrence, long firstReminder,
-		java.lang.String firstReminderType, long secondReminder,
-		java.lang.String secondReminderType,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"addCalendarBooking", _addCalendarBookingParameterTypes0);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarId, childCalendarIds, parentCalendarBookingId,
-					titleMap, descriptionMap, location, startTimeYear,
-					startTimeMonth, startTimeDay, startTimeHour,
-					startTimeMinute, endTimeYear, endTimeMonth, endTimeDay,
-					endTimeHour, endTimeMinute, timeZoneId, allDay, recurrence,
-					firstReminder, firstReminderType, secondReminder,
-					secondReminderType, serviceContext);
+	public static com.liferay.calendar.model.CalendarBooking addCalendarBooking(
+			HttpPrincipal httpPrincipal, long calendarId,
+			long[] childCalendarIds, long parentCalendarBookingId,
+			java.util.Map<java.util.Locale, String> titleMap,
+			java.util.Map<java.util.Locale, String> descriptionMap,
+			String location, int startTimeYear, int startTimeMonth,
+			int startTimeDay, int startTimeHour, int startTimeMinute,
+			int endTimeYear, int endTimeMonth, int endTimeDay, int endTimeHour,
+			int endTimeMinute, String timeZoneId, boolean allDay,
+			String recurrence, long firstReminder, String firstReminderType,
+			long secondReminder, String secondReminderType,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "addCalendarBooking",
+				_addCalendarBookingParameterTypes0);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarId, childCalendarIds,
+				parentCalendarBookingId, titleMap, descriptionMap, location,
+				startTimeYear, startTimeMonth, startTimeDay, startTimeHour,
+				startTimeMinute, endTimeYear, endTimeMonth, endTimeDay,
+				endTimeHour, endTimeMinute, timeZoneId, allDay, recurrence,
+				firstReminder, firstReminderType, secondReminder,
+				secondReminderType, serviceContext);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.calendar.model.CalendarBooking)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
 	public static com.liferay.calendar.model.CalendarBooking addCalendarBooking(
-		HttpPrincipal httpPrincipal, long calendarId, long[] childCalendarIds,
-		long parentCalendarBookingId,
-		java.util.Map<java.util.Locale, java.lang.String> titleMap,
-		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
-		java.lang.String location, long startTime, long endTime,
-		boolean allDay, java.lang.String recurrence, long firstReminder,
-		java.lang.String firstReminderType, long secondReminder,
-		java.lang.String secondReminderType,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+			HttpPrincipal httpPrincipal, long calendarId,
+			long[] childCalendarIds, long parentCalendarBookingId,
+			java.util.Map<java.util.Locale, String> titleMap,
+			java.util.Map<java.util.Locale, String> descriptionMap,
+			String location, long startTime, long endTime, boolean allDay,
+			String recurrence, long firstReminder, String firstReminderType,
+			long secondReminder, String secondReminderType,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"addCalendarBooking", _addCalendarBookingParameterTypes1);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarId, childCalendarIds, parentCalendarBookingId,
-					titleMap, descriptionMap, location, startTime, endTime,
-					allDay, recurrence, firstReminder, firstReminderType,
-					secondReminder, secondReminderType, serviceContext);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "addCalendarBooking",
+				_addCalendarBookingParameterTypes1);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarId, childCalendarIds,
+				parentCalendarBookingId, titleMap, descriptionMap, location,
+				startTime, endTime, allDay, recurrence, firstReminder,
+				firstReminderType, secondReminder, secondReminderType,
+				serviceContext);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.calendar.model.CalendarBooking)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static com.liferay.calendar.model.CalendarBooking deleteCalendarBooking(
-		HttpPrincipal httpPrincipal, long calendarBookingId)
+	public static com.liferay.calendar.model.CalendarBooking
+			deleteCalendarBooking(
+				HttpPrincipal httpPrincipal, long calendarBookingId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"deleteCalendarBooking",
-					_deleteCalendarBookingParameterTypes2);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarBookingId);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "deleteCalendarBooking",
+				_deleteCalendarBookingParameterTypes2);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarBookingId);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.calendar.model.CalendarBooking)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
 	public static void deleteCalendarBookingInstance(
-		HttpPrincipal httpPrincipal, long calendarBookingId, int instanceIndex,
-		boolean allFollowing)
+			HttpPrincipal httpPrincipal, long calendarBookingId,
+			int instanceIndex, boolean allFollowing)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"deleteCalendarBookingInstance",
-					_deleteCalendarBookingInstanceParameterTypes3);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarBookingId, instanceIndex, allFollowing);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class,
+				"deleteCalendarBookingInstance",
+				_deleteCalendarBookingInstanceParameterTypes3);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarBookingId, instanceIndex, allFollowing);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
 	public static void deleteCalendarBookingInstance(
-		HttpPrincipal httpPrincipal, long calendarBookingId, long startTime,
-		boolean allFollowing)
+			HttpPrincipal httpPrincipal, long calendarBookingId, long startTime,
+			boolean allFollowing)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"deleteCalendarBookingInstance",
-					_deleteCalendarBookingInstanceParameterTypes4);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarBookingId, startTime, allFollowing);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class,
+				"deleteCalendarBookingInstance",
+				_deleteCalendarBookingInstanceParameterTypes4);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarBookingId, startTime, allFollowing);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static java.lang.String exportCalendarBooking(
-		HttpPrincipal httpPrincipal, long calendarBookingId,
-		java.lang.String type) throws java.lang.Exception {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"exportCalendarBooking",
-					_exportCalendarBookingParameterTypes5);
+	public static String exportCalendarBooking(
+			HttpPrincipal httpPrincipal, long calendarBookingId, String type)
+		throws Exception {
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarBookingId, type);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "exportCalendarBooking",
+				_exportCalendarBookingParameterTypes5);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarBookingId, type);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof java.lang.Exception) {
-					throw (java.lang.Exception)e;
+			catch (Exception exception) {
+				if (exception instanceof Exception) {
+					throw (Exception)exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
-			return (java.lang.String)returnObj;
+			return (String)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static com.liferay.calendar.model.CalendarBooking fetchCalendarBooking(
-		HttpPrincipal httpPrincipal, long calendarBookingId)
+	public static com.liferay.calendar.model.CalendarBooking
+			fetchCalendarBooking(
+				HttpPrincipal httpPrincipal, long calendarBookingId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"fetchCalendarBooking", _fetchCalendarBookingParameterTypes6);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarBookingId);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "fetchCalendarBooking",
+				_fetchCalendarBookingParameterTypes6);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarBookingId);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.calendar.model.CalendarBooking)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
 	public static com.liferay.calendar.model.CalendarBooking getCalendarBooking(
-		HttpPrincipal httpPrincipal, long calendarBookingId)
+			HttpPrincipal httpPrincipal, long calendarBookingId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"getCalendarBooking", _getCalendarBookingParameterTypes7);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarBookingId);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "getCalendarBooking",
+				_getCalendarBookingParameterTypes7);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarBookingId);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.calendar.model.CalendarBooking)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
 	public static com.liferay.calendar.model.CalendarBooking getCalendarBooking(
-		HttpPrincipal httpPrincipal, long calendarId,
-		long parentCalendarBookingId)
+			HttpPrincipal httpPrincipal, long calendarId,
+			long parentCalendarBookingId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"getCalendarBooking", _getCalendarBookingParameterTypes8);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarId, parentCalendarBookingId);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "getCalendarBooking",
+				_getCalendarBookingParameterTypes8);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarId, parentCalendarBookingId);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.calendar.model.CalendarBooking)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static com.liferay.calendar.model.CalendarBooking getCalendarBookingInstance(
-		HttpPrincipal httpPrincipal, long calendarBookingId, int instanceIndex)
+	public static com.liferay.calendar.model.CalendarBooking
+			getCalendarBookingInstance(
+				HttpPrincipal httpPrincipal, long calendarBookingId,
+				int instanceIndex)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"getCalendarBookingInstance",
-					_getCalendarBookingInstanceParameterTypes9);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarBookingId, instanceIndex);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "getCalendarBookingInstance",
+				_getCalendarBookingInstanceParameterTypes9);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarBookingId, instanceIndex);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.calendar.model.CalendarBooking)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static java.util.List<com.liferay.calendar.model.CalendarBooking> getCalendarBookings(
-		HttpPrincipal httpPrincipal, long calendarId, int[] statuses)
+	public static java.util.List<com.liferay.calendar.model.CalendarBooking>
+			getCalendarBookings(
+				HttpPrincipal httpPrincipal, long calendarId, int[] statuses)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"getCalendarBookings", _getCalendarBookingsParameterTypes10);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarId, statuses);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "getCalendarBookings",
+				_getCalendarBookingsParameterTypes10);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarId, statuses);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
-			return (java.util.List<com.liferay.calendar.model.CalendarBooking>)returnObj;
+			return (java.util.List<com.liferay.calendar.model.CalendarBooking>)
+				returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static java.util.List<com.liferay.calendar.model.CalendarBooking> getCalendarBookings(
-		HttpPrincipal httpPrincipal, long calendarId, long startTime,
-		long endTime)
+	public static java.util.List<com.liferay.calendar.model.CalendarBooking>
+			getCalendarBookings(
+				HttpPrincipal httpPrincipal, long calendarId, long startTime,
+				long endTime)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"getCalendarBookings", _getCalendarBookingsParameterTypes11);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarId, startTime, endTime);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "getCalendarBookings",
+				_getCalendarBookingsParameterTypes11);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarId, startTime, endTime);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
-			return (java.util.List<com.liferay.calendar.model.CalendarBooking>)returnObj;
+			return (java.util.List<com.liferay.calendar.model.CalendarBooking>)
+				returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static java.util.List<com.liferay.calendar.model.CalendarBooking> getCalendarBookings(
-		HttpPrincipal httpPrincipal, long calendarId, long startTime,
-		long endTime, int max)
+	public static java.util.List<com.liferay.calendar.model.CalendarBooking>
+			getCalendarBookings(
+				HttpPrincipal httpPrincipal, long calendarId, long startTime,
+				long endTime, int max)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"getCalendarBookings", _getCalendarBookingsParameterTypes12);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarId, startTime, endTime, max);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "getCalendarBookings",
+				_getCalendarBookingsParameterTypes12);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarId, startTime, endTime, max);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
-			return (java.util.List<com.liferay.calendar.model.CalendarBooking>)returnObj;
+			return (java.util.List<com.liferay.calendar.model.CalendarBooking>)
+				returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static java.lang.String getCalendarBookingsRSS(
-		HttpPrincipal httpPrincipal, long calendarId, long startTime,
-		long endTime, int max, java.lang.String type, double version,
-		java.lang.String displayStyle,
-		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
+	public static String getCalendarBookingsRSS(
+			HttpPrincipal httpPrincipal, long calendarId, long startTime,
+			long endTime, int max, String type, double version,
+			String displayStyle,
+			com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"getCalendarBookingsRSS",
-					_getCalendarBookingsRSSParameterTypes13);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarId, startTime, endTime, max, type, version,
-					displayStyle, themeDisplay);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "getCalendarBookingsRSS",
+				_getCalendarBookingsRSSParameterTypes13);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarId, startTime, endTime, max, type, version,
+				displayStyle, themeDisplay);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
-			return (java.lang.String)returnObj;
+			return (String)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static java.util.List<com.liferay.calendar.model.CalendarBooking> getChildCalendarBookings(
-		HttpPrincipal httpPrincipal, long parentCalendarBookingId)
+	public static java.util.List<com.liferay.calendar.model.CalendarBooking>
+			getChildCalendarBookings(
+				HttpPrincipal httpPrincipal, long parentCalendarBookingId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"getChildCalendarBookings",
-					_getChildCalendarBookingsParameterTypes14);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					parentCalendarBookingId);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "getChildCalendarBookings",
+				_getChildCalendarBookingsParameterTypes14);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, parentCalendarBookingId);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
-			return (java.util.List<com.liferay.calendar.model.CalendarBooking>)returnObj;
+			return (java.util.List<com.liferay.calendar.model.CalendarBooking>)
+				returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static java.util.List<com.liferay.calendar.model.CalendarBooking> getChildCalendarBookings(
-		HttpPrincipal httpPrincipal, long parentCalendarBookingId,
-		boolean includeStagingCalendarBookings)
+	public static java.util.List<com.liferay.calendar.model.CalendarBooking>
+			getChildCalendarBookings(
+				HttpPrincipal httpPrincipal, long parentCalendarBookingId,
+				boolean includeStagingCalendarBookings)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"getChildCalendarBookings",
-					_getChildCalendarBookingsParameterTypes15);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					parentCalendarBookingId, includeStagingCalendarBookings);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "getChildCalendarBookings",
+				_getChildCalendarBookingsParameterTypes15);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, parentCalendarBookingId,
+				includeStagingCalendarBookings);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
-			return (java.util.List<com.liferay.calendar.model.CalendarBooking>)returnObj;
+			return (java.util.List<com.liferay.calendar.model.CalendarBooking>)
+				returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static java.util.List<com.liferay.calendar.model.CalendarBooking> getChildCalendarBookings(
-		HttpPrincipal httpPrincipal, long parentCalendarBookingId, int status)
+	public static java.util.List<com.liferay.calendar.model.CalendarBooking>
+			getChildCalendarBookings(
+				HttpPrincipal httpPrincipal, long parentCalendarBookingId,
+				int status)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"getChildCalendarBookings",
-					_getChildCalendarBookingsParameterTypes16);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					parentCalendarBookingId, status);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "getChildCalendarBookings",
+				_getChildCalendarBookingsParameterTypes16);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, parentCalendarBookingId, status);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
-			return (java.util.List<com.liferay.calendar.model.CalendarBooking>)returnObj;
+			return (java.util.List<com.liferay.calendar.model.CalendarBooking>)
+				returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static com.liferay.calendar.model.CalendarBooking getNewStartTimeAndDurationCalendarBooking(
-		HttpPrincipal httpPrincipal, long calendarBookingId, long offset,
-		long duration)
+	public static com.liferay.calendar.model.CalendarBooking
+			getNewStartTimeAndDurationCalendarBooking(
+				HttpPrincipal httpPrincipal, long calendarBookingId,
+				long offset, long duration)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"getNewStartTimeAndDurationCalendarBooking",
-					_getNewStartTimeAndDurationCalendarBookingParameterTypes17);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarBookingId, offset, duration);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class,
+				"getNewStartTimeAndDurationCalendarBooking",
+				_getNewStartTimeAndDurationCalendarBookingParameterTypes17);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarBookingId, offset, duration);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.calendar.model.CalendarBooking)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
 	public static boolean hasChildCalendarBookings(
 		HttpPrincipal httpPrincipal, long parentCalendarBookingId) {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"hasChildCalendarBookings",
-					_hasChildCalendarBookingsParameterTypes18);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					parentCalendarBookingId);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "hasChildCalendarBookings",
+				_hasChildCalendarBookingsParameterTypes18);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, parentCalendarBookingId);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			catch (Exception exception) {
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return ((Boolean)returnObj).booleanValue();
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static void invokeTransition(HttpPrincipal httpPrincipal,
-		long calendarBookingId, int status,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static void invokeTransition(
+			HttpPrincipal httpPrincipal, long calendarBookingId, int status,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"invokeTransition", _invokeTransitionParameterTypes19);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarBookingId, status, serviceContext);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "invokeTransition",
+				_invokeTransitionParameterTypes19);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarBookingId, status, serviceContext);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static com.liferay.calendar.model.CalendarBooking moveCalendarBookingToTrash(
-		HttpPrincipal httpPrincipal, long calendarBookingId)
+	public static com.liferay.calendar.model.CalendarBooking
+			moveCalendarBookingToTrash(
+				HttpPrincipal httpPrincipal, long calendarBookingId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"moveCalendarBookingToTrash",
-					_moveCalendarBookingToTrashParameterTypes20);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarBookingId);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "moveCalendarBookingToTrash",
+				_moveCalendarBookingToTrashParameterTypes20);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarBookingId);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.calendar.model.CalendarBooking)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static com.liferay.calendar.model.CalendarBooking restoreCalendarBookingFromTrash(
-		HttpPrincipal httpPrincipal, long calendarBookingId)
+	public static com.liferay.calendar.model.CalendarBooking
+			restoreCalendarBookingFromTrash(
+				HttpPrincipal httpPrincipal, long calendarBookingId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"restoreCalendarBookingFromTrash",
-					_restoreCalendarBookingFromTrashParameterTypes21);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarBookingId);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class,
+				"restoreCalendarBookingFromTrash",
+				_restoreCalendarBookingFromTrashParameterTypes21);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarBookingId);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.calendar.model.CalendarBooking)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static java.util.List<com.liferay.calendar.model.CalendarBooking> search(
-		HttpPrincipal httpPrincipal, long companyId, long[] groupIds,
-		long[] calendarIds, long[] calendarResourceIds,
-		long parentCalendarBookingId, java.lang.String keywords,
-		long startTime, long endTime, boolean recurring, int[] statuses,
-		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.calendar.model.CalendarBooking> orderByComparator)
+	public static java.util.List<com.liferay.calendar.model.CalendarBooking>
+			search(
+				HttpPrincipal httpPrincipal, long companyId, long[] groupIds,
+				long[] calendarIds, long[] calendarResourceIds,
+				long parentCalendarBookingId, String keywords, long startTime,
+				long endTime, boolean recurring, int[] statuses, int start,
+				int end,
+				com.liferay.portal.kernel.util.OrderByComparator
+					<com.liferay.calendar.model.CalendarBooking>
+						orderByComparator)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"search", _searchParameterTypes22);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					companyId, groupIds, calendarIds, calendarResourceIds,
-					parentCalendarBookingId, keywords, startTime, endTime,
-					recurring, statuses, start, end, orderByComparator);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "search",
+				_searchParameterTypes22);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, companyId, groupIds, calendarIds,
+				calendarResourceIds, parentCalendarBookingId, keywords,
+				startTime, endTime, recurring, statuses, start, end,
+				orderByComparator);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
-			return (java.util.List<com.liferay.calendar.model.CalendarBooking>)returnObj;
+			return (java.util.List<com.liferay.calendar.model.CalendarBooking>)
+				returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static java.util.List<com.liferay.calendar.model.CalendarBooking> search(
-		HttpPrincipal httpPrincipal, long companyId, long[] groupIds,
-		long[] calendarIds, long[] calendarResourceIds,
-		long parentCalendarBookingId, java.lang.String title,
-		java.lang.String description, java.lang.String location,
-		long startTime, long endTime, boolean recurring, int[] statuses,
-		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.calendar.model.CalendarBooking> orderByComparator)
+	public static java.util.List<com.liferay.calendar.model.CalendarBooking>
+			search(
+				HttpPrincipal httpPrincipal, long companyId, long[] groupIds,
+				long[] calendarIds, long[] calendarResourceIds,
+				long parentCalendarBookingId, String title, String description,
+				String location, long startTime, long endTime,
+				boolean recurring, int[] statuses, boolean andOperator,
+				int start, int end,
+				com.liferay.portal.kernel.util.OrderByComparator
+					<com.liferay.calendar.model.CalendarBooking>
+						orderByComparator)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"search", _searchParameterTypes23);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					companyId, groupIds, calendarIds, calendarResourceIds,
-					parentCalendarBookingId, title, description, location,
-					startTime, endTime, recurring, statuses, andOperator,
-					start, end, orderByComparator);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "search",
+				_searchParameterTypes23);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, companyId, groupIds, calendarIds,
+				calendarResourceIds, parentCalendarBookingId, title,
+				description, location, startTime, endTime, recurring, statuses,
+				andOperator, start, end, orderByComparator);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
-			return (java.util.List<com.liferay.calendar.model.CalendarBooking>)returnObj;
+			return (java.util.List<com.liferay.calendar.model.CalendarBooking>)
+				returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static int searchCount(HttpPrincipal httpPrincipal, long companyId,
-		long[] groupIds, long[] calendarIds, long[] calendarResourceIds,
-		long parentCalendarBookingId, java.lang.String keywords,
-		long startTime, long endTime, boolean recurring, int[] statuses)
+	public static int searchCount(
+			HttpPrincipal httpPrincipal, long companyId, long[] groupIds,
+			long[] calendarIds, long[] calendarResourceIds,
+			long parentCalendarBookingId, String keywords, long startTime,
+			long endTime, boolean recurring, int[] statuses)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"searchCount", _searchCountParameterTypes24);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					companyId, groupIds, calendarIds, calendarResourceIds,
-					parentCalendarBookingId, keywords, startTime, endTime,
-					recurring, statuses);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "searchCount",
+				_searchCountParameterTypes24);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, companyId, groupIds, calendarIds,
+				calendarResourceIds, parentCalendarBookingId, keywords,
+				startTime, endTime, recurring, statuses);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return ((Integer)returnObj).intValue();
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static int searchCount(HttpPrincipal httpPrincipal, long companyId,
-		long[] groupIds, long[] calendarIds, long[] calendarResourceIds,
-		long parentCalendarBookingId, java.lang.String title,
-		java.lang.String description, java.lang.String location,
-		long startTime, long endTime, boolean recurring, int[] statuses,
-		boolean andOperator)
+	public static int searchCount(
+			HttpPrincipal httpPrincipal, long companyId, long[] groupIds,
+			long[] calendarIds, long[] calendarResourceIds,
+			long parentCalendarBookingId, String title, String description,
+			String location, long startTime, long endTime, boolean recurring,
+			int[] statuses, boolean andOperator)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"searchCount", _searchCountParameterTypes25);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					companyId, groupIds, calendarIds, calendarResourceIds,
-					parentCalendarBookingId, title, description, location,
-					startTime, endTime, recurring, statuses, andOperator);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "searchCount",
+				_searchCountParameterTypes25);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, companyId, groupIds, calendarIds,
+				calendarResourceIds, parentCalendarBookingId, title,
+				description, location, startTime, endTime, recurring, statuses,
+				andOperator);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return ((Integer)returnObj).intValue();
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static com.liferay.calendar.model.CalendarBooking updateCalendarBooking(
-		HttpPrincipal httpPrincipal, long calendarBookingId, long calendarId,
-		long[] childCalendarIds,
-		java.util.Map<java.util.Locale, java.lang.String> titleMap,
-		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
-		java.lang.String location, long startTime, long endTime,
-		boolean allDay, java.lang.String recurrence, long firstReminder,
-		java.lang.String firstReminderType, long secondReminder,
-		java.lang.String secondReminderType,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static com.liferay.calendar.model.CalendarBooking
+			updateCalendarBooking(
+				HttpPrincipal httpPrincipal, long calendarBookingId,
+				long calendarId, long[] childCalendarIds,
+				java.util.Map<java.util.Locale, String> titleMap,
+				java.util.Map<java.util.Locale, String> descriptionMap,
+				String location, long startTime, long endTime, boolean allDay,
+				String recurrence, long firstReminder, String firstReminderType,
+				long secondReminder, String secondReminderType,
+				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"updateCalendarBooking",
-					_updateCalendarBookingParameterTypes26);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarBookingId, calendarId, childCalendarIds, titleMap,
-					descriptionMap, location, startTime, endTime, allDay,
-					recurrence, firstReminder, firstReminderType,
-					secondReminder, secondReminderType, serviceContext);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "updateCalendarBooking",
+				_updateCalendarBookingParameterTypes26);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarBookingId, calendarId, childCalendarIds,
+				titleMap, descriptionMap, location, startTime, endTime, allDay,
+				recurrence, firstReminder, firstReminderType, secondReminder,
+				secondReminderType, serviceContext);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.calendar.model.CalendarBooking)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static com.liferay.calendar.model.CalendarBooking updateCalendarBooking(
-		HttpPrincipal httpPrincipal, long calendarBookingId, long calendarId,
-		java.util.Map<java.util.Locale, java.lang.String> titleMap,
-		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
-		java.lang.String location, long startTime, long endTime,
-		boolean allDay, java.lang.String recurrence, long firstReminder,
-		java.lang.String firstReminderType, long secondReminder,
-		java.lang.String secondReminderType,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static com.liferay.calendar.model.CalendarBooking
+			updateCalendarBooking(
+				HttpPrincipal httpPrincipal, long calendarBookingId,
+				long calendarId,
+				java.util.Map<java.util.Locale, String> titleMap,
+				java.util.Map<java.util.Locale, String> descriptionMap,
+				String location, long startTime, long endTime, boolean allDay,
+				String recurrence, long firstReminder, String firstReminderType,
+				long secondReminder, String secondReminderType,
+				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"updateCalendarBooking",
-					_updateCalendarBookingParameterTypes27);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarBookingId, calendarId, titleMap, descriptionMap,
-					location, startTime, endTime, allDay, recurrence,
-					firstReminder, firstReminderType, secondReminder,
-					secondReminderType, serviceContext);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "updateCalendarBooking",
+				_updateCalendarBookingParameterTypes27);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarBookingId, calendarId, titleMap,
+				descriptionMap, location, startTime, endTime, allDay,
+				recurrence, firstReminder, firstReminderType, secondReminder,
+				secondReminderType, serviceContext);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.calendar.model.CalendarBooking)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static com.liferay.calendar.model.CalendarBooking updateCalendarBookingInstance(
-		HttpPrincipal httpPrincipal, long calendarBookingId, int instanceIndex,
-		long calendarId, long[] childCalendarIds,
-		java.util.Map<java.util.Locale, java.lang.String> titleMap,
-		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
-		java.lang.String location, long startTime, long endTime,
-		boolean allDay, java.lang.String recurrence, boolean allFollowing,
-		long firstReminder, java.lang.String firstReminderType,
-		long secondReminder, java.lang.String secondReminderType,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static com.liferay.calendar.model.CalendarBooking
+			updateCalendarBookingInstance(
+				HttpPrincipal httpPrincipal, long calendarBookingId,
+				int instanceIndex, long calendarId, long[] childCalendarIds,
+				java.util.Map<java.util.Locale, String> titleMap,
+				java.util.Map<java.util.Locale, String> descriptionMap,
+				String location, long startTime, long endTime, boolean allDay,
+				String recurrence, boolean allFollowing, long firstReminder,
+				String firstReminderType, long secondReminder,
+				String secondReminderType,
+				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"updateCalendarBookingInstance",
-					_updateCalendarBookingInstanceParameterTypes28);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarBookingId, instanceIndex, calendarId,
-					childCalendarIds, titleMap, descriptionMap, location,
-					startTime, endTime, allDay, recurrence, allFollowing,
-					firstReminder, firstReminderType, secondReminder,
-					secondReminderType, serviceContext);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class,
+				"updateCalendarBookingInstance",
+				_updateCalendarBookingInstanceParameterTypes28);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarBookingId, instanceIndex, calendarId,
+				childCalendarIds, titleMap, descriptionMap, location, startTime,
+				endTime, allDay, recurrence, allFollowing, firstReminder,
+				firstReminderType, secondReminder, secondReminderType,
+				serviceContext);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.calendar.model.CalendarBooking)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static com.liferay.calendar.model.CalendarBooking updateCalendarBookingInstance(
-		HttpPrincipal httpPrincipal, long calendarBookingId, int instanceIndex,
-		long calendarId,
-		java.util.Map<java.util.Locale, java.lang.String> titleMap,
-		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
-		java.lang.String location, int startTimeYear, int startTimeMonth,
-		int startTimeDay, int startTimeHour, int startTimeMinute,
-		int endTimeYear, int endTimeMonth, int endTimeDay, int endTimeHour,
-		int endTimeMinute, java.lang.String timeZoneId, boolean allDay,
-		java.lang.String recurrence, boolean allFollowing, long firstReminder,
-		java.lang.String firstReminderType, long secondReminder,
-		java.lang.String secondReminderType,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static com.liferay.calendar.model.CalendarBooking
+			updateCalendarBookingInstance(
+				HttpPrincipal httpPrincipal, long calendarBookingId,
+				int instanceIndex, long calendarId,
+				java.util.Map<java.util.Locale, String> titleMap,
+				java.util.Map<java.util.Locale, String> descriptionMap,
+				String location, int startTimeYear, int startTimeMonth,
+				int startTimeDay, int startTimeHour, int startTimeMinute,
+				int endTimeYear, int endTimeMonth, int endTimeDay,
+				int endTimeHour, int endTimeMinute, String timeZoneId,
+				boolean allDay, String recurrence, boolean allFollowing,
+				long firstReminder, String firstReminderType,
+				long secondReminder, String secondReminderType,
+				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"updateCalendarBookingInstance",
-					_updateCalendarBookingInstanceParameterTypes29);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarBookingId, instanceIndex, calendarId, titleMap,
-					descriptionMap, location, startTimeYear, startTimeMonth,
-					startTimeDay, startTimeHour, startTimeMinute, endTimeYear,
-					endTimeMonth, endTimeDay, endTimeHour, endTimeMinute,
-					timeZoneId, allDay, recurrence, allFollowing,
-					firstReminder, firstReminderType, secondReminder,
-					secondReminderType, serviceContext);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class,
+				"updateCalendarBookingInstance",
+				_updateCalendarBookingInstanceParameterTypes29);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarBookingId, instanceIndex, calendarId,
+				titleMap, descriptionMap, location, startTimeYear,
+				startTimeMonth, startTimeDay, startTimeHour, startTimeMinute,
+				endTimeYear, endTimeMonth, endTimeDay, endTimeHour,
+				endTimeMinute, timeZoneId, allDay, recurrence, allFollowing,
+				firstReminder, firstReminderType, secondReminder,
+				secondReminderType, serviceContext);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.calendar.model.CalendarBooking)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static com.liferay.calendar.model.CalendarBooking updateCalendarBookingInstance(
-		HttpPrincipal httpPrincipal, long calendarBookingId, int instanceIndex,
-		long calendarId,
-		java.util.Map<java.util.Locale, java.lang.String> titleMap,
-		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
-		java.lang.String location, long startTime, long endTime,
-		boolean allDay, java.lang.String recurrence, boolean allFollowing,
-		long firstReminder, java.lang.String firstReminderType,
-		long secondReminder, java.lang.String secondReminderType,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static com.liferay.calendar.model.CalendarBooking
+			updateCalendarBookingInstance(
+				HttpPrincipal httpPrincipal, long calendarBookingId,
+				int instanceIndex, long calendarId,
+				java.util.Map<java.util.Locale, String> titleMap,
+				java.util.Map<java.util.Locale, String> descriptionMap,
+				String location, long startTime, long endTime, boolean allDay,
+				String recurrence, boolean allFollowing, long firstReminder,
+				String firstReminderType, long secondReminder,
+				String secondReminderType,
+				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"updateCalendarBookingInstance",
-					_updateCalendarBookingInstanceParameterTypes30);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarBookingId, instanceIndex, calendarId, titleMap,
-					descriptionMap, location, startTime, endTime, allDay,
-					recurrence, allFollowing, firstReminder, firstReminderType,
-					secondReminder, secondReminderType, serviceContext);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class,
+				"updateCalendarBookingInstance",
+				_updateCalendarBookingInstanceParameterTypes30);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarBookingId, instanceIndex, calendarId,
+				titleMap, descriptionMap, location, startTime, endTime, allDay,
+				recurrence, allFollowing, firstReminder, firstReminderType,
+				secondReminder, secondReminderType, serviceContext);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.calendar.model.CalendarBooking)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static com.liferay.calendar.model.CalendarBooking updateOffsetAndDuration(
-		HttpPrincipal httpPrincipal, long calendarBookingId, long calendarId,
-		long[] childCalendarIds,
-		java.util.Map<java.util.Locale, java.lang.String> titleMap,
-		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
-		java.lang.String location, long offset, long duration, boolean allDay,
-		java.lang.String recurrence, long firstReminder,
-		java.lang.String firstReminderType, long secondReminder,
-		java.lang.String secondReminderType,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static com.liferay.calendar.model.CalendarBooking
+			updateOffsetAndDuration(
+				HttpPrincipal httpPrincipal, long calendarBookingId,
+				long calendarId, long[] childCalendarIds,
+				java.util.Map<java.util.Locale, String> titleMap,
+				java.util.Map<java.util.Locale, String> descriptionMap,
+				String location, long offset, long duration, boolean allDay,
+				String recurrence, long firstReminder, String firstReminderType,
+				long secondReminder, String secondReminderType,
+				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"updateOffsetAndDuration",
-					_updateOffsetAndDurationParameterTypes31);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarBookingId, calendarId, childCalendarIds, titleMap,
-					descriptionMap, location, offset, duration, allDay,
-					recurrence, firstReminder, firstReminderType,
-					secondReminder, secondReminderType, serviceContext);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "updateOffsetAndDuration",
+				_updateOffsetAndDurationParameterTypes31);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarBookingId, calendarId, childCalendarIds,
+				titleMap, descriptionMap, location, offset, duration, allDay,
+				recurrence, firstReminder, firstReminderType, secondReminder,
+				secondReminderType, serviceContext);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.calendar.model.CalendarBooking)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static com.liferay.calendar.model.CalendarBooking updateOffsetAndDuration(
-		HttpPrincipal httpPrincipal, long calendarBookingId, long calendarId,
-		java.util.Map<java.util.Locale, java.lang.String> titleMap,
-		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
-		java.lang.String location, long offset, long duration, boolean allDay,
-		java.lang.String recurrence, long firstReminder,
-		java.lang.String firstReminderType, long secondReminder,
-		java.lang.String secondReminderType,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static com.liferay.calendar.model.CalendarBooking
+			updateOffsetAndDuration(
+				HttpPrincipal httpPrincipal, long calendarBookingId,
+				long calendarId,
+				java.util.Map<java.util.Locale, String> titleMap,
+				java.util.Map<java.util.Locale, String> descriptionMap,
+				String location, long offset, long duration, boolean allDay,
+				String recurrence, long firstReminder, String firstReminderType,
+				long secondReminder, String secondReminderType,
+				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
-					"updateOffsetAndDuration",
-					_updateOffsetAndDurationParameterTypes32);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarBookingId, calendarId, titleMap, descriptionMap,
-					location, offset, duration, allDay, recurrence,
-					firstReminder, firstReminderType, secondReminder,
-					secondReminderType, serviceContext);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarBookingServiceUtil.class, "updateOffsetAndDuration",
+				_updateOffsetAndDurationParameterTypes32);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarBookingId, calendarId, titleMap,
+				descriptionMap, location, offset, duration, allDay, recurrence,
+				firstReminder, firstReminderType, secondReminder,
+				secondReminderType, serviceContext);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.calendar.model.CalendarBooking)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(CalendarBookingServiceHttp.class);
-	private static final Class<?>[] _addCalendarBookingParameterTypes0 = new Class[] {
+	private static Log _log = LogFactoryUtil.getLog(
+		CalendarBookingServiceHttp.class);
+
+	private static final Class<?>[] _addCalendarBookingParameterTypes0 =
+		new Class[] {
 			long.class, long[].class, long.class, java.util.Map.class,
-			java.util.Map.class, java.lang.String.class, int.class, int.class,
+			java.util.Map.class, String.class, int.class, int.class, int.class,
 			int.class, int.class, int.class, int.class, int.class, int.class,
-			int.class, int.class, java.lang.String.class, boolean.class,
-			java.lang.String.class, long.class, java.lang.String.class,
-			long.class, java.lang.String.class,
+			int.class, String.class, boolean.class, String.class, long.class,
+			String.class, long.class, String.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
-	private static final Class<?>[] _addCalendarBookingParameterTypes1 = new Class[] {
+	private static final Class<?>[] _addCalendarBookingParameterTypes1 =
+		new Class[] {
 			long.class, long[].class, long.class, java.util.Map.class,
-			java.util.Map.class, java.lang.String.class, long.class, long.class,
-			boolean.class, java.lang.String.class, long.class,
-			java.lang.String.class, long.class, java.lang.String.class,
-			com.liferay.portal.kernel.service.ServiceContext.class
+			java.util.Map.class, String.class, long.class, long.class,
+			boolean.class, String.class, long.class, String.class, long.class,
+			String.class, com.liferay.portal.kernel.service.ServiceContext.class
 		};
-	private static final Class<?>[] _deleteCalendarBookingParameterTypes2 = new Class[] {
-			long.class
+	private static final Class<?>[] _deleteCalendarBookingParameterTypes2 =
+		new Class[] {long.class};
+	private static final Class<?>[]
+		_deleteCalendarBookingInstanceParameterTypes3 = new Class[] {
+			long.class, int.class, boolean.class
 		};
-	private static final Class<?>[] _deleteCalendarBookingInstanceParameterTypes3 =
-		new Class[] { long.class, int.class, boolean.class };
-	private static final Class<?>[] _deleteCalendarBookingInstanceParameterTypes4 =
-		new Class[] { long.class, long.class, boolean.class };
-	private static final Class<?>[] _exportCalendarBookingParameterTypes5 = new Class[] {
-			long.class, java.lang.String.class
+	private static final Class<?>[]
+		_deleteCalendarBookingInstanceParameterTypes4 = new Class[] {
+			long.class, long.class, boolean.class
 		};
-	private static final Class<?>[] _fetchCalendarBookingParameterTypes6 = new Class[] {
-			long.class
-		};
-	private static final Class<?>[] _getCalendarBookingParameterTypes7 = new Class[] {
-			long.class
-		};
-	private static final Class<?>[] _getCalendarBookingParameterTypes8 = new Class[] {
-			long.class, long.class
-		};
-	private static final Class<?>[] _getCalendarBookingInstanceParameterTypes9 = new Class[] {
-			long.class, int.class
-		};
-	private static final Class<?>[] _getCalendarBookingsParameterTypes10 = new Class[] {
-			long.class, int[].class
-		};
-	private static final Class<?>[] _getCalendarBookingsParameterTypes11 = new Class[] {
-			long.class, long.class, long.class
-		};
-	private static final Class<?>[] _getCalendarBookingsParameterTypes12 = new Class[] {
-			long.class, long.class, long.class, int.class
-		};
-	private static final Class<?>[] _getCalendarBookingsRSSParameterTypes13 = new Class[] {
-			long.class, long.class, long.class, int.class,
-			java.lang.String.class, double.class, java.lang.String.class,
+	private static final Class<?>[] _exportCalendarBookingParameterTypes5 =
+		new Class[] {long.class, String.class};
+	private static final Class<?>[] _fetchCalendarBookingParameterTypes6 =
+		new Class[] {long.class};
+	private static final Class<?>[] _getCalendarBookingParameterTypes7 =
+		new Class[] {long.class};
+	private static final Class<?>[] _getCalendarBookingParameterTypes8 =
+		new Class[] {long.class, long.class};
+	private static final Class<?>[] _getCalendarBookingInstanceParameterTypes9 =
+		new Class[] {long.class, int.class};
+	private static final Class<?>[] _getCalendarBookingsParameterTypes10 =
+		new Class[] {long.class, int[].class};
+	private static final Class<?>[] _getCalendarBookingsParameterTypes11 =
+		new Class[] {long.class, long.class, long.class};
+	private static final Class<?>[] _getCalendarBookingsParameterTypes12 =
+		new Class[] {long.class, long.class, long.class, int.class};
+	private static final Class<?>[] _getCalendarBookingsRSSParameterTypes13 =
+		new Class[] {
+			long.class, long.class, long.class, int.class, String.class,
+			double.class, String.class,
 			com.liferay.portal.kernel.theme.ThemeDisplay.class
 		};
-	private static final Class<?>[] _getChildCalendarBookingsParameterTypes14 = new Class[] {
-			long.class
-		};
-	private static final Class<?>[] _getChildCalendarBookingsParameterTypes15 = new Class[] {
-			long.class, boolean.class
-		};
-	private static final Class<?>[] _getChildCalendarBookingsParameterTypes16 = new Class[] {
-			long.class, int.class
-		};
-	private static final Class<?>[] _getNewStartTimeAndDurationCalendarBookingParameterTypes17 =
-		new Class[] { long.class, long.class, long.class };
-	private static final Class<?>[] _hasChildCalendarBookingsParameterTypes18 = new Class[] {
-			long.class
-		};
-	private static final Class<?>[] _invokeTransitionParameterTypes19 = new Class[] {
+	private static final Class<?>[] _getChildCalendarBookingsParameterTypes14 =
+		new Class[] {long.class};
+	private static final Class<?>[] _getChildCalendarBookingsParameterTypes15 =
+		new Class[] {long.class, boolean.class};
+	private static final Class<?>[] _getChildCalendarBookingsParameterTypes16 =
+		new Class[] {long.class, int.class};
+	private static final Class<?>[]
+		_getNewStartTimeAndDurationCalendarBookingParameterTypes17 =
+			new Class[] {long.class, long.class, long.class};
+	private static final Class<?>[] _hasChildCalendarBookingsParameterTypes18 =
+		new Class[] {long.class};
+	private static final Class<?>[] _invokeTransitionParameterTypes19 =
+		new Class[] {
 			long.class, int.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
-	private static final Class<?>[] _moveCalendarBookingToTrashParameterTypes20 = new Class[] {
+	private static final Class<?>[]
+		_moveCalendarBookingToTrashParameterTypes20 = new Class[] {long.class};
+	private static final Class<?>[]
+		_restoreCalendarBookingFromTrashParameterTypes21 = new Class[] {
 			long.class
 		};
-	private static final Class<?>[] _restoreCalendarBookingFromTrashParameterTypes21 =
-		new Class[] { long.class };
 	private static final Class<?>[] _searchParameterTypes22 = new Class[] {
-			long.class, long[].class, long[].class, long[].class, long.class,
-			java.lang.String.class, long.class, long.class, boolean.class,
-			int[].class, int.class, int.class,
-			com.liferay.portal.kernel.util.OrderByComparator.class
-		};
+		long.class, long[].class, long[].class, long[].class, long.class,
+		String.class, long.class, long.class, boolean.class, int[].class,
+		int.class, int.class,
+		com.liferay.portal.kernel.util.OrderByComparator.class
+	};
 	private static final Class<?>[] _searchParameterTypes23 = new Class[] {
-			long.class, long[].class, long[].class, long[].class, long.class,
-			java.lang.String.class, java.lang.String.class,
-			java.lang.String.class, long.class, long.class, boolean.class,
-			int[].class, boolean.class, int.class, int.class,
-			com.liferay.portal.kernel.util.OrderByComparator.class
-		};
+		long.class, long[].class, long[].class, long[].class, long.class,
+		String.class, String.class, String.class, long.class, long.class,
+		boolean.class, int[].class, boolean.class, int.class, int.class,
+		com.liferay.portal.kernel.util.OrderByComparator.class
+	};
 	private static final Class<?>[] _searchCountParameterTypes24 = new Class[] {
-			long.class, long[].class, long[].class, long[].class, long.class,
-			java.lang.String.class, long.class, long.class, boolean.class,
-			int[].class
-		};
+		long.class, long[].class, long[].class, long[].class, long.class,
+		String.class, long.class, long.class, boolean.class, int[].class
+	};
 	private static final Class<?>[] _searchCountParameterTypes25 = new Class[] {
-			long.class, long[].class, long[].class, long[].class, long.class,
-			java.lang.String.class, java.lang.String.class,
-			java.lang.String.class, long.class, long.class, boolean.class,
-			int[].class, boolean.class
-		};
-	private static final Class<?>[] _updateCalendarBookingParameterTypes26 = new Class[] {
+		long.class, long[].class, long[].class, long[].class, long.class,
+		String.class, String.class, String.class, long.class, long.class,
+		boolean.class, int[].class, boolean.class
+	};
+	private static final Class<?>[] _updateCalendarBookingParameterTypes26 =
+		new Class[] {
 			long.class, long.class, long[].class, java.util.Map.class,
-			java.util.Map.class, java.lang.String.class, long.class, long.class,
-			boolean.class, java.lang.String.class, long.class,
-			java.lang.String.class, long.class, java.lang.String.class,
-			com.liferay.portal.kernel.service.ServiceContext.class
+			java.util.Map.class, String.class, long.class, long.class,
+			boolean.class, String.class, long.class, String.class, long.class,
+			String.class, com.liferay.portal.kernel.service.ServiceContext.class
 		};
-	private static final Class<?>[] _updateCalendarBookingParameterTypes27 = new Class[] {
+	private static final Class<?>[] _updateCalendarBookingParameterTypes27 =
+		new Class[] {
 			long.class, long.class, java.util.Map.class, java.util.Map.class,
-			java.lang.String.class, long.class, long.class, boolean.class,
-			java.lang.String.class, long.class, java.lang.String.class,
-			long.class, java.lang.String.class,
+			String.class, long.class, long.class, boolean.class, String.class,
+			long.class, String.class, long.class, String.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
-	private static final Class<?>[] _updateCalendarBookingInstanceParameterTypes28 =
-		new Class[] {
-			long.class, int.class, long.class, long[].class, java.util.Map.class,
-			java.util.Map.class, java.lang.String.class, long.class, long.class,
-			boolean.class, java.lang.String.class, boolean.class, long.class,
-			java.lang.String.class, long.class, java.lang.String.class,
+	private static final Class<?>[]
+		_updateCalendarBookingInstanceParameterTypes28 = new Class[] {
+			long.class, int.class, long.class, long[].class,
+			java.util.Map.class, java.util.Map.class, String.class, long.class,
+			long.class, boolean.class, String.class, boolean.class, long.class,
+			String.class, long.class, String.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
-	private static final Class<?>[] _updateCalendarBookingInstanceParameterTypes29 =
-		new Class[] {
+	private static final Class<?>[]
+		_updateCalendarBookingInstanceParameterTypes29 = new Class[] {
 			long.class, int.class, long.class, java.util.Map.class,
-			java.util.Map.class, java.lang.String.class, int.class, int.class,
+			java.util.Map.class, String.class, int.class, int.class, int.class,
 			int.class, int.class, int.class, int.class, int.class, int.class,
-			int.class, int.class, java.lang.String.class, boolean.class,
-			java.lang.String.class, boolean.class, long.class,
-			java.lang.String.class, long.class, java.lang.String.class,
+			int.class, String.class, boolean.class, String.class, boolean.class,
+			long.class, String.class, long.class, String.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
-	private static final Class<?>[] _updateCalendarBookingInstanceParameterTypes30 =
-		new Class[] {
+	private static final Class<?>[]
+		_updateCalendarBookingInstanceParameterTypes30 = new Class[] {
 			long.class, int.class, long.class, java.util.Map.class,
-			java.util.Map.class, java.lang.String.class, long.class, long.class,
-			boolean.class, java.lang.String.class, boolean.class, long.class,
-			java.lang.String.class, long.class, java.lang.String.class,
+			java.util.Map.class, String.class, long.class, long.class,
+			boolean.class, String.class, boolean.class, long.class,
+			String.class, long.class, String.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
-	private static final Class<?>[] _updateOffsetAndDurationParameterTypes31 = new Class[] {
+	private static final Class<?>[] _updateOffsetAndDurationParameterTypes31 =
+		new Class[] {
 			long.class, long.class, long[].class, java.util.Map.class,
-			java.util.Map.class, java.lang.String.class, long.class, long.class,
-			boolean.class, java.lang.String.class, long.class,
-			java.lang.String.class, long.class, java.lang.String.class,
-			com.liferay.portal.kernel.service.ServiceContext.class
+			java.util.Map.class, String.class, long.class, long.class,
+			boolean.class, String.class, long.class, String.class, long.class,
+			String.class, com.liferay.portal.kernel.service.ServiceContext.class
 		};
-	private static final Class<?>[] _updateOffsetAndDurationParameterTypes32 = new Class[] {
+	private static final Class<?>[] _updateOffsetAndDurationParameterTypes32 =
+		new Class[] {
 			long.class, long.class, java.util.Map.class, java.util.Map.class,
-			java.lang.String.class, long.class, long.class, boolean.class,
-			java.lang.String.class, long.class, java.lang.String.class,
-			long.class, java.lang.String.class,
+			String.class, long.class, long.class, boolean.class, String.class,
+			long.class, String.class, long.class, String.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
+
 }

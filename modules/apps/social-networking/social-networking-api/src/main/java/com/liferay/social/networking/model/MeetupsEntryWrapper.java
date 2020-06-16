@@ -14,10 +14,7 @@
 
 package com.liferay.social.networking.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,9 +34,9 @@ import java.util.Objects;
  * @see MeetupsEntry
  * @generated
  */
-@ProviderType
-public class MeetupsEntryWrapper implements MeetupsEntry,
-	ModelWrapper<MeetupsEntry> {
+public class MeetupsEntryWrapper
+	implements MeetupsEntry, ModelWrapper<MeetupsEntry> {
+
 	public MeetupsEntryWrapper(MeetupsEntry meetupsEntry) {
 		_meetupsEntry = meetupsEntry;
 	}
@@ -164,13 +161,188 @@ public class MeetupsEntryWrapper implements MeetupsEntry,
 	}
 
 	@Override
-	public MeetupsEntry toEscapedModel() {
-		return new MeetupsEntryWrapper(_meetupsEntry.toEscapedModel());
+	public Object clone() {
+		return new MeetupsEntryWrapper((MeetupsEntry)_meetupsEntry.clone());
 	}
 
 	@Override
-	public MeetupsEntry toUnescapedModel() {
-		return new MeetupsEntryWrapper(_meetupsEntry.toUnescapedModel());
+	public int compareTo(MeetupsEntry meetupsEntry) {
+		return _meetupsEntry.compareTo(meetupsEntry);
+	}
+
+	/**
+	 * Returns the company ID of this meetups entry.
+	 *
+	 * @return the company ID of this meetups entry
+	 */
+	@Override
+	public long getCompanyId() {
+		return _meetupsEntry.getCompanyId();
+	}
+
+	/**
+	 * Returns the create date of this meetups entry.
+	 *
+	 * @return the create date of this meetups entry
+	 */
+	@Override
+	public Date getCreateDate() {
+		return _meetupsEntry.getCreateDate();
+	}
+
+	/**
+	 * Returns the description of this meetups entry.
+	 *
+	 * @return the description of this meetups entry
+	 */
+	@Override
+	public String getDescription() {
+		return _meetupsEntry.getDescription();
+	}
+
+	/**
+	 * Returns the end date of this meetups entry.
+	 *
+	 * @return the end date of this meetups entry
+	 */
+	@Override
+	public Date getEndDate() {
+		return _meetupsEntry.getEndDate();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _meetupsEntry.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the max attendees of this meetups entry.
+	 *
+	 * @return the max attendees of this meetups entry
+	 */
+	@Override
+	public int getMaxAttendees() {
+		return _meetupsEntry.getMaxAttendees();
+	}
+
+	/**
+	 * Returns the meetups entry ID of this meetups entry.
+	 *
+	 * @return the meetups entry ID of this meetups entry
+	 */
+	@Override
+	public long getMeetupsEntryId() {
+		return _meetupsEntry.getMeetupsEntryId();
+	}
+
+	/**
+	 * Returns the modified date of this meetups entry.
+	 *
+	 * @return the modified date of this meetups entry
+	 */
+	@Override
+	public Date getModifiedDate() {
+		return _meetupsEntry.getModifiedDate();
+	}
+
+	/**
+	 * Returns the price of this meetups entry.
+	 *
+	 * @return the price of this meetups entry
+	 */
+	@Override
+	public double getPrice() {
+		return _meetupsEntry.getPrice();
+	}
+
+	/**
+	 * Returns the primary key of this meetups entry.
+	 *
+	 * @return the primary key of this meetups entry
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _meetupsEntry.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _meetupsEntry.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the start date of this meetups entry.
+	 *
+	 * @return the start date of this meetups entry
+	 */
+	@Override
+	public Date getStartDate() {
+		return _meetupsEntry.getStartDate();
+	}
+
+	/**
+	 * Returns the thumbnail ID of this meetups entry.
+	 *
+	 * @return the thumbnail ID of this meetups entry
+	 */
+	@Override
+	public long getThumbnailId() {
+		return _meetupsEntry.getThumbnailId();
+	}
+
+	/**
+	 * Returns the title of this meetups entry.
+	 *
+	 * @return the title of this meetups entry
+	 */
+	@Override
+	public String getTitle() {
+		return _meetupsEntry.getTitle();
+	}
+
+	/**
+	 * Returns the total attendees of this meetups entry.
+	 *
+	 * @return the total attendees of this meetups entry
+	 */
+	@Override
+	public int getTotalAttendees() {
+		return _meetupsEntry.getTotalAttendees();
+	}
+
+	/**
+	 * Returns the user ID of this meetups entry.
+	 *
+	 * @return the user ID of this meetups entry
+	 */
+	@Override
+	public long getUserId() {
+		return _meetupsEntry.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this meetups entry.
+	 *
+	 * @return the user name of this meetups entry
+	 */
+	@Override
+	public String getUserName() {
+		return _meetupsEntry.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this meetups entry.
+	 *
+	 * @return the user uuid of this meetups entry
+	 */
+	@Override
+	public String getUserUuid() {
+		return _meetupsEntry.getUserUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _meetupsEntry.hashCode();
 	}
 
 	@Override
@@ -189,206 +361,6 @@ public class MeetupsEntryWrapper implements MeetupsEntry,
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _meetupsEntry.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<MeetupsEntry> toCacheModel() {
-		return _meetupsEntry.toCacheModel();
-	}
-
-	/**
-	* Returns the price of this meetups entry.
-	*
-	* @return the price of this meetups entry
-	*/
-	@Override
-	public double getPrice() {
-		return _meetupsEntry.getPrice();
-	}
-
-	@Override
-	public int compareTo(MeetupsEntry meetupsEntry) {
-		return _meetupsEntry.compareTo(meetupsEntry);
-	}
-
-	/**
-	* Returns the max attendees of this meetups entry.
-	*
-	* @return the max attendees of this meetups entry
-	*/
-	@Override
-	public int getMaxAttendees() {
-		return _meetupsEntry.getMaxAttendees();
-	}
-
-	/**
-	* Returns the total attendees of this meetups entry.
-	*
-	* @return the total attendees of this meetups entry
-	*/
-	@Override
-	public int getTotalAttendees() {
-		return _meetupsEntry.getTotalAttendees();
-	}
-
-	@Override
-	public int hashCode() {
-		return _meetupsEntry.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _meetupsEntry.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new MeetupsEntryWrapper((MeetupsEntry)_meetupsEntry.clone());
-	}
-
-	/**
-	* Returns the description of this meetups entry.
-	*
-	* @return the description of this meetups entry
-	*/
-	@Override
-	public java.lang.String getDescription() {
-		return _meetupsEntry.getDescription();
-	}
-
-	/**
-	* Returns the title of this meetups entry.
-	*
-	* @return the title of this meetups entry
-	*/
-	@Override
-	public java.lang.String getTitle() {
-		return _meetupsEntry.getTitle();
-	}
-
-	/**
-	* Returns the user name of this meetups entry.
-	*
-	* @return the user name of this meetups entry
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _meetupsEntry.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this meetups entry.
-	*
-	* @return the user uuid of this meetups entry
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _meetupsEntry.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _meetupsEntry.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _meetupsEntry.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this meetups entry.
-	*
-	* @return the create date of this meetups entry
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _meetupsEntry.getCreateDate();
-	}
-
-	/**
-	* Returns the end date of this meetups entry.
-	*
-	* @return the end date of this meetups entry
-	*/
-	@Override
-	public Date getEndDate() {
-		return _meetupsEntry.getEndDate();
-	}
-
-	/**
-	* Returns the modified date of this meetups entry.
-	*
-	* @return the modified date of this meetups entry
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _meetupsEntry.getModifiedDate();
-	}
-
-	/**
-	* Returns the start date of this meetups entry.
-	*
-	* @return the start date of this meetups entry
-	*/
-	@Override
-	public Date getStartDate() {
-		return _meetupsEntry.getStartDate();
-	}
-
-	/**
-	* Returns the company ID of this meetups entry.
-	*
-	* @return the company ID of this meetups entry
-	*/
-	@Override
-	public long getCompanyId() {
-		return _meetupsEntry.getCompanyId();
-	}
-
-	/**
-	* Returns the meetups entry ID of this meetups entry.
-	*
-	* @return the meetups entry ID of this meetups entry
-	*/
-	@Override
-	public long getMeetupsEntryId() {
-		return _meetupsEntry.getMeetupsEntryId();
-	}
-
-	/**
-	* Returns the primary key of this meetups entry.
-	*
-	* @return the primary key of this meetups entry
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _meetupsEntry.getPrimaryKey();
-	}
-
-	/**
-	* Returns the thumbnail ID of this meetups entry.
-	*
-	* @return the thumbnail ID of this meetups entry
-	*/
-	@Override
-	public long getThumbnailId() {
-		return _meetupsEntry.getThumbnailId();
-	}
-
-	/**
-	* Returns the user ID of this meetups entry.
-	*
-	* @return the user ID of this meetups entry
-	*/
-	@Override
-	public long getUserId() {
-		return _meetupsEntry.getUserId();
-	}
-
-	@Override
 	public void persist() {
 		_meetupsEntry.persist();
 	}
@@ -399,43 +371,50 @@ public class MeetupsEntryWrapper implements MeetupsEntry,
 	}
 
 	/**
-	* Sets the company ID of this meetups entry.
-	*
-	* @param companyId the company ID of this meetups entry
-	*/
+	 * Sets the company ID of this meetups entry.
+	 *
+	 * @param companyId the company ID of this meetups entry
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_meetupsEntry.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this meetups entry.
-	*
-	* @param createDate the create date of this meetups entry
-	*/
+	 * Sets the create date of this meetups entry.
+	 *
+	 * @param createDate the create date of this meetups entry
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_meetupsEntry.setCreateDate(createDate);
 	}
 
 	/**
-	* Sets the description of this meetups entry.
-	*
-	* @param description the description of this meetups entry
-	*/
+	 * Sets the description of this meetups entry.
+	 *
+	 * @param description the description of this meetups entry
+	 */
 	@Override
-	public void setDescription(java.lang.String description) {
+	public void setDescription(String description) {
 		_meetupsEntry.setDescription(description);
 	}
 
 	/**
-	* Sets the end date of this meetups entry.
-	*
-	* @param endDate the end date of this meetups entry
-	*/
+	 * Sets the end date of this meetups entry.
+	 *
+	 * @param endDate the end date of this meetups entry
+	 */
 	@Override
 	public void setEndDate(Date endDate) {
 		_meetupsEntry.setEndDate(endDate);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_meetupsEntry.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -444,41 +423,35 @@ public class MeetupsEntryWrapper implements MeetupsEntry,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_meetupsEntry.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_meetupsEntry.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the max attendees of this meetups entry.
-	*
-	* @param maxAttendees the max attendees of this meetups entry
-	*/
+	 * Sets the max attendees of this meetups entry.
+	 *
+	 * @param maxAttendees the max attendees of this meetups entry
+	 */
 	@Override
 	public void setMaxAttendees(int maxAttendees) {
 		_meetupsEntry.setMaxAttendees(maxAttendees);
 	}
 
 	/**
-	* Sets the meetups entry ID of this meetups entry.
-	*
-	* @param meetupsEntryId the meetups entry ID of this meetups entry
-	*/
+	 * Sets the meetups entry ID of this meetups entry.
+	 *
+	 * @param meetupsEntryId the meetups entry ID of this meetups entry
+	 */
 	@Override
 	public void setMeetupsEntryId(long meetupsEntryId) {
 		_meetupsEntry.setMeetupsEntryId(meetupsEntryId);
 	}
 
 	/**
-	* Sets the modified date of this meetups entry.
-	*
-	* @param modifiedDate the modified date of this meetups entry
-	*/
+	 * Sets the modified date of this meetups entry.
+	 *
+	 * @param modifiedDate the modified date of this meetups entry
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_meetupsEntry.setModifiedDate(modifiedDate);
@@ -490,20 +463,20 @@ public class MeetupsEntryWrapper implements MeetupsEntry,
 	}
 
 	/**
-	* Sets the price of this meetups entry.
-	*
-	* @param price the price of this meetups entry
-	*/
+	 * Sets the price of this meetups entry.
+	 *
+	 * @param price the price of this meetups entry
+	 */
 	@Override
 	public void setPrice(double price) {
 		_meetupsEntry.setPrice(price);
 	}
 
 	/**
-	* Sets the primary key of this meetups entry.
-	*
-	* @param primaryKey the primary key of this meetups entry
-	*/
+	 * Sets the primary key of this meetups entry.
+	 *
+	 * @param primaryKey the primary key of this meetups entry
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_meetupsEntry.setPrimaryKey(primaryKey);
@@ -515,73 +488,100 @@ public class MeetupsEntryWrapper implements MeetupsEntry,
 	}
 
 	/**
-	* Sets the start date of this meetups entry.
-	*
-	* @param startDate the start date of this meetups entry
-	*/
+	 * Sets the start date of this meetups entry.
+	 *
+	 * @param startDate the start date of this meetups entry
+	 */
 	@Override
 	public void setStartDate(Date startDate) {
 		_meetupsEntry.setStartDate(startDate);
 	}
 
 	/**
-	* Sets the thumbnail ID of this meetups entry.
-	*
-	* @param thumbnailId the thumbnail ID of this meetups entry
-	*/
+	 * Sets the thumbnail ID of this meetups entry.
+	 *
+	 * @param thumbnailId the thumbnail ID of this meetups entry
+	 */
 	@Override
 	public void setThumbnailId(long thumbnailId) {
 		_meetupsEntry.setThumbnailId(thumbnailId);
 	}
 
 	/**
-	* Sets the title of this meetups entry.
-	*
-	* @param title the title of this meetups entry
-	*/
+	 * Sets the title of this meetups entry.
+	 *
+	 * @param title the title of this meetups entry
+	 */
 	@Override
-	public void setTitle(java.lang.String title) {
+	public void setTitle(String title) {
 		_meetupsEntry.setTitle(title);
 	}
 
 	/**
-	* Sets the total attendees of this meetups entry.
-	*
-	* @param totalAttendees the total attendees of this meetups entry
-	*/
+	 * Sets the total attendees of this meetups entry.
+	 *
+	 * @param totalAttendees the total attendees of this meetups entry
+	 */
 	@Override
 	public void setTotalAttendees(int totalAttendees) {
 		_meetupsEntry.setTotalAttendees(totalAttendees);
 	}
 
 	/**
-	* Sets the user ID of this meetups entry.
-	*
-	* @param userId the user ID of this meetups entry
-	*/
+	 * Sets the user ID of this meetups entry.
+	 *
+	 * @param userId the user ID of this meetups entry
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_meetupsEntry.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this meetups entry.
-	*
-	* @param userName the user name of this meetups entry
-	*/
+	 * Sets the user name of this meetups entry.
+	 *
+	 * @param userName the user name of this meetups entry
+	 */
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_meetupsEntry.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this meetups entry.
-	*
-	* @param userUuid the user uuid of this meetups entry
-	*/
+	 * Sets the user uuid of this meetups entry.
+	 *
+	 * @param userUuid the user uuid of this meetups entry
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_meetupsEntry.setUserUuid(userUuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<MeetupsEntry>
+		toCacheModel() {
+
+		return _meetupsEntry.toCacheModel();
+	}
+
+	@Override
+	public MeetupsEntry toEscapedModel() {
+		return new MeetupsEntryWrapper(_meetupsEntry.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _meetupsEntry.toString();
+	}
+
+	@Override
+	public MeetupsEntry toUnescapedModel() {
+		return new MeetupsEntryWrapper(_meetupsEntry.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _meetupsEntry.toXmlString();
 	}
 
 	@Override
@@ -624,4 +624,5 @@ public class MeetupsEntryWrapper implements MeetupsEntry,
 	}
 
 	private final MeetupsEntry _meetupsEntry;
+
 }

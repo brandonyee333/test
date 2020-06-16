@@ -1,20 +1,18 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.saml.persistence.model;
-
-import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -28,8 +26,8 @@ import java.util.List;
  * @author Mika Koivisto
  * @generated
  */
-@ProviderType
 public class SamlSpMessageSoap implements Serializable {
+
 	public static SamlSpMessageSoap toSoapModel(SamlSpMessage model) {
 		SamlSpMessageSoap soapModel = new SamlSpMessageSoap();
 
@@ -71,7 +69,8 @@ public class SamlSpMessageSoap implements Serializable {
 	}
 
 	public static SamlSpMessageSoap[] toSoapModels(List<SamlSpMessage> models) {
-		List<SamlSpMessageSoap> soapModels = new ArrayList<SamlSpMessageSoap>(models.size());
+		List<SamlSpMessageSoap> soapModels = new ArrayList<SamlSpMessageSoap>(
+			models.size());
 
 		for (SamlSpMessage model : models) {
 			soapModels.add(toSoapModel(model));
@@ -145,4 +144,5 @@ public class SamlSpMessageSoap implements Serializable {
 	private String _samlIdpEntityId;
 	private String _samlIdpResponseKey;
 	private Date _expirationDate;
+
 }

@@ -25,19 +25,20 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see WSRPConsumerModel
- * @see com.liferay.wsrp.model.impl.WSRPConsumerImpl
- * @see com.liferay.wsrp.model.impl.WSRPConsumerModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.wsrp.model.impl.WSRPConsumerImpl")
 @ProviderType
-public interface WSRPConsumer extends WSRPConsumerModel, PersistedModel {
+public interface WSRPConsumer extends PersistedModel, WSRPConsumerModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.wsrp.model.impl.WSRPConsumerImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.wsrp.model.impl.WSRPConsumerImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<WSRPConsumer, Long> WSRP_CONSUMER_ID_ACCESSOR = new Accessor<WSRPConsumer, Long>() {
+	public static final Accessor<WSRPConsumer, Long> WSRP_CONSUMER_ID_ACCESSOR =
+		new Accessor<WSRPConsumer, Long>() {
+
 			@Override
 			public Long get(WSRPConsumer wsrpConsumer) {
 				return wsrpConsumer.getWsrpConsumerId();
@@ -52,15 +53,20 @@ public interface WSRPConsumer extends WSRPConsumerModel, PersistedModel {
 			public Class<WSRPConsumer> getTypeClass() {
 				return WSRPConsumer.class;
 			}
+
 		};
 
-	public oasis.names.tc.wsrp.v2.types.RegistrationContext getRegistrationContext();
+	public oasis.names.tc.wsrp.v2.types.RegistrationContext
+		getRegistrationContext();
 
-	public com.liferay.portal.kernel.util.UnicodeProperties getRegistrationProperties();
+	public com.liferay.portal.kernel.util.UnicodeProperties
+		getRegistrationProperties();
 
 	public void setRegistrationContext(
 		oasis.names.tc.wsrp.v2.types.RegistrationContext registrationContext);
 
 	public void setRegistrationProperties(
-		com.liferay.portal.kernel.util.UnicodeProperties registrationProperties);
+		com.liferay.portal.kernel.util.UnicodeProperties
+			registrationProperties);
+
 }

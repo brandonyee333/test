@@ -22,27 +22,36 @@ import aQute.bnd.annotation.ProviderType;
  */
 @ProviderType
 public interface BlogsEntryFinder {
-	public int countByOrganizationId(long organizationId,
-		java.util.Date displayDate,
-		com.liferay.portal.kernel.dao.orm.QueryDefinition<com.liferay.blogs.kernel.model.BlogsEntry> queryDefinition);
+
+	public int countByOrganizationId(
+		long organizationId, java.util.Date displayDate,
+		com.liferay.portal.kernel.dao.orm.QueryDefinition
+			<com.liferay.blogs.kernel.model.BlogsEntry> queryDefinition);
 
 	public int countByOrganizationIds(
-		java.util.List<java.lang.Long> organizationIds,
-		java.util.Date displayDate,
-		com.liferay.portal.kernel.dao.orm.QueryDefinition<com.liferay.blogs.kernel.model.BlogsEntry> queryDefinition);
+		java.util.List<Long> organizationIds, java.util.Date displayDate,
+		com.liferay.portal.kernel.dao.orm.QueryDefinition
+			<com.liferay.blogs.kernel.model.BlogsEntry> queryDefinition);
 
-	public java.util.List<com.liferay.blogs.kernel.model.BlogsEntry> findByGroupIds(
-		long companyId, long groupId, java.util.Date displayDate,
-		com.liferay.portal.kernel.dao.orm.QueryDefinition<com.liferay.blogs.kernel.model.BlogsEntry> queryDefinition);
+	public java.util.List<com.liferay.blogs.kernel.model.BlogsEntry>
+		findByGroupIds(
+			long companyId, long groupId, java.util.Date displayDate,
+			com.liferay.portal.kernel.dao.orm.QueryDefinition
+				<com.liferay.blogs.kernel.model.BlogsEntry> queryDefinition);
 
-	public java.util.List<com.liferay.blogs.kernel.model.BlogsEntry> findByOrganizationId(
-		long organizationId, java.util.Date displayDate,
-		com.liferay.portal.kernel.dao.orm.QueryDefinition<com.liferay.blogs.kernel.model.BlogsEntry> queryDefinition);
+	public java.util.List<com.liferay.blogs.kernel.model.BlogsEntry>
+		findByOrganizationId(
+			long organizationId, java.util.Date displayDate,
+			com.liferay.portal.kernel.dao.orm.QueryDefinition
+				<com.liferay.blogs.kernel.model.BlogsEntry> queryDefinition);
 
-	public java.util.List<com.liferay.blogs.kernel.model.BlogsEntry> findByOrganizationIds(
-		java.util.List<java.lang.Long> organizationIds,
-		java.util.Date displayDate,
-		com.liferay.portal.kernel.dao.orm.QueryDefinition<com.liferay.blogs.kernel.model.BlogsEntry> queryDefinition);
+	public java.util.List<com.liferay.blogs.kernel.model.BlogsEntry>
+		findByOrganizationIds(
+			java.util.List<Long> organizationIds, java.util.Date displayDate,
+			com.liferay.portal.kernel.dao.orm.QueryDefinition
+				<com.liferay.blogs.kernel.model.BlogsEntry> queryDefinition);
 
-	public java.util.List<com.liferay.blogs.kernel.model.BlogsEntry> findByNoAssets();
+	public java.util.List<com.liferay.blogs.kernel.model.BlogsEntry>
+		findByNoAssets();
+
 }

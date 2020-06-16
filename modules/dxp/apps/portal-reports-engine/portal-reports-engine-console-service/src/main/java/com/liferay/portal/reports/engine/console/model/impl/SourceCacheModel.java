@@ -1,25 +1,22 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.portal.reports.engine.console.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.reports.engine.console.model.Source;
 
 import java.io.Externalizable;
@@ -33,11 +30,10 @@ import java.util.Date;
  * The cache model class for representing Source in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see Source
  * @generated
  */
-@ProviderType
 public class SourceCacheModel implements CacheModel<Source>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -104,7 +100,7 @@ public class SourceCacheModel implements CacheModel<Source>, Externalizable {
 		SourceImpl sourceImpl = new SourceImpl();
 
 		if (uuid == null) {
-			sourceImpl.setUuid(StringPool.BLANK);
+			sourceImpl.setUuid("");
 		}
 		else {
 			sourceImpl.setUuid(uuid);
@@ -116,7 +112,7 @@ public class SourceCacheModel implements CacheModel<Source>, Externalizable {
 		sourceImpl.setUserId(userId);
 
 		if (userName == null) {
-			sourceImpl.setUserName(StringPool.BLANK);
+			sourceImpl.setUserName("");
 		}
 		else {
 			sourceImpl.setUserName(userName);
@@ -144,35 +140,35 @@ public class SourceCacheModel implements CacheModel<Source>, Externalizable {
 		}
 
 		if (name == null) {
-			sourceImpl.setName(StringPool.BLANK);
+			sourceImpl.setName("");
 		}
 		else {
 			sourceImpl.setName(name);
 		}
 
 		if (driverClassName == null) {
-			sourceImpl.setDriverClassName(StringPool.BLANK);
+			sourceImpl.setDriverClassName("");
 		}
 		else {
 			sourceImpl.setDriverClassName(driverClassName);
 		}
 
 		if (driverUrl == null) {
-			sourceImpl.setDriverUrl(StringPool.BLANK);
+			sourceImpl.setDriverUrl("");
 		}
 		else {
 			sourceImpl.setDriverUrl(driverUrl);
 		}
 
 		if (driverUserName == null) {
-			sourceImpl.setDriverUserName(StringPool.BLANK);
+			sourceImpl.setDriverUserName("");
 		}
 		else {
 			sourceImpl.setDriverUserName(driverUserName);
 		}
 
 		if (driverPassword == null) {
-			sourceImpl.setDriverPassword(StringPool.BLANK);
+			sourceImpl.setDriverPassword("");
 		}
 		else {
 			sourceImpl.setDriverPassword(driverPassword);
@@ -206,10 +202,9 @@ public class SourceCacheModel implements CacheModel<Source>, Externalizable {
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -224,7 +219,7 @@ public class SourceCacheModel implements CacheModel<Source>, Externalizable {
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -235,35 +230,35 @@ public class SourceCacheModel implements CacheModel<Source>, Externalizable {
 		objectOutput.writeLong(lastPublishDate);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (driverClassName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(driverClassName);
 		}
 
 		if (driverUrl == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(driverUrl);
 		}
 
 		if (driverUserName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(driverUserName);
 		}
 
 		if (driverPassword == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(driverPassword);
@@ -284,4 +279,5 @@ public class SourceCacheModel implements CacheModel<Source>, Externalizable {
 	public String driverUrl;
 	public String driverUserName;
 	public String driverPassword;
+
 }

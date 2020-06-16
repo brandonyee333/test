@@ -14,8 +14,6 @@
 
 package com.liferay.calendar.service;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -25,48 +23,59 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see CalendarNotificationTemplateService
  * @generated
  */
-@ProviderType
 public class CalendarNotificationTemplateServiceWrapper
 	implements CalendarNotificationTemplateService,
-		ServiceWrapper<CalendarNotificationTemplateService> {
+			   ServiceWrapper<CalendarNotificationTemplateService> {
+
 	public CalendarNotificationTemplateServiceWrapper(
-		CalendarNotificationTemplateService calendarNotificationTemplateService) {
-		_calendarNotificationTemplateService = calendarNotificationTemplateService;
+		CalendarNotificationTemplateService
+			calendarNotificationTemplateService) {
+
+		_calendarNotificationTemplateService =
+			calendarNotificationTemplateService;
 	}
 
 	@Override
-	public com.liferay.calendar.model.CalendarNotificationTemplate addCalendarNotificationTemplate(
-		long calendarId,
-		com.liferay.calendar.notification.NotificationType notificationType,
-		java.lang.String notificationTypeSettings,
-		com.liferay.calendar.notification.NotificationTemplateType notificationTemplateType,
-		java.lang.String subject, java.lang.String body,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public com.liferay.calendar.model.CalendarNotificationTemplate
+			addCalendarNotificationTemplate(
+				long calendarId,
+				com.liferay.calendar.notification.NotificationType
+					notificationType,
+				String notificationTypeSettings,
+				com.liferay.calendar.notification.NotificationTemplateType
+					notificationTemplateType,
+				String subject, String body,
+				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _calendarNotificationTemplateService.addCalendarNotificationTemplate(calendarId,
-			notificationType, notificationTypeSettings,
-			notificationTemplateType, subject, body, serviceContext);
-	}
 
-	@Override
-	public com.liferay.calendar.model.CalendarNotificationTemplate updateCalendarNotificationTemplate(
-		long calendarNotificationTemplateId,
-		java.lang.String notificationTypeSettings, java.lang.String subject,
-		java.lang.String body,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _calendarNotificationTemplateService.updateCalendarNotificationTemplate(calendarNotificationTemplateId,
-			notificationTypeSettings, subject, body, serviceContext);
+		return _calendarNotificationTemplateService.
+			addCalendarNotificationTemplate(
+				calendarId, notificationType, notificationTypeSettings,
+				notificationTemplateType, subject, body, serviceContext);
 	}
 
 	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
+	public String getOSGiServiceIdentifier() {
 		return _calendarNotificationTemplateService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public com.liferay.calendar.model.CalendarNotificationTemplate
+			updateCalendarNotificationTemplate(
+				long calendarNotificationTemplateId,
+				String notificationTypeSettings, String subject, String body,
+				com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _calendarNotificationTemplateService.
+			updateCalendarNotificationTemplate(
+				calendarNotificationTemplateId, notificationTypeSettings,
+				subject, body, serviceContext);
 	}
 
 	@Override
@@ -76,9 +85,14 @@ public class CalendarNotificationTemplateServiceWrapper
 
 	@Override
 	public void setWrappedService(
-		CalendarNotificationTemplateService calendarNotificationTemplateService) {
-		_calendarNotificationTemplateService = calendarNotificationTemplateService;
+		CalendarNotificationTemplateService
+			calendarNotificationTemplateService) {
+
+		_calendarNotificationTemplateService =
+			calendarNotificationTemplateService;
 	}
 
-	private CalendarNotificationTemplateService _calendarNotificationTemplateService;
+	private CalendarNotificationTemplateService
+		_calendarNotificationTemplateService;
+
 }

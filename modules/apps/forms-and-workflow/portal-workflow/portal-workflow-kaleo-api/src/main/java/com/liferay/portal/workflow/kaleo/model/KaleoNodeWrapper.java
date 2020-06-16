@@ -14,10 +14,7 @@
 
 package com.liferay.portal.workflow.kaleo.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,8 +34,8 @@ import java.util.Objects;
  * @see KaleoNode
  * @generated
  */
-@ProviderType
 public class KaleoNodeWrapper implements KaleoNode, ModelWrapper<KaleoNode> {
+
 	public KaleoNodeWrapper(KaleoNode kaleoNode) {
 		_kaleoNode = kaleoNode;
 	}
@@ -69,8 +66,8 @@ public class KaleoNodeWrapper implements KaleoNode, ModelWrapper<KaleoNode> {
 		attributes.put("metadata", getMetadata());
 		attributes.put("description", getDescription());
 		attributes.put("type", getType());
-		attributes.put("initial", getInitial());
-		attributes.put("terminal", getTerminal());
+		attributes.put("initial", isInitial());
+		attributes.put("terminal", isTerminal());
 
 		return attributes;
 	}
@@ -163,45 +160,207 @@ public class KaleoNodeWrapper implements KaleoNode, ModelWrapper<KaleoNode> {
 	}
 
 	@Override
-	public KaleoNode toEscapedModel() {
-		return new KaleoNodeWrapper(_kaleoNode.toEscapedModel());
+	public Object clone() {
+		return new KaleoNodeWrapper((KaleoNode)_kaleoNode.clone());
 	}
 
 	@Override
-	public KaleoNode toUnescapedModel() {
-		return new KaleoNodeWrapper(_kaleoNode.toUnescapedModel());
+	public int compareTo(KaleoNode kaleoNode) {
+		return _kaleoNode.compareTo(kaleoNode);
+	}
+
+	/**
+	 * Returns the company ID of this kaleo node.
+	 *
+	 * @return the company ID of this kaleo node
+	 */
+	@Override
+	public long getCompanyId() {
+		return _kaleoNode.getCompanyId();
+	}
+
+	/**
+	 * Returns the create date of this kaleo node.
+	 *
+	 * @return the create date of this kaleo node
+	 */
+	@Override
+	public Date getCreateDate() {
+		return _kaleoNode.getCreateDate();
 	}
 
 	@Override
 	public KaleoTransition getDefaultKaleoTransition()
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return _kaleoNode.getDefaultKaleoTransition();
 	}
 
+	/**
+	 * Returns the description of this kaleo node.
+	 *
+	 * @return the description of this kaleo node
+	 */
 	@Override
-	public KaleoTransition getKaleoTransition(java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _kaleoNode.getKaleoTransition(name);
+	public String getDescription() {
+		return _kaleoNode.getDescription();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _kaleoNode.getExpandoBridge();
 	}
 
 	/**
-	* Returns the initial of this kaleo node.
-	*
-	* @return the initial of this kaleo node
-	*/
+	 * Returns the group ID of this kaleo node.
+	 *
+	 * @return the group ID of this kaleo node
+	 */
+	@Override
+	public long getGroupId() {
+		return _kaleoNode.getGroupId();
+	}
+
+	/**
+	 * Returns the initial of this kaleo node.
+	 *
+	 * @return the initial of this kaleo node
+	 */
 	@Override
 	public boolean getInitial() {
 		return _kaleoNode.getInitial();
 	}
 
 	/**
-	* Returns the terminal of this kaleo node.
-	*
-	* @return the terminal of this kaleo node
-	*/
+	 * Returns the kaleo definition ID of this kaleo node.
+	 *
+	 * @return the kaleo definition ID of this kaleo node
+	 */
+	@Override
+	public long getKaleoDefinitionId() {
+		return _kaleoNode.getKaleoDefinitionId();
+	}
+
+	/**
+	 * Returns the kaleo node ID of this kaleo node.
+	 *
+	 * @return the kaleo node ID of this kaleo node
+	 */
+	@Override
+	public long getKaleoNodeId() {
+		return _kaleoNode.getKaleoNodeId();
+	}
+
+	@Override
+	public KaleoTransition getKaleoTransition(String name)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _kaleoNode.getKaleoTransition(name);
+	}
+
+	@Override
+	public java.util.List<KaleoTransition> getKaleoTransitions() {
+		return _kaleoNode.getKaleoTransitions();
+	}
+
+	/**
+	 * Returns the metadata of this kaleo node.
+	 *
+	 * @return the metadata of this kaleo node
+	 */
+	@Override
+	public String getMetadata() {
+		return _kaleoNode.getMetadata();
+	}
+
+	/**
+	 * Returns the modified date of this kaleo node.
+	 *
+	 * @return the modified date of this kaleo node
+	 */
+	@Override
+	public Date getModifiedDate() {
+		return _kaleoNode.getModifiedDate();
+	}
+
+	/**
+	 * Returns the name of this kaleo node.
+	 *
+	 * @return the name of this kaleo node
+	 */
+	@Override
+	public String getName() {
+		return _kaleoNode.getName();
+	}
+
+	/**
+	 * Returns the primary key of this kaleo node.
+	 *
+	 * @return the primary key of this kaleo node
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _kaleoNode.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _kaleoNode.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the terminal of this kaleo node.
+	 *
+	 * @return the terminal of this kaleo node
+	 */
 	@Override
 	public boolean getTerminal() {
 		return _kaleoNode.getTerminal();
+	}
+
+	/**
+	 * Returns the type of this kaleo node.
+	 *
+	 * @return the type of this kaleo node
+	 */
+	@Override
+	public String getType() {
+		return _kaleoNode.getType();
+	}
+
+	/**
+	 * Returns the user ID of this kaleo node.
+	 *
+	 * @return the user ID of this kaleo node
+	 */
+	@Override
+	public long getUserId() {
+		return _kaleoNode.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this kaleo node.
+	 *
+	 * @return the user name of this kaleo node
+	 */
+	@Override
+	public String getUserName() {
+		return _kaleoNode.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this kaleo node.
+	 *
+	 * @return the user uuid of this kaleo node
+	 */
+	@Override
+	public String getUserUuid() {
+		return _kaleoNode.getUserUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _kaleoNode.hashCode();
 	}
 
 	@Override
@@ -220,10 +379,10 @@ public class KaleoNodeWrapper implements KaleoNode, ModelWrapper<KaleoNode> {
 	}
 
 	/**
-	* Returns <code>true</code> if this kaleo node is initial.
-	*
-	* @return <code>true</code> if this kaleo node is initial; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this kaleo node is initial.
+	 *
+	 * @return <code>true</code> if this kaleo node is initial; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isInitial() {
 		return _kaleoNode.isInitial();
@@ -235,198 +394,13 @@ public class KaleoNodeWrapper implements KaleoNode, ModelWrapper<KaleoNode> {
 	}
 
 	/**
-	* Returns <code>true</code> if this kaleo node is terminal.
-	*
-	* @return <code>true</code> if this kaleo node is terminal; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this kaleo node is terminal.
+	 *
+	 * @return <code>true</code> if this kaleo node is terminal; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isTerminal() {
 		return _kaleoNode.isTerminal();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _kaleoNode.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<KaleoNode> toCacheModel() {
-		return _kaleoNode.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(KaleoNode kaleoNode) {
-		return _kaleoNode.compareTo(kaleoNode);
-	}
-
-	@Override
-	public int hashCode() {
-		return _kaleoNode.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _kaleoNode.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new KaleoNodeWrapper((KaleoNode)_kaleoNode.clone());
-	}
-
-	/**
-	* Returns the description of this kaleo node.
-	*
-	* @return the description of this kaleo node
-	*/
-	@Override
-	public java.lang.String getDescription() {
-		return _kaleoNode.getDescription();
-	}
-
-	/**
-	* Returns the metadata of this kaleo node.
-	*
-	* @return the metadata of this kaleo node
-	*/
-	@Override
-	public java.lang.String getMetadata() {
-		return _kaleoNode.getMetadata();
-	}
-
-	/**
-	* Returns the name of this kaleo node.
-	*
-	* @return the name of this kaleo node
-	*/
-	@Override
-	public java.lang.String getName() {
-		return _kaleoNode.getName();
-	}
-
-	/**
-	* Returns the type of this kaleo node.
-	*
-	* @return the type of this kaleo node
-	*/
-	@Override
-	public java.lang.String getType() {
-		return _kaleoNode.getType();
-	}
-
-	/**
-	* Returns the user name of this kaleo node.
-	*
-	* @return the user name of this kaleo node
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _kaleoNode.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this kaleo node.
-	*
-	* @return the user uuid of this kaleo node
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _kaleoNode.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _kaleoNode.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _kaleoNode.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this kaleo node.
-	*
-	* @return the create date of this kaleo node
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _kaleoNode.getCreateDate();
-	}
-
-	/**
-	* Returns the modified date of this kaleo node.
-	*
-	* @return the modified date of this kaleo node
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _kaleoNode.getModifiedDate();
-	}
-
-	@Override
-	public java.util.List<KaleoTransition> getKaleoTransitions() {
-		return _kaleoNode.getKaleoTransitions();
-	}
-
-	/**
-	* Returns the company ID of this kaleo node.
-	*
-	* @return the company ID of this kaleo node
-	*/
-	@Override
-	public long getCompanyId() {
-		return _kaleoNode.getCompanyId();
-	}
-
-	/**
-	* Returns the group ID of this kaleo node.
-	*
-	* @return the group ID of this kaleo node
-	*/
-	@Override
-	public long getGroupId() {
-		return _kaleoNode.getGroupId();
-	}
-
-	/**
-	* Returns the kaleo definition ID of this kaleo node.
-	*
-	* @return the kaleo definition ID of this kaleo node
-	*/
-	@Override
-	public long getKaleoDefinitionId() {
-		return _kaleoNode.getKaleoDefinitionId();
-	}
-
-	/**
-	* Returns the kaleo node ID of this kaleo node.
-	*
-	* @return the kaleo node ID of this kaleo node
-	*/
-	@Override
-	public long getKaleoNodeId() {
-		return _kaleoNode.getKaleoNodeId();
-	}
-
-	/**
-	* Returns the primary key of this kaleo node.
-	*
-	* @return the primary key of this kaleo node
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _kaleoNode.getPrimaryKey();
-	}
-
-	/**
-	* Returns the user ID of this kaleo node.
-	*
-	* @return the user ID of this kaleo node
-	*/
-	@Override
-	public long getUserId() {
-		return _kaleoNode.getUserId();
 	}
 
 	@Override
@@ -440,33 +414,40 @@ public class KaleoNodeWrapper implements KaleoNode, ModelWrapper<KaleoNode> {
 	}
 
 	/**
-	* Sets the company ID of this kaleo node.
-	*
-	* @param companyId the company ID of this kaleo node
-	*/
+	 * Sets the company ID of this kaleo node.
+	 *
+	 * @param companyId the company ID of this kaleo node
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_kaleoNode.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this kaleo node.
-	*
-	* @param createDate the create date of this kaleo node
-	*/
+	 * Sets the create date of this kaleo node.
+	 *
+	 * @param createDate the create date of this kaleo node
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_kaleoNode.setCreateDate(createDate);
 	}
 
 	/**
-	* Sets the description of this kaleo node.
-	*
-	* @param description the description of this kaleo node
-	*/
+	 * Sets the description of this kaleo node.
+	 *
+	 * @param description the description of this kaleo node
+	 */
 	@Override
-	public void setDescription(java.lang.String description) {
+	public void setDescription(String description) {
 		_kaleoNode.setDescription(description);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_kaleoNode.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -475,83 +456,77 @@ public class KaleoNodeWrapper implements KaleoNode, ModelWrapper<KaleoNode> {
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_kaleoNode.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_kaleoNode.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the group ID of this kaleo node.
-	*
-	* @param groupId the group ID of this kaleo node
-	*/
+	 * Sets the group ID of this kaleo node.
+	 *
+	 * @param groupId the group ID of this kaleo node
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_kaleoNode.setGroupId(groupId);
 	}
 
 	/**
-	* Sets whether this kaleo node is initial.
-	*
-	* @param initial the initial of this kaleo node
-	*/
+	 * Sets whether this kaleo node is initial.
+	 *
+	 * @param initial the initial of this kaleo node
+	 */
 	@Override
 	public void setInitial(boolean initial) {
 		_kaleoNode.setInitial(initial);
 	}
 
 	/**
-	* Sets the kaleo definition ID of this kaleo node.
-	*
-	* @param kaleoDefinitionId the kaleo definition ID of this kaleo node
-	*/
+	 * Sets the kaleo definition ID of this kaleo node.
+	 *
+	 * @param kaleoDefinitionId the kaleo definition ID of this kaleo node
+	 */
 	@Override
 	public void setKaleoDefinitionId(long kaleoDefinitionId) {
 		_kaleoNode.setKaleoDefinitionId(kaleoDefinitionId);
 	}
 
 	/**
-	* Sets the kaleo node ID of this kaleo node.
-	*
-	* @param kaleoNodeId the kaleo node ID of this kaleo node
-	*/
+	 * Sets the kaleo node ID of this kaleo node.
+	 *
+	 * @param kaleoNodeId the kaleo node ID of this kaleo node
+	 */
 	@Override
 	public void setKaleoNodeId(long kaleoNodeId) {
 		_kaleoNode.setKaleoNodeId(kaleoNodeId);
 	}
 
 	/**
-	* Sets the metadata of this kaleo node.
-	*
-	* @param metadata the metadata of this kaleo node
-	*/
+	 * Sets the metadata of this kaleo node.
+	 *
+	 * @param metadata the metadata of this kaleo node
+	 */
 	@Override
-	public void setMetadata(java.lang.String metadata) {
+	public void setMetadata(String metadata) {
 		_kaleoNode.setMetadata(metadata);
 	}
 
 	/**
-	* Sets the modified date of this kaleo node.
-	*
-	* @param modifiedDate the modified date of this kaleo node
-	*/
+	 * Sets the modified date of this kaleo node.
+	 *
+	 * @param modifiedDate the modified date of this kaleo node
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_kaleoNode.setModifiedDate(modifiedDate);
 	}
 
 	/**
-	* Sets the name of this kaleo node.
-	*
-	* @param name the name of this kaleo node
-	*/
+	 * Sets the name of this kaleo node.
+	 *
+	 * @param name the name of this kaleo node
+	 */
 	@Override
-	public void setName(java.lang.String name) {
+	public void setName(String name) {
 		_kaleoNode.setName(name);
 	}
 
@@ -561,10 +536,10 @@ public class KaleoNodeWrapper implements KaleoNode, ModelWrapper<KaleoNode> {
 	}
 
 	/**
-	* Sets the primary key of this kaleo node.
-	*
-	* @param primaryKey the primary key of this kaleo node
-	*/
+	 * Sets the primary key of this kaleo node.
+	 *
+	 * @param primaryKey the primary key of this kaleo node
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_kaleoNode.setPrimaryKey(primaryKey);
@@ -576,53 +551,80 @@ public class KaleoNodeWrapper implements KaleoNode, ModelWrapper<KaleoNode> {
 	}
 
 	/**
-	* Sets whether this kaleo node is terminal.
-	*
-	* @param terminal the terminal of this kaleo node
-	*/
+	 * Sets whether this kaleo node is terminal.
+	 *
+	 * @param terminal the terminal of this kaleo node
+	 */
 	@Override
 	public void setTerminal(boolean terminal) {
 		_kaleoNode.setTerminal(terminal);
 	}
 
 	/**
-	* Sets the type of this kaleo node.
-	*
-	* @param type the type of this kaleo node
-	*/
+	 * Sets the type of this kaleo node.
+	 *
+	 * @param type the type of this kaleo node
+	 */
 	@Override
-	public void setType(java.lang.String type) {
+	public void setType(String type) {
 		_kaleoNode.setType(type);
 	}
 
 	/**
-	* Sets the user ID of this kaleo node.
-	*
-	* @param userId the user ID of this kaleo node
-	*/
+	 * Sets the user ID of this kaleo node.
+	 *
+	 * @param userId the user ID of this kaleo node
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_kaleoNode.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this kaleo node.
-	*
-	* @param userName the user name of this kaleo node
-	*/
+	 * Sets the user name of this kaleo node.
+	 *
+	 * @param userName the user name of this kaleo node
+	 */
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_kaleoNode.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this kaleo node.
-	*
-	* @param userUuid the user uuid of this kaleo node
-	*/
+	 * Sets the user uuid of this kaleo node.
+	 *
+	 * @param userUuid the user uuid of this kaleo node
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_kaleoNode.setUserUuid(userUuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<KaleoNode>
+		toCacheModel() {
+
+		return _kaleoNode.toCacheModel();
+	}
+
+	@Override
+	public KaleoNode toEscapedModel() {
+		return new KaleoNodeWrapper(_kaleoNode.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _kaleoNode.toString();
+	}
+
+	@Override
+	public KaleoNode toUnescapedModel() {
+		return new KaleoNodeWrapper(_kaleoNode.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _kaleoNode.toXmlString();
 	}
 
 	@Override
@@ -665,4 +667,5 @@ public class KaleoNodeWrapper implements KaleoNode, ModelWrapper<KaleoNode> {
 	}
 
 	private final KaleoNode _kaleoNode;
+
 }

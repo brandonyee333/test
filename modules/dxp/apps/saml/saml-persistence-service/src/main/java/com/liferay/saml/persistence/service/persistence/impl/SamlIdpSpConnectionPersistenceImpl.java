@@ -1,20 +1,18 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.saml.persistence.service.persistence.impl;
-
-import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -25,17 +23,15 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.service.persistence.CompanyProvider;
-import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
-
 import com.liferay.saml.persistence.exception.NoSuchIdpSpConnectionException;
 import com.liferay.saml.persistence.model.SamlIdpSpConnection;
 import com.liferay.saml.persistence.model.impl.SamlIdpSpConnectionImpl;
@@ -43,6 +39,8 @@ import com.liferay.saml.persistence.model.impl.SamlIdpSpConnectionModelImpl;
 import com.liferay.saml.persistence.service.persistence.SamlIdpSpConnectionPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -62,56 +60,32 @@ import java.util.Set;
  * </p>
  *
  * @author Mika Koivisto
- * @see SamlIdpSpConnectionPersistence
- * @see com.liferay.saml.persistence.service.persistence.SamlIdpSpConnectionUtil
  * @generated
  */
-@ProviderType
-public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<SamlIdpSpConnection>
+public class SamlIdpSpConnectionPersistenceImpl
+	extends BasePersistenceImpl<SamlIdpSpConnection>
 	implements SamlIdpSpConnectionPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link SamlIdpSpConnectionUtil} to access the saml idp sp connection persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use <code>SamlIdpSpConnectionUtil</code> to access the saml idp sp connection persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = SamlIdpSpConnectionImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
-			SamlIdpSpConnectionModelImpl.FINDER_CACHE_ENABLED,
-			SamlIdpSpConnectionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
-			SamlIdpSpConnectionModelImpl.FINDER_CACHE_ENABLED,
-			SamlIdpSpConnectionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
-			SamlIdpSpConnectionModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_COMPANYID =
-		new FinderPath(SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
-			SamlIdpSpConnectionModelImpl.FINDER_CACHE_ENABLED,
-			SamlIdpSpConnectionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
-			new String[] {
-				Long.class.getName(),
-				
-			Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID =
-		new FinderPath(SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
-			SamlIdpSpConnectionModelImpl.FINDER_CACHE_ENABLED,
-			SamlIdpSpConnectionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
-			new String[] { Long.class.getName() },
-			SamlIdpSpConnectionModelImpl.COMPANYID_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_COMPANYID = new FinderPath(SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
-			SamlIdpSpConnectionModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
-			new String[] { Long.class.getName() });
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		SamlIdpSpConnectionImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
+	private FinderPath _finderPathWithPaginationFindByCompanyId;
+	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+	private FinderPath _finderPathCountByCompanyId;
 
 	/**
 	 * Returns all the saml idp sp connections where companyId = &#63;.
@@ -121,15 +95,15 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 */
 	@Override
 	public List<SamlIdpSpConnection> findByCompanyId(long companyId) {
-		return findByCompanyId(companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			null);
+		return findByCompanyId(
+			companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the saml idp sp connections where companyId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SamlIdpSpConnectionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SamlIdpSpConnectionModelImpl</code>.
 	 * </p>
 	 *
 	 * @param companyId the company ID
@@ -138,8 +112,9 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 * @return the range of matching saml idp sp connections
 	 */
 	@Override
-	public List<SamlIdpSpConnection> findByCompanyId(long companyId, int start,
-		int end) {
+	public List<SamlIdpSpConnection> findByCompanyId(
+		long companyId, int start, int end) {
+
 		return findByCompanyId(companyId, start, end, null);
 	}
 
@@ -147,7 +122,7 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 * Returns an ordered range of all the saml idp sp connections where companyId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SamlIdpSpConnectionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SamlIdpSpConnectionModelImpl</code>.
 	 * </p>
 	 *
 	 * @param companyId the company ID
@@ -157,8 +132,10 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 * @return the ordered range of matching saml idp sp connections
 	 */
 	@Override
-	public List<SamlIdpSpConnection> findByCompanyId(long companyId, int start,
-		int end, OrderByComparator<SamlIdpSpConnection> orderByComparator) {
+	public List<SamlIdpSpConnection> findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<SamlIdpSpConnection> orderByComparator) {
+
 		return findByCompanyId(companyId, start, end, orderByComparator, true);
 	}
 
@@ -166,44 +143,49 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 * Returns an ordered range of all the saml idp sp connections where companyId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SamlIdpSpConnectionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SamlIdpSpConnectionModelImpl</code>.
 	 * </p>
 	 *
 	 * @param companyId the company ID
 	 * @param start the lower bound of the range of saml idp sp connections
 	 * @param end the upper bound of the range of saml idp sp connections (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching saml idp sp connections
 	 */
 	@Override
-	public List<SamlIdpSpConnection> findByCompanyId(long companyId, int start,
-		int end, OrderByComparator<SamlIdpSpConnection> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+	public List<SamlIdpSpConnection> findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<SamlIdpSpConnection> orderByComparator,
+		boolean useFinderCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID;
-			finderArgs = new Object[] { companyId };
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByCompanyId;
+				finderArgs = new Object[] {companyId};
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_COMPANYID;
-			finderArgs = new Object[] { companyId, start, end, orderByComparator };
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByCompanyId;
+			finderArgs = new Object[] {
+				companyId, start, end, orderByComparator
+			};
 		}
 
 		List<SamlIdpSpConnection> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<SamlIdpSpConnection>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<SamlIdpSpConnection>)finderCache.getResult(
+				finderPath, finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (SamlIdpSpConnection samlIdpSpConnection : list) {
-					if ((companyId != samlIdpSpConnection.getCompanyId())) {
+					if (companyId != samlIdpSpConnection.getCompanyId()) {
 						list = null;
 
 						break;
@@ -213,63 +195,56 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(3 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				query = new StringBundler(3);
+				sb = new StringBundler(3);
 			}
 
-			query.append(_SQL_SELECT_SAMLIDPSPCONNECTION_WHERE);
+			sb.append(_SQL_SELECT_SAMLIDPSPCONNECTION_WHERE);
 
-			query.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+			sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else
-			 if (pagination) {
-				query.append(SamlIdpSpConnectionModelImpl.ORDER_BY_JPQL);
+			else {
+				sb.append(SamlIdpSpConnectionModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(companyId);
+				queryPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<SamlIdpSpConnection>)QueryUtil.list(q,
-							getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<SamlIdpSpConnection>)QueryUtil.list(q,
-							getDialect(), start, end);
-				}
+				list = (List<SamlIdpSpConnection>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -288,26 +263,28 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 * @throws NoSuchIdpSpConnectionException if a matching saml idp sp connection could not be found
 	 */
 	@Override
-	public SamlIdpSpConnection findByCompanyId_First(long companyId,
-		OrderByComparator<SamlIdpSpConnection> orderByComparator)
+	public SamlIdpSpConnection findByCompanyId_First(
+			long companyId,
+			OrderByComparator<SamlIdpSpConnection> orderByComparator)
 		throws NoSuchIdpSpConnectionException {
-		SamlIdpSpConnection samlIdpSpConnection = fetchByCompanyId_First(companyId,
-				orderByComparator);
+
+		SamlIdpSpConnection samlIdpSpConnection = fetchByCompanyId_First(
+			companyId, orderByComparator);
 
 		if (samlIdpSpConnection != null) {
 			return samlIdpSpConnection;
 		}
 
-		StringBundler msg = new StringBundler(4);
+		StringBundler sb = new StringBundler(4);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("companyId=");
-		msg.append(companyId);
+		sb.append("companyId=");
+		sb.append(companyId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		sb.append("}");
 
-		throw new NoSuchIdpSpConnectionException(msg.toString());
+		throw new NoSuchIdpSpConnectionException(sb.toString());
 	}
 
 	/**
@@ -318,10 +295,12 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 * @return the first matching saml idp sp connection, or <code>null</code> if a matching saml idp sp connection could not be found
 	 */
 	@Override
-	public SamlIdpSpConnection fetchByCompanyId_First(long companyId,
+	public SamlIdpSpConnection fetchByCompanyId_First(
+		long companyId,
 		OrderByComparator<SamlIdpSpConnection> orderByComparator) {
-		List<SamlIdpSpConnection> list = findByCompanyId(companyId, 0, 1,
-				orderByComparator);
+
+		List<SamlIdpSpConnection> list = findByCompanyId(
+			companyId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -339,26 +318,28 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 * @throws NoSuchIdpSpConnectionException if a matching saml idp sp connection could not be found
 	 */
 	@Override
-	public SamlIdpSpConnection findByCompanyId_Last(long companyId,
-		OrderByComparator<SamlIdpSpConnection> orderByComparator)
+	public SamlIdpSpConnection findByCompanyId_Last(
+			long companyId,
+			OrderByComparator<SamlIdpSpConnection> orderByComparator)
 		throws NoSuchIdpSpConnectionException {
-		SamlIdpSpConnection samlIdpSpConnection = fetchByCompanyId_Last(companyId,
-				orderByComparator);
+
+		SamlIdpSpConnection samlIdpSpConnection = fetchByCompanyId_Last(
+			companyId, orderByComparator);
 
 		if (samlIdpSpConnection != null) {
 			return samlIdpSpConnection;
 		}
 
-		StringBundler msg = new StringBundler(4);
+		StringBundler sb = new StringBundler(4);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("companyId=");
-		msg.append(companyId);
+		sb.append("companyId=");
+		sb.append(companyId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		sb.append("}");
 
-		throw new NoSuchIdpSpConnectionException(msg.toString());
+		throw new NoSuchIdpSpConnectionException(sb.toString());
 	}
 
 	/**
@@ -369,16 +350,18 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 * @return the last matching saml idp sp connection, or <code>null</code> if a matching saml idp sp connection could not be found
 	 */
 	@Override
-	public SamlIdpSpConnection fetchByCompanyId_Last(long companyId,
+	public SamlIdpSpConnection fetchByCompanyId_Last(
+		long companyId,
 		OrderByComparator<SamlIdpSpConnection> orderByComparator) {
+
 		int count = countByCompanyId(companyId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<SamlIdpSpConnection> list = findByCompanyId(companyId, count - 1,
-				count, orderByComparator);
+		List<SamlIdpSpConnection> list = findByCompanyId(
+			companyId, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -398,10 +381,12 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 */
 	@Override
 	public SamlIdpSpConnection[] findByCompanyId_PrevAndNext(
-		long samlIdpSpConnectionId, long companyId,
-		OrderByComparator<SamlIdpSpConnection> orderByComparator)
+			long samlIdpSpConnectionId, long companyId,
+			OrderByComparator<SamlIdpSpConnection> orderByComparator)
 		throws NoSuchIdpSpConnectionException {
-		SamlIdpSpConnection samlIdpSpConnection = findByPrimaryKey(samlIdpSpConnectionId);
+
+		SamlIdpSpConnection samlIdpSpConnection = findByPrimaryKey(
+			samlIdpSpConnectionId);
 
 		Session session = null;
 
@@ -410,122 +395,128 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 
 			SamlIdpSpConnection[] array = new SamlIdpSpConnectionImpl[3];
 
-			array[0] = getByCompanyId_PrevAndNext(session, samlIdpSpConnection,
-					companyId, orderByComparator, true);
+			array[0] = getByCompanyId_PrevAndNext(
+				session, samlIdpSpConnection, companyId, orderByComparator,
+				true);
 
 			array[1] = samlIdpSpConnection;
 
-			array[2] = getByCompanyId_PrevAndNext(session, samlIdpSpConnection,
-					companyId, orderByComparator, false);
+			array[2] = getByCompanyId_PrevAndNext(
+				session, samlIdpSpConnection, companyId, orderByComparator,
+				false);
 
 			return array;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected SamlIdpSpConnection getByCompanyId_PrevAndNext(Session session,
-		SamlIdpSpConnection samlIdpSpConnection, long companyId,
+	protected SamlIdpSpConnection getByCompanyId_PrevAndNext(
+		Session session, SamlIdpSpConnection samlIdpSpConnection,
+		long companyId,
 		OrderByComparator<SamlIdpSpConnection> orderByComparator,
 		boolean previous) {
-		StringBundler query = null;
+
+		StringBundler sb = null;
 
 		if (orderByComparator != null) {
-			query = new StringBundler(4 +
-					(orderByComparator.getOrderByConditionFields().length * 3) +
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			query = new StringBundler(3);
+			sb = new StringBundler(3);
 		}
 
-		query.append(_SQL_SELECT_SAMLIDPSPCONNECTION_WHERE);
+		sb.append(_SQL_SELECT_SAMLIDPSPCONNECTION_WHERE);
 
-		query.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				query.append(WHERE_AND);
+				sb.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByConditionFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN);
+						sb.append(WHERE_GREATER_THAN);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN);
+						sb.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			query.append(ORDER_BY_CLAUSE);
+			sb.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC_HAS_NEXT);
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						query.append(ORDER_BY_DESC_HAS_NEXT);
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC);
+						sb.append(ORDER_BY_ASC);
 					}
 					else {
-						query.append(ORDER_BY_DESC);
+						sb.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			query.append(SamlIdpSpConnectionModelImpl.ORDER_BY_JPQL);
+			sb.append(SamlIdpSpConnectionModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
-		Query q = session.createQuery(sql);
+		Query query = session.createQuery(sql);
 
-		q.setFirstResult(0);
-		q.setMaxResults(2);
+		query.setFirstResult(0);
+		query.setMaxResults(2);
 
-		QueryPos qPos = QueryPos.getInstance(q);
+		QueryPos queryPos = QueryPos.getInstance(query);
 
-		qPos.add(companyId);
+		queryPos.add(companyId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(samlIdpSpConnection);
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(
+						samlIdpSpConnection)) {
 
-			for (Object value : values) {
-				qPos.add(value);
+				queryPos.add(orderByConditionValue);
 			}
 		}
 
-		List<SamlIdpSpConnection> list = q.list();
+		List<SamlIdpSpConnection> list = query.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -542,8 +533,10 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 */
 	@Override
 	public void removeByCompanyId(long companyId) {
-		for (SamlIdpSpConnection samlIdpSpConnection : findByCompanyId(
-				companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+		for (SamlIdpSpConnection samlIdpSpConnection :
+				findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+
 			remove(samlIdpSpConnection);
 		}
 	}
@@ -556,40 +549,40 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 */
 	@Override
 	public int countByCompanyId(long companyId) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_COMPANYID;
+		FinderPath finderPath = _finderPathCountByCompanyId;
 
-		Object[] finderArgs = new Object[] { companyId };
+		Object[] finderArgs = new Object[] {companyId};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(2);
+			StringBundler sb = new StringBundler(2);
 
-			query.append(_SQL_COUNT_SAMLIDPSPCONNECTION_WHERE);
+			sb.append(_SQL_COUNT_SAMLIDPSPCONNECTION_WHERE);
 
-			query.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+			sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(companyId);
+				queryPos.add(companyId);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -599,21 +592,14 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2 = "samlIdpSpConnection.companyId = ?";
-	public static final FinderPath FINDER_PATH_FETCH_BY_C_SSEI = new FinderPath(SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
-			SamlIdpSpConnectionModelImpl.FINDER_CACHE_ENABLED,
-			SamlIdpSpConnectionImpl.class, FINDER_CLASS_NAME_ENTITY,
-			"fetchByC_SSEI",
-			new String[] { Long.class.getName(), String.class.getName() },
-			SamlIdpSpConnectionModelImpl.COMPANYID_COLUMN_BITMASK |
-			SamlIdpSpConnectionModelImpl.SAMLSPENTITYID_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_C_SSEI = new FinderPath(SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
-			SamlIdpSpConnectionModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_SSEI",
-			new String[] { Long.class.getName(), String.class.getName() });
+	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2 =
+		"samlIdpSpConnection.companyId = ?";
+
+	private FinderPath _finderPathFetchByC_SSEI;
+	private FinderPath _finderPathCountByC_SSEI;
 
 	/**
-	 * Returns the saml idp sp connection where companyId = &#63; and samlSpEntityId = &#63; or throws a {@link NoSuchIdpSpConnectionException} if it could not be found.
+	 * Returns the saml idp sp connection where companyId = &#63; and samlSpEntityId = &#63; or throws a <code>NoSuchIdpSpConnectionException</code> if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param samlSpEntityId the saml sp entity ID
@@ -621,29 +607,31 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 * @throws NoSuchIdpSpConnectionException if a matching saml idp sp connection could not be found
 	 */
 	@Override
-	public SamlIdpSpConnection findByC_SSEI(long companyId,
-		String samlSpEntityId) throws NoSuchIdpSpConnectionException {
-		SamlIdpSpConnection samlIdpSpConnection = fetchByC_SSEI(companyId,
-				samlSpEntityId);
+	public SamlIdpSpConnection findByC_SSEI(
+			long companyId, String samlSpEntityId)
+		throws NoSuchIdpSpConnectionException {
+
+		SamlIdpSpConnection samlIdpSpConnection = fetchByC_SSEI(
+			companyId, samlSpEntityId);
 
 		if (samlIdpSpConnection == null) {
-			StringBundler msg = new StringBundler(6);
+			StringBundler sb = new StringBundler(6);
 
-			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			msg.append("companyId=");
-			msg.append(companyId);
+			sb.append("companyId=");
+			sb.append(companyId);
 
-			msg.append(", samlSpEntityId=");
-			msg.append(samlSpEntityId);
+			sb.append(", samlSpEntityId=");
+			sb.append(samlSpEntityId);
 
-			msg.append(StringPool.CLOSE_CURLY_BRACE);
+			sb.append("}");
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(msg.toString());
+				_log.debug(sb.toString());
 			}
 
-			throw new NoSuchIdpSpConnectionException(msg.toString());
+			throw new NoSuchIdpSpConnectionException(sb.toString());
 		}
 
 		return samlIdpSpConnection;
@@ -657,8 +645,9 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 * @return the matching saml idp sp connection, or <code>null</code> if a matching saml idp sp connection could not be found
 	 */
 	@Override
-	public SamlIdpSpConnection fetchByC_SSEI(long companyId,
-		String samlSpEntityId) {
+	public SamlIdpSpConnection fetchByC_SSEI(
+		long companyId, String samlSpEntityId) {
+
 		return fetchByC_SSEI(companyId, samlSpEntityId, true);
 	}
 
@@ -667,84 +656,98 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 *
 	 * @param companyId the company ID
 	 * @param samlSpEntityId the saml sp entity ID
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching saml idp sp connection, or <code>null</code> if a matching saml idp sp connection could not be found
 	 */
 	@Override
-	public SamlIdpSpConnection fetchByC_SSEI(long companyId,
-		String samlSpEntityId, boolean retrieveFromCache) {
-		Object[] finderArgs = new Object[] { companyId, samlSpEntityId };
+	public SamlIdpSpConnection fetchByC_SSEI(
+		long companyId, String samlSpEntityId, boolean useFinderCache) {
+
+		samlSpEntityId = Objects.toString(samlSpEntityId, "");
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {companyId, samlSpEntityId};
+		}
 
 		Object result = null;
 
-		if (retrieveFromCache) {
-			result = finderCache.getResult(FINDER_PATH_FETCH_BY_C_SSEI,
-					finderArgs, this);
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByC_SSEI, finderArgs, this);
 		}
 
 		if (result instanceof SamlIdpSpConnection) {
-			SamlIdpSpConnection samlIdpSpConnection = (SamlIdpSpConnection)result;
+			SamlIdpSpConnection samlIdpSpConnection =
+				(SamlIdpSpConnection)result;
 
 			if ((companyId != samlIdpSpConnection.getCompanyId()) ||
-					!Objects.equals(samlSpEntityId,
-						samlIdpSpConnection.getSamlSpEntityId())) {
+				!Objects.equals(
+					samlSpEntityId, samlIdpSpConnection.getSamlSpEntityId())) {
+
 				result = null;
 			}
 		}
 
 		if (result == null) {
-			StringBundler query = new StringBundler(4);
+			StringBundler sb = new StringBundler(4);
 
-			query.append(_SQL_SELECT_SAMLIDPSPCONNECTION_WHERE);
+			sb.append(_SQL_SELECT_SAMLIDPSPCONNECTION_WHERE);
 
-			query.append(_FINDER_COLUMN_C_SSEI_COMPANYID_2);
+			sb.append(_FINDER_COLUMN_C_SSEI_COMPANYID_2);
 
 			boolean bindSamlSpEntityId = false;
 
-			if (samlSpEntityId == null) {
-				query.append(_FINDER_COLUMN_C_SSEI_SAMLSPENTITYID_1);
-			}
-			else if (samlSpEntityId.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_C_SSEI_SAMLSPENTITYID_3);
+			if (samlSpEntityId.isEmpty()) {
+				sb.append(_FINDER_COLUMN_C_SSEI_SAMLSPENTITYID_3);
 			}
 			else {
 				bindSamlSpEntityId = true;
 
-				query.append(_FINDER_COLUMN_C_SSEI_SAMLSPENTITYID_2);
+				sb.append(_FINDER_COLUMN_C_SSEI_SAMLSPENTITYID_2);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(companyId);
+				queryPos.add(companyId);
 
 				if (bindSamlSpEntityId) {
-					qPos.add(samlSpEntityId);
+					queryPos.add(samlSpEntityId);
 				}
 
-				List<SamlIdpSpConnection> list = q.list();
+				List<SamlIdpSpConnection> list = query.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(FINDER_PATH_FETCH_BY_C_SSEI,
-						finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByC_SSEI, finderArgs, list);
+					}
 				}
 				else {
 					if (list.size() > 1) {
 						Collections.sort(list, Collections.reverseOrder());
 
 						if (_log.isWarnEnabled()) {
+							if (!useFinderCache) {
+								finderArgs = new Object[] {
+									companyId, samlSpEntityId
+								};
+							}
+
 							_log.warn(
 								"SamlIdpSpConnectionPersistenceImpl.fetchByC_SSEI(long, String, boolean) with parameters (" +
-								StringUtil.merge(finderArgs) +
-								") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+									StringUtil.merge(finderArgs) +
+										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 						}
 					}
 
@@ -753,20 +756,15 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 					result = samlIdpSpConnection;
 
 					cacheResult(samlIdpSpConnection);
-
-					if ((samlIdpSpConnection.getCompanyId() != companyId) ||
-							(samlIdpSpConnection.getSamlSpEntityId() == null) ||
-							!samlIdpSpConnection.getSamlSpEntityId()
-													.equals(samlSpEntityId)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_C_SSEI,
-							finderArgs, samlIdpSpConnection);
-					}
 				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_FETCH_BY_C_SSEI, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(
+						_finderPathFetchByC_SSEI, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -789,10 +787,12 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 * @return the saml idp sp connection that was removed
 	 */
 	@Override
-	public SamlIdpSpConnection removeByC_SSEI(long companyId,
-		String samlSpEntityId) throws NoSuchIdpSpConnectionException {
-		SamlIdpSpConnection samlIdpSpConnection = findByC_SSEI(companyId,
-				samlSpEntityId);
+	public SamlIdpSpConnection removeByC_SSEI(
+			long companyId, String samlSpEntityId)
+		throws NoSuchIdpSpConnectionException {
+
+		SamlIdpSpConnection samlIdpSpConnection = findByC_SSEI(
+			companyId, samlSpEntityId);
 
 		return remove(samlIdpSpConnection);
 	}
@@ -806,58 +806,57 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 */
 	@Override
 	public int countByC_SSEI(long companyId, String samlSpEntityId) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_SSEI;
+		samlSpEntityId = Objects.toString(samlSpEntityId, "");
 
-		Object[] finderArgs = new Object[] { companyId, samlSpEntityId };
+		FinderPath finderPath = _finderPathCountByC_SSEI;
+
+		Object[] finderArgs = new Object[] {companyId, samlSpEntityId};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(3);
+			StringBundler sb = new StringBundler(3);
 
-			query.append(_SQL_COUNT_SAMLIDPSPCONNECTION_WHERE);
+			sb.append(_SQL_COUNT_SAMLIDPSPCONNECTION_WHERE);
 
-			query.append(_FINDER_COLUMN_C_SSEI_COMPANYID_2);
+			sb.append(_FINDER_COLUMN_C_SSEI_COMPANYID_2);
 
 			boolean bindSamlSpEntityId = false;
 
-			if (samlSpEntityId == null) {
-				query.append(_FINDER_COLUMN_C_SSEI_SAMLSPENTITYID_1);
-			}
-			else if (samlSpEntityId.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_C_SSEI_SAMLSPENTITYID_3);
+			if (samlSpEntityId.isEmpty()) {
+				sb.append(_FINDER_COLUMN_C_SSEI_SAMLSPENTITYID_3);
 			}
 			else {
 				bindSamlSpEntityId = true;
 
-				query.append(_FINDER_COLUMN_C_SSEI_SAMLSPENTITYID_2);
+				sb.append(_FINDER_COLUMN_C_SSEI_SAMLSPENTITYID_2);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(companyId);
+				queryPos.add(companyId);
 
 				if (bindSamlSpEntityId) {
-					qPos.add(samlSpEntityId);
+					queryPos.add(samlSpEntityId);
 				}
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -867,10 +866,14 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_C_SSEI_COMPANYID_2 = "samlIdpSpConnection.companyId = ? AND ";
-	private static final String _FINDER_COLUMN_C_SSEI_SAMLSPENTITYID_1 = "samlIdpSpConnection.samlSpEntityId IS NULL";
-	private static final String _FINDER_COLUMN_C_SSEI_SAMLSPENTITYID_2 = "samlIdpSpConnection.samlSpEntityId = ?";
-	private static final String _FINDER_COLUMN_C_SSEI_SAMLSPENTITYID_3 = "(samlIdpSpConnection.samlSpEntityId IS NULL OR samlIdpSpConnection.samlSpEntityId = '')";
+	private static final String _FINDER_COLUMN_C_SSEI_COMPANYID_2 =
+		"samlIdpSpConnection.companyId = ? AND ";
+
+	private static final String _FINDER_COLUMN_C_SSEI_SAMLSPENTITYID_2 =
+		"samlIdpSpConnection.samlSpEntityId = ?";
+
+	private static final String _FINDER_COLUMN_C_SSEI_SAMLSPENTITYID_3 =
+		"(samlIdpSpConnection.samlSpEntityId IS NULL OR samlIdpSpConnection.samlSpEntityId = '')";
 
 	public SamlIdpSpConnectionPersistenceImpl() {
 		setModelClass(SamlIdpSpConnection.class);
@@ -883,15 +886,18 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 */
 	@Override
 	public void cacheResult(SamlIdpSpConnection samlIdpSpConnection) {
-		entityCache.putResult(SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
 			SamlIdpSpConnectionImpl.class, samlIdpSpConnection.getPrimaryKey(),
 			samlIdpSpConnection);
 
-		finderCache.putResult(FINDER_PATH_FETCH_BY_C_SSEI,
+		finderCache.putResult(
+			_finderPathFetchByC_SSEI,
 			new Object[] {
 				samlIdpSpConnection.getCompanyId(),
 				samlIdpSpConnection.getSamlSpEntityId()
-			}, samlIdpSpConnection);
+			},
+			samlIdpSpConnection);
 
 		samlIdpSpConnection.resetOriginalValues();
 	}
@@ -905,9 +911,10 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	public void cacheResult(List<SamlIdpSpConnection> samlIdpSpConnections) {
 		for (SamlIdpSpConnection samlIdpSpConnection : samlIdpSpConnections) {
 			if (entityCache.getResult(
-						SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
-						SamlIdpSpConnectionImpl.class,
-						samlIdpSpConnection.getPrimaryKey()) == null) {
+					SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
+					SamlIdpSpConnectionImpl.class,
+					samlIdpSpConnection.getPrimaryKey()) == null) {
+
 				cacheResult(samlIdpSpConnection);
 			}
 			else {
@@ -920,7 +927,7 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 * Clears the cache for all saml idp sp connections.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -936,19 +943,20 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 * Clears the cache for the saml idp sp connection.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(SamlIdpSpConnection samlIdpSpConnection) {
-		entityCache.removeResult(SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(
+			SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
 			SamlIdpSpConnectionImpl.class, samlIdpSpConnection.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
-		clearUniqueFindersCache((SamlIdpSpConnectionModelImpl)samlIdpSpConnection,
-			true);
+		clearUniqueFindersCache(
+			(SamlIdpSpConnectionModelImpl)samlIdpSpConnection, true);
 	}
 
 	@Override
@@ -957,50 +965,67 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (SamlIdpSpConnection samlIdpSpConnection : samlIdpSpConnections) {
-			entityCache.removeResult(SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(
+				SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
 				SamlIdpSpConnectionImpl.class,
 				samlIdpSpConnection.getPrimaryKey());
 
-			clearUniqueFindersCache((SamlIdpSpConnectionModelImpl)samlIdpSpConnection,
-				true);
+			clearUniqueFindersCache(
+				(SamlIdpSpConnectionModelImpl)samlIdpSpConnection, true);
+		}
+	}
+
+	public void clearCache(Set<Serializable> primaryKeys) {
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (Serializable primaryKey : primaryKeys) {
+			entityCache.removeResult(
+				SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
+				SamlIdpSpConnectionImpl.class, primaryKey);
 		}
 	}
 
 	protected void cacheUniqueFindersCache(
 		SamlIdpSpConnectionModelImpl samlIdpSpConnectionModelImpl) {
-		Object[] args = new Object[] {
-				samlIdpSpConnectionModelImpl.getCompanyId(),
-				samlIdpSpConnectionModelImpl.getSamlSpEntityId()
-			};
 
-		finderCache.putResult(FINDER_PATH_COUNT_BY_C_SSEI, args,
-			Long.valueOf(1), false);
-		finderCache.putResult(FINDER_PATH_FETCH_BY_C_SSEI, args,
-			samlIdpSpConnectionModelImpl, false);
+		Object[] args = new Object[] {
+			samlIdpSpConnectionModelImpl.getCompanyId(),
+			samlIdpSpConnectionModelImpl.getSamlSpEntityId()
+		};
+
+		finderCache.putResult(
+			_finderPathCountByC_SSEI, args, Long.valueOf(1), false);
+		finderCache.putResult(
+			_finderPathFetchByC_SSEI, args, samlIdpSpConnectionModelImpl,
+			false);
 	}
 
 	protected void clearUniqueFindersCache(
 		SamlIdpSpConnectionModelImpl samlIdpSpConnectionModelImpl,
 		boolean clearCurrent) {
+
 		if (clearCurrent) {
 			Object[] args = new Object[] {
-					samlIdpSpConnectionModelImpl.getCompanyId(),
-					samlIdpSpConnectionModelImpl.getSamlSpEntityId()
-				};
+				samlIdpSpConnectionModelImpl.getCompanyId(),
+				samlIdpSpConnectionModelImpl.getSamlSpEntityId()
+			};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_SSEI, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_C_SSEI, args);
+			finderCache.removeResult(_finderPathCountByC_SSEI, args);
+			finderCache.removeResult(_finderPathFetchByC_SSEI, args);
 		}
 
 		if ((samlIdpSpConnectionModelImpl.getColumnBitmask() &
-				FINDER_PATH_FETCH_BY_C_SSEI.getColumnBitmask()) != 0) {
-			Object[] args = new Object[] {
-					samlIdpSpConnectionModelImpl.getOriginalCompanyId(),
-					samlIdpSpConnectionModelImpl.getOriginalSamlSpEntityId()
-				};
+			 _finderPathFetchByC_SSEI.getColumnBitmask()) != 0) {
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_SSEI, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_C_SSEI, args);
+			Object[] args = new Object[] {
+				samlIdpSpConnectionModelImpl.getOriginalCompanyId(),
+				samlIdpSpConnectionModelImpl.getOriginalSamlSpEntityId()
+			};
+
+			finderCache.removeResult(_finderPathCountByC_SSEI, args);
+			finderCache.removeResult(_finderPathFetchByC_SSEI, args);
 		}
 	}
 
@@ -1017,7 +1042,7 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 		samlIdpSpConnection.setNew(true);
 		samlIdpSpConnection.setPrimaryKey(samlIdpSpConnectionId);
 
-		samlIdpSpConnection.setCompanyId(companyProvider.getCompanyId());
+		samlIdpSpConnection.setCompanyId(CompanyThreadLocal.getCompanyId());
 
 		return samlIdpSpConnection;
 	}
@@ -1032,6 +1057,7 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	@Override
 	public SamlIdpSpConnection remove(long samlIdpSpConnectionId)
 		throws NoSuchIdpSpConnectionException {
+
 		return remove((Serializable)samlIdpSpConnectionId);
 	}
 
@@ -1045,30 +1071,32 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	@Override
 	public SamlIdpSpConnection remove(Serializable primaryKey)
 		throws NoSuchIdpSpConnectionException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			SamlIdpSpConnection samlIdpSpConnection = (SamlIdpSpConnection)session.get(SamlIdpSpConnectionImpl.class,
-					primaryKey);
+			SamlIdpSpConnection samlIdpSpConnection =
+				(SamlIdpSpConnection)session.get(
+					SamlIdpSpConnectionImpl.class, primaryKey);
 
 			if (samlIdpSpConnection == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchIdpSpConnectionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchIdpSpConnectionException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(samlIdpSpConnection);
 		}
-		catch (NoSuchIdpSpConnectionException nsee) {
-			throw nsee;
+		catch (NoSuchIdpSpConnectionException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1078,7 +1106,6 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	@Override
 	protected SamlIdpSpConnection removeImpl(
 		SamlIdpSpConnection samlIdpSpConnection) {
-		samlIdpSpConnection = toUnwrappedModel(samlIdpSpConnection);
 
 		Session session = null;
 
@@ -1086,16 +1113,17 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 			session = openSession();
 
 			if (!session.contains(samlIdpSpConnection)) {
-				samlIdpSpConnection = (SamlIdpSpConnection)session.get(SamlIdpSpConnectionImpl.class,
-						samlIdpSpConnection.getPrimaryKeyObj());
+				samlIdpSpConnection = (SamlIdpSpConnection)session.get(
+					SamlIdpSpConnectionImpl.class,
+					samlIdpSpConnection.getPrimaryKeyObj());
 			}
 
 			if (samlIdpSpConnection != null) {
 				session.delete(samlIdpSpConnection);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1111,13 +1139,31 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	@Override
 	public SamlIdpSpConnection updateImpl(
 		SamlIdpSpConnection samlIdpSpConnection) {
-		samlIdpSpConnection = toUnwrappedModel(samlIdpSpConnection);
 
 		boolean isNew = samlIdpSpConnection.isNew();
 
-		SamlIdpSpConnectionModelImpl samlIdpSpConnectionModelImpl = (SamlIdpSpConnectionModelImpl)samlIdpSpConnection;
+		if (!(samlIdpSpConnection instanceof SamlIdpSpConnectionModelImpl)) {
+			InvocationHandler invocationHandler = null;
 
-		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+			if (ProxyUtil.isProxyClass(samlIdpSpConnection.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(
+					samlIdpSpConnection);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in samlIdpSpConnection proxy " +
+						invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom SamlIdpSpConnection implementation " +
+					samlIdpSpConnection.getClass());
+		}
+
+		SamlIdpSpConnectionModelImpl samlIdpSpConnectionModelImpl =
+			(SamlIdpSpConnectionModelImpl)samlIdpSpConnection;
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -1126,8 +1172,8 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 				samlIdpSpConnection.setCreateDate(now);
 			}
 			else {
-				samlIdpSpConnection.setCreateDate(serviceContext.getCreateDate(
-						now));
+				samlIdpSpConnection.setCreateDate(
+					serviceContext.getCreateDate(now));
 			}
 		}
 
@@ -1136,8 +1182,8 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 				samlIdpSpConnection.setModifiedDate(now);
 			}
 			else {
-				samlIdpSpConnection.setModifiedDate(serviceContext.getModifiedDate(
-						now));
+				samlIdpSpConnection.setModifiedDate(
+					serviceContext.getModifiedDate(now));
 			}
 		}
 
@@ -1152,11 +1198,12 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 				samlIdpSpConnection.setNew(false);
 			}
 			else {
-				samlIdpSpConnection = (SamlIdpSpConnection)session.merge(samlIdpSpConnection);
+				samlIdpSpConnection = (SamlIdpSpConnection)session.merge(
+					samlIdpSpConnection);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1167,41 +1214,44 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 		if (!SamlIdpSpConnectionModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else
-		 if (isNew) {
+		else if (isNew) {
 			Object[] args = new Object[] {
+				samlIdpSpConnectionModelImpl.getCompanyId()
+			};
+
+			finderCache.removeResult(_finderPathCountByCompanyId, args);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindByCompanyId, args);
+
+			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+		}
+		else {
+			if ((samlIdpSpConnectionModelImpl.getColumnBitmask() &
+				 _finderPathWithoutPaginationFindByCompanyId.
+					 getColumnBitmask()) != 0) {
+
+				Object[] args = new Object[] {
+					samlIdpSpConnectionModelImpl.getOriginalCompanyId()
+				};
+
+				finderCache.removeResult(_finderPathCountByCompanyId, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByCompanyId, args);
+
+				args = new Object[] {
 					samlIdpSpConnectionModelImpl.getCompanyId()
 				};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPANYID, args);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
-				args);
-
-			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
-				FINDER_ARGS_EMPTY);
-		}
-
-		else {
-			if ((samlIdpSpConnectionModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] {
-						samlIdpSpConnectionModelImpl.getOriginalCompanyId()
-					};
-
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPANYID, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
-					args);
-
-				args = new Object[] { samlIdpSpConnectionModelImpl.getCompanyId() };
-
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPANYID, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
-					args);
+				finderCache.removeResult(_finderPathCountByCompanyId, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByCompanyId, args);
 			}
 		}
 
-		entityCache.putResult(SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
 			SamlIdpSpConnectionImpl.class, samlIdpSpConnection.getPrimaryKey(),
 			samlIdpSpConnection, false);
 
@@ -1213,41 +1263,8 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 		return samlIdpSpConnection;
 	}
 
-	protected SamlIdpSpConnection toUnwrappedModel(
-		SamlIdpSpConnection samlIdpSpConnection) {
-		if (samlIdpSpConnection instanceof SamlIdpSpConnectionImpl) {
-			return samlIdpSpConnection;
-		}
-
-		SamlIdpSpConnectionImpl samlIdpSpConnectionImpl = new SamlIdpSpConnectionImpl();
-
-		samlIdpSpConnectionImpl.setNew(samlIdpSpConnection.isNew());
-		samlIdpSpConnectionImpl.setPrimaryKey(samlIdpSpConnection.getPrimaryKey());
-
-		samlIdpSpConnectionImpl.setSamlIdpSpConnectionId(samlIdpSpConnection.getSamlIdpSpConnectionId());
-		samlIdpSpConnectionImpl.setCompanyId(samlIdpSpConnection.getCompanyId());
-		samlIdpSpConnectionImpl.setUserId(samlIdpSpConnection.getUserId());
-		samlIdpSpConnectionImpl.setUserName(samlIdpSpConnection.getUserName());
-		samlIdpSpConnectionImpl.setCreateDate(samlIdpSpConnection.getCreateDate());
-		samlIdpSpConnectionImpl.setModifiedDate(samlIdpSpConnection.getModifiedDate());
-		samlIdpSpConnectionImpl.setSamlSpEntityId(samlIdpSpConnection.getSamlSpEntityId());
-		samlIdpSpConnectionImpl.setAssertionLifetime(samlIdpSpConnection.getAssertionLifetime());
-		samlIdpSpConnectionImpl.setAttributeNames(samlIdpSpConnection.getAttributeNames());
-		samlIdpSpConnectionImpl.setAttributesEnabled(samlIdpSpConnection.isAttributesEnabled());
-		samlIdpSpConnectionImpl.setAttributesNamespaceEnabled(samlIdpSpConnection.isAttributesNamespaceEnabled());
-		samlIdpSpConnectionImpl.setEnabled(samlIdpSpConnection.isEnabled());
-		samlIdpSpConnectionImpl.setMetadataUrl(samlIdpSpConnection.getMetadataUrl());
-		samlIdpSpConnectionImpl.setMetadataXml(samlIdpSpConnection.getMetadataXml());
-		samlIdpSpConnectionImpl.setMetadataUpdatedDate(samlIdpSpConnection.getMetadataUpdatedDate());
-		samlIdpSpConnectionImpl.setName(samlIdpSpConnection.getName());
-		samlIdpSpConnectionImpl.setNameIdAttribute(samlIdpSpConnection.getNameIdAttribute());
-		samlIdpSpConnectionImpl.setNameIdFormat(samlIdpSpConnection.getNameIdFormat());
-
-		return samlIdpSpConnectionImpl;
-	}
-
 	/**
-	 * Returns the saml idp sp connection with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the saml idp sp connection with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the saml idp sp connection
 	 * @return the saml idp sp connection
@@ -1256,6 +1273,7 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	@Override
 	public SamlIdpSpConnection findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchIdpSpConnectionException {
+
 		SamlIdpSpConnection samlIdpSpConnection = fetchByPrimaryKey(primaryKey);
 
 		if (samlIdpSpConnection == null) {
@@ -1263,15 +1281,15 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchIdpSpConnectionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchIdpSpConnectionException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return samlIdpSpConnection;
 	}
 
 	/**
-	 * Returns the saml idp sp connection with the primary key or throws a {@link NoSuchIdpSpConnectionException} if it could not be found.
+	 * Returns the saml idp sp connection with the primary key or throws a <code>NoSuchIdpSpConnectionException</code> if it could not be found.
 	 *
 	 * @param samlIdpSpConnectionId the primary key of the saml idp sp connection
 	 * @return the saml idp sp connection
@@ -1280,6 +1298,7 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	@Override
 	public SamlIdpSpConnection findByPrimaryKey(long samlIdpSpConnectionId)
 		throws NoSuchIdpSpConnectionException {
+
 		return findByPrimaryKey((Serializable)samlIdpSpConnectionId);
 	}
 
@@ -1291,14 +1310,16 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 */
 	@Override
 	public SamlIdpSpConnection fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
-				SamlIdpSpConnectionImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
+			SamlIdpSpConnectionImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
 		}
 
-		SamlIdpSpConnection samlIdpSpConnection = (SamlIdpSpConnection)serializable;
+		SamlIdpSpConnection samlIdpSpConnection =
+			(SamlIdpSpConnection)serializable;
 
 		if (samlIdpSpConnection == null) {
 			Session session = null;
@@ -1306,22 +1327,24 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 			try {
 				session = openSession();
 
-				samlIdpSpConnection = (SamlIdpSpConnection)session.get(SamlIdpSpConnectionImpl.class,
-						primaryKey);
+				samlIdpSpConnection = (SamlIdpSpConnection)session.get(
+					SamlIdpSpConnectionImpl.class, primaryKey);
 
 				if (samlIdpSpConnection != null) {
 					cacheResult(samlIdpSpConnection);
 				}
 				else {
-					entityCache.putResult(SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
 						SamlIdpSpConnectionImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
-				entityCache.removeResult(SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception exception) {
+				entityCache.removeResult(
+					SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
 					SamlIdpSpConnectionImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1345,18 +1368,21 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	@Override
 	public Map<Serializable, SamlIdpSpConnection> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, SamlIdpSpConnection> map = new HashMap<Serializable, SamlIdpSpConnection>();
+		Map<Serializable, SamlIdpSpConnection> map =
+			new HashMap<Serializable, SamlIdpSpConnection>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
 
 			Serializable primaryKey = iterator.next();
 
-			SamlIdpSpConnection samlIdpSpConnection = fetchByPrimaryKey(primaryKey);
+			SamlIdpSpConnection samlIdpSpConnection = fetchByPrimaryKey(
+				primaryKey);
 
 			if (samlIdpSpConnection != null) {
 				map.put(primaryKey, samlIdpSpConnection);
@@ -1368,8 +1394,9 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
-					SamlIdpSpConnectionImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
+				SamlIdpSpConnectionImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -1389,46 +1416,51 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler sb = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
-		query.append(_SQL_SELECT_SAMLIDPSPCONNECTION_WHERE_PKS_IN);
+		sb.append(_SQL_SELECT_SAMLIDPSPCONNECTION_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append((long)primaryKey);
+			sb.append((long)primaryKey);
 
-			query.append(StringPool.COMMA);
+			sb.append(",");
 		}
 
-		query.setIndex(query.index() - 1);
+		sb.setIndex(sb.index() - 1);
 
-		query.append(StringPool.CLOSE_PARENTHESIS);
+		sb.append(")");
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query q = session.createQuery(sql);
+			Query query = session.createQuery(sql);
 
-			for (SamlIdpSpConnection samlIdpSpConnection : (List<SamlIdpSpConnection>)q.list()) {
-				map.put(samlIdpSpConnection.getPrimaryKeyObj(),
+			for (SamlIdpSpConnection samlIdpSpConnection :
+					(List<SamlIdpSpConnection>)query.list()) {
+
+				map.put(
+					samlIdpSpConnection.getPrimaryKeyObj(),
 					samlIdpSpConnection);
 
 				cacheResult(samlIdpSpConnection);
 
-				uncachedPrimaryKeys.remove(samlIdpSpConnection.getPrimaryKeyObj());
+				uncachedPrimaryKeys.remove(
+					samlIdpSpConnection.getPrimaryKeyObj());
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
 					SamlIdpSpConnectionImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1451,7 +1483,7 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 * Returns a range of all the saml idp sp connections.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SamlIdpSpConnectionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SamlIdpSpConnectionModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of saml idp sp connections
@@ -1467,7 +1499,7 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 * Returns an ordered range of all the saml idp sp connections.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SamlIdpSpConnectionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SamlIdpSpConnectionModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of saml idp sp connections
@@ -1476,8 +1508,10 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 * @return the ordered range of saml idp sp connections
 	 */
 	@Override
-	public List<SamlIdpSpConnection> findAll(int start, int end,
+	public List<SamlIdpSpConnection> findAll(
+		int start, int end,
 		OrderByComparator<SamlIdpSpConnection> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -1485,62 +1519,63 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 * Returns an ordered range of all the saml idp sp connections.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link SamlIdpSpConnectionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SamlIdpSpConnectionModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of saml idp sp connections
 	 * @param end the upper bound of the range of saml idp sp connections (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of saml idp sp connections
 	 */
 	@Override
-	public List<SamlIdpSpConnection> findAll(int start, int end,
+	public List<SamlIdpSpConnection> findAll(
+		int start, int end,
 		OrderByComparator<SamlIdpSpConnection> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+		boolean useFinderCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-			finderArgs = FINDER_ARGS_EMPTY;
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-			finderArgs = new Object[] { start, end, orderByComparator };
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindAll;
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<SamlIdpSpConnection> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<SamlIdpSpConnection>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<SamlIdpSpConnection>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
-				query.append(_SQL_SELECT_SAMLIDPSPCONNECTION);
+				sb.append(_SQL_SELECT_SAMLIDPSPCONNECTION);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
-				sql = query.toString();
+				sql = sb.toString();
 			}
 			else {
 				sql = _SQL_SELECT_SAMLIDPSPCONNECTION;
 
-				if (pagination) {
-					sql = sql.concat(SamlIdpSpConnectionModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(SamlIdpSpConnectionModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -1548,29 +1583,23 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<SamlIdpSpConnection>)QueryUtil.list(q,
-							getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<SamlIdpSpConnection>)QueryUtil.list(q,
-							getDialect(), start, end);
-				}
+				list = (List<SamlIdpSpConnection>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1598,8 +1627,8 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -1607,18 +1636,19 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(_SQL_COUNT_SAMLIDPSPCONNECTION);
+				Query query = session.createQuery(
+					_SQL_COUNT_SAMLIDPSPCONNECTION);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
-					FINDER_ARGS_EMPTY);
+			catch (Exception exception) {
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1637,6 +1667,63 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 * Initializes the saml idp sp connection persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(
+			SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
+			SamlIdpSpConnectionModelImpl.FINDER_CACHE_ENABLED,
+			SamlIdpSpConnectionImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
+			SamlIdpSpConnectionModelImpl.FINDER_CACHE_ENABLED,
+			SamlIdpSpConnectionImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+			new String[0]);
+
+		_finderPathCountAll = new FinderPath(
+			SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
+			SamlIdpSpConnectionModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByCompanyId = new FinderPath(
+			SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
+			SamlIdpSpConnectionModelImpl.FINDER_CACHE_ENABLED,
+			SamlIdpSpConnectionImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			});
+
+		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
+			SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
+			SamlIdpSpConnectionModelImpl.FINDER_CACHE_ENABLED,
+			SamlIdpSpConnectionImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
+			new String[] {Long.class.getName()},
+			SamlIdpSpConnectionModelImpl.COMPANYID_COLUMN_BITMASK);
+
+		_finderPathCountByCompanyId = new FinderPath(
+			SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
+			SamlIdpSpConnectionModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
+			new String[] {Long.class.getName()});
+
+		_finderPathFetchByC_SSEI = new FinderPath(
+			SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
+			SamlIdpSpConnectionModelImpl.FINDER_CACHE_ENABLED,
+			SamlIdpSpConnectionImpl.class, FINDER_CLASS_NAME_ENTITY,
+			"fetchByC_SSEI",
+			new String[] {Long.class.getName(), String.class.getName()},
+			SamlIdpSpConnectionModelImpl.COMPANYID_COLUMN_BITMASK |
+			SamlIdpSpConnectionModelImpl.SAMLSPENTITYID_COLUMN_BITMASK);
+
+		_finderPathCountByC_SSEI = new FinderPath(
+			SamlIdpSpConnectionModelImpl.ENTITY_CACHE_ENABLED,
+			SamlIdpSpConnectionModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_SSEI",
+			new String[] {Long.class.getName(), String.class.getName()});
 	}
 
 	public void destroy() {
@@ -1646,19 +1733,36 @@ public class SamlIdpSpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@ServiceReference(type = CompanyProviderWrapper.class)
-	protected CompanyProvider companyProvider;
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_SAMLIDPSPCONNECTION = "SELECT samlIdpSpConnection FROM SamlIdpSpConnection samlIdpSpConnection";
-	private static final String _SQL_SELECT_SAMLIDPSPCONNECTION_WHERE_PKS_IN = "SELECT samlIdpSpConnection FROM SamlIdpSpConnection samlIdpSpConnection WHERE samlIdpSpConnectionId IN (";
-	private static final String _SQL_SELECT_SAMLIDPSPCONNECTION_WHERE = "SELECT samlIdpSpConnection FROM SamlIdpSpConnection samlIdpSpConnection WHERE ";
-	private static final String _SQL_COUNT_SAMLIDPSPCONNECTION = "SELECT COUNT(samlIdpSpConnection) FROM SamlIdpSpConnection samlIdpSpConnection";
-	private static final String _SQL_COUNT_SAMLIDPSPCONNECTION_WHERE = "SELECT COUNT(samlIdpSpConnection) FROM SamlIdpSpConnection samlIdpSpConnection WHERE ";
+
+	private static final String _SQL_SELECT_SAMLIDPSPCONNECTION =
+		"SELECT samlIdpSpConnection FROM SamlIdpSpConnection samlIdpSpConnection";
+
+	private static final String _SQL_SELECT_SAMLIDPSPCONNECTION_WHERE_PKS_IN =
+		"SELECT samlIdpSpConnection FROM SamlIdpSpConnection samlIdpSpConnection WHERE samlIdpSpConnectionId IN (";
+
+	private static final String _SQL_SELECT_SAMLIDPSPCONNECTION_WHERE =
+		"SELECT samlIdpSpConnection FROM SamlIdpSpConnection samlIdpSpConnection WHERE ";
+
+	private static final String _SQL_COUNT_SAMLIDPSPCONNECTION =
+		"SELECT COUNT(samlIdpSpConnection) FROM SamlIdpSpConnection samlIdpSpConnection";
+
+	private static final String _SQL_COUNT_SAMLIDPSPCONNECTION_WHERE =
+		"SELECT COUNT(samlIdpSpConnection) FROM SamlIdpSpConnection samlIdpSpConnection WHERE ";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "samlIdpSpConnection.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No SamlIdpSpConnection exists with the primary key ";
-	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No SamlIdpSpConnection exists with the key {";
-	private static final Log _log = LogFactoryUtil.getLog(SamlIdpSpConnectionPersistenceImpl.class);
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No SamlIdpSpConnection exists with the primary key ";
+
+	private static final String _NO_SUCH_ENTITY_WITH_KEY =
+		"No SamlIdpSpConnection exists with the key {";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		SamlIdpSpConnectionPersistenceImpl.class);
+
 }

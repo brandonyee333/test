@@ -14,28 +14,26 @@
 
 package com.liferay.portal.kernel.service.persistence;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class ResourceBlockFinderUtil {
-	public static com.liferay.portal.kernel.security.permission.ResourceBlockIdsBag findByC_G_N_R(
-		long companyId, long groupId, java.lang.String name, long[] roleIds) {
+
+	public static
+		com.liferay.portal.kernel.security.permission.ResourceBlockIdsBag
+			findByC_G_N_R(
+				long companyId, long groupId, String name, long[] roleIds) {
+
 		return getFinder().findByC_G_N_R(companyId, groupId, name, roleIds);
 	}
 
 	public static ResourceBlockFinder getFinder() {
 		if (_finder == null) {
-			_finder = (ResourceBlockFinder)PortalBeanLocatorUtil.locate(ResourceBlockFinder.class.getName());
-
-			ReferenceRegistry.registerReference(ResourceBlockFinderUtil.class,
-				"_finder");
+			_finder = (ResourceBlockFinder)PortalBeanLocatorUtil.locate(
+				ResourceBlockFinder.class.getName());
 		}
 
 		return _finder;
@@ -43,10 +41,8 @@ public class ResourceBlockFinderUtil {
 
 	public void setFinder(ResourceBlockFinder finder) {
 		_finder = finder;
-
-		ReferenceRegistry.registerReference(ResourceBlockFinderUtil.class,
-			"_finder");
 	}
 
 	private static ResourceBlockFinder _finder;
+
 }

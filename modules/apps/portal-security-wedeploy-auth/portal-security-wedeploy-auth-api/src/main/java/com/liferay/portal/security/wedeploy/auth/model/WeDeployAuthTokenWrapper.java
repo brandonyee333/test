@@ -14,10 +14,7 @@
 
 package com.liferay.portal.security.wedeploy.auth.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,9 +34,9 @@ import java.util.Objects;
  * @see WeDeployAuthToken
  * @generated
  */
-@ProviderType
-public class WeDeployAuthTokenWrapper implements WeDeployAuthToken,
-	ModelWrapper<WeDeployAuthToken> {
+public class WeDeployAuthTokenWrapper
+	implements ModelWrapper<WeDeployAuthToken>, WeDeployAuthToken {
+
 	public WeDeployAuthTokenWrapper(WeDeployAuthToken weDeployAuthToken) {
 		_weDeployAuthToken = weDeployAuthToken;
 	}
@@ -129,13 +126,139 @@ public class WeDeployAuthTokenWrapper implements WeDeployAuthToken,
 	}
 
 	@Override
-	public WeDeployAuthToken toEscapedModel() {
-		return new WeDeployAuthTokenWrapper(_weDeployAuthToken.toEscapedModel());
+	public Object clone() {
+		return new WeDeployAuthTokenWrapper(
+			(WeDeployAuthToken)_weDeployAuthToken.clone());
 	}
 
 	@Override
-	public WeDeployAuthToken toUnescapedModel() {
-		return new WeDeployAuthTokenWrapper(_weDeployAuthToken.toUnescapedModel());
+	public int compareTo(WeDeployAuthToken weDeployAuthToken) {
+		return _weDeployAuthToken.compareTo(weDeployAuthToken);
+	}
+
+	/**
+	 * Returns the client ID of this we deploy auth token.
+	 *
+	 * @return the client ID of this we deploy auth token
+	 */
+	@Override
+	public String getClientId() {
+		return _weDeployAuthToken.getClientId();
+	}
+
+	/**
+	 * Returns the company ID of this we deploy auth token.
+	 *
+	 * @return the company ID of this we deploy auth token
+	 */
+	@Override
+	public long getCompanyId() {
+		return _weDeployAuthToken.getCompanyId();
+	}
+
+	/**
+	 * Returns the create date of this we deploy auth token.
+	 *
+	 * @return the create date of this we deploy auth token
+	 */
+	@Override
+	public Date getCreateDate() {
+		return _weDeployAuthToken.getCreateDate();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _weDeployAuthToken.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the modified date of this we deploy auth token.
+	 *
+	 * @return the modified date of this we deploy auth token
+	 */
+	@Override
+	public Date getModifiedDate() {
+		return _weDeployAuthToken.getModifiedDate();
+	}
+
+	/**
+	 * Returns the primary key of this we deploy auth token.
+	 *
+	 * @return the primary key of this we deploy auth token
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _weDeployAuthToken.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _weDeployAuthToken.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the token of this we deploy auth token.
+	 *
+	 * @return the token of this we deploy auth token
+	 */
+	@Override
+	public String getToken() {
+		return _weDeployAuthToken.getToken();
+	}
+
+	/**
+	 * Returns the type of this we deploy auth token.
+	 *
+	 * @return the type of this we deploy auth token
+	 */
+	@Override
+	public int getType() {
+		return _weDeployAuthToken.getType();
+	}
+
+	/**
+	 * Returns the user ID of this we deploy auth token.
+	 *
+	 * @return the user ID of this we deploy auth token
+	 */
+	@Override
+	public long getUserId() {
+		return _weDeployAuthToken.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this we deploy auth token.
+	 *
+	 * @return the user name of this we deploy auth token
+	 */
+	@Override
+	public String getUserName() {
+		return _weDeployAuthToken.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this we deploy auth token.
+	 *
+	 * @return the user uuid of this we deploy auth token
+	 */
+	@Override
+	public String getUserUuid() {
+		return _weDeployAuthToken.getUserUuid();
+	}
+
+	/**
+	 * Returns the we deploy auth token ID of this we deploy auth token.
+	 *
+	 * @return the we deploy auth token ID of this we deploy auth token
+	 */
+	@Override
+	public long getWeDeployAuthTokenId() {
+		return _weDeployAuthToken.getWeDeployAuthTokenId();
+	}
+
+	@Override
+	public int hashCode() {
+		return _weDeployAuthToken.hashCode();
 	}
 
 	@Override
@@ -154,156 +277,6 @@ public class WeDeployAuthTokenWrapper implements WeDeployAuthToken,
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _weDeployAuthToken.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WeDeployAuthToken> toCacheModel() {
-		return _weDeployAuthToken.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(WeDeployAuthToken weDeployAuthToken) {
-		return _weDeployAuthToken.compareTo(weDeployAuthToken);
-	}
-
-	/**
-	* Returns the type of this we deploy auth token.
-	*
-	* @return the type of this we deploy auth token
-	*/
-	@Override
-	public int getType() {
-		return _weDeployAuthToken.getType();
-	}
-
-	@Override
-	public int hashCode() {
-		return _weDeployAuthToken.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _weDeployAuthToken.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new WeDeployAuthTokenWrapper((WeDeployAuthToken)_weDeployAuthToken.clone());
-	}
-
-	/**
-	* Returns the client ID of this we deploy auth token.
-	*
-	* @return the client ID of this we deploy auth token
-	*/
-	@Override
-	public java.lang.String getClientId() {
-		return _weDeployAuthToken.getClientId();
-	}
-
-	/**
-	* Returns the token of this we deploy auth token.
-	*
-	* @return the token of this we deploy auth token
-	*/
-	@Override
-	public java.lang.String getToken() {
-		return _weDeployAuthToken.getToken();
-	}
-
-	/**
-	* Returns the user name of this we deploy auth token.
-	*
-	* @return the user name of this we deploy auth token
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _weDeployAuthToken.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this we deploy auth token.
-	*
-	* @return the user uuid of this we deploy auth token
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _weDeployAuthToken.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _weDeployAuthToken.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _weDeployAuthToken.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this we deploy auth token.
-	*
-	* @return the create date of this we deploy auth token
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _weDeployAuthToken.getCreateDate();
-	}
-
-	/**
-	* Returns the modified date of this we deploy auth token.
-	*
-	* @return the modified date of this we deploy auth token
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _weDeployAuthToken.getModifiedDate();
-	}
-
-	/**
-	* Returns the company ID of this we deploy auth token.
-	*
-	* @return the company ID of this we deploy auth token
-	*/
-	@Override
-	public long getCompanyId() {
-		return _weDeployAuthToken.getCompanyId();
-	}
-
-	/**
-	* Returns the primary key of this we deploy auth token.
-	*
-	* @return the primary key of this we deploy auth token
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _weDeployAuthToken.getPrimaryKey();
-	}
-
-	/**
-	* Returns the user ID of this we deploy auth token.
-	*
-	* @return the user ID of this we deploy auth token
-	*/
-	@Override
-	public long getUserId() {
-		return _weDeployAuthToken.getUserId();
-	}
-
-	/**
-	* Returns the we deploy auth token ID of this we deploy auth token.
-	*
-	* @return the we deploy auth token ID of this we deploy auth token
-	*/
-	@Override
-	public long getWeDeployAuthTokenId() {
-		return _weDeployAuthToken.getWeDeployAuthTokenId();
-	}
-
-	@Override
 	public void persist() {
 		_weDeployAuthToken.persist();
 	}
@@ -314,33 +287,40 @@ public class WeDeployAuthTokenWrapper implements WeDeployAuthToken,
 	}
 
 	/**
-	* Sets the client ID of this we deploy auth token.
-	*
-	* @param clientId the client ID of this we deploy auth token
-	*/
+	 * Sets the client ID of this we deploy auth token.
+	 *
+	 * @param clientId the client ID of this we deploy auth token
+	 */
 	@Override
-	public void setClientId(java.lang.String clientId) {
+	public void setClientId(String clientId) {
 		_weDeployAuthToken.setClientId(clientId);
 	}
 
 	/**
-	* Sets the company ID of this we deploy auth token.
-	*
-	* @param companyId the company ID of this we deploy auth token
-	*/
+	 * Sets the company ID of this we deploy auth token.
+	 *
+	 * @param companyId the company ID of this we deploy auth token
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_weDeployAuthToken.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this we deploy auth token.
-	*
-	* @param createDate the create date of this we deploy auth token
-	*/
+	 * Sets the create date of this we deploy auth token.
+	 *
+	 * @param createDate the create date of this we deploy auth token
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_weDeployAuthToken.setCreateDate(createDate);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_weDeployAuthToken.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -349,21 +329,15 @@ public class WeDeployAuthTokenWrapper implements WeDeployAuthToken,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_weDeployAuthToken.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_weDeployAuthToken.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the modified date of this we deploy auth token.
-	*
-	* @param modifiedDate the modified date of this we deploy auth token
-	*/
+	 * Sets the modified date of this we deploy auth token.
+	 *
+	 * @param modifiedDate the modified date of this we deploy auth token
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_weDeployAuthToken.setModifiedDate(modifiedDate);
@@ -375,10 +349,10 @@ public class WeDeployAuthTokenWrapper implements WeDeployAuthToken,
 	}
 
 	/**
-	* Sets the primary key of this we deploy auth token.
-	*
-	* @param primaryKey the primary key of this we deploy auth token
-	*/
+	 * Sets the primary key of this we deploy auth token.
+	 *
+	 * @param primaryKey the primary key of this we deploy auth token
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_weDeployAuthToken.setPrimaryKey(primaryKey);
@@ -390,63 +364,92 @@ public class WeDeployAuthTokenWrapper implements WeDeployAuthToken,
 	}
 
 	/**
-	* Sets the token of this we deploy auth token.
-	*
-	* @param token the token of this we deploy auth token
-	*/
+	 * Sets the token of this we deploy auth token.
+	 *
+	 * @param token the token of this we deploy auth token
+	 */
 	@Override
-	public void setToken(java.lang.String token) {
+	public void setToken(String token) {
 		_weDeployAuthToken.setToken(token);
 	}
 
 	/**
-	* Sets the type of this we deploy auth token.
-	*
-	* @param type the type of this we deploy auth token
-	*/
+	 * Sets the type of this we deploy auth token.
+	 *
+	 * @param type the type of this we deploy auth token
+	 */
 	@Override
 	public void setType(int type) {
 		_weDeployAuthToken.setType(type);
 	}
 
 	/**
-	* Sets the user ID of this we deploy auth token.
-	*
-	* @param userId the user ID of this we deploy auth token
-	*/
+	 * Sets the user ID of this we deploy auth token.
+	 *
+	 * @param userId the user ID of this we deploy auth token
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_weDeployAuthToken.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this we deploy auth token.
-	*
-	* @param userName the user name of this we deploy auth token
-	*/
+	 * Sets the user name of this we deploy auth token.
+	 *
+	 * @param userName the user name of this we deploy auth token
+	 */
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_weDeployAuthToken.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this we deploy auth token.
-	*
-	* @param userUuid the user uuid of this we deploy auth token
-	*/
+	 * Sets the user uuid of this we deploy auth token.
+	 *
+	 * @param userUuid the user uuid of this we deploy auth token
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_weDeployAuthToken.setUserUuid(userUuid);
 	}
 
 	/**
-	* Sets the we deploy auth token ID of this we deploy auth token.
-	*
-	* @param weDeployAuthTokenId the we deploy auth token ID of this we deploy auth token
-	*/
+	 * Sets the we deploy auth token ID of this we deploy auth token.
+	 *
+	 * @param weDeployAuthTokenId the we deploy auth token ID of this we deploy auth token
+	 */
 	@Override
 	public void setWeDeployAuthTokenId(long weDeployAuthTokenId) {
 		_weDeployAuthToken.setWeDeployAuthTokenId(weDeployAuthTokenId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<WeDeployAuthToken>
+		toCacheModel() {
+
+		return _weDeployAuthToken.toCacheModel();
+	}
+
+	@Override
+	public WeDeployAuthToken toEscapedModel() {
+		return new WeDeployAuthTokenWrapper(
+			_weDeployAuthToken.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _weDeployAuthToken.toString();
+	}
+
+	@Override
+	public WeDeployAuthToken toUnescapedModel() {
+		return new WeDeployAuthTokenWrapper(
+			_weDeployAuthToken.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _weDeployAuthToken.toXmlString();
 	}
 
 	@Override
@@ -459,10 +462,13 @@ public class WeDeployAuthTokenWrapper implements WeDeployAuthToken,
 			return false;
 		}
 
-		WeDeployAuthTokenWrapper weDeployAuthTokenWrapper = (WeDeployAuthTokenWrapper)obj;
+		WeDeployAuthTokenWrapper weDeployAuthTokenWrapper =
+			(WeDeployAuthTokenWrapper)obj;
 
-		if (Objects.equals(_weDeployAuthToken,
-					weDeployAuthTokenWrapper._weDeployAuthToken)) {
+		if (Objects.equals(
+				_weDeployAuthToken,
+				weDeployAuthTokenWrapper._weDeployAuthToken)) {
+
 			return true;
 		}
 
@@ -490,4 +496,5 @@ public class WeDeployAuthTokenWrapper implements WeDeployAuthToken,
 	}
 
 	private final WeDeployAuthToken _weDeployAuthToken;
+
 }

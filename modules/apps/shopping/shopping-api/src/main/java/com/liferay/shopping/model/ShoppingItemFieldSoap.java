@@ -14,8 +14,6 @@
 
 package com.liferay.shopping.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -27,8 +25,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class ShoppingItemFieldSoap implements Serializable {
+
 	public static ShoppingItemFieldSoap toSoapModel(ShoppingItemField model) {
 		ShoppingItemFieldSoap soapModel = new ShoppingItemFieldSoap();
 
@@ -44,7 +42,9 @@ public class ShoppingItemFieldSoap implements Serializable {
 
 	public static ShoppingItemFieldSoap[] toSoapModels(
 		ShoppingItemField[] models) {
-		ShoppingItemFieldSoap[] soapModels = new ShoppingItemFieldSoap[models.length];
+
+		ShoppingItemFieldSoap[] soapModels =
+			new ShoppingItemFieldSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -55,10 +55,12 @@ public class ShoppingItemFieldSoap implements Serializable {
 
 	public static ShoppingItemFieldSoap[][] toSoapModels(
 		ShoppingItemField[][] models) {
+
 		ShoppingItemFieldSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new ShoppingItemFieldSoap[models.length][models[0].length];
+			soapModels =
+				new ShoppingItemFieldSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new ShoppingItemFieldSoap[0][0];
@@ -73,7 +75,9 @@ public class ShoppingItemFieldSoap implements Serializable {
 
 	public static ShoppingItemFieldSoap[] toSoapModels(
 		List<ShoppingItemField> models) {
-		List<ShoppingItemFieldSoap> soapModels = new ArrayList<ShoppingItemFieldSoap>(models.size());
+
+		List<ShoppingItemFieldSoap> soapModels =
+			new ArrayList<ShoppingItemFieldSoap>(models.size());
 
 		for (ShoppingItemField model : models) {
 			soapModels.add(toSoapModel(model));
@@ -147,4 +151,5 @@ public class ShoppingItemFieldSoap implements Serializable {
 	private String _name;
 	private String _values;
 	private String _description;
+
 }

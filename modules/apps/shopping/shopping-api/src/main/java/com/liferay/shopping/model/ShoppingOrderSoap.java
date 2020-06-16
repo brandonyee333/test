@@ -14,8 +14,6 @@
 
 package com.liferay.shopping.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,11 +24,10 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.shopping.service.http.ShoppingOrderServiceSoap}.
  *
  * @author Brian Wing Shun Chan
- * @see com.liferay.shopping.service.http.ShoppingOrderServiceSoap
  * @generated
  */
-@ProviderType
 public class ShoppingOrderSoap implements Serializable {
+
 	public static ShoppingOrderSoap toSoapModel(ShoppingOrder model) {
 		ShoppingOrderSoap soapModel = new ShoppingOrderSoap();
 
@@ -45,8 +42,8 @@ public class ShoppingOrderSoap implements Serializable {
 		soapModel.setTax(model.getTax());
 		soapModel.setShipping(model.getShipping());
 		soapModel.setAltShipping(model.getAltShipping());
-		soapModel.setRequiresShipping(model.getRequiresShipping());
-		soapModel.setInsure(model.getInsure());
+		soapModel.setRequiresShipping(model.isRequiresShipping());
+		soapModel.setInsure(model.isInsure());
 		soapModel.setInsurance(model.getInsurance());
 		soapModel.setCouponCodes(model.getCouponCodes());
 		soapModel.setCouponDiscount(model.getCouponDiscount());
@@ -60,7 +57,7 @@ public class ShoppingOrderSoap implements Serializable {
 		soapModel.setBillingZip(model.getBillingZip());
 		soapModel.setBillingCountry(model.getBillingCountry());
 		soapModel.setBillingPhone(model.getBillingPhone());
-		soapModel.setShipToBilling(model.getShipToBilling());
+		soapModel.setShipToBilling(model.isShipToBilling());
 		soapModel.setShippingFirstName(model.getShippingFirstName());
 		soapModel.setShippingLastName(model.getShippingLastName());
 		soapModel.setShippingEmailAddress(model.getShippingEmailAddress());
@@ -83,8 +80,8 @@ public class ShoppingOrderSoap implements Serializable {
 		soapModel.setPpPaymentGross(model.getPpPaymentGross());
 		soapModel.setPpReceiverEmail(model.getPpReceiverEmail());
 		soapModel.setPpPayerEmail(model.getPpPayerEmail());
-		soapModel.setSendOrderEmail(model.getSendOrderEmail());
-		soapModel.setSendShippingEmail(model.getSendShippingEmail());
+		soapModel.setSendOrderEmail(model.isSendOrderEmail());
+		soapModel.setSendShippingEmail(model.isSendShippingEmail());
 
 		return soapModel;
 	}
@@ -117,7 +114,8 @@ public class ShoppingOrderSoap implements Serializable {
 	}
 
 	public static ShoppingOrderSoap[] toSoapModels(List<ShoppingOrder> models) {
-		List<ShoppingOrderSoap> soapModels = new ArrayList<ShoppingOrderSoap>(models.size());
+		List<ShoppingOrderSoap> soapModels = new ArrayList<ShoppingOrderSoap>(
+			models.size());
 
 		for (ShoppingOrder model : models) {
 			soapModels.add(toSoapModel(model));
@@ -616,4 +614,5 @@ public class ShoppingOrderSoap implements Serializable {
 	private String _ppPayerEmail;
 	private boolean _sendOrderEmail;
 	private boolean _sendShippingEmail;
+
 }

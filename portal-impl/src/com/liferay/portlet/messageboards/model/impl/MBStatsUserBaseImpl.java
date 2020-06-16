@@ -14,8 +14,6 @@
 
 package com.liferay.portlet.messageboards.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.message.boards.kernel.model.MBStatsUser;
 import com.liferay.message.boards.kernel.service.MBStatsUserLocalServiceUtil;
 
@@ -31,13 +29,13 @@ import com.liferay.message.boards.kernel.service.MBStatsUserLocalServiceUtil;
  * @see MBStatsUser
  * @generated
  */
-@ProviderType
-public abstract class MBStatsUserBaseImpl extends MBStatsUserModelImpl
-	implements MBStatsUser {
+public abstract class MBStatsUserBaseImpl
+	extends MBStatsUserModelImpl implements MBStatsUser {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a message boards stats user model instance should use the {@link MBStatsUser} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a message boards stats user model instance should use the <code>MBStatsUser</code> interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -48,4 +46,5 @@ public abstract class MBStatsUserBaseImpl extends MBStatsUserModelImpl
 			MBStatsUserLocalServiceUtil.updateMBStatsUser(this);
 		}
 	}
+
 }

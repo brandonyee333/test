@@ -37,36 +37,39 @@ import java.util.Map;
  *
  * @author Brian Wing Shun Chan
  * @see LayoutPrototypeServiceUtil
- * @see com.liferay.portal.service.base.LayoutPrototypeServiceBaseImpl
- * @see com.liferay.portal.service.impl.LayoutPrototypeServiceImpl
  * @generated
  */
 @AccessControlled
 @JSONWebService
 @ProviderType
-@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
-	PortalException.class, SystemException.class})
+@Transactional(
+	isolation = Isolation.PORTAL,
+	rollbackFor = {PortalException.class, SystemException.class}
+)
 public interface LayoutPrototypeService extends BaseService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link LayoutPrototypeServiceUtil} to access the layout prototype remote service. Add custom service methods to {@link com.liferay.portal.service.impl.LayoutPrototypeServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link LayoutPrototypeServiceUtil} to access the layout prototype remote service. Add custom service methods to <code>com.liferay.portal.service.impl.LayoutPrototypeServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-
-	/**
-	* @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	#addLayoutPrototype(Map, Map, boolean, ServiceContext)}
-	*/
-	@java.lang.Deprecated
 	public LayoutPrototype addLayoutPrototype(
-		Map<Locale, java.lang.String> nameMap, java.lang.String description,
-		boolean active, ServiceContext serviceContext)
+			Map<Locale, String> nameMap, Map<Locale, String> descriptionMap,
+			boolean active, ServiceContext serviceContext)
 		throws PortalException;
 
+	/**
+	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
+	 #addLayoutPrototype(Map, Map, boolean, ServiceContext)}
+	 */
+	@Deprecated
 	public LayoutPrototype addLayoutPrototype(
-		Map<Locale, java.lang.String> nameMap,
-		Map<Locale, java.lang.String> descriptionMap, boolean active,
-		ServiceContext serviceContext) throws PortalException;
+			Map<Locale, String> nameMap, String description, boolean active,
+			ServiceContext serviceContext)
+		throws PortalException;
+
+	public void deleteLayoutPrototype(long layoutPrototypeId)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public LayoutPrototype fetchLayoutPrototype(long layoutPrototypeId)
@@ -77,33 +80,33 @@ public interface LayoutPrototypeService extends BaseService {
 		throws PortalException;
 
 	/**
-	* @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	#updateLayoutPrototype(long, Map, Map, boolean,
-	ServiceContext)}
-	*/
-	@java.lang.Deprecated
-	public LayoutPrototype updateLayoutPrototype(long layoutPrototypeId,
-		Map<Locale, java.lang.String> nameMap, java.lang.String description,
-		boolean active, ServiceContext serviceContext)
-		throws PortalException;
-
-	public LayoutPrototype updateLayoutPrototype(long layoutPrototypeId,
-		Map<Locale, java.lang.String> nameMap,
-		Map<Locale, java.lang.String> descriptionMap, boolean active,
-		ServiceContext serviceContext) throws PortalException;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
+	public String getOSGiServiceIdentifier();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LayoutPrototype> search(long companyId,
-		java.lang.Boolean active, OrderByComparator<LayoutPrototype> obc)
+	public List<LayoutPrototype> search(
+			long companyId, Boolean active,
+			OrderByComparator<LayoutPrototype> obc)
 		throws PortalException;
 
-	public void deleteLayoutPrototype(long layoutPrototypeId)
+	public LayoutPrototype updateLayoutPrototype(
+			long layoutPrototypeId, Map<Locale, String> nameMap,
+			Map<Locale, String> descriptionMap, boolean active,
+			ServiceContext serviceContext)
 		throws PortalException;
+
+	/**
+	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
+	 #updateLayoutPrototype(long, Map, Map, boolean,
+	 ServiceContext)}
+	 */
+	@Deprecated
+	public LayoutPrototype updateLayoutPrototype(
+			long layoutPrototypeId, Map<Locale, String> nameMap,
+			String description, boolean active, ServiceContext serviceContext)
+		throws PortalException;
+
 }

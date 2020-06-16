@@ -25,19 +25,22 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see MBCategoryModel
- * @see com.liferay.portlet.messageboards.model.impl.MBCategoryImpl
- * @see com.liferay.portlet.messageboards.model.impl.MBCategoryModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.portlet.messageboards.model.impl.MBCategoryImpl")
+@ImplementationClassName(
+	"com.liferay.portlet.messageboards.model.impl.MBCategoryImpl"
+)
 @ProviderType
 public interface MBCategory extends MBCategoryModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.portlet.messageboards.model.impl.MBCategoryImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.portlet.messageboards.model.impl.MBCategoryImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<MBCategory, Long> CATEGORY_ID_ACCESSOR = new Accessor<MBCategory, Long>() {
+	public static final Accessor<MBCategory, Long> CATEGORY_ID_ACCESSOR =
+		new Accessor<MBCategory, Long>() {
+
 			@Override
 			public Long get(MBCategory mbCategory) {
 				return mbCategory.getCategoryId();
@@ -52,9 +55,10 @@ public interface MBCategory extends MBCategoryModel, PersistedModel {
 			public Class<MBCategory> getTypeClass() {
 				return MBCategory.class;
 			}
+
 		};
 
-	public java.util.List<java.lang.Long> getAncestorCategoryIds()
+	public java.util.List<Long> getAncestorCategoryIds()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.util.List<MBCategory> getAncestors()
@@ -64,4 +68,5 @@ public interface MBCategory extends MBCategoryModel, PersistedModel {
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public boolean isRoot();
+
 }

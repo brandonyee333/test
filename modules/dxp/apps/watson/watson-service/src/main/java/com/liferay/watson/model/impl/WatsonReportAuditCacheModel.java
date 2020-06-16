@@ -1,26 +1,22 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-
 import com.liferay.watson.model.WatsonReportAudit;
 
 import java.io.Externalizable;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing WatsonReportAudit in entity cache.
  *
  * @author Steven Smith
- * @see WatsonReportAudit
  * @generated
  */
-@ProviderType
-public class WatsonReportAuditCacheModel implements CacheModel<WatsonReportAudit>,
-	Externalizable {
+public class WatsonReportAuditCacheModel
+	implements CacheModel<WatsonReportAudit>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,9 +45,12 @@ public class WatsonReportAuditCacheModel implements CacheModel<WatsonReportAudit
 			return false;
 		}
 
-		WatsonReportAuditCacheModel watsonReportAuditCacheModel = (WatsonReportAuditCacheModel)obj;
+		WatsonReportAuditCacheModel watsonReportAuditCacheModel =
+			(WatsonReportAuditCacheModel)obj;
 
-		if (watsonReportAuditId == watsonReportAuditCacheModel.watsonReportAuditId) {
+		if (watsonReportAuditId ==
+				watsonReportAuditCacheModel.watsonReportAuditId) {
+
 			return true;
 		}
 
@@ -115,7 +113,8 @@ public class WatsonReportAuditCacheModel implements CacheModel<WatsonReportAudit
 
 	@Override
 	public WatsonReportAudit toEntityModel() {
-		WatsonReportAuditImpl watsonReportAuditImpl = new WatsonReportAuditImpl();
+		WatsonReportAuditImpl watsonReportAuditImpl =
+			new WatsonReportAuditImpl();
 
 		watsonReportAuditImpl.setWatsonReportAuditId(watsonReportAuditId);
 		watsonReportAuditImpl.setGroupId(groupId);
@@ -123,7 +122,7 @@ public class WatsonReportAuditCacheModel implements CacheModel<WatsonReportAudit
 		watsonReportAuditImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonReportAuditImpl.setUserName(StringPool.BLANK);
+			watsonReportAuditImpl.setUserName("");
 		}
 		else {
 			watsonReportAuditImpl.setUserName(userName);
@@ -149,42 +148,42 @@ public class WatsonReportAuditCacheModel implements CacheModel<WatsonReportAudit
 		watsonReportAuditImpl.setWatsonReportId(watsonReportId);
 
 		if (name == null) {
-			watsonReportAuditImpl.setName(StringPool.BLANK);
+			watsonReportAuditImpl.setName("");
 		}
 		else {
 			watsonReportAuditImpl.setName(name);
 		}
 
 		if (description == null) {
-			watsonReportAuditImpl.setDescription(StringPool.BLANK);
+			watsonReportAuditImpl.setDescription("");
 		}
 		else {
 			watsonReportAuditImpl.setDescription(description);
 		}
 
 		if (fullReport == null) {
-			watsonReportAuditImpl.setFullReport(StringPool.BLANK);
+			watsonReportAuditImpl.setFullReport("");
 		}
 		else {
 			watsonReportAuditImpl.setFullReport(fullReport);
 		}
 
 		if (imagePayload == null) {
-			watsonReportAuditImpl.setImagePayload(StringPool.BLANK);
+			watsonReportAuditImpl.setImagePayload("");
 		}
 		else {
 			watsonReportAuditImpl.setImagePayload(imagePayload);
 		}
 
 		if (timeSpent == null) {
-			watsonReportAuditImpl.setTimeSpent(StringPool.BLANK);
+			watsonReportAuditImpl.setTimeSpent("");
 		}
 		else {
 			watsonReportAuditImpl.setTimeSpent(timeSpent);
 		}
 
 		if (reportedUser == null) {
-			watsonReportAuditImpl.setReportedUser(StringPool.BLANK);
+			watsonReportAuditImpl.setReportedUser("");
 		}
 		else {
 			watsonReportAuditImpl.setReportedUser(reportedUser);
@@ -206,7 +205,9 @@ public class WatsonReportAuditCacheModel implements CacheModel<WatsonReportAudit
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		watsonReportAuditId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -228,7 +229,7 @@ public class WatsonReportAuditCacheModel implements CacheModel<WatsonReportAudit
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
 		fullReport = objectInput.readUTF();
-		imagePayload = objectInput.readUTF();
+		imagePayload = (String)objectInput.readObject();
 		timeSpent = objectInput.readUTF();
 		reportedUser = objectInput.readUTF();
 		reportDate = objectInput.readLong();
@@ -239,8 +240,7 @@ public class WatsonReportAuditCacheModel implements CacheModel<WatsonReportAudit
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonReportAuditId);
 
 		objectOutput.writeLong(groupId);
@@ -250,7 +250,7 @@ public class WatsonReportAuditCacheModel implements CacheModel<WatsonReportAudit
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -268,42 +268,42 @@ public class WatsonReportAuditCacheModel implements CacheModel<WatsonReportAudit
 		objectOutput.writeLong(watsonReportId);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (fullReport == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(fullReport);
 		}
 
 		if (imagePayload == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(imagePayload);
+			objectOutput.writeObject(imagePayload);
 		}
 
 		if (timeSpent == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(timeSpent);
 		}
 
 		if (reportedUser == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(reportedUser);
@@ -336,4 +336,5 @@ public class WatsonReportAuditCacheModel implements CacheModel<WatsonReportAudit
 	public long reportDate;
 	public int key;
 	public int status;
+
 }

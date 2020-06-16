@@ -25,19 +25,22 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see DDMStorageLinkModel
- * @see com.liferay.dynamic.data.mapping.model.impl.DDMStorageLinkImpl
- * @see com.liferay.dynamic.data.mapping.model.impl.DDMStorageLinkModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.dynamic.data.mapping.model.impl.DDMStorageLinkImpl")
+@ImplementationClassName(
+	"com.liferay.dynamic.data.mapping.model.impl.DDMStorageLinkImpl"
+)
 @ProviderType
 public interface DDMStorageLink extends DDMStorageLinkModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.dynamic.data.mapping.model.impl.DDMStorageLinkImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.dynamic.data.mapping.model.impl.DDMStorageLinkImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<DDMStorageLink, Long> STORAGE_LINK_ID_ACCESSOR = new Accessor<DDMStorageLink, Long>() {
+	public static final Accessor<DDMStorageLink, Long>
+		STORAGE_LINK_ID_ACCESSOR = new Accessor<DDMStorageLink, Long>() {
+
 			@Override
 			public Long get(DDMStorageLink ddmStorageLink) {
 				return ddmStorageLink.getStorageLinkId();
@@ -52,11 +55,13 @@ public interface DDMStorageLink extends DDMStorageLinkModel, PersistedModel {
 			public Class<DDMStorageLink> getTypeClass() {
 				return DDMStorageLink.class;
 			}
+
 		};
 
-	public java.lang.String getStorageType()
+	public String getStorageType()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public DDMStructure getStructure()
 		throws com.liferay.portal.kernel.exception.PortalException;
+
 }

@@ -14,14 +14,11 @@
 
 package com.liferay.portal.background.task.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.background.task.model.BackgroundTask;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -36,12 +33,11 @@ import java.util.Map;
  * The cache model class for representing BackgroundTask in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see BackgroundTask
  * @generated
  */
-@ProviderType
-public class BackgroundTaskCacheModel implements CacheModel<BackgroundTask>,
-	Externalizable, MVCCModel {
+public class BackgroundTaskCacheModel
+	implements CacheModel<BackgroundTask>, Externalizable, MVCCModel {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -52,10 +48,12 @@ public class BackgroundTaskCacheModel implements CacheModel<BackgroundTask>,
 			return false;
 		}
 
-		BackgroundTaskCacheModel backgroundTaskCacheModel = (BackgroundTaskCacheModel)obj;
+		BackgroundTaskCacheModel backgroundTaskCacheModel =
+			(BackgroundTaskCacheModel)obj;
 
 		if ((backgroundTaskId == backgroundTaskCacheModel.backgroundTaskId) &&
-				(mvccVersion == backgroundTaskCacheModel.mvccVersion)) {
+			(mvccVersion == backgroundTaskCacheModel.mvccVersion)) {
+
 			return true;
 		}
 
@@ -131,7 +129,7 @@ public class BackgroundTaskCacheModel implements CacheModel<BackgroundTask>,
 		backgroundTaskImpl.setUserId(userId);
 
 		if (userName == null) {
-			backgroundTaskImpl.setUserName(StringPool.BLANK);
+			backgroundTaskImpl.setUserName("");
 		}
 		else {
 			backgroundTaskImpl.setUserName(userName);
@@ -152,21 +150,21 @@ public class BackgroundTaskCacheModel implements CacheModel<BackgroundTask>,
 		}
 
 		if (name == null) {
-			backgroundTaskImpl.setName(StringPool.BLANK);
+			backgroundTaskImpl.setName("");
 		}
 		else {
 			backgroundTaskImpl.setName(name);
 		}
 
 		if (servletContextNames == null) {
-			backgroundTaskImpl.setServletContextNames(StringPool.BLANK);
+			backgroundTaskImpl.setServletContextNames("");
 		}
 		else {
 			backgroundTaskImpl.setServletContextNames(servletContextNames);
 		}
 
 		if (taskExecutorClassName == null) {
-			backgroundTaskImpl.setTaskExecutorClassName(StringPool.BLANK);
+			backgroundTaskImpl.setTaskExecutorClassName("");
 		}
 		else {
 			backgroundTaskImpl.setTaskExecutorClassName(taskExecutorClassName);
@@ -185,7 +183,7 @@ public class BackgroundTaskCacheModel implements CacheModel<BackgroundTask>,
 		backgroundTaskImpl.setStatus(status);
 
 		if (statusMessage == null) {
-			backgroundTaskImpl.setStatusMessage(StringPool.BLANK);
+			backgroundTaskImpl.setStatusMessage("");
 		}
 		else {
 			backgroundTaskImpl.setStatusMessage(statusMessage);
@@ -199,6 +197,7 @@ public class BackgroundTaskCacheModel implements CacheModel<BackgroundTask>,
 	@Override
 	public void readExternal(ObjectInput objectInput)
 		throws ClassNotFoundException, IOException {
+
 		mvccVersion = objectInput.readLong();
 
 		backgroundTaskId = objectInput.readLong();
@@ -220,12 +219,11 @@ public class BackgroundTaskCacheModel implements CacheModel<BackgroundTask>,
 		completionDate = objectInput.readLong();
 
 		status = objectInput.readInt();
-		statusMessage = objectInput.readUTF();
+		statusMessage = (String)objectInput.readObject();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		objectOutput.writeLong(backgroundTaskId);
@@ -237,7 +235,7 @@ public class BackgroundTaskCacheModel implements CacheModel<BackgroundTask>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -247,21 +245,21 @@ public class BackgroundTaskCacheModel implements CacheModel<BackgroundTask>,
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (servletContextNames == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(servletContextNames);
 		}
 
 		if (taskExecutorClassName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(taskExecutorClassName);
@@ -275,10 +273,10 @@ public class BackgroundTaskCacheModel implements CacheModel<BackgroundTask>,
 		objectOutput.writeInt(status);
 
 		if (statusMessage == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(statusMessage);
+			objectOutput.writeObject(statusMessage);
 		}
 	}
 
@@ -298,4 +296,5 @@ public class BackgroundTaskCacheModel implements CacheModel<BackgroundTask>,
 	public long completionDate;
 	public int status;
 	public String statusMessage;
+
 }

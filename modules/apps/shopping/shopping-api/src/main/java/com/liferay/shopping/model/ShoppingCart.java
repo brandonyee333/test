@@ -25,19 +25,20 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see ShoppingCartModel
- * @see com.liferay.shopping.model.impl.ShoppingCartImpl
- * @see com.liferay.shopping.model.impl.ShoppingCartModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.shopping.model.impl.ShoppingCartImpl")
 @ProviderType
-public interface ShoppingCart extends ShoppingCartModel, PersistedModel {
+public interface ShoppingCart extends PersistedModel, ShoppingCartModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.shopping.model.impl.ShoppingCartImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.shopping.model.impl.ShoppingCartImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<ShoppingCart, Long> CART_ID_ACCESSOR = new Accessor<ShoppingCart, Long>() {
+	public static final Accessor<ShoppingCart, Long> CART_ID_ACCESSOR =
+		new Accessor<ShoppingCart, Long>() {
+
 			@Override
 			public Long get(ShoppingCart shoppingCart) {
 				return shoppingCart.getCartId();
@@ -52,14 +53,16 @@ public interface ShoppingCart extends ShoppingCartModel, PersistedModel {
 			public Class<ShoppingCart> getTypeClass() {
 				return ShoppingCart.class;
 			}
+
 		};
 
-	public void addItemId(long itemId, java.lang.String fields);
+	public void addItemId(long itemId, String fields);
 
 	public ShoppingCoupon getCoupon()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.util.Map<ShoppingCartItem, java.lang.Integer> getItems();
+	public java.util.Map<ShoppingCartItem, Integer> getItems();
 
 	public int getItemsSize();
+
 }

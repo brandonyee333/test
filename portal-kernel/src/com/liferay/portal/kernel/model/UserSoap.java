@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,11 +24,10 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.portal.service.http.UserServiceSoap}.
  *
  * @author Brian Wing Shun Chan
- * @see com.liferay.portal.service.http.UserServiceSoap
  * @generated
  */
-@ProviderType
 public class UserSoap implements Serializable {
+
 	public static UserSoap toSoapModel(User model) {
 		UserSoap soapModel = new UserSoap();
 
@@ -40,11 +37,11 @@ public class UserSoap implements Serializable {
 		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
-		soapModel.setDefaultUser(model.getDefaultUser());
+		soapModel.setDefaultUser(model.isDefaultUser());
 		soapModel.setContactId(model.getContactId());
 		soapModel.setPassword(model.getPassword());
-		soapModel.setPasswordEncrypted(model.getPasswordEncrypted());
-		soapModel.setPasswordReset(model.getPasswordReset());
+		soapModel.setPasswordEncrypted(model.isPasswordEncrypted());
+		soapModel.setPasswordReset(model.isPasswordReset());
 		soapModel.setPasswordModifiedDate(model.getPasswordModifiedDate());
 		soapModel.setDigest(model.getDigest());
 		soapModel.setReminderQueryQuestion(model.getReminderQueryQuestion());
@@ -71,10 +68,10 @@ public class UserSoap implements Serializable {
 		soapModel.setLastLoginIP(model.getLastLoginIP());
 		soapModel.setLastFailedLoginDate(model.getLastFailedLoginDate());
 		soapModel.setFailedLoginAttempts(model.getFailedLoginAttempts());
-		soapModel.setLockout(model.getLockout());
+		soapModel.setLockout(model.isLockout());
 		soapModel.setLockoutDate(model.getLockoutDate());
-		soapModel.setAgreedToTermsOfUse(model.getAgreedToTermsOfUse());
-		soapModel.setEmailAddressVerified(model.getEmailAddressVerified());
+		soapModel.setAgreedToTermsOfUse(model.isAgreedToTermsOfUse());
+		soapModel.setEmailAddressVerified(model.isEmailAddressVerified());
 		soapModel.setStatus(model.getStatus());
 
 		return soapModel;
@@ -530,4 +527,5 @@ public class UserSoap implements Serializable {
 	private boolean _agreedToTermsOfUse;
 	private boolean _emailAddressVerified;
 	private int _status;
+
 }

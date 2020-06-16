@@ -1,27 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.testray.model.TestrayCase;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing TestrayCase in entity cache.
  *
  * @author Ethan Bustad
- * @see TestrayCase
  * @generated
  */
-@ProviderType
-public class TestrayCaseCacheModel implements CacheModel<TestrayCase>,
-	Externalizable {
+public class TestrayCaseCacheModel
+	implements CacheModel<TestrayCase>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,7 +45,8 @@ public class TestrayCaseCacheModel implements CacheModel<TestrayCase>,
 			return false;
 		}
 
-		TestrayCaseCacheModel testrayCaseCacheModel = (TestrayCaseCacheModel)obj;
+		TestrayCaseCacheModel testrayCaseCacheModel =
+			(TestrayCaseCacheModel)obj;
 
 		if (testrayCaseId == testrayCaseCacheModel.testrayCaseId) {
 			return true;
@@ -121,7 +117,7 @@ public class TestrayCaseCacheModel implements CacheModel<TestrayCase>,
 		testrayCaseImpl.setUserId(userId);
 
 		if (userName == null) {
-			testrayCaseImpl.setUserName(StringPool.BLANK);
+			testrayCaseImpl.setUserName("");
 		}
 		else {
 			testrayCaseImpl.setUserName(userName);
@@ -146,21 +142,21 @@ public class TestrayCaseCacheModel implements CacheModel<TestrayCase>,
 		testrayCaseImpl.setTestrayProjectId(testrayProjectId);
 
 		if (name == null) {
-			testrayCaseImpl.setName(StringPool.BLANK);
+			testrayCaseImpl.setName("");
 		}
 		else {
 			testrayCaseImpl.setName(name);
 		}
 
 		if (description == null) {
-			testrayCaseImpl.setDescription(StringPool.BLANK);
+			testrayCaseImpl.setDescription("");
 		}
 		else {
 			testrayCaseImpl.setDescription(description);
 		}
 
 		if (descriptionType == null) {
-			testrayCaseImpl.setDescriptionType(StringPool.BLANK);
+			testrayCaseImpl.setDescriptionType("");
 		}
 		else {
 			testrayCaseImpl.setDescriptionType(descriptionType);
@@ -171,14 +167,14 @@ public class TestrayCaseCacheModel implements CacheModel<TestrayCase>,
 		testrayCaseImpl.setEstimatedDuration(estimatedDuration);
 
 		if (steps == null) {
-			testrayCaseImpl.setSteps(StringPool.BLANK);
+			testrayCaseImpl.setSteps("");
 		}
 		else {
 			testrayCaseImpl.setSteps(steps);
 		}
 
 		if (stepsType == null) {
-			testrayCaseImpl.setStepsType(StringPool.BLANK);
+			testrayCaseImpl.setStepsType("");
 		}
 		else {
 			testrayCaseImpl.setStepsType(stepsType);
@@ -192,7 +188,9 @@ public class TestrayCaseCacheModel implements CacheModel<TestrayCase>,
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		testrayCaseId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -218,15 +216,14 @@ public class TestrayCaseCacheModel implements CacheModel<TestrayCase>,
 		priority = objectInput.readInt();
 
 		estimatedDuration = objectInput.readInt();
-		steps = objectInput.readUTF();
+		steps = (String)objectInput.readObject();
 		stepsType = objectInput.readUTF();
 
 		caseNumber = objectInput.readLong();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(testrayCaseId);
 
 		objectOutput.writeLong(groupId);
@@ -236,7 +233,7 @@ public class TestrayCaseCacheModel implements CacheModel<TestrayCase>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -252,21 +249,21 @@ public class TestrayCaseCacheModel implements CacheModel<TestrayCase>,
 		objectOutput.writeLong(testrayProjectId);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (descriptionType == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(descriptionType);
@@ -279,14 +276,14 @@ public class TestrayCaseCacheModel implements CacheModel<TestrayCase>,
 		objectOutput.writeInt(estimatedDuration);
 
 		if (steps == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(steps);
+			objectOutput.writeObject(steps);
 		}
 
 		if (stepsType == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(stepsType);
@@ -314,4 +311,5 @@ public class TestrayCaseCacheModel implements CacheModel<TestrayCase>,
 	public String steps;
 	public String stepsType;
 	public long caseNumber;
+
 }

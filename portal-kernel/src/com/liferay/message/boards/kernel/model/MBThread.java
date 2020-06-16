@@ -25,19 +25,22 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see MBThreadModel
- * @see com.liferay.portlet.messageboards.model.impl.MBThreadImpl
- * @see com.liferay.portlet.messageboards.model.impl.MBThreadModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.portlet.messageboards.model.impl.MBThreadImpl")
+@ImplementationClassName(
+	"com.liferay.portlet.messageboards.model.impl.MBThreadImpl"
+)
 @ProviderType
 public interface MBThread extends MBThreadModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.portlet.messageboards.model.impl.MBThreadImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.portlet.messageboards.model.impl.MBThreadImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<MBThread, Long> THREAD_ID_ACCESSOR = new Accessor<MBThread, Long>() {
+	public static final Accessor<MBThread, Long> THREAD_ID_ACCESSOR =
+		new Accessor<MBThread, Long>() {
+
 			@Override
 			public Long get(MBThread mbThread) {
 				return mbThread.getThreadId();
@@ -52,9 +55,11 @@ public interface MBThread extends MBThreadModel, PersistedModel {
 			public Class<MBThread> getTypeClass() {
 				return MBThread.class;
 			}
+
 		};
 
-	public com.liferay.portal.kernel.repository.model.Folder addAttachmentsFolder()
+	public com.liferay.portal.kernel.repository.model.Folder
+			addAttachmentsFolder()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public long getAttachmentsFolderId();
@@ -69,4 +74,5 @@ public interface MBThread extends MBThreadModel, PersistedModel {
 	public boolean hasLock(long userId);
 
 	public boolean isLocked();
+
 }

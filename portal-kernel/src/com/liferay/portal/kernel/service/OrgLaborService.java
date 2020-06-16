@@ -34,44 +34,50 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see OrgLaborServiceUtil
- * @see com.liferay.portal.service.base.OrgLaborServiceBaseImpl
- * @see com.liferay.portal.service.impl.OrgLaborServiceImpl
  * @generated
  */
 @AccessControlled
 @JSONWebService
 @ProviderType
-@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
-	PortalException.class, SystemException.class})
+@Transactional(
+	isolation = Isolation.PORTAL,
+	rollbackFor = {PortalException.class, SystemException.class}
+)
 public interface OrgLaborService extends BaseService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link OrgLaborServiceUtil} to access the org labor remote service. Add custom service methods to {@link com.liferay.portal.service.impl.OrgLaborServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link OrgLaborServiceUtil} to access the org labor remote service. Add custom service methods to <code>com.liferay.portal.service.impl.OrgLaborServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public OrgLabor addOrgLabor(long organizationId, long typeId, int sunOpen,
-		int sunClose, int monOpen, int monClose, int tueOpen, int tueClose,
-		int wedOpen, int wedClose, int thuOpen, int thuClose, int friOpen,
-		int friClose, int satOpen, int satClose) throws PortalException;
+	public OrgLabor addOrgLabor(
+			long organizationId, long typeId, int sunOpen, int sunClose,
+			int monOpen, int monClose, int tueOpen, int tueClose, int wedOpen,
+			int wedClose, int thuOpen, int thuClose, int friOpen, int friClose,
+			int satOpen, int satClose)
+		throws PortalException;
+
+	public void deleteOrgLabor(long orgLaborId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public OrgLabor getOrgLabor(long orgLaborId) throws PortalException;
-
-	public OrgLabor updateOrgLabor(long orgLaborId, long typeId, int sunOpen,
-		int sunClose, int monOpen, int monClose, int tueOpen, int tueClose,
-		int wedOpen, int wedClose, int thuOpen, int thuClose, int friOpen,
-		int friClose, int satOpen, int satClose) throws PortalException;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<OrgLabor> getOrgLabors(long organizationId)
 		throws PortalException;
 
-	public void deleteOrgLabor(long orgLaborId) throws PortalException;
+	/**
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
+	public String getOSGiServiceIdentifier();
+
+	public OrgLabor updateOrgLabor(
+			long orgLaborId, long typeId, int sunOpen, int sunClose,
+			int monOpen, int monClose, int tueOpen, int tueClose, int wedOpen,
+			int wedClose, int thuOpen, int thuClose, int friOpen, int friClose,
+			int satOpen, int satClose)
+		throws PortalException;
+
 }

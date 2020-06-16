@@ -14,8 +14,6 @@
 
 package com.liferay.journal.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -27,16 +25,17 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class JournalContentSearchSoap implements Serializable {
+
 	public static JournalContentSearchSoap toSoapModel(
 		JournalContentSearch model) {
+
 		JournalContentSearchSoap soapModel = new JournalContentSearchSoap();
 
 		soapModel.setContentSearchId(model.getContentSearchId());
 		soapModel.setGroupId(model.getGroupId());
 		soapModel.setCompanyId(model.getCompanyId());
-		soapModel.setPrivateLayout(model.getPrivateLayout());
+		soapModel.setPrivateLayout(model.isPrivateLayout());
 		soapModel.setLayoutId(model.getLayoutId());
 		soapModel.setPortletId(model.getPortletId());
 		soapModel.setArticleId(model.getArticleId());
@@ -46,7 +45,9 @@ public class JournalContentSearchSoap implements Serializable {
 
 	public static JournalContentSearchSoap[] toSoapModels(
 		JournalContentSearch[] models) {
-		JournalContentSearchSoap[] soapModels = new JournalContentSearchSoap[models.length];
+
+		JournalContentSearchSoap[] soapModels =
+			new JournalContentSearchSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -57,10 +58,12 @@ public class JournalContentSearchSoap implements Serializable {
 
 	public static JournalContentSearchSoap[][] toSoapModels(
 		JournalContentSearch[][] models) {
+
 		JournalContentSearchSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new JournalContentSearchSoap[models.length][models[0].length];
+			soapModels =
+				new JournalContentSearchSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new JournalContentSearchSoap[0][0];
@@ -75,13 +78,16 @@ public class JournalContentSearchSoap implements Serializable {
 
 	public static JournalContentSearchSoap[] toSoapModels(
 		List<JournalContentSearch> models) {
-		List<JournalContentSearchSoap> soapModels = new ArrayList<JournalContentSearchSoap>(models.size());
+
+		List<JournalContentSearchSoap> soapModels =
+			new ArrayList<JournalContentSearchSoap>(models.size());
 
 		for (JournalContentSearch model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new JournalContentSearchSoap[soapModels.size()]);
+		return soapModels.toArray(
+			new JournalContentSearchSoap[soapModels.size()]);
 	}
 
 	public JournalContentSearchSoap() {
@@ -162,4 +168,5 @@ public class JournalContentSearchSoap implements Serializable {
 	private long _layoutId;
 	private String _portletId;
 	private String _articleId;
+
 }

@@ -14,8 +14,6 @@
 
 package com.liferay.dynamic.data.mapping.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.dynamic.data.mapping.model.DDMStructureLink;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLinkLocalServiceUtil;
 
@@ -31,13 +29,13 @@ import com.liferay.dynamic.data.mapping.service.DDMStructureLinkLocalServiceUtil
  * @see DDMStructureLink
  * @generated
  */
-@ProviderType
-public abstract class DDMStructureLinkBaseImpl extends DDMStructureLinkModelImpl
-	implements DDMStructureLink {
+public abstract class DDMStructureLinkBaseImpl
+	extends DDMStructureLinkModelImpl implements DDMStructureLink {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a ddm structure link model instance should use the {@link DDMStructureLink} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a ddm structure link model instance should use the <code>DDMStructureLink</code> interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -48,4 +46,5 @@ public abstract class DDMStructureLinkBaseImpl extends DDMStructureLinkModelImpl
 			DDMStructureLinkLocalServiceUtil.updateDDMStructureLink(this);
 		}
 	}
+
 }

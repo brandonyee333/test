@@ -14,8 +14,6 @@
 
 package com.liferay.portal.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.ResourceTypePermission;
 import com.liferay.portal.kernel.service.ResourceTypePermissionLocalServiceUtil;
 
@@ -31,21 +29,24 @@ import com.liferay.portal.kernel.service.ResourceTypePermissionLocalServiceUtil;
  * @see ResourceTypePermission
  * @generated
  */
-@ProviderType
 public abstract class ResourceTypePermissionBaseImpl
 	extends ResourceTypePermissionModelImpl implements ResourceTypePermission {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a resource type permission model instance should use the {@link ResourceTypePermission} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a resource type permission model instance should use the <code>ResourceTypePermission</code> interface instead.
 	 */
 	@Override
 	public void persist() {
 		if (this.isNew()) {
-			ResourceTypePermissionLocalServiceUtil.addResourceTypePermission(this);
+			ResourceTypePermissionLocalServiceUtil.addResourceTypePermission(
+				this);
 		}
 		else {
-			ResourceTypePermissionLocalServiceUtil.updateResourceTypePermission(this);
+			ResourceTypePermissionLocalServiceUtil.updateResourceTypePermission(
+				this);
 		}
 	}
+
 }

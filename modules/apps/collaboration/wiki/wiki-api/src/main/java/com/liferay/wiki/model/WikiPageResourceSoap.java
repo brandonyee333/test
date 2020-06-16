@@ -14,8 +14,6 @@
 
 package com.liferay.wiki.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -27,8 +25,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class WikiPageResourceSoap implements Serializable {
+
 	public static WikiPageResourceSoap toSoapModel(WikiPageResource model) {
 		WikiPageResourceSoap soapModel = new WikiPageResourceSoap();
 
@@ -42,8 +40,11 @@ public class WikiPageResourceSoap implements Serializable {
 		return soapModel;
 	}
 
-	public static WikiPageResourceSoap[] toSoapModels(WikiPageResource[] models) {
-		WikiPageResourceSoap[] soapModels = new WikiPageResourceSoap[models.length];
+	public static WikiPageResourceSoap[] toSoapModels(
+		WikiPageResource[] models) {
+
+		WikiPageResourceSoap[] soapModels =
+			new WikiPageResourceSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -54,10 +55,12 @@ public class WikiPageResourceSoap implements Serializable {
 
 	public static WikiPageResourceSoap[][] toSoapModels(
 		WikiPageResource[][] models) {
+
 		WikiPageResourceSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new WikiPageResourceSoap[models.length][models[0].length];
+			soapModels =
+				new WikiPageResourceSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WikiPageResourceSoap[0][0];
@@ -72,7 +75,9 @@ public class WikiPageResourceSoap implements Serializable {
 
 	public static WikiPageResourceSoap[] toSoapModels(
 		List<WikiPageResource> models) {
-		List<WikiPageResourceSoap> soapModels = new ArrayList<WikiPageResourceSoap>(models.size());
+
+		List<WikiPageResourceSoap> soapModels =
+			new ArrayList<WikiPageResourceSoap>(models.size());
 
 		for (WikiPageResource model : models) {
 			soapModels.add(toSoapModel(model));
@@ -146,4 +151,5 @@ public class WikiPageResourceSoap implements Serializable {
 	private long _companyId;
 	private long _nodeId;
 	private String _title;
+
 }

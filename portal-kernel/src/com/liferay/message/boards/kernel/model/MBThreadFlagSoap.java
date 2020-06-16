@@ -14,8 +14,6 @@
 
 package com.liferay.message.boards.kernel.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -28,8 +26,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class MBThreadFlagSoap implements Serializable {
+
 	public static MBThreadFlagSoap toSoapModel(MBThreadFlag model) {
 		MBThreadFlagSoap soapModel = new MBThreadFlagSoap();
 
@@ -75,7 +73,8 @@ public class MBThreadFlagSoap implements Serializable {
 	}
 
 	public static MBThreadFlagSoap[] toSoapModels(List<MBThreadFlag> models) {
-		List<MBThreadFlagSoap> soapModels = new ArrayList<MBThreadFlagSoap>(models.size());
+		List<MBThreadFlagSoap> soapModels = new ArrayList<MBThreadFlagSoap>(
+			models.size());
 
 		for (MBThreadFlag model : models) {
 			soapModels.add(toSoapModel(model));
@@ -185,4 +184,5 @@ public class MBThreadFlagSoap implements Serializable {
 	private Date _modifiedDate;
 	private long _threadId;
 	private Date _lastPublishDate;
+
 }

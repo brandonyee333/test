@@ -14,8 +14,6 @@
 
 package com.liferay.dynamic.data.mapping.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -28,8 +26,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class DDMContentSoap implements Serializable {
+
 	public static DDMContentSoap toSoapModel(DDMContent model) {
 		DDMContentSoap soapModel = new DDMContentSoap();
 
@@ -76,7 +74,8 @@ public class DDMContentSoap implements Serializable {
 	}
 
 	public static DDMContentSoap[] toSoapModels(List<DDMContent> models) {
-		List<DDMContentSoap> soapModels = new ArrayList<DDMContentSoap>(models.size());
+		List<DDMContentSoap> soapModels = new ArrayList<DDMContentSoap>(
+			models.size());
 
 		for (DDMContent model : models) {
 			soapModels.add(toSoapModel(model));
@@ -195,4 +194,5 @@ public class DDMContentSoap implements Serializable {
 	private String _name;
 	private String _description;
 	private String _data;
+
 }

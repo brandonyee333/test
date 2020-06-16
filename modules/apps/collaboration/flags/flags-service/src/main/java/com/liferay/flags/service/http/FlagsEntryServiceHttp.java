@@ -14,10 +14,7 @@
 
 package com.liferay.flags.service.http;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.flags.service.FlagsEntryServiceUtil;
-
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
@@ -27,10 +24,11 @@ import com.liferay.portal.kernel.util.MethodKey;
 
 /**
  * Provides the HTTP utility for the
- * {@link FlagsEntryServiceUtil} service utility. The
+ * <code>FlagsEntryServiceUtil</code> service
+ * utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it requires an additional
- * {@link HttpPrincipal} parameter.
+ * <code>HttpPrincipal</code> parameter.
  *
  * <p>
  * The benefits of using the HTTP utility is that it is fast and allows for
@@ -49,50 +47,58 @@ import com.liferay.portal.kernel.util.MethodKey;
  *
  * @author Brian Wing Shun Chan
  * @see FlagsEntryServiceSoap
- * @see HttpPrincipal
- * @see FlagsEntryServiceUtil
  * @generated
  */
-@ProviderType
 public class FlagsEntryServiceHttp {
-	public static void addEntry(HttpPrincipal httpPrincipal,
-		java.lang.String className, long classPK,
-		java.lang.String reporterEmailAddress, long reportedUserId,
-		java.lang.String contentTitle, java.lang.String contentURL,
-		java.lang.String reason,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(FlagsEntryServiceUtil.class,
-					"addEntry", _addEntryParameterTypes0);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					className, classPK, reporterEmailAddress, reportedUserId,
-					contentTitle, contentURL, reason, serviceContext);
+	public static void addEntry(
+			HttpPrincipal httpPrincipal, String className, long classPK,
+			String reporterEmailAddress, long reportedUserId,
+			String contentTitle, String contentURL, String reason,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				FlagsEntryServiceUtil.class, "addEntry",
+				_addEntryParameterTypes0);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, className, classPK, reporterEmailAddress,
+				reportedUserId, contentTitle, contentURL, reason,
+				serviceContext);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(FlagsEntryServiceHttp.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		FlagsEntryServiceHttp.class);
+
 	private static final Class<?>[] _addEntryParameterTypes0 = new Class[] {
-			java.lang.String.class, long.class, java.lang.String.class,
-			long.class, java.lang.String.class, java.lang.String.class,
-			java.lang.String.class,
-			com.liferay.portal.kernel.service.ServiceContext.class
-		};
+		String.class, long.class, String.class, long.class, String.class,
+		String.class, String.class,
+		com.liferay.portal.kernel.service.ServiceContext.class
+	};
+
 }

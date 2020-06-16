@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.loop.model.LoopUserNotificationEvent;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -31,12 +28,11 @@ import java.io.ObjectOutput;
  * The cache model class for representing LoopUserNotificationEvent in entity cache.
  *
  * @author Ethan Bustad
- * @see LoopUserNotificationEvent
  * @generated
  */
-@ProviderType
-public class LoopUserNotificationEventCacheModel implements CacheModel<LoopUserNotificationEvent>,
-	Externalizable {
+public class LoopUserNotificationEventCacheModel
+	implements CacheModel<LoopUserNotificationEvent>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -47,9 +43,14 @@ public class LoopUserNotificationEventCacheModel implements CacheModel<LoopUserN
 			return false;
 		}
 
-		LoopUserNotificationEventCacheModel loopUserNotificationEventCacheModel = (LoopUserNotificationEventCacheModel)obj;
+		LoopUserNotificationEventCacheModel
+			loopUserNotificationEventCacheModel =
+				(LoopUserNotificationEventCacheModel)obj;
 
-		if (loopUserNotificationEventId == loopUserNotificationEventCacheModel.loopUserNotificationEventId) {
+		if (loopUserNotificationEventId ==
+				loopUserNotificationEventCacheModel.
+					loopUserNotificationEventId) {
+
 			return true;
 		}
 
@@ -94,9 +95,11 @@ public class LoopUserNotificationEventCacheModel implements CacheModel<LoopUserN
 
 	@Override
 	public LoopUserNotificationEvent toEntityModel() {
-		LoopUserNotificationEventImpl loopUserNotificationEventImpl = new LoopUserNotificationEventImpl();
+		LoopUserNotificationEventImpl loopUserNotificationEventImpl =
+			new LoopUserNotificationEventImpl();
 
-		loopUserNotificationEventImpl.setLoopUserNotificationEventId(loopUserNotificationEventId);
+		loopUserNotificationEventImpl.setLoopUserNotificationEventId(
+			loopUserNotificationEventId);
 		loopUserNotificationEventImpl.setCreateTime(createTime);
 		loopUserNotificationEventImpl.setRecipientUserId(recipientUserId);
 		loopUserNotificationEventImpl.setClassNameId(classNameId);
@@ -139,8 +142,7 @@ public class LoopUserNotificationEventCacheModel implements CacheModel<LoopUserN
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(loopUserNotificationEventId);
 
 		objectOutput.writeLong(createTime);
@@ -175,4 +177,5 @@ public class LoopUserNotificationEventCacheModel implements CacheModel<LoopUserN
 	public int type;
 	public boolean received;
 	public boolean opened;
+
 }

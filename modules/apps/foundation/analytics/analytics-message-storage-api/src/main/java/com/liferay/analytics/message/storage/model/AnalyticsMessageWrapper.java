@@ -14,10 +14,7 @@
 
 package com.liferay.analytics.message.storage.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -39,9 +36,9 @@ import java.util.Objects;
  * @see AnalyticsMessage
  * @generated
  */
-@ProviderType
-public class AnalyticsMessageWrapper implements AnalyticsMessage,
-	ModelWrapper<AnalyticsMessage> {
+public class AnalyticsMessageWrapper
+	implements AnalyticsMessage, ModelWrapper<AnalyticsMessage> {
+
 	public AnalyticsMessageWrapper(AnalyticsMessage analyticsMessage) {
 		_analyticsMessage = analyticsMessage;
 	}
@@ -117,13 +114,119 @@ public class AnalyticsMessageWrapper implements AnalyticsMessage,
 	}
 
 	@Override
-	public AnalyticsMessage toEscapedModel() {
-		return new AnalyticsMessageWrapper(_analyticsMessage.toEscapedModel());
+	public Object clone() {
+		return new AnalyticsMessageWrapper(
+			(AnalyticsMessage)_analyticsMessage.clone());
 	}
 
 	@Override
-	public AnalyticsMessage toUnescapedModel() {
-		return new AnalyticsMessageWrapper(_analyticsMessage.toUnescapedModel());
+	public int compareTo(AnalyticsMessage analyticsMessage) {
+		return _analyticsMessage.compareTo(analyticsMessage);
+	}
+
+	/**
+	 * Returns the analytics message ID of this analytics message.
+	 *
+	 * @return the analytics message ID of this analytics message
+	 */
+	@Override
+	public long getAnalyticsMessageId() {
+		return _analyticsMessage.getAnalyticsMessageId();
+	}
+
+	/**
+	 * Returns the body of this analytics message.
+	 *
+	 * @return the body of this analytics message
+	 */
+	@Override
+	public Blob getBody() {
+		return _analyticsMessage.getBody();
+	}
+
+	/**
+	 * Returns the company ID of this analytics message.
+	 *
+	 * @return the company ID of this analytics message
+	 */
+	@Override
+	public long getCompanyId() {
+		return _analyticsMessage.getCompanyId();
+	}
+
+	/**
+	 * Returns the create date of this analytics message.
+	 *
+	 * @return the create date of this analytics message
+	 */
+	@Override
+	public Date getCreateDate() {
+		return _analyticsMessage.getCreateDate();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _analyticsMessage.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the mvcc version of this analytics message.
+	 *
+	 * @return the mvcc version of this analytics message
+	 */
+	@Override
+	public long getMvccVersion() {
+		return _analyticsMessage.getMvccVersion();
+	}
+
+	/**
+	 * Returns the primary key of this analytics message.
+	 *
+	 * @return the primary key of this analytics message
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _analyticsMessage.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _analyticsMessage.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the user ID of this analytics message.
+	 *
+	 * @return the user ID of this analytics message
+	 */
+	@Override
+	public long getUserId() {
+		return _analyticsMessage.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this analytics message.
+	 *
+	 * @return the user name of this analytics message
+	 */
+	@Override
+	public String getUserName() {
+		return _analyticsMessage.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this analytics message.
+	 *
+	 * @return the user uuid of this analytics message
+	 */
+	@Override
+	public String getUserUuid() {
+		return _analyticsMessage.getUserUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _analyticsMessage.hashCode();
 	}
 
 	@Override
@@ -142,155 +245,25 @@ public class AnalyticsMessageWrapper implements AnalyticsMessage,
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _analyticsMessage.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<AnalyticsMessage> toCacheModel() {
-		return _analyticsMessage.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(AnalyticsMessage analyticsMessage) {
-		return _analyticsMessage.compareTo(analyticsMessage);
-	}
-
-	@Override
-	public int hashCode() {
-		return _analyticsMessage.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _analyticsMessage.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new AnalyticsMessageWrapper((AnalyticsMessage)_analyticsMessage.clone());
-	}
-
-	/**
-	* Returns the user name of this analytics message.
-	*
-	* @return the user name of this analytics message
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _analyticsMessage.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this analytics message.
-	*
-	* @return the user uuid of this analytics message
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _analyticsMessage.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _analyticsMessage.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _analyticsMessage.toXmlString();
-	}
-
-	/**
-	* Returns the body of this analytics message.
-	*
-	* @return the body of this analytics message
-	*/
-	@Override
-	public Blob getBody() {
-		return _analyticsMessage.getBody();
-	}
-
-	/**
-	* Returns the create date of this analytics message.
-	*
-	* @return the create date of this analytics message
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _analyticsMessage.getCreateDate();
-	}
-
-	/**
-	* Returns the analytics message ID of this analytics message.
-	*
-	* @return the analytics message ID of this analytics message
-	*/
-	@Override
-	public long getAnalyticsMessageId() {
-		return _analyticsMessage.getAnalyticsMessageId();
-	}
-
-	/**
-	* Returns the company ID of this analytics message.
-	*
-	* @return the company ID of this analytics message
-	*/
-	@Override
-	public long getCompanyId() {
-		return _analyticsMessage.getCompanyId();
-	}
-
-	/**
-	* Returns the mvcc version of this analytics message.
-	*
-	* @return the mvcc version of this analytics message
-	*/
-	@Override
-	public long getMvccVersion() {
-		return _analyticsMessage.getMvccVersion();
-	}
-
-	/**
-	* Returns the primary key of this analytics message.
-	*
-	* @return the primary key of this analytics message
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _analyticsMessage.getPrimaryKey();
-	}
-
-	/**
-	* Returns the user ID of this analytics message.
-	*
-	* @return the user ID of this analytics message
-	*/
-	@Override
-	public long getUserId() {
-		return _analyticsMessage.getUserId();
-	}
-
-	@Override
 	public void persist() {
 		_analyticsMessage.persist();
 	}
 
 	/**
-	* Sets the analytics message ID of this analytics message.
-	*
-	* @param analyticsMessageId the analytics message ID of this analytics message
-	*/
+	 * Sets the analytics message ID of this analytics message.
+	 *
+	 * @param analyticsMessageId the analytics message ID of this analytics message
+	 */
 	@Override
 	public void setAnalyticsMessageId(long analyticsMessageId) {
 		_analyticsMessage.setAnalyticsMessageId(analyticsMessageId);
 	}
 
 	/**
-	* Sets the body of this analytics message.
-	*
-	* @param body the body of this analytics message
-	*/
+	 * Sets the body of this analytics message.
+	 *
+	 * @param body the body of this analytics message
+	 */
 	@Override
 	public void setBody(Blob body) {
 		_analyticsMessage.setBody(body);
@@ -302,23 +275,30 @@ public class AnalyticsMessageWrapper implements AnalyticsMessage,
 	}
 
 	/**
-	* Sets the company ID of this analytics message.
-	*
-	* @param companyId the company ID of this analytics message
-	*/
+	 * Sets the company ID of this analytics message.
+	 *
+	 * @param companyId the company ID of this analytics message
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_analyticsMessage.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this analytics message.
-	*
-	* @param createDate the create date of this analytics message
-	*/
+	 * Sets the create date of this analytics message.
+	 *
+	 * @param createDate the create date of this analytics message
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_analyticsMessage.setCreateDate(createDate);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_analyticsMessage.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -327,21 +307,15 @@ public class AnalyticsMessageWrapper implements AnalyticsMessage,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_analyticsMessage.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_analyticsMessage.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the mvcc version of this analytics message.
-	*
-	* @param mvccVersion the mvcc version of this analytics message
-	*/
+	 * Sets the mvcc version of this analytics message.
+	 *
+	 * @param mvccVersion the mvcc version of this analytics message
+	 */
 	@Override
 	public void setMvccVersion(long mvccVersion) {
 		_analyticsMessage.setMvccVersion(mvccVersion);
@@ -353,10 +327,10 @@ public class AnalyticsMessageWrapper implements AnalyticsMessage,
 	}
 
 	/**
-	* Sets the primary key of this analytics message.
-	*
-	* @param primaryKey the primary key of this analytics message
-	*/
+	 * Sets the primary key of this analytics message.
+	 *
+	 * @param primaryKey the primary key of this analytics message
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_analyticsMessage.setPrimaryKey(primaryKey);
@@ -368,33 +342,61 @@ public class AnalyticsMessageWrapper implements AnalyticsMessage,
 	}
 
 	/**
-	* Sets the user ID of this analytics message.
-	*
-	* @param userId the user ID of this analytics message
-	*/
+	 * Sets the user ID of this analytics message.
+	 *
+	 * @param userId the user ID of this analytics message
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_analyticsMessage.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this analytics message.
-	*
-	* @param userName the user name of this analytics message
-	*/
+	 * Sets the user name of this analytics message.
+	 *
+	 * @param userName the user name of this analytics message
+	 */
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_analyticsMessage.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this analytics message.
-	*
-	* @param userUuid the user uuid of this analytics message
-	*/
+	 * Sets the user uuid of this analytics message.
+	 *
+	 * @param userUuid the user uuid of this analytics message
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_analyticsMessage.setUserUuid(userUuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<AnalyticsMessage>
+		toCacheModel() {
+
+		return _analyticsMessage.toCacheModel();
+	}
+
+	@Override
+	public AnalyticsMessage toEscapedModel() {
+		return new AnalyticsMessageWrapper(_analyticsMessage.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _analyticsMessage.toString();
+	}
+
+	@Override
+	public AnalyticsMessage toUnescapedModel() {
+		return new AnalyticsMessageWrapper(
+			_analyticsMessage.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _analyticsMessage.toXmlString();
 	}
 
 	@Override
@@ -407,10 +409,12 @@ public class AnalyticsMessageWrapper implements AnalyticsMessage,
 			return false;
 		}
 
-		AnalyticsMessageWrapper analyticsMessageWrapper = (AnalyticsMessageWrapper)obj;
+		AnalyticsMessageWrapper analyticsMessageWrapper =
+			(AnalyticsMessageWrapper)obj;
 
-		if (Objects.equals(_analyticsMessage,
-					analyticsMessageWrapper._analyticsMessage)) {
+		if (Objects.equals(
+				_analyticsMessage, analyticsMessageWrapper._analyticsMessage)) {
+
 			return true;
 		}
 
@@ -438,4 +442,5 @@ public class AnalyticsMessageWrapper implements AnalyticsMessage,
 	}
 
 	private final AnalyticsMessage _analyticsMessage;
+
 }

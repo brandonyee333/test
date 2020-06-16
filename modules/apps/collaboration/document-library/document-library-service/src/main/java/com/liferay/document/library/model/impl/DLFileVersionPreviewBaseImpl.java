@@ -14,8 +14,6 @@
 
 package com.liferay.document.library.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.document.library.model.DLFileVersionPreview;
 import com.liferay.document.library.service.DLFileVersionPreviewLocalServiceUtil;
 
@@ -31,13 +29,13 @@ import com.liferay.document.library.service.DLFileVersionPreviewLocalServiceUtil
  * @see DLFileVersionPreview
  * @generated
  */
-@ProviderType
 public abstract class DLFileVersionPreviewBaseImpl
 	extends DLFileVersionPreviewModelImpl implements DLFileVersionPreview {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a dl file version preview model instance should use the {@link DLFileVersionPreview} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a dl file version preview model instance should use the <code>DLFileVersionPreview</code> interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -45,7 +43,9 @@ public abstract class DLFileVersionPreviewBaseImpl
 			DLFileVersionPreviewLocalServiceUtil.addDLFileVersionPreview(this);
 		}
 		else {
-			DLFileVersionPreviewLocalServiceUtil.updateDLFileVersionPreview(this);
+			DLFileVersionPreviewLocalServiceUtil.updateDLFileVersionPreview(
+				this);
 		}
 	}
+
 }

@@ -15,13 +15,11 @@
 package com.liferay.mail.reader.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-
 import com.liferay.mail.reader.exception.NoSuchMessageException;
 import com.liferay.mail.reader.model.Message;
 import com.liferay.mail.reader.service.MessageLocalServiceUtil;
 import com.liferay.mail.reader.service.persistence.MessagePersistence;
 import com.liferay.mail.reader.service.persistence.MessageUtil;
-
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -40,15 +38,6 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-
-import org.junit.runner.RunWith;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -58,17 +47,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 /**
  * @generated
  */
 @RunWith(Arquillian.class)
 public class MessagePersistenceTest {
+
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
-			PersistenceTestRule.INSTANCE,
-			new TransactionalTestRule(Propagation.REQUIRED,
-				"com.liferay.mail.reader.service"));
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
+			new TransactionalTestRule(
+				Propagation.REQUIRED, "com.liferay.mail.reader.service"));
 
 	@Before
 	public void setUp() {
@@ -107,7 +106,8 @@ public class MessagePersistenceTest {
 
 		_persistence.remove(newMessage);
 
-		Message existingMessage = _persistence.fetchByPrimaryKey(newMessage.getPrimaryKey());
+		Message existingMessage = _persistence.fetchByPrimaryKey(
+			newMessage.getPrimaryKey());
 
 		Assert.assertNull(existingMessage);
 	}
@@ -163,43 +163,47 @@ public class MessagePersistenceTest {
 
 		_messages.add(_persistence.update(newMessage));
 
-		Message existingMessage = _persistence.findByPrimaryKey(newMessage.getPrimaryKey());
+		Message existingMessage = _persistence.findByPrimaryKey(
+			newMessage.getPrimaryKey());
 
-		Assert.assertEquals(existingMessage.getMessageId(),
-			newMessage.getMessageId());
-		Assert.assertEquals(existingMessage.getCompanyId(),
-			newMessage.getCompanyId());
-		Assert.assertEquals(existingMessage.getUserId(), newMessage.getUserId());
-		Assert.assertEquals(existingMessage.getUserName(),
-			newMessage.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMessage.getCreateDate()),
+		Assert.assertEquals(
+			existingMessage.getMessageId(), newMessage.getMessageId());
+		Assert.assertEquals(
+			existingMessage.getCompanyId(), newMessage.getCompanyId());
+		Assert.assertEquals(
+			existingMessage.getUserId(), newMessage.getUserId());
+		Assert.assertEquals(
+			existingMessage.getUserName(), newMessage.getUserName());
+		Assert.assertEquals(
+			Time.getShortTimestamp(existingMessage.getCreateDate()),
 			Time.getShortTimestamp(newMessage.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMessage.getModifiedDate()),
+		Assert.assertEquals(
+			Time.getShortTimestamp(existingMessage.getModifiedDate()),
 			Time.getShortTimestamp(newMessage.getModifiedDate()));
-		Assert.assertEquals(existingMessage.getAccountId(),
-			newMessage.getAccountId());
-		Assert.assertEquals(existingMessage.getFolderId(),
-			newMessage.getFolderId());
-		Assert.assertEquals(existingMessage.getSender(), newMessage.getSender());
+		Assert.assertEquals(
+			existingMessage.getAccountId(), newMessage.getAccountId());
+		Assert.assertEquals(
+			existingMessage.getFolderId(), newMessage.getFolderId());
+		Assert.assertEquals(
+			existingMessage.getSender(), newMessage.getSender());
 		Assert.assertEquals(existingMessage.getTo(), newMessage.getTo());
 		Assert.assertEquals(existingMessage.getCc(), newMessage.getCc());
 		Assert.assertEquals(existingMessage.getBcc(), newMessage.getBcc());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingMessage.getSentDate()),
+		Assert.assertEquals(
+			Time.getShortTimestamp(existingMessage.getSentDate()),
 			Time.getShortTimestamp(newMessage.getSentDate()));
-		Assert.assertEquals(existingMessage.getSubject(),
-			newMessage.getSubject());
-		Assert.assertEquals(existingMessage.getPreview(),
-			newMessage.getPreview());
+		Assert.assertEquals(
+			existingMessage.getSubject(), newMessage.getSubject());
+		Assert.assertEquals(
+			existingMessage.getPreview(), newMessage.getPreview());
 		Assert.assertEquals(existingMessage.getBody(), newMessage.getBody());
 		Assert.assertEquals(existingMessage.getFlags(), newMessage.getFlags());
 		Assert.assertEquals(existingMessage.getSize(), newMessage.getSize());
-		Assert.assertEquals(existingMessage.getRemoteMessageId(),
+		Assert.assertEquals(
+			existingMessage.getRemoteMessageId(),
 			newMessage.getRemoteMessageId());
-		Assert.assertEquals(existingMessage.getContentType(),
-			newMessage.getContentType());
+		Assert.assertEquals(
+			existingMessage.getContentType(), newMessage.getContentType());
 	}
 
 	@Test
@@ -218,8 +222,8 @@ public class MessagePersistenceTest {
 
 	@Test
 	public void testCountByF_R() throws Exception {
-		_persistence.countByF_R(RandomTestUtil.nextLong(),
-			RandomTestUtil.nextLong());
+		_persistence.countByF_R(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
 
 		_persistence.countByF_R(0L, 0L);
 	}
@@ -228,7 +232,8 @@ public class MessagePersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		Message newMessage = addMessage();
 
-		Message existingMessage = _persistence.findByPrimaryKey(newMessage.getPrimaryKey());
+		Message existingMessage = _persistence.findByPrimaryKey(
+			newMessage.getPrimaryKey());
 
 		Assert.assertEquals(existingMessage, newMessage);
 	}
@@ -242,16 +247,16 @@ public class MessagePersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			getOrderByComparator());
+		_persistence.findAll(
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
 	}
 
 	protected OrderByComparator<Message> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create("Mail_Message", "messageId",
-			true, "companyId", true, "userId", true, "userName", true,
-			"createDate", true, "modifiedDate", true, "accountId", true,
-			"folderId", true, "sender", true, "sentDate", true, "subject",
-			true, "preview", true, "flags", true, "size", true,
+		return OrderByComparatorFactoryUtil.create(
+			"Mail_Message", "messageId", true, "companyId", true, "userId",
+			true, "userName", true, "createDate", true, "modifiedDate", true,
+			"accountId", true, "folderId", true, "sender", true, "sentDate",
+			true, "subject", true, "preview", true, "flags", true, "size", true,
 			"remoteMessageId", true, "contentType", true);
 	}
 
@@ -259,7 +264,8 @@ public class MessagePersistenceTest {
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		Message newMessage = addMessage();
 
-		Message existingMessage = _persistence.fetchByPrimaryKey(newMessage.getPrimaryKey());
+		Message existingMessage = _persistence.fetchByPrimaryKey(
+			newMessage.getPrimaryKey());
 
 		Assert.assertEquals(existingMessage, newMessage);
 	}
@@ -276,6 +282,7 @@ public class MessagePersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
+
 		Message newMessage1 = addMessage();
 		Message newMessage2 = addMessage();
 
@@ -284,18 +291,20 @@ public class MessagePersistenceTest {
 		primaryKeys.add(newMessage1.getPrimaryKey());
 		primaryKeys.add(newMessage2.getPrimaryKey());
 
-		Map<Serializable, Message> messages = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, Message> messages = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertEquals(2, messages.size());
-		Assert.assertEquals(newMessage1,
-			messages.get(newMessage1.getPrimaryKey()));
-		Assert.assertEquals(newMessage2,
-			messages.get(newMessage2.getPrimaryKey()));
+		Assert.assertEquals(
+			newMessage1, messages.get(newMessage1.getPrimaryKey()));
+		Assert.assertEquals(
+			newMessage2, messages.get(newMessage2.getPrimaryKey()));
 	}
 
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
+
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -305,7 +314,8 @@ public class MessagePersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, Message> messages = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, Message> messages = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertTrue(messages.isEmpty());
 	}
@@ -313,6 +323,7 @@ public class MessagePersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
+
 		Message newMessage = addMessage();
 
 		long pk = RandomTestUtil.nextLong();
@@ -322,50 +333,57 @@ public class MessagePersistenceTest {
 		primaryKeys.add(newMessage.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, Message> messages = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, Message> messages = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertEquals(1, messages.size());
-		Assert.assertEquals(newMessage, messages.get(newMessage.getPrimaryKey()));
+		Assert.assertEquals(
+			newMessage, messages.get(newMessage.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, Message> messages = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, Message> messages = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertTrue(messages.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
 		Message newMessage = addMessage();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newMessage.getPrimaryKey());
 
-		Map<Serializable, Message> messages = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, Message> messages = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertEquals(1, messages.size());
-		Assert.assertEquals(newMessage, messages.get(newMessage.getPrimaryKey()));
+		Assert.assertEquals(
+			newMessage, messages.get(newMessage.getPrimaryKey()));
 	}
 
 	@Test
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery = MessageLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			MessageLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<Message>() {
+		actionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<Message>() {
+
 				@Override
 				public void performAction(Message message) {
 					Assert.assertNotNull(message);
 
 					count.increment();
 				}
+
 			});
 
 		actionableDynamicQuery.performActions();
@@ -374,15 +392,14 @@ public class MessagePersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting()
-		throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
 		Message newMessage = addMessage();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(Message.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Message.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("messageId",
-				newMessage.getMessageId()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("messageId", newMessage.getMessageId()));
 
 		List<Message> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -395,11 +412,11 @@ public class MessagePersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(Message.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Message.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("messageId",
-				RandomTestUtil.nextLong()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("messageId", RandomTestUtil.nextLong()));
 
 		List<Message> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -407,19 +424,19 @@ public class MessagePersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting()
-		throws Exception {
+	public void testDynamicQueryByProjectionExisting() throws Exception {
 		Message newMessage = addMessage();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(Message.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Message.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.setProjection(ProjectionFactoryUtil.property("messageId"));
 
 		Object newMessageId = newMessage.getMessageId();
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("messageId",
-				new Object[] { newMessageId }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"messageId", new Object[] {newMessageId}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -432,13 +449,14 @@ public class MessagePersistenceTest {
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(Message.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Message.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.setProjection(ProjectionFactoryUtil.property("messageId"));
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("messageId",
-				new Object[] { RandomTestUtil.nextLong() }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"messageId", new Object[] {RandomTestUtil.nextLong()}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -451,14 +469,18 @@ public class MessagePersistenceTest {
 
 		_persistence.clearCache();
 
-		Message existingMessage = _persistence.findByPrimaryKey(newMessage.getPrimaryKey());
+		Message existingMessage = _persistence.findByPrimaryKey(
+			newMessage.getPrimaryKey());
 
-		Assert.assertEquals(Long.valueOf(existingMessage.getFolderId()),
-			ReflectionTestUtil.<Long>invoke(existingMessage,
-				"getOriginalFolderId", new Class<?>[0]));
-		Assert.assertEquals(Long.valueOf(existingMessage.getRemoteMessageId()),
-			ReflectionTestUtil.<Long>invoke(existingMessage,
-				"getOriginalRemoteMessageId", new Class<?>[0]));
+		Assert.assertEquals(
+			Long.valueOf(existingMessage.getFolderId()),
+			ReflectionTestUtil.<Long>invoke(
+				existingMessage, "getOriginalFolderId", new Class<?>[0]));
+		Assert.assertEquals(
+			Long.valueOf(existingMessage.getRemoteMessageId()),
+			ReflectionTestUtil.<Long>invoke(
+				existingMessage, "getOriginalRemoteMessageId",
+				new Class<?>[0]));
 	}
 
 	protected Message addMessage() throws Exception {
@@ -512,4 +534,5 @@ public class MessagePersistenceTest {
 	private List<Message> _messages = new ArrayList<Message>();
 	private MessagePersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
+
 }

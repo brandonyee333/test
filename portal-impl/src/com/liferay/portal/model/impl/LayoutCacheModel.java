@@ -14,14 +14,11 @@
 
 package com.liferay.portal.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -34,12 +31,11 @@ import java.util.Date;
  * The cache model class for representing Layout in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see Layout
  * @generated
  */
-@ProviderType
-public class LayoutCacheModel implements CacheModel<Layout>, Externalizable,
-	MVCCModel {
+public class LayoutCacheModel
+	implements CacheModel<Layout>, Externalizable, MVCCModel {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -53,7 +49,8 @@ public class LayoutCacheModel implements CacheModel<Layout>, Externalizable,
 		LayoutCacheModel layoutCacheModel = (LayoutCacheModel)obj;
 
 		if ((plid == layoutCacheModel.plid) &&
-				(mvccVersion == layoutCacheModel.mvccVersion)) {
+			(mvccVersion == layoutCacheModel.mvccVersion)) {
+
 			return true;
 		}
 
@@ -153,7 +150,7 @@ public class LayoutCacheModel implements CacheModel<Layout>, Externalizable,
 		layoutImpl.setMvccVersion(mvccVersion);
 
 		if (uuid == null) {
-			layoutImpl.setUuid(StringPool.BLANK);
+			layoutImpl.setUuid("");
 		}
 		else {
 			layoutImpl.setUuid(uuid);
@@ -165,7 +162,7 @@ public class LayoutCacheModel implements CacheModel<Layout>, Externalizable,
 		layoutImpl.setUserId(userId);
 
 		if (userName == null) {
-			layoutImpl.setUserName(StringPool.BLANK);
+			layoutImpl.setUserName("");
 		}
 		else {
 			layoutImpl.setUserName(userName);
@@ -190,49 +187,49 @@ public class LayoutCacheModel implements CacheModel<Layout>, Externalizable,
 		layoutImpl.setParentLayoutId(parentLayoutId);
 
 		if (name == null) {
-			layoutImpl.setName(StringPool.BLANK);
+			layoutImpl.setName("");
 		}
 		else {
 			layoutImpl.setName(name);
 		}
 
 		if (title == null) {
-			layoutImpl.setTitle(StringPool.BLANK);
+			layoutImpl.setTitle("");
 		}
 		else {
 			layoutImpl.setTitle(title);
 		}
 
 		if (description == null) {
-			layoutImpl.setDescription(StringPool.BLANK);
+			layoutImpl.setDescription("");
 		}
 		else {
 			layoutImpl.setDescription(description);
 		}
 
 		if (keywords == null) {
-			layoutImpl.setKeywords(StringPool.BLANK);
+			layoutImpl.setKeywords("");
 		}
 		else {
 			layoutImpl.setKeywords(keywords);
 		}
 
 		if (robots == null) {
-			layoutImpl.setRobots(StringPool.BLANK);
+			layoutImpl.setRobots("");
 		}
 		else {
 			layoutImpl.setRobots(robots);
 		}
 
 		if (type == null) {
-			layoutImpl.setType(StringPool.BLANK);
+			layoutImpl.setType("");
 		}
 		else {
 			layoutImpl.setType(type);
 		}
 
 		if (typeSettings == null) {
-			layoutImpl.setTypeSettings(StringPool.BLANK);
+			layoutImpl.setTypeSettings("");
 		}
 		else {
 			layoutImpl.setTypeSettings(typeSettings);
@@ -241,7 +238,7 @@ public class LayoutCacheModel implements CacheModel<Layout>, Externalizable,
 		layoutImpl.setHidden(hidden);
 
 		if (friendlyURL == null) {
-			layoutImpl.setFriendlyURL(StringPool.BLANK);
+			layoutImpl.setFriendlyURL("");
 		}
 		else {
 			layoutImpl.setFriendlyURL(friendlyURL);
@@ -250,21 +247,21 @@ public class LayoutCacheModel implements CacheModel<Layout>, Externalizable,
 		layoutImpl.setIconImageId(iconImageId);
 
 		if (themeId == null) {
-			layoutImpl.setThemeId(StringPool.BLANK);
+			layoutImpl.setThemeId("");
 		}
 		else {
 			layoutImpl.setThemeId(themeId);
 		}
 
 		if (colorSchemeId == null) {
-			layoutImpl.setColorSchemeId(StringPool.BLANK);
+			layoutImpl.setColorSchemeId("");
 		}
 		else {
 			layoutImpl.setColorSchemeId(colorSchemeId);
 		}
 
 		if (css == null) {
-			layoutImpl.setCss(StringPool.BLANK);
+			layoutImpl.setCss("");
 		}
 		else {
 			layoutImpl.setCss(css);
@@ -273,7 +270,7 @@ public class LayoutCacheModel implements CacheModel<Layout>, Externalizable,
 		layoutImpl.setPriority(priority);
 
 		if (layoutPrototypeUuid == null) {
-			layoutImpl.setLayoutPrototypeUuid(StringPool.BLANK);
+			layoutImpl.setLayoutPrototypeUuid("");
 		}
 		else {
 			layoutImpl.setLayoutPrototypeUuid(layoutPrototypeUuid);
@@ -282,7 +279,7 @@ public class LayoutCacheModel implements CacheModel<Layout>, Externalizable,
 		layoutImpl.setLayoutPrototypeLinkEnabled(layoutPrototypeLinkEnabled);
 
 		if (sourcePrototypeLayoutUuid == null) {
-			layoutImpl.setSourcePrototypeLayoutUuid(StringPool.BLANK);
+			layoutImpl.setSourcePrototypeLayoutUuid("");
 		}
 		else {
 			layoutImpl.setSourcePrototypeLayoutUuid(sourcePrototypeLayoutUuid);
@@ -301,7 +298,9 @@ public class LayoutCacheModel implements CacheModel<Layout>, Externalizable,
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		mvccVersion = objectInput.readLong();
 		uuid = objectInput.readUTF();
 
@@ -327,7 +326,7 @@ public class LayoutCacheModel implements CacheModel<Layout>, Externalizable,
 		keywords = objectInput.readUTF();
 		robots = objectInput.readUTF();
 		type = objectInput.readUTF();
-		typeSettings = objectInput.readUTF();
+		typeSettings = (String)objectInput.readObject();
 
 		hidden = objectInput.readBoolean();
 		friendlyURL = objectInput.readUTF();
@@ -335,7 +334,7 @@ public class LayoutCacheModel implements CacheModel<Layout>, Externalizable,
 		iconImageId = objectInput.readLong();
 		themeId = objectInput.readUTF();
 		colorSchemeId = objectInput.readUTF();
-		css = objectInput.readUTF();
+		css = (String)objectInput.readObject();
 
 		priority = objectInput.readInt();
 		layoutPrototypeUuid = objectInput.readUTF();
@@ -346,12 +345,11 @@ public class LayoutCacheModel implements CacheModel<Layout>, Externalizable,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
 		if (uuid == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -366,7 +364,7 @@ public class LayoutCacheModel implements CacheModel<Layout>, Externalizable,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -382,58 +380,58 @@ public class LayoutCacheModel implements CacheModel<Layout>, Externalizable,
 		objectOutput.writeLong(parentLayoutId);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (title == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(title);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (keywords == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(keywords);
 		}
 
 		if (robots == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(robots);
 		}
 
 		if (type == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(type);
 		}
 
 		if (typeSettings == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(typeSettings);
+			objectOutput.writeObject(typeSettings);
 		}
 
 		objectOutput.writeBoolean(hidden);
 
 		if (friendlyURL == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(friendlyURL);
@@ -442,30 +440,30 @@ public class LayoutCacheModel implements CacheModel<Layout>, Externalizable,
 		objectOutput.writeLong(iconImageId);
 
 		if (themeId == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(themeId);
 		}
 
 		if (colorSchemeId == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(colorSchemeId);
 		}
 
 		if (css == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(css);
+			objectOutput.writeObject(css);
 		}
 
 		objectOutput.writeInt(priority);
 
 		if (layoutPrototypeUuid == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(layoutPrototypeUuid);
@@ -474,7 +472,7 @@ public class LayoutCacheModel implements CacheModel<Layout>, Externalizable,
 		objectOutput.writeBoolean(layoutPrototypeLinkEnabled);
 
 		if (sourcePrototypeLayoutUuid == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(sourcePrototypeLayoutUuid);
@@ -513,4 +511,5 @@ public class LayoutCacheModel implements CacheModel<Layout>, Externalizable,
 	public boolean layoutPrototypeLinkEnabled;
 	public String sourcePrototypeLayoutUuid;
 	public long lastPublishDate;
+
 }

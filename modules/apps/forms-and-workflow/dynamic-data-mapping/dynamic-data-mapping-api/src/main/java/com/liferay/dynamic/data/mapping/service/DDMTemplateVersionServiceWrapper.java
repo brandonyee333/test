@@ -14,8 +14,6 @@
 
 package com.liferay.dynamic.data.mapping.service;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -25,52 +23,61 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see DDMTemplateVersionService
  * @generated
  */
-@ProviderType
 public class DDMTemplateVersionServiceWrapper
 	implements DDMTemplateVersionService,
-		ServiceWrapper<DDMTemplateVersionService> {
+			   ServiceWrapper<DDMTemplateVersionService> {
+
 	public DDMTemplateVersionServiceWrapper(
 		DDMTemplateVersionService ddmTemplateVersionService) {
+
 		_ddmTemplateVersionService = ddmTemplateVersionService;
 	}
 
 	@Override
-	public com.liferay.dynamic.data.mapping.model.DDMTemplateVersion getLatestTemplateVersion(
-		long templateId)
+	public com.liferay.dynamic.data.mapping.model.DDMTemplateVersion
+			getLatestTemplateVersion(long templateId)
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return _ddmTemplateVersionService.getLatestTemplateVersion(templateId);
 	}
 
+	/**
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
 	@Override
-	public com.liferay.dynamic.data.mapping.model.DDMTemplateVersion getTemplateVersion(
-		long templateVersionId)
+	public String getOSGiServiceIdentifier() {
+		return _ddmTemplateVersionService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMTemplateVersion
+			getTemplateVersion(long templateVersionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return _ddmTemplateVersionService.getTemplateVersion(templateVersionId);
+	}
+
+	@Override
+	public java.util.List
+		<com.liferay.dynamic.data.mapping.model.DDMTemplateVersion>
+				getTemplateVersions(
+					long templateId, int start, int end,
+					com.liferay.portal.kernel.util.OrderByComparator
+						<com.liferay.dynamic.data.mapping.model.
+							DDMTemplateVersion> orderByComparator)
+			throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _ddmTemplateVersionService.getTemplateVersions(
+			templateId, start, end, orderByComparator);
 	}
 
 	@Override
 	public int getTemplateVersionsCount(long templateId)
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return _ddmTemplateVersionService.getTemplateVersionsCount(templateId);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _ddmTemplateVersionService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public java.util.List<com.liferay.dynamic.data.mapping.model.DDMTemplateVersion> getTemplateVersions(
-		long templateId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.dynamic.data.mapping.model.DDMTemplateVersion> orderByComparator)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ddmTemplateVersionService.getTemplateVersions(templateId,
-			start, end, orderByComparator);
 	}
 
 	@Override
@@ -81,8 +88,10 @@ public class DDMTemplateVersionServiceWrapper
 	@Override
 	public void setWrappedService(
 		DDMTemplateVersionService ddmTemplateVersionService) {
+
 		_ddmTemplateVersionService = ddmTemplateVersionService;
 	}
 
 	private DDMTemplateVersionService _ddmTemplateVersionService;
+
 }

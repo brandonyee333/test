@@ -14,13 +14,9 @@
 
 package com.liferay.social.privatemessaging.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-
 import com.liferay.social.privatemessaging.model.UserThread;
 
 import java.io.Externalizable;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing UserThread in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see UserThread
  * @generated
  */
-@ProviderType
-public class UserThreadCacheModel implements CacheModel<UserThread>,
-	Externalizable {
+public class UserThreadCacheModel
+	implements CacheModel<UserThread>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -102,7 +97,7 @@ public class UserThreadCacheModel implements CacheModel<UserThread>,
 		userThreadImpl.setUserId(userId);
 
 		if (userName == null) {
-			userThreadImpl.setUserName(StringPool.BLANK);
+			userThreadImpl.setUserName("");
 		}
 		else {
 			userThreadImpl.setUserName(userName);
@@ -153,8 +148,7 @@ public class UserThreadCacheModel implements CacheModel<UserThread>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(userThreadId);
 
 		objectOutput.writeLong(companyId);
@@ -162,7 +156,7 @@ public class UserThreadCacheModel implements CacheModel<UserThread>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -190,4 +184,5 @@ public class UserThreadCacheModel implements CacheModel<UserThread>,
 	public long topMBMessageId;
 	public boolean read;
 	public boolean deleted;
+
 }

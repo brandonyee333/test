@@ -1,27 +1,24 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.community.meetup.service.persistence.impl;
-
-import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.community.meetup.exception.NoSuchMeetupGroupException;
 import com.liferay.osb.community.meetup.model.MeetupGroup;
 import com.liferay.osb.community.meetup.model.impl.MeetupGroupImpl;
 import com.liferay.osb.community.meetup.model.impl.MeetupGroupModelImpl;
 import com.liferay.osb.community.meetup.service.persistence.MeetupGroupPersistence;
-
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -30,17 +27,18 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.service.persistence.CompanyProvider;
-import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -59,32 +57,28 @@ import java.util.Set;
  * </p>
  *
  * @author Jamie Sammons
- * @see MeetupGroupPersistence
- * @see com.liferay.osb.community.meetup.service.persistence.MeetupGroupUtil
  * @generated
  */
-@ProviderType
-public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
-	implements MeetupGroupPersistence {
+public class MeetupGroupPersistenceImpl
+	extends BasePersistenceImpl<MeetupGroup> implements MeetupGroupPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link MeetupGroupUtil} to access the meetup group persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use <code>MeetupGroupUtil</code> to access the meetup group persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = MeetupGroupImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(MeetupGroupModelImpl.ENTITY_CACHE_ENABLED,
-			MeetupGroupModelImpl.FINDER_CACHE_ENABLED, MeetupGroupImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(MeetupGroupModelImpl.ENTITY_CACHE_ENABLED,
-			MeetupGroupModelImpl.FINDER_CACHE_ENABLED, MeetupGroupImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(MeetupGroupModelImpl.ENTITY_CACHE_ENABLED,
-			MeetupGroupModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		MeetupGroupImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
 
 	public MeetupGroupPersistenceImpl() {
 		setModelClass(MeetupGroup.class);
@@ -97,8 +91,9 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 	 */
 	@Override
 	public void cacheResult(MeetupGroup meetupGroup) {
-		entityCache.putResult(MeetupGroupModelImpl.ENTITY_CACHE_ENABLED,
-			MeetupGroupImpl.class, meetupGroup.getPrimaryKey(), meetupGroup);
+		entityCache.putResult(
+			MeetupGroupModelImpl.ENTITY_CACHE_ENABLED, MeetupGroupImpl.class,
+			meetupGroup.getPrimaryKey(), meetupGroup);
 
 		meetupGroup.resetOriginalValues();
 	}
@@ -112,8 +107,10 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 	public void cacheResult(List<MeetupGroup> meetupGroups) {
 		for (MeetupGroup meetupGroup : meetupGroups) {
 			if (entityCache.getResult(
-						MeetupGroupModelImpl.ENTITY_CACHE_ENABLED,
-						MeetupGroupImpl.class, meetupGroup.getPrimaryKey()) == null) {
+					MeetupGroupModelImpl.ENTITY_CACHE_ENABLED,
+					MeetupGroupImpl.class, meetupGroup.getPrimaryKey()) ==
+						null) {
+
 				cacheResult(meetupGroup);
 			}
 			else {
@@ -126,7 +123,7 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 	 * Clears the cache for all meetup groups.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -142,13 +139,14 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 	 * Clears the cache for the meetup group.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(MeetupGroup meetupGroup) {
-		entityCache.removeResult(MeetupGroupModelImpl.ENTITY_CACHE_ENABLED,
-			MeetupGroupImpl.class, meetupGroup.getPrimaryKey());
+		entityCache.removeResult(
+			MeetupGroupModelImpl.ENTITY_CACHE_ENABLED, MeetupGroupImpl.class,
+			meetupGroup.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -160,8 +158,21 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (MeetupGroup meetupGroup : meetupGroups) {
-			entityCache.removeResult(MeetupGroupModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(
+				MeetupGroupModelImpl.ENTITY_CACHE_ENABLED,
 				MeetupGroupImpl.class, meetupGroup.getPrimaryKey());
+		}
+	}
+
+	public void clearCache(Set<Serializable> primaryKeys) {
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (Serializable primaryKey : primaryKeys) {
+			entityCache.removeResult(
+				MeetupGroupModelImpl.ENTITY_CACHE_ENABLED,
+				MeetupGroupImpl.class, primaryKey);
 		}
 	}
 
@@ -178,7 +189,7 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 		meetupGroup.setNew(true);
 		meetupGroup.setPrimaryKey(meetupGroupId);
 
-		meetupGroup.setCompanyId(companyProvider.getCompanyId());
+		meetupGroup.setCompanyId(CompanyThreadLocal.getCompanyId());
 
 		return meetupGroup;
 	}
@@ -193,6 +204,7 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 	@Override
 	public MeetupGroup remove(long meetupGroupId)
 		throws NoSuchMeetupGroupException {
+
 		return remove((Serializable)meetupGroupId);
 	}
 
@@ -206,30 +218,31 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 	@Override
 	public MeetupGroup remove(Serializable primaryKey)
 		throws NoSuchMeetupGroupException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			MeetupGroup meetupGroup = (MeetupGroup)session.get(MeetupGroupImpl.class,
-					primaryKey);
+			MeetupGroup meetupGroup = (MeetupGroup)session.get(
+				MeetupGroupImpl.class, primaryKey);
 
 			if (meetupGroup == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchMeetupGroupException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchMeetupGroupException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(meetupGroup);
 		}
-		catch (NoSuchMeetupGroupException nsee) {
-			throw nsee;
+		catch (NoSuchMeetupGroupException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -238,24 +251,22 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 
 	@Override
 	protected MeetupGroup removeImpl(MeetupGroup meetupGroup) {
-		meetupGroup = toUnwrappedModel(meetupGroup);
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(meetupGroup)) {
-				meetupGroup = (MeetupGroup)session.get(MeetupGroupImpl.class,
-						meetupGroup.getPrimaryKeyObj());
+				meetupGroup = (MeetupGroup)session.get(
+					MeetupGroupImpl.class, meetupGroup.getPrimaryKeyObj());
 			}
 
 			if (meetupGroup != null) {
 				session.delete(meetupGroup);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -270,13 +281,29 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 
 	@Override
 	public MeetupGroup updateImpl(MeetupGroup meetupGroup) {
-		meetupGroup = toUnwrappedModel(meetupGroup);
-
 		boolean isNew = meetupGroup.isNew();
 
-		MeetupGroupModelImpl meetupGroupModelImpl = (MeetupGroupModelImpl)meetupGroup;
+		if (!(meetupGroup instanceof MeetupGroupModelImpl)) {
+			InvocationHandler invocationHandler = null;
 
-		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+			if (ProxyUtil.isProxyClass(meetupGroup.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(meetupGroup);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in meetupGroup proxy " +
+						invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom MeetupGroup implementation " +
+					meetupGroup.getClass());
+		}
+
+		MeetupGroupModelImpl meetupGroupModelImpl =
+			(MeetupGroupModelImpl)meetupGroup;
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -294,7 +321,8 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 				meetupGroup.setModifiedDate(now);
 			}
 			else {
-				meetupGroup.setModifiedDate(serviceContext.getModifiedDate(now));
+				meetupGroup.setModifiedDate(
+					serviceContext.getModifiedDate(now));
 			}
 		}
 
@@ -312,8 +340,8 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 				meetupGroup = (MeetupGroup)session.merge(meetupGroup);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -322,46 +350,22 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
 		if (isNew) {
-			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
-				FINDER_ARGS_EMPTY);
+			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(MeetupGroupModelImpl.ENTITY_CACHE_ENABLED,
-			MeetupGroupImpl.class, meetupGroup.getPrimaryKey(), meetupGroup,
-			false);
+		entityCache.putResult(
+			MeetupGroupModelImpl.ENTITY_CACHE_ENABLED, MeetupGroupImpl.class,
+			meetupGroup.getPrimaryKey(), meetupGroup, false);
 
 		meetupGroup.resetOriginalValues();
 
 		return meetupGroup;
 	}
 
-	protected MeetupGroup toUnwrappedModel(MeetupGroup meetupGroup) {
-		if (meetupGroup instanceof MeetupGroupImpl) {
-			return meetupGroup;
-		}
-
-		MeetupGroupImpl meetupGroupImpl = new MeetupGroupImpl();
-
-		meetupGroupImpl.setNew(meetupGroup.isNew());
-		meetupGroupImpl.setPrimaryKey(meetupGroup.getPrimaryKey());
-
-		meetupGroupImpl.setMeetupGroupId(meetupGroup.getMeetupGroupId());
-		meetupGroupImpl.setGroupId(meetupGroup.getGroupId());
-		meetupGroupImpl.setCompanyId(meetupGroup.getCompanyId());
-		meetupGroupImpl.setCreateDate(meetupGroup.getCreateDate());
-		meetupGroupImpl.setModifiedDate(meetupGroup.getModifiedDate());
-		meetupGroupImpl.setName(meetupGroup.getName());
-		meetupGroupImpl.setCity(meetupGroup.getCity());
-		meetupGroupImpl.setMemberCount(meetupGroup.getMemberCount());
-		meetupGroupImpl.setDescription(meetupGroup.getDescription());
-		meetupGroupImpl.setUrl(meetupGroup.getUrl());
-
-		return meetupGroupImpl;
-	}
-
 	/**
-	 * Returns the meetup group with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the meetup group with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the meetup group
 	 * @return the meetup group
@@ -370,6 +374,7 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 	@Override
 	public MeetupGroup findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchMeetupGroupException {
+
 		MeetupGroup meetupGroup = fetchByPrimaryKey(primaryKey);
 
 		if (meetupGroup == null) {
@@ -377,15 +382,15 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchMeetupGroupException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchMeetupGroupException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return meetupGroup;
 	}
 
 	/**
-	 * Returns the meetup group with the primary key or throws a {@link NoSuchMeetupGroupException} if it could not be found.
+	 * Returns the meetup group with the primary key or throws a <code>NoSuchMeetupGroupException</code> if it could not be found.
 	 *
 	 * @param meetupGroupId the primary key of the meetup group
 	 * @return the meetup group
@@ -394,6 +399,7 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 	@Override
 	public MeetupGroup findByPrimaryKey(long meetupGroupId)
 		throws NoSuchMeetupGroupException {
+
 		return findByPrimaryKey((Serializable)meetupGroupId);
 	}
 
@@ -405,8 +411,9 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 	 */
 	@Override
 	public MeetupGroup fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MeetupGroupModelImpl.ENTITY_CACHE_ENABLED,
-				MeetupGroupImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			MeetupGroupModelImpl.ENTITY_CACHE_ENABLED, MeetupGroupImpl.class,
+			primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -420,22 +427,24 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 			try {
 				session = openSession();
 
-				meetupGroup = (MeetupGroup)session.get(MeetupGroupImpl.class,
-						primaryKey);
+				meetupGroup = (MeetupGroup)session.get(
+					MeetupGroupImpl.class, primaryKey);
 
 				if (meetupGroup != null) {
 					cacheResult(meetupGroup);
 				}
 				else {
-					entityCache.putResult(MeetupGroupModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						MeetupGroupModelImpl.ENTITY_CACHE_ENABLED,
 						MeetupGroupImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
-				entityCache.removeResult(MeetupGroupModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception exception) {
+				entityCache.removeResult(
+					MeetupGroupModelImpl.ENTITY_CACHE_ENABLED,
 					MeetupGroupImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -459,11 +468,13 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 	@Override
 	public Map<Serializable, MeetupGroup> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, MeetupGroup> map = new HashMap<Serializable, MeetupGroup>();
+		Map<Serializable, MeetupGroup> map =
+			new HashMap<Serializable, MeetupGroup>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -482,8 +493,9 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(MeetupGroupModelImpl.ENTITY_CACHE_ENABLED,
-					MeetupGroupImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				MeetupGroupModelImpl.ENTITY_CACHE_ENABLED,
+				MeetupGroupImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -503,31 +515,31 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler sb = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
-		query.append(_SQL_SELECT_MEETUPGROUP_WHERE_PKS_IN);
+		sb.append(_SQL_SELECT_MEETUPGROUP_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append((long)primaryKey);
+			sb.append((long)primaryKey);
 
-			query.append(StringPool.COMMA);
+			sb.append(",");
 		}
 
-		query.setIndex(query.index() - 1);
+		sb.setIndex(sb.index() - 1);
 
-		query.append(StringPool.CLOSE_PARENTHESIS);
+		sb.append(")");
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query q = session.createQuery(sql);
+			Query query = session.createQuery(sql);
 
-			for (MeetupGroup meetupGroup : (List<MeetupGroup>)q.list()) {
+			for (MeetupGroup meetupGroup : (List<MeetupGroup>)query.list()) {
 				map.put(meetupGroup.getPrimaryKeyObj(), meetupGroup);
 
 				cacheResult(meetupGroup);
@@ -536,12 +548,13 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(MeetupGroupModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					MeetupGroupModelImpl.ENTITY_CACHE_ENABLED,
 					MeetupGroupImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -564,7 +577,7 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 	 * Returns a range of all the meetup groups.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MeetupGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>MeetupGroupModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of meetup groups
@@ -580,7 +593,7 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 	 * Returns an ordered range of all the meetup groups.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MeetupGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>MeetupGroupModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of meetup groups
@@ -589,8 +602,9 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 	 * @return the ordered range of meetup groups
 	 */
 	@Override
-	public List<MeetupGroup> findAll(int start, int end,
-		OrderByComparator<MeetupGroup> orderByComparator) {
+	public List<MeetupGroup> findAll(
+		int start, int end, OrderByComparator<MeetupGroup> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -598,62 +612,62 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 	 * Returns an ordered range of all the meetup groups.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MeetupGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>MeetupGroupModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of meetup groups
 	 * @param end the upper bound of the range of meetup groups (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of meetup groups
 	 */
 	@Override
-	public List<MeetupGroup> findAll(int start, int end,
-		OrderByComparator<MeetupGroup> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+	public List<MeetupGroup> findAll(
+		int start, int end, OrderByComparator<MeetupGroup> orderByComparator,
+		boolean useFinderCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-			finderArgs = FINDER_ARGS_EMPTY;
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-			finderArgs = new Object[] { start, end, orderByComparator };
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindAll;
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<MeetupGroup> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<MeetupGroup>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<MeetupGroup>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
-				query.append(_SQL_SELECT_MEETUPGROUP);
+				sb.append(_SQL_SELECT_MEETUPGROUP);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
-				sql = query.toString();
+				sql = sb.toString();
 			}
 			else {
 				sql = _SQL_SELECT_MEETUPGROUP;
 
-				if (pagination) {
-					sql = sql.concat(MeetupGroupModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(MeetupGroupModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -661,29 +675,23 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<MeetupGroup>)QueryUtil.list(q, getDialect(),
-							start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MeetupGroup>)QueryUtil.list(q, getDialect(),
-							start, end);
-				}
+				list = (List<MeetupGroup>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -711,8 +719,8 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -720,18 +728,18 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(_SQL_COUNT_MEETUPGROUP);
+				Query query = session.createQuery(_SQL_COUNT_MEETUPGROUP);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
-					FINDER_ARGS_EMPTY);
+			catch (Exception exception) {
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -750,6 +758,22 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 	 * Initializes the meetup group persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(
+			MeetupGroupModelImpl.ENTITY_CACHE_ENABLED,
+			MeetupGroupModelImpl.FINDER_CACHE_ENABLED, MeetupGroupImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			MeetupGroupModelImpl.ENTITY_CACHE_ENABLED,
+			MeetupGroupModelImpl.FINDER_CACHE_ENABLED, MeetupGroupImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+			new String[0]);
+
+		_finderPathCountAll = new FinderPath(
+			MeetupGroupModelImpl.ENTITY_CACHE_ENABLED,
+			MeetupGroupModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
 	}
 
 	public void destroy() {
@@ -759,16 +783,27 @@ public class MeetupGroupPersistenceImpl extends BasePersistenceImpl<MeetupGroup>
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@ServiceReference(type = CompanyProviderWrapper.class)
-	protected CompanyProvider companyProvider;
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_MEETUPGROUP = "SELECT meetupGroup FROM MeetupGroup meetupGroup";
-	private static final String _SQL_SELECT_MEETUPGROUP_WHERE_PKS_IN = "SELECT meetupGroup FROM MeetupGroup meetupGroup WHERE meetupGroupId IN (";
-	private static final String _SQL_COUNT_MEETUPGROUP = "SELECT COUNT(meetupGroup) FROM MeetupGroup meetupGroup";
+
+	private static final String _SQL_SELECT_MEETUPGROUP =
+		"SELECT meetupGroup FROM MeetupGroup meetupGroup";
+
+	private static final String _SQL_SELECT_MEETUPGROUP_WHERE_PKS_IN =
+		"SELECT meetupGroup FROM MeetupGroup meetupGroup WHERE meetupGroupId IN (";
+
+	private static final String _SQL_COUNT_MEETUPGROUP =
+		"SELECT COUNT(meetupGroup) FROM MeetupGroup meetupGroup";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "meetupGroup.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No MeetupGroup exists with the primary key ";
-	private static final Log _log = LogFactoryUtil.getLog(MeetupGroupPersistenceImpl.class);
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No MeetupGroup exists with the primary key ";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		MeetupGroupPersistenceImpl.class);
+
 }

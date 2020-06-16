@@ -1,27 +1,24 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.service.persistence.impl;
-
-import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.testray.exception.NoSuchTestrayTeamException;
 import com.liferay.osb.testray.model.TestrayTeam;
 import com.liferay.osb.testray.model.impl.TestrayTeamImpl;
 import com.liferay.osb.testray.model.impl.TestrayTeamModelImpl;
 import com.liferay.osb.testray.service.persistence.TestrayTeamPersistence;
-
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -31,17 +28,18 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.service.persistence.CompanyProvider;
-import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -61,45 +59,33 @@ import java.util.Set;
  * </p>
  *
  * @author Ethan Bustad
- * @see TestrayTeamPersistence
- * @see com.liferay.osb.testray.service.persistence.TestrayTeamUtil
  * @generated
  */
-@ProviderType
-public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
-	implements TestrayTeamPersistence {
+public class TestrayTeamPersistenceImpl
+	extends BasePersistenceImpl<TestrayTeam> implements TestrayTeamPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link TestrayTeamUtil} to access the testray team persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use <code>TestrayTeamUtil</code> to access the testray team persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = TestrayTeamImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayTeamModelImpl.FINDER_CACHE_ENABLED, TestrayTeamImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayTeamModelImpl.FINDER_CACHE_ENABLED, TestrayTeamImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayTeamModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
-	public static final FinderPath FINDER_PATH_FETCH_BY_TPI_N = new FinderPath(TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayTeamModelImpl.FINDER_CACHE_ENABLED, TestrayTeamImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByTPI_N",
-			new String[] { Long.class.getName(), String.class.getName() },
-			TestrayTeamModelImpl.TESTRAYPROJECTID_COLUMN_BITMASK |
-			TestrayTeamModelImpl.NAME_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_TPI_N = new FinderPath(TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayTeamModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByTPI_N",
-			new String[] { Long.class.getName(), String.class.getName() });
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		TestrayTeamImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
+	private FinderPath _finderPathFetchByTPI_N;
+	private FinderPath _finderPathCountByTPI_N;
 
 	/**
-	 * Returns the testray team where testrayProjectId = &#63; and name = &#63; or throws a {@link NoSuchTestrayTeamException} if it could not be found.
+	 * Returns the testray team where testrayProjectId = &#63; and name = &#63; or throws a <code>NoSuchTestrayTeamException</code> if it could not be found.
 	 *
 	 * @param testrayProjectId the testray project ID
 	 * @param name the name
@@ -109,26 +95,27 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 	@Override
 	public TestrayTeam findByTPI_N(long testrayProjectId, String name)
 		throws NoSuchTestrayTeamException {
+
 		TestrayTeam testrayTeam = fetchByTPI_N(testrayProjectId, name);
 
 		if (testrayTeam == null) {
-			StringBundler msg = new StringBundler(6);
+			StringBundler sb = new StringBundler(6);
 
-			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			msg.append("testrayProjectId=");
-			msg.append(testrayProjectId);
+			sb.append("testrayProjectId=");
+			sb.append(testrayProjectId);
 
-			msg.append(", name=");
-			msg.append(name);
+			sb.append(", name=");
+			sb.append(name);
 
-			msg.append(StringPool.CLOSE_CURLY_BRACE);
+			sb.append("}");
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(msg.toString());
+				_log.debug(sb.toString());
 			}
 
-			throw new NoSuchTestrayTeamException(msg.toString());
+			throw new NoSuchTestrayTeamException(sb.toString());
 		}
 
 		return testrayTeam;
@@ -151,73 +138,80 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 	 *
 	 * @param testrayProjectId the testray project ID
 	 * @param name the name
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching testray team, or <code>null</code> if a matching testray team could not be found
 	 */
 	@Override
-	public TestrayTeam fetchByTPI_N(long testrayProjectId, String name,
-		boolean retrieveFromCache) {
-		Object[] finderArgs = new Object[] { testrayProjectId, name };
+	public TestrayTeam fetchByTPI_N(
+		long testrayProjectId, String name, boolean useFinderCache) {
+
+		name = Objects.toString(name, "");
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {testrayProjectId, name};
+		}
 
 		Object result = null;
 
-		if (retrieveFromCache) {
-			result = finderCache.getResult(FINDER_PATH_FETCH_BY_TPI_N,
-					finderArgs, this);
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByTPI_N, finderArgs, this);
 		}
 
 		if (result instanceof TestrayTeam) {
 			TestrayTeam testrayTeam = (TestrayTeam)result;
 
 			if ((testrayProjectId != testrayTeam.getTestrayProjectId()) ||
-					!Objects.equals(name, testrayTeam.getName())) {
+				!Objects.equals(name, testrayTeam.getName())) {
+
 				result = null;
 			}
 		}
 
 		if (result == null) {
-			StringBundler query = new StringBundler(4);
+			StringBundler sb = new StringBundler(4);
 
-			query.append(_SQL_SELECT_TESTRAYTEAM_WHERE);
+			sb.append(_SQL_SELECT_TESTRAYTEAM_WHERE);
 
-			query.append(_FINDER_COLUMN_TPI_N_TESTRAYPROJECTID_2);
+			sb.append(_FINDER_COLUMN_TPI_N_TESTRAYPROJECTID_2);
 
 			boolean bindName = false;
 
-			if (name == null) {
-				query.append(_FINDER_COLUMN_TPI_N_NAME_1);
-			}
-			else if (name.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_TPI_N_NAME_3);
+			if (name.isEmpty()) {
+				sb.append(_FINDER_COLUMN_TPI_N_NAME_3);
 			}
 			else {
 				bindName = true;
 
-				query.append(_FINDER_COLUMN_TPI_N_NAME_2);
+				sb.append(_FINDER_COLUMN_TPI_N_NAME_2);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(testrayProjectId);
+				queryPos.add(testrayProjectId);
 
 				if (bindName) {
-					qPos.add(name);
+					queryPos.add(name);
 				}
 
-				List<TestrayTeam> list = q.list();
+				List<TestrayTeam> list = query.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(FINDER_PATH_FETCH_BY_TPI_N,
-						finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByTPI_N, finderArgs, list);
+					}
 				}
 				else {
 					TestrayTeam testrayTeam = list.get(0);
@@ -225,19 +219,15 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 					result = testrayTeam;
 
 					cacheResult(testrayTeam);
-
-					if ((testrayTeam.getTestrayProjectId() != testrayProjectId) ||
-							(testrayTeam.getName() == null) ||
-							!testrayTeam.getName().equals(name)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_TPI_N,
-							finderArgs, testrayTeam);
-					}
 				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_FETCH_BY_TPI_N, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(
+						_finderPathFetchByTPI_N, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -262,6 +252,7 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 	@Override
 	public TestrayTeam removeByTPI_N(long testrayProjectId, String name)
 		throws NoSuchTestrayTeamException {
+
 		TestrayTeam testrayTeam = findByTPI_N(testrayProjectId, name);
 
 		return remove(testrayTeam);
@@ -276,58 +267,57 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 	 */
 	@Override
 	public int countByTPI_N(long testrayProjectId, String name) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_TPI_N;
+		name = Objects.toString(name, "");
 
-		Object[] finderArgs = new Object[] { testrayProjectId, name };
+		FinderPath finderPath = _finderPathCountByTPI_N;
+
+		Object[] finderArgs = new Object[] {testrayProjectId, name};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(3);
+			StringBundler sb = new StringBundler(3);
 
-			query.append(_SQL_COUNT_TESTRAYTEAM_WHERE);
+			sb.append(_SQL_COUNT_TESTRAYTEAM_WHERE);
 
-			query.append(_FINDER_COLUMN_TPI_N_TESTRAYPROJECTID_2);
+			sb.append(_FINDER_COLUMN_TPI_N_TESTRAYPROJECTID_2);
 
 			boolean bindName = false;
 
-			if (name == null) {
-				query.append(_FINDER_COLUMN_TPI_N_NAME_1);
-			}
-			else if (name.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_TPI_N_NAME_3);
+			if (name.isEmpty()) {
+				sb.append(_FINDER_COLUMN_TPI_N_NAME_3);
 			}
 			else {
 				bindName = true;
 
-				query.append(_FINDER_COLUMN_TPI_N_NAME_2);
+				sb.append(_FINDER_COLUMN_TPI_N_NAME_2);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(testrayProjectId);
+				queryPos.add(testrayProjectId);
 
 				if (bindName) {
-					qPos.add(name);
+					queryPos.add(name);
 				}
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -337,10 +327,14 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_TPI_N_TESTRAYPROJECTID_2 = "testrayTeam.testrayProjectId = ? AND ";
-	private static final String _FINDER_COLUMN_TPI_N_NAME_1 = "testrayTeam.name IS NULL";
-	private static final String _FINDER_COLUMN_TPI_N_NAME_2 = "testrayTeam.name = ?";
-	private static final String _FINDER_COLUMN_TPI_N_NAME_3 = "(testrayTeam.name IS NULL OR testrayTeam.name = '')";
+	private static final String _FINDER_COLUMN_TPI_N_TESTRAYPROJECTID_2 =
+		"testrayTeam.testrayProjectId = ? AND ";
+
+	private static final String _FINDER_COLUMN_TPI_N_NAME_2 =
+		"testrayTeam.name = ?";
+
+	private static final String _FINDER_COLUMN_TPI_N_NAME_3 =
+		"(testrayTeam.name IS NULL OR testrayTeam.name = '')";
 
 	public TestrayTeamPersistenceImpl() {
 		setModelClass(TestrayTeam.class);
@@ -353,13 +347,16 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 	 */
 	@Override
 	public void cacheResult(TestrayTeam testrayTeam) {
-		entityCache.putResult(TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayTeamImpl.class, testrayTeam.getPrimaryKey(), testrayTeam);
+		entityCache.putResult(
+			TestrayTeamModelImpl.ENTITY_CACHE_ENABLED, TestrayTeamImpl.class,
+			testrayTeam.getPrimaryKey(), testrayTeam);
 
-		finderCache.putResult(FINDER_PATH_FETCH_BY_TPI_N,
+		finderCache.putResult(
+			_finderPathFetchByTPI_N,
 			new Object[] {
 				testrayTeam.getTestrayProjectId(), testrayTeam.getName()
-			}, testrayTeam);
+			},
+			testrayTeam);
 
 		testrayTeam.resetOriginalValues();
 	}
@@ -373,8 +370,10 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 	public void cacheResult(List<TestrayTeam> testrayTeams) {
 		for (TestrayTeam testrayTeam : testrayTeams) {
 			if (entityCache.getResult(
-						TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
-						TestrayTeamImpl.class, testrayTeam.getPrimaryKey()) == null) {
+					TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
+					TestrayTeamImpl.class, testrayTeam.getPrimaryKey()) ==
+						null) {
+
 				cacheResult(testrayTeam);
 			}
 			else {
@@ -387,7 +386,7 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 	 * Clears the cache for all testray teams.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -403,13 +402,14 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 	 * Clears the cache for the testray team.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(TestrayTeam testrayTeam) {
-		entityCache.removeResult(TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayTeamImpl.class, testrayTeam.getPrimaryKey());
+		entityCache.removeResult(
+			TestrayTeamModelImpl.ENTITY_CACHE_ENABLED, TestrayTeamImpl.class,
+			testrayTeam.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -423,47 +423,63 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (TestrayTeam testrayTeam : testrayTeams) {
-			entityCache.removeResult(TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(
+				TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
 				TestrayTeamImpl.class, testrayTeam.getPrimaryKey());
 
 			clearUniqueFindersCache((TestrayTeamModelImpl)testrayTeam, true);
 		}
 	}
 
+	public void clearCache(Set<Serializable> primaryKeys) {
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (Serializable primaryKey : primaryKeys) {
+			entityCache.removeResult(
+				TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
+				TestrayTeamImpl.class, primaryKey);
+		}
+	}
+
 	protected void cacheUniqueFindersCache(
 		TestrayTeamModelImpl testrayTeamModelImpl) {
-		Object[] args = new Object[] {
-				testrayTeamModelImpl.getTestrayProjectId(),
-				testrayTeamModelImpl.getName()
-			};
 
-		finderCache.putResult(FINDER_PATH_COUNT_BY_TPI_N, args,
-			Long.valueOf(1), false);
-		finderCache.putResult(FINDER_PATH_FETCH_BY_TPI_N, args,
-			testrayTeamModelImpl, false);
+		Object[] args = new Object[] {
+			testrayTeamModelImpl.getTestrayProjectId(),
+			testrayTeamModelImpl.getName()
+		};
+
+		finderCache.putResult(
+			_finderPathCountByTPI_N, args, Long.valueOf(1), false);
+		finderCache.putResult(
+			_finderPathFetchByTPI_N, args, testrayTeamModelImpl, false);
 	}
 
 	protected void clearUniqueFindersCache(
 		TestrayTeamModelImpl testrayTeamModelImpl, boolean clearCurrent) {
+
 		if (clearCurrent) {
 			Object[] args = new Object[] {
-					testrayTeamModelImpl.getTestrayProjectId(),
-					testrayTeamModelImpl.getName()
-				};
+				testrayTeamModelImpl.getTestrayProjectId(),
+				testrayTeamModelImpl.getName()
+			};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_TPI_N, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_TPI_N, args);
+			finderCache.removeResult(_finderPathCountByTPI_N, args);
+			finderCache.removeResult(_finderPathFetchByTPI_N, args);
 		}
 
 		if ((testrayTeamModelImpl.getColumnBitmask() &
-				FINDER_PATH_FETCH_BY_TPI_N.getColumnBitmask()) != 0) {
-			Object[] args = new Object[] {
-					testrayTeamModelImpl.getOriginalTestrayProjectId(),
-					testrayTeamModelImpl.getOriginalName()
-				};
+			 _finderPathFetchByTPI_N.getColumnBitmask()) != 0) {
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_TPI_N, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_TPI_N, args);
+			Object[] args = new Object[] {
+				testrayTeamModelImpl.getOriginalTestrayProjectId(),
+				testrayTeamModelImpl.getOriginalName()
+			};
+
+			finderCache.removeResult(_finderPathCountByTPI_N, args);
+			finderCache.removeResult(_finderPathFetchByTPI_N, args);
 		}
 	}
 
@@ -480,7 +496,7 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 		testrayTeam.setNew(true);
 		testrayTeam.setPrimaryKey(testrayTeamId);
 
-		testrayTeam.setCompanyId(companyProvider.getCompanyId());
+		testrayTeam.setCompanyId(CompanyThreadLocal.getCompanyId());
 
 		return testrayTeam;
 	}
@@ -495,6 +511,7 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 	@Override
 	public TestrayTeam remove(long testrayTeamId)
 		throws NoSuchTestrayTeamException {
+
 		return remove((Serializable)testrayTeamId);
 	}
 
@@ -508,30 +525,31 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 	@Override
 	public TestrayTeam remove(Serializable primaryKey)
 		throws NoSuchTestrayTeamException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			TestrayTeam testrayTeam = (TestrayTeam)session.get(TestrayTeamImpl.class,
-					primaryKey);
+			TestrayTeam testrayTeam = (TestrayTeam)session.get(
+				TestrayTeamImpl.class, primaryKey);
 
 			if (testrayTeam == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchTestrayTeamException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchTestrayTeamException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(testrayTeam);
 		}
-		catch (NoSuchTestrayTeamException nsee) {
-			throw nsee;
+		catch (NoSuchTestrayTeamException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -540,24 +558,22 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 
 	@Override
 	protected TestrayTeam removeImpl(TestrayTeam testrayTeam) {
-		testrayTeam = toUnwrappedModel(testrayTeam);
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(testrayTeam)) {
-				testrayTeam = (TestrayTeam)session.get(TestrayTeamImpl.class,
-						testrayTeam.getPrimaryKeyObj());
+				testrayTeam = (TestrayTeam)session.get(
+					TestrayTeamImpl.class, testrayTeam.getPrimaryKeyObj());
 			}
 
 			if (testrayTeam != null) {
 				session.delete(testrayTeam);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -572,13 +588,29 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 
 	@Override
 	public TestrayTeam updateImpl(TestrayTeam testrayTeam) {
-		testrayTeam = toUnwrappedModel(testrayTeam);
-
 		boolean isNew = testrayTeam.isNew();
 
-		TestrayTeamModelImpl testrayTeamModelImpl = (TestrayTeamModelImpl)testrayTeam;
+		if (!(testrayTeam instanceof TestrayTeamModelImpl)) {
+			InvocationHandler invocationHandler = null;
 
-		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+			if (ProxyUtil.isProxyClass(testrayTeam.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(testrayTeam);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in testrayTeam proxy " +
+						invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom TestrayTeam implementation " +
+					testrayTeam.getClass());
+		}
+
+		TestrayTeamModelImpl testrayTeamModelImpl =
+			(TestrayTeamModelImpl)testrayTeam;
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -596,7 +628,8 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 				testrayTeam.setModifiedDate(now);
 			}
 			else {
-				testrayTeam.setModifiedDate(serviceContext.getModifiedDate(now));
+				testrayTeam.setModifiedDate(
+					serviceContext.getModifiedDate(now));
 			}
 		}
 
@@ -614,8 +647,8 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 				testrayTeam = (TestrayTeam)session.merge(testrayTeam);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -626,16 +659,15 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 		if (!TestrayTeamModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else
-		 if (isNew) {
-			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
-				FINDER_ARGS_EMPTY);
+		else if (isNew) {
+			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayTeamImpl.class, testrayTeam.getPrimaryKey(), testrayTeam,
-			false);
+		entityCache.putResult(
+			TestrayTeamModelImpl.ENTITY_CACHE_ENABLED, TestrayTeamImpl.class,
+			testrayTeam.getPrimaryKey(), testrayTeam, false);
 
 		clearUniqueFindersCache(testrayTeamModelImpl, false);
 		cacheUniqueFindersCache(testrayTeamModelImpl);
@@ -645,31 +677,8 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 		return testrayTeam;
 	}
 
-	protected TestrayTeam toUnwrappedModel(TestrayTeam testrayTeam) {
-		if (testrayTeam instanceof TestrayTeamImpl) {
-			return testrayTeam;
-		}
-
-		TestrayTeamImpl testrayTeamImpl = new TestrayTeamImpl();
-
-		testrayTeamImpl.setNew(testrayTeam.isNew());
-		testrayTeamImpl.setPrimaryKey(testrayTeam.getPrimaryKey());
-
-		testrayTeamImpl.setTestrayTeamId(testrayTeam.getTestrayTeamId());
-		testrayTeamImpl.setGroupId(testrayTeam.getGroupId());
-		testrayTeamImpl.setCompanyId(testrayTeam.getCompanyId());
-		testrayTeamImpl.setUserId(testrayTeam.getUserId());
-		testrayTeamImpl.setUserName(testrayTeam.getUserName());
-		testrayTeamImpl.setCreateDate(testrayTeam.getCreateDate());
-		testrayTeamImpl.setModifiedDate(testrayTeam.getModifiedDate());
-		testrayTeamImpl.setTestrayProjectId(testrayTeam.getTestrayProjectId());
-		testrayTeamImpl.setName(testrayTeam.getName());
-
-		return testrayTeamImpl;
-	}
-
 	/**
-	 * Returns the testray team with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the testray team with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the testray team
 	 * @return the testray team
@@ -678,6 +687,7 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 	@Override
 	public TestrayTeam findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchTestrayTeamException {
+
 		TestrayTeam testrayTeam = fetchByPrimaryKey(primaryKey);
 
 		if (testrayTeam == null) {
@@ -685,15 +695,15 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchTestrayTeamException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchTestrayTeamException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return testrayTeam;
 	}
 
 	/**
-	 * Returns the testray team with the primary key or throws a {@link NoSuchTestrayTeamException} if it could not be found.
+	 * Returns the testray team with the primary key or throws a <code>NoSuchTestrayTeamException</code> if it could not be found.
 	 *
 	 * @param testrayTeamId the primary key of the testray team
 	 * @return the testray team
@@ -702,6 +712,7 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 	@Override
 	public TestrayTeam findByPrimaryKey(long testrayTeamId)
 		throws NoSuchTestrayTeamException {
+
 		return findByPrimaryKey((Serializable)testrayTeamId);
 	}
 
@@ -713,8 +724,9 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 	 */
 	@Override
 	public TestrayTeam fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
-				TestrayTeamImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			TestrayTeamModelImpl.ENTITY_CACHE_ENABLED, TestrayTeamImpl.class,
+			primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -728,22 +740,24 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 			try {
 				session = openSession();
 
-				testrayTeam = (TestrayTeam)session.get(TestrayTeamImpl.class,
-						primaryKey);
+				testrayTeam = (TestrayTeam)session.get(
+					TestrayTeamImpl.class, primaryKey);
 
 				if (testrayTeam != null) {
 					cacheResult(testrayTeam);
 				}
 				else {
-					entityCache.putResult(TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
 						TestrayTeamImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
-				entityCache.removeResult(TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception exception) {
+				entityCache.removeResult(
+					TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
 					TestrayTeamImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -767,11 +781,13 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 	@Override
 	public Map<Serializable, TestrayTeam> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, TestrayTeam> map = new HashMap<Serializable, TestrayTeam>();
+		Map<Serializable, TestrayTeam> map =
+			new HashMap<Serializable, TestrayTeam>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -790,8 +806,9 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
-					TestrayTeamImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
+				TestrayTeamImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -811,31 +828,31 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler sb = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
-		query.append(_SQL_SELECT_TESTRAYTEAM_WHERE_PKS_IN);
+		sb.append(_SQL_SELECT_TESTRAYTEAM_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append((long)primaryKey);
+			sb.append((long)primaryKey);
 
-			query.append(StringPool.COMMA);
+			sb.append(",");
 		}
 
-		query.setIndex(query.index() - 1);
+		sb.setIndex(sb.index() - 1);
 
-		query.append(StringPool.CLOSE_PARENTHESIS);
+		sb.append(")");
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query q = session.createQuery(sql);
+			Query query = session.createQuery(sql);
 
-			for (TestrayTeam testrayTeam : (List<TestrayTeam>)q.list()) {
+			for (TestrayTeam testrayTeam : (List<TestrayTeam>)query.list()) {
 				map.put(testrayTeam.getPrimaryKeyObj(), testrayTeam);
 
 				cacheResult(testrayTeam);
@@ -844,12 +861,13 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
 					TestrayTeamImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -872,7 +890,7 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 	 * Returns a range of all the testray teams.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestrayTeamModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayTeamModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray teams
@@ -888,7 +906,7 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 	 * Returns an ordered range of all the testray teams.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestrayTeamModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayTeamModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray teams
@@ -897,8 +915,9 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 	 * @return the ordered range of testray teams
 	 */
 	@Override
-	public List<TestrayTeam> findAll(int start, int end,
-		OrderByComparator<TestrayTeam> orderByComparator) {
+	public List<TestrayTeam> findAll(
+		int start, int end, OrderByComparator<TestrayTeam> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -906,62 +925,62 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 	 * Returns an ordered range of all the testray teams.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestrayTeamModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayTeamModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray teams
 	 * @param end the upper bound of the range of testray teams (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of testray teams
 	 */
 	@Override
-	public List<TestrayTeam> findAll(int start, int end,
-		OrderByComparator<TestrayTeam> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+	public List<TestrayTeam> findAll(
+		int start, int end, OrderByComparator<TestrayTeam> orderByComparator,
+		boolean useFinderCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-			finderArgs = FINDER_ARGS_EMPTY;
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-			finderArgs = new Object[] { start, end, orderByComparator };
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindAll;
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<TestrayTeam> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<TestrayTeam>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<TestrayTeam>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
-				query.append(_SQL_SELECT_TESTRAYTEAM);
+				sb.append(_SQL_SELECT_TESTRAYTEAM);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
-				sql = query.toString();
+				sql = sb.toString();
 			}
 			else {
 				sql = _SQL_SELECT_TESTRAYTEAM;
 
-				if (pagination) {
-					sql = sql.concat(TestrayTeamModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(TestrayTeamModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -969,29 +988,23 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<TestrayTeam>)QueryUtil.list(q, getDialect(),
-							start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<TestrayTeam>)QueryUtil.list(q, getDialect(),
-							start, end);
-				}
+				list = (List<TestrayTeam>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1019,8 +1032,8 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -1028,18 +1041,18 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(_SQL_COUNT_TESTRAYTEAM);
+				Query query = session.createQuery(_SQL_COUNT_TESTRAYTEAM);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
-					FINDER_ARGS_EMPTY);
+			catch (Exception exception) {
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1058,6 +1071,36 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 	 * Initializes the testray team persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(
+			TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayTeamModelImpl.FINDER_CACHE_ENABLED, TestrayTeamImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayTeamModelImpl.FINDER_CACHE_ENABLED, TestrayTeamImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+			new String[0]);
+
+		_finderPathCountAll = new FinderPath(
+			TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayTeamModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
+
+		_finderPathFetchByTPI_N = new FinderPath(
+			TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayTeamModelImpl.FINDER_CACHE_ENABLED, TestrayTeamImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchByTPI_N",
+			new String[] {Long.class.getName(), String.class.getName()},
+			TestrayTeamModelImpl.TESTRAYPROJECTID_COLUMN_BITMASK |
+			TestrayTeamModelImpl.NAME_COLUMN_BITMASK);
+
+		_finderPathCountByTPI_N = new FinderPath(
+			TestrayTeamModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayTeamModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByTPI_N",
+			new String[] {Long.class.getName(), String.class.getName()});
 	}
 
 	public void destroy() {
@@ -1067,19 +1110,36 @@ public class TestrayTeamPersistenceImpl extends BasePersistenceImpl<TestrayTeam>
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@ServiceReference(type = CompanyProviderWrapper.class)
-	protected CompanyProvider companyProvider;
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_TESTRAYTEAM = "SELECT testrayTeam FROM TestrayTeam testrayTeam";
-	private static final String _SQL_SELECT_TESTRAYTEAM_WHERE_PKS_IN = "SELECT testrayTeam FROM TestrayTeam testrayTeam WHERE testrayTeamId IN (";
-	private static final String _SQL_SELECT_TESTRAYTEAM_WHERE = "SELECT testrayTeam FROM TestrayTeam testrayTeam WHERE ";
-	private static final String _SQL_COUNT_TESTRAYTEAM = "SELECT COUNT(testrayTeam) FROM TestrayTeam testrayTeam";
-	private static final String _SQL_COUNT_TESTRAYTEAM_WHERE = "SELECT COUNT(testrayTeam) FROM TestrayTeam testrayTeam WHERE ";
+
+	private static final String _SQL_SELECT_TESTRAYTEAM =
+		"SELECT testrayTeam FROM TestrayTeam testrayTeam";
+
+	private static final String _SQL_SELECT_TESTRAYTEAM_WHERE_PKS_IN =
+		"SELECT testrayTeam FROM TestrayTeam testrayTeam WHERE testrayTeamId IN (";
+
+	private static final String _SQL_SELECT_TESTRAYTEAM_WHERE =
+		"SELECT testrayTeam FROM TestrayTeam testrayTeam WHERE ";
+
+	private static final String _SQL_COUNT_TESTRAYTEAM =
+		"SELECT COUNT(testrayTeam) FROM TestrayTeam testrayTeam";
+
+	private static final String _SQL_COUNT_TESTRAYTEAM_WHERE =
+		"SELECT COUNT(testrayTeam) FROM TestrayTeam testrayTeam WHERE ";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "testrayTeam.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No TestrayTeam exists with the primary key ";
-	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No TestrayTeam exists with the key {";
-	private static final Log _log = LogFactoryUtil.getLog(TestrayTeamPersistenceImpl.class);
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No TestrayTeam exists with the primary key ";
+
+	private static final String _NO_SUCH_ENTITY_WITH_KEY =
+		"No TestrayTeam exists with the key {";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		TestrayTeamPersistenceImpl.class);
+
 }

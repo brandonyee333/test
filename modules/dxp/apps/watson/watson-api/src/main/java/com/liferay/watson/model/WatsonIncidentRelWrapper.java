@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.watson.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,9 +34,9 @@ import java.util.Objects;
  * @see WatsonIncidentRel
  * @generated
  */
-@ProviderType
-public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
-	ModelWrapper<WatsonIncidentRel> {
+public class WatsonIncidentRelWrapper
+	implements ModelWrapper<WatsonIncidentRel>, WatsonIncidentRel {
+
 	public WatsonIncidentRelWrapper(WatsonIncidentRel watsonIncidentRel) {
 		_watsonIncidentRel = watsonIncidentRel;
 	}
@@ -143,13 +140,159 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 	}
 
 	@Override
-	public WatsonIncidentRel toEscapedModel() {
-		return new WatsonIncidentRelWrapper(_watsonIncidentRel.toEscapedModel());
+	public Object clone() {
+		return new WatsonIncidentRelWrapper(
+			(WatsonIncidentRel)_watsonIncidentRel.clone());
 	}
 
 	@Override
-	public WatsonIncidentRel toUnescapedModel() {
-		return new WatsonIncidentRelWrapper(_watsonIncidentRel.toUnescapedModel());
+	public int compareTo(WatsonIncidentRel watsonIncidentRel) {
+		return _watsonIncidentRel.compareTo(watsonIncidentRel);
+	}
+
+	/**
+	 * Returns the company ID of this watson incident rel.
+	 *
+	 * @return the company ID of this watson incident rel
+	 */
+	@Override
+	public long getCompanyId() {
+		return _watsonIncidentRel.getCompanyId();
+	}
+
+	/**
+	 * Returns the create date of this watson incident rel.
+	 *
+	 * @return the create date of this watson incident rel
+	 */
+	@Override
+	public Date getCreateDate() {
+		return _watsonIncidentRel.getCreateDate();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _watsonIncidentRel.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the group ID of this watson incident rel.
+	 *
+	 * @return the group ID of this watson incident rel
+	 */
+	@Override
+	public long getGroupId() {
+		return _watsonIncidentRel.getGroupId();
+	}
+
+	/**
+	 * Returns the modified date of this watson incident rel.
+	 *
+	 * @return the modified date of this watson incident rel
+	 */
+	@Override
+	public Date getModifiedDate() {
+		return _watsonIncidentRel.getModifiedDate();
+	}
+
+	/**
+	 * Returns the primary key of this watson incident rel.
+	 *
+	 * @return the primary key of this watson incident rel
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _watsonIncidentRel.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _watsonIncidentRel.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the status of this watson incident rel.
+	 *
+	 * @return the status of this watson incident rel
+	 */
+	@Override
+	public int getStatus() {
+		return _watsonIncidentRel.getStatus();
+	}
+
+	/**
+	 * Returns the type of this watson incident rel.
+	 *
+	 * @return the type of this watson incident rel
+	 */
+	@Override
+	public String getType() {
+		return _watsonIncidentRel.getType();
+	}
+
+	/**
+	 * Returns the user ID of this watson incident rel.
+	 *
+	 * @return the user ID of this watson incident rel
+	 */
+	@Override
+	public long getUserId() {
+		return _watsonIncidentRel.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this watson incident rel.
+	 *
+	 * @return the user name of this watson incident rel
+	 */
+	@Override
+	public String getUserName() {
+		return _watsonIncidentRel.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this watson incident rel.
+	 *
+	 * @return the user uuid of this watson incident rel
+	 */
+	@Override
+	public String getUserUuid() {
+		return _watsonIncidentRel.getUserUuid();
+	}
+
+	/**
+	 * Returns the watson incident id1 of this watson incident rel.
+	 *
+	 * @return the watson incident id1 of this watson incident rel
+	 */
+	@Override
+	public long getWatsonIncidentId1() {
+		return _watsonIncidentRel.getWatsonIncidentId1();
+	}
+
+	/**
+	 * Returns the watson incident id2 of this watson incident rel.
+	 *
+	 * @return the watson incident id2 of this watson incident rel
+	 */
+	@Override
+	public long getWatsonIncidentId2() {
+		return _watsonIncidentRel.getWatsonIncidentId2();
+	}
+
+	/**
+	 * Returns the watson incident rel ID of this watson incident rel.
+	 *
+	 * @return the watson incident rel ID of this watson incident rel
+	 */
+	@Override
+	public long getWatsonIncidentRelId() {
+		return _watsonIncidentRel.getWatsonIncidentRelId();
+	}
+
+	@Override
+	public int hashCode() {
+		return _watsonIncidentRel.hashCode();
 	}
 
 	@Override
@@ -168,176 +311,6 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _watsonIncidentRel.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WatsonIncidentRel> toCacheModel() {
-		return _watsonIncidentRel.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(WatsonIncidentRel watsonIncidentRel) {
-		return _watsonIncidentRel.compareTo(watsonIncidentRel);
-	}
-
-	/**
-	* Returns the status of this watson incident rel.
-	*
-	* @return the status of this watson incident rel
-	*/
-	@Override
-	public int getStatus() {
-		return _watsonIncidentRel.getStatus();
-	}
-
-	@Override
-	public int hashCode() {
-		return _watsonIncidentRel.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _watsonIncidentRel.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new WatsonIncidentRelWrapper((WatsonIncidentRel)_watsonIncidentRel.clone());
-	}
-
-	/**
-	* Returns the type of this watson incident rel.
-	*
-	* @return the type of this watson incident rel
-	*/
-	@Override
-	public java.lang.String getType() {
-		return _watsonIncidentRel.getType();
-	}
-
-	/**
-	* Returns the user name of this watson incident rel.
-	*
-	* @return the user name of this watson incident rel
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _watsonIncidentRel.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this watson incident rel.
-	*
-	* @return the user uuid of this watson incident rel
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _watsonIncidentRel.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _watsonIncidentRel.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _watsonIncidentRel.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this watson incident rel.
-	*
-	* @return the create date of this watson incident rel
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _watsonIncidentRel.getCreateDate();
-	}
-
-	/**
-	* Returns the modified date of this watson incident rel.
-	*
-	* @return the modified date of this watson incident rel
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _watsonIncidentRel.getModifiedDate();
-	}
-
-	/**
-	* Returns the company ID of this watson incident rel.
-	*
-	* @return the company ID of this watson incident rel
-	*/
-	@Override
-	public long getCompanyId() {
-		return _watsonIncidentRel.getCompanyId();
-	}
-
-	/**
-	* Returns the group ID of this watson incident rel.
-	*
-	* @return the group ID of this watson incident rel
-	*/
-	@Override
-	public long getGroupId() {
-		return _watsonIncidentRel.getGroupId();
-	}
-
-	/**
-	* Returns the primary key of this watson incident rel.
-	*
-	* @return the primary key of this watson incident rel
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _watsonIncidentRel.getPrimaryKey();
-	}
-
-	/**
-	* Returns the user ID of this watson incident rel.
-	*
-	* @return the user ID of this watson incident rel
-	*/
-	@Override
-	public long getUserId() {
-		return _watsonIncidentRel.getUserId();
-	}
-
-	/**
-	* Returns the watson incident id1 of this watson incident rel.
-	*
-	* @return the watson incident id1 of this watson incident rel
-	*/
-	@Override
-	public long getWatsonIncidentId1() {
-		return _watsonIncidentRel.getWatsonIncidentId1();
-	}
-
-	/**
-	* Returns the watson incident id2 of this watson incident rel.
-	*
-	* @return the watson incident id2 of this watson incident rel
-	*/
-	@Override
-	public long getWatsonIncidentId2() {
-		return _watsonIncidentRel.getWatsonIncidentId2();
-	}
-
-	/**
-	* Returns the watson incident rel ID of this watson incident rel.
-	*
-	* @return the watson incident rel ID of this watson incident rel
-	*/
-	@Override
-	public long getWatsonIncidentRelId() {
-		return _watsonIncidentRel.getWatsonIncidentRelId();
-	}
-
-	@Override
 	public void persist() {
 		_watsonIncidentRel.persist();
 	}
@@ -348,23 +321,30 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 	}
 
 	/**
-	* Sets the company ID of this watson incident rel.
-	*
-	* @param companyId the company ID of this watson incident rel
-	*/
+	 * Sets the company ID of this watson incident rel.
+	 *
+	 * @param companyId the company ID of this watson incident rel
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_watsonIncidentRel.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this watson incident rel.
-	*
-	* @param createDate the create date of this watson incident rel
-	*/
+	 * Sets the create date of this watson incident rel.
+	 *
+	 * @param createDate the create date of this watson incident rel
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_watsonIncidentRel.setCreateDate(createDate);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_watsonIncidentRel.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -373,31 +353,25 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_watsonIncidentRel.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_watsonIncidentRel.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the group ID of this watson incident rel.
-	*
-	* @param groupId the group ID of this watson incident rel
-	*/
+	 * Sets the group ID of this watson incident rel.
+	 *
+	 * @param groupId the group ID of this watson incident rel
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_watsonIncidentRel.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the modified date of this watson incident rel.
-	*
-	* @param modifiedDate the modified date of this watson incident rel
-	*/
+	 * Sets the modified date of this watson incident rel.
+	 *
+	 * @param modifiedDate the modified date of this watson incident rel
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_watsonIncidentRel.setModifiedDate(modifiedDate);
@@ -409,10 +383,10 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 	}
 
 	/**
-	* Sets the primary key of this watson incident rel.
-	*
-	* @param primaryKey the primary key of this watson incident rel
-	*/
+	 * Sets the primary key of this watson incident rel.
+	 *
+	 * @param primaryKey the primary key of this watson incident rel
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_watsonIncidentRel.setPrimaryKey(primaryKey);
@@ -424,83 +398,112 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 	}
 
 	/**
-	* Sets the status of this watson incident rel.
-	*
-	* @param status the status of this watson incident rel
-	*/
+	 * Sets the status of this watson incident rel.
+	 *
+	 * @param status the status of this watson incident rel
+	 */
 	@Override
 	public void setStatus(int status) {
 		_watsonIncidentRel.setStatus(status);
 	}
 
 	/**
-	* Sets the type of this watson incident rel.
-	*
-	* @param type the type of this watson incident rel
-	*/
+	 * Sets the type of this watson incident rel.
+	 *
+	 * @param type the type of this watson incident rel
+	 */
 	@Override
-	public void setType(java.lang.String type) {
+	public void setType(String type) {
 		_watsonIncidentRel.setType(type);
 	}
 
 	/**
-	* Sets the user ID of this watson incident rel.
-	*
-	* @param userId the user ID of this watson incident rel
-	*/
+	 * Sets the user ID of this watson incident rel.
+	 *
+	 * @param userId the user ID of this watson incident rel
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_watsonIncidentRel.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this watson incident rel.
-	*
-	* @param userName the user name of this watson incident rel
-	*/
+	 * Sets the user name of this watson incident rel.
+	 *
+	 * @param userName the user name of this watson incident rel
+	 */
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_watsonIncidentRel.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this watson incident rel.
-	*
-	* @param userUuid the user uuid of this watson incident rel
-	*/
+	 * Sets the user uuid of this watson incident rel.
+	 *
+	 * @param userUuid the user uuid of this watson incident rel
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_watsonIncidentRel.setUserUuid(userUuid);
 	}
 
 	/**
-	* Sets the watson incident id1 of this watson incident rel.
-	*
-	* @param watsonIncidentId1 the watson incident id1 of this watson incident rel
-	*/
+	 * Sets the watson incident id1 of this watson incident rel.
+	 *
+	 * @param watsonIncidentId1 the watson incident id1 of this watson incident rel
+	 */
 	@Override
 	public void setWatsonIncidentId1(long watsonIncidentId1) {
 		_watsonIncidentRel.setWatsonIncidentId1(watsonIncidentId1);
 	}
 
 	/**
-	* Sets the watson incident id2 of this watson incident rel.
-	*
-	* @param watsonIncidentId2 the watson incident id2 of this watson incident rel
-	*/
+	 * Sets the watson incident id2 of this watson incident rel.
+	 *
+	 * @param watsonIncidentId2 the watson incident id2 of this watson incident rel
+	 */
 	@Override
 	public void setWatsonIncidentId2(long watsonIncidentId2) {
 		_watsonIncidentRel.setWatsonIncidentId2(watsonIncidentId2);
 	}
 
 	/**
-	* Sets the watson incident rel ID of this watson incident rel.
-	*
-	* @param watsonIncidentRelId the watson incident rel ID of this watson incident rel
-	*/
+	 * Sets the watson incident rel ID of this watson incident rel.
+	 *
+	 * @param watsonIncidentRelId the watson incident rel ID of this watson incident rel
+	 */
 	@Override
 	public void setWatsonIncidentRelId(long watsonIncidentRelId) {
 		_watsonIncidentRel.setWatsonIncidentRelId(watsonIncidentRelId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<WatsonIncidentRel>
+		toCacheModel() {
+
+		return _watsonIncidentRel.toCacheModel();
+	}
+
+	@Override
+	public WatsonIncidentRel toEscapedModel() {
+		return new WatsonIncidentRelWrapper(
+			_watsonIncidentRel.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _watsonIncidentRel.toString();
+	}
+
+	@Override
+	public WatsonIncidentRel toUnescapedModel() {
+		return new WatsonIncidentRelWrapper(
+			_watsonIncidentRel.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _watsonIncidentRel.toXmlString();
 	}
 
 	@Override
@@ -513,10 +516,13 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 			return false;
 		}
 
-		WatsonIncidentRelWrapper watsonIncidentRelWrapper = (WatsonIncidentRelWrapper)obj;
+		WatsonIncidentRelWrapper watsonIncidentRelWrapper =
+			(WatsonIncidentRelWrapper)obj;
 
-		if (Objects.equals(_watsonIncidentRel,
-					watsonIncidentRelWrapper._watsonIncidentRel)) {
+		if (Objects.equals(
+				_watsonIncidentRel,
+				watsonIncidentRelWrapper._watsonIncidentRel)) {
+
 			return true;
 		}
 
@@ -544,4 +550,5 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 	}
 
 	private final WatsonIncidentRel _watsonIncidentRel;
+
 }

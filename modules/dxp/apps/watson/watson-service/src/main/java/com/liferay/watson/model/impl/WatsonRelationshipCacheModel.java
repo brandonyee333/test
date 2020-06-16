@@ -1,26 +1,22 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-
 import com.liferay.watson.model.WatsonRelationship;
 
 import java.io.Externalizable;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing WatsonRelationship in entity cache.
  *
  * @author Steven Smith
- * @see WatsonRelationship
  * @generated
  */
-@ProviderType
-public class WatsonRelationshipCacheModel implements CacheModel<WatsonRelationship>,
-	Externalizable {
+public class WatsonRelationshipCacheModel
+	implements CacheModel<WatsonRelationship>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,9 +45,12 @@ public class WatsonRelationshipCacheModel implements CacheModel<WatsonRelationsh
 			return false;
 		}
 
-		WatsonRelationshipCacheModel watsonRelationshipCacheModel = (WatsonRelationshipCacheModel)obj;
+		WatsonRelationshipCacheModel watsonRelationshipCacheModel =
+			(WatsonRelationshipCacheModel)obj;
 
-		if (watsonRelationshipId == watsonRelationshipCacheModel.watsonRelationshipId) {
+		if (watsonRelationshipId ==
+				watsonRelationshipCacheModel.watsonRelationshipId) {
+
 			return true;
 		}
 
@@ -105,7 +103,8 @@ public class WatsonRelationshipCacheModel implements CacheModel<WatsonRelationsh
 
 	@Override
 	public WatsonRelationship toEntityModel() {
-		WatsonRelationshipImpl watsonRelationshipImpl = new WatsonRelationshipImpl();
+		WatsonRelationshipImpl watsonRelationshipImpl =
+			new WatsonRelationshipImpl();
 
 		watsonRelationshipImpl.setWatsonRelationshipId(watsonRelationshipId);
 		watsonRelationshipImpl.setGroupId(groupId);
@@ -113,7 +112,7 @@ public class WatsonRelationshipCacheModel implements CacheModel<WatsonRelationsh
 		watsonRelationshipImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonRelationshipImpl.setUserName(StringPool.BLANK);
+			watsonRelationshipImpl.setUserName("");
 		}
 		else {
 			watsonRelationshipImpl.setUserName(userName);
@@ -141,7 +140,7 @@ public class WatsonRelationshipCacheModel implements CacheModel<WatsonRelationsh
 		watsonRelationshipImpl.setClassPK2(classPK2);
 
 		if (description == null) {
-			watsonRelationshipImpl.setDescription(StringPool.BLANK);
+			watsonRelationshipImpl.setDescription("");
 		}
 		else {
 			watsonRelationshipImpl.setDescription(description);
@@ -184,8 +183,7 @@ public class WatsonRelationshipCacheModel implements CacheModel<WatsonRelationsh
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonRelationshipId);
 
 		objectOutput.writeLong(groupId);
@@ -195,7 +193,7 @@ public class WatsonRelationshipCacheModel implements CacheModel<WatsonRelationsh
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -217,7 +215,7 @@ public class WatsonRelationshipCacheModel implements CacheModel<WatsonRelationsh
 		objectOutput.writeLong(classPK2);
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -241,4 +239,5 @@ public class WatsonRelationshipCacheModel implements CacheModel<WatsonRelationsh
 	public long classPK2;
 	public String description;
 	public int status;
+
 }

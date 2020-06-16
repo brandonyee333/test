@@ -14,10 +14,7 @@
 
 package com.liferay.dynamic.data.lists.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,9 +34,9 @@ import java.util.Objects;
  * @see DDLRecordVersion
  * @generated
  */
-@ProviderType
-public class DDLRecordVersionWrapper implements DDLRecordVersion,
-	ModelWrapper<DDLRecordVersion> {
+public class DDLRecordVersionWrapper
+	implements DDLRecordVersion, ModelWrapper<DDLRecordVersion> {
+
 	public DDLRecordVersionWrapper(DDLRecordVersion ddlRecordVersion) {
 		_ddlRecordVersion = ddlRecordVersion;
 	}
@@ -171,32 +168,238 @@ public class DDLRecordVersionWrapper implements DDLRecordVersion,
 	}
 
 	@Override
+	public Object clone() {
+		return new DDLRecordVersionWrapper(
+			(DDLRecordVersion)_ddlRecordVersion.clone());
+	}
+
+	@Override
+	public int compareTo(DDLRecordVersion ddlRecordVersion) {
+		return _ddlRecordVersion.compareTo(ddlRecordVersion);
+	}
+
+	/**
+	 * Returns the company ID of this ddl record version.
+	 *
+	 * @return the company ID of this ddl record version
+	 */
+	@Override
+	public long getCompanyId() {
+		return _ddlRecordVersion.getCompanyId();
+	}
+
+	/**
+	 * Returns the create date of this ddl record version.
+	 *
+	 * @return the create date of this ddl record version
+	 */
+	@Override
+	public Date getCreateDate() {
+		return _ddlRecordVersion.getCreateDate();
+	}
+
+	@Override
+	public com.liferay.dynamic.data.mapping.storage.DDMFormValues
+			getDDMFormValues()
+		throws com.liferay.dynamic.data.mapping.exception.StorageException {
+
+		return _ddlRecordVersion.getDDMFormValues();
+	}
+
+	/**
+	 * Returns the ddm storage ID of this ddl record version.
+	 *
+	 * @return the ddm storage ID of this ddl record version
+	 */
+	@Override
+	public long getDDMStorageId() {
+		return _ddlRecordVersion.getDDMStorageId();
+	}
+
+	/**
+	 * Returns the display index of this ddl record version.
+	 *
+	 * @return the display index of this ddl record version
+	 */
+	@Override
+	public int getDisplayIndex() {
+		return _ddlRecordVersion.getDisplayIndex();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _ddlRecordVersion.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the group ID of this ddl record version.
+	 *
+	 * @return the group ID of this ddl record version
+	 */
+	@Override
+	public long getGroupId() {
+		return _ddlRecordVersion.getGroupId();
+	}
+
+	/**
+	 * Returns the primary key of this ddl record version.
+	 *
+	 * @return the primary key of this ddl record version
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _ddlRecordVersion.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _ddlRecordVersion.getPrimaryKeyObj();
+	}
+
+	@Override
 	public DDLRecord getRecord()
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return _ddlRecordVersion.getRecord();
+	}
+
+	/**
+	 * Returns the record ID of this ddl record version.
+	 *
+	 * @return the record ID of this ddl record version
+	 */
+	@Override
+	public long getRecordId() {
+		return _ddlRecordVersion.getRecordId();
 	}
 
 	@Override
 	public DDLRecordSet getRecordSet()
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return _ddlRecordVersion.getRecordSet();
 	}
 
+	/**
+	 * Returns the record set ID of this ddl record version.
+	 *
+	 * @return the record set ID of this ddl record version
+	 */
 	@Override
-	public DDLRecordVersion toEscapedModel() {
-		return new DDLRecordVersionWrapper(_ddlRecordVersion.toEscapedModel());
-	}
-
-	@Override
-	public DDLRecordVersion toUnescapedModel() {
-		return new DDLRecordVersionWrapper(_ddlRecordVersion.toUnescapedModel());
+	public long getRecordSetId() {
+		return _ddlRecordVersion.getRecordSetId();
 	}
 
 	/**
-	* Returns <code>true</code> if this ddl record version is approved.
-	*
-	* @return <code>true</code> if this ddl record version is approved; <code>false</code> otherwise
-	*/
+	 * Returns the record version ID of this ddl record version.
+	 *
+	 * @return the record version ID of this ddl record version
+	 */
+	@Override
+	public long getRecordVersionId() {
+		return _ddlRecordVersion.getRecordVersionId();
+	}
+
+	/**
+	 * Returns the status of this ddl record version.
+	 *
+	 * @return the status of this ddl record version
+	 */
+	@Override
+	public int getStatus() {
+		return _ddlRecordVersion.getStatus();
+	}
+
+	/**
+	 * Returns the status by user ID of this ddl record version.
+	 *
+	 * @return the status by user ID of this ddl record version
+	 */
+	@Override
+	public long getStatusByUserId() {
+		return _ddlRecordVersion.getStatusByUserId();
+	}
+
+	/**
+	 * Returns the status by user name of this ddl record version.
+	 *
+	 * @return the status by user name of this ddl record version
+	 */
+	@Override
+	public String getStatusByUserName() {
+		return _ddlRecordVersion.getStatusByUserName();
+	}
+
+	/**
+	 * Returns the status by user uuid of this ddl record version.
+	 *
+	 * @return the status by user uuid of this ddl record version
+	 */
+	@Override
+	public String getStatusByUserUuid() {
+		return _ddlRecordVersion.getStatusByUserUuid();
+	}
+
+	/**
+	 * Returns the status date of this ddl record version.
+	 *
+	 * @return the status date of this ddl record version
+	 */
+	@Override
+	public Date getStatusDate() {
+		return _ddlRecordVersion.getStatusDate();
+	}
+
+	/**
+	 * Returns the user ID of this ddl record version.
+	 *
+	 * @return the user ID of this ddl record version
+	 */
+	@Override
+	public long getUserId() {
+		return _ddlRecordVersion.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this ddl record version.
+	 *
+	 * @return the user name of this ddl record version
+	 */
+	@Override
+	public String getUserName() {
+		return _ddlRecordVersion.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this ddl record version.
+	 *
+	 * @return the user uuid of this ddl record version
+	 */
+	@Override
+	public String getUserUuid() {
+		return _ddlRecordVersion.getUserUuid();
+	}
+
+	/**
+	 * Returns the version of this ddl record version.
+	 *
+	 * @return the version of this ddl record version
+	 */
+	@Override
+	public String getVersion() {
+		return _ddlRecordVersion.getVersion();
+	}
+
+	@Override
+	public int hashCode() {
+		return _ddlRecordVersion.hashCode();
+	}
+
+	/**
+	 * Returns <code>true</code> if this ddl record version is approved.
+	 *
+	 * @return <code>true</code> if this ddl record version is approved; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isApproved() {
 		return _ddlRecordVersion.isApproved();
@@ -208,20 +411,20 @@ public class DDLRecordVersionWrapper implements DDLRecordVersion,
 	}
 
 	/**
-	* Returns <code>true</code> if this ddl record version is denied.
-	*
-	* @return <code>true</code> if this ddl record version is denied; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this ddl record version is denied.
+	 *
+	 * @return <code>true</code> if this ddl record version is denied; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isDenied() {
 		return _ddlRecordVersion.isDenied();
 	}
 
 	/**
-	* Returns <code>true</code> if this ddl record version is a draft.
-	*
-	* @return <code>true</code> if this ddl record version is a draft; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this ddl record version is a draft.
+	 *
+	 * @return <code>true</code> if this ddl record version is a draft; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isDraft() {
 		return _ddlRecordVersion.isDraft();
@@ -233,30 +436,30 @@ public class DDLRecordVersionWrapper implements DDLRecordVersion,
 	}
 
 	/**
-	* Returns <code>true</code> if this ddl record version is expired.
-	*
-	* @return <code>true</code> if this ddl record version is expired; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this ddl record version is expired.
+	 *
+	 * @return <code>true</code> if this ddl record version is expired; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isExpired() {
 		return _ddlRecordVersion.isExpired();
 	}
 
 	/**
-	* Returns <code>true</code> if this ddl record version is inactive.
-	*
-	* @return <code>true</code> if this ddl record version is inactive; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this ddl record version is inactive.
+	 *
+	 * @return <code>true</code> if this ddl record version is inactive; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isInactive() {
 		return _ddlRecordVersion.isInactive();
 	}
 
 	/**
-	* Returns <code>true</code> if this ddl record version is incomplete.
-	*
-	* @return <code>true</code> if this ddl record version is incomplete; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this ddl record version is incomplete.
+	 *
+	 * @return <code>true</code> if this ddl record version is incomplete; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isIncomplete() {
 		return _ddlRecordVersion.isIncomplete();
@@ -268,249 +471,23 @@ public class DDLRecordVersionWrapper implements DDLRecordVersion,
 	}
 
 	/**
-	* Returns <code>true</code> if this ddl record version is pending.
-	*
-	* @return <code>true</code> if this ddl record version is pending; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this ddl record version is pending.
+	 *
+	 * @return <code>true</code> if this ddl record version is pending; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isPending() {
 		return _ddlRecordVersion.isPending();
 	}
 
 	/**
-	* Returns <code>true</code> if this ddl record version is scheduled.
-	*
-	* @return <code>true</code> if this ddl record version is scheduled; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this ddl record version is scheduled.
+	 *
+	 * @return <code>true</code> if this ddl record version is scheduled; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isScheduled() {
 		return _ddlRecordVersion.isScheduled();
-	}
-
-	@Override
-	public com.liferay.dynamic.data.mapping.storage.DDMFormValues getDDMFormValues()
-		throws com.liferay.dynamic.data.mapping.exception.StorageException {
-		return _ddlRecordVersion.getDDMFormValues();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _ddlRecordVersion.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<DDLRecordVersion> toCacheModel() {
-		return _ddlRecordVersion.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(DDLRecordVersion ddlRecordVersion) {
-		return _ddlRecordVersion.compareTo(ddlRecordVersion);
-	}
-
-	/**
-	* Returns the display index of this ddl record version.
-	*
-	* @return the display index of this ddl record version
-	*/
-	@Override
-	public int getDisplayIndex() {
-		return _ddlRecordVersion.getDisplayIndex();
-	}
-
-	/**
-	* Returns the status of this ddl record version.
-	*
-	* @return the status of this ddl record version
-	*/
-	@Override
-	public int getStatus() {
-		return _ddlRecordVersion.getStatus();
-	}
-
-	@Override
-	public int hashCode() {
-		return _ddlRecordVersion.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _ddlRecordVersion.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new DDLRecordVersionWrapper((DDLRecordVersion)_ddlRecordVersion.clone());
-	}
-
-	/**
-	* Returns the status by user name of this ddl record version.
-	*
-	* @return the status by user name of this ddl record version
-	*/
-	@Override
-	public java.lang.String getStatusByUserName() {
-		return _ddlRecordVersion.getStatusByUserName();
-	}
-
-	/**
-	* Returns the status by user uuid of this ddl record version.
-	*
-	* @return the status by user uuid of this ddl record version
-	*/
-	@Override
-	public java.lang.String getStatusByUserUuid() {
-		return _ddlRecordVersion.getStatusByUserUuid();
-	}
-
-	/**
-	* Returns the user name of this ddl record version.
-	*
-	* @return the user name of this ddl record version
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _ddlRecordVersion.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this ddl record version.
-	*
-	* @return the user uuid of this ddl record version
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _ddlRecordVersion.getUserUuid();
-	}
-
-	/**
-	* Returns the version of this ddl record version.
-	*
-	* @return the version of this ddl record version
-	*/
-	@Override
-	public java.lang.String getVersion() {
-		return _ddlRecordVersion.getVersion();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _ddlRecordVersion.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _ddlRecordVersion.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this ddl record version.
-	*
-	* @return the create date of this ddl record version
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _ddlRecordVersion.getCreateDate();
-	}
-
-	/**
-	* Returns the status date of this ddl record version.
-	*
-	* @return the status date of this ddl record version
-	*/
-	@Override
-	public Date getStatusDate() {
-		return _ddlRecordVersion.getStatusDate();
-	}
-
-	/**
-	* Returns the company ID of this ddl record version.
-	*
-	* @return the company ID of this ddl record version
-	*/
-	@Override
-	public long getCompanyId() {
-		return _ddlRecordVersion.getCompanyId();
-	}
-
-	/**
-	* Returns the ddm storage ID of this ddl record version.
-	*
-	* @return the ddm storage ID of this ddl record version
-	*/
-	@Override
-	public long getDDMStorageId() {
-		return _ddlRecordVersion.getDDMStorageId();
-	}
-
-	/**
-	* Returns the group ID of this ddl record version.
-	*
-	* @return the group ID of this ddl record version
-	*/
-	@Override
-	public long getGroupId() {
-		return _ddlRecordVersion.getGroupId();
-	}
-
-	/**
-	* Returns the primary key of this ddl record version.
-	*
-	* @return the primary key of this ddl record version
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _ddlRecordVersion.getPrimaryKey();
-	}
-
-	/**
-	* Returns the record ID of this ddl record version.
-	*
-	* @return the record ID of this ddl record version
-	*/
-	@Override
-	public long getRecordId() {
-		return _ddlRecordVersion.getRecordId();
-	}
-
-	/**
-	* Returns the record set ID of this ddl record version.
-	*
-	* @return the record set ID of this ddl record version
-	*/
-	@Override
-	public long getRecordSetId() {
-		return _ddlRecordVersion.getRecordSetId();
-	}
-
-	/**
-	* Returns the record version ID of this ddl record version.
-	*
-	* @return the record version ID of this ddl record version
-	*/
-	@Override
-	public long getRecordVersionId() {
-		return _ddlRecordVersion.getRecordVersionId();
-	}
-
-	/**
-	* Returns the status by user ID of this ddl record version.
-	*
-	* @return the status by user ID of this ddl record version
-	*/
-	@Override
-	public long getStatusByUserId() {
-		return _ddlRecordVersion.getStatusByUserId();
-	}
-
-	/**
-	* Returns the user ID of this ddl record version.
-	*
-	* @return the user ID of this ddl record version
-	*/
-	@Override
-	public long getUserId() {
-		return _ddlRecordVersion.getUserId();
 	}
 
 	@Override
@@ -524,43 +501,50 @@ public class DDLRecordVersionWrapper implements DDLRecordVersion,
 	}
 
 	/**
-	* Sets the company ID of this ddl record version.
-	*
-	* @param companyId the company ID of this ddl record version
-	*/
+	 * Sets the company ID of this ddl record version.
+	 *
+	 * @param companyId the company ID of this ddl record version
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_ddlRecordVersion.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this ddl record version.
-	*
-	* @param createDate the create date of this ddl record version
-	*/
+	 * Sets the create date of this ddl record version.
+	 *
+	 * @param createDate the create date of this ddl record version
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_ddlRecordVersion.setCreateDate(createDate);
 	}
 
 	/**
-	* Sets the ddm storage ID of this ddl record version.
-	*
-	* @param DDMStorageId the ddm storage ID of this ddl record version
-	*/
+	 * Sets the ddm storage ID of this ddl record version.
+	 *
+	 * @param DDMStorageId the ddm storage ID of this ddl record version
+	 */
 	@Override
 	public void setDDMStorageId(long DDMStorageId) {
 		_ddlRecordVersion.setDDMStorageId(DDMStorageId);
 	}
 
 	/**
-	* Sets the display index of this ddl record version.
-	*
-	* @param displayIndex the display index of this ddl record version
-	*/
+	 * Sets the display index of this ddl record version.
+	 *
+	 * @param displayIndex the display index of this ddl record version
+	 */
 	@Override
 	public void setDisplayIndex(int displayIndex) {
 		_ddlRecordVersion.setDisplayIndex(displayIndex);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_ddlRecordVersion.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -569,21 +553,15 @@ public class DDLRecordVersionWrapper implements DDLRecordVersion,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_ddlRecordVersion.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_ddlRecordVersion.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the group ID of this ddl record version.
-	*
-	* @param groupId the group ID of this ddl record version
-	*/
+	 * Sets the group ID of this ddl record version.
+	 *
+	 * @param groupId the group ID of this ddl record version
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_ddlRecordVersion.setGroupId(groupId);
@@ -595,10 +573,10 @@ public class DDLRecordVersionWrapper implements DDLRecordVersion,
 	}
 
 	/**
-	* Sets the primary key of this ddl record version.
-	*
-	* @param primaryKey the primary key of this ddl record version
-	*/
+	 * Sets the primary key of this ddl record version.
+	 *
+	 * @param primaryKey the primary key of this ddl record version
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_ddlRecordVersion.setPrimaryKey(primaryKey);
@@ -610,123 +588,151 @@ public class DDLRecordVersionWrapper implements DDLRecordVersion,
 	}
 
 	/**
-	* Sets the record ID of this ddl record version.
-	*
-	* @param recordId the record ID of this ddl record version
-	*/
+	 * Sets the record ID of this ddl record version.
+	 *
+	 * @param recordId the record ID of this ddl record version
+	 */
 	@Override
 	public void setRecordId(long recordId) {
 		_ddlRecordVersion.setRecordId(recordId);
 	}
 
 	/**
-	* Sets the record set ID of this ddl record version.
-	*
-	* @param recordSetId the record set ID of this ddl record version
-	*/
+	 * Sets the record set ID of this ddl record version.
+	 *
+	 * @param recordSetId the record set ID of this ddl record version
+	 */
 	@Override
 	public void setRecordSetId(long recordSetId) {
 		_ddlRecordVersion.setRecordSetId(recordSetId);
 	}
 
 	/**
-	* Sets the record version ID of this ddl record version.
-	*
-	* @param recordVersionId the record version ID of this ddl record version
-	*/
+	 * Sets the record version ID of this ddl record version.
+	 *
+	 * @param recordVersionId the record version ID of this ddl record version
+	 */
 	@Override
 	public void setRecordVersionId(long recordVersionId) {
 		_ddlRecordVersion.setRecordVersionId(recordVersionId);
 	}
 
 	/**
-	* Sets the status of this ddl record version.
-	*
-	* @param status the status of this ddl record version
-	*/
+	 * Sets the status of this ddl record version.
+	 *
+	 * @param status the status of this ddl record version
+	 */
 	@Override
 	public void setStatus(int status) {
 		_ddlRecordVersion.setStatus(status);
 	}
 
 	/**
-	* Sets the status by user ID of this ddl record version.
-	*
-	* @param statusByUserId the status by user ID of this ddl record version
-	*/
+	 * Sets the status by user ID of this ddl record version.
+	 *
+	 * @param statusByUserId the status by user ID of this ddl record version
+	 */
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
 		_ddlRecordVersion.setStatusByUserId(statusByUserId);
 	}
 
 	/**
-	* Sets the status by user name of this ddl record version.
-	*
-	* @param statusByUserName the status by user name of this ddl record version
-	*/
+	 * Sets the status by user name of this ddl record version.
+	 *
+	 * @param statusByUserName the status by user name of this ddl record version
+	 */
 	@Override
-	public void setStatusByUserName(java.lang.String statusByUserName) {
+	public void setStatusByUserName(String statusByUserName) {
 		_ddlRecordVersion.setStatusByUserName(statusByUserName);
 	}
 
 	/**
-	* Sets the status by user uuid of this ddl record version.
-	*
-	* @param statusByUserUuid the status by user uuid of this ddl record version
-	*/
+	 * Sets the status by user uuid of this ddl record version.
+	 *
+	 * @param statusByUserUuid the status by user uuid of this ddl record version
+	 */
 	@Override
-	public void setStatusByUserUuid(java.lang.String statusByUserUuid) {
+	public void setStatusByUserUuid(String statusByUserUuid) {
 		_ddlRecordVersion.setStatusByUserUuid(statusByUserUuid);
 	}
 
 	/**
-	* Sets the status date of this ddl record version.
-	*
-	* @param statusDate the status date of this ddl record version
-	*/
+	 * Sets the status date of this ddl record version.
+	 *
+	 * @param statusDate the status date of this ddl record version
+	 */
 	@Override
 	public void setStatusDate(Date statusDate) {
 		_ddlRecordVersion.setStatusDate(statusDate);
 	}
 
 	/**
-	* Sets the user ID of this ddl record version.
-	*
-	* @param userId the user ID of this ddl record version
-	*/
+	 * Sets the user ID of this ddl record version.
+	 *
+	 * @param userId the user ID of this ddl record version
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_ddlRecordVersion.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this ddl record version.
-	*
-	* @param userName the user name of this ddl record version
-	*/
+	 * Sets the user name of this ddl record version.
+	 *
+	 * @param userName the user name of this ddl record version
+	 */
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_ddlRecordVersion.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this ddl record version.
-	*
-	* @param userUuid the user uuid of this ddl record version
-	*/
+	 * Sets the user uuid of this ddl record version.
+	 *
+	 * @param userUuid the user uuid of this ddl record version
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_ddlRecordVersion.setUserUuid(userUuid);
 	}
 
 	/**
-	* Sets the version of this ddl record version.
-	*
-	* @param version the version of this ddl record version
-	*/
+	 * Sets the version of this ddl record version.
+	 *
+	 * @param version the version of this ddl record version
+	 */
 	@Override
-	public void setVersion(java.lang.String version) {
+	public void setVersion(String version) {
 		_ddlRecordVersion.setVersion(version);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<DDLRecordVersion>
+		toCacheModel() {
+
+		return _ddlRecordVersion.toCacheModel();
+	}
+
+	@Override
+	public DDLRecordVersion toEscapedModel() {
+		return new DDLRecordVersionWrapper(_ddlRecordVersion.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _ddlRecordVersion.toString();
+	}
+
+	@Override
+	public DDLRecordVersion toUnescapedModel() {
+		return new DDLRecordVersionWrapper(
+			_ddlRecordVersion.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _ddlRecordVersion.toXmlString();
 	}
 
 	@Override
@@ -739,10 +745,12 @@ public class DDLRecordVersionWrapper implements DDLRecordVersion,
 			return false;
 		}
 
-		DDLRecordVersionWrapper ddlRecordVersionWrapper = (DDLRecordVersionWrapper)obj;
+		DDLRecordVersionWrapper ddlRecordVersionWrapper =
+			(DDLRecordVersionWrapper)obj;
 
-		if (Objects.equals(_ddlRecordVersion,
-					ddlRecordVersionWrapper._ddlRecordVersion)) {
+		if (Objects.equals(
+				_ddlRecordVersion, ddlRecordVersionWrapper._ddlRecordVersion)) {
+
 			return true;
 		}
 
@@ -770,4 +778,5 @@ public class DDLRecordVersionWrapper implements DDLRecordVersion,
 	}
 
 	private final DDLRecordVersion _ddlRecordVersion;
+
 }

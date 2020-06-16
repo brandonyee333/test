@@ -1,27 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing ZendeskSection in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see ZendeskSection
  * @generated
  */
-@ProviderType
-public class ZendeskSectionCacheModel implements CacheModel<ZendeskSection>,
-	Externalizable {
+public class ZendeskSectionCacheModel
+	implements CacheModel<ZendeskSection>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,7 +45,8 @@ public class ZendeskSectionCacheModel implements CacheModel<ZendeskSection>,
 			return false;
 		}
 
-		ZendeskSectionCacheModel zendeskSectionCacheModel = (ZendeskSectionCacheModel)obj;
+		ZendeskSectionCacheModel zendeskSectionCacheModel =
+			(ZendeskSectionCacheModel)obj;
 
 		if (zendeskSectionId == zendeskSectionCacheModel.zendeskSectionId) {
 			return true;
@@ -103,7 +99,7 @@ public class ZendeskSectionCacheModel implements CacheModel<ZendeskSection>,
 		zendeskSectionImpl.setZendeskCategoryId(zendeskCategoryId);
 
 		if (documentationKey == null) {
-			zendeskSectionImpl.setDocumentationKey(StringPool.BLANK);
+			zendeskSectionImpl.setDocumentationKey("");
 		}
 		else {
 			zendeskSectionImpl.setDocumentationKey(documentationKey);
@@ -112,14 +108,14 @@ public class ZendeskSectionCacheModel implements CacheModel<ZendeskSection>,
 		zendeskSectionImpl.setRemoteId(remoteId);
 
 		if (remoteHtmlURL == null) {
-			zendeskSectionImpl.setRemoteHtmlURL(StringPool.BLANK);
+			zendeskSectionImpl.setRemoteHtmlURL("");
 		}
 		else {
 			zendeskSectionImpl.setRemoteHtmlURL(remoteHtmlURL);
 		}
 
 		if (remoteName == null) {
-			zendeskSectionImpl.setRemoteName(StringPool.BLANK);
+			zendeskSectionImpl.setRemoteName("");
 		}
 		else {
 			zendeskSectionImpl.setRemoteName(remoteName);
@@ -144,15 +140,14 @@ public class ZendeskSectionCacheModel implements CacheModel<ZendeskSection>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(zendeskSectionId);
 		objectOutput.writeLong(modifiedDate);
 
 		objectOutput.writeLong(zendeskCategoryId);
 
 		if (documentationKey == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(documentationKey);
@@ -161,14 +156,14 @@ public class ZendeskSectionCacheModel implements CacheModel<ZendeskSection>,
 		objectOutput.writeLong(remoteId);
 
 		if (remoteHtmlURL == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(remoteHtmlURL);
 		}
 
 		if (remoteName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(remoteName);
@@ -182,4 +177,5 @@ public class ZendeskSectionCacheModel implements CacheModel<ZendeskSection>,
 	public long remoteId;
 	public String remoteHtmlURL;
 	public String remoteName;
+
 }

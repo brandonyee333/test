@@ -1,26 +1,22 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-
 import com.liferay.watson.model.WatsonListTypeRel;
 
 import java.io.Externalizable;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing WatsonListTypeRel in entity cache.
  *
  * @author Steven Smith
- * @see WatsonListTypeRel
  * @generated
  */
-@ProviderType
-public class WatsonListTypeRelCacheModel implements CacheModel<WatsonListTypeRel>,
-	Externalizable {
+public class WatsonListTypeRelCacheModel
+	implements CacheModel<WatsonListTypeRel>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,9 +45,12 @@ public class WatsonListTypeRelCacheModel implements CacheModel<WatsonListTypeRel
 			return false;
 		}
 
-		WatsonListTypeRelCacheModel watsonListTypeRelCacheModel = (WatsonListTypeRelCacheModel)obj;
+		WatsonListTypeRelCacheModel watsonListTypeRelCacheModel =
+			(WatsonListTypeRelCacheModel)obj;
 
-		if (watsonListTypeRelId == watsonListTypeRelCacheModel.watsonListTypeRelId) {
+		if (watsonListTypeRelId ==
+				watsonListTypeRelCacheModel.watsonListTypeRelId) {
+
 			return true;
 		}
 
@@ -103,7 +101,8 @@ public class WatsonListTypeRelCacheModel implements CacheModel<WatsonListTypeRel
 
 	@Override
 	public WatsonListTypeRel toEntityModel() {
-		WatsonListTypeRelImpl watsonListTypeRelImpl = new WatsonListTypeRelImpl();
+		WatsonListTypeRelImpl watsonListTypeRelImpl =
+			new WatsonListTypeRelImpl();
 
 		watsonListTypeRelImpl.setWatsonListTypeRelId(watsonListTypeRelId);
 		watsonListTypeRelImpl.setGroupId(groupId);
@@ -111,7 +110,7 @@ public class WatsonListTypeRelCacheModel implements CacheModel<WatsonListTypeRel
 		watsonListTypeRelImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonListTypeRelImpl.setUserName(StringPool.BLANK);
+			watsonListTypeRelImpl.setUserName("");
 		}
 		else {
 			watsonListTypeRelImpl.setUserName(userName);
@@ -137,14 +136,14 @@ public class WatsonListTypeRelCacheModel implements CacheModel<WatsonListTypeRel
 		watsonListTypeRelImpl.setPrimary(primary);
 
 		if (value == null) {
-			watsonListTypeRelImpl.setValue(StringPool.BLANK);
+			watsonListTypeRelImpl.setValue("");
 		}
 		else {
 			watsonListTypeRelImpl.setValue(value);
 		}
 
 		if (type == null) {
-			watsonListTypeRelImpl.setType(StringPool.BLANK);
+			watsonListTypeRelImpl.setType("");
 		}
 		else {
 			watsonListTypeRelImpl.setType(type);
@@ -184,8 +183,7 @@ public class WatsonListTypeRelCacheModel implements CacheModel<WatsonListTypeRel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonListTypeRelId);
 
 		objectOutput.writeLong(groupId);
@@ -195,7 +193,7 @@ public class WatsonListTypeRelCacheModel implements CacheModel<WatsonListTypeRel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -213,14 +211,14 @@ public class WatsonListTypeRelCacheModel implements CacheModel<WatsonListTypeRel
 		objectOutput.writeBoolean(primary);
 
 		if (value == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(value);
 		}
 
 		if (type == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(type);
@@ -243,4 +241,5 @@ public class WatsonListTypeRelCacheModel implements CacheModel<WatsonListTypeRel
 	public String value;
 	public String type;
 	public int status;
+
 }

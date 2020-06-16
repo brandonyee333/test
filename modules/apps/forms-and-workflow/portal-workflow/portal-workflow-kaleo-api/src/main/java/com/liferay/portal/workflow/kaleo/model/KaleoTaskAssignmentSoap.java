@@ -14,8 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -28,9 +26,11 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class KaleoTaskAssignmentSoap implements Serializable {
-	public static KaleoTaskAssignmentSoap toSoapModel(KaleoTaskAssignment model) {
+
+	public static KaleoTaskAssignmentSoap toSoapModel(
+		KaleoTaskAssignment model) {
+
 		KaleoTaskAssignmentSoap soapModel = new KaleoTaskAssignmentSoap();
 
 		soapModel.setKaleoTaskAssignmentId(model.getKaleoTaskAssignmentId());
@@ -49,14 +49,17 @@ public class KaleoTaskAssignmentSoap implements Serializable {
 		soapModel.setAssigneeActionId(model.getAssigneeActionId());
 		soapModel.setAssigneeScript(model.getAssigneeScript());
 		soapModel.setAssigneeScriptLanguage(model.getAssigneeScriptLanguage());
-		soapModel.setAssigneeScriptRequiredContexts(model.getAssigneeScriptRequiredContexts());
+		soapModel.setAssigneeScriptRequiredContexts(
+			model.getAssigneeScriptRequiredContexts());
 
 		return soapModel;
 	}
 
 	public static KaleoTaskAssignmentSoap[] toSoapModels(
 		KaleoTaskAssignment[] models) {
-		KaleoTaskAssignmentSoap[] soapModels = new KaleoTaskAssignmentSoap[models.length];
+
+		KaleoTaskAssignmentSoap[] soapModels =
+			new KaleoTaskAssignmentSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -67,10 +70,12 @@ public class KaleoTaskAssignmentSoap implements Serializable {
 
 	public static KaleoTaskAssignmentSoap[][] toSoapModels(
 		KaleoTaskAssignment[][] models) {
+
 		KaleoTaskAssignmentSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new KaleoTaskAssignmentSoap[models.length][models[0].length];
+			soapModels =
+				new KaleoTaskAssignmentSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new KaleoTaskAssignmentSoap[0][0];
@@ -85,13 +90,16 @@ public class KaleoTaskAssignmentSoap implements Serializable {
 
 	public static KaleoTaskAssignmentSoap[] toSoapModels(
 		List<KaleoTaskAssignment> models) {
-		List<KaleoTaskAssignmentSoap> soapModels = new ArrayList<KaleoTaskAssignmentSoap>(models.size());
+
+		List<KaleoTaskAssignmentSoap> soapModels =
+			new ArrayList<KaleoTaskAssignmentSoap>(models.size());
 
 		for (KaleoTaskAssignment model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new KaleoTaskAssignmentSoap[soapModels.size()]);
+		return soapModels.toArray(
+			new KaleoTaskAssignmentSoap[soapModels.size()]);
 	}
 
 	public KaleoTaskAssignmentSoap() {
@@ -239,6 +247,7 @@ public class KaleoTaskAssignmentSoap implements Serializable {
 
 	public void setAssigneeScriptRequiredContexts(
 		String assigneeScriptRequiredContexts) {
+
 		_assigneeScriptRequiredContexts = assigneeScriptRequiredContexts;
 	}
 
@@ -259,4 +268,5 @@ public class KaleoTaskAssignmentSoap implements Serializable {
 	private String _assigneeScript;
 	private String _assigneeScriptLanguage;
 	private String _assigneeScriptRequiredContexts;
+
 }

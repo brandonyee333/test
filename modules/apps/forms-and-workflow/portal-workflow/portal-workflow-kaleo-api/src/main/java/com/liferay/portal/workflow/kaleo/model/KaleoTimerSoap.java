@@ -14,8 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -28,8 +26,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class KaleoTimerSoap implements Serializable {
+
 	public static KaleoTimerSoap toSoapModel(KaleoTimer model) {
 		KaleoTimerSoap soapModel = new KaleoTimerSoap();
 
@@ -44,7 +42,7 @@ public class KaleoTimerSoap implements Serializable {
 		soapModel.setKaleoClassPK(model.getKaleoClassPK());
 		soapModel.setKaleoDefinitionId(model.getKaleoDefinitionId());
 		soapModel.setName(model.getName());
-		soapModel.setBlocking(model.getBlocking());
+		soapModel.setBlocking(model.isBlocking());
 		soapModel.setDescription(model.getDescription());
 		soapModel.setDuration(model.getDuration());
 		soapModel.setScale(model.getScale());
@@ -82,7 +80,8 @@ public class KaleoTimerSoap implements Serializable {
 	}
 
 	public static KaleoTimerSoap[] toSoapModels(List<KaleoTimer> models) {
-		List<KaleoTimerSoap> soapModels = new ArrayList<KaleoTimerSoap>(models.size());
+		List<KaleoTimerSoap> soapModels = new ArrayList<KaleoTimerSoap>(
+			models.size());
 
 		for (KaleoTimer model : models) {
 			soapModels.add(toSoapModel(model));
@@ -259,4 +258,5 @@ public class KaleoTimerSoap implements Serializable {
 	private String _scale;
 	private double _recurrenceDuration;
 	private String _recurrenceScale;
+
 }

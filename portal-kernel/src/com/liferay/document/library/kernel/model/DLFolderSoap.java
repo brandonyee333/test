@@ -14,8 +14,6 @@
 
 package com.liferay.document.library.kernel.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,11 +24,10 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.portlet.documentlibrary.service.http.DLFolderServiceSoap}.
  *
  * @author Brian Wing Shun Chan
- * @see com.liferay.portlet.documentlibrary.service.http.DLFolderServiceSoap
  * @generated
  */
-@ProviderType
 public class DLFolderSoap implements Serializable {
+
 	public static DLFolderSoap toSoapModel(DLFolder model) {
 		DLFolderSoap soapModel = new DLFolderSoap();
 
@@ -43,14 +40,14 @@ public class DLFolderSoap implements Serializable {
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setRepositoryId(model.getRepositoryId());
-		soapModel.setMountPoint(model.getMountPoint());
+		soapModel.setMountPoint(model.isMountPoint());
 		soapModel.setParentFolderId(model.getParentFolderId());
 		soapModel.setTreePath(model.getTreePath());
 		soapModel.setName(model.getName());
 		soapModel.setDescription(model.getDescription());
 		soapModel.setLastPostDate(model.getLastPostDate());
 		soapModel.setDefaultFileEntryTypeId(model.getDefaultFileEntryTypeId());
-		soapModel.setHidden(model.getHidden());
+		soapModel.setHidden(model.isHidden());
 		soapModel.setRestrictionType(model.getRestrictionType());
 		soapModel.setLastPublishDate(model.getLastPublishDate());
 		soapModel.setStatus(model.getStatus());
@@ -89,7 +86,8 @@ public class DLFolderSoap implements Serializable {
 	}
 
 	public static DLFolderSoap[] toSoapModels(List<DLFolder> models) {
-		List<DLFolderSoap> soapModels = new ArrayList<DLFolderSoap>(models.size());
+		List<DLFolderSoap> soapModels = new ArrayList<DLFolderSoap>(
+			models.size());
 
 		for (DLFolder model : models) {
 			soapModels.add(toSoapModel(model));
@@ -324,4 +322,5 @@ public class DLFolderSoap implements Serializable {
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
+
 }

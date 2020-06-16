@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.watson.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,9 +34,9 @@ import java.util.Objects;
  * @see WatsonDocumentAudit
  * @generated
  */
-@ProviderType
-public class WatsonDocumentAuditWrapper implements WatsonDocumentAudit,
-	ModelWrapper<WatsonDocumentAudit> {
+public class WatsonDocumentAuditWrapper
+	implements ModelWrapper<WatsonDocumentAudit>, WatsonDocumentAudit {
+
 	public WatsonDocumentAuditWrapper(WatsonDocumentAudit watsonDocumentAudit) {
 		_watsonDocumentAudit = watsonDocumentAudit;
 	}
@@ -65,13 +62,13 @@ public class WatsonDocumentAuditWrapper implements WatsonDocumentAudit,
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("parentTypeWatsonListTypeId",
-			getParentTypeWatsonListTypeId());
+		attributes.put(
+			"parentTypeWatsonListTypeId", getParentTypeWatsonListTypeId());
 		attributes.put("subtypeWatsonListTypeId", getSubtypeWatsonListTypeId());
 		attributes.put("typeWatsonListTypeId", getTypeWatsonListTypeId());
 		attributes.put("watsonChildId", getWatsonChildId());
 		attributes.put("watsonDocumentId", getWatsonDocumentId());
-		attributes.put("originalDocument", getOriginalDocument());
+		attributes.put("originalDocument", isOriginalDocument());
 		attributes.put("receivedDate", getReceivedDate());
 		attributes.put("imagePayload", getImagePayload());
 		attributes.put("status", getStatus());
@@ -82,7 +79,7 @@ public class WatsonDocumentAuditWrapper implements WatsonDocumentAudit,
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
 		Long watsonDocumentAuditId = (Long)attributes.get(
-				"watsonDocumentAuditId");
+			"watsonDocumentAuditId");
 
 		if (watsonDocumentAuditId != null) {
 			setWatsonDocumentAuditId(watsonDocumentAuditId);
@@ -125,20 +122,21 @@ public class WatsonDocumentAuditWrapper implements WatsonDocumentAudit,
 		}
 
 		Long parentTypeWatsonListTypeId = (Long)attributes.get(
-				"parentTypeWatsonListTypeId");
+			"parentTypeWatsonListTypeId");
 
 		if (parentTypeWatsonListTypeId != null) {
 			setParentTypeWatsonListTypeId(parentTypeWatsonListTypeId);
 		}
 
 		Long subtypeWatsonListTypeId = (Long)attributes.get(
-				"subtypeWatsonListTypeId");
+			"subtypeWatsonListTypeId");
 
 		if (subtypeWatsonListTypeId != null) {
 			setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
 		}
 
-		Long typeWatsonListTypeId = (Long)attributes.get("typeWatsonListTypeId");
+		Long typeWatsonListTypeId = (Long)attributes.get(
+			"typeWatsonListTypeId");
 
 		if (typeWatsonListTypeId != null) {
 			setTypeWatsonListTypeId(typeWatsonListTypeId);
@@ -182,23 +180,209 @@ public class WatsonDocumentAuditWrapper implements WatsonDocumentAudit,
 	}
 
 	@Override
-	public WatsonDocumentAudit toEscapedModel() {
-		return new WatsonDocumentAuditWrapper(_watsonDocumentAudit.toEscapedModel());
+	public Object clone() {
+		return new WatsonDocumentAuditWrapper(
+			(WatsonDocumentAudit)_watsonDocumentAudit.clone());
 	}
 
 	@Override
-	public WatsonDocumentAudit toUnescapedModel() {
-		return new WatsonDocumentAuditWrapper(_watsonDocumentAudit.toUnescapedModel());
+	public int compareTo(WatsonDocumentAudit watsonDocumentAudit) {
+		return _watsonDocumentAudit.compareTo(watsonDocumentAudit);
 	}
 
 	/**
-	* Returns the original document of this watson document audit.
-	*
-	* @return the original document of this watson document audit
-	*/
+	 * Returns the company ID of this watson document audit.
+	 *
+	 * @return the company ID of this watson document audit
+	 */
+	@Override
+	public long getCompanyId() {
+		return _watsonDocumentAudit.getCompanyId();
+	}
+
+	/**
+	 * Returns the create date of this watson document audit.
+	 *
+	 * @return the create date of this watson document audit
+	 */
+	@Override
+	public Date getCreateDate() {
+		return _watsonDocumentAudit.getCreateDate();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _watsonDocumentAudit.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the group ID of this watson document audit.
+	 *
+	 * @return the group ID of this watson document audit
+	 */
+	@Override
+	public long getGroupId() {
+		return _watsonDocumentAudit.getGroupId();
+	}
+
+	/**
+	 * Returns the image payload of this watson document audit.
+	 *
+	 * @return the image payload of this watson document audit
+	 */
+	@Override
+	public String getImagePayload() {
+		return _watsonDocumentAudit.getImagePayload();
+	}
+
+	/**
+	 * Returns the modified date of this watson document audit.
+	 *
+	 * @return the modified date of this watson document audit
+	 */
+	@Override
+	public Date getModifiedDate() {
+		return _watsonDocumentAudit.getModifiedDate();
+	}
+
+	/**
+	 * Returns the original document of this watson document audit.
+	 *
+	 * @return the original document of this watson document audit
+	 */
 	@Override
 	public boolean getOriginalDocument() {
 		return _watsonDocumentAudit.getOriginalDocument();
+	}
+
+	/**
+	 * Returns the parent type watson list type ID of this watson document audit.
+	 *
+	 * @return the parent type watson list type ID of this watson document audit
+	 */
+	@Override
+	public long getParentTypeWatsonListTypeId() {
+		return _watsonDocumentAudit.getParentTypeWatsonListTypeId();
+	}
+
+	/**
+	 * Returns the primary key of this watson document audit.
+	 *
+	 * @return the primary key of this watson document audit
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _watsonDocumentAudit.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _watsonDocumentAudit.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the received date of this watson document audit.
+	 *
+	 * @return the received date of this watson document audit
+	 */
+	@Override
+	public Date getReceivedDate() {
+		return _watsonDocumentAudit.getReceivedDate();
+	}
+
+	/**
+	 * Returns the status of this watson document audit.
+	 *
+	 * @return the status of this watson document audit
+	 */
+	@Override
+	public int getStatus() {
+		return _watsonDocumentAudit.getStatus();
+	}
+
+	/**
+	 * Returns the subtype watson list type ID of this watson document audit.
+	 *
+	 * @return the subtype watson list type ID of this watson document audit
+	 */
+	@Override
+	public long getSubtypeWatsonListTypeId() {
+		return _watsonDocumentAudit.getSubtypeWatsonListTypeId();
+	}
+
+	/**
+	 * Returns the type watson list type ID of this watson document audit.
+	 *
+	 * @return the type watson list type ID of this watson document audit
+	 */
+	@Override
+	public long getTypeWatsonListTypeId() {
+		return _watsonDocumentAudit.getTypeWatsonListTypeId();
+	}
+
+	/**
+	 * Returns the user ID of this watson document audit.
+	 *
+	 * @return the user ID of this watson document audit
+	 */
+	@Override
+	public long getUserId() {
+		return _watsonDocumentAudit.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this watson document audit.
+	 *
+	 * @return the user name of this watson document audit
+	 */
+	@Override
+	public String getUserName() {
+		return _watsonDocumentAudit.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this watson document audit.
+	 *
+	 * @return the user uuid of this watson document audit
+	 */
+	@Override
+	public String getUserUuid() {
+		return _watsonDocumentAudit.getUserUuid();
+	}
+
+	/**
+	 * Returns the watson child ID of this watson document audit.
+	 *
+	 * @return the watson child ID of this watson document audit
+	 */
+	@Override
+	public long getWatsonChildId() {
+		return _watsonDocumentAudit.getWatsonChildId();
+	}
+
+	/**
+	 * Returns the watson document audit ID of this watson document audit.
+	 *
+	 * @return the watson document audit ID of this watson document audit
+	 */
+	@Override
+	public long getWatsonDocumentAuditId() {
+		return _watsonDocumentAudit.getWatsonDocumentAuditId();
+	}
+
+	/**
+	 * Returns the watson document ID of this watson document audit.
+	 *
+	 * @return the watson document ID of this watson document audit
+	 */
+	@Override
+	public long getWatsonDocumentId() {
+		return _watsonDocumentAudit.getWatsonDocumentId();
+	}
+
+	@Override
+	public int hashCode() {
+		return _watsonDocumentAudit.hashCode();
 	}
 
 	@Override
@@ -217,223 +401,13 @@ public class WatsonDocumentAuditWrapper implements WatsonDocumentAudit,
 	}
 
 	/**
-	* Returns <code>true</code> if this watson document audit is original document.
-	*
-	* @return <code>true</code> if this watson document audit is original document; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this watson document audit is original document.
+	 *
+	 * @return <code>true</code> if this watson document audit is original document; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isOriginalDocument() {
 		return _watsonDocumentAudit.isOriginalDocument();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _watsonDocumentAudit.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WatsonDocumentAudit> toCacheModel() {
-		return _watsonDocumentAudit.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(WatsonDocumentAudit watsonDocumentAudit) {
-		return _watsonDocumentAudit.compareTo(watsonDocumentAudit);
-	}
-
-	/**
-	* Returns the status of this watson document audit.
-	*
-	* @return the status of this watson document audit
-	*/
-	@Override
-	public int getStatus() {
-		return _watsonDocumentAudit.getStatus();
-	}
-
-	@Override
-	public int hashCode() {
-		return _watsonDocumentAudit.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _watsonDocumentAudit.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new WatsonDocumentAuditWrapper((WatsonDocumentAudit)_watsonDocumentAudit.clone());
-	}
-
-	/**
-	* Returns the image payload of this watson document audit.
-	*
-	* @return the image payload of this watson document audit
-	*/
-	@Override
-	public java.lang.String getImagePayload() {
-		return _watsonDocumentAudit.getImagePayload();
-	}
-
-	/**
-	* Returns the user name of this watson document audit.
-	*
-	* @return the user name of this watson document audit
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _watsonDocumentAudit.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this watson document audit.
-	*
-	* @return the user uuid of this watson document audit
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _watsonDocumentAudit.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _watsonDocumentAudit.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _watsonDocumentAudit.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this watson document audit.
-	*
-	* @return the create date of this watson document audit
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _watsonDocumentAudit.getCreateDate();
-	}
-
-	/**
-	* Returns the modified date of this watson document audit.
-	*
-	* @return the modified date of this watson document audit
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _watsonDocumentAudit.getModifiedDate();
-	}
-
-	/**
-	* Returns the received date of this watson document audit.
-	*
-	* @return the received date of this watson document audit
-	*/
-	@Override
-	public Date getReceivedDate() {
-		return _watsonDocumentAudit.getReceivedDate();
-	}
-
-	/**
-	* Returns the company ID of this watson document audit.
-	*
-	* @return the company ID of this watson document audit
-	*/
-	@Override
-	public long getCompanyId() {
-		return _watsonDocumentAudit.getCompanyId();
-	}
-
-	/**
-	* Returns the group ID of this watson document audit.
-	*
-	* @return the group ID of this watson document audit
-	*/
-	@Override
-	public long getGroupId() {
-		return _watsonDocumentAudit.getGroupId();
-	}
-
-	/**
-	* Returns the parent type watson list type ID of this watson document audit.
-	*
-	* @return the parent type watson list type ID of this watson document audit
-	*/
-	@Override
-	public long getParentTypeWatsonListTypeId() {
-		return _watsonDocumentAudit.getParentTypeWatsonListTypeId();
-	}
-
-	/**
-	* Returns the primary key of this watson document audit.
-	*
-	* @return the primary key of this watson document audit
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _watsonDocumentAudit.getPrimaryKey();
-	}
-
-	/**
-	* Returns the subtype watson list type ID of this watson document audit.
-	*
-	* @return the subtype watson list type ID of this watson document audit
-	*/
-	@Override
-	public long getSubtypeWatsonListTypeId() {
-		return _watsonDocumentAudit.getSubtypeWatsonListTypeId();
-	}
-
-	/**
-	* Returns the type watson list type ID of this watson document audit.
-	*
-	* @return the type watson list type ID of this watson document audit
-	*/
-	@Override
-	public long getTypeWatsonListTypeId() {
-		return _watsonDocumentAudit.getTypeWatsonListTypeId();
-	}
-
-	/**
-	* Returns the user ID of this watson document audit.
-	*
-	* @return the user ID of this watson document audit
-	*/
-	@Override
-	public long getUserId() {
-		return _watsonDocumentAudit.getUserId();
-	}
-
-	/**
-	* Returns the watson child ID of this watson document audit.
-	*
-	* @return the watson child ID of this watson document audit
-	*/
-	@Override
-	public long getWatsonChildId() {
-		return _watsonDocumentAudit.getWatsonChildId();
-	}
-
-	/**
-	* Returns the watson document audit ID of this watson document audit.
-	*
-	* @return the watson document audit ID of this watson document audit
-	*/
-	@Override
-	public long getWatsonDocumentAuditId() {
-		return _watsonDocumentAudit.getWatsonDocumentAuditId();
-	}
-
-	/**
-	* Returns the watson document ID of this watson document audit.
-	*
-	* @return the watson document ID of this watson document audit
-	*/
-	@Override
-	public long getWatsonDocumentId() {
-		return _watsonDocumentAudit.getWatsonDocumentId();
 	}
 
 	@Override
@@ -447,23 +421,30 @@ public class WatsonDocumentAuditWrapper implements WatsonDocumentAudit,
 	}
 
 	/**
-	* Sets the company ID of this watson document audit.
-	*
-	* @param companyId the company ID of this watson document audit
-	*/
+	 * Sets the company ID of this watson document audit.
+	 *
+	 * @param companyId the company ID of this watson document audit
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_watsonDocumentAudit.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this watson document audit.
-	*
-	* @param createDate the create date of this watson document audit
-	*/
+	 * Sets the create date of this watson document audit.
+	 *
+	 * @param createDate the create date of this watson document audit
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_watsonDocumentAudit.setCreateDate(createDate);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_watsonDocumentAudit.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -472,41 +453,35 @@ public class WatsonDocumentAuditWrapper implements WatsonDocumentAudit,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_watsonDocumentAudit.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_watsonDocumentAudit.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the group ID of this watson document audit.
-	*
-	* @param groupId the group ID of this watson document audit
-	*/
+	 * Sets the group ID of this watson document audit.
+	 *
+	 * @param groupId the group ID of this watson document audit
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_watsonDocumentAudit.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the image payload of this watson document audit.
-	*
-	* @param imagePayload the image payload of this watson document audit
-	*/
+	 * Sets the image payload of this watson document audit.
+	 *
+	 * @param imagePayload the image payload of this watson document audit
+	 */
 	@Override
-	public void setImagePayload(java.lang.String imagePayload) {
+	public void setImagePayload(String imagePayload) {
 		_watsonDocumentAudit.setImagePayload(imagePayload);
 	}
 
 	/**
-	* Sets the modified date of this watson document audit.
-	*
-	* @param modifiedDate the modified date of this watson document audit
-	*/
+	 * Sets the modified date of this watson document audit.
+	 *
+	 * @param modifiedDate the modified date of this watson document audit
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_watsonDocumentAudit.setModifiedDate(modifiedDate);
@@ -518,30 +493,31 @@ public class WatsonDocumentAuditWrapper implements WatsonDocumentAudit,
 	}
 
 	/**
-	* Sets whether this watson document audit is original document.
-	*
-	* @param originalDocument the original document of this watson document audit
-	*/
+	 * Sets whether this watson document audit is original document.
+	 *
+	 * @param originalDocument the original document of this watson document audit
+	 */
 	@Override
 	public void setOriginalDocument(boolean originalDocument) {
 		_watsonDocumentAudit.setOriginalDocument(originalDocument);
 	}
 
 	/**
-	* Sets the parent type watson list type ID of this watson document audit.
-	*
-	* @param parentTypeWatsonListTypeId the parent type watson list type ID of this watson document audit
-	*/
+	 * Sets the parent type watson list type ID of this watson document audit.
+	 *
+	 * @param parentTypeWatsonListTypeId the parent type watson list type ID of this watson document audit
+	 */
 	@Override
 	public void setParentTypeWatsonListTypeId(long parentTypeWatsonListTypeId) {
-		_watsonDocumentAudit.setParentTypeWatsonListTypeId(parentTypeWatsonListTypeId);
+		_watsonDocumentAudit.setParentTypeWatsonListTypeId(
+			parentTypeWatsonListTypeId);
 	}
 
 	/**
-	* Sets the primary key of this watson document audit.
-	*
-	* @param primaryKey the primary key of this watson document audit
-	*/
+	 * Sets the primary key of this watson document audit.
+	 *
+	 * @param primaryKey the primary key of this watson document audit
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_watsonDocumentAudit.setPrimaryKey(primaryKey);
@@ -553,103 +529,133 @@ public class WatsonDocumentAuditWrapper implements WatsonDocumentAudit,
 	}
 
 	/**
-	* Sets the received date of this watson document audit.
-	*
-	* @param receivedDate the received date of this watson document audit
-	*/
+	 * Sets the received date of this watson document audit.
+	 *
+	 * @param receivedDate the received date of this watson document audit
+	 */
 	@Override
 	public void setReceivedDate(Date receivedDate) {
 		_watsonDocumentAudit.setReceivedDate(receivedDate);
 	}
 
 	/**
-	* Sets the status of this watson document audit.
-	*
-	* @param status the status of this watson document audit
-	*/
+	 * Sets the status of this watson document audit.
+	 *
+	 * @param status the status of this watson document audit
+	 */
 	@Override
 	public void setStatus(int status) {
 		_watsonDocumentAudit.setStatus(status);
 	}
 
 	/**
-	* Sets the subtype watson list type ID of this watson document audit.
-	*
-	* @param subtypeWatsonListTypeId the subtype watson list type ID of this watson document audit
-	*/
+	 * Sets the subtype watson list type ID of this watson document audit.
+	 *
+	 * @param subtypeWatsonListTypeId the subtype watson list type ID of this watson document audit
+	 */
 	@Override
 	public void setSubtypeWatsonListTypeId(long subtypeWatsonListTypeId) {
-		_watsonDocumentAudit.setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
+		_watsonDocumentAudit.setSubtypeWatsonListTypeId(
+			subtypeWatsonListTypeId);
 	}
 
 	/**
-	* Sets the type watson list type ID of this watson document audit.
-	*
-	* @param typeWatsonListTypeId the type watson list type ID of this watson document audit
-	*/
+	 * Sets the type watson list type ID of this watson document audit.
+	 *
+	 * @param typeWatsonListTypeId the type watson list type ID of this watson document audit
+	 */
 	@Override
 	public void setTypeWatsonListTypeId(long typeWatsonListTypeId) {
 		_watsonDocumentAudit.setTypeWatsonListTypeId(typeWatsonListTypeId);
 	}
 
 	/**
-	* Sets the user ID of this watson document audit.
-	*
-	* @param userId the user ID of this watson document audit
-	*/
+	 * Sets the user ID of this watson document audit.
+	 *
+	 * @param userId the user ID of this watson document audit
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_watsonDocumentAudit.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this watson document audit.
-	*
-	* @param userName the user name of this watson document audit
-	*/
+	 * Sets the user name of this watson document audit.
+	 *
+	 * @param userName the user name of this watson document audit
+	 */
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_watsonDocumentAudit.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this watson document audit.
-	*
-	* @param userUuid the user uuid of this watson document audit
-	*/
+	 * Sets the user uuid of this watson document audit.
+	 *
+	 * @param userUuid the user uuid of this watson document audit
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_watsonDocumentAudit.setUserUuid(userUuid);
 	}
 
 	/**
-	* Sets the watson child ID of this watson document audit.
-	*
-	* @param watsonChildId the watson child ID of this watson document audit
-	*/
+	 * Sets the watson child ID of this watson document audit.
+	 *
+	 * @param watsonChildId the watson child ID of this watson document audit
+	 */
 	@Override
 	public void setWatsonChildId(long watsonChildId) {
 		_watsonDocumentAudit.setWatsonChildId(watsonChildId);
 	}
 
 	/**
-	* Sets the watson document audit ID of this watson document audit.
-	*
-	* @param watsonDocumentAuditId the watson document audit ID of this watson document audit
-	*/
+	 * Sets the watson document audit ID of this watson document audit.
+	 *
+	 * @param watsonDocumentAuditId the watson document audit ID of this watson document audit
+	 */
 	@Override
 	public void setWatsonDocumentAuditId(long watsonDocumentAuditId) {
 		_watsonDocumentAudit.setWatsonDocumentAuditId(watsonDocumentAuditId);
 	}
 
 	/**
-	* Sets the watson document ID of this watson document audit.
-	*
-	* @param watsonDocumentId the watson document ID of this watson document audit
-	*/
+	 * Sets the watson document ID of this watson document audit.
+	 *
+	 * @param watsonDocumentId the watson document ID of this watson document audit
+	 */
 	@Override
 	public void setWatsonDocumentId(long watsonDocumentId) {
 		_watsonDocumentAudit.setWatsonDocumentId(watsonDocumentId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<WatsonDocumentAudit>
+		toCacheModel() {
+
+		return _watsonDocumentAudit.toCacheModel();
+	}
+
+	@Override
+	public WatsonDocumentAudit toEscapedModel() {
+		return new WatsonDocumentAuditWrapper(
+			_watsonDocumentAudit.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _watsonDocumentAudit.toString();
+	}
+
+	@Override
+	public WatsonDocumentAudit toUnescapedModel() {
+		return new WatsonDocumentAuditWrapper(
+			_watsonDocumentAudit.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _watsonDocumentAudit.toXmlString();
 	}
 
 	@Override
@@ -662,10 +668,13 @@ public class WatsonDocumentAuditWrapper implements WatsonDocumentAudit,
 			return false;
 		}
 
-		WatsonDocumentAuditWrapper watsonDocumentAuditWrapper = (WatsonDocumentAuditWrapper)obj;
+		WatsonDocumentAuditWrapper watsonDocumentAuditWrapper =
+			(WatsonDocumentAuditWrapper)obj;
 
-		if (Objects.equals(_watsonDocumentAudit,
-					watsonDocumentAuditWrapper._watsonDocumentAudit)) {
+		if (Objects.equals(
+				_watsonDocumentAudit,
+				watsonDocumentAuditWrapper._watsonDocumentAudit)) {
+
 			return true;
 		}
 
@@ -693,4 +702,5 @@ public class WatsonDocumentAuditWrapper implements WatsonDocumentAudit,
 	}
 
 	private final WatsonDocumentAudit _watsonDocumentAudit;
+
 }

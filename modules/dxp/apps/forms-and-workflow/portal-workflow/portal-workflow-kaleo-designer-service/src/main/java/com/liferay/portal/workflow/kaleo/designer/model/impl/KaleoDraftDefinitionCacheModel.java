@@ -1,25 +1,22 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.portal.workflow.kaleo.designer.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition;
 
 import java.io.Externalizable;
@@ -33,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing KaleoDraftDefinition in entity cache.
  *
  * @author Eduardo Lundgren
- * @see KaleoDraftDefinition
  * @generated
  */
-@ProviderType
-public class KaleoDraftDefinitionCacheModel implements CacheModel<KaleoDraftDefinition>,
-	Externalizable {
+public class KaleoDraftDefinitionCacheModel
+	implements CacheModel<KaleoDraftDefinition>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -49,9 +45,12 @@ public class KaleoDraftDefinitionCacheModel implements CacheModel<KaleoDraftDefi
 			return false;
 		}
 
-		KaleoDraftDefinitionCacheModel kaleoDraftDefinitionCacheModel = (KaleoDraftDefinitionCacheModel)obj;
+		KaleoDraftDefinitionCacheModel kaleoDraftDefinitionCacheModel =
+			(KaleoDraftDefinitionCacheModel)obj;
 
-		if (kaleoDraftDefinitionId == kaleoDraftDefinitionCacheModel.kaleoDraftDefinitionId) {
+		if (kaleoDraftDefinitionId ==
+				kaleoDraftDefinitionCacheModel.kaleoDraftDefinitionId) {
+
 			return true;
 		}
 
@@ -98,15 +97,17 @@ public class KaleoDraftDefinitionCacheModel implements CacheModel<KaleoDraftDefi
 
 	@Override
 	public KaleoDraftDefinition toEntityModel() {
-		KaleoDraftDefinitionImpl kaleoDraftDefinitionImpl = new KaleoDraftDefinitionImpl();
+		KaleoDraftDefinitionImpl kaleoDraftDefinitionImpl =
+			new KaleoDraftDefinitionImpl();
 
-		kaleoDraftDefinitionImpl.setKaleoDraftDefinitionId(kaleoDraftDefinitionId);
+		kaleoDraftDefinitionImpl.setKaleoDraftDefinitionId(
+			kaleoDraftDefinitionId);
 		kaleoDraftDefinitionImpl.setGroupId(groupId);
 		kaleoDraftDefinitionImpl.setCompanyId(companyId);
 		kaleoDraftDefinitionImpl.setUserId(userId);
 
 		if (userName == null) {
-			kaleoDraftDefinitionImpl.setUserName(StringPool.BLANK);
+			kaleoDraftDefinitionImpl.setUserName("");
 		}
 		else {
 			kaleoDraftDefinitionImpl.setUserName(userName);
@@ -127,21 +128,21 @@ public class KaleoDraftDefinitionCacheModel implements CacheModel<KaleoDraftDefi
 		}
 
 		if (name == null) {
-			kaleoDraftDefinitionImpl.setName(StringPool.BLANK);
+			kaleoDraftDefinitionImpl.setName("");
 		}
 		else {
 			kaleoDraftDefinitionImpl.setName(name);
 		}
 
 		if (title == null) {
-			kaleoDraftDefinitionImpl.setTitle(StringPool.BLANK);
+			kaleoDraftDefinitionImpl.setTitle("");
 		}
 		else {
 			kaleoDraftDefinitionImpl.setTitle(title);
 		}
 
 		if (content == null) {
-			kaleoDraftDefinitionImpl.setContent(StringPool.BLANK);
+			kaleoDraftDefinitionImpl.setContent("");
 		}
 		else {
 			kaleoDraftDefinitionImpl.setContent(content);
@@ -156,7 +157,9 @@ public class KaleoDraftDefinitionCacheModel implements CacheModel<KaleoDraftDefi
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		kaleoDraftDefinitionId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -169,7 +172,7 @@ public class KaleoDraftDefinitionCacheModel implements CacheModel<KaleoDraftDefi
 		modifiedDate = objectInput.readLong();
 		name = objectInput.readUTF();
 		title = objectInput.readUTF();
-		content = objectInput.readUTF();
+		content = (String)objectInput.readObject();
 
 		version = objectInput.readInt();
 
@@ -177,8 +180,7 @@ public class KaleoDraftDefinitionCacheModel implements CacheModel<KaleoDraftDefi
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(kaleoDraftDefinitionId);
 
 		objectOutput.writeLong(groupId);
@@ -188,7 +190,7 @@ public class KaleoDraftDefinitionCacheModel implements CacheModel<KaleoDraftDefi
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -198,24 +200,24 @@ public class KaleoDraftDefinitionCacheModel implements CacheModel<KaleoDraftDefi
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (title == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(title);
 		}
 
 		if (content == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(content);
+			objectOutput.writeObject(content);
 		}
 
 		objectOutput.writeInt(version);
@@ -235,4 +237,5 @@ public class KaleoDraftDefinitionCacheModel implements CacheModel<KaleoDraftDefi
 	public String content;
 	public int version;
 	public int draftVersion;
+
 }

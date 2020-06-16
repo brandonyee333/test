@@ -1,27 +1,24 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.community.doc.project.service.persistence.impl;
-
-import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.community.doc.project.exception.NoSuchDocProjectException;
 import com.liferay.osb.community.doc.project.model.DocProject;
 import com.liferay.osb.community.doc.project.model.impl.DocProjectImpl;
 import com.liferay.osb.community.doc.project.model.impl.DocProjectModelImpl;
 import com.liferay.osb.community.doc.project.service.persistence.DocProjectPersistence;
-
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -31,21 +28,23 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.service.persistence.CompanyProvider;
-import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -65,51 +64,31 @@ import java.util.Set;
  * </p>
  *
  * @author Ryan Park
- * @see DocProjectPersistence
- * @see com.liferay.osb.community.doc.project.service.persistence.DocProjectUtil
  * @generated
  */
-@ProviderType
-public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
-	implements DocProjectPersistence {
+public class DocProjectPersistenceImpl
+	extends BasePersistenceImpl<DocProject> implements DocProjectPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link DocProjectUtil} to access the doc project persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use <code>DocProjectUtil</code> to access the doc project persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = DocProjectImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-			DocProjectModelImpl.FINDER_CACHE_ENABLED, DocProjectImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-			DocProjectModelImpl.FINDER_CACHE_ENABLED, DocProjectImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-			DocProjectModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_UUID = new FinderPath(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-			DocProjectModelImpl.FINDER_CACHE_ENABLED, DocProjectImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
-			new String[] {
-				String.class.getName(),
-				
-			Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID = new FinderPath(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-			DocProjectModelImpl.FINDER_CACHE_ENABLED, DocProjectImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
-			new String[] { String.class.getName() },
-			DocProjectModelImpl.UUID_COLUMN_BITMASK |
-			DocProjectModelImpl.NAME_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_UUID = new FinderPath(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-			DocProjectModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
-			new String[] { String.class.getName() });
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		DocProjectImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
+	private FinderPath _finderPathWithPaginationFindByUuid;
+	private FinderPath _finderPathWithoutPaginationFindByUuid;
+	private FinderPath _finderPathCountByUuid;
 
 	/**
 	 * Returns all the doc projects where uuid = &#63;.
@@ -126,7 +105,7 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * Returns a range of all the doc projects where uuid = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DocProjectModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DocProjectModelImpl</code>.
 	 * </p>
 	 *
 	 * @param uuid the uuid
@@ -143,7 +122,7 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * Returns an ordered range of all the doc projects where uuid = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DocProjectModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DocProjectModelImpl</code>.
 	 * </p>
 	 *
 	 * @param uuid the uuid
@@ -153,8 +132,10 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * @return the ordered range of matching doc projects
 	 */
 	@Override
-	public List<DocProject> findByUuid(String uuid, int start, int end,
+	public List<DocProject> findByUuid(
+		String uuid, int start, int end,
 		OrderByComparator<DocProject> orderByComparator) {
+
 		return findByUuid(uuid, start, end, orderByComparator, true);
 	}
 
@@ -162,44 +143,49 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * Returns an ordered range of all the doc projects where uuid = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DocProjectModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DocProjectModelImpl</code>.
 	 * </p>
 	 *
 	 * @param uuid the uuid
 	 * @param start the lower bound of the range of doc projects
 	 * @param end the upper bound of the range of doc projects (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching doc projects
 	 */
 	@Override
-	public List<DocProject> findByUuid(String uuid, int start, int end,
+	public List<DocProject> findByUuid(
+		String uuid, int start, int end,
 		OrderByComparator<DocProject> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+		boolean useFinderCache) {
+
+		uuid = Objects.toString(uuid, "");
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID;
-			finderArgs = new Object[] { uuid };
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByUuid;
+				finderArgs = new Object[] {uuid};
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_UUID;
-			finderArgs = new Object[] { uuid, start, end, orderByComparator };
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByUuid;
+			finderArgs = new Object[] {uuid, start, end, orderByComparator};
 		}
 
 		List<DocProject> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<DocProject>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<DocProject>)finderCache.getResult(
+				finderPath, finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (DocProject docProject : list) {
-					if (!Objects.equals(uuid, docProject.getUuid())) {
+					if (!uuid.equals(docProject.getUuid())) {
 						list = null;
 
 						break;
@@ -209,77 +195,67 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(3 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				query = new StringBundler(3);
+				sb = new StringBundler(3);
 			}
 
-			query.append(_SQL_SELECT_DOCPROJECT_WHERE);
+			sb.append(_SQL_SELECT_DOCPROJECT_WHERE);
 
 			boolean bindUuid = false;
 
-			if (uuid == null) {
-				query.append(_FINDER_COLUMN_UUID_UUID_1);
-			}
-			else if (uuid.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_UUID_UUID_3);
+			if (uuid.isEmpty()) {
+				sb.append(_FINDER_COLUMN_UUID_UUID_3);
 			}
 			else {
 				bindUuid = true;
 
-				query.append(_FINDER_COLUMN_UUID_UUID_2);
+				sb.append(_FINDER_COLUMN_UUID_UUID_2);
 			}
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else
-			 if (pagination) {
-				query.append(DocProjectModelImpl.ORDER_BY_JPQL);
+			else {
+				sb.append(DocProjectModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
 				if (bindUuid) {
-					qPos.add(uuid);
+					queryPos.add(uuid);
 				}
 
-				if (!pagination) {
-					list = (List<DocProject>)QueryUtil.list(q, getDialect(),
-							start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DocProject>)QueryUtil.list(q, getDialect(),
-							start, end);
-				}
+				list = (List<DocProject>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -298,25 +274,26 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * @throws NoSuchDocProjectException if a matching doc project could not be found
 	 */
 	@Override
-	public DocProject findByUuid_First(String uuid,
-		OrderByComparator<DocProject> orderByComparator)
+	public DocProject findByUuid_First(
+			String uuid, OrderByComparator<DocProject> orderByComparator)
 		throws NoSuchDocProjectException {
+
 		DocProject docProject = fetchByUuid_First(uuid, orderByComparator);
 
 		if (docProject != null) {
 			return docProject;
 		}
 
-		StringBundler msg = new StringBundler(4);
+		StringBundler sb = new StringBundler(4);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("uuid=");
-		msg.append(uuid);
+		sb.append("uuid=");
+		sb.append(uuid);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		sb.append("}");
 
-		throw new NoSuchDocProjectException(msg.toString());
+		throw new NoSuchDocProjectException(sb.toString());
 	}
 
 	/**
@@ -327,8 +304,9 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * @return the first matching doc project, or <code>null</code> if a matching doc project could not be found
 	 */
 	@Override
-	public DocProject fetchByUuid_First(String uuid,
-		OrderByComparator<DocProject> orderByComparator) {
+	public DocProject fetchByUuid_First(
+		String uuid, OrderByComparator<DocProject> orderByComparator) {
+
 		List<DocProject> list = findByUuid(uuid, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -347,25 +325,26 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * @throws NoSuchDocProjectException if a matching doc project could not be found
 	 */
 	@Override
-	public DocProject findByUuid_Last(String uuid,
-		OrderByComparator<DocProject> orderByComparator)
+	public DocProject findByUuid_Last(
+			String uuid, OrderByComparator<DocProject> orderByComparator)
 		throws NoSuchDocProjectException {
+
 		DocProject docProject = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (docProject != null) {
 			return docProject;
 		}
 
-		StringBundler msg = new StringBundler(4);
+		StringBundler sb = new StringBundler(4);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("uuid=");
-		msg.append(uuid);
+		sb.append("uuid=");
+		sb.append(uuid);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		sb.append("}");
 
-		throw new NoSuchDocProjectException(msg.toString());
+		throw new NoSuchDocProjectException(sb.toString());
 	}
 
 	/**
@@ -376,16 +355,17 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * @return the last matching doc project, or <code>null</code> if a matching doc project could not be found
 	 */
 	@Override
-	public DocProject fetchByUuid_Last(String uuid,
-		OrderByComparator<DocProject> orderByComparator) {
+	public DocProject fetchByUuid_Last(
+		String uuid, OrderByComparator<DocProject> orderByComparator) {
+
 		int count = countByUuid(uuid);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<DocProject> list = findByUuid(uuid, count - 1, count,
-				orderByComparator);
+		List<DocProject> list = findByUuid(
+			uuid, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -404,9 +384,13 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * @throws NoSuchDocProjectException if a doc project with the primary key could not be found
 	 */
 	@Override
-	public DocProject[] findByUuid_PrevAndNext(long docProjectId, String uuid,
-		OrderByComparator<DocProject> orderByComparator)
+	public DocProject[] findByUuid_PrevAndNext(
+			long docProjectId, String uuid,
+			OrderByComparator<DocProject> orderByComparator)
 		throws NoSuchDocProjectException {
+
+		uuid = Objects.toString(uuid, "");
+
 		DocProject docProject = findByPrimaryKey(docProjectId);
 
 		Session session = null;
@@ -416,135 +400,134 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 
 			DocProject[] array = new DocProjectImpl[3];
 
-			array[0] = getByUuid_PrevAndNext(session, docProject, uuid,
-					orderByComparator, true);
+			array[0] = getByUuid_PrevAndNext(
+				session, docProject, uuid, orderByComparator, true);
 
 			array[1] = docProject;
 
-			array[2] = getByUuid_PrevAndNext(session, docProject, uuid,
-					orderByComparator, false);
+			array[2] = getByUuid_PrevAndNext(
+				session, docProject, uuid, orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected DocProject getByUuid_PrevAndNext(Session session,
-		DocProject docProject, String uuid,
+	protected DocProject getByUuid_PrevAndNext(
+		Session session, DocProject docProject, String uuid,
 		OrderByComparator<DocProject> orderByComparator, boolean previous) {
-		StringBundler query = null;
+
+		StringBundler sb = null;
 
 		if (orderByComparator != null) {
-			query = new StringBundler(4 +
-					(orderByComparator.getOrderByConditionFields().length * 3) +
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			query = new StringBundler(3);
+			sb = new StringBundler(3);
 		}
 
-		query.append(_SQL_SELECT_DOCPROJECT_WHERE);
+		sb.append(_SQL_SELECT_DOCPROJECT_WHERE);
 
 		boolean bindUuid = false;
 
-		if (uuid == null) {
-			query.append(_FINDER_COLUMN_UUID_UUID_1);
-		}
-		else if (uuid.equals(StringPool.BLANK)) {
-			query.append(_FINDER_COLUMN_UUID_UUID_3);
+		if (uuid.isEmpty()) {
+			sb.append(_FINDER_COLUMN_UUID_UUID_3);
 		}
 		else {
 			bindUuid = true;
 
-			query.append(_FINDER_COLUMN_UUID_UUID_2);
+			sb.append(_FINDER_COLUMN_UUID_UUID_2);
 		}
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				query.append(WHERE_AND);
+				sb.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByConditionFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN);
+						sb.append(WHERE_GREATER_THAN);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN);
+						sb.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			query.append(ORDER_BY_CLAUSE);
+			sb.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC_HAS_NEXT);
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						query.append(ORDER_BY_DESC_HAS_NEXT);
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC);
+						sb.append(ORDER_BY_ASC);
 					}
 					else {
-						query.append(ORDER_BY_DESC);
+						sb.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			query.append(DocProjectModelImpl.ORDER_BY_JPQL);
+			sb.append(DocProjectModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
-		Query q = session.createQuery(sql);
+		Query query = session.createQuery(sql);
 
-		q.setFirstResult(0);
-		q.setMaxResults(2);
+		query.setFirstResult(0);
+		query.setMaxResults(2);
 
-		QueryPos qPos = QueryPos.getInstance(q);
+		QueryPos queryPos = QueryPos.getInstance(query);
 
 		if (bindUuid) {
-			qPos.add(uuid);
+			queryPos.add(uuid);
 		}
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(docProject);
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(docProject)) {
 
-			for (Object value : values) {
-				qPos.add(value);
+				queryPos.add(orderByConditionValue);
 			}
 		}
 
-		List<DocProject> list = q.list();
+		List<DocProject> list = query.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -561,8 +544,9 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 */
 	@Override
 	public void removeByUuid(String uuid) {
-		for (DocProject docProject : findByUuid(uuid, QueryUtil.ALL_POS,
-				QueryUtil.ALL_POS, null)) {
+		for (DocProject docProject :
+				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+
 			remove(docProject);
 		}
 	}
@@ -575,54 +559,53 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 */
 	@Override
 	public int countByUuid(String uuid) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_UUID;
+		uuid = Objects.toString(uuid, "");
 
-		Object[] finderArgs = new Object[] { uuid };
+		FinderPath finderPath = _finderPathCountByUuid;
+
+		Object[] finderArgs = new Object[] {uuid};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(2);
+			StringBundler sb = new StringBundler(2);
 
-			query.append(_SQL_COUNT_DOCPROJECT_WHERE);
+			sb.append(_SQL_COUNT_DOCPROJECT_WHERE);
 
 			boolean bindUuid = false;
 
-			if (uuid == null) {
-				query.append(_FINDER_COLUMN_UUID_UUID_1);
-			}
-			else if (uuid.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_UUID_UUID_3);
+			if (uuid.isEmpty()) {
+				sb.append(_FINDER_COLUMN_UUID_UUID_3);
 			}
 			else {
 				bindUuid = true;
 
-				query.append(_FINDER_COLUMN_UUID_UUID_2);
+				sb.append(_FINDER_COLUMN_UUID_UUID_2);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
 				if (bindUuid) {
-					qPos.add(uuid);
+					queryPos.add(uuid);
 				}
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -632,22 +615,17 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_UUID_UUID_1 = "docProject.uuid IS NULL";
-	private static final String _FINDER_COLUMN_UUID_UUID_2 = "docProject.uuid = ?";
-	private static final String _FINDER_COLUMN_UUID_UUID_3 = "(docProject.uuid IS NULL OR docProject.uuid = '')";
-	public static final FinderPath FINDER_PATH_FETCH_BY_UUID_G = new FinderPath(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-			DocProjectModelImpl.FINDER_CACHE_ENABLED, DocProjectImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
-			new String[] { String.class.getName(), Long.class.getName() },
-			DocProjectModelImpl.UUID_COLUMN_BITMASK |
-			DocProjectModelImpl.GROUPID_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_UUID_G = new FinderPath(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-			DocProjectModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G",
-			new String[] { String.class.getName(), Long.class.getName() });
+	private static final String _FINDER_COLUMN_UUID_UUID_2 =
+		"docProject.uuid = ?";
+
+	private static final String _FINDER_COLUMN_UUID_UUID_3 =
+		"(docProject.uuid IS NULL OR docProject.uuid = '')";
+
+	private FinderPath _finderPathFetchByUUID_G;
+	private FinderPath _finderPathCountByUUID_G;
 
 	/**
-	 * Returns the doc project where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchDocProjectException} if it could not be found.
+	 * Returns the doc project where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchDocProjectException</code> if it could not be found.
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
@@ -657,26 +635,27 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	@Override
 	public DocProject findByUUID_G(String uuid, long groupId)
 		throws NoSuchDocProjectException {
+
 		DocProject docProject = fetchByUUID_G(uuid, groupId);
 
 		if (docProject == null) {
-			StringBundler msg = new StringBundler(6);
+			StringBundler sb = new StringBundler(6);
 
-			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			msg.append("uuid=");
-			msg.append(uuid);
+			sb.append("uuid=");
+			sb.append(uuid);
 
-			msg.append(", groupId=");
-			msg.append(groupId);
+			sb.append(", groupId=");
+			sb.append(groupId);
 
-			msg.append(StringPool.CLOSE_CURLY_BRACE);
+			sb.append("}");
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(msg.toString());
+				_log.debug(sb.toString());
 			}
 
-			throw new NoSuchDocProjectException(msg.toString());
+			throw new NoSuchDocProjectException(sb.toString());
 		}
 
 		return docProject;
@@ -699,73 +678,80 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching doc project, or <code>null</code> if a matching doc project could not be found
 	 */
 	@Override
-	public DocProject fetchByUUID_G(String uuid, long groupId,
-		boolean retrieveFromCache) {
-		Object[] finderArgs = new Object[] { uuid, groupId };
+	public DocProject fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache) {
+
+		uuid = Objects.toString(uuid, "");
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {uuid, groupId};
+		}
 
 		Object result = null;
 
-		if (retrieveFromCache) {
-			result = finderCache.getResult(FINDER_PATH_FETCH_BY_UUID_G,
-					finderArgs, this);
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByUUID_G, finderArgs, this);
 		}
 
 		if (result instanceof DocProject) {
 			DocProject docProject = (DocProject)result;
 
 			if (!Objects.equals(uuid, docProject.getUuid()) ||
-					(groupId != docProject.getGroupId())) {
+				(groupId != docProject.getGroupId())) {
+
 				result = null;
 			}
 		}
 
 		if (result == null) {
-			StringBundler query = new StringBundler(4);
+			StringBundler sb = new StringBundler(4);
 
-			query.append(_SQL_SELECT_DOCPROJECT_WHERE);
+			sb.append(_SQL_SELECT_DOCPROJECT_WHERE);
 
 			boolean bindUuid = false;
 
-			if (uuid == null) {
-				query.append(_FINDER_COLUMN_UUID_G_UUID_1);
-			}
-			else if (uuid.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_UUID_G_UUID_3);
+			if (uuid.isEmpty()) {
+				sb.append(_FINDER_COLUMN_UUID_G_UUID_3);
 			}
 			else {
 				bindUuid = true;
 
-				query.append(_FINDER_COLUMN_UUID_G_UUID_2);
+				sb.append(_FINDER_COLUMN_UUID_G_UUID_2);
 			}
 
-			query.append(_FINDER_COLUMN_UUID_G_GROUPID_2);
+			sb.append(_FINDER_COLUMN_UUID_G_GROUPID_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
 				if (bindUuid) {
-					qPos.add(uuid);
+					queryPos.add(uuid);
 				}
 
-				qPos.add(groupId);
+				queryPos.add(groupId);
 
-				List<DocProject> list = q.list();
+				List<DocProject> list = query.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(FINDER_PATH_FETCH_BY_UUID_G,
-						finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByUUID_G, finderArgs, list);
+					}
 				}
 				else {
 					DocProject docProject = list.get(0);
@@ -773,19 +759,15 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 					result = docProject;
 
 					cacheResult(docProject);
-
-					if ((docProject.getUuid() == null) ||
-							!docProject.getUuid().equals(uuid) ||
-							(docProject.getGroupId() != groupId)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_UUID_G,
-							finderArgs, docProject);
-					}
 				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_FETCH_BY_UUID_G, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(
+						_finderPathFetchByUUID_G, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -810,6 +792,7 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	@Override
 	public DocProject removeByUUID_G(String uuid, long groupId)
 		throws NoSuchDocProjectException {
+
 		DocProject docProject = findByUUID_G(uuid, groupId);
 
 		return remove(docProject);
@@ -824,58 +807,57 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 */
 	@Override
 	public int countByUUID_G(String uuid, long groupId) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_UUID_G;
+		uuid = Objects.toString(uuid, "");
 
-		Object[] finderArgs = new Object[] { uuid, groupId };
+		FinderPath finderPath = _finderPathCountByUUID_G;
+
+		Object[] finderArgs = new Object[] {uuid, groupId};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(3);
+			StringBundler sb = new StringBundler(3);
 
-			query.append(_SQL_COUNT_DOCPROJECT_WHERE);
+			sb.append(_SQL_COUNT_DOCPROJECT_WHERE);
 
 			boolean bindUuid = false;
 
-			if (uuid == null) {
-				query.append(_FINDER_COLUMN_UUID_G_UUID_1);
-			}
-			else if (uuid.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_UUID_G_UUID_3);
+			if (uuid.isEmpty()) {
+				sb.append(_FINDER_COLUMN_UUID_G_UUID_3);
 			}
 			else {
 				bindUuid = true;
 
-				query.append(_FINDER_COLUMN_UUID_G_UUID_2);
+				sb.append(_FINDER_COLUMN_UUID_G_UUID_2);
 			}
 
-			query.append(_FINDER_COLUMN_UUID_G_GROUPID_2);
+			sb.append(_FINDER_COLUMN_UUID_G_GROUPID_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
 				if (bindUuid) {
-					qPos.add(uuid);
+					queryPos.add(uuid);
 				}
 
-				qPos.add(groupId);
+				queryPos.add(groupId);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -885,31 +867,18 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_UUID_G_UUID_1 = "docProject.uuid IS NULL AND ";
-	private static final String _FINDER_COLUMN_UUID_G_UUID_2 = "docProject.uuid = ? AND ";
-	private static final String _FINDER_COLUMN_UUID_G_UUID_3 = "(docProject.uuid IS NULL OR docProject.uuid = '') AND ";
-	private static final String _FINDER_COLUMN_UUID_G_GROUPID_2 = "docProject.groupId = ?";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_UUID_C = new FinderPath(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-			DocProjectModelImpl.FINDER_CACHE_ENABLED, DocProjectImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
-			new String[] {
-				String.class.getName(), Long.class.getName(),
-				
-			Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID_C =
-		new FinderPath(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-			DocProjectModelImpl.FINDER_CACHE_ENABLED, DocProjectImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
-			new String[] { String.class.getName(), Long.class.getName() },
-			DocProjectModelImpl.UUID_COLUMN_BITMASK |
-			DocProjectModelImpl.COMPANYID_COLUMN_BITMASK |
-			DocProjectModelImpl.NAME_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_UUID_C = new FinderPath(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-			DocProjectModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
-			new String[] { String.class.getName(), Long.class.getName() });
+	private static final String _FINDER_COLUMN_UUID_G_UUID_2 =
+		"docProject.uuid = ? AND ";
+
+	private static final String _FINDER_COLUMN_UUID_G_UUID_3 =
+		"(docProject.uuid IS NULL OR docProject.uuid = '') AND ";
+
+	private static final String _FINDER_COLUMN_UUID_G_GROUPID_2 =
+		"docProject.groupId = ?";
+
+	private FinderPath _finderPathWithPaginationFindByUuid_C;
+	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+	private FinderPath _finderPathCountByUuid_C;
 
 	/**
 	 * Returns all the doc projects where uuid = &#63; and companyId = &#63;.
@@ -920,15 +889,15 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 */
 	@Override
 	public List<DocProject> findByUuid_C(String uuid, long companyId) {
-		return findByUuid_C(uuid, companyId, QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS, null);
+		return findByUuid_C(
+			uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the doc projects where uuid = &#63; and companyId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DocProjectModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DocProjectModelImpl</code>.
 	 * </p>
 	 *
 	 * @param uuid the uuid
@@ -938,8 +907,9 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * @return the range of matching doc projects
 	 */
 	@Override
-	public List<DocProject> findByUuid_C(String uuid, long companyId,
-		int start, int end) {
+	public List<DocProject> findByUuid_C(
+		String uuid, long companyId, int start, int end) {
+
 		return findByUuid_C(uuid, companyId, start, end, null);
 	}
 
@@ -947,7 +917,7 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * Returns an ordered range of all the doc projects where uuid = &#63; and companyId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DocProjectModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DocProjectModelImpl</code>.
 	 * </p>
 	 *
 	 * @param uuid the uuid
@@ -958,16 +928,19 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * @return the ordered range of matching doc projects
 	 */
 	@Override
-	public List<DocProject> findByUuid_C(String uuid, long companyId,
-		int start, int end, OrderByComparator<DocProject> orderByComparator) {
-		return findByUuid_C(uuid, companyId, start, end, orderByComparator, true);
+	public List<DocProject> findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<DocProject> orderByComparator) {
+
+		return findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, true);
 	}
 
 	/**
 	 * Returns an ordered range of all the doc projects where uuid = &#63; and companyId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DocProjectModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DocProjectModelImpl</code>.
 	 * </p>
 	 *
 	 * @param uuid the uuid
@@ -975,42 +948,46 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * @param start the lower bound of the range of doc projects
 	 * @param end the upper bound of the range of doc projects (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching doc projects
 	 */
 	@Override
-	public List<DocProject> findByUuid_C(String uuid, long companyId,
-		int start, int end, OrderByComparator<DocProject> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+	public List<DocProject> findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<DocProject> orderByComparator,
+		boolean useFinderCache) {
+
+		uuid = Objects.toString(uuid, "");
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID_C;
-			finderArgs = new Object[] { uuid, companyId };
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByUuid_C;
+				finderArgs = new Object[] {uuid, companyId};
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_UUID_C;
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByUuid_C;
 			finderArgs = new Object[] {
-					uuid, companyId,
-					
-					start, end, orderByComparator
-				};
+				uuid, companyId, start, end, orderByComparator
+			};
 		}
 
 		List<DocProject> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<DocProject>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<DocProject>)finderCache.getResult(
+				finderPath, finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (DocProject docProject : list) {
-					if (!Objects.equals(uuid, docProject.getUuid()) ||
-							(companyId != docProject.getCompanyId())) {
+					if (!uuid.equals(docProject.getUuid()) ||
+						(companyId != docProject.getCompanyId())) {
+
 						list = null;
 
 						break;
@@ -1020,81 +997,71 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(4 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					4 + (orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				query = new StringBundler(4);
+				sb = new StringBundler(4);
 			}
 
-			query.append(_SQL_SELECT_DOCPROJECT_WHERE);
+			sb.append(_SQL_SELECT_DOCPROJECT_WHERE);
 
 			boolean bindUuid = false;
 
-			if (uuid == null) {
-				query.append(_FINDER_COLUMN_UUID_C_UUID_1);
-			}
-			else if (uuid.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_UUID_C_UUID_3);
+			if (uuid.isEmpty()) {
+				sb.append(_FINDER_COLUMN_UUID_C_UUID_3);
 			}
 			else {
 				bindUuid = true;
 
-				query.append(_FINDER_COLUMN_UUID_C_UUID_2);
+				sb.append(_FINDER_COLUMN_UUID_C_UUID_2);
 			}
 
-			query.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
+			sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else
-			 if (pagination) {
-				query.append(DocProjectModelImpl.ORDER_BY_JPQL);
+			else {
+				sb.append(DocProjectModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
 				if (bindUuid) {
-					qPos.add(uuid);
+					queryPos.add(uuid);
 				}
 
-				qPos.add(companyId);
+				queryPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<DocProject>)QueryUtil.list(q, getDialect(),
-							start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DocProject>)QueryUtil.list(q, getDialect(),
-							start, end);
-				}
+				list = (List<DocProject>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1114,29 +1081,31 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * @throws NoSuchDocProjectException if a matching doc project could not be found
 	 */
 	@Override
-	public DocProject findByUuid_C_First(String uuid, long companyId,
-		OrderByComparator<DocProject> orderByComparator)
+	public DocProject findByUuid_C_First(
+			String uuid, long companyId,
+			OrderByComparator<DocProject> orderByComparator)
 		throws NoSuchDocProjectException {
-		DocProject docProject = fetchByUuid_C_First(uuid, companyId,
-				orderByComparator);
+
+		DocProject docProject = fetchByUuid_C_First(
+			uuid, companyId, orderByComparator);
 
 		if (docProject != null) {
 			return docProject;
 		}
 
-		StringBundler msg = new StringBundler(6);
+		StringBundler sb = new StringBundler(6);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("uuid=");
-		msg.append(uuid);
+		sb.append("uuid=");
+		sb.append(uuid);
 
-		msg.append(", companyId=");
-		msg.append(companyId);
+		sb.append(", companyId=");
+		sb.append(companyId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		sb.append("}");
 
-		throw new NoSuchDocProjectException(msg.toString());
+		throw new NoSuchDocProjectException(sb.toString());
 	}
 
 	/**
@@ -1148,10 +1117,12 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * @return the first matching doc project, or <code>null</code> if a matching doc project could not be found
 	 */
 	@Override
-	public DocProject fetchByUuid_C_First(String uuid, long companyId,
+	public DocProject fetchByUuid_C_First(
+		String uuid, long companyId,
 		OrderByComparator<DocProject> orderByComparator) {
-		List<DocProject> list = findByUuid_C(uuid, companyId, 0, 1,
-				orderByComparator);
+
+		List<DocProject> list = findByUuid_C(
+			uuid, companyId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -1170,29 +1141,31 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * @throws NoSuchDocProjectException if a matching doc project could not be found
 	 */
 	@Override
-	public DocProject findByUuid_C_Last(String uuid, long companyId,
-		OrderByComparator<DocProject> orderByComparator)
+	public DocProject findByUuid_C_Last(
+			String uuid, long companyId,
+			OrderByComparator<DocProject> orderByComparator)
 		throws NoSuchDocProjectException {
-		DocProject docProject = fetchByUuid_C_Last(uuid, companyId,
-				orderByComparator);
+
+		DocProject docProject = fetchByUuid_C_Last(
+			uuid, companyId, orderByComparator);
 
 		if (docProject != null) {
 			return docProject;
 		}
 
-		StringBundler msg = new StringBundler(6);
+		StringBundler sb = new StringBundler(6);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("uuid=");
-		msg.append(uuid);
+		sb.append("uuid=");
+		sb.append(uuid);
 
-		msg.append(", companyId=");
-		msg.append(companyId);
+		sb.append(", companyId=");
+		sb.append(companyId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		sb.append("}");
 
-		throw new NoSuchDocProjectException(msg.toString());
+		throw new NoSuchDocProjectException(sb.toString());
 	}
 
 	/**
@@ -1204,16 +1177,18 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * @return the last matching doc project, or <code>null</code> if a matching doc project could not be found
 	 */
 	@Override
-	public DocProject fetchByUuid_C_Last(String uuid, long companyId,
+	public DocProject fetchByUuid_C_Last(
+		String uuid, long companyId,
 		OrderByComparator<DocProject> orderByComparator) {
+
 		int count = countByUuid_C(uuid, companyId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<DocProject> list = findByUuid_C(uuid, companyId, count - 1, count,
-				orderByComparator);
+		List<DocProject> list = findByUuid_C(
+			uuid, companyId, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -1233,10 +1208,13 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * @throws NoSuchDocProjectException if a doc project with the primary key could not be found
 	 */
 	@Override
-	public DocProject[] findByUuid_C_PrevAndNext(long docProjectId,
-		String uuid, long companyId,
-		OrderByComparator<DocProject> orderByComparator)
+	public DocProject[] findByUuid_C_PrevAndNext(
+			long docProjectId, String uuid, long companyId,
+			OrderByComparator<DocProject> orderByComparator)
 		throws NoSuchDocProjectException {
+
+		uuid = Objects.toString(uuid, "");
+
 		DocProject docProject = findByPrimaryKey(docProjectId);
 
 		Session session = null;
@@ -1246,139 +1224,138 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 
 			DocProject[] array = new DocProjectImpl[3];
 
-			array[0] = getByUuid_C_PrevAndNext(session, docProject, uuid,
-					companyId, orderByComparator, true);
+			array[0] = getByUuid_C_PrevAndNext(
+				session, docProject, uuid, companyId, orderByComparator, true);
 
 			array[1] = docProject;
 
-			array[2] = getByUuid_C_PrevAndNext(session, docProject, uuid,
-					companyId, orderByComparator, false);
+			array[2] = getByUuid_C_PrevAndNext(
+				session, docProject, uuid, companyId, orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected DocProject getByUuid_C_PrevAndNext(Session session,
-		DocProject docProject, String uuid, long companyId,
+	protected DocProject getByUuid_C_PrevAndNext(
+		Session session, DocProject docProject, String uuid, long companyId,
 		OrderByComparator<DocProject> orderByComparator, boolean previous) {
-		StringBundler query = null;
+
+		StringBundler sb = null;
 
 		if (orderByComparator != null) {
-			query = new StringBundler(5 +
-					(orderByComparator.getOrderByConditionFields().length * 3) +
+			sb = new StringBundler(
+				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			query = new StringBundler(4);
+			sb = new StringBundler(4);
 		}
 
-		query.append(_SQL_SELECT_DOCPROJECT_WHERE);
+		sb.append(_SQL_SELECT_DOCPROJECT_WHERE);
 
 		boolean bindUuid = false;
 
-		if (uuid == null) {
-			query.append(_FINDER_COLUMN_UUID_C_UUID_1);
-		}
-		else if (uuid.equals(StringPool.BLANK)) {
-			query.append(_FINDER_COLUMN_UUID_C_UUID_3);
+		if (uuid.isEmpty()) {
+			sb.append(_FINDER_COLUMN_UUID_C_UUID_3);
 		}
 		else {
 			bindUuid = true;
 
-			query.append(_FINDER_COLUMN_UUID_C_UUID_2);
+			sb.append(_FINDER_COLUMN_UUID_C_UUID_2);
 		}
 
-		query.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				query.append(WHERE_AND);
+				sb.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByConditionFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN);
+						sb.append(WHERE_GREATER_THAN);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN);
+						sb.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			query.append(ORDER_BY_CLAUSE);
+			sb.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC_HAS_NEXT);
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						query.append(ORDER_BY_DESC_HAS_NEXT);
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC);
+						sb.append(ORDER_BY_ASC);
 					}
 					else {
-						query.append(ORDER_BY_DESC);
+						sb.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			query.append(DocProjectModelImpl.ORDER_BY_JPQL);
+			sb.append(DocProjectModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
-		Query q = session.createQuery(sql);
+		Query query = session.createQuery(sql);
 
-		q.setFirstResult(0);
-		q.setMaxResults(2);
+		query.setFirstResult(0);
+		query.setMaxResults(2);
 
-		QueryPos qPos = QueryPos.getInstance(q);
+		QueryPos queryPos = QueryPos.getInstance(query);
 
 		if (bindUuid) {
-			qPos.add(uuid);
+			queryPos.add(uuid);
 		}
 
-		qPos.add(companyId);
+		queryPos.add(companyId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(docProject);
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(docProject)) {
 
-			for (Object value : values) {
-				qPos.add(value);
+				queryPos.add(orderByConditionValue);
 			}
 		}
 
-		List<DocProject> list = q.list();
+		List<DocProject> list = query.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -1396,8 +1373,11 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 */
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
-		for (DocProject docProject : findByUuid_C(uuid, companyId,
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+		for (DocProject docProject :
+				findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+					null)) {
+
 			remove(docProject);
 		}
 	}
@@ -1411,58 +1391,57 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 */
 	@Override
 	public int countByUuid_C(String uuid, long companyId) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_UUID_C;
+		uuid = Objects.toString(uuid, "");
 
-		Object[] finderArgs = new Object[] { uuid, companyId };
+		FinderPath finderPath = _finderPathCountByUuid_C;
+
+		Object[] finderArgs = new Object[] {uuid, companyId};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(3);
+			StringBundler sb = new StringBundler(3);
 
-			query.append(_SQL_COUNT_DOCPROJECT_WHERE);
+			sb.append(_SQL_COUNT_DOCPROJECT_WHERE);
 
 			boolean bindUuid = false;
 
-			if (uuid == null) {
-				query.append(_FINDER_COLUMN_UUID_C_UUID_1);
-			}
-			else if (uuid.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_UUID_C_UUID_3);
+			if (uuid.isEmpty()) {
+				sb.append(_FINDER_COLUMN_UUID_C_UUID_3);
 			}
 			else {
 				bindUuid = true;
 
-				query.append(_FINDER_COLUMN_UUID_C_UUID_2);
+				sb.append(_FINDER_COLUMN_UUID_C_UUID_2);
 			}
 
-			query.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
+			sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
 				if (bindUuid) {
-					qPos.add(uuid);
+					queryPos.add(uuid);
 				}
 
-				qPos.add(companyId);
+				queryPos.add(companyId);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1472,22 +1451,20 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_UUID_C_UUID_1 = "docProject.uuid IS NULL AND ";
-	private static final String _FINDER_COLUMN_UUID_C_UUID_2 = "docProject.uuid = ? AND ";
-	private static final String _FINDER_COLUMN_UUID_C_UUID_3 = "(docProject.uuid IS NULL OR docProject.uuid = '') AND ";
-	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 = "docProject.companyId = ?";
-	public static final FinderPath FINDER_PATH_FETCH_BY_GROUPID = new FinderPath(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-			DocProjectModelImpl.FINDER_CACHE_ENABLED, DocProjectImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByGroupId",
-			new String[] { Long.class.getName() },
-			DocProjectModelImpl.GROUPID_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_GROUPID = new FinderPath(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-			DocProjectModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
-			new String[] { Long.class.getName() });
+	private static final String _FINDER_COLUMN_UUID_C_UUID_2 =
+		"docProject.uuid = ? AND ";
+
+	private static final String _FINDER_COLUMN_UUID_C_UUID_3 =
+		"(docProject.uuid IS NULL OR docProject.uuid = '') AND ";
+
+	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
+		"docProject.companyId = ?";
+
+	private FinderPath _finderPathFetchByGroupId;
+	private FinderPath _finderPathCountByGroupId;
 
 	/**
-	 * Returns the doc project where groupId = &#63; or throws a {@link NoSuchDocProjectException} if it could not be found.
+	 * Returns the doc project where groupId = &#63; or throws a <code>NoSuchDocProjectException</code> if it could not be found.
 	 *
 	 * @param groupId the group ID
 	 * @return the matching doc project
@@ -1496,23 +1473,24 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	@Override
 	public DocProject findByGroupId(long groupId)
 		throws NoSuchDocProjectException {
+
 		DocProject docProject = fetchByGroupId(groupId);
 
 		if (docProject == null) {
-			StringBundler msg = new StringBundler(4);
+			StringBundler sb = new StringBundler(4);
 
-			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			msg.append("groupId=");
-			msg.append(groupId);
+			sb.append("groupId=");
+			sb.append(groupId);
 
-			msg.append(StringPool.CLOSE_CURLY_BRACE);
+			sb.append("}");
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(msg.toString());
+				_log.debug(sb.toString());
 			}
 
-			throw new NoSuchDocProjectException(msg.toString());
+			throw new NoSuchDocProjectException(sb.toString());
 		}
 
 		return docProject;
@@ -1533,63 +1511,73 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * Returns the doc project where groupId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param groupId the group ID
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching doc project, or <code>null</code> if a matching doc project could not be found
 	 */
 	@Override
-	public DocProject fetchByGroupId(long groupId, boolean retrieveFromCache) {
-		Object[] finderArgs = new Object[] { groupId };
+	public DocProject fetchByGroupId(long groupId, boolean useFinderCache) {
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {groupId};
+		}
 
 		Object result = null;
 
-		if (retrieveFromCache) {
-			result = finderCache.getResult(FINDER_PATH_FETCH_BY_GROUPID,
-					finderArgs, this);
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByGroupId, finderArgs, this);
 		}
 
 		if (result instanceof DocProject) {
 			DocProject docProject = (DocProject)result;
 
-			if ((groupId != docProject.getGroupId())) {
+			if (groupId != docProject.getGroupId()) {
 				result = null;
 			}
 		}
 
 		if (result == null) {
-			StringBundler query = new StringBundler(3);
+			StringBundler sb = new StringBundler(3);
 
-			query.append(_SQL_SELECT_DOCPROJECT_WHERE);
+			sb.append(_SQL_SELECT_DOCPROJECT_WHERE);
 
-			query.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+			sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(groupId);
+				queryPos.add(groupId);
 
-				List<DocProject> list = q.list();
+				List<DocProject> list = query.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(FINDER_PATH_FETCH_BY_GROUPID,
-						finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByGroupId, finderArgs, list);
+					}
 				}
 				else {
 					if (list.size() > 1) {
 						Collections.sort(list, Collections.reverseOrder());
 
 						if (_log.isWarnEnabled()) {
+							if (!useFinderCache) {
+								finderArgs = new Object[] {groupId};
+							}
+
 							_log.warn(
 								"DocProjectPersistenceImpl.fetchByGroupId(long, boolean) with parameters (" +
-								StringUtil.merge(finderArgs) +
-								") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+									StringUtil.merge(finderArgs) +
+										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 						}
 					}
 
@@ -1598,18 +1586,15 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 					result = docProject;
 
 					cacheResult(docProject);
-
-					if ((docProject.getGroupId() != groupId)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_GROUPID,
-							finderArgs, docProject);
-					}
 				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_FETCH_BY_GROUPID,
-					finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(
+						_finderPathFetchByGroupId, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1633,6 +1618,7 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	@Override
 	public DocProject removeByGroupId(long groupId)
 		throws NoSuchDocProjectException {
+
 		DocProject docProject = findByGroupId(groupId);
 
 		return remove(docProject);
@@ -1646,40 +1632,40 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 */
 	@Override
 	public int countByGroupId(long groupId) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_GROUPID;
+		FinderPath finderPath = _finderPathCountByGroupId;
 
-		Object[] finderArgs = new Object[] { groupId };
+		Object[] finderArgs = new Object[] {groupId};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(2);
+			StringBundler sb = new StringBundler(2);
 
-			query.append(_SQL_COUNT_DOCPROJECT_WHERE);
+			sb.append(_SQL_COUNT_DOCPROJECT_WHERE);
 
-			query.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+			sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(groupId);
+				queryPos.add(groupId);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1689,19 +1675,14 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2 = "docProject.groupId = ?";
-	public static final FinderPath FINDER_PATH_FETCH_BY_NAME = new FinderPath(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-			DocProjectModelImpl.FINDER_CACHE_ENABLED, DocProjectImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByName",
-			new String[] { String.class.getName() },
-			DocProjectModelImpl.NAME_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_NAME = new FinderPath(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-			DocProjectModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByName",
-			new String[] { String.class.getName() });
+	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2 =
+		"docProject.groupId = ?";
+
+	private FinderPath _finderPathFetchByName;
+	private FinderPath _finderPathCountByName;
 
 	/**
-	 * Returns the doc project where name = &#63; or throws a {@link NoSuchDocProjectException} if it could not be found.
+	 * Returns the doc project where name = &#63; or throws a <code>NoSuchDocProjectException</code> if it could not be found.
 	 *
 	 * @param name the name
 	 * @return the matching doc project
@@ -1712,20 +1693,20 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 		DocProject docProject = fetchByName(name);
 
 		if (docProject == null) {
-			StringBundler msg = new StringBundler(4);
+			StringBundler sb = new StringBundler(4);
 
-			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			msg.append("name=");
-			msg.append(name);
+			sb.append("name=");
+			sb.append(name);
 
-			msg.append(StringPool.CLOSE_CURLY_BRACE);
+			sb.append("}");
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(msg.toString());
+				_log.debug(sb.toString());
 			}
 
-			throw new NoSuchDocProjectException(msg.toString());
+			throw new NoSuchDocProjectException(sb.toString());
 		}
 
 		return docProject;
@@ -1746,18 +1727,24 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * Returns the doc project where name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param name the name
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching doc project, or <code>null</code> if a matching doc project could not be found
 	 */
 	@Override
-	public DocProject fetchByName(String name, boolean retrieveFromCache) {
-		Object[] finderArgs = new Object[] { name };
+	public DocProject fetchByName(String name, boolean useFinderCache) {
+		name = Objects.toString(name, "");
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {name};
+		}
 
 		Object result = null;
 
-		if (retrieveFromCache) {
-			result = finderCache.getResult(FINDER_PATH_FETCH_BY_NAME,
-					finderArgs, this);
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByName, finderArgs, this);
 		}
 
 		if (result instanceof DocProject) {
@@ -1769,54 +1756,57 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 		}
 
 		if (result == null) {
-			StringBundler query = new StringBundler(3);
+			StringBundler sb = new StringBundler(3);
 
-			query.append(_SQL_SELECT_DOCPROJECT_WHERE);
+			sb.append(_SQL_SELECT_DOCPROJECT_WHERE);
 
 			boolean bindName = false;
 
-			if (name == null) {
-				query.append(_FINDER_COLUMN_NAME_NAME_1);
-			}
-			else if (name.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_NAME_NAME_3);
+			if (name.isEmpty()) {
+				sb.append(_FINDER_COLUMN_NAME_NAME_3);
 			}
 			else {
 				bindName = true;
 
-				query.append(_FINDER_COLUMN_NAME_NAME_2);
+				sb.append(_FINDER_COLUMN_NAME_NAME_2);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
 				if (bindName) {
-					qPos.add(name);
+					queryPos.add(name);
 				}
 
-				List<DocProject> list = q.list();
+				List<DocProject> list = query.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(FINDER_PATH_FETCH_BY_NAME,
-						finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByName, finderArgs, list);
+					}
 				}
 				else {
 					if (list.size() > 1) {
 						Collections.sort(list, Collections.reverseOrder());
 
 						if (_log.isWarnEnabled()) {
+							if (!useFinderCache) {
+								finderArgs = new Object[] {name};
+							}
+
 							_log.warn(
 								"DocProjectPersistenceImpl.fetchByName(String, boolean) with parameters (" +
-								StringUtil.merge(finderArgs) +
-								") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+									StringUtil.merge(finderArgs) +
+										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 						}
 					}
 
@@ -1825,18 +1815,15 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 					result = docProject;
 
 					cacheResult(docProject);
-
-					if ((docProject.getName() == null) ||
-							!docProject.getName().equals(name)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_NAME,
-							finderArgs, docProject);
-					}
 				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_FETCH_BY_NAME, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(
+						_finderPathFetchByName, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1860,6 +1847,7 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	@Override
 	public DocProject removeByName(String name)
 		throws NoSuchDocProjectException {
+
 		DocProject docProject = findByName(name);
 
 		return remove(docProject);
@@ -1873,54 +1861,53 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 */
 	@Override
 	public int countByName(String name) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_NAME;
+		name = Objects.toString(name, "");
 
-		Object[] finderArgs = new Object[] { name };
+		FinderPath finderPath = _finderPathCountByName;
+
+		Object[] finderArgs = new Object[] {name};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(2);
+			StringBundler sb = new StringBundler(2);
 
-			query.append(_SQL_COUNT_DOCPROJECT_WHERE);
+			sb.append(_SQL_COUNT_DOCPROJECT_WHERE);
 
 			boolean bindName = false;
 
-			if (name == null) {
-				query.append(_FINDER_COLUMN_NAME_NAME_1);
-			}
-			else if (name.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_NAME_NAME_3);
+			if (name.isEmpty()) {
+				sb.append(_FINDER_COLUMN_NAME_NAME_3);
 			}
 			else {
 				bindName = true;
 
-				query.append(_FINDER_COLUMN_NAME_NAME_2);
+				sb.append(_FINDER_COLUMN_NAME_NAME_2);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
 				if (bindName) {
-					qPos.add(name);
+					queryPos.add(name);
 				}
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1930,29 +1917,15 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_NAME_NAME_1 = "docProject.name IS NULL";
-	private static final String _FINDER_COLUMN_NAME_NAME_2 = "docProject.name = ?";
-	private static final String _FINDER_COLUMN_NAME_NAME_3 = "(docProject.name IS NULL OR docProject.name = '')";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_U_S = new FinderPath(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-			DocProjectModelImpl.FINDER_CACHE_ENABLED, DocProjectImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByU_S",
-			new String[] {
-				Boolean.class.getName(), Integer.class.getName(),
-				
-			Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_S = new FinderPath(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-			DocProjectModelImpl.FINDER_CACHE_ENABLED, DocProjectImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByU_S",
-			new String[] { Boolean.class.getName(), Integer.class.getName() },
-			DocProjectModelImpl.UNLISTED_COLUMN_BITMASK |
-			DocProjectModelImpl.STATUS_COLUMN_BITMASK |
-			DocProjectModelImpl.NAME_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_U_S = new FinderPath(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-			DocProjectModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_S",
-			new String[] { Boolean.class.getName(), Integer.class.getName() });
+	private static final String _FINDER_COLUMN_NAME_NAME_2 =
+		"docProject.name = ?";
+
+	private static final String _FINDER_COLUMN_NAME_NAME_3 =
+		"(docProject.name IS NULL OR docProject.name = '')";
+
+	private FinderPath _finderPathWithPaginationFindByU_S;
+	private FinderPath _finderPathWithoutPaginationFindByU_S;
+	private FinderPath _finderPathCountByU_S;
 
 	/**
 	 * Returns all the doc projects where unlisted = &#63; and status = &#63;.
@@ -1963,15 +1936,15 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 */
 	@Override
 	public List<DocProject> findByU_S(boolean unlisted, int status) {
-		return findByU_S(unlisted, status, QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS, null);
+		return findByU_S(
+			unlisted, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the doc projects where unlisted = &#63; and status = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DocProjectModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DocProjectModelImpl</code>.
 	 * </p>
 	 *
 	 * @param unlisted the unlisted
@@ -1981,8 +1954,9 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * @return the range of matching doc projects
 	 */
 	@Override
-	public List<DocProject> findByU_S(boolean unlisted, int status, int start,
-		int end) {
+	public List<DocProject> findByU_S(
+		boolean unlisted, int status, int start, int end) {
+
 		return findByU_S(unlisted, status, start, end, null);
 	}
 
@@ -1990,7 +1964,7 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * Returns an ordered range of all the doc projects where unlisted = &#63; and status = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DocProjectModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DocProjectModelImpl</code>.
 	 * </p>
 	 *
 	 * @param unlisted the unlisted
@@ -2001,8 +1975,10 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * @return the ordered range of matching doc projects
 	 */
 	@Override
-	public List<DocProject> findByU_S(boolean unlisted, int status, int start,
-		int end, OrderByComparator<DocProject> orderByComparator) {
+	public List<DocProject> findByU_S(
+		boolean unlisted, int status, int start, int end,
+		OrderByComparator<DocProject> orderByComparator) {
+
 		return findByU_S(unlisted, status, start, end, orderByComparator, true);
 	}
 
@@ -2010,7 +1986,7 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * Returns an ordered range of all the doc projects where unlisted = &#63; and status = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DocProjectModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DocProjectModelImpl</code>.
 	 * </p>
 	 *
 	 * @param unlisted the unlisted
@@ -2018,42 +1994,44 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * @param start the lower bound of the range of doc projects
 	 * @param end the upper bound of the range of doc projects (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching doc projects
 	 */
 	@Override
-	public List<DocProject> findByU_S(boolean unlisted, int status, int start,
-		int end, OrderByComparator<DocProject> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+	public List<DocProject> findByU_S(
+		boolean unlisted, int status, int start, int end,
+		OrderByComparator<DocProject> orderByComparator,
+		boolean useFinderCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_S;
-			finderArgs = new Object[] { unlisted, status };
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByU_S;
+				finderArgs = new Object[] {unlisted, status};
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_U_S;
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByU_S;
 			finderArgs = new Object[] {
-					unlisted, status,
-					
-					start, end, orderByComparator
-				};
+				unlisted, status, start, end, orderByComparator
+			};
 		}
 
 		List<DocProject> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<DocProject>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<DocProject>)finderCache.getResult(
+				finderPath, finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (DocProject docProject : list) {
-					if ((unlisted != docProject.getUnlisted()) ||
-							(status != docProject.getStatus())) {
+					if ((unlisted != docProject.isUnlisted()) ||
+						(status != docProject.getStatus())) {
+
 						list = null;
 
 						break;
@@ -2063,67 +2041,60 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(4 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					4 + (orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				query = new StringBundler(4);
+				sb = new StringBundler(4);
 			}
 
-			query.append(_SQL_SELECT_DOCPROJECT_WHERE);
+			sb.append(_SQL_SELECT_DOCPROJECT_WHERE);
 
-			query.append(_FINDER_COLUMN_U_S_UNLISTED_2);
+			sb.append(_FINDER_COLUMN_U_S_UNLISTED_2);
 
-			query.append(_FINDER_COLUMN_U_S_STATUS_2);
+			sb.append(_FINDER_COLUMN_U_S_STATUS_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else
-			 if (pagination) {
-				query.append(DocProjectModelImpl.ORDER_BY_JPQL);
+			else {
+				sb.append(DocProjectModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(unlisted);
+				queryPos.add(unlisted);
 
-				qPos.add(status);
+				queryPos.add(status);
 
-				if (!pagination) {
-					list = (List<DocProject>)QueryUtil.list(q, getDialect(),
-							start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DocProject>)QueryUtil.list(q, getDialect(),
-							start, end);
-				}
+				list = (List<DocProject>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -2143,29 +2114,31 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * @throws NoSuchDocProjectException if a matching doc project could not be found
 	 */
 	@Override
-	public DocProject findByU_S_First(boolean unlisted, int status,
-		OrderByComparator<DocProject> orderByComparator)
+	public DocProject findByU_S_First(
+			boolean unlisted, int status,
+			OrderByComparator<DocProject> orderByComparator)
 		throws NoSuchDocProjectException {
-		DocProject docProject = fetchByU_S_First(unlisted, status,
-				orderByComparator);
+
+		DocProject docProject = fetchByU_S_First(
+			unlisted, status, orderByComparator);
 
 		if (docProject != null) {
 			return docProject;
 		}
 
-		StringBundler msg = new StringBundler(6);
+		StringBundler sb = new StringBundler(6);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("unlisted=");
-		msg.append(unlisted);
+		sb.append("unlisted=");
+		sb.append(unlisted);
 
-		msg.append(", status=");
-		msg.append(status);
+		sb.append(", status=");
+		sb.append(status);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		sb.append("}");
 
-		throw new NoSuchDocProjectException(msg.toString());
+		throw new NoSuchDocProjectException(sb.toString());
 	}
 
 	/**
@@ -2177,10 +2150,12 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * @return the first matching doc project, or <code>null</code> if a matching doc project could not be found
 	 */
 	@Override
-	public DocProject fetchByU_S_First(boolean unlisted, int status,
+	public DocProject fetchByU_S_First(
+		boolean unlisted, int status,
 		OrderByComparator<DocProject> orderByComparator) {
-		List<DocProject> list = findByU_S(unlisted, status, 0, 1,
-				orderByComparator);
+
+		List<DocProject> list = findByU_S(
+			unlisted, status, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -2199,29 +2174,31 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * @throws NoSuchDocProjectException if a matching doc project could not be found
 	 */
 	@Override
-	public DocProject findByU_S_Last(boolean unlisted, int status,
-		OrderByComparator<DocProject> orderByComparator)
+	public DocProject findByU_S_Last(
+			boolean unlisted, int status,
+			OrderByComparator<DocProject> orderByComparator)
 		throws NoSuchDocProjectException {
-		DocProject docProject = fetchByU_S_Last(unlisted, status,
-				orderByComparator);
+
+		DocProject docProject = fetchByU_S_Last(
+			unlisted, status, orderByComparator);
 
 		if (docProject != null) {
 			return docProject;
 		}
 
-		StringBundler msg = new StringBundler(6);
+		StringBundler sb = new StringBundler(6);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("unlisted=");
-		msg.append(unlisted);
+		sb.append("unlisted=");
+		sb.append(unlisted);
 
-		msg.append(", status=");
-		msg.append(status);
+		sb.append(", status=");
+		sb.append(status);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		sb.append("}");
 
-		throw new NoSuchDocProjectException(msg.toString());
+		throw new NoSuchDocProjectException(sb.toString());
 	}
 
 	/**
@@ -2233,16 +2210,18 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * @return the last matching doc project, or <code>null</code> if a matching doc project could not be found
 	 */
 	@Override
-	public DocProject fetchByU_S_Last(boolean unlisted, int status,
+	public DocProject fetchByU_S_Last(
+		boolean unlisted, int status,
 		OrderByComparator<DocProject> orderByComparator) {
+
 		int count = countByU_S(unlisted, status);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<DocProject> list = findByU_S(unlisted, status, count - 1, count,
-				orderByComparator);
+		List<DocProject> list = findByU_S(
+			unlisted, status, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -2262,10 +2241,11 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * @throws NoSuchDocProjectException if a doc project with the primary key could not be found
 	 */
 	@Override
-	public DocProject[] findByU_S_PrevAndNext(long docProjectId,
-		boolean unlisted, int status,
-		OrderByComparator<DocProject> orderByComparator)
+	public DocProject[] findByU_S_PrevAndNext(
+			long docProjectId, boolean unlisted, int status,
+			OrderByComparator<DocProject> orderByComparator)
 		throws NoSuchDocProjectException {
+
 		DocProject docProject = findByPrimaryKey(docProjectId);
 
 		Session session = null;
@@ -2275,125 +2255,128 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 
 			DocProject[] array = new DocProjectImpl[3];
 
-			array[0] = getByU_S_PrevAndNext(session, docProject, unlisted,
-					status, orderByComparator, true);
+			array[0] = getByU_S_PrevAndNext(
+				session, docProject, unlisted, status, orderByComparator, true);
 
 			array[1] = docProject;
 
-			array[2] = getByU_S_PrevAndNext(session, docProject, unlisted,
-					status, orderByComparator, false);
+			array[2] = getByU_S_PrevAndNext(
+				session, docProject, unlisted, status, orderByComparator,
+				false);
 
 			return array;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected DocProject getByU_S_PrevAndNext(Session session,
-		DocProject docProject, boolean unlisted, int status,
+	protected DocProject getByU_S_PrevAndNext(
+		Session session, DocProject docProject, boolean unlisted, int status,
 		OrderByComparator<DocProject> orderByComparator, boolean previous) {
-		StringBundler query = null;
+
+		StringBundler sb = null;
 
 		if (orderByComparator != null) {
-			query = new StringBundler(5 +
-					(orderByComparator.getOrderByConditionFields().length * 3) +
+			sb = new StringBundler(
+				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			query = new StringBundler(4);
+			sb = new StringBundler(4);
 		}
 
-		query.append(_SQL_SELECT_DOCPROJECT_WHERE);
+		sb.append(_SQL_SELECT_DOCPROJECT_WHERE);
 
-		query.append(_FINDER_COLUMN_U_S_UNLISTED_2);
+		sb.append(_FINDER_COLUMN_U_S_UNLISTED_2);
 
-		query.append(_FINDER_COLUMN_U_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_U_S_STATUS_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				query.append(WHERE_AND);
+				sb.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByConditionFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN);
+						sb.append(WHERE_GREATER_THAN);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN);
+						sb.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			query.append(ORDER_BY_CLAUSE);
+			sb.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC_HAS_NEXT);
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						query.append(ORDER_BY_DESC_HAS_NEXT);
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC);
+						sb.append(ORDER_BY_ASC);
 					}
 					else {
-						query.append(ORDER_BY_DESC);
+						sb.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			query.append(DocProjectModelImpl.ORDER_BY_JPQL);
+			sb.append(DocProjectModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
-		Query q = session.createQuery(sql);
+		Query query = session.createQuery(sql);
 
-		q.setFirstResult(0);
-		q.setMaxResults(2);
+		query.setFirstResult(0);
+		query.setMaxResults(2);
 
-		QueryPos qPos = QueryPos.getInstance(q);
+		QueryPos queryPos = QueryPos.getInstance(query);
 
-		qPos.add(unlisted);
+		queryPos.add(unlisted);
 
-		qPos.add(status);
+		queryPos.add(status);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(docProject);
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(docProject)) {
 
-			for (Object value : values) {
-				qPos.add(value);
+				queryPos.add(orderByConditionValue);
 			}
 		}
 
-		List<DocProject> list = q.list();
+		List<DocProject> list = query.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -2411,8 +2394,11 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 */
 	@Override
 	public void removeByU_S(boolean unlisted, int status) {
-		for (DocProject docProject : findByU_S(unlisted, status,
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+		for (DocProject docProject :
+				findByU_S(
+					unlisted, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+					null)) {
+
 			remove(docProject);
 		}
 	}
@@ -2426,44 +2412,44 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 */
 	@Override
 	public int countByU_S(boolean unlisted, int status) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_U_S;
+		FinderPath finderPath = _finderPathCountByU_S;
 
-		Object[] finderArgs = new Object[] { unlisted, status };
+		Object[] finderArgs = new Object[] {unlisted, status};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(3);
+			StringBundler sb = new StringBundler(3);
 
-			query.append(_SQL_COUNT_DOCPROJECT_WHERE);
+			sb.append(_SQL_COUNT_DOCPROJECT_WHERE);
 
-			query.append(_FINDER_COLUMN_U_S_UNLISTED_2);
+			sb.append(_FINDER_COLUMN_U_S_UNLISTED_2);
 
-			query.append(_FINDER_COLUMN_U_S_STATUS_2);
+			sb.append(_FINDER_COLUMN_U_S_STATUS_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(unlisted);
+				queryPos.add(unlisted);
 
-				qPos.add(status);
+				queryPos.add(status);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -2473,10 +2459,32 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_U_S_UNLISTED_2 = "docProject.unlisted = ? AND ";
-	private static final String _FINDER_COLUMN_U_S_STATUS_2 = "docProject.status = ?";
+	private static final String _FINDER_COLUMN_U_S_UNLISTED_2 =
+		"docProject.unlisted = ? AND ";
+
+	private static final String _FINDER_COLUMN_U_S_STATUS_2 =
+		"docProject.status = ?";
 
 	public DocProjectPersistenceImpl() {
+		Map<String, String> dbColumnNames = new HashMap<String, String>();
+
+		dbColumnNames.put("uuid", "uuid_");
+		dbColumnNames.put("type", "type_");
+
+		try {
+			Field field = BasePersistenceImpl.class.getDeclaredField(
+				"_dbColumnNames");
+
+			field.setAccessible(true);
+
+			field.set(this, dbColumnNames);
+		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(exception, exception);
+			}
+		}
+
 		setModelClass(DocProject.class);
 	}
 
@@ -2487,18 +2495,22 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 */
 	@Override
 	public void cacheResult(DocProject docProject) {
-		entityCache.putResult(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-			DocProjectImpl.class, docProject.getPrimaryKey(), docProject);
+		entityCache.putResult(
+			DocProjectModelImpl.ENTITY_CACHE_ENABLED, DocProjectImpl.class,
+			docProject.getPrimaryKey(), docProject);
 
-		finderCache.putResult(FINDER_PATH_FETCH_BY_UUID_G,
-			new Object[] { docProject.getUuid(), docProject.getGroupId() },
+		finderCache.putResult(
+			_finderPathFetchByUUID_G,
+			new Object[] {docProject.getUuid(), docProject.getGroupId()},
 			docProject);
 
-		finderCache.putResult(FINDER_PATH_FETCH_BY_GROUPID,
-			new Object[] { docProject.getGroupId() }, docProject);
+		finderCache.putResult(
+			_finderPathFetchByGroupId, new Object[] {docProject.getGroupId()},
+			docProject);
 
-		finderCache.putResult(FINDER_PATH_FETCH_BY_NAME,
-			new Object[] { docProject.getName() }, docProject);
+		finderCache.putResult(
+			_finderPathFetchByName, new Object[] {docProject.getName()},
+			docProject);
 
 		docProject.resetOriginalValues();
 	}
@@ -2512,8 +2524,9 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	public void cacheResult(List<DocProject> docProjects) {
 		for (DocProject docProject : docProjects) {
 			if (entityCache.getResult(
-						DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-						DocProjectImpl.class, docProject.getPrimaryKey()) == null) {
+					DocProjectModelImpl.ENTITY_CACHE_ENABLED,
+					DocProjectImpl.class, docProject.getPrimaryKey()) == null) {
+
 				cacheResult(docProject);
 			}
 			else {
@@ -2526,7 +2539,7 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * Clears the cache for all doc projects.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2542,13 +2555,14 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * Clears the cache for the doc project.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(DocProject docProject) {
-		entityCache.removeResult(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-			DocProjectImpl.class, docProject.getPrimaryKey());
+		entityCache.removeResult(
+			DocProjectModelImpl.ENTITY_CACHE_ENABLED, DocProjectImpl.class,
+			docProject.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2562,92 +2576,111 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (DocProject docProject : docProjects) {
-			entityCache.removeResult(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-				DocProjectImpl.class, docProject.getPrimaryKey());
+			entityCache.removeResult(
+				DocProjectModelImpl.ENTITY_CACHE_ENABLED, DocProjectImpl.class,
+				docProject.getPrimaryKey());
 
 			clearUniqueFindersCache((DocProjectModelImpl)docProject, true);
 		}
 	}
 
+	public void clearCache(Set<Serializable> primaryKeys) {
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (Serializable primaryKey : primaryKeys) {
+			entityCache.removeResult(
+				DocProjectModelImpl.ENTITY_CACHE_ENABLED, DocProjectImpl.class,
+				primaryKey);
+		}
+	}
+
 	protected void cacheUniqueFindersCache(
 		DocProjectModelImpl docProjectModelImpl) {
+
 		Object[] args = new Object[] {
-				docProjectModelImpl.getUuid(), docProjectModelImpl.getGroupId()
-			};
+			docProjectModelImpl.getUuid(), docProjectModelImpl.getGroupId()
+		};
 
-		finderCache.putResult(FINDER_PATH_COUNT_BY_UUID_G, args,
-			Long.valueOf(1), false);
-		finderCache.putResult(FINDER_PATH_FETCH_BY_UUID_G, args,
-			docProjectModelImpl, false);
+		finderCache.putResult(
+			_finderPathCountByUUID_G, args, Long.valueOf(1), false);
+		finderCache.putResult(
+			_finderPathFetchByUUID_G, args, docProjectModelImpl, false);
 
-		args = new Object[] { docProjectModelImpl.getGroupId() };
+		args = new Object[] {docProjectModelImpl.getGroupId()};
 
-		finderCache.putResult(FINDER_PATH_COUNT_BY_GROUPID, args,
-			Long.valueOf(1), false);
-		finderCache.putResult(FINDER_PATH_FETCH_BY_GROUPID, args,
-			docProjectModelImpl, false);
+		finderCache.putResult(
+			_finderPathCountByGroupId, args, Long.valueOf(1), false);
+		finderCache.putResult(
+			_finderPathFetchByGroupId, args, docProjectModelImpl, false);
 
-		args = new Object[] { docProjectModelImpl.getName() };
+		args = new Object[] {docProjectModelImpl.getName()};
 
-		finderCache.putResult(FINDER_PATH_COUNT_BY_NAME, args, Long.valueOf(1),
-			false);
-		finderCache.putResult(FINDER_PATH_FETCH_BY_NAME, args,
-			docProjectModelImpl, false);
+		finderCache.putResult(
+			_finderPathCountByName, args, Long.valueOf(1), false);
+		finderCache.putResult(
+			_finderPathFetchByName, args, docProjectModelImpl, false);
 	}
 
 	protected void clearUniqueFindersCache(
 		DocProjectModelImpl docProjectModelImpl, boolean clearCurrent) {
+
 		if (clearCurrent) {
 			Object[] args = new Object[] {
-					docProjectModelImpl.getUuid(),
-					docProjectModelImpl.getGroupId()
-				};
+				docProjectModelImpl.getUuid(), docProjectModelImpl.getGroupId()
+			};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID_G, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_UUID_G, args);
+			finderCache.removeResult(_finderPathCountByUUID_G, args);
+			finderCache.removeResult(_finderPathFetchByUUID_G, args);
 		}
 
 		if ((docProjectModelImpl.getColumnBitmask() &
-				FINDER_PATH_FETCH_BY_UUID_G.getColumnBitmask()) != 0) {
-			Object[] args = new Object[] {
-					docProjectModelImpl.getOriginalUuid(),
-					docProjectModelImpl.getOriginalGroupId()
-				};
+			 _finderPathFetchByUUID_G.getColumnBitmask()) != 0) {
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID_G, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_UUID_G, args);
+			Object[] args = new Object[] {
+				docProjectModelImpl.getOriginalUuid(),
+				docProjectModelImpl.getOriginalGroupId()
+			};
+
+			finderCache.removeResult(_finderPathCountByUUID_G, args);
+			finderCache.removeResult(_finderPathFetchByUUID_G, args);
 		}
 
 		if (clearCurrent) {
-			Object[] args = new Object[] { docProjectModelImpl.getGroupId() };
+			Object[] args = new Object[] {docProjectModelImpl.getGroupId()};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_GROUPID, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_GROUPID, args);
+			finderCache.removeResult(_finderPathCountByGroupId, args);
+			finderCache.removeResult(_finderPathFetchByGroupId, args);
 		}
 
 		if ((docProjectModelImpl.getColumnBitmask() &
-				FINDER_PATH_FETCH_BY_GROUPID.getColumnBitmask()) != 0) {
-			Object[] args = new Object[] {
-					docProjectModelImpl.getOriginalGroupId()
-				};
+			 _finderPathFetchByGroupId.getColumnBitmask()) != 0) {
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_GROUPID, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_GROUPID, args);
+			Object[] args = new Object[] {
+				docProjectModelImpl.getOriginalGroupId()
+			};
+
+			finderCache.removeResult(_finderPathCountByGroupId, args);
+			finderCache.removeResult(_finderPathFetchByGroupId, args);
 		}
 
 		if (clearCurrent) {
-			Object[] args = new Object[] { docProjectModelImpl.getName() };
+			Object[] args = new Object[] {docProjectModelImpl.getName()};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_NAME, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_NAME, args);
+			finderCache.removeResult(_finderPathCountByName, args);
+			finderCache.removeResult(_finderPathFetchByName, args);
 		}
 
 		if ((docProjectModelImpl.getColumnBitmask() &
-				FINDER_PATH_FETCH_BY_NAME.getColumnBitmask()) != 0) {
-			Object[] args = new Object[] { docProjectModelImpl.getOriginalName() };
+			 _finderPathFetchByName.getColumnBitmask()) != 0) {
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_NAME, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_NAME, args);
+			Object[] args = new Object[] {
+				docProjectModelImpl.getOriginalName()
+			};
+
+			finderCache.removeResult(_finderPathCountByName, args);
+			finderCache.removeResult(_finderPathFetchByName, args);
 		}
 	}
 
@@ -2668,7 +2701,7 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 
 		docProject.setUuid(uuid);
 
-		docProject.setCompanyId(companyProvider.getCompanyId());
+		docProject.setCompanyId(CompanyThreadLocal.getCompanyId());
 
 		return docProject;
 	}
@@ -2683,6 +2716,7 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	@Override
 	public DocProject remove(long docProjectId)
 		throws NoSuchDocProjectException {
+
 		return remove((Serializable)docProjectId);
 	}
 
@@ -2696,30 +2730,31 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	@Override
 	public DocProject remove(Serializable primaryKey)
 		throws NoSuchDocProjectException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			DocProject docProject = (DocProject)session.get(DocProjectImpl.class,
-					primaryKey);
+			DocProject docProject = (DocProject)session.get(
+				DocProjectImpl.class, primaryKey);
 
 			if (docProject == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchDocProjectException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchDocProjectException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(docProject);
 		}
-		catch (NoSuchDocProjectException nsee) {
-			throw nsee;
+		catch (NoSuchDocProjectException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -2728,24 +2763,22 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 
 	@Override
 	protected DocProject removeImpl(DocProject docProject) {
-		docProject = toUnwrappedModel(docProject);
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(docProject)) {
-				docProject = (DocProject)session.get(DocProjectImpl.class,
-						docProject.getPrimaryKeyObj());
+				docProject = (DocProject)session.get(
+					DocProjectImpl.class, docProject.getPrimaryKeyObj());
 			}
 
 			if (docProject != null) {
 				session.delete(docProject);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -2760,11 +2793,26 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 
 	@Override
 	public DocProject updateImpl(DocProject docProject) {
-		docProject = toUnwrappedModel(docProject);
-
 		boolean isNew = docProject.isNew();
 
-		DocProjectModelImpl docProjectModelImpl = (DocProjectModelImpl)docProject;
+		if (!(docProject instanceof DocProjectModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(docProject.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(docProject);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in docProject proxy " +
+						invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom DocProject implementation " +
+					docProject.getClass());
+		}
+
+		DocProjectModelImpl docProjectModelImpl =
+			(DocProjectModelImpl)docProject;
 
 		if (Validator.isNull(docProject.getUuid())) {
 			String uuid = PortalUUIDUtil.generate();
@@ -2772,7 +2820,8 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 			docProject.setUuid(uuid);
 		}
 
-		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -2808,8 +2857,8 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 				docProject = (DocProject)session.merge(docProject);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -2820,100 +2869,105 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 		if (!DocProjectModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else
-		 if (isNew) {
-			Object[] args = new Object[] { docProjectModelImpl.getUuid() };
+		else if (isNew) {
+			Object[] args = new Object[] {docProjectModelImpl.getUuid()};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID, args);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID,
-				args);
+			finderCache.removeResult(_finderPathCountByUuid, args);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindByUuid, args);
 
 			args = new Object[] {
+				docProjectModelImpl.getUuid(),
+				docProjectModelImpl.getCompanyId()
+			};
+
+			finderCache.removeResult(_finderPathCountByUuid_C, args);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindByUuid_C, args);
+
+			args = new Object[] {
+				docProjectModelImpl.isUnlisted(),
+				docProjectModelImpl.getStatus()
+			};
+
+			finderCache.removeResult(_finderPathCountByU_S, args);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindByU_S, args);
+
+			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+		}
+		else {
+			if ((docProjectModelImpl.getColumnBitmask() &
+				 _finderPathWithoutPaginationFindByUuid.getColumnBitmask()) !=
+					 0) {
+
+				Object[] args = new Object[] {
+					docProjectModelImpl.getOriginalUuid()
+				};
+
+				finderCache.removeResult(_finderPathCountByUuid, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByUuid, args);
+
+				args = new Object[] {docProjectModelImpl.getUuid()};
+
+				finderCache.removeResult(_finderPathCountByUuid, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByUuid, args);
+			}
+
+			if ((docProjectModelImpl.getColumnBitmask() &
+				 _finderPathWithoutPaginationFindByUuid_C.getColumnBitmask()) !=
+					 0) {
+
+				Object[] args = new Object[] {
+					docProjectModelImpl.getOriginalUuid(),
+					docProjectModelImpl.getOriginalCompanyId()
+				};
+
+				finderCache.removeResult(_finderPathCountByUuid_C, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByUuid_C, args);
+
+				args = new Object[] {
 					docProjectModelImpl.getUuid(),
 					docProjectModelImpl.getCompanyId()
 				};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID_C, args);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID_C,
-				args);
+				finderCache.removeResult(_finderPathCountByUuid_C, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByUuid_C, args);
+			}
 
-			args = new Object[] {
-					docProjectModelImpl.getUnlisted(),
+			if ((docProjectModelImpl.getColumnBitmask() &
+				 _finderPathWithoutPaginationFindByU_S.getColumnBitmask()) !=
+					 0) {
+
+				Object[] args = new Object[] {
+					docProjectModelImpl.getOriginalUnlisted(),
+					docProjectModelImpl.getOriginalStatus()
+				};
+
+				finderCache.removeResult(_finderPathCountByU_S, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByU_S, args);
+
+				args = new Object[] {
+					docProjectModelImpl.isUnlisted(),
 					docProjectModelImpl.getStatus()
 				};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_U_S, args);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_S,
-				args);
-
-			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
-				FINDER_ARGS_EMPTY);
-		}
-
-		else {
-			if ((docProjectModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] {
-						docProjectModelImpl.getOriginalUuid()
-					};
-
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID,
-					args);
-
-				args = new Object[] { docProjectModelImpl.getUuid() };
-
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID,
-					args);
-			}
-
-			if ((docProjectModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID_C.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] {
-						docProjectModelImpl.getOriginalUuid(),
-						docProjectModelImpl.getOriginalCompanyId()
-					};
-
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID_C, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID_C,
-					args);
-
-				args = new Object[] {
-						docProjectModelImpl.getUuid(),
-						docProjectModelImpl.getCompanyId()
-					};
-
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID_C, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID_C,
-					args);
-			}
-
-			if ((docProjectModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_S.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] {
-						docProjectModelImpl.getOriginalUnlisted(),
-						docProjectModelImpl.getOriginalStatus()
-					};
-
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_U_S, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_S,
-					args);
-
-				args = new Object[] {
-						docProjectModelImpl.getUnlisted(),
-						docProjectModelImpl.getStatus()
-					};
-
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_U_S, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_S,
-					args);
+				finderCache.removeResult(_finderPathCountByU_S, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByU_S, args);
 			}
 		}
 
-		entityCache.putResult(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-			DocProjectImpl.class, docProject.getPrimaryKey(), docProject, false);
+		entityCache.putResult(
+			DocProjectModelImpl.ENTITY_CACHE_ENABLED, DocProjectImpl.class,
+			docProject.getPrimaryKey(), docProject, false);
 
 		clearUniqueFindersCache(docProjectModelImpl, false);
 		cacheUniqueFindersCache(docProjectModelImpl);
@@ -2923,37 +2977,8 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 		return docProject;
 	}
 
-	protected DocProject toUnwrappedModel(DocProject docProject) {
-		if (docProject instanceof DocProjectImpl) {
-			return docProject;
-		}
-
-		DocProjectImpl docProjectImpl = new DocProjectImpl();
-
-		docProjectImpl.setNew(docProject.isNew());
-		docProjectImpl.setPrimaryKey(docProject.getPrimaryKey());
-
-		docProjectImpl.setUuid(docProject.getUuid());
-		docProjectImpl.setDocProjectId(docProject.getDocProjectId());
-		docProjectImpl.setGroupId(docProject.getGroupId());
-		docProjectImpl.setCompanyId(docProject.getCompanyId());
-		docProjectImpl.setUserId(docProject.getUserId());
-		docProjectImpl.setUserName(docProject.getUserName());
-		docProjectImpl.setCreateDate(docProject.getCreateDate());
-		docProjectImpl.setModifiedDate(docProject.getModifiedDate());
-		docProjectImpl.setName(docProject.getName());
-		docProjectImpl.setDescription(docProject.getDescription());
-		docProjectImpl.setIconFileName(docProject.getIconFileName());
-		docProjectImpl.setUnlisted(docProject.isUnlisted());
-		docProjectImpl.setType(docProject.getType());
-		docProjectImpl.setTypeSettings(docProject.getTypeSettings());
-		docProjectImpl.setStatus(docProject.getStatus());
-
-		return docProjectImpl;
-	}
-
 	/**
-	 * Returns the doc project with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the doc project with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the doc project
 	 * @return the doc project
@@ -2962,6 +2987,7 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	@Override
 	public DocProject findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchDocProjectException {
+
 		DocProject docProject = fetchByPrimaryKey(primaryKey);
 
 		if (docProject == null) {
@@ -2969,15 +2995,15 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchDocProjectException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchDocProjectException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return docProject;
 	}
 
 	/**
-	 * Returns the doc project with the primary key or throws a {@link NoSuchDocProjectException} if it could not be found.
+	 * Returns the doc project with the primary key or throws a <code>NoSuchDocProjectException</code> if it could not be found.
 	 *
 	 * @param docProjectId the primary key of the doc project
 	 * @return the doc project
@@ -2986,6 +3012,7 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	@Override
 	public DocProject findByPrimaryKey(long docProjectId)
 		throws NoSuchDocProjectException {
+
 		return findByPrimaryKey((Serializable)docProjectId);
 	}
 
@@ -2997,8 +3024,9 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 */
 	@Override
 	public DocProject fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-				DocProjectImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			DocProjectModelImpl.ENTITY_CACHE_ENABLED, DocProjectImpl.class,
+			primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -3012,22 +3040,24 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 			try {
 				session = openSession();
 
-				docProject = (DocProject)session.get(DocProjectImpl.class,
-						primaryKey);
+				docProject = (DocProject)session.get(
+					DocProjectImpl.class, primaryKey);
 
 				if (docProject != null) {
 					cacheResult(docProject);
 				}
 				else {
-					entityCache.putResult(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						DocProjectModelImpl.ENTITY_CACHE_ENABLED,
 						DocProjectImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
-				entityCache.removeResult(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception exception) {
+				entityCache.removeResult(
+					DocProjectModelImpl.ENTITY_CACHE_ENABLED,
 					DocProjectImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -3051,11 +3081,13 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	@Override
 	public Map<Serializable, DocProject> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, DocProject> map = new HashMap<Serializable, DocProject>();
+		Map<Serializable, DocProject> map =
+			new HashMap<Serializable, DocProject>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -3074,8 +3106,9 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
-					DocProjectImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				DocProjectModelImpl.ENTITY_CACHE_ENABLED, DocProjectImpl.class,
+				primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -3095,31 +3128,31 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler sb = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
-		query.append(_SQL_SELECT_DOCPROJECT_WHERE_PKS_IN);
+		sb.append(_SQL_SELECT_DOCPROJECT_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append((long)primaryKey);
+			sb.append((long)primaryKey);
 
-			query.append(StringPool.COMMA);
+			sb.append(",");
 		}
 
-		query.setIndex(query.index() - 1);
+		sb.setIndex(sb.index() - 1);
 
-		query.append(StringPool.CLOSE_PARENTHESIS);
+		sb.append(")");
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query q = session.createQuery(sql);
+			Query query = session.createQuery(sql);
 
-			for (DocProject docProject : (List<DocProject>)q.list()) {
+			for (DocProject docProject : (List<DocProject>)query.list()) {
 				map.put(docProject.getPrimaryKeyObj(), docProject);
 
 				cacheResult(docProject);
@@ -3128,12 +3161,13 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(DocProjectModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					DocProjectModelImpl.ENTITY_CACHE_ENABLED,
 					DocProjectImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -3156,7 +3190,7 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * Returns a range of all the doc projects.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DocProjectModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DocProjectModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of doc projects
@@ -3172,7 +3206,7 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * Returns an ordered range of all the doc projects.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DocProjectModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DocProjectModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of doc projects
@@ -3181,8 +3215,9 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * @return the ordered range of doc projects
 	 */
 	@Override
-	public List<DocProject> findAll(int start, int end,
-		OrderByComparator<DocProject> orderByComparator) {
+	public List<DocProject> findAll(
+		int start, int end, OrderByComparator<DocProject> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -3190,62 +3225,62 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * Returns an ordered range of all the doc projects.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DocProjectModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DocProjectModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of doc projects
 	 * @param end the upper bound of the range of doc projects (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of doc projects
 	 */
 	@Override
-	public List<DocProject> findAll(int start, int end,
-		OrderByComparator<DocProject> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+	public List<DocProject> findAll(
+		int start, int end, OrderByComparator<DocProject> orderByComparator,
+		boolean useFinderCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-			finderArgs = FINDER_ARGS_EMPTY;
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-			finderArgs = new Object[] { start, end, orderByComparator };
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindAll;
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<DocProject> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<DocProject>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<DocProject>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
-				query.append(_SQL_SELECT_DOCPROJECT);
+				sb.append(_SQL_SELECT_DOCPROJECT);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
-				sql = query.toString();
+				sql = sb.toString();
 			}
 			else {
 				sql = _SQL_SELECT_DOCPROJECT;
 
-				if (pagination) {
-					sql = sql.concat(DocProjectModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(DocProjectModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -3253,29 +3288,23 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<DocProject>)QueryUtil.list(q, getDialect(),
-							start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DocProject>)QueryUtil.list(q, getDialect(),
-							start, end);
-				}
+				list = (List<DocProject>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -3303,8 +3332,8 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -3312,18 +3341,18 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(_SQL_COUNT_DOCPROJECT);
+				Query query = session.createQuery(_SQL_COUNT_DOCPROJECT);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
-					FINDER_ARGS_EMPTY);
+			catch (Exception exception) {
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -3347,6 +3376,135 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 	 * Initializes the doc project persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(
+			DocProjectModelImpl.ENTITY_CACHE_ENABLED,
+			DocProjectModelImpl.FINDER_CACHE_ENABLED, DocProjectImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			DocProjectModelImpl.ENTITY_CACHE_ENABLED,
+			DocProjectModelImpl.FINDER_CACHE_ENABLED, DocProjectImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+			new String[0]);
+
+		_finderPathCountAll = new FinderPath(
+			DocProjectModelImpl.ENTITY_CACHE_ENABLED,
+			DocProjectModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByUuid = new FinderPath(
+			DocProjectModelImpl.ENTITY_CACHE_ENABLED,
+			DocProjectModelImpl.FINDER_CACHE_ENABLED, DocProjectImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
+			new String[] {
+				String.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			});
+
+		_finderPathWithoutPaginationFindByUuid = new FinderPath(
+			DocProjectModelImpl.ENTITY_CACHE_ENABLED,
+			DocProjectModelImpl.FINDER_CACHE_ENABLED, DocProjectImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
+			new String[] {String.class.getName()},
+			DocProjectModelImpl.UUID_COLUMN_BITMASK |
+			DocProjectModelImpl.NAME_COLUMN_BITMASK);
+
+		_finderPathCountByUuid = new FinderPath(
+			DocProjectModelImpl.ENTITY_CACHE_ENABLED,
+			DocProjectModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
+			new String[] {String.class.getName()});
+
+		_finderPathFetchByUUID_G = new FinderPath(
+			DocProjectModelImpl.ENTITY_CACHE_ENABLED,
+			DocProjectModelImpl.FINDER_CACHE_ENABLED, DocProjectImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
+			new String[] {String.class.getName(), Long.class.getName()},
+			DocProjectModelImpl.UUID_COLUMN_BITMASK |
+			DocProjectModelImpl.GROUPID_COLUMN_BITMASK);
+
+		_finderPathCountByUUID_G = new FinderPath(
+			DocProjectModelImpl.ENTITY_CACHE_ENABLED,
+			DocProjectModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G",
+			new String[] {String.class.getName(), Long.class.getName()});
+
+		_finderPathWithPaginationFindByUuid_C = new FinderPath(
+			DocProjectModelImpl.ENTITY_CACHE_ENABLED,
+			DocProjectModelImpl.FINDER_CACHE_ENABLED, DocProjectImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
+			new String[] {
+				String.class.getName(), Long.class.getName(),
+				Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+
+		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
+			DocProjectModelImpl.ENTITY_CACHE_ENABLED,
+			DocProjectModelImpl.FINDER_CACHE_ENABLED, DocProjectImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
+			new String[] {String.class.getName(), Long.class.getName()},
+			DocProjectModelImpl.UUID_COLUMN_BITMASK |
+			DocProjectModelImpl.COMPANYID_COLUMN_BITMASK |
+			DocProjectModelImpl.NAME_COLUMN_BITMASK);
+
+		_finderPathCountByUuid_C = new FinderPath(
+			DocProjectModelImpl.ENTITY_CACHE_ENABLED,
+			DocProjectModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
+			new String[] {String.class.getName(), Long.class.getName()});
+
+		_finderPathFetchByGroupId = new FinderPath(
+			DocProjectModelImpl.ENTITY_CACHE_ENABLED,
+			DocProjectModelImpl.FINDER_CACHE_ENABLED, DocProjectImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchByGroupId",
+			new String[] {Long.class.getName()},
+			DocProjectModelImpl.GROUPID_COLUMN_BITMASK);
+
+		_finderPathCountByGroupId = new FinderPath(
+			DocProjectModelImpl.ENTITY_CACHE_ENABLED,
+			DocProjectModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
+			new String[] {Long.class.getName()});
+
+		_finderPathFetchByName = new FinderPath(
+			DocProjectModelImpl.ENTITY_CACHE_ENABLED,
+			DocProjectModelImpl.FINDER_CACHE_ENABLED, DocProjectImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchByName",
+			new String[] {String.class.getName()},
+			DocProjectModelImpl.NAME_COLUMN_BITMASK);
+
+		_finderPathCountByName = new FinderPath(
+			DocProjectModelImpl.ENTITY_CACHE_ENABLED,
+			DocProjectModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByName",
+			new String[] {String.class.getName()});
+
+		_finderPathWithPaginationFindByU_S = new FinderPath(
+			DocProjectModelImpl.ENTITY_CACHE_ENABLED,
+			DocProjectModelImpl.FINDER_CACHE_ENABLED, DocProjectImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByU_S",
+			new String[] {
+				Boolean.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+
+		_finderPathWithoutPaginationFindByU_S = new FinderPath(
+			DocProjectModelImpl.ENTITY_CACHE_ENABLED,
+			DocProjectModelImpl.FINDER_CACHE_ENABLED, DocProjectImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByU_S",
+			new String[] {Boolean.class.getName(), Integer.class.getName()},
+			DocProjectModelImpl.UNLISTED_COLUMN_BITMASK |
+			DocProjectModelImpl.STATUS_COLUMN_BITMASK |
+			DocProjectModelImpl.NAME_COLUMN_BITMASK);
+
+		_finderPathCountByU_S = new FinderPath(
+			DocProjectModelImpl.ENTITY_CACHE_ENABLED,
+			DocProjectModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_S",
+			new String[] {Boolean.class.getName(), Integer.class.getName()});
 	}
 
 	public void destroy() {
@@ -3356,22 +3514,39 @@ public class DocProjectPersistenceImpl extends BasePersistenceImpl<DocProject>
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@ServiceReference(type = CompanyProviderWrapper.class)
-	protected CompanyProvider companyProvider;
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_DOCPROJECT = "SELECT docProject FROM DocProject docProject";
-	private static final String _SQL_SELECT_DOCPROJECT_WHERE_PKS_IN = "SELECT docProject FROM DocProject docProject WHERE docProjectId IN (";
-	private static final String _SQL_SELECT_DOCPROJECT_WHERE = "SELECT docProject FROM DocProject docProject WHERE ";
-	private static final String _SQL_COUNT_DOCPROJECT = "SELECT COUNT(docProject) FROM DocProject docProject";
-	private static final String _SQL_COUNT_DOCPROJECT_WHERE = "SELECT COUNT(docProject) FROM DocProject docProject WHERE ";
+
+	private static final String _SQL_SELECT_DOCPROJECT =
+		"SELECT docProject FROM DocProject docProject";
+
+	private static final String _SQL_SELECT_DOCPROJECT_WHERE_PKS_IN =
+		"SELECT docProject FROM DocProject docProject WHERE docProjectId IN (";
+
+	private static final String _SQL_SELECT_DOCPROJECT_WHERE =
+		"SELECT docProject FROM DocProject docProject WHERE ";
+
+	private static final String _SQL_COUNT_DOCPROJECT =
+		"SELECT COUNT(docProject) FROM DocProject docProject";
+
+	private static final String _SQL_COUNT_DOCPROJECT_WHERE =
+		"SELECT COUNT(docProject) FROM DocProject docProject WHERE ";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "docProject.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No DocProject exists with the primary key ";
-	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No DocProject exists with the key {";
-	private static final Log _log = LogFactoryUtil.getLog(DocProjectPersistenceImpl.class);
-	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"uuid", "type"
-			});
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No DocProject exists with the primary key ";
+
+	private static final String _NO_SUCH_ENTITY_WITH_KEY =
+		"No DocProject exists with the key {";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		DocProjectPersistenceImpl.class);
+
+	private static final Set<String> _badColumnNames = SetUtil.fromArray(
+		new String[] {"uuid", "type"});
+
 }

@@ -14,14 +14,10 @@
 
 package com.liferay.mobile.device.rules.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.mobile.device.rules.model.MDRAction;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing MDRAction in entity cache.
  *
  * @author Edward C. Han
- * @see MDRAction
  * @generated
  */
-@ProviderType
-public class MDRActionCacheModel implements CacheModel<MDRAction>,
-	Externalizable {
+public class MDRActionCacheModel
+	implements CacheModel<MDRAction>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -110,7 +105,7 @@ public class MDRActionCacheModel implements CacheModel<MDRAction>,
 		MDRActionImpl mdrActionImpl = new MDRActionImpl();
 
 		if (uuid == null) {
-			mdrActionImpl.setUuid(StringPool.BLANK);
+			mdrActionImpl.setUuid("");
 		}
 		else {
 			mdrActionImpl.setUuid(uuid);
@@ -122,7 +117,7 @@ public class MDRActionCacheModel implements CacheModel<MDRAction>,
 		mdrActionImpl.setUserId(userId);
 
 		if (userName == null) {
-			mdrActionImpl.setUserName(StringPool.BLANK);
+			mdrActionImpl.setUserName("");
 		}
 		else {
 			mdrActionImpl.setUserName(userName);
@@ -147,28 +142,28 @@ public class MDRActionCacheModel implements CacheModel<MDRAction>,
 		mdrActionImpl.setRuleGroupInstanceId(ruleGroupInstanceId);
 
 		if (name == null) {
-			mdrActionImpl.setName(StringPool.BLANK);
+			mdrActionImpl.setName("");
 		}
 		else {
 			mdrActionImpl.setName(name);
 		}
 
 		if (description == null) {
-			mdrActionImpl.setDescription(StringPool.BLANK);
+			mdrActionImpl.setDescription("");
 		}
 		else {
 			mdrActionImpl.setDescription(description);
 		}
 
 		if (type == null) {
-			mdrActionImpl.setType(StringPool.BLANK);
+			mdrActionImpl.setType("");
 		}
 		else {
 			mdrActionImpl.setType(type);
 		}
 
 		if (typeSettings == null) {
-			mdrActionImpl.setTypeSettings(StringPool.BLANK);
+			mdrActionImpl.setTypeSettings("");
 		}
 		else {
 			mdrActionImpl.setTypeSettings(typeSettings);
@@ -187,7 +182,9 @@ public class MDRActionCacheModel implements CacheModel<MDRAction>,
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		uuid = objectInput.readUTF();
 
 		actionId = objectInput.readLong();
@@ -209,15 +206,14 @@ public class MDRActionCacheModel implements CacheModel<MDRAction>,
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
 		type = objectInput.readUTF();
-		typeSettings = objectInput.readUTF();
+		typeSettings = (String)objectInput.readObject();
 		lastPublishDate = objectInput.readLong();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -232,7 +228,7 @@ public class MDRActionCacheModel implements CacheModel<MDRAction>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -248,31 +244,31 @@ public class MDRActionCacheModel implements CacheModel<MDRAction>,
 		objectOutput.writeLong(ruleGroupInstanceId);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (type == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(type);
 		}
 
 		if (typeSettings == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(typeSettings);
+			objectOutput.writeObject(typeSettings);
 		}
 
 		objectOutput.writeLong(lastPublishDate);
@@ -294,4 +290,5 @@ public class MDRActionCacheModel implements CacheModel<MDRAction>,
 	public String type;
 	public String typeSettings;
 	public long lastPublishDate;
+
 }

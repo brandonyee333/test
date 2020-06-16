@@ -25,19 +25,22 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see MBMessageModel
- * @see com.liferay.portlet.messageboards.model.impl.MBMessageImpl
- * @see com.liferay.portlet.messageboards.model.impl.MBMessageModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.portlet.messageboards.model.impl.MBMessageImpl")
+@ImplementationClassName(
+	"com.liferay.portlet.messageboards.model.impl.MBMessageImpl"
+)
 @ProviderType
 public interface MBMessage extends MBMessageModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.portlet.messageboards.model.impl.MBMessageImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.portlet.messageboards.model.impl.MBMessageImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<MBMessage, Long> MESSAGE_ID_ACCESSOR = new Accessor<MBMessage, Long>() {
+	public static final Accessor<MBMessage, Long> MESSAGE_ID_ACCESSOR =
+		new Accessor<MBMessage, Long>() {
+
 			@Override
 			public Long get(MBMessage mbMessage) {
 				return mbMessage.getMessageId();
@@ -52,18 +55,21 @@ public interface MBMessage extends MBMessageModel, PersistedModel {
 			public Class<MBMessage> getTypeClass() {
 				return MBMessage.class;
 			}
+
 		};
 
-	public com.liferay.portal.kernel.repository.model.Folder addAttachmentsFolder()
+	public com.liferay.portal.kernel.repository.model.Folder
+			addAttachmentsFolder()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.lang.String[] getAssetTagNames();
+	public String[] getAssetTagNames();
 
-	public java.util.List<com.liferay.portal.kernel.repository.model.FileEntry> getAttachmentsFileEntries()
+	public java.util.List<com.liferay.portal.kernel.repository.model.FileEntry>
+			getAttachmentsFileEntries()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.util.List<com.liferay.portal.kernel.repository.model.FileEntry> getAttachmentsFileEntries(
-		int start, int end)
+	public java.util.List<com.liferay.portal.kernel.repository.model.FileEntry>
+			getAttachmentsFileEntries(int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public int getAttachmentsFileEntriesCount()
@@ -72,16 +78,17 @@ public interface MBMessage extends MBMessageModel, PersistedModel {
 	public long getAttachmentsFolderId()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.lang.String getBody(boolean translate);
+	public String getBody(boolean translate);
 
 	public MBCategory getCategory()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.util.List<com.liferay.portal.kernel.repository.model.FileEntry> getDeletedAttachmentsFileEntries()
+	public java.util.List<com.liferay.portal.kernel.repository.model.FileEntry>
+			getDeletedAttachmentsFileEntries()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.util.List<com.liferay.portal.kernel.repository.model.FileEntry> getDeletedAttachmentsFileEntries(
-		int start, int end)
+	public java.util.List<com.liferay.portal.kernel.repository.model.FileEntry>
+			getDeletedAttachmentsFileEntries(int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public int getDeletedAttachmentsFileEntriesCount()
@@ -93,7 +100,7 @@ public interface MBMessage extends MBMessageModel, PersistedModel {
 	public long getThreadAttachmentsFolderId()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.lang.String getWorkflowClassName();
+	public String getWorkflowClassName();
 
 	public boolean isDiscussion();
 
@@ -104,4 +111,5 @@ public interface MBMessage extends MBMessageModel, PersistedModel {
 	public boolean isRoot();
 
 	public void setAttachmentsFolderId(long attachmentsFolderId);
+
 }

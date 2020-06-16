@@ -1,27 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.testray.model.TestrayTeam;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing TestrayTeam in entity cache.
  *
  * @author Ethan Bustad
- * @see TestrayTeam
  * @generated
  */
-@ProviderType
-public class TestrayTeamCacheModel implements CacheModel<TestrayTeam>,
-	Externalizable {
+public class TestrayTeamCacheModel
+	implements CacheModel<TestrayTeam>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,7 +45,8 @@ public class TestrayTeamCacheModel implements CacheModel<TestrayTeam>,
 			return false;
 		}
 
-		TestrayTeamCacheModel testrayTeamCacheModel = (TestrayTeamCacheModel)obj;
+		TestrayTeamCacheModel testrayTeamCacheModel =
+			(TestrayTeamCacheModel)obj;
 
 		if (testrayTeamId == testrayTeamCacheModel.testrayTeamId) {
 			return true;
@@ -101,7 +97,7 @@ public class TestrayTeamCacheModel implements CacheModel<TestrayTeam>,
 		testrayTeamImpl.setUserId(userId);
 
 		if (userName == null) {
-			testrayTeamImpl.setUserName(StringPool.BLANK);
+			testrayTeamImpl.setUserName("");
 		}
 		else {
 			testrayTeamImpl.setUserName(userName);
@@ -124,7 +120,7 @@ public class TestrayTeamCacheModel implements CacheModel<TestrayTeam>,
 		testrayTeamImpl.setTestrayProjectId(testrayProjectId);
 
 		if (name == null) {
-			testrayTeamImpl.setName(StringPool.BLANK);
+			testrayTeamImpl.setName("");
 		}
 		else {
 			testrayTeamImpl.setName(name);
@@ -153,8 +149,7 @@ public class TestrayTeamCacheModel implements CacheModel<TestrayTeam>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(testrayTeamId);
 
 		objectOutput.writeLong(groupId);
@@ -164,7 +159,7 @@ public class TestrayTeamCacheModel implements CacheModel<TestrayTeam>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -176,7 +171,7 @@ public class TestrayTeamCacheModel implements CacheModel<TestrayTeam>,
 		objectOutput.writeLong(testrayProjectId);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
@@ -192,4 +187,5 @@ public class TestrayTeamCacheModel implements CacheModel<TestrayTeam>,
 	public long modifiedDate;
 	public long testrayProjectId;
 	public String name;
+
 }

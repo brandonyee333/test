@@ -14,8 +14,6 @@
 
 package com.liferay.contacts.service;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -25,29 +23,30 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see EntryService
  * @generated
  */
-@ProviderType
-public class EntryServiceWrapper implements EntryService,
-	ServiceWrapper<EntryService> {
+public class EntryServiceWrapper
+	implements EntryService, ServiceWrapper<EntryService> {
+
 	public EntryServiceWrapper(EntryService entryService) {
 		_entryService = entryService;
 	}
 
+	/**
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
 	@Override
-	public com.liferay.portal.kernel.json.JSONArray searchUsersAndContacts(
-		long companyId, java.lang.String keywords, int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _entryService.searchUsersAndContacts(companyId, keywords, start,
-			end);
+	public String getOSGiServiceIdentifier() {
+		return _entryService.getOSGiServiceIdentifier();
 	}
 
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _entryService.getOSGiServiceIdentifier();
+	public com.liferay.portal.kernel.json.JSONArray searchUsersAndContacts(
+			long companyId, String keywords, int start, int end)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _entryService.searchUsersAndContacts(
+			companyId, keywords, start, end);
 	}
 
 	@Override
@@ -61,4 +60,5 @@ public class EntryServiceWrapper implements EntryService,
 	}
 
 	private EntryService _entryService;
+
 }

@@ -14,8 +14,6 @@
 
 package com.liferay.trash.kernel.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,11 +24,10 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.portlet.trash.service.http.TrashEntryServiceSoap}.
  *
  * @author Brian Wing Shun Chan
- * @see com.liferay.portlet.trash.service.http.TrashEntryServiceSoap
  * @generated
  */
-@ProviderType
 public class TrashEntrySoap implements Serializable {
+
 	public static TrashEntrySoap toSoapModel(TrashEntry model) {
 		TrashEntrySoap soapModel = new TrashEntrySoap();
 
@@ -77,7 +74,8 @@ public class TrashEntrySoap implements Serializable {
 	}
 
 	public static TrashEntrySoap[] toSoapModels(List<TrashEntry> models) {
-		List<TrashEntrySoap> soapModels = new ArrayList<TrashEntrySoap>(models.size());
+		List<TrashEntrySoap> soapModels = new ArrayList<TrashEntrySoap>(
+			models.size());
 
 		for (TrashEntry model : models) {
 			soapModels.add(toSoapModel(model));
@@ -196,4 +194,5 @@ public class TrashEntrySoap implements Serializable {
 	private long _systemEventSetKey;
 	private String _typeSettings;
 	private int _status;
+
 }

@@ -14,12 +14,9 @@
 
 package com.liferay.portal.workflow.kaleo.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.workflow.kaleo.model.KaleoTask;
 
 import java.io.Externalizable;
@@ -33,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing KaleoTask in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see KaleoTask
  * @generated
  */
-@ProviderType
-public class KaleoTaskCacheModel implements CacheModel<KaleoTask>,
-	Externalizable {
+public class KaleoTaskCacheModel
+	implements CacheModel<KaleoTask>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -104,7 +100,7 @@ public class KaleoTaskCacheModel implements CacheModel<KaleoTask>,
 		kaleoTaskImpl.setUserId(userId);
 
 		if (userName == null) {
-			kaleoTaskImpl.setUserName(StringPool.BLANK);
+			kaleoTaskImpl.setUserName("");
 		}
 		else {
 			kaleoTaskImpl.setUserName(userName);
@@ -128,14 +124,14 @@ public class KaleoTaskCacheModel implements CacheModel<KaleoTask>,
 		kaleoTaskImpl.setKaleoNodeId(kaleoNodeId);
 
 		if (name == null) {
-			kaleoTaskImpl.setName(StringPool.BLANK);
+			kaleoTaskImpl.setName("");
 		}
 		else {
 			kaleoTaskImpl.setName(name);
 		}
 
 		if (description == null) {
-			kaleoTaskImpl.setDescription(StringPool.BLANK);
+			kaleoTaskImpl.setDescription("");
 		}
 		else {
 			kaleoTaskImpl.setDescription(description);
@@ -167,8 +163,7 @@ public class KaleoTaskCacheModel implements CacheModel<KaleoTask>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(kaleoTaskId);
 
 		objectOutput.writeLong(groupId);
@@ -178,7 +173,7 @@ public class KaleoTaskCacheModel implements CacheModel<KaleoTask>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -192,14 +187,14 @@ public class KaleoTaskCacheModel implements CacheModel<KaleoTask>,
 		objectOutput.writeLong(kaleoNodeId);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -217,4 +212,5 @@ public class KaleoTaskCacheModel implements CacheModel<KaleoTask>,
 	public long kaleoNodeId;
 	public String name;
 	public String description;
+
 }

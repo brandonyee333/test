@@ -14,8 +14,6 @@
 
 package com.liferay.calendar.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,11 +24,10 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.calendar.service.http.CalendarResourceServiceSoap}.
  *
  * @author Eduardo Lundgren
- * @see com.liferay.calendar.service.http.CalendarResourceServiceSoap
  * @generated
  */
-@ProviderType
 public class CalendarResourceSoap implements Serializable {
+
 	public static CalendarResourceSoap toSoapModel(CalendarResource model) {
 		CalendarResourceSoap soapModel = new CalendarResourceSoap();
 
@@ -49,14 +46,17 @@ public class CalendarResourceSoap implements Serializable {
 		soapModel.setCode(model.getCode());
 		soapModel.setName(model.getName());
 		soapModel.setDescription(model.getDescription());
-		soapModel.setActive(model.getActive());
+		soapModel.setActive(model.isActive());
 		soapModel.setLastPublishDate(model.getLastPublishDate());
 
 		return soapModel;
 	}
 
-	public static CalendarResourceSoap[] toSoapModels(CalendarResource[] models) {
-		CalendarResourceSoap[] soapModels = new CalendarResourceSoap[models.length];
+	public static CalendarResourceSoap[] toSoapModels(
+		CalendarResource[] models) {
+
+		CalendarResourceSoap[] soapModels =
+			new CalendarResourceSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -67,10 +67,12 @@ public class CalendarResourceSoap implements Serializable {
 
 	public static CalendarResourceSoap[][] toSoapModels(
 		CalendarResource[][] models) {
+
 		CalendarResourceSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new CalendarResourceSoap[models.length][models[0].length];
+			soapModels =
+				new CalendarResourceSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new CalendarResourceSoap[0][0];
@@ -85,7 +87,9 @@ public class CalendarResourceSoap implements Serializable {
 
 	public static CalendarResourceSoap[] toSoapModels(
 		List<CalendarResource> models) {
-		List<CalendarResourceSoap> soapModels = new ArrayList<CalendarResourceSoap>(models.size());
+
+		List<CalendarResourceSoap> soapModels =
+			new ArrayList<CalendarResourceSoap>(models.size());
 
 		for (CalendarResource model : models) {
 			soapModels.add(toSoapModel(model));
@@ -262,4 +266,5 @@ public class CalendarResourceSoap implements Serializable {
 	private String _description;
 	private boolean _active;
 	private Date _lastPublishDate;
+
 }

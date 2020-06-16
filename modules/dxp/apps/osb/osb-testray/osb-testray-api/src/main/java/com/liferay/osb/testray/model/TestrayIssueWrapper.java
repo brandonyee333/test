@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,9 +34,9 @@ import java.util.Objects;
  * @see TestrayIssue
  * @generated
  */
-@ProviderType
-public class TestrayIssueWrapper implements TestrayIssue,
-	ModelWrapper<TestrayIssue> {
+public class TestrayIssueWrapper
+	implements ModelWrapper<TestrayIssue>, TestrayIssue {
+
 	public TestrayIssueWrapper(TestrayIssue testrayIssue) {
 		_testrayIssue = testrayIssue;
 	}
@@ -122,13 +119,128 @@ public class TestrayIssueWrapper implements TestrayIssue,
 	}
 
 	@Override
-	public TestrayIssue toEscapedModel() {
-		return new TestrayIssueWrapper(_testrayIssue.toEscapedModel());
+	public Object clone() {
+		return new TestrayIssueWrapper((TestrayIssue)_testrayIssue.clone());
 	}
 
 	@Override
-	public TestrayIssue toUnescapedModel() {
-		return new TestrayIssueWrapper(_testrayIssue.toUnescapedModel());
+	public int compareTo(TestrayIssue testrayIssue) {
+		return _testrayIssue.compareTo(testrayIssue);
+	}
+
+	/**
+	 * Returns the company ID of this testray issue.
+	 *
+	 * @return the company ID of this testray issue
+	 */
+	@Override
+	public long getCompanyId() {
+		return _testrayIssue.getCompanyId();
+	}
+
+	/**
+	 * Returns the create date of this testray issue.
+	 *
+	 * @return the create date of this testray issue
+	 */
+	@Override
+	public Date getCreateDate() {
+		return _testrayIssue.getCreateDate();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _testrayIssue.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the group ID of this testray issue.
+	 *
+	 * @return the group ID of this testray issue
+	 */
+	@Override
+	public long getGroupId() {
+		return _testrayIssue.getGroupId();
+	}
+
+	/**
+	 * Returns the modified date of this testray issue.
+	 *
+	 * @return the modified date of this testray issue
+	 */
+	@Override
+	public Date getModifiedDate() {
+		return _testrayIssue.getModifiedDate();
+	}
+
+	/**
+	 * Returns the name of this testray issue.
+	 *
+	 * @return the name of this testray issue
+	 */
+	@Override
+	public String getName() {
+		return _testrayIssue.getName();
+	}
+
+	/**
+	 * Returns the primary key of this testray issue.
+	 *
+	 * @return the primary key of this testray issue
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _testrayIssue.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _testrayIssue.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the testray issue ID of this testray issue.
+	 *
+	 * @return the testray issue ID of this testray issue
+	 */
+	@Override
+	public long getTestrayIssueId() {
+		return _testrayIssue.getTestrayIssueId();
+	}
+
+	/**
+	 * Returns the user ID of this testray issue.
+	 *
+	 * @return the user ID of this testray issue
+	 */
+	@Override
+	public long getUserId() {
+		return _testrayIssue.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this testray issue.
+	 *
+	 * @return the user name of this testray issue
+	 */
+	@Override
+	public String getUserName() {
+		return _testrayIssue.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this testray issue.
+	 *
+	 * @return the user uuid of this testray issue
+	 */
+	@Override
+	public String getUserUuid() {
+		return _testrayIssue.getUserUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _testrayIssue.hashCode();
 	}
 
 	@Override
@@ -147,146 +259,6 @@ public class TestrayIssueWrapper implements TestrayIssue,
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _testrayIssue.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<TestrayIssue> toCacheModel() {
-		return _testrayIssue.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(TestrayIssue testrayIssue) {
-		return _testrayIssue.compareTo(testrayIssue);
-	}
-
-	@Override
-	public int hashCode() {
-		return _testrayIssue.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _testrayIssue.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new TestrayIssueWrapper((TestrayIssue)_testrayIssue.clone());
-	}
-
-	/**
-	* Returns the name of this testray issue.
-	*
-	* @return the name of this testray issue
-	*/
-	@Override
-	public java.lang.String getName() {
-		return _testrayIssue.getName();
-	}
-
-	/**
-	* Returns the user name of this testray issue.
-	*
-	* @return the user name of this testray issue
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _testrayIssue.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this testray issue.
-	*
-	* @return the user uuid of this testray issue
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _testrayIssue.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _testrayIssue.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _testrayIssue.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this testray issue.
-	*
-	* @return the create date of this testray issue
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _testrayIssue.getCreateDate();
-	}
-
-	/**
-	* Returns the modified date of this testray issue.
-	*
-	* @return the modified date of this testray issue
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _testrayIssue.getModifiedDate();
-	}
-
-	/**
-	* Returns the company ID of this testray issue.
-	*
-	* @return the company ID of this testray issue
-	*/
-	@Override
-	public long getCompanyId() {
-		return _testrayIssue.getCompanyId();
-	}
-
-	/**
-	* Returns the group ID of this testray issue.
-	*
-	* @return the group ID of this testray issue
-	*/
-	@Override
-	public long getGroupId() {
-		return _testrayIssue.getGroupId();
-	}
-
-	/**
-	* Returns the primary key of this testray issue.
-	*
-	* @return the primary key of this testray issue
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _testrayIssue.getPrimaryKey();
-	}
-
-	/**
-	* Returns the testray issue ID of this testray issue.
-	*
-	* @return the testray issue ID of this testray issue
-	*/
-	@Override
-	public long getTestrayIssueId() {
-		return _testrayIssue.getTestrayIssueId();
-	}
-
-	/**
-	* Returns the user ID of this testray issue.
-	*
-	* @return the user ID of this testray issue
-	*/
-	@Override
-	public long getUserId() {
-		return _testrayIssue.getUserId();
-	}
-
-	@Override
 	public void persist() {
 		_testrayIssue.persist();
 	}
@@ -297,23 +269,30 @@ public class TestrayIssueWrapper implements TestrayIssue,
 	}
 
 	/**
-	* Sets the company ID of this testray issue.
-	*
-	* @param companyId the company ID of this testray issue
-	*/
+	 * Sets the company ID of this testray issue.
+	 *
+	 * @param companyId the company ID of this testray issue
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_testrayIssue.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this testray issue.
-	*
-	* @param createDate the create date of this testray issue
-	*/
+	 * Sets the create date of this testray issue.
+	 *
+	 * @param createDate the create date of this testray issue
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_testrayIssue.setCreateDate(createDate);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_testrayIssue.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -322,43 +301,37 @@ public class TestrayIssueWrapper implements TestrayIssue,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_testrayIssue.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_testrayIssue.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the group ID of this testray issue.
-	*
-	* @param groupId the group ID of this testray issue
-	*/
+	 * Sets the group ID of this testray issue.
+	 *
+	 * @param groupId the group ID of this testray issue
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_testrayIssue.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the modified date of this testray issue.
-	*
-	* @param modifiedDate the modified date of this testray issue
-	*/
+	 * Sets the modified date of this testray issue.
+	 *
+	 * @param modifiedDate the modified date of this testray issue
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_testrayIssue.setModifiedDate(modifiedDate);
 	}
 
 	/**
-	* Sets the name of this testray issue.
-	*
-	* @param name the name of this testray issue
-	*/
+	 * Sets the name of this testray issue.
+	 *
+	 * @param name the name of this testray issue
+	 */
 	@Override
-	public void setName(java.lang.String name) {
+	public void setName(String name) {
 		_testrayIssue.setName(name);
 	}
 
@@ -368,10 +341,10 @@ public class TestrayIssueWrapper implements TestrayIssue,
 	}
 
 	/**
-	* Sets the primary key of this testray issue.
-	*
-	* @param primaryKey the primary key of this testray issue
-	*/
+	 * Sets the primary key of this testray issue.
+	 *
+	 * @param primaryKey the primary key of this testray issue
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_testrayIssue.setPrimaryKey(primaryKey);
@@ -383,43 +356,70 @@ public class TestrayIssueWrapper implements TestrayIssue,
 	}
 
 	/**
-	* Sets the testray issue ID of this testray issue.
-	*
-	* @param testrayIssueId the testray issue ID of this testray issue
-	*/
+	 * Sets the testray issue ID of this testray issue.
+	 *
+	 * @param testrayIssueId the testray issue ID of this testray issue
+	 */
 	@Override
 	public void setTestrayIssueId(long testrayIssueId) {
 		_testrayIssue.setTestrayIssueId(testrayIssueId);
 	}
 
 	/**
-	* Sets the user ID of this testray issue.
-	*
-	* @param userId the user ID of this testray issue
-	*/
+	 * Sets the user ID of this testray issue.
+	 *
+	 * @param userId the user ID of this testray issue
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_testrayIssue.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this testray issue.
-	*
-	* @param userName the user name of this testray issue
-	*/
+	 * Sets the user name of this testray issue.
+	 *
+	 * @param userName the user name of this testray issue
+	 */
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_testrayIssue.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this testray issue.
-	*
-	* @param userUuid the user uuid of this testray issue
-	*/
+	 * Sets the user uuid of this testray issue.
+	 *
+	 * @param userUuid the user uuid of this testray issue
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_testrayIssue.setUserUuid(userUuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<TestrayIssue>
+		toCacheModel() {
+
+		return _testrayIssue.toCacheModel();
+	}
+
+	@Override
+	public TestrayIssue toEscapedModel() {
+		return new TestrayIssueWrapper(_testrayIssue.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _testrayIssue.toString();
+	}
+
+	@Override
+	public TestrayIssue toUnescapedModel() {
+		return new TestrayIssueWrapper(_testrayIssue.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _testrayIssue.toXmlString();
 	}
 
 	@Override
@@ -462,4 +462,5 @@ public class TestrayIssueWrapper implements TestrayIssue,
 	}
 
 	private final TestrayIssue _testrayIssue;
+
 }

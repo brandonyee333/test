@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,9 +34,9 @@ import java.util.Objects;
  * @see TestrayTask
  * @generated
  */
-@ProviderType
-public class TestrayTaskWrapper implements TestrayTask,
-	ModelWrapper<TestrayTask> {
+public class TestrayTaskWrapper
+	implements ModelWrapper<TestrayTask>, TestrayTask {
+
 	public TestrayTaskWrapper(TestrayTask testrayTask) {
 		_testrayTask = testrayTask;
 	}
@@ -143,13 +140,158 @@ public class TestrayTaskWrapper implements TestrayTask,
 	}
 
 	@Override
-	public TestrayTask toEscapedModel() {
-		return new TestrayTaskWrapper(_testrayTask.toEscapedModel());
+	public Object clone() {
+		return new TestrayTaskWrapper((TestrayTask)_testrayTask.clone());
 	}
 
 	@Override
-	public TestrayTask toUnescapedModel() {
-		return new TestrayTaskWrapper(_testrayTask.toUnescapedModel());
+	public int compareTo(TestrayTask testrayTask) {
+		return _testrayTask.compareTo(testrayTask);
+	}
+
+	/**
+	 * Returns the company ID of this testray task.
+	 *
+	 * @return the company ID of this testray task
+	 */
+	@Override
+	public long getCompanyId() {
+		return _testrayTask.getCompanyId();
+	}
+
+	/**
+	 * Returns the create date of this testray task.
+	 *
+	 * @return the create date of this testray task
+	 */
+	@Override
+	public Date getCreateDate() {
+		return _testrayTask.getCreateDate();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _testrayTask.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the group ID of this testray task.
+	 *
+	 * @return the group ID of this testray task
+	 */
+	@Override
+	public long getGroupId() {
+		return _testrayTask.getGroupId();
+	}
+
+	/**
+	 * Returns the modified date of this testray task.
+	 *
+	 * @return the modified date of this testray task
+	 */
+	@Override
+	public Date getModifiedDate() {
+		return _testrayTask.getModifiedDate();
+	}
+
+	/**
+	 * Returns the name of this testray task.
+	 *
+	 * @return the name of this testray task
+	 */
+	@Override
+	public String getName() {
+		return _testrayTask.getName();
+	}
+
+	/**
+	 * Returns the primary key of this testray task.
+	 *
+	 * @return the primary key of this testray task
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _testrayTask.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _testrayTask.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the status of this testray task.
+	 *
+	 * @return the status of this testray task
+	 */
+	@Override
+	public int getStatus() {
+		return _testrayTask.getStatus();
+	}
+
+	/**
+	 * Returns the status update date of this testray task.
+	 *
+	 * @return the status update date of this testray task
+	 */
+	@Override
+	public Date getStatusUpdateDate() {
+		return _testrayTask.getStatusUpdateDate();
+	}
+
+	/**
+	 * Returns the testray build ID of this testray task.
+	 *
+	 * @return the testray build ID of this testray task
+	 */
+	@Override
+	public long getTestrayBuildId() {
+		return _testrayTask.getTestrayBuildId();
+	}
+
+	/**
+	 * Returns the testray task ID of this testray task.
+	 *
+	 * @return the testray task ID of this testray task
+	 */
+	@Override
+	public long getTestrayTaskId() {
+		return _testrayTask.getTestrayTaskId();
+	}
+
+	/**
+	 * Returns the user ID of this testray task.
+	 *
+	 * @return the user ID of this testray task
+	 */
+	@Override
+	public long getUserId() {
+		return _testrayTask.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this testray task.
+	 *
+	 * @return the user name of this testray task
+	 */
+	@Override
+	public String getUserName() {
+		return _testrayTask.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this testray task.
+	 *
+	 * @return the user uuid of this testray task
+	 */
+	@Override
+	public String getUserUuid() {
+		return _testrayTask.getUserUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _testrayTask.hashCode();
 	}
 
 	@Override
@@ -168,176 +310,6 @@ public class TestrayTaskWrapper implements TestrayTask,
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _testrayTask.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<TestrayTask> toCacheModel() {
-		return _testrayTask.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(TestrayTask testrayTask) {
-		return _testrayTask.compareTo(testrayTask);
-	}
-
-	/**
-	* Returns the status of this testray task.
-	*
-	* @return the status of this testray task
-	*/
-	@Override
-	public int getStatus() {
-		return _testrayTask.getStatus();
-	}
-
-	@Override
-	public int hashCode() {
-		return _testrayTask.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _testrayTask.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new TestrayTaskWrapper((TestrayTask)_testrayTask.clone());
-	}
-
-	/**
-	* Returns the name of this testray task.
-	*
-	* @return the name of this testray task
-	*/
-	@Override
-	public java.lang.String getName() {
-		return _testrayTask.getName();
-	}
-
-	/**
-	* Returns the user name of this testray task.
-	*
-	* @return the user name of this testray task
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _testrayTask.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this testray task.
-	*
-	* @return the user uuid of this testray task
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _testrayTask.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _testrayTask.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _testrayTask.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this testray task.
-	*
-	* @return the create date of this testray task
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _testrayTask.getCreateDate();
-	}
-
-	/**
-	* Returns the modified date of this testray task.
-	*
-	* @return the modified date of this testray task
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _testrayTask.getModifiedDate();
-	}
-
-	/**
-	* Returns the status update date of this testray task.
-	*
-	* @return the status update date of this testray task
-	*/
-	@Override
-	public Date getStatusUpdateDate() {
-		return _testrayTask.getStatusUpdateDate();
-	}
-
-	/**
-	* Returns the company ID of this testray task.
-	*
-	* @return the company ID of this testray task
-	*/
-	@Override
-	public long getCompanyId() {
-		return _testrayTask.getCompanyId();
-	}
-
-	/**
-	* Returns the group ID of this testray task.
-	*
-	* @return the group ID of this testray task
-	*/
-	@Override
-	public long getGroupId() {
-		return _testrayTask.getGroupId();
-	}
-
-	/**
-	* Returns the primary key of this testray task.
-	*
-	* @return the primary key of this testray task
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _testrayTask.getPrimaryKey();
-	}
-
-	/**
-	* Returns the testray build ID of this testray task.
-	*
-	* @return the testray build ID of this testray task
-	*/
-	@Override
-	public long getTestrayBuildId() {
-		return _testrayTask.getTestrayBuildId();
-	}
-
-	/**
-	* Returns the testray task ID of this testray task.
-	*
-	* @return the testray task ID of this testray task
-	*/
-	@Override
-	public long getTestrayTaskId() {
-		return _testrayTask.getTestrayTaskId();
-	}
-
-	/**
-	* Returns the user ID of this testray task.
-	*
-	* @return the user ID of this testray task
-	*/
-	@Override
-	public long getUserId() {
-		return _testrayTask.getUserId();
-	}
-
-	@Override
 	public void persist() {
 		_testrayTask.persist();
 	}
@@ -348,23 +320,30 @@ public class TestrayTaskWrapper implements TestrayTask,
 	}
 
 	/**
-	* Sets the company ID of this testray task.
-	*
-	* @param companyId the company ID of this testray task
-	*/
+	 * Sets the company ID of this testray task.
+	 *
+	 * @param companyId the company ID of this testray task
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_testrayTask.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this testray task.
-	*
-	* @param createDate the create date of this testray task
-	*/
+	 * Sets the create date of this testray task.
+	 *
+	 * @param createDate the create date of this testray task
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_testrayTask.setCreateDate(createDate);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_testrayTask.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -373,43 +352,37 @@ public class TestrayTaskWrapper implements TestrayTask,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_testrayTask.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_testrayTask.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the group ID of this testray task.
-	*
-	* @param groupId the group ID of this testray task
-	*/
+	 * Sets the group ID of this testray task.
+	 *
+	 * @param groupId the group ID of this testray task
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_testrayTask.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the modified date of this testray task.
-	*
-	* @param modifiedDate the modified date of this testray task
-	*/
+	 * Sets the modified date of this testray task.
+	 *
+	 * @param modifiedDate the modified date of this testray task
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_testrayTask.setModifiedDate(modifiedDate);
 	}
 
 	/**
-	* Sets the name of this testray task.
-	*
-	* @param name the name of this testray task
-	*/
+	 * Sets the name of this testray task.
+	 *
+	 * @param name the name of this testray task
+	 */
 	@Override
-	public void setName(java.lang.String name) {
+	public void setName(String name) {
 		_testrayTask.setName(name);
 	}
 
@@ -419,10 +392,10 @@ public class TestrayTaskWrapper implements TestrayTask,
 	}
 
 	/**
-	* Sets the primary key of this testray task.
-	*
-	* @param primaryKey the primary key of this testray task
-	*/
+	 * Sets the primary key of this testray task.
+	 *
+	 * @param primaryKey the primary key of this testray task
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_testrayTask.setPrimaryKey(primaryKey);
@@ -434,73 +407,100 @@ public class TestrayTaskWrapper implements TestrayTask,
 	}
 
 	/**
-	* Sets the status of this testray task.
-	*
-	* @param status the status of this testray task
-	*/
+	 * Sets the status of this testray task.
+	 *
+	 * @param status the status of this testray task
+	 */
 	@Override
 	public void setStatus(int status) {
 		_testrayTask.setStatus(status);
 	}
 
 	/**
-	* Sets the status update date of this testray task.
-	*
-	* @param statusUpdateDate the status update date of this testray task
-	*/
+	 * Sets the status update date of this testray task.
+	 *
+	 * @param statusUpdateDate the status update date of this testray task
+	 */
 	@Override
 	public void setStatusUpdateDate(Date statusUpdateDate) {
 		_testrayTask.setStatusUpdateDate(statusUpdateDate);
 	}
 
 	/**
-	* Sets the testray build ID of this testray task.
-	*
-	* @param testrayBuildId the testray build ID of this testray task
-	*/
+	 * Sets the testray build ID of this testray task.
+	 *
+	 * @param testrayBuildId the testray build ID of this testray task
+	 */
 	@Override
 	public void setTestrayBuildId(long testrayBuildId) {
 		_testrayTask.setTestrayBuildId(testrayBuildId);
 	}
 
 	/**
-	* Sets the testray task ID of this testray task.
-	*
-	* @param testrayTaskId the testray task ID of this testray task
-	*/
+	 * Sets the testray task ID of this testray task.
+	 *
+	 * @param testrayTaskId the testray task ID of this testray task
+	 */
 	@Override
 	public void setTestrayTaskId(long testrayTaskId) {
 		_testrayTask.setTestrayTaskId(testrayTaskId);
 	}
 
 	/**
-	* Sets the user ID of this testray task.
-	*
-	* @param userId the user ID of this testray task
-	*/
+	 * Sets the user ID of this testray task.
+	 *
+	 * @param userId the user ID of this testray task
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_testrayTask.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this testray task.
-	*
-	* @param userName the user name of this testray task
-	*/
+	 * Sets the user name of this testray task.
+	 *
+	 * @param userName the user name of this testray task
+	 */
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_testrayTask.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this testray task.
-	*
-	* @param userUuid the user uuid of this testray task
-	*/
+	 * Sets the user uuid of this testray task.
+	 *
+	 * @param userUuid the user uuid of this testray task
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_testrayTask.setUserUuid(userUuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<TestrayTask>
+		toCacheModel() {
+
+		return _testrayTask.toCacheModel();
+	}
+
+	@Override
+	public TestrayTask toEscapedModel() {
+		return new TestrayTaskWrapper(_testrayTask.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _testrayTask.toString();
+	}
+
+	@Override
+	public TestrayTask toUnescapedModel() {
+		return new TestrayTaskWrapper(_testrayTask.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _testrayTask.toXmlString();
 	}
 
 	@Override
@@ -543,4 +543,5 @@ public class TestrayTaskWrapper implements TestrayTask,
 	}
 
 	private final TestrayTask _testrayTask;
+
 }

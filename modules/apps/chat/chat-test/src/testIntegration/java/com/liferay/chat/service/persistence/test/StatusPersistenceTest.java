@@ -15,13 +15,11 @@
 package com.liferay.chat.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-
 import com.liferay.chat.exception.NoSuchStatusException;
 import com.liferay.chat.model.Status;
 import com.liferay.chat.service.StatusLocalServiceUtil;
 import com.liferay.chat.service.persistence.StatusPersistence;
 import com.liferay.chat.service.persistence.StatusUtil;
-
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -39,15 +37,6 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-
-import org.junit.runner.RunWith;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -57,17 +46,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 /**
  * @generated
  */
 @RunWith(Arquillian.class)
 public class StatusPersistenceTest {
+
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
-			PersistenceTestRule.INSTANCE,
-			new TransactionalTestRule(Propagation.REQUIRED,
-				"com.liferay.chat.service"));
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
+			new TransactionalTestRule(
+				Propagation.REQUIRED, "com.liferay.chat.service"));
 
 	@Before
 	public void setUp() {
@@ -106,7 +105,8 @@ public class StatusPersistenceTest {
 
 		_persistence.remove(newStatus);
 
-		Status existingStatus = _persistence.fetchByPrimaryKey(newStatus.getPrimaryKey());
+		Status existingStatus = _persistence.fetchByPrimaryKey(
+			newStatus.getPrimaryKey());
 
 		Assert.assertNull(existingStatus);
 	}
@@ -138,20 +138,22 @@ public class StatusPersistenceTest {
 
 		_statuses.add(_persistence.update(newStatus));
 
-		Status existingStatus = _persistence.findByPrimaryKey(newStatus.getPrimaryKey());
+		Status existingStatus = _persistence.findByPrimaryKey(
+			newStatus.getPrimaryKey());
 
-		Assert.assertEquals(existingStatus.getStatusId(),
-			newStatus.getStatusId());
+		Assert.assertEquals(
+			existingStatus.getStatusId(), newStatus.getStatusId());
 		Assert.assertEquals(existingStatus.getUserId(), newStatus.getUserId());
-		Assert.assertEquals(existingStatus.getModifiedDate(),
-			newStatus.getModifiedDate());
-		Assert.assertEquals(existingStatus.getOnline(), newStatus.getOnline());
-		Assert.assertEquals(existingStatus.getAwake(), newStatus.getAwake());
-		Assert.assertEquals(existingStatus.getActivePanelIds(),
-			newStatus.getActivePanelIds());
-		Assert.assertEquals(existingStatus.getMessage(), newStatus.getMessage());
-		Assert.assertEquals(existingStatus.getPlaySound(),
-			newStatus.getPlaySound());
+		Assert.assertEquals(
+			existingStatus.getModifiedDate(), newStatus.getModifiedDate());
+		Assert.assertEquals(existingStatus.isOnline(), newStatus.isOnline());
+		Assert.assertEquals(existingStatus.isAwake(), newStatus.isAwake());
+		Assert.assertEquals(
+			existingStatus.getActivePanelIds(), newStatus.getActivePanelIds());
+		Assert.assertEquals(
+			existingStatus.getMessage(), newStatus.getMessage());
+		Assert.assertEquals(
+			existingStatus.isPlaySound(), newStatus.isPlaySound());
 	}
 
 	@Test
@@ -177,8 +179,8 @@ public class StatusPersistenceTest {
 
 	@Test
 	public void testCountByM_O() throws Exception {
-		_persistence.countByM_O(RandomTestUtil.nextLong(),
-			RandomTestUtil.randomBoolean());
+		_persistence.countByM_O(
+			RandomTestUtil.nextLong(), RandomTestUtil.randomBoolean());
 
 		_persistence.countByM_O(0L, RandomTestUtil.randomBoolean());
 	}
@@ -187,7 +189,8 @@ public class StatusPersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		Status newStatus = addStatus();
 
-		Status existingStatus = _persistence.findByPrimaryKey(newStatus.getPrimaryKey());
+		Status existingStatus = _persistence.findByPrimaryKey(
+			newStatus.getPrimaryKey());
 
 		Assert.assertEquals(existingStatus, newStatus);
 	}
@@ -201,22 +204,23 @@ public class StatusPersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			getOrderByComparator());
+		_persistence.findAll(
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
 	}
 
 	protected OrderByComparator<Status> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create("Chat_Status", "statusId",
-			true, "userId", true, "modifiedDate", true, "online", true,
-			"awake", true, "activePanelIds", true, "message", true,
-			"playSound", true);
+		return OrderByComparatorFactoryUtil.create(
+			"Chat_Status", "statusId", true, "userId", true, "modifiedDate",
+			true, "online", true, "awake", true, "activePanelIds", true,
+			"message", true, "playSound", true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		Status newStatus = addStatus();
 
-		Status existingStatus = _persistence.fetchByPrimaryKey(newStatus.getPrimaryKey());
+		Status existingStatus = _persistence.fetchByPrimaryKey(
+			newStatus.getPrimaryKey());
 
 		Assert.assertEquals(existingStatus, newStatus);
 	}
@@ -233,6 +237,7 @@ public class StatusPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
+
 		Status newStatus1 = addStatus();
 		Status newStatus2 = addStatus();
 
@@ -241,16 +246,20 @@ public class StatusPersistenceTest {
 		primaryKeys.add(newStatus1.getPrimaryKey());
 		primaryKeys.add(newStatus2.getPrimaryKey());
 
-		Map<Serializable, Status> statuses = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, Status> statuses = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertEquals(2, statuses.size());
-		Assert.assertEquals(newStatus1, statuses.get(newStatus1.getPrimaryKey()));
-		Assert.assertEquals(newStatus2, statuses.get(newStatus2.getPrimaryKey()));
+		Assert.assertEquals(
+			newStatus1, statuses.get(newStatus1.getPrimaryKey()));
+		Assert.assertEquals(
+			newStatus2, statuses.get(newStatus2.getPrimaryKey()));
 	}
 
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
+
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -260,7 +269,8 @@ public class StatusPersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, Status> statuses = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, Status> statuses = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertTrue(statuses.isEmpty());
 	}
@@ -268,6 +278,7 @@ public class StatusPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
+
 		Status newStatus = addStatus();
 
 		long pk = RandomTestUtil.nextLong();
@@ -277,32 +288,33 @@ public class StatusPersistenceTest {
 		primaryKeys.add(newStatus.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, Status> statuses = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, Status> statuses = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertEquals(1, statuses.size());
 		Assert.assertEquals(newStatus, statuses.get(newStatus.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, Status> statuses = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, Status> statuses = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertTrue(statuses.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
 		Status newStatus = addStatus();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newStatus.getPrimaryKey());
 
-		Map<Serializable, Status> statuses = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, Status> statuses = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertEquals(1, statuses.size());
 		Assert.assertEquals(newStatus, statuses.get(newStatus.getPrimaryKey()));
@@ -312,15 +324,19 @@ public class StatusPersistenceTest {
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery = StatusLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			StatusLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<Status>() {
+		actionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<Status>() {
+
 				@Override
 				public void performAction(Status status) {
 					Assert.assertNotNull(status);
 
 					count.increment();
 				}
+
 			});
 
 		actionableDynamicQuery.performActions();
@@ -329,15 +345,14 @@ public class StatusPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting()
-		throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
 		Status newStatus = addStatus();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(Status.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Status.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("statusId",
-				newStatus.getStatusId()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("statusId", newStatus.getStatusId()));
 
 		List<Status> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -350,11 +365,11 @@ public class StatusPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(Status.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Status.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("statusId",
-				RandomTestUtil.nextLong()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq("statusId", RandomTestUtil.nextLong()));
 
 		List<Status> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -362,19 +377,18 @@ public class StatusPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting()
-		throws Exception {
+	public void testDynamicQueryByProjectionExisting() throws Exception {
 		Status newStatus = addStatus();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(Status.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Status.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.setProjection(ProjectionFactoryUtil.property("statusId"));
 
 		Object newStatusId = newStatus.getStatusId();
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("statusId",
-				new Object[] { newStatusId }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in("statusId", new Object[] {newStatusId}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -387,13 +401,14 @@ public class StatusPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(Status.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			Status.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.setProjection(ProjectionFactoryUtil.property("statusId"));
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("statusId",
-				new Object[] { RandomTestUtil.nextLong() }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"statusId", new Object[] {RandomTestUtil.nextLong()}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -406,11 +421,13 @@ public class StatusPersistenceTest {
 
 		_persistence.clearCache();
 
-		Status existingStatus = _persistence.findByPrimaryKey(newStatus.getPrimaryKey());
+		Status existingStatus = _persistence.findByPrimaryKey(
+			newStatus.getPrimaryKey());
 
-		Assert.assertEquals(Long.valueOf(existingStatus.getUserId()),
-			ReflectionTestUtil.<Long>invoke(existingStatus,
-				"getOriginalUserId", new Class<?>[0]));
+		Assert.assertEquals(
+			Long.valueOf(existingStatus.getUserId()),
+			ReflectionTestUtil.<Long>invoke(
+				existingStatus, "getOriginalUserId", new Class<?>[0]));
 	}
 
 	protected Status addStatus() throws Exception {
@@ -440,4 +457,5 @@ public class StatusPersistenceTest {
 	private List<Status> _statuses = new ArrayList<Status>();
 	private StatusPersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
+
 }

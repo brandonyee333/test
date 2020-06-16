@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,9 +34,9 @@ import java.util.Objects;
  * @see TestrayAssignment
  * @generated
  */
-@ProviderType
-public class TestrayAssignmentWrapper implements TestrayAssignment,
-	ModelWrapper<TestrayAssignment> {
+public class TestrayAssignmentWrapper
+	implements ModelWrapper<TestrayAssignment>, TestrayAssignment {
+
 	public TestrayAssignmentWrapper(TestrayAssignment testrayAssignment) {
 		_testrayAssignment = testrayAssignment;
 	}
@@ -136,13 +133,169 @@ public class TestrayAssignmentWrapper implements TestrayAssignment,
 	}
 
 	@Override
-	public TestrayAssignment toEscapedModel() {
-		return new TestrayAssignmentWrapper(_testrayAssignment.toEscapedModel());
+	public Object clone() {
+		return new TestrayAssignmentWrapper(
+			(TestrayAssignment)_testrayAssignment.clone());
 	}
 
 	@Override
-	public TestrayAssignment toUnescapedModel() {
-		return new TestrayAssignmentWrapper(_testrayAssignment.toUnescapedModel());
+	public int compareTo(TestrayAssignment testrayAssignment) {
+		return _testrayAssignment.compareTo(testrayAssignment);
+	}
+
+	/**
+	 * Returns the assigned user ID of this testray assignment.
+	 *
+	 * @return the assigned user ID of this testray assignment
+	 */
+	@Override
+	public long getAssignedUserId() {
+		return _testrayAssignment.getAssignedUserId();
+	}
+
+	/**
+	 * Returns the assigned user uuid of this testray assignment.
+	 *
+	 * @return the assigned user uuid of this testray assignment
+	 */
+	@Override
+	public String getAssignedUserUuid() {
+		return _testrayAssignment.getAssignedUserUuid();
+	}
+
+	/**
+	 * Returns the fully qualified class name of this testray assignment.
+	 *
+	 * @return the fully qualified class name of this testray assignment
+	 */
+	@Override
+	public String getClassName() {
+		return _testrayAssignment.getClassName();
+	}
+
+	/**
+	 * Returns the class name ID of this testray assignment.
+	 *
+	 * @return the class name ID of this testray assignment
+	 */
+	@Override
+	public long getClassNameId() {
+		return _testrayAssignment.getClassNameId();
+	}
+
+	/**
+	 * Returns the class pk of this testray assignment.
+	 *
+	 * @return the class pk of this testray assignment
+	 */
+	@Override
+	public long getClassPK() {
+		return _testrayAssignment.getClassPK();
+	}
+
+	/**
+	 * Returns the company ID of this testray assignment.
+	 *
+	 * @return the company ID of this testray assignment
+	 */
+	@Override
+	public long getCompanyId() {
+		return _testrayAssignment.getCompanyId();
+	}
+
+	/**
+	 * Returns the create date of this testray assignment.
+	 *
+	 * @return the create date of this testray assignment
+	 */
+	@Override
+	public Date getCreateDate() {
+		return _testrayAssignment.getCreateDate();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _testrayAssignment.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the group ID of this testray assignment.
+	 *
+	 * @return the group ID of this testray assignment
+	 */
+	@Override
+	public long getGroupId() {
+		return _testrayAssignment.getGroupId();
+	}
+
+	/**
+	 * Returns the modified date of this testray assignment.
+	 *
+	 * @return the modified date of this testray assignment
+	 */
+	@Override
+	public Date getModifiedDate() {
+		return _testrayAssignment.getModifiedDate();
+	}
+
+	/**
+	 * Returns the primary key of this testray assignment.
+	 *
+	 * @return the primary key of this testray assignment
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _testrayAssignment.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _testrayAssignment.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the testray assignment ID of this testray assignment.
+	 *
+	 * @return the testray assignment ID of this testray assignment
+	 */
+	@Override
+	public long getTestrayAssignmentId() {
+		return _testrayAssignment.getTestrayAssignmentId();
+	}
+
+	/**
+	 * Returns the user ID of this testray assignment.
+	 *
+	 * @return the user ID of this testray assignment
+	 */
+	@Override
+	public long getUserId() {
+		return _testrayAssignment.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this testray assignment.
+	 *
+	 * @return the user name of this testray assignment
+	 */
+	@Override
+	public String getUserName() {
+		return _testrayAssignment.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this testray assignment.
+	 *
+	 * @return the user uuid of this testray assignment
+	 */
+	@Override
+	public String getUserUuid() {
+		return _testrayAssignment.getUserUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _testrayAssignment.hashCode();
 	}
 
 	@Override
@@ -161,207 +314,27 @@ public class TestrayAssignmentWrapper implements TestrayAssignment,
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _testrayAssignment.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<TestrayAssignment> toCacheModel() {
-		return _testrayAssignment.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(TestrayAssignment testrayAssignment) {
-		return _testrayAssignment.compareTo(testrayAssignment);
-	}
-
-	@Override
-	public int hashCode() {
-		return _testrayAssignment.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _testrayAssignment.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new TestrayAssignmentWrapper((TestrayAssignment)_testrayAssignment.clone());
-	}
-
-	/**
-	* Returns the assigned user uuid of this testray assignment.
-	*
-	* @return the assigned user uuid of this testray assignment
-	*/
-	@Override
-	public java.lang.String getAssignedUserUuid() {
-		return _testrayAssignment.getAssignedUserUuid();
-	}
-
-	/**
-	* Returns the fully qualified class name of this testray assignment.
-	*
-	* @return the fully qualified class name of this testray assignment
-	*/
-	@Override
-	public java.lang.String getClassName() {
-		return _testrayAssignment.getClassName();
-	}
-
-	/**
-	* Returns the user name of this testray assignment.
-	*
-	* @return the user name of this testray assignment
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _testrayAssignment.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this testray assignment.
-	*
-	* @return the user uuid of this testray assignment
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _testrayAssignment.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _testrayAssignment.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _testrayAssignment.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this testray assignment.
-	*
-	* @return the create date of this testray assignment
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _testrayAssignment.getCreateDate();
-	}
-
-	/**
-	* Returns the modified date of this testray assignment.
-	*
-	* @return the modified date of this testray assignment
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _testrayAssignment.getModifiedDate();
-	}
-
-	/**
-	* Returns the assigned user ID of this testray assignment.
-	*
-	* @return the assigned user ID of this testray assignment
-	*/
-	@Override
-	public long getAssignedUserId() {
-		return _testrayAssignment.getAssignedUserId();
-	}
-
-	/**
-	* Returns the class name ID of this testray assignment.
-	*
-	* @return the class name ID of this testray assignment
-	*/
-	@Override
-	public long getClassNameId() {
-		return _testrayAssignment.getClassNameId();
-	}
-
-	/**
-	* Returns the class pk of this testray assignment.
-	*
-	* @return the class pk of this testray assignment
-	*/
-	@Override
-	public long getClassPK() {
-		return _testrayAssignment.getClassPK();
-	}
-
-	/**
-	* Returns the company ID of this testray assignment.
-	*
-	* @return the company ID of this testray assignment
-	*/
-	@Override
-	public long getCompanyId() {
-		return _testrayAssignment.getCompanyId();
-	}
-
-	/**
-	* Returns the group ID of this testray assignment.
-	*
-	* @return the group ID of this testray assignment
-	*/
-	@Override
-	public long getGroupId() {
-		return _testrayAssignment.getGroupId();
-	}
-
-	/**
-	* Returns the primary key of this testray assignment.
-	*
-	* @return the primary key of this testray assignment
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _testrayAssignment.getPrimaryKey();
-	}
-
-	/**
-	* Returns the testray assignment ID of this testray assignment.
-	*
-	* @return the testray assignment ID of this testray assignment
-	*/
-	@Override
-	public long getTestrayAssignmentId() {
-		return _testrayAssignment.getTestrayAssignmentId();
-	}
-
-	/**
-	* Returns the user ID of this testray assignment.
-	*
-	* @return the user ID of this testray assignment
-	*/
-	@Override
-	public long getUserId() {
-		return _testrayAssignment.getUserId();
-	}
-
-	@Override
 	public void persist() {
 		_testrayAssignment.persist();
 	}
 
 	/**
-	* Sets the assigned user ID of this testray assignment.
-	*
-	* @param assignedUserId the assigned user ID of this testray assignment
-	*/
+	 * Sets the assigned user ID of this testray assignment.
+	 *
+	 * @param assignedUserId the assigned user ID of this testray assignment
+	 */
 	@Override
 	public void setAssignedUserId(long assignedUserId) {
 		_testrayAssignment.setAssignedUserId(assignedUserId);
 	}
 
 	/**
-	* Sets the assigned user uuid of this testray assignment.
-	*
-	* @param assignedUserUuid the assigned user uuid of this testray assignment
-	*/
+	 * Sets the assigned user uuid of this testray assignment.
+	 *
+	 * @param assignedUserUuid the assigned user uuid of this testray assignment
+	 */
 	@Override
-	public void setAssignedUserUuid(java.lang.String assignedUserUuid) {
+	public void setAssignedUserUuid(String assignedUserUuid) {
 		_testrayAssignment.setAssignedUserUuid(assignedUserUuid);
 	}
 
@@ -371,48 +344,55 @@ public class TestrayAssignmentWrapper implements TestrayAssignment,
 	}
 
 	@Override
-	public void setClassName(java.lang.String className) {
+	public void setClassName(String className) {
 		_testrayAssignment.setClassName(className);
 	}
 
 	/**
-	* Sets the class name ID of this testray assignment.
-	*
-	* @param classNameId the class name ID of this testray assignment
-	*/
+	 * Sets the class name ID of this testray assignment.
+	 *
+	 * @param classNameId the class name ID of this testray assignment
+	 */
 	@Override
 	public void setClassNameId(long classNameId) {
 		_testrayAssignment.setClassNameId(classNameId);
 	}
 
 	/**
-	* Sets the class pk of this testray assignment.
-	*
-	* @param classPK the class pk of this testray assignment
-	*/
+	 * Sets the class pk of this testray assignment.
+	 *
+	 * @param classPK the class pk of this testray assignment
+	 */
 	@Override
 	public void setClassPK(long classPK) {
 		_testrayAssignment.setClassPK(classPK);
 	}
 
 	/**
-	* Sets the company ID of this testray assignment.
-	*
-	* @param companyId the company ID of this testray assignment
-	*/
+	 * Sets the company ID of this testray assignment.
+	 *
+	 * @param companyId the company ID of this testray assignment
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_testrayAssignment.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this testray assignment.
-	*
-	* @param createDate the create date of this testray assignment
-	*/
+	 * Sets the create date of this testray assignment.
+	 *
+	 * @param createDate the create date of this testray assignment
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_testrayAssignment.setCreateDate(createDate);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_testrayAssignment.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -421,31 +401,25 @@ public class TestrayAssignmentWrapper implements TestrayAssignment,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_testrayAssignment.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_testrayAssignment.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the group ID of this testray assignment.
-	*
-	* @param groupId the group ID of this testray assignment
-	*/
+	 * Sets the group ID of this testray assignment.
+	 *
+	 * @param groupId the group ID of this testray assignment
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_testrayAssignment.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the modified date of this testray assignment.
-	*
-	* @param modifiedDate the modified date of this testray assignment
-	*/
+	 * Sets the modified date of this testray assignment.
+	 *
+	 * @param modifiedDate the modified date of this testray assignment
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_testrayAssignment.setModifiedDate(modifiedDate);
@@ -457,10 +431,10 @@ public class TestrayAssignmentWrapper implements TestrayAssignment,
 	}
 
 	/**
-	* Sets the primary key of this testray assignment.
-	*
-	* @param primaryKey the primary key of this testray assignment
-	*/
+	 * Sets the primary key of this testray assignment.
+	 *
+	 * @param primaryKey the primary key of this testray assignment
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_testrayAssignment.setPrimaryKey(primaryKey);
@@ -472,43 +446,72 @@ public class TestrayAssignmentWrapper implements TestrayAssignment,
 	}
 
 	/**
-	* Sets the testray assignment ID of this testray assignment.
-	*
-	* @param testrayAssignmentId the testray assignment ID of this testray assignment
-	*/
+	 * Sets the testray assignment ID of this testray assignment.
+	 *
+	 * @param testrayAssignmentId the testray assignment ID of this testray assignment
+	 */
 	@Override
 	public void setTestrayAssignmentId(long testrayAssignmentId) {
 		_testrayAssignment.setTestrayAssignmentId(testrayAssignmentId);
 	}
 
 	/**
-	* Sets the user ID of this testray assignment.
-	*
-	* @param userId the user ID of this testray assignment
-	*/
+	 * Sets the user ID of this testray assignment.
+	 *
+	 * @param userId the user ID of this testray assignment
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_testrayAssignment.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this testray assignment.
-	*
-	* @param userName the user name of this testray assignment
-	*/
+	 * Sets the user name of this testray assignment.
+	 *
+	 * @param userName the user name of this testray assignment
+	 */
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_testrayAssignment.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this testray assignment.
-	*
-	* @param userUuid the user uuid of this testray assignment
-	*/
+	 * Sets the user uuid of this testray assignment.
+	 *
+	 * @param userUuid the user uuid of this testray assignment
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_testrayAssignment.setUserUuid(userUuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<TestrayAssignment>
+		toCacheModel() {
+
+		return _testrayAssignment.toCacheModel();
+	}
+
+	@Override
+	public TestrayAssignment toEscapedModel() {
+		return new TestrayAssignmentWrapper(
+			_testrayAssignment.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _testrayAssignment.toString();
+	}
+
+	@Override
+	public TestrayAssignment toUnescapedModel() {
+		return new TestrayAssignmentWrapper(
+			_testrayAssignment.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _testrayAssignment.toXmlString();
 	}
 
 	@Override
@@ -521,10 +524,13 @@ public class TestrayAssignmentWrapper implements TestrayAssignment,
 			return false;
 		}
 
-		TestrayAssignmentWrapper testrayAssignmentWrapper = (TestrayAssignmentWrapper)obj;
+		TestrayAssignmentWrapper testrayAssignmentWrapper =
+			(TestrayAssignmentWrapper)obj;
 
-		if (Objects.equals(_testrayAssignment,
-					testrayAssignmentWrapper._testrayAssignment)) {
+		if (Objects.equals(
+				_testrayAssignment,
+				testrayAssignmentWrapper._testrayAssignment)) {
+
 			return true;
 		}
 
@@ -552,4 +558,5 @@ public class TestrayAssignmentWrapper implements TestrayAssignment,
 	}
 
 	private final TestrayAssignment _testrayAssignment;
+
 }

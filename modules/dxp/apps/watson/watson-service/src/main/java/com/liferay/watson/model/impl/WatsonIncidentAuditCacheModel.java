@@ -1,26 +1,22 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-
 import com.liferay.watson.model.WatsonIncidentAudit;
 
 import java.io.Externalizable;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing WatsonIncidentAudit in entity cache.
  *
  * @author Steven Smith
- * @see WatsonIncidentAudit
  * @generated
  */
-@ProviderType
-public class WatsonIncidentAuditCacheModel implements CacheModel<WatsonIncidentAudit>,
-	Externalizable {
+public class WatsonIncidentAuditCacheModel
+	implements CacheModel<WatsonIncidentAudit>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,9 +45,12 @@ public class WatsonIncidentAuditCacheModel implements CacheModel<WatsonIncidentA
 			return false;
 		}
 
-		WatsonIncidentAuditCacheModel watsonIncidentAuditCacheModel = (WatsonIncidentAuditCacheModel)obj;
+		WatsonIncidentAuditCacheModel watsonIncidentAuditCacheModel =
+			(WatsonIncidentAuditCacheModel)obj;
 
-		if (watsonIncidentAuditId == watsonIncidentAuditCacheModel.watsonIncidentAuditId) {
+		if (watsonIncidentAuditId ==
+				watsonIncidentAuditCacheModel.watsonIncidentAuditId) {
+
 			return true;
 		}
 
@@ -125,7 +123,8 @@ public class WatsonIncidentAuditCacheModel implements CacheModel<WatsonIncidentA
 
 	@Override
 	public WatsonIncidentAudit toEntityModel() {
-		WatsonIncidentAuditImpl watsonIncidentAuditImpl = new WatsonIncidentAuditImpl();
+		WatsonIncidentAuditImpl watsonIncidentAuditImpl =
+			new WatsonIncidentAuditImpl();
 
 		watsonIncidentAuditImpl.setWatsonIncidentAuditId(watsonIncidentAuditId);
 		watsonIncidentAuditImpl.setGroupId(groupId);
@@ -133,7 +132,7 @@ public class WatsonIncidentAuditCacheModel implements CacheModel<WatsonIncidentA
 		watsonIncidentAuditImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonIncidentAuditImpl.setUserName(StringPool.BLANK);
+			watsonIncidentAuditImpl.setUserName("");
 		}
 		else {
 			watsonIncidentAuditImpl.setUserName(userName);
@@ -153,10 +152,13 @@ public class WatsonIncidentAuditCacheModel implements CacheModel<WatsonIncidentA
 			watsonIncidentAuditImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		watsonIncidentAuditImpl.setExternalCaseWatsonListTypeId(externalCaseWatsonListTypeId);
-		watsonIncidentAuditImpl.setSourceWatsonListTypeId(sourceWatsonListTypeId);
+		watsonIncidentAuditImpl.setExternalCaseWatsonListTypeId(
+			externalCaseWatsonListTypeId);
+		watsonIncidentAuditImpl.setSourceWatsonListTypeId(
+			sourceWatsonListTypeId);
 		watsonIncidentAuditImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
-		watsonIncidentAuditImpl.setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
+		watsonIncidentAuditImpl.setSubtypeWatsonListTypeId(
+			subtypeWatsonListTypeId);
 		watsonIncidentAuditImpl.setAudienceAdultCount(audienceAdultCount);
 		watsonIncidentAuditImpl.setAudienceChildCount(audienceChildCount);
 		watsonIncidentAuditImpl.setVictimAdultCount(victimAdultCount);
@@ -164,21 +166,21 @@ public class WatsonIncidentAuditCacheModel implements CacheModel<WatsonIncidentA
 		watsonIncidentAuditImpl.setWatsonIncidentId(watsonIncidentId);
 
 		if (name == null) {
-			watsonIncidentAuditImpl.setName(StringPool.BLANK);
+			watsonIncidentAuditImpl.setName("");
 		}
 		else {
 			watsonIncidentAuditImpl.setName(name);
 		}
 
 		if (description == null) {
-			watsonIncidentAuditImpl.setDescription(StringPool.BLANK);
+			watsonIncidentAuditImpl.setDescription("");
 		}
 		else {
 			watsonIncidentAuditImpl.setDescription(description);
 		}
 
 		if (externalCaseId == null) {
-			watsonIncidentAuditImpl.setExternalCaseId(StringPool.BLANK);
+			watsonIncidentAuditImpl.setExternalCaseId("");
 		}
 		else {
 			watsonIncidentAuditImpl.setExternalCaseId(externalCaseId);
@@ -259,8 +261,7 @@ public class WatsonIncidentAuditCacheModel implements CacheModel<WatsonIncidentA
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonIncidentAuditId);
 
 		objectOutput.writeLong(groupId);
@@ -270,7 +271,7 @@ public class WatsonIncidentAuditCacheModel implements CacheModel<WatsonIncidentA
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -298,21 +299,21 @@ public class WatsonIncidentAuditCacheModel implements CacheModel<WatsonIncidentA
 		objectOutput.writeLong(watsonIncidentId);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (externalCaseId == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(externalCaseId);
@@ -354,4 +355,5 @@ public class WatsonIncidentAuditCacheModel implements CacheModel<WatsonIncidentA
 	public double expenses;
 	public int incidentStatus;
 	public int status;
+
 }

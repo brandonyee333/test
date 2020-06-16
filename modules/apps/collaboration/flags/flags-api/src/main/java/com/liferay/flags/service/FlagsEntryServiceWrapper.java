@@ -14,8 +14,6 @@
 
 package com.liferay.flags.service;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -25,32 +23,34 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see FlagsEntryService
  * @generated
  */
-@ProviderType
-public class FlagsEntryServiceWrapper implements FlagsEntryService,
-	ServiceWrapper<FlagsEntryService> {
+public class FlagsEntryServiceWrapper
+	implements FlagsEntryService, ServiceWrapper<FlagsEntryService> {
+
 	public FlagsEntryServiceWrapper(FlagsEntryService flagsEntryService) {
 		_flagsEntryService = flagsEntryService;
 	}
 
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _flagsEntryService.getOSGiServiceIdentifier();
+	public void addEntry(
+			String className, long classPK, String reporterEmailAddress,
+			long reportedUserId, String contentTitle, String contentURL,
+			String reason,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_flagsEntryService.addEntry(
+			className, classPK, reporterEmailAddress, reportedUserId,
+			contentTitle, contentURL, reason, serviceContext);
 	}
 
+	/**
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
 	@Override
-	public void addEntry(java.lang.String className, long classPK,
-		java.lang.String reporterEmailAddress, long reportedUserId,
-		java.lang.String contentTitle, java.lang.String contentURL,
-		java.lang.String reason,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_flagsEntryService.addEntry(className, classPK, reporterEmailAddress,
-			reportedUserId, contentTitle, contentURL, reason, serviceContext);
+	public String getOSGiServiceIdentifier() {
+		return _flagsEntryService.getOSGiServiceIdentifier();
 	}
 
 	@Override
@@ -64,4 +64,5 @@ public class FlagsEntryServiceWrapper implements FlagsEntryService,
 	}
 
 	private FlagsEntryService _flagsEntryService;
+
 }

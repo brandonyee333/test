@@ -1,27 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.testray.model.TestrayRun;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing TestrayRun in entity cache.
  *
  * @author Ethan Bustad
- * @see TestrayRun
  * @generated
  */
-@ProviderType
-public class TestrayRunCacheModel implements CacheModel<TestrayRun>,
-	Externalizable {
+public class TestrayRunCacheModel
+	implements CacheModel<TestrayRun>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -113,7 +108,7 @@ public class TestrayRunCacheModel implements CacheModel<TestrayRun>,
 		testrayRunImpl.setUserId(userId);
 
 		if (userName == null) {
-			testrayRunImpl.setUserName(StringPool.BLANK);
+			testrayRunImpl.setUserName("");
 		}
 		else {
 			testrayRunImpl.setUserName(userName);
@@ -136,21 +131,21 @@ public class TestrayRunCacheModel implements CacheModel<TestrayRun>,
 		testrayRunImpl.setTestrayBuildId(testrayBuildId);
 
 		if (name == null) {
-			testrayRunImpl.setName(StringPool.BLANK);
+			testrayRunImpl.setName("");
 		}
 		else {
 			testrayRunImpl.setName(name);
 		}
 
 		if (description == null) {
-			testrayRunImpl.setDescription(StringPool.BLANK);
+			testrayRunImpl.setDescription("");
 		}
 		else {
 			testrayRunImpl.setDescription(description);
 		}
 
 		if (externalReferencePK == null) {
-			testrayRunImpl.setExternalReferencePK(StringPool.BLANK);
+			testrayRunImpl.setExternalReferencePK("");
 		}
 		else {
 			testrayRunImpl.setExternalReferencePK(externalReferencePK);
@@ -161,7 +156,7 @@ public class TestrayRunCacheModel implements CacheModel<TestrayRun>,
 		testrayRunImpl.setNumber(number);
 
 		if (environmentHash == null) {
-			testrayRunImpl.setEnvironmentHash(StringPool.BLANK);
+			testrayRunImpl.setEnvironmentHash("");
 		}
 		else {
 			testrayRunImpl.setEnvironmentHash(environmentHash);
@@ -199,8 +194,7 @@ public class TestrayRunCacheModel implements CacheModel<TestrayRun>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(testrayRunId);
 
 		objectOutput.writeLong(groupId);
@@ -210,7 +204,7 @@ public class TestrayRunCacheModel implements CacheModel<TestrayRun>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -222,21 +216,21 @@ public class TestrayRunCacheModel implements CacheModel<TestrayRun>,
 		objectOutput.writeLong(testrayBuildId);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (externalReferencePK == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(externalReferencePK);
@@ -249,7 +243,7 @@ public class TestrayRunCacheModel implements CacheModel<TestrayRun>,
 		objectOutput.writeLong(number);
 
 		if (environmentHash == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(environmentHash);
@@ -271,4 +265,5 @@ public class TestrayRunCacheModel implements CacheModel<TestrayRun>,
 	public long jenkinsJobKey;
 	public long number;
 	public String environmentHash;
+
 }

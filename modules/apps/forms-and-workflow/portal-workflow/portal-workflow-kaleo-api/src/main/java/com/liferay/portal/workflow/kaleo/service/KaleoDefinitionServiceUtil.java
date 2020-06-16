@@ -14,57 +14,72 @@
 
 package com.liferay.portal.workflow.kaleo.service;
 
-import aQute.bnd.annotation.ProviderType;
-
-import com.liferay.osgi.util.ServiceTrackerFactory;
-
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * Provides the remote service utility for KaleoDefinition. This utility wraps
- * {@link com.liferay.portal.workflow.kaleo.service.impl.KaleoDefinitionServiceImpl} and is the
- * primary access point for service operations in application layer code running
- * on a remote server. Methods of this service are expected to have security
- * checks based on the propagated JAAS credentials because this service can be
+ * <code>com.liferay.portal.workflow.kaleo.service.impl.KaleoDefinitionServiceImpl</code> and is an
+ * access point for service operations in application layer code running on a
+ * remote server. Methods of this service are expected to have security checks
+ * based on the propagated JAAS credentials because this service can be
  * accessed remotely.
  *
  * @author Brian Wing Shun Chan
  * @see KaleoDefinitionService
- * @see com.liferay.portal.workflow.kaleo.service.base.KaleoDefinitionServiceBaseImpl
- * @see com.liferay.portal.workflow.kaleo.service.impl.KaleoDefinitionServiceImpl
  * @generated
  */
-@ProviderType
 public class KaleoDefinitionServiceUtil {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.workflow.kaleo.service.impl.KaleoDefinitionServiceImpl} and rerun ServiceBuilder to regenerate this class.
+	 * Never modify this class directly. Add custom service methods to <code>com.liferay.portal.workflow.kaleo.service.impl.KaleoDefinitionServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static java.util.List
+		<com.liferay.portal.workflow.kaleo.model.KaleoDefinition>
+			getKaleoDefinitions(int start, int end) {
 
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
-	}
-
-	public static java.util.List<com.liferay.portal.workflow.kaleo.model.KaleoDefinition> getKaleoDefinitions(
-		int start, int end) {
 		return getService().getKaleoDefinitions(start, end);
 	}
 
-	public static java.util.List<com.liferay.portal.workflow.kaleo.model.KaleoDefinition> getKaleoDefinitions(
-		long companyId, int start, int end) {
+	public static java.util.List
+		<com.liferay.portal.workflow.kaleo.model.KaleoDefinition>
+			getKaleoDefinitions(long companyId, int start, int end) {
+
 		return getService().getKaleoDefinitions(companyId, start, end);
+	}
+
+	/**
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
+	public static String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static KaleoDefinitionService getService() {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker<KaleoDefinitionService, KaleoDefinitionService> _serviceTracker =
-		ServiceTrackerFactory.open(KaleoDefinitionService.class);
+	private static ServiceTracker
+		<KaleoDefinitionService, KaleoDefinitionService> _serviceTracker;
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(KaleoDefinitionService.class);
+
+		ServiceTracker<KaleoDefinitionService, KaleoDefinitionService>
+			serviceTracker =
+				new ServiceTracker
+					<KaleoDefinitionService, KaleoDefinitionService>(
+						bundle.getBundleContext(), KaleoDefinitionService.class,
+						null);
+
+		serviceTracker.open();
+
+		_serviceTracker = serviceTracker;
+	}
+
 }

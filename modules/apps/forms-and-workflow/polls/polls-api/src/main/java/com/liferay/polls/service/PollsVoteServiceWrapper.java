@@ -14,8 +14,6 @@
 
 package com.liferay.polls.service;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -25,28 +23,29 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see PollsVoteService
  * @generated
  */
-@ProviderType
-public class PollsVoteServiceWrapper implements PollsVoteService,
-	ServiceWrapper<PollsVoteService> {
+public class PollsVoteServiceWrapper
+	implements PollsVoteService, ServiceWrapper<PollsVoteService> {
+
 	public PollsVoteServiceWrapper(PollsVoteService pollsVoteService) {
 		_pollsVoteService = pollsVoteService;
 	}
 
 	@Override
-	public com.liferay.polls.model.PollsVote addVote(long questionId,
-		long choiceId,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public com.liferay.polls.model.PollsVote addVote(
+			long questionId, long choiceId,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return _pollsVoteService.addVote(questionId, choiceId, serviceContext);
 	}
 
 	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
+	public String getOSGiServiceIdentifier() {
 		return _pollsVoteService.getOSGiServiceIdentifier();
 	}
 
@@ -61,4 +60,5 @@ public class PollsVoteServiceWrapper implements PollsVoteService,
 	}
 
 	private PollsVoteService _pollsVoteService;
+
 }

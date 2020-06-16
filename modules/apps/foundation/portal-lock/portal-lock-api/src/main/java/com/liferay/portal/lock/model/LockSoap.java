@@ -14,8 +14,6 @@
 
 package com.liferay.portal.lock.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -28,8 +26,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class LockSoap implements Serializable {
+
 	public static LockSoap toSoapModel(Lock model) {
 		LockSoap soapModel = new LockSoap();
 
@@ -43,7 +41,7 @@ public class LockSoap implements Serializable {
 		soapModel.setClassName(model.getClassName());
 		soapModel.setKey(model.getKey());
 		soapModel.setOwner(model.getOwner());
-		soapModel.setInheritable(model.getInheritable());
+		soapModel.setInheritable(model.isInheritable());
 		soapModel.setExpirationDate(model.getExpirationDate());
 
 		return soapModel;
@@ -209,4 +207,5 @@ public class LockSoap implements Serializable {
 	private String _owner;
 	private boolean _inheritable;
 	private Date _expirationDate;
+
 }

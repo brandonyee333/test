@@ -1,15 +1,15 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.portal.workflow.kaleo.forms.model;
@@ -25,19 +25,22 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Marcellus Tavares
  * @see KaleoProcessModel
- * @see com.liferay.portal.workflow.kaleo.forms.model.impl.KaleoProcessImpl
- * @see com.liferay.portal.workflow.kaleo.forms.model.impl.KaleoProcessModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.portal.workflow.kaleo.forms.model.impl.KaleoProcessImpl")
+@ImplementationClassName(
+	"com.liferay.portal.workflow.kaleo.forms.model.impl.KaleoProcessImpl"
+)
 @ProviderType
 public interface KaleoProcess extends KaleoProcessModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.portal.workflow.kaleo.forms.model.impl.KaleoProcessImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.portal.workflow.kaleo.forms.model.impl.KaleoProcessImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<KaleoProcess, Long> KALEO_PROCESS_ID_ACCESSOR = new Accessor<KaleoProcess, Long>() {
+	public static final Accessor<KaleoProcess, Long> KALEO_PROCESS_ID_ACCESSOR =
+		new Accessor<KaleoProcess, Long>() {
+
 			@Override
 			public Long get(KaleoProcess kaleoProcess) {
 				return kaleoProcess.getKaleoProcessId();
@@ -52,6 +55,7 @@ public interface KaleoProcess extends KaleoProcessModel, PersistedModel {
 			public Class<KaleoProcess> getTypeClass() {
 				return KaleoProcess.class;
 			}
+
 		};
 
 	public com.liferay.dynamic.data.lists.model.DDLRecordSet getDDLRecordSet()
@@ -60,19 +64,20 @@ public interface KaleoProcess extends KaleoProcessModel, PersistedModel {
 	public com.liferay.dynamic.data.mapping.model.DDMTemplate getDDMTemplate()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.lang.String getDescription()
+	public String getDescription()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.lang.String getDescription(java.util.Locale locale)
+	public String getDescription(java.util.Locale locale)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.util.List<KaleoProcessLink> getKaleoProcessLinks();
 
-	public java.lang.String getName()
+	public String getName()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.lang.String getName(java.util.Locale locale)
+	public String getName(java.util.Locale locale)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.lang.String getWorkflowDefinition();
+	public String getWorkflowDefinition();
+
 }

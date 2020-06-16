@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,11 +24,10 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.portal.service.http.UserGroupServiceSoap}.
  *
  * @author Brian Wing Shun Chan
- * @see com.liferay.portal.service.http.UserGroupServiceSoap
  * @generated
  */
-@ProviderType
 public class UserGroupSoap implements Serializable {
+
 	public static UserGroupSoap toSoapModel(UserGroup model) {
 		UserGroupSoap soapModel = new UserGroupSoap();
 
@@ -45,7 +42,7 @@ public class UserGroupSoap implements Serializable {
 		soapModel.setParentUserGroupId(model.getParentUserGroupId());
 		soapModel.setName(model.getName());
 		soapModel.setDescription(model.getDescription());
-		soapModel.setAddedByLDAPImport(model.getAddedByLDAPImport());
+		soapModel.setAddedByLDAPImport(model.isAddedByLDAPImport());
 
 		return soapModel;
 	}
@@ -78,7 +75,8 @@ public class UserGroupSoap implements Serializable {
 	}
 
 	public static UserGroupSoap[] toSoapModels(List<UserGroup> models) {
-		List<UserGroupSoap> soapModels = new ArrayList<UserGroupSoap>(models.size());
+		List<UserGroupSoap> soapModels = new ArrayList<UserGroupSoap>(
+			models.size());
 
 		for (UserGroup model : models) {
 			soapModels.add(toSoapModel(model));
@@ -210,4 +208,5 @@ public class UserGroupSoap implements Serializable {
 	private String _name;
 	private String _description;
 	private boolean _addedByLDAPImport;
+
 }

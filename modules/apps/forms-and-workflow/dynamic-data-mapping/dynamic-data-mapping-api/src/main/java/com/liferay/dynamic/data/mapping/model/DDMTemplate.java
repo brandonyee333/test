@@ -25,19 +25,22 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see DDMTemplateModel
- * @see com.liferay.dynamic.data.mapping.model.impl.DDMTemplateImpl
- * @see com.liferay.dynamic.data.mapping.model.impl.DDMTemplateModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.dynamic.data.mapping.model.impl.DDMTemplateImpl")
+@ImplementationClassName(
+	"com.liferay.dynamic.data.mapping.model.impl.DDMTemplateImpl"
+)
 @ProviderType
 public interface DDMTemplate extends DDMTemplateModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.dynamic.data.mapping.model.impl.DDMTemplateImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.dynamic.data.mapping.model.impl.DDMTemplateImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<DDMTemplate, Long> TEMPLATE_ID_ACCESSOR = new Accessor<DDMTemplate, Long>() {
+	public static final Accessor<DDMTemplate, Long> TEMPLATE_ID_ACCESSOR =
+		new Accessor<DDMTemplate, Long>() {
+
 			@Override
 			public Long get(DDMTemplate ddmTemplate) {
 				return ddmTemplate.getTemplateId();
@@ -52,32 +55,34 @@ public interface DDMTemplate extends DDMTemplateModel, PersistedModel {
 			public Class<DDMTemplate> getTypeClass() {
 				return DDMTemplate.class;
 			}
+
 		};
 
 	public DDMTemplateVersion getLatestTemplateVersion()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.lang.String getSmallImageType()
+	public String getSmallImageType()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.lang.String getTemplateImageURL(
+	public String getTemplateImageURL(
 		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay);
 
 	public DDMTemplateVersion getTemplateVersion()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	/**
-	* Returns the WebDAV URL to access the template.
-	*
-	* @param themeDisplay the theme display needed to build the URL. It can
-	set HTTPS access, the server name, the server port, the path
-	context, and the scope group.
-	* @param webDAVToken the WebDAV token for the URL
-	* @return the WebDAV URL
-	*/
-	public java.lang.String getWebDavURL(
+	 * Returns the WebDAV URL to access the template.
+	 *
+	 * @param themeDisplay the theme display needed to build the URL. It can
+	 set HTTPS access, the server name, the server port, the path
+	 context, and the scope group.
+	 * @param webDAVToken the WebDAV token for the URL
+	 * @return the WebDAV URL
+	 */
+	public String getWebDavURL(
 		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay,
-		java.lang.String webDAVToken);
+		String webDAVToken);
 
-	public void setSmallImageType(java.lang.String smallImageType);
+	public void setSmallImageType(String smallImageType);
+
 }

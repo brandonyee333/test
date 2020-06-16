@@ -1,15 +1,15 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.portal.resiliency.spi.model;
@@ -25,20 +25,22 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Michael C. Han
  * @see SPIDefinitionModel
- * @see com.liferay.portal.resiliency.spi.model.impl.SPIDefinitionImpl
- * @see com.liferay.portal.resiliency.spi.model.impl.SPIDefinitionModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.portal.resiliency.spi.model.impl.SPIDefinitionImpl")
+@ImplementationClassName(
+	"com.liferay.portal.resiliency.spi.model.impl.SPIDefinitionImpl"
+)
 @ProviderType
-public interface SPIDefinition extends SPIDefinitionModel, PersistedModel {
+public interface SPIDefinition extends PersistedModel, SPIDefinitionModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.portal.resiliency.spi.model.impl.SPIDefinitionImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.portal.resiliency.spi.model.impl.SPIDefinitionImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<SPIDefinition, Long> SPI_DEFINITION_ID_ACCESSOR =
-		new Accessor<SPIDefinition, Long>() {
+	public static final Accessor<SPIDefinition, Long>
+		SPI_DEFINITION_ID_ACCESSOR = new Accessor<SPIDefinition, Long>() {
+
 			@Override
 			public Long get(SPIDefinition spiDefinition) {
 				return spiDefinition.getSpiDefinitionId();
@@ -53,15 +55,16 @@ public interface SPIDefinition extends SPIDefinitionModel, PersistedModel {
 			public Class<SPIDefinition> getTypeClass() {
 				return SPIDefinition.class;
 			}
+
 		};
 
 	public void deleteBaseDir();
 
-	public java.lang.String getAgentClassName();
+	public String getAgentClassName();
 
-	public java.lang.String getBaseDir();
+	public String getBaseDir();
 
-	public java.lang.String getJavaExecutable();
+	public String getJavaExecutable();
 
 	public int getMaxRestartAttempts();
 
@@ -69,11 +72,11 @@ public interface SPIDefinition extends SPIDefinitionModel, PersistedModel {
 
 	public int getMinThreads();
 
-	public java.lang.String getNotificationRecipients();
+	public String getNotificationRecipients();
 
 	public long getPingInterval();
 
-	public java.lang.String getPortalProperties();
+	public String getPortalProperties();
 
 	public long getRegisterTimeout();
 
@@ -83,26 +86,27 @@ public interface SPIDefinition extends SPIDefinitionModel, PersistedModel {
 
 	public com.liferay.portal.kernel.resiliency.spi.SPI getSPI();
 
-	public java.lang.String getStatusLabel();
+	public String getStatusLabel();
 
-	public com.liferay.portal.kernel.util.UnicodeProperties getTypeSettingsProperties();
+	public com.liferay.portal.kernel.util.UnicodeProperties
+		getTypeSettingsProperties();
 
-	public java.lang.String getTypeSettingsProperty(java.lang.String key);
+	public String getTypeSettingsProperty(String key);
 
-	public java.lang.String getTypeSettingsProperty(java.lang.String key,
-		java.lang.String defaultValue);
+	public String getTypeSettingsProperty(String key, String defaultValue);
 
 	public boolean isAlive();
 
 	public void setMaxRestartAttempts(int maxRestartAttempts);
 
-	public void setNotificationRecipients(
-		java.lang.String notificationRecipients);
+	public void setNotificationRecipients(String notificationRecipients);
 
-	public void setPortalProperties(java.lang.String portalProperties);
+	public void setPortalProperties(String portalProperties);
 
 	public void setRestartAttempts(int restartAttempts);
 
 	public void setTypeSettingsProperties(
-		com.liferay.portal.kernel.util.UnicodeProperties typeSettingsProperties);
+		com.liferay.portal.kernel.util.UnicodeProperties
+			typeSettingsProperties);
+
 }

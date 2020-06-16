@@ -14,10 +14,7 @@
 
 package com.liferay.calendar.service.http;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.calendar.service.CalendarNotificationTemplateServiceUtil;
-
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
@@ -27,10 +24,11 @@ import com.liferay.portal.kernel.util.MethodKey;
 
 /**
  * Provides the HTTP utility for the
- * {@link CalendarNotificationTemplateServiceUtil} service utility. The
+ * <code>CalendarNotificationTemplateServiceUtil</code> service
+ * utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it requires an additional
- * {@link HttpPrincipal} parameter.
+ * <code>HttpPrincipal</code> parameter.
  *
  * <p>
  * The benefits of using the HTTP utility is that it is fast and allows for
@@ -49,101 +47,125 @@ import com.liferay.portal.kernel.util.MethodKey;
  *
  * @author Eduardo Lundgren
  * @see CalendarNotificationTemplateServiceSoap
- * @see HttpPrincipal
- * @see CalendarNotificationTemplateServiceUtil
  * @generated
  */
-@ProviderType
 public class CalendarNotificationTemplateServiceHttp {
-	public static com.liferay.calendar.model.CalendarNotificationTemplate addCalendarNotificationTemplate(
-		HttpPrincipal httpPrincipal, long calendarId,
-		com.liferay.calendar.notification.NotificationType notificationType,
-		java.lang.String notificationTypeSettings,
-		com.liferay.calendar.notification.NotificationTemplateType notificationTemplateType,
-		java.lang.String subject, java.lang.String body,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarNotificationTemplateServiceUtil.class,
-					"addCalendarNotificationTemplate",
-					_addCalendarNotificationTemplateParameterTypes0);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarId, notificationType, notificationTypeSettings,
-					notificationTemplateType, subject, body, serviceContext);
+	public static com.liferay.calendar.model.CalendarNotificationTemplate
+			addCalendarNotificationTemplate(
+				HttpPrincipal httpPrincipal, long calendarId,
+				com.liferay.calendar.notification.NotificationType
+					notificationType,
+				String notificationTypeSettings,
+				com.liferay.calendar.notification.NotificationTemplateType
+					notificationTemplateType,
+				String subject, String body,
+				com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarNotificationTemplateServiceUtil.class,
+				"addCalendarNotificationTemplate",
+				_addCalendarNotificationTemplateParameterTypes0);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarId, notificationType,
+				notificationTypeSettings, notificationTemplateType, subject,
+				body, serviceContext);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
-			return (com.liferay.calendar.model.CalendarNotificationTemplate)returnObj;
+			return (com.liferay.calendar.model.CalendarNotificationTemplate)
+				returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	public static com.liferay.calendar.model.CalendarNotificationTemplate updateCalendarNotificationTemplate(
-		HttpPrincipal httpPrincipal, long calendarNotificationTemplateId,
-		java.lang.String notificationTypeSettings, java.lang.String subject,
-		java.lang.String body,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static com.liferay.calendar.model.CalendarNotificationTemplate
+			updateCalendarNotificationTemplate(
+				HttpPrincipal httpPrincipal,
+				long calendarNotificationTemplateId,
+				String notificationTypeSettings, String subject, String body,
+				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(CalendarNotificationTemplateServiceUtil.class,
-					"updateCalendarNotificationTemplate",
-					_updateCalendarNotificationTemplateParameterTypes1);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					calendarNotificationTemplateId, notificationTypeSettings,
-					subject, body, serviceContext);
+		try {
+			MethodKey methodKey = new MethodKey(
+				CalendarNotificationTemplateServiceUtil.class,
+				"updateCalendarNotificationTemplate",
+				_updateCalendarNotificationTemplateParameterTypes1);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, calendarNotificationTemplateId,
+				notificationTypeSettings, subject, body, serviceContext);
 
 			Object returnObj = null;
 
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
-			return (com.liferay.calendar.model.CalendarNotificationTemplate)returnObj;
+			return (com.liferay.calendar.model.CalendarNotificationTemplate)
+				returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(CalendarNotificationTemplateServiceHttp.class);
-	private static final Class<?>[] _addCalendarNotificationTemplateParameterTypes0 =
-		new Class[] {
-			long.class, com.liferay.calendar.notification.NotificationType.class,
-			java.lang.String.class,
+	private static Log _log = LogFactoryUtil.getLog(
+		CalendarNotificationTemplateServiceHttp.class);
+
+	private static final Class<?>[]
+		_addCalendarNotificationTemplateParameterTypes0 = new Class[] {
+			long.class,
+			com.liferay.calendar.notification.NotificationType.class,
+			String.class,
 			com.liferay.calendar.notification.NotificationTemplateType.class,
-			java.lang.String.class, java.lang.String.class,
+			String.class, String.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
-	private static final Class<?>[] _updateCalendarNotificationTemplateParameterTypes1 =
-		new Class[] {
-			long.class, java.lang.String.class, java.lang.String.class,
-			java.lang.String.class,
+	private static final Class<?>[]
+		_updateCalendarNotificationTemplateParameterTypes1 = new Class[] {
+			long.class, String.class, String.class, String.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
+
 }

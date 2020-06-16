@@ -14,8 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.service;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -25,34 +23,40 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see KaleoDefinitionService
  * @generated
  */
-@ProviderType
-public class KaleoDefinitionServiceWrapper implements KaleoDefinitionService,
-	ServiceWrapper<KaleoDefinitionService> {
+public class KaleoDefinitionServiceWrapper
+	implements KaleoDefinitionService, ServiceWrapper<KaleoDefinitionService> {
+
 	public KaleoDefinitionServiceWrapper(
 		KaleoDefinitionService kaleoDefinitionService) {
+
 		_kaleoDefinitionService = kaleoDefinitionService;
 	}
 
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _kaleoDefinitionService.getOSGiServiceIdentifier();
-	}
+	public java.util.List
+		<com.liferay.portal.workflow.kaleo.model.KaleoDefinition>
+			getKaleoDefinitions(int start, int end) {
 
-	@Override
-	public java.util.List<com.liferay.portal.workflow.kaleo.model.KaleoDefinition> getKaleoDefinitions(
-		int start, int end) {
 		return _kaleoDefinitionService.getKaleoDefinitions(start, end);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.workflow.kaleo.model.KaleoDefinition> getKaleoDefinitions(
-		long companyId, int start, int end) {
-		return _kaleoDefinitionService.getKaleoDefinitions(companyId, start, end);
+	public java.util.List
+		<com.liferay.portal.workflow.kaleo.model.KaleoDefinition>
+			getKaleoDefinitions(long companyId, int start, int end) {
+
+		return _kaleoDefinitionService.getKaleoDefinitions(
+			companyId, start, end);
+	}
+
+	/**
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
+	@Override
+	public String getOSGiServiceIdentifier() {
+		return _kaleoDefinitionService.getOSGiServiceIdentifier();
 	}
 
 	@Override
@@ -61,9 +65,12 @@ public class KaleoDefinitionServiceWrapper implements KaleoDefinitionService,
 	}
 
 	@Override
-	public void setWrappedService(KaleoDefinitionService kaleoDefinitionService) {
+	public void setWrappedService(
+		KaleoDefinitionService kaleoDefinitionService) {
+
 		_kaleoDefinitionService = kaleoDefinitionService;
 	}
 
 	private KaleoDefinitionService _kaleoDefinitionService;
+
 }

@@ -14,8 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignmentInstance;
 import com.liferay.portal.workflow.kaleo.service.KaleoTaskAssignmentInstanceLocalServiceUtil;
 
@@ -31,22 +29,25 @@ import com.liferay.portal.workflow.kaleo.service.KaleoTaskAssignmentInstanceLoca
  * @see KaleoTaskAssignmentInstance
  * @generated
  */
-@ProviderType
 public abstract class KaleoTaskAssignmentInstanceBaseImpl
 	extends KaleoTaskAssignmentInstanceModelImpl
 	implements KaleoTaskAssignmentInstance {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a kaleo task assignment instance model instance should use the {@link KaleoTaskAssignmentInstance} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a kaleo task assignment instance model instance should use the <code>KaleoTaskAssignmentInstance</code> interface instead.
 	 */
 	@Override
 	public void persist() {
 		if (this.isNew()) {
-			KaleoTaskAssignmentInstanceLocalServiceUtil.addKaleoTaskAssignmentInstance(this);
+			KaleoTaskAssignmentInstanceLocalServiceUtil.
+				addKaleoTaskAssignmentInstance(this);
 		}
 		else {
-			KaleoTaskAssignmentInstanceLocalServiceUtil.updateKaleoTaskAssignmentInstance(this);
+			KaleoTaskAssignmentInstanceLocalServiceUtil.
+				updateKaleoTaskAssignmentInstance(this);
 		}
 	}
+
 }

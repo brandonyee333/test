@@ -1,26 +1,22 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-
 import com.liferay.watson.model.WatsonAddress;
 
 import java.io.Externalizable;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing WatsonAddress in entity cache.
  *
  * @author Steven Smith
- * @see WatsonAddress
  * @generated
  */
-@ProviderType
-public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
-	Externalizable {
+public class WatsonAddressCacheModel
+	implements CacheModel<WatsonAddress>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,7 +45,8 @@ public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
 			return false;
 		}
 
-		WatsonAddressCacheModel watsonAddressCacheModel = (WatsonAddressCacheModel)obj;
+		WatsonAddressCacheModel watsonAddressCacheModel =
+			(WatsonAddressCacheModel)obj;
 
 		if (watsonAddressId == watsonAddressCacheModel.watsonAddressId) {
 			return true;
@@ -141,7 +137,7 @@ public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
 		watsonAddressImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonAddressImpl.setUserName(StringPool.BLANK);
+			watsonAddressImpl.setUserName("");
 		}
 		else {
 			watsonAddressImpl.setUserName(userName);
@@ -165,82 +161,83 @@ public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
 		watsonAddressImpl.setDistrictWatsonListTypeId(districtWatsonListTypeId);
 		watsonAddressImpl.setOriginalWatsonAddressId(originalWatsonAddressId);
 		watsonAddressImpl.setProvinceWatsonListTypeId(provinceWatsonListTypeId);
-		watsonAddressImpl.setSubDistrictWatsonListTypeId(subDistrictWatsonListTypeId);
+		watsonAddressImpl.setSubDistrictWatsonListTypeId(
+			subDistrictWatsonListTypeId);
 		watsonAddressImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
 		watsonAddressImpl.setWatsonIncidentId(watsonIncidentId);
 
 		if (name == null) {
-			watsonAddressImpl.setName(StringPool.BLANK);
+			watsonAddressImpl.setName("");
 		}
 		else {
 			watsonAddressImpl.setName(name);
 		}
 
 		if (postalCode == null) {
-			watsonAddressImpl.setPostalCode(StringPool.BLANK);
+			watsonAddressImpl.setPostalCode("");
 		}
 		else {
 			watsonAddressImpl.setPostalCode(postalCode);
 		}
 
 		if (region == null) {
-			watsonAddressImpl.setRegion(StringPool.BLANK);
+			watsonAddressImpl.setRegion("");
 		}
 		else {
 			watsonAddressImpl.setRegion(region);
 		}
 
 		if (street == null) {
-			watsonAddressImpl.setStreet(StringPool.BLANK);
+			watsonAddressImpl.setStreet("");
 		}
 		else {
 			watsonAddressImpl.setStreet(street);
 		}
 
 		if (number == null) {
-			watsonAddressImpl.setNumber(StringPool.BLANK);
+			watsonAddressImpl.setNumber("");
 		}
 		else {
 			watsonAddressImpl.setNumber(number);
 		}
 
 		if (building == null) {
-			watsonAddressImpl.setBuilding(StringPool.BLANK);
+			watsonAddressImpl.setBuilding("");
 		}
 		else {
 			watsonAddressImpl.setBuilding(building);
 		}
 
 		if (floor == null) {
-			watsonAddressImpl.setFloor(StringPool.BLANK);
+			watsonAddressImpl.setFloor("");
 		}
 		else {
 			watsonAddressImpl.setFloor(floor);
 		}
 
 		if (room == null) {
-			watsonAddressImpl.setRoom(StringPool.BLANK);
+			watsonAddressImpl.setRoom("");
 		}
 		else {
 			watsonAddressImpl.setRoom(room);
 		}
 
 		if (description == null) {
-			watsonAddressImpl.setDescription(StringPool.BLANK);
+			watsonAddressImpl.setDescription("");
 		}
 		else {
 			watsonAddressImpl.setDescription(description);
 		}
 
 		if (imagePayload == null) {
-			watsonAddressImpl.setImagePayload(StringPool.BLANK);
+			watsonAddressImpl.setImagePayload("");
 		}
 		else {
 			watsonAddressImpl.setImagePayload(imagePayload);
 		}
 
 		if (otherType == null) {
-			watsonAddressImpl.setOtherType(StringPool.BLANK);
+			watsonAddressImpl.setOtherType("");
 		}
 		else {
 			watsonAddressImpl.setOtherType(otherType);
@@ -263,7 +260,9 @@ public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		watsonAddressId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -297,7 +296,7 @@ public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
 		floor = objectInput.readUTF();
 		room = objectInput.readUTF();
 		description = objectInput.readUTF();
-		imagePayload = objectInput.readUTF();
+		imagePayload = (String)objectInput.readObject();
 		otherType = objectInput.readUTF();
 		lastSeenDate = objectInput.readLong();
 
@@ -309,8 +308,7 @@ public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonAddressId);
 
 		objectOutput.writeLong(groupId);
@@ -320,7 +318,7 @@ public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -344,77 +342,77 @@ public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
 		objectOutput.writeLong(watsonIncidentId);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (postalCode == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(postalCode);
 		}
 
 		if (region == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(region);
 		}
 
 		if (street == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(street);
 		}
 
 		if (number == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(number);
 		}
 
 		if (building == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(building);
 		}
 
 		if (floor == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(floor);
 		}
 
 		if (room == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(room);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (imagePayload == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(imagePayload);
+			objectOutput.writeObject(imagePayload);
 		}
 
 		if (otherType == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(otherType);
@@ -458,4 +456,5 @@ public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
 	public double latitude;
 	public double longitude;
 	public int status;
+
 }

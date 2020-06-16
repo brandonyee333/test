@@ -1,26 +1,22 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.saml.persistence.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-
 import com.liferay.saml.persistence.model.SamlIdpSpSession;
 
 import java.io.Externalizable;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing SamlIdpSpSession in entity cache.
  *
  * @author Mika Koivisto
- * @see SamlIdpSpSession
  * @generated
  */
-@ProviderType
-public class SamlIdpSpSessionCacheModel implements CacheModel<SamlIdpSpSession>,
-	Externalizable {
+public class SamlIdpSpSessionCacheModel
+	implements CacheModel<SamlIdpSpSession>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,9 +45,12 @@ public class SamlIdpSpSessionCacheModel implements CacheModel<SamlIdpSpSession>,
 			return false;
 		}
 
-		SamlIdpSpSessionCacheModel samlIdpSpSessionCacheModel = (SamlIdpSpSessionCacheModel)obj;
+		SamlIdpSpSessionCacheModel samlIdpSpSessionCacheModel =
+			(SamlIdpSpSessionCacheModel)obj;
 
-		if (samlIdpSpSessionId == samlIdpSpSessionCacheModel.samlIdpSpSessionId) {
+		if (samlIdpSpSessionId ==
+				samlIdpSpSessionCacheModel.samlIdpSpSessionId) {
+
 			return true;
 		}
 
@@ -102,7 +100,7 @@ public class SamlIdpSpSessionCacheModel implements CacheModel<SamlIdpSpSession>,
 		samlIdpSpSessionImpl.setUserId(userId);
 
 		if (userName == null) {
-			samlIdpSpSessionImpl.setUserName(StringPool.BLANK);
+			samlIdpSpSessionImpl.setUserName("");
 		}
 		else {
 			samlIdpSpSessionImpl.setUserName(userName);
@@ -125,21 +123,21 @@ public class SamlIdpSpSessionCacheModel implements CacheModel<SamlIdpSpSession>,
 		samlIdpSpSessionImpl.setSamlIdpSsoSessionId(samlIdpSsoSessionId);
 
 		if (samlSpEntityId == null) {
-			samlIdpSpSessionImpl.setSamlSpEntityId(StringPool.BLANK);
+			samlIdpSpSessionImpl.setSamlSpEntityId("");
 		}
 		else {
 			samlIdpSpSessionImpl.setSamlSpEntityId(samlSpEntityId);
 		}
 
 		if (nameIdFormat == null) {
-			samlIdpSpSessionImpl.setNameIdFormat(StringPool.BLANK);
+			samlIdpSpSessionImpl.setNameIdFormat("");
 		}
 		else {
 			samlIdpSpSessionImpl.setNameIdFormat(nameIdFormat);
 		}
 
 		if (nameIdValue == null) {
-			samlIdpSpSessionImpl.setNameIdValue(StringPool.BLANK);
+			samlIdpSpSessionImpl.setNameIdValue("");
 		}
 		else {
 			samlIdpSpSessionImpl.setNameIdValue(nameIdValue);
@@ -168,8 +166,7 @@ public class SamlIdpSpSessionCacheModel implements CacheModel<SamlIdpSpSession>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(samlIdpSpSessionId);
 
 		objectOutput.writeLong(companyId);
@@ -177,7 +174,7 @@ public class SamlIdpSpSessionCacheModel implements CacheModel<SamlIdpSpSession>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -189,21 +186,21 @@ public class SamlIdpSpSessionCacheModel implements CacheModel<SamlIdpSpSession>,
 		objectOutput.writeLong(samlIdpSsoSessionId);
 
 		if (samlSpEntityId == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(samlSpEntityId);
 		}
 
 		if (nameIdFormat == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(nameIdFormat);
 		}
 
 		if (nameIdValue == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(nameIdValue);
@@ -220,4 +217,5 @@ public class SamlIdpSpSessionCacheModel implements CacheModel<SamlIdpSpSession>,
 	public String samlSpEntityId;
 	public String nameIdFormat;
 	public String nameIdValue;
+
 }

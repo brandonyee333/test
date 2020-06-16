@@ -1,26 +1,22 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-
 import com.liferay.watson.model.WatsonChildAudit;
 
 import java.io.Externalizable;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing WatsonChildAudit in entity cache.
  *
  * @author Steven Smith
- * @see WatsonChildAudit
  * @generated
  */
-@ProviderType
-public class WatsonChildAuditCacheModel implements CacheModel<WatsonChildAudit>,
-	Externalizable {
+public class WatsonChildAuditCacheModel
+	implements CacheModel<WatsonChildAudit>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,9 +45,12 @@ public class WatsonChildAuditCacheModel implements CacheModel<WatsonChildAudit>,
 			return false;
 		}
 
-		WatsonChildAuditCacheModel watsonChildAuditCacheModel = (WatsonChildAuditCacheModel)obj;
+		WatsonChildAuditCacheModel watsonChildAuditCacheModel =
+			(WatsonChildAuditCacheModel)obj;
 
-		if (watsonChildAuditId == watsonChildAuditCacheModel.watsonChildAuditId) {
+		if (watsonChildAuditId ==
+				watsonChildAuditCacheModel.watsonChildAuditId) {
+
 			return true;
 		}
 
@@ -129,7 +127,7 @@ public class WatsonChildAuditCacheModel implements CacheModel<WatsonChildAudit>,
 		watsonChildAuditImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonChildAuditImpl.setUserName(StringPool.BLANK);
+			watsonChildAuditImpl.setUserName("");
 		}
 		else {
 			watsonChildAuditImpl.setUserName(userName);
@@ -150,13 +148,18 @@ public class WatsonChildAuditCacheModel implements CacheModel<WatsonChildAudit>,
 		}
 
 		watsonChildAuditImpl.setBirthCountryId(birthCountryId);
-		watsonChildAuditImpl.setCitizenshipWatsonListTypeId(citizenshipWatsonListTypeId);
-		watsonChildAuditImpl.setCountryWatsonListTypeId(countryWatsonListTypeId);
-		watsonChildAuditImpl.setDischargeWatsonListTypeId(dischargeWatsonListTypeId);
-		watsonChildAuditImpl.setEthnicityWatsonListTypeId(ethnicityWatsonListTypeId);
+		watsonChildAuditImpl.setCitizenshipWatsonListTypeId(
+			citizenshipWatsonListTypeId);
+		watsonChildAuditImpl.setCountryWatsonListTypeId(
+			countryWatsonListTypeId);
+		watsonChildAuditImpl.setDischargeWatsonListTypeId(
+			dischargeWatsonListTypeId);
+		watsonChildAuditImpl.setEthnicityWatsonListTypeId(
+			ethnicityWatsonListTypeId);
 		watsonChildAuditImpl.setOriginalWatsonPersonId(originalWatsonPersonId);
 		watsonChildAuditImpl.setSexWatsonListTypeId(sexWatsonListTypeId);
-		watsonChildAuditImpl.setSourceSubtypeWatsonListTypeId(sourceSubtypeWatsonListTypeId);
+		watsonChildAuditImpl.setSourceSubtypeWatsonListTypeId(
+			sourceSubtypeWatsonListTypeId);
 		watsonChildAuditImpl.setSourceWatsonListTypeId(sourceWatsonListTypeId);
 		watsonChildAuditImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
 		watsonChildAuditImpl.setWatsonChildId(watsonChildId);
@@ -183,7 +186,7 @@ public class WatsonChildAuditCacheModel implements CacheModel<WatsonChildAudit>,
 		}
 
 		if (source == null) {
-			watsonChildAuditImpl.setSource(StringPool.BLANK);
+			watsonChildAuditImpl.setSource("");
 		}
 		else {
 			watsonChildAuditImpl.setSource(source);
@@ -239,8 +242,7 @@ public class WatsonChildAuditCacheModel implements CacheModel<WatsonChildAudit>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonChildAuditId);
 
 		objectOutput.writeLong(groupId);
@@ -250,7 +252,7 @@ public class WatsonChildAuditCacheModel implements CacheModel<WatsonChildAudit>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -285,7 +287,7 @@ public class WatsonChildAuditCacheModel implements CacheModel<WatsonChildAudit>,
 		objectOutput.writeLong(dateFollowUp);
 
 		if (source == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(source);
@@ -317,4 +319,5 @@ public class WatsonChildAuditCacheModel implements CacheModel<WatsonChildAudit>,
 	public long dateFollowUp;
 	public String source;
 	public int status;
+
 }

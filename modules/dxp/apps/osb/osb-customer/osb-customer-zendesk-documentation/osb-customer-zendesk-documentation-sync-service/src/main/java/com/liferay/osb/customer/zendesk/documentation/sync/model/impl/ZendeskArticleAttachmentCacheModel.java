@@ -1,27 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -32,12 +28,11 @@ import java.io.ObjectOutput;
  * The cache model class for representing ZendeskArticleAttachment in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see ZendeskArticleAttachment
  * @generated
  */
-@ProviderType
-public class ZendeskArticleAttachmentCacheModel implements CacheModel<ZendeskArticleAttachment>,
-	Externalizable {
+public class ZendeskArticleAttachmentCacheModel
+	implements CacheModel<ZendeskArticleAttachment>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,9 +43,12 @@ public class ZendeskArticleAttachmentCacheModel implements CacheModel<ZendeskArt
 			return false;
 		}
 
-		ZendeskArticleAttachmentCacheModel zendeskArticleAttachmentCacheModel = (ZendeskArticleAttachmentCacheModel)obj;
+		ZendeskArticleAttachmentCacheModel zendeskArticleAttachmentCacheModel =
+			(ZendeskArticleAttachmentCacheModel)obj;
 
-		if (zendeskArticleAttachmentId == zendeskArticleAttachmentCacheModel.zendeskArticleAttachmentId) {
+		if (zendeskArticleAttachmentId ==
+				zendeskArticleAttachmentCacheModel.zendeskArticleAttachmentId) {
+
 			return true;
 		}
 
@@ -85,20 +83,22 @@ public class ZendeskArticleAttachmentCacheModel implements CacheModel<ZendeskArt
 
 	@Override
 	public ZendeskArticleAttachment toEntityModel() {
-		ZendeskArticleAttachmentImpl zendeskArticleAttachmentImpl = new ZendeskArticleAttachmentImpl();
+		ZendeskArticleAttachmentImpl zendeskArticleAttachmentImpl =
+			new ZendeskArticleAttachmentImpl();
 
-		zendeskArticleAttachmentImpl.setZendeskArticleAttachmentId(zendeskArticleAttachmentId);
+		zendeskArticleAttachmentImpl.setZendeskArticleAttachmentId(
+			zendeskArticleAttachmentId);
 		zendeskArticleAttachmentImpl.setZendeskArticleId(zendeskArticleId);
 
 		if (filePath == null) {
-			zendeskArticleAttachmentImpl.setFilePath(StringPool.BLANK);
+			zendeskArticleAttachmentImpl.setFilePath("");
 		}
 		else {
 			zendeskArticleAttachmentImpl.setFilePath(filePath);
 		}
 
 		if (checksum == null) {
-			zendeskArticleAttachmentImpl.setChecksum(StringPool.BLANK);
+			zendeskArticleAttachmentImpl.setChecksum("");
 		}
 		else {
 			zendeskArticleAttachmentImpl.setChecksum(checksum);
@@ -107,7 +107,7 @@ public class ZendeskArticleAttachmentCacheModel implements CacheModel<ZendeskArt
 		zendeskArticleAttachmentImpl.setRemoteId(remoteId);
 
 		if (remoteContentURL == null) {
-			zendeskArticleAttachmentImpl.setRemoteContentURL(StringPool.BLANK);
+			zendeskArticleAttachmentImpl.setRemoteContentURL("");
 		}
 		else {
 			zendeskArticleAttachmentImpl.setRemoteContentURL(remoteContentURL);
@@ -131,21 +131,20 @@ public class ZendeskArticleAttachmentCacheModel implements CacheModel<ZendeskArt
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(zendeskArticleAttachmentId);
 
 		objectOutput.writeLong(zendeskArticleId);
 
 		if (filePath == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(filePath);
 		}
 
 		if (checksum == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(checksum);
@@ -154,7 +153,7 @@ public class ZendeskArticleAttachmentCacheModel implements CacheModel<ZendeskArt
 		objectOutput.writeLong(remoteId);
 
 		if (remoteContentURL == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(remoteContentURL);
@@ -167,4 +166,5 @@ public class ZendeskArticleAttachmentCacheModel implements CacheModel<ZendeskArt
 	public String checksum;
 	public long remoteId;
 	public String remoteContentURL;
+
 }

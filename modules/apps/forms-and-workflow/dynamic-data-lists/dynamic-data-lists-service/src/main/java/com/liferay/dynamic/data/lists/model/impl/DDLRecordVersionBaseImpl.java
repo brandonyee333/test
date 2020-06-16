@@ -14,8 +14,6 @@
 
 package com.liferay.dynamic.data.lists.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.dynamic.data.lists.model.DDLRecordVersion;
 import com.liferay.dynamic.data.lists.service.DDLRecordVersionLocalServiceUtil;
 
@@ -31,13 +29,13 @@ import com.liferay.dynamic.data.lists.service.DDLRecordVersionLocalServiceUtil;
  * @see DDLRecordVersion
  * @generated
  */
-@ProviderType
-public abstract class DDLRecordVersionBaseImpl extends DDLRecordVersionModelImpl
-	implements DDLRecordVersion {
+public abstract class DDLRecordVersionBaseImpl
+	extends DDLRecordVersionModelImpl implements DDLRecordVersion {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a ddl record version model instance should use the {@link DDLRecordVersion} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a ddl record version model instance should use the <code>DDLRecordVersion</code> interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -48,4 +46,5 @@ public abstract class DDLRecordVersionBaseImpl extends DDLRecordVersionModelImpl
 			DDLRecordVersionLocalServiceUtil.updateDDLRecordVersion(this);
 		}
 	}
+
 }

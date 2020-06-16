@@ -14,31 +14,29 @@
 
 package com.liferay.shopping.service.http;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ListUtil;
-
 import com.liferay.shopping.service.ShoppingItemServiceUtil;
 
 import java.rmi.RemoteException;
 
 /**
  * Provides the SOAP utility for the
- * {@link ShoppingItemServiceUtil} service utility. The
- * static methods of this class calls the same methods of the service utility.
- * However, the signatures are different because it is difficult for SOAP to
- * support certain types.
+ * <code>ShoppingItemServiceUtil</code> service
+ * utility. The static methods of this class call the same methods of the
+ * service utility. However, the signatures are different because it is
+ * difficult for SOAP to support certain types.
  *
  * <p>
  * ServiceBuilder follows certain rules in translating the methods. For example,
- * if the method in the service utility returns a {@link java.util.List}, that
- * is translated to an array of {@link com.liferay.shopping.model.ShoppingItemSoap}.
- * If the method in the service utility returns a
- * {@link com.liferay.shopping.model.ShoppingItem}, that is translated to a
- * {@link com.liferay.shopping.model.ShoppingItemSoap}. Methods that SOAP cannot
- * safely wire are skipped.
+ * if the method in the service utility returns a <code>java.util.List</code>,
+ * that is translated to an array of
+ * <code>com.liferay.shopping.model.ShoppingItemSoap</code>. If the method in the
+ * service utility returns a
+ * <code>com.liferay.shopping.model.ShoppingItem</code>, that is translated to a
+ * <code>com.liferay.shopping.model.ShoppingItemSoap</code>. Methods that SOAP
+ * cannot safely wire are skipped.
  * </p>
  *
  * <p>
@@ -60,115 +58,133 @@ import java.rmi.RemoteException;
  *
  * @author Brian Wing Shun Chan
  * @see ShoppingItemServiceHttp
- * @see com.liferay.shopping.model.ShoppingItemSoap
- * @see ShoppingItemServiceUtil
  * @generated
  */
-@ProviderType
 public class ShoppingItemServiceSoap {
+
 	public static void deleteItem(long itemId) throws RemoteException {
 		try {
 			ShoppingItemServiceUtil.deleteItem(itemId);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-			throw new RemoteException(e.getMessage());
+			throw new RemoteException(exception.getMessage());
 		}
 	}
 
 	public static int getCategoriesItemsCount(long groupId, Long[] categoryIds)
 		throws RemoteException {
+
 		try {
-			int returnValue = ShoppingItemServiceUtil.getCategoriesItemsCount(groupId,
-					ListUtil.toList(categoryIds));
+			int returnValue = ShoppingItemServiceUtil.getCategoriesItemsCount(
+				groupId, ListUtil.toList(categoryIds));
 
 			return returnValue;
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-			throw new RemoteException(e.getMessage());
+			throw new RemoteException(exception.getMessage());
 		}
 	}
 
 	public static com.liferay.shopping.model.ShoppingItemSoap getItem(
-		long itemId) throws RemoteException {
-		try {
-			com.liferay.shopping.model.ShoppingItem returnValue = ShoppingItemServiceUtil.getItem(itemId);
-
-			return com.liferay.shopping.model.ShoppingItemSoap.toSoapModel(returnValue);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
-	public static com.liferay.shopping.model.ShoppingItemSoap[] getItems(
-		long groupId, long categoryId) throws RemoteException {
-		try {
-			java.util.List<com.liferay.shopping.model.ShoppingItem> returnValue = ShoppingItemServiceUtil.getItems(groupId,
-					categoryId);
-
-			return com.liferay.shopping.model.ShoppingItemSoap.toSoapModels(returnValue);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
-	public static com.liferay.shopping.model.ShoppingItemSoap[] getItems(
-		long groupId, long categoryId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.shopping.model.ShoppingItem> obc)
+			long itemId)
 		throws RemoteException {
+
 		try {
-			java.util.List<com.liferay.shopping.model.ShoppingItem> returnValue = ShoppingItemServiceUtil.getItems(groupId,
-					categoryId, start, end, obc);
+			com.liferay.shopping.model.ShoppingItem returnValue =
+				ShoppingItemServiceUtil.getItem(itemId);
 
-			return com.liferay.shopping.model.ShoppingItemSoap.toSoapModels(returnValue);
+			return com.liferay.shopping.model.ShoppingItemSoap.toSoapModel(
+				returnValue);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-			throw new RemoteException(e.getMessage());
+			throw new RemoteException(exception.getMessage());
+		}
+	}
+
+	public static com.liferay.shopping.model.ShoppingItemSoap[] getItems(
+			long groupId, long categoryId)
+		throws RemoteException {
+
+		try {
+			java.util.List<com.liferay.shopping.model.ShoppingItem>
+				returnValue = ShoppingItemServiceUtil.getItems(
+					groupId, categoryId);
+
+			return com.liferay.shopping.model.ShoppingItemSoap.toSoapModels(
+				returnValue);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			throw new RemoteException(exception.getMessage());
+		}
+	}
+
+	public static com.liferay.shopping.model.ShoppingItemSoap[] getItems(
+			long groupId, long categoryId, int start, int end,
+			com.liferay.portal.kernel.util.OrderByComparator
+				<com.liferay.shopping.model.ShoppingItem> obc)
+		throws RemoteException {
+
+		try {
+			java.util.List<com.liferay.shopping.model.ShoppingItem>
+				returnValue = ShoppingItemServiceUtil.getItems(
+					groupId, categoryId, start, end, obc);
+
+			return com.liferay.shopping.model.ShoppingItemSoap.toSoapModels(
+				returnValue);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			throw new RemoteException(exception.getMessage());
 		}
 	}
 
 	public static int getItemsCount(long groupId, long categoryId)
 		throws RemoteException {
+
 		try {
-			int returnValue = ShoppingItemServiceUtil.getItemsCount(groupId,
-					categoryId);
+			int returnValue = ShoppingItemServiceUtil.getItemsCount(
+				groupId, categoryId);
 
 			return returnValue;
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-			throw new RemoteException(e.getMessage());
+			throw new RemoteException(exception.getMessage());
 		}
 	}
 
-	public static com.liferay.shopping.model.ShoppingItemSoap[] getItemsPrevAndNext(
-		long itemId,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.shopping.model.ShoppingItem> obc)
+	public static com.liferay.shopping.model.ShoppingItemSoap[]
+			getItemsPrevAndNext(
+				long itemId,
+				com.liferay.portal.kernel.util.OrderByComparator
+					<com.liferay.shopping.model.ShoppingItem> obc)
 		throws RemoteException {
+
 		try {
-			com.liferay.shopping.model.ShoppingItem[] returnValue = ShoppingItemServiceUtil.getItemsPrevAndNext(itemId,
-					obc);
+			com.liferay.shopping.model.ShoppingItem[] returnValue =
+				ShoppingItemServiceUtil.getItemsPrevAndNext(itemId, obc);
 
-			return com.liferay.shopping.model.ShoppingItemSoap.toSoapModels(returnValue);
+			return com.liferay.shopping.model.ShoppingItemSoap.toSoapModels(
+				returnValue);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-			throw new RemoteException(e.getMessage());
+			throw new RemoteException(exception.getMessage());
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(ShoppingItemServiceSoap.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		ShoppingItemServiceSoap.class);
+
 }

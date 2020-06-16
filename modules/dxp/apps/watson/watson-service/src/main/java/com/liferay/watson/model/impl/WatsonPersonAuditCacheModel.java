@@ -1,26 +1,22 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-
 import com.liferay.watson.model.WatsonPersonAudit;
 
 import java.io.Externalizable;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing WatsonPersonAudit in entity cache.
  *
  * @author Steven Smith
- * @see WatsonPersonAudit
  * @generated
  */
-@ProviderType
-public class WatsonPersonAuditCacheModel implements CacheModel<WatsonPersonAudit>,
-	Externalizable {
+public class WatsonPersonAuditCacheModel
+	implements CacheModel<WatsonPersonAudit>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,9 +45,12 @@ public class WatsonPersonAuditCacheModel implements CacheModel<WatsonPersonAudit
 			return false;
 		}
 
-		WatsonPersonAuditCacheModel watsonPersonAuditCacheModel = (WatsonPersonAuditCacheModel)obj;
+		WatsonPersonAuditCacheModel watsonPersonAuditCacheModel =
+			(WatsonPersonAuditCacheModel)obj;
 
-		if (watsonPersonAuditId == watsonPersonAuditCacheModel.watsonPersonAuditId) {
+		if (watsonPersonAuditId ==
+				watsonPersonAuditCacheModel.watsonPersonAuditId) {
+
 			return true;
 		}
 
@@ -137,7 +135,8 @@ public class WatsonPersonAuditCacheModel implements CacheModel<WatsonPersonAudit
 
 	@Override
 	public WatsonPersonAudit toEntityModel() {
-		WatsonPersonAuditImpl watsonPersonAuditImpl = new WatsonPersonAuditImpl();
+		WatsonPersonAuditImpl watsonPersonAuditImpl =
+			new WatsonPersonAuditImpl();
 
 		watsonPersonAuditImpl.setWatsonPersonAuditId(watsonPersonAuditId);
 		watsonPersonAuditImpl.setGroupId(groupId);
@@ -145,7 +144,7 @@ public class WatsonPersonAuditCacheModel implements CacheModel<WatsonPersonAudit
 		watsonPersonAuditImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonPersonAuditImpl.setUserName(StringPool.BLANK);
+			watsonPersonAuditImpl.setUserName("");
 		}
 		else {
 			watsonPersonAuditImpl.setUserName(userName);
@@ -166,9 +165,12 @@ public class WatsonPersonAuditCacheModel implements CacheModel<WatsonPersonAudit
 		}
 
 		watsonPersonAuditImpl.setBirthCountryId(birthCountryId);
-		watsonPersonAuditImpl.setCitizenshipWatsonListTypeId(citizenshipWatsonListTypeId);
-		watsonPersonAuditImpl.setCountryWatsonListTypeId(countryWatsonListTypeId);
-		watsonPersonAuditImpl.setEthnicityWatsonListTypeId(ethnicityWatsonListTypeId);
+		watsonPersonAuditImpl.setCitizenshipWatsonListTypeId(
+			citizenshipWatsonListTypeId);
+		watsonPersonAuditImpl.setCountryWatsonListTypeId(
+			countryWatsonListTypeId);
+		watsonPersonAuditImpl.setEthnicityWatsonListTypeId(
+			ethnicityWatsonListTypeId);
 		watsonPersonAuditImpl.setEyesWatsonListTypeId(eyesWatsonListTypeId);
 		watsonPersonAuditImpl.setHairWatsonListTypeId(hairWatsonListTypeId);
 		watsonPersonAuditImpl.setOriginalWatsonPersonId(originalWatsonPersonId);
@@ -178,14 +180,14 @@ public class WatsonPersonAuditCacheModel implements CacheModel<WatsonPersonAudit
 		watsonPersonAuditImpl.setWatsonPersonId(watsonPersonId);
 
 		if (description == null) {
-			watsonPersonAuditImpl.setDescription(StringPool.BLANK);
+			watsonPersonAuditImpl.setDescription("");
 		}
 		else {
 			watsonPersonAuditImpl.setDescription(description);
 		}
 
 		if (imagePayload == null) {
-			watsonPersonAuditImpl.setImagePayload(StringPool.BLANK);
+			watsonPersonAuditImpl.setImagePayload("");
 		}
 		else {
 			watsonPersonAuditImpl.setImagePayload(imagePayload);
@@ -213,35 +215,35 @@ public class WatsonPersonAuditCacheModel implements CacheModel<WatsonPersonAudit
 		}
 
 		if (startAge == null) {
-			watsonPersonAuditImpl.setStartAge(StringPool.BLANK);
+			watsonPersonAuditImpl.setStartAge("");
 		}
 		else {
 			watsonPersonAuditImpl.setStartAge(startAge);
 		}
 
 		if (endAge == null) {
-			watsonPersonAuditImpl.setEndAge(StringPool.BLANK);
+			watsonPersonAuditImpl.setEndAge("");
 		}
 		else {
 			watsonPersonAuditImpl.setEndAge(endAge);
 		}
 
 		if (occupation == null) {
-			watsonPersonAuditImpl.setOccupation(StringPool.BLANK);
+			watsonPersonAuditImpl.setOccupation("");
 		}
 		else {
 			watsonPersonAuditImpl.setOccupation(occupation);
 		}
 
 		if (height == null) {
-			watsonPersonAuditImpl.setHeight(StringPool.BLANK);
+			watsonPersonAuditImpl.setHeight("");
 		}
 		else {
 			watsonPersonAuditImpl.setHeight(height);
 		}
 
 		if (weight == null) {
-			watsonPersonAuditImpl.setWeight(StringPool.BLANK);
+			watsonPersonAuditImpl.setWeight("");
 		}
 		else {
 			watsonPersonAuditImpl.setWeight(weight);
@@ -257,7 +259,9 @@ public class WatsonPersonAuditCacheModel implements CacheModel<WatsonPersonAudit
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		watsonPersonAuditId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -291,7 +295,7 @@ public class WatsonPersonAuditCacheModel implements CacheModel<WatsonPersonAudit
 
 		watsonPersonId = objectInput.readLong();
 		description = objectInput.readUTF();
-		imagePayload = objectInput.readUTF();
+		imagePayload = (String)objectInput.readObject();
 		birthDate = objectInput.readLong();
 		dateAccepted = objectInput.readLong();
 		dateRescued = objectInput.readLong();
@@ -309,8 +313,7 @@ public class WatsonPersonAuditCacheModel implements CacheModel<WatsonPersonAudit
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonPersonAuditId);
 
 		objectOutput.writeLong(groupId);
@@ -320,7 +323,7 @@ public class WatsonPersonAuditCacheModel implements CacheModel<WatsonPersonAudit
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -352,17 +355,17 @@ public class WatsonPersonAuditCacheModel implements CacheModel<WatsonPersonAudit
 		objectOutput.writeLong(watsonPersonId);
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (imagePayload == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(imagePayload);
+			objectOutput.writeObject(imagePayload);
 		}
 
 		objectOutput.writeLong(birthDate);
@@ -370,35 +373,35 @@ public class WatsonPersonAuditCacheModel implements CacheModel<WatsonPersonAudit
 		objectOutput.writeLong(dateRescued);
 
 		if (startAge == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(startAge);
 		}
 
 		if (endAge == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(endAge);
 		}
 
 		if (occupation == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(occupation);
 		}
 
 		if (height == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(height);
 		}
 
 		if (weight == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(weight);
@@ -442,4 +445,5 @@ public class WatsonPersonAuditCacheModel implements CacheModel<WatsonPersonAudit
 	public boolean accepted;
 	public boolean rescued;
 	public int status;
+
 }

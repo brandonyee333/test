@@ -14,8 +14,6 @@
 
 package com.liferay.mobile.device.rules.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,11 +24,10 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.mobile.device.rules.service.http.MDRRuleGroupServiceSoap}.
  *
  * @author Edward C. Han
- * @see com.liferay.mobile.device.rules.service.http.MDRRuleGroupServiceSoap
  * @generated
  */
-@ProviderType
 public class MDRRuleGroupSoap implements Serializable {
+
 	public static MDRRuleGroupSoap toSoapModel(MDRRuleGroup model) {
 		MDRRuleGroupSoap soapModel = new MDRRuleGroupSoap();
 
@@ -77,7 +74,8 @@ public class MDRRuleGroupSoap implements Serializable {
 	}
 
 	public static MDRRuleGroupSoap[] toSoapModels(List<MDRRuleGroup> models) {
-		List<MDRRuleGroupSoap> soapModels = new ArrayList<MDRRuleGroupSoap>(models.size());
+		List<MDRRuleGroupSoap> soapModels = new ArrayList<MDRRuleGroupSoap>(
+			models.size());
 
 		for (MDRRuleGroup model : models) {
 			soapModels.add(toSoapModel(model));
@@ -196,4 +194,5 @@ public class MDRRuleGroupSoap implements Serializable {
 	private String _name;
 	private String _description;
 	private Date _lastPublishDate;
+
 }
