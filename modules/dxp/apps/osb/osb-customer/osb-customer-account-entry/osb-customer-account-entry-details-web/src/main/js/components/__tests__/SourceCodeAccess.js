@@ -38,28 +38,28 @@ axios.post.mockImplementation(endpoint =>
 describe('SourceCodeAccess', () => {
 	const collaboratorsJSON = [
 		{
+			collaboratorId: 101,
 			createDate: '01/01/2020',
-			deleteURL: DELETE_COLLABORATOR_URL,
+			deleteCollaboratorURL: DELETE_COLLABORATOR_URL,
 			emailAddress: 'test1@liferay.com',
 			fullName: 'Test One',
-			gitHubUserName: 'testuser1',
-			id: 101
+			gitHubUserName: 'testuser1'
 		},
 		{
+			collaboratorId: 102,
 			createDate: '02/02/2020',
-			deleteURL: DELETE_COLLABORATOR_URL,
+			deleteCollaboratorURL: DELETE_COLLABORATOR_URL,
 			emailAddress: 'test2@liferay.com',
 			fullName: 'Test Two',
-			gitHubUserName: 'testuser2',
-			id: 102
+			gitHubUserName: 'testuser2'
 		},
 		{
+			collaboratorId: 103,
 			createDate: '03/03/2020',
-			deleteURL: DELETE_COLLABORATOR_URL,
+			deleteCollaboratorURL: DELETE_COLLABORATOR_URL,
 			emailAddress: 'test3@liferay.com',
 			fullName: 'Test Three',
-			gitHubUserName: 'testuser3',
-			id: 103
+			gitHubUserName: 'testuser3'
 		}
 	];
 
