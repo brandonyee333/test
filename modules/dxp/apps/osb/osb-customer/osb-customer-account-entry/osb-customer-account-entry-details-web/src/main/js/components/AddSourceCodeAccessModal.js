@@ -175,7 +175,7 @@ export default function AddSourceCodeAccessModal({
 
 					setDataLoading(false);
 				})
-				.catch(error => {
+				.catch(() => {
 					setCustomError(
 						Liferay.Language.get(
 							'could-not-submit-please-try-again'
@@ -206,95 +206,6 @@ export default function AddSourceCodeAccessModal({
 
 	const fieldsToUpdate = fieldErrors.filter(item => item);
 
-	const successConfirmation = (
-		<div className="modal-body-announcement">
-			<div className="modal-body-icon check-circle-full">
-				<svg className="lexicon-icon lexicon-icon-check-circle-full">
-					<use xlinkHref="#check-circle-full" />
-				</svg>
-			</div>
-
-			<div className="modal-body-title">
-				{Liferay.Language.get(
-					'success-your-request-submitted-successfully'
-				)}
-			</div>
-
-			<div className="last-text modal-body-text">
-				{langSub(
-					Liferay.Language.get(
-						'you-will-receive-an-email-invitation-from-x-to-collaborate-on-the-liferaydxp-repository-accept-the-invitation-to-gain-access'
-					),
-					[
-						<a
-							aria-label={Liferay.Language.get('github-link')}
-							className="btn-link component-title"
-							href={GITHUB_URL}
-						>
-							{Liferay.Language.get('github')}
-						</a>
-					],
-					false
-				)}
-			</div>
-		</div>
-	);
-
-	const delayedConfirmation = (
-		<div className="modal-body-announcement">
-			<div className="modal-body-icon warning-full">
-				<svg className="lexicon-icon lexicon-icon-warning-full">
-					<use xlinkHref="#warning-full" />
-				</svg>
-			</div>
-
-			<div className="modal-body-title">
-				{Liferay.Language.get("oh-no-you-can't-be-granted-access-yet")}
-			</div>
-
-			<div className="modal-body-text">
-				{Liferay.Language.get('you-will-gain-access-within-a-few-days')}
-			</div>
-
-			<div className="modal-body-text">
-				{Liferay.Language.get(
-					'we-are-sorry-for-this-inconvenience-github-limits-the-amount-of-repository-invitations-that-can-be-sent-daily'
-				)}
-			</div>
-
-			<div className="last-text modal-body-text">
-				{langSub(
-					Liferay.Language.get(
-						'once-you-can-be-granted-access-you-will-receive-email-invitation-from-x-to-collaborate-on-the-liferaydxp-repository'
-					),
-					[
-						<a
-							aria-label={Liferay.Language.get('github-link')}
-							className="btn-link component-title"
-							href={GITHUB_URL}
-						>
-							{Liferay.Language.get('github')}
-						</a>
-					],
-					false
-				)}
-			</div>
-		</div>
-	);
-
-	const modalConfirmation = (
-		<div className="btn-row">
-			<Button
-				display="default"
-				onClick={handleClose}
-				type="reset"
-				value="close"
-			>
-				{Liferay.Language.get('close')}
-			</Button>
-		</div>
-	);
-
 	return (
 		<Modal
 			header={Liferay.Language.get(
@@ -306,15 +217,10 @@ export default function AddSourceCodeAccessModal({
 			{dataLoading ? (
 				<span aria-hidden="true" className="loading-animation"></span>
 			) : confirmation ? (
-				confirmation === 'success' ? (
-					<>
-						{successConfirmation} {modalConfirmation}
-					</>
-				) : (
-					<>
-						{delayedConfirmation} {modalConfirmation}
-					</>
-				)
+				<ConfirmationDisplay
+					confirmationType={confirmation}
+					onClose={handleClose}
+				/>
 			) : (
 				<>
 					{customError && <Alert type="danger">{customError}</Alert>}
@@ -373,6 +279,127 @@ export default function AddSourceCodeAccessModal({
 				</>
 			)}
 		</Modal>
+	);
+}
+
+ConfirmationDisplay.propTypes = {
+	confirmationType: PropTypes.string.isRequired,
+	onClose: PropTypes.func.isRequired
+};
+
+function ConfirmationDisplay({confirmationType, onClose}) {
+	function handleClose() {
+		onClose();
+	}
+
+	return (
+		<>
+			<div className="modal-body-announcement">
+				{confirmationType === 'success' && (
+					<>
+						<div className="modal-body-icon check-circle-full">
+							<svg className="lexicon-icon lexicon-icon-check-circle-full">
+								<use xlinkHref="#check-circle-full" />
+							</svg>
+						</div>
+
+						<div className="modal-body-title">
+							{Liferay.Language.get(
+								'success-your-request-submitted-successfully'
+							)}
+						</div>
+
+						<div className="last-text modal-body-text">
+							{langSub(
+								Liferay.Language.get(
+									'you-will-receive-an-email-invitation-from-x-to-collaborate-on-the-liferaydxp-repository-accept-the-invitation-to-gain-access'
+								),
+								[
+									<a
+										aria-label={Liferay.Language.get(
+											'github-link'
+										)}
+										className="btn-link component-title"
+										href={GITHUB_URL}
+									>
+										{Liferay.Language.get('github')}
+									</a>
+								],
+								false
+							)}
+						</div>
+					</>
+				)}
+
+				{confirmationType === 'delayed' && (
+					<>
+						<div className="modal-body-icon warning-full">
+							<svg className="lexicon-icon lexicon-icon-warning-full">
+								<use xlinkHref="#warning-full" />
+							</svg>
+						</div>
+
+						<div className="modal-body-title">
+							{Liferay.Language.get(
+								"oh-no-you-can't-be-granted-access-yet"
+							)}
+						</div>
+
+						<div className="modal-body-text">
+							{langSub(
+								Liferay.Language.get(
+									'you-will-gain-access-within-x'
+								),
+								[
+									<span className="semi-bold">
+										{LENGTH_OF_DAYS}{' '}
+										{Liferay.Language.get('days')}
+									</span>
+								],
+								false
+							)}
+						</div>
+
+						<div className="modal-body-text">
+							{Liferay.Language.get(
+								'we-are-sorry-for-this-inconvenience-github-limits-the-amount-of-repository-invitations-that-can-be-sent-daily'
+							)}
+						</div>
+
+						<div className="last-text modal-body-text">
+							{langSub(
+								Liferay.Language.get(
+									'once-you-can-be-granted-access-you-will-receive-email-invitation-from-x-to-collaborate-on-the-liferaydxp-repository'
+								),
+								[
+									<a
+										aria-label={Liferay.Language.get(
+											'github-link'
+										)}
+										className="btn-link component-title"
+										href={GITHUB_URL}
+									>
+										{Liferay.Language.get('github')}
+									</a>
+								],
+								false
+							)}
+						</div>
+					</>
+				)}
+			</div>
+
+			<div className="btn-row">
+				<Button
+					display="default"
+					onClick={handleClose}
+					type="reset"
+					value="close"
+				>
+					{Liferay.Language.get('close')}
+				</Button>
+			</div>
+		</>
 	);
 }
 
