@@ -507,7 +507,7 @@ type Organization implements DXPEntity{
 }
 
 type PageAsset {
-	canonicalURL: String
+	canonicalUrl: String
 	description: String
 	keywords: [Keyword]
 	id: String

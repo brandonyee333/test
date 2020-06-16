@@ -36,7 +36,7 @@ public class PageAsset {
 
 		PageAsset pageAsset = (PageAsset)obj;
 
-		if (Objects.equals(_canonicalURL, pageAsset._canonicalURL) &&
+		if (Objects.equals(_canonicalUrl, pageAsset._canonicalUrl) &&
 			Objects.equals(_description, pageAsset._description) &&
 			Objects.equals(_keywords, pageAsset._keywords) &&
 			Objects.equals(_id, pageAsset._id) &&
@@ -49,9 +49,8 @@ public class PageAsset {
 		return false;
 	}
 
-	@JsonProperty("canonicalUrl")
-	public String getCanonicalURL() {
-		return _canonicalURL;
+	public String getCanonicalUrl() {
+		return _canonicalUrl;
 	}
 
 	public String getDescription() {
@@ -78,11 +77,11 @@ public class PageAsset {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_canonicalURL, _description, _keywords, _id, _title, _url);
+			_canonicalUrl, _description, _keywords, _id, _title, _url);
 	}
 
-	public void setCanonicalURL(String canonicalURL) {
-		_canonicalURL = canonicalURL;
+	public void setCanonicalUrl(String canonicalUrl) {
+		_canonicalUrl = canonicalUrl;
 	}
 
 	public void setDescription(String description) {
@@ -105,7 +104,7 @@ public class PageAsset {
 		_url = url;
 	}
 
-	private String _canonicalURL;
+	private String _canonicalUrl;
 	private String _description;
 	private String _id;
 	private List<Keyword> _keywords;
