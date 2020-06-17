@@ -21,6 +21,10 @@ import com.liferay.portal.kernel.util.GetterUtil;
  */
 public class GitHubConfigurationValues {
 
+	public static final String[] EXCLUDE_GITHUB_USERNAMES =
+		GetterUtil.getStringValues(
+			GitHubConfigurationUtil.getArray("exclude.github.usernames"));
+
 	public static final boolean GITHUB_FEATURE_ENABLED = GetterUtil.getBoolean(
 		GitHubConfigurationUtil.get("github.feature.enabled"));
 

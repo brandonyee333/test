@@ -26,6 +26,10 @@ public class GitHubConfigurationUtil {
 		return _configuration.get(key);
 	}
 
+	public static String[] getArray(String key) {
+		return _configuration.getArray(key);
+	}
+
 	private static final Configuration _configuration =
 		ConfigurationFactoryUtil.getConfiguration(
 			GitHubConfigurationUtil.class.getClassLoader(), "portlet");

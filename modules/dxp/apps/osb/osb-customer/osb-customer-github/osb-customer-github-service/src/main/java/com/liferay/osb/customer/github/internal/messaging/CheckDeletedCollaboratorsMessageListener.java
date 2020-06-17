@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.scheduler.SchedulerEntryImpl;
 import com.liferay.portal.kernel.scheduler.TimeUnit;
 import com.liferay.portal.kernel.scheduler.Trigger;
 import com.liferay.portal.kernel.scheduler.TriggerFactory;
+import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -86,7 +87,10 @@ public class CheckDeletedCollaboratorsMessageListener
 
 			if (userName.equals(
 					GitHubConfigurationValues.
-						REMOTE_REST_SERVICE_API_GITHUB_REPOSITORY_OWNER)) {
+						REMOTE_REST_SERVICE_API_GITHUB_REPOSITORY_OWNER) ||
+				ArrayUtil.contains(
+					GitHubConfigurationValues.EXCLUDE_GITHUB_USERNAMES,
+					userName)) {
 
 				continue;
 			}
