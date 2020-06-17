@@ -18,12 +18,16 @@ import com.liferay.exportimport.content.processor.ExportImportContentProcessor;
 import com.liferay.exportimport.content.processor.base.BaseTextExportImportContentProcessor;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.journal.model.JournalFeed;
+import com.liferay.portal.kernel.exception.NoSuchLayoutException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.StagedModel;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.xml.Element;
@@ -104,8 +108,10 @@ public class JournalFeedExportImportContentProcessor
 
 		Layout targetLayout = null;
 
+		String targetLayoutFriendlyURL = null;
+
 		if (friendlyURLParts.length > 3) {
-			String targetLayoutFriendlyURL = StringUtil.merge(
+			targetLayoutFriendlyURL = StringUtil.merge(
 				Arrays.copyOfRange(
 					friendlyURLParts, 3, friendlyURLParts.length),
 				StringPool.SLASH);
@@ -118,10 +124,27 @@ public class JournalFeedExportImportContentProcessor
 				targetLayoutFriendlyURL);
 		}
 		else {
+			targetLayoutFriendlyURL = oldTargetLayoutFriendlyURL;
+
 			long plid = _portal.getPlidFromFriendlyURL(
-				portletDataContext.getCompanyId(), oldTargetLayoutFriendlyURL);
+				portletDataContext.getCompanyId(), targetLayoutFriendlyURL);
 
 			targetLayout = _layoutLocalService.fetchLayout(plid);
+		}
+
+		if (targetLayout == null) {
+			if (_log.isDebugEnabled()) {
+				StringBundler sb = new StringBundler(4);
+
+				sb.append("Can not retrieve target page friendly URL ");
+				sb.append(targetLayoutFriendlyURL);
+				sb.append(" for feed: ");
+				sb.append(feed.getFeedId());
+
+				_log.debug(sb.toString());
+			}
+
+			throw new NoSuchLayoutException();
 		}
 
 		Element feedElement = portletDataContext.getExportDataElement(feed);
@@ -188,6 +211,9 @@ public class JournalFeedExportImportContentProcessor
 
 		_layoutLocalService = layoutLocalService;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		JournalFeedExportImportContentProcessor.class);
 
 	private GroupLocalService _groupLocalService;
 	private LayoutLocalService _layoutLocalService;
