@@ -842,7 +842,7 @@ public class JournalArticleStagedModelDataHandler
 				}
 
 				Map<Long, Long> articlePrimaryKeys =
-					(Map<Long, Long>) portletDataContext.getNewPrimaryKeysMap(
+					(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
 						JournalArticle.class + ".primaryKey");
 
 				articlePrimaryKeys.put(
