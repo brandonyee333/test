@@ -98,15 +98,16 @@ public class ContentRecommendationRestController extends BaseRestController {
 			this::_toModelResource);
 	}
 
-	@PostMapping("/recommended-items")
-	public String getRecommendedItems(@RequestBody String json)
+	@PostMapping("/models/{modelId}/recommended-items")
+	public String getRecommendedItems(
+			@RequestBody String json, @PathVariable String modelId)
 		throws Exception {
 
 		JSONObject jsonObject = new JSONObject(json);
 
 		return toItemGetResponse(
 			"recommended-items",
-			DigestUtils.sha1Hex(jsonObject.getString("item")));
+			DigestUtils.sha1Hex(modelId.concat(jsonObject.getString("item"))));
 	}
 
 	private ResultBagResource<Model> _getModelResultBagResource(
