@@ -15,14 +15,23 @@
 package com.liferay.journal.internal.exportimport.content.processor;
 
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.test.util.PropsTestUtil;
+
+import java.util.Collections;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
  * @author Mariano Álvaro Sáiz
  */
 public class JournalArticleExportImportContentProcessorTest {
+
+	@Before
+	public void setUp() throws Exception {
+		setUpPropsUtil();
+	}
 
 	@Test
 	public void testMultipleLinesHTMLComment() {
@@ -48,6 +57,10 @@ public class JournalArticleExportImportContentProcessorTest {
 		_testExcludeHTMLComments(
 			"<p>Just a test</p>",
 			"<p>Just <!-- with a HTML comment -->a test</p>");
+	}
+
+	protected void setUpPropsUtil() {
+		PropsTestUtil.setProps(Collections.emptyMap());
 	}
 
 	private void _testExcludeHTMLComments(
