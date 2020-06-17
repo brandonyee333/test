@@ -37,12 +37,12 @@ public class Job {
 
 		Job job = (Job)obj;
 
-		if (Objects.equals(_id, job._id) &&
-			Objects.equals(_jobParameters, job._jobParameters) &&
-			Objects.equals(_jobTrainingFrequency, job._jobTrainingFrequency) &&
-			Objects.equals(_jobTrainingPeriod, job._jobTrainingPeriod) &&
-			Objects.equals(_jobType, job._jobType) &&
-			Objects.equals(_name, job._name)) {
+		if (equalsJob(job)) {
+			Class<?> clazz = obj.getClass();
+
+			if (!clazz.isInstance(this) && Job.class.isAssignableFrom(clazz)) {
+				return obj.equals(this);
+			}
 
 			return true;
 		}
@@ -109,6 +109,20 @@ public class Job {
 
 	public void setName(String name) {
 		_name = name;
+	}
+
+	protected boolean equalsJob(Job job) {
+		if (Objects.equals(_id, job._id) &&
+			Objects.equals(_jobParameters, job._jobParameters) &&
+			Objects.equals(_jobTrainingFrequency, job._jobTrainingFrequency) &&
+			Objects.equals(_jobTrainingPeriod, job._jobTrainingPeriod) &&
+			Objects.equals(_jobType, job._jobType) &&
+			Objects.equals(_name, job._name)) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	private String _id;

@@ -201,21 +201,17 @@ public class ContentRecommendationRestController extends BaseRestController {
 				return true;
 			}
 
+			if (!super.equals(obj)) {
+				return false;
+			}
+
 			if (!(obj instanceof Model)) {
 				return false;
 			}
 
 			Model model = (Model)obj;
 
-			if (Objects.equals(getId(), model.getId()) &&
-				Objects.equals(getJobParameters(), model.getJobParameters()) &&
-				Objects.equals(
-					getJobTrainingFrequency(),
-					model.getJobTrainingFrequency()) &&
-				Objects.equals(
-					getJobTrainingPeriod(), model.getJobTrainingPeriod()) &&
-				Objects.equals(getJobType(), model.getJobType()) &&
-				Objects.equals(getName(), model.getName()) &&
+			if (super.equalsJob(model) &&
 				Objects.equals(_jobStatus, model._jobStatus)) {
 
 				return true;
@@ -231,9 +227,7 @@ public class ContentRecommendationRestController extends BaseRestController {
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(
-				getId(), getJobParameters(), getJobTrainingFrequency(),
-				getJobTrainingPeriod(), getJobType(), getName(), _jobStatus);
+			return super.hashCode() ^ Objects.hash(_jobStatus);
 		}
 
 		public void setJobStatus(JobStatus jobStatus) {
