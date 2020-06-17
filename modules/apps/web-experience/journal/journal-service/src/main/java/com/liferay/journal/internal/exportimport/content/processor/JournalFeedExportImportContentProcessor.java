@@ -130,7 +130,7 @@ public class JournalFeedExportImportContentProcessor
 				portletDataContext.getSourceGroupId());
 
 			if (oldGroup == null) {
-				return newTargetLayoutFriendlyURL;
+				return content;
 			}
 
 			String oldGroupFriendlyURL = oldGroup.getFriendlyURL();
