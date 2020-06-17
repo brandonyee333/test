@@ -12,7 +12,7 @@
 from ..common.spark import BaseSparkJob
 
 from pyspark.sql import Window
-from pyspark.sql.functions import col, count, current_date, datediff, expr, unix_timestamp
+from pyspark.sql.functions import col, count, current_date, datediff, expr, lit, unix_timestamp
 
 import datetime
 
@@ -186,9 +186,11 @@ class ReadRecommendedItemsSparkJob(BaseSparkJob):
 		        self.spark_application_configuration.get('aws.storage.path'),
 		        self.spark_application_args.lcp_project_id, job.get('id')
 		    )
-		).filter('error is null').selectExpr(
-		    'sha1(input.itemId) as id', 'input.itemId as item',
-		    'output.recommendedItems as recommendedItems'
+		).filter('error is null').withColumn('jobId', lit(
+		    job.get('id')
+		)).selectExpr(
+		    'sha1(concat(jobId, input.itemId)) as id', 'input.itemId as item',
+		    'jobId', 'output.recommendedItems as recommendedItems'
 		)
 
 		recommended_items_data_frame.createOrReplaceTempView(
