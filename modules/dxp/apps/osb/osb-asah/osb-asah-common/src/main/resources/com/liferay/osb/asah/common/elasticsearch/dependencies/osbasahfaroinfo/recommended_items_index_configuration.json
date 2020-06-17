@@ -5,6 +5,9 @@
 				"item": {
 					"type": "keyword"
 				},
+				"jobId": {
+					"type": "keyword"
+				},
 				"recommendedItems": {
 					"type": "keyword"
 				}
