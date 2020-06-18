@@ -127,19 +127,22 @@ public class StringFieldRenderer extends BaseFieldRenderer {
 		StringBundler sb = new StringBundler(jsonArray.length() * 2);
 
 		for (int i = 0; i < jsonArray.length(); i++) {
-			String optionValue = jsonArray.getString(i);
+			String value = jsonArray.getString(i);
 
 			if (manualDataSourceType) {
-				LocalizedValue label = getFieldOptionLabel(field, optionValue);
+				LocalizedValue label = getFieldOptionLabel(field, value);
 
 				if (label == null) {
-					continue;
+					sb.append(value);
+				}
+				else {
+					sb.append(label.getString(locale));
 				}
 
 				sb.append(label.getString(locale));
 			}
 			else {
-				sb.append(optionValue);
+				sb.append(value);
 			}
 
 			sb.append(StringPool.COMMA_AND_SPACE);
