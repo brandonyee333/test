@@ -1330,18 +1330,18 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	@ServiceReference(type = AccountEntryLocalService.class)
-	protected AccountEntryLocalService _accountEntryLocalService;
-
-	@ServiceReference(type = KeyGenerator.class)
-	protected KeyGenerator _keyGenerator;
-
-	@ServiceReference(type = LicenseEntryLocalService.class)
-	protected LicenseEntryLocalService _licenseEntryLocalService;
-
-	@ServiceReference(type = ProductEntryLocalService.class)
-	protected ProductEntryLocalService _productEntryLocalService;
+	private AccountEntryLocalService _accountEntryLocalService;
 
 	@BeanReference(type = CountryService.class)
-	protected CountryService countryService;
+	private CountryService _countryService;
+
+	@ServiceReference(type = KeyGenerator.class)
+	private KeyGenerator _keyGenerator;
+
+	@ServiceReference(type = LicenseEntryLocalService.class)
+	private LicenseEntryLocalService _licenseEntryLocalService;
+
+	@ServiceReference(type = ProductEntryLocalService.class)
+	private ProductEntryLocalService _productEntryLocalService;
 
 }

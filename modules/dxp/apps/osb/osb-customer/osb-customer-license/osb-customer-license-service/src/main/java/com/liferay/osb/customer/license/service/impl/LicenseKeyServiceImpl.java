@@ -15,15 +15,22 @@
 package com.liferay.osb.customer.license.service.impl;
 
 import com.liferay.osb.customer.admin.constants.LicenseEntryConstants;
+import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.model.LicenseEntry;
+import com.liferay.osb.customer.admin.model.ProductEntry;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.admin.service.LicenseEntryLocalService;
+import com.liferay.osb.customer.admin.service.ProductEntryLocalService;
 import com.liferay.osb.customer.constants.OSBActionKeys;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.customer.license.constants.LicenseKeyConstants;
 import com.liferay.osb.customer.license.model.LicenseKey;
 import com.liferay.osb.customer.license.service.base.LicenseKeyServiceBaseImpl;
 import com.liferay.osb.customer.license.service.permission.AssetReceiptPermission;
 import com.liferay.osb.customer.license.service.permission.LicenseKeyPermission;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.io.Base64OutputStream;
@@ -36,6 +43,7 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -58,17 +66,55 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			long accountEntryId, long productEntryId, int productMinorVersion)
 		throws PortalException {
 
-		/*
-		TODO
+		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
+			accountEntryId);
+		ProductEntry productEntry = _productEntryLocalService.getProductEntry(
+			productEntryId);
 
-		if (!accountCustomerLocalService.hasAccountCustomer(
-				getUserId(), accountEntryId)) {
+		try {
+			User user = getUser();
 
-			throw new PrincipalException();
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("accountKey eq '");
+			sb.append(accountEntry.getKoroneikiAccountKey());
+			sb.append("' and customerContactUuids/any(s:s eq '");
+			sb.append(user.getUuid());
+			sb.append("') and property_type eq 'primary' and state eq ");
+			sb.append("'active'");
+
+			List<ProductPurchaseView> productPurchaseViews =
+				_productPurchaseViewWebService.getProductPurchaseViews(
+					StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
+
+			boolean hasActiveProduct = false;
+
+			for (ProductPurchaseView productPurchaseView :
+					productPurchaseViews) {
+
+				Product product = productPurchaseView.getProduct();
+
+				ProductEntry curProductEntry =
+					_productEntryLocalService.getProductEntryByKoroneikiKey(
+						product.getKey());
+
+				if ((curProductEntry.isDigitalEnterprise() &&
+					 productEntry.isDigitalEnterprise()) ||
+					(curProductEntry.isDigitalEnterprise() &&
+					 productEntry.isDXPCloud()) ||
+					(curProductEntry.isPortal() && productEntry.isPortal())) {
+
+					hasActiveProduct = true;
+				}
+			}
+
+			if (!hasActiveProduct) {
+				throw new PrincipalException();
+			}
 		}
-
-		validate product ownership
-		*/
+		catch (Exception e) {
+			throw new PortalException(e);
+		}
 
 		return licenseKeyLocalService.addDeveloperLicenseKey(
 			getUserId(), accountEntryId, productEntryId, productMinorVersion);
@@ -903,7 +949,16 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		}
 	}
 
+	@ServiceReference(type = AccountEntryLocalService.class)
+	private AccountEntryLocalService _accountEntryLocalService;
+
 	@ServiceReference(type = LicenseEntryLocalService.class)
 	private LicenseEntryLocalService _licenseEntryLocalService;
+
+	@ServiceReference(type = ProductEntryLocalService.class)
+	private ProductEntryLocalService _productEntryLocalService;
+
+	@ServiceReference(type = ProductPurchaseViewWebService.class)
+	private ProductPurchaseViewWebService _productPurchaseViewWebService;
 
 }

@@ -37,7 +37,7 @@ public class UpgradeSchema extends UpgradeProcess {
 			"alter table OSB_LicenseKeySet add column koroneikiAccountKey " +
 				"varchar(75)");
 
-		runSQL("alter table OSB_ProductEntry add column licenses " + "tinyint");
+		runSQL("alter table OSB_ProductEntry add column licenses tinyint");
 	}
 
 }
