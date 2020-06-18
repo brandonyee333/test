@@ -55,7 +55,7 @@ import org.springframework.web.bind.annotation.RestController;
 	produces = "application/json", value = "/api/content-recommendations"
 )
 @RestController
-public class ContentRecommendationRestController extends BaseRestController {
+public class RecommendationRestController extends BaseRestController {
 
 	@GetMapping
 	public ResourceSupport getLinksResourceSupport() {
@@ -114,7 +114,7 @@ public class ContentRecommendationRestController extends BaseRestController {
 		Integer page, String keywords) {
 
 		return ControllerLinkBuilder.methodOn(
-			ContentRecommendationRestController.class
+			RecommendationRestController.class
 		).getModelResultBagResource(
 			page, keywords
 		);
@@ -138,7 +138,7 @@ public class ContentRecommendationRestController extends BaseRestController {
 			new Model(job, _jobDog.getJobStatus(job.getId())),
 			ControllerLinkBuilder.linkTo(
 				ControllerLinkBuilder.methodOn(
-					ContentRecommendationRestController.class
+					RecommendationRestController.class
 				).getModelResource(
 					job.getId()
 				)

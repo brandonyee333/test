@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.rest.controller.api.external.test;
 
-import com.liferay.osb.asah.backend.rest.controller.api.external.ContentRecommendationRestController;
+import com.liferay.osb.asah.backend.rest.controller.api.external.RecommendationRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -38,7 +38,7 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class ContentRecommendationRestControllerTest {
+public class RecommendationRestControllerTest {
 
 	@ElasticsearchIndex(
 		name = "recommended-items",
@@ -47,7 +47,7 @@ public class ContentRecommendationRestControllerTest {
 	)
 	@Test
 	public void testGetRecommendedItems() throws Exception {
-		String json = _contentRecommendationRestController.getRecommendedItems(
+		String json = _recommendationRestController.getRecommendedItems(
 			JSONUtil.put(
 				"item", "https://www-prd.liferay.com/services/training/online"
 			).toString(),
@@ -66,7 +66,6 @@ public class ContentRecommendationRestControllerTest {
 	}
 
 	@Autowired
-	private ContentRecommendationRestController
-		_contentRecommendationRestController;
+	private RecommendationRestController _recommendationRestController;
 
 }
