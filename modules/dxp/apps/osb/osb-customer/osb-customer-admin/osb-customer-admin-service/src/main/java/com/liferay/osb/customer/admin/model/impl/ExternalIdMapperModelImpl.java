@@ -640,16 +640,16 @@ public class ExternalIdMapperModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof ExternalIdMapper)) {
+		if (!(object instanceof ExternalIdMapper)) {
 			return false;
 		}
 
-		ExternalIdMapper externalIdMapper = (ExternalIdMapper)obj;
+		ExternalIdMapper externalIdMapper = (ExternalIdMapper)object;
 
 		long primaryKey = externalIdMapper.getPrimaryKey();
 

@@ -489,16 +489,16 @@ public class LicenseEntryWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof LicenseEntryWrapper)) {
+		if (!(object instanceof LicenseEntryWrapper)) {
 			return false;
 		}
 
-		LicenseEntryWrapper licenseEntryWrapper = (LicenseEntryWrapper)obj;
+		LicenseEntryWrapper licenseEntryWrapper = (LicenseEntryWrapper)object;
 
 		if (Objects.equals(_licenseEntry, licenseEntryWrapper._licenseEntry)) {
 			return true;

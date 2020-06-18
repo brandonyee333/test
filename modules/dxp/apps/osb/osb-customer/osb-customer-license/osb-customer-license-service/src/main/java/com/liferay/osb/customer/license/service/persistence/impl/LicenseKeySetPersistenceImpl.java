@@ -592,6 +592,637 @@ public class LicenseKeySetPersistenceImpl
 	private static final String _FINDER_COLUMN_ACCOUNTENTRYID_ACCOUNTENTRYID_2 =
 		"licenseKeySet.accountEntryId = ?";
 
+	private FinderPath _finderPathWithPaginationFindByKA_N;
+	private FinderPath _finderPathWithoutPaginationFindByKA_N;
+	private FinderPath _finderPathCountByKA_N;
+
+	/**
+	 * Returns all the license key sets where koroneikiAccountKey = &#63; and name = &#63;.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param name the name
+	 * @return the matching license key sets
+	 */
+	@Override
+	public List<LicenseKeySet> findByKA_N(
+		String koroneikiAccountKey, String name) {
+
+		return findByKA_N(
+			koroneikiAccountKey, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			null);
+	}
+
+	/**
+	 * Returns a range of all the license key sets where koroneikiAccountKey = &#63; and name = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseKeySetModelImpl</code>.
+	 * </p>
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param name the name
+	 * @param start the lower bound of the range of license key sets
+	 * @param end the upper bound of the range of license key sets (not inclusive)
+	 * @return the range of matching license key sets
+	 */
+	@Override
+	public List<LicenseKeySet> findByKA_N(
+		String koroneikiAccountKey, String name, int start, int end) {
+
+		return findByKA_N(koroneikiAccountKey, name, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the license key sets where koroneikiAccountKey = &#63; and name = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseKeySetModelImpl</code>.
+	 * </p>
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param name the name
+	 * @param start the lower bound of the range of license key sets
+	 * @param end the upper bound of the range of license key sets (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching license key sets
+	 */
+	@Override
+	public List<LicenseKeySet> findByKA_N(
+		String koroneikiAccountKey, String name, int start, int end,
+		OrderByComparator<LicenseKeySet> orderByComparator) {
+
+		return findByKA_N(
+			koroneikiAccountKey, name, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the license key sets where koroneikiAccountKey = &#63; and name = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseKeySetModelImpl</code>.
+	 * </p>
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param name the name
+	 * @param start the lower bound of the range of license key sets
+	 * @param end the upper bound of the range of license key sets (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching license key sets
+	 */
+	@Override
+	public List<LicenseKeySet> findByKA_N(
+		String koroneikiAccountKey, String name, int start, int end,
+		OrderByComparator<LicenseKeySet> orderByComparator,
+		boolean useFinderCache) {
+
+		koroneikiAccountKey = Objects.toString(koroneikiAccountKey, "");
+		name = Objects.toString(name, "");
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByKA_N;
+				finderArgs = new Object[] {koroneikiAccountKey, name};
+			}
+		}
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByKA_N;
+			finderArgs = new Object[] {
+				koroneikiAccountKey, name, start, end, orderByComparator
+			};
+		}
+
+		List<LicenseKeySet> list = null;
+
+		if (useFinderCache) {
+			list = (List<LicenseKeySet>)finderCache.getResult(
+				finderPath, finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (LicenseKeySet licenseKeySet : list) {
+					if (!koroneikiAccountKey.equals(
+							licenseKeySet.getKoroneikiAccountKey()) ||
+						!name.equals(licenseKeySet.getName())) {
+
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					4 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(4);
+			}
+
+			sb.append(_SQL_SELECT_LICENSEKEYSET_WHERE);
+
+			boolean bindKoroneikiAccountKey = false;
+
+			if (koroneikiAccountKey.isEmpty()) {
+				sb.append(_FINDER_COLUMN_KA_N_KORONEIKIACCOUNTKEY_3);
+			}
+			else {
+				bindKoroneikiAccountKey = true;
+
+				sb.append(_FINDER_COLUMN_KA_N_KORONEIKIACCOUNTKEY_2);
+			}
+
+			boolean bindName = false;
+
+			if (name.isEmpty()) {
+				sb.append(_FINDER_COLUMN_KA_N_NAME_3);
+			}
+			else {
+				bindName = true;
+
+				sb.append(_FINDER_COLUMN_KA_N_NAME_2);
+			}
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(LicenseKeySetModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindKoroneikiAccountKey) {
+					queryPos.add(koroneikiAccountKey);
+				}
+
+				if (bindName) {
+					queryPos.add(name);
+				}
+
+				list = (List<LicenseKeySet>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first license key set in the ordered set where koroneikiAccountKey = &#63; and name = &#63;.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param name the name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching license key set
+	 * @throws NoSuchLicenseKeySetException if a matching license key set could not be found
+	 */
+	@Override
+	public LicenseKeySet findByKA_N_First(
+			String koroneikiAccountKey, String name,
+			OrderByComparator<LicenseKeySet> orderByComparator)
+		throws NoSuchLicenseKeySetException {
+
+		LicenseKeySet licenseKeySet = fetchByKA_N_First(
+			koroneikiAccountKey, name, orderByComparator);
+
+		if (licenseKeySet != null) {
+			return licenseKeySet;
+		}
+
+		StringBundler sb = new StringBundler(6);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("koroneikiAccountKey=");
+		sb.append(koroneikiAccountKey);
+
+		sb.append(", name=");
+		sb.append(name);
+
+		sb.append("}");
+
+		throw new NoSuchLicenseKeySetException(sb.toString());
+	}
+
+	/**
+	 * Returns the first license key set in the ordered set where koroneikiAccountKey = &#63; and name = &#63;.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param name the name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching license key set, or <code>null</code> if a matching license key set could not be found
+	 */
+	@Override
+	public LicenseKeySet fetchByKA_N_First(
+		String koroneikiAccountKey, String name,
+		OrderByComparator<LicenseKeySet> orderByComparator) {
+
+		List<LicenseKeySet> list = findByKA_N(
+			koroneikiAccountKey, name, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last license key set in the ordered set where koroneikiAccountKey = &#63; and name = &#63;.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param name the name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching license key set
+	 * @throws NoSuchLicenseKeySetException if a matching license key set could not be found
+	 */
+	@Override
+	public LicenseKeySet findByKA_N_Last(
+			String koroneikiAccountKey, String name,
+			OrderByComparator<LicenseKeySet> orderByComparator)
+		throws NoSuchLicenseKeySetException {
+
+		LicenseKeySet licenseKeySet = fetchByKA_N_Last(
+			koroneikiAccountKey, name, orderByComparator);
+
+		if (licenseKeySet != null) {
+			return licenseKeySet;
+		}
+
+		StringBundler sb = new StringBundler(6);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("koroneikiAccountKey=");
+		sb.append(koroneikiAccountKey);
+
+		sb.append(", name=");
+		sb.append(name);
+
+		sb.append("}");
+
+		throw new NoSuchLicenseKeySetException(sb.toString());
+	}
+
+	/**
+	 * Returns the last license key set in the ordered set where koroneikiAccountKey = &#63; and name = &#63;.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param name the name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching license key set, or <code>null</code> if a matching license key set could not be found
+	 */
+	@Override
+	public LicenseKeySet fetchByKA_N_Last(
+		String koroneikiAccountKey, String name,
+		OrderByComparator<LicenseKeySet> orderByComparator) {
+
+		int count = countByKA_N(koroneikiAccountKey, name);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<LicenseKeySet> list = findByKA_N(
+			koroneikiAccountKey, name, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the license key sets before and after the current license key set in the ordered set where koroneikiAccountKey = &#63; and name = &#63;.
+	 *
+	 * @param licenseKeySetId the primary key of the current license key set
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param name the name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next license key set
+	 * @throws NoSuchLicenseKeySetException if a license key set with the primary key could not be found
+	 */
+	@Override
+	public LicenseKeySet[] findByKA_N_PrevAndNext(
+			long licenseKeySetId, String koroneikiAccountKey, String name,
+			OrderByComparator<LicenseKeySet> orderByComparator)
+		throws NoSuchLicenseKeySetException {
+
+		koroneikiAccountKey = Objects.toString(koroneikiAccountKey, "");
+		name = Objects.toString(name, "");
+
+		LicenseKeySet licenseKeySet = findByPrimaryKey(licenseKeySetId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			LicenseKeySet[] array = new LicenseKeySetImpl[3];
+
+			array[0] = getByKA_N_PrevAndNext(
+				session, licenseKeySet, koroneikiAccountKey, name,
+				orderByComparator, true);
+
+			array[1] = licenseKeySet;
+
+			array[2] = getByKA_N_PrevAndNext(
+				session, licenseKeySet, koroneikiAccountKey, name,
+				orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected LicenseKeySet getByKA_N_PrevAndNext(
+		Session session, LicenseKeySet licenseKeySet,
+		String koroneikiAccountKey, String name,
+		OrderByComparator<LicenseKeySet> orderByComparator, boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(4);
+		}
+
+		sb.append(_SQL_SELECT_LICENSEKEYSET_WHERE);
+
+		boolean bindKoroneikiAccountKey = false;
+
+		if (koroneikiAccountKey.isEmpty()) {
+			sb.append(_FINDER_COLUMN_KA_N_KORONEIKIACCOUNTKEY_3);
+		}
+		else {
+			bindKoroneikiAccountKey = true;
+
+			sb.append(_FINDER_COLUMN_KA_N_KORONEIKIACCOUNTKEY_2);
+		}
+
+		boolean bindName = false;
+
+		if (name.isEmpty()) {
+			sb.append(_FINDER_COLUMN_KA_N_NAME_3);
+		}
+		else {
+			bindName = true;
+
+			sb.append(_FINDER_COLUMN_KA_N_NAME_2);
+		}
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(LicenseKeySetModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		if (bindKoroneikiAccountKey) {
+			queryPos.add(koroneikiAccountKey);
+		}
+
+		if (bindName) {
+			queryPos.add(name);
+		}
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(
+						licenseKeySet)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<LicenseKeySet> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the license key sets where koroneikiAccountKey = &#63; and name = &#63; from the database.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param name the name
+	 */
+	@Override
+	public void removeByKA_N(String koroneikiAccountKey, String name) {
+		for (LicenseKeySet licenseKeySet :
+				findByKA_N(
+					koroneikiAccountKey, name, QueryUtil.ALL_POS,
+					QueryUtil.ALL_POS, null)) {
+
+			remove(licenseKeySet);
+		}
+	}
+
+	/**
+	 * Returns the number of license key sets where koroneikiAccountKey = &#63; and name = &#63;.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param name the name
+	 * @return the number of matching license key sets
+	 */
+	@Override
+	public int countByKA_N(String koroneikiAccountKey, String name) {
+		koroneikiAccountKey = Objects.toString(koroneikiAccountKey, "");
+		name = Objects.toString(name, "");
+
+		FinderPath finderPath = _finderPathCountByKA_N;
+
+		Object[] finderArgs = new Object[] {koroneikiAccountKey, name};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(3);
+
+			sb.append(_SQL_COUNT_LICENSEKEYSET_WHERE);
+
+			boolean bindKoroneikiAccountKey = false;
+
+			if (koroneikiAccountKey.isEmpty()) {
+				sb.append(_FINDER_COLUMN_KA_N_KORONEIKIACCOUNTKEY_3);
+			}
+			else {
+				bindKoroneikiAccountKey = true;
+
+				sb.append(_FINDER_COLUMN_KA_N_KORONEIKIACCOUNTKEY_2);
+			}
+
+			boolean bindName = false;
+
+			if (name.isEmpty()) {
+				sb.append(_FINDER_COLUMN_KA_N_NAME_3);
+			}
+			else {
+				bindName = true;
+
+				sb.append(_FINDER_COLUMN_KA_N_NAME_2);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindKoroneikiAccountKey) {
+					queryPos.add(koroneikiAccountKey);
+				}
+
+				if (bindName) {
+					queryPos.add(name);
+				}
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_KA_N_KORONEIKIACCOUNTKEY_2 =
+		"licenseKeySet.koroneikiAccountKey = ? AND ";
+
+	private static final String _FINDER_COLUMN_KA_N_KORONEIKIACCOUNTKEY_3 =
+		"(licenseKeySet.koroneikiAccountKey IS NULL OR licenseKeySet.koroneikiAccountKey = '') AND ";
+
+	private static final String _FINDER_COLUMN_KA_N_NAME_2 =
+		"licenseKeySet.name = ?";
+
+	private static final String _FINDER_COLUMN_KA_N_NAME_3 =
+		"(licenseKeySet.name IS NULL OR licenseKeySet.name = '')";
+
 	private FinderPath _finderPathWithPaginationFindByU_AEI_N;
 	private FinderPath _finderPathWithoutPaginationFindByU_AEI_N;
 	private FinderPath _finderPathCountByU_AEI_N;
@@ -1498,6 +2129,15 @@ public class LicenseKeySetPersistenceImpl
 				_finderPathWithoutPaginationFindByAccountEntryId, args);
 
 			args = new Object[] {
+				licenseKeySetModelImpl.getKoroneikiAccountKey(),
+				licenseKeySetModelImpl.getName()
+			};
+
+			finderCache.removeResult(_finderPathCountByKA_N, args);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindByKA_N, args);
+
+			args = new Object[] {
 				licenseKeySetModelImpl.getUserId(),
 				licenseKeySetModelImpl.getAccountEntryId(),
 				licenseKeySetModelImpl.getName()
@@ -1533,6 +2173,29 @@ public class LicenseKeySetPersistenceImpl
 					_finderPathCountByAccountEntryId, args);
 				finderCache.removeResult(
 					_finderPathWithoutPaginationFindByAccountEntryId, args);
+			}
+
+			if ((licenseKeySetModelImpl.getColumnBitmask() &
+				 _finderPathWithoutPaginationFindByKA_N.getColumnBitmask()) !=
+					 0) {
+
+				Object[] args = new Object[] {
+					licenseKeySetModelImpl.getOriginalKoroneikiAccountKey(),
+					licenseKeySetModelImpl.getOriginalName()
+				};
+
+				finderCache.removeResult(_finderPathCountByKA_N, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByKA_N, args);
+
+				args = new Object[] {
+					licenseKeySetModelImpl.getKoroneikiAccountKey(),
+					licenseKeySetModelImpl.getName()
+				};
+
+				finderCache.removeResult(_finderPathCountByKA_N, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByKA_N, args);
 			}
 
 			if ((licenseKeySetModelImpl.getColumnBitmask() &
@@ -2009,6 +2672,32 @@ public class LicenseKeySetPersistenceImpl
 			LicenseKeySetModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAccountEntryId",
 			new String[] {Long.class.getName()});
+
+		_finderPathWithPaginationFindByKA_N = new FinderPath(
+			LicenseKeySetModelImpl.ENTITY_CACHE_ENABLED,
+			LicenseKeySetModelImpl.FINDER_CACHE_ENABLED,
+			LicenseKeySetImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findByKA_N",
+			new String[] {
+				String.class.getName(), String.class.getName(),
+				Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+
+		_finderPathWithoutPaginationFindByKA_N = new FinderPath(
+			LicenseKeySetModelImpl.ENTITY_CACHE_ENABLED,
+			LicenseKeySetModelImpl.FINDER_CACHE_ENABLED,
+			LicenseKeySetImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"findByKA_N",
+			new String[] {String.class.getName(), String.class.getName()},
+			LicenseKeySetModelImpl.KORONEIKIACCOUNTKEY_COLUMN_BITMASK |
+			LicenseKeySetModelImpl.NAME_COLUMN_BITMASK);
+
+		_finderPathCountByKA_N = new FinderPath(
+			LicenseKeySetModelImpl.ENTITY_CACHE_ENABLED,
+			LicenseKeySetModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByKA_N",
+			new String[] {String.class.getName(), String.class.getName()});
 
 		_finderPathWithPaginationFindByU_AEI_N = new FinderPath(
 			LicenseKeySetModelImpl.ENTITY_CACHE_ENABLED,

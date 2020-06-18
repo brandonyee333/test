@@ -36,17 +36,17 @@ public class AccountEnvironmentCacheModel
 	implements CacheModel<AccountEnvironment>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof AccountEnvironmentCacheModel)) {
+		if (!(object instanceof AccountEnvironmentCacheModel)) {
 			return false;
 		}
 
 		AccountEnvironmentCacheModel accountEnvironmentCacheModel =
-			(AccountEnvironmentCacheModel)obj;
+			(AccountEnvironmentCacheModel)object;
 
 		if (accountEnvironmentId ==
 				accountEnvironmentCacheModel.accountEnvironmentId) {

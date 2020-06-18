@@ -801,16 +801,16 @@ public class SupportRegionModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof SupportRegion)) {
+		if (!(object instanceof SupportRegion)) {
 			return false;
 		}
 
-		SupportRegion supportRegion = (SupportRegion)obj;
+		SupportRegion supportRegion = (SupportRegion)object;
 
 		long primaryKey = supportRegion.getPrimaryKey();
 

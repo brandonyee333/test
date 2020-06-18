@@ -54,7 +54,7 @@ public class LicenseKeyServiceHttp {
 	public static com.liferay.osb.customer.license.model.LicenseKey
 			addDeveloperLicenseKey(
 				HttpPrincipal httpPrincipal, long accountEntryId,
-				String productEntryRootName, int productMinorVersion)
+				long productEntryId, int productMinorVersion)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		try {
@@ -63,8 +63,7 @@ public class LicenseKeyServiceHttp {
 				_addDeveloperLicenseKeyParameterTypes0);
 
 			MethodHandler methodHandler = new MethodHandler(
-				methodKey, accountEntryId, productEntryRootName,
-				productMinorVersion);
+				methodKey, accountEntryId, productEntryId, productMinorVersion);
 
 			Object returnObj = null;
 
@@ -1345,7 +1344,7 @@ public class LicenseKeyServiceHttp {
 		LicenseKeyServiceHttp.class);
 
 	private static final Class<?>[] _addDeveloperLicenseKeyParameterTypes0 =
-		new Class[] {long.class, String.class, int.class};
+		new Class[] {long.class, long.class, int.class};
 	private static final Class<?>[] _addLicenseKeyParameterTypes1 =
 		new Class[] {
 			long.class, long.class, String.class, long.class, long.class,

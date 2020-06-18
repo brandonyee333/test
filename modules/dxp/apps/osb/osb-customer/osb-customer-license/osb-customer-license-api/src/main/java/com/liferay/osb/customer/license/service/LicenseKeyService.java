@@ -63,8 +63,7 @@ public interface LicenseKeyService extends BaseService {
 	 * Never modify or reference this interface directly. Always use {@link LicenseKeyServiceUtil} to access the license key remote service. Add custom service methods to <code>com.liferay.osb.customer.license.service.impl.LicenseKeyServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public LicenseKey addDeveloperLicenseKey(
-			long accountEntryId, String productEntryRootName,
-			int productMinorVersion)
+			long accountEntryId, long productEntryId, int productMinorVersion)
 		throws PortalException;
 
 	public LicenseKey addLicenseKey(

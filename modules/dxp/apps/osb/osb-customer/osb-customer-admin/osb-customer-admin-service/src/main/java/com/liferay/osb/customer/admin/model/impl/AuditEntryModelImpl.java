@@ -1215,16 +1215,16 @@ public class AuditEntryModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof AuditEntry)) {
+		if (!(object instanceof AuditEntry)) {
 			return false;
 		}
 
-		AuditEntry auditEntry = (AuditEntry)obj;
+		AuditEntry auditEntry = (AuditEntry)object;
 
 		long primaryKey = auditEntry.getPrimaryKey();
 

@@ -36,17 +36,17 @@ public class ProductEntryCacheModel
 	implements CacheModel<ProductEntry>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof ProductEntryCacheModel)) {
+		if (!(object instanceof ProductEntryCacheModel)) {
 			return false;
 		}
 
 		ProductEntryCacheModel productEntryCacheModel =
-			(ProductEntryCacheModel)obj;
+			(ProductEntryCacheModel)object;
 
 		if (productEntryId == productEntryCacheModel.productEntryId) {
 			return true;

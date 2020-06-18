@@ -127,9 +127,11 @@ public class LicenseKeySetModelImpl
 
 	public static final long ACCOUNTENTRYID_COLUMN_BITMASK = 1L;
 
-	public static final long NAME_COLUMN_BITMASK = 2L;
+	public static final long KORONEIKIACCOUNTKEY_COLUMN_BITMASK = 2L;
 
-	public static final long USERID_COLUMN_BITMASK = 4L;
+	public static final long NAME_COLUMN_BITMASK = 4L;
+
+	public static final long USERID_COLUMN_BITMASK = 8L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -601,7 +603,17 @@ public class LicenseKeySetModelImpl
 
 	@Override
 	public void setKoroneikiAccountKey(String koroneikiAccountKey) {
+		_columnBitmask |= KORONEIKIACCOUNTKEY_COLUMN_BITMASK;
+
+		if (_originalKoroneikiAccountKey == null) {
+			_originalKoroneikiAccountKey = _koroneikiAccountKey;
+		}
+
 		_koroneikiAccountKey = koroneikiAccountKey;
+	}
+
+	public String getOriginalKoroneikiAccountKey() {
+		return GetterUtil.getString(_originalKoroneikiAccountKey);
 	}
 
 	@JSON
@@ -717,16 +729,16 @@ public class LicenseKeySetModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof LicenseKeySet)) {
+		if (!(object instanceof LicenseKeySet)) {
 			return false;
 		}
 
-		LicenseKeySet licenseKeySet = (LicenseKeySet)obj;
+		LicenseKeySet licenseKeySet = (LicenseKeySet)object;
 
 		long primaryKey = licenseKeySet.getPrimaryKey();
 
@@ -762,6 +774,9 @@ public class LicenseKeySetModelImpl
 		licenseKeySetModelImpl._setOriginalUserId = false;
 
 		licenseKeySetModelImpl._setModifiedDate = false;
+
+		licenseKeySetModelImpl._originalKoroneikiAccountKey =
+			licenseKeySetModelImpl._koroneikiAccountKey;
 
 		licenseKeySetModelImpl._originalAccountEntryId =
 			licenseKeySetModelImpl._accountEntryId;
@@ -911,6 +926,7 @@ public class LicenseKeySetModelImpl
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private String _koroneikiAccountKey;
+	private String _originalKoroneikiAccountKey;
 	private long _accountEntryId;
 	private long _originalAccountEntryId;
 	private boolean _setOriginalAccountEntryId;

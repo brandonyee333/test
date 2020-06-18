@@ -475,17 +475,17 @@ public class AccountAttachmentWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof AccountAttachmentWrapper)) {
+		if (!(object instanceof AccountAttachmentWrapper)) {
 			return false;
 		}
 
 		AccountAttachmentWrapper accountAttachmentWrapper =
-			(AccountAttachmentWrapper)obj;
+			(AccountAttachmentWrapper)object;
 
 		if (Objects.equals(
 				_accountAttachment,

@@ -813,16 +813,16 @@ public class ProductEntryModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof ProductEntry)) {
+		if (!(object instanceof ProductEntry)) {
 			return false;
 		}
 
-		ProductEntry productEntry = (ProductEntry)obj;
+		ProductEntry productEntry = (ProductEntry)object;
 
 		long primaryKey = productEntry.getPrimaryKey();
 

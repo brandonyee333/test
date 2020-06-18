@@ -33,12 +33,12 @@ public class LicenseKeyServiceWrapper
 	@Override
 	public com.liferay.osb.customer.license.model.LicenseKey
 			addDeveloperLicenseKey(
-				long accountEntryId, String productEntryRootName,
+				long accountEntryId, long productEntryId,
 				int productMinorVersion)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _licenseKeyService.addDeveloperLicenseKey(
-			accountEntryId, productEntryRootName, productMinorVersion);
+			accountEntryId, productEntryId, productMinorVersion);
 	}
 
 	@Override

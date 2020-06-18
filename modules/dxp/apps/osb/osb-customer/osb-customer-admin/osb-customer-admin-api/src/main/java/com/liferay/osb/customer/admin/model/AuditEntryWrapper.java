@@ -765,16 +765,16 @@ public class AuditEntryWrapper implements AuditEntry, ModelWrapper<AuditEntry> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof AuditEntryWrapper)) {
+		if (!(object instanceof AuditEntryWrapper)) {
 			return false;
 		}
 
-		AuditEntryWrapper auditEntryWrapper = (AuditEntryWrapper)obj;
+		AuditEntryWrapper auditEntryWrapper = (AuditEntryWrapper)object;
 
 		if (Objects.equals(_auditEntry, auditEntryWrapper._auditEntry)) {
 			return true;

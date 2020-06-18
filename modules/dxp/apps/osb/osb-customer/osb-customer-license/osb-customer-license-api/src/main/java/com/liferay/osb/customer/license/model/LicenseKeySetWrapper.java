@@ -424,16 +424,17 @@ public class LicenseKeySetWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof LicenseKeySetWrapper)) {
+		if (!(object instanceof LicenseKeySetWrapper)) {
 			return false;
 		}
 
-		LicenseKeySetWrapper licenseKeySetWrapper = (LicenseKeySetWrapper)obj;
+		LicenseKeySetWrapper licenseKeySetWrapper =
+			(LicenseKeySetWrapper)object;
 
 		if (Objects.equals(
 				_licenseKeySet, licenseKeySetWrapper._licenseKeySet)) {

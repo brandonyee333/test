@@ -39,12 +39,12 @@ public class LicenseKeyLocalServiceUtil {
 	 */
 	public static com.liferay.osb.customer.license.model.LicenseKey
 			addDeveloperLicenseKey(
-				long userId, long accountEntryId, String productEntryRootName,
+				long userId, long accountEntryId, long productEntryId,
 				int productMinorVersion)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addDeveloperLicenseKey(
-			userId, accountEntryId, productEntryRootName, productMinorVersion);
+			userId, accountEntryId, productEntryId, productMinorVersion);
 	}
 
 	/**

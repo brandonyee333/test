@@ -229,6 +229,13 @@ public class ProductEntryLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
+	public static com.liferay.osb.customer.admin.model.ProductEntry
+			getDeveloperProductEntry(long productEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().getDeveloperProductEntry(productEntryId);
+	}
+
 	public static
 		com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
 			getIndexableActionableDynamicQuery() {

@@ -63,14 +63,14 @@ public class LicenseKeyServiceSoap {
 
 	public static com.liferay.osb.customer.license.model.LicenseKeySoap
 			addDeveloperLicenseKey(
-				long accountEntryId, String productEntryRootName,
+				long accountEntryId, long productEntryId,
 				int productMinorVersion)
 		throws RemoteException {
 
 		try {
 			com.liferay.osb.customer.license.model.LicenseKey returnValue =
 				LicenseKeyServiceUtil.addDeveloperLicenseKey(
-					accountEntryId, productEntryRootName, productMinorVersion);
+					accountEntryId, productEntryId, productMinorVersion);
 
 			return com.liferay.osb.customer.license.model.LicenseKeySoap.
 				toSoapModel(returnValue);

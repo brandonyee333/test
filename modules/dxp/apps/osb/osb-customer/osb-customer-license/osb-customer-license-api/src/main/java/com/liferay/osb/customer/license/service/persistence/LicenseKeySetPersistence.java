@@ -194,6 +194,161 @@ public interface LicenseKeySetPersistence
 	public int countByAccountEntryId(long accountEntryId);
 
 	/**
+	 * Returns all the license key sets where koroneikiAccountKey = &#63; and name = &#63;.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param name the name
+	 * @return the matching license key sets
+	 */
+	public java.util.List<LicenseKeySet> findByKA_N(
+		String koroneikiAccountKey, String name);
+
+	/**
+	 * Returns a range of all the license key sets where koroneikiAccountKey = &#63; and name = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseKeySetModelImpl</code>.
+	 * </p>
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param name the name
+	 * @param start the lower bound of the range of license key sets
+	 * @param end the upper bound of the range of license key sets (not inclusive)
+	 * @return the range of matching license key sets
+	 */
+	public java.util.List<LicenseKeySet> findByKA_N(
+		String koroneikiAccountKey, String name, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the license key sets where koroneikiAccountKey = &#63; and name = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseKeySetModelImpl</code>.
+	 * </p>
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param name the name
+	 * @param start the lower bound of the range of license key sets
+	 * @param end the upper bound of the range of license key sets (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching license key sets
+	 */
+	public java.util.List<LicenseKeySet> findByKA_N(
+		String koroneikiAccountKey, String name, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<LicenseKeySet>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the license key sets where koroneikiAccountKey = &#63; and name = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseKeySetModelImpl</code>.
+	 * </p>
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param name the name
+	 * @param start the lower bound of the range of license key sets
+	 * @param end the upper bound of the range of license key sets (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching license key sets
+	 */
+	public java.util.List<LicenseKeySet> findByKA_N(
+		String koroneikiAccountKey, String name, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<LicenseKeySet>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first license key set in the ordered set where koroneikiAccountKey = &#63; and name = &#63;.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param name the name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching license key set
+	 * @throws NoSuchLicenseKeySetException if a matching license key set could not be found
+	 */
+	public LicenseKeySet findByKA_N_First(
+			String koroneikiAccountKey, String name,
+			com.liferay.portal.kernel.util.OrderByComparator<LicenseKeySet>
+				orderByComparator)
+		throws NoSuchLicenseKeySetException;
+
+	/**
+	 * Returns the first license key set in the ordered set where koroneikiAccountKey = &#63; and name = &#63;.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param name the name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching license key set, or <code>null</code> if a matching license key set could not be found
+	 */
+	public LicenseKeySet fetchByKA_N_First(
+		String koroneikiAccountKey, String name,
+		com.liferay.portal.kernel.util.OrderByComparator<LicenseKeySet>
+			orderByComparator);
+
+	/**
+	 * Returns the last license key set in the ordered set where koroneikiAccountKey = &#63; and name = &#63;.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param name the name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching license key set
+	 * @throws NoSuchLicenseKeySetException if a matching license key set could not be found
+	 */
+	public LicenseKeySet findByKA_N_Last(
+			String koroneikiAccountKey, String name,
+			com.liferay.portal.kernel.util.OrderByComparator<LicenseKeySet>
+				orderByComparator)
+		throws NoSuchLicenseKeySetException;
+
+	/**
+	 * Returns the last license key set in the ordered set where koroneikiAccountKey = &#63; and name = &#63;.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param name the name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching license key set, or <code>null</code> if a matching license key set could not be found
+	 */
+	public LicenseKeySet fetchByKA_N_Last(
+		String koroneikiAccountKey, String name,
+		com.liferay.portal.kernel.util.OrderByComparator<LicenseKeySet>
+			orderByComparator);
+
+	/**
+	 * Returns the license key sets before and after the current license key set in the ordered set where koroneikiAccountKey = &#63; and name = &#63;.
+	 *
+	 * @param licenseKeySetId the primary key of the current license key set
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param name the name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next license key set
+	 * @throws NoSuchLicenseKeySetException if a license key set with the primary key could not be found
+	 */
+	public LicenseKeySet[] findByKA_N_PrevAndNext(
+			long licenseKeySetId, String koroneikiAccountKey, String name,
+			com.liferay.portal.kernel.util.OrderByComparator<LicenseKeySet>
+				orderByComparator)
+		throws NoSuchLicenseKeySetException;
+
+	/**
+	 * Removes all the license key sets where koroneikiAccountKey = &#63; and name = &#63; from the database.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param name the name
+	 */
+	public void removeByKA_N(String koroneikiAccountKey, String name);
+
+	/**
+	 * Returns the number of license key sets where koroneikiAccountKey = &#63; and name = &#63;.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param name the name
+	 * @return the number of matching license key sets
+	 */
+	public int countByKA_N(String koroneikiAccountKey, String name);
+
+	/**
 	 * Returns all the license key sets where userId = &#63; and accountEntryId = &#63; and name = &#63;.
 	 *
 	 * @param userId the user ID

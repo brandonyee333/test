@@ -34,17 +34,17 @@ public class AccountEntryLanguageCacheModel
 	implements CacheModel<AccountEntryLanguage>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof AccountEntryLanguageCacheModel)) {
+		if (!(object instanceof AccountEntryLanguageCacheModel)) {
 			return false;
 		}
 
 		AccountEntryLanguageCacheModel accountEntryLanguageCacheModel =
-			(AccountEntryLanguageCacheModel)obj;
+			(AccountEntryLanguageCacheModel)object;
 
 		if (accountEntryLanguageId ==
 				accountEntryLanguageCacheModel.accountEntryLanguageId) {

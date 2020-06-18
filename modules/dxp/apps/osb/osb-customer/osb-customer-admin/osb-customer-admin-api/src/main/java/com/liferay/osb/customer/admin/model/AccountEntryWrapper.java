@@ -767,16 +767,16 @@ public class AccountEntryWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof AccountEntryWrapper)) {
+		if (!(object instanceof AccountEntryWrapper)) {
 			return false;
 		}
 
-		AccountEntryWrapper accountEntryWrapper = (AccountEntryWrapper)obj;
+		AccountEntryWrapper accountEntryWrapper = (AccountEntryWrapper)object;
 
 		if (Objects.equals(_accountEntry, accountEntryWrapper._accountEntry)) {
 			return true;

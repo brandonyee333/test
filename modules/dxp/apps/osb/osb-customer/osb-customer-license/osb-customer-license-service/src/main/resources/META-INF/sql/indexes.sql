@@ -17,4 +17,5 @@ create index IX_1A89947B on OSB_LicenseKey (userId, productId[$COLUMN_LENGTH:75$
 create index IX_F6FA838F on OSB_LicenseKey (uuid_[$COLUMN_LENGTH:75$]);
 
 create index IX_AA77CE1D on OSB_LicenseKeySet (accountEntryId);
+create index IX_484515A7 on OSB_LicenseKeySet (koroneikiAccountKey[$COLUMN_LENGTH:75$], name[$COLUMN_LENGTH:75$]);
 create index IX_62FEABD6 on OSB_LicenseKeySet (userId, accountEntryId, name[$COLUMN_LENGTH:75$]);

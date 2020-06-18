@@ -507,16 +507,17 @@ public class SupportRegionWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof SupportRegionWrapper)) {
+		if (!(object instanceof SupportRegionWrapper)) {
 			return false;
 		}
 
-		SupportRegionWrapper supportRegionWrapper = (SupportRegionWrapper)obj;
+		SupportRegionWrapper supportRegionWrapper =
+			(SupportRegionWrapper)object;
 
 		if (Objects.equals(
 				_supportRegion, supportRegionWrapper._supportRegion)) {

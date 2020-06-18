@@ -273,17 +273,17 @@ public class AccountEntryLanguageWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof AccountEntryLanguageWrapper)) {
+		if (!(object instanceof AccountEntryLanguageWrapper)) {
 			return false;
 		}
 
 		AccountEntryLanguageWrapper accountEntryLanguageWrapper =
-			(AccountEntryLanguageWrapper)obj;
+			(AccountEntryLanguageWrapper)object;
 
 		if (Objects.equals(
 				_accountEntryLanguage,

@@ -597,16 +597,16 @@ public class ProductEntryWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof ProductEntryWrapper)) {
+		if (!(object instanceof ProductEntryWrapper)) {
 			return false;
 		}
 
-		ProductEntryWrapper productEntryWrapper = (ProductEntryWrapper)obj;
+		ProductEntryWrapper productEntryWrapper = (ProductEntryWrapper)object;
 
 		if (Objects.equals(_productEntry, productEntryWrapper._productEntry)) {
 			return true;

@@ -36,17 +36,17 @@ public class ExternalIdMapperCacheModel
 	implements CacheModel<ExternalIdMapper>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof ExternalIdMapperCacheModel)) {
+		if (!(object instanceof ExternalIdMapperCacheModel)) {
 			return false;
 		}
 
 		ExternalIdMapperCacheModel externalIdMapperCacheModel =
-			(ExternalIdMapperCacheModel)obj;
+			(ExternalIdMapperCacheModel)object;
 
 		if (externalIdMapperId ==
 				externalIdMapperCacheModel.externalIdMapperId) {

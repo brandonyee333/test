@@ -792,16 +792,16 @@ public class LicenseEntryModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof LicenseEntry)) {
+		if (!(object instanceof LicenseEntry)) {
 			return false;
 		}
 
-		LicenseEntry licenseEntry = (LicenseEntry)obj;
+		LicenseEntry licenseEntry = (LicenseEntry)object;
 
 		long primaryKey = licenseEntry.getPrimaryKey();
 

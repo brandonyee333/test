@@ -809,17 +809,17 @@ public class AccountEnvironmentAttachmentModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof AccountEnvironmentAttachment)) {
+		if (!(object instanceof AccountEnvironmentAttachment)) {
 			return false;
 		}
 
 		AccountEnvironmentAttachment accountEnvironmentAttachment =
-			(AccountEnvironmentAttachment)obj;
+			(AccountEnvironmentAttachment)object;
 
 		long primaryKey = accountEnvironmentAttachment.getPrimaryKey();
 

@@ -36,17 +36,17 @@ public class SupportRegionCacheModel
 	implements CacheModel<SupportRegion>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof SupportRegionCacheModel)) {
+		if (!(object instanceof SupportRegionCacheModel)) {
 			return false;
 		}
 
 		SupportRegionCacheModel supportRegionCacheModel =
-			(SupportRegionCacheModel)obj;
+			(SupportRegionCacheModel)object;
 
 		if (supportRegionId == supportRegionCacheModel.supportRegionId) {
 			return true;

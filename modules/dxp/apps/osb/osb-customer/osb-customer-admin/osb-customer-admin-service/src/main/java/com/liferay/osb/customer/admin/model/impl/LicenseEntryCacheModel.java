@@ -36,17 +36,17 @@ public class LicenseEntryCacheModel
 	implements CacheModel<LicenseEntry>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof LicenseEntryCacheModel)) {
+		if (!(object instanceof LicenseEntryCacheModel)) {
 			return false;
 		}
 
 		LicenseEntryCacheModel licenseEntryCacheModel =
-			(LicenseEntryCacheModel)obj;
+			(LicenseEntryCacheModel)object;
 
 		if (licenseEntryId == licenseEntryCacheModel.licenseEntryId) {
 			return true;

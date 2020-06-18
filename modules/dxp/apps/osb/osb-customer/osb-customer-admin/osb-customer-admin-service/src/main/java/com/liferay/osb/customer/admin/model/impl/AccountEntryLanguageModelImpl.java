@@ -491,16 +491,17 @@ public class AccountEntryLanguageModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof AccountEntryLanguage)) {
+		if (!(object instanceof AccountEntryLanguage)) {
 			return false;
 		}
 
-		AccountEntryLanguage accountEntryLanguage = (AccountEntryLanguage)obj;
+		AccountEntryLanguage accountEntryLanguage =
+			(AccountEntryLanguage)object;
 
 		long primaryKey = accountEntryLanguage.getPrimaryKey();
 

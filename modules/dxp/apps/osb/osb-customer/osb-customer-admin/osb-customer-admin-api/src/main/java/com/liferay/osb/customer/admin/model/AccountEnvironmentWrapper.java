@@ -747,17 +747,17 @@ public class AccountEnvironmentWrapper
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof AccountEnvironmentWrapper)) {
+		if (!(object instanceof AccountEnvironmentWrapper)) {
 			return false;
 		}
 
 		AccountEnvironmentWrapper accountEnvironmentWrapper =
-			(AccountEnvironmentWrapper)obj;
+			(AccountEnvironmentWrapper)object;
 
 		if (Objects.equals(
 				_accountEnvironment,

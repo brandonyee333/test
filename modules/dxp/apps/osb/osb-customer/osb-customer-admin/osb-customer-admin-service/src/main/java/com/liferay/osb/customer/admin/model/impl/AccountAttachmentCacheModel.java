@@ -36,17 +36,17 @@ public class AccountAttachmentCacheModel
 	implements CacheModel<AccountAttachment>, Externalizable {
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof AccountAttachmentCacheModel)) {
+		if (!(object instanceof AccountAttachmentCacheModel)) {
 			return false;
 		}
 
 		AccountAttachmentCacheModel accountAttachmentCacheModel =
-			(AccountAttachmentCacheModel)obj;
+			(AccountAttachmentCacheModel)object;
 
 		if (accountAttachmentId ==
 				accountAttachmentCacheModel.accountAttachmentId) {

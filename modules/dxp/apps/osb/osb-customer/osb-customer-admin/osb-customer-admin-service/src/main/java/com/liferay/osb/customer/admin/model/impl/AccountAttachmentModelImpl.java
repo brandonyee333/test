@@ -776,16 +776,16 @@ public class AccountAttachmentModelImpl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof AccountAttachment)) {
+		if (!(object instanceof AccountAttachment)) {
 			return false;
 		}
 
-		AccountAttachment accountAttachment = (AccountAttachment)obj;
+		AccountAttachment accountAttachment = (AccountAttachment)object;
 
 		long primaryKey = accountAttachment.getPrimaryKey();
 

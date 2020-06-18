@@ -1474,16 +1474,16 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof LicenseKeyWrapper)) {
+		if (!(object instanceof LicenseKeyWrapper)) {
 			return false;
 		}
 
-		LicenseKeyWrapper licenseKeyWrapper = (LicenseKeyWrapper)obj;
+		LicenseKeyWrapper licenseKeyWrapper = (LicenseKeyWrapper)object;
 
 		if (Objects.equals(_licenseKey, licenseKeyWrapper._licenseKey)) {
 			return true;

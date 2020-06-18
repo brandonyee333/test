@@ -239,6 +239,15 @@ public class ProductEntryLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.osb.customer.admin.model.ProductEntry
+			getDeveloperProductEntry(long productEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _productEntryLocalService.getDeveloperProductEntry(
+			productEntryId);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
 		getIndexableActionableDynamicQuery() {
 
