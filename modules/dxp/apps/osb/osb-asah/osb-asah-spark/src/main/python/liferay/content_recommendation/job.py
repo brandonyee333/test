@@ -189,8 +189,8 @@ class ReadRecommendedItemsSparkJob(BaseSparkJob):
 		).filter('error is null').withColumn('jobId', lit(
 		    job.get('id')
 		)).selectExpr(
-		    'sha1(concat(jobId, input.itemId)) as id', 'input.itemId as item',
-		    'jobId', 'output.recommendedItems as recommendedItems'
+		    'sha1(concat(jobId, input.itemId)) as id', 'input.itemId as itemId',
+		    'jobId', 'output.recommendedItems as recommendedItemIds'
 		)
 
 		recommended_items_data_frame.createOrReplaceTempView(
