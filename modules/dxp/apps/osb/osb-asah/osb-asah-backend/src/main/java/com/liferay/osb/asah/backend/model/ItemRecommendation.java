@@ -46,6 +46,10 @@ public class ItemRecommendation {
 		return false;
 	}
 
+	public String getId() {
+		return _id;
+	}
+
 	public String getItemId() {
 		return _itemId;
 	}
