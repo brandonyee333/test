@@ -14,7 +14,7 @@ function build_and_push_docker_images {
 
 	for file_name in `ls`
 	do
-		if [ ${file_name} == "osb-asah-dxp-server" ] ||
+		if [ -z "$(ls -A ${file_name}/.wedeploy-profile-* 2> /dev/null)" ] ||
 		   [ ! -e ${file_name}/Dockerfile ]
 		then
 			continue
@@ -146,27 +146,18 @@ function generate_wedeploy_profiles {
 
 	for file_name in `ls`
 	do
-		if [ ! -e ${file_name}/LCP.json ]
+		local pattern="${file_name}/.wedeploy-*"
+
+		local markers=(${pattern})
+
+		local marker=${markers[0]}
+
+		if [[ ! -f ${marker} ]]
 		then
 			continue
 		fi
 
-		if [[ ${file_name} == osb-asah-backend ]] ||
-		   [[ ${file_name} == osb-asah-batch-curator ]] ||
-		   [[ ${file_name} == osb-asah-dxp-extractor ]] ||
-		   [[ ${file_name} == osb-asah-extractor ]] ||
-		   [[ ${file_name} == osb-asah-publisher ]] ||
-		   [[ ${file_name} == osb-asah-queue ]] ||
-		   [[ ${file_name} == osb-asah-redis ]] ||
-		   [[ ${file_name} == osb-asah-salesforce-extractor ]] ||
-		   [[ ${file_name} == osb-asah-stream-curator ]] ||
-		   [[ ${file_name} == osb-asah-upgrade ]]
-		then
-			generate_wedeploy_profile ${file_name} customer
-		elif [[ ${file_name} == osb-asah-monolith ]]
-		then
-			generate_wedeploy_profile ${file_name} customer-trial
-		fi
+		generate_wedeploy_profile ${file_name} ${marker##*.wedeploy-profile-}
 	done
 
 	git add .wedeploy_profiles
