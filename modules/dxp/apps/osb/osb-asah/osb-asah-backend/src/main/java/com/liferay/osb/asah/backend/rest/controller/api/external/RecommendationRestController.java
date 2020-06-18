@@ -40,6 +40,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.json.JSONObject;
 
@@ -134,7 +135,26 @@ public class RecommendationRestController extends BaseRestController {
 			itemRecommendationResultBag, this::_toPageRecommendationResource);
 	}
 
+	private void _expandPageRecommendationAttributes(
+		PageRecommendation pageRecommendation) {
+
+		PageAsset pageAsset = _fetchPageAsset(pageRecommendation.getURL());
+
+		if (pageAsset == null) {
+			return;
+		}
+
+		pageRecommendation.setDescription(pageAsset.getDescription());
+		pageRecommendation.setTitle(pageAsset.getTitle());
+		pageRecommendation.setKeywords(
+			ListUtil.map(pageAsset.getKeywords(), Keyword::getValue));
+	}
+
 	private PageAsset _fetchPageAsset(String canonicalUrl) {
+		if (StringUtils.isBlank(canonicalUrl)) {
+			return null;
+		}
+
 		PropertyFilter propertyFilter = new PropertyFilter(
 			"canonicalUrl = " + canonicalUrl, false);
 
@@ -210,14 +230,7 @@ public class RecommendationRestController extends BaseRestController {
 				recommendedItemId -> _toPageRecommendation(
 					itemRecommendation.getJobId(), recommendedItemId)));
 
-		PageAsset pageAsset = _fetchPageAsset(itemRecommendation.getItemId());
-
-		if (pageAsset != null) {
-			pageRecommendation.setDescription(pageAsset.getDescription());
-			pageRecommendation.setTitle(pageAsset.getTitle());
-			pageRecommendation.setKeywords(
-				ListUtil.map(pageAsset.getKeywords(), Keyword::getValue));
-		}
+		_expandPageRecommendationAttributes(pageRecommendation);
 
 		return pageRecommendation;
 	}
@@ -229,14 +242,7 @@ public class RecommendationRestController extends BaseRestController {
 		pageRecommendation.setJobId(jobId);
 		pageRecommendation.setURL(url);
 
-		PageAsset pageAsset = _fetchPageAsset(url);
-
-		if (pageAsset != null) {
-			pageRecommendation.setDescription(pageAsset.getDescription());
-			pageRecommendation.setTitle(pageAsset.getTitle());
-			pageRecommendation.setKeywords(
-				ListUtil.map(pageAsset.getKeywords(), Keyword::getValue));
-		}
+		_expandPageRecommendationAttributes(pageRecommendation);
 
 		return pageRecommendation;
 	}
