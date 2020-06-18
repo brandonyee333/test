@@ -14,15 +14,19 @@
 
 package com.liferay.osb.asah.backend.rest.controller.api.external;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.liferay.osb.asah.backend.dog.JobDog;
+import com.liferay.osb.asah.backend.dog.RecommendationDog;
+import com.liferay.osb.asah.backend.model.ItemRecommendation;
 import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobStatus;
 import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -89,16 +93,25 @@ public class RecommendationRestController extends BaseRestController {
 			this::_toModelResource);
 	}
 
-	@PostMapping("/models/{modelId}/recommended-items")
-	public String getRecommendedItems(
-			@RequestBody String json, @PathVariable String modelId)
-		throws Exception {
+	@PostMapping("/recommended-pages")
+	public Resource<PageRecommendation> getPageRecommendationResource(
+		@RequestBody String json) {
 
 		JSONObject jsonObject = new JSONObject(json);
 
-		return toItemGetResponse(
-			"recommended-items",
-			DigestUtils.sha1Hex(modelId.concat(jsonObject.getString("item"))));
+		return getPageRecommendationResource(
+			jsonObject.getString("modelId"),
+			DigestUtils.sha1Hex(
+				jsonObject.getString("modelId") +
+					jsonObject.getString("item")));
+	}
+
+	@GetMapping("/models/{modelId}/recommended-pages/{recommendationId}")
+	public Resource<PageRecommendation> getPageRecommendationResource(
+		@PathVariable String modelId, @PathVariable String recommendationId) {
+
+		return _toPageRecommendationResource(
+			_recommendationDog.getItemRecommendation(recommendationId));
 	}
 
 	private ResultBagResource<Model> _getModelResultBagResource(
@@ -132,6 +145,47 @@ public class RecommendationRestController extends BaseRestController {
 					RecommendationRestController.class
 				).getModelResource(
 					job.getId()
+				)
+			).withSelfRel());
+	}
+
+	private PageRecommendation _toPageRecommendation(
+		ItemRecommendation itemRecommendation) {
+
+		PageRecommendation pageRecommendation = new PageRecommendation();
+
+		pageRecommendation.setId(itemRecommendation.getId());
+		pageRecommendation.setJobId(itemRecommendation.getJobId());
+		pageRecommendation.setURL(itemRecommendation.getItemId());
+		pageRecommendation.setPageRecommendations(
+			ListUtil.map(
+				itemRecommendation.getRecommendedItemIds(),
+				recommendedItemId -> _toPageRecommendation(
+					itemRecommendation.getJobId(), recommendedItemId)));
+
+		return pageRecommendation;
+	}
+
+	private PageRecommendation _toPageRecommendation(String jobId, String url) {
+		PageRecommendation pageRecommendation = new PageRecommendation();
+
+		pageRecommendation.setId(DigestUtils.sha1Hex(jobId + url));
+		pageRecommendation.setJobId(jobId);
+		pageRecommendation.setURL(url);
+
+		return pageRecommendation;
+	}
+
+	private Resource<PageRecommendation> _toPageRecommendationResource(
+		ItemRecommendation itemRecommendation) {
+
+		return new Resource<>(
+			_toPageRecommendation(itemRecommendation),
+			ControllerLinkBuilder.linkTo(
+				ControllerLinkBuilder.methodOn(
+					RecommendationRestController.class
+				).getPageRecommendationResource(
+					itemRecommendation.getJobId(), itemRecommendation.getId()
 				)
 			).withSelfRel());
 	}
@@ -172,6 +226,9 @@ public class RecommendationRestController extends BaseRestController {
 
 	@Autowired
 	private JobDog _jobDog;
+
+	@Autowired
+	private RecommendationDog _recommendationDog;
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private static class Model extends Job {
@@ -226,6 +283,53 @@ public class RecommendationRestController extends BaseRestController {
 		}
 
 		private JobStatus _jobStatus;
+
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private static class PageRecommendation {
+
+		@JsonIgnore
+		public String getId() {
+			return _id;
+		}
+
+		@JsonIgnore
+		public String getJobId() {
+			return _jobId;
+		}
+
+		@JsonProperty("recommendedPages")
+		public List<PageRecommendation> getPageRecommendations() {
+			return _pageRecommendations;
+		}
+
+		public String getURL() {
+			return _url;
+		}
+
+		public void setId(String id) {
+			_id = id;
+		}
+
+		public void setJobId(String jobId) {
+			_jobId = jobId;
+		}
+
+		public void setPageRecommendations(
+			List<PageRecommendation> pageRecommendations) {
+
+			_pageRecommendations = pageRecommendations;
+		}
+
+		public void setURL(String url) {
+			_url = url;
+		}
+
+		private String _id;
+		private String _jobId;
+		private List<PageRecommendation> _pageRecommendations;
+		private String _url;
 
 	}
 
