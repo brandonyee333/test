@@ -37,10 +37,12 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
 import com.liferay.osb.asah.common.model.ExperimentMetrics;
 import com.liferay.osb.asah.common.model.ExperimentMetricsBag;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.VariantMetrics;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
@@ -73,7 +75,6 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.metrics.cardinality.CardinalityAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.sort.FieldSortBuilder;
 
 import org.json.JSONObject;
 
@@ -224,13 +225,12 @@ public class ExperimentDog {
 	}
 
 	public ResultBag<Experiment> getExperimentResultBag(
-		String channelId, FieldSortBuilder fieldSortBuilder, String keywords,
-		int size, int start) {
+		String channelId, String keywords, int size, Sort sort, int start) {
 
 		SearchHits searchHits = _dataDog.querySearchHits(
 			"experiments", _faroInfoElasticsearchInvoker,
 			DogUtil.buildSearchSourceBuilder(
-				fieldSortBuilder,
+				SortBuilderUtil.fieldSort(sort),
 				_buildKeywordsQueryBuilder(channelId, keywords), size, start));
 
 		return DogUtil.createResultBag(Experiment.class, searchHits);

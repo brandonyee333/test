@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Sort;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,7 +58,7 @@ public class DXPEntityDog {
 
 	public ResultBag<? extends DXPEntity> getDXPEntityResultBag(
 		String channelId, String collectionName, String keywords, int size,
-		Map<String, String> sort, int start) {
+		Sort sort, int start) {
 
 		if (collectionName.equals("groups") || collectionName.equals("teams")) {
 			SearchHits searchHits = _dataDog.querySearchHits(
@@ -213,17 +214,17 @@ public class DXPEntityDog {
 	}
 
 	private List<FieldSortBuilder> _getFieldSortBuilders(
-		String collectionName, Map<String, String> sort) {
+		String collectionName, Sort sort) {
 
 		if (!collectionName.equals("users") ||
-			!StringUtils.equals(sort.get("column"), "name")) {
+			!StringUtils.equals(sort.getColumn(), "name")) {
 
 			return Collections.singletonList(SortBuilderUtil.fieldSort(sort));
 		}
 
 		List<FieldSortBuilder> fieldSortBuilders = new ArrayList<>();
 
-		SortOrder sortOrder = SortOrder.valueOf(sort.get("type"));
+		SortOrder sortOrder = SortOrder.valueOf(sort.getType());
 
 		fieldSortBuilders.add(
 			SortBuilderUtil.fieldSort("firstName", sortOrder));

@@ -25,6 +25,7 @@ import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.URL;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.petra.string.CharPool;
 
 import java.util.ArrayList;
@@ -145,33 +146,30 @@ public class MetricDog {
 	}
 
 	public <T extends AssetMetric> List<T> getAssetMetrics(
-		FieldSortBuilder fieldSortBuilder,
+		int count, SearchQueryContext searchQueryContext,
+		Set<String> selectedMetrics, int size, Sort sort, int start) {
+
+		return _getAssetMetrics(
+			Collections.emptySet(), count, searchQueryContext, selectedMetrics,
+			size, sort, start);
+	}
+
+	public <T extends AssetMetric> List<T> getAssetMetrics(
 		SearchQueryContext searchQueryContext, Set<String> selectedMetrics,
-		int size, int start) {
+		int size, Sort sort, int start) {
 
 		return _getAssetMetrics(
 			Collections.emptySet(), getAssetMetricsCount(searchQueryContext),
-			fieldSortBuilder, searchQueryContext, selectedMetrics, size, start);
+			searchQueryContext, selectedMetrics, size, sort, start);
 	}
 
 	public <T extends AssetMetric> List<T> getAssetMetrics(
-		int count, FieldSortBuilder fieldSortBuilder,
-		SearchQueryContext searchQueryContext, Set<String> selectedMetrics,
-		int size, int start) {
+		Set<String> assetIds, SearchQueryContext searchQueryContext,
+		Set<String> selectedMetrics, int size, Sort sort, int start) {
 
 		return _getAssetMetrics(
-			Collections.emptySet(), count, fieldSortBuilder, searchQueryContext,
-			selectedMetrics, size, start);
-	}
-
-	public <T extends AssetMetric> List<T> getAssetMetrics(
-		Set<String> assetIds, FieldSortBuilder fieldSortBuilder,
-		SearchQueryContext searchQueryContext, Set<String> selectedMetrics,
-		int size, int start) {
-
-		return _getAssetMetrics(
-			assetIds, assetIds.size(), fieldSortBuilder, searchQueryContext,
-			selectedMetrics, size, start);
+			assetIds, assetIds.size(), searchQueryContext, selectedMetrics,
+			size, sort, start);
 	}
 
 	public int getAssetMetricsCount(SearchQueryContext searchQueryContext) {
@@ -277,9 +275,8 @@ public class MetricDog {
 
 	private SearchSourceBuilder _buildAssetMetricsSearchSourceBuilder(
 		Set<String> assetIds, int count, DogConfiguration dogConfiguration,
-		FieldSortBuilder fieldSortBuilder,
 		SearchQueryContext searchQueryContext, Set<String> selectedMetrics,
-		int size, int start) {
+		int size, Sort sort, int start) {
 
 		AssetResolver<AssetMetric> assetResolver =
 			dogConfiguration.getAssetResolver();
@@ -301,7 +298,7 @@ public class MetricDog {
 
 		termsAggregationBuilder.subAggregation(
 			_createBucketSortPipelineAggregationBuilder(
-				fieldSortBuilder, size, start, assetResolver.getSupplier()));
+				size, sort, start, assetResolver.getSupplier()));
 
 		return _searchQueryHelper.createRangeSearchSourceBuilder(
 			termsAggregationBuilder, Optional.empty(), assetIds, assetResolver,
@@ -311,11 +308,15 @@ public class MetricDog {
 
 	private BucketSortPipelineAggregationBuilder
 		_createBucketSortPipelineAggregationBuilder(
-			FieldSortBuilder fieldSortBuilder, int size, int start,
-			Supplier<AssetMetric> supplier) {
+			int size, Sort sort, int start, Supplier<AssetMetric> supplier) {
 
-		if (fieldSortBuilder == null) {
+		FieldSortBuilder fieldSortBuilder = null;
+
+		if (sort == null) {
 			fieldSortBuilder = _createDefaultFieldSortBuilder(supplier.get());
+		}
+		else {
+			fieldSortBuilder = SortBuilderUtil.fieldSort(sort);
 		}
 
 		BucketSortPipelineAggregationBuilder
@@ -392,9 +393,8 @@ public class MetricDog {
 	}
 
 	private <T extends AssetMetric> List<T> _getAssetMetrics(
-		Set<String> assetIds, int count, FieldSortBuilder fieldSortBuilder,
-		SearchQueryContext searchQueryContext, Set<String> selectedMetrics,
-		int size, int start) {
+		Set<String> assetIds, int count, SearchQueryContext searchQueryContext,
+		Set<String> selectedMetrics, int size, Sort sort, int start) {
 
 		if (count == 0) {
 			return Collections.emptyList();
@@ -407,8 +407,8 @@ public class MetricDog {
 		Aggregations aggregations = _dataDog.queryAggregations(
 			dogConfiguration.getCollection(),
 			_buildAssetMetricsSearchSourceBuilder(
-				assetIds, count, dogConfiguration, fieldSortBuilder,
-				searchQueryContext, selectedMetrics, size, start));
+				assetIds, count, dogConfiguration, searchQueryContext,
+				selectedMetrics, size, sort, start));
 
 		if (DogUtil.isEmpty(aggregations)) {
 			return Collections.emptyList();

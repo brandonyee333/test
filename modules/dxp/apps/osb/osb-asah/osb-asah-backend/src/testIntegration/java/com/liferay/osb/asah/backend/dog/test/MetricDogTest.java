@@ -211,7 +211,7 @@ public class MetricDogTest {
 		Collections.addAll(set, "1", "2", "3");
 
 		List<AssetMetric> assetMetrics = _metricDog.getAssetMetrics(
-			set, null,
+			set,
 			_createSearchQuery(
 				null, AssetType.JOURNAL, null, TimeRange.LAST_7_DAYS, null),
 			new HashSet<String>() {
@@ -219,7 +219,7 @@ public class MetricDogTest {
 					add(JournalMetricType.VIEWS.getName());
 				}
 			},
-			10, 0);
+			10, null, 0);
 
 		Assert.assertEquals(assetMetrics.toString(), 3, assetMetrics.size());
 
@@ -251,13 +251,13 @@ public class MetricDogTest {
 			"http://192.168.108.90:8080/search?q=Liferay");
 
 		List<AssetMetric> assetMetrics = _metricDog.getAssetMetrics(
-			assetIds, null, new SearchQueryContext(),
+			assetIds, new SearchQueryContext(),
 			new HashSet<String>() {
 				{
 					add(PageMetricType.VIEWS.getName());
 				}
 			},
-			1000, 0);
+			1000, null, 0);
 
 		Assert.assertNotNull(assetMetrics);
 

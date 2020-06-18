@@ -17,14 +17,12 @@ package com.liferay.osb.asah.backend.dog.test;
 import com.liferay.osb.asah.backend.dog.DataSourceDog;
 import com.liferay.osb.asah.backend.model.DataSource;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.List;
-
-import org.elasticsearch.search.sort.SortOrder;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -59,9 +57,7 @@ public class DataSourceDogTest {
 	@Test
 	public void testGetFilteredDataSources() {
 		List<DataSource> dataSources = _dataSourceDog.getDataSources(
-			"Token Authentication",
-			SortBuilderUtil.fieldSort("dateModified", SortOrder.DESC), 1,
-			"LIFERAY");
+			"Token Authentication", 1, Sort.desc("dateModified"), "LIFERAY");
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 

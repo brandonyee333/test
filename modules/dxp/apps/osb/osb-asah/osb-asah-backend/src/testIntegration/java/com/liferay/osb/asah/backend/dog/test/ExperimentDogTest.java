@@ -23,6 +23,7 @@ import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dxp.DXPClient;
 import com.liferay.osb.asah.common.model.ExperimentMetrics;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.VariantMetrics;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -35,8 +36,6 @@ import java.time.LocalTime;
 import java.time.ZoneOffset;
 
 import java.util.List;
-
-import org.elasticsearch.search.sort.SortBuilders;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -193,7 +192,7 @@ public class ExperimentDogTest {
 	@Test
 	public void testGetExperimentsAll() {
 		ResultBag<Experiment> resultBag = _experimentDog.getExperimentResultBag(
-			"1", SortBuilders.fieldSort("name.raw"), null, 10, 0);
+			"1", null, 10, Sort.asc("name.raw"), 0);
 
 		Assert.assertNotNull(resultBag);
 		Assert.assertEquals(3, resultBag.getTotal());
@@ -241,7 +240,7 @@ public class ExperimentDogTest {
 	@Test
 	public void testGetExperimentsPaginated() {
 		ResultBag<Experiment> resultBag = _experimentDog.getExperimentResultBag(
-			"1", SortBuilders.fieldSort("name.raw"), null, 1, 1);
+			"1", null, 1, Sort.asc("name.raw"), 1);
 
 		Assert.assertNotNull(resultBag);
 		Assert.assertEquals(3, resultBag.getTotal());

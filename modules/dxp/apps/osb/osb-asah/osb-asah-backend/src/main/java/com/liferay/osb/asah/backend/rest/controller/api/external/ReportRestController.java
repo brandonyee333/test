@@ -44,10 +44,10 @@ import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.backend.model.Trend;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.DataExportTask;
 import com.liferay.osb.asah.common.model.DataExportTaskStatus;
 import com.liferay.osb.asah.common.model.DataExportTaskType;
+import com.liferay.osb.asah.common.model.Sort;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -72,9 +72,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
-
-import org.elasticsearch.search.sort.FieldSortBuilder;
-import org.elasticsearch.search.sort.SortOrder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -354,9 +351,8 @@ public class ReportRestController extends BaseRestController {
 			searchQueryContext);
 
 		List<PageMetric> pageMetrics = _metricDog.getAssetMetrics(
-			assetMetricsCount, _createFieldSortBuilder(sortMetric, sortOrder),
-			searchQueryContext, _getPageMetricTypeNames(), _PAGE_SIZE,
-			page * _PAGE_SIZE);
+			assetMetricsCount, searchQueryContext, _getPageMetricTypeNames(),
+			_PAGE_SIZE, _createSort(sortMetric, sortOrder), page * _PAGE_SIZE);
 
 		pageMetricResultBag.setResults(pageMetrics);
 
@@ -431,15 +427,11 @@ public class ReportRestController extends BaseRestController {
 		return bodyBuilder.build();
 	}
 
-	private FieldSortBuilder _createFieldSortBuilder(
-		String metricTypeString, String sortOrderString) {
-
+	private Sort _createSort(String metricTypeString, String sortOrderString) {
 		MetricType metricType = _metricTypeDog.getMetricType(
 			AssetType.PAGE, metricTypeString);
 
-		return SortBuilderUtil.fieldSort(
-			metricType.getAggregationName(),
-			SortOrder.fromString(sortOrderString));
+		return new Sort(metricType.getAggregationName(), sortOrderString);
 	}
 
 	private String _decodeURL(String url) {

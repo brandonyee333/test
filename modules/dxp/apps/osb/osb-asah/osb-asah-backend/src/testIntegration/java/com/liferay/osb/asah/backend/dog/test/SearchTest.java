@@ -22,11 +22,10 @@ import com.liferay.osb.asah.backend.model.Dashboard;
 import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-
-import org.elasticsearch.search.sort.SortBuilders;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -68,7 +67,7 @@ public class SearchTest {
 	@Test
 	public void testCustomAssetSearch() {
 		ResultBag<Dashboard> resultBag = _dashboardDog.getDashboardResultBag(
-			"1", SortBuilders.fieldSort("assetTitle"), "ASSET", 10, 0);
+			"1", "ASSET", 10, Sort.asc("assetTitle"), 0);
 
 		Assert.assertEquals(3, resultBag.getTotal());
 	}

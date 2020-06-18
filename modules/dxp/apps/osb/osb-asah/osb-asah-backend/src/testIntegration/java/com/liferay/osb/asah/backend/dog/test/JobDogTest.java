@@ -26,6 +26,7 @@ import com.liferay.osb.asah.backend.model.JobType;
 import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -37,7 +38,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -103,14 +103,7 @@ public class JobDogTest {
 		Assert.assertTrue(statuses.get(0));
 
 		ResultBag<JobRun> jobRunResultBag = _jobDog.getJobRunResultBag(
-			"1", 20,
-			new HashMap<String, String>() {
-				{
-					put("column", "id");
-					put("type", "DESC");
-				}
-			},
-			0);
+			"1", 20, Sort.desc("id"), 0);
 
 		Assert.assertEquals(0, jobRunResultBag.getTotal());
 	}
@@ -150,14 +143,7 @@ public class JobDogTest {
 	@Test
 	public void testGetJobRunResultBag() {
 		ResultBag<JobRun> jobRunResultBag = _jobDog.getJobRunResultBag(
-			"1", 10,
-			new HashMap<String, String>() {
-				{
-					put("column", "id");
-					put("type", "DESC");
-				}
-			},
-			0);
+			"1", 10, Sort.desc("id"), 0);
 
 		Assert.assertEquals(3, jobRunResultBag.getTotal());
 

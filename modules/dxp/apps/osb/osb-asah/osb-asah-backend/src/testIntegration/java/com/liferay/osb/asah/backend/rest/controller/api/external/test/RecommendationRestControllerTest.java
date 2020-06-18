@@ -41,6 +41,14 @@ import org.springframework.test.context.ContextConfiguration;
 public class RecommendationRestControllerTest {
 
 	@ElasticsearchIndex(
+		name = "job-runs", resourcePath = "job-runs-info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "jobs", resourcePath = "jobs-info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
 		name = "recommended-items",
 		resourcePath = "recommended-items-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO

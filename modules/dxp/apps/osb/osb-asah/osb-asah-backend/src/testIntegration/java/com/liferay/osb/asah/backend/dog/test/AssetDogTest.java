@@ -19,12 +19,12 @@ import com.liferay.osb.asah.backend.model.PageAsset;
 import com.liferay.osb.asah.backend.model.PropertyFilter;
 import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -50,15 +50,7 @@ public class AssetDogTest {
 	@Test
 	public void testGetPageAssetResultBag() {
 		ResultBag<PageAsset> pageAssetResultBag =
-			_assetDog.getPageAssetResultBag(
-				null, null, 20,
-				new HashMap<String, String>() {
-					{
-						put("column", "id");
-						put("type", "DESC");
-					}
-				},
-				0);
+			_assetDog.getPageAssetResultBag(null, null, 20, Sort.desc("id"), 0);
 
 		Assert.assertEquals(3, pageAssetResultBag.getTotal());
 		Assert.assertEquals(
@@ -76,14 +68,7 @@ public class AssetDogTest {
 	public void testGetPageAssetResultBagWithKeywords() {
 		ResultBag<PageAsset> pageAssetResultBag =
 			_assetDog.getPageAssetResultBag(
-				"seize", null, 20,
-				new HashMap<String, String>() {
-					{
-						put("column", "id");
-						put("type", "DESC");
-					}
-				},
-				0);
+				"seize", null, 20, Sort.desc("id"), 0);
 
 		Assert.assertEquals(1, pageAssetResultBag.getTotal());
 		Assert.assertEquals(
@@ -103,14 +88,7 @@ public class AssetDogTest {
 				Arrays.asList(
 					new PropertyFilter(
 						"url = https://www.terrance-lueilwitz.biz", false)),
-				20,
-				new HashMap<String, String>() {
-					{
-						put("column", "id");
-						put("type", "DESC");
-					}
-				},
-				0);
+				20, Sort.desc("id"), 0);
 
 		Assert.assertEquals(1, pageAssetResultBag.getTotal());
 		Assert.assertEquals(

@@ -26,6 +26,8 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.model.Sort;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,7 +51,6 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.sort.FieldSortBuilder;
 
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
@@ -97,13 +98,12 @@ public class DashboardDog {
 	}
 
 	public ResultBag<Dashboard> getDashboardResultBag(
-		String channelId, FieldSortBuilder fieldSortBuilder, String keywords,
-		int size, int start) {
+		String channelId, String keywords, int size, Sort sort, int start) {
 
 		SearchHits searchHits = _dataDog.querySearchHits(
 			"custom-asset-dashboards", _cerebroInfoElasticsearchInvoker,
 			DogUtil.buildSearchSourceBuilder(
-				fieldSortBuilder,
+				SortBuilderUtil.fieldSort(sort),
 				_buildKeywordsQueryBuilder(channelId, keywords), size, start));
 
 		ResultBag<Dashboard> resultBag = new ResultBag<>();

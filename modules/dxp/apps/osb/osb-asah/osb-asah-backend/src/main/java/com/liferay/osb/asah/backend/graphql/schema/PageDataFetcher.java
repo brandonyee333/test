@@ -56,8 +56,8 @@ public class PageDataFetcher extends BaseDataFetcher<List<AssetMetric>> {
 		Map<String, Object> context = dataFetchingEnvironment.getContext();
 
 		return _metricDog.getAssetMetrics(
-			new HashSet<>(urls), null, searchQueryContext,
-			(Set<String>)context.get("selectedMetrics"), 1000, 0);
+			new HashSet<>(urls), searchQueryContext,
+			(Set<String>)context.get("selectedMetrics"), 1000, null, 0);
 	}
 
 	@Autowired

@@ -19,8 +19,7 @@ import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-
-import java.util.Map;
+import com.liferay.osb.asah.common.model.Sort;
 
 import javax.annotation.PostConstruct;
 
@@ -43,7 +42,7 @@ public class RecommendationDog {
 	}
 
 	public ResultBag<ItemRecommendation> getItemRecommendationResultBag(
-		String jobId, int size, Map<String, String> sort, int start) {
+		String jobId, int size, Sort sort, int start) {
 
 		SearchHits searchHits = _dataDog.querySearchHits(
 			"recommended-items", _faroInfoElasticsearchInvoker,

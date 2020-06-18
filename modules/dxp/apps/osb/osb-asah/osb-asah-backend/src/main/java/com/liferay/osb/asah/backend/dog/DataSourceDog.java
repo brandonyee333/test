@@ -17,13 +17,14 @@ package com.liferay.osb.asah.backend.dog;
 import com.liferay.osb.asah.backend.model.DataSource;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.model.Sort;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.sort.FieldSortBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -39,8 +40,7 @@ import org.springframework.stereotype.Component;
 public class DataSourceDog {
 
 	public List<DataSource> getDataSources(
-		String credentialsType, FieldSortBuilder fieldSortBuilder, Integer size,
-		String type) {
+		String credentialsType, Integer size, Sort sort, String type) {
 
 		ElasticsearchInvoker elasticsearchInvoker =
 			_elasticsearchInvokerFactory.forFaroInfo();
@@ -67,8 +67,9 @@ public class DataSourceDog {
 						searchSourceBuilder.size(size);
 					}
 
-					if (fieldSortBuilder != null) {
-						searchSourceBuilder.sort(fieldSortBuilder);
+					if (sort != null) {
+						searchSourceBuilder.sort(
+							SortBuilderUtil.fieldSort(sort));
 					}
 				}));
 

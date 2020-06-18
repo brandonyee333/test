@@ -26,6 +26,7 @@ import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.model.DataControlTaskType;
+import com.liferay.osb.asah.common.model.Sort;
 
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
@@ -38,7 +39,6 @@ import java.time.LocalDate;
 import java.time.ZoneOffset;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -113,9 +113,8 @@ public class DataControlTaskDog {
 	}
 
 	public ResultBag<DataControlTask> getDataControlTaskResultBag(
-		String batchId, String keywords, Integer rangeKey, int size,
-		Map<String, String> sort, int start, List<String> statuses,
-		List<String> types) {
+		String batchId, String keywords, Integer rangeKey, int size, Sort sort,
+		int start, List<String> statuses, List<String> types) {
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
@@ -184,8 +183,7 @@ public class DataControlTaskDog {
 	}
 
 	private SearchSourceBuilder _buildSearchSourceBuilder(
-		QueryBuilder queryBuilder, int size, Map<String, String> sort,
-		int start) {
+		QueryBuilder queryBuilder, int size, Sort sort, int start) {
 
 		FieldSortBuilder fieldSortBuilder = SortBuilderUtil.fieldSort(sort);
 

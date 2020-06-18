@@ -21,8 +21,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-
-import java.util.Map;
+import com.liferay.osb.asah.common.model.Sort;
 
 import javax.annotation.PostConstruct;
 
@@ -42,7 +41,7 @@ import org.springframework.stereotype.Component;
 public class SuppressionDog {
 
 	public ResultBag<Suppression> getSuppressionResultBag(
-		String keywords, int size, Map<String, String> sort, int start) {
+		String keywords, int size, Sort sort, int start) {
 
 		QueryBuilder queryBuilder = null;
 

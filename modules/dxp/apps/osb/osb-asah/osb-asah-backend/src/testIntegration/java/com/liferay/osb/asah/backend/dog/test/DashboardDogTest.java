@@ -18,13 +18,12 @@ import com.liferay.osb.asah.backend.dog.DashboardDog;
 import com.liferay.osb.asah.backend.model.Dashboard;
 import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.List;
-
-import org.elasticsearch.search.sort.SortBuilders;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -74,7 +73,7 @@ public class DashboardDogTest {
 	@Test
 	public void testGetDashboardBagAll() {
 		ResultBag<Dashboard> resultBag = _dashboardDog.getDashboardResultBag(
-			"1", SortBuilders.fieldSort("assetTitle"), null, 10, 0);
+			"1", null, 10, Sort.asc("assetTitle"), 0);
 
 		Assert.assertNotNull(resultBag);
 		Assert.assertEquals(3, resultBag.getTotal());
@@ -92,7 +91,7 @@ public class DashboardDogTest {
 	@Test
 	public void testGetDashboardBagPaginated() {
 		ResultBag<Dashboard> resultBag = _dashboardDog.getDashboardResultBag(
-			"1", SortBuilders.fieldSort("assetTitle"), null, 1, 1);
+			"1", null, 1, Sort.asc("assetTitle"), 1);
 
 		Assert.assertNotNull(resultBag);
 		Assert.assertEquals(3, resultBag.getTotal());

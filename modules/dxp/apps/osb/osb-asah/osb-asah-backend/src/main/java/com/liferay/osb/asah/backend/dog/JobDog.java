@@ -37,6 +37,7 @@ import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Sort;
 
 import java.io.IOException;
 
@@ -144,7 +145,7 @@ public class JobDog {
 	}
 
 	public ResultBag<Job> getJobResultBag(
-		String keywords, int size, Map<String, String> sort, int start) {
+		String keywords, int size, Sort sort, int start) {
 
 		SearchHits searchHits = _dataDog.querySearchHits(
 			"jobs", _faroInfoElasticsearchInvoker,
@@ -156,7 +157,7 @@ public class JobDog {
 	}
 
 	public ResultBag<JobRun> getJobRunResultBag(
-		String jobId, int size, Map<String, String> sort, int start) {
+		String jobId, int size, Sort sort, int start) {
 
 		SearchHits searchHits = _dataDog.querySearchHits(
 			"job-runs", _faroInfoElasticsearchInvoker,
@@ -325,14 +326,7 @@ public class JobDog {
 
 	private JobRun _fetchLatestJobRun(String jobId) {
 		ResultBag<JobRun> resultBag = getJobRunResultBag(
-			jobId, 1,
-			new HashMap<String, String>() {
-				{
-					put("column", "id");
-					put("type", "DESC");
-				}
-			},
-			0);
+			jobId, 1, Sort.desc("id"), 0);
 
 		if (resultBag.getTotal() == 0) {
 			return null;

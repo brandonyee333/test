@@ -18,12 +18,12 @@ import com.liferay.osb.asah.backend.dog.RecommendationDog;
 import com.liferay.osb.asah.backend.model.ItemRecommendation;
 import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Assert;
@@ -71,14 +71,7 @@ public class RecommendationDogTest {
 	public void testGetItemRecommendationResultBag() {
 		ResultBag<ItemRecommendation> itemRecommendationResultBag =
 			_recommendationDog.getItemRecommendationResultBag(
-				"1", 20,
-				new HashMap<String, String>() {
-					{
-						put("column", "id");
-						put("type", "DESC");
-					}
-				},
-				0);
+				"1", 20, Sort.desc("id"), 0);
 
 		List<ItemRecommendation> itemRecommendations =
 			itemRecommendationResultBag.getResults();

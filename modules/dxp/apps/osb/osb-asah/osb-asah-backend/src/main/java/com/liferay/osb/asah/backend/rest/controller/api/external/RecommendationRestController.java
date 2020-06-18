@@ -22,9 +22,9 @@ import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobStatus;
 import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
+import com.liferay.osb.asah.common.model.Sort;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -81,14 +81,7 @@ public class RecommendationRestController extends BaseRestController {
 		@RequestParam(defaultValue = "") String keywords) {
 
 		ResultBag<Job> jobResultBag = _jobDog.getJobResultBag(
-			keywords, _PAGE_SIZE,
-			new HashMap<String, String>() {
-				{
-					put("column", "id");
-					put("type", "DESC");
-				}
-			},
-			page * _PAGE_SIZE);
+			keywords, _PAGE_SIZE, Sort.desc("id"), page * _PAGE_SIZE);
 
 		return _toResultBagResource(
 			_getModelResultBagResource(page + 1, keywords), page,

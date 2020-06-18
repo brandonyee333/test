@@ -60,8 +60,9 @@ public class AssetMetricsDataFetcher
 
 			assetMetrics.addAll(
 				_metricDog.getAssetMetrics(
-					null, searchQueryContext,
-					(Set<String>)context.get("selectedMetrics"), 10000, 0));
+					searchQueryContext,
+					(Set<String>)context.get("selectedMetrics"), 10000, null,
+					0));
 		}
 
 		assetMetrics.sort(
