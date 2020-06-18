@@ -98,7 +98,7 @@ public class RecommendationRestController extends BaseRestController {
 			this::_toModelResource);
 	}
 
-	@PostMapping("/recommended-pages")
+	@PostMapping("/page-recommendation")
 	public Resource<PageRecommendation> getPageRecommendationResource(
 		@RequestBody String json) {
 
@@ -111,7 +111,7 @@ public class RecommendationRestController extends BaseRestController {
 					jsonObject.getString("item")));
 	}
 
-	@GetMapping("/models/{modelId}/recommended-pages/{recommendationId}")
+	@GetMapping("/models/{modelId}/page-recommendations/{recommendationId}")
 	public Resource<PageRecommendation> getPageRecommendationResource(
 		@PathVariable String modelId, @PathVariable String recommendationId) {
 
@@ -119,7 +119,7 @@ public class RecommendationRestController extends BaseRestController {
 			_recommendationDog.getItemRecommendation(recommendationId));
 	}
 
-	@GetMapping("/models/{modelId}/recommended-pages")
+	@GetMapping("/models/{modelId}/page-recommendations")
 	public ResultBagResource<PageRecommendation>
 		getPageRecommendationResultBagResource(
 			@PathVariable String modelId,
