@@ -30,6 +30,7 @@ import com.liferay.osb.asah.backend.model.PropertyFilter;
 import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.Arrays;
@@ -49,6 +50,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -114,6 +116,8 @@ public class RecommendationRestController extends BaseRestController {
 	public Resource<PageRecommendation> getPageRecommendationResource(
 		@PathVariable String modelId, @PathVariable String recommendationId) {
 
+		_checkJobStatus(modelId);
+
 		return _toPageRecommendationResource(
 			_recommendationDog.getItemRecommendation(recommendationId));
 	}
@@ -124,6 +128,8 @@ public class RecommendationRestController extends BaseRestController {
 			@PathVariable String modelId,
 			@RequestParam(defaultValue = "0") Integer page) {
 
+		_checkJobStatus(modelId);
+
 		ResultBag<ItemRecommendation> itemRecommendationResultBag =
 			_recommendationDog.getItemRecommendationResultBag(
 				modelId, _PAGE_SIZE, Sort.asc("itemId"), page * _PAGE_SIZE);
@@ -132,6 +138,16 @@ public class RecommendationRestController extends BaseRestController {
 			_getPageRecommendationResultBagResource(modelId, page + 1), page,
 			_getPageRecommendationResultBagResource(modelId, page - 1),
 			itemRecommendationResultBag, this::_toPageRecommendationResource);
+	}
+
+	private void _checkJobStatus(String jobId) {
+		JobStatus jobStatus = _jobDog.getJobStatus(jobId);
+
+		if (jobStatus != JobStatus.READY) {
+			throw new OSBAsahException(
+				HttpStatus.CONFLICT,
+				"Please try again later when the model status is ready");
+		}
 	}
 
 	private void _expandPageRecommendationAttributes(
