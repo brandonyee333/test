@@ -70,9 +70,9 @@ public class RecommendationRestControllerTest {
 		Resource<?> pageRecommendationResource =
 			_recommendationRestController.getPageRecommendationResource(
 				JSONUtil.put(
-					"item", "https://page-a"
-				).put(
 					"modelId", "1"
+				).put(
+					"url", "https://page-a"
 				).toString());
 
 		Assert.assertNotNull(pageRecommendationResource);

@@ -107,8 +107,7 @@ public class RecommendationRestController extends BaseRestController {
 		return getPageRecommendationResource(
 			jsonObject.getString("modelId"),
 			DigestUtils.sha1Hex(
-				jsonObject.getString("modelId") +
-					jsonObject.getString("item")));
+				jsonObject.getString("modelId") + jsonObject.getString("url")));
 	}
 
 	@GetMapping("/models/{modelId}/page-recommendations/{recommendationId}")
