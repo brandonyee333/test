@@ -114,6 +114,22 @@ public class RecommendationRestController extends BaseRestController {
 			_recommendationDog.getItemRecommendation(recommendationId));
 	}
 
+	@GetMapping("/models/{modelId}/recommended-pages")
+	public ResultBagResource<PageRecommendation>
+		getPageRecommendationResultBagResource(
+			@PathVariable String modelId,
+			@RequestParam(defaultValue = "0") Integer page) {
+
+		ResultBag<ItemRecommendation> itemRecommendationResultBag =
+			_recommendationDog.getItemRecommendationResultBag(
+				modelId, _PAGE_SIZE, Sort.asc("itemId"), page * _PAGE_SIZE);
+
+		return _toResultBagResource(
+			_getPageRecommendationResultBagResource(modelId, page + 1), page,
+			_getPageRecommendationResultBagResource(modelId, page - 1),
+			itemRecommendationResultBag, this::_toPageRecommendationResource);
+	}
+
 	private ResultBagResource<Model> _getModelResultBagResource(
 		Integer page, String keywords) {
 
@@ -121,6 +137,16 @@ public class RecommendationRestController extends BaseRestController {
 			RecommendationRestController.class
 		).getModelResultBagResource(
 			page, keywords
+		);
+	}
+
+	private ResultBagResource<PageRecommendation>
+		_getPageRecommendationResultBagResource(String modelId, Integer page) {
+
+		return ControllerLinkBuilder.methodOn(
+			RecommendationRestController.class
+		).getPageRecommendationResultBagResource(
+			modelId, page
 		);
 	}
 
