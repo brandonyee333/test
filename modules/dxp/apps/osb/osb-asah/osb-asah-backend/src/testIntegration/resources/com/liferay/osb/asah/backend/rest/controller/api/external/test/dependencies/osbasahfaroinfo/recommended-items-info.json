@@ -1,52 +1,38 @@
 [
 	{
-		"id": "fd98459b712bf8a15c6f9a71e4ae52f641b25eb2",
-		"item": "https://www-prd.liferay.com/services/training/online",
+		"id": "3d45ba615abf461a97dd5583619e27cc0de4c159",
+		"itemId": "https://page-a",
 		"jobId": "1",
-		"recommendedItems": [
-			"https://www-prd.liferay.com/blog",
-			"https://www-prd.liferay.com/resource"
+		"recommendedItemIds": [
+			"https://page-b",
+			"https://page-c"
 		]
 	},
 	{
-		"id": "fd5c2aaf0ea7e8ea87f00eb4b0d1d53dc4737b33",
-		"item": "https://www-prd.liferay.com/solutions/headless-apis",
+		"id": "c27a37a60867da3cc61cb37b10314214bda8d40e",
+		"itemId": "https://page-b",
 		"jobId": "1",
-		"recommendedItems": [
-			"https://www-prd.liferay.com",
-			"https://www-prd.liferay.com/blog",
-			"https://www-prd.liferay.com/resource",
-			"https://www-prd.liferay.com/resources",
-			"https://www-prd.liferay.com/services/partners/become-a-partner"
+		"recommendedItemIds": [
+			"https://page-c"
 		]
 	},
 	{
-		"id": "3998f9192aa95a8f9a7963ad2ddc2ea7bd74d9f5",
-		"item": "https://www-upgrade.liferay.com/az_test_content_page",
+		"id": "60bbee53c99878fb6c9e02f09558add2f027b13e",
+		"itemId": "https://page-c",
 		"jobId": "1",
-		"recommendedItems": [
-			"https://www-upgrade.liferay.com",
-			"https://www-upgrade.liferay.com/az_test_content_page1"
+		"recommendedItemIds": [
+			"https://page-a",
+			"https://page-d"
 		]
 	},
 	{
-		"id": "0a89969af178fc3fb8043a230e882d34adef03b4",
-		"item": "https://www.liferay.co.jp/-/blog/understanding-search-from-a-developers-perspective",
-		"jobId": "2",
-		"recommendedItems": [
-			"https://www.liferay.co.jp/blog"
-		]
-	},
-	{
-		"id": "4befd80dfa96a21f73e0b70f8b533c20a635c14a",
-		"item": "https://www.liferay.co.jp/-/dxp-7-2-sp1-introduces-dxp-only-search-features",
+		"id": "7df559372adc103aa408ce5db267481b57b49002",
+		"itemId": "https://page-d",
 		"jobId": "1",
-		"recommendedItems": [
-			"https://www.liferay.co.jp",
-			"https://www.liferay.co.jp/-/blog/new-websites-and-new-domains",
-			"https://www.liferay.co.jp/-/provide-cx-while-keeping-legacy-system-case-study",
-			"https://www.liferay.co.jp/blog",
-			"https://www.liferay.co.jp/portal"
+		"recommendedItemIds": [
+			"https://page-a",
+			"https://page-b",
+			"https://page-c"
 		]
 	}
 ]

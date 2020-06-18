@@ -21,17 +21,18 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.json.JSONObject;
-
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Resource;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * @author Marcellus Tavares
@@ -39,6 +40,17 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class RecommendationRestControllerTest {
+
+	@Before
+	public void setUp() {
+		RequestContextHolder.setRequestAttributes(
+			new ServletRequestAttributes(new MockHttpServletRequest()));
+	}
+
+	@After
+	public void tearDown() {
+		RequestContextHolder.resetRequestAttributes();
+	}
 
 	@ElasticsearchIndex(
 		name = "job-runs", resourcePath = "job-runs-info.json",
@@ -54,23 +66,16 @@ public class RecommendationRestControllerTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testGetRecommendedItems() throws Exception {
-		String json = _recommendationRestController.getRecommendedItems(
-			JSONUtil.put(
-				"item", "https://www-prd.liferay.com/services/training/online"
-			).toString(),
-			"1");
+	public void testGetPageRecommendationResource() {
+		Resource<?> pageRecommendationResource =
+			_recommendationRestController.getPageRecommendationResource(
+				JSONUtil.put(
+					"item", "https://page-a"
+				).put(
+					"modelId", "1"
+				).toString());
 
-		JSONObject jsonObject = new JSONObject(json);
-
-		List<String> recommendedItems = JSONUtil.toStringList(
-			jsonObject.getJSONArray("recommendedItems"));
-
-		Assert.assertEquals(
-			Arrays.asList(
-				"https://www-prd.liferay.com/blog",
-				"https://www-prd.liferay.com/resource"),
-			recommendedItems);
+		Assert.assertNotNull(pageRecommendationResource);
 	}
 
 	@Autowired
