@@ -382,6 +382,18 @@ public class RecommendationRestController extends BaseRestController {
 		}
 
 		@JsonProperty("recommendedPages")
+		public List<Resource<PageRecommendation>>
+			getPageRecommendationResources() {
+
+			if (_pageRecommendations == null) {
+				return null;
+			}
+
+			return ListUtil.map(
+				_pageRecommendations, this::_toPageRecommendationResource);
+		}
+
+		@JsonIgnore
 		public List<PageRecommendation> getPageRecommendations() {
 			return _pageRecommendations;
 		}
@@ -422,6 +434,21 @@ public class RecommendationRestController extends BaseRestController {
 
 		public void setURL(String url) {
 			_url = url;
+		}
+
+		private Resource<PageRecommendation> _toPageRecommendationResource(
+			PageRecommendation pageRecommendation) {
+
+			return new Resource<>(
+				pageRecommendation,
+				ControllerLinkBuilder.linkTo(
+					ControllerLinkBuilder.methodOn(
+						RecommendationRestController.class
+					).getPageRecommendationResource(
+						pageRecommendation.getJobId(),
+						pageRecommendation.getId()
+					)
+				).withSelfRel());
 		}
 
 		private String _description;
