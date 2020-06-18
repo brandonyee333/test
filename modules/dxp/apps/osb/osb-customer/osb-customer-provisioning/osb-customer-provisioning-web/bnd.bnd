@@ -1,0 +1,7 @@
+Bundle-Name: Liferay OSB Customer Provisioning Web
+Bundle-SymbolicName: com.liferay.osb.customer.provisioning.web
+Bundle-Version: 1.0.0
+Liferay-Releng-Module-Group-Title: Customer
+Web-ContextPath: /osb-customer-provisioning-web
+-dsannotations-options: inherit
+-includeresource: content=src/main/resources/content

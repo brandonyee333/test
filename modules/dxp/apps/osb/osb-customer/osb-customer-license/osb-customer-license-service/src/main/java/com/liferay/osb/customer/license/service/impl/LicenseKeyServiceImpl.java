@@ -55,8 +55,7 @@ import java.util.List;
 public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 	public LicenseKey addDeveloperLicenseKey(
-			long accountEntryId, String productEntryRootName,
-			int productMinorVersion)
+			long accountEntryId, long productEntryId, int productMinorVersion)
 		throws PortalException {
 
 		/*
@@ -67,11 +66,12 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 			throw new PrincipalException();
 		}
+
+		validate product ownership
 		*/
 
 		return licenseKeyLocalService.addDeveloperLicenseKey(
-			getUserId(), accountEntryId, productEntryRootName,
-			productMinorVersion);
+			getUserId(), accountEntryId, productEntryId, productMinorVersion);
 	}
 
 	public LicenseKey addLicenseKey(

@@ -10,13 +10,6 @@
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<css-class-wrapper>osb-portlet-license</css-class-wrapper>
 	</portlet>
-	<portlet>
-		<portlet-name>38</portlet-name>
-		<configuration-action-class>com.liferay.osb.selfprovisioning.action.ConfigurationActionImpl</configuration-action-class>
-		<preferences-unique-per-layout>true</preferences-unique-per-layout>
-		<header-portlet-css>/css/main.css</header-portlet-css>
-		<css-class-wrapper>osb-portlet-self-provisioning</css-class-wrapper>
-	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>
 		<role-link>Administrator</role-link>

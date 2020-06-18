@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.admin.service.impl;
 
 import com.liferay.osb.customer.admin.constants.ExternalIdMapperConstants;
+import com.liferay.osb.customer.admin.constants.ProductEntryConstants;
 import com.liferay.osb.customer.admin.exception.DuplicateProductEntryException;
 import com.liferay.osb.customer.admin.exception.ProductEntryKoroneikiProductKeyException;
 import com.liferay.osb.customer.admin.exception.ZendeskTagException;
@@ -112,6 +113,30 @@ public class ProductEntryLocalServiceImpl
 
 	public ProductEntry fetchProductEntryByName(String name) {
 		return productEntryPersistence.fetchByName(name);
+	}
+
+	public ProductEntry getDeveloperProductEntry(long productEntryId)
+		throws PortalException {
+
+		ProductEntry productEntry = productEntryPersistence.findByPrimaryKey(
+			productEntryId);
+
+		List<ProductEntry> productEntries =
+			productEntryPersistence.findByEnvironment(
+				ProductEntryConstants.ENVIRONMENT_DEVELOPMENT);
+
+		for (ProductEntry curProductEntry : productEntries) {
+			if ((curProductEntry.isDigitalEnterprise() &&
+				 productEntry.isDigitalEnterprise()) ||
+				(curProductEntry.isDigitalEnterprise() &&
+				 productEntry.isDXPCloud()) ||
+				(curProductEntry.isPortal() && productEntry.isPortal())) {
+
+				return curProductEntry;
+			}
+		}
+
+		return null;
 	}
 
 	public List<ProductEntry> getProductEntries(boolean licenses) {

@@ -16,8 +16,10 @@ package com.liferay.osb.customer.license.service.impl;
 
 import com.liferay.osb.customer.admin.constants.LicenseEntryConstants;
 import com.liferay.osb.customer.admin.constants.ProductEntryConstants;
+import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.model.LicenseEntry;
 import com.liferay.osb.customer.admin.model.ProductEntry;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.admin.service.LicenseEntryLocalService;
 import com.liferay.osb.customer.admin.service.ProductEntryLocalService;
 import com.liferay.osb.customer.license.constants.LicenseKeyConstants;
@@ -72,53 +74,41 @@ import org.apache.commons.lang.time.DateUtils;
 public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 	public LicenseKey addDeveloperLicenseKey(
-			long userId, long accountEntryId, String productEntryRootName,
+			long userId, long accountEntryId, long productEntryId,
 			int productMinorVersion)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
-		/*
-		TODO
-		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
+
+		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
 			accountEntryId);
 
-		OfferingEntry offeringEntry = getOfferingEntry(
-			accountEntryId, productEntryRootName);
+		String name = "Developer Activation Keys";
 
-		if (offeringEntry == null) {
-			throw new PrincipalException();
-		}
+		LicenseKeySet licenseKeySet =
+			licenseKeySetPersistence.fetchByKA_N_First(
+				accountEntry.getKoroneikiAccountKey(), name, null);
 
-		OfferingEntry developerOfferingEntry = getDeveloperOfferingEntry(
-			accountEntryId, offeringEntry.getProductEntryId(),
-			offeringEntry.getVersion(), offeringEntry.getSizing());
+		LicenseEntry licenseEntry = _licenseEntryLocalService.getLicenseEntry(
+			productEntryId, LicenseEntryConstants.TYPE_DEVELOPER);
+		ProductEntry productEntry = _productEntryLocalService.getProductEntry(
+			productEntryId);
 
-		long licenseKeySetId = 0;
+		Date startDate = new Date();
 
-		LicenseKey licenseKey = licenseKeyPersistence.fetchByOEI_C_A_First(
-			developerOfferingEntry.getOfferingEntryId(), false, true, null);
-
-		if (licenseKey != null) {
-			licenseKeySetId = licenseKey.getLicenseKeySetId();
-		}
-
-		LicenseEntry licenseEntry = licenseEntryPersistence.findByPEI_T(
-			developerOfferingEntry.getProductEntryId(),
-			LicenseEntryConstants.TYPE_DEVELOPER);
+		Date expirationDate = new Date(
+			startDate.getTime() +
+				LicenseKeyConstants.LIFETIME_INDEFINITE_VALUE);
 
 		return addLicenseKey(
-			userId, licenseKeySetId, "Developer Activation Keys",
-			developerOfferingEntry.getOfferingEntryId(),
-			licenseEntry.getLicenseEntryId(),
-			developerOfferingEntry.getProductEntryId(),
-			getProductVersion(productMinorVersion), 0, user.getFullName(), 2, 5,
+			userId, licenseKeySet, name, licenseEntry, productEntry,
+			accountEntry.getKoroneikiAccountKey(), StringPool.BLANK,
+			accountEntry.getName(), getProductVersion(productMinorVersion), 0,
+			user.getFullName(), 1, 5, 0, 0, 0,
 			accountEntry.getName() + " Developer Activation Keys",
 			new String[0], new String[0], new String[0],
-			new String[] {LicenseKeyConstants.SERVER_ID_DEVELOPER}, new Date(),
-			null, false, true);
-		*/
-
-		return null;
+			new String[] {LicenseKeyConstants.SERVER_ID_DEVELOPER}, startDate,
+			expirationDate, StringPool.BLANK, false, true);
 	}
 
 	public LicenseKey addLicenseKey(
@@ -1115,145 +1105,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		);
 	}
 
-	/*
-	TODO
-	protected OfferingEntry getDeveloperOfferingEntry(
-			long accountEntryId, long primaryProductEntryId, int version,
-			int sizing)
-		throws PortalException {
-
-		ProductEntry productEntry = getDeveloperProductEntry(
-			primaryProductEntryId);
-
-		OfferingEntry offeringEntry =
-			offeringEntryPersistence.fetchByAEI_PEI_T_First(
-				accountEntryId, productEntry.getProductEntryId(),
-				OfferingEntryConstants.TYPE_DEVELOPER, null);
-
-		if (offeringEntry != null) {
-			return offeringEntry;
-		}
-
-		OrderEntry orderEntry = getDeveloperOrderEntry(accountEntryId);
-
-		SupportResponse supportResponse =
-			supportResponseLocalService.getSupportResponseByName("Limited");
-
-		return offeringEntryLocalService.addOfferingEntry(
-			OSBCustomerConstants.USER_DEFAULT_USER_ID, accountEntryId,
-			orderEntry.getOrderEntryId(), productEntry.getProductEntryId(),
-			supportResponse.getSupportResponseId(), StringPool.BLANK,
-			OfferingEntryConstants.TYPE_DEVELOPER, version, true,
-			OfferingDefinitionConstants.LIFETIME_INDEFINITE_VALUE, 0, 0, false,
-			Time.MINUTE, sizing, OfferingEntryConstants.QUANTITY_UNLIMITED,
-			OfferingEntryConstants.STATUS_ACTIVE);
-	}
-
-	protected OrderEntry getDeveloperOrderEntry(long accountEntryId)
-		throws PortalException {
-
-		OfferingEntry offeringEntry =
-			offeringEntryPersistence.fetchByAEI_T_First(
-				accountEntryId, OfferingEntryConstants.TYPE_DEVELOPER, null);
-
-		if (offeringEntry != null) {
-			return offeringEntry.getOrderEntry();
-		}
-
-		Calendar startCal = Calendar.getInstance();
-
-		return orderEntryLocalService.addOrderEntry(
-			OSBCustomerConstants.USER_DEFAULT_USER_ID, accountEntryId, StringPool.BLANK,
-			startCal.get(Calendar.MONTH), startCal.get(Calendar.DATE),
-			startCal.get(Calendar.YEAR), false, 0, 0, 0,
-			WorkflowConstants.STATUS_APPROVED, StringPool.BLANK,
-			new ArrayList<OfferingEntry>());
-	}
-
-	protected ProductEntry getDeveloperProductEntry(long productEntryId)
-		throws PortalException {
-
-		ProductEntry productEntry = productEntryPersistence.findByPrimaryKey(
-			productEntryId);
-
-		List<ProductEntry> productEntries =
-			productEntryPersistence.findByEnvironment(
-				ProductEntryConstants.ENVIRONMENT_DEVELOPMENT);
-
-		for (ProductEntry curProductEntry : productEntries) {
-			if ((curProductEntry.isCommerceSubscription() &&
-				 productEntry.isCommerceSubscription()) ||
-				(curProductEntry.isDigitalEnterprise() &&
-				 productEntry.isDigitalEnterprise()) ||
-				(curProductEntry.isDigitalEnterprise() &&
-				 productEntry.isDXPCloud()) ||
-				(curProductEntry.isPortal() && productEntry.isPortal())) {
-
-				return curProductEntry;
-			}
-		}
-
-		return null;
-	}
-
-	protected OfferingEntry getOfferingEntry(
-			long accountEntryId, String productEntryRootName)
-		throws PortalException {
-
-		LinkedHashMap params = new LinkedHashMap();
-
-		params.put("license", StringPool.BLANK);
-
-		List<OfferingEntry> offeringEntries = offeringEntryLocalService.search(
-			0, accountEntryId, new int[] {OfferingEntryConstants.TYPE_REGULAR},
-			new int[] {OfferingEntryConstants.STATUS_ACTIVE}, 0, 0, 0, 0, 0, 0,
-			params, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-
-		for (OfferingEntry offeringEntry : offeringEntries) {
-			ProductEntry productEntry = offeringEntry.getProductEntry();
-
-			if (productEntry.getEnvironment() ==
-					ProductEntryConstants.ENVIRONMENT_DEVELOPMENT) {
-
-				continue;
-			}
-
-			/*
-
-			if (productEntryRootName.equals(
-					ProductEntryConstants.ROOT_COMMERCE_SUBSCRIPTION) &&
-				productEntry.isCommerceSubscription()) {
-
-				return offeringEntry;
-			}
-
-			if (productEntry.getType() != ProductEntryConstants.TYPE_PRIMARY) {
-				continue;
-			}
-
-			if ((productEntryRootName.equals(
-					ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE) &&
-				 productEntry.isDigitalEnterprise()) ||
-				(productEntryRootName.equals(
-					ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE) &&
-				 productEntry.isDXPCloud()) ||
-				(productEntryRootName.equals(
-					ProductEntryConstants.ROOT_NAME_PORTAL) &&
-				 productEntry.isPortal())) {
-
-				return offeringEntry;
-			}
-		}
-
-		return null;
-	}
-
-	*/
-
 	protected int getProductVersion(int productMinorVersion) {
-		/*
-		TODO
-
 		if (productMinorVersion ==
 				ProductEntryConstants.COMMERCE_LICENSE_VERSION_1) {
 
@@ -1303,7 +1155,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 			return ProductEntryConstants.PORTAL_VERSION_5_2_9;
 		}
-		*/
 
 		return 0;
 	}
@@ -1477,6 +1328,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			}
 		}
 	}
+
+	@ServiceReference(type = AccountEntryLocalService.class)
+	protected AccountEntryLocalService _accountEntryLocalService;
 
 	@ServiceReference(type = KeyGenerator.class)
 	protected KeyGenerator _keyGenerator;

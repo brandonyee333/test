@@ -23,7 +23,7 @@ long[] digitalEnterpriseProductMinorVersions = StringUtil.split(PrefsParamUtil.g
 long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(portletPreferences, request, "portal_productMinorVersions"), 0L);
 %>
 
-<c:if test="<%= PortletPermissionUtil.contains(permissionChecker, plid, OSBPortletKeys.OSB_SELF_PROVISIONING, OSBActionKeys.CONFIGURATION) %>">
+<c:if test="<%= PortletPermissionUtil.contains(permissionChecker, plid, CustomerProvisioningPortletKeys.SELF_PROVISIONING, OSBActionKeys.CONFIGURATION) %>">
 	<liferay-portlet:renderURL portletConfiguration="<%= true %>" var="portletURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 		<portlet:param name="redirect" value="<%= redirect %>" />
 	</liferay-portlet:renderURL>

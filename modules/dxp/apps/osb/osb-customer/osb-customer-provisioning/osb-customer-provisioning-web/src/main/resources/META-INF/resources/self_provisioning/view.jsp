@@ -35,12 +35,36 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 	<c:otherwise>
 
 		<%
-		LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
+		TreeSet<AccountEntry> accountEntries = new TreeSet<AccountEntry>(new AccountEntryNameComparator(true));
+		Map<String, Set<ProductEntry>> accountEntryProductEntriesMap = new HashMap<String, Set<ProductEntry>>();
 
-		params.put("accountCustomer", Long.valueOf(user.getUserId()));
-		params.put("primaryProductEntry", new Object[] {OfferingEntryConstants.STATUS_ACTIVE, ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE, ProductEntryConstants.ROOT_NAME_PORTAL, ProductEntryConstants.ROOT_DXP_CLOUD, ProductEntryConstants.TYPE_PRIMARY, ProductEntryConstants.ROOT_COMMERCE_SUBSCRIPTION, ProductEntryConstants.ENVIRONMENT_DEVELOPMENT});
+		String filter = "customerContactUuids/any(s:s eq '" + user.getUuid() + "') and property_type eq 'primary' and state eq 'active'";
 
-		List<AccountEntry> accountEntries = AccountEntryLocalServiceUtil.search(null, params, QueryUtil.ALL_POS, QueryUtil.ALL_POS, new AccountEntryNameComparator(true));
+		List<ProductPurchaseView> productPurchaseViews = productPurchaseViewWebService.getProductPurchaseViews(StringPool.BLANK, filter, 1, 1000, StringPool.BLANK);
+
+		for (ProductPurchaseView productPurchaseView : productPurchaseViews) {
+			ProductPurchase[] productPurchases = productPurchaseView.getProductPurchases();
+
+			if (ArrayUtil.isEmpty(productPurchases)) {
+				continue;
+			}
+
+			ProductPurchase productPurchase = productPurchases[0];
+
+			Set<ProductEntry> productEntries = accountEntryProductEntriesMap.get(productPurchase.getAccountKey());
+
+			if (productEntries == null) {
+				accountEntries.add(AccountEntryLocalServiceUtil.getKoroneikiAccountEntry(productPurchase.getAccountKey()));
+
+				productEntries = new TreeSet<>(new ProductEntryNameComparator(true));
+
+				accountEntryProductEntriesMap.put(productPurchase.getAccountKey(), productEntries);
+			}
+
+			ProductEntry productEntry = ProductEntryLocalServiceUtil.getProductEntryByKoroneikiKey(productPurchase.getProductKey());
+
+			productEntries.add(ProductEntryLocalServiceUtil.getDeveloperProductEntry(productEntry.getProductEntryId()));
+		}
 		%>
 
 		<div class="container-fluid-1280">
@@ -63,7 +87,7 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 				</aui:col>
 
 				<aui:col width="<%= 30 %>">
-					<aui:select label="" name="productEntryRootName" onChange='<%= renderResponse.getNamespace() + "selectProduct(this.value);" %>'>
+					<aui:select label="" name="productEntryId" onChange='<%= renderResponse.getNamespace() + "selectProduct();" %>'>
 						<aui:option disabled="<%= true %>" label="product" selected="<%= true %>" value="" />
 					</aui:select>
 				</aui:col>
@@ -88,11 +112,11 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 					var A = AUI();
 
 					var accountEntryId = A.one('#<portlet:namespace />accountEntryId');
-					var productEntryRootName = A.one('#<portlet:namespace />productEntryRootName');
+					var productEntryId = A.one('#<portlet:namespace />productEntryId');
 					var productMinorVersion = A.one('#<portlet:namespace />productMinorVersion');
 
-					if (accountEntryId && productEntryRootName && productMinorVersion) {
-						if (!accountEntryId.val() || !productEntryRootName || !productMinorVersion.val()) {
+					if (accountEntryId && productEntryId && productMinorVersion) {
+						if (!accountEntryId.val() || !productEntryId || !productMinorVersion.val()) {
 							alert('<liferay-ui:message key="please-fill-out-all-required-fields" />');
 
 							return;
@@ -100,7 +124,7 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 
 						<portlet:resourceURL id="generateLicenseKey" var="generateLicenseKeyURL" />
 
-						window.location.href = '<%= generateLicenseKeyURL.toString() %>&<portlet:namespace />accountEntryId=' + accountEntryId.val() + '&<portlet:namespace />productEntryRootName=' + productEntryRootName.val() + '&<portlet:namespace />productMinorVersion=' + productMinorVersion.val();
+						window.location.href = '<%= generateLicenseKeyURL.toString() %>&<portlet:namespace />accountEntryId=' + accountEntryId.val() + '&<portlet:namespace />productEntryId=' + productEntryId.val() + '&<portlet:namespace />productMinorVersion=' + productMinorVersion.val();
 					}
 				},
 				['aui-base']
@@ -127,14 +151,14 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 				function(accountEntryId) {
 					var A = AUI();
 
-					var productEntryRootNameSelect = A.one('#<portlet:namespace />productEntryRootName');
+					var productEntryIdSelect = A.one('#<portlet:namespace />productEntryId');
 
-					if (productEntryRootNameSelect) {
-						productEntryRootNameSelect.empty();
+					if (productEntryIdSelect) {
+						productEntryIdSelect.empty();
 
-						var productEntryRootNameOptions = [];
+						var productEntryIdOptions = [];
 
-						productEntryRootNameOptions.push('<option disabled><liferay-ui:message key="product" /></option>');
+						productEntryIdOptions.push('<option disabled><liferay-ui:message key="product" /></option>');
 
 						var selectedOption = '';
 
@@ -145,16 +169,25 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 							if (accountEntryId == '<%= accountEntry.getAccountEntryId() %>') {
 
 								<%
-								Set<String> productEntryRootNames = SupportUtil.getSelfProvisioningProducts(accountEntry.getAccountEntryId());
+								Set<ProductEntry> productEntries = accountEntryProductEntriesMap.get(accountEntry.getKoroneikiAccountKey());
 
-								for (String productEntryRootName : productEntryRootNames) {
+								for (ProductEntry productEntry : productEntries) {
+									String productEntryRootName = null;
+
+									if (productEntry.isDigitalEnterprise() || productEntry.isDXPCloud()) {
+										productEntryRootName = ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE;
+									}
+
+									if (productEntry.isPortal()) {
+										productEntryRootName = ProductEntryConstants.ROOT_NAME_PORTAL;
+									}
 								%>
 
 									if (selectedOption == '') {
-										selectedOption = '<%= productEntryRootName %>';
+										selectedOption = '<%= productEntry.getProductEntryId() %>';
 									}
 
-									productEntryRootNameOptions.push('<option value="<%= productEntryRootName %>"><%= productEntryRootName %></option>');
+									productEntryIdOptions.push('<option value="<%= productEntry.getProductEntryId() %>"><%= productEntryRootName %></option>');
 
 								<%
 								}
@@ -166,12 +199,12 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 						}
 						%>
 
-						productEntryRootNameSelect.append(productEntryRootNameOptions.join(''));
+						productEntryIdSelect.append(productEntryIdOptions.join(''));
 
 						if (selectedOption != '') {
-							productEntryRootNameSelect.val(selectedOption);
+							productEntryIdSelect.val(selectedOption);
 
-							<portlet:namespace />selectProduct(selectedOption);
+							<portlet:namespace />selectProduct();
 						}
 					}
 				},
@@ -181,8 +214,14 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 			Liferay.provide(
 				window,
 				'<portlet:namespace />selectProduct',
-				function(productEntryRootName) {
+				function() {
 					var A = AUI();
+
+					var productEntryIdSelect = document.getElementById('<portlet:namespace />productEntryId');
+
+					var selectedOption = productEntryIdSelect.options[productEntryIdSelect.selectedIndex];
+
+					var productEntryRootName = selectedOption.text;
 
 					var productMinorVersionSelect = A.one('#<portlet:namespace />productMinorVersion');
 
@@ -251,7 +290,7 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 			<c:if test="<%= accountEntries.size() == 1 %>">
 
 				<%
-				AccountEntry accountEntry = accountEntries.get(0);
+				AccountEntry accountEntry = accountEntries.first();
 				%>
 
 				<portlet:namespace />init(<%= accountEntry.getAccountEntryId() %>);

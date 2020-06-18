@@ -19,11 +19,15 @@ import com.liferay.osb.customer.admin.constants.ProductEntryConstants;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.service.ListTypeServiceUtil;
+import com.liferay.portal.kernel.util.Time;
 
 /**
  * @author Kyle Bischof
  */
 public class LicenseKeyConstants {
+
+	public static final long LIFETIME_INDEFINITE_VALUE =
+		36500 * 1440 * Time.MINUTE;
 
 	public static final String SERVER_ID_CLUSTER = "Cluster";
 

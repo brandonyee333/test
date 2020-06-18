@@ -4,6 +4,5 @@
 <display>
 	<category name="category.osb">
 		<portlet id="4" />
-		<portlet id="38" />
 	</category>
 </display>

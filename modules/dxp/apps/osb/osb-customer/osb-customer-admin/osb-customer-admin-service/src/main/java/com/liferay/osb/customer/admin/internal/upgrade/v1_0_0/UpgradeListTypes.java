@@ -43,6 +43,10 @@ public class UpgradeListTypes extends UpgradeProcess {
 			"update ListType set type_ = replace(type_, 'osb.model', " +
 				"'osb.customer.admin.model') where type_ like " +
 					"'%com.liferay.osb.model%'");
+
+		runSQL(
+			"update OSB_ProductEntry set versionsListType = replace(" +
+				"versionsListType, 'digitalEnterprise', 'dxp')");
 	}
 
 }

@@ -178,6 +178,10 @@
 		<finder name="AccountEntryId" return-type="Collection">
 			<finder-column name="accountEntryId" />
 		</finder>
+		<finder name="KA_N" return-type="Collection">
+			<finder-column name="koroneikiAccountKey" />
+			<finder-column name="name" />
+		</finder>
 		<finder name="U_AEI_N" return-type="Collection">
 			<finder-column name="userId" />
 			<finder-column name="accountEntryId" />
