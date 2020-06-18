@@ -18,11 +18,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.liferay.osb.asah.backend.dog.AssetDog;
 import com.liferay.osb.asah.backend.dog.JobDog;
 import com.liferay.osb.asah.backend.dog.RecommendationDog;
 import com.liferay.osb.asah.backend.model.ItemRecommendation;
 import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobStatus;
+import com.liferay.osb.asah.backend.model.Keyword;
+import com.liferay.osb.asah.backend.model.PageAsset;
+import com.liferay.osb.asah.backend.model.PropertyFilter;
 import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.model.Sort;
@@ -130,6 +134,23 @@ public class RecommendationRestController extends BaseRestController {
 			itemRecommendationResultBag, this::_toPageRecommendationResource);
 	}
 
+	private PageAsset _fetchPageAsset(String canonicalUrl) {
+		PropertyFilter propertyFilter = new PropertyFilter(
+			"canonicalUrl = " + canonicalUrl, false);
+
+		ResultBag<PageAsset> pageAssetResultBag =
+			_assetDog.getPageAssetResultBag(
+				null, Arrays.asList(propertyFilter), 1, Sort.desc("id"), 0);
+
+		if (pageAssetResultBag.getTotal() == 1) {
+			List<PageAsset> pageAssets = pageAssetResultBag.getResults();
+
+			return pageAssets.get(0);
+		}
+
+		return null;
+	}
+
 	private ResultBagResource<Model> _getModelResultBagResource(
 		Integer page, String keywords) {
 
@@ -189,6 +210,15 @@ public class RecommendationRestController extends BaseRestController {
 				recommendedItemId -> _toPageRecommendation(
 					itemRecommendation.getJobId(), recommendedItemId)));
 
+		PageAsset pageAsset = _fetchPageAsset(itemRecommendation.getItemId());
+
+		if (pageAsset != null) {
+			pageRecommendation.setDescription(pageAsset.getDescription());
+			pageRecommendation.setTitle(pageAsset.getTitle());
+			pageRecommendation.setKeywords(
+				ListUtil.map(pageAsset.getKeywords(), Keyword::getValue));
+		}
+
 		return pageRecommendation;
 	}
 
@@ -198,6 +228,15 @@ public class RecommendationRestController extends BaseRestController {
 		pageRecommendation.setId(DigestUtils.sha1Hex(jobId + url));
 		pageRecommendation.setJobId(jobId);
 		pageRecommendation.setURL(url);
+
+		PageAsset pageAsset = _fetchPageAsset(url);
+
+		if (pageAsset != null) {
+			pageRecommendation.setDescription(pageAsset.getDescription());
+			pageRecommendation.setTitle(pageAsset.getTitle());
+			pageRecommendation.setKeywords(
+				ListUtil.map(pageAsset.getKeywords(), Keyword::getValue));
+		}
 
 		return pageRecommendation;
 	}
@@ -249,6 +288,9 @@ public class RecommendationRestController extends BaseRestController {
 	}
 
 	private static final int _PAGE_SIZE = 20;
+
+	@Autowired
+	private AssetDog _assetDog;
 
 	@Autowired
 	private JobDog _jobDog;
@@ -315,6 +357,10 @@ public class RecommendationRestController extends BaseRestController {
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private static class PageRecommendation {
 
+		public String getDescription() {
+			return _description;
+		}
+
 		@JsonIgnore
 		public String getId() {
 			return _id;
@@ -325,13 +371,25 @@ public class RecommendationRestController extends BaseRestController {
 			return _jobId;
 		}
 
+		public List<String> getKeywords() {
+			return _keywords;
+		}
+
 		@JsonProperty("recommendedPages")
 		public List<PageRecommendation> getPageRecommendations() {
 			return _pageRecommendations;
 		}
 
+		public String getTitle() {
+			return _title;
+		}
+
 		public String getURL() {
 			return _url;
+		}
+
+		public void setDescription(String description) {
+			_description = description;
 		}
 
 		public void setId(String id) {
@@ -342,19 +400,30 @@ public class RecommendationRestController extends BaseRestController {
 			_jobId = jobId;
 		}
 
+		public void setKeywords(List<String> keywords) {
+			_keywords = keywords;
+		}
+
 		public void setPageRecommendations(
 			List<PageRecommendation> pageRecommendations) {
 
 			_pageRecommendations = pageRecommendations;
 		}
 
+		public void setTitle(String title) {
+			_title = title;
+		}
+
 		public void setURL(String url) {
 			_url = url;
 		}
 
+		private String _description;
 		private String _id;
 		private String _jobId;
+		private List<String> _keywords;
 		private List<PageRecommendation> _pageRecommendations;
+		private String _title;
 		private String _url;
 
 	}
