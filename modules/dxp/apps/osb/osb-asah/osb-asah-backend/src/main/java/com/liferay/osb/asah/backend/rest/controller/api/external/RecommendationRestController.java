@@ -51,9 +51,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author Marcellus Tavares
  */
-@RequestMapping(
-	produces = "application/json", value = "/api/content-recommendations"
-)
+@RequestMapping(produces = "application/json", value = "/api/recommendations")
 @RestController
 public class RecommendationRestController extends BaseRestController {
 
