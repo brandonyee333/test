@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.elasticsearch;
 
+import com.liferay.osb.asah.common.model.Sort;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -52,6 +54,10 @@ public class SortBuilderUtil {
 	public static FieldSortBuilder fieldSort(Map<String, String> sort) {
 		return fieldSort(
 			sort.get("column"), SortOrder.valueOf(sort.get("type")));
+	}
+
+	public static FieldSortBuilder fieldSort(Sort sort) {
+		return fieldSort(sort.getColumn(), SortOrder.valueOf(sort.getType()));
 	}
 
 	public static FieldSortBuilder fieldSort(String fieldName) {
