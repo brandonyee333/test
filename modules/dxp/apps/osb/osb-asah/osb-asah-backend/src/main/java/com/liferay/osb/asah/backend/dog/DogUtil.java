@@ -60,6 +60,8 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 
+import org.json.JSONObject;
+
 /**
  * @author Marcellus Tavares
  */
@@ -187,6 +189,10 @@ public class DogUtil {
 		}
 
 		return searchSourceBuilder;
+	}
+
+	public static <T> T convert(JSONObject jsonObject, Class<T> modelClass) {
+		return _objectMapper.convertValue(jsonObject, modelClass);
 	}
 
 	public static <T> ResultBag<T> createResultBag(
