@@ -22,12 +22,7 @@ import com.liferay.osb.customer.github.exception.DuplicateCollaboratorException;
 import com.liferay.osb.customer.github.model.Collaborator;
 import com.liferay.osb.customer.github.service.base.CollaboratorLocalServiceBaseImpl;
 import com.liferay.osb.customer.github.web.service.GitHubWebService;
-import com.liferay.osb.exception.RequiredAccountEntryException;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
@@ -59,24 +54,26 @@ public class CollaboratorLocalServiceImpl
 		collaborator.setEmailAddress(emailAddress);
 		collaborator.setFullName(fullName);
 		collaborator.setGitHubUserName(gitHubUserName);
-		collaborator.setStatus(WorkflowConstants.STATUS_PENDING);
+		//collaborator.setStatus(WorkflowConstants.STATUS_PENDING);
 
-		AccountEntry accountEntry =
-			AccountEntryLocalServiceUtil.getAccountEntry(accountEntryId);
+		/*
+				AccountEntry accountEntry =
+					AccountEntryLocalServiceUtil.getAccountEntry(accountEntryId);
 
-		if (accountEntry.getStatus() == WorkflowConstants.STATUS_CLOSED) {
-			_gitHubWebService.getUser(gitHubUserName);
+				if (accountEntry.getStatus() == WorkflowConstants.STATUS_CLOSED) {
+					_gitHubWebService.getUser(gitHubUserName);
 
-			collaborator.setStatus(WorkflowConstants.STATUS_CLOSED);
-		}
-		else {
-			JSONObject jsonObject = _gitHubWebService.addCollaborator(
-				gitHubUserName);
+					collaborator.setStatus(WorkflowConstants.STATUS_CLOSED);
+				}
+				else {
+					JSONObject jsonObject = _gitHubWebService.addCollaborator(
+						gitHubUserName);
 
-			if (jsonObject != null) {
-				collaborator.setStatus(WorkflowConstants.STATUS_APPROVED);
-			}
-		}
+					if (jsonObject != null) {
+						collaborator.setStatus(WorkflowConstants.STATUS_APPROVED);
+					}
+				}
+		*/
 
 		return collaboratorPersistence.update(collaborator);
 	}
@@ -129,7 +126,7 @@ public class CollaboratorLocalServiceImpl
 		throws PortalException {
 
 		if (accountEntryId <= 0) {
-			throw new RequiredAccountEntryException();
+			//throw new RequiredAccountEntryException();
 		}
 
 		if (Validator.isNull(emailAddress)) {
