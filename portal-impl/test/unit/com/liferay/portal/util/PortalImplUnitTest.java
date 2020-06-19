@@ -447,6 +447,23 @@ public class PortalImplUnitTest extends PowerMockito {
 	}
 
 	@Test
+	public void testIsValidResourceId() {
+		Assert.assertTrue(_portalImpl.isValidResourceId("/view.jsp"));
+		Assert.assertFalse(
+			_portalImpl.isValidResourceId("/META-INF/MANIFEST.MF"));
+		Assert.assertFalse(
+			_portalImpl.isValidResourceId("/META-INF\\MANIFEST.MF"));
+		Assert.assertFalse(
+			_portalImpl.isValidResourceId("\\META-INF/MANIFEST.MF"));
+		Assert.assertFalse(
+			_portalImpl.isValidResourceId("\\META-INF\\MANIFEST.MF"));
+		Assert.assertFalse(_portalImpl.isValidResourceId("/WEB-INF/web.xml"));
+		Assert.assertFalse(_portalImpl.isValidResourceId("/WEB-INF\\web.xml"));
+		Assert.assertFalse(_portalImpl.isValidResourceId("\\WEB-INF/web.xml"));
+		Assert.assertFalse(_portalImpl.isValidResourceId("\\WEB-INF\\web.xml"));
+	}
+
+	@Test
 	public void testUpdateRedirectRemoveLayoutURL() {
 		mockStatic(HttpUtil.class);
 
