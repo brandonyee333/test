@@ -18,6 +18,7 @@ import com.liferay.osb.asah.backend.dog.JobDog;
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.ResultBag;
+import com.liferay.osb.asah.common.model.Sort;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
@@ -37,7 +38,7 @@ public class JobBagDataFetcher implements DataFetcher<ResultBag<Job>> {
 		return _jobDog.getJobResultBag(
 			dataFetchingEnvironment.getArgument("keywords"),
 			dataFetchingEnvironment.getArgument("size"),
-			dataFetchingEnvironment.getArgument("sort"),
+			Sort.of(dataFetchingEnvironment.getArgument("sort")),
 			dataFetchingEnvironment.getArgument("start"));
 	}
 
