@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.storage;
 
 /**
  * @author Marcellus Tavares
+ * @author Riccardo Ferrari
  */
 public class StorageWriterConfiguration {
 
@@ -23,7 +24,15 @@ public class StorageWriterConfiguration {
 		return new Builder(path);
 	}
 
-	public String getGoogleBucket() {
+	public long getChunkSize() {
+		return _chunkSize;
+	}
+
+	public String getGoogleBucketPath() {
+		if (_googleBucketFolder != null) {
+			return String.format("%s/%s", _googleBucket, _googleBucketFolder);
+		}
+
 		return _googleBucket;
 	}
 
@@ -45,12 +54,25 @@ public class StorageWriterConfiguration {
 			return _storageWriterConfiguration;
 		}
 
+		public Builder chunkSize(long chunkSize) {
+			_storageWriterConfiguration._chunkSize = chunkSize;
+
+			return this;
+		}
+
 		public Builder googleBucket(String googleBucket) {
 			if (googleBucket == null) {
 				throw new IllegalArgumentException("Google bucket is null");
 			}
 
 			_storageWriterConfiguration._googleBucket = googleBucket;
+
+			return this;
+		}
+
+		public Builder googleBucketFolder(String googleBucketFolder) {
+			_storageWriterConfiguration._googleBucketFolder =
+				googleBucketFolder;
 
 			return this;
 		}
@@ -63,7 +85,9 @@ public class StorageWriterConfiguration {
 	private StorageWriterConfiguration() {
 	}
 
+	private long _chunkSize;
 	private String _googleBucket;
+	private String _googleBucketFolder;
 	private String _path;
 
 }

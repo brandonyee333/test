@@ -14,12 +14,18 @@
 
 package com.liferay.osb.asah.common.storage;
 
+import java.io.InputStream;
+
 /**
  * @author Marcellus Tavares
  */
 public interface StorageWriter {
 
 	public void close();
+
+	public void flush();
+
+	public boolean write(InputStream inputStream);
 
 	public boolean write(String data);
 

@@ -18,8 +18,8 @@ import com.liferay.osb.asah.common.storage.StorageWriter;
 import com.liferay.osb.asah.common.storage.StorageWriterConfiguration;
 import com.liferay.osb.asah.common.storage.StorageWriterFactory;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.PreDestroy;
 
@@ -36,19 +36,26 @@ public class StorageWriterFactoryImpl implements StorageWriterFactory {
 	public StorageWriter getStorageWriter(
 		StorageWriterConfiguration storageWriterConfiguration) {
 
+		StorageWriter storageWriter = _storageWriters.get(
+			storageWriterConfiguration);
+
+		if (storageWriter != null) {
+			return storageWriter;
+		}
+
 		LocalStorageWriter localStorageWriter = new LocalStorageWriter(
 			storageWriterConfiguration);
 
 		localStorageWriter.setGoogleStorageArchiver(_googleStorageArchiver);
 
-		_storageWriters.add(localStorageWriter);
+		_storageWriters.put(storageWriterConfiguration, localStorageWriter);
 
 		return localStorageWriter;
 	}
 
 	@PreDestroy
 	private void _destroy() {
-		for (StorageWriter storageWriter : _storageWriters) {
+		for (StorageWriter storageWriter : _storageWriters.values()) {
 			storageWriter.close();
 		}
 	}
@@ -56,6 +63,7 @@ public class StorageWriterFactoryImpl implements StorageWriterFactory {
 	@Autowired(required = false)
 	private GoogleStorageArchiver _googleStorageArchiver;
 
-	private final List<StorageWriter> _storageWriters = new ArrayList<>();
+	private final Map<StorageWriterConfiguration, StorageWriter>
+		_storageWriters = new HashMap<>();
 
 }

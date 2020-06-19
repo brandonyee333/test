@@ -18,9 +18,12 @@ import com.liferay.osb.asah.common.storage.StorageWriter;
 import com.liferay.osb.asah.common.storage.StorageWriterConfiguration;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import java.nio.charset.StandardCharsets;
 
@@ -64,10 +67,41 @@ public class LocalStorageWriter implements StorageWriter {
 		}
 	}
 
+	public void flush() {
+		try {
+			_rollover();
+		}
+		catch (IOException e) {
+			_log.error(e, e);
+		}
+	}
+
 	public void setGoogleStorageArchiver(
 		GoogleStorageArchiver googleStorageArchiver) {
 
 		_googleStorageArchiver = googleStorageArchiver;
+	}
+
+	@Override
+	public boolean write(InputStream inputStream) {
+		try (BufferedReader bufferedReader = new BufferedReader(
+				new InputStreamReader(inputStream))) {
+
+			String line = null;
+
+			while ((line = bufferedReader.readLine()) != null) {
+				if (!write(line)) {
+					return false;
+				}
+			}
+		}
+		catch (IOException e) {
+			_log.error(e, e);
+
+			return false;
+		}
+
+		return true;
 	}
 
 	@Override
@@ -92,13 +126,14 @@ public class LocalStorageWriter implements StorageWriter {
 
 	private void _archiveFile(File file) {
 		if ((_googleStorageArchiver == null) ||
-			(_storageStorageWriterConfiguration.getGoogleBucket() == null)) {
+			(_storageStorageWriterConfiguration.getGoogleBucketPath() ==
+				null)) {
 
 			return;
 		}
 
 		_googleStorageArchiver.archiveAsync(
-			_storageStorageWriterConfiguration.getGoogleBucket(), file);
+			_storageStorageWriterConfiguration.getGoogleBucketPath(), file);
 	}
 
 	private void _createMissingParentFileDirectories(File file) {
