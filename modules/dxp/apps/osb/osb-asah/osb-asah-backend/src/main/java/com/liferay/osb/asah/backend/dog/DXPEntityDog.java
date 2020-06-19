@@ -301,6 +301,10 @@ public class DXPEntityDog {
 							"data-sources",
 							QueryBuilders.termQuery("id", dataSourceId));
 
+					if (dataSourceJSONObject == null) {
+						return null;
+					}
+
 					return dataSourceJSONObject.getString("name");
 				}));
 		organization.setId(organizationJSONObject.getString("id"));
