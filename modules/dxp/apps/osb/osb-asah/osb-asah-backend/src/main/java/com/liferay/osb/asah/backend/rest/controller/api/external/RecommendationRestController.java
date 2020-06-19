@@ -100,7 +100,7 @@ public class RecommendationRestController extends BaseRestController {
 			this::_toModelResource);
 	}
 
-	@PostMapping("/page-recommendation")
+	@PostMapping("/page-recommendations")
 	public Resource<PageRecommendation> getPageRecommendationResource(
 		@RequestBody String json) {
 
