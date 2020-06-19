@@ -97,7 +97,7 @@ const Panel = ({
 
 												dispatch({
 													payload: name,
-													type: EVENT_TYPES.REMOVED,
+													type: EVENT_TYPES.FIELD_REMOVED,
 												});
 											}}
 											small
@@ -117,7 +117,7 @@ const Panel = ({
 
 											dispatch({
 												payload: name,
-												type: EVENT_TYPES.REPEATED,
+												type: EVENT_TYPES.FIELD_REPEATED,
 											});
 										}}
 										small
