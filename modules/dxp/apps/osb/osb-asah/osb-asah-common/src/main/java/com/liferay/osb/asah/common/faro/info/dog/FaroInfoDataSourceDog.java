@@ -275,6 +275,8 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 		_cerebroRawElasticsearchInvoker =
 			elasticsearchInvokerFactory.forCerebroRaw();
 		_dxpRawElasticsearchInvoker = elasticsearchInvokerFactory.forDXPRaw();
+		_faroInfoElasticsearchInvoker =
+			elasticsearchInvokerFactory.forFaroInfo();
 		_salesforceElasticsearchInvoker =
 			elasticsearchInvokerFactory.forSalesforceRaw();
 	}
@@ -514,6 +516,10 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 				_dxpRawElasticsearchInvoker, "OSBAsahMarkers", "audit-events",
 				"groups", "organizations", "roles", "teams", "user-groups",
 				"users");
+
+			_deleteData(
+				dataSourceId, "dataSourceId", _faroInfoElasticsearchInvoker,
+				"organizations");
 		}
 		else if (type.equals("SALESFORCE")) {
 			_deleteData(
@@ -596,6 +602,8 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private FaroInfoChannelDog _faroInfoChannelDog;
+
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
