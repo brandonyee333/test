@@ -40,10 +40,10 @@ export const EditEntry = ({
 	}, [basePortletURL, redirect]);
 
 	const onSave = useCallback(() => {
-		const {pages} = ddmForm;
-		const visitor = new PagesVisitor(pages);
+		const ddmReactForm = ddmForm.reactComponentRef.current;
+		const visitor = new PagesVisitor(ddmReactForm.get('pages'));
 
-		ddmForm.validate().then((validForm) => {
+		ddmReactForm.validate().then((validForm) => {
 			if (!validForm) {
 				return;
 			}
@@ -114,7 +114,7 @@ export const EditEntry = ({
 	}, [dataDefinitionId, dataRecordId, ddmForm, onCancel]);
 
 	useEffect(() => {
-		const formNode = ddmForm.getFormNode();
+		const formNode = ddmForm.reactComponentRef.current.getFormNode();
 		const onSubmit = () => onSave();
 
 		formNode.addEventListener('submit', onSubmit);
