@@ -22,12 +22,16 @@ import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
+import java.util.Iterator;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.elasticsearch.action.support.WriteRequest;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -63,13 +67,55 @@ public class FaroInfoOrganizationsUpgradeStep implements UpgradeStep {
 
 		JSONArrayIterator.of(
 			"organizations", faroInfoElasticsearchInvoker,
-			jsonObject -> elasticsearchBulkRequestBuilder.delete(
-				"organizations", jsonObject.getString("id"))
+			jsonObject -> {
+				_updateIndividuals(
+					faroInfoElasticsearchInvoker, jsonObject.getString("id"));
+
+				elasticsearchBulkRequestBuilder.delete(
+					"organizations", jsonObject.getString("id"));
+
+				return elasticsearchBulkRequestBuilder;
+			}
 		).setQueryBuilder(
 			BoolQueryBuilderUtil.mustNot(
 				QueryBuilders.termsQuery("dataSourceId", dataSourceIds))
 		).setStopOnExceptions(
 			false
+		).iterate();
+	}
+
+	private void _updateIndividuals(
+			ElasticsearchInvoker elasticsearchInvoker, String organizationId)
+		throws Exception {
+
+		JSONArrayIterator.of(
+			"individuals", elasticsearchInvoker,
+			individualJSONObject -> {
+				JSONObject modifiedJSONObject = new JSONObject();
+
+				JSONArray idsJSONArray = individualJSONObject.getJSONArray(
+					"organizationIds");
+
+				Iterator<Object> iterator = idsJSONArray.iterator();
+
+				while (iterator.hasNext()) {
+					String id = (String)iterator.next();
+
+					if (StringUtils.equals(id, organizationId)) {
+						iterator.remove();
+					}
+				}
+
+				modifiedJSONObject.put("organizationIds", idsJSONArray);
+
+				elasticsearchInvoker.update(
+					"individuals", individualJSONObject.getString("id"),
+					modifiedJSONObject);
+
+				return null;
+			}
+		).setQueryBuilder(
+			QueryBuilders.termQuery("organizationIds", organizationId)
 		).iterate();
 	}
 
