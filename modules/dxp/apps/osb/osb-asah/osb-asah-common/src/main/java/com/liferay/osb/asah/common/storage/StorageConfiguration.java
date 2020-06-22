@@ -18,7 +18,7 @@ package com.liferay.osb.asah.common.storage;
  * @author Marcellus Tavares
  * @author Riccardo Ferrari
  */
-public class StorageWriterConfiguration {
+public class StorageConfiguration {
 
 	public static Builder builder(String path) {
 		return new Builder(path);
@@ -47,19 +47,19 @@ public class StorageWriterConfiguration {
 				throw new IllegalArgumentException("Path is null");
 			}
 
-			_storageWriterConfiguration._path = path;
+			_storageConfiguration._path = path;
 		}
 
-		public StorageWriterConfiguration build() {
-			if (_storageWriterConfiguration.getChunkSize() == 0) {
-				_storageWriterConfiguration._chunkSize = _DEFAULT_CHUNK_SIZE;
+		public StorageConfiguration build() {
+			if (_storageConfiguration.getChunkSize() == 0) {
+				_storageConfiguration._chunkSize = _DEFAULT_CHUNK_SIZE;
 			}
 
-			return _storageWriterConfiguration;
+			return _storageConfiguration;
 		}
 
 		public Builder chunkSize(long chunkSize) {
-			_storageWriterConfiguration._chunkSize = chunkSize;
+			_storageConfiguration._chunkSize = chunkSize;
 
 			return this;
 		}
@@ -69,26 +69,25 @@ public class StorageWriterConfiguration {
 				throw new IllegalArgumentException("Google bucket is null");
 			}
 
-			_storageWriterConfiguration._googleBucket = googleBucket;
+			_storageConfiguration._googleBucket = googleBucket;
 
 			return this;
 		}
 
 		public Builder googleBucketFolder(String googleBucketFolder) {
-			_storageWriterConfiguration._googleBucketFolder =
-				googleBucketFolder;
+			_storageConfiguration._googleBucketFolder = googleBucketFolder;
 
 			return this;
 		}
 
 		private static final long _DEFAULT_CHUNK_SIZE = 10 * 1024 * 1024;
 
-		private StorageWriterConfiguration _storageWriterConfiguration =
-			new StorageWriterConfiguration();
+		private StorageConfiguration _storageConfiguration =
+			new StorageConfiguration();
 
 	}
 
-	private StorageWriterConfiguration() {
+	private StorageConfiguration() {
 	}
 
 	private long _chunkSize;

@@ -22,7 +22,7 @@ import java.util.Date;
 /**
  * @author Marcellus Tavares
  */
-public interface StorageWriter {
+public interface Storage {
 
 	public void close();
 

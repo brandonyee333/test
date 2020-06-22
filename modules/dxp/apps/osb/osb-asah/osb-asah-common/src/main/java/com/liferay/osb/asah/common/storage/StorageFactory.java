@@ -17,9 +17,8 @@ package com.liferay.osb.asah.common.storage;
 /**
  * @author Marcellus Tavares
  */
-public interface StorageWriterFactory {
+public interface StorageFactory {
 
-	public StorageWriter getStorageWriter(
-		StorageWriterConfiguration storageWriterConfiguration);
+	public Storage getStorage(StorageConfiguration storageConfiguration);
 
 }

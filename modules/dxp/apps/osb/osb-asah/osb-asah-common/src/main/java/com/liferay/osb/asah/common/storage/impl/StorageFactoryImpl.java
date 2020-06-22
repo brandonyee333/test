@@ -14,9 +14,9 @@
 
 package com.liferay.osb.asah.common.storage.impl;
 
-import com.liferay.osb.asah.common.storage.StorageWriter;
-import com.liferay.osb.asah.common.storage.StorageWriterConfiguration;
-import com.liferay.osb.asah.common.storage.StorageWriterFactory;
+import com.liferay.osb.asah.common.storage.Storage;
+import com.liferay.osb.asah.common.storage.StorageConfiguration;
+import com.liferay.osb.asah.common.storage.StorageFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,40 +30,36 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-public class StorageWriterFactoryImpl implements StorageWriterFactory {
+public class StorageFactoryImpl implements StorageFactory {
 
 	@Override
-	public StorageWriter getStorageWriter(
-		StorageWriterConfiguration storageWriterConfiguration) {
+	public Storage getStorage(StorageConfiguration storageConfiguration) {
+		Storage storage = _storageInstances.get(storageConfiguration);
 
-		StorageWriter storageWriter = _storageWriters.get(
-			storageWriterConfiguration);
-
-		if (storageWriter != null) {
-			return storageWriter;
+		if (storage != null) {
+			return storage;
 		}
 
-		LocalStorageWriter localStorageWriter = new LocalStorageWriter(
-			storageWriterConfiguration);
+		LocalStorage localStorage = new LocalStorage(storageConfiguration);
 
-		localStorageWriter.setGoogleStorageArchiver(_googleStorageArchiver);
+		localStorage.setGoogleStorageArchiver(_googleStorageArchiver);
 
-		_storageWriters.put(storageWriterConfiguration, localStorageWriter);
+		_storageInstances.put(storageConfiguration, localStorage);
 
-		return localStorageWriter;
+		return localStorage;
 	}
 
 	@PreDestroy
 	private void _destroy() {
-		for (StorageWriter storageWriter : _storageWriters.values()) {
-			storageWriter.close();
+		for (Storage storage : _storageInstances.values()) {
+			storage.close();
 		}
 	}
 
 	@Autowired(required = false)
 	private GoogleStorageArchiver _googleStorageArchiver;
 
-	private final Map<StorageWriterConfiguration, StorageWriter>
-		_storageWriters = new HashMap<>();
+	private final Map<StorageConfiguration, Storage> _storageInstances =
+		new HashMap<>();
 
 }

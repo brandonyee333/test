@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.common.storage.impl;
 
-import com.liferay.osb.asah.common.storage.StorageWriter;
-import com.liferay.osb.asah.common.storage.StorageWriterConfiguration;
+import com.liferay.osb.asah.common.storage.Storage;
+import com.liferay.osb.asah.common.storage.StorageConfiguration;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -35,17 +35,15 @@ import org.apache.commons.logging.LogFactory;
 /**
  * @author Marcellus Tavares
  */
-public class LocalStorageWriter implements StorageWriter {
+public class LocalStorage implements Storage {
 
-	public LocalStorageWriter(
-		StorageWriterConfiguration storageWriterConfiguration) {
-
-		_storageStorageWriterConfiguration = storageWriterConfiguration;
+	public LocalStorage(StorageConfiguration storageConfiguration) {
+		_storageStorageConfiguration = storageConfiguration;
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
 				"Storage writer initialized for path " +
-					_storageStorageWriterConfiguration.getPath());
+					_storageStorageConfiguration.getPath());
 		}
 
 		try {
@@ -64,7 +62,7 @@ public class LocalStorageWriter implements StorageWriter {
 		catch (IOException ioe) {
 			_log.error(
 				"Unable to close storage writer for path " +
-					_storageStorageWriterConfiguration.getPath(),
+					_storageStorageConfiguration.getPath(),
 				ioe);
 		}
 	}
@@ -83,17 +81,15 @@ public class LocalStorageWriter implements StorageWriter {
 		try {
 			String fullPathPrefix = pathPrefix;
 
-			if (_storageStorageWriterConfiguration.getGoogleBucketFolder() !=
-					null) {
-
+			if (_storageStorageConfiguration.getGoogleBucketFolder() != null) {
 				fullPathPrefix =
-					_storageStorageWriterConfiguration.getGoogleBucketFolder() +
-						"/" + pathPrefix;
+					_storageStorageConfiguration.getGoogleBucketFolder() + "/" +
+						pathPrefix;
 			}
 
 			return _googleStorageArchiver.readSparkJobResult(
-				_storageStorageWriterConfiguration.getGoogleBucket(),
-				fullPathPrefix, lastUpdate);
+				_storageStorageConfiguration.getGoogleBucket(), fullPathPrefix,
+				lastUpdate);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -156,14 +152,14 @@ public class LocalStorageWriter implements StorageWriter {
 
 	private void _archiveFile(File file) {
 		if ((_googleStorageArchiver == null) ||
-			(_storageStorageWriterConfiguration.getGoogleBucket() == null)) {
+			(_storageStorageConfiguration.getGoogleBucket() == null)) {
 
 			return;
 		}
 
 		_googleStorageArchiver.archiveAsync(
-			_storageStorageWriterConfiguration.getGoogleBucket(),
-			_storageStorageWriterConfiguration.getGoogleBucketFolder(), file);
+			_storageStorageConfiguration.getGoogleBucket(),
+			_storageStorageConfiguration.getGoogleBucketFolder(), file);
 	}
 
 	private void _createMissingParentFileDirectories(File file) {
@@ -193,9 +189,7 @@ public class LocalStorageWriter implements StorageWriter {
 	}
 
 	private boolean _isFileSizeLimitReached() {
-		if (_file.length() >=
-				_storageStorageWriterConfiguration.getChunkSize()) {
-
+		if (_file.length() >= _storageStorageConfiguration.getChunkSize()) {
 			return true;
 		}
 
@@ -203,7 +197,7 @@ public class LocalStorageWriter implements StorageWriter {
 	}
 
 	private void _open() throws IOException {
-		_file = new File(_storageStorageWriterConfiguration.getPath());
+		_file = new File(_storageStorageConfiguration.getPath());
 
 		_createMissingParentFileDirectories(_file);
 
@@ -232,7 +226,7 @@ public class LocalStorageWriter implements StorageWriter {
 		_bufferedOutputStream.close();
 
 		File targetFile = new File(
-			_storageStorageWriterConfiguration.getPath() + "." +
+			_storageStorageConfiguration.getPath() + "." +
 				System.currentTimeMillis());
 
 		_deleteFile(targetFile);
@@ -246,12 +240,12 @@ public class LocalStorageWriter implements StorageWriter {
 
 	private static final int _DEFAULT_FILE_BUFFER_SIZE = 8192;
 
-	private static final Log _log = LogFactory.getLog(LocalStorageWriter.class);
+	private static final Log _log = LogFactory.getLog(LocalStorage.class);
 
 	private BufferedOutputStream _bufferedOutputStream;
 	private File _file;
 	private FileOutputStream _fileOutputStream;
 	private GoogleStorageArchiver _googleStorageArchiver;
-	private final StorageWriterConfiguration _storageStorageWriterConfiguration;
+	private final StorageConfiguration _storageStorageConfiguration;
 
 }
