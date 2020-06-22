@@ -195,10 +195,12 @@ public class DXPEntityDog {
 			return boolQueryBuilder;
 		}
 
+		BoolQueryBuilder dataSourceBoolQueryBuilder = QueryBuilders.boolQuery();
+
 		for (int i = 0; i < dataSourcesJSONArray.length(); i++) {
 			JSONObject jsonObject = dataSourcesJSONArray.getJSONObject(i);
 
-			boolQueryBuilder.should(
+			dataSourceBoolQueryBuilder.should(
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termsQuery(
 						key,
@@ -210,7 +212,11 @@ public class DXPEntityDog {
 				));
 		}
 
-		return boolQueryBuilder;
+		return BoolQueryBuilderUtil.filter(
+			boolQueryBuilder
+		).filter(
+			dataSourceBoolQueryBuilder
+		);
 	}
 
 	private List<FieldSortBuilder> _getFieldSortBuilders(
