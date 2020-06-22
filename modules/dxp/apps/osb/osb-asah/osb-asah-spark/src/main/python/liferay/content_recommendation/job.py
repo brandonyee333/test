@@ -197,7 +197,7 @@ class ReadRecommendedItemsSparkJob(BaseSparkJob):
 		    'recommended_items'
 		)
 
-class UpdateJobExecutionStepSparkJob(BaseSparkJob):
+class UpdateJobRunStepSparkJob(BaseSparkJob):
 	def run(self):
 		elasticsearch_bridge = self.spark_application.elasticsearch_bridge
 

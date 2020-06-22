@@ -79,7 +79,7 @@ class ContentRecommendationApplication(BaseSparkApplication):
 			jobs.append(WriteItemsSparkJob(self))
 			jobs.append(WriteUserItemInteractionsSparkJob(self))
 
-			jobs.append(UpdateJobExecutionStepSparkJob(self))
+			jobs.append(UpdateJobRunStepSparkJob(self))
 		else:
 			jobs.append(ReadRecommendedItemsSparkJob(self))
 
