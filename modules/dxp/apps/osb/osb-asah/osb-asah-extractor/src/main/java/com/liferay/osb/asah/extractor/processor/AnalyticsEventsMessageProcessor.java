@@ -29,9 +29,9 @@ import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.AnalyticsEventsMessage;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
-import com.liferay.osb.asah.common.storage.StorageWriter;
-import com.liferay.osb.asah.common.storage.StorageWriterConfiguration;
-import com.liferay.osb.asah.common.storage.StorageWriterFactory;
+import com.liferay.osb.asah.common.storage.Storage;
+import com.liferay.osb.asah.common.storage.StorageConfiguration;
+import com.liferay.osb.asah.common.storage.StorageFactory;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.extractor.fiftyonedegrees.FiftyOneDegreesDevice;
@@ -288,7 +288,7 @@ public class AnalyticsEventsMessageProcessor implements MessageListener {
 					_messageBus.sendMessage(channel, analyticsEvent.toJSON());
 				}
 
-				_storageWriter.write(analyticsEvent.toJSON());
+				_storage.write(analyticsEvent.toJSON());
 
 				analyticsEventJSONArray.put(
 					new JSONObject(analyticsEvent.toJSON()));
@@ -354,13 +354,12 @@ public class AnalyticsEventsMessageProcessor implements MessageListener {
 
 		_messageBus.registerMessageListener(Channel.DATA_SOURCES, this);
 
-		StorageWriterConfiguration.Builder builder =
-			StorageWriterConfiguration.builder(_analyticsEventsStoragePath);
+		StorageConfiguration.Builder builder = StorageConfiguration.builder(
+			_analyticsEventsStoragePath);
 
 		builder.googleBucket(_analyticsEventsBucket);
 
-		_storageWriter = _storageWriterFactory.getStorageWriter(
-			builder.build());
+		_storage = _storageFactory.getStorage(builder.build());
 	}
 
 	private boolean _isCrawler(Map<String, Object> context) {
@@ -456,9 +455,9 @@ public class AnalyticsEventsMessageProcessor implements MessageListener {
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_MESSAGE)
 	private MessageSubscriber _messageSubscriber;
 
-	private StorageWriter _storageWriter;
+	private Storage _storage;
 
 	@Autowired
-	private StorageWriterFactory _storageWriterFactory;
+	private StorageFactory _storageFactory;
 
 }
