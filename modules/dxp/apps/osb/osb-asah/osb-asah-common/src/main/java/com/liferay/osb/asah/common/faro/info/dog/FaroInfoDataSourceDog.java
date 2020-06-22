@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -494,7 +495,7 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 		).iterate();
 	}
 
-	private void _deleteData(JSONObject dataSourceJSONObject) {
+	private void _deleteData(JSONObject dataSourceJSONObject) throws Exception {
 		String dataSourceId = dataSourceJSONObject.getString("id");
 
 		String type = getDataSourceType(dataSourceJSONObject);
@@ -508,6 +509,8 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 			_deleteData(
 				dataSourceId, "dataSourceId", _cerebroRawElasticsearchInvoker,
 				"analytics-events");
+
+			_deleteIndividualReferences(dataSourceId);
 
 			_deleteData(
 				dataSourceId, "osbAsahDataSourceId",
@@ -544,6 +547,70 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 		}
 	}
 
+	private void _deleteIndividualReferences(String dataSourceId)
+		throws Exception {
+
+		_deleteIndividualReferences(
+			"groupIds",
+			_getDataIds(
+				"groups", dataSourceId, "osbAsahDataSourceId",
+				_dxpRawElasticsearchInvoker));
+		_deleteIndividualReferences(
+			"organizationIds",
+			_getDataIds(
+				"organizations", dataSourceId, "dataSourceId",
+				elasticsearchInvoker));
+		_deleteIndividualReferences(
+			"roleIds",
+			_getDataIds(
+				"roles", dataSourceId, "osbAsahDataSourceId",
+				_dxpRawElasticsearchInvoker));
+		_deleteIndividualReferences(
+			"teamIds",
+			_getDataIds(
+				"teams", dataSourceId, "osbAsahDataSourceId",
+				_dxpRawElasticsearchInvoker));
+		_deleteIndividualReferences(
+			"userGroupIds",
+			_getDataIds(
+				"user-groups", dataSourceId, "osbAsahDataSourceId",
+				_dxpRawElasticsearchInvoker));
+	}
+
+	private void _deleteIndividualReferences(String fieldName, List<String> ids)
+		throws Exception {
+
+		JSONArrayIterator.of(
+			"individuals", elasticsearchInvoker,
+			individualJSONObject -> {
+				JSONObject modifiedJSONObject = new JSONObject();
+
+				JSONArray idsJSONArray = individualJSONObject.getJSONArray(
+					fieldName);
+
+				Iterator<Object> iterator = idsJSONArray.iterator();
+
+				while (iterator.hasNext()) {
+					String id = (String)iterator.next();
+
+					if (ids.contains(id)) {
+						iterator.remove();
+					}
+				}
+
+				modifiedJSONObject.put(fieldName, idsJSONArray);
+
+				elasticsearchInvoker.update(
+					"individuals", individualJSONObject.getString("id"),
+					modifiedJSONObject);
+
+				return null;
+			}
+		).setQueryBuilder(
+			QueryBuilders.termsQuery(fieldName, ids)
+		).iterate();
+	}
+
 	private void _deleteRunLogs(JSONObject dataSourceJSONObject) {
 		QueryBuilder queryBuilder = QueryBuilders.termQuery(
 			"dataSourceId", dataSourceJSONObject.getString("id"));
@@ -558,6 +625,18 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 		else if (type.equals("SALESFORCE")) {
 			_salesforceElasticsearchInvoker.delete("run-logs", queryBuilder);
 		}
+	}
+
+	private List<String> _getDataIds(
+		String collectionName, String dataSourceId,
+		String dataSourceIdFieldName,
+		ElasticsearchInvoker elasticsearchInvoker) {
+
+		return JSONUtil.toStringList(
+			elasticsearchInvoker.get(
+				collectionName,
+				QueryBuilders.termQuery(dataSourceIdFieldName, dataSourceId)),
+			"id");
 	}
 
 	private JSONObject _getEmptyDataJSONObject(
