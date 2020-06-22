@@ -27,6 +27,8 @@ import java.io.InputStreamReader;
 
 import java.nio.charset.StandardCharsets;
 
+import java.util.Date;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -76,6 +78,30 @@ public class LocalStorageWriter implements StorageWriter {
 		}
 	}
 
+	@Override
+	public File readSparkJobResult(String pathPrefix, Date lastUpdate) {
+		try {
+			String fullPathPrefix = pathPrefix;
+
+			if (_storageStorageWriterConfiguration.getGoogleBucketFolder() !=
+					null) {
+
+				fullPathPrefix =
+					_storageStorageWriterConfiguration.getGoogleBucketFolder() +
+						"/" + pathPrefix;
+			}
+
+			return _googleStorageArchiver.readSparkJobResult(
+				_storageStorageWriterConfiguration.getGoogleBucket(),
+				fullPathPrefix, lastUpdate);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+		}
+
+		return null;
+	}
+
 	public void setGoogleStorageArchiver(
 		GoogleStorageArchiver googleStorageArchiver) {
 
@@ -84,6 +110,8 @@ public class LocalStorageWriter implements StorageWriter {
 
 	@Override
 	public boolean write(InputStream inputStream) {
+		boolean status = true;
+
 		try (BufferedReader bufferedReader = new BufferedReader(
 				new InputStreamReader(inputStream))) {
 
@@ -91,17 +119,19 @@ public class LocalStorageWriter implements StorageWriter {
 
 			while ((line = bufferedReader.readLine()) != null) {
 				if (!write(line)) {
-					return false;
+					status = false;
 				}
 			}
 		}
 		catch (IOException e) {
 			_log.error(e, e);
 
-			return false;
+			status = false;
 		}
 
-		return true;
+		flush();
+
+		return status;
 	}
 
 	@Override
@@ -126,14 +156,14 @@ public class LocalStorageWriter implements StorageWriter {
 
 	private void _archiveFile(File file) {
 		if ((_googleStorageArchiver == null) ||
-			(_storageStorageWriterConfiguration.getGoogleBucketPath() ==
-				null)) {
+			(_storageStorageWriterConfiguration.getGoogleBucket() == null)) {
 
 			return;
 		}
 
 		_googleStorageArchiver.archiveAsync(
-			_storageStorageWriterConfiguration.getGoogleBucketPath(), file);
+			_storageStorageWriterConfiguration.getGoogleBucket(),
+			_storageStorageWriterConfiguration.getGoogleBucketFolder(), file);
 	}
 
 	private void _createMissingParentFileDirectories(File file) {
@@ -163,7 +193,9 @@ public class LocalStorageWriter implements StorageWriter {
 	}
 
 	private boolean _isFileSizeLimitReached() {
-		if (_file.length() >= _DEFAULT_MAX_FILE_SIZE) {
+		if (_file.length() >=
+				_storageStorageWriterConfiguration.getChunkSize()) {
+
 			return true;
 		}
 
@@ -213,8 +245,6 @@ public class LocalStorageWriter implements StorageWriter {
 	}
 
 	private static final int _DEFAULT_FILE_BUFFER_SIZE = 8192;
-
-	private static final long _DEFAULT_MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 	private static final Log _log = LogFactory.getLog(LocalStorageWriter.class);
 

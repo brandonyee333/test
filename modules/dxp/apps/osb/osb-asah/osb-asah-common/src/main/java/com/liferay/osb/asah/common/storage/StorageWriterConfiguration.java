@@ -28,12 +28,12 @@ public class StorageWriterConfiguration {
 		return _chunkSize;
 	}
 
-	public String getGoogleBucketPath() {
-		if (_googleBucketFolder != null) {
-			return String.format("%s/%s", _googleBucket, _googleBucketFolder);
-		}
-
+	public String getGoogleBucket() {
 		return _googleBucket;
+	}
+
+	public String getGoogleBucketFolder() {
+		return _googleBucketFolder;
 	}
 
 	public String getPath() {
@@ -51,6 +51,10 @@ public class StorageWriterConfiguration {
 		}
 
 		public StorageWriterConfiguration build() {
+			if (_storageWriterConfiguration.getChunkSize() == 0) {
+				_storageWriterConfiguration._chunkSize = _DEFAULT_CHUNK_SIZE;
+			}
+
 			return _storageWriterConfiguration;
 		}
 
@@ -76,6 +80,8 @@ public class StorageWriterConfiguration {
 
 			return this;
 		}
+
+		private static final long _DEFAULT_CHUNK_SIZE = 10 * 1024 * 1024;
 
 		private StorageWriterConfiguration _storageWriterConfiguration =
 			new StorageWriterConfiguration();

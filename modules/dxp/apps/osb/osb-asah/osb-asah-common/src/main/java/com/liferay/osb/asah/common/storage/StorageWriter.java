@@ -14,7 +14,10 @@
 
 package com.liferay.osb.asah.common.storage;
 
+import java.io.File;
 import java.io.InputStream;
+
+import java.util.Date;
 
 /**
  * @author Marcellus Tavares
@@ -24,6 +27,8 @@ public interface StorageWriter {
 	public void close();
 
 	public void flush();
+
+	public File readSparkJobResult(String pathPrefix, Date lastUpdate);
 
 	public boolean write(InputStream inputStream);
 
