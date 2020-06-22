@@ -133,13 +133,12 @@ public class StringFieldRenderer extends BaseFieldRenderer {
 				LocalizedValue labelLocalizedValue = getFieldOptionLabel(
 					field, value);
 
-				String label = value;
-
 				if (labelLocalizedValue != null) {
-					label = labelLocalizedValue.getString(locale);
+					sb.append(labelLocalizedValue.getString(locale));
 				}
-
-				sb.append(label);
+				else {
+					sb.append(value);
+				}
 			}
 			else {
 				sb.append(value);
