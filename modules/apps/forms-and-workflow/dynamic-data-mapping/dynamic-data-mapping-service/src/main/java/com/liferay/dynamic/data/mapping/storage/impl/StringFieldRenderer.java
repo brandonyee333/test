@@ -130,11 +130,11 @@ public class StringFieldRenderer extends BaseFieldRenderer {
 			String value = jsonArray.getString(i);
 
 			if (manualDataSourceType) {
-				LocalizedValue labelLocalizedValue = getFieldOptionLabel(
+				LocalizedValue localizedValue = getFieldOptionLabel(
 					field, value);
 
-				if (labelLocalizedValue != null) {
-					sb.append(labelLocalizedValue.getString(locale));
+				if (localizedValue != null) {
+					sb.append(localizedValue.getString(locale));
 				}
 				else {
 					sb.append(value);
