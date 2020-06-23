@@ -61,7 +61,9 @@ public class DXPBatchEntitiesRestController {
 			@RequestHeader(required = false, value = "OSB-Asah-Data-Source-ID")
 				String dataSourceId,
 			@RequestParam("resourceName") String resourceName,
-			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date lastUpdate)
+			@DateTimeFormat(pattern = "EEE, dd MMM yyyy HH:mm:ss zzz")
+			@RequestHeader(required = false, value = "Last-Modified")
+				Date lastUpdate)
 		throws Exception {
 
 		if (_log.isDebugEnabled()) {
