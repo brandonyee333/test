@@ -62,7 +62,7 @@ public class DXPBatchEntitiesRestController {
 				String dataSourceId,
 			@RequestParam("resourceName") String resourceName,
 			@DateTimeFormat(pattern = "EEE, dd MMM yyyy HH:mm:ss zzz")
-			@RequestHeader(required = false, value = "Last-Modified")
+			@RequestHeader(required = false, value = "If-Modified-Since")
 				Date resourceLastModifiedDate)
 		throws Exception {
 
