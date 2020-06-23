@@ -55,7 +55,7 @@ public class LicenseKeyServiceHttp {
 			addDeveloperLicenseKey(
 				HttpPrincipal httpPrincipal, long accountEntryId,
 				long productEntryId, int productMinorVersion)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		try {
 			MethodKey methodKey = new MethodKey(
@@ -71,11 +71,8 @@ public class LicenseKeyServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+				if (exception instanceof Exception) {
+					throw (Exception)exception;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(
@@ -105,7 +102,7 @@ public class LicenseKeyServiceHttp {
 				String[] macAddresses, String[] serverIds,
 				java.util.Date startDate, java.util.Date expirationDate,
 				boolean complimentary, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		try {
 			MethodKey methodKey = new MethodKey(
@@ -127,11 +124,8 @@ public class LicenseKeyServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+				if (exception instanceof Exception) {
+					throw (Exception)exception;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(
@@ -158,7 +152,7 @@ public class LicenseKeyServiceHttp {
 				String hostName, String ipAddresses, String macAddresses,
 				String serverId, java.util.Date startDate,
 				java.util.Date expirationDate)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		try {
 			MethodKey methodKey = new MethodKey(
@@ -177,11 +171,8 @@ public class LicenseKeyServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+				if (exception instanceof Exception) {
+					throw (Exception)exception;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(
@@ -916,7 +907,7 @@ public class LicenseKeyServiceHttp {
 			renewLicenseKey(
 				HttpPrincipal httpPrincipal, String uuid,
 				java.util.Date startDate, java.util.Date expirationDate)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		try {
 			MethodKey methodKey = new MethodKey(
@@ -932,11 +923,8 @@ public class LicenseKeyServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+				if (exception instanceof Exception) {
+					throw (Exception)exception;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(
@@ -1188,7 +1176,7 @@ public class LicenseKeyServiceHttp {
 	public static void updateLicenseKey(
 			HttpPrincipal httpPrincipal, long userId, long licenseKeyId,
 			boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		try {
 			MethodKey methodKey = new MethodKey(
@@ -1202,11 +1190,8 @@ public class LicenseKeyServiceHttp {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+				if (exception instanceof Exception) {
+					throw (Exception)exception;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(
@@ -1226,8 +1211,8 @@ public class LicenseKeyServiceHttp {
 			updateLicenseKey(
 				HttpPrincipal httpPrincipal, long licenseKeyId,
 				long licenseKeySetId, String koroneikiProductPurchaseKey,
-				String name, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
+				String name, boolean complimentary, boolean active)
+		throws Exception {
 
 		try {
 			MethodKey methodKey = new MethodKey(
@@ -1236,7 +1221,7 @@ public class LicenseKeyServiceHttp {
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, licenseKeyId, licenseKeySetId,
-				koroneikiProductPurchaseKey, name, active);
+				koroneikiProductPurchaseKey, name, complimentary, active);
 
 			Object returnObj = null;
 
@@ -1244,11 +1229,8 @@ public class LicenseKeyServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+				if (exception instanceof Exception) {
+					throw (Exception)exception;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(
@@ -1269,7 +1251,7 @@ public class LicenseKeyServiceHttp {
 	public static void updateLicenseKey(
 			HttpPrincipal httpPrincipal, String userUuid, String uuid,
 			boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		try {
 			MethodKey methodKey = new MethodKey(
@@ -1283,11 +1265,8 @@ public class LicenseKeyServiceHttp {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+				if (exception instanceof Exception) {
+					throw (Exception)exception;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(
@@ -1306,7 +1285,7 @@ public class LicenseKeyServiceHttp {
 	public static void updateLicenseKeys(
 			HttpPrincipal httpPrincipal, String assetReceiptLicenseUuid,
 			boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		try {
 			MethodKey methodKey = new MethodKey(
@@ -1320,11 +1299,8 @@ public class LicenseKeyServiceHttp {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+				if (exception instanceof Exception) {
+					throw (Exception)exception;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(
@@ -1452,7 +1428,8 @@ public class LicenseKeyServiceHttp {
 		new Class[] {long.class, long.class, boolean.class};
 	private static final Class<?>[] _updateLicenseKeyParameterTypes26 =
 		new Class[] {
-			long.class, long.class, String.class, String.class, boolean.class
+			long.class, long.class, String.class, String.class, boolean.class,
+			boolean.class
 		};
 	private static final Class<?>[] _updateLicenseKeyParameterTypes27 =
 		new Class[] {String.class, String.class, boolean.class};

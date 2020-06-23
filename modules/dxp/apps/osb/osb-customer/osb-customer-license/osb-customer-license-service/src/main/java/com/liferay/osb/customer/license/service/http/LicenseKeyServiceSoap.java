@@ -520,14 +520,15 @@ public class LicenseKeyServiceSoap {
 	public static com.liferay.osb.customer.license.model.LicenseKeySoap
 			updateLicenseKey(
 				long licenseKeyId, long licenseKeySetId,
-				String koroneikiProductPurchaseKey, String name, boolean active)
+				String koroneikiProductPurchaseKey, String name,
+				boolean complimentary, boolean active)
 		throws RemoteException {
 
 		try {
 			com.liferay.osb.customer.license.model.LicenseKey returnValue =
 				LicenseKeyServiceUtil.updateLicenseKey(
 					licenseKeyId, licenseKeySetId, koroneikiProductPurchaseKey,
-					name, active);
+					name, complimentary, active);
 
 			return com.liferay.osb.customer.license.model.LicenseKeySoap.
 				toSoapModel(returnValue);

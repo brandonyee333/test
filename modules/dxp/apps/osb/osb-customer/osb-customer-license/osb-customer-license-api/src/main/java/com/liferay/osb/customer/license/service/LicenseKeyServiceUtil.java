@@ -41,7 +41,7 @@ public class LicenseKeyServiceUtil {
 			addDeveloperLicenseKey(
 				long accountEntryId, long productEntryId,
 				int productMinorVersion)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		return getService().addDeveloperLicenseKey(
 			accountEntryId, productEntryId, productMinorVersion);
@@ -59,7 +59,7 @@ public class LicenseKeyServiceUtil {
 				String[] macAddresses, String[] serverIds,
 				java.util.Date startDate, java.util.Date expirationDate,
 				boolean complimentary, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		return getService().addLicenseKey(
 			userId, licenseKeySetId, name, licenseEntryId, productEntryId,
@@ -78,7 +78,7 @@ public class LicenseKeyServiceUtil {
 				long maxUsers, String description, String hostName,
 				String ipAddresses, String macAddresses, String serverId,
 				java.util.Date startDate, java.util.Date expirationDate)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		return getService().addLicenseKey(
 			userUuid, assetReceiptLicenseUuid, licenseEntryType,
@@ -253,7 +253,7 @@ public class LicenseKeyServiceUtil {
 			renewLicenseKey(
 				String uuid, java.util.Date startDate,
 				java.util.Date expirationDate)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		return getService().renewLicenseKey(uuid, startDate, expirationDate);
 	}
@@ -354,7 +354,7 @@ public class LicenseKeyServiceUtil {
 
 	public static void updateLicenseKey(
 			long userId, long licenseKeyId, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		getService().updateLicenseKey(userId, licenseKeyId, active);
 	}
@@ -362,24 +362,25 @@ public class LicenseKeyServiceUtil {
 	public static com.liferay.osb.customer.license.model.LicenseKey
 			updateLicenseKey(
 				long licenseKeyId, long licenseKeySetId,
-				String koroneikiProductPurchaseKey, String name, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
+				String koroneikiProductPurchaseKey, String name,
+				boolean complimentary, boolean active)
+		throws Exception {
 
 		return getService().updateLicenseKey(
 			licenseKeyId, licenseKeySetId, koroneikiProductPurchaseKey, name,
-			active);
+			complimentary, active);
 	}
 
 	public static void updateLicenseKey(
 			String userUuid, String uuid, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		getService().updateLicenseKey(userUuid, uuid, active);
 	}
 
 	public static void updateLicenseKeys(
 			String assetReceiptLicenseUuid, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		getService().updateLicenseKeys(assetReceiptLicenseUuid, active);
 	}

@@ -64,7 +64,7 @@ public interface LicenseKeyService extends BaseService {
 	 */
 	public LicenseKey addDeveloperLicenseKey(
 			long accountEntryId, long productEntryId, int productMinorVersion)
-		throws PortalException;
+		throws Exception;
 
 	public LicenseKey addLicenseKey(
 			long userId, long licenseKeySetId, String name, long licenseEntryId,
@@ -76,7 +76,7 @@ public interface LicenseKeyService extends BaseService {
 			String[] ipAddresses, String[] macAddresses, String[] serverIds,
 			Date startDate, Date expirationDate, boolean complimentary,
 			boolean active)
-		throws PortalException;
+		throws Exception;
 
 	@JSONWebService
 	public LicenseKey addLicenseKey(
@@ -85,7 +85,7 @@ public interface LicenseKeyService extends BaseService {
 			int productVersion, String owner, long maxUsers, String description,
 			String hostName, String ipAddresses, String macAddresses,
 			String serverId, Date startDate, Date expirationDate)
-		throws PortalException;
+		throws Exception;
 
 	@JSONWebService
 	public String generateCommerceLicenseKey(
@@ -188,7 +188,7 @@ public interface LicenseKeyService extends BaseService {
 	@JSONWebService
 	public LicenseKey renewLicenseKey(
 			String uuid, Date startDate, Date expirationDate)
-		throws PortalException;
+		throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> search(
@@ -245,20 +245,21 @@ public interface LicenseKeyService extends BaseService {
 		throws PortalException;
 
 	public void updateLicenseKey(long userId, long licenseKeyId, boolean active)
-		throws PortalException;
+		throws Exception;
 
 	public LicenseKey updateLicenseKey(
 			long licenseKeyId, long licenseKeySetId,
-			String koroneikiProductPurchaseKey, String name, boolean active)
-		throws PortalException;
+			String koroneikiProductPurchaseKey, String name,
+			boolean complimentary, boolean active)
+		throws Exception;
 
 	@JSONWebService
 	public void updateLicenseKey(String userUuid, String uuid, boolean active)
-		throws PortalException;
+		throws Exception;
 
 	@JSONWebService
 	public void updateLicenseKeys(
 			String assetReceiptLicenseUuid, boolean active)
-		throws PortalException;
+		throws Exception;
 
 }

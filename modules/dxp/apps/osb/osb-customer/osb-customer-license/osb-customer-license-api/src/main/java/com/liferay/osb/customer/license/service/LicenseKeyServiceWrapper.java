@@ -35,7 +35,7 @@ public class LicenseKeyServiceWrapper
 			addDeveloperLicenseKey(
 				long accountEntryId, long productEntryId,
 				int productMinorVersion)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		return _licenseKeyService.addDeveloperLicenseKey(
 			accountEntryId, productEntryId, productMinorVersion);
@@ -52,7 +52,7 @@ public class LicenseKeyServiceWrapper
 			String[] ipAddresses, String[] macAddresses, String[] serverIds,
 			java.util.Date startDate, java.util.Date expirationDate,
 			boolean complimentary, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		return _licenseKeyService.addLicenseKey(
 			userId, licenseKeySetId, name, licenseEntryId, productEntryId,
@@ -71,7 +71,7 @@ public class LicenseKeyServiceWrapper
 			String hostName, String ipAddresses, String macAddresses,
 			String serverId, java.util.Date startDate,
 			java.util.Date expirationDate)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		return _licenseKeyService.addLicenseKey(
 			userUuid, assetReceiptLicenseUuid, licenseEntryType,
@@ -256,7 +256,7 @@ public class LicenseKeyServiceWrapper
 	public com.liferay.osb.customer.license.model.LicenseKey renewLicenseKey(
 			String uuid, java.util.Date startDate,
 			java.util.Date expirationDate)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		return _licenseKeyService.renewLicenseKey(
 			uuid, startDate, expirationDate);
@@ -362,7 +362,7 @@ public class LicenseKeyServiceWrapper
 
 	@Override
 	public void updateLicenseKey(long userId, long licenseKeyId, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		_licenseKeyService.updateLicenseKey(userId, licenseKeyId, active);
 	}
@@ -370,17 +370,18 @@ public class LicenseKeyServiceWrapper
 	@Override
 	public com.liferay.osb.customer.license.model.LicenseKey updateLicenseKey(
 			long licenseKeyId, long licenseKeySetId,
-			String koroneikiProductPurchaseKey, String name, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
+			String koroneikiProductPurchaseKey, String name,
+			boolean complimentary, boolean active)
+		throws Exception {
 
 		return _licenseKeyService.updateLicenseKey(
 			licenseKeyId, licenseKeySetId, koroneikiProductPurchaseKey, name,
-			active);
+			complimentary, active);
 	}
 
 	@Override
 	public void updateLicenseKey(String userUuid, String uuid, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		_licenseKeyService.updateLicenseKey(userUuid, uuid, active);
 	}
@@ -388,7 +389,7 @@ public class LicenseKeyServiceWrapper
 	@Override
 	public void updateLicenseKeys(
 			String assetReceiptLicenseUuid, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		_licenseKeyService.updateLicenseKeys(assetReceiptLicenseUuid, active);
 	}

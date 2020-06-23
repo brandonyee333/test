@@ -37,7 +37,7 @@ public class LicenseKeyLocalServiceWrapper
 			addDeveloperLicenseKey(
 				long userId, long accountEntryId, long productEntryId,
 				int productMinorVersion)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		return _licenseKeyLocalService.addDeveloperLicenseKey(
 			userId, accountEntryId, productEntryId, productMinorVersion);
@@ -71,7 +71,7 @@ public class LicenseKeyLocalServiceWrapper
 			String[] macAddresses, String[] serverIds, java.util.Date startDate,
 			java.util.Date expirationDate, String additionalInfo,
 			boolean complimentary, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		return _licenseKeyLocalService.addLicenseKey(
 			userId, licenseKeySet, name, licenseEntry, productEntry,
@@ -93,7 +93,7 @@ public class LicenseKeyLocalServiceWrapper
 			String[] ipAddresses, String[] macAddresses, String[] serverIds,
 			java.util.Date startDate, java.util.Date expirationDate,
 			boolean complimentary, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		return _licenseKeyLocalService.addLicenseKey(
 			userId, licenseKeySetId, name, licenseEntryId, productEntryId,
@@ -112,7 +112,7 @@ public class LicenseKeyLocalServiceWrapper
 			String hostName, String ipAddresses, String macAddresses,
 			String serverId, java.util.Date startDate,
 			java.util.Date expirationDate)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		return _licenseKeyLocalService.addLicenseKey(
 			userId, assetReceiptLicenseUuid, licenseEntryType, productEntryName,
@@ -565,7 +565,7 @@ public class LicenseKeyLocalServiceWrapper
 	public com.liferay.osb.customer.license.model.LicenseKey renewLicenseKey(
 			long userId, long licenseKeyId, java.util.Date startDate,
 			java.util.Date expirationDate)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		return _licenseKeyLocalService.renewLicenseKey(
 			userId, licenseKeyId, startDate, expirationDate);
@@ -687,7 +687,7 @@ public class LicenseKeyLocalServiceWrapper
 
 	@Override
 	public void updateLicenseKey(long userId, long licenseKeyId, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		_licenseKeyLocalService.updateLicenseKey(userId, licenseKeyId, active);
 	}
@@ -705,12 +705,13 @@ public class LicenseKeyLocalServiceWrapper
 	@Override
 	public com.liferay.osb.customer.license.model.LicenseKey updateLicenseKey(
 			long userId, long licenseKeyId, long licenseKeySetId,
-			String koroneikiProductPurchaseKey, String name, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
+			String koroneikiProductPurchaseKey, String name,
+			boolean complimentary, boolean active)
+		throws Exception {
 
 		return _licenseKeyLocalService.updateLicenseKey(
 			userId, licenseKeyId, licenseKeySetId, koroneikiProductPurchaseKey,
-			name, active);
+			name, complimentary, active);
 	}
 
 	@Override

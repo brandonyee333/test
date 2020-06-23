@@ -68,7 +68,7 @@ public interface LicenseKeyLocalService
 	public LicenseKey addDeveloperLicenseKey(
 			long userId, long accountEntryId, long productEntryId,
 			int productMinorVersion)
-		throws PortalException;
+		throws Exception;
 
 	/**
 	 * Adds the license key to the database. Also notifies the appropriate model listeners.
@@ -90,7 +90,7 @@ public interface LicenseKeyLocalService
 			String[] macAddresses, String[] serverIds, Date startDate,
 			Date expirationDate, String additionalInfo, boolean complimentary,
 			boolean active)
-		throws PortalException;
+		throws Exception;
 
 	public LicenseKey addLicenseKey(
 			long userId, long licenseKeySetId, String name, long licenseEntryId,
@@ -102,7 +102,7 @@ public interface LicenseKeyLocalService
 			String[] ipAddresses, String[] macAddresses, String[] serverIds,
 			Date startDate, Date expirationDate, boolean complimentary,
 			boolean active)
-		throws PortalException;
+		throws Exception;
 
 	public LicenseKey addLicenseKey(
 			long userId, String assetReceiptLicenseUuid,
@@ -110,7 +110,7 @@ public interface LicenseKeyLocalService
 			int productVersion, String owner, long maxUsers, String description,
 			String hostName, String ipAddresses, String macAddresses,
 			String serverId, Date startDate, Date expirationDate)
-		throws PortalException;
+		throws Exception;
 
 	/**
 	 * Creates a new license key with the primary key. Does not add the license key to the database.
@@ -369,7 +369,7 @@ public interface LicenseKeyLocalService
 
 	public LicenseKey renewLicenseKey(
 			long userId, long licenseKeyId, Date startDate, Date expirationDate)
-		throws PortalException;
+		throws Exception;
 
 	public LicenseKey renewLicenseKey(
 			long userId, long licenseKeyId, Date startDate, int renewTime)
@@ -433,7 +433,7 @@ public interface LicenseKeyLocalService
 	public LicenseKey updateLicenseKey(LicenseKey licenseKey);
 
 	public void updateLicenseKey(long userId, long licenseKeyId, boolean active)
-		throws PortalException;
+		throws Exception;
 
 	public LicenseKey updateLicenseKey(
 			long licenseKeyId, long accountEntryId, long offeringEntryId,
@@ -442,7 +442,8 @@ public interface LicenseKeyLocalService
 
 	public LicenseKey updateLicenseKey(
 			long userId, long licenseKeyId, long licenseKeySetId,
-			String koroneikiProductPurchaseKey, String name, boolean active)
-		throws PortalException;
+			String koroneikiProductPurchaseKey, String name,
+			boolean complimentary, boolean active)
+		throws Exception;
 
 }
