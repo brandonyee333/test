@@ -23,7 +23,6 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Sort;
 
 import java.util.ArrayList;
@@ -90,8 +89,7 @@ public class DXPEntityDog {
 				collectionName, _dxpRawElasticsearchInvoker,
 				DogUtil.buildSearchSourceBuilder(
 					_getFieldSortBuilders(collectionName, sort),
-					_getBoolQueryBuilder(
-						boolQueryBuilder, channelJSONObject, "groupId"),
+					_getBoolQueryBuilder(boolQueryBuilder, channelJSONObject),
 					size, start));
 
 			return _createResultBag(this::_mapDXPEntity, searchHits);
@@ -143,9 +141,7 @@ public class DXPEntityDog {
 				collectionName, _dxpRawElasticsearchInvoker,
 				DogUtil.buildSearchSourceBuilder(
 					_getFieldSortBuilders(collectionName, sort),
-					_getBoolQueryBuilder(
-						boolQueryBuilder, channelJSONObject,
-						"memberships.com.liferay.portal.kernel.model.Group"),
+					_getBoolQueryBuilder(boolQueryBuilder, channelJSONObject),
 					size, start));
 
 			return _createResultBag(this::_mapDXPUser, searchHits);
@@ -183,8 +179,7 @@ public class DXPEntityDog {
 	}
 
 	private BoolQueryBuilder _getBoolQueryBuilder(
-		BoolQueryBuilder boolQueryBuilder, JSONObject channelJSONObject,
-		String key) {
+		BoolQueryBuilder boolQueryBuilder, JSONObject channelJSONObject) {
 
 		JSONArray dataSourcesJSONArray = channelJSONObject.optJSONArray(
 			"dataSources");
@@ -201,15 +196,8 @@ public class DXPEntityDog {
 			JSONObject jsonObject = dataSourcesJSONArray.getJSONObject(i);
 
 			dataSourceBoolQueryBuilder.should(
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termsQuery(
-						key,
-						JSONUtil.toStringArray(
-							jsonObject.getJSONArray("groupIds")))
-				).filter(
-					QueryBuilders.termQuery(
-						"osbAsahDataSourceId", jsonObject.getString("id"))
-				));
+				QueryBuilders.termQuery(
+					"osbAsahDataSourceId", jsonObject.getString("id")));
 		}
 
 		return BoolQueryBuilderUtil.filter(
