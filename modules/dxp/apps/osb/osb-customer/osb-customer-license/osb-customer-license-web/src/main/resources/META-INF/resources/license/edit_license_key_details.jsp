@@ -428,6 +428,10 @@ if ((serverIdsIndexes == null) || (serverIdsIndexes.length <= 0)) {
 			</c:choose>
 
 			<aui:col md="12">
+				<aui:input helpMessage="do-not-count-this-license-against-the-customer's-purchases" name="complimentary" type="checkbox" />
+			</aui:col>
+
+			<aui:col md="12">
 				<aui:button primary="<%= true %>" type="submit" value="generate" />
 
 				<aui:button onClick="<%= backURL %>" value="cancel" />

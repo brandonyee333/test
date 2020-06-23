@@ -64,7 +64,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 	public LicenseKey addDeveloperLicenseKey(
 			long accountEntryId, long productEntryId, int productMinorVersion)
-		throws PortalException {
+		throws Exception {
 
 		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
 			accountEntryId);
@@ -130,7 +130,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			String[] ipAddresses, String[] macAddresses, String[] serverIds,
 			Date startDate, Date expirationDate, boolean complimentary,
 			boolean active)
-		throws PortalException {
+		throws Exception {
 
 		/*
 		TODO
@@ -182,11 +182,12 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		}
 
 		return licenseKeyLocalService.addLicenseKey(
-			userId, licenseKeySetId, name, offeringEntryId, licenseEntryId,
-			productEntryId, koroneikiAccountKey, koroneikiProductPurchaseKey, accountEntryName,
-			productVersion, clusterId, owner, maxServers,
-			maxHttpSessions, description, hostNames, ipAddresses, macAddresses,
-			serverIds, startDate, expirationDate, false, true);
+			userId, licenseKeySetId, name, licenseEntryId, productEntryId,
+			koroneikiAccountKey, koroneikiProductPurchaseKey, accountEntryName,
+			productVersion, clusterId, owner, maxServers, maxHttpSessions,
+			maxConcurrentUsers, maxUsers, sizing, description, hostNames,
+			ipAddresses, macAddresses, serverIds, startDate, expirationDate,
+			complimentary, true);
 	}
 
 	@JSONWebService
@@ -196,7 +197,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			int productVersion, String owner, long maxUsers, String description,
 			String hostName, String ipAddresses, String macAddresses,
 			String serverId, Date startDate, Date expirationDate)
-		throws PortalException {
+		throws Exception {
 
 		validateJSONWebServicePermissions();
 
@@ -525,7 +526,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	@JSONWebService
 	public LicenseKey renewLicenseKey(
 			String uuid, Date startDate, Date expirationDate)
-		throws PortalException {
+		throws Exception {
 
 		validateJSONWebServicePermissions();
 
@@ -633,7 +634,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	}
 
 	public void updateLicenseKey(long userId, long licenseKeyId, boolean active)
-		throws PortalException {
+		throws Exception {
 
 		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
 			licenseKeyId);
@@ -659,8 +660,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 	public LicenseKey updateLicenseKey(
 			long licenseKeyId, long licenseKeySetId,
-			String koroneikiProductPurchaseKey, String name, boolean active)
-		throws PortalException {
+			String koroneikiProductPurchaseKey, String name,
+			boolean complimentary, boolean active)
+		throws Exception {
 
 		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
 			licenseKeyId);
@@ -683,12 +685,12 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 		return licenseKeyLocalService.updateLicenseKey(
 			getUserId(), licenseKeyId, licenseKeySetId,
-			koroneikiProductPurchaseKey, name, active);
+			koroneikiProductPurchaseKey, name, complimentary, active);
 	}
 
 	@JSONWebService
 	public void updateLicenseKey(String userUuid, String uuid, boolean active)
-		throws PortalException {
+		throws Exception {
 
 		validateJSONWebServicePermissions();
 
@@ -705,7 +707,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	@JSONWebService
 	public void updateLicenseKeys(
 			String assetReceiptLicenseUuid, boolean active)
-		throws PortalException {
+		throws Exception {
 
 		List<LicenseKey> licenseKeys = licenseKeyPersistence.findByARLU_A(
 			assetReceiptLicenseUuid, !active);

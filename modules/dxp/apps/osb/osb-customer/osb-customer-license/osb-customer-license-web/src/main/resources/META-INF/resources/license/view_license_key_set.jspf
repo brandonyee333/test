@@ -276,6 +276,7 @@ while (!displayLicenseKeys.isEmpty()) {
 							<portlet:param name="licenseKeySetId" value="<%= String.valueOf(licenseKeySetId) %>" />
 							<portlet:param name="licenseKeyId" value="<%= String.valueOf(licenseKey.getLicenseKeyId()) %>" />
 							<portlet:param name="koroneikiProductPurchaseKey" value="<%= licenseKey.getKoroneikiProductPurchaseKey() %>" />
+							<portlet:param name="complimentary" value="<%= String.valueOf(licenseKey.isComplimentary()) %>" />
 							<portlet:param name="active" value="<%= String.valueOf(!licenseKey.isActive()) %>" />
 						</portlet:actionURL>
 

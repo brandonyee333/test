@@ -270,6 +270,8 @@ public class LicensePortlet extends MVCPortlet {
 			actionRequest, "expirationDateDay");
 		int expirationDateYear = ParamUtil.getInteger(
 			actionRequest, "expirationDateYear");
+		boolean complimentary = ParamUtil.getBoolean(
+			actionRequest, "complimentary");
 		boolean active = ParamUtil.getBoolean(actionRequest, "active");
 
 		Date startDate = _portal.getDate(
@@ -345,7 +347,7 @@ public class LicensePortlet extends MVCPortlet {
 				hostNames.toArray(new String[0]),
 				ipAddresses.toArray(new String[0]),
 				macAddresses.toArray(new String[0]), serverIds, startDate,
-				expirationDate, false, true);
+				expirationDate, complimentary, true);
 
 			actionRequest.setAttribute("clusterId", licenseKey.getClusterId());
 			actionRequest.setAttribute(
@@ -357,7 +359,7 @@ public class LicensePortlet extends MVCPortlet {
 		else {
 			licenseKey = _licenseKeyService.updateLicenseKey(
 				licenseKeyId, licenseKeySetId, koroneikiProductPurchaseKey,
-				name, active);
+				name, complimentary, active);
 		}
 	}
 

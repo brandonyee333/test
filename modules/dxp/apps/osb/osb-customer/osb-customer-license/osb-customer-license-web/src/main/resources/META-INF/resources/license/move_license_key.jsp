@@ -53,6 +53,7 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 			<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 			<aui:input name="licenseKeyId" type="hidden" value="<%= String.valueOf(licenseKey.getLicenseKeyId()) %>" />
 			<aui:input name="licenseKeySetId" type="hidden" value="<%= String.valueOf(licenseKey.getLicenseKeySetId()) %>" />
+			<aui:input name="complimentary" type="hidden" value="<%= String.valueOf(licenseKey.isComplimentary()) %>" />
 			<aui:input name="active" type="hidden" value="<%= String.valueOf(licenseKey.getActive()) %>" />
 			<aui:input name="koroneikiProductPurchaseKey" type="hidden" value="" />
 

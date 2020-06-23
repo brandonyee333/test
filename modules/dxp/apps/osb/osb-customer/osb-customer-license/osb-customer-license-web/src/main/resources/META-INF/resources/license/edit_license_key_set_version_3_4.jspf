@@ -273,7 +273,8 @@
 							<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
 							<portlet:param name="licenseKeySetId" value="<%= String.valueOf(licenseKeySetId) %>" />
 							<portlet:param name="licenseKeyId" value="<%= String.valueOf(clusterLicenseKey.getLicenseKeyId()) %>" />
-							<portlet:param name="productPurchaseKey" value="<%= clusterLicenseKey.getKoroneikiProductPurchaseKey() %>" />
+							<portlet:param name="koroneikiProductPurchaseKey" value="<%= clusterLicenseKey.getKoroneikiProductPurchaseKey() %>" />
+							<portlet:param name="complimentary" value="<%= String.valueOf(licenseKey.isComplimentary()) %>" />
 							<portlet:param name="active" value="<%= String.valueOf(!clusterLicenseKey.isActive()) %>" />
 						</portlet:actionURL>
 
@@ -380,6 +381,21 @@
 			</c:if>
 
 			<aui:col md="12">
+				<span><liferay-ui:message key="complimentary" />:</span>
+
+				<span>
+					<c:choose>
+						<c:when test="<%= licenseKey.isComplimentary() %>">
+							<liferay-ui:message key="yes" />
+						</c:when>
+						<c:otherwise>
+							<liferay-ui:message key="no" />
+						</c:otherwise>
+					</c:choose>
+				</span>
+			</aui:col>
+
+			<aui:col md="12">
 				<c:if test="<%= licenseKey.isActive() && ((licenseKey.getLicenseVersion() >= 2) || licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) %>">
 					<portlet:resourceURL id="licenseKey" var="downloadLicenseFileURL">
 						<portlet:param name="mvcPath" value="/license/edit_license_key_set.jsp" />
@@ -413,17 +429,39 @@
 				</c:if>
 
 				<c:if test="<%= LicenseKeyPermission.contains(permissionChecker, licenseKey.getLicenseKeyId(), OSBActionKeys.UPDATE_ADVANCED) %>">
+					<portlet:actionURL name="updateLicenseKey" var="complimentaryLicenseKeyURL">
+						<portlet:param name="mvcPath" value="/license/edit_license_key_set.jsp" />
+						<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+						<portlet:param name="licenseKeySetId" value="<%= String.valueOf(licenseKeySetId) %>" />
+						<portlet:param name="licenseKeyId" value="<%= String.valueOf(licenseKey.getLicenseKeyId()) %>" />
+						<portlet:param name="koroneikiProductPurchaseKey" value="<%= licenseKey.getKoroneikiProductPurchaseKey() %>" />
+						<portlet:param name="complimentary" value="<%= String.valueOf(!licenseKey.isComplimentary()) %>" />
+						<portlet:param name="active" value="<%= String.valueOf(licenseKey.isActive()) %>" />
+					</portlet:actionURL>
+
+					<%
+					String url = "javascript:location.href = '" + HttpUtil.encodeURL(complimentaryLicenseKeyURL.toString()) + "'";
+					%>
+
+					<liferay-ui:icon
+						image='<%= licenseKey.isComplimentary() ? "../aui/plus-sign" : "../aui/minus-sign" %>'
+						label="<%= true %>"
+						message='<%= licenseKey.isComplimentary() ? "remove-complimentary" : "make-complimentary" %>'
+						url="<%= url %>"
+					/>
+
 					<portlet:actionURL name="updateLicenseKey" var="activateLicenseKeyURL">
 						<portlet:param name="mvcPath" value="/license/edit_license_key_set.jsp" />
 						<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
 						<portlet:param name="licenseKeySetId" value="<%= String.valueOf(licenseKeySetId) %>" />
 						<portlet:param name="licenseKeyId" value="<%= String.valueOf(licenseKey.getLicenseKeyId()) %>" />
-						<portlet:param name="productPurchaseKey" value="<%= licenseKey.getKoroneikiProductPurchaseKey() %>" />
+						<portlet:param name="koroneikiProductPurchaseKey" value="<%= licenseKey.getKoroneikiProductPurchaseKey() %>" />
+						<portlet:param name="complimentary" value="<%= String.valueOf(licenseKey.isComplimentary()) %>" />
 						<portlet:param name="active" value="<%= String.valueOf(!licenseKey.isActive()) %>" />
 					</portlet:actionURL>
 
 					<%
-					String url = "location.href = '" + HttpUtil.encodeURL(activateLicenseKeyURL.toString()) + "'";
+					url = "location.href = '" + HttpUtil.encodeURL(activateLicenseKeyURL.toString()) + "'";
 
 					if (licenseKey.isActive()) {
 						url = "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-deactivate-this-license-key") + "')) { " + url + " } else { self.focus(); }";
