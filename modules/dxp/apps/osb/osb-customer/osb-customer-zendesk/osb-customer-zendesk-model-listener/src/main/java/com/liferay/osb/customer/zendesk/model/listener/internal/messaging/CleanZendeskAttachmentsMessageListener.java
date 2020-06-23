@@ -20,7 +20,6 @@ import com.liferay.osb.customer.zendesk.model.ZendeskTicketComment;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskAttachmentWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketCommentWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
-import com.liferay.osb.customer.zendesk.web.service.search.QueryFactory;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -35,7 +34,6 @@ import com.liferay.portal.kernel.scheduler.Trigger;
 import com.liferay.portal.kernel.scheduler.TriggerFactory;
 import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Time;
 
 import java.text.Format;
@@ -56,11 +54,11 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jenny Chen
  */
 @Component(
-	// Need to revise
 	immediate = true, property = "days.solved=27",
 	service = CleanZendeskAttachmentsMessageListener.class
 )
-public class CleanZendeskAttachmentsMessageListener extends BaseMessageListener {
+public class CleanZendeskAttachmentsMessageListener
+	extends BaseMessageListener {
 
 	@Activate
 	@Modified
@@ -102,21 +100,21 @@ public class CleanZendeskAttachmentsMessageListener extends BaseMessageListener 
 				for (ZendeskAttachment zendeskAttachment :
 						zendeskTicketComment.getZendeskAttachments()) {
 
-					if (!hasExcludeFile(zendeskAttachment.getFileName())) {
-						if (_log.isDebugEnabled()) {
-							_log.debug(
-								"Deleting " + zendeskAttachment.getFileName() +
-									" for ticket " +
-										zendeskTicket.getZendeskTicketId());
-						}
-
-						_asyncZendeskAttachmentWebService.
-							deleteZendeskAttachment(
-								zendeskTicket.getZendeskTicketId(),
-								zendeskTicketComment.
-									getZendeskTicketCommentId(),
-								zendeskAttachment.getZendeskAttachmentId());
+					if (isKeepAttachment(zendeskAttachment.getFileName())) {
+						continue;
 					}
+
+					if (_log.isDebugEnabled()) {
+						_log.debug(
+							"Deleting " + zendeskAttachment.getFileName() +
+								" for ticket " +
+									zendeskTicket.getZendeskTicketId());
+					}
+
+					_asyncZendeskAttachmentWebService.deleteZendeskAttachment(
+						zendeskTicket.getZendeskTicketId(),
+						zendeskTicketComment.getZendeskTicketCommentId(),
+						zendeskAttachment.getZendeskAttachmentId());
 				}
 			}
 		}
@@ -139,27 +137,26 @@ public class CleanZendeskAttachmentsMessageListener extends BaseMessageListener 
 		deleteZendeskAttachments(zendeskTickets);
 	}
 
-	protected boolean hasExcludeFile(String fileName) {
+	protected boolean isKeepAttachment(String fileName) {
 		if (fileName.startsWith("activation-key-") &&
 			fileName.endsWith(".xml")) {
 
 			return true;
 		}
-		else if ((fileName.startsWith("liferay-fix-pack-") ||
-				  fileName.startsWith("liferay-security-")) &&
-				 fileName.endsWith(".zip")) {
+
+		if ((fileName.startsWith("liferay-fix-pack-") ||
+			 fileName.startsWith("liferay-hotfix-") ||
+			 fileName.startsWith("liferay-security-")) &&
+			fileName.endsWith(".zip")) {
 
 			return true;
 		}
-		else if (fileName.endsWith(".groovy")) {
-			return true;
-		}
-		else if (fileName.startsWith("liferay-hotfix-") &&
-				 fileName.endsWith(".zip")) {
 
+		if (fileName.endsWith(".groovy")) {
 			return true;
 		}
-		else if (fileName.endsWith(".support")) {
+
+		if (fileName.endsWith(".support")) {
 			return true;
 		}
 
@@ -176,12 +173,6 @@ public class CleanZendeskAttachmentsMessageListener extends BaseMessageListener 
 
 	@Reference
 	private FastDateFormatFactory _fastDateFormatFactory;
-
-	@Reference
-	private Portal _portal;
-
-	@Reference
-	private QueryFactory _queryFactory;
 
 	@Reference
 	private SchedulerEngineHelper _schedulerEngineHelper;

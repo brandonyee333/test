@@ -97,20 +97,6 @@ public class DefaultZendeskTicketCommentWebService
 		return zendeskTicketComments;
 	}
 
-	public SearchHits<ZendeskTicketComment> search(
-			long zendeskTicketId, Query query)
-		throws PortalException {
-
-		String endpoint =
-			ZendeskRESTEndpoints.URL_API_V2 + "tickets/" + zendeskTicketId +
-				"/comments.json";
-
-		JSONObject responseJSONObject = _zendeskBaseWebService.get(
-			endpoint, query.getParameters());
-
-		return toSearchHits(responseJSONObject);
-	}
-
 	protected JSONObject getZendeskTicketCommentJSONObject(
 		long zendeskUserId, String htmlBody) {
 
@@ -128,6 +114,20 @@ public class DefaultZendeskTicketCommentWebService
 		jsonObject.put("ticket", ticketJSONObject);
 
 		return jsonObject;
+	}
+
+	protected SearchHits<ZendeskTicketComment> search(
+			long zendeskTicketId, Query query)
+		throws PortalException {
+
+		String endpoint =
+			ZendeskRESTEndpoints.URL_API_V2 + "tickets/" + zendeskTicketId +
+				"/comments.json";
+
+		JSONObject responseJSONObject = _zendeskBaseWebService.get(
+			endpoint, query.getParameters());
+
+		return toSearchHits(responseJSONObject);
 	}
 
 	protected SearchHits<ZendeskTicketComment> toSearchHits(
