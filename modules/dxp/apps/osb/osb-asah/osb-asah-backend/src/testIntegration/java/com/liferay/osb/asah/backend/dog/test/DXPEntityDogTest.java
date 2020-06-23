@@ -57,8 +57,8 @@ public class DXPEntityDogTest {
 			null, "groups", Arrays.asList("Global", "Guest"), 2, null,
 			Sort.asc("name"));
 		_testGetResultBag(
-			"414686271857066676", "groups", Arrays.asList("Guest"), 1, null,
-			Sort.asc("name"));
+			"414686271857066676", "groups", Arrays.asList("Global", "Guest"), 2,
+			null, Sort.asc("name"));
 		_testGetResultBag(
 			"414686271857066677", "groups", Collections.emptyList(), 0, null,
 			Sort.asc("name"));
@@ -147,7 +147,12 @@ public class DXPEntityDogTest {
 				"Test3 Test3"),
 			5, null, Sort.asc("name"));
 		_testGetResultBag(
-			"414686271857066676", "users", Arrays.asList("Test3 Test3"), 1,
+			"414686271857066676", "users",
+			Arrays.asList(
+				"Bruno Admin", "Bruno Badmin", "Test1 Test1", "Test2 Test2"),
+			4, null, Sort.asc("name"));
+		_testGetResultBag(
+			"414686271857066677", "users", Arrays.asList("Test3 Test3"), 1,
 			null, Sort.asc("name"));
 	}
 
@@ -164,6 +169,10 @@ public class DXPEntityDogTest {
 	}
 
 	@ElasticsearchIndex(
+		name = "channels", resourcePath = "channels.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
 		name = "users", resourcePath = "users.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
 	)
@@ -173,6 +182,10 @@ public class DXPEntityDogTest {
 			null, "users",
 			Arrays.asList("Test1 Test1", "Test2 Test2", "Test3 Test3"), 3,
 			"Test", Sort.asc("name"));
+		_testGetResultBag(
+			"414686271857066676", "users",
+			Arrays.asList("Test1 Test1", "Test2 Test2"), 2, "Test",
+			Sort.asc("name"));
 	}
 
 	@ElasticsearchIndex(
