@@ -40,6 +40,7 @@ import java.util.zip.ZipOutputStream;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -194,11 +195,25 @@ public class GoogleStorageArchiver {
 	}
 
 	private String _getBucketFilePath(String bucketPath, String fileName) {
-		if (bucketPath != null) {
-			return String.format("%s/%s", bucketPath, fileName);
+		String bucketFilePath = fileName;
+
+		int lastDot = fileName.lastIndexOf('.');
+
+		if (lastDot > -1) {
+			String lastToken = fileName.substring(lastDot + 1);
+
+			if (StringUtils.isNumeric(lastToken)) {
+				bucketFilePath = String.format(
+					"%s/%s", fileName.substring(0, lastDot),
+					fileName.substring(lastDot + 1));
+			}
 		}
 
-		return fileName;
+		if (bucketPath != null) {
+			return String.format("%s/%s", bucketPath, bucketFilePath);
+		}
+
+		return bucketFilePath;
 	}
 
 	@PostConstruct
