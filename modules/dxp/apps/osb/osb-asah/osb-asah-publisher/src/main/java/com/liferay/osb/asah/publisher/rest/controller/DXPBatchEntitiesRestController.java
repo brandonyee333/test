@@ -63,7 +63,7 @@ public class DXPBatchEntitiesRestController {
 			@RequestParam("resourceName") String resourceName,
 			@DateTimeFormat(pattern = "EEE, dd MMM yyyy HH:mm:ss zzz")
 			@RequestHeader(required = false, value = "Last-Modified")
-				Date lastUpdate)
+				Date resourceLastModifiedDate)
 		throws Exception {
 
 		if (_log.isDebugEnabled()) {
@@ -74,44 +74,52 @@ public class DXPBatchEntitiesRestController {
 		Storage storage = _storageFactory.getStorage(
 			_getStorageConfiguration(dataSourceId, resourceName));
 
-		File file = storage.readSparkJobResult(resourceName, lastUpdate);
+		File file = storage.readSparkJobResult(
+			resourceLastModifiedDate, resourceName);
 
 		if (file == null) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
 
-		HttpHeaders httpHeaders = new HttpHeaders();
+		ResponseEntity.BodyBuilder bodyBuilder = ResponseEntity.ok();
 
-		httpHeaders.add(
-			HttpHeaders.CONTENT_DISPOSITION,
-			"attachment; filename=" + resourceName + ".zip");
-		httpHeaders.add(
-			HttpHeaders.CONTENT_LENGTH, String.valueOf(file.length()));
-
-		ResponseEntity.BodyBuilder responseEntity = ResponseEntity.ok();
-
-		responseEntity = responseEntity.headers(httpHeaders);
-
-		return responseEntity.body(
+		bodyBuilder.body(
 			new ByteArrayResource(Files.readAllBytes(file.toPath())));
+
+		bodyBuilder = bodyBuilder.headers(
+			new HttpHeaders() {
+				{
+					add(
+						HttpHeaders.CONTENT_DISPOSITION,
+						"attachment; filename=" + resourceName + ".zip");
+					add(
+						HttpHeaders.CONTENT_LENGTH,
+						String.valueOf(file.length()));
+				}
+			});
+
+		return bodyBuilder.build();
 	}
 
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<?> post(
 			@RequestHeader(required = false, value = "OSB-Asah-Data-Source-ID")
 				String dataSourceId,
-			@RequestParam("file") MultipartFile file)
+			@RequestParam("file") MultipartFile multipartFile)
 		throws Exception {
 
 		if (_log.isDebugEnabled()) {
-			_log.debug("Received upload request " + file.getOriginalFilename());
+			_log.debug(
+				"Received upload request " +
+					multipartFile.getOriginalFilename());
 		}
 
 		Storage storage = _storageFactory.getStorage(
-			_getStorageConfiguration(dataSourceId, file.getOriginalFilename()));
+			_getStorageConfiguration(
+				dataSourceId, multipartFile.getOriginalFilename()));
 
 		ZipInputStream zipInputStream = new ZipInputStream(
-			file.getInputStream());
+			multipartFile.getInputStream());
 
 		zipInputStream.getNextEntry();
 
@@ -124,16 +132,14 @@ public class DXPBatchEntitiesRestController {
 	}
 
 	private StorageConfiguration _getStorageConfiguration(
-		String dataSourceId, String resoruceName) {
+		String dataSourceId, String resourceName) {
 
 		StorageConfiguration.Builder builder = StorageConfiguration.builder(
-			_analyticsBatchResourcesStoragePath + "/" + resoruceName);
+			_analyticsBatchResourcesStoragePath + "/" + resourceName);
 
-		builder = builder.chunkSize(_DEFAULT_CHUNK_SIZE);
-
-		builder = builder.googleBucket(_analyticsBatchResourcesBucket);
-
-		builder = builder.googleBucketFolder(
+		builder.chunkSize(_DEFAULT_CHUNK_SIZE);
+		builder.googleBucket(_analyticsBatchResourcesBucket);
+		builder.googleBucketFolder(
 			String.format(
 				"%s/%s", ServiceConstants.LCP_PROJECT_ID, dataSourceId));
 
