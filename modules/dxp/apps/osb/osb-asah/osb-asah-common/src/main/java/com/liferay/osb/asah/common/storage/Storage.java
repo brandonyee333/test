@@ -28,7 +28,8 @@ public interface Storage {
 
 	public void flush();
 
-	public File readSparkJobResult(String pathPrefix, Date lastUpdate);
+	public File readSparkJobResult(
+		Date sparkJobResultDateAfter, String sparkJobResultPathPrefix);
 
 	public boolean write(InputStream inputStream);
 

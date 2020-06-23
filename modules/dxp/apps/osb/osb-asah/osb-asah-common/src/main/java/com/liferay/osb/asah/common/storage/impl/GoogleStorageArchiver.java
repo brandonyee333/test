@@ -58,36 +58,38 @@ public class GoogleStorageArchiver {
 	}
 
 	public File readSparkJobResult(
-			String bucket, String pathPrefix, Date lastUpdate)
+			String bucket, Date sparkJobResultDateAfter,
+			String sparkJobResultPathPrefix)
 		throws Exception {
 
-		BlobId successBlobId = BlobId.of(bucket, pathPrefix + "/_SUCCESS");
+		BlobId successBlobId = BlobId.of(
+			bucket, sparkJobResultPathPrefix + "/_SUCCESS");
 
 		Blob successBlob = _storage.get(successBlobId);
 
 		if (!successBlob.exists()) {
 			_log.error("_SUCCESS file missing");
 
-			throw new IOException();
+			return null;
 		}
 
-		if ((lastUpdate != null) &&
-			(lastUpdate.getTime() > successBlob.getCreateTime())) {
+		if ((sparkJobResultDateAfter != null) &&
+			(sparkJobResultDateAfter.getTime() > successBlob.getCreateTime())) {
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					String.format(
-						"Bucket '%s' is older than %s", successBlob.getName(),
-						lastUpdate));
+						"Success blob '%s' is older than the requested date %s",
+						successBlob.getName(), sparkJobResultDateAfter));
 			}
 
 			return null;
 		}
 
 		Page<Blob> blobs = _storage.list(
-			bucket, Storage.BlobListOption.prefix(pathPrefix));
+			bucket, Storage.BlobListOption.prefix(sparkJobResultPathPrefix));
 
-		String tempFileName = _createTempFileName("export", ".zip");
+		String tempFileName = _createTempFileName(".zip", "export");
 
 		ZipOutputStream zipOutputStream = new ZipOutputStream(
 			new FileOutputStream(tempFileName));
@@ -108,8 +110,8 @@ public class GoogleStorageArchiver {
 
 				zipOutputStream.write(bytes, 0, bytes.length);
 			}
-			catch (IOException e) {
-				_log.error(e.getMessage(), e);
+			catch (IOException ioe) {
+				_log.error(ioe.getMessage(), ioe);
 			}
 		}
 
@@ -134,9 +136,7 @@ public class GoogleStorageArchiver {
 		}
 
 		Blob blob = _uploadBlob(
-			0,
-			_buildBlobInfo(
-				bucket, _getBucketFilePath(bucketPath, file.getName())),
+			0, _buildBlobInfo(bucket, _getFileName(bucketPath, file.getName())),
 			content);
 
 		if (blob == null) {
@@ -168,7 +168,7 @@ public class GoogleStorageArchiver {
 		return builder.build();
 	}
 
-	private String _createTempFileName(String prefix, String extension) {
+	private String _createTempFileName(String extension, String prefix) {
 		StringBuilder sb = new StringBuilder(7);
 
 		sb.append(System.getProperty(_TMP_DIR));
@@ -194,26 +194,24 @@ public class GoogleStorageArchiver {
 		}
 	}
 
-	private String _getBucketFilePath(String bucketPath, String fileName) {
-		String bucketFilePath = fileName;
+	private String _getFileName(String bucketPath, String fileName) {
+		int index = fileName.lastIndexOf('.');
 
-		int lastDot = fileName.lastIndexOf('.');
-
-		if (lastDot > -1) {
-			String lastToken = fileName.substring(lastDot + 1);
+		if (index > -1) {
+			String lastToken = fileName.substring(index + 1);
 
 			if (StringUtils.isNumeric(lastToken)) {
-				bucketFilePath = String.format(
-					"%s/%s", fileName.substring(0, lastDot),
-					fileName.substring(lastDot + 1));
+				fileName = String.format(
+					"%s/%s", fileName.substring(0, index),
+					fileName.substring(index + 1));
 			}
 		}
 
 		if (bucketPath != null) {
-			return String.format("%s/%s", bucketPath, bucketFilePath);
+			return String.format("%s/%s", bucketPath, fileName);
 		}
 
-		return bucketFilePath;
+		return fileName;
 	}
 
 	@PostConstruct

@@ -71,25 +71,25 @@ public class LocalStorage implements Storage {
 		try {
 			_rollover();
 		}
-		catch (IOException e) {
-			_log.error(e, e);
+		catch (IOException ioe) {
+			_log.error(ioe, ioe);
 		}
 	}
 
 	@Override
-	public File readSparkJobResult(String pathPrefix, Date lastUpdate) {
-		try {
-			String fullPathPrefix = pathPrefix;
+	public File readSparkJobResult(
+		Date sparkJobResultDateAfter, String sparkJobResultPathPrefix) {
 
+		try {
 			if (_storageStorageConfiguration.getGoogleBucketFolder() != null) {
-				fullPathPrefix =
+				sparkJobResultPathPrefix =
 					_storageStorageConfiguration.getGoogleBucketFolder() + "/" +
-						pathPrefix;
+						sparkJobResultPathPrefix;
 			}
 
 			return _googleStorageArchiver.readSparkJobResult(
-				_storageStorageConfiguration.getGoogleBucket(), fullPathPrefix,
-				lastUpdate);
+				_storageStorageConfiguration.getGoogleBucket(),
+				sparkJobResultDateAfter, sparkJobResultPathPrefix);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -119,8 +119,8 @@ public class LocalStorage implements Storage {
 				}
 			}
 		}
-		catch (IOException e) {
-			_log.error(e, e);
+		catch (IOException ioe) {
+			_log.error(ioe, ioe);
 
 			status = false;
 		}
