@@ -31,6 +31,15 @@
 				/>
 			</not>
 			<then>
+				<copy
+					preservelastmodified="true"
+					todir="${portal.base.dir}/tools/sdk/dependencies/com.liferay.portal.tools.service.builder.temp/"
+				>
+					<fileset
+						dir="${portal.base.dir}/tools/sdk/dependencies/com.liferay.portal.tools.service.builder"
+					/>
+				</copy>
+
 				<replaceregexp
 					file="${portal.base.dir}/tools/sdk/dependencies/com.liferay.portal.tools.service.builder/ivy.xml"
 					flags="s"
@@ -57,6 +66,19 @@
 			match="@author Brian Wing Shun Chan"
 			replace="@author Brian Wing Shun Chan${line.separator} * @generated"
 		/>
+
+		<delete dir="${portal.base.dir}/tools/sdk/dependencies/com.liferay.portal.tools.service.builder" />
+
+		<copy
+			preservelastmodified="true"
+			todir="${portal.base.dir}/tools/sdk/dependencies/com.liferay.portal.tools.service.builder"
+		>
+			<fileset
+				dir="${portal.base.dir}/tools/sdk/dependencies/com.liferay.portal.tools.service.builder.temp"
+			/>
+		</copy>
+
+		<delete dir="${portal.base.dir}/tools/sdk/dependencies/com.liferay.portal.tools.service.builder.temp" />
 	</target>
 
 	<target name="format-javadoc">
