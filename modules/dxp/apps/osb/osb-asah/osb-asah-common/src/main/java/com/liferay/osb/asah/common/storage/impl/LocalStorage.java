@@ -109,7 +109,7 @@ public class LocalStorage implements Storage {
 		boolean status = true;
 
 		try (BufferedReader bufferedReader = new BufferedReader(
-				new InputStreamReader(inputStream))) {
+				new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
 
 			String line = null;
 
