@@ -16,23 +16,17 @@ package com.liferay.osb.customer.zendesk.web.service;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.customer.zendesk.model.ZendeskTicketComment;
 import com.liferay.portal.kernel.exception.PortalException;
 
-import java.util.List;
-
 /**
- * @author Amos Fong
+ * @author Jenny Chen
  */
 @ProviderType
-public interface ZendeskTicketCommentWebService {
+public interface ZendeskAttachmentWebService {
 
-	public ZendeskTicketComment addZendeskTicketComment(
-			long zendeskTicketId, long zendeskUserId, String body)
-		throws PortalException;
-
-	public List<ZendeskTicketComment> getZendeskTicketComments(
-			long zendeskTicketId)
+	public void deleteZendeskAttachment(
+			long zendeskTicketId, long zendeskTicketCommentId,
+			long zendeskAttachmentId)
 		throws PortalException;
 
 }

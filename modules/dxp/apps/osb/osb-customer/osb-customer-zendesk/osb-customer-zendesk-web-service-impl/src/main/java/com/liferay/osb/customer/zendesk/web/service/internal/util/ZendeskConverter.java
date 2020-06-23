@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.zendesk.web.service.internal.util;
 
 import com.liferay.osb.customer.zendesk.model.ZendeskArticle;
+import com.liferay.osb.customer.zendesk.model.ZendeskAttachment;
 import com.liferay.osb.customer.zendesk.model.ZendeskCategory;
 import com.liferay.osb.customer.zendesk.model.ZendeskOrganization;
 import com.liferay.osb.customer.zendesk.model.ZendeskOrganizationMembership;
@@ -119,6 +120,31 @@ public class ZendeskConverter {
 		}
 
 		return zendeskArticles;
+	}
+
+	public ZendeskAttachment toZendeskAttachment(JSONObject jsonObject)
+		throws PortalException {
+
+		ZendeskAttachment zendeskAttachment = new ZendeskAttachment();
+
+		zendeskAttachment.setFileName(jsonObject.getString("file_name"));
+		zendeskAttachment.setZendeskAttachmentId(jsonObject.getLong("id"));
+
+		return zendeskAttachment;
+	}
+
+	public List<ZendeskAttachment> toZendeskAttachments(JSONArray jsonArray)
+		throws PortalException {
+
+		List<ZendeskAttachment> zendeskAttachments = new ArrayList<>();
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			zendeskAttachments.add(toZendeskAttachment(jsonObject));
+		}
+
+		return zendeskAttachments;
 	}
 
 	public List<ZendeskCategory> toZendeskCategories(JSONArray jsonArray)
@@ -297,13 +323,39 @@ public class ZendeskConverter {
 		return zendeskTicket;
 	}
 
-	public ZendeskTicketComment toZendeskTicketComment(JSONObject jsonObject) {
+	public ZendeskTicketComment toZendeskTicketComment(JSONObject jsonObject)
+		throws PortalException {
+
 		ZendeskTicketComment zendeskTicketComment = new ZendeskTicketComment();
 
 		zendeskTicketComment.setZendeskTicketCommentId(
 			jsonObject.getLong("id"));
 
+		JSONArray jsonArray = jsonObject.getJSONArray("attachments");
+
+		if (jsonArray != null) {
+			List<ZendeskAttachment> zendeskAttachments = toZendeskAttachments(
+				jsonArray);
+
+			zendeskTicketComment.setZendeskAttachments(zendeskAttachments);
+		}
+
 		return zendeskTicketComment;
+	}
+
+	public List<ZendeskTicketComment> toZendeskTicketComments(
+			JSONArray jsonArray)
+		throws PortalException {
+
+		List<ZendeskTicketComment> zendeskTicketComments = new ArrayList<>();
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			zendeskTicketComments.add(toZendeskTicketComment(jsonObject));
+		}
+
+		return zendeskTicketComments;
 	}
 
 	public ZendeskTranslation toZendeskTranslation(JSONObject jsonObject) {

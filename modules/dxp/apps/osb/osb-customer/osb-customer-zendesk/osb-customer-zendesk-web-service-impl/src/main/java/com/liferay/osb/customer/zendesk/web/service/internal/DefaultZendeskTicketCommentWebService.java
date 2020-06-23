@@ -18,11 +18,21 @@ import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicketComment;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketCommentWebService;
+import com.liferay.osb.customer.zendesk.web.service.internal.search.SearchHitsImpl;
 import com.liferay.osb.customer.zendesk.web.service.internal.util.ZendeskConverter;
+import com.liferay.osb.customer.zendesk.web.service.search.Query;
+import com.liferay.osb.customer.zendesk.web.service.search.QueryFactory;
+import com.liferay.osb.customer.zendesk.web.service.search.SearchHits;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.Validator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -63,6 +73,44 @@ public class DefaultZendeskTicketCommentWebService
 		return null;
 	}
 
+	public List<ZendeskTicketComment> getZendeskTicketComments(
+			long zendeskTicketId)
+		throws PortalException {
+
+		Query query = queryFactory.createQuery();
+
+		List<ZendeskTicketComment> zendeskTicketComments = new ArrayList<>();
+
+		int page = 1;
+
+		while (page > 0) {
+			query.setPage(page);
+
+			SearchHits<ZendeskTicketComment> searchHits = search(
+				zendeskTicketId, query);
+
+			zendeskTicketComments.addAll(searchHits.getResults());
+
+			page = searchHits.getNextPage();
+		}
+
+		return zendeskTicketComments;
+	}
+
+	public SearchHits<ZendeskTicketComment> search(
+			long zendeskTicketId, Query query)
+		throws PortalException {
+
+		String endpoint =
+			ZendeskRESTEndpoints.URL_API_V2 + "tickets/" + zendeskTicketId +
+				"/comments.json";
+
+		JSONObject responseJSONObject = _zendeskBaseWebService.get(
+			endpoint, query.getParameters());
+
+		return toSearchHits(responseJSONObject);
+	}
+
 	protected JSONObject getZendeskTicketCommentJSONObject(
 		long zendeskUserId, String htmlBody) {
 
@@ -82,8 +130,38 @@ public class DefaultZendeskTicketCommentWebService
 		return jsonObject;
 	}
 
+	protected SearchHits<ZendeskTicketComment> toSearchHits(
+			JSONObject responseJSONObject)
+		throws PortalException {
+
+		SearchHits<ZendeskTicketComment> searchHits = new SearchHitsImpl<>();
+
+		searchHits.setCount(responseJSONObject.getInt("count"));
+
+		String nextPageURL = responseJSONObject.getString("next_page");
+
+		if (Validator.isNotNull(nextPageURL)) {
+			String page = _http.getParameter(nextPageURL, "page", false);
+
+			searchHits.setNextPage(GetterUtil.getInteger(page));
+		}
+
+		JSONArray jsonArray = responseJSONObject.getJSONArray("comments");
+
+		searchHits.setResults(
+			zendeskConverter.toZendeskTicketComments(jsonArray));
+
+		return searchHits;
+	}
+
+	@Reference
+	protected QueryFactory queryFactory;
+
 	@Reference
 	protected ZendeskConverter zendeskConverter;
+
+	@Reference
+	private Http _http;
 
 	@Reference
 	private ZendeskBaseWebService _zendeskBaseWebService;
