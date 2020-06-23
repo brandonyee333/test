@@ -1,27 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -32,23 +28,23 @@ import java.io.ObjectOutput;
  * The cache model class for representing ZendeskCategory in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see ZendeskCategory
  * @generated
  */
-@ProviderType
-public class ZendeskCategoryCacheModel implements CacheModel<ZendeskCategory>,
-	Externalizable {
+public class ZendeskCategoryCacheModel
+	implements CacheModel<ZendeskCategory>, Externalizable {
+
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof ZendeskCategoryCacheModel)) {
+		if (!(object instanceof ZendeskCategoryCacheModel)) {
 			return false;
 		}
 
-		ZendeskCategoryCacheModel zendeskCategoryCacheModel = (ZendeskCategoryCacheModel)obj;
+		ZendeskCategoryCacheModel zendeskCategoryCacheModel =
+			(ZendeskCategoryCacheModel)object;
 
 		if (zendeskCategoryId == zendeskCategoryCacheModel.zendeskCategoryId) {
 			return true;
@@ -90,21 +86,22 @@ public class ZendeskCategoryCacheModel implements CacheModel<ZendeskCategory>,
 		zendeskCategoryImpl.setZendeskCategoryId(zendeskCategoryId);
 
 		if (documentationKey == null) {
-			zendeskCategoryImpl.setDocumentationKey(StringPool.BLANK);
+			zendeskCategoryImpl.setDocumentationKey("");
 		}
 		else {
 			zendeskCategoryImpl.setDocumentationKey(documentationKey);
 		}
 
 		if (documentationOriginalURL == null) {
-			zendeskCategoryImpl.setDocumentationOriginalURL(StringPool.BLANK);
+			zendeskCategoryImpl.setDocumentationOriginalURL("");
 		}
 		else {
-			zendeskCategoryImpl.setDocumentationOriginalURL(documentationOriginalURL);
+			zendeskCategoryImpl.setDocumentationOriginalURL(
+				documentationOriginalURL);
 		}
 
 		if (articleLabels == null) {
-			zendeskCategoryImpl.setArticleLabels(StringPool.BLANK);
+			zendeskCategoryImpl.setArticleLabels("");
 		}
 		else {
 			zendeskCategoryImpl.setArticleLabels(articleLabels);
@@ -131,26 +128,25 @@ public class ZendeskCategoryCacheModel implements CacheModel<ZendeskCategory>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(zendeskCategoryId);
 
 		if (documentationKey == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(documentationKey);
 		}
 
 		if (documentationOriginalURL == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(documentationOriginalURL);
 		}
 
 		if (articleLabels == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(articleLabels);
@@ -167,4 +163,5 @@ public class ZendeskCategoryCacheModel implements CacheModel<ZendeskCategory>,
 	public String articleLabels;
 	public long remoteId;
 	public long remoteUserSegmentId;
+
 }

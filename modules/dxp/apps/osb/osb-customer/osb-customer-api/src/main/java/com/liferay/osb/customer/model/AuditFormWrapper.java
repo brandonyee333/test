@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.customer.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,8 +34,8 @@ import java.util.Objects;
  * @see AuditForm
  * @generated
  */
-@ProviderType
 public class AuditFormWrapper implements AuditForm, ModelWrapper<AuditForm> {
+
 	public AuditFormWrapper(AuditForm auditForm) {
 		_auditForm = auditForm;
 	}
@@ -64,7 +61,7 @@ public class AuditFormWrapper implements AuditForm, ModelWrapper<AuditForm> {
 		attributes.put("endUserName", getEndUserName());
 		attributes.put("endUserEmailAddress", getEndUserEmailAddress());
 		attributes.put("companyName", getCompanyName());
-		attributes.put("agreement", getAgreement());
+		attributes.put("agreement", isAgreement());
 
 		return attributes;
 	}
@@ -102,7 +99,7 @@ public class AuditFormWrapper implements AuditForm, ModelWrapper<AuditForm> {
 		}
 
 		String endUserEmailAddress = (String)attributes.get(
-				"endUserEmailAddress");
+			"endUserEmailAddress");
 
 		if (endUserEmailAddress != null) {
 			setEndUserEmailAddress(endUserEmailAddress);
@@ -122,30 +119,135 @@ public class AuditFormWrapper implements AuditForm, ModelWrapper<AuditForm> {
 	}
 
 	@Override
-	public AuditForm toEscapedModel() {
-		return new AuditFormWrapper(_auditForm.toEscapedModel());
+	public Object clone() {
+		return new AuditFormWrapper((AuditForm)_auditForm.clone());
 	}
 
 	@Override
-	public AuditForm toUnescapedModel() {
-		return new AuditFormWrapper(_auditForm.toUnescapedModel());
+	public int compareTo(AuditForm auditForm) {
+		return _auditForm.compareTo(auditForm);
 	}
 
 	/**
-	* Returns the agreement of this audit form.
-	*
-	* @return the agreement of this audit form
-	*/
+	 * Returns the agreement of this audit form.
+	 *
+	 * @return the agreement of this audit form
+	 */
 	@Override
 	public boolean getAgreement() {
 		return _auditForm.getAgreement();
 	}
 
 	/**
-	* Returns <code>true</code> if this audit form is agreement.
-	*
-	* @return <code>true</code> if this audit form is agreement; <code>false</code> otherwise
-	*/
+	 * Returns the audit form ID of this audit form.
+	 *
+	 * @return the audit form ID of this audit form
+	 */
+	@Override
+	public long getAuditFormId() {
+		return _auditForm.getAuditFormId();
+	}
+
+	/**
+	 * Returns the company name of this audit form.
+	 *
+	 * @return the company name of this audit form
+	 */
+	@Override
+	public String getCompanyName() {
+		return _auditForm.getCompanyName();
+	}
+
+	/**
+	 * Returns the create date of this audit form.
+	 *
+	 * @return the create date of this audit form
+	 */
+	@Override
+	public Date getCreateDate() {
+		return _auditForm.getCreateDate();
+	}
+
+	/**
+	 * Returns the end user email address of this audit form.
+	 *
+	 * @return the end user email address of this audit form
+	 */
+	@Override
+	public String getEndUserEmailAddress() {
+		return _auditForm.getEndUserEmailAddress();
+	}
+
+	/**
+	 * Returns the end user name of this audit form.
+	 *
+	 * @return the end user name of this audit form
+	 */
+	@Override
+	public String getEndUserName() {
+		return _auditForm.getEndUserName();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _auditForm.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the primary key of this audit form.
+	 *
+	 * @return the primary key of this audit form
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _auditForm.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _auditForm.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the user ID of this audit form.
+	 *
+	 * @return the user ID of this audit form
+	 */
+	@Override
+	public long getUserId() {
+		return _auditForm.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this audit form.
+	 *
+	 * @return the user name of this audit form
+	 */
+	@Override
+	public String getUserName() {
+		return _auditForm.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this audit form.
+	 *
+	 * @return the user uuid of this audit form
+	 */
+	@Override
+	public String getUserUuid() {
+		return _auditForm.getUserUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _auditForm.hashCode();
+	}
+
+	/**
+	 * Returns <code>true</code> if this audit form is agreement.
+	 *
+	 * @return <code>true</code> if this audit form is agreement; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isAgreement() {
 		return _auditForm.isAgreement();
@@ -167,155 +269,25 @@ public class AuditFormWrapper implements AuditForm, ModelWrapper<AuditForm> {
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _auditForm.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<AuditForm> toCacheModel() {
-		return _auditForm.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(AuditForm auditForm) {
-		return _auditForm.compareTo(auditForm);
-	}
-
-	@Override
-	public int hashCode() {
-		return _auditForm.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _auditForm.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new AuditFormWrapper((AuditForm)_auditForm.clone());
-	}
-
-	/**
-	* Returns the company name of this audit form.
-	*
-	* @return the company name of this audit form
-	*/
-	@Override
-	public java.lang.String getCompanyName() {
-		return _auditForm.getCompanyName();
-	}
-
-	/**
-	* Returns the end user email address of this audit form.
-	*
-	* @return the end user email address of this audit form
-	*/
-	@Override
-	public java.lang.String getEndUserEmailAddress() {
-		return _auditForm.getEndUserEmailAddress();
-	}
-
-	/**
-	* Returns the end user name of this audit form.
-	*
-	* @return the end user name of this audit form
-	*/
-	@Override
-	public java.lang.String getEndUserName() {
-		return _auditForm.getEndUserName();
-	}
-
-	/**
-	* Returns the user name of this audit form.
-	*
-	* @return the user name of this audit form
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _auditForm.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this audit form.
-	*
-	* @return the user uuid of this audit form
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _auditForm.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _auditForm.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _auditForm.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this audit form.
-	*
-	* @return the create date of this audit form
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _auditForm.getCreateDate();
-	}
-
-	/**
-	* Returns the audit form ID of this audit form.
-	*
-	* @return the audit form ID of this audit form
-	*/
-	@Override
-	public long getAuditFormId() {
-		return _auditForm.getAuditFormId();
-	}
-
-	/**
-	* Returns the primary key of this audit form.
-	*
-	* @return the primary key of this audit form
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _auditForm.getPrimaryKey();
-	}
-
-	/**
-	* Returns the user ID of this audit form.
-	*
-	* @return the user ID of this audit form
-	*/
-	@Override
-	public long getUserId() {
-		return _auditForm.getUserId();
-	}
-
-	@Override
 	public void persist() {
 		_auditForm.persist();
 	}
 
 	/**
-	* Sets whether this audit form is agreement.
-	*
-	* @param agreement the agreement of this audit form
-	*/
+	 * Sets whether this audit form is agreement.
+	 *
+	 * @param agreement the agreement of this audit form
+	 */
 	@Override
 	public void setAgreement(boolean agreement) {
 		_auditForm.setAgreement(agreement);
 	}
 
 	/**
-	* Sets the audit form ID of this audit form.
-	*
-	* @param auditFormId the audit form ID of this audit form
-	*/
+	 * Sets the audit form ID of this audit form.
+	 *
+	 * @param auditFormId the audit form ID of this audit form
+	 */
 	@Override
 	public void setAuditFormId(long auditFormId) {
 		_auditForm.setAuditFormId(auditFormId);
@@ -327,54 +299,55 @@ public class AuditFormWrapper implements AuditForm, ModelWrapper<AuditForm> {
 	}
 
 	/**
-	* Sets the company name of this audit form.
-	*
-	* @param companyName the company name of this audit form
-	*/
+	 * Sets the company name of this audit form.
+	 *
+	 * @param companyName the company name of this audit form
+	 */
 	@Override
-	public void setCompanyName(java.lang.String companyName) {
+	public void setCompanyName(String companyName) {
 		_auditForm.setCompanyName(companyName);
 	}
 
 	/**
-	* Sets the create date of this audit form.
-	*
-	* @param createDate the create date of this audit form
-	*/
+	 * Sets the create date of this audit form.
+	 *
+	 * @param createDate the create date of this audit form
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_auditForm.setCreateDate(createDate);
 	}
 
 	/**
-	* Sets the end user email address of this audit form.
-	*
-	* @param endUserEmailAddress the end user email address of this audit form
-	*/
+	 * Sets the end user email address of this audit form.
+	 *
+	 * @param endUserEmailAddress the end user email address of this audit form
+	 */
 	@Override
-	public void setEndUserEmailAddress(java.lang.String endUserEmailAddress) {
+	public void setEndUserEmailAddress(String endUserEmailAddress) {
 		_auditForm.setEndUserEmailAddress(endUserEmailAddress);
 	}
 
 	/**
-	* Sets the end user name of this audit form.
-	*
-	* @param endUserName the end user name of this audit form
-	*/
+	 * Sets the end user name of this audit form.
+	 *
+	 * @param endUserName the end user name of this audit form
+	 */
 	@Override
-	public void setEndUserName(java.lang.String endUserName) {
+	public void setEndUserName(String endUserName) {
 		_auditForm.setEndUserName(endUserName);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_auditForm.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_auditForm.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_auditForm.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -388,10 +361,10 @@ public class AuditFormWrapper implements AuditForm, ModelWrapper<AuditForm> {
 	}
 
 	/**
-	* Sets the primary key of this audit form.
-	*
-	* @param primaryKey the primary key of this audit form
-	*/
+	 * Sets the primary key of this audit form.
+	 *
+	 * @param primaryKey the primary key of this audit form
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_auditForm.setPrimaryKey(primaryKey);
@@ -403,46 +376,73 @@ public class AuditFormWrapper implements AuditForm, ModelWrapper<AuditForm> {
 	}
 
 	/**
-	* Sets the user ID of this audit form.
-	*
-	* @param userId the user ID of this audit form
-	*/
+	 * Sets the user ID of this audit form.
+	 *
+	 * @param userId the user ID of this audit form
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_auditForm.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this audit form.
-	*
-	* @param userName the user name of this audit form
-	*/
+	 * Sets the user name of this audit form.
+	 *
+	 * @param userName the user name of this audit form
+	 */
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_auditForm.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this audit form.
-	*
-	* @param userUuid the user uuid of this audit form
-	*/
+	 * Sets the user uuid of this audit form.
+	 *
+	 * @param userUuid the user uuid of this audit form
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_auditForm.setUserUuid(userUuid);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public com.liferay.portal.kernel.model.CacheModel<AuditForm>
+		toCacheModel() {
+
+		return _auditForm.toCacheModel();
+	}
+
+	@Override
+	public AuditForm toEscapedModel() {
+		return new AuditFormWrapper(_auditForm.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _auditForm.toString();
+	}
+
+	@Override
+	public AuditForm toUnescapedModel() {
+		return new AuditFormWrapper(_auditForm.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _auditForm.toXmlString();
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof AuditFormWrapper)) {
+		if (!(object instanceof AuditFormWrapper)) {
 			return false;
 		}
 
-		AuditFormWrapper auditFormWrapper = (AuditFormWrapper)obj;
+		AuditFormWrapper auditFormWrapper = (AuditFormWrapper)object;
 
 		if (Objects.equals(_auditForm, auditFormWrapper._auditForm)) {
 			return true;
@@ -472,4 +472,5 @@ public class AuditFormWrapper implements AuditForm, ModelWrapper<AuditForm> {
 	}
 
 	private final AuditForm _auditForm;
+
 }

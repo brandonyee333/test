@@ -1,27 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -34,23 +30,23 @@ import java.util.Date;
  * The cache model class for representing ZendeskArticle in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see ZendeskArticle
  * @generated
  */
-@ProviderType
-public class ZendeskArticleCacheModel implements CacheModel<ZendeskArticle>,
-	Externalizable {
+public class ZendeskArticleCacheModel
+	implements CacheModel<ZendeskArticle>, Externalizable {
+
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof ZendeskArticleCacheModel)) {
+		if (!(object instanceof ZendeskArticleCacheModel)) {
 			return false;
 		}
 
-		ZendeskArticleCacheModel zendeskArticleCacheModel = (ZendeskArticleCacheModel)obj;
+		ZendeskArticleCacheModel zendeskArticleCacheModel =
+			(ZendeskArticleCacheModel)object;
 
 		if (zendeskArticleId == zendeskArticleCacheModel.zendeskArticleId) {
 			return true;
@@ -112,44 +108,47 @@ public class ZendeskArticleCacheModel implements CacheModel<ZendeskArticle>,
 		zendeskArticleImpl.setZendeskSectionId(zendeskSectionId);
 
 		if (documentationKey == null) {
-			zendeskArticleImpl.setDocumentationKey(StringPool.BLANK);
+			zendeskArticleImpl.setDocumentationKey("");
 		}
 		else {
 			zendeskArticleImpl.setDocumentationKey(documentationKey);
 		}
 
 		if (documentationOriginalURL == null) {
-			zendeskArticleImpl.setDocumentationOriginalURL(StringPool.BLANK);
+			zendeskArticleImpl.setDocumentationOriginalURL("");
 		}
 		else {
-			zendeskArticleImpl.setDocumentationOriginalURL(documentationOriginalURL);
+			zendeskArticleImpl.setDocumentationOriginalURL(
+				documentationOriginalURL);
 		}
 
 		if (previousArticleDocumentationKey == null) {
-			zendeskArticleImpl.setPreviousArticleDocumentationKey(StringPool.BLANK);
+			zendeskArticleImpl.setPreviousArticleDocumentationKey("");
 		}
 		else {
-			zendeskArticleImpl.setPreviousArticleDocumentationKey(previousArticleDocumentationKey);
+			zendeskArticleImpl.setPreviousArticleDocumentationKey(
+				previousArticleDocumentationKey);
 		}
 
 		if (nextArticleDocumentationKey == null) {
-			zendeskArticleImpl.setNextArticleDocumentationKey(StringPool.BLANK);
+			zendeskArticleImpl.setNextArticleDocumentationKey("");
 		}
 		else {
-			zendeskArticleImpl.setNextArticleDocumentationKey(nextArticleDocumentationKey);
+			zendeskArticleImpl.setNextArticleDocumentationKey(
+				nextArticleDocumentationKey);
 		}
 
 		zendeskArticleImpl.setRemoteId(remoteId);
 
 		if (remoteHtmlURL == null) {
-			zendeskArticleImpl.setRemoteHtmlURL(StringPool.BLANK);
+			zendeskArticleImpl.setRemoteHtmlURL("");
 		}
 		else {
 			zendeskArticleImpl.setRemoteHtmlURL(remoteHtmlURL);
 		}
 
 		if (remoteTitle == null) {
-			zendeskArticleImpl.setRemoteTitle(StringPool.BLANK);
+			zendeskArticleImpl.setRemoteTitle("");
 		}
 		else {
 			zendeskArticleImpl.setRemoteTitle(remoteTitle);
@@ -179,8 +178,7 @@ public class ZendeskArticleCacheModel implements CacheModel<ZendeskArticle>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(zendeskArticleId);
 		objectOutput.writeLong(modifiedDate);
 
@@ -189,28 +187,28 @@ public class ZendeskArticleCacheModel implements CacheModel<ZendeskArticle>,
 		objectOutput.writeLong(zendeskSectionId);
 
 		if (documentationKey == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(documentationKey);
 		}
 
 		if (documentationOriginalURL == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(documentationOriginalURL);
 		}
 
 		if (previousArticleDocumentationKey == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(previousArticleDocumentationKey);
 		}
 
 		if (nextArticleDocumentationKey == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(nextArticleDocumentationKey);
@@ -219,14 +217,14 @@ public class ZendeskArticleCacheModel implements CacheModel<ZendeskArticle>,
 		objectOutput.writeLong(remoteId);
 
 		if (remoteHtmlURL == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(remoteHtmlURL);
 		}
 
 		if (remoteTitle == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(remoteTitle);
@@ -244,4 +242,5 @@ public class ZendeskArticleCacheModel implements CacheModel<ZendeskArticle>,
 	public long remoteId;
 	public String remoteHtmlURL;
 	public String remoteTitle;
+
 }

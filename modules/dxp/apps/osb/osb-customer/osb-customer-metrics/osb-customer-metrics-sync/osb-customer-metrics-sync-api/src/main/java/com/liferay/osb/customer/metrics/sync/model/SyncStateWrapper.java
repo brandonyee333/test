@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.customer.metrics.sync.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -36,8 +33,8 @@ import java.util.Objects;
  * @see SyncState
  * @generated
  */
-@ProviderType
-public class SyncStateWrapper implements SyncState, ModelWrapper<SyncState> {
+public class SyncStateWrapper implements ModelWrapper<SyncState>, SyncState {
+
 	public SyncStateWrapper(SyncState syncState) {
 		_syncState = syncState;
 	}
@@ -85,13 +82,68 @@ public class SyncStateWrapper implements SyncState, ModelWrapper<SyncState> {
 	}
 
 	@Override
-	public SyncState toEscapedModel() {
-		return new SyncStateWrapper(_syncState.toEscapedModel());
+	public Object clone() {
+		return new SyncStateWrapper((SyncState)_syncState.clone());
 	}
 
 	@Override
-	public SyncState toUnescapedModel() {
-		return new SyncStateWrapper(_syncState.toUnescapedModel());
+	public int compareTo(SyncState syncState) {
+		return _syncState.compareTo(syncState);
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _syncState.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the last run time of this sync state.
+	 *
+	 * @return the last run time of this sync state
+	 */
+	@Override
+	public long getLastRunTime() {
+		return _syncState.getLastRunTime();
+	}
+
+	/**
+	 * Returns the model name of this sync state.
+	 *
+	 * @return the model name of this sync state
+	 */
+	@Override
+	public String getModelName() {
+		return _syncState.getModelName();
+	}
+
+	/**
+	 * Returns the primary key of this sync state.
+	 *
+	 * @return the primary key of this sync state
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _syncState.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _syncState.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the sync state ID of this sync state.
+	 *
+	 * @return the sync state ID of this sync state
+	 */
+	@Override
+	public long getSyncStateId() {
+		return _syncState.getSyncStateId();
+	}
+
+	@Override
+	public int hashCode() {
+		return _syncState.hashCode();
 	}
 
 	@Override
@@ -110,86 +162,6 @@ public class SyncStateWrapper implements SyncState, ModelWrapper<SyncState> {
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _syncState.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<SyncState> toCacheModel() {
-		return _syncState.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(SyncState syncState) {
-		return _syncState.compareTo(syncState);
-	}
-
-	@Override
-	public int hashCode() {
-		return _syncState.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _syncState.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new SyncStateWrapper((SyncState)_syncState.clone());
-	}
-
-	/**
-	* Returns the model name of this sync state.
-	*
-	* @return the model name of this sync state
-	*/
-	@Override
-	public java.lang.String getModelName() {
-		return _syncState.getModelName();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _syncState.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _syncState.toXmlString();
-	}
-
-	/**
-	* Returns the last run time of this sync state.
-	*
-	* @return the last run time of this sync state
-	*/
-	@Override
-	public long getLastRunTime() {
-		return _syncState.getLastRunTime();
-	}
-
-	/**
-	* Returns the primary key of this sync state.
-	*
-	* @return the primary key of this sync state
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _syncState.getPrimaryKey();
-	}
-
-	/**
-	* Returns the sync state ID of this sync state.
-	*
-	* @return the sync state ID of this sync state
-	*/
-	@Override
-	public long getSyncStateId() {
-		return _syncState.getSyncStateId();
-	}
-
-	@Override
 	public void persist() {
 		_syncState.persist();
 	}
@@ -200,14 +172,15 @@ public class SyncStateWrapper implements SyncState, ModelWrapper<SyncState> {
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_syncState.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_syncState.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_syncState.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_syncState.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -216,22 +189,22 @@ public class SyncStateWrapper implements SyncState, ModelWrapper<SyncState> {
 	}
 
 	/**
-	* Sets the last run time of this sync state.
-	*
-	* @param lastRunTime the last run time of this sync state
-	*/
+	 * Sets the last run time of this sync state.
+	 *
+	 * @param lastRunTime the last run time of this sync state
+	 */
 	@Override
 	public void setLastRunTime(long lastRunTime) {
 		_syncState.setLastRunTime(lastRunTime);
 	}
 
 	/**
-	* Sets the model name of this sync state.
-	*
-	* @param modelName the model name of this sync state
-	*/
+	 * Sets the model name of this sync state.
+	 *
+	 * @param modelName the model name of this sync state
+	 */
 	@Override
-	public void setModelName(java.lang.String modelName) {
+	public void setModelName(String modelName) {
 		_syncState.setModelName(modelName);
 	}
 
@@ -241,10 +214,10 @@ public class SyncStateWrapper implements SyncState, ModelWrapper<SyncState> {
 	}
 
 	/**
-	* Sets the primary key of this sync state.
-	*
-	* @param primaryKey the primary key of this sync state
-	*/
+	 * Sets the primary key of this sync state.
+	 *
+	 * @param primaryKey the primary key of this sync state
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_syncState.setPrimaryKey(primaryKey);
@@ -256,26 +229,53 @@ public class SyncStateWrapper implements SyncState, ModelWrapper<SyncState> {
 	}
 
 	/**
-	* Sets the sync state ID of this sync state.
-	*
-	* @param syncStateId the sync state ID of this sync state
-	*/
+	 * Sets the sync state ID of this sync state.
+	 *
+	 * @param syncStateId the sync state ID of this sync state
+	 */
 	@Override
 	public void setSyncStateId(long syncStateId) {
 		_syncState.setSyncStateId(syncStateId);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public com.liferay.portal.kernel.model.CacheModel<SyncState>
+		toCacheModel() {
+
+		return _syncState.toCacheModel();
+	}
+
+	@Override
+	public SyncState toEscapedModel() {
+		return new SyncStateWrapper(_syncState.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _syncState.toString();
+	}
+
+	@Override
+	public SyncState toUnescapedModel() {
+		return new SyncStateWrapper(_syncState.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _syncState.toXmlString();
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof SyncStateWrapper)) {
+		if (!(object instanceof SyncStateWrapper)) {
 			return false;
 		}
 
-		SyncStateWrapper syncStateWrapper = (SyncStateWrapper)obj;
+		SyncStateWrapper syncStateWrapper = (SyncStateWrapper)object;
 
 		if (Objects.equals(_syncState, syncStateWrapper._syncState)) {
 			return true;
@@ -305,4 +305,5 @@ public class SyncStateWrapper implements SyncState, ModelWrapper<SyncState> {
 	}
 
 	private final SyncState _syncState;
+
 }

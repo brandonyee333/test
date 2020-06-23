@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.customer.release.notes.jira.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -36,9 +33,9 @@ import java.util.Objects;
  * @see JIRAProject
  * @generated
  */
-@ProviderType
-public class JIRAProjectWrapper implements JIRAProject,
-	ModelWrapper<JIRAProject> {
+public class JIRAProjectWrapper
+	implements JIRAProject, ModelWrapper<JIRAProject> {
+
 	public JIRAProjectWrapper(JIRAProject jiraProject) {
 		_jiraProject = jiraProject;
 	}
@@ -86,13 +83,68 @@ public class JIRAProjectWrapper implements JIRAProject,
 	}
 
 	@Override
-	public JIRAProject toEscapedModel() {
-		return new JIRAProjectWrapper(_jiraProject.toEscapedModel());
+	public Object clone() {
+		return new JIRAProjectWrapper((JIRAProject)_jiraProject.clone());
 	}
 
 	@Override
-	public JIRAProject toUnescapedModel() {
-		return new JIRAProjectWrapper(_jiraProject.toUnescapedModel());
+	public int compareTo(JIRAProject jiraProject) {
+		return _jiraProject.compareTo(jiraProject);
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _jiraProject.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the jira project ID of this jira project.
+	 *
+	 * @return the jira project ID of this jira project
+	 */
+	@Override
+	public long getJiraProjectId() {
+		return _jiraProject.getJiraProjectId();
+	}
+
+	/**
+	 * Returns the key of this jira project.
+	 *
+	 * @return the key of this jira project
+	 */
+	@Override
+	public String getKey() {
+		return _jiraProject.getKey();
+	}
+
+	/**
+	 * Returns the name of this jira project.
+	 *
+	 * @return the name of this jira project
+	 */
+	@Override
+	public String getName() {
+		return _jiraProject.getName();
+	}
+
+	/**
+	 * Returns the primary key of this jira project.
+	 *
+	 * @return the primary key of this jira project
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _jiraProject.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _jiraProject.getPrimaryKeyObj();
+	}
+
+	@Override
+	public int hashCode() {
+		return _jiraProject.hashCode();
 	}
 
 	@Override
@@ -111,86 +163,6 @@ public class JIRAProjectWrapper implements JIRAProject,
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _jiraProject.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<JIRAProject> toCacheModel() {
-		return _jiraProject.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(JIRAProject jiraProject) {
-		return _jiraProject.compareTo(jiraProject);
-	}
-
-	@Override
-	public int hashCode() {
-		return _jiraProject.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _jiraProject.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new JIRAProjectWrapper((JIRAProject)_jiraProject.clone());
-	}
-
-	/**
-	* Returns the key of this jira project.
-	*
-	* @return the key of this jira project
-	*/
-	@Override
-	public java.lang.String getKey() {
-		return _jiraProject.getKey();
-	}
-
-	/**
-	* Returns the name of this jira project.
-	*
-	* @return the name of this jira project
-	*/
-	@Override
-	public java.lang.String getName() {
-		return _jiraProject.getName();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _jiraProject.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _jiraProject.toXmlString();
-	}
-
-	/**
-	* Returns the jira project ID of this jira project.
-	*
-	* @return the jira project ID of this jira project
-	*/
-	@Override
-	public long getJiraProjectId() {
-		return _jiraProject.getJiraProjectId();
-	}
-
-	/**
-	* Returns the primary key of this jira project.
-	*
-	* @return the primary key of this jira project
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _jiraProject.getPrimaryKey();
-	}
-
-	@Override
 	public void persist() {
 		_jiraProject.persist();
 	}
@@ -201,14 +173,15 @@ public class JIRAProjectWrapper implements JIRAProject,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_jiraProject.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_jiraProject.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_jiraProject.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_jiraProject.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -217,32 +190,32 @@ public class JIRAProjectWrapper implements JIRAProject,
 	}
 
 	/**
-	* Sets the jira project ID of this jira project.
-	*
-	* @param jiraProjectId the jira project ID of this jira project
-	*/
+	 * Sets the jira project ID of this jira project.
+	 *
+	 * @param jiraProjectId the jira project ID of this jira project
+	 */
 	@Override
 	public void setJiraProjectId(long jiraProjectId) {
 		_jiraProject.setJiraProjectId(jiraProjectId);
 	}
 
 	/**
-	* Sets the key of this jira project.
-	*
-	* @param key the key of this jira project
-	*/
+	 * Sets the key of this jira project.
+	 *
+	 * @param key the key of this jira project
+	 */
 	@Override
-	public void setKey(java.lang.String key) {
+	public void setKey(String key) {
 		_jiraProject.setKey(key);
 	}
 
 	/**
-	* Sets the name of this jira project.
-	*
-	* @param name the name of this jira project
-	*/
+	 * Sets the name of this jira project.
+	 *
+	 * @param name the name of this jira project
+	 */
 	@Override
-	public void setName(java.lang.String name) {
+	public void setName(String name) {
 		_jiraProject.setName(name);
 	}
 
@@ -252,10 +225,10 @@ public class JIRAProjectWrapper implements JIRAProject,
 	}
 
 	/**
-	* Sets the primary key of this jira project.
-	*
-	* @param primaryKey the primary key of this jira project
-	*/
+	 * Sets the primary key of this jira project.
+	 *
+	 * @param primaryKey the primary key of this jira project
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_jiraProject.setPrimaryKey(primaryKey);
@@ -267,16 +240,43 @@ public class JIRAProjectWrapper implements JIRAProject,
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public com.liferay.portal.kernel.model.CacheModel<JIRAProject>
+		toCacheModel() {
+
+		return _jiraProject.toCacheModel();
+	}
+
+	@Override
+	public JIRAProject toEscapedModel() {
+		return new JIRAProjectWrapper(_jiraProject.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _jiraProject.toString();
+	}
+
+	@Override
+	public JIRAProject toUnescapedModel() {
+		return new JIRAProjectWrapper(_jiraProject.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _jiraProject.toXmlString();
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof JIRAProjectWrapper)) {
+		if (!(object instanceof JIRAProjectWrapper)) {
 			return false;
 		}
 
-		JIRAProjectWrapper jiraProjectWrapper = (JIRAProjectWrapper)obj;
+		JIRAProjectWrapper jiraProjectWrapper = (JIRAProjectWrapper)object;
 
 		if (Objects.equals(_jiraProject, jiraProjectWrapper._jiraProject)) {
 			return true;
@@ -306,4 +306,5 @@ public class JIRAProjectWrapper implements JIRAProject,
 	}
 
 	private final JIRAProject _jiraProject;
+
 }

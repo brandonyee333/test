@@ -1,27 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.customer.ticket.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.ticket.model.TicketAttachment;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -34,25 +30,27 @@ import java.util.Date;
  * The cache model class for representing TicketAttachment in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see TicketAttachment
  * @generated
  */
-@ProviderType
-public class TicketAttachmentCacheModel implements CacheModel<TicketAttachment>,
-	Externalizable {
+public class TicketAttachmentCacheModel
+	implements CacheModel<TicketAttachment>, Externalizable {
+
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof TicketAttachmentCacheModel)) {
+		if (!(object instanceof TicketAttachmentCacheModel)) {
 			return false;
 		}
 
-		TicketAttachmentCacheModel ticketAttachmentCacheModel = (TicketAttachmentCacheModel)obj;
+		TicketAttachmentCacheModel ticketAttachmentCacheModel =
+			(TicketAttachmentCacheModel)object;
 
-		if (ticketAttachmentId == ticketAttachmentCacheModel.ticketAttachmentId) {
+		if (ticketAttachmentId ==
+				ticketAttachmentCacheModel.ticketAttachmentId) {
+
 			return true;
 		}
 
@@ -101,7 +99,7 @@ public class TicketAttachmentCacheModel implements CacheModel<TicketAttachment>,
 		ticketAttachmentImpl.setUserId(userId);
 
 		if (userName == null) {
-			ticketAttachmentImpl.setUserName(StringPool.BLANK);
+			ticketAttachmentImpl.setUserName("");
 		}
 		else {
 			ticketAttachmentImpl.setUserName(userName);
@@ -118,14 +116,14 @@ public class TicketAttachmentCacheModel implements CacheModel<TicketAttachment>,
 		ticketAttachmentImpl.setZendeskTicketId(zendeskTicketId);
 
 		if (fileRepositoryId == null) {
-			ticketAttachmentImpl.setFileRepositoryId(StringPool.BLANK);
+			ticketAttachmentImpl.setFileRepositoryId("");
 		}
 		else {
 			ticketAttachmentImpl.setFileRepositoryId(fileRepositoryId);
 		}
 
 		if (fileName == null) {
-			ticketAttachmentImpl.setFileName(StringPool.BLANK);
+			ticketAttachmentImpl.setFileName("");
 		}
 		else {
 			ticketAttachmentImpl.setFileName(fileName);
@@ -159,14 +157,13 @@ public class TicketAttachmentCacheModel implements CacheModel<TicketAttachment>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(ticketAttachmentId);
 
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -179,14 +176,14 @@ public class TicketAttachmentCacheModel implements CacheModel<TicketAttachment>,
 		objectOutput.writeLong(zendeskTicketId);
 
 		if (fileRepositoryId == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(fileRepositoryId);
 		}
 
 		if (fileName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(fileName);
@@ -207,4 +204,5 @@ public class TicketAttachmentCacheModel implements CacheModel<TicketAttachment>,
 	public String fileName;
 	public long fileSize;
 	public int type;
+
 }
