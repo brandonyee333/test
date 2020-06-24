@@ -16,9 +16,12 @@ package com.liferay.osb.asah.backend.model;
 
 /**
  * @author Marcellus Tavares
+ * @author Riccardo Ferrari
  */
 public enum JobType {
 
+	COMMERCE_PRODUCT_CONTENT_RECOMMENDATION,
+	COMMERCE_USER_INTERACTION_RECOMMENDATION,
 	CONTENT_RECOMMENDATION_ITEM_SIMILARITY
 
 }
