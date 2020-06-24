@@ -16,7 +16,13 @@
 
 <%
 if (searchTerms.isAdvancedSearch()) {
-	results = accountWebService.search(StringPool.BLANK, searchTerms.getFilter(), searchContainer.getCur(), searchContainer.getDelta(), StringPool.BLANK);
+	String sort = StringPool.BLANK;
+
+	if (Validator.isNull(searchTerms.getFilter())) {
+		sort = "name";
+	}
+
+	results = accountWebService.search(StringPool.BLANK, searchTerms.getFilter(), searchContainer.getCur(), searchContainer.getDelta(), sort);
 	total = (int)accountWebService.searchCount(StringPool.BLANK, searchTerms.getFilter());
 }
 else {

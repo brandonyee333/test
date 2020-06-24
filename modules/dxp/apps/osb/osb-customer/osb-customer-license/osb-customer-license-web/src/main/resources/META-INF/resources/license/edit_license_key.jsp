@@ -70,6 +70,7 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 			<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 			<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 			<aui:input name="licenseKeySetId" type="hidden" value="<%= licenseKeySetId %>" />
+			<aui:input name="koroneikiProductKey" type="hidden" value="" />
 			<aui:input name="koroneikiProductPurchaseKey" type="hidden" value="" />
 			<aui:input name="aggregateLicense" type="hidden" value="<%= aggregateLicense %>" />
 
@@ -169,7 +170,7 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 
 						List<String> koroneikiProductKeys = ListUtil.toList(productEntries, ProductEntry.KORONEIKI_PRODUCT_KEY_ACCESSOR);
 
-						String filter = "accountKey eq '" + koroneikiAccount.getKey() + "' and productKey eq '" + StringUtil.merge(koroneikiProductKeys, "' and productKey eq '") + "'";
+						String filter = "accountKey eq '" + koroneikiAccount.getKey() + "' and (productKey eq '" + StringUtil.merge(koroneikiProductKeys, "' or productKey eq '") + "')";
 
 						List<ProductPurchaseView> productPurchaseViews = productPurchaseViewWebService.getProductPurchaseViews(StringPool.BLANK, filter, 1, 1000, StringPool.BLANK);
 
@@ -218,34 +219,35 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 						%>
 
 						<optgroup label="<liferay-ui:message key="purchased" />">
+							<c:if test="<%= !availableProductEntries.isEmpty() %>">
 
-						<c:if test="<%= !availableProductEntries.isEmpty() %>">
+								<%
+								for (ProductEntry curProductEntry : availableProductEntries) {
+								%>
 
-							<%
-							for (ProductEntry curProductEntry : availableProductEntries) {
-							%>
+									<aui:option label="<%= curProductEntry.getName() %>" selected="<%= curProductEntry.getProductEntryId() == productEntryId %>" value="<%= curProductEntry.getProductEntryId() %>" />
 
-								<aui:option label="<%= curProductEntry.getName() %>" selected="<%= curProductEntry.getProductEntryId() == productEntryId %>" value="<%= curProductEntry.getProductEntryId() %>" />
+								<%
+								}
+								%>
 
-							<%
-							}
-							%>
-
-						</c:if>
+							</c:if>
+						</optgroup>
 
 						<c:if test="<%= !otherProductEntries.isEmpty() %>">
 							<optgroup label="<liferay-ui:message key="other" />">
 
-							<%
-							for (ProductEntry curProductEntry : otherProductEntries) {
-							%>
+								<%
+								for (ProductEntry curProductEntry : otherProductEntries) {
+								%>
 
-								<aui:option label="<%= curProductEntry.getName() %>" selected="<%= curProductEntry.getProductEntryId() == productEntryId %>" value="<%= curProductEntry.getProductEntryId() %>" />
+									<aui:option label="<%= curProductEntry.getName() %>" selected="<%= curProductEntry.getProductEntryId() == productEntryId %>" value="<%= curProductEntry.getProductEntryId() %>" />
 
-							<%
-							}
-							%>
+								<%
+								}
+								%>
 
+							</optgroup>
 						</c:if>
 					</c:if>
 				</aui:select>
@@ -325,210 +327,227 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 
 			<aui:col md="12">
 				<h2 class="control-label">
-					<liferay-ui:message key="choose-license" />
+					<liferay-ui:message key="choose-purchase" />
 				</h2>
 
-				<%
-				List<ProductPurchaseDisplay> productPurchaseDisplays = new ArrayList<ProductPurchaseDisplay>();
+				<c:if test="<%= Validator.isNotNull(koroneikiAccountKey) && (productEntry != null) && (productVersion > 0) && (licenseEntry != null) %>">
 
-				if (Validator.isNotNull(koroneikiAccountKey) && (productEntry != null) && (productVersion > 0) && (licenseEntry != null)) {
-					ProductPurchaseView productPurchaseView = productPurchaseViewWebService.getProductPurchaseView(koroneikiAccountKey, productEntry.getKoroneikiProductKey());
+					<%
+					List<ProductPurchaseDisplay> productPurchaseDisplays = new ArrayList<ProductPurchaseDisplay>();
 
-					Map<String, List<ProductConsumption>> productConsumptionsMap = new HashMap<String, List<ProductConsumption>>();
+					if (Validator.isNotNull(koroneikiAccountKey) && (productEntry != null) && (productVersion > 0) && (licenseEntry != null)) {
+						ProductPurchaseView productPurchaseView = productPurchaseViewWebService.fetchProductPurchaseView(koroneikiAccountKey, productEntry.getKoroneikiProductKey());
 
-					if (productPurchaseView.getProductConsumptions() != null) {
-						for (ProductConsumption productConsumption : productPurchaseView.getProductConsumptions()) {
-							List<ProductConsumption> curProductConsumptions = productConsumptionsMap.get(productConsumption.getProductPurchaseKey());
+						Map<String, List<ProductConsumption>> productConsumptionsMap = new HashMap<String, List<ProductConsumption>>();
 
-							if (curProductConsumptions == null) {
-								curProductConsumptions = new ArrayList<ProductConsumption>();
+						if (productPurchaseView != null) {
+							if (productPurchaseView.getProductConsumptions() != null) {
+								for (ProductConsumption productConsumption : productPurchaseView.getProductConsumptions()) {
+									List<ProductConsumption> curProductConsumptions = productConsumptionsMap.get(productConsumption.getProductPurchaseKey());
 
-								productConsumptionsMap.put(productConsumption.getProductPurchaseKey(), curProductConsumptions);
+									if (curProductConsumptions == null) {
+										curProductConsumptions = new ArrayList<ProductConsumption>();
+
+										productConsumptionsMap.put(productConsumption.getProductPurchaseKey(), curProductConsumptions);
+									}
+
+									curProductConsumptions.add(productConsumption);
+								}
 							}
 
-							curProductConsumptions.add(productConsumption);
+							if (productPurchaseView.getProductPurchases() != null) {
+								for (ProductPurchase productPurchase : productPurchaseView.getProductPurchases()) {
+									productPurchaseDisplays.add(new ProductPurchaseDisplay(request, productPurchase, productConsumptionsMap.get(productPurchase.getKey())));
+								}
+							}
 						}
 					}
+					%>
 
-					if (productPurchaseView.getProductPurchases() != null) {
-						for (ProductPurchase productPurchase : productPurchaseView.getProductPurchases()) {
-							productPurchaseDisplays.add(new ProductPurchaseDisplay(request, productPurchase, productConsumptionsMap.get(productPurchase.getKey())));
-						}
-					}
-				}
-				%>
-
-				<liferay-ui:search-container
-					headerNames="start-date,lifetime,instance-size,license-keys-available"
-					total="<%= productPurchaseDisplays.size() %>"
-				>
-					<liferay-ui:search-container-results
-						results="<%= productPurchaseDisplays %>"
-					/>
-
-					<liferay-ui:search-container-row
-						className="com.liferay.osb.customer.license.web.internal.display.context.ProductPurchaseDisplay"
-						modelVar="productPurchaseDisplay"
+					<liferay-ui:search-container
+						emptyResultsMessage="no-product-purchases-were-found"
+						headerNames="start-date,lifetime,instance-size,license-keys-generated"
+						total="<%= productPurchaseDisplays.size() %>"
 					>
+						<liferay-ui:search-container-results
+							results="<%= productPurchaseDisplays %>"
+						/>
 
-						<%
-						String licenseEntryType = licenseEntry.getType();
-
-						Calendar startDateCal = Calendar.getInstance(timeZone, locale);
-
-						if (!licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) && !licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) {
-							startDateCal.setTime(productPurchaseDisplay.getStartDate());
-						}
-
-						Calendar expirationDateCal = Calendar.getInstance(timeZone, locale);
-
-						if (!licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) && !licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) {
-							expirationDateCal.setTime(productPurchaseDisplay.getEndDate());
-						}
-
-						String rowHREF = null;
-
-						if (addLicensePermission && productPurchaseDisplay.hasAvailableLicenseKeys()) {
-							StringBundler sb = new StringBundler(5);
-
-							sb.append("javascript:");
-							sb.append(renderResponse.getNamespace());
-							sb.append("selectProductPurchase('");
-							sb.append(productPurchaseDisplay.getKey());
-							sb.append("');");
-
-							rowHREF = sb.toString();
-						}
-						%>
-
-						<liferay-ui:search-container-column-text
-							name="start-date"
+						<liferay-ui:search-container-row
+							className="com.liferay.osb.customer.license.web.internal.display.context.ProductPurchaseDisplay"
+							modelVar="productPurchaseDisplay"
 						>
-							<c:choose>
-								<c:when test="<%= hasUpdateAdmin %>">
+
+							<%
+							String licenseEntryType = licenseEntry.getType();
+
+							Calendar startDateCal = Calendar.getInstance(timeZone, locale);
+
+							if (!licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) && !licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) {
+								startDateCal.setTime(productPurchaseDisplay.getStartDate());
+							}
+
+							Calendar expirationDateCal = Calendar.getInstance(timeZone, locale);
+
+							if (!licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) && !licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) {
+								expirationDateCal.setTime(productPurchaseDisplay.getEndDate());
+							}
+
+							String rowHREF = null;
+
+							if (addLicensePermission) {
+								StringBundler sb = new StringBundler(5);
+
+								sb.append("javascript:");
+								sb.append(renderResponse.getNamespace());
+								sb.append("selectProductPurchase('");
+								sb.append(productPurchaseDisplay.getKey());
+								sb.append("');");
+
+								rowHREF = sb.toString();
+							}
+							%>
+
+							<liferay-ui:search-container-column-text
+								name="start-date"
+							>
+								<c:choose>
+									<c:when test="<%= hasUpdateAdmin %>">
+										<liferay-ui:input-date
+											dayParam='<%= productPurchaseDisplay.getKey() + "startDateDay" %>'
+											dayValue="<%= startDateCal.get(Calendar.DAY_OF_MONTH) %>"
+											disabled="<%= false %>"
+											firstDayOfWeek="<%= startDateCal.getFirstDayOfWeek() %>"
+											formName="fm"
+											monthParam='<%= productPurchaseDisplay.getKey() + "startDateMonth" %>'
+											monthValue="<%= startDateCal.get(Calendar.MONTH) %>"
+											yearParam='<%= productPurchaseDisplay.getKey() + "startDateYear" %>'
+											yearValue="<%= startDateCal.get(Calendar.YEAR) %>"
+										/>
+									</c:when>
+									<c:otherwise>
+										<%= longDateFormatDate.format(startDateCal.getTime()) %>
+									</c:otherwise>
+								</c:choose>
+							</liferay-ui:search-container-column-text>
+
+							<liferay-ui:search-container-column-text
+								name="expiration-date"
+							>
+								<c:choose>
+									<c:when test="<%= hasUpdateAdmin %>">
+										<liferay-ui:input-date
+											dayParam='<%= productPurchaseDisplay.getKey() + "expirationDateDay" %>'
+											dayValue="<%= expirationDateCal.get(Calendar.DAY_OF_MONTH) %>"
+											disabled="<%= false %>"
+											firstDayOfWeek="<%= expirationDateCal.getFirstDayOfWeek() %>"
+											formName="fm"
+											monthParam='<%= productPurchaseDisplay.getKey() + "expirationDateMonth" %>'
+											monthValue="<%= expirationDateCal.get(Calendar.MONTH) %>"
+											yearParam='<%= productPurchaseDisplay.getKey() + "expirationDateYear" %>'
+											yearValue="<%= expirationDateCal.get(Calendar.YEAR) %>"
+										/>
+									</c:when>
+									<c:otherwise>
+										<%= longDateFormatDate.format(expirationDateCal.getTime()) %>
+									</c:otherwise>
+								</c:choose>
+							</liferay-ui:search-container-column-text>
+
+							<liferay-ui:search-container-column-text
+								name="instance-size"
+							>
+								<%= productPurchaseDisplay.getSizing() %>
+
+								<aui:input name='<%= productPurchaseDisplay.getKey() + "sizing" %>' type="hidden" value="<%= productPurchaseDisplay.getSizing() %>" />
+							</liferay-ui:search-container-column-text>
+
+							<liferay-ui:search-container-column-text
+								name="license-keys-generated"
+								value="<%= productPurchaseDisplay.getLicenseKeysGenerated() %>"
+							/>
+
+							<liferay-ui:search-container-column-text>
+								<c:if test="<%= addLicensePermission %>">
+									<aui:button onClick="<%= rowHREF %>" value="choose" />
+								</c:if>
+							</liferay-ui:search-container-column-text>
+						</liferay-ui:search-container-row>
+
+						<liferay-ui:search-iterator
+							paginate="<%= false %>"
+						/>
+					</liferay-ui:search-container>
+
+					<table class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<th class="detached-header" colspan="5">
+									<liferay-ui:message key="detached" />
+								</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<tr>
+								<td class="table-cell">
 
 									<%
-									Calendar calendar = CalendarFactoryUtil.getCalendar(2010, 1, 1);
-
-									Date firstEnabledDate = calendar.getTime();
-
-									calendar = CalendarFactoryUtil.getCalendar(2050, 1, 1);
-
-									Date lastEnabledDate = calendar.getTime();
+									Calendar startDateCal = Calendar.getInstance();
 									%>
 
 									<liferay-ui:input-date
-										dayParam='<%= productPurchaseDisplay.getKey() + "startDateDay" %>'
+										dayParam="startDateDay"
 										dayValue="<%= startDateCal.get(Calendar.DAY_OF_MONTH) %>"
+										disabled="<%= false %>"
 										firstDayOfWeek="<%= startDateCal.getFirstDayOfWeek() %>"
-										firstEnabledDate="<%= firstEnabledDate %>"
 										formName="fm"
-										lastEnabledDate="<%= lastEnabledDate %>"
-										monthParam='<%= productPurchaseDisplay.getKey() + "startDateMonth" %>'
+										monthParam="startDateMonth"
 										monthValue="<%= startDateCal.get(Calendar.MONTH) %>"
-										yearParam='<%= productPurchaseDisplay.getKey() + "startDateYear" %>'
+										yearParam="startDateYear"
 										yearValue="<%= startDateCal.get(Calendar.YEAR) %>"
 									/>
-								</c:when>
-								<c:otherwise>
-									<c:if test="<%= rowHREF != null %>">
-										<a href="<%= rowHREF %>">
-									</c:if>
-
-									<%= longDateFormatDate.format(startDateCal.getTime()) %>
-
-									<c:if test="<%= rowHREF != null %>">
-										</a>
-									</c:if>
-								</c:otherwise>
-							</c:choose>
-						</liferay-ui:search-container-column-text>
-
-						<liferay-ui:search-container-column-text
-							name="expiration-date"
-						>
-							<c:choose>
-								<c:when test="<%= hasUpdateAdmin %>">
+								</td>
+								<td class="table-cell">
 
 									<%
-									Calendar calendar = CalendarFactoryUtil.getCalendar(2010, 1, 1);
+									Calendar expirationDateCal = Calendar.getInstance();
 
-									Date firstEnabledDate = calendar.getTime();
-
-									calendar = CalendarFactoryUtil.getCalendar(2050, 1, 1);
-
-									Date lastEnabledDate = calendar.getTime();
+									expirationDateCal.add(Calendar.YEAR, 1);
 									%>
 
 									<liferay-ui:input-date
-										dayParam='<%= productPurchaseDisplay.getKey() + "expirationDateDay" %>'
+										dayParam="expirationDateDay"
 										dayValue="<%= expirationDateCal.get(Calendar.DAY_OF_MONTH) %>"
+										disabled="<%= false %>"
 										firstDayOfWeek="<%= expirationDateCal.getFirstDayOfWeek() %>"
-										firstEnabledDate="<%= firstEnabledDate %>"
 										formName="fm"
-										lastEnabledDate="<%= lastEnabledDate %>"
-										monthParam='<%= productPurchaseDisplay.getKey() + "expirationDateMonth" %>'
+										monthParam="expirationDateMonth"
 										monthValue="<%= expirationDateCal.get(Calendar.MONTH) %>"
-										yearParam='<%= productPurchaseDisplay.getKey() + "expirationDateYear" %>'
+										yearParam="expirationDateYear"
 										yearValue="<%= expirationDateCal.get(Calendar.YEAR) %>"
 									/>
-								</c:when>
-								<c:otherwise>
-									<c:if test="<%= rowHREF != null %>">
-										<a href="<%= rowHREF %>">
+								</td>
+								<td class="table-cell">
+									<aui:select label="" name="sizing">
+										<aui:option label="1" value="1" />
+										<aui:option label="2" value="2" />
+										<aui:option label="3" value="3" />
+										<aui:option label="4" value="4" />
+									</aui:select>
+								</td>
+								<td class="table-cell">
+									<%= productConsumptionWebService.searchCount("accountKey eq '" + koroneikiAccountKey + "' and productKey eq '" + productEntry.getKoroneikiProductKey() + "' and productPurchaseKey eq null") %>
+								</td>
+								<td class="table-cell">
+									<c:if test="<%= addLicensePermission %>">
+										<aui:button onClick='<%= renderResponse.getNamespace() + "selectProductPurchase('');" %>' value="choose" />
 									</c:if>
-
-									<%= longDateFormatDate.format(expirationDateCal.getTime()) %>
-
-									<c:if test="<%= rowHREF != null %>">
-										</a>
-									</c:if>
-								</c:otherwise>
-							</c:choose>
-						</liferay-ui:search-container-column-text>
-
-						<liferay-ui:search-container-column-text
-							href="<%= rowHREF %>"
-							name="instance-size"
-						>
-							<%= productPurchaseDisplay.getSizing() %>
-
-							<aui:input name='<%= productPurchaseDisplay.getKey() + "sizing" %>' type="hidden" value="<%= productPurchaseDisplay.getSizing() %>" />
-						</liferay-ui:search-container-column-text>
-
-						<liferay-ui:search-container-column-text
-							href="<%= rowHREF %>"
-							name="license-keys-available"
-						>
-							<c:choose>
-								<c:when test="<%= !productPurchaseDisplay.isApproved() %>">
-									<liferay-ui:icon
-										image="inactive"
-										label="<%= true %>"
-										message="inactive"
-									/>
-								</c:when>
-								<c:otherwise>
-									<%= productPurchaseDisplay.getLicenseKeysAvailable() %>
-								</c:otherwise>
-							</c:choose>
-						</liferay-ui:search-container-column-text>
-
-						<liferay-ui:search-container-column-text
-							href="<%= rowHREF %>"
-						>
-							<c:if test="<%= addLicensePermission && productPurchaseDisplay.hasAvailableLicenseKeys() %>">
-								<aui:button onClick="<%= rowHREF %>" value="choose" />
-							</c:if>
-						</liferay-ui:search-container-column-text>
-					</liferay-ui:search-container-row>
-
-					<liferay-ui:search-iterator
-						paginate="<%= false %>"
-					/>
-				</liferay-ui:search-container>
-
-				<%-- detached here --%>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</c:if>
 			</aui:col>
 		</aui:form>
 	</aui:row>

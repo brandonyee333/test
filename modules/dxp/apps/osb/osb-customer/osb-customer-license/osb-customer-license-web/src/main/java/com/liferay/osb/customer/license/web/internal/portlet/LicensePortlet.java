@@ -140,8 +140,6 @@ public class LicensePortlet extends MVCPortlet {
 
 		long licenseKeyId = ParamUtil.getLong(actionRequest, "licenseKeyId");
 
-		LicenseKey licenseKey = null;
-
 		if (licenseKeyId > 0) {
 			int renewTime = ParamUtil.getInteger(
 				actionRequest, "renewTime_" + licenseKeyId);
@@ -158,7 +156,7 @@ public class LicensePortlet extends MVCPortlet {
 
 			cal.set(startYear, startMonth, startDay);
 
-			licenseKey = _licenseKeyService.renewLicenseKey(
+			_licenseKeyService.renewLicenseKey(
 				licenseKeyId, cal.getTime(), renewTime);
 		}
 		else {
@@ -193,7 +191,7 @@ public class LicensePortlet extends MVCPortlet {
 					continue;
 				}
 
-				licenseKey = _licenseKeyService.renewLicenseKey(
+				_licenseKeyService.renewLicenseKey(
 					curLicenseKey.getLicenseKeyId(), cal.getTime(), renewTime);
 			}
 		}
@@ -315,8 +313,6 @@ public class LicensePortlet extends MVCPortlet {
 			macAddresses.add(StringUtil.merge(curMacAddresses));
 		}
 
-		LicenseKey licenseKey = null;
-
 		if (licenseKeyId <= 0) {
 			Date expirationDate = null;
 
@@ -338,7 +334,7 @@ public class LicensePortlet extends MVCPortlet {
 				}
 			}
 
-			licenseKey = _licenseKeyService.addLicenseKey(
+			LicenseKey licenseKey = _licenseKeyService.addLicenseKey(
 				themeDisplay.getUserId(), licenseKeySetId, name, licenseEntryId,
 				productEntryId, koroneikiAccountKey,
 				koroneikiProductPurchaseKey, accountEntryName, productVersion,
@@ -357,7 +353,7 @@ public class LicensePortlet extends MVCPortlet {
 				"licenseKeySetId", licenseKey.getLicenseKeySetId());
 		}
 		else {
-			licenseKey = _licenseKeyService.updateLicenseKey(
+			_licenseKeyService.updateLicenseKey(
 				licenseKeyId, licenseKeySetId, koroneikiProductPurchaseKey,
 				name, complimentary, active);
 		}

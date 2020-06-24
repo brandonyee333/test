@@ -57,6 +57,7 @@ import com.liferay.portal.kernel.service.CountryService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
@@ -714,7 +715,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		if (clusterId <= 0) {
 			clusterId = counterLocalService.increment(
-				getCounterName(koroneikiProductPurchaseKey));
+				getCounterName(
+					koroneikiAccountKey, productEntry.getKoroneikiProductKey(),
+					koroneikiProductPurchaseKey));
 		}
 
 		accountEntryName = LicenseUtil.trimText(accountEntryName);
@@ -908,7 +911,10 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		if (licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER)) {
 			if (clusterId <= 0) {
 				clusterId = counterLocalService.increment(
-					getCounterName(koroneikiProductPurchaseKey));
+					getCounterName(
+						koroneikiAccountKey,
+						productEntry.getKoroneikiProductKey(),
+						koroneikiProductPurchaseKey));
 			}
 			else {
 				List<LicenseKey> clusterLicenseKeys =
@@ -957,7 +963,10 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 			if (!licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER)) {
 				clusterId = counterLocalService.increment(
-					getCounterName(koroneikiProductPurchaseKey));
+					getCounterName(
+						koroneikiAccountKey,
+						productEntry.getKoroneikiProductKey(),
+						koroneikiProductPurchaseKey));
 			}
 
 			String key = _keyGenerator.generate(
@@ -1010,8 +1019,15 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		if (!koroneikiProductPurchaseKey.equals(
 				licenseKey.getKoroneikiProductPurchaseKey())) {
 
+			ProductEntry productEntry =
+				_productEntryLocalService.getProductEntry(
+					licenseKey.getProductEntryId());
+
 			clusterId = counterLocalService.increment(
-				getCounterName(koroneikiProductPurchaseKey));
+				getCounterName(
+					licenseKey.getKoroneikiAccountKey(),
+					productEntry.getKoroneikiProductKey(),
+					koroneikiProductPurchaseKey));
 		}
 
 		for (LicenseKey clusterLicenseKey : clusterLicenseKeys) {
@@ -1091,8 +1107,15 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		if (!koroneikiProductPurchaseKey.equals(
 				licenseKey.getKoroneikiProductPurchaseKey())) {
 
+			ProductEntry productEntry =
+				_productEntryLocalService.getProductEntry(
+					licenseKey.getProductEntryId());
+
 			clusterId = counterLocalService.increment(
-				getCounterName(koroneikiProductPurchaseKey));
+				getCounterName(
+					licenseKey.getKoroneikiAccountKey(),
+					productEntry.getKoroneikiProductKey(),
+					koroneikiProductPurchaseKey));
 		}
 
 		for (LicenseKey clusterLicenseKey : clusterLicenseKeys) {
@@ -1175,13 +1198,25 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		);
 	}
 
-	protected String getCounterName(String productPurchaseKey) {
-		return LicenseKey.class.getName(
-		).concat(
-			StringPool.POUND
-		).concat(
-			productPurchaseKey
-		);
+	protected String getCounterName(
+		String koroneikiAccountKey, String koroneikiProductKey,
+		String koroneikiProductPurchaseKey) {
+
+		StringBundler sb = new StringBundler(5);
+
+		sb.append(LicenseKey.class.getName());
+		sb.append(StringPool.POUND);
+
+		if (Validator.isNotNull(koroneikiProductPurchaseKey)) {
+			sb.append(koroneikiProductPurchaseKey);
+		}
+		else {
+			sb.append(koroneikiAccountKey);
+			sb.append(StringPool.POUND);
+			sb.append(koroneikiProductKey);
+		}
+
+		return sb.toString();
 	}
 
 	protected int getProductVersion(int productMinorVersion) {

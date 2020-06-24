@@ -80,7 +80,10 @@
 	.lfr-input-date .form-control {
 		background-color: $color-white;
 		border-color: $color-border;
-		margin-bottom: $margin-default;
+	}
+
+	.lfr-search-container {
+		margin-top: 0;
 	}
 
 	.lfr-search-wrapper-container {
@@ -145,13 +148,32 @@
 		margin: $margin-md;
 	}
 
-	.table-cell {
-		a {
-			color: $color-default;
+	.table {
+		.detached-header {
+			background-color: $color-divider;
+			height: auto;
+			padding: 0 0 0 12px;
 		}
 
-		&.first {
+		.form-group {
+			margin-bottom: 0;
+		}
+
+		.table-cell {
+			padding: 8px 12px;
 			vertical-align: middle;
+
+			&.first {
+				vertical-align: middle;
+			}
+
+			a {
+				color: $color-default;
+			}
+		}
+
+		.table-first-header {
+			padding-left: 12px;
 		}
 	}
 

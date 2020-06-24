@@ -25,7 +25,13 @@ long licenseKeyId = ParamUtil.getLong(request, "licenseKeyId");
 
 LicenseKey licenseKey = LicenseKeyServiceUtil.getLicenseKey(licenseKeyId);
 
-ProductPurchase productPurchase = productPurchaseWebService.getProductPurchase(licenseKey.getKoroneikiProductPurchaseKey());
+ProductEntry productEntry = ProductEntryLocalServiceUtil.getProductEntry(licenseKey.getProductEntryId());
+
+ProductPurchase productPurchase = null;
+
+if (Validator.isNotNull(licenseKey.getKoroneikiProductPurchaseKey())) {
+	productPurchase = productPurchaseWebService.getProductPurchase(licenseKey.getKoroneikiProductPurchaseKey());
+}
 
 PortletURL portletURL = renderResponse.createRenderURL();
 
@@ -66,39 +72,41 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 			Move License: <%= HtmlUtil.escape(licenseKey.getDescription()) %>
 
 			<h1 class="section-heading">
-				<liferay-ui:message key="choose-license" />
+				<liferay-ui:message key="choose-purchase" />
 			</h1>
 
 			<%
 			List<ProductPurchaseDisplay> productPurchaseDisplays = new ArrayList<ProductPurchaseDisplay>();
 
-			ProductPurchaseView productPurchaseView = productPurchaseViewWebService.getProductPurchaseView(licenseKey.getKoroneikiAccountKey(), productPurchase.getProductKey());
+			ProductPurchaseView productPurchaseView = productPurchaseViewWebService.fetchProductPurchaseView(licenseKey.getKoroneikiAccountKey(), productEntry.getKoroneikiProductKey());
 
 			Map<String, List<ProductConsumption>> productConsumptionsMap = new HashMap<String, List<ProductConsumption>>();
 
-			if (productPurchaseView.getProductConsumptions() != null) {
-				for (ProductConsumption productConsumption : productPurchaseView.getProductConsumptions()) {
-					List<ProductConsumption> curProductConsumptions = productConsumptionsMap.get(productConsumption.getProductPurchaseKey());
+			if (productPurchaseView != null) {
+				if (productPurchaseView.getProductConsumptions() != null) {
+					for (ProductConsumption productConsumption : productPurchaseView.getProductConsumptions()) {
+						List<ProductConsumption> curProductConsumptions = productConsumptionsMap.get(productConsumption.getProductPurchaseKey());
 
-					if (curProductConsumptions == null) {
-						curProductConsumptions = new ArrayList<ProductConsumption>();
+						if (curProductConsumptions == null) {
+							curProductConsumptions = new ArrayList<ProductConsumption>();
 
-						productConsumptionsMap.put(productConsumption.getProductPurchaseKey(), curProductConsumptions);
+							productConsumptionsMap.put(productConsumption.getProductPurchaseKey(), curProductConsumptions);
+						}
+
+						curProductConsumptions.add(productConsumption);
 					}
-
-					curProductConsumptions.add(productConsumption);
 				}
-			}
 
-			if (productPurchaseView.getProductPurchases() != null) {
-				for (ProductPurchase curProductPurchase : productPurchaseView.getProductPurchases()) {
-					productPurchaseDisplays.add(new ProductPurchaseDisplay(request, curProductPurchase, productConsumptionsMap.get(curProductPurchase.getKey())));
+				if (productPurchaseView.getProductPurchases() != null) {
+					for (ProductPurchase curProductPurchase : productPurchaseView.getProductPurchases()) {
+						productPurchaseDisplays.add(new ProductPurchaseDisplay(request, curProductPurchase, productConsumptionsMap.get(curProductPurchase.getKey())));
+					}
 				}
 			}
 			%>
 
 			<liferay-ui:search-container
-				headerNames="start-date,lifetime,instance-size,license-keys-available"
+				headerNames="start-date,lifetime,instance-size,license-keys-generated"
 				total="<%= productPurchaseDisplays.size() %>"
 			>
 				<liferay-ui:search-container-results
@@ -156,21 +164,9 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 
 					<liferay-ui:search-container-column-text
 						href="<%= rowHREF %>"
-						name="license-keys-available"
-					>
-						<c:choose>
-							<c:when test="<%= !productPurchaseDisplay.isApproved() %>">
-								<liferay-ui:icon
-									image="inactive"
-									label="<%= true %>"
-									message="inactive"
-								/>
-							</c:when>
-							<c:otherwise>
-								<%= productPurchaseDisplay.getLicenseKeysAvailable() %>
-							</c:otherwise>
-						</c:choose>
-					</liferay-ui:search-container-column-text>
+						name="license-keys-generated"
+						value="<%= productPurchaseDisplay.getLicenseKeysGenerated() %>"
+					/>
 
 					<liferay-ui:search-container-column-text
 						href="<%= rowHREF %>"
@@ -191,9 +187,50 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 				</liferay-ui:search-container-row>
 
 				<liferay-ui:search-iterator
-					markupView="lexicon"
+					paginate="<%= false %>"
 				/>
 			</liferay-ui:search-container>
+
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr>
+						<th class="detached-header" colspan="5">
+							<liferay-ui:message key="detached" />
+						</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr>
+						<td class="table-cell">
+							<%= productEntry.getName() %>
+						</td>
+						<td class="table-cell">
+							<%= longDateFormatDate.format(licenseKey.getStartDate()) %>
+						</td>
+						<td class="table-cell">
+							<%= longDateFormatDate.format(licenseKey.getExpirationDate()) %>
+						</td>
+						<td class="table-cell">
+							<%= productConsumptionWebService.searchCount("accountKey eq '" + licenseKey.getKoroneikiAccountKey() + "' and productKey eq '" + productEntry.getKoroneikiProductKey() + "' and productPurchaseKey eq null") %>
+						</td>
+						<td class="table-cell">
+							<c:choose>
+								<c:when test="<%= Validator.isNull(licenseKey.getKoroneikiProductPurchaseKey()) %>">
+									<liferay-ui:icon
+										image="checked"
+										label="<%= true %>"
+										message="current"
+									/>
+								</c:when>
+								<c:otherwise>
+									<aui:button onClick='<%= renderResponse.getNamespace() + "moveLicenseKey('');" %>' value="choose" />
+								</c:otherwise>
+							</c:choose>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</aui:form>
 	</aui:row>
 </div>

@@ -25,61 +25,48 @@ long licenseKeySetId = ParamUtil.getLong(request, "licenseKeySetId");
 
 LicenseKeySet licenseKeySet = LicenseKeySetLocalServiceUtil.fetchLicenseKeySet(licenseKeySetId);
 
+String koroneikiAccountKey = ParamUtil.getString(request, "koroneikiAccountKey");
 String koroneikiProductPurchaseKey = ParamUtil.getString(request, "koroneikiProductPurchaseKey");
 
-ProductPurchase productPurchase = productPurchaseWebService.getProductPurchase(koroneikiProductPurchaseKey);
+ProductPurchase productPurchase = null;
 
-Account koroneikiAccount = accountWebService.getAccount(productPurchase.getAccountKey());
+if (Validator.isNotNull(koroneikiProductPurchaseKey)) {
+	productPurchase = productPurchaseWebService.getProductPurchase(koroneikiProductPurchaseKey);
 
-ProductEntry productEntry = ProductEntryLocalServiceUtil.getProductEntryByKoroneikiKey(productPurchase.getProductKey());
+	koroneikiAccountKey = productPurchase.getAccountKey();
+}
+
+Account koroneikiAccount = accountWebService.getAccount(koroneikiAccountKey);
 
 long licenseEntryId = ParamUtil.getLong(request, "licenseEntryId");
 
 LicenseEntry licenseEntry = LicenseEntryLocalServiceUtil.getLicenseEntry(licenseEntryId);
 
+ProductEntry productEntry = licenseEntry.getProductEntry();
+
 String licenseEntryType = licenseEntry.getType();
 
-int sizing = ParamUtil.getInteger(request, productPurchase.getKey() + "sizing");
+int sizing = ParamUtil.getInteger(request, koroneikiProductPurchaseKey + "sizing");
 
-int startDateDay = ParamUtil.getInteger(request, productPurchase.getKey() + "startDateDay");
-int startDateMonth = ParamUtil.getInteger(request, productPurchase.getKey() + "startDateMonth");
-int startDateYear = ParamUtil.getInteger(request, productPurchase.getKey() + "startDateYear");
+int startDateDay = ParamUtil.getInteger(request, koroneikiProductPurchaseKey + "startDateDay");
+int startDateMonth = ParamUtil.getInteger(request, koroneikiProductPurchaseKey + "startDateMonth");
+int startDateYear = ParamUtil.getInteger(request, koroneikiProductPurchaseKey + "startDateYear");
 
-Date startDate = null;
+Calendar calendar = Calendar.getInstance(timeZone, locale);
 
-if ((startDateDay > 0) && (startDateMonth >= 0) && (startDateYear > 0)) {
-	Calendar calendar = Calendar.getInstance(timeZone, locale);
+calendar.set(startDateYear, startDateMonth, startDateDay);
 
-	calendar.set(startDateYear, startDateMonth, startDateDay);
+Date startDate = calendar.getTime();
 
-	startDate = calendar.getTime();
-}
-else if (licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) {
-	startDate = new Date();
-}
-else {
-	startDate = productPurchase.getStartDate();
-}
+int expirationDateDay = ParamUtil.getInteger(request, koroneikiProductPurchaseKey + "expirationDateDay");
+int expirationDateMonth = ParamUtil.getInteger(request, koroneikiProductPurchaseKey + "expirationDateMonth");
+int expirationDateYear = ParamUtil.getInteger(request, koroneikiProductPurchaseKey + "expirationDateYear");
 
-int expirationDateDay = ParamUtil.getInteger(request, productPurchase.getKey() + "expirationDateDay");
-int expirationDateMonth = ParamUtil.getInteger(request, productPurchase.getKey() + "expirationDateMonth");
-int expirationDateYear = ParamUtil.getInteger(request, productPurchase.getKey() + "expirationDateYear");
+calendar = Calendar.getInstance(timeZone, locale);
 
-Date expirationDate = null;
+calendar.set(expirationDateYear, expirationDateMonth, expirationDateDay);
 
-if ((expirationDateDay > 0) && (expirationDateMonth >= 0) && (expirationDateYear > 0)) {
-	Calendar calendar = Calendar.getInstance(timeZone, locale);
-
-	calendar.set(expirationDateYear, expirationDateMonth, expirationDateDay);
-
-	expirationDate = calendar.getTime();
-}
-else {
-	expirationDate = productPurchase.getEndDate();
-}
-
-long licenseKeyCount = productConsumptionWebService.searchCount("accountKey eq '" + productPurchase.getAccountKey() + "' and productPurchaseKey eq '" + productPurchase.getKey() + "'");
-long licenseKeyMaxServers = productPurchase.getQuantity();
+Date expirationDate = calendar.getTime();
 
 long clusterId = ParamUtil.getLong(request, "clusterId");
 int productVersion = ParamUtil.getInteger(request, "productVersion");
@@ -108,7 +95,7 @@ if ((serverIdsIndexes == null) || (serverIdsIndexes.length <= 0)) {
 			<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 			<aui:input name="licenseKeySetId" type="hidden" value="<%= licenseKeySetId %>" />
 			<aui:input name="koroneikiProductPurchaseKey" type="hidden" value="<%= koroneikiProductPurchaseKey %>" />
-			<aui:input name="koroneikiAccountKey" type="hidden" value="<%= productPurchase.getAccountKey() %>" />
+			<aui:input name="koroneikiAccountKey" type="hidden" value="<%= koroneikiAccountKey %>" />
 			<aui:input name="accountEntryName" type="hidden" value="<%= koroneikiAccount.getName() %>" />
 			<aui:input name="clusterId" type="hidden" value="<%= clusterId %>" />
 			<aui:input name="sizing" type="hidden" value="<%= sizing %>" />
@@ -213,9 +200,30 @@ if ((serverIdsIndexes == null) || (serverIdsIndexes.length <= 0)) {
 
 				<br />
 
-				<span class="bold uppercase"><liferay-ui:message key="license-keys-available" />:</span>
+				<span class="bold uppercase"><liferay-ui:message key="instance-size" />:</span>
 
-				<%= licenseKeyMaxServers - licenseKeyCount %>
+				<%= sizing %>
+			</aui:col>
+
+			<aui:col md="4">
+				<span class="bold uppercase"><liferay-ui:message key="license-keys-generated" />:</span>
+
+				<%
+				long licenseKeyCount = 0;
+
+				if (productPurchase != null) {
+					licenseKeyCount = productConsumptionWebService.searchCount("accountKey eq '" + koroneikiAccountKey + "' and productPurchaseKey eq '" + productPurchase.getKey() + "'");
+				}
+				else {
+					licenseKeyCount = productConsumptionWebService.searchCount("accountKey eq '" + koroneikiAccountKey + "' and productKey eq '" + productEntry.getKoroneikiProductKey() + "' and productPurchaseKey eq null");
+				}
+				%>
+
+				<%= licenseKeyCount %>
+
+				<c:if test="<%= productPurchase != null %>">
+					/ <%= productPurchase.getQuantity() %>
+				</c:if>
 			</aui:col>
 
 			<c:choose>

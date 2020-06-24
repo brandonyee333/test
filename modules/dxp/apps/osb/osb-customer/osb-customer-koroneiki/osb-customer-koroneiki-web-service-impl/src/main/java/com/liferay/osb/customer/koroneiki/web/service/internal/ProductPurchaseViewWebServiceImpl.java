@@ -17,9 +17,11 @@ package com.liferay.osb.customer.koroneiki.web.service.internal;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.customer.koroneiki.web.service.internal.configuration.KoroneikiConfiguration;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
+import com.liferay.osb.koroneiki.phloem.rest.client.http.HttpInvoker;
 import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Page;
 import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Pagination;
 import com.liferay.osb.koroneiki.phloem.rest.client.resource.v1_0.ProductPurchaseViewResource;
+import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ProductPurchaseViewSerDes;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -28,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -42,13 +46,24 @@ import org.osgi.service.component.annotations.Component;
 public class ProductPurchaseViewWebServiceImpl
 	implements ProductPurchaseViewWebService {
 
-	public ProductPurchaseView getProductPurchaseView(
+	public ProductPurchaseView fetchProductPurchaseView(
 			String accountKey, String productKey)
 		throws Exception {
 
-		return _productPurchaseViewResource.
-			getAccountAccountKeyProductProductKeyProductPurchaseView(
-				accountKey, productKey);
+		HttpInvoker.HttpResponse httpResponse =
+			_productPurchaseViewResource.
+				getAccountAccountKeyProductProductKeyProductPurchaseViewHttpResponse(
+					accountKey, productKey);
+
+		if ((httpResponse.getStatusCode() ==
+				HttpServletResponse.SC_NO_CONTENT) ||
+			(httpResponse.getStatusCode() ==
+				HttpServletResponse.SC_NOT_FOUND)) {
+
+			return null;
+		}
+
+		return ProductPurchaseViewSerDes.toDTO(httpResponse.getContent());
 	}
 
 	public List<ProductPurchaseView> getProductPurchaseViews(

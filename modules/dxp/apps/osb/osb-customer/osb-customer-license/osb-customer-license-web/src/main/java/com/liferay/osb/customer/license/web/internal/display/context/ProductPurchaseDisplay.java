@@ -69,15 +69,8 @@ public class ProductPurchaseDisplay {
 		return _productPurchase.getKey();
 	}
 
-	public int getLicenseKeysAvailable() {
-		int licenseKeysAvailable =
-			_productPurchase.getQuantity() - _provisionedCount;
-
-		if (licenseKeysAvailable < 0) {
-			return 0;
-		}
-
-		return licenseKeysAvailable;
+	public String getLicenseKeysGenerated() {
+		return _provisionedCount + " / " + _productPurchase.getQuantity();
 	}
 
 	public String getProductName() {
@@ -96,18 +89,6 @@ public class ProductPurchaseDisplay {
 
 	public Date getStartDate() {
 		return _productPurchase.getStartDate();
-	}
-
-	public boolean hasAvailableLicenseKeys() {
-		if (!isApproved()) {
-			return false;
-		}
-
-		if (getLicenseKeysAvailable() <= 0) {
-			return false;
-		}
-
-		return true;
 	}
 
 	public boolean isApproved() {
