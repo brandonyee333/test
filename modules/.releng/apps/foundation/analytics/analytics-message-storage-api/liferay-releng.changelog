@@ -12,3 +12,8 @@ bed41663d22eb58c93d98b4c86dadaaadcad1287^..4c9dd397bd0b742be83b5aa6c3d3c3ebdecd9
 # Bundle Version 1.0.3
 #
 3d3b3724e5e3ff498e7dcd05b86c33c7b90c1b3d^..defafac7393f020e0a09a5bb272a291fd030f89d=LRAC-5302
+
+#
+# Bundle Version 1.0.4
+#
+defafac7393f020e0a09a5bb272a291fd030f89d^..d601b9e50924a6f7d74a524df60fb53869e8830c=LPS-105380 LRAC-5302 LRIS-30438
