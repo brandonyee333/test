@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Calendar API
 Bundle-SymbolicName: com.liferay.calendar.api
-Bundle-Version: 2.3.26
+Bundle-Version: 2.3.27
 Export-Package:\
 	com.liferay.calendar.constants,\
 	com.liferay.calendar.exception,\
