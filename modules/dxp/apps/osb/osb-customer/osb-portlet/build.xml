@@ -67,18 +67,23 @@
 			replace="@author Brian Wing Shun Chan${line.separator} * @generated"
 		/>
 
-		<delete dir="${portal.base.dir}/tools/sdk/dependencies/com.liferay.portal.tools.service.builder" />
+		<if>
+			<available file="${portal.base.dir}/tools/sdk/dependencies/com.liferay.portal.tools.service.builder.temp" type="dir" />
+			<then>
+				<delete dir="${portal.base.dir}/tools/sdk/dependencies/com.liferay.portal.tools.service.builder" />
 
-		<copy
-			preservelastmodified="true"
-			todir="${portal.base.dir}/tools/sdk/dependencies/com.liferay.portal.tools.service.builder"
-		>
-			<fileset
-				dir="${portal.base.dir}/tools/sdk/dependencies/com.liferay.portal.tools.service.builder.temp"
-			/>
-		</copy>
+				<copy
+					preservelastmodified="true"
+					todir="${portal.base.dir}/tools/sdk/dependencies/com.liferay.portal.tools.service.builder"
+				>
+					<fileset
+						dir="${portal.base.dir}/tools/sdk/dependencies/com.liferay.portal.tools.service.builder.temp"
+					/>
+				</copy>
 
-		<delete dir="${portal.base.dir}/tools/sdk/dependencies/com.liferay.portal.tools.service.builder.temp" />
+				<delete dir="${portal.base.dir}/tools/sdk/dependencies/com.liferay.portal.tools.service.builder.temp" />
+			</then>
+		</if>
 	</target>
 
 	<target name="format-javadoc">
