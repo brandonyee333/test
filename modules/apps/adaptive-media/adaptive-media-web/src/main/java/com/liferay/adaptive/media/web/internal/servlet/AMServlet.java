@@ -19,6 +19,8 @@ import com.liferay.adaptive.media.AdaptiveMedia;
 import com.liferay.adaptive.media.exception.AMException;
 import com.liferay.adaptive.media.handler.AMRequestHandler;
 import com.liferay.adaptive.media.web.internal.constants.AMWebConstants;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
@@ -122,6 +124,10 @@ public class AMServlet extends HttpServlet {
 				HttpServletResponse.SC_NOT_FOUND, request.getRequestURI());
 		}
 		catch (Exception e) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(e, e);
+			}
+
 			Throwable cause = e.getCause();
 
 			if (cause instanceof PrincipalException) {
@@ -155,6 +161,8 @@ public class AMServlet extends HttpServlet {
 
 		return StringPool.BLANK;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(AMServlet.class);
 
 	private static final Pattern _requestHandlerPattern = Pattern.compile(
 		"^/([^/]*)");
