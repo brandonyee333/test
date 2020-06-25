@@ -30,7 +30,7 @@ describe('AddSourceCodeAccessModal', () => {
 	it('renders the header of the modal', () => {
 		const {container, getByText} = renderAddSourceCodeAccessModal();
 
-		getByText("give-a-team-member-access-to-liferay's-source-code");
+		getByText("give-a-team-member-access-to-liferay-dxp's-source-code");
 		expect(container).toMatchSnapshot();
 	});
 

@@ -9,12 +9,12 @@ exports[`SourceCodeAccess renders correctly 1`] = `
       <div
         class="small-title"
       >
-        team-members-who-have-access-to-liferay's-source-code
+        team-members-who-have-access-to-liferay-dxp's-source-code
       </div>
       <div
         class="panel-subtitle"
       >
-        add-your-email-address-and-github-username-to-get-access-to-liferay's-source-code
+        add-your-email-address-and-github-username-to-get-access-to-liferay-dxp's-source-code-refer-to-x-article-for-details
       </div>
     </div>
     <button
@@ -152,12 +152,12 @@ exports[`SourceCodeAccess renders details when a collaborator is clicked 1`] = `
       <div
         class="small-title"
       >
-        team-members-who-have-access-to-liferay's-source-code
+        team-members-who-have-access-to-liferay-dxp's-source-code
       </div>
       <div
         class="panel-subtitle"
       >
-        add-your-email-address-and-github-username-to-get-access-to-liferay's-source-code
+        add-your-email-address-and-github-username-to-get-access-to-liferay-dxp's-source-code-refer-to-x-article-for-details
       </div>
     </div>
     <button
@@ -358,12 +358,12 @@ exports[`SourceCodeAccess renders no results message when there are no collabora
       <div
         class="small-title"
       >
-        team-members-who-have-access-to-liferay's-source-code
+        team-members-who-have-access-to-liferay-dxp's-source-code
       </div>
       <div
         class="panel-subtitle"
       >
-        add-your-email-address-and-github-username-to-get-access-to-liferay's-source-code
+        add-your-email-address-and-github-username-to-get-access-to-liferay-dxp's-source-code-refer-to-x-article-for-details
       </div>
     </div>
     <button
@@ -398,12 +398,12 @@ exports[`SourceCodeAccess renders the description for add collaborators button 1
       <div
         class="small-title"
       >
-        team-members-who-have-access-to-liferay's-source-code
+        team-members-who-have-access-to-liferay-dxp's-source-code
       </div>
       <div
         class="panel-subtitle"
       >
-        add-your-email-address-and-github-username-to-get-access-to-liferay's-source-code
+        add-your-email-address-and-github-username-to-get-access-to-liferay-dxp's-source-code-refer-to-x-article-for-details
       </div>
     </div>
     <button
@@ -541,12 +541,12 @@ exports[`SourceCodeAccess renders the header for collaborators list 1`] = `
       <div
         class="small-title"
       >
-        team-members-who-have-access-to-liferay's-source-code
+        team-members-who-have-access-to-liferay-dxp's-source-code
       </div>
       <div
         class="panel-subtitle"
       >
-        add-your-email-address-and-github-username-to-get-access-to-liferay's-source-code
+        add-your-email-address-and-github-username-to-get-access-to-liferay-dxp's-source-code-refer-to-x-article-for-details
       </div>
     </div>
     <button

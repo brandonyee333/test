@@ -204,7 +204,7 @@ export default function AddSourceCodeAccessModal({
 	return (
 		<Modal
 			header={Liferay.Language.get(
-				"give-a-team-member-access-to-liferay's-source-code"
+				"give-a-team-member-access-to-liferay-dxp's-source-code"
 			)}
 			onClose={handleClose}
 			show={show}

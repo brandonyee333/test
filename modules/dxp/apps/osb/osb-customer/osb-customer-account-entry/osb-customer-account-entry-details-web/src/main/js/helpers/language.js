@@ -4,9 +4,9 @@ const SPLIT_REGEX = /({\d+})/g;
  * Utility function for substituting variables into language keys.
  *
  * Examples:
- * sub(Liferay.Language.get('search-x'), ['all'])
+ * langSub(Liferay.Language.get('search-x'), ['all'])
  * => 'search all'
- * sub(Liferay.Language.get('search-x'), [<b>all<b>], false)
+ * langSub(Liferay.Language.get('search-x'), [<b>all<b>], false)
  * => 'search <b>all</b>'
  *
  * @param {string} langKey This is the language key used from our properties file

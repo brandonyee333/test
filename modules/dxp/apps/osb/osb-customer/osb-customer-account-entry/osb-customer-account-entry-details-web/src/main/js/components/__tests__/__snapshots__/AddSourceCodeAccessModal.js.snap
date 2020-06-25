@@ -19,7 +19,7 @@ exports[`AddSourceCodeAccessModal renders correctly 1`] = `
           <div
             class="modal-title"
           >
-            give-a-team-member-access-to-liferay's-source-code
+            give-a-team-member-access-to-liferay-dxp's-source-code
           </div>
           <button
             aria-label="Close"
@@ -165,7 +165,7 @@ exports[`AddSourceCodeAccessModal renders fields for name, email, and github 1`]
           <div
             class="modal-title"
           >
-            give-a-team-member-access-to-liferay's-source-code
+            give-a-team-member-access-to-liferay-dxp's-source-code
           </div>
           <button
             aria-label="Close"
@@ -311,7 +311,7 @@ exports[`AddSourceCodeAccessModal renders the header of the modal 1`] = `
           <div
             class="modal-title"
           >
-            give-a-team-member-access-to-liferay's-source-code
+            give-a-team-member-access-to-liferay-dxp's-source-code
           </div>
           <button
             aria-label="Close"

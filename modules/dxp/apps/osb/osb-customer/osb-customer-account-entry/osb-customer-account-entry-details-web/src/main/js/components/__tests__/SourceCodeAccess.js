@@ -84,7 +84,7 @@ describe('SourceCodeAccess', () => {
 
 		getByText(
 			container,
-			"team-members-who-have-access-to-liferay's-source-code"
+			"team-members-who-have-access-to-liferay-dxp's-source-code"
 		);
 		expect(container).toMatchSnapshot();
 	});
@@ -123,7 +123,7 @@ describe('SourceCodeAccess', () => {
 
 		getByText(
 			container,
-			"add-your-email-address-and-github-username-to-get-access-to-liferay's-source-code"
+			"add-your-email-address-and-github-username-to-get-access-to-liferay-dxp's-source-code-refer-to-x-article-for-details"
 		);
 		expect(container).toMatchSnapshot();
 	});

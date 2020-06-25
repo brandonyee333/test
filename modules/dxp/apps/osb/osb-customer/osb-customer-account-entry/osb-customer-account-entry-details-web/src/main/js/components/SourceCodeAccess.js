@@ -7,7 +7,11 @@ import Accordion from './Accordion';
 import AddSourceCodeAccessModal from './AddSourceCodeAccessModal';
 import Button from './Button';
 
+import {langSub} from '../helpers/language';
 import {CollaboratorsRecord} from '../store/sourceCodeAccessCollaborator';
+
+const ACCESS_DXP_SOURCE_CODE_ARTICLE =
+	'https://help.liferay.com/hc/en-us/articles/360045389291';
 
 SourceCodeAccess.propTypes = {
 	addCollaboratorURL: PropTypes.string.isRequired,
@@ -145,13 +149,24 @@ export default function SourceCodeAccess({addCollaboratorURL, collaborators}) {
 				<div>
 					<div className="small-title">
 						{Liferay.Language.get(
-							"team-members-who-have-access-to-liferay's-source-code"
+							"team-members-who-have-access-to-liferay-dxp's-source-code"
 						)}
 					</div>
 
 					<div className="panel-subtitle">
-						{Liferay.Language.get(
-							"add-your-email-address-and-github-username-to-get-access-to-liferay's-source-code"
+						{langSub(
+							Liferay.Language.get(
+								"add-your-email-address-and-github-username-to-get-access-to-liferay-dxp's-source-code-refer-to-x-article-for-details"
+							),
+							[
+								<a
+									className="btn-link component-title"
+									href={ACCESS_DXP_SOURCE_CODE_ARTICLE}
+								>
+									{Liferay.Language.get('this')}
+								</a>
+							],
+							false
 						)}
 					</div>
 				</div>
