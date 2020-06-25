@@ -90,6 +90,10 @@
 			<finder-column name="assetReceiptLicenseUuid" />
 			<finder-column name="active" />
 		</finder>
+		<finder name="KA_PEI" return-type="Collection">
+			<finder-column name="koroneikiAccountKey" />
+			<finder-column name="productEntryId" />
+		</finder>
 		<finder name="KPP_CI" return-type="Collection">
 			<finder-column name="koroneikiProductPurchaseKey" />
 			<finder-column name="clusterId" />
@@ -143,10 +147,7 @@
 
 		<!-- References -->
 
-		<reference entity="Country" package-path="com.liferay.portal" />
 		<reference entity="ListType" package-path="com.liferay.portal" />
-		<reference entity="Role" package-path="com.liferay.portal" />
-		<reference entity="ExpandoValue" package-path="com.liferay.portlet.expando" />
 	</entity>
 	<entity local-service="true" name="LicenseKeySet" remote-service="true">
 
@@ -187,10 +188,6 @@
 			<finder-column name="accountEntryId" />
 			<finder-column name="name" />
 		</finder>
-
-		<!-- References -->
-
-		<reference entity="Role" package-path="com.liferay.portal" />
 	</entity>
 	<exceptions>
 		<exception>DuplicateHostName</exception>

@@ -59,12 +59,6 @@ public class LicenseKeyFinderImpl
 			LicenseKeyFinder.class.getName() +
 				".findByU_C_M_M_KA_KPP_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A";
 
-	public static final String JOIN_BY_ACCOUNT_CUSTOMER =
-		LicenseKeyFinder.class.getName() + ".joinByAccountCustomer";
-
-	public static final String JOIN_BY_ACCOUNT_WORKER =
-		LicenseKeyFinder.class.getName() + ".joinByAccountWorker";
-
 	public static final String JOIN_BY_ACTIVE =
 		LicenseKeyFinder.class.getName() + ".joinByActive";
 
@@ -73,12 +67,6 @@ public class LicenseKeyFinderImpl
 
 	public static final String JOIN_BY_ASSET_RECEIPT_ITEM =
 		LicenseKeyFinder.class.getName() + ".joinByAssetReceiptLicense";
-
-	public static final String JOIN_BY_ORDER_ENTRY =
-		LicenseKeyFinder.class.getName() + ".joinByOrderEntry";
-
-	public static final String JOIN_BY_PARTNER_WORKER =
-		LicenseKeyFinder.class.getName() + ".joinByPartnerWorker";
 
 	public int countByKeywords(
 		String keywords, LinkedHashMap<String, Object> params) {
@@ -584,20 +572,11 @@ public class LicenseKeyFinderImpl
 	protected String getJoin(String key, Object value) {
 		String join = StringPool.BLANK;
 
-		if (key.equals("accountCustomer")) {
-			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_CUSTOMER);
-		}
-		else if (key.equals("accountEntryType")) {
+		if (key.equals("accountEntryType")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_ENTRY_TYPE);
-		}
-		else if (key.equals("accountWorker")) {
-			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_WORKER);
 		}
 		else if (key.equals("active")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACTIVE);
-		}
-		else if (key.equals("partnerWorker")) {
-			join = CustomSQLUtil.get(getClass(), JOIN_BY_PARTNER_WORKER);
 		}
 
 		if (Validator.isNotNull(join)) {
@@ -633,26 +612,14 @@ public class LicenseKeyFinderImpl
 	protected String getWhere(String key, Object value) {
 		String join = StringPool.BLANK;
 
-		if (key.equals("accountCustomer")) {
-			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_CUSTOMER);
-		}
-		else if (key.equals("accountEntryType")) {
+		if (key.equals("accountEntryType")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_ENTRY_TYPE);
-		}
-		else if (key.equals("accountWorker")) {
-			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_WORKER);
 		}
 		else if (key.equals("active")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACTIVE);
 		}
 		else if (key.equals("assetReceiptLicense")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_ASSET_RECEIPT_ITEM);
-		}
-		else if (key.equals("orderEntry")) {
-			join = CustomSQLUtil.get(getClass(), JOIN_BY_ORDER_ENTRY);
-		}
-		else if (key.equals("partnerWorker")) {
-			join = CustomSQLUtil.get(getClass(), JOIN_BY_PARTNER_WORKER);
 		}
 
 		if (Validator.isNotNull(join)) {

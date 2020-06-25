@@ -60,6 +60,7 @@ page import="com.liferay.osb.customer.license.service.LicenseKeySetServiceUtil" 
 page import="com.liferay.osb.customer.license.service.permission.LicenseKeyPermission" %><%@
 page import="com.liferay.osb.customer.license.service.permission.LicenseKeySetPermission" %><%@
 page import="com.liferay.osb.customer.license.util.LicenseUtil" %><%@
+page import="com.liferay.osb.customer.license.web.internal.configuration.LicenseWebConfigurationValues" %><%@
 page import="com.liferay.osb.customer.license.web.internal.display.context.ProductPurchaseDisplay" %><%@
 page import="com.liferay.osb.customer.license.web.internal.search.AccountDisplayTerms" %><%@
 page import="com.liferay.osb.customer.license.web.internal.search.AccountSearch" %><%@

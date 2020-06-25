@@ -315,11 +315,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		return licenseKeys.get(0);
 	}
 
-	public int getLicenseKeyCount(String koroneikiProductPurchaseKey) {
-		return licenseKeyPersistence.countByKoroneikiProductPurchaseKey(
-			koroneikiProductPurchaseKey);
-	}
-
 	public List<LicenseKey> getLicenseKeys(long userId, long accountEntryId) {
 		return licenseKeyPersistence.findByU_AEI(userId, accountEntryId);
 	}
@@ -328,9 +323,11 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		return licenseKeyPersistence.findByU_PI(userId, productId);
 	}
 
-	public List<LicenseKey> getLicenseKeys(String koroneikiProductPurchaseKey) {
+	public List<LicenseKey> getLicenseKeys(
+		String koroneikiProductPurchaseKey, int start, int end) {
+
 		return licenseKeyPersistence.findByKoroneikiProductPurchaseKey(
-			koroneikiProductPurchaseKey);
+			koroneikiProductPurchaseKey, start, end);
 	}
 
 	public List<LicenseKey> getLicenseKeys(
@@ -338,6 +335,13 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		return licenseKeyPersistence.findByKPP_CI(
 			koroneikiProductPurchaseKey, clusterId);
+	}
+
+	public List<LicenseKey> getLicenseKeys(
+		String koroneikiAccountKey, long productEntryId, int start, int end) {
+
+		return licenseKeyPersistence.findByKA_PEI(
+			koroneikiAccountKey, productEntryId, start, end);
 	}
 
 	public List<LicenseKey> getLicenseKeys(String productId, String serverId) {
@@ -359,6 +363,18 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		return licenseKeyPersistence.findByPEN_SI_A(
 			productEntryName, serverId, active, start, end, obc);
+	}
+
+	public int getLicenseKeysCount(String koroneikiProductPurchaseKey) {
+		return licenseKeyPersistence.countByKoroneikiProductPurchaseKey(
+			koroneikiProductPurchaseKey);
+	}
+
+	public int getLicenseKeysCount(
+		String koroneikiAccountKey, long productEntryId) {
+
+		return licenseKeyPersistence.countByKA_PEI(
+			koroneikiAccountKey, productEntryId);
 	}
 
 	public List<LicenseKey> getLicenseKeySetLicenseKeys(long licenseKeySetId) {

@@ -97,32 +97,6 @@
 				)
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.customer.license.service.persistence.LicenseKeyFinder.joinByAccountCustomer">
-		<![CDATA[
-			INNER JOIN
-				OSB_AccountCustomer ON
-					OSB_AccountCustomer.accountEntryId = OSB_AccountEntry.accountEntryId
-			WHERE
-				(
-					(OSB_AccountCustomer.userId = ?) AND
-					(OSB_AccountEntry.type_ = 2) AND
-					(OSB_LicenseKey.userId = ?)
-				)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.customer.license.service.persistence.LicenseKeyFinder.joinByAccountWorker">
-		<![CDATA[
-			INNER JOIN
-				OSB_AccountWorker ON
-					OSB_AccountWorker.accountEntryId = OSB_AccountEntry.accountEntryId
-			WHERE
-				(
-					(OSB_AccountWorker.userId = ?) AND
-					(OSB_AccountEntry.type_ = 2) AND
-					(OSB_LicenseKey.userId = ?)
-				)
-		]]>
-	</sql>
 	<sql id="com.liferay.osb.customer.license.service.persistence.LicenseKeyFinder.joinByActive">
 		<![CDATA[
 			WHERE
@@ -139,22 +113,6 @@
 		<![CDATA[
 			WHERE
 				OSB_LicenseKey.assetReceiptLicenseId >= ?
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.customer.license.service.persistence.LicenseKeyFinder.joinByOrderEntry">
-		<![CDATA[
-			WHERE
-				OSB_LicenseKey.orderEntryId >= ?
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.customer.license.service.persistence.LicenseKeyFinder.joinByPartnerWorker">
-		<![CDATA[
-			INNER JOIN
-				OSB_PartnerWorker ON
-					(OSB_AccountEntry.partnerManagedSupport = [$TRUE$]) AND
-					(OSB_PartnerWorker.partnerEntryId = OSB_AccountEntry.partnerEntryId)
-			WHERE
-				OSB_PartnerWorker.userId = ?
 		]]>
 	</sql>
 </custom-sql>

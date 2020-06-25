@@ -15,11 +15,19 @@
 --%>
 
 <%
-long[] offeringEntryIds = ParamUtil.getLongValues(request, "offeringEntryIds");
+String koroneikiAccountKey = ParamUtil.getString(request, "koroneikiAccountKey");
+String koroneikiProductKey = ParamUtil.getString(request, "koroneikiProductKey");
+String koroneikiProductPurchaseKey = ParamUtil.getString(request, "koroneikiProductPurchaseKey");
 
-if (ArrayUtil.isNotEmpty(offeringEntryIds)) {
-	results = LicenseKeyServiceUtil.getOfferingEntryGroupLicenseKeys(offeringEntryIds, false, true, searchContainer.getStart(), searchContainer.getEnd(), searchContainer.getOrderByComparator());
-	total = LicenseKeyServiceUtil.getOfferingEntryGroupLicenseKeysCount(offeringEntryIds, false, true);
+if (Validator.isNotNull(koroneikiProductPurchaseKey)) {
+	results = LicenseKeyLocalServiceUtil.getLicenseKeys(koroneikiProductPurchaseKey, searchContainer.getStart(), searchContainer.getEnd());
+	total = LicenseKeyLocalServiceUtil.getLicenseKeysCount(koroneikiProductPurchaseKey);
+}
+else if (Validator.isNotNull(koroneikiAccountKey) && Validator.isNotNull(koroneikiProductKey)) {
+	ProductEntry productEntry = ProductEntryLocalServiceUtil.getProductEntryByKoroneikiKey(koroneikiProductKey);
+
+	results = LicenseKeyLocalServiceUtil.getLicenseKeys(koroneikiAccountKey, productEntry.getProductEntryId(), searchContainer.getStart(), searchContainer.getEnd());
+	total = LicenseKeyLocalServiceUtil.getLicenseKeysCount(koroneikiAccountKey, productEntry.getProductEntryId());
 }
 else if (searchTerms.isAdvancedSearch()) {
 	results = LicenseKeyServiceUtil.search(searchTerms.getCreateUserIdObj(), searchTerms.getCreateDateGTDay(), searchTerms.getCreateDateGTMonth(), searchTerms.getCreateDateGTYear(), searchTerms.getCreateDateLTDay(), searchTerms.getCreateDateLTMonth(), searchTerms.getCreateDateLTYear(), searchTerms.getModifiedUserIdObj(), searchTerms.getModifiedDateGTDay(), searchTerms.getModifiedDateGTMonth(), searchTerms.getModifiedDateGTYear(), searchTerms.getModifiedDateLTDay(), searchTerms.getModifiedDateLTMonth(), searchTerms.getModifiedDateLTYear(), searchTerms.getKoroneikiAccountKeyObj(), searchTerms.getKoroneikiProductPurchaseKeyObj(), searchTerms.getAccountEntryName(), searchTerms.getLicenseKeySetName(), searchTerms.getStartDateGTDay(), searchTerms.getStartDateGTMonth(), searchTerms.getStartDateGTYear(), searchTerms.getStartDateLTDay(), searchTerms.getStartDateLTMonth(), searchTerms.getStartDateLTYear(), searchTerms.getLicenseEntryIds(), searchTerms.getProductEntryIds(), searchTerms.getProductEntryName(), null, searchTerms.getProductVersions(), searchTerms.getOwner(), searchTerms.getDescription(), searchTerms.getHostName(), searchTerms.getIpAddress(), searchTerms.getMacAddress(), searchTerms.getServerId(), searchTerms.getKey(), searchTerms.getExpirationDateGTDay(), searchTerms.getExpirationDateGTMonth(), searchTerms.getExpirationDateGTYear(), searchTerms.getExpirationDateLTDay(), searchTerms.getExpirationDateLTMonth(), searchTerms.getExpirationDateLTYear(), searchTerms.getParams(), searchTerms.isAndOperator(), searchContainer.getStart(), searchContainer.getEnd(), searchContainer.getOrderByComparator());

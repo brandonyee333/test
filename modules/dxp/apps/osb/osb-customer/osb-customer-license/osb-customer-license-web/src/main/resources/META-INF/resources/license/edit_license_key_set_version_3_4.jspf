@@ -33,7 +33,7 @@
 		<aui:col md="4">
 			<span class="bold uppercase"><liferay-ui:message key="owner" />:</span>
 
-			<%= HtmlUtil.escape(licenseKey.getOwner()) %>
+			<a href="<%= LicenseWebConfigurationValues.getProvisioningAccountLink(licenseKey.getKoroneikiAccountKey()) %>"><%= HtmlUtil.escape(licenseKey.getOwner()) %></a>
 		</aui:col>
 
 		<aui:col md="8">
@@ -46,7 +46,11 @@
 	<aui:col md="4">
 		<span class="bold uppercase"><liferay-ui:message key="product" />:</span>
 
-		<%= productEntryName %>
+		<%
+		ProductEntry productEntry = ProductEntryLocalServiceUtil.getProductEntry(licenseKey.getProductEntryId());
+		%>
+
+		<a href="<%= LicenseWebConfigurationValues.getProvisioningProductPurchaseLink(licenseKey.getKoroneikiAccountKey(), productEntry.getKoroneikiProductKey(), licenseKey.getKoroneikiProductPurchaseKey()) %>"><%= productEntryName %></a>
 	</aui:col>
 
 	<aui:col md="4">
