@@ -74,6 +74,12 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.search.legacy.searcher.SearchRequestBuilderFactory;
+import com.liferay.portal.search.query.Queries;
+import com.liferay.portal.search.sort.FieldSort;
+import com.liferay.portal.search.sort.NestedSort;
+import com.liferay.portal.search.sort.SortOrder;
+import com.liferay.portal.search.sort.Sorts;
 import com.liferay.portlet.asset.service.permission.AssetCategoryPermission;
 import com.liferay.portlet.asset.service.permission.AssetVocabularyPermission;
 
@@ -854,8 +860,14 @@ public class AssetUtil {
 			searchContext.setLike(true);
 		}
 
-		searchContext.setSorts(
-			getSorts(assetEntryQuery, searchContext.getLocale()));
+		_searchRequestBuilderFactory.builder(
+			searchContext
+		).fetchSource(
+			true
+		).sorts(
+			getSearchSorts(assetEntryQuery, searchContext.getLocale())
+		);
+
 		searchContext.setStart(start);
 
 		return assetSearcher;
@@ -898,11 +910,14 @@ public class AssetUtil {
 		if (sortField.startsWith(
 				DDMStructureManager.STRUCTURE_INDEXER_FIELD_PREFIX)) {
 
-			StringBundler sb = new StringBundler(3);
+			StringBundler sb = new StringBundler(5);
+
+			sb.append(DDMIndexer.DDM_FIELDS);
+			sb.append(StringPool.PERIOD);
 
 			try {
-				String indexType = sortField.split(
-					DDMStructureManager.STRUCTURE_INDEXER_FIELD_SEPARATOR)[1];
+				String indexType =
+					sortField.split(DDMIndexer.DDM_FIELD_SEPARATOR)[1];
 
 				if (fieldLocalizable) {
 					sb.append(_ddmIndexer.getValueFieldName(indexType, locale));
@@ -950,6 +965,59 @@ public class AssetUtil {
 		return getOrderByCol(sortField, fieldType, true, sortType, locale);
 	}
 
+	protected com.liferay.portal.search.sort.Sort getSearchSort(
+			String orderByType, String sortField, Locale locale)
+		throws Exception {
+
+		Sort sort = _getSort(orderByType, sortField, locale);
+
+		FieldSort fieldSort = _sorts.field(sort.getFieldName());
+
+		if (sort.isReverse()) {
+			fieldSort.setSortOrder(SortOrder.DESC);
+		}
+
+		if (!sortField.startsWith(DDMIndexer.DDM_FIELD_PREFIX)) {
+			return fieldSort;
+		}
+
+		NestedSort nestedSort = _sorts.nested(DDMIndexer.DDM_FIELDS);
+
+		StringBundler sb = new StringBundler(3);
+
+		sb.append(sortField);
+
+		if (_getDDMFormFieldLocalizable(sortField)) {
+			sb.append(StringPool.UNDERLINE);
+			sb.append(LocaleUtil.toLanguageId(locale));
+		}
+
+		nestedSort.setFilterQuery(
+			_queries.term(
+				StringBundler.concat(
+					DDMIndexer.DDM_FIELDS, StringPool.PERIOD,
+					DDMIndexer.DDM_FIELD_NAME),
+				sb.toString()));
+
+		fieldSort.setNestedSort(nestedSort);
+
+		return fieldSort;
+	}
+
+	protected com.liferay.portal.search.sort.Sort[] getSearchSorts(
+			AssetEntryQuery assetEntryQuery, Locale locale)
+		throws Exception {
+
+		com.liferay.portal.search.sort.Sort sort1 = _getSearchSort(
+			assetEntryQuery.getOrderByType1(), assetEntryQuery.getOrderByCol1(),
+			locale);
+		com.liferay.portal.search.sort.Sort sort2 = _getSearchSort(
+			assetEntryQuery.getOrderByType2(), assetEntryQuery.getOrderByCol2(),
+			locale);
+
+		return new com.liferay.portal.search.sort.Sort[] {sort1, sort2};
+	}
+
 	protected static Sort getSort(
 			String orderByType, String sortField, Locale locale)
 		throws Exception {
@@ -975,20 +1043,6 @@ public class AssetUtil {
 			!sortField.startsWith(
 				DDMStructureManager.STRUCTURE_INDEXER_FIELD_PREFIX),
 			orderByType);
-	}
-
-	protected static Sort[] getSorts(
-			AssetEntryQuery assetEntryQuery, Locale locale)
-		throws Exception {
-
-		Sort sort1 = getSort(
-			assetEntryQuery.getOrderByType1(), assetEntryQuery.getOrderByCol1(),
-			locale);
-		Sort sort2 = getSort(
-			assetEntryQuery.getOrderByType2(), assetEntryQuery.getOrderByCol2(),
-			locale);
-
-		return new Sort[] {sort1, sort2};
 	}
 
 	protected static int getSortType(String fieldType) {
