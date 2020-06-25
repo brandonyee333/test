@@ -192,25 +192,29 @@ public class LicenseKeyModelImpl
 
 	public static final long COMPLIMENTARY_COLUMN_BITMASK = 16L;
 
-	public static final long KORONEIKIPRODUCTPURCHASEKEY_COLUMN_BITMASK = 32L;
+	public static final long KORONEIKIACCOUNTKEY_COLUMN_BITMASK = 32L;
 
-	public static final long LICENSEENTRYTYPE_COLUMN_BITMASK = 64L;
+	public static final long KORONEIKIPRODUCTPURCHASEKEY_COLUMN_BITMASK = 64L;
 
-	public static final long LICENSEKEYSETID_COLUMN_BITMASK = 128L;
+	public static final long LICENSEENTRYTYPE_COLUMN_BITMASK = 128L;
 
-	public static final long OFFERINGENTRYID_COLUMN_BITMASK = 256L;
+	public static final long LICENSEKEYSETID_COLUMN_BITMASK = 256L;
 
-	public static final long PRODUCTENTRYNAME_COLUMN_BITMASK = 512L;
+	public static final long OFFERINGENTRYID_COLUMN_BITMASK = 512L;
 
-	public static final long PRODUCTID_COLUMN_BITMASK = 1024L;
+	public static final long PRODUCTENTRYID_COLUMN_BITMASK = 1024L;
 
-	public static final long SERVERID_COLUMN_BITMASK = 2048L;
+	public static final long PRODUCTENTRYNAME_COLUMN_BITMASK = 2048L;
 
-	public static final long USERID_COLUMN_BITMASK = 4096L;
+	public static final long PRODUCTID_COLUMN_BITMASK = 4096L;
 
-	public static final long UUID_COLUMN_BITMASK = 8192L;
+	public static final long SERVERID_COLUMN_BITMASK = 8192L;
 
-	public static final long LICENSEKEYID_COLUMN_BITMASK = 16384L;
+	public static final long USERID_COLUMN_BITMASK = 16384L;
+
+	public static final long UUID_COLUMN_BITMASK = 32768L;
+
+	public static final long LICENSEKEYID_COLUMN_BITMASK = 65536L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -1629,7 +1633,17 @@ public class LicenseKeyModelImpl
 
 	@Override
 	public void setKoroneikiAccountKey(String koroneikiAccountKey) {
+		_columnBitmask |= KORONEIKIACCOUNTKEY_COLUMN_BITMASK;
+
+		if (_originalKoroneikiAccountKey == null) {
+			_originalKoroneikiAccountKey = _koroneikiAccountKey;
+		}
+
 		_koroneikiAccountKey = koroneikiAccountKey;
+	}
+
+	public String getOriginalKoroneikiAccountKey() {
+		return GetterUtil.getString(_originalKoroneikiAccountKey);
 	}
 
 	@JSON
@@ -1736,7 +1750,19 @@ public class LicenseKeyModelImpl
 
 	@Override
 	public void setProductEntryId(long productEntryId) {
+		_columnBitmask |= PRODUCTENTRYID_COLUMN_BITMASK;
+
+		if (!_setOriginalProductEntryId) {
+			_setOriginalProductEntryId = true;
+
+			_originalProductEntryId = _productEntryId;
+		}
+
 		_productEntryId = productEntryId;
+	}
+
+	public long getOriginalProductEntryId() {
+		return _originalProductEntryId;
 	}
 
 	@JSON
@@ -2367,6 +2393,9 @@ public class LicenseKeyModelImpl
 		licenseKeyModelImpl._originalAssetReceiptLicenseUuid =
 			licenseKeyModelImpl._assetReceiptLicenseUuid;
 
+		licenseKeyModelImpl._originalKoroneikiAccountKey =
+			licenseKeyModelImpl._koroneikiAccountKey;
+
 		licenseKeyModelImpl._originalKoroneikiProductPurchaseKey =
 			licenseKeyModelImpl._koroneikiProductPurchaseKey;
 
@@ -2379,6 +2408,11 @@ public class LicenseKeyModelImpl
 			licenseKeyModelImpl._offeringEntryId;
 
 		licenseKeyModelImpl._setOriginalOfferingEntryId = false;
+
+		licenseKeyModelImpl._originalProductEntryId =
+			licenseKeyModelImpl._productEntryId;
+
+		licenseKeyModelImpl._setOriginalProductEntryId = false;
 
 		licenseKeyModelImpl._originalLicenseEntryType =
 			licenseKeyModelImpl._licenseEntryType;
@@ -2749,6 +2783,7 @@ public class LicenseKeyModelImpl
 	private String _assetReceiptLicenseUuid;
 	private String _originalAssetReceiptLicenseUuid;
 	private String _koroneikiAccountKey;
+	private String _originalKoroneikiAccountKey;
 	private String _koroneikiProductPurchaseKey;
 	private String _originalKoroneikiProductPurchaseKey;
 	private long _accountEntryId;
@@ -2760,6 +2795,8 @@ public class LicenseKeyModelImpl
 	private boolean _setOriginalOfferingEntryId;
 	private long _licenseEntryId;
 	private long _productEntryId;
+	private long _originalProductEntryId;
+	private boolean _setOriginalProductEntryId;
 	private long _supportResponseId;
 	private String _accountEntryName;
 	private String _licenseEntryName;

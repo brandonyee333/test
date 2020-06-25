@@ -14,7 +14,6 @@
 
 package com.liferay.osb.customer.license.service.base;
 
-import com.liferay.expando.kernel.service.persistence.ExpandoValuePersistence;
 import com.liferay.osb.customer.license.model.LicenseKey;
 import com.liferay.osb.customer.license.service.LicenseKeyLocalService;
 import com.liferay.osb.customer.license.service.persistence.LicenseKeyFinder;
@@ -41,9 +40,7 @@ import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
-import com.liferay.portal.kernel.service.persistence.CountryPersistence;
 import com.liferay.portal.kernel.service.persistence.ListTypePersistence;
-import com.liferay.portal.kernel.service.persistence.RolePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -507,24 +504,6 @@ public abstract class LicenseKeyLocalServiceBaseImpl
 	}
 
 	/**
-	 * Returns the country persistence.
-	 *
-	 * @return the country persistence
-	 */
-	public CountryPersistence getCountryPersistence() {
-		return countryPersistence;
-	}
-
-	/**
-	 * Sets the country persistence.
-	 *
-	 * @param countryPersistence the country persistence
-	 */
-	public void setCountryPersistence(CountryPersistence countryPersistence) {
-		this.countryPersistence = countryPersistence;
-	}
-
-	/**
 	 * Returns the list type local service.
 	 *
 	 * @return the list type local service
@@ -591,46 +570,6 @@ public abstract class LicenseKeyLocalServiceBaseImpl
 	}
 
 	/**
-	 * Returns the role local service.
-	 *
-	 * @return the role local service
-	 */
-	public com.liferay.portal.kernel.service.RoleLocalService
-		getRoleLocalService() {
-
-		return roleLocalService;
-	}
-
-	/**
-	 * Sets the role local service.
-	 *
-	 * @param roleLocalService the role local service
-	 */
-	public void setRoleLocalService(
-		com.liferay.portal.kernel.service.RoleLocalService roleLocalService) {
-
-		this.roleLocalService = roleLocalService;
-	}
-
-	/**
-	 * Returns the role persistence.
-	 *
-	 * @return the role persistence
-	 */
-	public RolePersistence getRolePersistence() {
-		return rolePersistence;
-	}
-
-	/**
-	 * Sets the role persistence.
-	 *
-	 * @param rolePersistence the role persistence
-	 */
-	public void setRolePersistence(RolePersistence rolePersistence) {
-		this.rolePersistence = rolePersistence;
-	}
-
-	/**
 	 * Returns the user local service.
 	 *
 	 * @return the user local service
@@ -668,49 +607,6 @@ public abstract class LicenseKeyLocalServiceBaseImpl
 	 */
 	public void setUserPersistence(UserPersistence userPersistence) {
 		this.userPersistence = userPersistence;
-	}
-
-	/**
-	 * Returns the expando value local service.
-	 *
-	 * @return the expando value local service
-	 */
-	public com.liferay.expando.kernel.service.ExpandoValueLocalService
-		getExpandoValueLocalService() {
-
-		return expandoValueLocalService;
-	}
-
-	/**
-	 * Sets the expando value local service.
-	 *
-	 * @param expandoValueLocalService the expando value local service
-	 */
-	public void setExpandoValueLocalService(
-		com.liferay.expando.kernel.service.ExpandoValueLocalService
-			expandoValueLocalService) {
-
-		this.expandoValueLocalService = expandoValueLocalService;
-	}
-
-	/**
-	 * Returns the expando value persistence.
-	 *
-	 * @return the expando value persistence
-	 */
-	public ExpandoValuePersistence getExpandoValuePersistence() {
-		return expandoValuePersistence;
-	}
-
-	/**
-	 * Sets the expando value persistence.
-	 *
-	 * @param expandoValuePersistence the expando value persistence
-	 */
-	public void setExpandoValuePersistence(
-		ExpandoValuePersistence expandoValuePersistence) {
-
-		this.expandoValuePersistence = expandoValuePersistence;
 	}
 
 	public void afterPropertiesSet() {
@@ -799,9 +695,6 @@ public abstract class LicenseKeyLocalServiceBaseImpl
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
 
-	@ServiceReference(type = CountryPersistence.class)
-	protected CountryPersistence countryPersistence;
-
 	@ServiceReference(
 		type = com.liferay.portal.kernel.service.ListTypeLocalService.class
 	)
@@ -818,15 +711,6 @@ public abstract class LicenseKeyLocalServiceBaseImpl
 		resourceLocalService;
 
 	@ServiceReference(
-		type = com.liferay.portal.kernel.service.RoleLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.RoleLocalService
-		roleLocalService;
-
-	@ServiceReference(type = RolePersistence.class)
-	protected RolePersistence rolePersistence;
-
-	@ServiceReference(
 		type = com.liferay.portal.kernel.service.UserLocalService.class
 	)
 	protected com.liferay.portal.kernel.service.UserLocalService
@@ -834,15 +718,6 @@ public abstract class LicenseKeyLocalServiceBaseImpl
 
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-
-	@ServiceReference(
-		type = com.liferay.expando.kernel.service.ExpandoValueLocalService.class
-	)
-	protected com.liferay.expando.kernel.service.ExpandoValueLocalService
-		expandoValueLocalService;
-
-	@ServiceReference(type = ExpandoValuePersistence.class)
-	protected ExpandoValuePersistence expandoValuePersistence;
 
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
 	protected PersistedModelLocalServiceRegistry

@@ -279,20 +279,22 @@ public interface LicenseKeyLocalService
 	public LicenseKey getLicenseKeyByUuid(String uuid) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getLicenseKeyCount(String koroneikiProductPurchaseKey);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeys(long userId, long accountEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeys(long userId, String productId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getLicenseKeys(String koroneikiProductPurchaseKey);
+	public List<LicenseKey> getLicenseKeys(
+		String koroneikiProductPurchaseKey, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeys(
 		String koroneikiProductPurchaseKey, long clusterId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<LicenseKey> getLicenseKeys(
+		String koroneikiAccountKey, long productEntryId, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeys(String productId, String serverId);
@@ -306,6 +308,13 @@ public interface LicenseKeyLocalService
 	public List<LicenseKey> getLicenseKeysByName(
 		String productEntryName, String serverId, boolean active, int start,
 		int end, OrderByComparator obc);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getLicenseKeysCount(String koroneikiProductPurchaseKey);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getLicenseKeysCount(
+		String koroneikiAccountKey, long productEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeySetLicenseKeys(long licenseKeySetId);

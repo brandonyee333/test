@@ -370,10 +370,6 @@ public class LicenseKeyLocalServiceUtil {
 		return getService().getLicenseKeyByUuid(uuid);
 	}
 
-	public static int getLicenseKeyCount(String koroneikiProductPurchaseKey) {
-		return getService().getLicenseKeyCount(koroneikiProductPurchaseKey);
-	}
-
 	public static java.util.List
 		<com.liferay.osb.customer.license.model.LicenseKey> getLicenseKeys(
 			long userId, long accountEntryId) {
@@ -390,9 +386,10 @@ public class LicenseKeyLocalServiceUtil {
 
 	public static java.util.List
 		<com.liferay.osb.customer.license.model.LicenseKey> getLicenseKeys(
-			String koroneikiProductPurchaseKey) {
+			String koroneikiProductPurchaseKey, int start, int end) {
 
-		return getService().getLicenseKeys(koroneikiProductPurchaseKey);
+		return getService().getLicenseKeys(
+			koroneikiProductPurchaseKey, start, end);
 	}
 
 	public static java.util.List
@@ -401,6 +398,15 @@ public class LicenseKeyLocalServiceUtil {
 
 		return getService().getLicenseKeys(
 			koroneikiProductPurchaseKey, clusterId);
+	}
+
+	public static java.util.List
+		<com.liferay.osb.customer.license.model.LicenseKey> getLicenseKeys(
+			String koroneikiAccountKey, long productEntryId, int start,
+			int end) {
+
+		return getService().getLicenseKeys(
+			koroneikiAccountKey, productEntryId, start, end);
 	}
 
 	public static java.util.List
@@ -430,6 +436,17 @@ public class LicenseKeyLocalServiceUtil {
 
 		return getService().getLicenseKeysByName(
 			productEntryName, serverId, active, start, end, obc);
+	}
+
+	public static int getLicenseKeysCount(String koroneikiProductPurchaseKey) {
+		return getService().getLicenseKeysCount(koroneikiProductPurchaseKey);
+	}
+
+	public static int getLicenseKeysCount(
+		String koroneikiAccountKey, long productEntryId) {
+
+		return getService().getLicenseKeysCount(
+			koroneikiAccountKey, productEntryId);
 	}
 
 	public static java.util.List

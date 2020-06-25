@@ -1573,6 +1573,204 @@ public class LicenseKeyUtil {
 	}
 
 	/**
+	 * Returns all the license keies where koroneikiAccountKey = &#63; and productEntryId = &#63;.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param productEntryId the product entry ID
+	 * @return the matching license keies
+	 */
+	public static List<LicenseKey> findByKA_PEI(
+		String koroneikiAccountKey, long productEntryId) {
+
+		return getPersistence().findByKA_PEI(
+			koroneikiAccountKey, productEntryId);
+	}
+
+	/**
+	 * Returns a range of all the license keies where koroneikiAccountKey = &#63; and productEntryId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseKeyModelImpl</code>.
+	 * </p>
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param productEntryId the product entry ID
+	 * @param start the lower bound of the range of license keies
+	 * @param end the upper bound of the range of license keies (not inclusive)
+	 * @return the range of matching license keies
+	 */
+	public static List<LicenseKey> findByKA_PEI(
+		String koroneikiAccountKey, long productEntryId, int start, int end) {
+
+		return getPersistence().findByKA_PEI(
+			koroneikiAccountKey, productEntryId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the license keies where koroneikiAccountKey = &#63; and productEntryId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseKeyModelImpl</code>.
+	 * </p>
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param productEntryId the product entry ID
+	 * @param start the lower bound of the range of license keies
+	 * @param end the upper bound of the range of license keies (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching license keies
+	 */
+	public static List<LicenseKey> findByKA_PEI(
+		String koroneikiAccountKey, long productEntryId, int start, int end,
+		OrderByComparator<LicenseKey> orderByComparator) {
+
+		return getPersistence().findByKA_PEI(
+			koroneikiAccountKey, productEntryId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the license keies where koroneikiAccountKey = &#63; and productEntryId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseKeyModelImpl</code>.
+	 * </p>
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param productEntryId the product entry ID
+	 * @param start the lower bound of the range of license keies
+	 * @param end the upper bound of the range of license keies (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching license keies
+	 */
+	public static List<LicenseKey> findByKA_PEI(
+		String koroneikiAccountKey, long productEntryId, int start, int end,
+		OrderByComparator<LicenseKey> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByKA_PEI(
+			koroneikiAccountKey, productEntryId, start, end, orderByComparator,
+			useFinderCache);
+	}
+
+	/**
+	 * Returns the first license key in the ordered set where koroneikiAccountKey = &#63; and productEntryId = &#63;.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param productEntryId the product entry ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching license key
+	 * @throws NoSuchLicenseKeyException if a matching license key could not be found
+	 */
+	public static LicenseKey findByKA_PEI_First(
+			String koroneikiAccountKey, long productEntryId,
+			OrderByComparator<LicenseKey> orderByComparator)
+		throws com.liferay.osb.customer.license.exception.
+			NoSuchLicenseKeyException {
+
+		return getPersistence().findByKA_PEI_First(
+			koroneikiAccountKey, productEntryId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first license key in the ordered set where koroneikiAccountKey = &#63; and productEntryId = &#63;.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param productEntryId the product entry ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching license key, or <code>null</code> if a matching license key could not be found
+	 */
+	public static LicenseKey fetchByKA_PEI_First(
+		String koroneikiAccountKey, long productEntryId,
+		OrderByComparator<LicenseKey> orderByComparator) {
+
+		return getPersistence().fetchByKA_PEI_First(
+			koroneikiAccountKey, productEntryId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last license key in the ordered set where koroneikiAccountKey = &#63; and productEntryId = &#63;.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param productEntryId the product entry ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching license key
+	 * @throws NoSuchLicenseKeyException if a matching license key could not be found
+	 */
+	public static LicenseKey findByKA_PEI_Last(
+			String koroneikiAccountKey, long productEntryId,
+			OrderByComparator<LicenseKey> orderByComparator)
+		throws com.liferay.osb.customer.license.exception.
+			NoSuchLicenseKeyException {
+
+		return getPersistence().findByKA_PEI_Last(
+			koroneikiAccountKey, productEntryId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last license key in the ordered set where koroneikiAccountKey = &#63; and productEntryId = &#63;.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param productEntryId the product entry ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching license key, or <code>null</code> if a matching license key could not be found
+	 */
+	public static LicenseKey fetchByKA_PEI_Last(
+		String koroneikiAccountKey, long productEntryId,
+		OrderByComparator<LicenseKey> orderByComparator) {
+
+		return getPersistence().fetchByKA_PEI_Last(
+			koroneikiAccountKey, productEntryId, orderByComparator);
+	}
+
+	/**
+	 * Returns the license keies before and after the current license key in the ordered set where koroneikiAccountKey = &#63; and productEntryId = &#63;.
+	 *
+	 * @param licenseKeyId the primary key of the current license key
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param productEntryId the product entry ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next license key
+	 * @throws NoSuchLicenseKeyException if a license key with the primary key could not be found
+	 */
+	public static LicenseKey[] findByKA_PEI_PrevAndNext(
+			long licenseKeyId, String koroneikiAccountKey, long productEntryId,
+			OrderByComparator<LicenseKey> orderByComparator)
+		throws com.liferay.osb.customer.license.exception.
+			NoSuchLicenseKeyException {
+
+		return getPersistence().findByKA_PEI_PrevAndNext(
+			licenseKeyId, koroneikiAccountKey, productEntryId,
+			orderByComparator);
+	}
+
+	/**
+	 * Removes all the license keies where koroneikiAccountKey = &#63; and productEntryId = &#63; from the database.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param productEntryId the product entry ID
+	 */
+	public static void removeByKA_PEI(
+		String koroneikiAccountKey, long productEntryId) {
+
+		getPersistence().removeByKA_PEI(koroneikiAccountKey, productEntryId);
+	}
+
+	/**
+	 * Returns the number of license keies where koroneikiAccountKey = &#63; and productEntryId = &#63;.
+	 *
+	 * @param koroneikiAccountKey the koroneiki account key
+	 * @param productEntryId the product entry ID
+	 * @return the number of matching license keies
+	 */
+	public static int countByKA_PEI(
+		String koroneikiAccountKey, long productEntryId) {
+
+		return getPersistence().countByKA_PEI(
+			koroneikiAccountKey, productEntryId);
+	}
+
+	/**
 	 * Returns all the license keies where koroneikiProductPurchaseKey = &#63; and clusterId = &#63;.
 	 *
 	 * @param koroneikiProductPurchaseKey the koroneiki product purchase key
