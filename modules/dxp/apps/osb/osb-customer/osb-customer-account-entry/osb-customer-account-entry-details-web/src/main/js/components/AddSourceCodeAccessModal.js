@@ -382,7 +382,7 @@ function ConfirmationDisplay({confirmationType, onClose}) {
 
 						<div className="last-text modal-body-text">
 							{Liferay.Language.get(
-								'this-request-is-pending-project-status'
+								'this-request-will-be-completed-as-soon-as-the-support-project-becomes-active'
 							)}
 						</div>
 					</>
