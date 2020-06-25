@@ -54,6 +54,46 @@ public class LayoutLocalServiceTest {
 		_group = GroupTestUtil.addGroup();
 	}
 
+	@Test
+	public void testLayoutsAreFoundBasedOnDoubleHttpEncodedLegacyFriendlyURL()
+		throws Exception {
+
+		String name = "café";
+
+		String friendlyURL = HttpUtil.decodeURL(StringPool.SLASH + name);
+
+		friendlyURL = HttpUtil.decodeURL(friendlyURL);
+
+		Layout layout = LayoutTestUtil.addLayout(
+			_group.getGroupId(), false,
+			Collections.singletonMap(LocaleUtil.getDefault(), name),
+			Collections.singletonMap(LocaleUtil.getDefault(), friendlyURL));
+
+		Assert.assertEquals(
+			layout,
+			_layoutLocalService.getFriendlyURLLayout(
+				_group.getGroupId(), false, friendlyURL));
+	}
+
+	@Test
+	public void testLayoutsAreFoundBasedOnHttpEncodedFriendlyURL()
+		throws Exception {
+
+		String name = "café";
+
+		String friendlyURL = HttpUtil.decodeURL(StringPool.SLASH + name);
+
+		Layout layout = LayoutTestUtil.addLayout(
+			_group.getGroupId(), false,
+			Collections.singletonMap(LocaleUtil.getDefault(), name),
+			Collections.singletonMap(LocaleUtil.getDefault(), null));
+
+		Assert.assertEquals(
+			layout,
+			_layoutLocalService.getFriendlyURLLayout(
+				_group.getGroupId(), false, friendlyURL));
+	}
+
 	@DeleteAfterTestRun
 	private Group _group;
 
