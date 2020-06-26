@@ -133,7 +133,8 @@ export default function AddSourceCodeAccessModal({
 							CollaboratorsRecord({
 								collaboratorId: data.collaboratorId,
 								createDate: data.createDate,
-								deleteCollaboratorURL: data.deleteCollaboratorURL,
+								deleteCollaboratorURL:
+									data.deleteCollaboratorURL,
 								emailAddress: fields.emailAddress.value,
 								fullName: fields.fullName.value,
 								gitHubUserName: fields.gitHubUserName.value
@@ -153,13 +154,6 @@ export default function AddSourceCodeAccessModal({
 							addCollaborator();
 							setConfirmation('project-status');
 							break;
-						case 'duplicate-collaborator':
-							setCustomError(
-								Liferay.Language.get(
-									'please-provide-a-unique-github-username'
-								)
-							);
-							break;
 						default:
 							setCustomError(
 								Liferay.Language.get(
@@ -170,12 +164,37 @@ export default function AddSourceCodeAccessModal({
 
 					setDataLoading(false);
 				})
-				.catch(() => {
-					setCustomError(
-						Liferay.Language.get(
-							'could-not-submit-please-try-again'
+				.catch(({response}) => {
+					if (
+						response.data.errorMessage.includes(
+							'DuplicateCollaboratorException'
 						)
-					);
+					) {
+						setCustomError(
+							Liferay.Language.get(
+								'please-provide-a-unique-github-username'
+							)
+						);
+					} else if (
+						response.data.errorMessage.includes(
+							'get-a-single-user'
+						) ||
+						response.data.errorMessage.includes(
+							'add-user-as-a-collaborator'
+						)
+					) {
+						setCustomError(
+							Liferay.Language.get(
+								'please-provide-a-valid-github-user-or-collaborator'
+							)
+						);
+					} else {
+						setCustomError(
+							Liferay.Language.get(
+								'could-not-submit-please-try-again'
+							)
+						);
+					}
 
 					setDataLoading(false);
 				});
@@ -345,7 +364,9 @@ function ConfirmationDisplay({confirmationType, onClose}) {
 						{modalWarningHeader}
 
 						<div className="modal-body-text">
-							{Liferay.Language.get('you-will-gain-access-within-a-few-days')}
+							{Liferay.Language.get(
+								'you-will-gain-access-within-a-few-days'
+							)}
 						</div>
 
 						<div className="modal-body-text">
