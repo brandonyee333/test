@@ -1,0 +1,47 @@
+commerce:
+  ml:
+    locale: en_US
+google:
+  storage:
+    bucket: analytics-cloud-analytic-events-uat
+product:
+    content:
+        recommendation:
+            score:
+                function: "tanimoto_coefficient"
+    interaction:
+        recommendation:
+            enable: true
+            score:
+                function: "tanimoto_coefficient"
+user:
+    interaction:
+           recommendation:
+                als:
+                    checkpoint:
+                        interval: 5
+                catalog:
+                    coverage: 0.3
+                train:
+                    split:
+                        ratio: 0.85
+                tuning:
+                    alpha:
+                        - 40
+                        - 60
+                    cross:
+                        validator:
+                            numFolds: 5
+                            parallelism: 2
+                    max:
+                        iteration:
+                            - 10
+                            - 20
+                    rank:
+                        - 10
+                        - 20
+                        - 5
+                    regularization:
+                        parameter:
+                            - 0.1
+                            - 1.0
