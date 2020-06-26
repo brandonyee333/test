@@ -152,7 +152,9 @@ public class FaroInfoIndividualUtil {
 				JSONObject accountJSONObject = accountJSONObjects.get(
 					accountPK);
 
-				jsonArray.put(accountJSONObject);
+				if (accountJSONObject != null) {
+					jsonArray.put(accountJSONObject);
+				}
 			}
 
 			individualAccountsJSONObjects.put(
