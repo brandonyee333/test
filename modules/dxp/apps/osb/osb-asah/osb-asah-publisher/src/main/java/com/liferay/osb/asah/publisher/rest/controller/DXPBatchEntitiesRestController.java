@@ -83,9 +83,6 @@ public class DXPBatchEntitiesRestController {
 
 		ResponseEntity.BodyBuilder bodyBuilder = ResponseEntity.ok();
 
-		bodyBuilder.body(
-			new ByteArrayResource(Files.readAllBytes(file.toPath())));
-
 		bodyBuilder = bodyBuilder.headers(
 			new HttpHeaders() {
 				{
@@ -98,7 +95,8 @@ public class DXPBatchEntitiesRestController {
 				}
 			});
 
-		return bodyBuilder.build();
+		return bodyBuilder.body(
+			new ByteArrayResource(Files.readAllBytes(file.toPath())));
 	}
 
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
