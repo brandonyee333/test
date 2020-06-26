@@ -11,7 +11,7 @@ import {langSub} from '../helpers/language';
 import {CollaboratorsRecord} from '../store/sourceCodeAccessCollaborator';
 
 const ACCESS_DXP_SOURCE_CODE_ARTICLE =
-	'https://help.liferay.com/hc/en-us/articles/360045389291';
+	'https://help.liferay.com/hc/articles/360045389291';
 
 SourceCodeAccess.propTypes = {
 	addCollaboratorURL: PropTypes.string.isRequired,

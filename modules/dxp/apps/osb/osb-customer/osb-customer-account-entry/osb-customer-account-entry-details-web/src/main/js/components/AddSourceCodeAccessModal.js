@@ -166,8 +166,8 @@ export default function AddSourceCodeAccessModal({
 				})
 				.catch(({response}) => {
 					if (
-						response.data.errorMessage.includes(
-							'DuplicateCollaboratorException'
+						response.data.errorMessage.match(
+							/DuplicateCollaboratorException/
 						)
 					) {
 						setCustomError(
@@ -176,11 +176,9 @@ export default function AddSourceCodeAccessModal({
 							)
 						);
 					} else if (
-						response.data.errorMessage.includes(
-							'get-a-single-user'
-						) ||
-						response.data.errorMessage.includes(
-							'add-user-as-a-collaborator'
+						response.data.errorMessage.match(/get-a-single-user/) ||
+						response.data.errorMessage.match(
+							/add-user-as-a-collaborator/
 						)
 					) {
 						setCustomError(
