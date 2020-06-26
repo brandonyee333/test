@@ -45,7 +45,7 @@ class BaseSparkApplication(object):
 	def start(self):
 		pass
 
-class BaseSparkJob:
+class BaseSparkJob(object, metaclass=ABCMeta):
 	def __init__(self, spark_application):
 		self.spark_application = spark_application
 		self.spark_application_args = spark_application.args
