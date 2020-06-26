@@ -36,6 +36,7 @@ import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.search.join.ScoreMode;
@@ -495,6 +496,49 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 		).iterate();
 	}
 
+	private void _deleteAccountReferences(String dataSourceId)
+		throws Exception {
+
+		JSONArrayIterator.of(
+			"individuals", elasticsearchInvoker,
+			individualJSONObject -> {
+				JSONObject modifiedJSONObject = new JSONObject();
+
+				JSONArray dataSourceAccountPKsJSONArray =
+					individualJSONObject.getJSONArray("dataSourceAccountPKs");
+
+				Iterator<Object> iterator =
+					dataSourceAccountPKsJSONArray.iterator();
+
+				while (iterator.hasNext()) {
+					JSONObject jsonObject = (JSONObject)iterator.next();
+
+					if (StringUtils.equals(
+							jsonObject.getString("dataSourceId"),
+							dataSourceId)) {
+
+						iterator.remove();
+					}
+				}
+
+				modifiedJSONObject.put(
+					"dataSourceAccountPKs", dataSourceAccountPKsJSONArray);
+
+				elasticsearchInvoker.update(
+					"individuals", individualJSONObject.getString("id"),
+					modifiedJSONObject);
+
+				return null;
+			}
+		).setQueryBuilder(
+			QueryBuilders.nestedQuery(
+				"dataSourceAccountPKs",
+				QueryBuilders.termQuery(
+					"dataSourceAccountPKs.dataSourceId", dataSourceId),
+				ScoreMode.None)
+		).iterate();
+	}
+
 	private void _deleteData(JSONObject dataSourceJSONObject) throws Exception {
 		String dataSourceId = dataSourceJSONObject.getString("id");
 
@@ -523,6 +567,8 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 				"organizations");
 		}
 		else if (type.equals("SALESFORCE")) {
+			_deleteAccountReferences(dataSourceId);
+
 			_deleteData(
 				dataSourceId, "osbAsahDataSourceId",
 				_salesforceElasticsearchInvoker, "Account", "Contact", "Lead",
