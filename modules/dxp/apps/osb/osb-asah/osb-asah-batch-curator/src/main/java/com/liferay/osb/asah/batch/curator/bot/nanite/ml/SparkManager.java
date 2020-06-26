@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite.ml;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Riccardo Ferrari
@@ -23,6 +24,7 @@ import java.util.List;
 public interface SparkManager {
 
 	public void submitJob(
-		List<String> arguments, String configuration, String name);
+		List<String> arguments, String configuration, String name,
+		Map<String, String> properties);
 
 }

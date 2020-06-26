@@ -26,6 +26,9 @@ import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicat
 import java.io.IOException;
 
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,14 +46,16 @@ public class DataprocSparkManager implements SparkManager {
 
 	@Override
 	public void submitJob(
-		List<String> arguments, String configuration, String name) {
+		List<String> arguments, String configuration, String name,
+		Map<String, String> properties) {
 
 		try {
 			JobControllerClient jobControllerClient =
 				_buildJobControllerClient();
 
 			jobControllerClient.submitJob(
-				_buildSubmitJobRequest(arguments, configuration, name));
+				_buildSubmitJobRequest(
+					arguments, configuration, name, properties));
 
 			jobControllerClient.close();
 		}
@@ -60,12 +65,14 @@ public class DataprocSparkManager implements SparkManager {
 	}
 
 	private Job _buildJob(
-		List<String> arguments, String configuration, String name) {
+		List<String> arguments, String configuration, String name,
+		Map<String, String> properties) {
 
 		Job.Builder builder = Job.newBuilder();
 
 		builder.setPlacement(_buildJobPlacement());
-		builder.setPysparkJob(_buildPySparkJob(arguments, configuration, name));
+		builder.setPysparkJob(
+			_buildPySparkJob(arguments, configuration, name, properties));
 
 		return builder.build();
 	}
@@ -89,7 +96,8 @@ public class DataprocSparkManager implements SparkManager {
 	}
 
 	private PySparkJob _buildPySparkJob(
-		List<String> arguments, String configuration, String name) {
+		List<String> arguments, String configuration, String name,
+		Map<String, String> properties) {
 
 		PySparkJob.Builder builder = PySparkJob.newBuilder();
 
@@ -107,20 +115,64 @@ public class DataprocSparkManager implements SparkManager {
 		builder.setMainPythonFileUri(
 			String.format("gs://%s/osb-asah-spark.py", _bucket));
 
+		if (properties != null) {
+			builder.putAllProperties(properties);
+
+			builder = _configureEnvironmentVariables(builder, properties);
+		}
+
 		return builder.build();
 	}
 
 	private SubmitJobRequest _buildSubmitJobRequest(
-		List<String> arguments, String configuration, String name) {
+		List<String> arguments, String configuration, String name,
+		Map<String, String> properties) {
 
 		SubmitJobRequest.Builder builder = SubmitJobRequest.newBuilder();
 
-		builder.setJob(_buildJob(arguments, configuration, name));
+		builder.setJob(_buildJob(arguments, configuration, name, properties));
 		builder.setProjectId(_projectId);
 		builder.setRegion(_region);
 
 		return builder.build();
 	}
+
+	private PySparkJob.Builder _configureEnvironmentVariables(
+		PySparkJob.Builder pysparkJobBuilder,
+		Map<String, String> contextParameters) {
+
+		Pattern pattern = Pattern.compile(_ENVIRONMENT_VARIABLE_PATTERN);
+
+		for (Map.Entry<String, String> entry : contextParameters.entrySet()) {
+			Matcher matcher = pattern.matcher(entry.getKey());
+
+			if (matcher.matches()) {
+				if (_log.isDebugEnabled()) {
+					_log.debug("Adding variable: " + entry.getKey());
+				}
+
+				String key = "spark.executorEnv." + entry.getKey();
+
+				pysparkJobBuilder = pysparkJobBuilder.putProperties(
+					key, entry.getValue());
+
+				key = "spark.yarn.appMasterEnv." + entry.getKey();
+
+				pysparkJobBuilder = pysparkJobBuilder.putProperties(
+					key, entry.getValue());
+			}
+			else {
+				if (_log.isDebugEnabled()) {
+					_log.debug("Skipping variable: " + entry.getKey());
+				}
+			}
+		}
+
+		return pysparkJobBuilder;
+	}
+
+	private static final String _ENVIRONMENT_VARIABLE_PATTERN =
+		"^[A-Z_]{1}[A-Z0-9_]+$";
 
 	private static final Log _log = LogFactory.getLog(
 		DataprocSparkManager.class);

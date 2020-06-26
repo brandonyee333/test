@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicat
 import com.liferay.osb.asah.common.spring.http.Http;
 
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 
@@ -37,7 +38,8 @@ public class LocalSparkManager implements SparkManager {
 
 	@Override
 	public void submitJob(
-		List<String> arguments, String configuration, String name) {
+		List<String> arguments, String configuration, String name,
+		Map<String, String> properties) {
 
 		_http.exchange(
 			_livyServerURL, "/batches", HttpMethod.POST,
