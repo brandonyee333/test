@@ -50,7 +50,7 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 	public void run(JSONObject contextJSONObject) throws Exception {
 		JSONObject jobJSONObject = contextJSONObject.getJSONObject("job");
 
-		String now = DateUtil.newUTCDateString();
+		String dateString = DateUtil.newUTCDateString();
 
 		String jobType = jobJSONObject.getString("type");
 
@@ -59,7 +59,7 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 			JSONUtil.put(
 				"context", new JSONObject()
 			).put(
-				"createdDate", now
+				"createdDate", dateString
 			).put(
 				"job",
 				JSONUtil.put(
@@ -68,7 +68,7 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 					"type", jobType
 				)
 			).put(
-				"lastUpdatedDate", now
+				"lastUpdatedDate", dateString
 			).put(
 				"status", "RUNNING"
 			));

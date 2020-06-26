@@ -70,14 +70,14 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 			return;
 		}
 
-		String now = DateUtil.newUTCDateString();
+		String dateString = DateUtil.newUTCDateString();
 
 		JSONObject jobRunJSONObject = _faroInfoElasticsearchInvoker.add(
 			"job-runs",
 			JSONUtil.put(
 				"context", new JSONObject()
 			).put(
-				"createdDate", now
+				"createdDate", dateString
 			).put(
 				"job",
 				JSONUtil.put(
@@ -86,7 +86,7 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 					"type", jobJSONObject.getString("type")
 				)
 			).put(
-				"lastUpdatedDate", now
+				"lastUpdatedDate", dateString
 			).put(
 				"status", "RUNNING"
 			).put(
