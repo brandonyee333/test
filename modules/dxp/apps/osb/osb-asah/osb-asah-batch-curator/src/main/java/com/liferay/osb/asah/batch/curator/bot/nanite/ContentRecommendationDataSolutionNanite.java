@@ -778,7 +778,8 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 				"--job-run-id", jobRunJSONObject.getString("id"),
 				"--lcp-project-id", ServiceConstants.LCP_PROJECT_ID),
 			"content_recommendation.yaml",
-			"liferay.content_recommendation.ContentRecommendationApplication");
+			"liferay.content_recommendation.ContentRecommendationApplication",
+			null);
 	}
 
 	private void _updateJobRun(JSONObject jobRunJSONObject) {
