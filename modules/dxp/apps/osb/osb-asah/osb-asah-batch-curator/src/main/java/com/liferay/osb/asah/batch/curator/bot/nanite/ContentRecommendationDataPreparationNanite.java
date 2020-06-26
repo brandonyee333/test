@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import javax.annotation.PostConstruct;
 
@@ -100,7 +101,7 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 				"--lcp-project-id", ServiceConstants.LCP_PROJECT_ID),
 			"content_recommendation.yaml",
 			"liferay.content_recommendation.ContentRecommendationApplication",
-			null);
+			Collections.emptyMap());
 	}
 
 	private long _getCurrentMonthJobRunsCount(String jobId) {

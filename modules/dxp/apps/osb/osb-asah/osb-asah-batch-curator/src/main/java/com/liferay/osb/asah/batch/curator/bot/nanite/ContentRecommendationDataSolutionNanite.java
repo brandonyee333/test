@@ -74,6 +74,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -779,7 +780,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 				"--lcp-project-id", ServiceConstants.LCP_PROJECT_ID),
 			"content_recommendation.yaml",
 			"liferay.content_recommendation.ContentRecommendationApplication",
-			null);
+			Collections.emptyMap());
 	}
 
 	private void _updateJobRun(JSONObject jobRunJSONObject) {

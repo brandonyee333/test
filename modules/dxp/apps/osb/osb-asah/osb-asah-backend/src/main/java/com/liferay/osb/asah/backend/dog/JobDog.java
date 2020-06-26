@@ -421,10 +421,10 @@ public class JobDog {
 		new HashMap<JobType, String>() {
 			{
 				put(
-					JobType.COMMERCE_PRODUCT_CONTENT_RECOMMENDATION,
+					JobType.COMMERCE_PRODUCT_RECOMMENDATION_PRODUCT_CONTENT,
 					"CommerceRecommendationNanite");
 				put(
-					JobType.COMMERCE_USER_INTERACTION_RECOMMENDATION,
+					JobType.COMMERCE_PRODUCT_RECOMMENDATION_USER_INTERACTION,
 					"CommerceRecommendationNanite");
 				put(
 					JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY,

@@ -73,38 +73,40 @@ public class CommerceRecommendationNanite extends BaseNanite {
 				"status", "RUNNING"
 			));
 
-		Map<String, String> properties = new HashMap<>();
-
-		properties.put(
-			"spark.executor.extraJavaOptions", "-XX:ThreadStackSize=8192");
-		properties.put(
-			"spark.serializer", "org.apache.spark.serializer.KryoSerializer");
-
 		_sparkManager.submitJob(
 			Arrays.asList(
 				"--elasticsearch-hostname",
 				ServiceConstants.LCP_ENGINE_ELASTICSEARCH_SERVER_IP,
 				"--job-run-id", jobRunJSONObject.getString("id"),
 				"--lcp-project-id", ServiceConstants.LCP_PROJECT_ID),
-			"commerce_application.yaml", _getApplicationClassName(jobType),
-			properties);
-	}
-
-	private String _getApplicationClassName(String jobType) {
-		if (jobType.equals("COMMERCE_PRODUCT_CONTENT_RECOMMENDATION")) {
-			return "liferay.commerce.recommend." +
-				"ProductContentRecommendationApplication";
-		}
-
-		if (jobType.equals("COMMERCE_USER_INTERACTION_RECOMMENDATION")) {
-			return "liferay.commerce.recommend." +
-				"UserInteractionRecommendationApplication";
-		}
-
-		return null;
+			"commerce_application.yaml",
+			_jobTypeApplicationClassNameMap.get(jobType),
+			new HashMap<String, String>() {
+				{
+					put(
+						"spark.executor.extraJavaOptions",
+						"-XX:ThreadStackSize=8192");
+					put(
+						"spark.serializer",
+						"org.apache.spark.serializer.KryoSerializer");
+				}
+			});
 	}
 
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+	private final Map<String, String> _jobTypeApplicationClassNameMap =
+		new HashMap<String, String>() {
+			{
+				put(
+					"COMMERCE_PRODUCT_RECOMMENDATION_PRODUCT_CONTENT",
+					"liferay.commerce.recommend." +
+						"ProductContentRecommendationApplication");
+				put(
+					"COMMERCE_PRODUCT_RECOMMENDATION_USER_INTERACTION",
+					"liferay.commerce.recommend." +
+						"UserInteractionRecommendationApplication");
+			}
+		};
 
 	@Autowired
 	private SparkManager _sparkManager;

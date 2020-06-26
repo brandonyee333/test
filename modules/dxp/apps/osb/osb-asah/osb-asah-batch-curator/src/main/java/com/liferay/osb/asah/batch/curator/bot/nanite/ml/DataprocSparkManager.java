@@ -115,11 +115,9 @@ public class DataprocSparkManager implements SparkManager {
 		builder.setMainPythonFileUri(
 			String.format("gs://%s/osb-asah-spark.py", _bucket));
 
-		if (properties != null) {
-			builder.putAllProperties(properties);
+		builder.putAllProperties(properties);
 
-			builder = _configureEnvironmentVariables(builder, properties);
-		}
+		_putPySparkJobBuilderEnvironmentVariables(builder, properties);
 
 		return builder.build();
 	}
@@ -137,29 +135,24 @@ public class DataprocSparkManager implements SparkManager {
 		return builder.build();
 	}
 
-	private PySparkJob.Builder _configureEnvironmentVariables(
-		PySparkJob.Builder pysparkJobBuilder,
-		Map<String, String> contextParameters) {
+	private PySparkJob.Builder _putPySparkJobBuilderEnvironmentVariables(
+		PySparkJob.Builder pySparkJobBuilder, Map<String, String> properties) {
 
-		Pattern pattern = Pattern.compile(_ENVIRONMENT_VARIABLE_PATTERN);
-
-		for (Map.Entry<String, String> entry : contextParameters.entrySet()) {
-			Matcher matcher = pattern.matcher(entry.getKey());
+		for (Map.Entry<String, String> entry : properties.entrySet()) {
+			Matcher matcher = _environmentVariablePattern.matcher(
+				entry.getKey());
 
 			if (matcher.matches()) {
 				if (_log.isDebugEnabled()) {
 					_log.debug("Adding variable: " + entry.getKey());
 				}
 
-				String key = "spark.executorEnv." + entry.getKey();
+				pySparkJobBuilder.putProperties(
+					"spark.executorEnv." + entry.getKey(), entry.getValue());
 
-				pysparkJobBuilder = pysparkJobBuilder.putProperties(
-					key, entry.getValue());
-
-				key = "spark.yarn.appMasterEnv." + entry.getKey();
-
-				pysparkJobBuilder = pysparkJobBuilder.putProperties(
-					key, entry.getValue());
+				pySparkJobBuilder.putProperties(
+					"spark.yarn.appMasterEnv." + entry.getKey(),
+					entry.getValue());
 			}
 			else {
 				if (_log.isDebugEnabled()) {
@@ -168,14 +161,14 @@ public class DataprocSparkManager implements SparkManager {
 			}
 		}
 
-		return pysparkJobBuilder;
+		return pySparkJobBuilder;
 	}
-
-	private static final String _ENVIRONMENT_VARIABLE_PATTERN =
-		"^[A-Z_]{1}[A-Z0-9_]+$";
 
 	private static final Log _log = LogFactory.getLog(
 		DataprocSparkManager.class);
+
+	private static final Pattern _environmentVariablePattern = Pattern.compile(
+		"^[A-Z_]{1}[A-Z0-9_]+$");
 
 	@Value("${osb.asah.spark.manager.bucket:analytics-cloud-osbasahspark}")
 	private String _bucket;

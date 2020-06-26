@@ -83,7 +83,7 @@ public class DXPBatchEntitiesRestController {
 
 		ResponseEntity.BodyBuilder bodyBuilder = ResponseEntity.ok();
 
-		bodyBuilder = bodyBuilder.headers(
+		bodyBuilder.headers(
 			new HttpHeaders() {
 				{
 					add(
