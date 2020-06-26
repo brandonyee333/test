@@ -35,7 +35,7 @@ import org.springframework.stereotype.Component;
  * @author Riccardo Ferrari
  */
 @Component
-public class CommerceRecommendationNanite extends BaseNanite {
+public class CommerceProductRecommendationNanite extends BaseNanite {
 
 	@Override
 	@PostConstruct

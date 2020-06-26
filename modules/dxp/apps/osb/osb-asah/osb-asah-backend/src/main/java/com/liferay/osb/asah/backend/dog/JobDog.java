@@ -422,10 +422,10 @@ public class JobDog {
 			{
 				put(
 					JobType.COMMERCE_PRODUCT_RECOMMENDATION_PRODUCT_CONTENT,
-					"CommerceRecommendationNanite");
+					"CommerceProductRecommendationNanite");
 				put(
 					JobType.COMMERCE_PRODUCT_RECOMMENDATION_USER_INTERACTION,
-					"CommerceRecommendationNanite");
+					"CommerceProductRecommendationNanite");
 				put(
 					JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY,
 					"ContentRecommendationDataPreparationNanite");
