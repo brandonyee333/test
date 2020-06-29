@@ -33,7 +33,7 @@ public class UserActionDisplayContext {
 
 		UserActionContributor[] userActionContributors =
 			(UserActionContributor[])request.getAttribute(
-				UsersAdminWebKeys.USER_ACTION_CONTRIBUTORS);
+				"USER_ACTION_CONTRIBUTORS");
 
 		if (userActionContributors == null) {
 			_filteredUserActionContributors = new UserActionContributor[0];

@@ -50,7 +50,7 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 		RenderRequest renderRequest, RenderResponse renderResponse) {
 
 		renderRequest.setAttribute(
-			UsersAdminWebKeys.USER_ACTION_CONTRIBUTORS,
+			"USER_ACTION_CONTRIBUTORS",
 			_userActionContributors.toArray(new UserActionContributor[0]));
 
 		return "/view.jsp";
