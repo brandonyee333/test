@@ -11,16 +11,17 @@
 
 from abc import ABCMeta, abstractmethod
 
-from pyspark.sql import SparkSession
+from pyspark.ml.linalg import DenseVector, VectorUDT
+
 from pyspark.sql.functions import udf
 from pyspark.sql.types import DoubleType
-from pyspark.ml.linalg import DenseVector, VectorUDT
 
 import numpy as np
 
 class BaseUDFFunction(object, metaclass=ABCMeta):
-	def __init__(self, spark_session: SparkSession):
+	def __init__(self, spark_session):
 		udf_function = udf(self.udf_function, self.get_return_type())
+
 		spark_session.udf.register(self.get_function_name(), udf_function)
 
 	@staticmethod
@@ -39,7 +40,7 @@ class BaseUDFFunction(object, metaclass=ABCMeta):
 		raise NotImplementedError()
 
 class TanimotoCoefficientUDFFunction(BaseUDFFunction):
-	def __init__(self, spark_session: SparkSession):
+	def __init__(self, spark_session):
 		super().__init__(spark_session)
 
 	@staticmethod
@@ -64,7 +65,7 @@ class TanimotoCoefficientUDFFunction(BaseUDFFunction):
 		        (norm1_squared + norm2_squared - dot_product)).item()
 
 class ToDenseVectorUDFFunction(BaseUDFFunction):
-	def __init__(self, spark_session: SparkSession):
+	def __init__(self, spark_session):
 		super().__init__(spark_session)
 
 	@staticmethod

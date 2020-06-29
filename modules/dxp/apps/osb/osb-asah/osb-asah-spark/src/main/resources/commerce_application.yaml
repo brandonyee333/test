@@ -3,7 +3,7 @@ commerce:
     locale: en_US
 google:
   storage:
-    bucket: analytics-cloud-analytic-events-uat
+    bucket: gs://analytics-cloud-analytic-events-uat
 product:
     content:
         recommendation:
