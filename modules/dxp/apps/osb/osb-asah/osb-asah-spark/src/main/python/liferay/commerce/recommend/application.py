@@ -9,21 +9,19 @@
 # distribution rights of the Software.
 #
 
+from ...common.elasticsearch import ElasticsearchBridge
+from ...common.spark import BaseSparkApplication, SparkJobPipeline
+
+from ..configuration import CommerceConfiguration, JobManager
+from ..udf import TanimotoCoefficientUDFFunction, ToDenseVectorUDFFunction
+
+from .job import *
+
+from abc import ABCMeta, abstractmethod
+
 import argparse
 import logging
 import sys
-from abc import ABCMeta, abstractmethod
-
-from liferay.commerce.configuration import CommerceConfiguration, JobManager
-from liferay.commerce.constants import ProductInteractionRecommendationConstants
-from liferay.commerce.recommend.job import ProductContentJSONFileReader, ProductContentPipelineJob, \
- ProductContentRecommendationJob, ProductContentRecommendationJSONFileWriter, ProductInteractionJSONFileReader, \
- OrderInteractionJSONFileReader, UserInteractionDataPreparationSparkJob, \
- UserInteractionCollaborativeFilteringSparkJob, ProductInteractionRecommendationSparkJob, \
- ProductInteractionRecommendationJSONFileWriterSparkJob, ContextUserInteractionRecommendationJSONFileWriterSparkJob
-from liferay.commerce.udf import TanimotoCoefficientUDFFunction, ToDenseVectorUDFFunction
-from liferay.common.elasticsearch import ElasticsearchBridge
-from liferay.common.spark import BaseSparkApplication, SparkJobPipeline
 
 class BaseCommerceSparkApplication(BaseSparkApplication, metaclass=ABCMeta):
 	def __init__(self):
@@ -78,7 +76,7 @@ class BaseCommerceSparkApplication(BaseSparkApplication, metaclass=ABCMeta):
 		return logging.getLogger(self.__class__.__name__)
 
 	@abstractmethod
-	def _create_spark_job_pipeline(self) -> SparkJobPipeline:
+	def _create_spark_job_pipeline(self):
 		pass
 
 class ProductContentRecommendationApplication(BaseCommerceSparkApplication):
@@ -90,10 +88,10 @@ class ProductContentRecommendationApplication(BaseCommerceSparkApplication):
 	def _create_spark_job_pipeline(self):
 		jobs = list()
 
-		jobs.append(ProductContentJSONFileReader(self))
-		jobs.append(ProductContentPipelineJob(self))
-		jobs.append(ProductContentRecommendationJob(self))
-		jobs.append(ProductContentRecommendationJSONFileWriter(self))
+		jobs.append(ProductContentDataFrameReaderSparkJob(self))
+		jobs.append(ProductContentPipelineSparkJob(self))
+		jobs.append(ProductContentRecommendationSparkJob(self))
+		jobs.append(ProductContentRecommendationDataFrameWriter(self))
 
 		return SparkJobPipeline(jobs)
 
@@ -104,26 +102,25 @@ class UserInteractionRecommendationApplication(BaseCommerceSparkApplication):
 		TanimotoCoefficientUDFFunction(self.spark_session)
 		ToDenseVectorUDFFunction(self.spark_session)
 
-	def _create_spark_job_pipeline(self) -> SparkJobPipeline:
+	def _create_spark_job_pipeline(self):
 		jobs = list()
 
-		jobs.append(ProductInteractionJSONFileReader(self))
-		jobs.append(OrderInteractionJSONFileReader(self))
+		jobs.append(ProductInteractionDataFrameReaderSparkJob(self))
+		jobs.append(OrderInteractionDataFrameReaderSparkJob(self))
 		jobs.append(UserInteractionDataPreparationSparkJob(self))
 		jobs.append(UserInteractionCollaborativeFilteringSparkJob(self))
 		jobs.append(
-		    ContextUserInteractionRecommendationJSONFileWriterSparkJob(self)
+		    ContextUserInteractionRecommendationDataFrameWriterSparkJob(self)
 		)
 
 		product_interaction_recommendation_enable = self.configuration.get(
-		    ProductInteractionRecommendationConstants.
-		    PRODUCT_INTERACTION_RECOMMENDATION_ENABLE
+		    'product.interaction.recommendation.enable'
 		)
 
 		if product_interaction_recommendation_enable:
 			jobs.append(ProductInteractionRecommendationSparkJob(self))
 			jobs.append(
-			    ProductInteractionRecommendationJSONFileWriterSparkJob(self)
+			    ProductInteractionRecommendationDataFrameWriterSparkJob(self)
 			)
 
 		return SparkJobPipeline(jobs)
