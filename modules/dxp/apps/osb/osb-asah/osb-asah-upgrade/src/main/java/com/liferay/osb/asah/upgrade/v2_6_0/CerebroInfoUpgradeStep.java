@@ -147,6 +147,10 @@ public class CerebroInfoUpgradeStep implements UpgradeStep {
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
+		if (aggregations == null) {
+			return dataSourceIds;
+		}
+
 		Terms terms = aggregations.get("dataSources");
 
 		for (Terms.Bucket bucket : terms.getBuckets()) {
