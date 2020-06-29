@@ -549,9 +549,9 @@ class UserInteractionCollaborativeFilteringSparkJob(BaseSparkJob):
 
 	def _get_evaluator(self):
 		return MAPEvaluator(
-		    query_col='commerceAccountId',
-		    label_col='rating',
-		    prediction_col='prediction'
+		    label_column_name='rating',
+		    prediction_column_name='prediction',
+		    query_column_name='commerceAccountId'
 		)
 
 	def _get_requested_catalog_coverage(self):

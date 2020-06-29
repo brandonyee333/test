@@ -119,9 +119,9 @@ class CommerceFeatureExtractor(object):
 class MAPEvaluator(Evaluator):
 	def __init__(
 	    self,
-	    query_column_name,
 	    label_column_name,
 	    prediction_column_name,
+	    query_column_name,
 	    threshold=0.5
 	):
 		super(MAPEvaluator, self).__init__()
