@@ -13,6 +13,54 @@ from ..common.configuration import Configuration
 
 from datetime import datetime
 
+class CommerceConfiguration(Configuration):
+	def __init__(self, configuration_path, job_manager):
+		super(CommerceConfiguration, self).__init__(configuration_path)
+
+		self.job_manager = job_manager
+
+	def get(self, key, default_value=None):
+		value = self._get_environment_variable(key)
+
+		if value is not None:
+			return self._cast_value(value)
+
+		value = self.job_manager.get_job_parameter(key)
+
+		if value is not None:
+			return self._cast_value(value)
+
+		if self._dict is not None:
+			value = self._dict.get(key)
+
+		if value is not None:
+			return value
+
+		return default_value
+
+	def get_list(self, key=None, default=None):
+		value = self.get(key, default_value=default)
+
+		if isinstance(value, list):
+			return value
+
+		if isinstance(value, str):
+			return [self._cast_value(v.strip()) for v in value.split(',')]
+
+		if value is None:
+			return None
+
+		return [value]
+
+	def _cast_value(self, value):
+		if value.lower() in ['true', 'false']:
+			return value.lower() == 'true'
+
+		if value.replace('.', '', 1).isdigit():
+			return float(value) if '.' in value else int(value)
+
+		return value
+
 class JobManager(object):
 	def __init__(self, elasticsearch_bridge, job_run_id):
 		self.elasticsearch_bridge = elasticsearch_bridge
@@ -70,51 +118,3 @@ class JobManager(object):
 		)
 
 		return document['job']['id']
-
-class CommerceConfiguration(Configuration):
-	def __init__(self, configuration_path, job_manager):
-		super(CommerceConfiguration, self).__init__(configuration_path)
-
-		self.job_manager = job_manager
-
-	def get(self, key, default_value=None):
-		value = self._get_environment_variable(key)
-
-		if value is not None:
-			return self._cast_value(value)
-
-		value = self.job_manager.get_job_parameter(key)
-
-		if value is not None:
-			return self._cast_value(value)
-
-		if self._dict is not None:
-			value = self._dict.get(key)
-
-		if value is not None:
-			return value
-
-		return default_value
-
-	def get_list(self, key=None, default=None):
-		value = self.get(key, default_value=default)
-
-		if isinstance(value, list):
-			return value
-
-		if isinstance(value, str):
-			return [self._cast_value(v.strip()) for v in value.split(',')]
-
-		if value is None:
-			return None
-
-		return [value]
-
-	def _cast_value(self, value):
-		if value.lower() in ['true', 'false']:
-			return value.lower() == 'true'
-
-		if value.replace('.', '', 1).isdigit():
-			return float(value) if '.' in value else int(value)
-
-		return value
