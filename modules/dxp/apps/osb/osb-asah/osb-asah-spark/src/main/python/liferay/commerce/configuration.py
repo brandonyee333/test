@@ -9,31 +9,20 @@
 # distribution rights of the Software.
 #
 
-import string
+from ..common.configuration import Configuration
+
 from datetime import datetime
 
-from liferay.common.configuration import Configuration
-from liferay.common.elasticsearch import ElasticsearchBridge
-
 class JobManager(object):
-
-	_OSB_ASAH_JOBS_COLLECTION = 'jobs'
-
-	_OSB_ASAH_JOB_RUNS_COLLECTION = 'job-runs'
-
-	_OSB_ASAH_FARO_INFO_NAMESPACE = 'osbasahfaroinfo'
-
-	def __init__(
-	    self, elasticsearch_bridge: ElasticsearchBridge, job_run_id: string
-	):
+	def __init__(self, elasticsearch_bridge, job_run_id):
 		self.elasticsearch_bridge = elasticsearch_bridge
 
 		self.job_run_id = job_run_id
 
 		self.job_id = self._get_job_id()
 
-	def get_parameter(self, parameter_name, default_value=None):
-		parameters = self.get_parameters()
+	def get_job_parameter(self, parameter_name, default_value=None):
+		parameters = self.get_job_parameters()
 
 		for parameter in parameters:
 			if parameter['name'] == parameter_name:
@@ -41,65 +30,49 @@ class JobManager(object):
 
 		return default_value
 
-	def get_parameters(self):
-		elasticsearch_bridge = self.elasticsearch_bridge
-
-		document = elasticsearch_bridge.get_document(
-		    self._OSB_ASAH_JOBS_COLLECTION, self.job_id,
-		    self._OSB_ASAH_FARO_INFO_NAMESPACE
+	def get_job_parameters(self):
+		document = self.elasticsearch_bridge.get_document(
+		    'jobs', self.job_id, 'osbasahfaroinfo'
 		)
 
 		return document['parameters']
 
-	def get_context_attribute(self, name: string, default_value: string = None):
-		elasticsearch_bridge = self.elasticsearch_bridge
-
-		document = elasticsearch_bridge.get_document(
-		    self._OSB_ASAH_JOB_RUNS_COLLECTION, self.job_run_id,
-		    self._OSB_ASAH_FARO_INFO_NAMESPACE
+	def get_job_run_context_attribute(self, attribute_name, default_value=None):
+		document = self.elasticsearch_bridge.get_document(
+		    'job-runs', self.job_run_id, 'osbasahfaroinfo'
 		)
 
 		context = document['context']
 
-		return context.get(name, default_value=default_value)
+		return context.get(attribute_name, default_value=default_value)
 
-	def update_context_attribute(self, attribute_name, value):
-		elasticsearch_bridge = self.elasticsearch_bridge
-
-		elasticsearch_bridge.update_document(
-		    self._OSB_ASAH_JOB_RUNS_COLLECTION, {
+	def update_job_run_context_attribute(self, attribute_name, attribute_value):
+		self.elasticsearch_bridge.update_document(
+		    'job-runs', {
 		        'context': {
-		            attribute_name: value
+		            attribute_name: attribute_value
 		        },
 		        'lastUpdatedDate': datetime.utcnow(),
-		    }, self.job_run_id, self._OSB_ASAH_FARO_INFO_NAMESPACE
+		    }, self.job_run_id, 'osbasahfaroinfo'
 		)
 
-	def update_status(self, status):
-		elasticsearch_bridge = self.elasticsearch_bridge
-
-		elasticsearch_bridge.update_document(
-		    self._OSB_ASAH_JOB_RUNS_COLLECTION, {
+	def update_job_run_status(self, status):
+		self.elasticsearch_bridge.update_document(
+		    'job-runs', {
 		        'status': status,
 		        'lastUpdatedDate': datetime.utcnow(),
-		    }, self.job_run_id, self._OSB_ASAH_FARO_INFO_NAMESPACE
+		    }, self.job_run_id, 'osbasahfaroinfo'
 		)
 
 	def _get_job_id(self):
-		elasticsearch_bridge = self.elasticsearch_bridge
-
-		document = elasticsearch_bridge.get_document(
-		    self._OSB_ASAH_JOB_RUNS_COLLECTION, self.job_run_id,
-		    self._OSB_ASAH_FARO_INFO_NAMESPACE
+		document = self.elasticsearch_bridge.get_document(
+		    'job-runs', self.job_run_id, 'osbasahfaroinfo'
 		)
 
 		return document['job']['id']
 
 class CommerceConfiguration(Configuration):
-
-	_BOOLEAN_VALUES = ['true', 'false']
-
-	def __init__(self, configuration_path: string, job_manager: JobManager):
+	def __init__(self, configuration_path, job_manager):
 		super(CommerceConfiguration, self).__init__(configuration_path)
 
 		self.job_manager = job_manager
@@ -110,7 +83,7 @@ class CommerceConfiguration(Configuration):
 		if value is not None:
 			return self._cast_value(value)
 
-		value = self.job_manager.get_parameter(key)
+		value = self.job_manager.get_job_parameter(key)
 
 		if value is not None:
 			return self._cast_value(value)
@@ -130,7 +103,7 @@ class CommerceConfiguration(Configuration):
 			return value
 
 		if isinstance(value, str):
-			return [self._cast_value(x.strip()) for x in value.split(',')]
+			return [self._cast_value(v.strip()) for v in value.split(',')]
 
 		if value is None:
 			return None
@@ -138,7 +111,7 @@ class CommerceConfiguration(Configuration):
 		return [value]
 
 	def _cast_value(self, value):
-		if value.lower() in self._BOOLEAN_VALUES:
+		if value.lower() in ['true', 'false']:
 			return value.lower() == 'true'
 
 		if value.replace('.', '', 1).isdigit():
