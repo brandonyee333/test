@@ -6,7 +6,7 @@
 		"OSB_ASAH_ANALYTICS_EVENTS_STORAGE_PATH": "/storage/analytics_events.json"
 	},
 	"id": "osbasahextractor",
-	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-extractor-20200627-c2984e6",
+	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-extractor-20200629-dd3a7be",
 	"kind": "Deployment",
 	"memory": 3072,
 	"ports": [
