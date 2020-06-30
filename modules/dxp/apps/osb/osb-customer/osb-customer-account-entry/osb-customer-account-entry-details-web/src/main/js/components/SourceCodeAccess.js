@@ -208,8 +208,7 @@ function PanelSubHeading() {
 		Liferay.Language.get(
 			"add-your-email-address-and-github-username-to-get-access-to-liferay-dxp's-source-code-refer-to-this-article-for-details"
 		),
-		['btn-link component-title', ACCESS_DXP_SOURCE_CODE_ARTICLE],
-		false
+		['btn-link component-title', ACCESS_DXP_SOURCE_CODE_ARTICLE]
 	);
 
 	return <div className="panel-subtitle">
