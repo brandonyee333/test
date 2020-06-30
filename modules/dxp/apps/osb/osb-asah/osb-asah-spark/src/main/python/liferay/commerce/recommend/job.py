@@ -439,48 +439,11 @@ class UserInteractionCollaborativeFilteringSparkJob(BaseSparkJob):
 
 		best_model = training_pipeline_model.bestModel
 
-		# Model parameters
+		self._log_model_details(best_model)
 
-		if self._log.isEnabledFor(logging.INFO):
-			self._log.info("Best model details:")
-			self._log.info(
-			    "Max Iterations: {}".format(
-			        best_model._java_obj.parent().getMaxIter()
-			    )
-			)
-			self._log.info(
-			    "Reg Parameter: {}".format(
-			        best_model._java_obj.parent().getRegParam()
-			    )
-			)
-			self._log.info(
-			    "Alpha: {}".format(best_model._java_obj.parent().getAlpha())
-			)
-			self._log.info(
-			    "Rank: {}".format(best_model._java_obj.parent().getRank())
-			)
-			self._log.info(
-			    "Non-negative feedback: {}".format(
-			        best_model._java_obj.parent().getNonnegative()
-			    )
-			)
-
-		# Model performance
-
-		if self._log.isEnabledFor(logging.INFO):
-			test_map = self._get_evaluator().evaluate(
-			    best_model.transform(test_data_frame)
-			)
-
-			self._log.info("Model performance on TEST set: {}".format(test_map))
-
-			train_map = self._get_evaluator().evaluate(
-			    best_model.transform(train_data_frame)
-			)
-
-			self._log.info(
-			    "Model performance on TRAIN set: {}".format(train_map)
-			)
+		self._log_model_performance(
+		    best_model, test_data_frame, train_data_frame
+		)
 
 		requested_catalog_coverage = self._get_requested_catalog_coverage()
 
@@ -606,6 +569,41 @@ class UserInteractionCollaborativeFilteringSparkJob(BaseSparkJob):
 		        )
 		    )
 		)
+
+	def _log_model_details(self, model):
+		if not self._log.isEnabledFor(logging.INFO):
+			return
+
+		self._log.info("Best model details:")
+		self._log.info(
+		    "Max Iterations: {}".format(model._java_obj.parent().getMaxIter())
+		)
+		self._log.info(
+		    "Reg Parameter: {}".format(model._java_obj.parent().getRegParam())
+		)
+		self._log.info("Alpha: {}".format(model._java_obj.parent().getAlpha()))
+		self._log.info("Rank: {}".format(model._java_obj.parent().getRank()))
+		self._log.info(
+		    "Non-negative feedback: {}".format(
+		        model._java_obj.parent().getNonnegative()
+		    )
+		)
+
+	def _log_model_performance(self, model, test_data_frame, train_data_frame):
+		if not self._log.isEnabledFor(logging.INFO):
+			return
+
+		test_map = self._get_evaluator().evaluate(
+		    model.transform(test_data_frame)
+		)
+
+		self._log.info("Model performance on TEST set: {}".format(test_map))
+
+		train_map = self._get_evaluator().evaluate(
+		    model.transform(train_data_frame)
+		)
+
+		self._log.info("Model performance on TRAIN set: {}".format(train_map))
 
 	def _split_train_test(self, user_item_data_frame):
 		train_split_ratio = self.spark_application.configuration.get(
