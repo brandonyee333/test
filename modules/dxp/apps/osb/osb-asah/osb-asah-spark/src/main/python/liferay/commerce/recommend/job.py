@@ -123,7 +123,7 @@ class ProductContentDataFrameReaderSparkJob(BaseDataFrameReaderSparkJob):
 		super(ProductContentDataFrameReaderSparkJob, self).__init__(
 		    spark_application,
 		    'com.liferay.headless.commerce.admin.catalog.dto.v1_0.Product',
-		    'product_data'
+		    'products'
 		)
 
 	def _post_process(self, product_data_frame):
@@ -208,7 +208,7 @@ class ProductContentPipelineSparkJob(BaseSparkJob):
 		self._commerce_feature_extractor = CommerceFeatureExtractor()
 
 	def run(self):
-		products_data_frame = self.spark_session.table('product_data')
+		products_data_frame = self.spark_session.table('products')
 
 		feature_column_names = [
 		    column for column in products_data_frame.columns
@@ -310,7 +310,7 @@ class ProductInteractionDataFrameReaderSparkJob(BaseDataFrameReaderSparkJob):
 		super().__init__(
 		    spark_application,
 		    'com.liferay.headless.commerce.admin.catalog.dto.v1_0.Product',
-		    'product_interaction_table'
+		    'product_interactions'
 		)
 
 	def _post_process(self, data_frame):
@@ -407,7 +407,7 @@ class OrderInteractionDataFrameReaderSparkJob(BaseDataFrameReaderSparkJob):
 		super().__init__(
 		    spark_application,
 		    'com.liferay.headless.commerce.admin.order.dto.v1_0.Order',
-		    'order_interaction_table'
+		    'order_interactions'
 		)
 
 	def _post_process(self, data_frame):
@@ -479,7 +479,7 @@ class UserInteractionCollaborativeFilteringSparkJob(BaseSparkJob):
 	    self, recommendations_data_frame
 	):
 		product_interaction_data_frame = self.spark_session.table(
-		    'product_interaction_table'
+		    'product_interactions'
 		).select('CPDefinitionId', 'assetCategoryIds')
 
 		return recommendations_data_frame.selectExpr(
@@ -500,7 +500,7 @@ class UserInteractionCollaborativeFilteringSparkJob(BaseSparkJob):
 
 	def _get_requested_catalog_coverage(self):
 		product_interaction_data_frame = self.spark_session.table(
-		    'product_interaction_table'
+		    'product_interactions'
 		)
 
 		catalog_coverage = float(
@@ -626,11 +626,11 @@ class UserInteractionDataPreparationSparkJob(BaseSparkJob):
 
 	def run(self):
 		cp_instance_data_frame = self.spark_session.table(
-		    'product_interaction_table'
+		    'product_interactions'
 		).selectExpr('CPDefinitionId', 'explode(sku_list) as sku')
 
 		order_interaction_data_frame = self.spark_session.table(
-		    'order_interaction_table'
+		    'order_interactions'
 		)
 
 		user_item_ratings_data_frame = order_interaction_data_frame.join(
