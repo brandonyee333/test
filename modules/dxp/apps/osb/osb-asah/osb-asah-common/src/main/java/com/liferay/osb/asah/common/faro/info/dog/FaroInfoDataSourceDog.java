@@ -573,6 +573,9 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 				dataSourceId, "osbAsahDataSourceId",
 				_salesforceElasticsearchInvoker, "Account", "Contact", "Lead",
 				"OSBAsahMarkers", "individuals");
+
+			_deleteData(
+				dataSourceId, "dataSourceId", elasticsearchInvoker, "fields");
 		}
 		else if (_log.isWarnEnabled()) {
 			_log.warn(
