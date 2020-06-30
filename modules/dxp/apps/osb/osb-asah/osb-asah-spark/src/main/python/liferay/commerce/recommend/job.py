@@ -89,6 +89,35 @@ class BaseDataFrameWriterSparkJob(BaseSparkJob):
 		    configuration.get('dataSourceId'), self.target_folder
 		)
 
+class ContextUserInteractionRecommendationDataFrameWriterSparkJob(
+    BaseDataFrameWriterSparkJob
+):
+	def __init__(self, spark_application):
+		super().__init__(
+		    spark_application,
+		    'com.liferay.headless.commerce.machine.learning.dto.v1_0.'
+		    'UserRecommendation', 'context_user_interaction_recommendation'
+		)
+
+	def pre_process(self, data_frame):
+		data_frame = data_frame.withColumn('createDate', current_date())
+		data_frame = data_frame.withColumn(
+		    'jobId', lit(self.spark_application.args.job_run_id)
+		)
+		data_frame = data_frame.withColumn(
+		    'entryClassPK',
+		    col('commerceAccountId').cast('long')
+		)
+		data_frame = data_frame.withColumn(
+		    'recommendedEntryClassPK',
+		    col('CPDefinitionId').cast('long')
+		)
+
+		data_frame = data_frame.drop('commerceAccountId')
+		data_frame = data_frame.drop('CPDefinitionId')
+
+		return data_frame
+
 class ProductContentDataFrameReaderSparkJob(BaseDataFrameReaderSparkJob):
 	def __init__(self, spark_application):
 		super(ProductContentDataFrameReaderSparkJob, self).__init__(
@@ -208,6 +237,14 @@ class ProductContentPipelineSparkJob(BaseSparkJob):
 
 		self.spark_session.catalog.cacheTable('pipeline_data')
 
+class ProductContentRecommendationDataFrameWriter(BaseDataFrameWriterSparkJob):
+	def __init__(self, spark_application):
+		super().__init__(
+		    spark_application,
+		    'com.liferay.headless.commerce.machine.learning.dto.v1_0.'
+		    'ProductContentRecommendation', 'product_content_recommendations'
+		)
+
 class ProductContentRecommendationSparkJob(BaseSparkJob):
 	def __init__(self, spark_application):
 		super(ProductContentRecommendationSparkJob,
@@ -268,14 +305,6 @@ class ProductContentRecommendationSparkJob(BaseSparkJob):
 
 		self.spark_session.catalog.cacheTable('product_content_recommendations')
 
-class ProductContentRecommendationDataFrameWriter(BaseDataFrameWriterSparkJob):
-	def __init__(self, spark_application):
-		super().__init__(
-		    spark_application,
-		    'com.liferay.headless.commerce.machine.learning.dto.v1_0.'
-		    'ProductContentRecommendation', 'product_content_recommendations'
-		)
-
 class ProductInteractionDataFrameReaderSparkJob(BaseDataFrameReaderSparkJob):
 	def __init__(self, spark_application):
 		super().__init__(
@@ -288,6 +317,89 @@ class ProductInteractionDataFrameReaderSparkJob(BaseDataFrameReaderSparkJob):
 		return data_frame.selectExpr(
 		    "id AS CPDefinitionId", "categories.id AS assetCategoryIds",
 		    "skus.sku AS sku_list"
+		)
+
+class ProductInteractionRecommendationDataFrameWriterSparkJob(
+    BaseDataFrameWriterSparkJob
+):
+	def __init__(self, spark_application):
+		super().__init__(
+		    spark_application,
+		    'com.liferay.headless.commerce.machine.learning.dto.v1_0.'
+		    'ProductInteractionRecommendation',
+		    'product_interaction_recommendations'
+		)
+
+class ProductInteractionRecommendationSparkJob(BaseSparkJob):
+	def __init__(self, spark_application):
+		super().__init__(spark_application)
+
+	def run(self):
+		configuration = self.spark_application_configuration
+		spark_context = self.spark_session.sparkContext
+
+		# Item-Item Collaborative Filtering
+
+		item_factors_data_frame = self.spark_session.table('item_factors')
+
+		score_function = configuration.get(
+		    'product.interaction.recommendation.score.function'
+		)
+
+		window = Window.partitionBy(col('id')).orderBy(col('score').desc())
+
+		recommendations_data_frame = item_factors_data_frame.crossJoin(
+		    item_factors_data_frame.selectExpr(
+		        'id as id2', 'features as features2'
+		    )
+		)
+
+		recommendations_data_frame = recommendations_data_frame.selectExpr(
+		    'id', 'toDenseVector(features) as features', 'id2',
+		    'toDenseVector(features2) as features2'
+		)
+
+		recommendations_data_frame = recommendations_data_frame.selectExpr(
+		    '*', score_function + '(features, features2) AS score'
+		)
+
+		recommendations_data_frame = recommendations_data_frame.select(
+		    '*',
+		    rank().over(window).alias('rank')
+		)
+
+		recommendations_data_frame = recommendations_data_frame.filter(
+		    'rank > 1 AND rank <= 11'
+		)
+
+		recommendations_data_frame = recommendations_data_frame.withColumn(
+		    'createDate', current_date()
+		)
+		recommendations_data_frame = recommendations_data_frame.withColumn(
+		    'jobId', lit(spark_context.applicationId)
+		)
+		recommendations_data_frame = recommendations_data_frame.withColumn(
+		    'entryClassPK',
+		    col('id').cast('long')
+		)
+		recommendations_data_frame = recommendations_data_frame.withColumn(
+		    'recommendedEntryClassPK',
+		    col('id2').cast('long')
+		)
+
+		recommendations_data_frame = recommendations_data_frame.drop('features')
+		recommendations_data_frame = recommendations_data_frame.drop(
+		    'features2'
+		)
+		recommendations_data_frame = recommendations_data_frame.drop('id')
+		recommendations_data_frame = recommendations_data_frame.drop('id2')
+
+		recommendations_data_frame.createOrReplaceTempView(
+		    "product_interaction_recommendations"
+		)
+
+		self.spark_session.catalog.cacheTable(
+		    'product_interaction_recommendations'
 		)
 
 class OrderInteractionDataFrameReaderSparkJob(BaseDataFrameReaderSparkJob):
@@ -303,34 +415,6 @@ class OrderInteractionDataFrameReaderSparkJob(BaseDataFrameReaderSparkJob):
 		    'accountId as commerceAccountId', 'createDate',
 		    'explode(orderItems.sku) as sku'
 		)
-
-class UserInteractionDataPreparationSparkJob(BaseSparkJob):
-	def __init__(self, spark_application):
-		super().__init__(spark_application)
-
-	def run(self):
-		cp_instance_data_frame = self.spark_session.table(
-		    'product_interaction_table'
-		).selectExpr('CPDefinitionId', 'explode(sku_list) as sku')
-
-		order_interaction_data_frame = self.spark_session.table(
-		    'order_interaction_table'
-		)
-
-		user_item_ratings_data_frame = order_interaction_data_frame.join(
-		    cp_instance_data_frame, on=["sku"]
-		)
-
-		user_item_ratings_data_frame = user_item_ratings_data_frame.drop("sku")
-		user_item_ratings_data_frame = user_item_ratings_data_frame.withColumn(
-		    'rating', lit(1.0)
-		)
-
-		user_item_ratings_data_frame.createOrReplaceTempView(
-		    'user_item_rating_table'
-		)
-
-		self.spark_session.catalog.cacheTable('user_item_rating_table')
 
 class UserInteractionCollaborativeFilteringSparkJob(BaseSparkJob):
 	def __init__(self, spark_application):
@@ -538,114 +622,30 @@ class UserInteractionCollaborativeFilteringSparkJob(BaseSparkJob):
 		    'recommendations.rating as score'
 		).join(product_interaction_data_frame, on='CPDefinitionId')
 
-class ProductInteractionRecommendationSparkJob(BaseSparkJob):
+class UserInteractionDataPreparationSparkJob(BaseSparkJob):
 	def __init__(self, spark_application):
 		super().__init__(spark_application)
 
 	def run(self):
-		configuration = self.spark_application_configuration
-		spark_context = self.spark_session.sparkContext
+		cp_instance_data_frame = self.spark_session.table(
+		    'product_interaction_table'
+		).selectExpr('CPDefinitionId', 'explode(sku_list) as sku')
 
-		# Item-Item Collaborative Filtering
-
-		item_factors_data_frame = self.spark_session.table('item_factors')
-
-		score_function = configuration.get(
-		    'product.interaction.recommendation.score.function'
+		order_interaction_data_frame = self.spark_session.table(
+		    'order_interaction_table'
 		)
 
-		window = Window.partitionBy(col('id')).orderBy(col('score').desc())
-
-		recommendations_data_frame = item_factors_data_frame.crossJoin(
-		    item_factors_data_frame.selectExpr(
-		        'id as id2', 'features as features2'
-		    )
+		user_item_ratings_data_frame = order_interaction_data_frame.join(
+		    cp_instance_data_frame, on=["sku"]
 		)
 
-		recommendations_data_frame = recommendations_data_frame.selectExpr(
-		    'id', 'toDenseVector(features) as features', 'id2',
-		    'toDenseVector(features2) as features2'
+		user_item_ratings_data_frame = user_item_ratings_data_frame.drop("sku")
+		user_item_ratings_data_frame = user_item_ratings_data_frame.withColumn(
+		    'rating', lit(1.0)
 		)
 
-		recommendations_data_frame = recommendations_data_frame.selectExpr(
-		    '*', score_function + '(features, features2) AS score'
+		user_item_ratings_data_frame.createOrReplaceTempView(
+		    'user_item_rating_table'
 		)
 
-		recommendations_data_frame = recommendations_data_frame.select(
-		    '*',
-		    rank().over(window).alias('rank')
-		)
-
-		recommendations_data_frame = recommendations_data_frame.filter(
-		    'rank > 1 AND rank <= 11'
-		)
-
-		recommendations_data_frame = recommendations_data_frame.withColumn(
-		    'createDate', current_date()
-		)
-		recommendations_data_frame = recommendations_data_frame.withColumn(
-		    'jobId', lit(spark_context.applicationId)
-		)
-		recommendations_data_frame = recommendations_data_frame.withColumn(
-		    'entryClassPK',
-		    col('id').cast('long')
-		)
-		recommendations_data_frame = recommendations_data_frame.withColumn(
-		    'recommendedEntryClassPK',
-		    col('id2').cast('long')
-		)
-
-		recommendations_data_frame = recommendations_data_frame.drop('features')
-		recommendations_data_frame = recommendations_data_frame.drop(
-		    'features2'
-		)
-		recommendations_data_frame = recommendations_data_frame.drop('id')
-		recommendations_data_frame = recommendations_data_frame.drop('id2')
-
-		recommendations_data_frame.createOrReplaceTempView(
-		    "product_interaction_recommendations"
-		)
-
-		self.spark_session.catalog.cacheTable(
-		    'product_interaction_recommendations'
-		)
-
-class ContextUserInteractionRecommendationDataFrameWriterSparkJob(
-    BaseDataFrameWriterSparkJob
-):
-	def __init__(self, spark_application):
-		super().__init__(
-		    spark_application,
-		    'com.liferay.headless.commerce.machine.learning.dto.v1_0.'
-		    'UserRecommendation', 'context_user_interaction_recommendation'
-		)
-
-	def pre_process(self, data_frame):
-		data_frame = data_frame.withColumn('createDate', current_date())
-		data_frame = data_frame.withColumn(
-		    'jobId', lit(self.spark_application.args.job_run_id)
-		)
-		data_frame = data_frame.withColumn(
-		    'entryClassPK',
-		    col('commerceAccountId').cast('long')
-		)
-		data_frame = data_frame.withColumn(
-		    'recommendedEntryClassPK',
-		    col('CPDefinitionId').cast('long')
-		)
-
-		data_frame = data_frame.drop('commerceAccountId')
-		data_frame = data_frame.drop('CPDefinitionId')
-
-		return data_frame
-
-class ProductInteractionRecommendationDataFrameWriterSparkJob(
-    BaseDataFrameWriterSparkJob
-):
-	def __init__(self, spark_application):
-		super().__init__(
-		    spark_application,
-		    'com.liferay.headless.commerce.machine.learning.dto.v1_0.'
-		    'ProductInteractionRecommendation',
-		    'product_interaction_recommendations'
-		)
+		self.spark_session.catalog.cacheTable('user_item_rating_table')
