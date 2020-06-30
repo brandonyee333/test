@@ -512,20 +512,21 @@ class UserInteractionCollaborativeFilteringSparkJob(BaseSparkJob):
 
 			self.spark_session.catalog.cacheTable('item_factors')
 
-	def _split_train_test(self, user_item_data_frame):
-		train_split_ratio = self.spark_application.configuration.get(
-		    'user.interaction.recommendation.train.split.ratio'
-		)
+	def _get_context_recommendations_data_frame(
+	    self, recommendations_data_frame
+	):
+		product_interaction_data_frame = self.spark_session.table(
+		    'product_interaction_table'
+		).select('CPDefinitionId', 'assetCategoryIds')
 
-		train_data_frame, test_data_frame = user_item_data_frame.randomSplit(
-		    [train_split_ratio, 1 - train_split_ratio]
-		)
-
-		train_data_frame.cache()
-
-		test_data_frame.cache()
-
-		return train_data_frame, test_data_frame
+		return recommendations_data_frame.selectExpr(
+		    'commerceAccountId',
+		    'explode(recommendations) as recommendations',
+		).selectExpr(
+		    'commerceAccountId',
+		    'recommendations.CPDefinitionId as CPDefinitionId',
+		    'recommendations.rating as score'
+		).join(product_interaction_data_frame, on='CPDefinitionId')
 
 	def _get_evaluator(self):
 		return MAPEvaluator(
@@ -533,6 +534,22 @@ class UserInteractionCollaborativeFilteringSparkJob(BaseSparkJob):
 		    prediction_column_name='prediction',
 		    query_column_name='commerceAccountId'
 		)
+
+	def _get_requested_catalog_coverage(self):
+		product_interaction_data_frame = self.spark_session.table(
+		    'product_interaction_table'
+		)
+
+		catalog_coverage = float(
+		    self.spark_application.configuration.
+		    get('user.interaction.recommendation.catalog.coverage')
+		)
+
+		catalog_count = product_interaction_data_frame.rdd.countApprox(
+		    self._default_count_approx_timeout
+		)
+
+		return int(catalog_count * catalog_coverage)
 
 	def _get_training_pipeline(self):
 		configuration = self.spark_application.configuration
@@ -590,37 +607,20 @@ class UserInteractionCollaborativeFilteringSparkJob(BaseSparkJob):
 		    )
 		)
 
-	def _get_requested_catalog_coverage(self):
-		product_interaction_data_frame = self.spark_session.table(
-		    'product_interaction_table'
+	def _split_train_test(self, user_item_data_frame):
+		train_split_ratio = self.spark_application.configuration.get(
+		    'user.interaction.recommendation.train.split.ratio'
 		)
 
-		catalog_coverage = float(
-		    self.spark_application.configuration.
-		    get('user.interaction.recommendation.catalog.coverage')
+		train_data_frame, test_data_frame = user_item_data_frame.randomSplit(
+		    [train_split_ratio, 1 - train_split_ratio]
 		)
 
-		catalog_count = product_interaction_data_frame.rdd.countApprox(
-		    self._default_count_approx_timeout
-		)
+		train_data_frame.cache()
 
-		return int(catalog_count * catalog_coverage)
+		test_data_frame.cache()
 
-	def _get_context_recommendations_data_frame(
-	    self, recommendations_data_frame
-	):
-		product_interaction_data_frame = self.spark_session.table(
-		    'product_interaction_table'
-		).select('CPDefinitionId', 'assetCategoryIds')
-
-		return recommendations_data_frame.selectExpr(
-		    'commerceAccountId',
-		    'explode(recommendations) as recommendations',
-		).selectExpr(
-		    'commerceAccountId',
-		    'recommendations.CPDefinitionId as CPDefinitionId',
-		    'recommendations.rating as score'
-		).join(product_interaction_data_frame, on='CPDefinitionId')
+		return train_data_frame, test_data_frame
 
 class UserInteractionDataPreparationSparkJob(BaseSparkJob):
 	def __init__(self, spark_application):
