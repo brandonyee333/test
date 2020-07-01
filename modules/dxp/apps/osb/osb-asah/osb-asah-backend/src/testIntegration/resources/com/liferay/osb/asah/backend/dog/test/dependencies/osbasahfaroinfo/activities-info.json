@@ -4,8 +4,8 @@
 		"activityType": "BROWSE",
 		"applicationId": "Page",
 		"dataSourceId": "351238757269547424",
-		"day": "2019-04-06T00:00:00.000Z",
-		"endTime": "2019-04-06T22:20:10.843Z",
+		"day": "${now-7dT00:00:00.000Z}",
+		"endTime": "${now-7dT22:20:10.843Z}",
 		"eventId": "pageViewed",
 		"eventProperties": {
 			"page": "/web/guest/home",
@@ -21,7 +21,7 @@
 			"url": "https://www.joaquin-dibbert.biz"
 		},
 		"ownerId": "337984659206412898",
-		"startTime": "2019-04-06T22:20:10.843Z",
+		"startTime": "${now-7dT22:20:10.843Z}",
 		"userId": "db1ed215-9ed2-46a4-90de-535604c02c65"
 	},
 	{
@@ -29,8 +29,8 @@
 		"activityType": "BROWSE",
 		"applicationId": "Page",
 		"dataSourceId": "351238757269547424",
-		"day": "2019-04-06T00:00:00.000Z",
-		"endTime": "2019-04-06T22:20:10.843Z",
+		"day": "${now-7dT00:00:00.000Z}",
+		"endTime": "${now-7dT22:20:10.843Z}",
 		"eventId": "pageViewed",
 		"eventProperties": {
 			"page": "/web/guest/home",
@@ -46,7 +46,7 @@
 			"url": "https://www.joaquin-dibbert.biz"
 		},
 		"ownerId": "337984612356412845",
-		"startTime": "2019-04-06T22:20:10.843Z",
+		"startTime": "${now-7dT22:20:10.843Z}",
 		"userId": "5666a530-7021-11e9-9f43-21e859277aa6"
 	},
 	{
@@ -54,8 +54,8 @@
 		"activityType": "BROWSE",
 		"applicationId": "Page",
 		"dataSourceId": "378537591206619399",
-		"day": "2019-09-24T00:00:00.000Z",
-		"endTime": "2019-09-24T17:37:02.244Z",
+		"day": "${now-5dT00:00:00.000Z}",
+		"endTime": "${now-5dT17:37:02.244Z}",
 		"eventId": "pageLoaded",
 		"eventProperties": {
 			"pageLoadTime": "1189",
@@ -71,7 +71,7 @@
 			"url": "http://192.168.109.41:8089/chico?segmentsExperienceId=39028"
 		},
 		"ownerId": "337984659206412898",
-		"startTime": "2019-09-24T17:37:02.244Z",
+		"startTime": "${now-5dT17:37:02.244Z}",
 		"userId": "d1cb5880-def1-11e9-8caf-1d0d61d4920d"
 	},
 	{
@@ -79,8 +79,8 @@
 		"activityType": "BROWSE",
 		"applicationId": "Page",
 		"dataSourceId": "370975939087274525",
-		"day": "2019-08-23T00:00:00.000Z",
-		"endTime": "2019-08-23T10:35:30.521Z",
+		"day": "${now-5dT00:00:00.000Z}",
+		"endTime": "${now-5dT10:35:30.521Z}",
 		"eventContext": {
 			"canonicalUrl": "https://www.liferay.com/es/home",
 			"country": "Brunei",
@@ -102,7 +102,7 @@
 			"url": "https://www.liferay.com/es/home"
 		},
 		"ownerId": "370997372450569302",
-		"startTime": "2019-08-23T10:35:30.521Z",
+		"startTime": "${now-5dT10:35:30.521Z}",
 		"userId": "b6768060-c591-11e9-bdb3-7d8fa2cd3cfc"
 	},
 	{
@@ -110,8 +110,8 @@
 		"activityType": "BROWSE",
 		"applicationId": "Page",
 		"dataSourceId": "370975939087274525",
-		"day": "2019-08-23T00:00:00.000Z",
-		"endTime": "2019-08-23T10:43:13.224Z",
+		"day": "${now-1dT00:00:00.000Z}",
+		"endTime": "${now-1dT10:43:13.224Z}",
 		"eventContext": {
 			"canonicalUrl": "https://www.liferay.com/es/home",
 			"country": "Brazil",
@@ -133,7 +133,7 @@
 			"url": "https://www.liferay.com/es/home"
 		},
 		"ownerId": "373408403592592166",
-		"startTime": "2019-08-23T10:43:13.224Z",
+		"startTime": "${now-1dT10:43:13.224Z}",
 		"userId": "c49580a0-c592-11e9-92f9-f7e41e09bfe8"
 	}
 ]

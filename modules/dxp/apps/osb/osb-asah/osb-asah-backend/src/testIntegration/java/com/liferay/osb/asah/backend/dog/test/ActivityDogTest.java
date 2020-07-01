@@ -79,7 +79,7 @@ public class ActivityDogTest {
 	public void testGetPageUnloadedActivityResultBag() {
 		ResultBag<Activity> activityResultBag =
 			_activityDog.getActivityResultBag(
-				"Page", null, "pageUnloaded", 20, 0);
+				"Page", null, "pageUnloaded", 7, 20, 0);
 
 		Assert.assertEquals(2, activityResultBag.getTotal());
 	}
@@ -95,7 +95,7 @@ public class ActivityDogTest {
 				"Page",
 				Arrays.asList(
 					new PropertyFilter("eventContext.country = Brazil", false)),
-				"pageUnloaded", 20, 0);
+				"pageUnloaded", 7, 20, 0);
 
 		Assert.assertEquals(1, activityResultBag.getTotal());
 	}
@@ -111,7 +111,7 @@ public class ActivityDogTest {
 				"Page",
 				Arrays.asList(
 					new PropertyFilter("eventContext.country ~ Br.*", false)),
-				"pageUnloaded", 20, 0);
+				"pageUnloaded", 7, 20, 0);
 
 		Assert.assertEquals(2, activityResultBag.getTotal());
 		Assert.assertEquals(
