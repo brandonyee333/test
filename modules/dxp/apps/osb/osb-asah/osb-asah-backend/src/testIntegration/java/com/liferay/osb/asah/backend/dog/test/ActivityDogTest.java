@@ -76,6 +76,19 @@ public class ActivityDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
+	public void testGetLast3DaysPageUnloadedActivityResultBag() {
+		ResultBag<Activity> activityResultBag =
+			_activityDog.getActivityResultBag(
+				"Page", null, "pageUnloaded", 3, 20, 0);
+
+		Assert.assertEquals(1, activityResultBag.getTotal());
+	}
+
+	@ElasticsearchIndex(
+		name = "activities", resourcePath = "activities-info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
 	public void testGetLast7DaysPageUnloadedActivityResultBag() {
 		ResultBag<Activity> activityResultBag =
 			_activityDog.getActivityResultBag(
