@@ -42,6 +42,14 @@ public abstract class BaseTransformationJSONArrayFunction
 		_includeToday = includeToday;
 	}
 
+	public BaseTransformationJSONArrayFunction(
+		boolean includeToday, String rangeEnd, String rangeStart) {
+
+		_includeToday = includeToday;
+		_rangeEnd = rangeEnd;
+		_rangeStart = rangeStart;
+	}
+
 	@Override
 	public JSONArray apply(
 			String collectionName, String computeFunctionString,
@@ -175,6 +183,8 @@ public abstract class BaseTransformationJSONArrayFunction
 	protected String startDayDateString;
 
 	private final boolean _includeToday;
+	private String _rangeEnd;
+	private String _rangeStart;
 	private long _totalElements;
 
 }
