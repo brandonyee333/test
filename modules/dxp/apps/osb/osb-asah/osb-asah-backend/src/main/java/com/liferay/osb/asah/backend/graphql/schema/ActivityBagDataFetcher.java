@@ -61,6 +61,7 @@ public class ActivityBagDataFetcher
 			dataFetchingEnvironment.getArgument("applicationId"),
 			eventContextPropertyFilters,
 			dataFetchingEnvironment.getArgument("eventId"),
+			dataFetchingEnvironment.getArgument("rangeKey"),
 			dataFetchingEnvironment.getArgument("size"),
 			dataFetchingEnvironment.getArgument("start"));
 	}

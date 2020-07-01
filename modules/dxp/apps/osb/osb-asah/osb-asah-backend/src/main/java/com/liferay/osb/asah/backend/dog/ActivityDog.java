@@ -37,6 +37,7 @@ import javax.annotation.PostConstruct;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.search.SearchHits;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,13 +63,14 @@ public class ActivityDog {
 
 	public ResultBag<Activity> getActivityResultBag(
 		String applicationId, List<PropertyFilter> propertyFilters,
-		String eventId, int size, int start) {
+		String eventId, int rangeKey, int size, int start) {
 
 		SearchHits searchHits = _dataDog.querySearchHits(
 			"activities", _faroInfoElasticsearchInvoker,
 			DogUtil.buildSearchSourceBuilder(
 				Collections.emptyList(),
-				_buildQueryBuilder(applicationId, propertyFilters, eventId),
+				_buildQueryBuilder(
+					applicationId, propertyFilters, eventId, rangeKey),
 				size, start));
 
 		return DogUtil.createResultBag(Activity.class, searchHits);
@@ -109,18 +111,34 @@ public class ActivityDog {
 
 	private QueryBuilder _buildQueryBuilder(
 		String applicationId, List<PropertyFilter> propertyFilters,
-		String eventId) {
+		String eventId, int rangeKey) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery("applicationId", applicationId)
 		).filter(
 			QueryBuilders.termQuery("eventId", eventId)
+		).filter(
+			_buildRangeQueryBuilder("startTime", rangeKey)
 		);
 
 		DogUtil.addBoolQueryBuilderPropertyFilters(
 			boolQueryBuilder, propertyFilters);
 
 		return boolQueryBuilder;
+	}
+
+	private RangeQueryBuilder _buildRangeQueryBuilder(
+		String fieldName, int rangeKey) {
+
+		RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(
+			fieldName);
+
+		rangeQueryBuilder.timeZone("UTC");
+
+		rangeQueryBuilder.gte(String.format("now-%sd/d", rangeKey));
+		rangeQueryBuilder.lt("now/d");
+
+		return rangeQueryBuilder;
 	}
 
 	@PostConstruct
