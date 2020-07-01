@@ -507,19 +507,17 @@ public class FaroInfoTestUtil {
 		);
 	}
 
-	public static JSONObject buildFieldsJSONObject(
-		String dataSourceId, String name) {
-
-		String dateString = DateUtil.newDateString();
+	public static JSONObject buildFieldJSONObject(
+		String dataSourceId, String dataSourceName) {
 
 		return JSONUtil.put(
 			"context", "demographics"
 		).put(
 			"dataSourceId", dataSourceId
 		).put(
-			"dataSourceName", name
+			"dataSourceName", dataSourceName
 		).put(
-			"dateModified", dateString
+			"dateModified", DateUtil.newDateString()
 		).put(
 			"fieldType", "Text"
 		).put(

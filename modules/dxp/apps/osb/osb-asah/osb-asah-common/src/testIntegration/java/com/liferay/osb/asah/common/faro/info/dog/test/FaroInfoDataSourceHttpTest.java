@@ -741,7 +741,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		elasticsearchInvoker.add(
 			"fields",
-			FaroInfoTestUtil.buildFieldsJSONObject(
+			FaroInfoTestUtil.buildFieldJSONObject(
 				dataSourceId, dataSourceName));
 
 		_salesforceRawElasticsearchInvoker.add(
