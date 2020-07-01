@@ -18,6 +18,9 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 
+import java.time.LocalDate;
+
+import java.util.Calendar;
 import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -113,6 +116,20 @@ public abstract class BaseTransformationJSONArrayFunction
 	}
 
 	protected String computeEndDayDateString() throws Exception {
+		if (_rangeEnd != null) {
+			LocalDate endDate = LocalDate.parse(_rangeEnd);
+
+			Calendar calendar = Calendar.getInstance();
+
+			calendar.set(
+				endDate.getYear(), endDate.getMonthValue() - 1,
+				endDate.getDayOfMonth(), 23, 59, 59);
+
+			endDayDateString = DateUtil.toString(calendar.getTime());
+
+			return endDayDateString;
+		}
+
 		endDayDateString = DateUtil.newEndOfDayDateString(
 			DateUtil.newDayDateString());
 
@@ -126,6 +143,20 @@ public abstract class BaseTransformationJSONArrayFunction
 	protected String computeStartDayDateString(
 			String computeFunctionString, int size)
 		throws Exception {
+
+		if (_rangeStart != null) {
+			LocalDate startDate = LocalDate.parse(_rangeStart);
+
+			Calendar calendar = Calendar.getInstance();
+
+			calendar.set(
+				startDate.getYear(), startDate.getMonthValue() - 1,
+				startDate.getDayOfMonth());
+
+			startDayDateString = DateUtil.toString(calendar.getTime());
+
+			return startDayDateString;
+		}
 
 		String dayDateString = DateUtil.newDayDateString();
 
