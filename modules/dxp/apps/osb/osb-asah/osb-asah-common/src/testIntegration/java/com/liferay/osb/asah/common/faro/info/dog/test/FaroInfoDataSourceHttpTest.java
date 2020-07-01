@@ -566,14 +566,16 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		String dataSourceId1 = dataSourceJSONObject1.getString("id");
 
-		_addAccountsAndIndividualsToSalesforceDataSource(dataSourceId1);
+		_addDataToSalesforceDataSource(
+			dataSourceId1, dataSourceJSONObject1.getString("name"));
 
 		JSONObject dataSourceJSONObject2 = _faroInfoDataSourceDog.addDataSource(
 			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject());
 
 		String dataSourceId2 = dataSourceJSONObject2.getString("id");
 
-		_addAccountsAndIndividualsToSalesforceDataSource(dataSourceId2);
+		_addDataToSalesforceDataSource(
+			dataSourceId2, dataSourceJSONObject2.getString("name"));
 
 		dataSourceJSONObject1.put("deletionDate", DateUtil.newDayDateString());
 
@@ -591,6 +593,18 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 				dataSourceId2,
 			elasticsearchInvoker.exists(
 				"accounts",
+				QueryBuilders.termQuery("dataSourceId", dataSourceId2)));
+		Assert.assertFalse(
+			"Found entry in fields collection with data source ID " +
+				dataSourceId1,
+			elasticsearchInvoker.exists(
+				"fields",
+				QueryBuilders.termQuery("dataSourceId", dataSourceId1)));
+		Assert.assertTrue(
+			"Unable to find entry in fields collection with data source ID " +
+				dataSourceId2,
+			elasticsearchInvoker.exists(
+				"fields",
 				QueryBuilders.termQuery("dataSourceId", dataSourceId2)));
 		Assert.assertFalse(
 			"Found entry in individuals collection with data source ID " +
@@ -667,38 +681,6 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		Assert.assertEquals(updatedURL, dataSourceJSONObject.getString("url"));
 	}
 
-	private void _addAccountsAndIndividualsToSalesforceDataSource(
-		String dataSourceId) {
-
-		elasticsearchInvoker.add(
-			"accounts",
-			JSONUtil.put(
-				"accountPK", RandomTestUtil.randomId()
-			).put(
-				"dataSourceId", dataSourceId
-			));
-
-		_salesforceRawElasticsearchInvoker.add(
-			"individuals",
-			JSONUtil.put(
-				"email", RandomTestUtil.randomEmailAddress()
-			).put(
-				"firstName", RandomTestUtil.randomString()
-			).put(
-				"id", RandomTestUtil.randomUUID()
-			).put(
-				"jobTitle", RandomTestUtil.randomString()
-			).put(
-				"lastName", RandomTestUtil.randomString()
-			).put(
-				"modifiedDate", DateUtil.newDayDateString()
-			).put(
-				"osbAsahDataSourceId", dataSourceId
-			).put(
-				"subscription", RandomTestUtil.randomString()
-			));
-	}
-
 	private void _addActivityAndUserToLiferayDataSource(
 			JSONObject dataSourceJSONObject)
 		throws Exception {
@@ -743,6 +725,43 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 				"userId", RandomTestUtil.randomNumber()
 			).put(
 				"uuid", RandomTestUtil.randomUUID()
+			));
+	}
+
+	private void _addDataToSalesforceDataSource(
+		String dataSourceId, String dataSourceName) {
+
+		elasticsearchInvoker.add(
+			"accounts",
+			JSONUtil.put(
+				"accountPK", RandomTestUtil.randomId()
+			).put(
+				"dataSourceId", dataSourceId
+			));
+
+		elasticsearchInvoker.add(
+			"fields",
+			FaroInfoTestUtil.buildFieldsJSONObject(
+				dataSourceId, dataSourceName));
+
+		_salesforceRawElasticsearchInvoker.add(
+			"individuals",
+			JSONUtil.put(
+				"email", RandomTestUtil.randomEmailAddress()
+			).put(
+				"firstName", RandomTestUtil.randomString()
+			).put(
+				"id", RandomTestUtil.randomUUID()
+			).put(
+				"jobTitle", RandomTestUtil.randomString()
+			).put(
+				"lastName", RandomTestUtil.randomString()
+			).put(
+				"modifiedDate", DateUtil.newDayDateString()
+			).put(
+				"osbAsahDataSourceId", dataSourceId
+			).put(
+				"subscription", RandomTestUtil.randomString()
 			));
 	}
 

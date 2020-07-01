@@ -507,6 +507,34 @@ public class FaroInfoTestUtil {
 		);
 	}
 
+	public static JSONObject buildFieldsJSONObject(
+		String dataSourceId, String name) {
+
+		String dateString = DateUtil.newDateString();
+
+		return JSONUtil.put(
+			"context", "demographics"
+		).put(
+			"dataSourceId", dataSourceId
+		).put(
+			"dataSourceName", name
+		).put(
+			"dateModified", dateString
+		).put(
+			"fieldType", "Text"
+		).put(
+			"name", "givenName"
+		).put(
+			"ownerId", RandomTestUtil.randomId()
+		).put(
+			"ownerType", "individual"
+		).put(
+			"sourceName", "firstName"
+		).put(
+			"value", RandomTestUtil.randomString()
+		);
+	}
+
 	public static JSONObject buildIndividualEngagementJSONObject(
 		String dayDateString, JSONObject individualJSONObject, double score) {
 
