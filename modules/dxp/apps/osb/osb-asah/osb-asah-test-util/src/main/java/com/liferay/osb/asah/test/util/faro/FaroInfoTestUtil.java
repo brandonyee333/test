@@ -474,6 +474,32 @@ public class FaroInfoTestUtil {
 		);
 	}
 
+	public static JSONObject buildFieldJSONObject(
+		String dataSourceId, String dataSourceName) {
+
+		return JSONUtil.put(
+			"context", "demographics"
+		).put(
+			"dataSourceId", dataSourceId
+		).put(
+			"dataSourceName", dataSourceName
+		).put(
+			"dateModified", DateUtil.newDateString()
+		).put(
+			"fieldType", "Text"
+		).put(
+			"name", "givenName"
+		).put(
+			"ownerId", RandomTestUtil.randomId()
+		).put(
+			"ownerType", "individual"
+		).put(
+			"sourceName", "firstName"
+		).put(
+			"value", RandomTestUtil.randomString()
+		);
+	}
+
 	public static JSONObject buildFieldMappingJSONObject(
 		JSONObject authorJSONObject, String context,
 		JSONObject dataSourceFieldNamesJSONObject, String fieldName,
@@ -504,32 +530,6 @@ public class FaroInfoTestUtil {
 			).put(
 				"key", "MOST_RECENT"
 			)
-		);
-	}
-
-	public static JSONObject buildFieldJSONObject(
-		String dataSourceId, String dataSourceName) {
-
-		return JSONUtil.put(
-			"context", "demographics"
-		).put(
-			"dataSourceId", dataSourceId
-		).put(
-			"dataSourceName", dataSourceName
-		).put(
-			"dateModified", DateUtil.newDateString()
-		).put(
-			"fieldType", "Text"
-		).put(
-			"name", "givenName"
-		).put(
-			"ownerId", RandomTestUtil.randomId()
-		).put(
-			"ownerType", "individual"
-		).put(
-			"sourceName", "firstName"
-		).put(
-			"value", RandomTestUtil.randomString()
 		);
 	}
 
