@@ -86,7 +86,7 @@ public class ElasticsearchInvokerTest {
 
 	@After
 	public void tearDown() {
-		_elasticsearchIndexManager.clear(_indexName);
+		_elasticsearchIndexManager.delete(_indexName);
 	}
 
 	@Test
