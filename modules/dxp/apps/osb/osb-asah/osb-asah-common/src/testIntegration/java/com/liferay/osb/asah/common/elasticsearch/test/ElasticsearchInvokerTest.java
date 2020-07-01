@@ -69,16 +69,14 @@ public class ElasticsearchInvokerTest {
 
 	@Before
 	public void setUp() {
-		_indexNamespace = _generateIndexNamespace();
-
 		_elasticsearchInvoker = new ElasticsearchInvokerImpl(
 			Collections.emptyMap(), _elasticsearchConnection.getClient(),
-			_indexNamespace);
+			"test");
 
 		_collectionName = RandomTestUtil.randomString();
 
 		_indexName = ElasticsearchIndexUtil.getIndexName(
-			_collectionName, _indexNamespace);
+			_collectionName, "test");
 
 		_elasticsearchIndexManager.create(
 			true, _createIndexConfiguration(), _indexName);
@@ -629,12 +627,6 @@ public class ElasticsearchInvokerTest {
 		return jsonObject.toString();
 	}
 
-	private String _generateIndexNamespace() {
-		String indexNamespace = RandomTestUtil.randomString();
-
-		return indexNamespace.toLowerCase();
-	}
-
 	private String _collectionName;
 
 	@Autowired
@@ -645,6 +637,5 @@ public class ElasticsearchInvokerTest {
 
 	private ElasticsearchInvoker _elasticsearchInvoker;
 	private String _indexName;
-	private String _indexNamespace;
 
 }
