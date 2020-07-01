@@ -76,7 +76,7 @@ public class ActivityDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testGetPageUnloadedActivityResultBag() {
+	public void testGetLast7DaysPageUnloadedActivityResultBag() {
 		ResultBag<Activity> activityResultBag =
 			_activityDog.getActivityResultBag(
 				"Page", null, "pageUnloaded", 7, 20, 0);
