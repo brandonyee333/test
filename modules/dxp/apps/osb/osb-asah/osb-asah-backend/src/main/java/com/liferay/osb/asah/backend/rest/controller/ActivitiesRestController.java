@@ -65,6 +65,8 @@ public class ActivitiesRestController extends BaseRestController {
 				String filterString,
 			@RequestParam(defaultValue = "true") boolean includeToday,
 			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(required = false) String rangeEnd,
+			@RequestParam(required = false) String rangeStart,
 			@RequestParam(defaultValue = "20") int size)
 		throws Exception {
 
@@ -74,7 +76,7 @@ public class ActivitiesRestController extends BaseRestController {
 				filterString, _faroInfoActivitiesFilterStringConverterHelper),
 			size, "day",
 			new ActivitiesHistogramTransformationJSONArrayFunction(
-				includeToday),
+				includeToday, rangeEnd, rangeStart),
 			"activity-transformations");
 	}
 

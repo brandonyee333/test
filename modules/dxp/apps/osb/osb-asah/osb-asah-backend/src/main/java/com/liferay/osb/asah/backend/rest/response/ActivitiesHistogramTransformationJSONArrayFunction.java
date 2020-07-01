@@ -36,9 +36,9 @@ public class ActivitiesHistogramTransformationJSONArrayFunction
 	extends BaseTransformationJSONArrayFunction {
 
 	public ActivitiesHistogramTransformationJSONArrayFunction(
-		boolean includeToday) {
+		boolean includeToday, String rangeEnd, String rangeStart) {
 
-		super(includeToday);
+		super(includeToday, rangeEnd, rangeStart);
 	}
 
 	@Override
