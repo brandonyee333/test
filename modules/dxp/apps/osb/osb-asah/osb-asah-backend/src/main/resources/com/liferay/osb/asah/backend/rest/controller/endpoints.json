@@ -17,7 +17,7 @@
 			"templated": true
 		},
 		"activities": {
-			"href": "{url}/activities{?apply,filter,includeToday,page,size,sort*}",
+			"href": "{url}/activities{?apply,filter,includeToday,page,rangeEnd,rangeStart,size,sort*}",
 			"templated": true
 		},
 		"activity": {
