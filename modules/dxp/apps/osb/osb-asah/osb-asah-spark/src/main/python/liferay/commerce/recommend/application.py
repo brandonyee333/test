@@ -44,11 +44,11 @@ class BaseCommerceSparkApplication(BaseSparkApplication, metaclass=ABCMeta):
 		try:
 			spark_job_pipeline.run()
 		except Exception as e:
-			self.job_manager.update_status("FAILED")
+			self.job_manager.update_job_run_status("FAILED")
 
 			raise e
 
-		self.job_manager.update_status("COMPLETED")
+		self.job_manager.update_job_run_status("COMPLETED")
 
 	def _create_argument_parser(self):
 		argument_parser = argparse.ArgumentParser(

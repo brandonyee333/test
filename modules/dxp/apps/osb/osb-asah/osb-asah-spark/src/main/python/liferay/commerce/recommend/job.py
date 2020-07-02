@@ -47,7 +47,7 @@ class BaseDataFrameReaderSparkJob(BaseSparkJob):
 			self.spark_session.catalog.cacheTable(self.table_name)
 
 	def _get_bucket_path(self):
-		configuration = self.spark_application.configuration
+		configuration = self.spark_application_configuration
 
 		return "{}/{}/{}/{}/".format(
 		    configuration.get('google.storage.bucket'),
@@ -81,7 +81,7 @@ class BaseDataFrameWriterSparkJob(BaseSparkJob):
 		)
 
 	def _get_bucket_path(self):
-		configuration = self.spark_application.configuration
+		configuration = self.spark_application_configuration
 
 		return "{}/{}/{}/{}/".format(
 		    configuration.get('google.storage.bucket'),
@@ -127,16 +127,19 @@ class ProductContentDataFrameReaderSparkJob(BaseDataFrameReaderSparkJob):
 		)
 
 	def _post_process(self, product_data_frame):
+		locale = self.spark_application_configuration.get("commerce.ml.locale")
+
 		products_data_frame = product_data_frame.selectExpr(
 		    "CAST(categories.id AS array<string>) assetCategoryIds",
-		    "description.en_US AS description",
-		    "metaDescription.en_US AS metaDescription",
-		    "metaTitle.en_US AS metaTitle", "name.en_US AS name",
-		    "productType AS productTypeName", "id"
+		    "description.{} AS description".format(locale),
+		    "metaDescription.{} AS metaDescription".format(locale),
+		    "metaTitle.{} AS metaTitle".format(locale),
+		    "name.{} AS name".format(locale), "productType AS productTypeName",
+		    "id"
 		)
 
 		return products_data_frame.join(
-		    self._get_product_specifications_data_frame(products_data_frame),
+		    self._get_product_specifications_data_frame(product_data_frame),
 		    on=["id"],
 		    how='left_outer'
 		).withColumnRenamed("id", 'entryClassPK')
@@ -151,7 +154,7 @@ class ProductContentDataFrameReaderSparkJob(BaseDataFrameReaderSparkJob):
 		    explode("productSpecifications").alias("productSpecifications")
 		)
 
-		locale = self.spark_application.configuration.get("commerce.ml.locale")
+		locale = self.spark_application_configuration.get("commerce.ml.locale")
 
 		specification_data_frames = []
 
@@ -259,7 +262,7 @@ class ProductContentRecommendationSparkJob(BaseSparkJob):
 		    )
 		)
 
-		score_function = self.spark_application.configuration.get(
+		score_function = self.spark_application_configuration.get(
 		    'product.content.recommendation.score.function'
 		)
 
@@ -411,7 +414,7 @@ class OrderInteractionDataFrameReaderSparkJob(BaseDataFrameReaderSparkJob):
 		)
 
 	def _post_process(self, data_frame):
-		return data_frame.selectExr(
+		return data_frame.selectExpr(
 		    'accountId as commerceAccountId', 'createDate',
 		    'explode(orderItems.sku) as sku'
 		)
@@ -504,7 +507,7 @@ class UserInteractionCollaborativeFilteringSparkJob(BaseSparkJob):
 		)
 
 		catalog_coverage = float(
-		    self.spark_application.configuration.
+		    self.spark_application_configuration.
 		    get('user.interaction.recommendation.catalog.coverage')
 		)
 
@@ -515,7 +518,7 @@ class UserInteractionCollaborativeFilteringSparkJob(BaseSparkJob):
 		return int(catalog_count * catalog_coverage)
 
 	def _get_training_pipeline(self):
-		configuration = self.spark_application.configuration
+		configuration = self.spark_application_configuration
 
 		als = ALS(
 		    userCol='commerceAccountId',
@@ -606,7 +609,7 @@ class UserInteractionCollaborativeFilteringSparkJob(BaseSparkJob):
 		self._log.info("Model performance on TRAIN set: {}".format(train_map))
 
 	def _split_train_test(self, user_item_data_frame):
-		train_split_ratio = self.spark_application.configuration.get(
+		train_split_ratio = self.spark_application_configuration.get(
 		    'user.interaction.recommendation.train.split.ratio'
 		)
 
