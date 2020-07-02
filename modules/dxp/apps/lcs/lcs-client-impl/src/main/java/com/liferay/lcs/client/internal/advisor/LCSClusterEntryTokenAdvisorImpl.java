@@ -75,18 +75,6 @@ public class LCSClusterEntryTokenAdvisorImpl
 		_initLCSEventManager();
 	}
 
-	@Activate
-	public void activate() {
-		LCSConfiguration lcsConfiguration =
-			_lcsConfigurationProvider.getLCSConfiguration();
-
-		_keyName = lcsConfiguration.digitalSignatureKeyName();
-		_keyStorePath = lcsConfiguration.digitalSignatureKeyStorePath();
-		_keyStoreType = lcsConfiguration.digitalSignatureKeyStoreType();
-
-		_initLCSEventManager();
-	}
-
 	public String getLCSAccessSecret() {
 		return _lcsAccessSecret;
 	}
@@ -148,6 +136,18 @@ public class LCSClusterEntryTokenAdvisorImpl
 			lcsClusterEntryTokenContentAdvisor.getPortalPropertiesBlacklist();
 
 		return lcsClusterEntryToken;
+	}
+
+	@Activate
+	protected void activate() {
+		LCSConfiguration lcsConfiguration =
+			_lcsConfigurationProvider.getLCSConfiguration();
+
+		_keyName = lcsConfiguration.digitalSignatureKeyName();
+		_keyStorePath = lcsConfiguration.digitalSignatureKeyStorePath();
+		_keyStoreType = lcsConfiguration.digitalSignatureKeyStoreType();
+
+		_initLCSEventManager();
 	}
 
 	protected String decrypt(byte[] bytes, int lcsPortletBuildNumber)

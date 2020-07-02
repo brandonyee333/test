@@ -46,25 +46,6 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = LCSClientAdvisor.class)
 public class LCSClientAdvisorImpl implements LCSClientAdvisor {
 
-	@Activate
-	public void activate() {
-		LCSConfiguration lcsConfiguration =
-			_lcsConfigurationProvider.getLCSConfiguration();
-
-		_lcsPlatformPortalHostName =
-			lcsConfiguration.lcsPlatformPortalHostName();
-		_lcsPlatformPortalHostPort =
-			lcsConfiguration.lcsPlatformPortalHostPort();
-		_lcsPlatformPortalLayoutLCSClusterEntry =
-			lcsConfiguration.lcsPlatformPortalLayoutLCSClusterEntry();
-		_lcsPlatformPortalLayoutLCSClusterNode =
-			lcsConfiguration.lcsPlatformPortalLayoutLCSClusterNode();
-		_lcsPlatformPortalLayoutLCSProject =
-			lcsConfiguration.lcsPlatformPortalLayoutLCSProject();
-		_lcsPlatformPortalProtocol =
-			lcsConfiguration.lcsPlatformPortalProtocol();
-	}
-
 	public String getLCSClusterEntryLayoutURL() throws LCSException {
 		LCSClusterNode lcsClusterNode =
 			_lcsClusterNodeClient.fetchLCSClusterNode(_lcsKeyAdvisor.getKey());
@@ -187,6 +168,25 @@ public class LCSClientAdvisorImpl implements LCSClientAdvisor {
 
 		return _getLCSLayoutURL(
 			_lcsPlatformPortalLayoutLCSClusterEntry, publicRenderParameters);
+	}
+
+	@Activate
+	protected void activate() {
+		LCSConfiguration lcsConfiguration =
+			_lcsConfigurationProvider.getLCSConfiguration();
+
+		_lcsPlatformPortalHostName =
+			lcsConfiguration.lcsPlatformPortalHostName();
+		_lcsPlatformPortalHostPort =
+			lcsConfiguration.lcsPlatformPortalHostPort();
+		_lcsPlatformPortalLayoutLCSClusterEntry =
+			lcsConfiguration.lcsPlatformPortalLayoutLCSClusterEntry();
+		_lcsPlatformPortalLayoutLCSClusterNode =
+			lcsConfiguration.lcsPlatformPortalLayoutLCSClusterNode();
+		_lcsPlatformPortalLayoutLCSProject =
+			lcsConfiguration.lcsPlatformPortalLayoutLCSProject();
+		_lcsPlatformPortalProtocol =
+			lcsConfiguration.lcsPlatformPortalProtocol();
 	}
 
 	private static String _getPublicRenderParameterName(String parameterName) {
