@@ -94,7 +94,7 @@ public class AccountEntryServiceHttp {
 	public static com.liferay.osb.customer.admin.model.AccountEntry
 			fetchCorpProjectAccountEntry(
 				HttpPrincipal httpPrincipal, String corpProjectUuid)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		try {
 			MethodKey methodKey = new MethodKey(
@@ -110,11 +110,8 @@ public class AccountEntryServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+				if (exception instanceof Exception) {
+					throw (Exception)exception;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(
@@ -177,7 +174,7 @@ public class AccountEntryServiceHttp {
 		<com.liferay.osb.customer.admin.model.AccountEntry> getAccountEntries(
 				HttpPrincipal httpPrincipal, String userUuid,
 				long[] productEntryIds)
-			throws com.liferay.portal.kernel.exception.PortalException {
+			throws Exception {
 
 		try {
 			MethodKey methodKey = new MethodKey(
@@ -193,11 +190,8 @@ public class AccountEntryServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+				if (exception instanceof Exception) {
+					throw (Exception)exception;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(
@@ -298,7 +292,7 @@ public class AccountEntryServiceHttp {
 	public static com.liferay.osb.customer.admin.model.AccountEntry
 			getCorpProjectAccountEntry(
 				HttpPrincipal httpPrincipal, String corpProjectUuid)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		try {
 			MethodKey methodKey = new MethodKey(
@@ -314,11 +308,8 @@ public class AccountEntryServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+				if (exception instanceof Exception) {
+					throw (Exception)exception;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(

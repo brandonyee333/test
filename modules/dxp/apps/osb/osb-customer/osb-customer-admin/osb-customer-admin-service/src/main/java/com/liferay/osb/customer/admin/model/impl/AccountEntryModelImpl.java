@@ -81,7 +81,8 @@ public class AccountEntryModelImpl
 		{"code_", Types.VARCHAR}, {"instructions", Types.VARCHAR},
 		{"activeSupport", Types.BOOLEAN},
 		{"activeTicketSupport", Types.BOOLEAN},
-		{"lastZendeskAuditDate", Types.TIMESTAMP}, {"status", Types.INTEGER}
+		{"lastZendeskAuditDate", Types.TIMESTAMP}, {"status", Types.INTEGER},
+		{"corpEntryName", Types.VARCHAR}, {"corpProjectUuid", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -105,10 +106,12 @@ public class AccountEntryModelImpl
 		TABLE_COLUMNS_MAP.put("activeTicketSupport", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("lastZendeskAuditDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("corpEntryName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("corpProjectUuid", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table OSB_AccountEntry (accountEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,koroneikiAccountKey VARCHAR(75) null,dossieraAccountKey VARCHAR(75) null,name VARCHAR(500) null,code_ VARCHAR(75) null,instructions STRING null,activeSupport BOOLEAN,activeTicketSupport BOOLEAN,lastZendeskAuditDate DATE null,status INTEGER)";
+		"create table OSB_AccountEntry (accountEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,koroneikiAccountKey VARCHAR(75) null,dossieraAccountKey VARCHAR(75) null,name VARCHAR(500) null,code_ VARCHAR(75) null,instructions STRING null,activeSupport BOOLEAN,activeTicketSupport BOOLEAN,lastZendeskAuditDate DATE null,status INTEGER,corpEntryName VARCHAR(75) null,corpProjectUuid VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table OSB_AccountEntry";
 
@@ -175,6 +178,8 @@ public class AccountEntryModelImpl
 		model.setActiveTicketSupport(soapModel.isActiveTicketSupport());
 		model.setLastZendeskAuditDate(soapModel.getLastZendeskAuditDate());
 		model.setStatus(soapModel.getStatus());
+		model.setCorpEntryName(soapModel.getCorpEntryName());
+		model.setCorpProjectUuid(soapModel.getCorpProjectUuid());
 
 		return model;
 	}
@@ -735,6 +740,51 @@ public class AccountEntryModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"corpEntryName",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getCorpEntryName();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"corpEntryName",
+			new BiConsumer<AccountEntry, Object>() {
+
+				@Override
+				public void accept(
+					AccountEntry accountEntry, Object corpEntryNameObject) {
+
+					accountEntry.setCorpEntryName((String)corpEntryNameObject);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"corpProjectUuid",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getCorpProjectUuid();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"corpProjectUuid",
+			new BiConsumer<AccountEntry, Object>() {
+
+				@Override
+				public void accept(
+					AccountEntry accountEntry, Object corpProjectUuidObject) {
+
+					accountEntry.setCorpProjectUuid(
+						(String)corpProjectUuidObject);
+				}
+
+			});
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
@@ -1034,6 +1084,38 @@ public class AccountEntryModelImpl
 		_status = status;
 	}
 
+	@JSON
+	@Override
+	public String getCorpEntryName() {
+		if (_corpEntryName == null) {
+			return "";
+		}
+		else {
+			return _corpEntryName;
+		}
+	}
+
+	@Override
+	public void setCorpEntryName(String corpEntryName) {
+		_corpEntryName = corpEntryName;
+	}
+
+	@JSON
+	@Override
+	public String getCorpProjectUuid() {
+		if (_corpProjectUuid == null) {
+			return "";
+		}
+		else {
+			return _corpProjectUuid;
+		}
+	}
+
+	@Override
+	public void setCorpProjectUuid(String corpProjectUuid) {
+		_corpProjectUuid = corpProjectUuid;
+	}
+
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -1087,6 +1169,8 @@ public class AccountEntryModelImpl
 		accountEntryImpl.setActiveTicketSupport(isActiveTicketSupport());
 		accountEntryImpl.setLastZendeskAuditDate(getLastZendeskAuditDate());
 		accountEntryImpl.setStatus(getStatus());
+		accountEntryImpl.setCorpEntryName(getCorpEntryName());
+		accountEntryImpl.setCorpProjectUuid(getCorpProjectUuid());
 
 		accountEntryImpl.resetOriginalValues();
 
@@ -1267,6 +1351,22 @@ public class AccountEntryModelImpl
 
 		accountEntryCacheModel.status = getStatus();
 
+		accountEntryCacheModel.corpEntryName = getCorpEntryName();
+
+		String corpEntryName = accountEntryCacheModel.corpEntryName;
+
+		if ((corpEntryName != null) && (corpEntryName.length() == 0)) {
+			accountEntryCacheModel.corpEntryName = null;
+		}
+
+		accountEntryCacheModel.corpProjectUuid = getCorpProjectUuid();
+
+		String corpProjectUuid = accountEntryCacheModel.corpProjectUuid;
+
+		if ((corpProjectUuid != null) && (corpProjectUuid.length() == 0)) {
+			accountEntryCacheModel.corpProjectUuid = null;
+		}
+
 		return accountEntryCacheModel;
 	}
 
@@ -1360,6 +1460,8 @@ public class AccountEntryModelImpl
 	private boolean _activeTicketSupport;
 	private Date _lastZendeskAuditDate;
 	private int _status;
+	private String _corpEntryName;
+	private String _corpProjectUuid;
 	private long _columnBitmask;
 	private AccountEntry _escapedModel;
 

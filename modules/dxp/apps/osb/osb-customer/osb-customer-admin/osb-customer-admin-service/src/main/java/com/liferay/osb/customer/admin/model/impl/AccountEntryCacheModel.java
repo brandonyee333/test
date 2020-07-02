@@ -62,7 +62,7 @@ public class AccountEntryCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(35);
+		StringBundler sb = new StringBundler(39);
 
 		sb.append("{accountEntryId=");
 		sb.append(accountEntryId);
@@ -98,6 +98,10 @@ public class AccountEntryCacheModel
 		sb.append(lastZendeskAuditDate);
 		sb.append(", status=");
 		sb.append(status);
+		sb.append(", corpEntryName=");
+		sb.append(corpEntryName);
+		sb.append(", corpProjectUuid=");
+		sb.append(corpProjectUuid);
 		sb.append("}");
 
 		return sb.toString();
@@ -189,6 +193,20 @@ public class AccountEntryCacheModel
 
 		accountEntryImpl.setStatus(status);
 
+		if (corpEntryName == null) {
+			accountEntryImpl.setCorpEntryName("");
+		}
+		else {
+			accountEntryImpl.setCorpEntryName(corpEntryName);
+		}
+
+		if (corpProjectUuid == null) {
+			accountEntryImpl.setCorpProjectUuid("");
+		}
+		else {
+			accountEntryImpl.setCorpProjectUuid(corpProjectUuid);
+		}
+
 		accountEntryImpl.resetOriginalValues();
 
 		return accountEntryImpl;
@@ -219,6 +237,8 @@ public class AccountEntryCacheModel
 		lastZendeskAuditDate = objectInput.readLong();
 
 		status = objectInput.readInt();
+		corpEntryName = objectInput.readUTF();
+		corpProjectUuid = objectInput.readUTF();
 	}
 
 	@Override
@@ -290,6 +310,20 @@ public class AccountEntryCacheModel
 		objectOutput.writeLong(lastZendeskAuditDate);
 
 		objectOutput.writeInt(status);
+
+		if (corpEntryName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(corpEntryName);
+		}
+
+		if (corpProjectUuid == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(corpProjectUuid);
+		}
 	}
 
 	public long accountEntryId;
@@ -309,5 +343,7 @@ public class AccountEntryCacheModel
 	public boolean activeTicketSupport;
 	public long lastZendeskAuditDate;
 	public int status;
+	public String corpEntryName;
+	public String corpProjectUuid;
 
 }

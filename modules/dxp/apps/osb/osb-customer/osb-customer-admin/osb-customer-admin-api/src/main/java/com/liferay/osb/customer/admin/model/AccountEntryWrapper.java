@@ -72,6 +72,8 @@ public class AccountEntryWrapper
 		attributes.put("activeTicketSupport", isActiveTicketSupport());
 		attributes.put("lastZendeskAuditDate", getLastZendeskAuditDate());
 		attributes.put("status", getStatus());
+		attributes.put("corpEntryName", getCorpEntryName());
+		attributes.put("corpProjectUuid", getCorpProjectUuid());
 
 		return attributes;
 	}
@@ -183,6 +185,18 @@ public class AccountEntryWrapper
 		if (status != null) {
 			setStatus(status);
 		}
+
+		String corpEntryName = (String)attributes.get("corpEntryName");
+
+		if (corpEntryName != null) {
+			setCorpEntryName(corpEntryName);
+		}
+
+		String corpProjectUuid = (String)attributes.get("corpProjectUuid");
+
+		if (corpProjectUuid != null) {
+			setCorpProjectUuid(corpProjectUuid);
+		}
 	}
 
 	@Override
@@ -257,9 +271,29 @@ public class AccountEntryWrapper
 		return _accountEntry.getCompanyId();
 	}
 
+	/**
+	 * Returns the corp entry name of this account entry.
+	 *
+	 * @return the corp entry name of this account entry
+	 */
+	@Override
+	public String getCorpEntryName() {
+		return _accountEntry.getCorpEntryName();
+	}
+
 	@Override
 	public long getCorpProjectId() {
 		return _accountEntry.getCorpProjectId();
+	}
+
+	/**
+	 * Returns the corp project uuid of this account entry.
+	 *
+	 * @return the corp project uuid of this account entry
+	 */
+	@Override
+	public String getCorpProjectUuid() {
+		return _accountEntry.getCorpProjectUuid();
 	}
 
 	/**
@@ -375,6 +409,14 @@ public class AccountEntryWrapper
 	@Override
 	public String getName() {
 		return _accountEntry.getName();
+	}
+
+	@Override
+	public java.util.List
+		<com.liferay.osb.customer.admin.model.legacy.OfferingEntry>
+			getOfferingEntries() {
+
+		return _accountEntry.getOfferingEntries();
 	}
 
 	/**
@@ -553,6 +595,26 @@ public class AccountEntryWrapper
 	}
 
 	/**
+	 * Sets the corp entry name of this account entry.
+	 *
+	 * @param corpEntryName the corp entry name of this account entry
+	 */
+	@Override
+	public void setCorpEntryName(String corpEntryName) {
+		_accountEntry.setCorpEntryName(corpEntryName);
+	}
+
+	/**
+	 * Sets the corp project uuid of this account entry.
+	 *
+	 * @param corpProjectUuid the corp project uuid of this account entry
+	 */
+	@Override
+	public void setCorpProjectUuid(String corpProjectUuid) {
+		_accountEntry.setCorpProjectUuid(corpProjectUuid);
+	}
+
+	/**
 	 * Sets the create date of this account entry.
 	 *
 	 * @param createDate the create date of this account entry
@@ -677,6 +739,15 @@ public class AccountEntryWrapper
 	@Override
 	public void setNew(boolean n) {
 		_accountEntry.setNew(n);
+	}
+
+	@Override
+	public void setOfferingEntries(
+		java.util.List
+			<com.liferay.osb.customer.admin.model.legacy.OfferingEntry>
+				offeringEntries) {
+
+		_accountEntry.setOfferingEntries(offeringEntries);
 	}
 
 	/**

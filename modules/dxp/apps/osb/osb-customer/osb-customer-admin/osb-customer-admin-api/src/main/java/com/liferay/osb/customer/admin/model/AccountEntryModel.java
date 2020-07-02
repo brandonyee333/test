@@ -362,6 +362,36 @@ public interface AccountEntryModel
 	 */
 	public void setStatus(int status);
 
+	/**
+	 * Returns the corp entry name of this account entry.
+	 *
+	 * @return the corp entry name of this account entry
+	 */
+	@AutoEscape
+	public String getCorpEntryName();
+
+	/**
+	 * Sets the corp entry name of this account entry.
+	 *
+	 * @param corpEntryName the corp entry name of this account entry
+	 */
+	public void setCorpEntryName(String corpEntryName);
+
+	/**
+	 * Returns the corp project uuid of this account entry.
+	 *
+	 * @return the corp project uuid of this account entry
+	 */
+	@AutoEscape
+	public String getCorpProjectUuid();
+
+	/**
+	 * Sets the corp project uuid of this account entry.
+	 *
+	 * @param corpProjectUuid the corp project uuid of this account entry
+	 */
+	public void setCorpProjectUuid(String corpProjectUuid);
+
 	@Override
 	public boolean isNew();
 

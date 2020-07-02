@@ -71,6 +71,11 @@ public interface AccountEntry extends AccountEntryModel, PersistedModel {
 	@com.liferay.portal.kernel.json.JSON
 	public String[] getLanguageIds();
 
+	@com.liferay.portal.kernel.json.JSON
+	public java.util.List
+		<com.liferay.osb.customer.admin.model.legacy.OfferingEntry>
+			getOfferingEntries();
+
 	public String getStatusLabel();
 
 	public long[] getSupportRegionIds();
@@ -81,6 +86,11 @@ public interface AccountEntry extends AccountEntryModel, PersistedModel {
 	public String getTier() throws Exception;
 
 	public void setLanguageIds(String[] languageIds);
+
+	public void setOfferingEntries(
+		java.util.List
+			<com.liferay.osb.customer.admin.model.legacy.OfferingEntry>
+				offeringEntries);
 
 	public void setSupportRegionIds(long[] supportRegionIds);
 

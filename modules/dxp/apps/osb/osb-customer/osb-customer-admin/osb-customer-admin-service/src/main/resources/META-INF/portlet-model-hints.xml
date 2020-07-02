@@ -34,6 +34,8 @@
 		<field name="activeTicketSupport" type="boolean" />
 		<field name="lastZendeskAuditDate" type="Date" />
 		<field name="status" type="int" />
+		<field name="corpEntryName" type="String" />
+		<field name="corpProjectUuid" type="String" />
 	</model>
 	<model name="com.liferay.osb.customer.admin.model.AccountEntryLanguage">
 		<field name="accountEntryLanguageId" type="long" />

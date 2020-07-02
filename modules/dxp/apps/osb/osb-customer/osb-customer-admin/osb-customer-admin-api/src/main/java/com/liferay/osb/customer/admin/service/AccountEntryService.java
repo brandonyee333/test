@@ -65,7 +65,7 @@ public interface AccountEntryService extends BaseService {
 	@JSONWebService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountEntry fetchCorpProjectAccountEntry(String corpProjectUuid)
-		throws PortalException;
+		throws Exception;
 
 	@JSONWebService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -76,7 +76,7 @@ public interface AccountEntryService extends BaseService {
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountEntry> getAccountEntries(
 			String userUuid, long[] productEntryIds)
-		throws PortalException;
+		throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountEntry getAccountEntry(long accountEntryId)
@@ -90,7 +90,7 @@ public interface AccountEntryService extends BaseService {
 	@JSONWebService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountEntry getCorpProjectAccountEntry(String corpProjectUuid)
-		throws PortalException;
+		throws Exception;
 
 	/**
 	 * Returns the OSGi service identifier.

@@ -45,6 +45,8 @@
 		<property name="activeTicketSupport" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="lastZendeskAuditDate" type="org.hibernate.type.TimestampType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="corpEntryName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="corpProjectUuid" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.osb.customer.admin.model.impl.AccountEntryLanguageImpl" table="OSB_AccountEntryLanguage">
 		<id name="accountEntryLanguageId" type="long">

@@ -41,7 +41,7 @@ public class AccountEntryServiceWrapper
 	@Override
 	public com.liferay.osb.customer.admin.model.AccountEntry
 			fetchCorpProjectAccountEntry(String corpProjectUuid)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		return _accountEntryService.fetchCorpProjectAccountEntry(
 			corpProjectUuid);
@@ -59,7 +59,7 @@ public class AccountEntryServiceWrapper
 	@Override
 	public java.util.List<com.liferay.osb.customer.admin.model.AccountEntry>
 			getAccountEntries(String userUuid, long[] productEntryIds)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		return _accountEntryService.getAccountEntries(
 			userUuid, productEntryIds);
@@ -84,7 +84,7 @@ public class AccountEntryServiceWrapper
 	@Override
 	public com.liferay.osb.customer.admin.model.AccountEntry
 			getCorpProjectAccountEntry(String corpProjectUuid)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		return _accountEntryService.getCorpProjectAccountEntry(corpProjectUuid);
 	}

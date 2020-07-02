@@ -46,7 +46,7 @@ public class AccountEntryServiceUtil {
 
 	public static com.liferay.osb.customer.admin.model.AccountEntry
 			fetchCorpProjectAccountEntry(String corpProjectUuid)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		return getService().fetchCorpProjectAccountEntry(corpProjectUuid);
 	}
@@ -61,7 +61,7 @@ public class AccountEntryServiceUtil {
 	public static java.util.List
 		<com.liferay.osb.customer.admin.model.AccountEntry> getAccountEntries(
 				String userUuid, long[] productEntryIds)
-			throws com.liferay.portal.kernel.exception.PortalException {
+			throws Exception {
 
 		return getService().getAccountEntries(userUuid, productEntryIds);
 	}
@@ -82,7 +82,7 @@ public class AccountEntryServiceUtil {
 
 	public static com.liferay.osb.customer.admin.model.AccountEntry
 			getCorpProjectAccountEntry(String corpProjectUuid)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		return getService().getCorpProjectAccountEntry(corpProjectUuid);
 	}

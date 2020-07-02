@@ -34,7 +34,9 @@ create table OSB_AccountEntry (
 	activeSupport BOOLEAN,
 	activeTicketSupport BOOLEAN,
 	lastZendeskAuditDate DATE null,
-	status INTEGER
+	status INTEGER,
+	corpEntryName VARCHAR(75) null,
+	corpProjectUuid VARCHAR(75) null
 );
 
 create table OSB_AccountEntryLanguage (

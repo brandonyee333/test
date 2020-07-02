@@ -48,6 +48,8 @@ public class AccountEntrySoap implements Serializable {
 		soapModel.setActiveTicketSupport(model.isActiveTicketSupport());
 		soapModel.setLastZendeskAuditDate(model.getLastZendeskAuditDate());
 		soapModel.setStatus(model.getStatus());
+		soapModel.setCorpEntryName(model.getCorpEntryName());
+		soapModel.setCorpProjectUuid(model.getCorpProjectUuid());
 
 		return soapModel;
 	}
@@ -245,6 +247,22 @@ public class AccountEntrySoap implements Serializable {
 		_status = status;
 	}
 
+	public String getCorpEntryName() {
+		return _corpEntryName;
+	}
+
+	public void setCorpEntryName(String corpEntryName) {
+		_corpEntryName = corpEntryName;
+	}
+
+	public String getCorpProjectUuid() {
+		return _corpProjectUuid;
+	}
+
+	public void setCorpProjectUuid(String corpProjectUuid) {
+		_corpProjectUuid = corpProjectUuid;
+	}
+
 	private long _accountEntryId;
 	private long _companyId;
 	private long _userId;
@@ -262,5 +280,7 @@ public class AccountEntrySoap implements Serializable {
 	private boolean _activeTicketSupport;
 	private Date _lastZendeskAuditDate;
 	private int _status;
+	private String _corpEntryName;
+	private String _corpProjectUuid;
 
 }
