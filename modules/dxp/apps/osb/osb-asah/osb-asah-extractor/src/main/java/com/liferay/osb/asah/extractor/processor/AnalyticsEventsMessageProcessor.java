@@ -327,6 +327,10 @@ public class AnalyticsEventsMessageProcessor implements MessageListener {
 			context.putAll(convertedValues);
 		}
 
+		if (StringUtils.isBlank(MapUtil.getString(context, "canonicalUrl"))) {
+			context.put("canonicalUrl", MapUtil.getString(context, "url"));
+		}
+
 		String screenHeight = MapUtil.getString(context, "screenHeight");
 
 		if (screenHeight != null) {
