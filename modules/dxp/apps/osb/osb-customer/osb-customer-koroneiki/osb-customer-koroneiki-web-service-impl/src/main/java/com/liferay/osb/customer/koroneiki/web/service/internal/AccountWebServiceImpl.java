@@ -138,9 +138,13 @@ public class AccountWebServiceImpl implements AccountWebService {
 			koroneikiConfiguration.scheme()
 		).header(
 			"API_Token", koroneikiConfiguration.apiToken()
+		).parameter(
+			"nestedFields", "productPurchases"
 		).build();
 
-		_nestedFieldsAccountResource = builder.endpoint(
+		AccountResource.Builder nestedFieldsBuilder = AccountResource.builder();
+
+		_nestedFieldsAccountResource = nestedFieldsBuilder.endpoint(
 			koroneikiConfiguration.host(), koroneikiConfiguration.port(),
 			koroneikiConfiguration.scheme()
 		).header(

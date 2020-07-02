@@ -5,6 +5,7 @@ Export-Package:\
 	com.liferay.osb.customer.admin.constants,\
 	com.liferay.osb.customer.admin.exception,\
 	com.liferay.osb.customer.admin.model,\
+	com.liferay.osb.customer.admin.model.legacy,\
 	com.liferay.osb.customer.admin.service,\
 	com.liferay.osb.customer.admin.service.persistence,\
 	com.liferay.osb.customer.admin.util.comparator

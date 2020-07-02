@@ -12,12 +12,29 @@
  *
  */
 
-package com.liferay.osb.customer.admin.service.impl;
+package com.liferay.osb.customer.admin.model.legacy;
 
-import com.liferay.osb.customer.admin.service.base.LicenseEntryServiceBaseImpl;
+import java.util.Date;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Amos Fong
  */
-public class LicenseEntryServiceImpl extends LicenseEntryServiceBaseImpl {
+public interface OfferingEntry {
+
+	public long getProductEntryId();
+
+	public int getQuantity();
+
+	public Date getStartDate();
+
+	public Date getSupportEndDate();
+
+	public void setProductEntryId(long productEntryId);
+
+	public void setQuantity(int quantity);
+
+	public void setStartDate(Date startDate);
+
+	public void setSupportEndDate(Date supportEndDate);
+
 }

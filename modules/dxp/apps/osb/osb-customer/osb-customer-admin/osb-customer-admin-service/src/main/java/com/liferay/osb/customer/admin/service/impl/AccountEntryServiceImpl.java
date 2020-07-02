@@ -15,14 +15,23 @@
 package com.liferay.osb.customer.admin.service.impl;
 
 import com.liferay.osb.customer.admin.constants.AccountEntryConstants;
+import com.liferay.osb.customer.admin.constants.WorkflowConstants;
 import com.liferay.osb.customer.admin.exception.NoSuchAccountEntryException;
 import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.model.ProductEntry;
+import com.liferay.osb.customer.admin.model.impl.AccountEntryImpl;
+import com.liferay.osb.customer.admin.model.impl.legacy.OfferingEntryImpl;
+import com.liferay.osb.customer.admin.model.legacy.OfferingEntry;
 import com.liferay.osb.customer.admin.service.base.AccountEntryServiceBaseImpl;
 import com.liferay.osb.customer.admin.service.permission.AccountEntryPermission;
 import com.liferay.osb.customer.constants.OSBActionKeys;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkDomain;
+import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkEntityName;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
@@ -30,9 +39,12 @@ import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -54,13 +66,19 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 
 	@JSONWebService
 	public AccountEntry fetchCorpProjectAccountEntry(String corpProjectUuid)
-		throws PortalException {
+		throws Exception {
 
 		validateJSONWebServicePermissions();
 
-		// TODO
+		List<Account> accounts = _accountWebService.getAccounts(
+			ExternalLinkDomain.WEB, ExternalLinkEntityName.WEB_CORP_PROJECT,
+			corpProjectUuid, 1, 1);
 
-		return null;
+		if (accounts.isEmpty()) {
+			return null;
+		}
+
+		return translate(accounts.get(0));
 	}
 
 	@JSONWebService
@@ -76,13 +94,41 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 	@JSONWebService
 	public List<AccountEntry> getAccountEntries(
 			String userUuid, long[] productEntryIds)
-		throws PortalException {
+		throws Exception {
 
 		validateJSONWebServicePermissions();
 
-		// TODO
+		StringBundler sb = new StringBundler();
 
-		return null;
+		sb.append("customerContactUuids/any(s:s eq '");
+		sb.append(userUuid);
+		sb.append("') and productKeys/any(s:");
+
+		for (int i = 0; i < productEntryIds.length; i++) {
+			ProductEntry productEntry =
+				productEntryLocalService.getProductEntry(productEntryIds[i]);
+
+			sb.append("s eq '");
+			sb.append(productEntry.getKoroneikiProductKey());
+			sb.append("'");
+
+			if ((i + 1) < productEntryIds.length) {
+				sb.append(" or ");
+			}
+		}
+
+		sb.append(")");
+
+		List<Account> accounts = _accountWebService.search(
+			StringPool.BLANK, sb.toString(), 1, 1000, null);
+
+		List<AccountEntry> accountEntries = new ArrayList<>();
+
+		for (Account account : accounts) {
+			accountEntries.add(translate(account));
+		}
+
+		return accountEntries;
 	}
 
 	public AccountEntry getAccountEntry(long accountEntryId)
@@ -123,13 +169,18 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 
 	@JSONWebService
 	public AccountEntry getCorpProjectAccountEntry(String corpProjectUuid)
-		throws PortalException {
+		throws Exception {
 
 		validateJSONWebServicePermissions();
 
-		// TODO
+		AccountEntry accountEntry = fetchCorpProjectAccountEntry(
+			corpProjectUuid);
 
-		return null;
+		if (accountEntry == null) {
+			throw new NoSuchAccountEntryException();
+		}
+
+		return accountEntry;
 	}
 
 	public void syncToZendesk(String koroneikiAccountKey)
@@ -207,6 +258,83 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 			params.put("accountEntryMembership", Long.valueOf(getUserId()));
 			params.put("status", AccountEntryConstants.STATUSES_ACTIVE);
 		}
+	}
+
+	protected String getExternalLinkEntityId(
+		Account account, String externalLinkDomain,
+		String externalLinkEntityName) {
+
+		ExternalLink[] externalLinks = account.getExternalLinks();
+
+		if (externalLinks != null) {
+			for (ExternalLink externalLink : externalLinks) {
+				String domain = externalLink.getDomain();
+				String entityName = externalLink.getEntityName();
+
+				if (domain.equals(externalLinkDomain) &&
+					entityName.equals(externalLinkEntityName)) {
+
+					return externalLink.getEntityId();
+				}
+			}
+		}
+
+		return null;
+	}
+
+	protected AccountEntry translate(Account account) throws Exception {
+		AccountEntry accountEntry = new AccountEntryImpl();
+
+		if (Validator.isNotNull(account.getParentAccountKey())) {
+			Account parentAccount = _accountWebService.getAccount(
+				account.getParentAccountKey());
+
+			accountEntry.setCorpEntryName(parentAccount.getName());
+			accountEntry.setDossieraAccountKey(
+				getExternalLinkEntityId(
+					parentAccount, ExternalLinkDomain.DOSSIERA,
+					ExternalLinkEntityName.DOSSIERA_ACCOUNT));
+		}
+
+		accountEntry.setCorpProjectUuid(
+			getExternalLinkEntityId(
+				account, ExternalLinkDomain.WEB,
+				ExternalLinkEntityName.WEB_CORP_PROJECT));
+		accountEntry.setKoroneikiAccountKey(account.getKey());
+		accountEntry.setName(account.getName());
+
+		if (account.getStatus() == Account.Status.APPROVED) {
+			accountEntry.setStatus(WorkflowConstants.STATUS_APPROVED);
+		}
+		else if (account.getStatus() == Account.Status.CLOSED) {
+			accountEntry.setStatus(WorkflowConstants.STATUS_CLOSED);
+		}
+
+		ProductPurchase[] productPurchases = account.getProductPurchases();
+
+		if (productPurchases != null) {
+			List<OfferingEntry> offeringEntries = new ArrayList<>();
+
+			for (ProductPurchase productPurchase : productPurchases) {
+				ProductEntry productEntry =
+					productEntryLocalService.getProductEntryByKoroneikiKey(
+						productPurchase.getProductKey());
+
+				OfferingEntry offeringEntry = new OfferingEntryImpl();
+
+				offeringEntry.setSupportEndDate(productPurchase.getEndDate());
+				offeringEntry.setProductEntryId(
+					productEntry.getProductEntryId());
+				offeringEntry.setQuantity(productPurchase.getQuantity());
+				offeringEntry.setStartDate(productPurchase.getStartDate());
+
+				offeringEntries.add(offeringEntry);
+			}
+
+			accountEntry.setOfferingEntries(offeringEntries);
+		}
+
+		return accountEntry;
 	}
 
 	protected void validateJSONWebServicePermissions() throws PortalException {

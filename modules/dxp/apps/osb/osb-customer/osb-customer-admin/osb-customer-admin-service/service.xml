@@ -82,6 +82,11 @@
 		<column name="lastZendeskAuditDate" type="Date" />
 		<column name="status" type="int" />
 
+		<!-- Legacy fields -->
+
+		<column name="corpEntryName" type="String" />
+		<column name="corpProjectUuid" type="String" />
+
 		<!-- Finder methods -->
 
 		<finder name="KoroneikiAccountKey" return-type="AccountEntry">

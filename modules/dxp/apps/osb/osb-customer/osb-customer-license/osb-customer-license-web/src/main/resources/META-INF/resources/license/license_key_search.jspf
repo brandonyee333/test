@@ -15,8 +15,6 @@
 --%>
 
 <%
-boolean licenseAdmin = true; // TODO AccountWorkerLocalServiceUtil.hasAccountWorkerRole(user.getUserId(), AccountWorkerConstants.ROLE_SALES) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE_OSB_ACCOUNT_ADMIN_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE_OSB_TRIAL_LICENSE_ADMIN_ID);
-
 int rowLength = 4;
 
 Calendar calendar = CalendarFactoryUtil.getCalendar(2010, 1, 1);
@@ -139,15 +137,13 @@ Date lastEnabledDate = calendar.getTime();
 			<aui:button cssClass="btn-sm" onClick="<%= taglibSelectModifiedUser %>" primary="<%= true %>" value="choose" />
 		</aui:col>
 
-		<c:if test="<%= licenseAdmin %>">
-			<aui:col md="4">
-				<aui:select label="active" name="<%= displayTerms.ACTIVE %>">
-					<aui:option />
-					<aui:option label="<%= Boolean.TRUE.toString() %>" selected="<%= displayTerms.hasActive() && displayTerms.isActive() %>" value="1" />
-					<aui:option label="<%= Boolean.FALSE.toString() %>" selected="<%= displayTerms.hasActive() && !displayTerms.isActive() %>" value="0" />
-				</aui:select>
-			</aui:col>
-		</c:if>
+		<aui:col md="4">
+			<aui:select label="active" name="<%= displayTerms.ACTIVE %>">
+				<aui:option />
+				<aui:option label="<%= Boolean.TRUE.toString() %>" selected="<%= displayTerms.hasActive() && displayTerms.isActive() %>" value="1" />
+				<aui:option label="<%= Boolean.FALSE.toString() %>" selected="<%= displayTerms.hasActive() && !displayTerms.isActive() %>" value="0" />
+			</aui:select>
+		</aui:col>
 	</aui:row>
 
 	<aui:row>

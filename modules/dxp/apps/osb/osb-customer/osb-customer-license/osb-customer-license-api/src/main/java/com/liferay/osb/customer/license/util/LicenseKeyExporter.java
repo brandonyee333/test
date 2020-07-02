@@ -15,10 +15,11 @@
 package com.liferay.osb.customer.license.util;
 
 import com.liferay.osb.customer.license.model.LicenseKey;
-import com.liferay.osb.customer.license.model.LicenseKeySet;
 
 import java.io.File;
+import java.io.IOException;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,9 +33,11 @@ public interface LicenseKeyExporter {
 
 	public File toFile(LicenseKey licenseKey) throws Exception;
 
+	public String toLI(LicenseKey licenseKey) throws IOException;
+
 	public String toXML(LicenseKey licenseKey) throws Exception;
 
-	public String toXML(LicenseKeySet licenseKeySet) throws Exception;
+	public String toXML(List<LicenseKey> licenseKeys) throws Exception;
 
 	public String toXML(Map<String, String> properties, String key)
 		throws Exception;

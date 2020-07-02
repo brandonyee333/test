@@ -537,6 +537,10 @@ public class LicensePortlet extends MVCPortlet {
 		LicenseKeySet licenseKeySet = _licenseKeySetService.getLicenseKeySet(
 			licenseKeySetId);
 
+		if (!LicenseUtil.isAggregate(licenseKeySet.getLicenseKeySetId())) {
+			return;
+		}
+
 		List<LicenseKey> licenseKeys =
 			_licenseKeyLocalService.getLicenseKeySetLicenseKeys(
 				licenseKeySet.getLicenseKeySetId());
@@ -549,7 +553,7 @@ public class LicensePortlet extends MVCPortlet {
 
 		String fileName = _licenseKeyExporter.getFileName(licenseKey);
 
-		String licenseXML = _licenseKeyExporter.toXML(licenseKeySet);
+		String licenseXML = _licenseKeyExporter.toXML(licenseKeys);
 
 		PortletResponseUtil.sendFile(
 			resourceRequest, resourceResponse, fileName, licenseXML.getBytes(),

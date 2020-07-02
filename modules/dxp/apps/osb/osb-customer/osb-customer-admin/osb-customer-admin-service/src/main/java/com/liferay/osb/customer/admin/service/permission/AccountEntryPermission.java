@@ -90,8 +90,6 @@ public class AccountEntryPermission {
 			return false;
 		}
 
-		/*
-
 		if (actionId.equals(OSBActionKeys.ADD_LICENSE) ||
 			actionId.equals(OSBActionKeys.ADD_LICENSE_KEY_SET)) {
 
@@ -102,6 +100,8 @@ public class AccountEntryPermission {
 				return true;
 			}
 
+			/*
+
 			if ((accountEntry.getAccountEntryId() ==
 					OSBCustomerConstants.ACCOUNT_ENTRY_LRDCOM_ID) &&
 				_organizationLocalService.hasUserOrganization(
@@ -110,10 +110,10 @@ public class AccountEntryPermission {
 
 				return true;
 			}
+			*/
 
 			return false;
 		}
-		*/
 
 		if (_organizationLocalService.hasUserOrganization(
 				permissionChecker.getUserId(),

@@ -21,6 +21,8 @@ public class OSBCustomerConstants {
 
 	public static final long ACCOUNT_ENTRY_LRDCOM_ID = 5377279;
 
+	public static final long ACCOUNT_ENTRY_WEDEPLOY_ID = 94686572;
+
 	public static final String ATTACHMENTS_DIR_ACCOUNT_ENTRY =
 		"osb/accountentry/";
 
@@ -47,6 +49,9 @@ public class OSBCustomerConstants {
 	public static final long ORGANIZATION_LIFERAY_INC_ID = 1747318;
 
 	public static final long ORGANIZATION_PARTNER_ID = 1747324;
+
+	public static final long PRODUCT_ENTRY_DIGITAL_ENTERPRISE_DEVELOPER_ID =
+		81815275;
 
 	public static final long
 		ROLE_CUSTOMER_COMMERCE_CONNECTOR_TO_PUNCHOUT2GO_ID = 120129734;

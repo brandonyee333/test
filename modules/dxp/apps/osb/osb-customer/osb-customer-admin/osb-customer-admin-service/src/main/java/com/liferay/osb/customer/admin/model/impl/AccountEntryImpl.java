@@ -19,6 +19,7 @@ import com.liferay.osb.customer.admin.model.AccountAttachment;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.model.AccountEntryLanguage;
 import com.liferay.osb.customer.admin.model.SupportRegion;
+import com.liferay.osb.customer.admin.model.legacy.OfferingEntry;
 import com.liferay.osb.customer.admin.service.AccountAttachmentLocalServiceUtil;
 import com.liferay.osb.customer.admin.service.AccountEntryLanguageLocalServiceUtil;
 import com.liferay.osb.customer.admin.service.SupportRegionLocalServiceUtil;
@@ -101,6 +102,11 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 		return languageIds;
 	}
 
+	@JSON
+	public List<OfferingEntry> getOfferingEntries() {
+		return _offeringEntries;
+	}
+
 	public String getStatusLabel() {
 		return WorkflowConstants.getStatusLabel(getStatus());
 	}
@@ -139,11 +145,16 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 		_languageIds = languageIds;
 	}
 
+	public void setOfferingEntries(List<OfferingEntry> offeringEntries) {
+		_offeringEntries = offeringEntries;
+	}
+
 	public void setSupportRegionIds(long[] supportRegionIds) {
 		_supportRegionIds = supportRegionIds;
 	}
 
 	private String[] _languageIds;
+	private List<OfferingEntry> _offeringEntries;
 	private long[] _supportRegionIds;
 
 }
