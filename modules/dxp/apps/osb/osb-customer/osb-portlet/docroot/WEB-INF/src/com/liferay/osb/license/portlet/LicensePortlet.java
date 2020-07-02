@@ -307,6 +307,8 @@ public class LicensePortlet extends OSBPortlet {
 			startDateMonth, startDateDay, startDateYear,
 			themeDisplay.getTimeZone(), (Class<? extends PortalException>)null);
 
+		Date expirationDate = null;
+
 		List<String> hostNames = new ArrayList<>();
 		List<String> ipAddresses = new ArrayList<>();
 		List<String> macAddresses = new ArrayList<>();
@@ -344,6 +346,24 @@ public class LicensePortlet extends OSBPortlet {
 		LicenseKey licenseKey = null;
 
 		if (licenseKeyId <= 0) {
+			boolean aggregateLicense = ParamUtil.getBoolean(
+				actionRequest, "aggregateLicense");
+
+			if (aggregateLicense && LicenseUtil.isAggregate(licenseKeySetId)) {
+				List<LicenseKey> licenseKeys =
+					LicenseKeyLocalServiceUtil.getLicenseKeySetLicenseKeys(
+						licenseKeySetId);
+
+				for (LicenseKey curLicenseKey : licenseKeys) {
+					if (curLicenseKey.isActive()) {
+						startDate = curLicenseKey.getStartDate();
+						expirationDate = curLicenseKey.getExpirationDate();
+
+						break;
+					}
+				}
+			}
+
 			licenseKey = LicenseKeyServiceUtil.addLicenseKey(
 				themeDisplay.getUserId(), licenseKeySetId, name,
 				offeringEntryId, licenseEntryId, 0, productVersion, clusterId,
@@ -351,7 +371,7 @@ public class LicensePortlet extends OSBPortlet {
 				hostNames.toArray(new String[0]),
 				ipAddresses.toArray(new String[0]),
 				macAddresses.toArray(new String[0]), serverIds, startDate,
-				false, true);
+				expirationDate, false, true);
 
 			actionRequest.setAttribute("clusterId", licenseKey.getClusterId());
 			actionRequest.setAttribute(

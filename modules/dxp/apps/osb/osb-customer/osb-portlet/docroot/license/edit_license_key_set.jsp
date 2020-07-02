@@ -35,6 +35,8 @@ LicenseKeySet licenseKeySet = LicenseKeySetServiceUtil.getLicenseKeySet(licenseK
 
 List<LicenseKey> licenseKeys = LicenseKeyServiceUtil.getLicenseKeySetLicenseKeys(licenseKeySetId);
 
+List<LicenseKey> renewLicenseKeys = ListUtil.copy(licenseKeys);
+
 long offeringEntryId = ParamUtil.getLong(request, "offeringEntryId");
 long clusterId = ParamUtil.getLong(request, "clusterId");
 
@@ -130,8 +132,8 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 			List<LicenseKey> inactiveLicenseKeys = new ArrayList<LicenseKey>();
 			List<LicenseKey> displayLicenseKeys = new ArrayList<LicenseKey>();
 
-			while (!licenseKeys.isEmpty()) {
-				LicenseKey licenseKey = licenseKeys.remove(0);
+			while (!renewLicenseKeys.isEmpty()) {
+				LicenseKey licenseKey = renewLicenseKeys.remove(0);
 
 				if (!licenseKey.isActive()) {
 					inactiveLicenseKeys.add(licenseKey);
@@ -214,6 +216,27 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 			</c:if>
 
 			<aui:button-row cssClass="pull-right">
+				<c:if test="<%= LicenseUtil.isAggregate(licenseKeySetId) && OSBAccountEntryPermission.contains(permissionChecker, licenseKeySet.getAccountEntryId(), OSBActionKeys.ADD_LICENSE) %>">
+
+					<%
+					LicenseKey firstLicenseKey = licenseKeys.get(0);
+					%>
+
+					<portlet:renderURL var="addAggregatedLicenseKeyURL">
+						<portlet:param name="mvcPath" value="/license/edit_license_key.jsp" />
+						<portlet:param name="redirect" value="<%= currentURL %>" />
+						<portlet:param name="aggregateLicense" value="<%= Boolean.TRUE.toString() %>" />
+						<portlet:param name="licenseEntryId" value="<%= String.valueOf(firstLicenseKey.getLicenseEntryId()) %>" />
+						<portlet:param name="licenseKeyId" value="<%= String.valueOf(firstLicenseKey.getLicenseKeyId()) %>" />
+						<portlet:param name="licenseKeySetId" value="<%= String.valueOf(licenseKeySetId) %>" />
+						<portlet:param name="offeringEntryId" value="<%= String.valueOf(firstLicenseKey.getOfferingEntryId()) %>" />
+						<portlet:param name="productEntryId" value="<%= String.valueOf(firstLicenseKey.getProductEntryId()) %>" />
+						<portlet:param name="productVersion" value="<%= String.valueOf(firstLicenseKey.getProductVersion()) %>" />
+					</portlet:renderURL>
+
+					<aui:button onClick="<%= addAggregatedLicenseKeyURL %>" primary="<%= true %>" value="add-aggregated-license-key" />
+				</c:if>
+
 				<c:if test="<%= OSBAccountEntryPermission.contains(permissionChecker, licenseKeySet.getAccountEntryId(), OSBActionKeys.ADD_LICENSE) %>">
 					<portlet:renderURL var="addLicenseKeyURL">
 						<portlet:param name="mvcPath" value="/license/edit_license_key.jsp" />

@@ -139,7 +139,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			accountEntry.getName() + " Developer Activation Keys",
 			new String[0], new String[0], new String[0],
 			new String[] {LicenseKeyConstants.SERVER_ID_DEVELOPER}, new Date(),
-			false, true);
+			null, false, true);
 	}
 
 	public LicenseKey addLicenseKey(
@@ -219,7 +219,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			int productVersion, long clusterId, String owner, int maxServers,
 			int maxHttpSessions, String description, String[] hostNames,
 			String[] ipAddresses, String[] macAddresses, String[] serverIds,
-			Date startDate, boolean complimentary, boolean active)
+			Date startDate, Date expirationDate, boolean complimentary,
+			boolean active)
 		throws PortalException {
 
 		LicenseKeySet licenseKeySet = null;
@@ -245,8 +246,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			userId, licenseKeySet, name, offeringEntry, licenseEntry,
 			productEntry, productVersion, clusterId, owner, maxServers,
 			maxHttpSessions, description, hostNames, ipAddresses, macAddresses,
-			serverIds, startDate, null, StringPool.BLANK, complimentary,
-			active);
+			serverIds, startDate, expirationDate, StringPool.BLANK,
+			complimentary, active);
 	}
 
 	public LicenseKey addLicenseKey(

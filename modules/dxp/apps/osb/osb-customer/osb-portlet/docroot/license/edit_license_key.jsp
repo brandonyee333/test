@@ -168,6 +168,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 			<aui:input name="licenseKeySetId" type="hidden" value="<%= licenseKeySetId %>" />
 			<aui:input name="clusterId" type="hidden" value="<%= clusterId %>" />
 			<aui:input name="offeringEntryId" type="hidden" value="<%= offeringEntryId %>" />
+			<aui:input name="aggregateLicense" type="hidden" value='<%= ParamUtil.getBoolean(request, "aggregateLicense") %>' />
 
 			<aui:button-row cssClass="pull-right">
 				<aui:button cssClass="btn-sm" onClick="<%= backURL %>" value="back-to-previous-page" />

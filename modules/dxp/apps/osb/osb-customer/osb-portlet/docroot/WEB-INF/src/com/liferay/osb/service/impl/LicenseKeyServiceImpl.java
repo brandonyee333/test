@@ -92,7 +92,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			int productVersion, long clusterId, String owner, int maxServers,
 			int maxHttpSessions, String description, String[] hostNames,
 			String[] ipAddresses, String[] macAddresses, String[] serverIds,
-			Date startDate, boolean complimentary, boolean active)
+			Date startDate, Date expirationDate, boolean complimentary,
+			boolean active)
 		throws PortalException {
 
 		OfferingEntry offeringEntry =
@@ -133,7 +134,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			userId, licenseKeySetId, name, offeringEntryId, licenseEntryId,
 			productEntryId, productVersion, clusterId, owner, maxServers,
 			maxHttpSessions, description, hostNames, ipAddresses, macAddresses,
-			serverIds, startDate, false, true);
+			serverIds, startDate, expirationDate, false, true);
 	}
 
 	@JSONWebService
@@ -426,7 +427,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 				productVersion, 0, accountEntry.getName(), maxServers, 0,
 				accountEntry.getName(), new String[] {hostName},
 				new String[] {ipAddresses}, new String[] {macAddresses},
-				new String[] {serverId}, orderEntry.getStartDate(), false,
+				new String[] {serverId}, orderEntry.getStartDate(), null, false,
 				true);
 		}
 		catch (MaximumLicenseKeyException mlke) {
