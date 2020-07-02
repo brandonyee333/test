@@ -43,8 +43,6 @@ import com.liferay.portal.kernel.lock.Lock;
 import com.liferay.portal.kernel.lock.NoSuchLockException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -809,9 +807,6 @@ public class DLWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 			long companyId = webDAVRequest.getCompanyId();
 			long groupId = webDAVRequest.getGroupId();
 			long parentFolderId = getParentFolderId(companyId, pathArray);
-
-			Group group = _groupLocalService.getGroup(groupId);
-
 			String title = getTitle(pathArray);
 			String description = StringPool.BLANK;
 			String changeLog = StringPool.BLANK;
