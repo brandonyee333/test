@@ -112,14 +112,14 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 		_deleteAssets(
 			channelIds, processedCountMonitorConsumer, queueMonitorConsumer);
 		_deleteData(
+			channelIds, elasticsearchInvoker, "activities", "activity-groups",
+			"individual-segments");
+		_deleteData(
 			channelIds, _cerebroInfoElasticsearchInvoker, "blog-clicks",
 			"blog-social-shares", "blog-traffic-sources", "blogs",
 			"custom-assets", "custom-asset-dashboards", "document-libraries",
 			"forms", "journal-clicks", "journals", "page-referrers", "pages",
 			"user-sessions");
-		_deleteData(
-			channelIds, elasticsearchInvoker, "activities", "activity-groups",
-			"individual-segments");
 		_deleteIndividualReferences(
 			channelIds, processedCountMonitorConsumer, queueMonitorConsumer);
 	}

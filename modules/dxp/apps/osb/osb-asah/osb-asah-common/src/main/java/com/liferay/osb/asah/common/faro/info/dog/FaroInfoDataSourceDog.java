@@ -551,29 +551,24 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 		}
 		else if (type.equals("LIFERAY")) {
 			_deleteData(
-				dataSourceId, "dataSourceId", _cerebroRawElasticsearchInvoker,
-				"analytics-events");
-
-			_deleteIndividualReferences(dataSourceId);
-
-			_deleteData(
 				dataSourceId, "osbAsahDataSourceId",
 				_dxpRawElasticsearchInvoker, "OSBAsahMarkers", "audit-events",
 				"groups", "organizations", "roles", "teams", "user-groups",
 				"users");
-
+			_deleteData(
+				dataSourceId, "dataSourceId", _cerebroRawElasticsearchInvoker,
+				"analytics-events");
 			_deleteData(
 				dataSourceId, "dataSourceId", elasticsearchInvoker,
 				"organizations");
+			_deleteIndividualReferences(dataSourceId);
 		}
 		else if (type.equals("SALESFORCE")) {
 			_deleteAccountReferences(dataSourceId);
-
 			_deleteData(
 				dataSourceId, "osbAsahDataSourceId",
 				_salesforceElasticsearchInvoker, "Account", "Contact", "Lead",
 				"OSBAsahMarkers", "individuals");
-
 			_deleteData(
 				dataSourceId, "dataSourceId", elasticsearchInvoker, "fields");
 		}
