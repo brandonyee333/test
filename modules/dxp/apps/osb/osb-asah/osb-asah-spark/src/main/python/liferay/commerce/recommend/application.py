@@ -8,14 +8,17 @@
 # permissions and limitations under the License, including but not limited to
 # distribution rights of the Software.
 #
+from liferay.commerce.recommend.job import ProductContentDataFrameReaderSparkJob, ProductContentPipelineSparkJob, \
+ ProductContentRecommendationSparkJob, ProductContentRecommendationDataFrameWriter, \
+ ProductInteractionDataFrameReaderSparkJob, OrderInteractionDataFrameReaderSparkJob, \
+ UserInteractionDataPreparationSparkJob, UserInteractionCollaborativeFilteringSparkJob, \
+ ContextUserInteractionRecommendationDataFrameWriterSparkJob, ProductInteractionRecommendationSparkJob, \
+ ProductInteractionRecommendationDataFrameWriterSparkJob
+from liferay.common.elasticsearch import ElasticsearchBridge
+from liferay.common.spark import BaseSparkApplication, SparkJobPipeline
 
-from ...common.elasticsearch import ElasticsearchBridge
-from ...common.spark import BaseSparkApplication, SparkJobPipeline
-
-from ..configuration import CommerceConfiguration, JobManager
-from ..udf import TanimotoCoefficientUDFFunction, ToDenseVectorUDFFunction
-
-from .job import *
+from liferay.commerce.configuration import CommerceConfiguration, JobManager
+from liferay.commerce.udf import TanimotoCoefficientUDFFunction, ToDenseVectorUDFFunction
 
 from abc import ABCMeta, abstractmethod
 

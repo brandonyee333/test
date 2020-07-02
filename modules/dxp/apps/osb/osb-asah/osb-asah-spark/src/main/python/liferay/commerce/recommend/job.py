@@ -11,9 +11,9 @@
 
 from abc import abstractmethod
 
-from ...common.spark import BaseSparkJob
+from liferay.common.spark import BaseSparkJob
 
-from .feature import CommerceFeatureExtractor, MAPEvaluator
+from liferay.commerce.recommend.feature import CommerceFeatureExtractor, MAPEvaluator
 
 from pyspark import StorageLevel
 

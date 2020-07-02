@@ -9,7 +9,7 @@
 # distribution rights of the Software.
 #
 
-from ..common.spark import BaseSparkJob
+from liferay.common.spark import BaseSparkJob
 
 from pyspark.sql import Window
 from pyspark.sql.functions import col, count, current_date, datediff, expr, lit, unix_timestamp
