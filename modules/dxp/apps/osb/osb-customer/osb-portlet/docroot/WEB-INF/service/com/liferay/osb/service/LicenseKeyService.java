@@ -81,8 +81,8 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 		java.lang.String owner, int maxServers, int maxHttpSessions,
 		java.lang.String description, java.lang.String[] hostNames,
 		java.lang.String[] ipAddresses, java.lang.String[] macAddresses,
-		java.lang.String[] serverIds, Date startDate, boolean complimentary,
-		boolean active) throws PortalException;
+		java.lang.String[] serverIds, Date startDate, Date expirationDate,
+		boolean complimentary, boolean active) throws PortalException;
 
 	@JSONWebService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

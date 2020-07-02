@@ -97,7 +97,7 @@ public class LicenseKeyServiceHttp {
 		java.lang.String description, java.lang.String[] hostNames,
 		java.lang.String[] ipAddresses, java.lang.String[] macAddresses,
 		java.lang.String[] serverIds, java.util.Date startDate,
-		boolean complimentary, boolean active)
+		java.util.Date expirationDate, boolean complimentary, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
@@ -108,7 +108,7 @@ public class LicenseKeyServiceHttp {
 					productEntryId, productVersion, clusterId, owner,
 					maxServers, maxHttpSessions, description, hostNames,
 					ipAddresses, macAddresses, serverIds, startDate,
-					complimentary, active);
+					expirationDate, complimentary, active);
 
 			Object returnObj = null;
 
@@ -1102,7 +1102,8 @@ public class LicenseKeyServiceHttp {
 			java.lang.String.class, int.class, int.class, java.lang.String.class,
 			java.lang.String[].class, java.lang.String[].class,
 			java.lang.String[].class, java.lang.String[].class,
-			java.util.Date.class, boolean.class, boolean.class
+			java.util.Date.class, java.util.Date.class, boolean.class,
+			boolean.class
 		};
 	private static final Class<?>[] _addLicenseKeyParameterTypes2 = new Class[] {
 			java.lang.String.class, java.lang.String.class,

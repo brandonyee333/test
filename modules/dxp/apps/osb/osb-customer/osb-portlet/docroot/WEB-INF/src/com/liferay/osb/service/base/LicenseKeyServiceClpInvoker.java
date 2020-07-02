@@ -44,7 +44,8 @@ public class LicenseKeyServiceClpInvoker {
 				"int", "long", "java.lang.String", "int", "int",
 				"java.lang.String", "java.lang.String[][]",
 				"java.lang.String[][]", "java.lang.String[][]",
-				"java.lang.String[][]", "java.util.Date", "boolean", "boolean"
+				"java.lang.String[][]", "java.util.Date", "java.util.Date",
+				"boolean", "boolean"
 			};
 
 		_methodName229 = "addLicenseKey";
@@ -252,9 +253,9 @@ public class LicenseKeyServiceClpInvoker {
 				(java.lang.String[])arguments[13],
 				(java.lang.String[])arguments[14],
 				(java.lang.String[])arguments[15],
-				(java.util.Date)arguments[16],
-				((Boolean)arguments[17]).booleanValue(),
-				((Boolean)arguments[18]).booleanValue());
+				(java.util.Date)arguments[16], (java.util.Date)arguments[17],
+				((Boolean)arguments[18]).booleanValue(),
+				((Boolean)arguments[19]).booleanValue());
 		}
 
 		if (_methodName229.equals(name) &&

@@ -88,15 +88,15 @@ public class LicenseKeyServiceSoap {
 		int maxServers, int maxHttpSessions, java.lang.String description,
 		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
 		java.lang.String[] macAddresses, java.lang.String[] serverIds,
-		java.util.Date startDate, boolean complimentary, boolean active)
-		throws RemoteException {
+		java.util.Date startDate, java.util.Date expirationDate,
+		boolean complimentary, boolean active) throws RemoteException {
 		try {
 			com.liferay.osb.model.LicenseKey returnValue = LicenseKeyServiceUtil.addLicenseKey(userId,
 					licenseKeySetId, name, offeringEntryId, licenseEntryId,
 					productEntryId, productVersion, clusterId, owner,
 					maxServers, maxHttpSessions, description, hostNames,
 					ipAddresses, macAddresses, serverIds, startDate,
-					complimentary, active);
+					expirationDate, complimentary, active);
 
 			return com.liferay.osb.model.LicenseKeySoap.toSoapModel(returnValue);
 		}

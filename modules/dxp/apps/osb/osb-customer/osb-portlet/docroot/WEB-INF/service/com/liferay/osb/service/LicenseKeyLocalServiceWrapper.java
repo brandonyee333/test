@@ -99,13 +99,14 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 		int maxHttpSessions, java.lang.String description,
 		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
 		java.lang.String[] macAddresses, java.lang.String[] serverIds,
-		java.util.Date startDate, boolean complimentary, boolean active)
+		java.util.Date startDate, java.util.Date expirationDate,
+		boolean complimentary, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _licenseKeyLocalService.addLicenseKey(userId, licenseKeySetId,
 			name, offeringEntryId, licenseEntryId, productEntryId,
 			productVersion, clusterId, owner, maxServers, maxHttpSessions,
 			description, hostNames, ipAddresses, macAddresses, serverIds,
-			startDate, complimentary, active);
+			startDate, expirationDate, complimentary, active);
 	}
 
 	/**
