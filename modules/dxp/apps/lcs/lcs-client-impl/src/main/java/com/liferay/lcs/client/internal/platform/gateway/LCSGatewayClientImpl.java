@@ -25,16 +25,16 @@ import com.liferay.lcs.client.constants.LCSClientConstants;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.exception.CompressionException;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
+import com.liferay.lcs.client.internal.platform.http.RESTClient;
+import com.liferay.lcs.client.internal.platform.http.RESTClientException;
+import com.liferay.lcs.client.internal.platform.http.RESTClientFactory;
+import com.liferay.lcs.client.internal.platform.http.RESTClientSerializeException;
+import com.liferay.lcs.client.internal.platform.http.RESTClientTransportException;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.security.KeyStoreFactory;
 import com.liferay.lcs.util.CompressionUtil;
-import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
-import com.liferay.petra.json.web.service.client.JSONWebServiceClientFactory;
-import com.liferay.petra.json.web.service.client.JSONWebServiceException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -45,6 +45,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.http.NameValuePair;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -77,11 +79,10 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 		throws LCSGatewayException {
 
 		try {
-			_jsonWebServiceClient.doGet(
-				_URL_LCS_GATEWAY_DELETE_MESSAGES, "key", key);
+			_restClient.doGet(_URL_LCS_GATEWAY_DELETE_MESSAGES, "key", key);
 		}
-		catch (JSONWebServiceException jsonwse) {
-			_processJSONWebServiceException(jsonwse);
+		catch (RESTClientException restClientException) {
+			_processJSONWebServiceException(restClientException);
 		}
 	}
 
@@ -102,11 +103,12 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 			boolean checkGatewayAvailability, String key)
 		throws LCSGatewayException {
 
-		Map<String, String> parameters = new HashMap<>();
+		List<NameValuePair> parameters = new ArrayList<>();
 
-		parameters.put("key", key);
+		parameters.add(new LCSNameValuePair("key", key));
 
-		Map<String, String> headers = _getBaseHeaders();
+		List<NameValuePair> headers = new ArrayList<>(
+			_baseHeaderNameValuePairs);
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Getting messages from gateway");
@@ -184,17 +186,21 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 			_log.debug("Sending " + clazz.getName());
 		}
 
-		Map<String, String> parameters = new HashMap<>();
+		List<NameValuePair> parameters = new ArrayList<>();
 
-		parameters.put("json", json);
+		parameters.add(new LCSNameValuePair("json", json));
 
 		String key = message.getKey();
 
-		Map<String, String> headers = _getBaseHeaders();
+		List<NameValuePair> headers = new ArrayList<>(
+			_baseHeaderNameValuePairs);
 
-		headers.put("HASH_CODE", String.valueOf(key.hashCode()));
-		headers.put("KEY", key);
-		headers.put("MESSAGE_TYPE_CODE", _getMessageNameHashCode(message));
+		headers.add(
+			new LCSNameValuePair("HASH_CODE", String.valueOf(key.hashCode())));
+		headers.add(new LCSNameValuePair("KEY", key));
+		headers.add(
+			new LCSNameValuePair(
+				"MESSAGE_TYPE_CODE", _getMessageNameHashCode(message)));
 
 		_sendMessage(checkGatewayAvailability, parameters, headers);
 	}
@@ -220,13 +226,13 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 
 	@Deactivate
 	protected void deactivate() {
-		if (_jsonWebServiceClient != null) {
-			_jsonWebServiceClient.destroy();
+		if (_restClient != null) {
+			_restClient.destroy();
 		}
 	}
 
 	private <V, T> List<V> _convertToList(Class<T> clazz, String json)
-		throws JSONWebServiceSerializeException {
+		throws RESTClientSerializeException {
 
 		if (json == null) {
 			return Collections.emptyList();
@@ -249,25 +255,11 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 			return _objectMapper.readValue(json, javaType);
 		}
 		catch (IOException ioe) {
-			throw new JSONWebServiceSerializeException(ioe);
+			throw new RESTClientSerializeException(ioe);
 		}
 		finally {
 			currentThread.setContextClassLoader(classLoader);
 		}
-	}
-
-	private Map<String, String> _getBaseHeaders() {
-		if (!_baseHeaders.isEmpty()) {
-			return _baseHeaders;
-		}
-
-		_baseHeaders.put(
-			"LCS_PORTLET_BUILD_NUMBER",
-			String.valueOf(LCSClientConstants.LCS_CLIENT_BUILD_NUMBER));
-
-		_baseHeaders.put("PROTOCOL_VERSION", Message.PROTOCOL_VERSION_CURRENT);
-
-		return _baseHeaders;
 	}
 
 	private String _getMessageNameHashCode(Message message) {
@@ -279,8 +271,9 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 	}
 
 	private synchronized List<Message> _getMessages(
-			boolean checkGatewayAvailability, Map<String, String> parameters,
-			Map<String, String> headers)
+			boolean checkGatewayAvailability,
+			List<? extends NameValuePair> parameters,
+			List<? extends NameValuePair> headers)
 		throws LCSGatewayException {
 
 		if (checkGatewayAvailability && !_available) {
@@ -292,7 +285,7 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 		}
 
 		try {
-			String json = _jsonWebServiceClient.doGet(
+			String json = _restClient.doGet(
 				_URL_LCS_GATEWAY_GET_MESSAGES, parameters, headers);
 
 			List<Message> messages = _convertToList(Message.class, json);
@@ -305,8 +298,8 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 
 			return messages;
 		}
-		catch (JSONWebServiceException jsonwse) {
-			_processJSONWebServiceException(jsonwse);
+		catch (RESTClientException restClientException) {
+			_processJSONWebServiceException(restClientException);
 		}
 
 		return Collections.emptyList();
@@ -342,19 +335,18 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 		properties.put("proxyPassword", lcsConfiguration.proxyHostPassword());
 		properties.put("proxyWorkstation", lcsConfiguration.proxyWorkstation());
 
-		_jsonWebServiceClient = _jsonWebServiceClientFactory.getInstance(
-			properties, false);
+		_restClient = _restClientFactory.getInstance(properties, false);
 	}
 
 	private void _processJSONWebServiceException(
-			JSONWebServiceException jsonwse)
+			RESTClientException restClientException)
 		throws LCSGatewayException {
 
 		String message = "Error communicating with LCS";
 
-		if (jsonwse instanceof JSONWebServiceTransportException) {
-			if (jsonwse instanceof
-					JSONWebServiceTransportException.AuthenticationFailure) {
+		if (restClientException instanceof RESTClientTransportException) {
+			if (restClientException instanceof
+					RESTClientTransportException.AuthenticationFailure) {
 
 				message =
 					message +
@@ -371,12 +363,13 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 			}
 		}
 
-		throw new LCSGatewayException(message, jsonwse);
+		throw new LCSGatewayException(message, restClientException);
 	}
 
 	private synchronized void _sendMessage(
-			boolean checkGatewayAvailability, Map<String, String> parameters,
-			Map<String, String> headers)
+			boolean checkGatewayAvailability,
+			List<? extends NameValuePair> parameters,
+			List<? extends NameValuePair> headers)
 		throws LCSGatewayException {
 
 		if (checkGatewayAvailability && !_available) {
@@ -388,13 +381,13 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 		}
 
 		try {
-			_jsonWebServiceClient.doPost(
+			_restClient.doPost(
 				_URL_LCS_GATEWAY_SEND_MESSAGE, parameters, headers);
 
 			_lastMessageSent = System.currentTimeMillis();
 		}
-		catch (JSONWebServiceException jsonwse) {
-			_processJSONWebServiceException(jsonwse);
+		catch (RESTClientException restClientException) {
+			_processJSONWebServiceException(restClientException);
 		}
 	}
 
@@ -418,13 +411,22 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 	private static final Log _log = LogFactoryUtil.getLog(
 		LCSGatewayClientImpl.class);
 
+	private static final List<NameValuePair> _baseHeaderNameValuePairs =
+		new ArrayList<NameValuePair>() {
+			{
+				add(
+					new LCSNameValuePair(
+						"LCS_PORTLET_BUILD_NUMBER",
+						String.valueOf(
+							LCSClientConstants.LCS_CLIENT_BUILD_NUMBER)));
+
+				add(
+					new LCSNameValuePair(
+						"PROTOCOL_VERSION", Message.PROTOCOL_VERSION_CURRENT));
+			}
+		};
+
 	private volatile boolean _available;
-	private final Map<String, String> _baseHeaders = new HashMap<>();
-	private JSONWebServiceClient _jsonWebServiceClient;
-
-	@Reference
-	private JSONWebServiceClientFactory _jsonWebServiceClientFactory;
-
 	private long _lastHandshakeSuccess;
 	private long _lastMessageReceived;
 	private long _lastMessageSent;
@@ -436,5 +438,9 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 	private LCSEventManager _lcsEventManager;
 
 	private ObjectMapper _objectMapper = new ObjectMapper();
+	private RESTClient _restClient;
+
+	@Reference
+	private RESTClientFactory _restClientFactory;
 
 }

@@ -16,17 +16,17 @@ package com.liferay.lcs.client.internal.platform.portal;
 
 import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
+import com.liferay.lcs.client.internal.platform.http.RESTClient;
+import com.liferay.lcs.client.internal.platform.http.RESTClientException;
+import com.liferay.lcs.client.internal.platform.http.RESTClientFactory;
+import com.liferay.lcs.client.internal.platform.http.RESTClientInvocationException;
+import com.liferay.lcs.client.internal.platform.http.RESTClientSerializeException;
+import com.liferay.lcs.client.internal.platform.http.RESTClientTransportException;
 import com.liferay.lcs.client.platform.exception.LCSClientAuthenticationException;
 import com.liferay.lcs.client.platform.exception.LCSClientInternalException;
 import com.liferay.lcs.client.platform.exception.LCSException;
 import com.liferay.lcs.client.platform.exception.LCSPlatformException;
 import com.liferay.lcs.security.KeyStoreFactory;
-import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
-import com.liferay.petra.json.web.service.client.JSONWebServiceClientFactory;
-import com.liferay.petra.json.web.service.client.JSONWebServiceException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -57,15 +57,16 @@ public class LCSPortalClientImpl implements LCSPortalClient {
 		throws LCSException {
 
 		try {
-			return _jsonWebServiceClient.doGetToList(
-				clazz, url, parametersArray);
+			return _restClient.doGetToList(clazz, url, parametersArray);
 		}
-		catch (JSONWebServiceException jsonwse) {
-			if (jsonwse.getStatus() == HttpServletResponse.SC_NOT_FOUND) {
+		catch (RESTClientException restClientException) {
+			if (restClientException.getStatus() ==
+					HttpServletResponse.SC_NOT_FOUND) {
+
 				return Collections.emptyList();
 			}
 
-			throw _toLCSException(jsonwse);
+			throw _toLCSException(restClientException);
 		}
 	}
 
@@ -75,19 +76,21 @@ public class LCSPortalClientImpl implements LCSPortalClient {
 		throws LCSException {
 
 		try {
-			return _jsonWebServiceClient.doGetToObject(
-				clazz, url, parametersArray);
+			return _restClient.doGetToObject(clazz, url, parametersArray);
 		}
-		catch (JSONWebServiceException jsonwse) {
-			if (jsonwse.getStatus() == HttpServletResponse.SC_NOT_FOUND) {
+		catch (RESTClientException restClientException) {
+			if (restClientException.getStatus() ==
+					HttpServletResponse.SC_NOT_FOUND) {
+
 				if (_log.isTraceEnabled()) {
-					_log.trace("Response contains no data", jsonwse);
+					_log.trace(
+						"Response contains no data", restClientException);
 				}
 
 				return null;
 			}
 
-			throw _toLCSException(jsonwse);
+			throw _toLCSException(restClientException);
 		}
 	}
 
@@ -101,8 +104,8 @@ public class LCSPortalClientImpl implements LCSPortalClient {
 			return true;
 		}
 
-		_jsonWebServiceClient.setOAuthAccessToken(oauthAccessToken);
-		_jsonWebServiceClient.setOAuthAccessSecret(oauthAccessSecret);
+		_restClient.setOAuthAccessToken(oauthAccessToken);
+		_restClient.setOAuthAccessSecret(oauthAccessSecret);
 
 		try {
 			testOAuthRequest();
@@ -130,10 +133,10 @@ public class LCSPortalClientImpl implements LCSPortalClient {
 		String json = null;
 
 		try {
-			json = _jsonWebServiceClient.doGet(_URL_OSB_LCS_REST_TEST);
+			json = _restClient.doGet(_URL_OSB_LCS_REST_TEST);
 		}
-		catch (JSONWebServiceException jsonwse) {
-			throw _toLCSException(jsonwse);
+		catch (RESTClientException restClientException) {
+			throw _toLCSException(restClientException);
 		}
 
 		if (Validator.isNull(json)) {
@@ -185,8 +188,7 @@ public class LCSPortalClientImpl implements LCSPortalClient {
 		properties.put("proxyPassword", lcsConfiguration.proxyHostPassword());
 		properties.put("proxyWorkstation", lcsConfiguration.proxyWorkstation());
 
-		_jsonWebServiceClient = _jsonWebServiceClientFactory.getInstance(
-			properties, true);
+		_restClient = _restClientFactory.getInstance(properties, true);
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Activated " + this);
@@ -195,29 +197,30 @@ public class LCSPortalClientImpl implements LCSPortalClient {
 
 	@Deactivate
 	protected void deactivate() {
-		if (_jsonWebServiceClient != null) {
-			_jsonWebServiceClient.destroy();
+		if (_restClient != null) {
+			_restClient.destroy();
 		}
 
 		_lcsAccessTokenNextValidityCheckMillis.set(0);
 	}
 
-	private LCSException _toLCSException(JSONWebServiceException jsonwse)
+	private LCSException _toLCSException(
+			RESTClientException restClientException)
 		throws LCSException {
 
-		if (jsonwse instanceof JSONWebServiceInvocationException) {
+		if (restClientException instanceof RESTClientInvocationException) {
 			throw new LCSPlatformException(
-				"Unable to execute remote request", jsonwse);
+				"Unable to execute remote request", restClientException);
 		}
-		else if (jsonwse instanceof JSONWebServiceSerializeException) {
+		else if (restClientException instanceof RESTClientSerializeException) {
 			throw new LCSClientInternalException(
 				"Error communicating with LCS. A message in an unexpected " +
 					"format caused a serialization error.",
-				jsonwse);
+				restClientException);
 		}
-		else if (jsonwse instanceof JSONWebServiceTransportException) {
-			if (jsonwse instanceof
-					JSONWebServiceTransportException.AuthenticationFailure) {
+		else if (restClientException instanceof RESTClientTransportException) {
+			if (restClientException instanceof
+					RESTClientTransportException.AuthenticationFailure) {
 
 				StringBundler sb = new StringBundler(4);
 
@@ -227,14 +230,14 @@ public class LCSPortalClientImpl implements LCSPortalClient {
 				sb.append("install a new token.");
 
 				throw new LCSClientAuthenticationException(
-					sb.toString(), jsonwse);
+					sb.toString(), restClientException);
 			}
 
 			throw new LCSPlatformException(
-				"Unable to communicate with LCS", jsonwse);
+				"Unable to communicate with LCS", restClientException);
 		}
 
-		return new LCSException("LCS Exception", jsonwse);
+		return new LCSException("LCS Exception", restClientException);
 	}
 
 	private static final String _URL_OSB_LCS_REST_TEST = "/o/osb-lcs-rest/";
@@ -245,12 +248,12 @@ public class LCSPortalClientImpl implements LCSPortalClient {
 	private static final AtomicLong _lcsAccessTokenNextValidityCheckMillis =
 		new AtomicLong(0);
 
-	private JSONWebServiceClient _jsonWebServiceClient;
-
-	@Reference
-	private JSONWebServiceClientFactory _jsonWebServiceClientFactory;
-
 	@Reference
 	private LCSConfigurationProvider _lcsConfigurationProvider;
+
+	private RESTClient _restClient;
+
+	@Reference
+	private RESTClientFactory _restClientFactory;
 
 }

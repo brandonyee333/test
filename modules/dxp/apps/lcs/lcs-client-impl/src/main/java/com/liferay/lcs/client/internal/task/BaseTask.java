@@ -14,7 +14,7 @@
 
 package com.liferay.lcs.client.internal.task;
 
-import com.liferay.petra.json.web.service.client.JSONWebServiceException;
+import com.liferay.lcs.client.internal.platform.http.RESTClientException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -44,7 +44,7 @@ public abstract class BaseTask implements Task {
 		catch (Exception e) {
 			String errorMessage = "Unable to run task";
 
-			if (e instanceof JSONWebServiceException) {
+			if (e instanceof RESTClientException) {
 				_log.error(errorMessage);
 			}
 			else {
