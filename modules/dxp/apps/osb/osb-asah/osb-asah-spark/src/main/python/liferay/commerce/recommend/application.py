@@ -12,12 +12,12 @@
 from abc import ABCMeta, abstractmethod
 
 from liferay.commerce.configuration import CommerceConfiguration, JobManager
-from liferay.commerce.recommend.job import ProductContentDataFrameReaderSparkJob, ProductContentPipelineSparkJob, \
- ProductContentRecommendationSparkJob, ProductContentRecommendationDataFrameWriter, \
- ProductInteractionDataFrameReaderSparkJob, OrderInteractionDataFrameReaderSparkJob, \
- UserInteractionDataPreparationSparkJob, UserInteractionCollaborativeFilteringSparkJob, \
- ContextUserInteractionRecommendationDataFrameWriterSparkJob, ProductInteractionRecommendationSparkJob, \
- ProductInteractionRecommendationDataFrameWriterSparkJob
+from liferay.commerce.recommend.job import ContextUserInteractionRecommendationDataFrameWriterSparkJob, \
+OrderInteractionDataFrameReaderSparkJob, ProductContentPipelineSparkJob, \
+ProductContentRecommendationDataFrameWriter, ProductContentRecommendationSparkJob, \
+ProductInteractionDataFrameReaderSparkJob, ProductInteractionRecommendationDataFrameWriterSparkJob, \
+ProductInteractionRecommendationSparkJob, UserInteractionCollaborativeFilteringSparkJob, \
+UserInteractionDataPreparationSparkJob
 from liferay.commerce.udf import TanimotoCoefficientUDFFunction, ToDenseVectorUDFFunction
 
 from liferay.common.elasticsearch import ElasticsearchBridge

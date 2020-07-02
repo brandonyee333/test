@@ -12,9 +12,11 @@
 from liferay.common.elasticsearch import ElasticsearchBridge
 from liferay.common.spark import BaseSparkApplication, SparkJobPipeline
 
-from liferay.content_recommendation.job import ReadAnalyticsEventsSparkJob, GenerateUserItemInteractionsSparkJob, \
- GenerateItemsSparkJob, WriteItemsSparkJob, WriteUserItemInteractionsSparkJob, UpdateJobRunStepSparkJob, \
- ReadRecommendedItemsSparkJob, WriteRecommendedItemsSparkJob, CompleteJobRunSparkJob
+from liferay.content_recommendation.job import CompleteJobRunSparkJob, \
+GenerateItemsSparkJob, GenerateUserItemInteractionsSparkJob, \
+ReadAnalyticsEventsSparkJob, ReadRecommendedItemsSparkJob, \
+UpdateJobRunStepSparkJob, WriteItemsSparkJob, WriteRecommendedItemsSparkJob, \
+WriteUserItemInteractionsSparkJob
 
 from pyspark import SparkConf
 
