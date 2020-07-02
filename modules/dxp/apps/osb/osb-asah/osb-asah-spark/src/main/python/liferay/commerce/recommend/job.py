@@ -12,15 +12,12 @@
 from abc import abstractmethod
 
 from liferay.commerce.recommend.feature import CommerceFeatureExtractor, MAPEvaluator
-
 from liferay.common.spark import BaseSparkJob
 
 from pyspark import StorageLevel
-
 from pyspark.ml import Pipeline
 from pyspark.ml.recommendation import ALS
 from pyspark.ml.tuning import ParamGridBuilder, CrossValidator
-
 from pyspark.sql import Window
 from pyspark.sql.functions import col, explode, when, coalesce, regexp_replace, lit, current_date, rank
 

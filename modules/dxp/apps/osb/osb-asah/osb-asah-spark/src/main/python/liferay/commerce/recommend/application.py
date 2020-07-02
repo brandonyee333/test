@@ -19,7 +19,6 @@ ProductInteractionDataFrameReaderSparkJob, ProductInteractionRecommendationDataF
 ProductInteractionRecommendationSparkJob, UserInteractionCollaborativeFilteringSparkJob, \
 UserInteractionDataPreparationSparkJob
 from liferay.commerce.udf import TanimotoCoefficientUDFFunction, ToDenseVectorUDFFunction
-
 from liferay.common.elasticsearch import ElasticsearchBridge
 from liferay.common.spark import BaseSparkApplication, SparkJobPipeline
 
