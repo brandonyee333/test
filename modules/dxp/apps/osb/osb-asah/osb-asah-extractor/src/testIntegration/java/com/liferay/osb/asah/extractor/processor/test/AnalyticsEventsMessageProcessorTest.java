@@ -180,6 +180,82 @@ public class AnalyticsEventsMessageProcessorTest {
 				"analytics-events", QueryBuilders.matchAllQuery()));
 	}
 
+	@ElasticsearchIndex(
+		name = "data-sources", resourcePath = "data-sources.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@MessageBusChannel(
+		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
+		resourcePath = "analytics_events_message_canonical_url_1.json"
+	)
+	@Test
+	public void testProcessQueuedMessagesMissingCanonicalUrl()
+		throws Exception {
+
+		ReflectionTestUtils.invokeMethod(
+			_analyticsEventsMessageProcessor, "_cacheActiveDataSourceIds");
+		ReflectionTestUtils.invokeMethod(
+			_analyticsEventsMessageProcessor, "_cacheChannelIds");
+
+		_analyticsEventsMessageProcessor.processQueuedMessages();
+
+		ElasticsearchInvoker elasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroRaw();
+
+		JSONArray analyticsEventsJSONArray = elasticsearchInvoker.get(
+			"analytics-events");
+
+		for (int i = 0; i < analyticsEventsJSONArray.length(); i++) {
+			JSONObject analyticsEventJSONObject =
+				analyticsEventsJSONArray.getJSONObject(i);
+
+			JSONObject contextJSONObject =
+				analyticsEventJSONObject.getJSONObject("context");
+
+			Assert.assertEquals(
+				contextJSONObject.getString("url"),
+				contextJSONObject.getString("canonicalUrl"));
+		}
+	}
+
+	@ElasticsearchIndex(
+		name = "data-sources", resourcePath = "data-sources.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@MessageBusChannel(
+		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
+		resourcePath = "analytics_events_message_canonical_url_2.json"
+	)
+	@Test
+	public void testProcessQueuedMessagesNotReplacingCanonicalUrl()
+		throws Exception {
+
+		ReflectionTestUtils.invokeMethod(
+			_analyticsEventsMessageProcessor, "_cacheActiveDataSourceIds");
+		ReflectionTestUtils.invokeMethod(
+			_analyticsEventsMessageProcessor, "_cacheChannelIds");
+
+		_analyticsEventsMessageProcessor.processQueuedMessages();
+
+		ElasticsearchInvoker elasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroRaw();
+
+		JSONArray analyticsEventsJSONArray = elasticsearchInvoker.get(
+			"analytics-events");
+
+		for (int i = 0; i < analyticsEventsJSONArray.length(); i++) {
+			JSONObject analyticsEventJSONObject =
+				analyticsEventsJSONArray.getJSONObject(i);
+
+			JSONObject contextJSONObject =
+				analyticsEventJSONObject.getJSONObject("context");
+
+			Assert.assertNotEquals(
+				contextJSONObject.getString("url"),
+				contextJSONObject.getString("canonicalUrl"));
+		}
+	}
+
 	@Autowired
 	private AnalyticsEventsMessageProcessor _analyticsEventsMessageProcessor;
 
