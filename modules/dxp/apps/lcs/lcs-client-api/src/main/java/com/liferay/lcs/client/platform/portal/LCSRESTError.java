@@ -44,6 +44,17 @@ public enum LCSRESTError {
 		200,
 		"The environment token is not valid and was likely regenerated in " +
 			"LCS. Please download and install the new token."),
+	LCS_CLUSTER_NODE_IS_ALREADY_ACTIVATED(
+		400,
+		"Detected attempt to activate an already active instance. This is " +
+			"common issue for dynamic cloud environments if machine image " +
+				"accidentally included " +
+					"[LIFERAY_HOME]/data/license/server/lcsServerId file or " +
+						"cluster nodes share [LIFERAY_HOME]/data folder."),
+	LCS_PLATFORM_UNDEFINED_RESPONSE(
+		800,
+		"LCS Platform responds with undefined protocol message. Please check " +
+			"LCS processor logs verify LCS platform connection configuration"),
 	LCS_SUBSCRIPTION_ENTRY_ERROR_NO_ACTIVE_SUBSCRIPTION(
 		3,
 		"There are no active subscriptions in the LCS project. Please " +
