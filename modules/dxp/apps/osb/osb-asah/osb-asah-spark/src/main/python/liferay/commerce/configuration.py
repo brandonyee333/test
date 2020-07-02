@@ -9,9 +9,9 @@
 # distribution rights of the Software.
 #
 
-from liferay.common.configuration import Configuration
-
 from datetime import datetime
+
+from liferay.common.configuration import Configuration
 
 class CommerceConfiguration(Configuration):
 	def __init__(self, configuration_path, job_manager):

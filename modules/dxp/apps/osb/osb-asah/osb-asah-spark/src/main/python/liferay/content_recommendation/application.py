@@ -12,15 +12,15 @@
 from liferay.common.elasticsearch import ElasticsearchBridge
 from liferay.common.spark import BaseSparkApplication, SparkJobPipeline
 
+from liferay.content_recommendation.job import ReadAnalyticsEventsSparkJob, GenerateUserItemInteractionsSparkJob, \
+ GenerateItemsSparkJob, WriteItemsSparkJob, WriteUserItemInteractionsSparkJob, UpdateJobRunStepSparkJob, \
+ ReadRecommendedItemsSparkJob, WriteRecommendedItemsSparkJob, CompleteJobRunSparkJob
+
 from pyspark import SparkConf
 
 import argparse
 import datetime
 import sys
-
-from liferay.content_recommendation.job import ReadAnalyticsEventsSparkJob, GenerateUserItemInteractionsSparkJob, \
- GenerateItemsSparkJob, WriteItemsSparkJob, WriteUserItemInteractionsSparkJob, UpdateJobRunStepSparkJob, \
- ReadRecommendedItemsSparkJob, WriteRecommendedItemsSparkJob, CompleteJobRunSparkJob
 
 class ContentRecommendationApplication(BaseSparkApplication):
 	def __init__(self):
