@@ -43,9 +43,12 @@ import com.liferay.portal.kernel.lock.Lock;
 import com.liferay.portal.kernel.lock.NoSuchLockException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
@@ -802,6 +805,9 @@ public class DLWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 			long companyId = webDAVRequest.getCompanyId();
 			long groupId = webDAVRequest.getGroupId();
 			long parentFolderId = getParentFolderId(companyId, pathArray);
+
+			Group group = _groupLocalService.getGroup(groupId);
+
 			String title = getTitle(pathArray);
 			String description = StringPool.BLANK;
 			String changeLog = StringPool.BLANK;
@@ -811,7 +817,13 @@ public class DLWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 
 			serviceContext.setAddGroupPermissions(
 				isAddGroupPermissions(groupId));
-			serviceContext.setAddGuestPermissions(true);
+
+			if (group.getType() == GroupConstants.TYPE_SITE_OPEN) {
+				serviceContext.setAddGuestPermissions(true);
+			}
+			else {
+				serviceContext.setAddGuestPermissions(false);
+			}
 
 			String extension = FileUtil.getExtension(title);
 
@@ -1237,6 +1249,11 @@ public class DLWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 		_dlTrashService = dlTrashService;
 	}
 
+	@Reference(unbind = "-")
+	protected void setGroupLocalService(GroupLocalService groupLocalService) {
+		_groupLocalService = groupLocalService;
+	}
+
 	protected Resource toResource(
 		WebDAVRequest webDAVRequest, FileEntry fileEntry, boolean appendPath) {
 
@@ -1275,5 +1292,6 @@ public class DLWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 	private AssetTagLocalService _assetTagLocalService;
 	private DLAppService _dlAppService;
 	private DLTrashService _dlTrashService;
+	private GroupLocalService _groupLocalService;
 
 }
