@@ -743,6 +743,22 @@ AUI.add(
 							function(fieldTemplate) {
 								var field = instance.createField(fieldTemplate);
 
+								var displayLocale = instance.get('displayLocale');
+
+								field.set('displayLocale', displayLocale);
+
+								var parent = instance.get('parent');
+
+								var translationManager = parent.get('translationManager');
+
+								if (translationManager) {
+									translationManager.get('availableLocales').forEach(
+										function(item, index) {
+											field.addLocaleToLocalizationMap(item)
+										}
+									);
+								}
+
 								field.renderUI();
 
 								instance._addFieldValidation(field, instance);
