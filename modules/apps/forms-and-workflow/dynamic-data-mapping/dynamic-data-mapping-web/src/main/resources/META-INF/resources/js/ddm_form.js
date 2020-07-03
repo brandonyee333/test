@@ -743,21 +743,7 @@ AUI.add(
 							function(fieldTemplate) {
 								var field = instance.createField(fieldTemplate);
 
-								var displayLocale = instance.get('displayLocale');
-
-								field.set('displayLocale', displayLocale);
-
-								var parent = instance.get('parent');
-
-								var translationManager = parent.get('translationManager');
-
-								if (translationManager) {
-									translationManager.get('availableLocales').forEach(
-										function(item, index) {
-											field.addLocaleToLocalizationMap(item)
-										}
-									);
-								}
+								instance._addRepeatedFieldAvailableLocales(field);
 
 								field.renderUI();
 
@@ -977,6 +963,27 @@ AUI.add(
 							}
 						);
 					},
+
+					_addRepeatedFieldAvailableLocales: function(field) {
+						var instance = this;
+
+						var displayLocale = instance.get('displayLocale');
+
+						var parent = instance.get('parent');
+
+						var translationManager = parent.get('translationManager');
+
+						field.set('displayLocale', displayLocale);
+
+						if (translationManager) {
+							translationManager.get('availableLocales').forEach(
+								function (item, index) {
+									field.addLocaleToLocalizationMap(item)
+								}
+							);
+						}
+					},
+
 
 					_addTip: function(labelNode, tipNode) {
 						if (tipNode) {
