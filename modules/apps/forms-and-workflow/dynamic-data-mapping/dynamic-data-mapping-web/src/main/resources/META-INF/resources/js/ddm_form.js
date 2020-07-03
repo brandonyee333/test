@@ -982,6 +982,16 @@ AUI.add(
 								}
 							);
 						}
+
+						var nestedFields = field.get('fields');
+
+						if (!nestedFields || nestedFields.length == 0) {
+							return;
+						}
+
+						nestedFields.forEach(function(nestedField) {
+							field._addRepeatedFieldAvailableLocales(nestedField);
+						});
 					},
 
 
