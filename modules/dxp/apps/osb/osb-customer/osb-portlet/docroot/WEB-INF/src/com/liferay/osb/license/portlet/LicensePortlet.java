@@ -307,8 +307,6 @@ public class LicensePortlet extends OSBPortlet {
 			startDateMonth, startDateDay, startDateYear,
 			themeDisplay.getTimeZone(), (Class<? extends PortalException>)null);
 
-		Date expirationDate = null;
-
 		List<String> hostNames = new ArrayList<>();
 		List<String> ipAddresses = new ArrayList<>();
 		List<String> macAddresses = new ArrayList<>();
@@ -346,6 +344,8 @@ public class LicensePortlet extends OSBPortlet {
 		LicenseKey licenseKey = null;
 
 		if (licenseKeyId <= 0) {
+			Date expirationDate = null;
+
 			boolean aggregateLicense = ParamUtil.getBoolean(
 				actionRequest, "aggregateLicense");
 

@@ -35,8 +35,6 @@ LicenseKeySet licenseKeySet = LicenseKeySetServiceUtil.getLicenseKeySet(licenseK
 
 List<LicenseKey> licenseKeys = LicenseKeyServiceUtil.getLicenseKeySetLicenseKeys(licenseKeySetId);
 
-List<LicenseKey> renewLicenseKeys = ListUtil.copy(licenseKeys);
-
 long offeringEntryId = ParamUtil.getLong(request, "offeringEntryId");
 long clusterId = ParamUtil.getLong(request, "clusterId");
 
@@ -132,9 +130,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 			List<LicenseKey> inactiveLicenseKeys = new ArrayList<LicenseKey>();
 			List<LicenseKey> displayLicenseKeys = new ArrayList<LicenseKey>();
 
-			while (!renewLicenseKeys.isEmpty()) {
-				LicenseKey licenseKey = renewLicenseKeys.remove(0);
-
+			for (LicenseKey licenseKey : licenseKeys) {
 				if (!licenseKey.isActive()) {
 					inactiveLicenseKeys.add(licenseKey);
 				}

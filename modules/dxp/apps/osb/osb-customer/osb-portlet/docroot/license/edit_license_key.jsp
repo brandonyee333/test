@@ -133,6 +133,8 @@ if ((serverIdsIndexes == null) || (serverIdsIndexes.length <= 0)) {
 	serverIdsIndexes = new int[] {0};
 }
 
+boolean aggregateLicense = ParamUtil.getBoolean(request, "aggregateLicense");
+
 boolean hasUpdateAdmin = false;
 
 if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ACCOUNT_ADMIN_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
@@ -150,6 +152,7 @@ portletURL.setParameter("offeringEntryId", String.valueOf(offeringEntryId));
 portletURL.setParameter("productEntryId", String.valueOf(productEntryId));
 portletURL.setParameter("productVersion", String.valueOf(productVersion));
 portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
+portletURL.setParameter("aggregateLicense", String.valueOf(aggregateLicense));
 %>
 
 <portlet:actionURL name="updateLicenseKey" var="updateLicenseKeyURL">
@@ -168,7 +171,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 			<aui:input name="licenseKeySetId" type="hidden" value="<%= licenseKeySetId %>" />
 			<aui:input name="clusterId" type="hidden" value="<%= clusterId %>" />
 			<aui:input name="offeringEntryId" type="hidden" value="<%= offeringEntryId %>" />
-			<aui:input name="aggregateLicense" type="hidden" value='<%= ParamUtil.getBoolean(request, "aggregateLicense") %>' />
+			<aui:input name="aggregateLicense" type="hidden" value="<%= aggregateLicense %>" />
 
 			<aui:button-row cssClass="pull-right">
 				<aui:button cssClass="btn-sm" onClick="<%= backURL %>" value="back-to-previous-page" />
