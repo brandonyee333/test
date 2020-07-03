@@ -17,11 +17,16 @@ package com.liferay.osb.asah.upgrade.v2_6_1;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.elasticsearch.index.query.QueryBuilders;
@@ -42,12 +47,16 @@ public class RemoveDanglingFieldMappingsUpgradeStep implements UpgradeStep {
 		_faroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forFaroInfo();
 
-		Set<String> dataSourceIds = JSONUtil.toStringSet(
+		Map<String, List<String>> invalidFieldMappings = new HashMap<>();
+
+		Set<String> validDataSourceIds = JSONUtil.toStringSet(
 			_faroInfoElasticsearchInvoker.get("data-sources"), "id");
 
 		JSONArrayIterator.of(
 			"field-mappings", _faroInfoElasticsearchInvoker,
 			fieldMappingJSONObject -> {
+				List<String> invalidDataSourceIds = new ArrayList<>();
+
 				JSONObject dataSourceFieldNamesJSONObject =
 					fieldMappingJSONObject.getJSONObject(
 						"dataSourceFieldNames");
@@ -56,7 +65,8 @@ public class RemoveDanglingFieldMappingsUpgradeStep implements UpgradeStep {
 					dataSourceFieldNamesJSONObject.keySet());
 
 				for (String dataSourceId : fieldMappingDataSourceIds) {
-					if (!dataSourceIds.contains(dataSourceId)) {
+					if (!validDataSourceIds.contains(dataSourceId)) {
+						invalidDataSourceIds.add(dataSourceId);
 						dataSourceFieldNamesJSONObject.remove(dataSourceId);
 					}
 				}
@@ -73,6 +83,14 @@ public class RemoveDanglingFieldMappingsUpgradeStep implements UpgradeStep {
 						"field-mappings", fieldMappingJSONObject);
 				}
 
+				for (String dataSourceId : invalidDataSourceIds) {
+					List<String> fieldMappingIds =
+						invalidFieldMappings.computeIfAbsent(
+							dataSourceId, key -> new ArrayList<>());
+
+					fieldMappingIds.add(fieldMappingJSONObject.getString("id"));
+				}
+
 				return null;
 			}
 		).setQueryBuilder(
@@ -82,11 +100,21 @@ public class RemoveDanglingFieldMappingsUpgradeStep implements UpgradeStep {
 				DateUtil.newDateString()
 			)
 		).iterate();
+
+		for (Map.Entry<String, List<String>> entry :
+				invalidFieldMappings.entrySet()) {
+
+			_faroInfoIndividualSegmentDog.disableDynamicIndividualSegments(
+				entry.getKey(), entry.getValue());
+		}
 	}
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
 
 }
