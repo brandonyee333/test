@@ -19,6 +19,7 @@ import com.liferay.osb.asah.upgrade.v2_6_0.CerebroInfoUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_6_0.FaroInfoOrganizationsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_6_0.OSBAsahTasksIndexMappingUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_6_0.PagesIndexMappingUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_6_1.RemoveDanglingFieldMappingsUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -40,6 +41,9 @@ public class UpgradeProcessConfiguration {
 			_osbAsahTasksIndexMappingUpgradeStep,
 			_pagesIndexMappingUpgradeStep);
 
+		upgradeProcess.addUpgradeSteps(
+			"2.6.0", "2.6.1", _removeDanglingFieldMappingsUpgradeStep);
+
 		return upgradeProcess;
 	}
 
@@ -59,5 +63,9 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private PagesIndexMappingUpgradeStep _pagesIndexMappingUpgradeStep;
+
+	@Autowired
+	private RemoveDanglingFieldMappingsUpgradeStep
+		_removeDanglingFieldMappingsUpgradeStep;
 
 }
