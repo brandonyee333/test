@@ -90,7 +90,7 @@ definition {
 
 		AssertElementPresent(
 			key_entryTitle = "Blogs Entry Title",
-			locator1 = "Blogs#DESCRIPTIVE_VIEW_ENTRY_TITLE");
+			locator1 = "Blogs#DESCRIPTIVE_VIEW_ENTRY_TITLE_STAGING_LIVE");
 
 		Navigator.gotoStagedSitePage(
 			pageName = "Staging Blogs Page",
@@ -147,7 +147,7 @@ definition {
 
 		AssertElementPresent(
 			key_entryTitle = "Blogs Entry Title",
-			locator1 = "Blogs#DESCRIPTIVE_VIEW_ENTRY_TITLE");
+			locator1 = "Blogs#DESCRIPTIVE_VIEW_ENTRY_TITLE_STAGING_LIVE");
 
 		AssertClick(
 			key_navItem = "Images",

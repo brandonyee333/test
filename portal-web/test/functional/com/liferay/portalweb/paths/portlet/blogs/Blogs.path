@@ -35,6 +35,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>DESCRIPTIVE_VIEW_ENTRY_TITLE_STAGING_LIVE</td>
+	<td>//div[contains(@id,'blogEntriesSearchContainer')]//div[contains(@class,'list-group-item-content')]/h4[contains(.,'${key_entryTitle}')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>DESCRIPTIVE_VIEW_ENTRY_OPTIONS_DROPDOWN</td>
 	<td>//li[@data-qa-id='row' and contains(.,'${key_entryTitle}')]/div//a[span/*[name()='svg'][contains(@class,'icon-ellipsis-v')]]</td>
 	<td></td>
