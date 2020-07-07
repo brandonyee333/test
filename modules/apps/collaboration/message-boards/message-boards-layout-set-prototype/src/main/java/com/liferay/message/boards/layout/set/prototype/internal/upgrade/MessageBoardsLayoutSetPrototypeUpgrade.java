@@ -32,6 +32,7 @@ public class MessageBoardsLayoutSetPrototypeUpgrade
 		registry.register(
 			"com.liferay.message.boards.layout.set.prototype", "0.0.0", "1.0.0",
 			new DummyUpgradeStep());
+
 		registry.register(
 			"com.liferay.message.boards.layout.set.prototype", "1.0.0", "1.0.1",
 			new UpgradeLocalizedColumn());
