@@ -240,7 +240,10 @@ public class JobDog {
 		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
 			_jobTypeNaniteMap.get(job.getJobType()),
 			JSONUtil.put(
-				"job", _objectMapper.convertValue(job, JSONObject.class)));
+				"job", _objectMapper.convertValue(job, JSONObject.class)
+			).put(
+				"trigger", "MANUAL"
+			));
 
 		return job;
 	}

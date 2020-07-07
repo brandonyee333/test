@@ -43,7 +43,8 @@ public class JobRun {
 
 		if (Objects.equals(_completedDate, jobRun._completedDate) &&
 			Objects.equals(_id, jobRun._id) &&
-			Objects.equals(_jobRunStatus, jobRun._jobRunStatus)) {
+			Objects.equals(_jobRunStatus, jobRun._jobRunStatus) &&
+			Objects.equals(_trigger, jobRun._trigger)) {
 
 			return true;
 		}
@@ -85,9 +86,13 @@ public class JobRun {
 		return _jobRunStatus;
 	}
 
+	public String getTrigger() {
+		return _trigger;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(_completedDate, _id, _jobRunStatus);
+		return Objects.hash(_completedDate, _id, _jobRunStatus, _trigger);
 	}
 
 	public void setCompletedDate(Date completedDate) {
@@ -108,9 +113,14 @@ public class JobRun {
 		_jobRunStatus = jobRunStatus;
 	}
 
+	public void setTrigger(String trigger) {
+		_trigger = trigger;
+	}
+
 	private Date _completedDate;
 	private Map<String, Object> _context;
 	private String _id;
 	private JobRunStatus _jobRunStatus;
+	private String _trigger;
 
 }

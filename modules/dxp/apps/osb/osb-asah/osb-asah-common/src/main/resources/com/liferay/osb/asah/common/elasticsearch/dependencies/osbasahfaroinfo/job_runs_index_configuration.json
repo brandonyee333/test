@@ -32,6 +32,9 @@
 				},
 				"step": {
 					"type": "keyword"
+				},
+				"trigger": {
+					"type": "keyword"
 				}
 			}
 		}

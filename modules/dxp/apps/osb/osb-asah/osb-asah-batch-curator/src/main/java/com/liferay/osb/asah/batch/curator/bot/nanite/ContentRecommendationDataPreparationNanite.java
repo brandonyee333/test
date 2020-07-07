@@ -91,6 +91,8 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 				"status", "RUNNING"
 			).put(
 				"step", "DATA_PREPARATION"
+			).put(
+				"trigger", contextJSONObject.optString("trigger", "SCHEDULE")
 			));
 
 		_sparkManager.submitJob(
