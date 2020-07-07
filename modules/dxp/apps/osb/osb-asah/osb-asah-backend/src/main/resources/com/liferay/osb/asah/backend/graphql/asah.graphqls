@@ -408,6 +408,14 @@ type JobRunBag {
 	total: Int
 }
 
+type JobRunsMonthlyStatistics {
+	availableJobRuns: Int
+	completedJobRuns: Int
+	failedJobRuns: Int
+	runningJobRuns: Int
+	scheduledJobRuns: Int
+}
+
 type JournalMetric implements AssetMetric {
 	assetId: String
 	assetMetrics: [AssetMetric]
@@ -786,6 +794,10 @@ type QueryType {
 		sort: Sort!,
 		start: Int!
 	): JobRunBag
+
+	jobRunsMonthlyStatistics(
+		jobId: String!
+	): JobRunsMonthlyStatistics
 
 	jobs(
 		keywords: String,
