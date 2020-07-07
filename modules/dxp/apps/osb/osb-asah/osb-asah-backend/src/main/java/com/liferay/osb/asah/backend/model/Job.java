@@ -14,9 +14,13 @@
 
 package com.liferay.osb.asah.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.liferay.osb.asah.common.date.DateUtil;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -50,6 +54,18 @@ public class Job {
 		return false;
 	}
 
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	public Date getCreatedDate() {
+		if (_createdDate == null) {
+			return null;
+		}
+
+		return new Date(_createdDate.getTime());
+	}
+
 	public String getId() {
 		return _id;
 	}
@@ -74,6 +90,18 @@ public class Job {
 		return _jobType;
 	}
 
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	public Date getLastUpdatedDate() {
+		if (_lastUpdatedDate == null) {
+			return null;
+		}
+
+		return new Date(_lastUpdatedDate.getTime());
+	}
+
 	public String getName() {
 		return _name;
 	}
@@ -81,8 +109,14 @@ public class Job {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_id, _jobParameters, _jobTrainingFrequency, _jobTrainingPeriod,
-			_jobType, _name);
+			_createdDate, _id, _jobParameters, _jobTrainingFrequency,
+			_jobTrainingPeriod, _jobType, _lastUpdatedDate, _name);
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		if (createdDate != null) {
+			_createdDate = new Date(createdDate.getTime());
+		}
 	}
 
 	public void setId(String id) {
@@ -107,16 +141,24 @@ public class Job {
 		_jobType = jobType;
 	}
 
+	public void setLastUpdatedDate(Date lastUpdatedDate) {
+		if (lastUpdatedDate != null) {
+			_lastUpdatedDate = new Date(lastUpdatedDate.getTime());
+		}
+	}
+
 	public void setName(String name) {
 		_name = name;
 	}
 
 	protected boolean equalsJob(Job job) {
-		if (Objects.equals(_id, job._id) &&
+		if (Objects.equals(_createdDate, job._createdDate) &&
+			Objects.equals(_id, job._id) &&
 			Objects.equals(_jobParameters, job._jobParameters) &&
 			Objects.equals(_jobTrainingFrequency, job._jobTrainingFrequency) &&
 			Objects.equals(_jobTrainingPeriod, job._jobTrainingPeriod) &&
 			Objects.equals(_jobType, job._jobType) &&
+			Objects.equals(_lastUpdatedDate, job._lastUpdatedDate) &&
 			Objects.equals(_name, job._name)) {
 
 			return true;
@@ -125,11 +167,13 @@ public class Job {
 		return false;
 	}
 
+	private Date _createdDate;
 	private String _id;
 	private List<JobParameter> _jobParameters = new ArrayList<>();
 	private JobTrainingFrequency _jobTrainingFrequency;
 	private JobTrainingPeriod _jobTrainingPeriod;
 	private JobType _jobType;
+	private Date _lastUpdatedDate;
 	private String _name;
 
 }

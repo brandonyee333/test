@@ -2,8 +2,14 @@
 	"mappings": {
 		"jobs": {
 			"properties": {
+				"createdDate": {
+					"type": "date"
+				},
 				"id": {
 					"type": "keyword"
+				},
+				"lastUpdatedDate": {
+					"type": "date"
 				},
 				"name": {
 					"fields": {

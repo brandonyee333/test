@@ -30,6 +30,7 @@ import com.liferay.osb.asah.backend.model.JobTrainingFrequency;
 import com.liferay.osb.asah.backend.model.JobTrainingPeriod;
 import com.liferay.osb.asah.backend.model.JobType;
 import com.liferay.osb.asah.backend.model.ResultBag;
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
@@ -83,6 +84,11 @@ public class JobDog {
 		boolean runNow) {
 
 		JSONObject jsonObject = new JSONObject();
+
+		String dateString = DateUtil.newUTCDateString();
+
+		jsonObject.put("createdDate", dateString);
+		jsonObject.put("lastUpdatedDate", dateString);
 
 		jsonObject.put("name", name);
 		jsonObject.put(
@@ -248,6 +254,7 @@ public class JobDog {
 
 		String oldTrainingFrequency = jsonObject.getString("trainingFrequency");
 
+		jsonObject.put("lastUpdatedDate", DateUtil.newUTCDateString());
 		jsonObject.put("name", name);
 		jsonObject.put(
 			"parameters",
