@@ -19,11 +19,14 @@ import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootAp
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.spring.cache.OSBAsahRedisDisabledTestConfiguration;
+
+import java.util.Arrays;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -122,6 +125,34 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 		Assert.assertEquals(
 			"GL Contact: Sales - MKTG FRM KK",
 			eventPropertiesJSONObject.getString("title"));
+	}
+
+	@Test
+	public void testKeywordsLowercase() throws Exception {
+		_cerebroRawElasticsearchInvoker.add(
+			"analytics-events",
+			_getAnalyticsEventJSONArray("analytics-events-1.json"), 50);
+
+		_activitiesNanite.run();
+
+		JSONObject assetJSONObject = faroInfoElasticsearchInvoker.fetch(
+			"assets",
+			QueryBuilders.termQuery(
+				"name",
+				"Felix Gogo Shell - reference - Knowledge | \"Liferay"));
+
+		Assert.assertTrue(assetJSONObject.has("keywords"));
+
+		String[] keywords = JSONUtil.toStringArray(
+			assetJSONObject.getJSONArray("keywords"), "keyword");
+
+		Arrays.sort(keywords);
+
+		Assert.assertArrayEquals(
+			new String[] {
+				"felix gogo shell", "knowledge", "portal", "reference"
+			},
+			keywords);
 	}
 
 	private JSONArray _getAnalyticsEventJSONArray(String resourceName)
