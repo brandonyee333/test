@@ -17,6 +17,7 @@ package com.liferay.osb.asah.upgrade;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.util.Map;
 import java.util.Objects;
 
 import org.apache.commons.logging.Log;
@@ -30,6 +31,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class BaseReindexUpgradeStep implements UpgradeStep {
 
 	public abstract String[] getCollectionNames();
+
+	public Map<String, Object> getParams() {
+		return null;
+	}
+
+	public String getScript() {
+		return null;
+	}
 
 	public abstract WeDeployDataService getWeDeployDataService();
 
@@ -104,7 +113,8 @@ public abstract class BaseReindexUpgradeStep implements UpgradeStep {
 	protected void doUpgrade(String newIndexName, String oldIndexName)
 		throws Exception {
 
-		_reindexHelper.reindex(newIndexName, oldIndexName);
+		_reindexHelper.reindex(
+			newIndexName, getParams(), getScript(), oldIndexName);
 	}
 
 	private static final Log _log = LogFactory.getLog(
