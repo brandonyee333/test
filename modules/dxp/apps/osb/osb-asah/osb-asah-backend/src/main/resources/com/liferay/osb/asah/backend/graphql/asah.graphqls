@@ -613,7 +613,9 @@ type QueryType {
 		country: String,
 		deviceType: String,
 		includePrevious: Boolean,
-		rangeKey: Int!,
+		rangeEnd: String,
+		rangeKey: Int,
+		rangeStart: String,
 		title: String,
 		url: String!
 	): BlogMetric
@@ -621,7 +623,9 @@ type QueryType {
 	blogs(
 		channelId: String,
 		keywords: String,
-		rangeKey: Int!,
+		rangeEnd: String,
+		rangeKey: Int,
+		rangeStart: String,
 		size: Int!,
 		sort: Sort!,
 		start: Int!
@@ -633,7 +637,9 @@ type QueryType {
 		country: String,
 		deviceType: String,
 		includePrevious: Boolean,
-		rangeKey: Int!,
+		rangeEnd: String,
+		rangeKey: Int,
+		rangeStart: String,
 		title: String,
 		url: String!
 	): CustomAssetMetric
@@ -674,7 +680,9 @@ type QueryType {
 		country: String,
 		deviceType: String,
 		includePrevious: Boolean,
-		rangeKey: Int!,
+		rangeEnd: String,
+		rangeKey: Int,
+		rangeStart: String,
 		title: String,
 		url: String!
 	): DocumentMetric
@@ -682,7 +690,9 @@ type QueryType {
 	documents(
 		channelId: String,
 		keywords: String,
-		rangeKey: Int!,
+		rangeEnd: String,
+		rangeKey: Int,
+		rangeStart: String,
 		size: Int!,
 		sort: Sort!,
 		start: Int!
@@ -711,7 +721,9 @@ type QueryType {
 		country: String,
 		deviceType: String,
 		includePrevious: Boolean,
-		rangeKey: Int!,
+		rangeEnd: String,
+		rangeKey: Int,
+		rangeStart: String,
 		title: String,
 		url: String!
 	): FormMetric
@@ -719,7 +731,9 @@ type QueryType {
 	forms(
 		channelId: String,
 		keywords: String,
-		rangeKey: Int!,
+		rangeEnd: String,
+		rangeKey: Int,
+		rangeStart: String,
 		size: Int!,
 		sort: Sort!,
 		start: Int!
@@ -786,7 +800,9 @@ type QueryType {
 		country: String,
 		deviceType: String,
 		includePrevious: Boolean,
-		rangeKey: Int!,
+		rangeEnd: String,
+		rangeKey: Int,
+		rangeStart: String,
 		title: String,
 		url: String!
 	): JournalMetric
@@ -794,7 +810,9 @@ type QueryType {
 	journals(
 		channelId: String,
 		keywords: String,
-		rangeKey: Int!,
+		rangeEnd: String,
+		rangeKey: Int,
+		rangeStart: String,
 		size: Int!,
 		sort: Sort!,
 		start: Int!
