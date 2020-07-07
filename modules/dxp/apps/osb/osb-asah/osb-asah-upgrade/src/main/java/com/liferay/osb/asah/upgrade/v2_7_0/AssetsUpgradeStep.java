@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.upgrade.v2_6_0;
+package com.liferay.osb.asah.upgrade.v2_7_0;
 
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
