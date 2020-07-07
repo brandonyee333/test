@@ -508,6 +508,8 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 		).flatMap(
 			Collection::stream
 		).map(
+			String::toLowerCase
+		).map(
 			keyword -> Pair.of(keyword, type)
 		).collect(
 			Collectors.toSet()
