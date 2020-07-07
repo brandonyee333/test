@@ -648,6 +648,20 @@ definition {
 			value1 = "${assetTitle}");
 	}
 
+	macro viewByUserWithWorkflowCP {
+		var key_entryTitle = "${entryTitle}";
+
+		Portlet.changeDisplayStyle(displayStyle = "List");
+
+		AssertTextEquals(
+			locator1 = "Blogs#ENTRY_TABLE_TITLE_USER_VIEW",
+			value1 = "${entryTitle}");
+
+		AssertTextEquals(
+			locator1 = "Blogs#ENTRY_TABLE_STATUS",
+			value1 = "Pending");
+	}
+
 	macro viewDefaultCP {
 		AssertTextEquals(
 			locator1 = "Message#EMPTY_INFO",

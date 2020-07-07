@@ -449,7 +449,7 @@ definition {
 			panel = "Site Administration",
 			portlet = "Blogs");
 
-		BlogsEntry.viewWithWorkflowCP(
+		BlogsEntry.viewByUserWithWorkflowCP(
 			entryContent = "Blogs Entry Content",
 			entryTitle = "Blogs Entry Title");
 
