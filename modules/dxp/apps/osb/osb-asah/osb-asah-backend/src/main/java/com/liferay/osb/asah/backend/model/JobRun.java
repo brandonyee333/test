@@ -42,6 +42,7 @@ public class JobRun {
 		JobRun jobRun = (JobRun)obj;
 
 		if (Objects.equals(_completedDate, jobRun._completedDate) &&
+			Objects.equals(_createdDate, jobRun._createdDate) &&
 			Objects.equals(_id, jobRun._id) &&
 			Objects.equals(_jobRunStatus, jobRun._jobRunStatus) &&
 			Objects.equals(_trigger, jobRun._trigger)) {
@@ -77,6 +78,18 @@ public class JobRun {
 		return _context;
 	}
 
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	public Date getCreatedDate() {
+		if (_createdDate == null) {
+			return null;
+		}
+
+		return new Date(_createdDate.getTime());
+	}
+
 	public String getId() {
 		return _id;
 	}
@@ -92,7 +105,8 @@ public class JobRun {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(_completedDate, _id, _jobRunStatus, _trigger);
+		return Objects.hash(
+			_completedDate, _createdDate, _id, _jobRunStatus, _trigger);
 	}
 
 	public void setCompletedDate(Date completedDate) {
@@ -103,6 +117,12 @@ public class JobRun {
 
 	public void setContext(Map<String, Object> context) {
 		_context = context;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		if (createdDate != null) {
+			_createdDate = new Date(createdDate.getTime());
+		}
 	}
 
 	public void setId(String id) {
@@ -119,6 +139,7 @@ public class JobRun {
 
 	private Date _completedDate;
 	private Map<String, Object> _context;
+	private Date _createdDate;
 	private String _id;
 	private JobRunStatus _jobRunStatus;
 	private String _trigger;

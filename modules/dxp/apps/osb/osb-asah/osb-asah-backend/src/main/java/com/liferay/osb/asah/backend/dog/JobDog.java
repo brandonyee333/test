@@ -25,6 +25,7 @@ import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobParameter;
 import com.liferay.osb.asah.backend.model.JobRun;
 import com.liferay.osb.asah.backend.model.JobRunStatus;
+import com.liferay.osb.asah.backend.model.JobRunsMonthlyStatistics;
 import com.liferay.osb.asah.backend.model.JobStatus;
 import com.liferay.osb.asah.backend.model.JobTrainingFrequency;
 import com.liferay.osb.asah.backend.model.JobTrainingPeriod;
@@ -42,11 +43,19 @@ import com.liferay.osb.asah.common.model.Sort;
 
 import java.io.IOException;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.TimeZone;
+import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
@@ -59,6 +68,7 @@ import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -69,6 +79,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.support.CronSequenceGenerator;
 import org.springframework.stereotype.Component;
 
 /**
@@ -177,6 +189,27 @@ public class JobDog {
 				QueryBuilders.termQuery("job.id", jobId), size, start));
 
 		return DogUtil.createResultBag(JobRun.class, searchHits);
+	}
+
+	public JobRunsMonthlyStatistics getJobRunsMonthlyStatistics(String id) {
+		ResultBag<JobRun> jobRunResultBag = _getCurrentMonthJobRunResultBag(
+			id, 20, Sort.desc("id"), 0);
+
+		List<JobRun> jobRuns = jobRunResultBag.getResults();
+
+		return new JobRunsMonthlyStatistics() {
+			{
+				setAvailableJobRuns(_maxMonthlyJobRuns - jobRuns.size());
+				setCompletedJobRuns(
+					_countJobRunsByStatus(jobRuns, JobRunStatus.COMPLETED));
+				setFailedJobRuns(
+					_countJobRunsByStatus(jobRuns, JobRunStatus.FAILED));
+				setRunningJobRuns(
+					_countJobRunsByStatus(jobRuns, JobRunStatus.RUNNING));
+				setScheduledJobRuns(
+					_countCurrentMonthScheduledJobRuns(jobRuns, getJob(id)));
+			}
+		};
 	}
 
 	public JobStatus getJobStatus(String id) {
@@ -314,6 +347,71 @@ public class JobDog {
 		return boolQueryBuilder;
 	}
 
+	private int _countCurrentMonthScheduledJobRuns(
+		JobTrainingFrequency jobTrainingFrequency, Date startDate) {
+
+		int count = 0;
+
+		LocalDateTime nowLocalDateTime = LocalDateTime.now(ZoneId.of("UTC"));
+
+		CronSequenceGenerator cronSequenceGenerator = new CronSequenceGenerator(
+			jobTrainingFrequency.getCronExpression(),
+			TimeZone.getTimeZone("UTC"));
+
+		while (true) {
+			startDate = cronSequenceGenerator.next(startDate);
+
+			LocalDateTime nextJobRunLocalDateTime = DateUtil.toLocalDateTime(
+				startDate, ZoneId.of("UTC"));
+
+			if ((nextJobRunLocalDateTime.getMonthValue() >
+					nowLocalDateTime.getMonthValue()) ||
+				(nextJobRunLocalDateTime.getYear() >
+					nowLocalDateTime.getYear())) {
+
+				break;
+			}
+
+			if (nextJobRunLocalDateTime.getMonthValue() ==
+					nowLocalDateTime.getMonthValue()) {
+
+				count++;
+			}
+		}
+
+		return count;
+	}
+
+	private int _countCurrentMonthScheduledJobRuns(
+		List<JobRun> currentMonthJobRuns, Job job) {
+
+		if (job.getJobTrainingFrequency() == JobTrainingFrequency.MANUAL) {
+			return 0;
+		}
+
+		Date startDate = job.getLastUpdatedDate();
+
+		JobRun lastScheduledJobRun = _fetchLastScheduledJobRun(
+			currentMonthJobRuns);
+
+		if (lastScheduledJobRun != null) {
+			startDate = lastScheduledJobRun.getCreatedDate();
+		}
+
+		return _countCurrentMonthScheduledJobRuns(
+			job.getJobTrainingFrequency(), startDate);
+	}
+
+	private long _countJobRunsByStatus(
+		List<JobRun> jobRuns, JobRunStatus jobRunStatus) {
+
+		Stream<JobRun> stream = jobRuns.stream();
+
+		return stream.filter(
+			jobRun -> jobRun.getJobRunStatus() == jobRunStatus
+		).count();
+	}
+
 	private boolean _deleteJob(String id) {
 		JSONObject jsonObject = _faroInfoElasticsearchInvoker.get("jobs", id);
 
@@ -351,6 +449,20 @@ public class JobDog {
 		}
 	}
 
+	private JobRun _fetchLastScheduledJobRun(List<JobRun> jobRuns) {
+		Stream<JobRun> stream = jobRuns.stream();
+
+		Optional<JobRun> lastScheduledJobRunOptional = stream.sorted(
+			Comparator.comparing(
+				JobRun::getId
+			).reversed()
+		).filter(
+			jobRun -> Objects.equals(jobRun.getTrigger(), "SCHEDULE")
+		).findFirst();
+
+		return lastScheduledJobRunOptional.orElse(null);
+	}
+
 	private JobRun _fetchLatestJobRun(String jobId) {
 		ResultBag<JobRun> resultBag = getJobRunResultBag(
 			jobId, 1, Sort.desc("id"), 0);
@@ -362,6 +474,31 @@ public class JobDog {
 		List<JobRun> results = resultBag.getResults();
 
 		return results.get(0);
+	}
+
+	private ResultBag<JobRun> _getCurrentMonthJobRunResultBag(
+		String jobId, int size, Sort sort, int start) {
+
+		RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(
+			"createdDate");
+
+		rangeQueryBuilder.timeZone("UTC");
+
+		rangeQueryBuilder.gte("now/M");
+		rangeQueryBuilder.lt("now");
+
+		SearchHits searchHits = _dataDog.querySearchHits(
+			"job-runs", _faroInfoElasticsearchInvoker,
+			DogUtil.buildSearchSourceBuilder(
+				SortBuilderUtil.fieldSort(sort),
+				BoolQueryBuilderUtil.filter(
+					rangeQueryBuilder
+				).filter(
+					QueryBuilders.termQuery("job.id", jobId)
+				),
+				size, start));
+
+		return DogUtil.createResultBag(JobRun.class, searchHits);
 	}
 
 	private boolean _hasJobCompleted(String id) {
@@ -457,6 +594,9 @@ public class JobDog {
 					"ContentRecommendationDataPreparationNanite");
 			}
 		};
+
+	@Value("${osb.asah.content.recommendation.max.monthly.job.runs:10}")
+	private int _maxMonthlyJobRuns;
 
 	private final ObjectMapper _objectMapper = new ObjectMapper() {
 		{
