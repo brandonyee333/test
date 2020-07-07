@@ -30,7 +30,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -97,7 +96,7 @@ public class PreferenceMutationDataFetcher implements DataFetcher<Preference> {
 						try {
 							new JSONArray(value);
 						}
-						catch (JSONException ex) {
+						catch (Exception e) {
 							return false;
 						}
 
