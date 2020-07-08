@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -228,7 +229,12 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 
 		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
 			"individuals",
-			QueryBuilders.termQuery("demographics.email.value", email));
+			BoolQueryBuilderUtil.should(
+				QueryBuilders.termQuery("demographics.email.value", email)
+			).should(
+				QueryBuilders.termQuery(
+					"emailAddressHashed", DigestUtils.sha256Hex(email))
+			));
 
 		if (individualJSONObject == null) {
 			_faroInfoIndividualDog.addIndividual(
