@@ -21,9 +21,13 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.Sort;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
+import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.reindex.BulkByScrollResponse;
 import org.elasticsearch.search.SearchHits;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +38,18 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class RecommendationDog {
+
+	public boolean deleteItemRecommendationsByJobId(String jobId) {
+		BulkByScrollResponse bulkByScrollResponse =
+			_faroInfoElasticsearchInvoker.deleteByQuery(
+				QueryBuilders.termQuery("jobId", jobId), true,
+				"recommended-items");
+
+		List<BulkItemResponse.Failure> bulkFailures =
+			bulkByScrollResponse.getBulkFailures();
+
+		return bulkFailures.isEmpty();
+	}
 
 	public ItemRecommendation getItemRecommendation(String id) {
 		return DogUtil.convert(
