@@ -19,6 +19,7 @@ import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobParameter;
 import com.liferay.osb.asah.backend.model.JobRun;
 import com.liferay.osb.asah.backend.model.JobRunStatus;
+import com.liferay.osb.asah.backend.model.JobRunsMonthlyStatistics;
 import com.liferay.osb.asah.backend.model.JobStatus;
 import com.liferay.osb.asah.backend.model.JobTrainingFrequency;
 import com.liferay.osb.asah.backend.model.JobTrainingPeriod;
@@ -33,6 +34,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
@@ -159,6 +161,35 @@ public class JobDogTest {
 	}
 
 	@ElasticsearchIndex(
+		name = "job-runs", resourcePath = "job-runs-info-4.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "jobs", resourcePath = "jobs-info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetJobRunsMonthlyStatistics() {
+		JobRunsMonthlyStatistics jobRunsMonthlyStatistics =
+			_jobDog.getJobRunsMonthlyStatistics("1");
+
+		ResultBag<JobRun> jobRunResultBag = _jobDog.getJobRunResultBag(
+			"1", 20, Sort.desc("id"), 0);
+
+		List<JobRun> jobRuns = jobRunResultBag.getResults();
+
+		Assert.assertEquals(
+			jobRunsMonthlyStatistics.getCompletedJobRuns(),
+			_countCurrentMonthJobRunsByStatus(jobRuns, JobRunStatus.COMPLETED));
+		Assert.assertEquals(
+			jobRunsMonthlyStatistics.getFailedJobRuns(),
+			_countCurrentMonthJobRunsByStatus(jobRuns, JobRunStatus.FAILED));
+		Assert.assertEquals(
+			jobRunsMonthlyStatistics.getRunningJobRuns(),
+			_countCurrentMonthJobRunsByStatus(jobRuns, JobRunStatus.RUNNING));
+	}
+
+	@ElasticsearchIndex(
 		name = "job-runs", resourcePath = "job-runs-info-1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
@@ -278,6 +309,31 @@ public class JobDogTest {
 			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY, job.getJobType());
 		Assert.assertEquals(
 			"Product Recommendation Job Updated", job.getName());
+	}
+
+	private int _countCurrentMonthJobRunsByStatus(
+		List<JobRun> jobRuns, JobRunStatus jobRunStatus) {
+
+		int count = 0;
+
+		LocalDateTime nowLocalDateTime = LocalDateTime.now(ZoneId.of("UTC"));
+
+		for (JobRun jobRun : jobRuns) {
+			if (jobRun.getJobRunStatus() != jobRunStatus) {
+				continue;
+			}
+
+			LocalDateTime createdDateLocalDateTime = DateUtil.toLocalDateTime(
+				jobRun.getCreatedDate(), ZoneId.of("UTC"));
+
+			if (createdDateLocalDateTime.getMonthValue() ==
+					nowLocalDateTime.getMonthValue()) {
+
+				count++;
+			}
+		}
+
+		return count;
 	}
 
 	private <R> List<R> _getJobRunsProperty(

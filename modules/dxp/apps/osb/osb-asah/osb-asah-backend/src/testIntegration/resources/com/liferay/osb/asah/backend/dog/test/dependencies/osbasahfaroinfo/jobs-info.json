@@ -1,6 +1,8 @@
 [
 	{
+		"createdDate": "${now-40d}",
 		"id": "1",
+		"lastUpdatedDate": "${now-40d}",
 		"name": "Related Content Job",
 		"parameters": [
 			{
