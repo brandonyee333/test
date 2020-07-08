@@ -321,6 +321,13 @@ public class JobDog {
 			return false;
 		}
 
+		boolean success = _recommendationDog.deleteItemRecommendationsByJobId(
+			id);
+
+		if (!success) {
+			return false;
+		}
+
 		return _faroInfoElasticsearchInvoker.delete(
 			"jobs", jsonObject.getString("id"));
 	}
@@ -451,5 +458,8 @@ public class JobDog {
 			registerModule(new JsonOrgModule());
 		}
 	};
+
+	@Autowired
+	private RecommendationDog _recommendationDog;
 
 }
