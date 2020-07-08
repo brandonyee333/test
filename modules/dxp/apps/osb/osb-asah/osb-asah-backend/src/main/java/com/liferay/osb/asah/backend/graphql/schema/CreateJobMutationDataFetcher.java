@@ -47,7 +47,8 @@ public class CreateJobMutationDataFetcher implements DataFetcher<Job> {
 			JobTrainingPeriod.valueOf(
 				dataFetchingEnvironment.getArgument("trainingPeriod")),
 			JobType.valueOf(dataFetchingEnvironment.getArgument("type")),
-			dataFetchingEnvironment.getArgument("name"));
+			dataFetchingEnvironment.getArgument("name"),
+			dataFetchingEnvironment.getArgument("runNow"));
 	}
 
 	@Autowired

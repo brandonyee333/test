@@ -448,6 +448,7 @@ type MutationType {
 	createJob(
 		name: String!
 		parameters: [JobParameterInput]
+		runNow: Boolean
 		trainingFrequency: JobTrainingFrequency
 		trainingPeriod: JobTrainingPeriod
 		type: JobType!
@@ -495,6 +496,7 @@ type MutationType {
 		jobId: String!
 		name: String!
 		parameters: [JobParameterInput]
+		runNow: Boolean
 		trainingFrequency: JobTrainingFrequency
 		trainingPeriod: JobTrainingPeriod
 	): Job

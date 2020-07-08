@@ -79,7 +79,8 @@ public class JobDog {
 	public Job addJob(
 		List<JobParameter> jobParameters,
 		JobTrainingFrequency jobTrainingFrequency,
-		JobTrainingPeriod jobTrainingPeriod, JobType jobType, String name) {
+		JobTrainingPeriod jobTrainingPeriod, JobType jobType, String name,
+		boolean runNow) {
 
 		JSONObject jsonObject = new JSONObject();
 
@@ -237,7 +238,7 @@ public class JobDog {
 	public Job updateJob(
 		String id, List<JobParameter> jobParameters,
 		JobTrainingFrequency jobTrainingFrequency,
-		JobTrainingPeriod jobTrainingPeriod, String name) {
+		JobTrainingPeriod jobTrainingPeriod, String name, boolean runNow) {
 
 		JSONObject jsonObject = _faroInfoElasticsearchInvoker.get("jobs", id);
 

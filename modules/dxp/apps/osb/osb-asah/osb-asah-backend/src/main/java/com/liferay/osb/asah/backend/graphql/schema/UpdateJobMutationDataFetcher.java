@@ -46,7 +46,8 @@ public class UpdateJobMutationDataFetcher implements DataFetcher<Job> {
 				dataFetchingEnvironment.getArgument("trainingFrequency")),
 			JobTrainingPeriod.valueOf(
 				dataFetchingEnvironment.getArgument("trainingPeriod")),
-			dataFetchingEnvironment.getArgument("name"));
+			dataFetchingEnvironment.getArgument("name"),
+			dataFetchingEnvironment.getArgument("runNow"));
 	}
 
 	@Autowired
