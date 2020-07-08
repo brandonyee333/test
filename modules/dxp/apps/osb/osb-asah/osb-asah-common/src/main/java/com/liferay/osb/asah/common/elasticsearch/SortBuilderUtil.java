@@ -67,11 +67,17 @@ public class SortBuilderUtil {
 	public static FieldSortBuilder fieldSort(
 		String fieldName, SortOrder sortOrder) {
 
+		return fieldSort(fieldName, sortOrder, "long");
+	}
+
+	public static FieldSortBuilder fieldSort(
+		String fieldName, SortOrder sortOrder, String unmappedType) {
+
 		FieldSortBuilder fieldSortBuilder = SortBuilders.fieldSort(fieldName);
 
 		fieldSortBuilder.order(sortOrder);
 
-		return fieldSortBuilder.unmappedType("long");
+		return fieldSortBuilder.unmappedType(unmappedType);
 	}
 
 	public static List<Pair<String, SortOrder>> getSortOrderPairs(
