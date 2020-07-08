@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -230,7 +231,9 @@ public class IndividualDog {
 		searchSourceBuilder.query(boolQueryBuilder);
 
 		searchSourceBuilder.size(size);
-		searchSourceBuilder.sort("demographics.givenName.value", SortOrder.ASC);
+		searchSourceBuilder.sort(
+			SortBuilderUtil.fieldSort(
+				"demographics.givenName.value", SortOrder.ASC, "keyword"));
 
 		return searchSourceBuilder;
 	}
