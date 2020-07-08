@@ -14,18 +14,22 @@
 
 package com.liferay.osb.asah.backend.ext.seo.rest.controller.api.data.source.v1.test;
 
+import com.liferay.osb.asah.backend.ext.seo.model.CountrySearchKeywords;
 import com.liferay.osb.asah.backend.ext.seo.model.SearchKeyword;
 import com.liferay.osb.asah.backend.ext.seo.model.TrafficSource;
 import com.liferay.osb.asah.backend.ext.seo.rest.controller.api.data.source.v1.RootRestController;
 import com.liferay.osb.asah.backend.ext.seo.spring.OSBAsahBackendExtSEOSpringBootApplication;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.http.Http;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+
+import org.json.JSONArray;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -63,6 +67,16 @@ public class RootRestControllerTest {
 	@Test
 	public void testGetTrafficSources() {
 		Mockito.doAnswer(
+			invocationOnMock -> String.valueOf(
+				JSONUtil.putAll(JSONUtil.put("valueKey", "United States")))
+		).when(
+			_http
+		).exchange(
+			Mockito.anyString(), Mockito.contains("geolocations"),
+			Mockito.any(HttpMethod.class), Mockito.anyObject()
+		);
+
+		Mockito.doAnswer(
 			invocationOnMock -> ResponseEntity.ok(
 				ResourceUtil.readResourceToString(
 					"dependencies/semrush_url_organic.csv", this))
@@ -92,22 +106,53 @@ public class RootRestControllerTest {
 
 		Assert.assertEquals(
 			new TrafficSource(
-				"organic",
-				Arrays.asList(
-					new SearchKeyword("liferay", 1, 3600, 2880),
-					new SearchKeyword("liferay portal", 1, 390, 312),
-					new SearchKeyword("liferay inc", 1, 260, 208)),
-				3400, 85.41D),
+				Collections.singletonList(
+					new CountrySearchKeywords(
+						"us",
+						Arrays.asList(
+							new SearchKeyword("liferay", 1, 3600, 2880),
+							new SearchKeyword("liferay portal", 1, 390, 312),
+							new SearchKeyword("liferay inc", 1, 260, 208)))),
+				"organic", 3400, 85.43D),
 			trafficSources.get(0));
 
 		Assert.assertEquals(
 			new TrafficSource(
-				"paid",
-				Arrays.asList(
-					new SearchKeyword("dxp enterprises", 1, 4400, 206),
-					new SearchKeyword("intranet definition", 1, 4400, 206),
-					new SearchKeyword("dxp", 1, 3600, 169)),
-				581, 14.59D),
+				Collections.singletonList(
+					new CountrySearchKeywords(
+						"us",
+						Arrays.asList(
+							new SearchKeyword("dxp enterprises", 1, 4400, 206),
+							new SearchKeyword(
+								"intranet definition", 1, 4400, 205),
+							new SearchKeyword("dxp", 1, 3600, 169)))),
+				"paid", 580, 14.57D),
+			trafficSources.get(1));
+	}
+
+	@Test
+	public void testGetTrafficSourcesWithEmptyDatabases() {
+		Mockito.doAnswer(
+			invocationOnMock -> String.valueOf(new JSONArray())
+		).when(
+			_http
+		).exchange(
+			Mockito.anyString(), Mockito.contains("geolocations"),
+			Mockito.any(HttpMethod.class), Mockito.anyObject()
+		);
+
+		List<TrafficSource> trafficSources =
+			_rootRestController.getTrafficSources(RandomTestUtil.randomURL());
+
+		Assert.assertEquals(
+			trafficSources.toString(), 2, trafficSources.size());
+
+		Assert.assertEquals(
+			new TrafficSource(Collections.emptyList(), "organic", 0, 0D),
+			trafficSources.get(0));
+
+		Assert.assertEquals(
+			new TrafficSource(Collections.emptyList(), "paid", 0, 0D),
 			trafficSources.get(1));
 	}
 
@@ -117,7 +162,98 @@ public class RootRestControllerTest {
 	}
 
 	@Test
+	public void testGetTrafficSourcesWithMultipleDatabases() {
+		Mockito.doAnswer(
+			invocationOnMock -> String.valueOf(
+				JSONUtil.putAll(
+					JSONUtil.put("valueKey", "Spain"),
+					JSONUtil.put("valueKey", "United States")))
+		).when(
+			_http
+		).exchange(
+			Mockito.anyString(), Mockito.contains("geolocations"),
+			Mockito.any(HttpMethod.class), Mockito.anyObject()
+		);
+
+		Mockito.doAnswer(
+			invocationOnMock -> ResponseEntity.ok(
+				ResourceUtil.readResourceToString(
+					"dependencies/semrush_url_organic.csv", this))
+		).when(
+			_http
+		).exchangeResponseEntity(
+			Mockito.contains("url_organic"), Mockito.anyString(),
+			Mockito.any(HttpMethod.class), Mockito.anyObject()
+		);
+
+		Mockito.doAnswer(
+			invocationOnMock -> ResponseEntity.ok(
+				ResourceUtil.readResourceToString(
+					"dependencies/semrush_url_adwords.csv", this))
+		).when(
+			_http
+		).exchangeResponseEntity(
+			Mockito.contains("url_adwords"), Mockito.anyString(),
+			Mockito.any(HttpMethod.class), Mockito.anyObject()
+		);
+
+		List<TrafficSource> trafficSources =
+			_rootRestController.getTrafficSources(RandomTestUtil.randomURL());
+
+		Assert.assertEquals(
+			trafficSources.toString(), 2, trafficSources.size());
+
+		Assert.assertEquals(
+			new TrafficSource(
+				Arrays.asList(
+					new CountrySearchKeywords(
+						"es",
+						Arrays.asList(
+							new SearchKeyword("liferay", 1, 3600, 2880),
+							new SearchKeyword("liferay portal", 1, 390, 312),
+							new SearchKeyword("liferay inc", 1, 260, 208))),
+					new CountrySearchKeywords(
+						"us",
+						Arrays.asList(
+							new SearchKeyword("liferay", 1, 3600, 2880),
+							new SearchKeyword("liferay portal", 1, 390, 312),
+							new SearchKeyword("liferay inc", 1, 260, 208)))),
+				"organic", 6800, 85.43D),
+			trafficSources.get(0));
+
+		Assert.assertEquals(
+			new TrafficSource(
+				Arrays.asList(
+					new CountrySearchKeywords(
+						"es",
+						Arrays.asList(
+							new SearchKeyword("dxp enterprises", 1, 4400, 206),
+							new SearchKeyword(
+								"intranet definition", 1, 4400, 205),
+							new SearchKeyword("dxp", 1, 3600, 169))),
+					new CountrySearchKeywords(
+						"us",
+						Arrays.asList(
+							new SearchKeyword("dxp enterprises", 1, 4400, 206),
+							new SearchKeyword(
+								"intranet definition", 1, 4400, 205),
+							new SearchKeyword("dxp", 1, 3600, 169)))),
+				"paid", 1160, 14.57D),
+			trafficSources.get(1));
+	}
+
+	@Test
 	public void testGetTrafficSourcesWithNothingFound() {
+		Mockito.doAnswer(
+			invocationOnMock -> String.valueOf(
+				JSONUtil.putAll(JSONUtil.put("valueKey", "United States")))
+		).when(
+			_http
+		).exchange(
+			Mockito.anyString(), Mockito.contains("geolocations"),
+			Mockito.any(HttpMethod.class), Mockito.anyObject()
+		);
+
 		Mockito.doAnswer(
 			invocationOnMock -> ResponseEntity.ok("ERROR 50 :: NOTHING FOUND")
 		).when(
@@ -134,10 +270,16 @@ public class RootRestControllerTest {
 			trafficSources.toString(), 2, trafficSources.size());
 
 		Assert.assertEquals(
-			new TrafficSource("organic", new ArrayList<>(), 0, 0D),
+			new TrafficSource(
+				Collections.singletonList(
+					new CountrySearchKeywords("us", Collections.emptyList())),
+				"organic", 0, 0D),
 			trafficSources.get(0));
 		Assert.assertEquals(
-			new TrafficSource("paid", new ArrayList<>(), 0, 0D),
+			new TrafficSource(
+				Collections.singletonList(
+					new CountrySearchKeywords("us", Collections.emptyList())),
+				"paid", 0, 0D),
 			trafficSources.get(1));
 	}
 
@@ -148,6 +290,16 @@ public class RootRestControllerTest {
 
 	@Test(expected = HttpClientErrorException.class)
 	public void testGetTrafficSourcesWithSEMrushAPIError() {
+		Mockito.doAnswer(
+			invocationOnMock -> String.valueOf(
+				JSONUtil.putAll(JSONUtil.put("valueKey", "United States")))
+		).when(
+			_http
+		).exchange(
+			Mockito.anyString(), Mockito.contains("geolocations"),
+			Mockito.any(HttpMethod.class), Mockito.anyObject()
+		);
+
 		Mockito.doAnswer(
 			invocationOnMock -> ResponseEntity.status(
 				HttpStatus.INTERNAL_SERVER_ERROR
@@ -164,6 +316,16 @@ public class RootRestControllerTest {
 
 	@Test(expected = HttpClientErrorException.class)
 	public void testGetTrafficSourcesWithURLAdwordsSEMrushAPIError() {
+		Mockito.doAnswer(
+			invocationOnMock -> String.valueOf(
+				JSONUtil.putAll(JSONUtil.put("valueKey", "United States")))
+		).when(
+			_http
+		).exchange(
+			Mockito.anyString(), Mockito.contains("geolocations"),
+			Mockito.any(HttpMethod.class), Mockito.anyObject()
+		);
+
 		Mockito.doAnswer(
 			invocationOnMock -> ResponseEntity.ok(
 				ResourceUtil.readResourceToString(
@@ -191,6 +353,16 @@ public class RootRestControllerTest {
 
 	@Test(expected = HttpClientErrorException.class)
 	public void testGetTrafficSourcesWithURLOrganicSEMrushAPIError() {
+		Mockito.doAnswer(
+			invocationOnMock -> String.valueOf(
+				JSONUtil.putAll(JSONUtil.put("valueKey", "United States")))
+		).when(
+			_http
+		).exchange(
+			Mockito.anyString(), Mockito.contains("geolocations"),
+			Mockito.any(HttpMethod.class), Mockito.anyObject()
+		);
+
 		Mockito.doAnswer(
 			invocationOnMock -> ResponseEntity.status(
 				HttpStatus.INTERNAL_SERVER_ERROR
