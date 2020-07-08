@@ -96,6 +96,10 @@ public class JobDog {
 
 		jsonObject = _faroInfoElasticsearchInvoker.add("jobs", jsonObject);
 
+		if (runNow) {
+			runJob(jsonObject.getString("id"));
+		}
+
 		return _deserializeJob(jsonObject.toString());
 	}
 
@@ -255,6 +259,10 @@ public class JobDog {
 
 		jsonObject = _faroInfoElasticsearchInvoker.update(
 			"jobs", id, jsonObject);
+
+		if (runNow) {
+			runJob(id);
+		}
 
 		return _deserializeJob(jsonObject.toString());
 	}
