@@ -434,13 +434,173 @@
 		"deviceType": "Desktop",
 		"directAccess": 1,
 		"directAccessDates": [
+			"${now-6d}"
+		],
+		"engagementScore": 0.09893977777777777,
+		"eventDate": "${now-6d}",
+		"firstEventDate": "${now-6d}",
+		"formSubmissions": 0,
+		"id": "11",
+		"indirectAccess": 0,
+		"indirectAccessDates": [
+		],
+		"individualId": null,
+		"interactionDates": [
+		],
+		"lastEventDate": "${now-6d}",
+		"modifiedDate": "${now-6d}",
+		"pageScrolls": [
+		],
+		"platformName": "Unknown",
+		"region": null,
+		"searchTerm": "",
+		"segmentNames": [
+		],
+		"sessionId": "11",
+		"timeOnPage": 445229,
+		"title": "Search",
+		"url": "http://192.168.108.90:8080/search?q=%20",
+		"userId": "11",
+		"views": 3
+	},
+	{
+		"bounce": 0,
+		"browserName": "Chrome",
+		"channelId": "2",
+		"city": null,
+		"country": null,
+		"ctaClicks": 3,
+		"dataSourceId": "333962835564819979",
+		"deviceType": "Desktop",
+		"directAccess": 1,
+		"directAccessDates": [
+			"${now-21d}"
+		],
+		"engagementScore": 0.09893977777777777,
+		"eventDate": "${now-21d}",
+		"firstEventDate": "${now-21d}",
+		"formSubmissions": 0,
+		"id": "12",
+		"indirectAccess": 0,
+		"indirectAccessDates": [
+		],
+		"individualId": null,
+		"interactionDates": [
+		],
+		"lastEventDate": "${now-21d}",
+		"modifiedDate": "${now-21d}",
+		"pageScrolls": [
+		],
+		"platformName": "Unknown",
+		"region": null,
+		"searchTerm": "",
+		"segmentNames": [
+		],
+		"sessionId": "11",
+		"timeOnPage": 445229,
+		"title": "Search",
+		"url": "http://192.168.108.90:8080/search?q=%20",
+		"userId": "11",
+		"views": 1
+	},
+	{
+		"bounce": 0,
+		"browserName": "Chrome",
+		"channelId": "2",
+		"city": null,
+		"country": null,
+		"ctaClicks": 3,
+		"dataSourceId": "333962835564819979",
+		"deviceType": "Desktop",
+		"directAccess": 1,
+		"directAccessDates": [
+			"${now-27d}"
+		],
+		"engagementScore": 0.09893977777777777,
+		"eventDate": "${now-27d}",
+		"firstEventDate": "${now-27d}",
+		"formSubmissions": 0,
+		"id": "13",
+		"indirectAccess": 0,
+		"indirectAccessDates": [
+		],
+		"individualId": null,
+		"interactionDates": [
+		],
+		"lastEventDate": "${now-27d}",
+		"modifiedDate": "${now-27d}",
+		"pageScrolls": [
+		],
+		"platformName": "Unknown",
+		"region": null,
+		"searchTerm": "",
+		"segmentNames": [
+		],
+		"sessionId": "11",
+		"timeOnPage": 445229,
+		"title": "Search",
+		"url": "http://192.168.108.90:8080/search?q=%20",
+		"userId": "11",
+		"views": 1
+	},
+	{
+		"bounce": 0,
+		"browserName": "Chrome",
+		"channelId": "2",
+		"city": null,
+		"country": null,
+		"ctaClicks": 3,
+		"dataSourceId": "333962835564819979",
+		"deviceType": "Desktop",
+		"directAccess": 1,
+		"directAccessDates": [
+			"${now-75d}"
+		],
+		"engagementScore": 0.09893977777777777,
+		"eventDate": "${now-75d}",
+		"firstEventDate": "${now-7d}",
+		"formSubmissions": 0,
+		"id": "14",
+		"indirectAccess": 0,
+		"indirectAccessDates": [
+		],
+		"individualId": null,
+		"interactionDates": [
+		],
+		"lastEventDate": "${now-75d}",
+		"modifiedDate": "${now-75d}",
+		"pageScrolls": [
+		],
+		"platformName": "Unknown",
+		"region": null,
+		"searchTerm": "",
+		"segmentNames": [
+		],
+		"sessionId": "11",
+		"timeOnPage": 445229,
+		"title": "Search",
+		"url": "http://192.168.108.90:8080/search?q=%20",
+		"userId": "11",
+		"views": 3
+	},
+	{
+		"bounce": 0,
+		"browserName": "Chrome",
+		"channelId": "2",
+		"city": null,
+		"country": null,
+		"ctaClicks": 3,
+		"dataSourceId": "333962835564819979",
+		"deviceType": "Desktop",
+		"directAccess": 1,
+		"directAccessDates": [
 			"${now-160d}"
 		],
 		"engagementScore": 0.09893977777777777,
 		"eventDate": "${now-160d}",
 		"firstEventDate": "${now-160d}",
 		"formSubmissions": 0,
-		"id": "11",
+		"id": "15",
 		"indirectAccess": 0,
 		"indirectAccessDates": [
 		],
@@ -461,7 +621,7 @@
 		"title": "Search",
 		"url": "http://192.168.108.90:8080/search?q=Liferay%20DXP",
 		"userId": "11",
-		"views": 0
+		"views": 1
 	},
 	{
 		"bounce": 0,
@@ -480,7 +640,7 @@
 		"eventDate": "${now-361d}",
 		"firstEventDate": "${now-361d}",
 		"formSubmissions": 0,
-		"id": "12",
+		"id": "16",
 		"indirectAccess": 0,
 		"indirectAccessDates": [
 		],
@@ -501,6 +661,6 @@
 		"title": "Search",
 		"url": "http://192.168.108.90:8080/search?q=liferay",
 		"userId": "11",
-		"views": 0
+		"views": 2
 	}
 ]
