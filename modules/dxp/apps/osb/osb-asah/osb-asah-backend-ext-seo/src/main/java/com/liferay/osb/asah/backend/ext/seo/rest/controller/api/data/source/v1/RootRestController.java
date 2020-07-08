@@ -17,6 +17,7 @@ package com.liferay.osb.asah.backend.ext.seo.rest.controller.api.data.source.v1;
 import com.liferay.osb.asah.backend.ext.seo.model.CountrySearchKeywords;
 import com.liferay.osb.asah.backend.ext.seo.model.SearchKeyword;
 import com.liferay.osb.asah.backend.ext.seo.model.TrafficSource;
+import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.spring.http.Http;
 
 import com.univocity.parsers.common.processor.BeanListProcessor;
@@ -31,10 +32,13 @@ import java.math.RoundingMode;
 
 import java.nio.charset.StandardCharsets;
 
+import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -42,6 +46,9 @@ import java.util.stream.Stream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -137,7 +144,27 @@ public class RootRestController {
 	}
 
 	private Set<String> _getDatabases(String url) {
-		return Collections.singleton("us");
+		Set<String> databases = new LinkedHashSet<>();
+
+		JSONArray jsonArray = new JSONArray(
+			_http.exchange(
+				ServiceConstants.URL_BACKEND_INTERNAL,
+				"/api/1.0/pages/geolocations?canonicalUrl=" + url,
+				HttpMethod.GET, null));
+
+		Iterator<Object> iterator = jsonArray.iterator();
+
+		while (iterator.hasNext() && (databases.size() < _databasesLimit)) {
+			JSONObject jsonObject = (JSONObject)iterator.next();
+
+			String database = _databases.get(jsonObject.getString("valueKey"));
+
+			if (database != null) {
+				databases.add(database);
+			}
+		}
+
+		return databases;
 	}
 
 	private List<CountrySearchKeywords> _getSearchKeywords(
@@ -219,6 +246,32 @@ public class RootRestController {
 	}
 
 	private static final Log _log = LogFactory.getLog(RootRestController.class);
+
+	private static final Map<String, String> _databases = Stream.of(
+		new AbstractMap.SimpleImmutableEntry<>("Australia", "au"),
+		new AbstractMap.SimpleImmutableEntry<>("Brazil", "br"),
+		new AbstractMap.SimpleImmutableEntry<>("Canada", "ca"),
+		new AbstractMap.SimpleImmutableEntry<>("Finland", "fi"),
+		new AbstractMap.SimpleImmutableEntry<>("France", "fr"),
+		new AbstractMap.SimpleImmutableEntry<>("Germany", "de"),
+		new AbstractMap.SimpleImmutableEntry<>("Hungary", "hu"),
+		new AbstractMap.SimpleImmutableEntry<>("India", "in"),
+		new AbstractMap.SimpleImmutableEntry<>("Italy", "it"),
+		new AbstractMap.SimpleImmutableEntry<>("Japan", "jp"),
+		new AbstractMap.SimpleImmutableEntry<>("Netherlands", "nl"),
+		new AbstractMap.SimpleImmutableEntry<>("Russia", "ru"),
+		new AbstractMap.SimpleImmutableEntry<>("Saudi Arabia", "sa"),
+		new AbstractMap.SimpleImmutableEntry<>("Spain", "es"),
+		new AbstractMap.SimpleImmutableEntry<>("Sweden", "se"),
+		new AbstractMap.SimpleImmutableEntry<>("United Kingdom", "uk"),
+		new AbstractMap.SimpleImmutableEntry<>("United States", "us"),
+		new AbstractMap.SimpleImmutableEntry<>("Unknown", "us")
+	).collect(
+		Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)
+	);
+
+	@Value("${osb.asah.seo.semrush.databases.limit:5}")
+	private int _databasesLimit;
 
 	@Autowired
 	private Environment _environment;
