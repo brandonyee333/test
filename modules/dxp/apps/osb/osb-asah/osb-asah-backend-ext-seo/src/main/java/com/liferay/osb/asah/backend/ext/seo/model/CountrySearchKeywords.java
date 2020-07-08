@@ -1,0 +1,81 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.backend.ext.seo.model;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * @author David Arques
+ */
+public class CountrySearchKeywords {
+
+	public CountrySearchKeywords(
+		String countryCode, List<SearchKeyword> searchKeywords) {
+
+		_countryCode = countryCode;
+		_searchKeywords = searchKeywords;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof CountrySearchKeywords)) {
+			return false;
+		}
+
+		CountrySearchKeywords countrySearchKeywords =
+			(CountrySearchKeywords)obj;
+
+		if (Objects.equals(_countryCode, countrySearchKeywords._countryCode) &&
+			Objects.equals(
+				_searchKeywords, countrySearchKeywords._searchKeywords)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	public String getCountryCode() {
+		return _countryCode;
+	}
+
+	@JsonProperty("keywords")
+	public List<SearchKeyword> getSearchKeywords() {
+		return _searchKeywords;
+	}
+
+	public int hashCode() {
+		return Objects.hash(_countryCode, _searchKeywords);
+	}
+
+	public void setCountryCode(String countryCode) {
+		_countryCode = countryCode;
+	}
+
+	public void setSearchKeywords(List<SearchKeyword> searchKeywords) {
+		_searchKeywords = searchKeywords;
+	}
+
+	private String _countryCode;
+	private List<SearchKeyword> _searchKeywords;
+
+}
