@@ -67,7 +67,7 @@ public class JobDogTest {
 			},
 			JobTrainingFrequency.MANUAL, JobTrainingPeriod.LAST_30_DAYS,
 			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY,
-			"Product Recommendation Job");
+			"Product Recommendation Job", false);
 
 		Assert.assertNotNull(job);
 		Assert.assertNotNull(job.getId());
@@ -115,7 +115,7 @@ public class JobDogTest {
 		Job job = _jobDog.addJob(
 			Collections.emptyList(), JobTrainingFrequency.MANUAL,
 			JobTrainingPeriod.LAST_30_DAYS,
-			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY, jobName);
+			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY, jobName, false);
 
 		Assert.assertEquals(job, _jobDog.fetchJob(jobName));
 	}
@@ -172,7 +172,7 @@ public class JobDogTest {
 		Job job = _jobDog.addJob(
 			Collections.emptyList(), JobTrainingFrequency.MANUAL,
 			JobTrainingPeriod.LAST_30_DAYS,
-			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY, "Job");
+			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY, "Job", false);
 
 		Assert.assertEquals(
 			JobStatus.PENDING, _jobDog.getJobStatus(job.getId()));
@@ -192,7 +192,7 @@ public class JobDogTest {
 		Job job = _jobDog.addJob(
 			Collections.emptyList(), JobTrainingFrequency.EVERY_7_DAYS,
 			JobTrainingPeriod.LAST_30_DAYS,
-			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY, "Job");
+			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY, "Job", false);
 
 		Assert.assertEquals(
 			JobStatus.SCHEDULED, _jobDog.getJobStatus(job.getId()));
@@ -245,7 +245,7 @@ public class JobDogTest {
 			},
 			JobTrainingFrequency.MANUAL, JobTrainingPeriod.LAST_30_DAYS,
 			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY,
-			"Product Recommendation Job");
+			"Product Recommendation Job", false);
 
 		Assert.assertNotNull(job);
 		Assert.assertNotNull(job.getId());
@@ -258,7 +258,7 @@ public class JobDogTest {
 				}
 			},
 			JobTrainingFrequency.EVERY_7_DAYS, JobTrainingPeriod.LAST_180_DAYS,
-			"Product Recommendation Job Updated");
+			"Product Recommendation Job Updated", false);
 
 		Assert.assertNotNull(job);
 		Assert.assertNotNull(job.getId());
