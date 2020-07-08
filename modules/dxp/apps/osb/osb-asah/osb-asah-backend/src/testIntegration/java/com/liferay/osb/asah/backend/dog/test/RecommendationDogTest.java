@@ -46,6 +46,25 @@ public class RecommendationDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
+	public void testDeleteItemRecommendationsByJobId() {
+		boolean success = _recommendationDog.deleteItemRecommendationsByJobId(
+			"1");
+
+		Assert.assertTrue(success);
+
+		ResultBag<ItemRecommendation> resultBag =
+			_recommendationDog.getItemRecommendationResultBag(
+				"1", 20, Sort.desc("id"), 0);
+
+		Assert.assertEquals(0, resultBag.getTotal());
+	}
+
+	@ElasticsearchIndex(
+		name = "recommended-items",
+		resourcePath = "recommended-items-info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
 	public void testGetItemRecommendation() {
 		ItemRecommendation itemRecommendation =
 			_recommendationDog.getItemRecommendation(
