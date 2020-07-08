@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.ext.seo.rest.controller.api.data.source.v1;
 
+import com.liferay.osb.asah.backend.ext.seo.model.CountrySearchKeywords;
 import com.liferay.osb.asah.backend.ext.seo.model.SearchKeyword;
 import com.liferay.osb.asah.backend.ext.seo.model.TrafficSource;
 import com.liferay.osb.asah.common.spring.http.Http;
@@ -31,8 +32,12 @@ import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.logging.Log;
@@ -84,28 +89,33 @@ public class RootRestController {
 			throw new IllegalArgumentException("URL is null");
 		}
 
-		List<SearchKeyword> organicSearchKeywords = _getSearchKeywords(
-			_urlOrganicDisplayLimit, "url_organic", url);
+		Set<String> databases = _getDatabases(url);
+
+		List<CountrySearchKeywords> organicCountrySearchKeywords =
+			_getSearchKeywords(
+				databases, _urlOrganicDisplayLimit, "url_organic", url);
 
 		int organicSearchKeywordsTotalTraffic = _getSearchKeywordsTotalTraffic(
-			organicSearchKeywords);
+			organicCountrySearchKeywords);
 
-		List<SearchKeyword> paidSearchKeywords = _getSearchKeywords(
-			_urlAdwordsDisplayLimit, "url_adwords", url);
+		List<CountrySearchKeywords> paidCountrySearchKeywords =
+			_getSearchKeywords(
+				databases, _urlAdwordsDisplayLimit, "url_adwords", url);
 
 		int paidSearchKeywordsTotalTraffic = _getSearchKeywordsTotalTraffic(
-			paidSearchKeywords);
+			paidCountrySearchKeywords);
 
 		return Arrays.asList(
 			new TrafficSource(
-				"organic", organicSearchKeywords,
+				organicCountrySearchKeywords, "organic",
 				organicSearchKeywordsTotalTraffic,
 				_calculatePercentage(
 					organicSearchKeywordsTotalTraffic,
 					organicSearchKeywordsTotalTraffic +
 						paidSearchKeywordsTotalTraffic)),
 			new TrafficSource(
-				"paid", paidSearchKeywords, paidSearchKeywordsTotalTraffic,
+				paidCountrySearchKeywords, "paid",
+				paidSearchKeywordsTotalTraffic,
 				_calculatePercentage(
 					paidSearchKeywordsTotalTraffic,
 					organicSearchKeywordsTotalTraffic +
@@ -126,15 +136,30 @@ public class RootRestController {
 		return bigDecimal.doubleValue();
 	}
 
+	private Set<String> _getDatabases(String url) {
+		return Collections.singleton("us");
+	}
+
+	private List<CountrySearchKeywords> _getSearchKeywords(
+		Set<String> databases, int displayLimit, String type, String url) {
+
+		Stream<String> stream = databases.stream();
+
+		return stream.map(
+			database -> new CountrySearchKeywords(
+				database, _getSearchKeywords(database, displayLimit, type, url))
+		).collect(
+			Collectors.toList()
+		);
+	}
+
 	private List<SearchKeyword> _getSearchKeywords(
-		int displayLimit, String type, String url) {
+		String database, int displayLimit, String type, String url) {
 
 		UriComponentsBuilder uriComponentsBuilder =
 			UriComponentsBuilder.fromHttpUrl("https://api.semrush.com/");
 
-		// TODO Use country codes to set database (LPS-111042)
-
-		uriComponentsBuilder.queryParam("database", "us");
+		uriComponentsBuilder.queryParam("database", database);
 		uriComponentsBuilder.queryParam("display_filter", "+|Tg|Gt|0");
 		uriComponentsBuilder.queryParam("display_limit", displayLimit);
 		uriComponentsBuilder.queryParam("display_sort", "tg_desc");
@@ -157,11 +182,16 @@ public class RootRestController {
 	}
 
 	private int _getSearchKeywordsTotalTraffic(
-		List<SearchKeyword> searchKeywords) {
+		List<CountrySearchKeywords> countrySearchKeywordsList) {
 
-		Stream<SearchKeyword> stream = searchKeywords.stream();
+		Stream<CountrySearchKeywords> stream =
+			countrySearchKeywordsList.stream();
 
-		return stream.mapToInt(
+		return stream.map(
+			CountrySearchKeywords::getSearchKeywords
+		).flatMap(
+			Collection::stream
+		).mapToInt(
 			SearchKeyword::getTraffic
 		).sum();
 	}
