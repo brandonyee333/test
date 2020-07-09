@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.Assert;
@@ -89,13 +90,18 @@ public class ActivitiesRestControllerTest {
 		JSONObject activityTransformationsJSONObject = new JSONObject(
 			_activitiesRestController.getActivityTransformations(
 				"compute(day(day) as temp)/groupby((temp))",
-				"userId eq '311355742999294554'", true, 0, null, null, 1));
+				"userId eq '311355742999294554'", true, 0, null, null, 0));
+
+		JSONArray jsonArray = (JSONArray)JSONUtil.getValue(
+			activityTransformationsJSONObject, "JSONObject/_embedded",
+			"JSONArray/activity-transformations");
+
+		Assert.assertEquals(48, jsonArray.length());
 
 		Assert.assertEquals(
 			1,
 			JSONUtil.getValue(
-				activityTransformationsJSONObject, "JSONObject/_embedded",
-				"JSONArray/activity-transformations", "Object/0",
+				jsonArray.getJSONObject(jsonArray.length() - 1),
 				"Object/totalElements"));
 	}
 
