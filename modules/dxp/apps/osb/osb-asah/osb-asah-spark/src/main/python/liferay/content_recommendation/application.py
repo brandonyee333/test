@@ -11,8 +11,8 @@
 
 from liferay.common.elasticsearch import ElasticsearchBridge
 from liferay.common.spark import BaseSparkApplication, SparkJobPipeline
-from liferay.content_recommendation.job import PublishJobRunSparkJob, \
-GenerateItemsSparkJob, GenerateUserItemInteractionsSparkJob, \
+from liferay.content_recommendation.job import GenerateItemsSparkJob, \
+GenerateUserItemInteractionsSparkJob, PublishJobRunSparkJob, \
 ReadAnalyticsEventsSparkJob, ReadRecommendedItemsSparkJob, \
 UpdateJobRunStepSparkJob, WriteItemsSparkJob, WriteRecommendedItemsSparkJob, \
 WriteUserItemInteractionsSparkJob

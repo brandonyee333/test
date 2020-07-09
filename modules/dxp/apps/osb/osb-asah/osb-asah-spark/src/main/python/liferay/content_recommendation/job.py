@@ -16,20 +16,6 @@ from pyspark.sql.functions import col, count, current_date, datediff, expr, lit,
 
 import datetime
 
-class PublishJobRunSparkJob(BaseSparkJob):
-	def run(self):
-		elasticsearch_bridge = self.spark_application.elasticsearch_bridge
-
-		now = datetime.datetime.utcnow()
-
-		elasticsearch_bridge.update_document(
-		    'job-runs', {
-		        'completedDate': now,
-		        'lastUpdatedDate': now,
-		        'status': 'PUBLISHED'
-		    }, self.spark_application_args.job_run_id, 'osbasahfaroinfo'
-		)
-
 class GenerateItemsSparkJob(BaseSparkJob):
 	def _update_job_run_items_dataset_count(self, items_data_frame):
 		elasticsearch_bridge = self.spark_application.elasticsearch_bridge
@@ -89,6 +75,20 @@ class GenerateUserItemInteractionsSparkJob(BaseSparkJob):
 
 		user_item_interactions_data_frame.createOrReplaceTempView(
 		    'user_item_interactions'
+		)
+
+class PublishJobRunSparkJob(BaseSparkJob):
+	def run(self):
+		elasticsearch_bridge = self.spark_application.elasticsearch_bridge
+
+		now = datetime.datetime.utcnow()
+
+		elasticsearch_bridge.update_document(
+		    'job-runs', {
+		        'completedDate': now,
+		        'lastUpdatedDate': now,
+		        'status': 'PUBLISHED'
+		    }, self.spark_application_args.job_run_id, 'osbasahfaroinfo'
 		)
 
 class ReadAnalyticsEventsSparkJob(BaseSparkJob):
