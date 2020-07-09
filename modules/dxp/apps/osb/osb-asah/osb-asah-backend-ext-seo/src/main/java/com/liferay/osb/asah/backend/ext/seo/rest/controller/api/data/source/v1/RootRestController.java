@@ -32,9 +32,9 @@ import java.math.RoundingMode;
 
 import java.nio.charset.StandardCharsets;
 
-import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -246,28 +246,29 @@ public class RootRestController {
 
 	private static final Log _log = LogFactory.getLog(RootRestController.class);
 
-	private static final Map<String, String> _databases = Stream.of(
-		new AbstractMap.SimpleImmutableEntry<>("Australia", "au"),
-		new AbstractMap.SimpleImmutableEntry<>("Brazil", "br"),
-		new AbstractMap.SimpleImmutableEntry<>("Canada", "ca"),
-		new AbstractMap.SimpleImmutableEntry<>("Finland", "fi"),
-		new AbstractMap.SimpleImmutableEntry<>("France", "fr"),
-		new AbstractMap.SimpleImmutableEntry<>("Germany", "de"),
-		new AbstractMap.SimpleImmutableEntry<>("Hungary", "hu"),
-		new AbstractMap.SimpleImmutableEntry<>("India", "in"),
-		new AbstractMap.SimpleImmutableEntry<>("Italy", "it"),
-		new AbstractMap.SimpleImmutableEntry<>("Japan", "jp"),
-		new AbstractMap.SimpleImmutableEntry<>("Netherlands", "nl"),
-		new AbstractMap.SimpleImmutableEntry<>("Russia", "ru"),
-		new AbstractMap.SimpleImmutableEntry<>("Saudi Arabia", "sa"),
-		new AbstractMap.SimpleImmutableEntry<>("Spain", "es"),
-		new AbstractMap.SimpleImmutableEntry<>("Sweden", "se"),
-		new AbstractMap.SimpleImmutableEntry<>("United Kingdom", "uk"),
-		new AbstractMap.SimpleImmutableEntry<>("United States", "us"),
-		new AbstractMap.SimpleImmutableEntry<>("Unknown", "us")
-	).collect(
-		Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)
-	);
+	private static final Map<String, String> _databases =
+		new HashMap<String, String>() {
+			{
+				put("Australia", "au");
+				put("Brazil", "br");
+				put("Canada", "ca");
+				put("Finland", "fi");
+				put("France", "fr");
+				put("Germany", "de");
+				put("Hungary", "hu");
+				put("India", "in");
+				put("Italy", "it");
+				put("Japan", "jp");
+				put("Netherlands", "nl");
+				put("Russia", "ru");
+				put("Saudi Arabia", "sa");
+				put("Spain", "es");
+				put("Sweden", "se");
+				put("United Kingdom", "uk");
+				put("United States", "us");
+				put("Unknown", "us");
+			}
+		};
 
 	@Value("${osb.asah.seo.semrush.databases.limit:5}")
 	private int _databasesLimit;
