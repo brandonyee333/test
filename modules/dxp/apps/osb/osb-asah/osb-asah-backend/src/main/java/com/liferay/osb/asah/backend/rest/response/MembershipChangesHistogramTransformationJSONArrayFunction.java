@@ -65,7 +65,7 @@ public class MembershipChangesHistogramTransformationJSONArrayFunction
 		JSONArray jsonArray = new JSONArray();
 
 		computeEndDayDateString();
-		computeStartDayDateString(computeFunctionString, size);
+		computeStartDayDateString(size);
 
 		ExtendedBounds extendedBounds = new ExtendedBounds(
 			startDayDateString, endDayDateString);
