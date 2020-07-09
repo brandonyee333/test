@@ -64,7 +64,7 @@ public abstract class BaseTransformationJSONArrayFunction
 		_totalElements = size;
 
 		computeEndDayDateString();
-		computeStartDayDateString(computeFunctionString, size);
+		computeStartDayDateString(size);
 
 		ExtendedBounds extendedBounds = new ExtendedBounds(
 			startDayDateString, endDayDateString);
@@ -136,20 +136,17 @@ public abstract class BaseTransformationJSONArrayFunction
 			return endDayDateString;
 		}
 
-		endDayDateString = DateUtil.newEndOfDayDateString(
-			DateUtil.newDayDateString());
+		endDayDateString = DateUtil.newDateString();
 
 		if (!_includeToday) {
-			endDayDateString = DateUtil.addDays(endDayDateString, -1);
+			endDayDateString = DateUtil.newEndOfDayDateString(
+				DateUtil.addDays(endDayDateString, -1));
 		}
 
 		return endDayDateString;
 	}
 
-	protected String computeStartDayDateString(
-			String computeFunctionString, int size)
-		throws Exception {
-
+	protected String computeStartDayDateString(int size) throws Exception {
 		if (_rangeStart != null) {
 			LocalDate startDate = LocalDate.parse(_rangeStart);
 
@@ -157,27 +154,25 @@ public abstract class BaseTransformationJSONArrayFunction
 
 			calendar.set(
 				startDate.getYear(), startDate.getMonthValue() - 1,
-				startDate.getDayOfMonth());
+				startDate.getDayOfMonth(), 0, 0, 0);
 
 			startDayDateString = DateUtil.toString(calendar.getTime());
+
+			int deltaDays = DateUtil.getDeltaDays(
+				startDayDateString, endDayDateString);
+
+			startDayDateString = DateUtil.addDays(
+				startDayDateString, 1 - deltaDays);
 
 			return startDayDateString;
 		}
 
-		String dayDateString = DateUtil.newDayDateString();
-
-		if (computeFunctionString.equals("day")) {
-			startDayDateString = DateUtil.addDays(dayDateString, 1 - size);
-		}
-		else if (computeFunctionString.equals("month")) {
-			startDayDateString = DateUtil.addMonths(dayDateString, 1 - size);
-		}
-		else if (computeFunctionString.equals("week")) {
-			startDayDateString = DateUtil.addDays(dayDateString, 7 - 7 * size);
+		if (size == 0) {
+			startDayDateString = DateUtil.addHours(endDayDateString, -47);
 		}
 		else {
-			throw new IllegalArgumentException(
-				"Unsupported compute function: " + computeFunctionString);
+			startDayDateString = DateUtil.newDayDateString(
+				DateUtil.addDays(DateUtil.newDateString(), 1 - size));
 		}
 
 		return startDayDateString;
