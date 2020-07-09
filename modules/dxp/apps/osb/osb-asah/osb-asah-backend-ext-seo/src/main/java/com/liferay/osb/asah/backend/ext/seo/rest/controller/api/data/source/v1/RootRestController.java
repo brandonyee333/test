@@ -35,7 +35,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -165,10 +164,10 @@ public class RootRestController {
 				"/api/1.0/pages/geolocations?canonicalUrl=" + url,
 				HttpMethod.GET, null));
 
-		Iterator<Object> iterator = jsonArray.iterator();
+		for (int i = 0; (i < jsonArray.length()) && (i < _databasesLimit);
+			 i++) {
 
-		while (iterator.hasNext() && (databases.size() < _databasesLimit)) {
-			JSONObject jsonObject = (JSONObject)iterator.next();
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
 			String database = _databases.get(jsonObject.getString("valueKey"));
 
