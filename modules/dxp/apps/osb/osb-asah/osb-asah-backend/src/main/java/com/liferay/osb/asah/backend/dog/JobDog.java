@@ -115,7 +115,7 @@ public class JobDog {
 		jsonObject = _faroInfoElasticsearchInvoker.add("jobs", jsonObject);
 
 		if (runNow) {
-			runJob(jsonObject.getString("id"));
+			runJob(jsonObject.getString("id"), jobTrainingPeriod);
 		}
 
 		return _deserializeJob(jsonObject.toString());
@@ -291,7 +291,7 @@ public class JobDog {
 		return jobRunJSONObject.getString("completedDate");
 	}
 
-	public Job runJob(String id) {
+	public Job runJob(String id, JobTrainingPeriod jobTrainingPeriod) {
 		JobRun jobRun = _fetchLatestJobRun(id);
 
 		if ((jobRun != null) &&
@@ -308,6 +308,8 @@ public class JobDog {
 			_jobTypeNaniteMap.get(job.getJobType()),
 			JSONUtil.put(
 				"job", _objectMapper.convertValue(job, JSONObject.class)
+			).put(
+				"trainingPeriod", jobTrainingPeriod.toString()
 			).put(
 				"trigger", "MANUAL"
 			));
@@ -338,7 +340,7 @@ public class JobDog {
 			"jobs", id, jsonObject);
 
 		if (runNow) {
-			runJob(id);
+			runJob(id, jobTrainingPeriod);
 		}
 
 		return _deserializeJob(jsonObject.toString());
