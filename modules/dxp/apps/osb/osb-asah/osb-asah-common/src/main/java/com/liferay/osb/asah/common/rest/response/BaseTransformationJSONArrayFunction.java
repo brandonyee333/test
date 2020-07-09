@@ -96,6 +96,12 @@ public abstract class BaseTransformationJSONArrayFunction
 			finalQueryBuilder = boolQueryBuilder;
 		}
 
+		if (computeFunctionString.equals("day") && (size <= 2) &&
+			(_rangeEnd == null) && (_rangeStart == null)) {
+
+			computeFunctionString = "hour";
+		}
+
 		return apply(
 			collectionName, computeFunctionString, elasticsearchInvoker,
 			extendedBounds, finalQueryBuilder, supportedFieldName);
