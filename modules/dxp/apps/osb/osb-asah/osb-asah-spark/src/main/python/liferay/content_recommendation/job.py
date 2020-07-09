@@ -16,7 +16,7 @@ from pyspark.sql.functions import col, count, current_date, datediff, expr, lit,
 
 import datetime
 
-class CompleteJobRunSparkJob(BaseSparkJob):
+class PublishJobRunSparkJob(BaseSparkJob):
 	def run(self):
 		elasticsearch_bridge = self.spark_application.elasticsearch_bridge
 

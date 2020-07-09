@@ -11,7 +11,7 @@
 
 from liferay.common.elasticsearch import ElasticsearchBridge
 from liferay.common.spark import BaseSparkApplication, SparkJobPipeline
-from liferay.content_recommendation.job import CompleteJobRunSparkJob, \
+from liferay.content_recommendation.job import PublishJobRunSparkJob, \
 GenerateItemsSparkJob, GenerateUserItemInteractionsSparkJob, \
 ReadAnalyticsEventsSparkJob, ReadRecommendedItemsSparkJob, \
 UpdateJobRunStepSparkJob, WriteItemsSparkJob, WriteRecommendedItemsSparkJob, \
@@ -88,7 +88,7 @@ class ContentRecommendationApplication(BaseSparkApplication):
 
 			jobs.append(WriteRecommendedItemsSparkJob(self))
 
-			jobs.append(CompleteJobRunSparkJob(self))
+			jobs.append(PublishJobRunSparkJob(self))
 
 		return SparkJobPipeline(jobs)
 
