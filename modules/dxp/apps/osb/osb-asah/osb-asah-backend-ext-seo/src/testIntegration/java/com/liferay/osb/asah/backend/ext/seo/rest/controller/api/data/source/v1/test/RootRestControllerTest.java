@@ -103,7 +103,6 @@ public class RootRestControllerTest {
 
 		Assert.assertEquals(
 			trafficSources.toString(), 2, trafficSources.size());
-
 		Assert.assertEquals(
 			new TrafficSource(
 				Collections.singletonList(
@@ -115,7 +114,6 @@ public class RootRestControllerTest {
 							new SearchKeyword("liferay inc", 1, 260, 208)))),
 				"organic", 3400, 85.43D),
 			trafficSources.get(0));
-
 		Assert.assertEquals(
 			new TrafficSource(
 				Collections.singletonList(
@@ -146,11 +144,9 @@ public class RootRestControllerTest {
 
 		Assert.assertEquals(
 			trafficSources.toString(), 2, trafficSources.size());
-
 		Assert.assertEquals(
 			new TrafficSource(Collections.emptyList(), "organic", 0, 0D),
 			trafficSources.get(0));
-
 		Assert.assertEquals(
 			new TrafficSource(Collections.emptyList(), "paid", 0, 0D),
 			trafficSources.get(1));
@@ -202,7 +198,6 @@ public class RootRestControllerTest {
 
 		Assert.assertEquals(
 			trafficSources.toString(), 2, trafficSources.size());
-
 		Assert.assertEquals(
 			new TrafficSource(
 				Arrays.asList(
@@ -220,7 +215,6 @@ public class RootRestControllerTest {
 							new SearchKeyword("liferay inc", 1, 260, 208)))),
 				"organic", 6800, 85.43D),
 			trafficSources.get(0));
-
 		Assert.assertEquals(
 			new TrafficSource(
 				Arrays.asList(
@@ -268,7 +262,6 @@ public class RootRestControllerTest {
 
 		Assert.assertEquals(
 			trafficSources.toString(), 2, trafficSources.size());
-
 		Assert.assertEquals(
 			new TrafficSource(
 				Collections.singletonList(
