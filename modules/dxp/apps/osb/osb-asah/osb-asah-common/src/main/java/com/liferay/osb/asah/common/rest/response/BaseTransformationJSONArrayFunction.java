@@ -198,6 +198,9 @@ public abstract class BaseTransformationJSONArrayFunction
 		if (computeFunctionString.equals("day")) {
 			return DateHistogramInterval.DAY;
 		}
+		else if (computeFunctionString.equals("hour")) {
+			return DateHistogramInterval.HOUR;
+		}
 		else if (computeFunctionString.equals("month")) {
 			return DateHistogramInterval.MONTH;
 		}
