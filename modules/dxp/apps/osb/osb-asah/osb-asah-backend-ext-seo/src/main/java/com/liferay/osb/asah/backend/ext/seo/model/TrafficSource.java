@@ -29,7 +29,7 @@ public class TrafficSource {
 
 	public TrafficSource(
 		List<CountrySearchKeywords> countrySearchKeywordsList, String name,
-		int trafficAmount, double trafficShare) {
+		long trafficAmount, double trafficShare) {
 
 		_countrySearchKeywordsList = countrySearchKeywordsList;
 		_name = name;
@@ -71,7 +71,7 @@ public class TrafficSource {
 		return _name;
 	}
 
-	public int getTrafficAmount() {
+	public long getTrafficAmount() {
 		return _trafficAmount;
 	}
 
@@ -95,7 +95,7 @@ public class TrafficSource {
 		_name = name;
 	}
 
-	public void setTrafficAmount(int trafficAmount) {
+	public void setTrafficAmount(long trafficAmount) {
 		_trafficAmount = trafficAmount;
 	}
 
@@ -105,7 +105,7 @@ public class TrafficSource {
 
 	private List<CountrySearchKeywords> _countrySearchKeywordsList;
 	private String _name;
-	private int _trafficAmount;
+	private long _trafficAmount;
 	private double _trafficShare;
 
 }

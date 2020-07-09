@@ -101,14 +101,14 @@ public class RootRestController {
 			_getCountrySearchKeywordsList(
 				databases, _urlOrganicDisplayLimit, "url_organic", url);
 
-		int organicSearchKeywordsTotalTraffic = _getSearchKeywordsTotalTraffic(
+		long organicSearchKeywordsTotalTraffic = _getSearchKeywordsTotalTraffic(
 			organicCountrySearchKeywordsList);
 
 		List<CountrySearchKeywords> paidCountrySearchKeywordsList =
 			_getCountrySearchKeywordsList(
 				databases, _urlAdwordsDisplayLimit, "url_adwords", url);
 
-		int paidSearchKeywordsTotalTraffic = _getSearchKeywordsTotalTraffic(
+		long paidSearchKeywordsTotalTraffic = _getSearchKeywordsTotalTraffic(
 			paidCountrySearchKeywordsList);
 
 		return Arrays.asList(
@@ -128,7 +128,7 @@ public class RootRestController {
 						paidSearchKeywordsTotalTraffic)));
 	}
 
-	private double _calculatePercentage(int value, int total) {
+	private double _calculatePercentage(long value, long total) {
 		double percentage = 0;
 
 		if (total != 0) {
@@ -207,7 +207,7 @@ public class RootRestController {
 		return _toSearchKeywords(responseEntity.getBody());
 	}
 
-	private int _getSearchKeywordsTotalTraffic(
+	private long _getSearchKeywordsTotalTraffic(
 		List<CountrySearchKeywords> countrySearchKeywordsList) {
 
 		Stream<CountrySearchKeywords> stream =
@@ -217,7 +217,7 @@ public class RootRestController {
 			CountrySearchKeywords::getSearchKeywords
 		).flatMap(
 			Collection::stream
-		).mapToInt(
+		).mapToLong(
 			SearchKeyword::getTraffic
 		).sum();
 	}
