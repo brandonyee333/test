@@ -167,6 +167,40 @@ public class JobDog {
 		return _deserializeJob(searchHit.getSourceAsString());
 	}
 
+	public String getJobNextTrainingDateString(String id) {
+		Job job = getJob(id);
+
+		JobTrainingFrequency jobTrainingFrequency =
+			job.getJobTrainingFrequency();
+
+		if (jobTrainingFrequency == JobTrainingFrequency.MANUAL) {
+			return null;
+		}
+
+		JobRun jobRun = _objectMapper.convertValue(
+			_faroInfoElasticsearchInvoker.fetch(
+				"job-runs",
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery("job.id", id)
+				).filter(
+					QueryBuilders.termQuery("trigger", "SCHEDULE")
+				),
+				SortBuilderUtil.fieldSort("id", SortOrder.DESC), null, null),
+			JobRun.class);
+
+		Date startDate = job.getLastUpdatedDate();
+
+		if (jobRun != null) {
+			startDate = jobRun.getCreatedDate();
+		}
+
+		CronSequenceGenerator cronSequenceGenerator = new CronSequenceGenerator(
+			jobTrainingFrequency.getCronExpression(),
+			TimeZone.getTimeZone("UTC"));
+
+		return DateUtil.toUTCString(cronSequenceGenerator.next(startDate));
+	}
+
 	public ResultBag<Job> getJobResultBag(
 		String keywords, int size, Sort sort, int start) {
 
