@@ -77,6 +77,15 @@ public class RootRestControllerTest {
 		);
 
 		Mockito.doAnswer(
+			invocationOnMock -> ResponseEntity.ok("Traffic\n3400\n")
+		).when(
+			_http
+		).exchangeResponseEntity(
+			Mockito.contains("domain_organic_unique"), Mockito.anyString(),
+			Mockito.any(HttpMethod.class), Mockito.anyObject()
+		);
+
+		Mockito.doAnswer(
 			invocationOnMock -> ResponseEntity.ok(
 				ResourceUtil.readResourceToString(
 					"dependencies/semrush_url_organic.csv", this))
@@ -128,6 +137,41 @@ public class RootRestControllerTest {
 			trafficSources.get(1));
 	}
 
+	@Test(expected = HttpClientErrorException.class)
+	public void testGetTrafficSourcesWithDomainOrganicUniqueSEMrushAPIError() {
+		Mockito.doAnswer(
+			invocationOnMock -> String.valueOf(
+				JSONUtil.putAll(JSONUtil.put("valueKey", "United States")))
+		).when(
+			_http
+		).exchange(
+			Mockito.anyString(), Mockito.anyString(),
+			Mockito.any(HttpMethod.class), Mockito.anyObject()
+		);
+
+		Mockito.doAnswer(
+			invocationOnMock -> ResponseEntity.ok("")
+		).when(
+			_http
+		).exchangeResponseEntity(
+			Mockito.anyString(), Mockito.anyString(),
+			Mockito.any(HttpMethod.class), Mockito.anyObject()
+		);
+
+		Mockito.doAnswer(
+			invocationOnMock -> ResponseEntity.status(
+				HttpStatus.INTERNAL_SERVER_ERROR
+			).build()
+		).when(
+			_http
+		).exchangeResponseEntity(
+			Mockito.contains("domain_organic_unique"), Mockito.anyString(),
+			Mockito.any(HttpMethod.class), Mockito.anyObject()
+		);
+
+		_rootRestController.getTrafficSources(RandomTestUtil.randomURL());
+	}
+
 	@Test
 	public void testGetTrafficSourcesWithEmptyDatabases() {
 		Mockito.doAnswer(
@@ -157,6 +201,29 @@ public class RootRestControllerTest {
 		_rootRestController.getTrafficSources("");
 	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetTrafficSourcesWithInvalidURL() {
+		Mockito.doAnswer(
+			invocationOnMock -> "[]"
+		).when(
+			_http
+		).exchange(
+			Mockito.anyString(), Mockito.anyString(),
+			Mockito.any(HttpMethod.class), Mockito.anyObject()
+		);
+
+		Mockito.doAnswer(
+			invocationOnMock -> ResponseEntity.ok()
+		).when(
+			_http
+		).exchangeResponseEntity(
+			Mockito.anyString(), Mockito.anyString(),
+			Mockito.any(HttpMethod.class), Mockito.anyObject()
+		);
+
+		_rootRestController.getTrafficSources(RandomTestUtil.randomString());
+	}
+
 	@Test
 	public void testGetTrafficSourcesWithMultipleDatabases() {
 		Mockito.doAnswer(
@@ -168,6 +235,15 @@ public class RootRestControllerTest {
 			_http
 		).exchange(
 			Mockito.anyString(), Mockito.contains("geolocations"),
+			Mockito.any(HttpMethod.class), Mockito.anyObject()
+		);
+
+		Mockito.doAnswer(
+			invocationOnMock -> ResponseEntity.ok("Traffic\n3400\n")
+		).when(
+			_http
+		).exchangeResponseEntity(
+			Mockito.contains("domain_organic_unique"), Mockito.anyString(),
 			Mockito.any(HttpMethod.class), Mockito.anyObject()
 		);
 
@@ -316,6 +392,15 @@ public class RootRestControllerTest {
 			_http
 		).exchange(
 			Mockito.anyString(), Mockito.contains("geolocations"),
+			Mockito.any(HttpMethod.class), Mockito.anyObject()
+		);
+
+		Mockito.doAnswer(
+			invocationOnMock -> ResponseEntity.ok("Traffic\n3400\n")
+		).when(
+			_http
+		).exchangeResponseEntity(
+			Mockito.contains("domain_organic_unique"), Mockito.anyString(),
 			Mockito.any(HttpMethod.class), Mockito.anyObject()
 		);
 
