@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.users.admin.user.action.contributor.UserActionContributor;
-import com.liferay.users.admin.web.internal.constants.UsersAdminWebKeys;
 
 import javax.servlet.http.HttpServletRequest;
 

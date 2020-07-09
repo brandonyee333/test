@@ -17,7 +17,6 @@ package com.liferay.users.admin.web.portlet.action;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.users.admin.constants.UsersAdminPortletKeys;
 import com.liferay.users.admin.user.action.contributor.UserActionContributor;
-import com.liferay.users.admin.web.internal.constants.UsersAdminWebKeys;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
