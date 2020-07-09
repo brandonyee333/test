@@ -69,13 +69,6 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 			getAccountEntryId(), accountProjectId);
 	}
 
-	public long getCorpProjectId() {
-
-		// TODO
-
-		return 0;
-	}
-
 	public String getDescription() throws Exception {
 		return null;
 	}

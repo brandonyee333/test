@@ -55,8 +55,10 @@ public class AccountUpdateMessageSubscriber
 			OSBCustomerConstants.USER_DEFAULT_USER_ID,
 			accountEntry.getAccountEntryId(), account.getKey(),
 			getDossieraAccountKey(account.getExternalLinks()),
-			account.getName(), account.getCode(), null,
-			getStatus(account.getStatusAsString()), null, new long[0]);
+			getCorpProjectUuid(account.getExternalLinks()),
+			getCorpProjectId(account.getExternalLinks()), account.getName(),
+			account.getCode(), null, getStatus(account.getStatusAsString()),
+			null, new long[0]);
 
 		sendMessage(
 			"liferay/zendesk_account_sync", message.getDestinationName(),

@@ -46,6 +46,7 @@ import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
+import com.liferay.osb.customer.license.generator.KeyGenerator;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.NoSuchListTypeException;
@@ -66,6 +67,8 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
+import com.liferay.portal.kernel.util.Base64;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
@@ -84,7 +87,6 @@ import java.io.ObjectInputStream;
 
 import java.text.DateFormat;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -161,10 +163,9 @@ public class AdminPortlet extends MVCPortlet {
 			File serverIdFile = uploadPortletRequest.getFile("serverId");
 
 			if ((serverIdFile != null) && (serverIdFile.length() > 0)) {
-				/*
 				byte[] bytes = FileUtil.getBytes(serverIdFile);
 
-				Properties serverProperties = KeyGenerator.decryptServerId(
+				Properties serverProperties = _keyGenerator.decryptServerId(
 					bytes);
 
 				actionRequest.setAttribute(
@@ -174,12 +175,11 @@ public class AdminPortlet extends MVCPortlet {
 
 				byte[] serverIdBytes = (byte[])Base64.stringToObject(serverId);
 
-				Properties serverIdProperties = KeyGenerator.decryptServerId(
+				Properties serverIdProperties = _keyGenerator.decryptServerId(
 					serverIdBytes);
 
 				actionRequest.setAttribute(
 					"serverIdProperties", serverIdProperties);
-				*/
 			}
 		}
 		finally {
@@ -346,8 +346,8 @@ public class AdminPortlet extends MVCPortlet {
 		if (accountEntryId <= 0) {
 			_accountEntryLocalService.addAccountEntry(
 				themeDisplay.getUserId(), koroneikiAccountKey,
-				dossieraAccountKey, null, null, instructions,
-				WorkflowConstants.STATUS_APPROVED, languageIds,
+				dossieraAccountKey, StringPool.BLANK, 0, null, null,
+				instructions, WorkflowConstants.STATUS_APPROVED, languageIds,
 				supportRegionIds);
 		}
 		else {
@@ -356,7 +356,8 @@ public class AdminPortlet extends MVCPortlet {
 
 			_accountEntryLocalService.updateAccountEntry(
 				themeDisplay.getUserId(), accountEntryId, koroneikiAccountKey,
-				dossieraAccountKey, accountEntry.getName(),
+				dossieraAccountKey, accountEntry.getCorpProjectUuid(),
+				accountEntry.getCorpProjectId(), accountEntry.getName(),
 				accountEntry.getCode(), instructions, accountEntry.getStatus(),
 				languageIds, supportRegionIds);
 		}
@@ -635,14 +636,12 @@ public class AdminPortlet extends MVCPortlet {
 		String code = ParamUtil.getString(resourceRequest, "code");
 		String name = ParamUtil.getString(resourceRequest, "name");
 
-		List<AccountEntry> accountEntries = new ArrayList<>();
+		List<AccountEntry> accountEntries = _accountEntryLocalService.search(
+			name + StringPool.PERCENT, code + StringPool.PERCENT);
 
 		JSONArray accountEntriesArray = JSONFactoryUtil.createJSONArray();
 
 		for (AccountEntry accountEntry : accountEntries) {
-
-			// TODO
-
 			if (Validator.isNotNull(code)) {
 				accountEntriesArray.put(accountEntry.getName());
 			}
@@ -713,6 +712,9 @@ public class AdminPortlet extends MVCPortlet {
 
 	@Reference
 	private AccountWebService _accountWebService;
+
+	@Reference
+	private KeyGenerator _keyGenerator;
 
 	@Reference
 	private LicenseEntryLocalService _licenseEntryLocalService;

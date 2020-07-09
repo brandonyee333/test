@@ -74,6 +74,8 @@
 
 		<column name="koroneikiAccountKey" type="String" />
 		<column name="dossieraAccountKey" type="String" />
+		<column name="corpProjectUuid" type="String" />
+		<column name="corpProjectId" type="long" />
 		<column name="name" type="String" />
 		<column name="code" type="String" />
 		<column name="instructions" type="String" />
@@ -85,7 +87,6 @@
 		<!-- Legacy fields -->
 
 		<column name="corpEntryName" type="String" />
-		<column name="corpProjectUuid" type="String" />
 
 		<!-- Finder methods -->
 
@@ -94,6 +95,10 @@
 		</finder>
 		<finder name="DossieraAccountKey" return-type="Collection">
 			<finder-column name="dossieraAccountKey" />
+		</finder>
+		<finder name="N_C" return-type="Collection">
+			<finder-column case-sensitive="false" comparator="LIKE" name="name" />
+			<finder-column case-sensitive="false" comparator="LIKE" name="code" />
 		</finder>
 
 		<!-- References -->

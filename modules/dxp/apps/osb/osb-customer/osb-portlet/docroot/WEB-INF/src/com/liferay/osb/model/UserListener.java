@@ -51,37 +51,6 @@ public class UserListener extends BaseModelListener<User> {
 		}
 	}
 
-	@Override
-	public void onAfterRemove(User user) {
-		/*
-		TODO
-
-		try {
-			AccountCustomerLocalServiceUtil.deleteAccountCustomers(
-				user.getUserId());
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-
-		try {
-			AccountWorkerLocalServiceUtil.deleteAccountWorkers(
-				user.getUserId());
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-
-		try {
-			PartnerWorkerLocalServiceUtil.deletePartnerWorkers(
-				user.getUserId());
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-		*/
-	}
-
 	protected void assignOrganizations(long userId) throws PortalException {
 		/*
 		TODO

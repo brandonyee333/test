@@ -20,6 +20,8 @@ import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
+import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkDomain;
+import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkEntityName;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
@@ -58,15 +60,57 @@ public abstract class BaseMessageSubscriber implements MessageSubscriber {
 
 	protected abstract void doReceive(Message message) throws Exception;
 
+	protected long getCorpProjectId(ExternalLink[] externalLinks) {
+		if (externalLinks != null) {
+			for (ExternalLink externalLink : externalLinks) {
+				String domain = externalLink.getDomain();
+
+				if (domain.equals(ExternalLinkDomain.LCS)) {
+					String entityName = externalLink.getEntityName();
+
+					if (entityName.equals(
+							ExternalLinkEntityName.LCS_CORP_PROJECT)) {
+
+						return Long.valueOf(externalLink.getEntityId());
+					}
+				}
+			}
+		}
+
+		return 0;
+	}
+
+	protected String getCorpProjectUuid(ExternalLink[] externalLinks) {
+		if (externalLinks != null) {
+			for (ExternalLink externalLink : externalLinks) {
+				String domain = externalLink.getDomain();
+
+				if (domain.equals(ExternalLinkDomain.WEB)) {
+					String entityName = externalLink.getEntityName();
+
+					if (entityName.equals(
+							ExternalLinkEntityName.WEB_CORP_PROJECT)) {
+
+						return externalLink.getEntityId();
+					}
+				}
+			}
+		}
+
+		return StringPool.BLANK;
+	}
+
 	protected String getDossieraAccountKey(ExternalLink[] externalLinks) {
 		if (externalLinks != null) {
 			for (ExternalLink externalLink : externalLinks) {
 				String domain = externalLink.getDomain();
 
-				if (domain.equals("dossiera")) {
+				if (domain.equals(ExternalLinkDomain.DOSSIERA)) {
 					String entityName = externalLink.getEntityName();
 
-					if (entityName.equals("account")) {
+					if (entityName.equals(
+							ExternalLinkEntityName.DOSSIERA_ACCOUNT)) {
+
 						return externalLink.getEntityId();
 					}
 				}

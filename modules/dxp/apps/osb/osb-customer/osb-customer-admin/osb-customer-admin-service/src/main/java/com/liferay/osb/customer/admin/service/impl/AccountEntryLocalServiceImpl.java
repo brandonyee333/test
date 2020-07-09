@@ -50,15 +50,17 @@ public class AccountEntryLocalServiceImpl
 
 	public AccountEntry addAccountEntry(
 			long userId, String koroneikiAccountKey, String dossieraAccountKey,
-			String name, String code, String instructions, int status,
-			String[] languageIds, long[] supportRegionIds)
+			String corpProjectUuid, long corpProjectId, String name,
+			String code, String instructions, int status, String[] languageIds,
+			long[] supportRegionIds)
 		throws PortalException {
 
 		validate(0, koroneikiAccountKey);
 
 		return doAddAccountEntry(
-			userId, koroneikiAccountKey, dossieraAccountKey, name, code,
-			instructions, status, languageIds, supportRegionIds);
+			userId, koroneikiAccountKey, dossieraAccountKey, corpProjectUuid,
+			corpProjectId, name, code, instructions, status, languageIds,
+			supportRegionIds);
 	}
 
 	@Override
@@ -128,13 +130,6 @@ public class AccountEntryLocalServiceImpl
 			accountEntry.getAccountEntryId());
 	}
 
-	public AccountEntry fetchCorpProjectAccountEntry(String corpProjectUuid) {
-
-		// TODO
-
-		return null;
-	}
-
 	@Override
 	public AccountEntry fetchKoroneikiAccountEntry(String koroneikiAccountKey) {
 		return accountEntryPersistence.fetchByKoroneikiAccountKey(
@@ -153,13 +148,6 @@ public class AccountEntryLocalServiceImpl
 		return accountEntryPersistence.findByPrimaryKey(accountEntryId);
 	}
 
-	public AccountEntry getCorpProjectAccountEntry(String corpProjectUuid) {
-
-		// TODO
-
-		return null;
-	}
-
 	@Override
 	public AccountEntry getKoroneikiAccountEntry(String koroneikiAccountKey)
 		throws PortalException {
@@ -176,27 +164,16 @@ public class AccountEntryLocalServiceImpl
 		return null;
 	}
 
-	public boolean hasValidLicenseAccountEntry(long userId) {
-
-		// TODO
-
-		return false;
-	}
-
-	public boolean hasValidSupportAccountEntry(
-		long userId, boolean ticketSupport) {
-
-		// TODO
-
-		return false;
-	}
-
 	public List<AccountEntry> search(
 		String keywords, LinkedHashMap<String, Object> params, int start,
 		int end, OrderByComparator obc) {
 
 		return accountEntryFinder.findByKeywords(
 			keywords, params, start, end, obc);
+	}
+
+	public List<AccountEntry> search(String name, String code) {
+		return accountEntryPersistence.findByN_C(name, code);
 	}
 
 	public List<AccountEntry> search(
@@ -228,9 +205,9 @@ public class AccountEntryLocalServiceImpl
 
 	public AccountEntry updateAccountEntry(
 			long userId, long accountEntryId, String koroneikiAccountKey,
-			String dossieraAccountKey, String name, String code,
-			String instructions, int status, String[] languageIds,
-			long[] supportRegionIds)
+			String dossieraAccountKey, String corpProjectUuid,
+			long corpProjectId, String name, String code, String instructions,
+			int status, String[] languageIds, long[] supportRegionIds)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -247,6 +224,8 @@ public class AccountEntryLocalServiceImpl
 		accountEntry.setModifiedDate(new Date());
 		accountEntry.setKoroneikiAccountKey(koroneikiAccountKey);
 		accountEntry.setDossieraAccountKey(dossieraAccountKey);
+		accountEntry.setCorpProjectUuid(corpProjectUuid);
+		accountEntry.setCorpProjectId(corpProjectId);
 		accountEntry.setName(name);
 		accountEntry.setCode(code);
 		accountEntry.setInstructions(instructions);
@@ -371,8 +350,9 @@ public class AccountEntryLocalServiceImpl
 
 	protected AccountEntry doAddAccountEntry(
 			long userId, String koroneikiAccountKey, String dossieraAccountKey,
-			String name, String code, String instructions, int status,
-			String[] languageIds, long[] supportRegionIds)
+			String corpProjectUuid, long corpProjectId, String name,
+			String code, String instructions, int status, String[] languageIds,
+			long[] supportRegionIds)
 		throws PortalException {
 
 		// Account entry
@@ -394,6 +374,8 @@ public class AccountEntryLocalServiceImpl
 		accountEntry.setModifiedDate(now);
 		accountEntry.setKoroneikiAccountKey(koroneikiAccountKey);
 		accountEntry.setDossieraAccountKey(dossieraAccountKey);
+		accountEntry.setCorpProjectUuid(corpProjectUuid);
+		accountEntry.setCorpProjectId(corpProjectId);
 		accountEntry.setName(name);
 		accountEntry.setCode(code);
 		accountEntry.setInstructions(instructions);

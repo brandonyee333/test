@@ -17,4 +17,5 @@ dependencies {
 	compileOnly project(":private:apps:osb-customer:osb-customer-identity-management:osb-customer-identity-management-api")
 	compileOnly project(":private:apps:osb-customer:osb-customer-koroneiki:osb-customer-koroneiki-api")
 	compileOnly project(":private:apps:osb-customer:osb-customer-koroneiki:osb-customer-koroneiki-web-service-api")
+	compileOnly project(":private:apps:osb-customer:osb-customer-license:osb-customer-license-generator-api")
 }

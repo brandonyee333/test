@@ -174,43 +174,30 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 
 						List<ProductPurchaseView> productPurchaseViews = productPurchaseViewWebService.getProductPurchaseViews(StringPool.BLANK, filter, 1, 1000, StringPool.BLANK);
 
-						List<ProductEntry> availableProductEntries = new ArrayList<ProductEntry>();
+						List<ProductEntry> purchasedProductEntries = new ArrayList<ProductEntry>();
 						List<ProductEntry> otherProductEntries = new ArrayList<ProductEntry>();
 
 						for (ProductEntry curProductEntry : productEntries) {
+							boolean purchased = false;
+
 							String koroneikiProductKey = curProductEntry.getKoroneikiProductKey();
-							boolean available = false;
 
 							for (ProductPurchaseView productPurchaseView : productPurchaseViews) {
 								Product product = productPurchaseView.getProduct();
 
 								if (koroneikiProductKey.equals(product.getKey())) {
-									int availableKeys = 0;
-
 									ProductPurchase[] productPurchases = productPurchaseView.getProductPurchases();
 
 									if (productPurchases != null) {
-										for (ProductPurchase productPurchase : productPurchases) {
-											availableKeys += productPurchase.getQuantity();
-										}
-									}
-
-									ProductConsumption[] productConsumptions = productPurchaseView.getProductConsumptions();
-
-									if (productConsumptions != null) {
-										availableKeys = availableKeys - productConsumptions.length;
-									}
-
-									if (availableKeys > 0) {
-										available = true;
+										purchased = true;
 
 										break;
 									}
 								}
 							}
 
-							if (available) {
-								availableProductEntries.add(curProductEntry);
+							if (purchased) {
+								purchasedProductEntries.add(curProductEntry);
 							}
 							else {
 								otherProductEntries.add(curProductEntry);
@@ -219,10 +206,10 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 						%>
 
 						<optgroup label="<liferay-ui:message key="purchased" />">
-							<c:if test="<%= !availableProductEntries.isEmpty() %>">
+							<c:if test="<%= !purchasedProductEntries.isEmpty() %>">
 
 								<%
-								for (ProductEntry curProductEntry : availableProductEntries) {
+								for (ProductEntry curProductEntry : purchasedProductEntries) {
 								%>
 
 									<aui:option label="<%= curProductEntry.getName() %>" selected="<%= curProductEntry.getProductEntryId() == productEntryId %>" value="<%= curProductEntry.getProductEntryId() %>" />
@@ -333,7 +320,7 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 				<c:if test="<%= Validator.isNotNull(koroneikiAccountKey) && (productEntry != null) && (productVersion > 0) && (licenseEntry != null) %>">
 
 					<%
-					List<ProductPurchaseDisplay> productPurchaseDisplays = new ArrayList<ProductPurchaseDisplay>();
+					List<Object> productPurchaseDisplays = new ArrayList<Object>();
 
 					if (Validator.isNotNull(koroneikiAccountKey) && (productEntry != null) && (productVersion > 0) && (licenseEntry != null)) {
 						ProductPurchaseView productPurchaseView = productPurchaseViewWebService.fetchProductPurchaseView(koroneikiAccountKey, productEntry.getKoroneikiProductKey());
@@ -361,12 +348,13 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 								}
 							}
 						}
+
+						productPurchaseDisplays.add((Object)null);
 					}
 					%>
 
 					<liferay-ui:search-container
-						emptyResultsMessage="no-product-purchases-were-found"
-						headerNames="start-date,lifetime,instance-size,license-keys-generated"
+						headerNames="start-date,expiration-date,instance-size,license-keys-generated,,"
 						total="<%= productPurchaseDisplays.size() %>"
 					>
 						<liferay-ui:search-container-results
@@ -374,22 +362,35 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 						/>
 
 						<liferay-ui:search-container-row
-							className="com.liferay.osb.customer.license.web.internal.display.context.ProductPurchaseDisplay"
-							modelVar="productPurchaseDisplay"
+							className="java.lang.Object"
+							modelVar="resultRow"
 						>
 
 							<%
-							String licenseEntryType = licenseEntry.getType();
+							ProductPurchaseDisplay productPurchaseDisplay = null;
+
+							if (resultRow instanceof ProductPurchaseDisplay) {
+								productPurchaseDisplay = (ProductPurchaseDisplay)resultRow;
+							}
+
+							String productPurchaseKey = StringPool.BLANK;
+
+							if (productPurchaseDisplay != null) {
+								productPurchaseKey = productPurchaseDisplay.getKey();
+							}
 
 							Calendar startDateCal = Calendar.getInstance(timeZone, locale);
 
-							if (!licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) && !licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) {
+							if (productPurchaseDisplay != null) {
 								startDateCal.setTime(productPurchaseDisplay.getStartDate());
 							}
 
 							Calendar expirationDateCal = Calendar.getInstance(timeZone, locale);
 
-							if (!licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) && !licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) {
+							if (productPurchaseDisplay == null) {
+								expirationDateCal.add(Calendar.YEAR, 1);
+							}
+							else {
 								expirationDateCal.setTime(productPurchaseDisplay.getEndDate());
 							}
 
@@ -401,7 +402,7 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 								sb.append("javascript:");
 								sb.append(renderResponse.getNamespace());
 								sb.append("selectProductPurchase('");
-								sb.append(productPurchaseDisplay.getKey());
+								sb.append(productPurchaseKey);
 								sb.append("');");
 
 								rowHREF = sb.toString();
@@ -414,14 +415,14 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 								<c:choose>
 									<c:when test="<%= hasUpdateAdmin %>">
 										<liferay-ui:input-date
-											dayParam='<%= productPurchaseDisplay.getKey() + "startDateDay" %>'
+											dayParam='<%= productPurchaseKey + "startDateDay" %>'
 											dayValue="<%= startDateCal.get(Calendar.DAY_OF_MONTH) %>"
 											disabled="<%= false %>"
 											firstDayOfWeek="<%= startDateCal.getFirstDayOfWeek() %>"
 											formName="fm"
-											monthParam='<%= productPurchaseDisplay.getKey() + "startDateMonth" %>'
+											monthParam='<%= productPurchaseKey + "startDateMonth" %>'
 											monthValue="<%= startDateCal.get(Calendar.MONTH) %>"
-											yearParam='<%= productPurchaseDisplay.getKey() + "startDateYear" %>'
+											yearParam='<%= productPurchaseKey + "startDateYear" %>'
 											yearValue="<%= startDateCal.get(Calendar.YEAR) %>"
 										/>
 									</c:when>
@@ -437,14 +438,14 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 								<c:choose>
 									<c:when test="<%= hasUpdateAdmin %>">
 										<liferay-ui:input-date
-											dayParam='<%= productPurchaseDisplay.getKey() + "expirationDateDay" %>'
+											dayParam='<%= productPurchaseKey + "expirationDateDay" %>'
 											dayValue="<%= expirationDateCal.get(Calendar.DAY_OF_MONTH) %>"
 											disabled="<%= false %>"
 											firstDayOfWeek="<%= expirationDateCal.getFirstDayOfWeek() %>"
 											formName="fm"
-											monthParam='<%= productPurchaseDisplay.getKey() + "expirationDateMonth" %>'
+											monthParam='<%= productPurchaseKey + "expirationDateMonth" %>'
 											monthValue="<%= expirationDateCal.get(Calendar.MONTH) %>"
-											yearParam='<%= productPurchaseDisplay.getKey() + "expirationDateYear" %>'
+											yearParam='<%= productPurchaseKey + "expirationDateYear" %>'
 											yearValue="<%= expirationDateCal.get(Calendar.YEAR) %>"
 										/>
 									</c:when>
@@ -457,15 +458,35 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 							<liferay-ui:search-container-column-text
 								name="instance-size"
 							>
-								<%= productPurchaseDisplay.getSizing() %>
+								<c:choose>
+									<c:when test="<%= productPurchaseDisplay != null %>">
+										<%= productPurchaseDisplay.getSizing() %>
 
-								<aui:input name='<%= productPurchaseDisplay.getKey() + "sizing" %>' type="hidden" value="<%= productPurchaseDisplay.getSizing() %>" />
+										<aui:input name='<%= productPurchaseDisplay.getKey() + "sizing" %>' type="hidden" value="<%= productPurchaseDisplay.getSizing() %>" />
+									</c:when>
+									<c:otherwise>
+										<aui:select label="" name="sizing">
+											<aui:option label="1" value="1" />
+											<aui:option label="2" value="2" />
+											<aui:option label="3" value="3" />
+											<aui:option label="4" value="4" />
+										</aui:select>
+									</c:otherwise>
+								</c:choose>
 							</liferay-ui:search-container-column-text>
 
 							<liferay-ui:search-container-column-text
 								name="license-keys-generated"
-								value="<%= productPurchaseDisplay.getLicenseKeysGenerated() %>"
-							/>
+							>
+								<c:choose>
+									<c:when test="<%= productPurchaseDisplay != null %>">
+										<%= productPurchaseDisplay.getLicenseKeysGenerated() %>
+									</c:when>
+									<c:otherwise>
+										<%= productConsumptionWebService.searchCount("accountKey eq '" + koroneikiAccountKey + "' and productKey eq '" + productEntry.getKoroneikiProductKey() + "' and productPurchaseKey eq null") %>
+									</c:otherwise>
+								</c:choose>
+							</liferay-ui:search-container-column-text>
 
 							<liferay-ui:search-container-column-text>
 								<c:if test="<%= addLicensePermission %>">
@@ -475,78 +496,11 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 						</liferay-ui:search-container-row>
 
 						<liferay-ui:search-iterator
+							markupView="lexicon"
 							paginate="<%= false %>"
+							resultRowSplitter="<%= new ProductPurchaseResultRowSplitter() %>"
 						/>
 					</liferay-ui:search-container>
-
-					<table class="table table-bordered table-hover">
-						<thead>
-							<tr>
-								<th class="detached-header" colspan="5">
-									<liferay-ui:message key="detached" />
-								</th>
-							</tr>
-						</thead>
-
-						<tbody>
-							<tr>
-								<td class="table-cell">
-
-									<%
-									Calendar startDateCal = Calendar.getInstance();
-									%>
-
-									<liferay-ui:input-date
-										dayParam="startDateDay"
-										dayValue="<%= startDateCal.get(Calendar.DAY_OF_MONTH) %>"
-										disabled="<%= false %>"
-										firstDayOfWeek="<%= startDateCal.getFirstDayOfWeek() %>"
-										formName="fm"
-										monthParam="startDateMonth"
-										monthValue="<%= startDateCal.get(Calendar.MONTH) %>"
-										yearParam="startDateYear"
-										yearValue="<%= startDateCal.get(Calendar.YEAR) %>"
-									/>
-								</td>
-								<td class="table-cell">
-
-									<%
-									Calendar expirationDateCal = Calendar.getInstance();
-
-									expirationDateCal.add(Calendar.YEAR, 1);
-									%>
-
-									<liferay-ui:input-date
-										dayParam="expirationDateDay"
-										dayValue="<%= expirationDateCal.get(Calendar.DAY_OF_MONTH) %>"
-										disabled="<%= false %>"
-										firstDayOfWeek="<%= expirationDateCal.getFirstDayOfWeek() %>"
-										formName="fm"
-										monthParam="expirationDateMonth"
-										monthValue="<%= expirationDateCal.get(Calendar.MONTH) %>"
-										yearParam="expirationDateYear"
-										yearValue="<%= expirationDateCal.get(Calendar.YEAR) %>"
-									/>
-								</td>
-								<td class="table-cell">
-									<aui:select label="" name="sizing">
-										<aui:option label="1" value="1" />
-										<aui:option label="2" value="2" />
-										<aui:option label="3" value="3" />
-										<aui:option label="4" value="4" />
-									</aui:select>
-								</td>
-								<td class="table-cell">
-									<%= productConsumptionWebService.searchCount("accountKey eq '" + koroneikiAccountKey + "' and productKey eq '" + productEntry.getKoroneikiProductKey() + "' and productPurchaseKey eq null") %>
-								</td>
-								<td class="table-cell">
-									<c:if test="<%= addLicensePermission %>">
-										<aui:button onClick='<%= renderResponse.getNamespace() + "selectProductPurchase('');" %>' value="choose" />
-									</c:if>
-								</td>
-							</tr>
-						</tbody>
-					</table>
 				</c:if>
 			</aui:col>
 		</aui:form>

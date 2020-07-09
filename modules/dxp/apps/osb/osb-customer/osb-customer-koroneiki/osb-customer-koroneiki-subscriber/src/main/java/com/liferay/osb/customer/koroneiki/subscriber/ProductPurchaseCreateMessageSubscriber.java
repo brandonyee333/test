@@ -62,8 +62,10 @@ public class ProductPurchaseCreateMessageSubscriber
 			_accountEntryLocalService.addAccountEntry(
 				OSBCustomerConstants.USER_DEFAULT_USER_ID, account.getKey(),
 				getDossieraAccountKey(account.getExternalLinks()),
-				account.getName(), account.getCode(), null,
-				getStatus(account.getStatusAsString()), null, new long[0]);
+				getCorpProjectUuid(account.getExternalLinks()),
+				getCorpProjectId(account.getExternalLinks()), account.getName(),
+				account.getCode(), null, getStatus(account.getStatusAsString()),
+				null, new long[0]);
 		}
 
 		sendMessage(

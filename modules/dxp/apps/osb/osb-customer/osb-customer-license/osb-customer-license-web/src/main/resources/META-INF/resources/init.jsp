@@ -68,6 +68,7 @@ page import="com.liferay.osb.customer.license.web.internal.search.AccountSearchT
 page import="com.liferay.osb.customer.license.web.internal.search.LicenseKeyDisplayTerms" %><%@
 page import="com.liferay.osb.customer.license.web.internal.search.LicenseKeySearch" %><%@
 page import="com.liferay.osb.customer.license.web.internal.search.LicenseKeySearchTerms" %><%@
+page import="com.liferay.osb.customer.license.web.internal.search.ProductPurchaseResultRowSplitter" %><%@
 page import="com.liferay.osb.customer.license.web.internal.search.UserDisplayTerms" %><%@
 page import="com.liferay.osb.customer.license.web.internal.search.UserSearch" %><%@
 page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account" %><%@
