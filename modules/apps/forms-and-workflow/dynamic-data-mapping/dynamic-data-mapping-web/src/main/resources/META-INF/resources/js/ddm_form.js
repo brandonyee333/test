@@ -967,13 +967,11 @@ AUI.add(
 					_addRepeatedFieldAvailableLocales: function(field) {
 						var instance = this;
 
-						var displayLocale = instance.get('displayLocale');
+						field.set('displayLocale', instance.get('displayLocale'));
 
 						var parent = instance.get('parent');
 
 						var translationManager = parent.get('translationManager');
-
-						field.set('displayLocale', displayLocale);
 
 						if (translationManager) {
 							translationManager.get('availableLocales').forEach(
