@@ -128,13 +128,13 @@ public class OSBAsahBatchCuratorBot {
 
 			_nanitesMap.put(clazz.getSimpleName(), nanite);
 		}
-
-		BaseActivitiesNanite.setAnalyticsConfigured(
-			_faroInfoDataSourceDog.isAnalyticsConfigured());
 	}
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void onStartup() {
+		BaseActivitiesNanite.setAnalyticsConfigured(
+			_faroInfoDataSourceDog.isAnalyticsConfigured());
+
 		_elasticsearchInvoker.updateByQueryWithRetry(
 			QueryBuilders.termQuery("status", "STARTED"), true,
 			new Script(
