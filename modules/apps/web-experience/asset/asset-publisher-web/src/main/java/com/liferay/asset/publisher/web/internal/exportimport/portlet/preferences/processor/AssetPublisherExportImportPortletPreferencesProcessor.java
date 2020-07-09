@@ -1329,8 +1329,20 @@ public class AssetPublisherExportImportPortletPreferencesProcessor
 
 			long scopeIdLayoutId = GetterUtil.getLong(scopeIdSuffix);
 
-			Layout scopeIdLayout = _layoutLocalService.getLayout(
+			Layout scopeIdLayout = _layoutLocalService.fetchLayout(
 				layout.getGroupId(), layout.isPrivateLayout(), scopeIdLayoutId);
+
+			if (scopeIdLayout == null) {
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						StringBundler.concat(
+							"Ignoring scope ", value,
+							" because the referenced layout ",
+							String.valueOf(scopeIdLayoutId), " was not found"));
+				}
+
+				return value;
+			}
 
 			if (layout.getPlid() != scopeIdLayout.getPlid()) {
 				StagedModelDataHandlerUtil.exportReferenceStagedModel(
@@ -1347,9 +1359,21 @@ public class AssetPublisherExportImportPortletPreferencesProcessor
 				AssetPublisherUtil.SCOPE_ID_LAYOUT_UUID_PREFIX.length());
 
 			Layout scopeUuidLayout =
-				_layoutLocalService.getLayoutByUuidAndGroupId(
+				_layoutLocalService.fetchLayoutByUuidAndGroupId(
 					scopeLayoutUuid, portletDataContext.getGroupId(),
 					portletDataContext.isPrivateLayout());
+
+			if (scopeUuidLayout == null) {
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						StringBundler.concat(
+							"Ignoring scope ", value,
+							" because the referenced layout ",
+							String.valueOf(scopeLayoutUuid), " was not found"));
+				}
+
+				return value;
+			}
 
 			if (layout.getPlid() != scopeUuidLayout.getPlid()) {
 				StagedModelDataHandlerUtil.exportReferenceStagedModel(
