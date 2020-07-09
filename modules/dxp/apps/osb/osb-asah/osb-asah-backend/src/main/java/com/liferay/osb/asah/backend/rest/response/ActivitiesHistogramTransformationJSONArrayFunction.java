@@ -66,6 +66,10 @@ public class ActivitiesHistogramTransformationJSONArrayFunction
 					0
 				);
 
+				if (computeFunctionString.equals("week")) {
+					aggregationBuilder.offset("-1d");
+				}
+
 				searchSourceBuilder.aggregation(aggregationBuilder);
 
 				searchSourceBuilder.query(queryBuilder);
