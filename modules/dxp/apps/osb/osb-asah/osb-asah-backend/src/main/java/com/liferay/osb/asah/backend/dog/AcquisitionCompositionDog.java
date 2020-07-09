@@ -30,7 +30,6 @@ import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -86,11 +85,8 @@ public class AcquisitionCompositionDog {
 					AggregationBuilders.cardinality("total");
 
 				BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-					QueryBuilders.nestedQuery(
-						"interactions",
-						_searchQueryHelper.createRangeQueryBuilder(
-							"interactions.eventDate", timeRange),
-						ScoreMode.None));
+					_searchQueryHelper.createRangeQueryBuilder(
+						"lastEventDate", timeRange));
 
 				BoolQueryBuilderUtil.filterTerm(
 					boolQueryBuilder, "channelId", channelId);
