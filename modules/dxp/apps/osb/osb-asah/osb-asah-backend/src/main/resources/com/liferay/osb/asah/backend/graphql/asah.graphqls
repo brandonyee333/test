@@ -498,7 +498,8 @@ type MutationType {
 	): Preference
 
 	runJob(
-		jobId: String!
+		jobId: String!,
+		trainingPeriod: JobTrainingPeriod!
 	): Job
 
 	updateJob(
