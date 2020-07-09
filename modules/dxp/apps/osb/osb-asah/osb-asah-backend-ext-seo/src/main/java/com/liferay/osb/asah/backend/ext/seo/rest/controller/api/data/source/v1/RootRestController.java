@@ -98,30 +98,30 @@ public class RootRestController {
 
 		Set<String> databases = _getDatabases(url);
 
-		List<CountrySearchKeywords> organicCountrySearchKeywords =
-			_getSearchKeywords(
+		List<CountrySearchKeywords> organicCountrySearchKeywordsList =
+			_getCountrySearchKeywordsList(
 				databases, _urlOrganicDisplayLimit, "url_organic", url);
 
 		int organicSearchKeywordsTotalTraffic = _getSearchKeywordsTotalTraffic(
-			organicCountrySearchKeywords);
+			organicCountrySearchKeywordsList);
 
-		List<CountrySearchKeywords> paidCountrySearchKeywords =
-			_getSearchKeywords(
+		List<CountrySearchKeywords> paidCountrySearchKeywordsList =
+			_getCountrySearchKeywordsList(
 				databases, _urlAdwordsDisplayLimit, "url_adwords", url);
 
 		int paidSearchKeywordsTotalTraffic = _getSearchKeywordsTotalTraffic(
-			paidCountrySearchKeywords);
+			paidCountrySearchKeywordsList);
 
 		return Arrays.asList(
 			new TrafficSource(
-				organicCountrySearchKeywords, "organic",
+				organicCountrySearchKeywordsList, "organic",
 				organicSearchKeywordsTotalTraffic,
 				_calculatePercentage(
 					organicSearchKeywordsTotalTraffic,
 					organicSearchKeywordsTotalTraffic +
 						paidSearchKeywordsTotalTraffic)),
 			new TrafficSource(
-				paidCountrySearchKeywords, "paid",
+				paidCountrySearchKeywordsList, "paid",
 				paidSearchKeywordsTotalTraffic,
 				_calculatePercentage(
 					paidSearchKeywordsTotalTraffic,
@@ -141,6 +141,19 @@ public class RootRestController {
 		bigDecimal = bigDecimal.setScale(2, RoundingMode.HALF_UP);
 
 		return bigDecimal.doubleValue();
+	}
+
+	private List<CountrySearchKeywords> _getCountrySearchKeywordsList(
+		Set<String> databases, int displayLimit, String type, String url) {
+
+		Stream<String> stream = databases.stream();
+
+		return stream.map(
+			database -> new CountrySearchKeywords(
+				database, _getSearchKeywords(database, displayLimit, type, url))
+		).collect(
+			Collectors.toList()
+		);
 	}
 
 	private Set<String> _getDatabases(String url) {
@@ -165,19 +178,6 @@ public class RootRestController {
 		}
 
 		return databases;
-	}
-
-	private List<CountrySearchKeywords> _getSearchKeywords(
-		Set<String> databases, int displayLimit, String type, String url) {
-
-		Stream<String> stream = databases.stream();
-
-		return stream.map(
-			database -> new CountrySearchKeywords(
-				database, _getSearchKeywords(database, displayLimit, type, url))
-		).collect(
-			Collectors.toList()
-		);
 	}
 
 	private List<SearchKeyword> _getSearchKeywords(
