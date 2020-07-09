@@ -378,6 +378,7 @@ type Keyword {
 type Job {
 	id: String
 	name: String
+	nextTrainingDate: String
 	parameters: [JobParameter]
 	status: JobStatus
 	trainingDate: String
