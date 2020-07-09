@@ -915,6 +915,618 @@ public class AccountEntryPersistenceImpl
 		_FINDER_COLUMN_DOSSIERAACCOUNTKEY_DOSSIERAACCOUNTKEY_3 =
 			"(accountEntry.dossieraAccountKey IS NULL OR accountEntry.dossieraAccountKey = '')";
 
+	private FinderPath _finderPathWithPaginationFindByN_C;
+	private FinderPath _finderPathWithPaginationCountByN_C;
+
+	/**
+	 * Returns all the account entries where name LIKE &#63; and code LIKE &#63;.
+	 *
+	 * @param name the name
+	 * @param code the code
+	 * @return the matching account entries
+	 */
+	@Override
+	public List<AccountEntry> findByN_C(String name, String code) {
+		return findByN_C(
+			name, code, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the account entries where name LIKE &#63; and code LIKE &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AccountEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param name the name
+	 * @param code the code
+	 * @param start the lower bound of the range of account entries
+	 * @param end the upper bound of the range of account entries (not inclusive)
+	 * @return the range of matching account entries
+	 */
+	@Override
+	public List<AccountEntry> findByN_C(
+		String name, String code, int start, int end) {
+
+		return findByN_C(name, code, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the account entries where name LIKE &#63; and code LIKE &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AccountEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param name the name
+	 * @param code the code
+	 * @param start the lower bound of the range of account entries
+	 * @param end the upper bound of the range of account entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching account entries
+	 */
+	@Override
+	public List<AccountEntry> findByN_C(
+		String name, String code, int start, int end,
+		OrderByComparator<AccountEntry> orderByComparator) {
+
+		return findByN_C(name, code, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the account entries where name LIKE &#63; and code LIKE &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AccountEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param name the name
+	 * @param code the code
+	 * @param start the lower bound of the range of account entries
+	 * @param end the upper bound of the range of account entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching account entries
+	 */
+	@Override
+	public List<AccountEntry> findByN_C(
+		String name, String code, int start, int end,
+		OrderByComparator<AccountEntry> orderByComparator,
+		boolean useFinderCache) {
+
+		name = Objects.toString(name, "");
+		code = Objects.toString(code, "");
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		finderPath = _finderPathWithPaginationFindByN_C;
+		finderArgs = new Object[] {name, code, start, end, orderByComparator};
+
+		List<AccountEntry> list = null;
+
+		if (useFinderCache) {
+			list = (List<AccountEntry>)finderCache.getResult(
+				finderPath, finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (AccountEntry accountEntry : list) {
+					if (!StringUtil.wildcardMatches(
+							accountEntry.getName(), name, '_', '%', '\\',
+							false) ||
+						!StringUtil.wildcardMatches(
+							accountEntry.getCode(), code, '_', '%', '\\',
+							false)) {
+
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					4 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(4);
+			}
+
+			sb.append(_SQL_SELECT_ACCOUNTENTRY_WHERE);
+
+			boolean bindName = false;
+
+			if (name.isEmpty()) {
+				sb.append(_FINDER_COLUMN_N_C_NAME_3);
+			}
+			else {
+				bindName = true;
+
+				sb.append(_FINDER_COLUMN_N_C_NAME_2);
+			}
+
+			boolean bindCode = false;
+
+			if (code.isEmpty()) {
+				sb.append(_FINDER_COLUMN_N_C_CODE_3);
+			}
+			else {
+				bindCode = true;
+
+				sb.append(_FINDER_COLUMN_N_C_CODE_2);
+			}
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(AccountEntryModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindName) {
+					queryPos.add(StringUtil.toLowerCase(name));
+				}
+
+				if (bindCode) {
+					queryPos.add(StringUtil.toLowerCase(code));
+				}
+
+				list = (List<AccountEntry>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first account entry in the ordered set where name LIKE &#63; and code LIKE &#63;.
+	 *
+	 * @param name the name
+	 * @param code the code
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching account entry
+	 * @throws NoSuchAccountEntryException if a matching account entry could not be found
+	 */
+	@Override
+	public AccountEntry findByN_C_First(
+			String name, String code,
+			OrderByComparator<AccountEntry> orderByComparator)
+		throws NoSuchAccountEntryException {
+
+		AccountEntry accountEntry = fetchByN_C_First(
+			name, code, orderByComparator);
+
+		if (accountEntry != null) {
+			return accountEntry;
+		}
+
+		StringBundler sb = new StringBundler(6);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("nameLIKE");
+		sb.append(name);
+
+		sb.append(", codeLIKE");
+		sb.append(code);
+
+		sb.append("}");
+
+		throw new NoSuchAccountEntryException(sb.toString());
+	}
+
+	/**
+	 * Returns the first account entry in the ordered set where name LIKE &#63; and code LIKE &#63;.
+	 *
+	 * @param name the name
+	 * @param code the code
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching account entry, or <code>null</code> if a matching account entry could not be found
+	 */
+	@Override
+	public AccountEntry fetchByN_C_First(
+		String name, String code,
+		OrderByComparator<AccountEntry> orderByComparator) {
+
+		List<AccountEntry> list = findByN_C(
+			name, code, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last account entry in the ordered set where name LIKE &#63; and code LIKE &#63;.
+	 *
+	 * @param name the name
+	 * @param code the code
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching account entry
+	 * @throws NoSuchAccountEntryException if a matching account entry could not be found
+	 */
+	@Override
+	public AccountEntry findByN_C_Last(
+			String name, String code,
+			OrderByComparator<AccountEntry> orderByComparator)
+		throws NoSuchAccountEntryException {
+
+		AccountEntry accountEntry = fetchByN_C_Last(
+			name, code, orderByComparator);
+
+		if (accountEntry != null) {
+			return accountEntry;
+		}
+
+		StringBundler sb = new StringBundler(6);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("nameLIKE");
+		sb.append(name);
+
+		sb.append(", codeLIKE");
+		sb.append(code);
+
+		sb.append("}");
+
+		throw new NoSuchAccountEntryException(sb.toString());
+	}
+
+	/**
+	 * Returns the last account entry in the ordered set where name LIKE &#63; and code LIKE &#63;.
+	 *
+	 * @param name the name
+	 * @param code the code
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching account entry, or <code>null</code> if a matching account entry could not be found
+	 */
+	@Override
+	public AccountEntry fetchByN_C_Last(
+		String name, String code,
+		OrderByComparator<AccountEntry> orderByComparator) {
+
+		int count = countByN_C(name, code);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<AccountEntry> list = findByN_C(
+			name, code, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the account entries before and after the current account entry in the ordered set where name LIKE &#63; and code LIKE &#63;.
+	 *
+	 * @param accountEntryId the primary key of the current account entry
+	 * @param name the name
+	 * @param code the code
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next account entry
+	 * @throws NoSuchAccountEntryException if a account entry with the primary key could not be found
+	 */
+	@Override
+	public AccountEntry[] findByN_C_PrevAndNext(
+			long accountEntryId, String name, String code,
+			OrderByComparator<AccountEntry> orderByComparator)
+		throws NoSuchAccountEntryException {
+
+		name = Objects.toString(name, "");
+		code = Objects.toString(code, "");
+
+		AccountEntry accountEntry = findByPrimaryKey(accountEntryId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			AccountEntry[] array = new AccountEntryImpl[3];
+
+			array[0] = getByN_C_PrevAndNext(
+				session, accountEntry, name, code, orderByComparator, true);
+
+			array[1] = accountEntry;
+
+			array[2] = getByN_C_PrevAndNext(
+				session, accountEntry, name, code, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected AccountEntry getByN_C_PrevAndNext(
+		Session session, AccountEntry accountEntry, String name, String code,
+		OrderByComparator<AccountEntry> orderByComparator, boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(4);
+		}
+
+		sb.append(_SQL_SELECT_ACCOUNTENTRY_WHERE);
+
+		boolean bindName = false;
+
+		if (name.isEmpty()) {
+			sb.append(_FINDER_COLUMN_N_C_NAME_3);
+		}
+		else {
+			bindName = true;
+
+			sb.append(_FINDER_COLUMN_N_C_NAME_2);
+		}
+
+		boolean bindCode = false;
+
+		if (code.isEmpty()) {
+			sb.append(_FINDER_COLUMN_N_C_CODE_3);
+		}
+		else {
+			bindCode = true;
+
+			sb.append(_FINDER_COLUMN_N_C_CODE_2);
+		}
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(AccountEntryModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		if (bindName) {
+			queryPos.add(StringUtil.toLowerCase(name));
+		}
+
+		if (bindCode) {
+			queryPos.add(StringUtil.toLowerCase(code));
+		}
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(accountEntry)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<AccountEntry> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the account entries where name LIKE &#63; and code LIKE &#63; from the database.
+	 *
+	 * @param name the name
+	 * @param code the code
+	 */
+	@Override
+	public void removeByN_C(String name, String code) {
+		for (AccountEntry accountEntry :
+				findByN_C(
+					name, code, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+
+			remove(accountEntry);
+		}
+	}
+
+	/**
+	 * Returns the number of account entries where name LIKE &#63; and code LIKE &#63;.
+	 *
+	 * @param name the name
+	 * @param code the code
+	 * @return the number of matching account entries
+	 */
+	@Override
+	public int countByN_C(String name, String code) {
+		name = Objects.toString(name, "");
+		code = Objects.toString(code, "");
+
+		FinderPath finderPath = _finderPathWithPaginationCountByN_C;
+
+		Object[] finderArgs = new Object[] {name, code};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(3);
+
+			sb.append(_SQL_COUNT_ACCOUNTENTRY_WHERE);
+
+			boolean bindName = false;
+
+			if (name.isEmpty()) {
+				sb.append(_FINDER_COLUMN_N_C_NAME_3);
+			}
+			else {
+				bindName = true;
+
+				sb.append(_FINDER_COLUMN_N_C_NAME_2);
+			}
+
+			boolean bindCode = false;
+
+			if (code.isEmpty()) {
+				sb.append(_FINDER_COLUMN_N_C_CODE_3);
+			}
+			else {
+				bindCode = true;
+
+				sb.append(_FINDER_COLUMN_N_C_CODE_2);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindName) {
+					queryPos.add(StringUtil.toLowerCase(name));
+				}
+
+				if (bindCode) {
+					queryPos.add(StringUtil.toLowerCase(code));
+				}
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_N_C_NAME_2 =
+		"lower(accountEntry.name) LIKE ? AND ";
+
+	private static final String _FINDER_COLUMN_N_C_NAME_3 =
+		"(accountEntry.name IS NULL OR accountEntry.name LIKE '') AND ";
+
+	private static final String _FINDER_COLUMN_N_C_CODE_2 =
+		"lower(accountEntry.code) LIKE ?";
+
+	private static final String _FINDER_COLUMN_N_C_CODE_3 =
+		"(accountEntry.code IS NULL OR accountEntry.code LIKE '')";
+
 	public AccountEntryPersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
@@ -2105,6 +2717,22 @@ public class AccountEntryPersistenceImpl
 			AccountEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByDossieraAccountKey", new String[] {String.class.getName()});
+
+		_finderPathWithPaginationFindByN_C = new FinderPath(
+			AccountEntryModelImpl.ENTITY_CACHE_ENABLED,
+			AccountEntryModelImpl.FINDER_CACHE_ENABLED, AccountEntryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByN_C",
+			new String[] {
+				String.class.getName(), String.class.getName(),
+				Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+
+		_finderPathWithPaginationCountByN_C = new FinderPath(
+			AccountEntryModelImpl.ENTITY_CACHE_ENABLED,
+			AccountEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByN_C",
+			new String[] {String.class.getName(), String.class.getName()});
 	}
 
 	public void destroy() {

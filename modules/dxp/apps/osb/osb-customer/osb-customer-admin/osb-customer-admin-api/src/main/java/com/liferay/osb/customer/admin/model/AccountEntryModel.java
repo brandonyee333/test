@@ -248,6 +248,35 @@ public interface AccountEntryModel
 	public void setDossieraAccountKey(String dossieraAccountKey);
 
 	/**
+	 * Returns the corp project uuid of this account entry.
+	 *
+	 * @return the corp project uuid of this account entry
+	 */
+	@AutoEscape
+	public String getCorpProjectUuid();
+
+	/**
+	 * Sets the corp project uuid of this account entry.
+	 *
+	 * @param corpProjectUuid the corp project uuid of this account entry
+	 */
+	public void setCorpProjectUuid(String corpProjectUuid);
+
+	/**
+	 * Returns the corp project ID of this account entry.
+	 *
+	 * @return the corp project ID of this account entry
+	 */
+	public long getCorpProjectId();
+
+	/**
+	 * Sets the corp project ID of this account entry.
+	 *
+	 * @param corpProjectId the corp project ID of this account entry
+	 */
+	public void setCorpProjectId(long corpProjectId);
+
+	/**
 	 * Returns the name of this account entry.
 	 *
 	 * @return the name of this account entry
@@ -376,21 +405,6 @@ public interface AccountEntryModel
 	 * @param corpEntryName the corp entry name of this account entry
 	 */
 	public void setCorpEntryName(String corpEntryName);
-
-	/**
-	 * Returns the corp project uuid of this account entry.
-	 *
-	 * @return the corp project uuid of this account entry
-	 */
-	@AutoEscape
-	public String getCorpProjectUuid();
-
-	/**
-	 * Sets the corp project uuid of this account entry.
-	 *
-	 * @param corpProjectUuid the corp project uuid of this account entry
-	 */
-	public void setCorpProjectUuid(String corpProjectUuid);
 
 	@Override
 	public boolean isNew();

@@ -74,8 +74,9 @@ public interface AccountEntryLocalService
 
 	public AccountEntry addAccountEntry(
 			long userId, String koroneikiAccountKey, String dossieraAccountKey,
-			String name, String code, String instructions, int status,
-			String[] languageIds, long[] supportRegionIds)
+			String corpProjectUuid, long corpProjectId, String name,
+			String code, String instructions, int status, String[] languageIds,
+			long[] supportRegionIds)
 		throws PortalException;
 
 	public void addSupportRegionAccountEntries(
@@ -216,9 +217,6 @@ public interface AccountEntryLocalService
 	public AccountEntry fetchAccountEntry(long accountEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountEntry fetchCorpProjectAccountEntry(String corpProjectUuid);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountEntry fetchKoroneikiAccountEntry(String koroneikiAccountKey);
 
 	/**
@@ -259,9 +257,6 @@ public interface AccountEntryLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountEntry getCorpProjectAccountEntry(String corpProjectUuid);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
@@ -322,16 +317,12 @@ public interface AccountEntryLocalService
 		long supportRegionId, long accountEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasValidLicenseAccountEntry(long userId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasValidSupportAccountEntry(
-		long userId, boolean ticketSupport);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountEntry> search(
 		String keywords, LinkedHashMap<String, Object> params, int start,
 		int end, OrderByComparator obc);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountEntry> search(String name, String code);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountEntry> search(
@@ -364,9 +355,9 @@ public interface AccountEntryLocalService
 
 	public AccountEntry updateAccountEntry(
 			long userId, long accountEntryId, String koroneikiAccountKey,
-			String dossieraAccountKey, String name, String code,
-			String instructions, int status, String[] languageIds,
-			long[] supportRegionIds)
+			String dossieraAccountKey, String corpProjectUuid,
+			long corpProjectId, String name, String code, String instructions,
+			int status, String[] languageIds, long[] supportRegionIds)
 		throws PortalException;
 
 	public AccountEntry updateInstructions(

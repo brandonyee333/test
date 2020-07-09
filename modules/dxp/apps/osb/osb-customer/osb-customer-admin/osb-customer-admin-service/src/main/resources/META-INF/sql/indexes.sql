@@ -6,6 +6,7 @@ create index IX_B9459F3D on OSB_AccountEntries_SupportRegions (supportRegionId);
 
 create index IX_4304C568 on OSB_AccountEntry (dossieraAccountKey[$COLUMN_LENGTH:75$]);
 create index IX_32D8BC5 on OSB_AccountEntry (koroneikiAccountKey[$COLUMN_LENGTH:75$]);
+create index IX_9004ACB7 on OSB_AccountEntry (name[$COLUMN_LENGTH:500$], code_[$COLUMN_LENGTH:75$]);
 
 create index IX_8B166398 on OSB_AccountEntryLanguage (accountEntryId);
 

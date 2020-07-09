@@ -64,8 +64,6 @@ public interface AccountEntry extends AccountEntryModel, PersistedModel {
 	public java.util.List<AccountAttachment> getAccountAttachments(
 		long accountProjectId);
 
-	public long getCorpProjectId();
-
 	public String getDescription() throws Exception;
 
 	@com.liferay.portal.kernel.json.JSON

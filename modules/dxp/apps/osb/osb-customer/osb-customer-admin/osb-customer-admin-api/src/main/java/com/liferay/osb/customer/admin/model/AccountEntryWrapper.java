@@ -65,6 +65,8 @@ public class AccountEntryWrapper
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("koroneikiAccountKey", getKoroneikiAccountKey());
 		attributes.put("dossieraAccountKey", getDossieraAccountKey());
+		attributes.put("corpProjectUuid", getCorpProjectUuid());
+		attributes.put("corpProjectId", getCorpProjectId());
 		attributes.put("name", getName());
 		attributes.put("code", getCode());
 		attributes.put("instructions", getInstructions());
@@ -73,7 +75,6 @@ public class AccountEntryWrapper
 		attributes.put("lastZendeskAuditDate", getLastZendeskAuditDate());
 		attributes.put("status", getStatus());
 		attributes.put("corpEntryName", getCorpEntryName());
-		attributes.put("corpProjectUuid", getCorpProjectUuid());
 
 		return attributes;
 	}
@@ -142,6 +143,18 @@ public class AccountEntryWrapper
 			setDossieraAccountKey(dossieraAccountKey);
 		}
 
+		String corpProjectUuid = (String)attributes.get("corpProjectUuid");
+
+		if (corpProjectUuid != null) {
+			setCorpProjectUuid(corpProjectUuid);
+		}
+
+		Long corpProjectId = (Long)attributes.get("corpProjectId");
+
+		if (corpProjectId != null) {
+			setCorpProjectId(corpProjectId);
+		}
+
 		String name = (String)attributes.get("name");
 
 		if (name != null) {
@@ -190,12 +203,6 @@ public class AccountEntryWrapper
 
 		if (corpEntryName != null) {
 			setCorpEntryName(corpEntryName);
-		}
-
-		String corpProjectUuid = (String)attributes.get("corpProjectUuid");
-
-		if (corpProjectUuid != null) {
-			setCorpProjectUuid(corpProjectUuid);
 		}
 	}
 
@@ -281,6 +288,11 @@ public class AccountEntryWrapper
 		return _accountEntry.getCorpEntryName();
 	}
 
+	/**
+	 * Returns the corp project ID of this account entry.
+	 *
+	 * @return the corp project ID of this account entry
+	 */
 	@Override
 	public long getCorpProjectId() {
 		return _accountEntry.getCorpProjectId();
@@ -602,6 +614,16 @@ public class AccountEntryWrapper
 	@Override
 	public void setCorpEntryName(String corpEntryName) {
 		_accountEntry.setCorpEntryName(corpEntryName);
+	}
+
+	/**
+	 * Sets the corp project ID of this account entry.
+	 *
+	 * @param corpProjectId the corp project ID of this account entry
+	 */
+	@Override
+	public void setCorpProjectId(long corpProjectId) {
+		_accountEntry.setCorpProjectId(corpProjectId);
 	}
 
 	/**

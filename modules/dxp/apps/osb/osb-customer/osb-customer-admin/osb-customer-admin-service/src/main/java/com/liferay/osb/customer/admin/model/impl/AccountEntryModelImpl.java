@@ -77,12 +77,13 @@ public class AccountEntryModelImpl
 		{"createDate", Types.TIMESTAMP}, {"modifiedUserId", Types.BIGINT},
 		{"modifiedUserName", Types.VARCHAR}, {"modifiedDate", Types.TIMESTAMP},
 		{"koroneikiAccountKey", Types.VARCHAR},
-		{"dossieraAccountKey", Types.VARCHAR}, {"name", Types.VARCHAR},
-		{"code_", Types.VARCHAR}, {"instructions", Types.VARCHAR},
-		{"activeSupport", Types.BOOLEAN},
+		{"dossieraAccountKey", Types.VARCHAR},
+		{"corpProjectUuid", Types.VARCHAR}, {"corpProjectId", Types.BIGINT},
+		{"name", Types.VARCHAR}, {"code_", Types.VARCHAR},
+		{"instructions", Types.VARCHAR}, {"activeSupport", Types.BOOLEAN},
 		{"activeTicketSupport", Types.BOOLEAN},
 		{"lastZendeskAuditDate", Types.TIMESTAMP}, {"status", Types.INTEGER},
-		{"corpEntryName", Types.VARCHAR}, {"corpProjectUuid", Types.VARCHAR}
+		{"corpEntryName", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -99,6 +100,8 @@ public class AccountEntryModelImpl
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("koroneikiAccountKey", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("dossieraAccountKey", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("corpProjectUuid", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("corpProjectId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("code_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("instructions", Types.VARCHAR);
@@ -107,11 +110,10 @@ public class AccountEntryModelImpl
 		TABLE_COLUMNS_MAP.put("lastZendeskAuditDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("corpEntryName", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("corpProjectUuid", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table OSB_AccountEntry (accountEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,koroneikiAccountKey VARCHAR(75) null,dossieraAccountKey VARCHAR(75) null,name VARCHAR(500) null,code_ VARCHAR(75) null,instructions STRING null,activeSupport BOOLEAN,activeTicketSupport BOOLEAN,lastZendeskAuditDate DATE null,status INTEGER,corpEntryName VARCHAR(75) null,corpProjectUuid VARCHAR(75) null)";
+		"create table OSB_AccountEntry (accountEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,koroneikiAccountKey VARCHAR(75) null,dossieraAccountKey VARCHAR(75) null,corpProjectUuid VARCHAR(75) null,corpProjectId LONG,name VARCHAR(500) null,code_ VARCHAR(75) null,instructions STRING null,activeSupport BOOLEAN,activeTicketSupport BOOLEAN,lastZendeskAuditDate DATE null,status INTEGER,corpEntryName VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table OSB_AccountEntry";
 
@@ -142,11 +144,15 @@ public class AccountEntryModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.osb.customer.admin.model.AccountEntry"),
 		true);
 
-	public static final long DOSSIERAACCOUNTKEY_COLUMN_BITMASK = 1L;
+	public static final long CODE_COLUMN_BITMASK = 1L;
 
-	public static final long KORONEIKIACCOUNTKEY_COLUMN_BITMASK = 2L;
+	public static final long DOSSIERAACCOUNTKEY_COLUMN_BITMASK = 2L;
 
-	public static final long ACCOUNTENTRYID_COLUMN_BITMASK = 4L;
+	public static final long KORONEIKIACCOUNTKEY_COLUMN_BITMASK = 4L;
+
+	public static final long NAME_COLUMN_BITMASK = 8L;
+
+	public static final long ACCOUNTENTRYID_COLUMN_BITMASK = 16L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -171,6 +177,8 @@ public class AccountEntryModelImpl
 		model.setModifiedDate(soapModel.getModifiedDate());
 		model.setKoroneikiAccountKey(soapModel.getKoroneikiAccountKey());
 		model.setDossieraAccountKey(soapModel.getDossieraAccountKey());
+		model.setCorpProjectUuid(soapModel.getCorpProjectUuid());
+		model.setCorpProjectId(soapModel.getCorpProjectId());
 		model.setName(soapModel.getName());
 		model.setCode(soapModel.getCode());
 		model.setInstructions(soapModel.getInstructions());
@@ -179,7 +187,6 @@ public class AccountEntryModelImpl
 		model.setLastZendeskAuditDate(soapModel.getLastZendeskAuditDate());
 		model.setStatus(soapModel.getStatus());
 		model.setCorpEntryName(soapModel.getCorpEntryName());
-		model.setCorpProjectUuid(soapModel.getCorpProjectUuid());
 
 		return model;
 	}
@@ -583,6 +590,51 @@ public class AccountEntryModelImpl
 
 			});
 		attributeGetterFunctions.put(
+			"corpProjectUuid",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getCorpProjectUuid();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"corpProjectUuid",
+			new BiConsumer<AccountEntry, Object>() {
+
+				@Override
+				public void accept(
+					AccountEntry accountEntry, Object corpProjectUuidObject) {
+
+					accountEntry.setCorpProjectUuid(
+						(String)corpProjectUuidObject);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"corpProjectId",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getCorpProjectId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"corpProjectId",
+			new BiConsumer<AccountEntry, Object>() {
+
+				@Override
+				public void accept(
+					AccountEntry accountEntry, Object corpProjectIdObject) {
+
+					accountEntry.setCorpProjectId((Long)corpProjectIdObject);
+				}
+
+			});
+		attributeGetterFunctions.put(
 			"name",
 			new Function<AccountEntry, Object>() {
 
@@ -759,29 +811,6 @@ public class AccountEntryModelImpl
 					AccountEntry accountEntry, Object corpEntryNameObject) {
 
 					accountEntry.setCorpEntryName((String)corpEntryNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"corpProjectUuid",
-			new Function<AccountEntry, Object>() {
-
-				@Override
-				public Object apply(AccountEntry accountEntry) {
-					return accountEntry.getCorpProjectUuid();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"corpProjectUuid",
-			new BiConsumer<AccountEntry, Object>() {
-
-				@Override
-				public void accept(
-					AccountEntry accountEntry, Object corpProjectUuidObject) {
-
-					accountEntry.setCorpProjectUuid(
-						(String)corpProjectUuidObject);
 				}
 
 			});
@@ -982,6 +1011,33 @@ public class AccountEntryModelImpl
 
 	@JSON
 	@Override
+	public String getCorpProjectUuid() {
+		if (_corpProjectUuid == null) {
+			return "";
+		}
+		else {
+			return _corpProjectUuid;
+		}
+	}
+
+	@Override
+	public void setCorpProjectUuid(String corpProjectUuid) {
+		_corpProjectUuid = corpProjectUuid;
+	}
+
+	@JSON
+	@Override
+	public long getCorpProjectId() {
+		return _corpProjectId;
+	}
+
+	@Override
+	public void setCorpProjectId(long corpProjectId) {
+		_corpProjectId = corpProjectId;
+	}
+
+	@JSON
+	@Override
 	public String getName() {
 		if (_name == null) {
 			return "";
@@ -993,7 +1049,17 @@ public class AccountEntryModelImpl
 
 	@Override
 	public void setName(String name) {
+		_columnBitmask |= NAME_COLUMN_BITMASK;
+
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@JSON
@@ -1009,7 +1075,17 @@ public class AccountEntryModelImpl
 
 	@Override
 	public void setCode(String code) {
+		_columnBitmask |= CODE_COLUMN_BITMASK;
+
+		if (_originalCode == null) {
+			_originalCode = _code;
+		}
+
 		_code = code;
+	}
+
+	public String getOriginalCode() {
+		return GetterUtil.getString(_originalCode);
 	}
 
 	@JSON
@@ -1100,22 +1176,6 @@ public class AccountEntryModelImpl
 		_corpEntryName = corpEntryName;
 	}
 
-	@JSON
-	@Override
-	public String getCorpProjectUuid() {
-		if (_corpProjectUuid == null) {
-			return "";
-		}
-		else {
-			return _corpProjectUuid;
-		}
-	}
-
-	@Override
-	public void setCorpProjectUuid(String corpProjectUuid) {
-		_corpProjectUuid = corpProjectUuid;
-	}
-
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -1162,6 +1222,8 @@ public class AccountEntryModelImpl
 		accountEntryImpl.setModifiedDate(getModifiedDate());
 		accountEntryImpl.setKoroneikiAccountKey(getKoroneikiAccountKey());
 		accountEntryImpl.setDossieraAccountKey(getDossieraAccountKey());
+		accountEntryImpl.setCorpProjectUuid(getCorpProjectUuid());
+		accountEntryImpl.setCorpProjectId(getCorpProjectId());
 		accountEntryImpl.setName(getName());
 		accountEntryImpl.setCode(getCode());
 		accountEntryImpl.setInstructions(getInstructions());
@@ -1170,7 +1232,6 @@ public class AccountEntryModelImpl
 		accountEntryImpl.setLastZendeskAuditDate(getLastZendeskAuditDate());
 		accountEntryImpl.setStatus(getStatus());
 		accountEntryImpl.setCorpEntryName(getCorpEntryName());
-		accountEntryImpl.setCorpProjectUuid(getCorpProjectUuid());
 
 		accountEntryImpl.resetOriginalValues();
 
@@ -1240,6 +1301,10 @@ public class AccountEntryModelImpl
 
 		accountEntryModelImpl._originalDossieraAccountKey =
 			accountEntryModelImpl._dossieraAccountKey;
+
+		accountEntryModelImpl._originalName = accountEntryModelImpl._name;
+
+		accountEntryModelImpl._originalCode = accountEntryModelImpl._code;
 
 		accountEntryModelImpl._columnBitmask = 0;
 	}
@@ -1311,6 +1376,16 @@ public class AccountEntryModelImpl
 			accountEntryCacheModel.dossieraAccountKey = null;
 		}
 
+		accountEntryCacheModel.corpProjectUuid = getCorpProjectUuid();
+
+		String corpProjectUuid = accountEntryCacheModel.corpProjectUuid;
+
+		if ((corpProjectUuid != null) && (corpProjectUuid.length() == 0)) {
+			accountEntryCacheModel.corpProjectUuid = null;
+		}
+
+		accountEntryCacheModel.corpProjectId = getCorpProjectId();
+
 		accountEntryCacheModel.name = getName();
 
 		String name = accountEntryCacheModel.name;
@@ -1357,14 +1432,6 @@ public class AccountEntryModelImpl
 
 		if ((corpEntryName != null) && (corpEntryName.length() == 0)) {
 			accountEntryCacheModel.corpEntryName = null;
-		}
-
-		accountEntryCacheModel.corpProjectUuid = getCorpProjectUuid();
-
-		String corpProjectUuid = accountEntryCacheModel.corpProjectUuid;
-
-		if ((corpProjectUuid != null) && (corpProjectUuid.length() == 0)) {
-			accountEntryCacheModel.corpProjectUuid = null;
 		}
 
 		return accountEntryCacheModel;
@@ -1453,15 +1520,18 @@ public class AccountEntryModelImpl
 	private String _originalKoroneikiAccountKey;
 	private String _dossieraAccountKey;
 	private String _originalDossieraAccountKey;
+	private String _corpProjectUuid;
+	private long _corpProjectId;
 	private String _name;
+	private String _originalName;
 	private String _code;
+	private String _originalCode;
 	private String _instructions;
 	private boolean _activeSupport;
 	private boolean _activeTicketSupport;
 	private Date _lastZendeskAuditDate;
 	private int _status;
 	private String _corpEntryName;
-	private String _corpProjectUuid;
 	private long _columnBitmask;
 	private AccountEntry _escapedModel;
 

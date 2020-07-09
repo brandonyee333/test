@@ -54,14 +54,16 @@ public class AccountEntryLocalServiceUtil {
 	public static com.liferay.osb.customer.admin.model.AccountEntry
 			addAccountEntry(
 				long userId, String koroneikiAccountKey,
-				String dossieraAccountKey, String name, String code,
+				String dossieraAccountKey, String corpProjectUuid,
+				long corpProjectId, String name, String code,
 				String instructions, int status, String[] languageIds,
 				long[] supportRegionIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addAccountEntry(
-			userId, koroneikiAccountKey, dossieraAccountKey, name, code,
-			instructions, status, languageIds, supportRegionIds);
+			userId, koroneikiAccountKey, dossieraAccountKey, corpProjectUuid,
+			corpProjectId, name, code, instructions, status, languageIds,
+			supportRegionIds);
 	}
 
 	public static void addSupportRegionAccountEntries(
@@ -286,12 +288,6 @@ public class AccountEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.customer.admin.model.AccountEntry
-		fetchCorpProjectAccountEntry(String corpProjectUuid) {
-
-		return getService().fetchCorpProjectAccountEntry(corpProjectUuid);
-	}
-
-	public static com.liferay.osb.customer.admin.model.AccountEntry
 		fetchKoroneikiAccountEntry(String koroneikiAccountKey) {
 
 		return getService().fetchKoroneikiAccountEntry(koroneikiAccountKey);
@@ -349,12 +345,6 @@ public class AccountEntryLocalServiceUtil {
 		getActionableDynamicQuery() {
 
 		return getService().getActionableDynamicQuery();
-	}
-
-	public static com.liferay.osb.customer.admin.model.AccountEntry
-		getCorpProjectAccountEntry(String corpProjectUuid) {
-
-		return getService().getCorpProjectAccountEntry(corpProjectUuid);
 	}
 
 	public static
@@ -453,16 +443,6 @@ public class AccountEntryLocalServiceUtil {
 			supportRegionId, accountEntryId);
 	}
 
-	public static boolean hasValidLicenseAccountEntry(long userId) {
-		return getService().hasValidLicenseAccountEntry(userId);
-	}
-
-	public static boolean hasValidSupportAccountEntry(
-		long userId, boolean ticketSupport) {
-
-		return getService().hasValidSupportAccountEntry(userId, ticketSupport);
-	}
-
 	public static java.util.List
 		<com.liferay.osb.customer.admin.model.AccountEntry> search(
 			String keywords, java.util.LinkedHashMap<String, Object> params,
@@ -470,6 +450,13 @@ public class AccountEntryLocalServiceUtil {
 			com.liferay.portal.kernel.util.OrderByComparator obc) {
 
 		return getService().search(keywords, params, start, end, obc);
+	}
+
+	public static java.util.List
+		<com.liferay.osb.customer.admin.model.AccountEntry> search(
+			String name, String code) {
+
+		return getService().search(name, code);
 	}
 
 	public static java.util.List
@@ -524,14 +511,16 @@ public class AccountEntryLocalServiceUtil {
 	public static com.liferay.osb.customer.admin.model.AccountEntry
 			updateAccountEntry(
 				long userId, long accountEntryId, String koroneikiAccountKey,
-				String dossieraAccountKey, String name, String code,
+				String dossieraAccountKey, String corpProjectUuid,
+				long corpProjectId, String name, String code,
 				String instructions, int status, String[] languageIds,
 				long[] supportRegionIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateAccountEntry(
 			userId, accountEntryId, koroneikiAccountKey, dossieraAccountKey,
-			name, code, instructions, status, languageIds, supportRegionIds);
+			corpProjectUuid, corpProjectId, name, code, instructions, status,
+			languageIds, supportRegionIds);
 	}
 
 	public static com.liferay.osb.customer.admin.model.AccountEntry

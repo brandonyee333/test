@@ -62,7 +62,7 @@ public class AccountEntryCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(39);
+		StringBundler sb = new StringBundler(41);
 
 		sb.append("{accountEntryId=");
 		sb.append(accountEntryId);
@@ -84,6 +84,10 @@ public class AccountEntryCacheModel
 		sb.append(koroneikiAccountKey);
 		sb.append(", dossieraAccountKey=");
 		sb.append(dossieraAccountKey);
+		sb.append(", corpProjectUuid=");
+		sb.append(corpProjectUuid);
+		sb.append(", corpProjectId=");
+		sb.append(corpProjectId);
 		sb.append(", name=");
 		sb.append(name);
 		sb.append(", code=");
@@ -100,8 +104,6 @@ public class AccountEntryCacheModel
 		sb.append(status);
 		sb.append(", corpEntryName=");
 		sb.append(corpEntryName);
-		sb.append(", corpProjectUuid=");
-		sb.append(corpProjectUuid);
 		sb.append("}");
 
 		return sb.toString();
@@ -159,6 +161,15 @@ public class AccountEntryCacheModel
 			accountEntryImpl.setDossieraAccountKey(dossieraAccountKey);
 		}
 
+		if (corpProjectUuid == null) {
+			accountEntryImpl.setCorpProjectUuid("");
+		}
+		else {
+			accountEntryImpl.setCorpProjectUuid(corpProjectUuid);
+		}
+
+		accountEntryImpl.setCorpProjectId(corpProjectId);
+
 		if (name == null) {
 			accountEntryImpl.setName("");
 		}
@@ -200,13 +211,6 @@ public class AccountEntryCacheModel
 			accountEntryImpl.setCorpEntryName(corpEntryName);
 		}
 
-		if (corpProjectUuid == null) {
-			accountEntryImpl.setCorpProjectUuid("");
-		}
-		else {
-			accountEntryImpl.setCorpProjectUuid(corpProjectUuid);
-		}
-
 		accountEntryImpl.resetOriginalValues();
 
 		return accountEntryImpl;
@@ -227,6 +231,9 @@ public class AccountEntryCacheModel
 		modifiedDate = objectInput.readLong();
 		koroneikiAccountKey = objectInput.readUTF();
 		dossieraAccountKey = objectInput.readUTF();
+		corpProjectUuid = objectInput.readUTF();
+
+		corpProjectId = objectInput.readLong();
 		name = objectInput.readUTF();
 		code = objectInput.readUTF();
 		instructions = objectInput.readUTF();
@@ -238,7 +245,6 @@ public class AccountEntryCacheModel
 
 		status = objectInput.readInt();
 		corpEntryName = objectInput.readUTF();
-		corpProjectUuid = objectInput.readUTF();
 	}
 
 	@Override
@@ -283,6 +289,15 @@ public class AccountEntryCacheModel
 			objectOutput.writeUTF(dossieraAccountKey);
 		}
 
+		if (corpProjectUuid == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(corpProjectUuid);
+		}
+
+		objectOutput.writeLong(corpProjectId);
+
 		if (name == null) {
 			objectOutput.writeUTF("");
 		}
@@ -317,13 +332,6 @@ public class AccountEntryCacheModel
 		else {
 			objectOutput.writeUTF(corpEntryName);
 		}
-
-		if (corpProjectUuid == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(corpProjectUuid);
-		}
 	}
 
 	public long accountEntryId;
@@ -336,6 +344,8 @@ public class AccountEntryCacheModel
 	public long modifiedDate;
 	public String koroneikiAccountKey;
 	public String dossieraAccountKey;
+	public String corpProjectUuid;
+	public long corpProjectId;
 	public String name;
 	public String code;
 	public String instructions;
@@ -344,6 +354,5 @@ public class AccountEntryCacheModel
 	public long lastZendeskAuditDate;
 	public int status;
 	public String corpEntryName;
-	public String corpProjectUuid;
 
 }

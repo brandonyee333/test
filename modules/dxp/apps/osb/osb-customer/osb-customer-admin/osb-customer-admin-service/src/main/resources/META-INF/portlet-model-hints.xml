@@ -23,6 +23,8 @@
 		<field name="modifiedDate" type="Date" />
 		<field name="koroneikiAccountKey" type="String" />
 		<field name="dossieraAccountKey" type="String" />
+		<field name="corpProjectUuid" type="String" />
+		<field name="corpProjectId" type="long" />
 		<field name="name" type="String">
 			<hint name="max-length">500</hint>
 		</field>
@@ -35,7 +37,6 @@
 		<field name="lastZendeskAuditDate" type="Date" />
 		<field name="status" type="int" />
 		<field name="corpEntryName" type="String" />
-		<field name="corpProjectUuid" type="String" />
 	</model>
 	<model name="com.liferay.osb.customer.admin.model.AccountEntryLanguage">
 		<field name="accountEntryLanguageId" type="long" />

@@ -41,6 +41,8 @@ public class AccountEntrySoap implements Serializable {
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setKoroneikiAccountKey(model.getKoroneikiAccountKey());
 		soapModel.setDossieraAccountKey(model.getDossieraAccountKey());
+		soapModel.setCorpProjectUuid(model.getCorpProjectUuid());
+		soapModel.setCorpProjectId(model.getCorpProjectId());
 		soapModel.setName(model.getName());
 		soapModel.setCode(model.getCode());
 		soapModel.setInstructions(model.getInstructions());
@@ -49,7 +51,6 @@ public class AccountEntrySoap implements Serializable {
 		soapModel.setLastZendeskAuditDate(model.getLastZendeskAuditDate());
 		soapModel.setStatus(model.getStatus());
 		soapModel.setCorpEntryName(model.getCorpEntryName());
-		soapModel.setCorpProjectUuid(model.getCorpProjectUuid());
 
 		return soapModel;
 	}
@@ -183,6 +184,22 @@ public class AccountEntrySoap implements Serializable {
 		_dossieraAccountKey = dossieraAccountKey;
 	}
 
+	public String getCorpProjectUuid() {
+		return _corpProjectUuid;
+	}
+
+	public void setCorpProjectUuid(String corpProjectUuid) {
+		_corpProjectUuid = corpProjectUuid;
+	}
+
+	public long getCorpProjectId() {
+		return _corpProjectId;
+	}
+
+	public void setCorpProjectId(long corpProjectId) {
+		_corpProjectId = corpProjectId;
+	}
+
 	public String getName() {
 		return _name;
 	}
@@ -255,14 +272,6 @@ public class AccountEntrySoap implements Serializable {
 		_corpEntryName = corpEntryName;
 	}
 
-	public String getCorpProjectUuid() {
-		return _corpProjectUuid;
-	}
-
-	public void setCorpProjectUuid(String corpProjectUuid) {
-		_corpProjectUuid = corpProjectUuid;
-	}
-
 	private long _accountEntryId;
 	private long _companyId;
 	private long _userId;
@@ -273,6 +282,8 @@ public class AccountEntrySoap implements Serializable {
 	private Date _modifiedDate;
 	private String _koroneikiAccountKey;
 	private String _dossieraAccountKey;
+	private String _corpProjectUuid;
+	private long _corpProjectId;
 	private String _name;
 	private String _code;
 	private String _instructions;
@@ -281,6 +292,5 @@ public class AccountEntrySoap implements Serializable {
 	private Date _lastZendeskAuditDate;
 	private int _status;
 	private String _corpEntryName;
-	private String _corpProjectUuid;
 
 }

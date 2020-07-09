@@ -28,6 +28,8 @@ create table OSB_AccountEntry (
 	modifiedDate DATE null,
 	koroneikiAccountKey VARCHAR(75) null,
 	dossieraAccountKey VARCHAR(75) null,
+	corpProjectUuid VARCHAR(75) null,
+	corpProjectId LONG,
 	name VARCHAR(500) null,
 	code_ VARCHAR(75) null,
 	instructions STRING null,
@@ -35,8 +37,7 @@ create table OSB_AccountEntry (
 	activeTicketSupport BOOLEAN,
 	lastZendeskAuditDate DATE null,
 	status INTEGER,
-	corpEntryName VARCHAR(75) null,
-	corpProjectUuid VARCHAR(75) null
+	corpEntryName VARCHAR(75) null
 );
 
 create table OSB_AccountEntryLanguage (

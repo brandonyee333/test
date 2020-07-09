@@ -238,6 +238,160 @@ public interface AccountEntryPersistence extends BasePersistence<AccountEntry> {
 	public int countByDossieraAccountKey(String dossieraAccountKey);
 
 	/**
+	 * Returns all the account entries where name LIKE &#63; and code LIKE &#63;.
+	 *
+	 * @param name the name
+	 * @param code the code
+	 * @return the matching account entries
+	 */
+	public java.util.List<AccountEntry> findByN_C(String name, String code);
+
+	/**
+	 * Returns a range of all the account entries where name LIKE &#63; and code LIKE &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AccountEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param name the name
+	 * @param code the code
+	 * @param start the lower bound of the range of account entries
+	 * @param end the upper bound of the range of account entries (not inclusive)
+	 * @return the range of matching account entries
+	 */
+	public java.util.List<AccountEntry> findByN_C(
+		String name, String code, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the account entries where name LIKE &#63; and code LIKE &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AccountEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param name the name
+	 * @param code the code
+	 * @param start the lower bound of the range of account entries
+	 * @param end the upper bound of the range of account entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching account entries
+	 */
+	public java.util.List<AccountEntry> findByN_C(
+		String name, String code, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<AccountEntry>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the account entries where name LIKE &#63; and code LIKE &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AccountEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param name the name
+	 * @param code the code
+	 * @param start the lower bound of the range of account entries
+	 * @param end the upper bound of the range of account entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching account entries
+	 */
+	public java.util.List<AccountEntry> findByN_C(
+		String name, String code, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<AccountEntry>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first account entry in the ordered set where name LIKE &#63; and code LIKE &#63;.
+	 *
+	 * @param name the name
+	 * @param code the code
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching account entry
+	 * @throws NoSuchAccountEntryException if a matching account entry could not be found
+	 */
+	public AccountEntry findByN_C_First(
+			String name, String code,
+			com.liferay.portal.kernel.util.OrderByComparator<AccountEntry>
+				orderByComparator)
+		throws NoSuchAccountEntryException;
+
+	/**
+	 * Returns the first account entry in the ordered set where name LIKE &#63; and code LIKE &#63;.
+	 *
+	 * @param name the name
+	 * @param code the code
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching account entry, or <code>null</code> if a matching account entry could not be found
+	 */
+	public AccountEntry fetchByN_C_First(
+		String name, String code,
+		com.liferay.portal.kernel.util.OrderByComparator<AccountEntry>
+			orderByComparator);
+
+	/**
+	 * Returns the last account entry in the ordered set where name LIKE &#63; and code LIKE &#63;.
+	 *
+	 * @param name the name
+	 * @param code the code
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching account entry
+	 * @throws NoSuchAccountEntryException if a matching account entry could not be found
+	 */
+	public AccountEntry findByN_C_Last(
+			String name, String code,
+			com.liferay.portal.kernel.util.OrderByComparator<AccountEntry>
+				orderByComparator)
+		throws NoSuchAccountEntryException;
+
+	/**
+	 * Returns the last account entry in the ordered set where name LIKE &#63; and code LIKE &#63;.
+	 *
+	 * @param name the name
+	 * @param code the code
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching account entry, or <code>null</code> if a matching account entry could not be found
+	 */
+	public AccountEntry fetchByN_C_Last(
+		String name, String code,
+		com.liferay.portal.kernel.util.OrderByComparator<AccountEntry>
+			orderByComparator);
+
+	/**
+	 * Returns the account entries before and after the current account entry in the ordered set where name LIKE &#63; and code LIKE &#63;.
+	 *
+	 * @param accountEntryId the primary key of the current account entry
+	 * @param name the name
+	 * @param code the code
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next account entry
+	 * @throws NoSuchAccountEntryException if a account entry with the primary key could not be found
+	 */
+	public AccountEntry[] findByN_C_PrevAndNext(
+			long accountEntryId, String name, String code,
+			com.liferay.portal.kernel.util.OrderByComparator<AccountEntry>
+				orderByComparator)
+		throws NoSuchAccountEntryException;
+
+	/**
+	 * Removes all the account entries where name LIKE &#63; and code LIKE &#63; from the database.
+	 *
+	 * @param name the name
+	 * @param code the code
+	 */
+	public void removeByN_C(String name, String code);
+
+	/**
+	 * Returns the number of account entries where name LIKE &#63; and code LIKE &#63;.
+	 *
+	 * @param name the name
+	 * @param code the code
+	 * @return the number of matching account entries
+	 */
+	public int countByN_C(String name, String code);
+
+	/**
 	 * Caches the account entry in the entity cache if it is enabled.
 	 *
 	 * @param accountEntry the account entry
