@@ -19,6 +19,6 @@ package com.liferay.osb.asah.backend.model;
  */
 public enum JobRunStatus {
 
-	COMPLETED, FAILED, RUNNING
+	COMPLETED, FAILED, PUBLISHED, RUNNING
 
 }
