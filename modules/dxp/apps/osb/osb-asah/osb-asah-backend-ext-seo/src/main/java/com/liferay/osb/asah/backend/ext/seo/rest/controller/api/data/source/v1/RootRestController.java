@@ -19,6 +19,7 @@ import com.liferay.osb.asah.backend.ext.seo.model.SearchKeyword;
 import com.liferay.osb.asah.backend.ext.seo.model.TrafficSource;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.spring.http.Http;
+import com.liferay.osb.asah.common.util.StringUtil;
 
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvFormat;
@@ -30,6 +31,9 @@ import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import java.nio.charset.StandardCharsets;
 
 import java.util.Arrays;
@@ -39,6 +43,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -101,8 +106,8 @@ public class RootRestController {
 			_getCountrySearchKeywordsList(
 				databases, _urlOrganicDisplayLimit, "url_organic", url);
 
-		long organicSearchKeywordsTotalTraffic = _getSearchKeywordsTotalTraffic(
-			organicCountrySearchKeywordsList);
+		long organicSearchKeywordsTotalTraffic =
+			_getOrganicSearchKeywordsTotalTraffic(databases, url);
 
 		List<CountrySearchKeywords> paidCountrySearchKeywordsList =
 			_getCountrySearchKeywordsList(
@@ -179,6 +184,74 @@ public class RootRestController {
 		return databases;
 	}
 
+	private String _getDomain(String url) {
+		try {
+			URI uri = new URI(url);
+
+			String host = uri.getHost();
+
+			if (StringUtil.isNull(host)) {
+				throw new IllegalArgumentException("Invalid URL " + url);
+			}
+
+			if (host.startsWith("www.")) {
+				return host.substring(4);
+			}
+
+			return host;
+		}
+		catch (URISyntaxException uriSyntaxException) {
+			throw new IllegalArgumentException(
+				"Invalid URL " + url, uriSyntaxException);
+		}
+	}
+
+	private long _getOrganicSearchKeywordsTotalTraffic(
+		Set<String> databases, String url) {
+
+		Stream<String> stream = databases.stream();
+
+		String domain = _getDomain(url);
+
+		return stream.mapToLong(
+			database -> _getOrganicSearchKeywordsTotalTraffic(
+				database, domain, url)
+		).sum();
+	}
+
+	private long _getOrganicSearchKeywordsTotalTraffic(
+		String database, String domain, String url) {
+
+		UriComponentsBuilder uriComponentsBuilder =
+			UriComponentsBuilder.fromHttpUrl("https://api.semrush.com/");
+
+		uriComponentsBuilder.queryParam("database", database);
+		uriComponentsBuilder.queryParam("display_filter", "+|Ur|Eq|" + url);
+		uriComponentsBuilder.queryParam("display_limit", 1);
+		uriComponentsBuilder.queryParam("domain", domain);
+		uriComponentsBuilder.queryParam("export_columns", "Tg");
+		uriComponentsBuilder.queryParam(
+			"key", _environment.getProperty("SEMRUSH_API_KEY", _semrushAPIKey));
+		uriComponentsBuilder.queryParam("type", "domain_organic_unique");
+
+		UriComponents uriComponents = uriComponentsBuilder.build();
+
+		ResponseEntity<String> responseEntity = _http.exchangeResponseEntity(
+			uriComponents.toUriString(), null, HttpMethod.GET, null);
+
+		if (!Objects.equals(responseEntity.getStatusCode(), HttpStatus.OK)) {
+			throw new HttpClientErrorException(responseEntity.getStatusCode());
+		}
+
+		return _readFirstCell(
+			responseEntity.getBody()
+		).map(
+			Long::valueOf
+		).orElse(
+			0L
+		);
+	}
+
 	private List<SearchKeyword> _getSearchKeywords(
 		String database, int displayLimit, String type, String url) {
 
@@ -220,6 +293,24 @@ public class RootRestController {
 		).mapToLong(
 			SearchKeyword::getTraffic
 		).sum();
+	}
+
+	private Optional<String> _readFirstCell(String body) {
+		CsvParserSettings csvParserSettings = new CsvParserSettings();
+
+		csvParserSettings.setHeaderExtractionEnabled(true);
+
+		CsvParser csvParser = new CsvParser(csvParserSettings);
+
+		List<String[]> rows = csvParser.parseAll(
+			new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8)));
+
+		Stream<String[]> stream = rows.stream();
+
+		return stream.findFirst(
+		).map(
+			row -> row[0]
+		);
 	}
 
 	private List<SearchKeyword> _toSearchKeywords(String body) {
