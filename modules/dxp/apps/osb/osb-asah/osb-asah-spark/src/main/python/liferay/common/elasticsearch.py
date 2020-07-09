@@ -45,6 +45,17 @@ class ElasticsearchBridge:
 		    format='es', path=self._get_index_path(collection_name, namespace)
 		)
 
+	def search(self, body, collection_name, namespace):
+		response = self.elasticsearch.search(
+		    body=body, index=self._get_index_path(collection_name, namespace)
+		)
+
+		search_hits = response.get('hits')
+
+		documents = [hit.get('_source') for hit in search_hits.get('hits')]
+
+		return documents, search_hits.get('total')
+
 	def update_document(self, collection_name, document, id, namespace):
 		self.elasticsearch.update(
 		    body={'doc': document},
