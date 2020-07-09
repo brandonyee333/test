@@ -174,9 +174,13 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		return " AND ".join(expressions)
 
 	def _get_maximum_days_delta(self):
-		job = self.spark_application.job
+		job_run = self.spark_application.job_run
 
-		return self._training_periods_days_delta.get(job.get('trainingPeriod'))
+		job_run_context = job_run.get('context')
+
+		return self._training_periods_days_delta.get(
+		    job_run_context.get('trainingPeriod')
+		)
 
 	def run(self):
 		data_frame_reader = self.spark_session.read
