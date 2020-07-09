@@ -75,7 +75,12 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 		JSONObject jobRunJSONObject = _faroInfoElasticsearchInvoker.add(
 			"job-runs",
 			JSONUtil.put(
-				"context", new JSONObject()
+				"context",
+				JSONUtil.put(
+					"trainingPeriod",
+					contextJSONObject.optString(
+						"trainingPeriod",
+						jobJSONObject.getString("trainingPeriod")))
 			).put(
 				"createdDate", dateString
 			).put(
