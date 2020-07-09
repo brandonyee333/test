@@ -26,7 +26,7 @@ class CompleteJobRunSparkJob(BaseSparkJob):
 		    'job-runs', {
 		        'completedDate': now,
 		        'lastUpdatedDate': now,
-		        'status': 'COMPLETED'
+		        'status': 'PUBLISHED'
 		    }, self.spark_application_args.job_run_id, 'osbasahfaroinfo'
 		)
 
