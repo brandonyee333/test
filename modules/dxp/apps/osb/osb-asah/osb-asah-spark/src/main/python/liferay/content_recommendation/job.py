@@ -79,6 +79,8 @@ class GenerateUserItemInteractionsSparkJob(BaseSparkJob):
 
 class PublishJobRunSparkJob(BaseSparkJob):
 	def run(self):
+		self._complete_previous_published_job_runs()
+
 		elasticsearch_bridge = self.spark_application.elasticsearch_bridge
 
 		now = datetime.datetime.utcnow()
@@ -90,6 +92,41 @@ class PublishJobRunSparkJob(BaseSparkJob):
 		        'status': 'PUBLISHED'
 		    }, self.spark_application_args.job_run_id, 'osbasahfaroinfo'
 		)
+
+	def _complete_previous_published_job_runs(self):
+		elasticsearch_bridge = self.spark_application.elasticsearch_bridge
+		job = self.spark_application.job
+
+		job_runs, total = elasticsearch_bridge.search(
+		    {
+		        'query':
+		            {
+		                'bool':
+		                    {
+		                        'filter':
+		                            [
+		                                {
+		                                    "term": {
+		                                        "job.id": job.get('id')
+		                                    }
+		                                }, {
+		                                    "term": {
+		                                        "status": 'PUBLISHED'
+		                                    }
+		                                }
+		                            ]
+		                    }
+		            }
+		    }, 'job-runs', 'osbasahfaroinfo'
+		)
+
+		for job_run in job_runs:
+			elasticsearch_bridge.update_document(
+			    'job-runs', {
+			        'lastUpdatedDate': datetime.datetime.utcnow(),
+			        'status': 'COMPLETED'
+			    }, job_run.get('id'), 'osbasahfaroinfo'
+			)
 
 class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 	def __init__(self, spark_application):
