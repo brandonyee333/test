@@ -265,18 +265,31 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 	}
 
 	private void _addOSBAsahTask(JSONObject individualSegmentJSONObject) {
+		_addOSBAsahTask(individualSegmentJSONObject, null);
+	}
+
+	private void _addOSBAsahTask(
+		JSONObject individualSegmentJSONObject,
+		String oldIndividualSegmentName) {
+
 		if (Objects.equals(
 				individualSegmentJSONObject.getString("segmentType"),
 				"DYNAMIC")) {
 
+			JSONObject contextJSONObject = JSONUtil.put(
+				"dateModified",
+				individualSegmentJSONObject.getString("dateModified")
+			).put(
+				"individualSegmentJSONObject", individualSegmentJSONObject
+			);
+
+			if (StringUtils.isNotBlank(oldIndividualSegmentName)) {
+				contextJSONObject.put(
+					"updateSegmentNames", oldIndividualSegmentName);
+			}
+
 			_faroInfoOSBAsahTaskDog.addOSBAsahTask(
-				"UpdateDynamicMembershipsNanite",
-				JSONUtil.put(
-					"dateModified",
-					individualSegmentJSONObject.getString("dateModified")
-				).put(
-					"individualSegmentJSONObject", individualSegmentJSONObject
-				));
+				"UpdateDynamicMembershipsNanite", contextJSONObject);
 		}
 	}
 
