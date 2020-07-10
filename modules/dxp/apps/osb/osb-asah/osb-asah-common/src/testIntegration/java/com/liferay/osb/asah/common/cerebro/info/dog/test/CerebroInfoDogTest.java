@@ -45,7 +45,7 @@ import org.springframework.test.context.ContextConfiguration;
 public class CerebroInfoDogTest {
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		_elasticsearchInvoker = _elasticsearchInvokerFactory.forCerebroInfo();
 
 		_faroInfoElasticsearchInvoker =
@@ -75,9 +75,12 @@ public class CerebroInfoDogTest {
 					"referencedAssetIds", JSONUtil.put("1234")
 				));
 
-		_cerebroInfoDog.updateSegmentNames(individualSegmentJSONObject);
+		individualSegmentJSONObject.put("name", "Test Segment 2");
 
-		JSONArray segmentNamesJSONArray = JSONUtil.put("Test Segment 1");
+		_cerebroInfoDog.updateSegmentNames(
+			individualSegmentJSONObject, "Test Segment 1");
+
+		JSONArray segmentNamesJSONArray = JSONUtil.put("Test Segment 2");
 
 		JSONArray pagesJSONArray = _elasticsearchInvoker.get(
 			"pages", QueryBuilders.termQuery("individualId", "1"));

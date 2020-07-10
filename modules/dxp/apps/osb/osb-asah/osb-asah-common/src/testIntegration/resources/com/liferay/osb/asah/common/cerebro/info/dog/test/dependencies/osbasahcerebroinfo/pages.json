@@ -33,6 +33,7 @@
 		"reads": 2,
 		"region": null,
 		"segmentNames": [
+			"Test Segment 1"
 		],
 		"sessionId": "4",
 		"timeOnPage": 445229,
@@ -75,6 +76,7 @@
 		"reads": null,
 		"region": null,
 		"segmentNames": [
+			"Test Segment 1"
 		],
 		"sessionId": "5",
 		"timeOnPage": 445229,
