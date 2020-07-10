@@ -848,38 +848,18 @@ mariadb.executable=${mariadb.executable}]]></echo>
 			<propertycopy from="search.engine[@{suite.name}]" name="suite.search.engine" silent="true" />
 
 			<if>
-				<isset property="suite.search.engine" />
+				<equals arg1="${suite.search.engine}" arg2="elasticsearch6" />
 				<then>
-					<echo>Preparing search engine: ${suite.search.engine}</echo>
-
-					<if>
-						<equals arg1="${suite.search.engine}" arg2="elasticsearch6" />
-						<then>
-							<ant antfile="build-test-elasticsearch6.xml" inheritAll="false" target="deploy-elasticsearch6" />
-						</then>
-						<elseif>
-							<equals arg1="${suite.search.engine}" arg2="solr" />
-							<then>
-								<ant antfile="build-test-solr.xml" target="deploy-solr" />
-
-								<condition else="${env.TEST_BATCH_NAME}" property="test.batch.name" value="${test.batch.name}">
-									<isset property="test.batch.name" />
-								</condition>
-
-								<if>
-									<not>
-										<contains string="${test.batch.name}" substring="functional" />
-									</not>
-									<then>
-										<property name="com.liferay.portal.search.solr.test.unit.started" value="true" />
-
-										<ant antfile="build-test-solr.xml" target="start-solr" />
-									</then>
-								</if>
-							</then>
-						</elseif>
-					</if>
+					<ant antfile="build-test-elasticsearch6.xml" target="deploy-elasticsearch6" />
 				</then>
+				<elseif>
+					<equals arg1="${suite.search.engine}" arg2="solr" />
+					<then>
+						<property name="com.liferay.portal.search.solr.test.unit.started" value="true" />
+
+						<ant antfile="build-test-solr.xml" target="set-up-solr" />
+					</then>
+				</elseif>
 			</if>
 		</sequential>
 	</macrodef>
@@ -1523,27 +1503,6 @@ app.server.type=@{app.server.type}]]></echo>
 									dest="${liferay.home}/deploy"
 									src="@{test.plugin.zip.url}"
 								/>
-							</then>
-						</if>
-
-						<if>
-							<isset property="env.CI_TEST_SUITE" />
-							<then>
-								<get-testcase-property property.name="osgi.app.includes" />
-
-								<if>
-									<and>
-										<not>
-											<contains string="${osgi.app.includes}" substring="portal-search-elasticsearch6" />
-										</not>
-										<not>
-											<contains string="${osgi.app.includes}" substring="portal-search-solr" />
-										</not>
-									</and>
-									<then>
-										<prepare-suite-search-engine suite.name="${env.CI_TEST_SUITE}" />
-									</then>
-								</if>
 							</then>
 						</if>
 
