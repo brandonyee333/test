@@ -3671,6 +3671,73 @@ go</echo>
 		</sequential>
 	</macrodef>
 
+	<macrodef name="set-up-search-engine">
+		<sequential>
+			<get-testcase-property property.name="remote.elasticsearch.enabled" />
+			<propertycopy from="search.engine[${env.CI_TEST_SUITE}]" name="suite.search.engine" silent="true" />
+
+			<if>
+				<or>
+					<equals arg1="${remote.elasticsearch.enabled}" arg2="true" />
+					<equals arg1="${suite.search.engine}" arg2="remote-elasticsearch2" />
+				</or>
+				<then>
+					<ant antfile="build-test-elasticsearch.xml" target="start-elasticsearch" />
+
+					<get-testcase-property property.name="elastic.kibana.enabled" />
+
+					<if>
+						<equals arg1="${elastic.kibana.enabled}" arg2="true" />
+						<then>
+							<ant antfile="build-test-elasticsearch.xml" target="start-kibana" />
+						</then>
+					</if>
+				</then>
+			</if>
+
+			<get-testcase-property property.name="osgi.app.includes" />
+
+			<if>
+				<and>
+					<contains string="${suite.search.engine}" substring="elasticsearch6" />
+					<not>
+						<contains string="${osgi.app.includes}" substring="portal-search-elasticsearch6" />
+					</not>
+				</and>
+				<then>
+					<ant antfile="build-test-elasticsearch6.xml" target="deploy-elasticsearch6" />
+				</then>
+			</if>
+
+			<get-testcase-property property.name="remote.elasticsearch6.enabled" />
+
+			<if>
+				<or>
+					<equals arg1="${remote.elasticsearch6.enabled}" arg2="true" />
+					<equals arg1="${suite.search.engine}" arg2="remote-elasticsearch6" />
+				</or>
+				<then>
+					<ant antfile="build-test-elasticsearch6.xml" target="start-elasticsearch" />
+				</then>
+			</if>
+
+			<get-testcase-property property.name="solr.enabled" />
+
+			<if>
+				<equals arg1="${solr.enabled}" arg2="true" />
+				<then>
+					<ant antfile="build-test-solr.xml" target="start-solr" />
+				</then>
+				<elseif>
+					<equals arg1="${suite.search.engine}" arg2="solr" />
+					<then>
+						<ant antfile="build-test-solr.xml" target="set-up-solr" />
+					</then>
+				</elseif>
+			</if>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="setup-testable-jboss">
 		<sequential>
 			<setup-testable-jboss-jsp-configuration />
@@ -11868,54 +11935,6 @@ module.framework.properties.blacklist.portal.profile.names=${blacklist.portal.pr
 			</then>
 		</if>
 
-		<get-testcase-property property.name="remote.elasticsearch.enabled" />
-		<propertycopy from="search.engine[${env.CI_TEST_SUITE}]" name="suite.search.engine" silent="true" />
-
-		<if>
-			<or>
-				<equals arg1="${remote.elasticsearch.enabled}" arg2="true" />
-				<equals arg1="${suite.search.engine}" arg2="remote-elasticsearch2" />
-			</or>
-			<then>
-				<ant antfile="build-test-elasticsearch.xml" target="start-elasticsearch" />
-
-				<get-testcase-property property.name="elastic.kibana.enabled" />
-
-				<if>
-					<equals arg1="${elastic.kibana.enabled}" arg2="true" />
-					<then>
-						<ant antfile="build-test-elasticsearch.xml" target="start-kibana" />
-					</then>
-				</if>
-			</then>
-		</if>
-
-		<get-testcase-property property.name="osgi.app.includes" />
-
-		<if>
-			<and>
-				<contains string="${suite.search.engine}" substring="elasticsearch6" />
-				<not>
-					<contains string="${osgi.app.includes}" substring="portal-search-elasticsearch6" />
-				</not>
-			</and>
-			<then>
-				<ant antfile="build-test-elasticsearch6.xml" target="deploy-elasticsearch6" />
-			</then>
-		</if>
-
-		<get-testcase-property property.name="remote.elasticsearch6.enabled" />
-
-		<if>
-			<or>
-				<equals arg1="${remote.elasticsearch6.enabled}" arg2="true" />
-				<equals arg1="${suite.search.engine}" arg2="remote-elasticsearch6" />
-			</or>
-			<then>
-				<ant antfile="build-test-elasticsearch6.xml" target="start-elasticsearch" />
-			</then>
-		</if>
-
 		<get-testcase-property property.name="socks.proxy.enabled" />
 
 		<if>
@@ -11940,28 +11959,6 @@ module.framework.properties.blacklist.portal.profile.names=${blacklist.portal.pr
 
 				<print-file file.name="${liferay.home}/osgi/modules/com.liferay.simple.socks.proxy.SocksProxyConfiguration.cfg" />
 			</then>
-		</if>
-
-		<get-testcase-property property.name="solr.enabled" />
-
-		<if>
-			<equals arg1="${solr.enabled}" arg2="true" />
-			<then>
-				<ant antfile="build-test-solr.xml" target="start-solr" />
-			</then>
-			<elseif>
-				<isset property="env.CI_TEST_SUITE" />
-				<then>
-					<propertycopy from="search.engine[${env.CI_TEST_SUITE}]" name="suite.search.engine" silent="true" />
-
-					<if>
-						<equals arg1="${suite.search.engine}" arg2="solr" />
-						<then>
-							<ant antfile="build-test-solr.xml" target="set-up-solr" />
-						</then>
-					</if>
-				</then>
-			</elseif>
 		</if>
 
 		<get-testcase-property property.name="test.smtp.server.enabled" />
@@ -12017,6 +12014,8 @@ module.framework.properties.blacklist.portal.profile.names=${blacklist.portal.pr
 		<antcall target="deploy-dependency-jars" />
 
 		<antcall target="deploy-extra-apps" />
+
+		<set-up-search-engine />
 
 		<get-testcase-property property.name="osgi.module.configuration.file.names" />
 		<get-testcase-property property.name="osgi.module.configurations" />
