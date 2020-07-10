@@ -57,7 +57,13 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 			_updateDynamicMembershipsForIndividualSegment(
 				dateModified, individualSegmentJSONObject);
 
-			_cerebroInfoDog.updateSegmentNames(individualSegmentJSONObject);
+			if (contextJSONObject.has("updateSegmentNames")) {
+				String oldIndividualSegmentName = contextJSONObject.getString(
+					"updateSegmentNames");
+
+				_cerebroInfoDog.updateSegmentNames(
+					individualSegmentJSONObject, oldIndividualSegmentName);
+			}
 
 			return;
 		}
