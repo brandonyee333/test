@@ -851,7 +851,20 @@ mariadb.executable=${mariadb.executable}]]></echo>
 				<contains string="${suite.search.engine}" substring="elasticsearch6" />
 				<then>
 					<ant antfile="build-test-elasticsearch6.xml" target="deploy-elasticsearch6" />
+
+					<if>
+						<equals arg1="${suite.search.engine}" arg2="remote-elasticsearch6" />
+						<then>
+							<ant antfile="build-test-elasticsearch6.xml" target="start-elasticsearch" />
+						</then>
+					</if>
 				</then>
+				<elseif>
+					<equals arg1="${suite.search.engine}" arg2="remote-elasticsearch2" />
+					<then>
+						<ant antfile="build-test-elasticsearch.xml" target="start-elasticsearch" />
+					</then>
+				</elseif>
 				<elseif>
 					<equals arg1="${suite.search.engine}" arg2="solr" />
 					<then>
