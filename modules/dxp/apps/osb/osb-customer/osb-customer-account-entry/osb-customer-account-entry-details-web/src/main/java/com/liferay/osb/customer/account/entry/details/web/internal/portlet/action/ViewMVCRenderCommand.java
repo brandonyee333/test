@@ -23,6 +23,7 @@ import com.liferay.osb.customer.koroneiki.web.service.AuditEntryWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -62,8 +63,8 @@ public class ViewMVCRenderCommand extends BaseMVCRenderCommand {
 
 		AccountEntrySearchDisplayContext accountEntrySearchDisplayContext =
 			new AccountEntrySearchDisplayContext(
-				renderRequest, renderResponse, themeDisplay,
-				_accountWebService);
+				renderRequest, renderResponse, themeDisplay, _accountWebService,
+				_productWebService);
 
 		renderRequest.setAttribute(
 			AccountEntrySearchDisplayContext.class.getName(),
@@ -133,6 +134,9 @@ public class ViewMVCRenderCommand extends BaseMVCRenderCommand {
 
 	@Reference
 	private ProductPurchaseWebService _productPurchaseWebService;
+
+	@Reference
+	private ProductWebService _productWebService;
 
 	@Reference
 	private TeamWebService _teamWebService;

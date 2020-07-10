@@ -15,8 +15,11 @@
 package com.liferay.osb.customer.account.entry.details.web.internal.display.context;
 
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
@@ -27,6 +30,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,13 +44,15 @@ public class AccountEntrySearchDisplayContext {
 
 	public AccountEntrySearchDisplayContext(
 			PortletRequest portletRequest, MimeResponse mimeResponse,
-			ThemeDisplay themeDisplay, AccountWebService accountWebService)
+			ThemeDisplay themeDisplay, AccountWebService accountWebService,
+			ProductWebService productWebService)
 		throws PortalException {
 
 		_portletRequest = portletRequest;
 		_mimeResponse = mimeResponse;
 		_themeDisplay = themeDisplay;
 		_accountWebService = accountWebService;
+		_productWebService = productWebService;
 	}
 
 	public SearchContainer getAccountsSearchContainer() throws Exception {
@@ -60,7 +66,7 @@ public class AccountEntrySearchDisplayContext {
 			_portletRequest, _mimeResponse.createRenderURL(),
 			Collections.emptyList(), "no-accounts-were-found");
 
-		StringBundler sb = new StringBundler(9);
+		StringBundler sb = new StringBundler(11);
 
 		if (Validator.isNotNull(keywords)) {
 			sb.append("(name eq '");
@@ -80,6 +86,16 @@ public class AccountEntrySearchDisplayContext {
 			sb.append("contactUuids/any(u:u eq '");
 			sb.append(user.getUuid());
 			sb.append("')");
+		}
+
+		String productFilter = getProductsFilter();
+
+		if (Validator.isNotNull(productFilter)) {
+			if (sb.length() > 0) {
+				sb.append(" and ");
+			}
+
+			sb.append(productFilter);
 		}
 
 		int total = (int)_accountWebService.searchCount(
@@ -126,9 +142,57 @@ public class AccountEntrySearchDisplayContext {
 		return false;
 	}
 
+	protected String getProductsFilter() throws Exception {
+		List<Product> products = new ArrayList<>();
+
+		Product product = _productWebService.fetchProductByName(
+			ProductConstants.NAME_GOLD);
+
+		if (product != null) {
+			products.add(product);
+		}
+
+		product = _productWebService.fetchProductByName(
+			ProductConstants.NAME_LIMITED);
+
+		if (product != null) {
+			products.add(product);
+		}
+
+		product = _productWebService.fetchProductByName(
+			ProductConstants.NAME_PLATINUM);
+
+		if (product != null) {
+			products.add(product);
+		}
+
+		if (products.isEmpty()) {
+			return StringPool.BLANK;
+		}
+
+		StringBundler sb = new StringBundler(7);
+
+		sb.append("productKeys/any(s:s eq '");
+
+		for (int i = 0; i < products.size(); i++) {
+			Product curProduct = products.get(i);
+
+			sb.append(curProduct.getKey());
+
+			if ((i + 1) < products.size()) {
+				sb.append("' or s eq '");
+			}
+		}
+
+		sb.append("')");
+
+		return sb.toString();
+	}
+
 	private final AccountWebService _accountWebService;
 	private final MimeResponse _mimeResponse;
 	private final PortletRequest _portletRequest;
+	private final ProductWebService _productWebService;
 	private SearchContainer _searchContainer;
 	private final ThemeDisplay _themeDisplay;
 

@@ -18,11 +18,16 @@ import com.liferay.osb.customer.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.customer.koroneiki.web.service.internal.configuration.KoroneikiConfiguration;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.http.HttpInvoker;
+import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Page;
+import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Pagination;
 import com.liferay.osb.koroneiki.phloem.rest.client.resource.v1_0.ProductResource;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ProductSerDes;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.util.Http;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -62,6 +67,21 @@ public class ProductWebServiceImpl implements ProductWebService {
 		}
 
 		return ProductSerDes.toDTO(httpResponse.getContent());
+	}
+
+	public List<Product> getProducts(
+			String search, String filterString, int page, int pageSize,
+			String sortString)
+		throws Exception {
+
+		Page<Product> productsPage = _productResource.getProductsPage(
+			search, filterString, Pagination.of(page, pageSize), sortString);
+
+		if ((productsPage != null) && (productsPage.getItems() != null)) {
+			return new ArrayList<>(productsPage.getItems());
+		}
+
+		return Collections.emptyList();
 	}
 
 	@Activate

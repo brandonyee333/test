@@ -71,11 +71,16 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 
 							<%
 							List<SupportRegion> supportRegions = accountEntry.getSupportRegions();
-
-							SupportRegion supportRegion = supportRegions.get(0);
 							%>
 
-							<%= HtmlUtil.escape(supportRegion.getName()) %>
+							<c:if test="<%= !supportRegions.isEmpty() %>">
+
+								<%
+								SupportRegion supportRegion = supportRegions.get(0);
+								%>
+
+								<%= HtmlUtil.escape(supportRegion.getName()) %>
+							</c:if>
 						</c:if>
 					</td>
 				</tr>
