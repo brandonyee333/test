@@ -603,7 +603,9 @@ type QueryType {
 		channelId: String,
 		country: String,
 		deviceType: String,
-		rangeKey: Int!
+		rangeEnd: String,
+		rangeKey: Int,
+		rangeStart: String
 	): [PageMetric]
 
 	assets(
