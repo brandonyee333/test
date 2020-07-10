@@ -39,6 +39,10 @@ public interface AccountWebService {
 			String contactUuid, int page, int pageSize)
 		throws Exception;
 
+	public List<Account> getTeamAssignedAccounts(
+			String teamKey, int page, int pageSize)
+		throws Exception;
+
 	public List<Account> search(
 			String search, String filterString, int page, int pageSize,
 			String sortString)

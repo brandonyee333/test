@@ -97,6 +97,21 @@ public class AccountWebServiceImpl implements AccountWebService {
 		return Collections.emptyList();
 	}
 
+	public List<Account> getTeamAssignedAccounts(
+			String teamKey, int page, int pageSize)
+		throws Exception {
+
+		Page<Account> accountsPage =
+			_accountResource.getTeamTeamKeyAssignedAccountsPage(
+				teamKey, Pagination.of(page, pageSize));
+
+		if ((accountsPage != null) && (accountsPage.getItems() != null)) {
+			return new ArrayList<>(accountsPage.getItems());
+		}
+
+		return Collections.emptyList();
+	}
+
 	public List<Account> search(
 			String search, String filterString, int page, int pageSize,
 			String sortString)
@@ -139,7 +154,7 @@ public class AccountWebServiceImpl implements AccountWebService {
 		).header(
 			"API_Token", koroneikiConfiguration.apiToken()
 		).parameter(
-			"nestedFields", "productPurchases"
+			"nestedFields", "assignedTeams,productPurchases"
 		).build();
 
 		AccountResource.Builder nestedFieldsBuilder = AccountResource.builder();

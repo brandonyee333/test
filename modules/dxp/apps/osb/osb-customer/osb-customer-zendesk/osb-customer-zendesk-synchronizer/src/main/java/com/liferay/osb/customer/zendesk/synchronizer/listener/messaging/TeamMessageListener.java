@@ -14,8 +14,10 @@
 
 package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 
+import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.zendesk.synchronizer.AccountSynchronizer;
 import com.liferay.osb.customer.zendesk.synchronizer.constants.ZendeskDestinationNames;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.TeamSerDes;
@@ -30,6 +32,7 @@ import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 
 import java.util.Dictionary;
+import java.util.List;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -102,16 +105,20 @@ public class TeamMessageListener extends BaseMessageListener {
 				continue;
 			}
 
-			//TODO
+			List<Account> accounts = _accountWebService.getTeamAssignedAccounts(
+				team.getKey(), 1, 1000);
 
-			// LHC-1836
-			// update all accounts assigned to team
-
+			for (Account account : accounts) {
+				_accountSynchronizer.update(account);
+			}
 		}
 	}
 
 	@Reference
 	private AccountSynchronizer _accountSynchronizer;
+
+	@Reference
+	private AccountWebService _accountWebService;
 
 	private volatile BundleContext _bundleContext;
 

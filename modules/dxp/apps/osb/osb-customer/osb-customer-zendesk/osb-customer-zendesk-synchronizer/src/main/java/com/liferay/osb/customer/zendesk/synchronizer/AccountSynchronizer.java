@@ -414,8 +414,7 @@ public class AccountSynchronizer {
 				name.equals(ProductConstants.NAME_PLATINUM) ||
 				name.equals(ProductConstants.NAME_SILVER)) {
 
-				return StringUtil.replace(
-					name, " Subscription", StringPool.BLANK);
+				return StringUtil.removeSubstring(name, " Subscription");
 			}
 		}
 
