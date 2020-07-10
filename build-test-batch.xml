@@ -848,7 +848,7 @@ mariadb.executable=${mariadb.executable}]]></echo>
 			<propertycopy from="search.engine[@{suite.name}]" name="suite.search.engine" silent="true" />
 
 			<if>
-				<equals arg1="${suite.search.engine}" arg2="elasticsearch6" />
+				<contains string="${suite.search.engine}" substring="elasticsearch6" />
 				<then>
 					<ant antfile="build-test-elasticsearch6.xml" target="deploy-elasticsearch6" />
 				</then>

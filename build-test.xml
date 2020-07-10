@@ -11873,7 +11873,7 @@ module.framework.properties.blacklist.portal.profile.names=${blacklist.portal.pr
 
 		<if>
 			<and>
-				<equals arg1="${suite.search.engine}" arg2="elasticsearch6" />
+				<contains string="${suite.search.engine}" substring="elasticsearch6" />
 				<not>
 					<contains string="${osgi.app.includes}" substring="portal-search-elasticsearch6" />
 				</not>
