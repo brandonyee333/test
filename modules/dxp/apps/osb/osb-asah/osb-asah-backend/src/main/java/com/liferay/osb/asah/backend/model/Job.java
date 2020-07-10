@@ -106,6 +106,11 @@ public class Job {
 		return _name;
 	}
 
+	@JsonProperty("osbAsahTaskId")
+	public String getOSBAsahTaskId() {
+		return _osbAsahTaskId;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(
@@ -151,6 +156,10 @@ public class Job {
 		_name = name;
 	}
 
+	public void setOSBAsahTaskId(String osbAsahTaskId) {
+		_osbAsahTaskId = osbAsahTaskId;
+	}
+
 	protected boolean equalsJob(Job job) {
 		if (Objects.equals(_createdDate, job._createdDate) &&
 			Objects.equals(_id, job._id) &&
@@ -175,5 +184,6 @@ public class Job {
 	private JobType _jobType;
 	private Date _lastUpdatedDate;
 	private String _name;
+	private String _osbAsahTaskId;
 
 }
