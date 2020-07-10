@@ -16,6 +16,7 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.InterestScoreArm;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAssetDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoInterestDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
@@ -91,8 +92,15 @@ public class InterestThresholdScoreNanite extends BaseNanite {
 				return null;
 			}
 		).setQueryBuilder(
-			QueryBuilders.regexpQuery(
-				"filter", ".*interests.filter\\(filter='.*score eq ''true''.*")
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.regexpQuery(
+					"filter",
+					".*interests.filter\\(filter='.*score eq ''true''.*")
+			).filter(
+				QueryBuilders.termQuery("state", "READY")
+			).filter(
+				QueryBuilders.termQuery("status", "ACTIVE")
+			)
 		).iterate();
 
 		_faroInfoInterestDog.clearCache();
