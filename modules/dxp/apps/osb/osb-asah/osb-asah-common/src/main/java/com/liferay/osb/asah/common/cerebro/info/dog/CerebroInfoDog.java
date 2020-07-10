@@ -45,12 +45,11 @@ public class CerebroInfoDog {
 	@PostConstruct
 	public void init() {
 		_elasticsearchInvoker = _elasticsearchInvokerFactory.forCerebroInfo();
-
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
 	}
 
-	public void updateSegmentNames(JSONObject individualSegmentJSONObject)
+	public void updateSegmentNames(
+			JSONObject individualSegmentJSONObject,
+			String oldIndividualSegmentName)
 		throws Exception {
 
 		String channelId = individualSegmentJSONObject.optString(
@@ -80,10 +79,15 @@ public class CerebroInfoDog {
 				collectionName, _elasticsearchInvoker,
 				jsonObject -> _updateSegmentNames(
 					collectionName, elasticsearchBulkRequestBuilder,
-					individualSegmentJSONObject.getString("id"),
-					individualSegmentJSONObject.getString("name"), jsonObject)
+					individualSegmentJSONObject.getString("name"), jsonObject,
+					oldIndividualSegmentName)
 			).setQueryBuilder(
-				QueryBuilders.termQuery("channelId", channelId)
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery("channelId", channelId)
+				).filter(
+					QueryBuilders.termQuery(
+						"segmentNames", oldIndividualSegmentName)
+				)
 			).setStopOnExceptions(
 				false
 			).iterate();
@@ -93,24 +97,8 @@ public class CerebroInfoDog {
 	private ElasticsearchBulkRequestBuilder _updateSegmentNames(
 		String collectionName,
 		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder,
-		String individualSegmentId, String individualSegmentName,
-		JSONObject jsonObject) {
-
-		JSONArray individualJSONArray = _faroInfoElasticsearchInvoker.get(
-			"individuals",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery(
-					"id", jsonObject.getString("individualId"))
-			).filter(
-				QueryBuilders.termQuery(
-					"individualSegmentIds", individualSegmentId)
-			));
-
-		if ((individualJSONArray == null) ||
-			(individualJSONArray.length() == 0)) {
-
-			return elasticsearchBulkRequestBuilder;
-		}
+		String individualSegmentName, JSONObject jsonObject,
+		String oldIndividualSegmentName) {
 
 		JSONArray segmentNamesJSONArray = jsonObject.getJSONArray(
 			"segmentNames");
@@ -118,9 +106,7 @@ public class CerebroInfoDog {
 		List<String> segmentNames = JSONUtil.toStringList(
 			segmentNamesJSONArray);
 
-		if (segmentNames.contains(individualSegmentName)) {
-			return elasticsearchBulkRequestBuilder;
-		}
+		segmentNames.remove(oldIndividualSegmentName);
 
 		segmentNames.add(individualSegmentName);
 
@@ -145,7 +131,5 @@ public class CerebroInfoDog {
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 }
