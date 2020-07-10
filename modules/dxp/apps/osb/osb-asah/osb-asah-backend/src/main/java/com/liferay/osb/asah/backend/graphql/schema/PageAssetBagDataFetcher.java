@@ -26,6 +26,9 @@ import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,9 +45,21 @@ public class PageAssetBagDataFetcher
 	public ResultBag<PageAsset> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
+		Function<Map<String, Object>, PropertyFilter> mapperFunction =
+			propertyFilterMap -> {
+				PropertyFilter propertyFilter = PropertyFilter.of(
+					propertyFilterMap);
+
+				if (Objects.equals(propertyFilter.getPropertyName(), "title")) {
+					propertyFilter.setPropertyName("name");
+				}
+
+				return propertyFilter;
+			};
+
 		List<PropertyFilter> propertyFilters = ListUtil.map(
 			dataFetchingEnvironment.getArgument("propertyFilters"),
-			PropertyFilter::of);
+			mapperFunction);
 
 		return _assetDog.getPageAssetResultBag(
 			dataFetchingEnvironment.getArgument("keywords"), propertyFilters,
