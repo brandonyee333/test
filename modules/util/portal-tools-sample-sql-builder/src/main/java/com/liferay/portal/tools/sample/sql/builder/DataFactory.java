@@ -158,14 +158,12 @@ import com.liferay.message.boards.model.impl.MBStatsUserModelImpl;
 import com.liferay.message.boards.model.impl.MBThreadFlagModelImpl;
 import com.liferay.message.boards.model.impl.MBThreadModelImpl;
 import com.liferay.message.boards.social.MBActivityKeys;
+import com.liferay.petra.io.unsync.UnsyncBufferedReader;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.io.OutputStreamWriter;
-import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
-import com.liferay.portal.kernel.io.unsync.UnsyncBufferedWriter;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.metadata.RawMetadataProcessor;
 import com.liferay.portal.kernel.model.AccountModel;
@@ -275,13 +273,10 @@ import com.liferay.wiki.model.impl.WikiPageModelImpl;
 import com.liferay.wiki.model.impl.WikiPageResourceModelImpl;
 import com.liferay.wiki.social.WikiActivityKeys;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.Writer;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -312,29 +307,6 @@ public class DataFactory {
 	public DataFactory() throws Exception {
 		_simpleDateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"yyyy-MM-dd HH:mm:ss", TimeZone.getDefault());
-
-		File outputDir = new File(BenchmarksPropsValues.OUTPUT_DIR);
-
-		outputDir.mkdirs();
-
-		for (String csvFileName : BenchmarksPropsValues.OUTPUT_CSV_FILE_NAMES) {
-			_csvWriters.put(
-				csvFileName,
-				new UnsyncBufferedWriter(
-					new OutputStreamWriter(
-						new FileOutputStream(
-							new File(outputDir, csvFileName.concat(".csv")))),
-					_WRITER_BUFFER_SIZE) {
-
-					@Override
-					public void flush() {
-
-						// Disable FreeMarker from flushing
-
-					}
-
-				});
-		}
 
 		_counter = new SimpleCounter(BenchmarksPropsValues.MAX_GROUP_COUNT + 1);
 		_timeCounter = new SimpleCounter();
@@ -375,44 +347,45 @@ public class DataFactory {
 		_sampleUserId = _counter.get();
 		_userPersonalSiteGroupId = _counter.get();
 
-		_dlDDMStructureContent = _readFile("ddm_structure_basic_document.json");
+		_cpDefinitionCount =
+			BenchmarksPropsValues.MAX_COMMERCE_PRODUCT_COUNT *
+				BenchmarksPropsValues.MAX_COMMERCE_PRODUCT_DEFINITION_COUNT;
+
+		_dlDDMStructureContent = _readFile(
+			DataFactoryConstants.DL_DDM_STRUCTURE_CONTENT);
 		_dlDDMStructureLayoutContent = _readFile(
-			"ddm_structure_layout_basic_document.json");
+			DataFactoryConstants.DL_DDM_STRUCTURE_LAYOUT_CONTENT);
 		_journalDDMStructureContent = _readFile(
-			"ddm_structure_basic_web_content.json");
+			DataFactoryConstants.JOURNAL_DDM_STRUCTURE_CONTENT);
 		_journalDDMStructureLayoutContent = _readFile(
-			"ddm_structure_layout_basic_web_content.json");
+			DataFactoryConstants.JOURNAL_DDM_STRUCTURE_LAYOUT_CONTENT);
 
 		_defaultAssetPublisherPortletPreferencesImpl =
 			(PortletPreferencesImpl)_portletPreferencesFactory.fromDefaultXML(
-				_readFile("default_asset_publisher_preference.xml"));
+				_readFile(
+					DataFactoryConstants.DEFAULT_ASSET_PUBLISHER_PREFERENCE));
+
+		_defaultDLDDMStructureId = _counter.get();
+		_defaultJournalDDMStructureId = _counter.get();
+		_defaultDDLDDMStructureVersionId = _counter.get();
+		_defaultDLDDMStructureVersionId = _counter.get();
+		_defaultJournalDDMStructureVersionId = _counter.get();
+		_defaultJournalDDMTemplateId = _counter.get();
+
+		_commerceCatalogId = _counter.get();
+		_commerceChannelId = _counter.get();
+
+		_cPTaxCategoryId = _counter.get();
 
 		initAssetCategoryModels();
 		initAssetTagModels();
-		initCommerceCurrencyModel();
-		initCommerceCatalogModel();
-		initCommerceChannelModel();
-		initCommerceProductModels();
-		initDLFileEntryTypeModel();
-		initGroupModels();
+
+		initCommerceIds();
 
 		initJournalArticleContent();
 
 		initRoleModels();
 		initUserNames();
-	}
-
-	public void closeCSVWriters() throws IOException {
-		for (Writer writer : _csvWriters.values()) {
-			writer.close();
-		}
-	}
-
-	public ResourcePermissionModel commerceCatalogResourcePermission() {
-		return newResourcePermissionModel(
-			CommerceCatalog.class.getName(),
-			String.valueOf(_commerceCatalogModel.getCommerceCatalogId()),
-			_guestRoleModel.getRoleId(), _sampleUserId);
 	}
 
 	public RoleModel getAdministratorRoleModel() {
@@ -478,10 +451,6 @@ public class DataFactory {
 		}
 
 		return allAssetCategoryModels;
-	}
-
-	public List<AssetEntryModel> getAssetEntryModels() {
-		return new ArrayList<>(_assetEntryModels);
 	}
 
 	public List<Long> getAssetTagIds(AssetEntryModel assetEntryModel) {
@@ -570,107 +539,12 @@ public class DataFactory {
 		return _classNameModels.values();
 	}
 
-	public GroupModel getCommerceCatalogGroupModel() {
-		return _commerceCatalogGroupModel;
-	}
-
-	public CommerceCatalogModel getCommerceCatalogModel() {
-		return _commerceCatalogModel;
-	}
-
-	public GroupModel getCommerceChannelGroupModel() {
-		return _commerceChannelGroupModel;
-	}
-
-	public CommerceChannelModel getCommerceChannelModel() {
-		return _commerceChannelModel;
-	}
-
-	public CommerceCurrencyModel getCommerceCurrencyModel() {
-		return _commerceCurrencyModel;
-	}
-
 	public long getCounterNext() {
 		return _counter.get();
 	}
 
-	public List<CPDefinitionLocalizationModel>
-		getCPDefinitionLocalizationModels() {
-
-		return new ArrayList<>(_cpDefinitionLocalizationModels);
-	}
-
-	public List<CPDefinitionModel> getCPDefinitionModels() {
-		return new ArrayList<>(_cpDefinitionModels);
-	}
-
-	public List<CPFriendlyURLEntryModel> getCPFriendlyURLEntryModels() {
-		return new ArrayList<>(_cpFriendlyURLEntryModels);
-	}
-
-	public List<CPInstanceModel> getCPInstanceModels() {
-		return new ArrayList<>(_cpInstanceModels);
-	}
-
-	public List<CProductModel> getCProductModels() {
-		return new ArrayList<>(_cProductModels);
-	}
-
-	public List<CPTaxCategoryModel> getCPTaxCategoryModels() {
-		return new ArrayList<>(_cpTaxCategoryModels);
-	}
-
-	public Writer getCSVWriter(String csvFileName) {
-		Writer writer = _csvWriters.get(csvFileName);
-
-		if (writer == null) {
-			throw new IllegalArgumentException(
-				"Unknown CSV file name: " + csvFileName);
-		}
-
-		return writer;
-	}
-
 	public long getDefaultDLDDMStructureId() {
-		return _defaultDLDDMStructureModel.getStructureId();
-	}
-
-	public DDMStructureLayoutModel getDefaultDLDDMStructureLayoutModel() {
-		return _defaultDLDDMStructureLayoutModel;
-	}
-
-	public DDMStructureModel getDefaultDLDDMStructureModel() {
-		return _defaultDLDDMStructureModel;
-	}
-
-	public DDMStructureVersionModel getDefaultDLDDMStructureVersionModel() {
-		return _defaultDLDDMStructureVersionModel;
-	}
-
-	public DLFileEntryTypeModel getDefaultDLFileEntryTypeModel() {
-		return _defaultDLFileEntryTypeModel;
-	}
-
-	public DDMStructureLayoutModel getDefaultJournalDDMStructureLayoutModel() {
-		return _defaultJournalDDMStructureLayoutModel;
-	}
-
-	public DDMStructureModel getDefaultJournalDDMStructureModel() {
-		return _defaultJournalDDMStructureModel;
-	}
-
-	public DDMStructureVersionModel
-		getDefaultJournalDDMStructureVersionModel() {
-
-		return _defaultJournalDDMStructureVersionModel;
-	}
-
-	public DDMTemplateModel getDefaultJournalDDMTemplateModel() {
-		return _defaultJournalDDMTemplateModel;
-	}
-
-	public DDMTemplateVersionModel getDefaultJournalDDMTemplateVersionModel() {
-		return _defaultJournalDDMTemplateVersionModel;
+		return _defaultDLDDMStructureId;
 	}
 
 	public long getDLFileEntryClassNameId() {
@@ -833,14 +707,15 @@ public class DataFactory {
 
 				sb.setIndex(0);
 
-				sb.append("TestVocabulary_");
+				sb.append(DataFactoryConstants.ASSET_VOCABULARY_NAME_PREFIX);
 				sb.append(i);
 				sb.append(StringPool.UNDERLINE);
 				sb.append(j);
 
 				AssetVocabularyModel assetVocabularyModel =
 					newAssetVocabularyModel(
-						i, _sampleUserId, _SAMPLE_USER_NAME, sb.toString());
+						i, _sampleUserId, DataFactoryConstants.SAMPLE_USER_NAME,
+						sb.toString());
 
 				assetVocabularyModels.add(assetVocabularyModel);
 
@@ -849,7 +724,7 @@ public class DataFactory {
 
 					sb.setIndex(0);
 
-					sb.append("TestCategory_");
+					sb.append(DataFactoryConstants.ASSET_CATEGORY_NAME_PREFIX);
 					sb.append(assetVocabularyModel.getVocabularyId());
 					sb.append(StringPool.UNDERLINE);
 					sb.append(k);
@@ -910,11 +785,13 @@ public class DataFactory {
 				assetTagModel.setGroupId(i);
 				assetTagModel.setCompanyId(_companyId);
 				assetTagModel.setUserId(_sampleUserId);
-				assetTagModel.setUserName(_SAMPLE_USER_NAME);
+				assetTagModel.setUserName(
+					DataFactoryConstants.SAMPLE_USER_NAME);
 				assetTagModel.setCreateDate(new Date());
 				assetTagModel.setModifiedDate(new Date());
 				assetTagModel.setName(
-					StringBundler.concat("TestTag_", i, "_", j));
+					StringBundler.concat(
+						DataFactoryConstants.ASSET_TAG_NAME_PREFIX, i, "_", j));
 				assetTagModel.setLastPublishDate(new Date());
 
 				assetTagModels.add(assetTagModel);
@@ -944,95 +821,9 @@ public class DataFactory {
 		}
 	}
 
-	public void initCommerceCatalogModel() {
-		_commerceCatalogModel = new CommerceCatalogModelImpl();
-
-		_commerceCatalogModel.setCommerceCatalogId(_counter.get());
-		_commerceCatalogModel.setCompanyId(_companyId);
-		_commerceCatalogModel.setUserName(_SAMPLE_USER_NAME);
-		_commerceCatalogModel.setCreateDate(new Date());
-		_commerceCatalogModel.setModifiedDate(new Date());
-		_commerceCatalogModel.setName("Master");
-		_commerceCatalogModel.setCommerceCurrencyCode(
-			_commerceCurrencyModel.getCode());
-		_commerceCatalogModel.setCatalogDefaultLanguageId("en_US");
-		_commerceCatalogModel.setSystem(true);
-	}
-
-	public void initCommerceChannelModel() {
-		_commerceChannelModel = new CommerceChannelModelImpl();
-
-		_commerceChannelModel.setCommerceChannelId(_counter.get());
-		_commerceChannelModel.setCompanyId(_companyId);
-		_commerceChannelModel.setUserId(_sampleUserId);
-		_commerceChannelModel.setUserName(_SAMPLE_USER_NAME);
-		_commerceChannelModel.setCreateDate(new Date());
-		_commerceChannelModel.setModifiedDate(new Date());
-		_commerceChannelModel.setSiteGroupId(1);
-		_commerceChannelModel.setName(_SAMPLE_USER_NAME + " Channel");
-		_commerceChannelModel.setType("site");
-		_commerceChannelModel.setTypeSettings(String.valueOf(_guestGroupId));
-		_commerceChannelModel.setCommerceCurrencyCode(
-			_commerceCurrencyModel.getCode());
-	}
-
-	public void initCommerceCurrencyModel() {
-		_commerceCurrencyModel = new CommerceCurrencyModelImpl();
-
-		_commerceCurrencyModel.setUuid(SequentialUUID.generate());
-		_commerceCurrencyModel.setCommerceCurrencyId(_counter.get());
-		_commerceCurrencyModel.setCompanyId(_companyId);
-		_commerceCurrencyModel.setUserId(_sampleUserId);
-		_commerceCurrencyModel.setUserName(_SAMPLE_USER_NAME);
-		_commerceCurrencyModel.setCreateDate(new Date());
-		_commerceCurrencyModel.setModifiedDate(new Date());
-		_commerceCurrencyModel.setCode("USD");
-
-		String name = StringBundler.concat(
-			"<?xml version=\"1.0\" encoding=\"UTF-8\"?><root available-locales",
-			"=\"en_US\" default-locale=\"en_US\"><Name language-id=\"en_US\">",
-			"US Dollar</Name></root>");
-
-		_commerceCurrencyModel.setName(name);
-
-		_commerceCurrencyModel.setRate(BigDecimal.valueOf(1));
-
-		String formatPattern = StringBundler.concat(
-			"<?xml version=\"1.0\" encoding=\"UTF-8\"?><root available-locales",
-			"=\"en_US\" default-locale=\"en_US\"><FormatPattern language-id",
-			"=\"en_US\">$###,##0.00</FormatPattern></root>");
-
-		_commerceCurrencyModel.setFormatPattern(formatPattern);
-
-		_commerceCurrencyModel.setMaxFractionDigits(2);
-		_commerceCurrencyModel.setMinFractionDigits(2);
-		_commerceCurrencyModel.setRoundingMode("HALF_EVEN");
-		_commerceCurrencyModel.setPrimary(true);
-		_commerceCurrencyModel.setPriority(1);
-		_commerceCurrencyModel.setActive(true);
-		_commerceCurrencyModel.setLastPublishDate(new Date());
-	}
-
-	public void initCommerceProductModels() {
-		CPTaxCategoryModel cpTaxCategoryModel = newCPTaxCategoryModel(
-			"Normal Product");
-
-		_cpTaxCategoryModels = Collections.singletonList(cpTaxCategoryModel);
-
-		_cProductModels = new ArrayList<>(
+	public void initCommerceIds() {
+		_cpDefinitionIdList = new ArrayList<>(
 			BenchmarksPropsValues.MAX_COMMERCE_PRODUCT_COUNT);
-
-		int cpDefinitionCount =
-			BenchmarksPropsValues.MAX_COMMERCE_PRODUCT_COUNT *
-				BenchmarksPropsValues.MAX_COMMERCE_PRODUCT_DEFINITION_COUNT;
-
-		_assetEntryModels = new ArrayList<>(cpDefinitionCount);
-		_cpDefinitionLocalizationModels = new ArrayList<>(cpDefinitionCount);
-		_cpDefinitionModels = new ArrayList<>(cpDefinitionCount);
-		_cpFriendlyURLEntryModels = new ArrayList<>(cpDefinitionCount);
-		_cpInstanceModels = new ArrayList<>(
-			cpDefinitionCount *
-				BenchmarksPropsValues.MAX_COMMERCE_PRODUCT_INSTANCE_COUNT);
 
 		for (int productIndex = 0;
 			 productIndex < BenchmarksPropsValues.MAX_COMMERCE_PRODUCT_COUNT;
@@ -1041,6 +832,8 @@ public class DataFactory {
 			long[] cpDefinitionIds = new long
 				[BenchmarksPropsValues.MAX_COMMERCE_PRODUCT_DEFINITION_COUNT];
 
+			_cProductIds.add(_counter.get());
+
 			for (int i = 0;
 				 i <
 					 BenchmarksPropsValues.
@@ -1048,130 +841,19 @@ public class DataFactory {
 				 i++) {
 
 				cpDefinitionIds[i] = _counter.get();
+				_cpDefinitionLocalizationNames.put(
+					cpDefinitionIds[i],
+					DataFactoryConstants.CPFRIENDLYURL_TITLE_PREFIX +
+						cpDefinitionIds[i]);
 			}
 
-			long cProductId = _counter.get();
-
-			CProductModel cProductModel = newCProductModel(
-				_commerceCatalogGroupId, cProductId,
+			_publishedCPDefinitionIds.add(
 				cpDefinitionIds
 					[BenchmarksPropsValues.
 						MAX_COMMERCE_PRODUCT_DEFINITION_COUNT - 1]);
 
-			_cProductModels.add(cProductModel);
-
-			for (int definitionIndex = 0;
-				 definitionIndex <
-					 BenchmarksPropsValues.
-						 MAX_COMMERCE_PRODUCT_DEFINITION_COUNT;
-				 definitionIndex++) {
-
-				long cpDefinitionId = cpDefinitionIds[definitionIndex];
-
-				CPDefinitionLocalizationModel cpDefinitionLocalizationModel =
-					newCPDefinitionLocalizationModel(cpDefinitionId);
-
-				_cpDefinitionLocalizationModels.add(
-					cpDefinitionLocalizationModel);
-
-				_cpDefinitionModels.add(
-					newCPDefinitionModel(
-						_commerceCatalogGroupId, cpDefinitionId, cProductId,
-						cpTaxCategoryModel.getCPTaxCategoryId(),
-						definitionIndex + 1));
-
-				_assetEntryModels.add(
-					newAssetEntryModel(
-						_commerceCatalogGroupId, new Date(), new Date(),
-						getClassNameId(CPDefinition.class), cpDefinitionId,
-						SequentialUUID.generate(), 0, true, true, "text/plain",
-						cpDefinitionLocalizationModel.getName()));
-
-				_cpFriendlyURLEntryModels.add(
-					newCPFriendlyURLEntryModel(cProductModel));
-
-				for (int instanceIndex = 0;
-					 instanceIndex <
-						 BenchmarksPropsValues.
-							 MAX_COMMERCE_PRODUCT_INSTANCE_COUNT;
-					 instanceIndex++) {
-
-					_cpInstanceModels.add(
-						newCPInstanceModel(
-							_commerceCatalogGroupId, cpDefinitionId,
-							instanceIndex));
-				}
-			}
+			_cpDefinitionIdList.add(cpDefinitionIds);
 		}
-	}
-
-	public void initDLFileEntryTypeModel() {
-		_defaultDLFileEntryTypeModel = new DLFileEntryTypeModelImpl();
-
-		_defaultDLFileEntryTypeModel.setUuid(SequentialUUID.generate());
-		_defaultDLFileEntryTypeModel.setFileEntryTypeId(
-			DLFileEntryTypeConstants.FILE_ENTRY_TYPE_ID_BASIC_DOCUMENT);
-		_defaultDLFileEntryTypeModel.setCreateDate(nextFutureDate());
-		_defaultDLFileEntryTypeModel.setModifiedDate(nextFutureDate());
-		_defaultDLFileEntryTypeModel.setFileEntryTypeKey(
-			StringUtil.toUpperCase(
-				DLFileEntryTypeConstants.NAME_BASIC_DOCUMENT));
-
-		StringBundler sb = new StringBundler(4);
-
-		sb.append("<?xml version=\"1.0\"?><root available-locales=\"en_US\" ");
-		sb.append("default-locale=\"en_US\"><name language-id=\"en_US\">");
-		sb.append(DLFileEntryTypeConstants.NAME_BASIC_DOCUMENT);
-		sb.append("</name></root>");
-
-		_defaultDLFileEntryTypeModel.setName(sb.toString());
-
-		_defaultDLFileEntryTypeModel.setLastPublishDate(nextFutureDate());
-
-		_defaultDLDDMStructureModel = newDDMStructureModel(
-			_globalGroupId, _defaultUserId, getClassNameId(DLFileEntry.class),
-			RawMetadataProcessor.TIKA_RAW_METADATA, _dlDDMStructureContent);
-
-		_defaultDLDDMStructureVersionModel = newDDMStructureVersionModel(
-			_defaultDLDDMStructureModel);
-
-		_defaultDLDDMStructureLayoutModel = newDDMStructureLayoutModel(
-			_globalGroupId, _defaultUserId,
-			_defaultDLDDMStructureVersionModel.getStructureVersionId(),
-			_dlDDMStructureLayoutContent);
-
-		_defaultJournalDDMStructureModel = newDDMStructureModel(
-			_globalGroupId, _defaultUserId,
-			getClassNameId(JournalArticle.class), "BASIC-WEB-CONTENT",
-			_journalDDMStructureContent);
-
-		_defaultJournalDDMStructureVersionModel = newDDMStructureVersionModel(
-			_defaultJournalDDMStructureModel);
-
-		_defaultJournalDDMStructureLayoutModel = newDDMStructureLayoutModel(
-			_globalGroupId, _defaultUserId,
-			_defaultJournalDDMStructureVersionModel.getStructureVersionId(),
-			_journalDDMStructureLayoutContent);
-
-		_defaultJournalDDMTemplateModel = newDDMTemplateModel(
-			_globalGroupId, _defaultUserId,
-			_defaultJournalDDMStructureModel.getStructureId(),
-			getClassNameId(JournalArticle.class));
-
-		_defaultJournalDDMTemplateVersionModel = newDDMTemplateVersionModel(
-			_defaultJournalDDMTemplateModel);
-	}
-
-	public void initGroupModels() {
-		_commerceChannelGroupModel = newGroupModel(
-			_commerceChannelGroupId, getClassNameId(CommerceChannel.class),
-			_commerceChannelModel.getCommerceChannelId(),
-			_commerceChannelModel.getName(), false);
-
-		_commerceCatalogGroupModel = newGroupModel(
-			_commerceCatalogGroupId, getClassNameId(CommerceCatalog.class),
-			_commerceCatalogModel.getCommerceCatalogId(),
-			_commerceCatalogModel.getName(), false);
 	}
 
 	public void initJournalArticleContent() {
@@ -1284,7 +966,8 @@ public class DataFactory {
 		_firstNames = new ArrayList<>();
 
 		UnsyncBufferedReader unsyncBufferedReader = new UnsyncBufferedReader(
-			new InputStreamReader(getResourceInputStream("first_names.txt")));
+			new InputStreamReader(
+				getResourceInputStream(DataFactoryConstants.FIRST_NAME_LIST)));
 
 		String line = null;
 
@@ -1297,7 +980,8 @@ public class DataFactory {
 		_lastNames = new ArrayList<>();
 
 		unsyncBufferedReader = new UnsyncBufferedReader(
-			new InputStreamReader(getResourceInputStream("last_names.txt")));
+			new InputStreamReader(
+				getResourceInputStream(DataFactoryConstants.LAST_NAME_LIST)));
 
 		while ((line = unsyncBufferedReader.readLine()) != null) {
 			_lastNames.add(line);
@@ -1313,8 +997,8 @@ public class DataFactory {
 		accountModel.setCompanyId(_companyId);
 		accountModel.setCreateDate(new Date());
 		accountModel.setModifiedDate(new Date());
-		accountModel.setName("Liferay");
-		accountModel.setLegalName("Liferay, Inc.");
+		accountModel.setName(DataFactoryConstants.ACCOUNT_LEGAL_NAME);
+		accountModel.setLegalName(DataFactoryConstants.ACCOUNT_LEGAL_NAME);
 
 		return accountModel;
 	}
@@ -1394,8 +1078,8 @@ public class DataFactory {
 			journalArticleModel.getCreateDate(),
 			journalArticleModel.getModifiedDate(),
 			getClassNameId(JournalArticle.class), resourcePrimKey, resourceUUID,
-			_defaultJournalDDMStructureModel.getStructureId(),
-			journalArticleModel.isIndexable(), true, ContentTypes.TEXT_HTML,
+			_defaultJournalDDMStructureId, journalArticleModel.isIndexable(),
+			true, ContentTypes.TEXT_HTML,
 			journalArticleLocalizationModel.getTitle());
 	}
 
@@ -1405,6 +1089,36 @@ public class DataFactory {
 			wikiPageModel.getModifiedDate(), getClassNameId(WikiPage.class),
 			wikiPageModel.getResourcePrimKey(), wikiPageModel.getUuid(), 0,
 			true, true, ContentTypes.TEXT_HTML, wikiPageModel.getTitle());
+	}
+
+	public List<AssetEntryModel> newAssetEntryModels() {
+		List<AssetEntryModel> assetEntryModels = new ArrayList<>(
+			_cpDefinitionCount);
+
+		for (int productIndex = 0;
+			 productIndex < BenchmarksPropsValues.MAX_COMMERCE_PRODUCT_COUNT;
+			 productIndex++) {
+
+			long[] cpDefinitionIds = _cpDefinitionIdList.get(productIndex);
+
+			for (int definitionIndex = 0;
+				 definitionIndex <
+					 BenchmarksPropsValues.
+						 MAX_COMMERCE_PRODUCT_DEFINITION_COUNT;
+				 definitionIndex++) {
+
+				assetEntryModels.add(
+					newAssetEntryModel(
+						_commerceCatalogGroupId, new Date(), new Date(),
+						getClassNameId(CPDefinition.class),
+						cpDefinitionIds[definitionIndex],
+						SequentialUUID.generate(), 0, true, true, "text/plain",
+						_cpDefinitionLocalizationNames.get(
+							cpDefinitionIds[definitionIndex])));
+			}
+		}
+
+		return assetEntryModels;
 	}
 
 	public List<PortletPreferencesModel>
@@ -1454,13 +1168,110 @@ public class DataFactory {
 		return blogsStatsUserModel;
 	}
 
+	public GroupModel newCommerceCatalogGroupModel() {
+		return newGroupModel(
+			_commerceCatalogGroupId, getClassNameId(CommerceCatalog.class),
+			_commerceCatalogId, DataFactoryConstants.COMMERCE_CATALOG_NAME,
+			false);
+	}
+
+	public CommerceCatalogModel newCommerceCatalogModel() {
+		CommerceCatalogModel commerceCatalogModel =
+			new CommerceCatalogModelImpl();
+
+		commerceCatalogModel.setCommerceCatalogId(_commerceCatalogId);
+		commerceCatalogModel.setCompanyId(_companyId);
+		commerceCatalogModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
+		commerceCatalogModel.setCreateDate(new Date());
+		commerceCatalogModel.setModifiedDate(new Date());
+		commerceCatalogModel.setName(
+			DataFactoryConstants.COMMERCE_CATALOG_NAME);
+		commerceCatalogModel.setCommerceCurrencyCode(
+			DataFactoryConstants.COMMERCE_CURRENCY_CODE);
+		commerceCatalogModel.setCatalogDefaultLanguageId(
+			DataFactoryConstants.LANGUAGE_ID);
+		commerceCatalogModel.setSystem(true);
+
+		return commerceCatalogModel;
+	}
+
+	public GroupModel newCommerceChannelGroupModel() {
+		return newGroupModel(
+			_commerceChannelGroupId, getClassNameId(CommerceChannel.class),
+			_commerceChannelId, DataFactoryConstants.COMMERCE_CHANNEL_NAME,
+			false);
+	}
+
+	public CommerceChannelModel newCommerceChannelModel() {
+		CommerceChannelModel commerceChannelModel =
+			new CommerceChannelModelImpl();
+
+		commerceChannelModel.setCommerceChannelId(_commerceChannelId);
+		commerceChannelModel.setCompanyId(_companyId);
+		commerceChannelModel.setUserId(_sampleUserId);
+		commerceChannelModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
+		commerceChannelModel.setCreateDate(new Date());
+		commerceChannelModel.setModifiedDate(new Date());
+		commerceChannelModel.setSiteGroupId(1);
+		commerceChannelModel.setName(
+			DataFactoryConstants.COMMERCE_CHANNEL_NAME);
+		commerceChannelModel.setType("site");
+		commerceChannelModel.setTypeSettings(String.valueOf(_guestGroupId));
+		commerceChannelModel.setCommerceCurrencyCode(
+			DataFactoryConstants.COMMERCE_CURRENCY_CODE);
+
+		return commerceChannelModel;
+	}
+
+	public CommerceCurrencyModel newCommerceCurrencyModel() {
+		CommerceCurrencyModel commerceCurrencyModel =
+			new CommerceCurrencyModelImpl();
+
+		commerceCurrencyModel.setUuid(SequentialUUID.generate());
+		commerceCurrencyModel.setCommerceCurrencyId(_counter.get());
+		commerceCurrencyModel.setCompanyId(_companyId);
+		commerceCurrencyModel.setUserId(_sampleUserId);
+		commerceCurrencyModel.setUserName(
+			DataFactoryConstants.SAMPLE_USER_NAME);
+		commerceCurrencyModel.setCreateDate(new Date());
+		commerceCurrencyModel.setModifiedDate(new Date());
+		commerceCurrencyModel.setCode(
+			DataFactoryConstants.COMMERCE_CURRENCY_CODE);
+
+		String name = StringBundler.concat(
+			"<?xml version=\"1.0\" encoding=\"UTF-8\"?><root available-locales",
+			"=\"en_US\" default-locale=\"en_US\"><Name language-id=\"en_US\">",
+			"US Dollar</Name></root>");
+
+		commerceCurrencyModel.setName(name);
+
+		commerceCurrencyModel.setRate(BigDecimal.valueOf(1));
+
+		String formatPattern = StringBundler.concat(
+			"<?xml version=\"1.0\" encoding=\"UTF-8\"?><root available-locales",
+			"=\"en_US\" default-locale=\"en_US\"><FormatPattern language-id",
+			"=\"en_US\">$###,##0.00</FormatPattern></root>");
+
+		commerceCurrencyModel.setFormatPattern(formatPattern);
+
+		commerceCurrencyModel.setMaxFractionDigits(2);
+		commerceCurrencyModel.setMinFractionDigits(2);
+		commerceCurrencyModel.setRoundingMode("HALF_EVEN");
+		commerceCurrencyModel.setPrimary(true);
+		commerceCurrencyModel.setPriority(1);
+		commerceCurrencyModel.setActive(true);
+		commerceCurrencyModel.setLastPublishDate(new Date());
+
+		return commerceCurrencyModel;
+	}
+
 	public CompanyModel newCompanyModel() {
 		CompanyModel companyModel = new CompanyModelImpl();
 
 		companyModel.setCompanyId(_companyId);
 		companyModel.setAccountId(_accountId);
-		companyModel.setWebId("liferay.com");
-		companyModel.setMx("liferay.com");
+		companyModel.setWebId(DataFactoryConstants.COMPANY_WEBID);
+		companyModel.setMx(DataFactoryConstants.COMPANY_WEBID);
 		companyModel.setActive(true);
 
 		return companyModel;
@@ -1515,7 +1326,7 @@ public class DataFactory {
 		layoutModel.setGroupId(groupId);
 		layoutModel.setCompanyId(_companyId);
 		layoutModel.setUserId(_sampleUserId);
-		layoutModel.setUserName(_SAMPLE_USER_NAME);
+		layoutModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		layoutModel.setCreateDate(new Date());
 		layoutModel.setModifiedDate(new Date());
 		layoutModel.setLayoutId(simpleCounter.get());
@@ -1547,7 +1358,9 @@ public class DataFactory {
 
 			layoutModels.add(
 				newContentLayoutModel(
-					groupId, i + "_web_content", "web_content"));
+					groupId,
+					i + DataFactoryConstants.CONTENT_LAYOUT_NAME_SUFFIX,
+					DataFactoryConstants.FRAGMENT_ENTRY_KEY));
 		}
 
 		return layoutModels;
@@ -1593,6 +1406,157 @@ public class DataFactory {
 		counterModels.add(counterModel);
 
 		return counterModels;
+	}
+
+	public List<CPDefinitionLocalizationModel>
+		newCPDefinitionLocalizationModels() {
+
+		List<CPDefinitionLocalizationModel> cpDefinitionLocalizationModels =
+			new ArrayList<>(_cpDefinitionCount);
+
+		for (int productIndex = 0;
+			 productIndex < BenchmarksPropsValues.MAX_COMMERCE_PRODUCT_COUNT;
+			 productIndex++) {
+
+			long[] cpDefinitionIds = _cpDefinitionIdList.get(productIndex);
+
+			for (int definitionIndex = 0;
+				 definitionIndex <
+					 BenchmarksPropsValues.
+						 MAX_COMMERCE_PRODUCT_DEFINITION_COUNT;
+				 definitionIndex++) {
+
+				long cpDefinitionId = cpDefinitionIds[definitionIndex];
+
+				cpDefinitionLocalizationModels.add(
+					newCPDefinitionLocalizationModel(cpDefinitionId));
+			}
+		}
+
+		return cpDefinitionLocalizationModels;
+	}
+
+	public List<CPDefinitionModel> newCPDefinitionModels() {
+		List<CPDefinitionModel> cpDefinitionModels = new ArrayList<>(
+			_cpDefinitionCount);
+
+		for (int productIndex = 0;
+			 productIndex < BenchmarksPropsValues.MAX_COMMERCE_PRODUCT_COUNT;
+			 productIndex++) {
+
+			long[] cpDefinitionIds = _cpDefinitionIdList.get(productIndex);
+
+			for (int definitionIndex = 0;
+				 definitionIndex <
+					 BenchmarksPropsValues.
+						 MAX_COMMERCE_PRODUCT_DEFINITION_COUNT;
+				 definitionIndex++) {
+
+				long cpDefinitionId = cpDefinitionIds[definitionIndex];
+
+				cpDefinitionModels.add(
+					newCPDefinitionModel(
+						cpDefinitionId, _cProductIds.get(productIndex),
+						_cPTaxCategoryId, definitionIndex + 1));
+			}
+		}
+
+		return cpDefinitionModels;
+	}
+
+	public List<CPFriendlyURLEntryModel> newCPFriendlyURLEntryModels() {
+		List<CPFriendlyURLEntryModel> cpFriendlyURLEntryModels =
+			new ArrayList<>(_cpDefinitionCount);
+
+		for (int productIndex = 0;
+			 productIndex < BenchmarksPropsValues.MAX_COMMERCE_PRODUCT_COUNT;
+			 productIndex++) {
+
+			for (int definitionIndex = 0;
+				 definitionIndex <
+					 BenchmarksPropsValues.
+						 MAX_COMMERCE_PRODUCT_DEFINITION_COUNT;
+				 definitionIndex++) {
+
+				cpFriendlyURLEntryModels.add(
+					newCPFriendlyURLEntryModel(
+						_cProductIds.get(productIndex),
+						_publishedCPDefinitionIds.get(productIndex)));
+			}
+		}
+
+		return cpFriendlyURLEntryModels;
+	}
+
+	public List<CPInstanceModel> newCPInstanceModels() {
+		List<CPInstanceModel> cpInstanceModels = new ArrayList<>(
+			_cpDefinitionCount *
+				BenchmarksPropsValues.MAX_COMMERCE_PRODUCT_INSTANCE_COUNT);
+
+		for (int productIndex = 0;
+			 productIndex < BenchmarksPropsValues.MAX_COMMERCE_PRODUCT_COUNT;
+			 productIndex++) {
+
+			long[] cpDefinitionIds = _cpDefinitionIdList.get(productIndex);
+
+			for (int definitionIndex = 0;
+				 definitionIndex <
+					 BenchmarksPropsValues.
+						 MAX_COMMERCE_PRODUCT_DEFINITION_COUNT;
+				 definitionIndex++) {
+
+				long cpDefinitionId = cpDefinitionIds[definitionIndex];
+
+				for (int instanceIndex = 0;
+					 instanceIndex <
+						 BenchmarksPropsValues.
+							 MAX_COMMERCE_PRODUCT_INSTANCE_COUNT;
+					 instanceIndex++) {
+
+					cpInstanceModels.add(
+						newCPInstanceModel(cpDefinitionId, instanceIndex));
+				}
+			}
+		}
+
+		return cpInstanceModels;
+	}
+
+	public List<CProductModel> newCProductModels() {
+		List<CProductModel> cProductModels = new ArrayList<>(
+			BenchmarksPropsValues.MAX_COMMERCE_PRODUCT_COUNT);
+
+		for (int productIndex = 0;
+			 productIndex < BenchmarksPropsValues.MAX_COMMERCE_PRODUCT_COUNT;
+			 productIndex++) {
+
+			cProductModels.add(
+				newCProductModel(
+					_cProductIds.get(productIndex),
+					_publishedCPDefinitionIds.get(productIndex)));
+		}
+
+		return cProductModels;
+	}
+
+	public CPTaxCategoryModel newCPTaxCategoryModel() {
+		CPTaxCategoryModel cpTaxCategoryModel = new CPTaxCategoryModelImpl();
+
+		cpTaxCategoryModel.setCPTaxCategoryId(_cPTaxCategoryId);
+		cpTaxCategoryModel.setCompanyId(_companyId);
+		cpTaxCategoryModel.setUserId(_sampleUserId);
+		cpTaxCategoryModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
+		cpTaxCategoryModel.setCreateDate(new Date());
+		cpTaxCategoryModel.setModifiedDate(new Date());
+		cpTaxCategoryModel.setName(
+			StringBundler.concat(
+				"<?xml version=\"1.0\" encoding=\"UTF-8\"?><root ",
+				"available-locales=\"en_US\" default-locale=\"en_US\"><Name ",
+				"language-id=\"en_US\"> Normal Product </Name></root>"));
+
+		cpTaxCategoryModel.setDescription(null);
+
+		return cpTaxCategoryModel;
 	}
 
 	public DDMStructureLayoutModel newDDLDDMStructureLayoutModel(
@@ -1654,7 +1618,8 @@ public class DataFactory {
 
 		return newDDMStructureModel(
 			groupId, _sampleUserId, getClassNameId(DDLRecordSet.class),
-			"Test DDM Structure", sb.toString());
+			DataFactoryConstants.DDL_DDM_STRUCTURE_KEY, sb.toString(),
+			_counter.get());
 	}
 
 	public List<PortletPreferencesModel> newDDLPortletPreferencesModels(
@@ -1689,9 +1654,10 @@ public class DataFactory {
 		ddlRecordModel.setGroupId(dDLRecordSetModel.getGroupId());
 		ddlRecordModel.setCompanyId(_companyId);
 		ddlRecordModel.setUserId(_sampleUserId);
-		ddlRecordModel.setUserName(_SAMPLE_USER_NAME);
+		ddlRecordModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		ddlRecordModel.setVersionUserId(_sampleUserId);
-		ddlRecordModel.setVersionUserName(_SAMPLE_USER_NAME);
+		ddlRecordModel.setVersionUserName(
+			DataFactoryConstants.SAMPLE_USER_NAME);
 		ddlRecordModel.setCreateDate(new Date());
 		ddlRecordModel.setModifiedDate(new Date());
 		ddlRecordModel.setDDMStorageId(_counter.get());
@@ -1714,7 +1680,7 @@ public class DataFactory {
 		ddlRecordSetModel.setGroupId(ddmStructureModel.getGroupId());
 		ddlRecordSetModel.setCompanyId(_companyId);
 		ddlRecordSetModel.setUserId(_sampleUserId);
-		ddlRecordSetModel.setUserName(_SAMPLE_USER_NAME);
+		ddlRecordSetModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		ddlRecordSetModel.setCreateDate(new Date());
 		ddlRecordSetModel.setModifiedDate(new Date());
 		ddlRecordSetModel.setDDMStructureId(ddmStructureModel.getStructureId());
@@ -1750,7 +1716,8 @@ public class DataFactory {
 		ddlRecordVersionModel.setGroupId(dDLRecordModel.getGroupId());
 		ddlRecordVersionModel.setCompanyId(_companyId);
 		ddlRecordVersionModel.setUserId(_sampleUserId);
-		ddlRecordVersionModel.setUserName(_SAMPLE_USER_NAME);
+		ddlRecordVersionModel.setUserName(
+			DataFactoryConstants.SAMPLE_USER_NAME);
 		ddlRecordVersionModel.setCreateDate(dDLRecordModel.getModifiedDate());
 		ddlRecordVersionModel.setDDMStorageId(dDLRecordModel.getDDMStorageId());
 		ddlRecordVersionModel.setRecordSetId(dDLRecordModel.getRecordSetId());
@@ -1823,7 +1790,7 @@ public class DataFactory {
 		ddmStorageLinkModel.setClassPK(journalArticleModel.getId());
 		ddmStorageLinkModel.setStructureId(structureId);
 		ddmStorageLinkModel.setStructureVersionId(
-			_defaultJournalDDMStructureVersionModel.getStructureVersionId());
+			_defaultJournalDDMStructureVersionId);
 
 		return ddmStorageLinkModel;
 	}
@@ -1840,7 +1807,7 @@ public class DataFactory {
 		ddmStorageLinkModel.setClassPK(ddmContentModel.getContentId());
 		ddmStorageLinkModel.setStructureId(structureId);
 		ddmStorageLinkModel.setStructureVersionId(
-			_defaultDLDDMStructureVersionModel.getStructureVersionId());
+			_defaultDLDDMStructureVersionId);
 
 		return ddmStorageLinkModel;
 	}
@@ -1866,14 +1833,22 @@ public class DataFactory {
 	public DDMStructureVersionModel newDDMStructureVersionModel(
 		DDMStructureModel ddmStructureModel) {
 
+		return newDDMStructureVersionModel(
+			ddmStructureModel, _defaultDDLDDMStructureVersionId);
+	}
+
+	public DDMStructureVersionModel newDDMStructureVersionModel(
+		DDMStructureModel ddmStructureModel, long structureVersionId) {
+
 		DDMStructureVersionModel ddmStructureVersionModel =
 			new DDMStructureVersionModelImpl();
 
-		ddmStructureVersionModel.setStructureVersionId(_counter.get());
+		ddmStructureVersionModel.setStructureVersionId(structureVersionId);
 		ddmStructureVersionModel.setGroupId(ddmStructureModel.getGroupId());
 		ddmStructureVersionModel.setCompanyId(_companyId);
 		ddmStructureVersionModel.setUserId(ddmStructureModel.getUserId());
-		ddmStructureVersionModel.setUserName(_SAMPLE_USER_NAME);
+		ddmStructureVersionModel.setUserName(
+			DataFactoryConstants.SAMPLE_USER_NAME);
 		ddmStructureVersionModel.setCreateDate(nextFutureDate());
 		ddmStructureVersionModel.setStructureId(
 			ddmStructureModel.getStructureId());
@@ -1894,7 +1869,8 @@ public class DataFactory {
 		ddmStructureVersionModel.setStorageType(StorageType.JSON.toString());
 		ddmStructureVersionModel.setStatusByUserId(
 			ddmStructureModel.getUserId());
-		ddmStructureVersionModel.setStatusByUserName(_SAMPLE_USER_NAME);
+		ddmStructureVersionModel.setStatusByUserName(
+			DataFactoryConstants.SAMPLE_USER_NAME);
 		ddmStructureVersionModel.setStatusDate(nextFutureDate());
 
 		return ddmStructureVersionModel;
@@ -1916,22 +1892,67 @@ public class DataFactory {
 		return ddmTemplateLinkModel;
 	}
 
-	public DDMTemplateVersionModel newDDMTemplateVersionModel(
-		DDMTemplateModel ddmTemplateModel) {
+	public DDMStructureLayoutModel newDefaultDLDDMStructureLayoutModel() {
+		return newDDMStructureLayoutModel(
+			_globalGroupId, _defaultUserId, _defaultDLDDMStructureVersionId,
+			_dlDDMStructureLayoutContent);
+	}
 
+	public DDMStructureModel newDefaultDLDDMStructureModel() {
+		return newDDMStructureModel(
+			_globalGroupId, _defaultUserId, getClassNameId(DLFileEntry.class),
+			RawMetadataProcessor.TIKA_RAW_METADATA, _dlDDMStructureContent,
+			_defaultDLDDMStructureId);
+	}
+
+	public DDMStructureVersionModel newDefaultDLDDMStructureVersionModel(
+		DDMStructureModel ddmStructureModel) {
+
+		return newDDMStructureVersionModel(
+			ddmStructureModel, _defaultDLDDMStructureVersionId);
+	}
+
+	public DDMStructureLayoutModel newDefaultJournalDDMStructureLayoutModel() {
+		return newDDMStructureLayoutModel(
+			_globalGroupId, _defaultUserId,
+			_defaultJournalDDMStructureVersionId,
+			_journalDDMStructureLayoutContent);
+	}
+
+	public DDMStructureModel newDefaultJournalDDMStructureModel() {
+		return newDDMStructureModel(
+			_globalGroupId, _defaultUserId,
+			getClassNameId(JournalArticle.class),
+			DataFactoryConstants.JOURNAL_STRUCTURE_KEY,
+			_journalDDMStructureContent, _defaultJournalDDMStructureId);
+	}
+
+	public DDMStructureVersionModel newDefaultJournalDDMStructureVersionModel(
+		DDMStructureModel ddmStructureModel) {
+
+		return newDDMStructureVersionModel(
+			ddmStructureModel, _defaultJournalDDMStructureVersionId);
+	}
+
+	public DDMTemplateModel newDefaultJournalDDMTemplateModel() {
+		return newDDMTemplateModel(
+			_globalGroupId, _defaultUserId, _defaultJournalDDMStructureId,
+			getClassNameId(JournalArticle.class), _defaultJournalDDMTemplateId);
+	}
+
+	public DDMTemplateVersionModel newDefaultJournalDDMTemplateVersionModel() {
 		DDMTemplateVersionModelImpl ddmTemplateVersionModelImpl =
 			new DDMTemplateVersionModelImpl();
 
 		ddmTemplateVersionModelImpl.setTemplateVersionId(_counter.get());
-		ddmTemplateVersionModelImpl.setGroupId(ddmTemplateModel.getGroupId());
+		ddmTemplateVersionModelImpl.setGroupId(_globalGroupId);
 		ddmTemplateVersionModelImpl.setCompanyId(_companyId);
-		ddmTemplateVersionModelImpl.setUserId(ddmTemplateModel.getUserId());
+		ddmTemplateVersionModelImpl.setUserId(_defaultUserId);
 		ddmTemplateVersionModelImpl.setCreateDate(nextFutureDate());
-		ddmTemplateVersionModelImpl.setTemplateId(
-			ddmTemplateModel.getTemplateId());
-		ddmTemplateVersionModelImpl.setClassPK(ddmTemplateModel.getClassPK());
+		ddmTemplateVersionModelImpl.setTemplateId(_defaultJournalDDMTemplateId);
+		ddmTemplateVersionModelImpl.setClassPK(_defaultJournalDDMStructureId);
 		ddmTemplateVersionModelImpl.setClassNameId(
-			ddmTemplateModel.getClassNameId());
+			getClassNameId(DDMStructure.class));
 		ddmTemplateVersionModelImpl.setVersion(
 			DDMTemplateConstants.VERSION_DEFAULT);
 
@@ -1939,13 +1960,12 @@ public class DataFactory {
 
 		sb.append("<?xml version=\"1.0\"?><root available-locales=\"en_US\" ");
 		sb.append("default-locale=\"en_US\"><name language-id=\"en_US\">");
-		sb.append(ddmTemplateModel.getTemplateKey());
+		sb.append(DataFactoryConstants.JOURNAL_STRUCTURE_KEY);
 		sb.append("</name></root>");
 
 		ddmTemplateVersionModelImpl.setName(sb.toString());
 
-		ddmTemplateVersionModelImpl.setStatusByUserId(
-			ddmTemplateModel.getUserId());
+		ddmTemplateVersionModelImpl.setStatusByUserId(_defaultUserId);
 		ddmTemplateVersionModelImpl.setStatusDate(nextFutureDate());
 
 		return ddmTemplateVersionModelImpl;
@@ -1991,6 +2011,33 @@ public class DataFactory {
 		return dlFileEntryModels;
 	}
 
+	public DLFileEntryTypeModel newDLFileEntryTypeModel() {
+		DLFileEntryTypeModel defaultDLFileEntryTypeModel =
+			new DLFileEntryTypeModelImpl();
+
+		defaultDLFileEntryTypeModel.setUuid(SequentialUUID.generate());
+		defaultDLFileEntryTypeModel.setFileEntryTypeId(
+			_defaultDLFileEntryTypeId);
+		defaultDLFileEntryTypeModel.setCreateDate(nextFutureDate());
+		defaultDLFileEntryTypeModel.setModifiedDate(nextFutureDate());
+		defaultDLFileEntryTypeModel.setFileEntryTypeKey(
+			StringUtil.toUpperCase(
+				DLFileEntryTypeConstants.NAME_BASIC_DOCUMENT));
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append("<?xml version=\"1.0\"?><root available-locales=\"en_US\" ");
+		sb.append("default-locale=\"en_US\"><name language-id=\"en_US\">");
+		sb.append(DLFileEntryTypeConstants.NAME_BASIC_DOCUMENT);
+		sb.append("</name></root>");
+
+		defaultDLFileEntryTypeModel.setName(sb.toString());
+
+		defaultDLFileEntryTypeModel.setLastPublishDate(nextFutureDate());
+
+		return defaultDLFileEntryTypeModel;
+	}
+
 	public DLFileVersionModel newDLFileVersionModel(
 		DLFileEntryModel dlFileEntryModel) {
 
@@ -2001,7 +2048,7 @@ public class DataFactory {
 		dlFileVersionModel.setGroupId(dlFileEntryModel.getGroupId());
 		dlFileVersionModel.setCompanyId(_companyId);
 		dlFileVersionModel.setUserId(_sampleUserId);
-		dlFileVersionModel.setUserName(_SAMPLE_USER_NAME);
+		dlFileVersionModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		dlFileVersionModel.setCreateDate(nextFutureDate());
 		dlFileVersionModel.setModifiedDate(nextFutureDate());
 		dlFileVersionModel.setRepositoryId(dlFileEntryModel.getRepositoryId());
@@ -2044,8 +2091,10 @@ public class DataFactory {
 		fragmentCollectionModel.setUserId(_sampleUserId);
 		fragmentCollectionModel.setCreateDate(new Date());
 		fragmentCollectionModel.setModifiedDate(new Date());
-		fragmentCollectionModel.setFragmentCollectionKey("fragmentcollection");
-		fragmentCollectionModel.setName("fragmentcollection");
+		fragmentCollectionModel.setFragmentCollectionKey(
+			DataFactoryConstants.FRAGMENT_COLLECTION_KEY);
+		fragmentCollectionModel.setName(
+			DataFactoryConstants.FRAGMENT_COLLECTION_KEY);
 
 		return fragmentCollectionModel;
 	}
@@ -2061,7 +2110,8 @@ public class DataFactory {
 		fragmentEntryLinkModel.setGroupId(fragmentEntryModel.getGroupId());
 		fragmentEntryLinkModel.setCompanyId(_companyId);
 		fragmentEntryLinkModel.setUserId(_sampleUserId);
-		fragmentEntryLinkModel.setUserName(_SAMPLE_USER_NAME);
+		fragmentEntryLinkModel.setUserName(
+			DataFactoryConstants.SAMPLE_USER_NAME);
 		fragmentEntryLinkModel.setCreateDate(new Date());
 		fragmentEntryLinkModel.setModifiedDate(new Date());
 		fragmentEntryLinkModel.setFragmentEntryId(
@@ -2089,15 +2139,17 @@ public class DataFactory {
 		fragmentEntryModel.setGroupId(groupId);
 		fragmentEntryModel.setCompanyId(_companyId);
 		fragmentEntryModel.setUserId(_sampleUserId);
-		fragmentEntryModel.setUserName(_SAMPLE_USER_NAME);
+		fragmentEntryModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		fragmentEntryModel.setCreateDate(new Date());
 		fragmentEntryModel.setModifiedDate(new Date());
 		fragmentEntryModel.setFragmentCollectionId(
 			fragmentCollectionModel.getFragmentCollectionId());
-		fragmentEntryModel.setFragmentEntryKey("web_content");
-		fragmentEntryModel.setName("web_content");
+		fragmentEntryModel.setFragmentEntryKey(
+			DataFactoryConstants.FRAGMENT_ENTRY_KEY);
+		fragmentEntryModel.setName(DataFactoryConstants.FRAGMENT_ENTRY_KEY);
 		fragmentEntryModel.setCss(StringPool.BLANK);
-		fragmentEntryModel.setHtml(_readFile("web_content.html"));
+		fragmentEntryModel.setHtml(
+			_readFile(DataFactoryConstants.FRAGMENT_HTML_FILE_NAME));
 		fragmentEntryModel.setJs(StringPool.BLANK);
 		fragmentEntryModel.setType(FragmentConstants.TYPE_COMPONENT);
 		fragmentEntryModel.setStatus(WorkflowConstants.STATUS_APPROVED);
@@ -2157,7 +2209,8 @@ public class DataFactory {
 		FriendlyURLEntryModel friendlyURLEntryModel =
 			new FriendlyURLEntryModelImpl();
 
-		friendlyURLEntryModel.setDefaultLanguageId("en_US");
+		friendlyURLEntryModel.setDefaultLanguageId(
+			DataFactoryConstants.LANGUAGE_ID);
 		friendlyURLEntryModel.setUuid(SequentialUUID.generate());
 		friendlyURLEntryModel.setFriendlyURLEntryId(_counter.get());
 		friendlyURLEntryModel.setGroupId(blogsEntryModel.getGroupId());
@@ -2189,7 +2242,8 @@ public class DataFactory {
 		for (int i = 1; i <= BenchmarksPropsValues.MAX_GROUP_COUNT; i++) {
 			groupModels.add(
 				newGroupModel(
-					i, getClassNameId(Group.class), i, "Site " + i, true));
+					i, getClassNameId(Group.class), i,
+					DataFactoryConstants.GROUP_NAME_PREFIX + i, true));
 		}
 
 		return groupModels;
@@ -2202,7 +2256,10 @@ public class DataFactory {
 	}
 
 	public UserModel newGuestUserModel() {
-		return newUserModel(_counter.get(), "Test", "Test", "Test", false);
+		return newUserModel(
+			_counter.get(), DataFactoryConstants.GUEST_USER_NAME,
+			DataFactoryConstants.GUEST_USER_NAME,
+			DataFactoryConstants.GUEST_USER_NAME, false);
 	}
 
 	public JournalArticleLocalizationModel newJournalArticleLocalizationModel(
@@ -2214,7 +2271,7 @@ public class DataFactory {
 
 		StringBundler sb = new StringBundler(4);
 
-		sb.append("TestJournalArticle_");
+		sb.append(DataFactoryConstants.JOURNAL_ARTICLE_TITLE_PREFIX);
 		sb.append(articleIndex);
 		sb.append(StringPool.UNDERLINE);
 		sb.append(versionIndex);
@@ -2247,7 +2304,7 @@ public class DataFactory {
 			journalArticleResourceModel.getGroupId());
 		journalArticleModel.setCompanyId(_companyId);
 		journalArticleModel.setUserId(_sampleUserId);
-		journalArticleModel.setUserName(_SAMPLE_USER_NAME);
+		journalArticleModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		journalArticleModel.setCreateDate(new Date());
 		journalArticleModel.setModifiedDate(new Date());
 		journalArticleModel.setClassNameId(
@@ -2259,7 +2316,7 @@ public class DataFactory {
 
 		StringBundler sb = new StringBundler(4);
 
-		sb.append("TestJournalArticle_");
+		sb.append(DataFactoryConstants.JOURNAL_ARTICLE_TITLE_PREFIX);
 		sb.append(articleIndex);
 		sb.append(StringPool.UNDERLINE);
 		sb.append(versionIndex);
@@ -2267,11 +2324,12 @@ public class DataFactory {
 		journalArticleModel.setUrlTitle(sb.toString());
 
 		journalArticleModel.setContent(_journalArticleContent);
-		journalArticleModel.setDefaultLanguageId("en_US");
+		journalArticleModel.setDefaultLanguageId(
+			DataFactoryConstants.LANGUAGE_ID);
 		journalArticleModel.setDDMStructureKey(
-			_defaultJournalDDMStructureModel.getStructureKey());
+			DataFactoryConstants.JOURNAL_STRUCTURE_KEY);
 		journalArticleModel.setDDMTemplateKey(
-			_defaultJournalDDMTemplateModel.getTemplateKey());
+			DataFactoryConstants.JOURNAL_STRUCTURE_KEY);
 		journalArticleModel.setDisplayDate(new Date());
 		journalArticleModel.setExpirationDate(nextFutureDate());
 		journalArticleModel.setReviewDate(new Date());
@@ -2370,13 +2428,15 @@ public class DataFactory {
 		layoutFriendlyURLEntryModel.setGroupId(layoutModel.getGroupId());
 		layoutFriendlyURLEntryModel.setCompanyId(_companyId);
 		layoutFriendlyURLEntryModel.setUserId(_sampleUserId);
-		layoutFriendlyURLEntryModel.setUserName(_SAMPLE_USER_NAME);
+		layoutFriendlyURLEntryModel.setUserName(
+			DataFactoryConstants.SAMPLE_USER_NAME);
 		layoutFriendlyURLEntryModel.setCreateDate(new Date());
 		layoutFriendlyURLEntryModel.setModifiedDate(new Date());
 		layoutFriendlyURLEntryModel.setPlid(layoutModel.getPlid());
 		layoutFriendlyURLEntryModel.setFriendlyURL(
 			layoutModel.getFriendlyURL());
-		layoutFriendlyURLEntryModel.setLanguageId("en_US");
+		layoutFriendlyURLEntryModel.setLanguageId(
+			DataFactoryConstants.LANGUAGE_ID);
 		layoutFriendlyURLEntryModel.setLastPublishDate(new Date());
 
 		return layoutFriendlyURLEntryModel;
@@ -2400,7 +2460,7 @@ public class DataFactory {
 		layoutModel.setGroupId(groupId);
 		layoutModel.setCompanyId(_companyId);
 		layoutModel.setUserId(_sampleUserId);
-		layoutModel.setUserName(_SAMPLE_USER_NAME);
+		layoutModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		layoutModel.setCreateDate(new Date());
 		layoutModel.setModifiedDate(new Date());
 		layoutModel.setLayoutId(simpleCounter.get());
@@ -2440,7 +2500,8 @@ public class DataFactory {
 		layoutPageTemplateStructureModel.setGroupId(layoutModel.getGroupId());
 		layoutPageTemplateStructureModel.setCompanyId(_companyId);
 		layoutPageTemplateStructureModel.setUserId(_sampleUserId);
-		layoutPageTemplateStructureModel.setUserName(_SAMPLE_USER_NAME);
+		layoutPageTemplateStructureModel.setUserName(
+			DataFactoryConstants.SAMPLE_USER_NAME);
 		layoutPageTemplateStructureModel.setCreateDate(new Date());
 		layoutPageTemplateStructureModel.setModifiedDate(new Date());
 		layoutPageTemplateStructureModel.setClassNameId(
@@ -2467,7 +2528,8 @@ public class DataFactory {
 			layoutPageTemplateStructureModel.getGroupId());
 		layoutPageTemplateStructureRelModel.setCompanyId(_companyId);
 		layoutPageTemplateStructureRelModel.setUserId(_sampleUserId);
-		layoutPageTemplateStructureRelModel.setUserName(_SAMPLE_USER_NAME);
+		layoutPageTemplateStructureRelModel.setUserName(
+			DataFactoryConstants.SAMPLE_USER_NAME);
 		layoutPageTemplateStructureRelModel.setCreateDate(new Date());
 		layoutPageTemplateStructureRelModel.setModifiedDate(new Date());
 		layoutPageTemplateStructureRelModel.setLayoutPageTemplateStructureId(
@@ -2549,7 +2611,7 @@ public class DataFactory {
 		mbDiscussionModel.setGroupId(groupId);
 		mbDiscussionModel.setCompanyId(_companyId);
 		mbDiscussionModel.setUserId(_sampleUserId);
-		mbDiscussionModel.setUserName(_SAMPLE_USER_NAME);
+		mbDiscussionModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		mbDiscussionModel.setCreateDate(new Date());
 		mbDiscussionModel.setModifiedDate(new Date());
 		mbDiscussionModel.setClassNameId(classNameId);
@@ -2570,7 +2632,7 @@ public class DataFactory {
 		mbMailingListModel.setGroupId(mbCategoryModel.getGroupId());
 		mbMailingListModel.setCompanyId(_companyId);
 		mbMailingListModel.setUserId(_sampleUserId);
-		mbMailingListModel.setUserName(_SAMPLE_USER_NAME);
+		mbMailingListModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		mbMailingListModel.setCreateDate(new Date());
 		mbMailingListModel.setModifiedDate(new Date());
 		mbMailingListModel.setCategoryId(mbCategoryModel.getCategoryId());
@@ -2605,7 +2667,7 @@ public class DataFactory {
 			messageId = _counter.get();
 			parentMessageId = mbThreadModel.getRootMessageId();
 			subject = "N/A";
-			body = "This is test comment " + index + ".";
+			body = DataFactoryConstants.MB_COMMENT_PREFIX + index + ".";
 			urlSubject = "test-comment-" + index;
 		}
 
@@ -2628,8 +2690,10 @@ public class DataFactory {
 				mbThreadModel.getGroupId(), 0, 0, mbThreadModel.getCategoryId(),
 				mbThreadModel.getThreadId(), mbThreadModel.getRootMessageId(),
 				mbThreadModel.getRootMessageId(),
-				MBMessageConstants.DEFAULT_PARENT_MESSAGE_ID, "Test Message 1",
-				"test-message-1", "This is test message 1."));
+				MBMessageConstants.DEFAULT_PARENT_MESSAGE_ID,
+				DataFactoryConstants.MB_ROOT_SUBJECT,
+				DataFactoryConstants.MB_URL_SUBJECT,
+				DataFactoryConstants.MB_MESSAGE_BODY));
 
 		for (int i = 2; i <= BenchmarksPropsValues.MAX_MB_MESSAGE_COUNT; i++) {
 			mbMessageModels.add(
@@ -2637,8 +2701,10 @@ public class DataFactory {
 					mbThreadModel.getGroupId(), 0, 0,
 					mbThreadModel.getCategoryId(), mbThreadModel.getThreadId(),
 					_counter.get(), mbThreadModel.getRootMessageId(),
-					mbThreadModel.getRootMessageId(), "Test Message " + i,
-					"test-message-" + i, "This is test message " + i + "."));
+					mbThreadModel.getRootMessageId(),
+					DataFactoryConstants.MB_SUBJECT_PREFIX + i,
+					DataFactoryConstants.MB_URL_SUBJECT_PREFIX + i,
+					DataFactoryConstants.MB_BODY_PREFIX + i + "."));
 		}
 
 		return mbMessageModels;
@@ -2681,7 +2747,7 @@ public class DataFactory {
 		mbThreadFlagModel.setGroupId(mbThreadModel.getGroupId());
 		mbThreadFlagModel.setCompanyId(_companyId);
 		mbThreadFlagModel.setUserId(_sampleUserId);
-		mbThreadFlagModel.setUserName(_SAMPLE_USER_NAME);
+		mbThreadFlagModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		mbThreadFlagModel.setCreateDate(new Date());
 		mbThreadFlagModel.setModifiedDate(new Date());
 		mbThreadFlagModel.setThreadId(mbThreadModel.getThreadId());
@@ -2842,23 +2908,29 @@ public class DataFactory {
 
 		layoutModels.add(
 			newLayoutModel(
-				groupId, "welcome", LoginPortletKeys.LOGIN + ",",
+				groupId, DataFactoryConstants.HELLO_WORLD_LAYOUT_NAME,
+				LoginPortletKeys.LOGIN + ",",
 				HelloWorldPortletKeys.HELLO_WORLD + ","));
 		layoutModels.add(
-			newLayoutModel(groupId, "blogs", "", BlogsPortletKeys.BLOGS + ","));
+			newLayoutModel(
+				groupId, DataFactoryConstants.BLOG_LAYOUT_NAME, "",
+				BlogsPortletKeys.BLOGS + ","));
 		layoutModels.add(
 			newLayoutModel(
-				groupId, "commerce_product", "",
+				groupId, DataFactoryConstants.COMMERCE_LAYOUT_NAME, "",
 				CPPortletKeys.CP_CONTENT_WEB + ","));
 		layoutModels.add(
 			newLayoutModel(
-				groupId, "document_library", "",
+				groupId, DataFactoryConstants.DL_LAYOUT_NAME, "",
 				DLPortletKeys.DOCUMENT_LIBRARY + ","));
 		layoutModels.add(
 			newLayoutModel(
-				groupId, "forums", "", MBPortletKeys.MESSAGE_BOARDS + ","));
+				groupId, DataFactoryConstants.FORUMS_LAYOUT_NAME, "",
+				MBPortletKeys.MESSAGE_BOARDS + ","));
 		layoutModels.add(
-			newLayoutModel(groupId, "wiki", "", WikiPortletKeys.WIKI + ","));
+			newLayoutModel(
+				groupId, DataFactoryConstants.WIKI_LAYOUT_NAME, "",
+				WikiPortletKeys.WIKI + ","));
 
 		return layoutModels;
 	}
@@ -2877,7 +2949,7 @@ public class DataFactory {
 				false, ReleaseConstants.TEST_STRING));
 
 		try (InputStream is = DataFactory.class.getResourceAsStream(
-				"dependencies/releases.txt");
+				DataFactoryConstants.RELEASE_RESOURCE_FILE_NAME);
 			Reader reader = new InputStreamReader(is);
 			UnsyncBufferedReader unsyncBufferedReader =
 				new UnsyncBufferedReader(reader)) {
@@ -2900,6 +2972,12 @@ public class DataFactory {
 		}
 
 		return releases;
+	}
+
+	public ResourcePermissionModel newResourcePermission() {
+		return newResourcePermissionModel(
+			CommerceCatalog.class.getName(), String.valueOf(_commerceCatalogId),
+			_guestRoleModel.getRoleId(), _sampleUserId);
 	}
 
 	public List<ResourcePermissionModel> newResourcePermissionModels(
@@ -3114,8 +3192,9 @@ public class DataFactory {
 
 	public UserModel newSampleUserModel() {
 		return newUserModel(
-			_sampleUserId, _SAMPLE_USER_NAME, _SAMPLE_USER_NAME,
-			_SAMPLE_USER_NAME, false);
+			_sampleUserId, DataFactoryConstants.SAMPLE_USER_NAME,
+			DataFactoryConstants.SAMPLE_USER_NAME,
+			DataFactoryConstants.SAMPLE_USER_NAME, false);
 	}
 
 	public SocialActivityModel newSocialActivityModel(
@@ -3221,7 +3300,9 @@ public class DataFactory {
 			userModels.add(
 				newUserModel(
 					_counter.get(), userName[0], userName[1],
-					"test" + _userScreenNameCounter.get(), false));
+					DataFactoryConstants.SCREEN_NAME_PREFIX +
+						_userScreenNameCounter.get(),
+					false));
 		}
 
 		return userModels;
@@ -3470,7 +3551,7 @@ public class DataFactory {
 		assetCategoryModel.setGroupId(groupId);
 		assetCategoryModel.setCompanyId(_companyId);
 		assetCategoryModel.setUserId(_sampleUserId);
-		assetCategoryModel.setUserName(_SAMPLE_USER_NAME);
+		assetCategoryModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		assetCategoryModel.setCreateDate(new Date());
 		assetCategoryModel.setModifiedDate(new Date());
 		assetCategoryModel.setParentCategoryId(
@@ -3505,7 +3586,7 @@ public class DataFactory {
 		assetEntryModel.setGroupId(groupId);
 		assetEntryModel.setCompanyId(_companyId);
 		assetEntryModel.setUserId(_sampleUserId);
-		assetEntryModel.setUserName(_SAMPLE_USER_NAME);
+		assetEntryModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		assetEntryModel.setCreateDate(createDate);
 		assetEntryModel.setModifiedDate(modifiedDate);
 		assetEntryModel.setClassNameId(classNameId);
@@ -3564,13 +3645,17 @@ public class DataFactory {
 		blogsEntryModel.setGroupId(groupId);
 		blogsEntryModel.setCompanyId(_companyId);
 		blogsEntryModel.setUserId(_sampleUserId);
-		blogsEntryModel.setUserName(_SAMPLE_USER_NAME);
+		blogsEntryModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		blogsEntryModel.setCreateDate(new Date());
 		blogsEntryModel.setModifiedDate(new Date());
-		blogsEntryModel.setTitle("Test Blog " + index);
-		blogsEntryModel.setSubtitle("Subtitle of Test Blog " + index);
-		blogsEntryModel.setUrlTitle("testblog" + index);
-		blogsEntryModel.setContent("This is test blog " + index + ".");
+		blogsEntryModel.setTitle(
+			DataFactoryConstants.BLOG_ENTRY_TITLE_PREFIX + index);
+		blogsEntryModel.setSubtitle(
+			DataFactoryConstants.BLOG_ENTRY_SUBTITLE_PREFIX + index);
+		blogsEntryModel.setUrlTitle(
+			DataFactoryConstants.BLOG_URL_TITLE_PREFIX + index);
+		blogsEntryModel.setContent(
+			DataFactoryConstants.BLOG_CONTENT_PREFIX + index + ".");
 		blogsEntryModel.setDisplayDate(new Date());
 		blogsEntryModel.setLastPublishDate(new Date());
 		blogsEntryModel.setStatusByUserId(_sampleUserId);
@@ -3589,40 +3674,47 @@ public class DataFactory {
 			_counter.get());
 		cpDefinitionLocalizationModel.setCompanyId(_companyId);
 		cpDefinitionLocalizationModel.setCPDefinitionId(cpDefinitionId);
-		cpDefinitionLocalizationModel.setLanguageId("en_US");
-		cpDefinitionLocalizationModel.setName("Definition " + cpDefinitionId);
+		cpDefinitionLocalizationModel.setLanguageId(
+			DataFactoryConstants.LANGUAGE_ID);
+		cpDefinitionLocalizationModel.setName(
+			_cpDefinitionLocalizationNames.get(cpDefinitionId));
 		cpDefinitionLocalizationModel.setShortDescription(
-			"Short description for definition " + cpDefinitionId);
+			DataFactoryConstants.CPDEFINITION_SHORT_DESCRIPTION_PREFIX +
+				cpDefinitionId);
 		cpDefinitionLocalizationModel.setDescription(
-			"A longer and more verbose description for definition with ID " +
+			DataFactoryConstants.CPDEFINITION_DESCRIPTION_PREFIX +
 				cpDefinitionId);
 		cpDefinitionLocalizationModel.setMetaTitle(
-			"A meta-title for definition " + cpDefinitionId);
+			DataFactoryConstants.CPDEFINITION_META_TITLE_PREFIX +
+				cpDefinitionId);
 		cpDefinitionLocalizationModel.setMetaDescription(
-			"A meta-description for definition " + cpDefinitionId);
+			DataFactoryConstants.CPDEFINITION_META_DESCRIPTION_PREFIX +
+				cpDefinitionId);
 		cpDefinitionLocalizationModel.setMetaKeywords(
-			"Meta-keywords for definition " + cpDefinitionId);
+			DataFactoryConstants.CPDEFINITION_META_KEYWORDS_PREFIX +
+				cpDefinitionId);
 
 		return cpDefinitionLocalizationModel;
 	}
 
 	protected CPDefinitionModel newCPDefinitionModel(
-		long groupId, long cpDefinitionId, long cProductId,
-		long cpTaxCategoryId, int version) {
+		long cpDefinitionId, long cProductId, long cpTaxCategoryId,
+		int version) {
 
 		CPDefinitionModel cpDefinitionModel = new CPDefinitionModelImpl();
 
 		cpDefinitionModel.setUuid(SequentialUUID.generate());
 		cpDefinitionModel.setCPDefinitionId(cpDefinitionId);
-		cpDefinitionModel.setGroupId(groupId);
+		cpDefinitionModel.setGroupId(_commerceCatalogGroupId);
 		cpDefinitionModel.setCompanyId(_companyId);
 		cpDefinitionModel.setUserId(_sampleUserId);
-		cpDefinitionModel.setUserName(_SAMPLE_USER_NAME);
+		cpDefinitionModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		cpDefinitionModel.setCreateDate(new Date());
 		cpDefinitionModel.setModifiedDate(new Date());
 		cpDefinitionModel.setCProductId(cProductId);
 		cpDefinitionModel.setCPTaxCategoryId(cpTaxCategoryId);
-		cpDefinitionModel.setProductTypeName("simple");
+		cpDefinitionModel.setProductTypeName(
+			DataFactoryConstants.CPDEFINITION_PRODUCT_TYPE_NAME);
 		cpDefinitionModel.setAvailableIndividually(true);
 		cpDefinitionModel.setIgnoreSKUCombinations(true);
 		cpDefinitionModel.setShippable(true);
@@ -3648,19 +3740,21 @@ public class DataFactory {
 		cpDefinitionModel.setVersion(version);
 		cpDefinitionModel.setStatus(WorkflowConstants.STATUS_APPROVED);
 		cpDefinitionModel.setStatusByUserId(_sampleUserId);
-		cpDefinitionModel.setStatusByUserName(_SAMPLE_USER_NAME);
+		cpDefinitionModel.setStatusByUserName(
+			DataFactoryConstants.SAMPLE_USER_NAME);
 		cpDefinitionModel.setStatusDate(new Date());
 
 		return cpDefinitionModel;
 	}
 
 	protected CPFriendlyURLEntryModel newCPFriendlyURLEntryModel(
-		CProductModel cProductModel) {
+		long cProductId, long publishedCPDefinitionId) {
 
 		return newCPFriendlyURLEntryModel(
-			0, getClassNameId(CProduct.class), cProductModel.getCProductId(),
+			0, getClassNameId(CProduct.class), cProductId,
 			FriendlyURLNormalizerUtil.normalizeWithPeriodsAndSlashes(
-				"Definition " + cProductModel.getPublishedCPDefinitionId()));
+				DataFactoryConstants.CPFRIENDLYURL_TITLE_PREFIX +
+					publishedCPDefinitionId));
 	}
 
 	protected CPFriendlyURLEntryModel newCPFriendlyURLEntryModel(
@@ -3674,12 +3768,13 @@ public class DataFactory {
 		cpFriendlyURLEntryModel.setGroupId(groupId);
 		cpFriendlyURLEntryModel.setCompanyId(_companyId);
 		cpFriendlyURLEntryModel.setUserId(_sampleUserId);
-		cpFriendlyURLEntryModel.setUserName(_SAMPLE_USER_NAME);
+		cpFriendlyURLEntryModel.setUserName(
+			DataFactoryConstants.SAMPLE_USER_NAME);
 		cpFriendlyURLEntryModel.setCreateDate(new Date());
 		cpFriendlyURLEntryModel.setModifiedDate(new Date());
 		cpFriendlyURLEntryModel.setClassNameId(classNameId);
 		cpFriendlyURLEntryModel.setClassPK(classPK);
-		cpFriendlyURLEntryModel.setLanguageId("en_US");
+		cpFriendlyURLEntryModel.setLanguageId(DataFactoryConstants.LANGUAGE_ID);
 		cpFriendlyURLEntryModel.setUrlTitle(urlTitle);
 		cpFriendlyURLEntryModel.setMain(true);
 
@@ -3687,16 +3782,16 @@ public class DataFactory {
 	}
 
 	protected CPInstanceModel newCPInstanceModel(
-		long groupId, long cpDefinitionId, int index) {
+		long cpDefinitionId, int index) {
 
 		CPInstanceModel cpInstanceModel = new CPInstanceModelImpl();
 
 		cpInstanceModel.setUuid(SequentialUUID.generate());
 		cpInstanceModel.setCPInstanceId(_counter.get());
-		cpInstanceModel.setGroupId(groupId);
+		cpInstanceModel.setGroupId(_commerceCatalogGroupId);
 		cpInstanceModel.setCompanyId(_companyId);
 		cpInstanceModel.setUserId(_sampleUserId);
-		cpInstanceModel.setUserName(_SAMPLE_USER_NAME);
+		cpInstanceModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		cpInstanceModel.setCreateDate(new Date());
 		cpInstanceModel.setModifiedDate(new Date());
 		cpInstanceModel.setCPDefinitionId(cpDefinitionId);
@@ -3704,9 +3799,12 @@ public class DataFactory {
 
 		String instanceKey = cpDefinitionId + StringPool.POUND + index;
 
-		cpInstanceModel.setSku("SKU" + instanceKey);
-		cpInstanceModel.setGtin("GTIN" + instanceKey);
-		cpInstanceModel.setManufacturerPartNumber("MPN" + instanceKey);
+		cpInstanceModel.setSku(
+			DataFactoryConstants.CPINSTANCE_SKU_PREFIX + instanceKey);
+		cpInstanceModel.setGtin(
+			DataFactoryConstants.CPINSTANCE_GTIN_PREFIX + instanceKey);
+		cpInstanceModel.setManufacturerPartNumber(
+			DataFactoryConstants.CPINSTANCE_MPN_PREFIX + instanceKey);
 
 		cpInstanceModel.setPurchasable(true);
 		cpInstanceModel.setJson("[]");
@@ -3729,23 +3827,24 @@ public class DataFactory {
 		cpInstanceModel.setMaxSubscriptionCycles(0);
 		cpInstanceModel.setStatus(WorkflowConstants.STATUS_APPROVED);
 		cpInstanceModel.setStatusByUserId(_sampleUserId);
-		cpInstanceModel.setStatusByUserName(_SAMPLE_USER_NAME);
+		cpInstanceModel.setStatusByUserName(
+			DataFactoryConstants.SAMPLE_USER_NAME);
 		cpInstanceModel.setStatusDate(new Date());
 
 		return cpInstanceModel;
 	}
 
 	protected CProductModel newCProductModel(
-		long groupId, long cProductId, long publishedCPDefinitionId) {
+		long cProductId, long publishedCPDefinitionId) {
 
 		CProductModel cProductModel = new CProductModelImpl();
 
 		cProductModel.setUuid(SequentialUUID.generate());
 		cProductModel.setCProductId(cProductId);
-		cProductModel.setGroupId(groupId);
+		cProductModel.setGroupId(_commerceCatalogGroupId);
 		cProductModel.setCompanyId(_companyId);
 		cProductModel.setUserId(_sampleUserId);
-		cProductModel.setUserName(_SAMPLE_USER_NAME);
+		cProductModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		cProductModel.setCreateDate(new Date());
 		cProductModel.setModifiedDate(new Date());
 		cProductModel.setPublishedCPDefinitionId(publishedCPDefinitionId);
@@ -3753,26 +3852,6 @@ public class DataFactory {
 			BenchmarksPropsValues.MAX_COMMERCE_PRODUCT_DEFINITION_COUNT);
 
 		return cProductModel;
-	}
-
-	protected CPTaxCategoryModel newCPTaxCategoryModel(String name) {
-		CPTaxCategoryModel cpTaxCategoryModel = new CPTaxCategoryModelImpl();
-
-		cpTaxCategoryModel.setCPTaxCategoryId(_counter.get());
-		cpTaxCategoryModel.setCompanyId(_companyId);
-		cpTaxCategoryModel.setUserId(_sampleUserId);
-		cpTaxCategoryModel.setUserName(_SAMPLE_USER_NAME);
-		cpTaxCategoryModel.setCreateDate(new Date());
-		cpTaxCategoryModel.setModifiedDate(new Date());
-		cpTaxCategoryModel.setName(
-			StringBundler.concat(
-				"<?xml version=\"1.0\" encoding=\"UTF-8\"?><root ",
-				"available-locales=\"en_US\" default-locale=\"en_US\"><Name ",
-				"language-id=\"en_US\">", name, "</Name></root>"));
-
-		cpTaxCategoryModel.setDescription(null);
-
-		return cpTaxCategoryModel;
 	}
 
 	protected DDMContentModel newDDMContentModel(
@@ -3785,7 +3864,7 @@ public class DataFactory {
 		ddmContentModel.setGroupId(groupId);
 		ddmContentModel.setCompanyId(_companyId);
 		ddmContentModel.setUserId(_sampleUserId);
-		ddmContentModel.setUserName(_SAMPLE_USER_NAME);
+		ddmContentModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		ddmContentModel.setCreateDate(nextFutureDate());
 		ddmContentModel.setModifiedDate(nextFutureDate());
 		ddmContentModel.setName(DDMStorageLink.class.getName());
@@ -3805,7 +3884,8 @@ public class DataFactory {
 		ddmStructureLayoutModel.setGroupId(groupId);
 		ddmStructureLayoutModel.setCompanyId(_companyId);
 		ddmStructureLayoutModel.setUserId(userId);
-		ddmStructureLayoutModel.setUserName(_SAMPLE_USER_NAME);
+		ddmStructureLayoutModel.setUserName(
+			DataFactoryConstants.SAMPLE_USER_NAME);
 		ddmStructureLayoutModel.setCreateDate(nextFutureDate());
 		ddmStructureLayoutModel.setModifiedDate(nextFutureDate());
 		ddmStructureLayoutModel.setStructureLayoutKey(
@@ -3832,18 +3912,19 @@ public class DataFactory {
 
 	protected DDMStructureModel newDDMStructureModel(
 		long groupId, long userId, long classNameId, String structureKey,
-		String definition) {
+		String definition, long structureId) {
 
 		DDMStructureModel ddmStructureModel = new DDMStructureModelImpl();
 
 		ddmStructureModel.setUuid(SequentialUUID.generate());
-		ddmStructureModel.setStructureId(_counter.get());
+		ddmStructureModel.setStructureId(structureId);
 		ddmStructureModel.setGroupId(groupId);
 		ddmStructureModel.setCompanyId(_companyId);
 		ddmStructureModel.setUserId(userId);
-		ddmStructureModel.setUserName(_SAMPLE_USER_NAME);
+		ddmStructureModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		ddmStructureModel.setVersionUserId(userId);
-		ddmStructureModel.setVersionUserName(_SAMPLE_USER_NAME);
+		ddmStructureModel.setVersionUserName(
+			DataFactoryConstants.SAMPLE_USER_NAME);
 		ddmStructureModel.setCreateDate(nextFutureDate());
 		ddmStructureModel.setModifiedDate(nextFutureDate());
 		ddmStructureModel.setClassNameId(classNameId);
@@ -3867,12 +3948,13 @@ public class DataFactory {
 	}
 
 	protected DDMTemplateModel newDDMTemplateModel(
-		long groupId, long userId, long structureId, long sourceClassNameId) {
+		long groupId, long userId, long structureId, long sourceClassNameId,
+		long templateId) {
 
 		DDMTemplateModel ddmTemplateModel = new DDMTemplateModelImpl();
 
 		ddmTemplateModel.setUuid(SequentialUUID.generate());
-		ddmTemplateModel.setTemplateId(_counter.get());
+		ddmTemplateModel.setTemplateId(templateId);
 		ddmTemplateModel.setGroupId(groupId);
 		ddmTemplateModel.setCompanyId(_companyId);
 		ddmTemplateModel.setUserId(userId);
@@ -3881,10 +3963,12 @@ public class DataFactory {
 		ddmTemplateModel.setClassNameId(getClassNameId(DDMStructure.class));
 		ddmTemplateModel.setClassPK(structureId);
 		ddmTemplateModel.setResourceClassNameId(sourceClassNameId);
-		ddmTemplateModel.setTemplateKey("BASIC-WEB-CONTENT");
+		ddmTemplateModel.setTemplateKey(
+			DataFactoryConstants.JOURNAL_STRUCTURE_KEY);
 		ddmTemplateModel.setVersion(DDMTemplateConstants.VERSION_DEFAULT);
 		ddmTemplateModel.setVersionUserId(userId);
-		ddmTemplateModel.setVersionUserName(_SAMPLE_USER_NAME);
+		ddmTemplateModel.setVersionUserName(
+			DataFactoryConstants.SAMPLE_USER_NAME);
 
 		StringBundler sb = new StringBundler(3);
 
@@ -3915,16 +3999,19 @@ public class DataFactory {
 		dlFileEntryModel.setGroupId(dlFolderModel.getGroupId());
 		dlFileEntryModel.setCompanyId(_companyId);
 		dlFileEntryModel.setUserId(_sampleUserId);
-		dlFileEntryModel.setUserName(_SAMPLE_USER_NAME);
+		dlFileEntryModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		dlFileEntryModel.setCreateDate(nextFutureDate());
 		dlFileEntryModel.setModifiedDate(nextFutureDate());
 		dlFileEntryModel.setRepositoryId(dlFolderModel.getRepositoryId());
 		dlFileEntryModel.setFolderId(dlFolderModel.getFolderId());
-		dlFileEntryModel.setName("TestFile" + index);
-		dlFileEntryModel.setFileName("TestFile" + index + ".txt");
-		dlFileEntryModel.setExtension("txt");
+		dlFileEntryModel.setName(
+			DataFactoryConstants.DL_ENTRY_NAME_PREFIX + index);
+		dlFileEntryModel.setFileName(
+			DataFactoryConstants.DL_ENTRY_NAME_PREFIX + index + ".txt");
+		dlFileEntryModel.setExtension(DataFactoryConstants.DL_EXTENSION);
 		dlFileEntryModel.setMimeType(ContentTypes.TEXT_PLAIN);
-		dlFileEntryModel.setTitle("TestFile" + index + ".txt");
+		dlFileEntryModel.setTitle(
+			DataFactoryConstants.DL_ENTRY_NAME_PREFIX + index + ".txt");
 		dlFileEntryModel.setFileEntryTypeId(
 			DLFileEntryTypeConstants.FILE_ENTRY_TYPE_ID_BASIC_DOCUMENT);
 		dlFileEntryModel.setVersion(DLFileEntryConstants.VERSION_DEFAULT);
@@ -3944,15 +4031,15 @@ public class DataFactory {
 		dlFolderModel.setGroupId(groupId);
 		dlFolderModel.setCompanyId(_companyId);
 		dlFolderModel.setUserId(_sampleUserId);
-		dlFolderModel.setUserName(_SAMPLE_USER_NAME);
+		dlFolderModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		dlFolderModel.setCreateDate(nextFutureDate());
 		dlFolderModel.setModifiedDate(nextFutureDate());
 		dlFolderModel.setRepositoryId(groupId);
 		dlFolderModel.setParentFolderId(parentFolderId);
-		dlFolderModel.setName("Test Folder " + index);
+		dlFolderModel.setName(
+			DataFactoryConstants.DL_FOLDER_NAME_PREFIX + index);
 		dlFolderModel.setLastPostDate(nextFutureDate());
-		dlFolderModel.setDefaultFileEntryTypeId(
-			_defaultDLFileEntryTypeModel.getFileEntryTypeId());
+		dlFolderModel.setDefaultFileEntryTypeId(_defaultDLFileEntryTypeId);
 		dlFolderModel.setLastPublishDate(nextFutureDate());
 		dlFolderModel.setStatusDate(nextFutureDate());
 
@@ -4001,8 +4088,9 @@ public class DataFactory {
 		layoutSetModel.setCreateDate(new Date());
 		layoutSetModel.setModifiedDate(new Date());
 		layoutSetModel.setPrivateLayout(privateLayout);
-		layoutSetModel.setThemeId("classic_WAR_classictheme");
-		layoutSetModel.setColorSchemeId("01");
+		layoutSetModel.setThemeId(DataFactoryConstants.LAYOUT_THEME_ID);
+		layoutSetModel.setColorSchemeId(
+			DataFactoryConstants.LAYOUT_COLOR_THEME_ID);
 
 		return layoutSetModel;
 	}
@@ -4015,12 +4103,13 @@ public class DataFactory {
 		mbCategoryModel.setGroupId(groupId);
 		mbCategoryModel.setCompanyId(_companyId);
 		mbCategoryModel.setUserId(_sampleUserId);
-		mbCategoryModel.setUserName(_SAMPLE_USER_NAME);
+		mbCategoryModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		mbCategoryModel.setCreateDate(new Date());
 		mbCategoryModel.setModifiedDate(new Date());
 		mbCategoryModel.setParentCategoryId(
 			MBCategoryConstants.DEFAULT_PARENT_CATEGORY_ID);
-		mbCategoryModel.setName("Test Category " + index);
+		mbCategoryModel.setName(
+			DataFactoryConstants.MB_CATEGORY_NAME_PREFIX + index);
 		mbCategoryModel.setDisplayStyle(
 			MBCategoryConstants.DEFAULT_DISPLAY_STYLE);
 		mbCategoryModel.setLastPublishDate(new Date());
@@ -4041,7 +4130,7 @@ public class DataFactory {
 		mBMessageModel.setGroupId(groupId);
 		mBMessageModel.setCompanyId(_companyId);
 		mBMessageModel.setUserId(_sampleUserId);
-		mBMessageModel.setUserName(_SAMPLE_USER_NAME);
+		mBMessageModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		mBMessageModel.setCreateDate(new Date());
 		mBMessageModel.setModifiedDate(new Date());
 		mBMessageModel.setClassNameId(classNameId);
@@ -4070,7 +4159,7 @@ public class DataFactory {
 		mbThreadModel.setGroupId(groupId);
 		mbThreadModel.setCompanyId(_companyId);
 		mbThreadModel.setUserId(_sampleUserId);
-		mbThreadModel.setUserName(_SAMPLE_USER_NAME);
+		mbThreadModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		mbThreadModel.setCreateDate(new Date());
 		mbThreadModel.setModifiedDate(new Date());
 		mbThreadModel.setCategoryId(categoryId);
@@ -4169,7 +4258,7 @@ public class DataFactory {
 		roleModel.setRoleId(_counter.get());
 		roleModel.setCompanyId(_companyId);
 		roleModel.setUserId(_sampleUserId);
-		roleModel.setUserName(_SAMPLE_USER_NAME);
+		roleModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		roleModel.setCreateDate(new Date());
 		roleModel.setModifiedDate(new Date());
 		roleModel.setClassNameId(getClassNameId(Role.class));
@@ -4207,7 +4296,7 @@ public class DataFactory {
 		subscriptionModel.setSubscriptionId(_counter.get());
 		subscriptionModel.setCompanyId(_companyId);
 		subscriptionModel.setUserId(_sampleUserId);
-		subscriptionModel.setUserName(_SAMPLE_USER_NAME);
+		subscriptionModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		subscriptionModel.setCreateDate(new Date());
 		subscriptionModel.setModifiedDate(new Date());
 		subscriptionModel.setClassNameId(classNameId);
@@ -4234,14 +4323,18 @@ public class DataFactory {
 		userModel.setModifiedDate(new Date());
 		userModel.setDefaultUser(defaultUser);
 		userModel.setContactId(_counter.get());
-		userModel.setPassword("test");
+		userModel.setPassword(DataFactoryConstants.USER_PASSWORD);
 		userModel.setPasswordModifiedDate(new Date());
-		userModel.setReminderQueryQuestion("What is your screen name?");
+		userModel.setReminderQueryQuestion(
+			DataFactoryConstants.REMINDER_QUERY_QUESTION);
 		userModel.setReminderQueryAnswer(screenName);
-		userModel.setEmailAddress(screenName + "@liferay.com");
+		userModel.setEmailAddress(
+			screenName + DataFactoryConstants.EMAIL_POSTFIX);
 		userModel.setScreenName(screenName);
-		userModel.setLanguageId("en_US");
-		userModel.setGreeting("Welcome " + screenName + StringPool.EXCLAMATION);
+		userModel.setLanguageId(DataFactoryConstants.LANGUAGE_ID);
+		userModel.setGreeting(
+			DataFactoryConstants.GREETING_PREFIX + screenName +
+				StringPool.EXCLAMATION);
 		userModel.setFirstName(firstName);
 		userModel.setLastName(lastName);
 		userModel.setLoginDate(new Date());
@@ -4276,10 +4369,11 @@ public class DataFactory {
 		wikiNodeModel.setGroupId(groupId);
 		wikiNodeModel.setCompanyId(_companyId);
 		wikiNodeModel.setUserId(_sampleUserId);
-		wikiNodeModel.setUserName(_SAMPLE_USER_NAME);
+		wikiNodeModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		wikiNodeModel.setCreateDate(new Date());
 		wikiNodeModel.setModifiedDate(new Date());
-		wikiNodeModel.setName("Test Node " + index);
+		wikiNodeModel.setName(
+			DataFactoryConstants.WIKI_NODE_NAME_PREFIX + index);
 		wikiNodeModel.setLastPostDate(new Date());
 		wikiNodeModel.setLastPublishDate(new Date());
 		wikiNodeModel.setStatusDate(new Date());
@@ -4298,17 +4392,18 @@ public class DataFactory {
 		wikiPageModel.setGroupId(wikiNodeModel.getGroupId());
 		wikiPageModel.setCompanyId(_companyId);
 		wikiPageModel.setUserId(_sampleUserId);
-		wikiPageModel.setUserName(_SAMPLE_USER_NAME);
+		wikiPageModel.setUserName(DataFactoryConstants.SAMPLE_USER_NAME);
 		wikiPageModel.setCreateDate(new Date());
 		wikiPageModel.setModifiedDate(new Date());
 		wikiPageModel.setNodeId(wikiNodeModel.getNodeId());
-		wikiPageModel.setTitle("Test Page " + index);
+		wikiPageModel.setTitle(
+			DataFactoryConstants.WIKI_PAGE_TITLE_PREFIX + index);
 		wikiPageModel.setVersion(WikiPageConstants.VERSION_DEFAULT);
 		wikiPageModel.setContent(
 			StringBundler.concat(
-				"This is Test Page ", index, " of ", wikiNodeModel.getName(),
-				"."));
-		wikiPageModel.setFormat("creole");
+				DataFactoryConstants.WIKI_PAGE_CONTENT_PREFIX, index, " of ",
+				wikiNodeModel.getName(), "."));
+		wikiPageModel.setFormat(DataFactoryConstants.WIKI_PAGE_FORMAT);
 		wikiPageModel.setHead(true);
 		wikiPageModel.setLastPublishDate(new Date());
 
@@ -4447,10 +4542,6 @@ public class DataFactory {
 	private static final long _FUTURE_TIME =
 		System.currentTimeMillis() + Time.YEAR;
 
-	private static final String _SAMPLE_USER_NAME = "Sample";
-
-	private static final int _WRITER_BUFFER_SIZE = 16 * 1024;
-
 	private static final PortletPreferencesFactory _portletPreferencesFactory =
 		new PortletPreferencesFactoryImpl();
 
@@ -4462,7 +4553,6 @@ public class DataFactory {
 	private final long[] _assetClassNameIds;
 	private final Map<Long, Integer> _assetClassNameIdsIndexes =
 		new HashMap<>();
-	private List<AssetEntryModel> _assetEntryModels;
 	private final Map<Long, Integer> _assetPublisherQueryStartIndexes =
 		new HashMap<>();
 	private Map<Long, SimpleCounter>[] _assetTagCounters;
@@ -4472,34 +4562,29 @@ public class DataFactory {
 	private final Map<String, ClassNameModel> _classNameModels =
 		new HashMap<>();
 	private final long _commerceCatalogGroupId;
-	private GroupModel _commerceCatalogGroupModel;
-	private CommerceCatalogModel _commerceCatalogModel;
+	private final long _commerceCatalogId;
 	private final long _commerceChannelGroupId;
-	private GroupModel _commerceChannelGroupModel;
-	private CommerceChannelModel _commerceChannelModel;
-	private CommerceCurrencyModel _commerceCurrencyModel;
+	private final long _commerceChannelId;
 	private final long _companyId;
 	private final SimpleCounter _counter;
-	private List<CPDefinitionLocalizationModel> _cpDefinitionLocalizationModels;
-	private List<CPDefinitionModel> _cpDefinitionModels;
-	private List<CPFriendlyURLEntryModel> _cpFriendlyURLEntryModels;
-	private List<CPInstanceModel> _cpInstanceModels;
-	private List<CProductModel> _cProductModels;
-	private List<CPTaxCategoryModel> _cpTaxCategoryModels;
-	private final Map<String, Writer> _csvWriters = new HashMap<>();
+	private final int _cpDefinitionCount;
+	private List<long[]> _cpDefinitionIdList;
+	private final Map<Long, String> _cpDefinitionLocalizationNames =
+		new HashMap<>();
+	private final List<Long> _cProductIds = new ArrayList<>();
+	private final long _cPTaxCategoryId;
 	private final PortletPreferencesImpl
 		_defaultAssetPublisherPortletPreferencesImpl;
 	private AssetVocabularyModel _defaultAssetVocabularyModel;
-	private DDMStructureLayoutModel _defaultDLDDMStructureLayoutModel;
-	private DDMStructureModel _defaultDLDDMStructureModel;
-	private DDMStructureVersionModel _defaultDLDDMStructureVersionModel;
-	private DLFileEntryTypeModel _defaultDLFileEntryTypeModel;
+	private final long _defaultDDLDDMStructureVersionId;
+	private final long _defaultDLDDMStructureId;
+	private final long _defaultDLDDMStructureVersionId;
+	private long _defaultDLFileEntryTypeId =
+		DLFileEntryTypeConstants.FILE_ENTRY_TYPE_ID_BASIC_DOCUMENT;
 	private String _defaultJournalArticleId;
-	private DDMStructureLayoutModel _defaultJournalDDMStructureLayoutModel;
-	private DDMStructureModel _defaultJournalDDMStructureModel;
-	private DDMStructureVersionModel _defaultJournalDDMStructureVersionModel;
-	private DDMTemplateModel _defaultJournalDDMTemplateModel;
-	private DDMTemplateVersionModel _defaultJournalDDMTemplateVersionModel;
+	private final long _defaultJournalDDMStructureId;
+	private final long _defaultJournalDDMStructureVersionId;
+	private final long _defaultJournalDDMTemplateId;
 	private final long _defaultUserId;
 	private final String _dlDDMStructureContent;
 	private final String _dlDDMStructureLayoutContent;
@@ -4517,6 +4602,7 @@ public class DataFactory {
 	private final Map<Long, SimpleCounter> _layoutCounters = new HashMap<>();
 	private RoleModel _ownerRoleModel;
 	private RoleModel _powerUserRoleModel;
+	private final List<Long> _publishedCPDefinitionIds = new ArrayList<>();
 	private final SimpleCounter _resourcePermissionCounter;
 	private List<RoleModel> _roleModels;
 	private final long _sampleUserId;

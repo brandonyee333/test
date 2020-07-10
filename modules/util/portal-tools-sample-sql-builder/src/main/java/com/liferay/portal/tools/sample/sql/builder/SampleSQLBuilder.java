@@ -14,16 +14,17 @@
 
 package com.liferay.portal.tools.sample.sql.builder;
 
+import com.liferay.petra.io.OutputStreamWriter;
+import com.liferay.petra.io.unsync.UnsyncBufferedReader;
+import com.liferay.petra.io.unsync.UnsyncBufferedWriter;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.freemarker.FreeMarkerUtil;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
-import com.liferay.portal.kernel.io.OutputStreamWriter;
-import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
-import com.liferay.portal.kernel.io.unsync.UnsyncBufferedWriter;
 import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.tools.ToolDependencies;
 import com.liferay.portal.tools.sample.sql.builder.io.CharPipe;
 import com.liferay.portal.tools.sample.sql.builder.io.UnsyncTeeWriter;
@@ -41,7 +42,6 @@ import java.nio.channels.FileChannel;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,17 +56,14 @@ public class SampleSQLBuilder {
 		ToolDependencies.wireBasic();
 
 		try {
-			DataFactory dataFactory = new DataFactory();
-
-			new SampleSQLBuilder(dataFactory);
+			new SampleSQLBuilder();
 		}
 		catch (Exception exception) {
 			exception.printStackTrace();
 		}
 	}
 
-	public SampleSQLBuilder(DataFactory dataFactory) throws Exception {
-		_dataFactory = dataFactory;
+	public SampleSQLBuilder() throws Exception {
 
 		// Generic
 
@@ -232,69 +229,39 @@ public class SampleSQLBuilder {
 
 		Writer writer = new OutputStreamWriter(fileOutputStream);
 
-		return createUnsyncBufferedWriter(writer);
-	}
-
-	protected Writer createUnsyncBufferedWriter(Writer writer) {
-		return new UnsyncBufferedWriter(writer, _WRITER_BUFFER_SIZE) {
-
-			@Override
-			public void flush() {
-
-				// Disable FreeMarker from flushing
-
-			}
-
-		};
+		return new UnsyncBufferedWriter(writer, _WRITER_BUFFER_SIZE);
 	}
 
 	protected Reader generateSQL() {
 		final CharPipe charPipe = new CharPipe(_PIPE_BUFFER_SIZE);
 
-		Thread thread = new Thread() {
-
-			@Override
-			public void run() {
-				Writer sampleSQLWriter = null;
-
-				try {
-					sampleSQLWriter = new UnsyncTeeWriter(
-						createUnsyncBufferedWriter(charPipe.getWriter()),
+		Thread thread = new Thread(
+			() -> {
+				try (CSVFileWriter csvFileWriter = new CSVFileWriter();
+					Writer sampleSQLWriter = new UnsyncTeeWriter(
+						new UnsyncBufferedWriter(
+							charPipe.getWriter(), _WRITER_BUFFER_SIZE),
 						createFileWriter(
 							new File(
 								BenchmarksPropsValues.OUTPUT_DIR,
-								"sample.sql")));
+								"sample.sql")))) {
 
 					FreeMarkerUtil.process(
 						BenchmarksPropsValues.SCRIPT,
-						Collections.singletonMap("dataFactory", _dataFactory),
+						HashMapBuilder.<String, Object>put(
+							"csvFileWriter", csvFileWriter
+						).put(
+							"dataFactory", new DataFactory()
+						).build(),
 						sampleSQLWriter);
 				}
 				catch (Throwable t) {
 					_freeMarkerThrowable = t;
 				}
 				finally {
-					try {
-						_dataFactory.closeCSVWriters();
-					}
-					catch (IOException ioException) {
-						ioException.printStackTrace();
-					}
-
-					if (sampleSQLWriter != null) {
-						try {
-							sampleSQLWriter.close();
-						}
-						catch (IOException ioException) {
-							ioException.printStackTrace();
-						}
-					}
-
 					charPipe.close();
 				}
-			}
-
-		};
+			});
 
 		thread.start();
 
@@ -365,7 +332,6 @@ public class SampleSQLBuilder {
 
 	private static final int _WRITER_BUFFER_SIZE = 16 * 1024;
 
-	private final DataFactory _dataFactory;
 	private volatile Throwable _freeMarkerThrowable;
 
 }
