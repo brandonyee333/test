@@ -888,8 +888,6 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 					individualSegmentJSONObject.getString("id"));
 			}
 		}
-
-		_cerebroInfoDog.updateSegmentNames(individualSegmentJSONObject);
 	}
 
 	private static final String _ACCOUNT_PREFIX = "Account: ";
