@@ -35,9 +35,13 @@ public class PropertyFilter {
 	}
 
 	public PropertyFilter(String filterString, boolean negate) {
-		_filterString = filterString;
-		_filterTokens = _getFilterTokens(filterString);
 		_negate = negate;
+
+		List<String> filterTokens = _getFilterTokens(filterString);
+
+		_operator = filterTokens.get(1);
+		_propertyName = filterTokens.get(0);
+		_propertyValue = filterTokens.get(2);
 	}
 
 	@Override
@@ -52,11 +56,12 @@ public class PropertyFilter {
 
 		PropertyFilter propertyFilter = (PropertyFilter)obj;
 
-		if (Objects.equals(_filterString, propertyFilter._filterString) &&
-			Objects.equals(_filterTokens, propertyFilter._filterTokens) &&
-			Objects.equals(_negate, propertyFilter._negate) &&
+		if (Objects.equals(_negate, propertyFilter._negate) &&
+			Objects.equals(_operator, propertyFilter._operator) &&
+			Objects.equals(_propertyName, propertyFilter._propertyName) &&
 			Objects.equals(
-				_propertyNamespace, propertyFilter._propertyNamespace)) {
+				_propertyNamespace, propertyFilter._propertyNamespace) &&
+			Objects.equals(_propertyValue, propertyFilter._propertyValue)) {
 
 			return true;
 		}
@@ -64,16 +69,12 @@ public class PropertyFilter {
 		return false;
 	}
 
-	public String getFilterString() {
-		return _filterString;
-	}
-
 	public String getOperator() {
-		return _filterTokens.get(1);
+		return _operator;
 	}
 
 	public String getPropertyName() {
-		return _propertyNamespace + _filterTokens.get(0);
+		return _propertyNamespace + _propertyName;
 	}
 
 	public String getPropertyNamespace() {
@@ -81,12 +82,14 @@ public class PropertyFilter {
 	}
 
 	public String getPropertyValue() {
-		return _filterTokens.get(2);
+		return _propertyValue;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(_filterTokens, _negate, _propertyNamespace);
+		return Objects.hash(
+			_operator, _negate, _propertyName, _propertyNamespace,
+			_propertyValue);
 	}
 
 	public boolean isNegate() {
@@ -114,9 +117,10 @@ public class PropertyFilter {
 		return tokens;
 	}
 
-	private final String _filterString;
-	private final List<String> _filterTokens;
 	private final boolean _negate;
+	private final String _operator;
+	private final String _propertyName;
 	private String _propertyNamespace = "";
+	private final String _propertyValue;
 
 }
