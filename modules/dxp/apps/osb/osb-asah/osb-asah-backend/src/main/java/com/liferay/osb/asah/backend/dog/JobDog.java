@@ -14,13 +14,6 @@
 
 package com.liferay.osb.asah.backend.dog;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
 import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobParameter;
 import com.liferay.osb.asah.backend.model.JobRun;
@@ -32,16 +25,15 @@ import com.liferay.osb.asah.backend.model.JobTrainingPeriod;
 import com.liferay.osb.asah.backend.model.JobType;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchRepository;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
-
-import java.io.IOException;
+import com.liferay.osb.asah.common.util.ObjectMapperUtil;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -60,8 +52,6 @@ import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.common.unit.Fuzziness;
@@ -70,12 +60,8 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,30 +81,28 @@ public class JobDog {
 		JobTrainingPeriod jobTrainingPeriod, JobType jobType, String name,
 		boolean runNow) {
 
-		JSONObject jsonObject = new JSONObject();
+		Job job = new Job();
 
-		String dateString = DateUtil.newUTCDateString();
+		Date date = new Date();
 
-		jsonObject.put("createdDate", dateString);
-		jsonObject.put("lastUpdatedDate", dateString);
+		job.setCreatedDate(date);
+		job.setLastUpdatedDate(date);
 
-		jsonObject.put("name", name);
-		jsonObject.put(
-			"parameters",
-			_objectMapper.convertValue(jobParameters, JSONArray.class));
-		jsonObject.put("trainingFrequency", jobTrainingFrequency.toString());
-		jsonObject.put("trainingPeriod", jobTrainingPeriod.toString());
-		jsonObject.put("type", jobType.toString());
+		job.setName(name);
+		job.setJobParameters(jobParameters);
+		job.setJobTrainingFrequency(jobTrainingFrequency);
+		job.setJobTrainingPeriod(jobTrainingPeriod);
+		job.setJobType(jobType);
 
-		_scheduleOSBAsahTask(jsonObject);
+		_scheduleOSBAsahTask(job);
 
-		jsonObject = _faroInfoElasticsearchInvoker.add("jobs", jsonObject);
+		job = _jobElasticsearchRepository.add(job);
 
 		if (runNow) {
-			runJob(jsonObject.getString("id"), jobTrainingPeriod);
+			runJob(job.getId(), jobTrainingPeriod);
 		}
 
-		return _deserializeJob(jsonObject.toString());
+		return job;
 	}
 
 	public List<Boolean> deleteJobs(List<String> ids) {
@@ -132,39 +116,13 @@ public class JobDog {
 	}
 
 	public Job fetchJob(String name) {
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"jobs", _faroInfoElasticsearchInvoker,
-			_buildJobSearchSourceBuilder("name", name));
-
-		if (searchHits.getTotalHits() == 0) {
-			return null;
-		}
-
-		SearchHit searchHit = searchHits.getAt(0);
-
-		return _deserializeJob(searchHit.getSourceAsString());
+		return _jobElasticsearchRepository.fetchFirst(
+			searchSourceBuilder -> searchSourceBuilder.query(
+				QueryBuilders.termQuery("name", name)));
 	}
 
 	public Job getJob(String id) {
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"jobs", _faroInfoElasticsearchInvoker,
-			_buildJobSearchSourceBuilder("id", id));
-
-		if (searchHits.getTotalHits() != 1) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					String.format(
-						"Unable to retrieve the job definition for the job " +
-							"ID %s. Returned %d total hits.",
-						id, searchHits.getTotalHits()));
-			}
-
-			return null;
-		}
-
-		SearchHit searchHit = searchHits.getAt(0);
-
-		return _deserializeJob(searchHit.getSourceAsString());
+		return _jobElasticsearchRepository.get(id);
 	}
 
 	public String getJobNextTrainingDateString(String id) {
@@ -177,16 +135,17 @@ public class JobDog {
 			return null;
 		}
 
-		JobRun jobRun = _objectMapper.convertValue(
-			_faroInfoElasticsearchInvoker.fetch(
-				"job-runs",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery("job.id", id)
-				).filter(
-					QueryBuilders.termQuery("trigger", "SCHEDULE")
-				),
-				SortBuilderUtil.fieldSort("id", SortOrder.DESC), null, null),
-			JobRun.class);
+		JobRun jobRun = _jobRunElasticsearchRepository.fetchFirst(
+			searchSourceBuilder -> {
+				searchSourceBuilder.query(
+					BoolQueryBuilderUtil.filter(
+						QueryBuilders.termQuery("job.id", id)
+					).filter(
+						QueryBuilders.termQuery("trigger", "SCHEDULE")
+					));
+				searchSourceBuilder.sort(
+					SortBuilderUtil.fieldSort("id", SortOrder.DESC));
+			});
 
 		Date startDate = job.getLastUpdatedDate();
 
@@ -204,25 +163,15 @@ public class JobDog {
 	public ResultBag<Job> getJobResultBag(
 		String keywords, int size, Sort sort, int start) {
 
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"jobs", _faroInfoElasticsearchInvoker,
-			DogUtil.buildSearchSourceBuilder(
-				SortBuilderUtil.fieldSort(sort),
-				_buildKeywordsQueryBuilder(keywords), size, start));
-
-		return DogUtil.createResultBag(Job.class, searchHits);
+		return _jobElasticsearchRepository.search(
+			_buildKeywordsQueryBuilder(keywords), size, sort, start);
 	}
 
 	public ResultBag<JobRun> getJobRunResultBag(
 		String jobId, int size, Sort sort, int start) {
 
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"job-runs", _faroInfoElasticsearchInvoker,
-			DogUtil.buildSearchSourceBuilder(
-				SortBuilderUtil.fieldSort(sort),
-				QueryBuilders.termQuery("job.id", jobId), size, start));
-
-		return DogUtil.createResultBag(JobRun.class, searchHits);
+		return _jobRunElasticsearchRepository.search(
+			QueryBuilders.termQuery("job.id", jobId), size, sort, start);
 	}
 
 	public JobRunsMonthlyStatistics getJobRunsMonthlyStatistics(String id) {
@@ -251,14 +200,16 @@ public class JobDog {
 			return JobStatus.READY;
 		}
 
-		JSONObject jobRunJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"job-runs", QueryBuilders.termQuery("job.id", id),
-			SortBuilderUtil.fieldSort("id", SortOrder.DESC), null, null);
+		JobRun jobRun = _jobRunElasticsearchRepository.fetchFirst(
+			searchSourceBuilder -> {
+				searchSourceBuilder.query(
+					QueryBuilders.termQuery("job.id", id));
+				searchSourceBuilder.sort(
+					SortBuilderUtil.fieldSort("id", SortOrder.DESC));
+			});
 
-		if (jobRunJSONObject != null) {
-			if (Objects.equals(
-					jobRunJSONObject.getString("status"), "RUNNING")) {
-
+		if (jobRun != null) {
+			if (jobRun.getJobRunStatus() == JobRunStatus.RUNNING) {
 				return JobStatus.TRAINING;
 			}
 
@@ -275,20 +226,23 @@ public class JobDog {
 	}
 
 	public String getJobTrainingDateString(String id) {
-		JSONObject jobRunJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"job-runs",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("job.id", id)
-			).filter(
-				QueryBuilders.termQuery("status", "COMPLETED")
-			),
-			SortBuilderUtil.fieldSort("id", SortOrder.DESC), null, null);
+		JobRun jobRun = _jobRunElasticsearchRepository.fetchFirst(
+			searchSourceBuilder -> {
+				searchSourceBuilder.query(
+					BoolQueryBuilderUtil.filter(
+						QueryBuilders.termQuery("job.id", id)
+					).filter(
+						QueryBuilders.termQuery("status", "COMPLETED")
+					));
+				searchSourceBuilder.sort(
+					SortBuilderUtil.fieldSort("id", SortOrder.DESC));
+			});
 
-		if (jobRunJSONObject == null) {
+		if (jobRun == null) {
 			return null;
 		}
 
-		return jobRunJSONObject.getString("completedDate");
+		return jobRun.getCompletedDateISO();
 	}
 
 	public Job runJob(String id, JobTrainingPeriod jobTrainingPeriod) {
@@ -307,7 +261,7 @@ public class JobDog {
 		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
 			_jobTypeNaniteMap.get(job.getJobType()),
 			JSONUtil.put(
-				"job", _objectMapper.convertValue(job, JSONObject.class)
+				"job", ObjectMapperUtil.convertValue(job, JSONObject.class)
 			).put(
 				"trainingPeriod", jobTrainingPeriod.toString()
 			).put(
@@ -322,41 +276,26 @@ public class JobDog {
 		JobTrainingFrequency jobTrainingFrequency,
 		JobTrainingPeriod jobTrainingPeriod, String name, boolean runNow) {
 
-		JSONObject jsonObject = _faroInfoElasticsearchInvoker.get("jobs", id);
+		Job job = _jobElasticsearchRepository.get(id);
 
-		String oldTrainingFrequency = jsonObject.getString("trainingFrequency");
+		JobTrainingFrequency oldJobTrainingFrequency =
+			job.getJobTrainingFrequency();
 
-		jsonObject.put("lastUpdatedDate", DateUtil.newUTCDateString());
-		jsonObject.put("name", name);
-		jsonObject.put(
-			"parameters",
-			_objectMapper.convertValue(jobParameters, JSONArray.class));
-		jsonObject.put("trainingFrequency", jobTrainingFrequency.toString());
-		jsonObject.put("trainingPeriod", jobTrainingPeriod.toString());
+		job.setLastUpdatedDate(new Date());
+		job.setName(name);
+		job.setJobParameters(jobParameters);
+		job.setJobTrainingFrequency(jobTrainingFrequency);
+		job.setJobTrainingPeriod(jobTrainingPeriod);
 
-		_rescheduleOSBAsahTask(jsonObject, oldTrainingFrequency);
+		_rescheduleOSBAsahTask(job, oldJobTrainingFrequency);
 
-		jsonObject = _faroInfoElasticsearchInvoker.update(
-			"jobs", id, jsonObject);
+		job = _jobElasticsearchRepository.update(id, job);
 
 		if (runNow) {
 			runJob(id, jobTrainingPeriod);
 		}
 
-		return _deserializeJob(jsonObject.toString());
-	}
-
-	private SearchSourceBuilder _buildJobSearchSourceBuilder(
-		String fieldName, String fieldValue) {
-
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		searchSourceBuilder.query(
-			QueryBuilders.termQuery(fieldName, fieldValue));
-		searchSourceBuilder.size(1);
-
-		return searchSourceBuilder;
+		return job;
 	}
 
 	private QueryBuilder _buildKeywordsQueryBuilder(String keywords) {
@@ -449,14 +388,13 @@ public class JobDog {
 	}
 
 	private boolean _deleteJob(String id) {
-		JSONObject jsonObject = _faroInfoElasticsearchInvoker.get("jobs", id);
+		Job job = _jobElasticsearchRepository.get(id);
 
-		_unscheduleOSBAsahTask(jsonObject);
+		_unscheduleOSBAsahTask(job);
 
 		BulkByScrollResponse bulkByScrollResponse =
-			_faroInfoElasticsearchInvoker.deleteByQuery(
-				QueryBuilders.termQuery("job.id", jsonObject.getString("id")),
-				true, "job-runs");
+			_jobRunElasticsearchRepository.deleteByQuery(
+				QueryBuilders.termQuery("job.id", job.getId()));
 
 		List<BulkItemResponse.Failure> bulkFailures =
 			bulkByScrollResponse.getBulkFailures();
@@ -472,17 +410,7 @@ public class JobDog {
 			return false;
 		}
 
-		return _faroInfoElasticsearchInvoker.delete(
-			"jobs", jsonObject.getString("id"));
-	}
-
-	private Job _deserializeJob(String json) {
-		try {
-			return _objectMapper.readValue(json, Job.class);
-		}
-		catch (IOException ioe) {
-			throw new RuntimeException("Unable to deserialize job JSON", ioe);
-		}
+		return _jobElasticsearchRepository.delete(id);
 	}
 
 	private JobRun _fetchLastScheduledJobRun(List<JobRun> jobRuns) {
@@ -523,23 +451,17 @@ public class JobDog {
 		rangeQueryBuilder.gte("now/M");
 		rangeQueryBuilder.lt("now");
 
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"job-runs", _faroInfoElasticsearchInvoker,
-			DogUtil.buildSearchSourceBuilder(
-				SortBuilderUtil.fieldSort(sort),
-				BoolQueryBuilderUtil.filter(
-					rangeQueryBuilder
-				).filter(
-					QueryBuilders.termQuery("job.id", jobId)
-				),
-				size, start));
-
-		return DogUtil.createResultBag(JobRun.class, searchHits);
+		return _jobRunElasticsearchRepository.search(
+			BoolQueryBuilderUtil.filter(
+				rangeQueryBuilder
+			).filter(
+				QueryBuilders.termQuery("job.id", jobId)
+			),
+			size, sort, start);
 	}
 
 	private boolean _hasJobCompleted(String id) {
-		return _faroInfoElasticsearchInvoker.exists(
-			"job-runs",
+		return _jobRunElasticsearchRepository.exists(
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery("job.id", id)
 			).filter(
@@ -549,32 +471,32 @@ public class JobDog {
 
 	@PostConstruct
 	private void _init() {
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
+		_jobElasticsearchRepository = new ElasticsearchRepository<>(
+			"jobs", _elasticsearchInvokerFactory.forFaroInfo(), Job.class);
+
+		_jobRunElasticsearchRepository = new ElasticsearchRepository<>(
+			"job-runs", _elasticsearchInvokerFactory.forFaroInfo(),
+			JobRun.class);
 	}
 
 	private void _rescheduleOSBAsahTask(
-		JSONObject jobJSONObject, String oldTrainingFrequency) {
+		Job job, JobTrainingFrequency oldJobTrainingFrequency) {
 
 		JobTrainingFrequency newJobTrainingFrequency =
-			JobTrainingFrequency.valueOf(
-				jobJSONObject.getString("trainingFrequency"));
-		JobTrainingFrequency oldJobTrainingFrequency =
-			JobTrainingFrequency.valueOf(oldTrainingFrequency);
+			job.getJobTrainingFrequency();
 
 		if (newJobTrainingFrequency == oldJobTrainingFrequency) {
 			return;
 		}
 
-		_unscheduleOSBAsahTask(jobJSONObject);
+		_unscheduleOSBAsahTask(job);
 
-		_scheduleOSBAsahTask(jobJSONObject);
+		_scheduleOSBAsahTask(job);
 	}
 
-	private void _scheduleOSBAsahTask(JSONObject jobJSONObject) {
+	private void _scheduleOSBAsahTask(Job job) {
 		JobTrainingFrequency jobTrainingFrequency =
-			JobTrainingFrequency.valueOf(
-				jobJSONObject.getString("trainingFrequency"));
+			job.getJobTrainingFrequency();
 
 		if (jobTrainingFrequency == JobTrainingFrequency.MANUAL) {
 			return;
@@ -582,17 +504,17 @@ public class JobDog {
 
 		JSONObject osbAsahTaskJSONObject =
 			_faroInfoOSBAsahTaskDog.scheduleOSBAsahTask(
-				_jobTypeNaniteMap.get(
-					JobType.valueOf(jobJSONObject.getString("type"))),
-				JSONUtil.put("job", jobJSONObject),
+				_jobTypeNaniteMap.get(job.getJobType()),
+				JSONUtil.put(
+					"job",
+					ObjectMapperUtil.convertValue(job, JSONObject.class)),
 				jobTrainingFrequency.getCronExpression());
 
-		jobJSONObject.put(
-			"osbAsahTaskId", osbAsahTaskJSONObject.getString("id"));
+		job.setOSBAsahTaskId(osbAsahTaskJSONObject.getString("id"));
 	}
 
-	private void _unscheduleOSBAsahTask(JSONObject jobJSONObject) {
-		String osbAsahTaskId = jobJSONObject.optString("osbAsahTaskId", "");
+	private void _unscheduleOSBAsahTask(Job job) {
+		String osbAsahTaskId = job.getOSBAsahTaskId();
 
 		if (StringUtils.isBlank(osbAsahTaskId)) {
 			return;
@@ -600,22 +522,17 @@ public class JobDog {
 
 		_faroInfoOSBAsahTaskDog.unscheduleOSBAsahTask(osbAsahTaskId);
 
-		jobJSONObject.put("osbAsahTaskId", "");
+		job.setOSBAsahTaskId("");
 	}
-
-	private static final Log _log = LogFactory.getLog(JobDog.class);
-
-	@Autowired
-	private DataDog _dataDog;
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
 	@Autowired
 	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
+	private ElasticsearchRepository<Job> _jobElasticsearchRepository;
+	private ElasticsearchRepository<JobRun> _jobRunElasticsearchRepository;
 	private final Map<JobType, String> _jobTypeNaniteMap =
 		new HashMap<JobType, String>() {
 			{
@@ -633,17 +550,6 @@ public class JobDog {
 
 	@Value("${osb.asah.content.recommendation.max.monthly.job.runs:10}")
 	private int _maxMonthlyJobRuns;
-
-	private final ObjectMapper _objectMapper = new ObjectMapper() {
-		{
-			disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-			disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-
-			registerModule(new JavaTimeModule());
-			registerModule(new Jdk8Module());
-			registerModule(new JsonOrgModule());
-		}
-	};
 
 	@Autowired
 	private RecommendationDog _recommendationDog;
