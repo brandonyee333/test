@@ -45,6 +45,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.ResourceNotFoundException;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 
@@ -121,6 +122,7 @@ public class IndividualNanite implements Nanite {
 						messageJSONObject.getString("userId"));
 
 					_updatePagesAndAssets(
+						messageJSONObject.getString("channelId"),
 						messageJSONObject.getString("dataSourceId"),
 						knownIndividualJSONObject.getString("id"),
 						messageJSONObject.getString("userId"));
@@ -144,7 +146,9 @@ public class IndividualNanite implements Nanite {
 		}
 	}
 
-	private List<String> _fetchIndividualSegmentNames(String individualId) {
+	private List<String> _fetchIndividualSegmentNames(
+		String channelId, String individualId) {
+
 		JSONObject individualJSONObject = _faroInfoElasticsearchInvoker.fetch(
 			"individuals", individualId);
 
@@ -152,18 +156,23 @@ public class IndividualNanite implements Nanite {
 			return Collections.emptyList();
 		}
 
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+			QueryBuilders.termsQuery(
+				"id",
+				JSONUtil.toStringSet(
+					individualJSONObject.getJSONArray("individualSegmentIds")))
+		).filter(
+			QueryBuilders.termQuery("status", "ACTIVE")
+		);
+
+		if (StringUtils.isNotBlank(channelId)) {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery("channelId", channelId));
+		}
+
 		return JSONUtil.toStringList(
 			_faroInfoElasticsearchInvoker.get(
-				"individual-segments",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termsQuery(
-						"id",
-						JSONUtil.toStringSet(
-							individualJSONObject.getJSONArray(
-								"individualSegmentIds")))
-				).filter(
-					QueryBuilders.termQuery("status", "ACTIVE")
-				)),
+				"individual-segments", boolQueryBuilder),
 			"name");
 	}
 
@@ -367,11 +376,13 @@ public class IndividualNanite implements Nanite {
 	}
 
 	private void _updatePagesAndAssets(
-		String dataSourceId, String individualId, String userId) {
+		String channelId, String dataSourceId, String individualId,
+		String userId) {
 
 		Script script;
 
-		List<String> segmentNames = _fetchIndividualSegmentNames(individualId);
+		List<String> segmentNames = _fetchIndividualSegmentNames(
+			channelId, individualId);
 
 		if (segmentNames.isEmpty()) {
 			script = new Script(
