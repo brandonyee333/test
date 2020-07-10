@@ -64,7 +64,7 @@ definition {
 	test ElasticsearchRemoteClusterSmokeTest {
 		property environment.acceptance = "false";
 		property remote.elasticsearch.cluster.size = "2";
-		property remote.elasticsearch.enabled = "true";
+		property remote.elasticsearch6.enabled = "true";
 		property test.name.skip.portal.instance = "Elasticsearch6#ElasticsearchRemoteClusterSmokeTest";
 
 		Elasticsearch.viewClusterStatusViaClusterHealthAPI(numberOfNodes = "2");
