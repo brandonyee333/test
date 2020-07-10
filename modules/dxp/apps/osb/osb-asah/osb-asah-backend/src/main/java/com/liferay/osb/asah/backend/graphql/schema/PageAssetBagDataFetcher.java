@@ -45,21 +45,21 @@ public class PageAssetBagDataFetcher
 	public ResultBag<PageAsset> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		Function<Map<String, Object>, PropertyFilter> mapperFunction =
-			propertyFilterMap -> {
-				PropertyFilter propertyFilter = PropertyFilter.of(
-					propertyFilterMap);
-
-				if (Objects.equals(propertyFilter.getPropertyName(), "title")) {
-					propertyFilter.setPropertyName("name");
-				}
-
-				return propertyFilter;
-			};
-
 		List<PropertyFilter> propertyFilters = ListUtil.map(
 			dataFetchingEnvironment.getArgument("propertyFilters"),
-			mapperFunction);
+			(Function<Map<String, Object>, PropertyFilter>)
+				propertyFilterMap -> {
+					PropertyFilter propertyFilter = PropertyFilter.of(
+						propertyFilterMap);
+
+					if (Objects.equals(
+							propertyFilter.getPropertyName(), "title")) {
+
+						propertyFilter.setPropertyName("name");
+					}
+
+					return propertyFilter;
+				});
 
 		return _assetDog.getPageAssetResultBag(
 			dataFetchingEnvironment.getArgument("keywords"), propertyFilters,
