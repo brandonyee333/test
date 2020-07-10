@@ -34,6 +34,9 @@ public class PropertyFilter {
 			MapUtil.get(propertyFilter, "negate"));
 	}
 
+	public PropertyFilter() {
+	}
+
 	public PropertyFilter(String filterString, boolean negate) {
 		_negate = negate;
 
@@ -96,8 +99,24 @@ public class PropertyFilter {
 		return _negate;
 	}
 
+	public void setNegate(boolean negate) {
+		_negate = negate;
+	}
+
+	public void setOperator(String operator) {
+		_operator = operator;
+	}
+
+	public void setPropertyName(String propertyName) {
+		_propertyName = propertyName;
+	}
+
 	public void setPropertyNamespace(String propertyNamespace) {
 		_propertyNamespace = propertyNamespace;
+	}
+
+	public void setPropertyValue(String propertyValue) {
+		_propertyValue = propertyValue;
 	}
 
 	private static List<String> _getFilterTokens(String filterString) {
@@ -117,10 +136,10 @@ public class PropertyFilter {
 		return tokens;
 	}
 
-	private final boolean _negate;
-	private final String _operator;
-	private final String _propertyName;
+	private boolean _negate;
+	private String _operator;
+	private String _propertyName;
 	private String _propertyNamespace = "";
-	private final String _propertyValue;
+	private String _propertyValue;
 
 }
