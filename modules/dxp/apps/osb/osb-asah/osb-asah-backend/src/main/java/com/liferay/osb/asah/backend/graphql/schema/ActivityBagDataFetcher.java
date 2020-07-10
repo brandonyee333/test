@@ -18,7 +18,7 @@ import com.liferay.osb.asah.backend.dog.ActivityDog;
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.backend.model.Activity;
 import com.liferay.osb.asah.backend.model.PropertyFilter;
-import com.liferay.osb.asah.backend.model.ResultBag;
+import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import graphql.schema.DataFetcher;

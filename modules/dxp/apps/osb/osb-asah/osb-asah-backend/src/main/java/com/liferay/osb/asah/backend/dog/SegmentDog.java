@@ -19,13 +19,13 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
-import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.model.Segment;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.ArrayList;

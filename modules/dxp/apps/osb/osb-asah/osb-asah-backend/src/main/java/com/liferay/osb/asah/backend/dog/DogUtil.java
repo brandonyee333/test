@@ -26,8 +26,8 @@ import com.liferay.osb.asah.backend.dog.resolver.AssetResolver;
 import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
 import com.liferay.osb.asah.backend.model.AssetId;
 import com.liferay.osb.asah.backend.model.PropertyFilter;
-import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.model.ResultBag;
 
 import java.io.IOException;
 

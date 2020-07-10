@@ -16,13 +16,13 @@ package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.model.DXPEntity;
 import com.liferay.osb.asah.backend.model.Organization;
-import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.model.User;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 
 import java.util.ArrayList;

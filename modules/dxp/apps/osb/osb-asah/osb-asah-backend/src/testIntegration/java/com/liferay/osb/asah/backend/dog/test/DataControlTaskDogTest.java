@@ -16,12 +16,12 @@ package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.DataControlTaskDog;
 import com.liferay.osb.asah.backend.model.DataControlTask;
-import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.model.DataControlTaskType;
+import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;

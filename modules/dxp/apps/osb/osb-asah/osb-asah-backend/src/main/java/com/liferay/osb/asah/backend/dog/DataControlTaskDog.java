@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.model.DataControlTask;
-import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -26,6 +25,7 @@ import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.model.DataControlTaskType;
+import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 
 import com.univocity.parsers.csv.CsvParser;

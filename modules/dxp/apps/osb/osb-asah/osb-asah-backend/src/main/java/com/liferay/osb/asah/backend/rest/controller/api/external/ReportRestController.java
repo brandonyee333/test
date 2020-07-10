@@ -38,7 +38,6 @@ import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.PageMetric;
 import com.liferay.osb.asah.backend.model.PageMetricType;
-import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.model.Segment;
 import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.backend.model.Trend;
@@ -47,6 +46,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.model.DataExportTask;
 import com.liferay.osb.asah.common.model.DataExportTaskStatus;
 import com.liferay.osb.asah.common.model.DataExportTaskType;
+import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 
 import java.io.File;

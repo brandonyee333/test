@@ -16,8 +16,8 @@ package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.DashboardDog;
 import com.liferay.osb.asah.backend.model.Dashboard;
-import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;

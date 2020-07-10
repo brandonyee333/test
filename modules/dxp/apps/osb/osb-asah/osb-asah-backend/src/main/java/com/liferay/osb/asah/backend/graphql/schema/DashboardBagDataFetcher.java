@@ -17,7 +17,7 @@ package com.liferay.osb.asah.backend.graphql.schema;
 import com.liferay.osb.asah.backend.dog.DashboardDog;
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.backend.model.Dashboard;
-import com.liferay.osb.asah.backend.model.ResultBag;
+import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 
 import graphql.schema.DataFetcher;

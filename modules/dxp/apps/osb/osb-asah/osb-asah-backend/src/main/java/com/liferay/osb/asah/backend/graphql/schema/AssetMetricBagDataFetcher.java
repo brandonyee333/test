@@ -21,7 +21,7 @@ import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.MetricType;
-import com.liferay.osb.asah.backend.model.ResultBag;
+import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 
 import graphql.execution.ExecutionTypeInfo;
