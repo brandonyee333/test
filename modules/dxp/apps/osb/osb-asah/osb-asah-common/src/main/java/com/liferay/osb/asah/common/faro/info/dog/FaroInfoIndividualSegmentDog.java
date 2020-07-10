@@ -215,6 +215,21 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 		JSONObject individualSegmentJSONObject = elasticsearchInvoker.get(
 			"individual-segments", individualSegmentId);
 
+		String oldIndividualSegmentName = individualSegmentJSONObject.getString(
+			"name");
+
+		boolean updateSegmentNames = false;
+
+		String newIndividualSegmentName =
+			partialIndividualSegmentJSONObject.optString("name", null);
+
+		if (StringUtils.isNotBlank(newIndividualSegmentName) &&
+			!StringUtils.equals(
+				oldIndividualSegmentName, newIndividualSegmentName)) {
+
+			updateSegmentNames = true;
+		}
+
 		_updateAccount(
 			individualSegmentJSONObject, partialIndividualSegmentJSONObject);
 
@@ -228,6 +243,11 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 			individualSegmentJSONObject = elasticsearchInvoker.update(
 				"individual-segments", individualSegmentId,
 				partialIndividualSegmentJSONObject);
+
+			if (updateSegmentNames) {
+				_addOSBAsahTask(
+					individualSegmentJSONObject, oldIndividualSegmentName);
+			}
 		}
 		else {
 			_setReferencedFields(partialIndividualSegmentJSONObject);
@@ -236,7 +256,13 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 				"individual-segments", individualSegmentId,
 				_setState(partialIndividualSegmentJSONObject));
 
-			_addOSBAsahTask(individualSegmentJSONObject);
+			if (updateSegmentNames) {
+				_addOSBAsahTask(
+					individualSegmentJSONObject, oldIndividualSegmentName);
+			}
+			else {
+				_addOSBAsahTask(individualSegmentJSONObject);
+			}
 		}
 
 		return individualSegmentJSONObject;
