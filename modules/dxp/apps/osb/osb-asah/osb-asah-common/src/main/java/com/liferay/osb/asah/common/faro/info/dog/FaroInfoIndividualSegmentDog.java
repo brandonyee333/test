@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.faro.info.dog;
 
-import com.liferay.osb.asah.common.cerebro.info.dog.CerebroInfoDog;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -215,21 +214,6 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 		JSONObject individualSegmentJSONObject = elasticsearchInvoker.get(
 			"individual-segments", individualSegmentId);
 
-		String oldIndividualSegmentName = individualSegmentJSONObject.getString(
-			"name");
-
-		boolean updateSegmentNames = false;
-
-		String newIndividualSegmentName =
-			partialIndividualSegmentJSONObject.optString("name", null);
-
-		if (StringUtils.isNotBlank(newIndividualSegmentName) &&
-			!StringUtils.equals(
-				oldIndividualSegmentName, newIndividualSegmentName)) {
-
-			updateSegmentNames = true;
-		}
-
 		_updateAccount(
 			individualSegmentJSONObject, partialIndividualSegmentJSONObject);
 
@@ -243,11 +227,6 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 			individualSegmentJSONObject = elasticsearchInvoker.update(
 				"individual-segments", individualSegmentId,
 				partialIndividualSegmentJSONObject);
-
-			if (updateSegmentNames) {
-				_addOSBAsahTask(
-					individualSegmentJSONObject, oldIndividualSegmentName);
-			}
 		}
 		else {
 			_setReferencedFields(partialIndividualSegmentJSONObject);
@@ -256,13 +235,7 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 				"individual-segments", individualSegmentId,
 				_setState(partialIndividualSegmentJSONObject));
 
-			if (updateSegmentNames) {
-				_addOSBAsahTask(
-					individualSegmentJSONObject, oldIndividualSegmentName);
-			}
-			else {
-				_addOSBAsahTask(individualSegmentJSONObject);
-			}
+			_addOSBAsahTask(individualSegmentJSONObject);
 		}
 
 		return individualSegmentJSONObject;
@@ -291,31 +264,18 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 	}
 
 	private void _addOSBAsahTask(JSONObject individualSegmentJSONObject) {
-		_addOSBAsahTask(individualSegmentJSONObject, null);
-	}
-
-	private void _addOSBAsahTask(
-		JSONObject individualSegmentJSONObject,
-		String oldIndividualSegmentName) {
-
 		if (Objects.equals(
 				individualSegmentJSONObject.getString("segmentType"),
 				"DYNAMIC")) {
 
-			JSONObject contextJSONObject = JSONUtil.put(
-				"dateModified",
-				individualSegmentJSONObject.getString("dateModified")
-			).put(
-				"individualSegmentJSONObject", individualSegmentJSONObject
-			);
-
-			if (StringUtils.isNotBlank(oldIndividualSegmentName)) {
-				contextJSONObject.put(
-					"updateSegmentNames", oldIndividualSegmentName);
-			}
-
 			_faroInfoOSBAsahTaskDog.addOSBAsahTask(
-				"UpdateDynamicMembershipsNanite", contextJSONObject);
+				"UpdateDynamicMembershipsNanite",
+				JSONUtil.put(
+					"dateModified",
+					individualSegmentJSONObject.getString("dateModified")
+				).put(
+					"individualSegmentJSONObject", individualSegmentJSONObject
+				));
 		}
 	}
 
@@ -942,9 +902,6 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 		"activeIndividualCount", "activitiesCount", "engagementScore",
 		"individualCount", "lastActivityDate"
 	};
-
-	@Autowired
-	private CerebroInfoDog _cerebroInfoDog;
 
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
