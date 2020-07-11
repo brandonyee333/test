@@ -76,7 +76,7 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 			</h1>
 
 			<%
-			List<ProductPurchaseDisplay> productPurchaseDisplays = new ArrayList<ProductPurchaseDisplay>();
+			List<Object> productPurchaseDisplays = new ArrayList<Object>();
 
 			ProductPurchaseView productPurchaseView = productPurchaseViewWebService.fetchProductPurchaseView(licenseKey.getKoroneikiAccountKey(), productEntry.getKoroneikiProductKey());
 
@@ -103,10 +103,12 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 					}
 				}
 			}
+
+			productPurchaseDisplays.add((Object)null);
 			%>
 
 			<liferay-ui:search-container
-				headerNames="start-date,lifetime,instance-size,license-keys-generated"
+				headerNames="start-date,expiration-date,instance-size,license-keys-generated,,"
 				total="<%= productPurchaseDisplays.size() %>"
 			>
 				<liferay-ui:search-container-results
@@ -114,25 +116,45 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 				/>
 
 				<liferay-ui:search-container-row
-					className="com.liferay.osb.customer.license.web.internal.display.context.ProductPurchaseDisplay"
-					modelVar="productPurchaseDisplay"
+					className="java.lang.Object"
+					modelVar="resultRow"
 				>
 
 					<%
+					ProductPurchaseDisplay productPurchaseDisplay = null;
+
+					if (resultRow instanceof ProductPurchaseDisplay) {
+						productPurchaseDisplay = (ProductPurchaseDisplay)resultRow;
+					}
+
+					String productPurchaseKey = StringPool.BLANK;
+
+					if (productPurchaseDisplay != null) {
+						productPurchaseKey = productPurchaseDisplay.getKey();
+					}
+
 					Calendar startDateCal = Calendar.getInstance(timeZone, locale);
 
-					startDateCal.setTime(productPurchaseDisplay.getStartDate());
+					if (productPurchaseDisplay != null) {
+						startDateCal.setTime(productPurchaseDisplay.getStartDate());
+					}
+					else {
+						startDateCal.setTime(licenseKey.getStartDate());
+					}
 
 					Calendar expirationDateCal = Calendar.getInstance(timeZone, locale);
 
-					expirationDateCal.setTime(productPurchaseDisplay.getEndDate());
+					if (productPurchaseDisplay != null) {
+						expirationDateCal.setTime(productPurchaseDisplay.getEndDate());
+					}
+					else {
+						startDateCal.setTime(licenseKey.getExpirationDate());
+					}
 
 					String rowHREF = null;
 
-					String productPurchaseKey = productPurchaseDisplay.getKey();
-
 					if (!productPurchaseKey.equals(licenseKey.getKoroneikiProductPurchaseKey())) {
-						StringBuilder sb = new StringBuilder();
+						StringBundler sb = new StringBundler(5);
 
 						sb.append("javascript:");
 						sb.append(renderResponse.getNamespace());
@@ -143,12 +165,6 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 						rowHREF = sb.toString();
 					}
 					%>
-
-					<liferay-ui:search-container-column-text
-						href="<%= rowHREF %>"
-						name="product"
-						value="<%= productPurchaseDisplay.getProductName() %>"
-					/>
 
 					<liferay-ui:search-container-column-text
 						href="<%= rowHREF %>"
@@ -163,14 +179,32 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 					/>
 
 					<liferay-ui:search-container-column-text
-						href="<%= rowHREF %>"
-						name="license-keys-generated"
-						value="<%= productPurchaseDisplay.getLicenseKeysGenerated() %>"
-					/>
+						name="instance-size"
+					>
+						<c:choose>
+							<c:when test="<%= productPurchaseDisplay != null %>">
+								<%= productPurchaseDisplay.getSizing() %>
+							</c:when>
+							<c:otherwise>
+								<%= licenseKey.getSizing() %>
+							</c:otherwise>
+						</c:choose>
+					</liferay-ui:search-container-column-text>
 
 					<liferay-ui:search-container-column-text
-						href="<%= rowHREF %>"
+						name="license-keys-generated"
 					>
+						<c:choose>
+							<c:when test="<%= productPurchaseDisplay != null %>">
+								<%= productPurchaseDisplay.getLicenseKeysGenerated() %>
+							</c:when>
+							<c:otherwise>
+								<%= productConsumptionWebService.searchCount("accountKey eq '" + licenseKey.getKoroneikiAccountKey() + "' and productKey eq '" + productEntry.getKoroneikiProductKey() + "' and productPurchaseKey eq null") %>
+							</c:otherwise>
+						</c:choose>
+					</liferay-ui:search-container-column-text>
+
+					<liferay-ui:search-container-column-text>
 						<c:choose>
 							<c:when test="<%= productPurchaseKey.equals(licenseKey.getKoroneikiProductPurchaseKey()) %>">
 								<liferay-ui:icon
@@ -187,50 +221,11 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 				</liferay-ui:search-container-row>
 
 				<liferay-ui:search-iterator
+					markupView="lexicon"
 					paginate="<%= false %>"
+					resultRowSplitter="<%= new ProductPurchaseResultRowSplitter() %>"
 				/>
 			</liferay-ui:search-container>
-
-			<table class="table table-bordered table-hover">
-				<thead>
-					<tr>
-						<th class="detached-header" colspan="5">
-							<liferay-ui:message key="detached" />
-						</th>
-					</tr>
-				</thead>
-
-				<tbody>
-					<tr>
-						<td class="table-cell">
-							<%= productEntry.getName() %>
-						</td>
-						<td class="table-cell">
-							<%= longDateFormatDate.format(licenseKey.getStartDate()) %>
-						</td>
-						<td class="table-cell">
-							<%= longDateFormatDate.format(licenseKey.getExpirationDate()) %>
-						</td>
-						<td class="table-cell">
-							<%= productConsumptionWebService.searchCount("accountKey eq '" + licenseKey.getKoroneikiAccountKey() + "' and productKey eq '" + productEntry.getKoroneikiProductKey() + "' and productPurchaseKey eq null") %>
-						</td>
-						<td class="table-cell">
-							<c:choose>
-								<c:when test="<%= Validator.isNull(licenseKey.getKoroneikiProductPurchaseKey()) %>">
-									<liferay-ui:icon
-										image="checked"
-										label="<%= true %>"
-										message="current"
-									/>
-								</c:when>
-								<c:otherwise>
-									<aui:button onClick='<%= renderResponse.getNamespace() + "moveLicenseKey('');" %>' value="choose" />
-								</c:otherwise>
-							</c:choose>
-						</td>
-					</tr>
-				</tbody>
-			</table>
 		</aui:form>
 	</aui:row>
 </div>
