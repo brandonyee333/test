@@ -59,15 +59,6 @@ public class CerebroInfoDog {
 			return;
 		}
 
-		JSONArray referencedAssetIdsJSONArray =
-			individualSegmentJSONObject.optJSONArray("referencedAssetIds");
-
-		if ((referencedAssetIdsJSONArray == null) ||
-			(referencedAssetIdsJSONArray.length() == 0)) {
-
-			return;
-		}
-
 		for (String collectionName : _CEREBRO_INFO_COLLECTION_NAMES) {
 			ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
 				_elasticsearchInvoker.createElasticsearchBulkRequestBuilder();
