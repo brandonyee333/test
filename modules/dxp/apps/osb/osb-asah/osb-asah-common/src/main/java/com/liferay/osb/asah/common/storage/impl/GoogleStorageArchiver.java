@@ -202,8 +202,7 @@ public class GoogleStorageArchiver {
 
 			if (StringUtils.isNumeric(lastToken)) {
 				fileName = String.format(
-					"%s/%s", fileName.substring(0, index),
-					fileName.substring(index + 1));
+					"%s/%s", fileName.substring(0, index), lastToken);
 			}
 		}
 
