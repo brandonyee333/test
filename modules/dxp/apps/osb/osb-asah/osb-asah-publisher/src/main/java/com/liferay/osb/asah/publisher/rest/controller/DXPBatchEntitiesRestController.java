@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.publisher.rest.controller;
 
-import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.storage.Storage;
 import com.liferay.osb.asah.common.storage.StorageConfiguration;
 import com.liferay.osb.asah.common.storage.StorageFactory;
@@ -137,9 +136,7 @@ public class DXPBatchEntitiesRestController {
 
 		builder.chunkSize(_DEFAULT_CHUNK_SIZE);
 		builder.googleBucket(_analyticsBatchResourcesBucket);
-		builder.googleBucketFolder(
-			String.format(
-				"%s/%s", ServiceConstants.LCP_PROJECT_ID, dataSourceId));
+		builder.googleBucketFolder(dataSourceId);
 
 		return builder.build();
 	}

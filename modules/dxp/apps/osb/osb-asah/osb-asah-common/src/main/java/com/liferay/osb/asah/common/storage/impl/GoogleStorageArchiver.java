@@ -22,6 +22,7 @@ import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageException;
 import com.google.cloud.storage.StorageOptions;
 
+import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 
 import java.io.File;
@@ -30,7 +31,9 @@ import java.io.IOException;
 
 import java.nio.file.Files;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -195,22 +198,27 @@ public class GoogleStorageArchiver {
 	}
 
 	private String _getFileName(String bucketPath, String fileName) {
+		List<String> bucketPaths = new ArrayList<>();
+
+		bucketPaths.add(ServiceConstants.LCP_PROJECT_ID);
+
+		if (bucketPath != null) {
+			bucketPaths.add(bucketPath);
+		}
+
 		int index = fileName.lastIndexOf('.');
 
 		if (index > -1) {
 			String lastToken = fileName.substring(index + 1);
 
 			if (StringUtils.isNumeric(lastToken)) {
-				fileName = String.format(
-					"%s/%s", fileName.substring(0, index), lastToken);
+				bucketPaths.add(fileName.substring(0, index));
+
+				fileName = lastToken;
 			}
 		}
 
-		if (bucketPath != null) {
-			return String.format("%s/%s", bucketPath, fileName);
-		}
-
-		return fileName;
+		return String.format("%s/%s", String.join("/", bucketPaths), fileName);
 	}
 
 	@PostConstruct
