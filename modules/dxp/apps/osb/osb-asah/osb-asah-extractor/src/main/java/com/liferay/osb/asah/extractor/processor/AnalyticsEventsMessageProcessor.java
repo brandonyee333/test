@@ -106,9 +106,6 @@ public class AnalyticsEventsMessageProcessor implements MessageListener {
 			JSONArray analyticsEventJSONArray = _getAnalyticsEventJSONArray(
 				analyticsEventsMessages);
 
-			_cerebroRawElasticsearchInvoker.add(
-				"analytics-events", analyticsEventJSONArray);
-
 			_analyticsEventsCounter.inc(analyticsEventJSONArray.length());
 		}
 	}
@@ -348,8 +345,6 @@ public class AnalyticsEventsMessageProcessor implements MessageListener {
 
 	@PostConstruct
 	private void _init() {
-		_cerebroRawElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroRaw();
 		_faroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forFaroInfo();
 
@@ -436,7 +431,6 @@ public class AnalyticsEventsMessageProcessor implements MessageListener {
 	)
 	private String _analyticsEventsStoragePath;
 
-	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
 	private Map<String, String> _channelIds;
 
 	@Autowired
