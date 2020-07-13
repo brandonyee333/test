@@ -180,11 +180,9 @@ public class AccountEntryViewDisplayContext {
 
 			jsonObject.put("collaboratorId", collaborator.getCollaboratorId());
 			jsonObject.put("createDate", collaborator.getCreateDate());
-
 			jsonObject.put(
 				"deleteCollaboratorURL",
 				getCollaboratorDeleteURL(collaborator));
-
 			jsonObject.put("emailAddress", collaborator.getEmailAddress());
 			jsonObject.put("fullName", collaborator.getFullName());
 			jsonObject.put("gitHubUserName", collaborator.getGitHubUserName());
