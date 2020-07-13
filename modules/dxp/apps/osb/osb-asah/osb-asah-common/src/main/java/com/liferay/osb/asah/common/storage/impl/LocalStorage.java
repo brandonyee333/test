@@ -80,6 +80,12 @@ public class LocalStorage implements Storage {
 	public File readSparkJobResult(
 		Date sparkJobResultDateAfter, String sparkJobResultPathPrefix) {
 
+		if ((_googleStorageArchiver == null) ||
+			(_storageStorageConfiguration.getGoogleBucket() == null)) {
+
+			return null;
+		}
+
 		try {
 			return _googleStorageArchiver.readSparkJobResult(
 				_storageStorageConfiguration.getGoogleBucket(),
