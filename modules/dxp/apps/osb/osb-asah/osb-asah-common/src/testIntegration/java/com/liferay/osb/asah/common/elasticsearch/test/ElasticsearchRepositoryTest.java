@@ -53,7 +53,6 @@ public class ElasticsearchRepositoryTest {
 			new MyPreference("key", "value"));
 
 		Assert.assertNotNull(myPreference.getId());
-
 		Assert.assertEquals("key", myPreference.getKey());
 		Assert.assertEquals("value", myPreference.getValue());
 	}
@@ -112,7 +111,6 @@ public class ElasticsearchRepositoryTest {
 			QueryBuilders.matchAllQuery(), 20, Sort.desc("id"), 0);
 
 		Assert.assertEquals(3, resultBag.getTotal());
-
 		Assert.assertEquals(
 			Arrays.asList(myPreference3, myPreference2, myPreference1),
 			resultBag.getResults());
