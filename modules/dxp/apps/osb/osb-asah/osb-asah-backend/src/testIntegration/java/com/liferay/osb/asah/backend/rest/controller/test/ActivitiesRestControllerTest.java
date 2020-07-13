@@ -97,7 +97,6 @@ public class ActivitiesRestControllerTest {
 			"JSONArray/activity-transformations");
 
 		Assert.assertEquals(48, jsonArray.length());
-
 		Assert.assertEquals(
 			1,
 			JSONUtil.getValue(
