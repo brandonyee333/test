@@ -22,6 +22,8 @@ import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.http.QueueHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.messaging.Channel;
+import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
 
@@ -30,6 +32,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -91,9 +94,31 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 
 	@Override
 	public void run() throws Exception {
-		process(
-			"analytics-events", "lastSuccessfulAnalyticsEventId",
-			_cerebroRawElasticsearchInvoker, QueryBuilders.matchAllQuery());
+		while (true) {
+			long start = System.currentTimeMillis();
+
+			List<AnalyticsEvent> analyticsEvents =
+				_messageSubscriber.pullMessages(
+					50, AnalyticsEvent::toAnalyticsEvent);
+
+			if (analyticsEvents.isEmpty()) {
+				break;
+			}
+
+			for (AnalyticsEvent analyticsEvent : analyticsEvents) {
+				process(new JSONObject(analyticsEvent.toJSON()));
+			}
+
+			if (_log.isInfoEnabled()) {
+				Class<?> clazz = getClass();
+
+				_log.info(
+					String.format(
+						"%s processed %d events in %d ms",
+						clazz.getSimpleName(), analyticsEvents.size(),
+						System.currentTimeMillis() - start));
+			}
+		}
 	}
 
 	@Override
@@ -115,23 +140,12 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 
 			String applicationId = analyticsEvent.getApplicationId();
 
-			String dataSourceAssetPKFieldName =
-				_dataSourceAssetPKFieldNames.get(applicationId);
-
-			if (dataSourceAssetPKFieldName == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn("Invalid application ID " + applicationId);
-				}
-
-				return;
-			}
-
 			JSONObject activityGroupJSONObject = _addActivityGroupJSONObject(
 				analyticsEvent);
 
 			_addActivityJSONObject(
 				activityGroupJSONObject, analyticsEvent, applicationId,
-				dataSourceAssetPKFieldName);
+				_dataSourceAssetPKFieldNames.get(applicationId));
 		}
 		catch (Exception e) {
 			_log.error(
@@ -614,6 +628,9 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
+
+	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_ACTIVITY)
+	private MessageSubscriber _messageSubscriber;
 
 	@Autowired
 	private QueueHttp _queueHttp;
