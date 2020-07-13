@@ -80,9 +80,7 @@ public class LocalStorage implements Storage {
 	public File readSparkJobResult(
 		Date sparkJobResultDateAfter, String sparkJobResultPathPrefix) {
 
-		if ((_googleStorageArchiver == null) ||
-			(_storageStorageConfiguration.getGoogleBucket() == null)) {
-
+		if (!_isGoogleStorageArchiverEnabled()) {
 			return null;
 		}
 
@@ -152,9 +150,7 @@ public class LocalStorage implements Storage {
 	}
 
 	private void _archiveFile(File file) {
-		if ((_googleStorageArchiver == null) ||
-			(_storageStorageConfiguration.getGoogleBucket() == null)) {
-
+		if (!_isGoogleStorageArchiverEnabled()) {
 			return;
 		}
 
@@ -204,6 +200,16 @@ public class LocalStorage implements Storage {
 		}
 
 		return false;
+	}
+
+	private boolean _isGoogleStorageArchiverEnabled() {
+		if ((_googleStorageArchiver == null) ||
+			(_storageStorageConfiguration.getGoogleBucket() == null)) {
+
+			return false;
+		}
+
+		return true;
 	}
 
 	private void _open() throws IOException {
