@@ -26,6 +26,8 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
+import com.liferay.osb.asah.common.messaging.Channel;
+import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.Acquisition;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.UserSession;
@@ -87,8 +89,6 @@ public class SessionNanite implements Nanite {
 	public void init() {
 		_cerebroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forCerebroInfo();
-		_cerebroRawElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroRaw();
 		_faroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forFaroInfo();
 
@@ -210,25 +210,6 @@ public class SessionNanite implements Nanite {
 		).filter(
 			eventId -> !_nonInteractionEvents.contains(eventId)
 		).count();
-	}
-
-	private JSONObject _getOSBAsahMarkerJSONObject() {
-		Class<?> clazz = getClass();
-
-		JSONObject osbAsahMarkerJSONObject =
-			_cerebroInfoElasticsearchInvoker.fetch(
-				"OSBAsahMarkers", clazz.getSimpleName());
-
-		if (osbAsahMarkerJSONObject == null) {
-			osbAsahMarkerJSONObject = new JSONObject();
-
-			osbAsahMarkerJSONObject.put("id", clazz.getSimpleName());
-
-			_cerebroInfoElasticsearchInvoker.add(
-				"OSBAsahMarkers", osbAsahMarkerJSONObject);
-		}
-
-		return osbAsahMarkerJSONObject;
 	}
 
 	private long _getPageViewsCount(List<AnalyticsEvent> analyticsEvents) {
@@ -454,41 +435,18 @@ public class SessionNanite implements Nanite {
 	}
 
 	private void _run() throws Exception {
-		JSONObject osbAsahMarkerJSONObject = _getOSBAsahMarkerJSONObject();
-
 		while (true) {
 			long start = System.currentTimeMillis();
 
-			String lastSuccessfulAnalyticsEventId =
-				osbAsahMarkerJSONObject.optString(
-					"lastSuccessfulAnalyticsEventId", "0");
-
-			String analyticsEventsJSON = _cerebroRawElasticsearchInvoker.get(
-				"analytics-events",
-				searchSourceBuilder -> {
-					searchSourceBuilder.searchAfter(
-						new Object[] {lastSuccessfulAnalyticsEventId});
-					searchSourceBuilder.size(500);
-					searchSourceBuilder.sort("id");
-				});
-
 			List<AnalyticsEvent> analyticsEvents =
-				AnalyticsEvent.toAnalyticsEvents(analyticsEventsJSON);
+				_messageSubscriber.pullMessages(
+					50, AnalyticsEvent::toAnalyticsEvent);
 
 			if (analyticsEvents.isEmpty()) {
 				break;
 			}
 
 			_processAnalyticsEvents(analyticsEvents);
-
-			AnalyticsEvent lastAnalyticsEvent = analyticsEvents.get(
-				analyticsEvents.size() - 1);
-
-			osbAsahMarkerJSONObject.put(
-				"lastSuccessfulAnalyticsEventId", lastAnalyticsEvent.getId());
-
-			_cerebroInfoElasticsearchInvoker.update(
-				"OSBAsahMarkers", osbAsahMarkerJSONObject);
 
 			if (_log.isInfoEnabled()) {
 				Class<?> clazz = getClass();
@@ -580,7 +538,6 @@ public class SessionNanite implements Nanite {
 		};
 
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
-	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
@@ -589,6 +546,9 @@ public class SessionNanite implements Nanite {
 
 	@Autowired
 	private FinalizeSessionArm _finalizeSessionArm;
+
+	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_MESSAGE)
+	private MessageSubscriber _messageSubscriber;
 
 	private final ObjectMapper _objectMapper = new ObjectMapper() {
 		{
