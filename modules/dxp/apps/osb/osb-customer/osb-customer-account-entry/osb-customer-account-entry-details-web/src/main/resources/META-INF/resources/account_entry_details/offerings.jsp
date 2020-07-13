@@ -18,14 +18,12 @@
 
 <%
 AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
-
-PortletURL portletURL = renderResponse.createRenderURL();
 %>
 
 <liferay-ui:search-container
 	emptyResultsMessage="no-offerings-were-found"
 	headerNames="product,sla,start-date,support-end-date,license,tickets,version,instance-size,status"
-	iteratorURL="<%= portletURL %>"
+	iteratorURL="<%= renderResponse.createRenderURL() %>"
 >
 	<liferay-ui:search-container-results>
 

@@ -46,11 +46,7 @@
 		<aui:nav-item href="<%= userGroupsURL.toString() %>" label="user-groups" selected='<%= tabs1.equals("user-groups") %>' />
 	</aui:nav>
 
-	<%
-	boolean searchEnabled = ParamUtil.getBoolean(request, "searchEnabled");
-	%>
-
-	<c:if test="<%= searchEnabled %>">
+	<c:if test='<%= ParamUtil.getBoolean(request, "searchEnabled") %>'>
 		<aui:nav-bar-search>
 			<aui:form action="<%= siteMembershipsDisplayContext.getPortletURL() %>" name="searchFm">
 				<liferay-ui:input-search

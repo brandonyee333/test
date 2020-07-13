@@ -316,11 +316,7 @@ name = HtmlUtil.escapeJS(name);
 			}
 		).render();
 
-		<%
-		boolean useCustomDataProcessor = (editorOptionsDynamicAttributes != null) && GetterUtil.getBoolean(editorOptionsDynamicAttributes.get("useCustomDataProcessor"));
-		%>
-
-		<c:if test="<%= useCustomDataProcessor %>">
+		<c:if test='<%= (editorOptionsDynamicAttributes != null) && GetterUtil.getBoolean(editorOptionsDynamicAttributes.get("useCustomDataProcessor")) %>'>
 			alloyEditor.getNativeEditor().on(
 				'customDataProcessorLoaded',
 				function() {

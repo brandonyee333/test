@@ -224,11 +224,7 @@ int nodesCount = WikiNodeServiceUtil.getNodesCount(scopeGroupId);
 	</div>
 </div>
 
-<%
-boolean showAddNodeButton = WikiResourcePermissionChecker.contains(permissionChecker, scopeGroupId, ActionKeys.ADD_NODE);
-%>
-
-<c:if test="<%= showAddNodeButton %>">
+<c:if test="<%= WikiResourcePermissionChecker.contains(permissionChecker, scopeGroupId, ActionKeys.ADD_NODE) %>">
 	<portlet:renderURL var="viewNodesURL">
 		<portlet:param name="mvcRenderCommandName" value="/wiki_admin/view" />
 	</portlet:renderURL>

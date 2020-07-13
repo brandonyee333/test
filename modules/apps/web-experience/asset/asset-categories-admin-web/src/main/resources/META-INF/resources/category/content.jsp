@@ -18,11 +18,9 @@
 
 <%
 long categoryId = ParamUtil.getLong(request, "categoryId");
-
-AssetCategory category = AssetCategoryLocalServiceUtil.fetchCategory(categoryId);
 %>
 
-<aui:model-context bean="<%= category %>" model="<%= AssetCategory.class %>" />
+<aui:model-context bean="<%= AssetCategoryLocalServiceUtil.fetchCategory(categoryId) %>" model="<%= AssetCategory.class %>" />
 
 <aui:input autoFocus="<%= true %>" label="name" name="title" placeholder="name" />
 

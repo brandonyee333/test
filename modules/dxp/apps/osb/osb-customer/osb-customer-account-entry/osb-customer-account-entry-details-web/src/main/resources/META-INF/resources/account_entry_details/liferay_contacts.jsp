@@ -20,14 +20,12 @@
 AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 
 long accountEntryId = accountEntry.getAccountEntryId();
-
-PortletURL portletURL = renderResponse.createRenderURL();
 %>
 
 <liferay-ui:search-container
 	emptyResultsMessage="no-liferay-contacts-were-found"
 	headerNames="name,role,email,contact-number"
-	iteratorURL="<%= portletURL %>"
+	iteratorURL="<%= renderResponse.createRenderURL() %>"
 >
 	<liferay-ui:search-container-results>
 

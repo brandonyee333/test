@@ -16,11 +16,7 @@
 
 <%@ include file="/init.jsp" %>
 
-<%
-User selUser = (User)request.getAttribute("user.selUser");
-%>
-
-<aui:model-context bean="<%= selUser %>" model="<%= User.class %>" />
+<aui:model-context bean='<%= (User)request.getAttribute("user.selUser") %>' model="<%= User.class %>" />
 
 <liferay-ui:asset-categories-error />
 

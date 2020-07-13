@@ -103,11 +103,7 @@
 		value="<%= LanguageUtil.get(request, offeringEntryGroup.getSizingLabel()) %>"
 	/>
 
-	<%
-	long licensePlid = PortalUtil.getPlidFromPortletId(OSBConstants.GROUP_LICENSE_ID, OSBPortletKeys.OSB_LICENSE);
-	%>
-
-	<liferay-portlet:renderURL plid="<%= licensePlid %>" portletName="<%= OSBPortletKeys.OSB_LICENSE %>" var="viewLicensesURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+	<liferay-portlet:renderURL plid="<%= PortalUtil.getPlidFromPortletId(OSBConstants.GROUP_LICENSE_ID, OSBPortletKeys.OSB_LICENSE) %>" portletName="<%= OSBPortletKeys.OSB_LICENSE %>" var="viewLicensesURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 		<liferay-portlet:param name="mvcPath" value="/license/view.jsp" />
 		<liferay-portlet:param name="tabs1" value="portal" />
 		<liferay-portlet:param name="redirect" value="<%= portletURL.toString() %>" />
