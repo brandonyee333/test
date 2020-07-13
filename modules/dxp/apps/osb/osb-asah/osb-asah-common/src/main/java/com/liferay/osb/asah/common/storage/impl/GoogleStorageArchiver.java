@@ -31,9 +31,7 @@ import java.io.IOException;
 
 import java.nio.file.Files;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -43,7 +41,6 @@ import java.util.zip.ZipOutputStream;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -56,8 +53,11 @@ import org.springframework.stereotype.Component;
 @ConditionalOnGoogleApplicationCredentials
 public class GoogleStorageArchiver {
 
-	public void archiveAsync(String bucket, String bucketPath, File file) {
-		_executorService.submit(() -> _archive(bucket, bucketPath, file));
+	public void archiveAsync(
+		String bucket, String bucketFolder, File file, String fileName) {
+
+		_executorService.submit(
+			() -> _archive(bucket, bucketFolder, file, fileName));
 	}
 
 	public File readSparkJobResult(
@@ -125,7 +125,9 @@ public class GoogleStorageArchiver {
 		return new File(tempFileName);
 	}
 
-	private void _archive(String bucket, String bucketPath, File file) {
+	private void _archive(
+		String bucket, String bucketFolder, File file, String fileName) {
+
 		byte[] content = null;
 
 		try {
@@ -139,7 +141,7 @@ public class GoogleStorageArchiver {
 		}
 
 		Blob blob = _uploadBlob(
-			0, _buildBlobInfo(bucket, _getFileName(bucketPath, file.getName())),
+			0, _buildBlobInfo(bucket, _getFileName(bucketFolder, fileName)),
 			content);
 
 		if (blob == null) {
@@ -197,28 +199,20 @@ public class GoogleStorageArchiver {
 		}
 	}
 
-	private String _getFileName(String bucketPath, String fileName) {
-		List<String> bucketPaths = new ArrayList<>();
+	private String _getFileName(String bucketFolder, String fileName) {
+		StringBuilder sb = new StringBuilder();
 
-		bucketPaths.add(ServiceConstants.LCP_PROJECT_ID);
+		sb.append(ServiceConstants.LCP_PROJECT_ID);
 
-		if (bucketPath != null) {
-			bucketPaths.add(bucketPath);
+		if (bucketFolder != null) {
+			sb.append("/");
+			sb.append(bucketFolder);
 		}
 
-		int index = fileName.lastIndexOf('.');
+		sb.append("/");
+		sb.append(fileName);
 
-		if (index > -1) {
-			String lastToken = fileName.substring(index + 1);
-
-			if (StringUtils.isNumeric(lastToken)) {
-				bucketPaths.add(fileName.substring(0, index));
-
-				fileName = lastToken;
-			}
-		}
-
-		return String.format("%s/%s", String.join("/", bucketPaths), fileName);
+		return sb.toString();
 	}
 
 	@PostConstruct

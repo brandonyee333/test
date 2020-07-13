@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.storage.impl;
 
+import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.storage.Storage;
 import com.liferay.osb.asah.common.storage.StorageConfiguration;
 
@@ -159,7 +160,8 @@ public class LocalStorage implements Storage {
 
 		_googleStorageArchiver.archiveAsync(
 			_storageStorageConfiguration.getGoogleBucket(),
-			_storageStorageConfiguration.getGoogleBucketFolder(), file);
+			_storageStorageConfiguration.getGoogleBucketFolder(), file,
+			_getArchiveFileName(file.getName()));
 	}
 
 	private void _createMissingParentFileDirectories(File file) {
@@ -186,6 +188,14 @@ public class LocalStorage implements Storage {
 		if (!result) {
 			throw new IOException("Unable to delete file " + file);
 		}
+	}
+
+	private String _getArchiveFileName(String fileName) {
+		int index = fileName.lastIndexOf('.');
+
+		return String.format(
+			"%s/%s", fileName.substring(0, index),
+			fileName.substring(index + 1));
 	}
 
 	private boolean _isFileSizeLimitReached() {
