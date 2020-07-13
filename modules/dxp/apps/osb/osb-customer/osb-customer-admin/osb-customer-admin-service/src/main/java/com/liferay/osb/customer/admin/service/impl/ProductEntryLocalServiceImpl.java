@@ -40,8 +40,8 @@ public class ProductEntryLocalServiceImpl
 
 	public ProductEntry addProductEntry(
 			long userId, String koroneikiProductKey, String name,
-			int environment, boolean licenses, String versionsListType,
-			String zendeskTag)
+			int environment, boolean accountEnvironments, boolean licenses,
+			String versionsListType, String zendeskTag)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -61,6 +61,7 @@ public class ProductEntryLocalServiceImpl
 		productEntry.setKoroneikiProductKey(koroneikiProductKey);
 		productEntry.setName(name);
 		productEntry.setEnvironment(environment);
+		productEntry.setAccountEnvironments(accountEnvironments);
 		productEntry.setLicenses(licenses);
 		productEntry.setVersionsListType(versionsListType);
 
@@ -186,8 +187,8 @@ public class ProductEntryLocalServiceImpl
 
 	public ProductEntry updateProductEntry(
 			long productEntryId, String koroneikiProductKey, String name,
-			int environment, boolean licenses, String versionsListType,
-			String zendeskTag)
+			int environment, boolean accountEnvironments, boolean licenses,
+			String versionsListType, String zendeskTag)
 		throws PortalException {
 
 		validate(productEntryId, koroneikiProductKey, zendeskTag);
@@ -199,6 +200,7 @@ public class ProductEntryLocalServiceImpl
 		productEntry.setKoroneikiProductKey(koroneikiProductKey);
 		productEntry.setName(name);
 		productEntry.setEnvironment(environment);
+		productEntry.setAccountEnvironments(accountEnvironments);
 		productEntry.setLicenses(licenses);
 		productEntry.setVersionsListType(versionsListType);
 

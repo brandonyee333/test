@@ -384,6 +384,10 @@ public class AccountEntryViewDisplayContext {
 				ProductEntryLocalServiceUtil.getProductEntryByKoroneikiKey(
 					productPurchase.getProductKey());
 
+			if (!productEntry.isAccountEnvironments()) {
+				continue;
+			}
+
 			if (productEntryDisplayNames.contains(
 					productEntry.getDisplayName())) {
 

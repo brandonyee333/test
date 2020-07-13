@@ -32,6 +32,7 @@ if ((productEntry != null) && Validator.isNotNull(productEntry.getKoroneikiProdu
 }
 
 int environment = BeanParamUtil.getInteger(productEntry, request, "environment");
+boolean accountEnvironments = BeanParamUtil.getBoolean(productEntry, request, "accountEnvironments");
 boolean licenses = BeanParamUtil.getBoolean(productEntry, request, "licenses");
 String versionsListType = BeanParamUtil.getString(productEntry, request, "versionsListType");
 String zendeskTag = ParamUtil.getString(request, "zendeskTag");
@@ -110,6 +111,14 @@ if (productEntry != null) {
 					%>
 
 				</aui:select>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="account-environments" />
+			</td>
+			<td>
+				<aui:input label="" name="accountEnvironments" type="checkbox" value="<%= accountEnvironments %>" />
 			</td>
 		</tr>
 		<tr>

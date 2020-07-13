@@ -370,6 +370,7 @@
 		<column accessor="true" name="koroneikiProductKey" type="String" />
 		<column name="name" type="String" />
 		<column name="environment" type="int" />
+		<column name="accountEnvironments" type="boolean" />
 		<column name="licenses" type="boolean" />
 		<column name="versionsListType" type="String" />
 
