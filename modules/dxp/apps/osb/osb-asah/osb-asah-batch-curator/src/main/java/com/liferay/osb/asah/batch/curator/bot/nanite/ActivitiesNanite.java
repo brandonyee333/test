@@ -86,8 +86,8 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 	public void init() {
 		super.init();
 
-		_cerebroRawElasticsearchInvoker =
-			elasticsearchInvokerFactory.forCerebroRaw();
+		_faroInfoElasticsearchInvoker =
+			elasticsearchInvokerFactory.forFaroInfo();
 
 		_queueHttp.initializeQueue();
 	}
@@ -411,13 +411,13 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 
 		if (Objects.equals(analyticsEvent.getEventId(), "formSubmitted")) {
 			JSONArray formViewedActivityJSONArray = new JSONArray(
-				_cerebroRawElasticsearchInvoker.get(
-					"analytics-events",
+				_faroInfoElasticsearchInvoker.get(
+					"activities",
 					searchSourceBuilder -> {
 						searchSourceBuilder.query(
 							BoolQueryBuilderUtil.filter(
 								QueryBuilders.rangeQuery(
-									"eventDate"
+									"endTime"
 								).lt(
 									DateUtil.toUTCString(
 										analyticsEvent.getEventDate())
@@ -432,7 +432,7 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 						searchSourceBuilder.size(1);
 						searchSourceBuilder.sort(
 							SortBuilderUtil.fieldSort(
-								"eventDate", SortOrder.DESC));
+								"endTime", SortOrder.DESC));
 					}));
 
 			if (formViewedActivityJSONArray.length() > 0) {
@@ -447,7 +447,7 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 					"duration",
 					String.valueOf(
 						DateUtil.getDeltaMilliseconds(
-							formViewedActivityJSONObject.getString("eventDate"),
+							formViewedActivityJSONObject.getString("endTime"),
 							DateUtil.toUTCString(
 								analyticsEvent.getEventDate())))
 				).put(
@@ -624,10 +624,11 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 		};
 
 	private boolean _active;
-	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
+
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_ACTIVITY)
 	private MessageSubscriber _messageSubscriber;
