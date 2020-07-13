@@ -67,7 +67,7 @@ public class GoogleStorageArchiver {
 
 		BlobId successBlobId = BlobId.of(
 			bucket,
-			_getFileName(bucketFolder, sparkJobResultPathPrefix + "/_SUCCESS"));
+			_getBlobName(bucketFolder, sparkJobResultPathPrefix + "/_SUCCESS"));
 
 		Blob successBlob = _storage.get(successBlobId);
 
@@ -142,7 +142,7 @@ public class GoogleStorageArchiver {
 		}
 
 		Blob blob = _uploadBlob(
-			0, _buildBlobInfo(bucket, _getFileName(bucketFolder, fileName)),
+			0, _buildBlobInfo(bucket, _getBlobName(bucketFolder, fileName)),
 			content);
 
 		if (blob == null) {
@@ -200,7 +200,7 @@ public class GoogleStorageArchiver {
 		}
 	}
 
-	private String _getFileName(String bucketFolder, String fileName) {
+	private String _getBlobName(String bucketFolder, String fileName) {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append(ServiceConstants.LCP_PROJECT_ID);
