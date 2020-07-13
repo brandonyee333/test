@@ -85,7 +85,6 @@ public class IndividualSegmentActivityFieldsNanite
 		return _active;
 	}
 
-	@Override
 	protected void process(JSONObject individualSegmentJSONObject)
 		throws Exception {
 

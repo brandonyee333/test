@@ -106,7 +106,7 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 			}
 
 			for (AnalyticsEvent analyticsEvent : analyticsEvents) {
-				process(new JSONObject(analyticsEvent.toJSON()));
+				process(analyticsEvent);
 			}
 
 			if (_log.isInfoEnabled()) {
@@ -130,26 +130,18 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 		return _active;
 	}
 
-	@Override
-	protected void process(JSONObject analyticsEventJSONObject) {
-		String analyticsEventJSON = analyticsEventJSONObject.toString();
-
+	protected void process(AnalyticsEvent analyticsEvent) {
 		try {
-			AnalyticsEvent analyticsEvent = AnalyticsEvent.toAnalyticsEvent(
-				analyticsEventJSON);
-
 			String applicationId = analyticsEvent.getApplicationId();
 
-			JSONObject activityGroupJSONObject = _addActivityGroupJSONObject(
-				analyticsEvent);
-
 			_addActivityJSONObject(
-				activityGroupJSONObject, analyticsEvent, applicationId,
-				_dataSourceAssetPKFieldNames.get(applicationId));
+				_addActivityGroupJSONObject(analyticsEvent), analyticsEvent,
+				applicationId, _dataSourceAssetPKFieldNames.get(applicationId));
 		}
 		catch (Exception e) {
 			_log.error(
-				"Unable to process the analytics event " + analyticsEventJSON,
+				"Unable to process the analytics event " +
+					analyticsEvent.toJSON(),
 				e);
 		}
 	}

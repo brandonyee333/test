@@ -16,15 +16,12 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 
 import io.prometheus.client.Counter;
 import io.prometheus.client.Gauge;
 
 import javax.annotation.PostConstruct;
-
-import org.elasticsearch.index.query.QueryBuilder;
 
 import org.json.JSONObject;
 
@@ -74,40 +71,6 @@ public abstract class BaseNanite implements Nanite {
 		Gauge.Child child = _queueSizeGauge.labels(clazz.getSimpleName());
 
 		child.set(size);
-	}
-
-	protected void process(JSONObject jsonObject) throws Exception {
-	}
-
-	protected void process(
-			String collectionName, String trackerIdKey,
-			ElasticsearchInvoker elasticsearchInvoker,
-			QueryBuilder queryBuilder)
-		throws Exception {
-
-		JSONObject osbAsahMarkerJSONObject = getOSBAsahMarkerJSONObject();
-
-		JSONArrayIterator.of(
-			collectionName, elasticsearchInvoker,
-			jsonObject -> {
-				try {
-					process(jsonObject);
-				}
-				catch (Exception e) {
-					return e;
-				}
-
-				return null;
-			}
-		).setMonitoringConsumers(
-			this::monitorProcessedCount, this::monitorQueueSize
-		).setQueryBuilder(
-			queryBuilder
-		).setTracker(
-			osbAsahMarkerJSONObject, trackerIdKey,
-			() -> faroInfoElasticsearchInvoker.update(
-				"OSBAsahMarkers", osbAsahMarkerJSONObject)
-		).iterate();
 	}
 
 	@Autowired
