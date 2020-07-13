@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.storage.impl;
 
-import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.storage.Storage;
 import com.liferay.osb.asah.common.storage.StorageConfiguration;
 
@@ -82,14 +81,9 @@ public class LocalStorage implements Storage {
 		Date sparkJobResultDateAfter, String sparkJobResultPathPrefix) {
 
 		try {
-			if (_storageStorageConfiguration.getGoogleBucketFolder() != null) {
-				sparkJobResultPathPrefix =
-					_storageStorageConfiguration.getGoogleBucketFolder() + "/" +
-						sparkJobResultPathPrefix;
-			}
-
 			return _googleStorageArchiver.readSparkJobResult(
 				_storageStorageConfiguration.getGoogleBucket(),
+				_storageStorageConfiguration.getGoogleBucketFolder(),
 				sparkJobResultDateAfter, sparkJobResultPathPrefix);
 		}
 		catch (Exception e) {

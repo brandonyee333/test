@@ -61,12 +61,13 @@ public class GoogleStorageArchiver {
 	}
 
 	public File readSparkJobResult(
-			String bucket, Date sparkJobResultDateAfter,
+			String bucket, String bucketFolder, Date sparkJobResultDateAfter,
 			String sparkJobResultPathPrefix)
 		throws Exception {
 
 		BlobId successBlobId = BlobId.of(
-			bucket, sparkJobResultPathPrefix + "/_SUCCESS");
+			bucket,
+			_getFileName(bucketFolder, sparkJobResultPathPrefix + "/_SUCCESS"));
 
 		Blob successBlob = _storage.get(successBlobId);
 
