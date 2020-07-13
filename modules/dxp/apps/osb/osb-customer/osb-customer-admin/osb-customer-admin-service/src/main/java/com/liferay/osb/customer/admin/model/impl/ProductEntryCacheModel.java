@@ -62,7 +62,7 @@ public class ProductEntryCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(21);
+		StringBundler sb = new StringBundler(23);
 
 		sb.append("{productEntryId=");
 		sb.append(productEntryId);
@@ -80,6 +80,8 @@ public class ProductEntryCacheModel
 		sb.append(name);
 		sb.append(", environment=");
 		sb.append(environment);
+		sb.append(", accountEnvironments=");
+		sb.append(accountEnvironments);
 		sb.append(", licenses=");
 		sb.append(licenses);
 		sb.append(", versionsListType=");
@@ -132,6 +134,7 @@ public class ProductEntryCacheModel
 		}
 
 		productEntryImpl.setEnvironment(environment);
+		productEntryImpl.setAccountEnvironments(accountEnvironments);
 		productEntryImpl.setLicenses(licenses);
 
 		if (versionsListType == null) {
@@ -158,6 +161,8 @@ public class ProductEntryCacheModel
 		name = objectInput.readUTF();
 
 		environment = objectInput.readInt();
+
+		accountEnvironments = objectInput.readBoolean();
 
 		licenses = objectInput.readBoolean();
 		versionsListType = objectInput.readUTF();
@@ -195,6 +200,8 @@ public class ProductEntryCacheModel
 
 		objectOutput.writeInt(environment);
 
+		objectOutput.writeBoolean(accountEnvironments);
+
 		objectOutput.writeBoolean(licenses);
 
 		if (versionsListType == null) {
@@ -213,6 +220,7 @@ public class ProductEntryCacheModel
 	public String koroneikiProductKey;
 	public String name;
 	public int environment;
+	public boolean accountEnvironments;
 	public boolean licenses;
 	public String versionsListType;
 

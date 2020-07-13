@@ -133,6 +133,7 @@ create table OSB_ProductEntry (
 	koroneikiProductKey VARCHAR(75) null,
 	name VARCHAR(75) null,
 	environment INTEGER,
+	accountEnvironments BOOLEAN,
 	licenses BOOLEAN,
 	versionsListType VARCHAR(75) null
 );

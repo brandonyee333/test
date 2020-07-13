@@ -63,8 +63,8 @@ public interface ProductEntryLocalService
 	 */
 	public ProductEntry addProductEntry(
 			long userId, String koroneikiProductKey, String name,
-			int environment, boolean licenses, String versionsListType,
-			String zendeskTag)
+			int environment, boolean accountEnvironments, boolean licenses,
+			String versionsListType, String zendeskTag)
 		throws PortalException;
 
 	/**
@@ -276,8 +276,8 @@ public interface ProductEntryLocalService
 
 	public ProductEntry updateProductEntry(
 			long productEntryId, String koroneikiProductKey, String name,
-			int environment, boolean licenses, String versionsListType,
-			String zendeskTag)
+			int environment, boolean accountEnvironments, boolean licenses,
+			String versionsListType, String zendeskTag)
 		throws PortalException;
 
 	/**

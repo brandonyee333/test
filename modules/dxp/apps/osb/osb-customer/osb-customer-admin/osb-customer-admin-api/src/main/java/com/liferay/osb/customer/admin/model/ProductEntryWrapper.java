@@ -63,6 +63,7 @@ public class ProductEntryWrapper
 		attributes.put("koroneikiProductKey", getKoroneikiProductKey());
 		attributes.put("name", getName());
 		attributes.put("environment", getEnvironment());
+		attributes.put("accountEnvironments", isAccountEnvironments());
 		attributes.put("licenses", isLicenses());
 		attributes.put("versionsListType", getVersionsListType());
 
@@ -120,6 +121,13 @@ public class ProductEntryWrapper
 			setEnvironment(environment);
 		}
 
+		Boolean accountEnvironments = (Boolean)attributes.get(
+			"accountEnvironments");
+
+		if (accountEnvironments != null) {
+			setAccountEnvironments(accountEnvironments);
+		}
+
 		Boolean licenses = (Boolean)attributes.get("licenses");
 
 		if (licenses != null) {
@@ -141,6 +149,16 @@ public class ProductEntryWrapper
 	@Override
 	public int compareTo(ProductEntry productEntry) {
 		return _productEntry.compareTo(productEntry);
+	}
+
+	/**
+	 * Returns the account environments of this product entry.
+	 *
+	 * @return the account environments of this product entry
+	 */
+	@Override
+	public boolean getAccountEnvironments() {
+		return _productEntry.getAccountEnvironments();
 	}
 
 	@Override
@@ -307,6 +325,16 @@ public class ProductEntryWrapper
 		return _productEntry.hashCode();
 	}
 
+	/**
+	 * Returns <code>true</code> if this product entry is account environments.
+	 *
+	 * @return <code>true</code> if this product entry is account environments; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isAccountEnvironments() {
+		return _productEntry.isAccountEnvironments();
+	}
+
 	@Override
 	public boolean isAnalyticsCloud() {
 		return _productEntry.isAnalyticsCloud();
@@ -415,6 +443,16 @@ public class ProductEntryWrapper
 	@Override
 	public void persist() {
 		_productEntry.persist();
+	}
+
+	/**
+	 * Sets whether this product entry is account environments.
+	 *
+	 * @param accountEnvironments the account environments of this product entry
+	 */
+	@Override
+	public void setAccountEnvironments(boolean accountEnvironments) {
+		_productEntry.setAccountEnvironments(accountEnvironments);
 	}
 
 	@Override

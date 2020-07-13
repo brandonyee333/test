@@ -76,8 +76,8 @@ public class ProductEntryModelImpl
 		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
 		{"modifiedDate", Types.TIMESTAMP},
 		{"koroneikiProductKey", Types.VARCHAR}, {"name", Types.VARCHAR},
-		{"environment", Types.INTEGER}, {"licenses", Types.BOOLEAN},
-		{"versionsListType", Types.VARCHAR}
+		{"environment", Types.INTEGER}, {"accountEnvironments", Types.BOOLEAN},
+		{"licenses", Types.BOOLEAN}, {"versionsListType", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -92,12 +92,13 @@ public class ProductEntryModelImpl
 		TABLE_COLUMNS_MAP.put("koroneikiProductKey", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("environment", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("accountEnvironments", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("licenses", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("versionsListType", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table OSB_ProductEntry (productEntryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,koroneikiProductKey VARCHAR(75) null,name VARCHAR(75) null,environment INTEGER,licenses BOOLEAN,versionsListType VARCHAR(75) null)";
+		"create table OSB_ProductEntry (productEntryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,koroneikiProductKey VARCHAR(75) null,name VARCHAR(75) null,environment INTEGER,accountEnvironments BOOLEAN,licenses BOOLEAN,versionsListType VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table OSB_ProductEntry";
 
@@ -157,6 +158,7 @@ public class ProductEntryModelImpl
 		model.setKoroneikiProductKey(soapModel.getKoroneikiProductKey());
 		model.setName(soapModel.getName());
 		model.setEnvironment(soapModel.getEnvironment());
+		model.setAccountEnvironments(soapModel.isAccountEnvironments());
 		model.setLicenses(soapModel.isLicenses());
 		model.setVersionsListType(soapModel.getVersionsListType());
 
@@ -494,6 +496,30 @@ public class ProductEntryModelImpl
 
 			});
 		attributeGetterFunctions.put(
+			"accountEnvironments",
+			new Function<ProductEntry, Object>() {
+
+				@Override
+				public Object apply(ProductEntry productEntry) {
+					return productEntry.getAccountEnvironments();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"accountEnvironments",
+			new BiConsumer<ProductEntry, Object>() {
+
+				@Override
+				public void accept(
+					ProductEntry productEntry,
+					Object accountEnvironmentsObject) {
+
+					productEntry.setAccountEnvironments(
+						(Boolean)accountEnvironmentsObject);
+				}
+
+			});
+		attributeGetterFunctions.put(
 			"licenses",
 			new Function<ProductEntry, Object>() {
 
@@ -704,6 +730,23 @@ public class ProductEntryModelImpl
 
 	@JSON
 	@Override
+	public boolean getAccountEnvironments() {
+		return _accountEnvironments;
+	}
+
+	@JSON
+	@Override
+	public boolean isAccountEnvironments() {
+		return _accountEnvironments;
+	}
+
+	@Override
+	public void setAccountEnvironments(boolean accountEnvironments) {
+		_accountEnvironments = accountEnvironments;
+	}
+
+	@JSON
+	@Override
 	public boolean getLicenses() {
 		return _licenses;
 	}
@@ -791,6 +834,7 @@ public class ProductEntryModelImpl
 		productEntryImpl.setKoroneikiProductKey(getKoroneikiProductKey());
 		productEntryImpl.setName(getName());
 		productEntryImpl.setEnvironment(getEnvironment());
+		productEntryImpl.setAccountEnvironments(isAccountEnvironments());
 		productEntryImpl.setLicenses(isLicenses());
 		productEntryImpl.setVersionsListType(getVersionsListType());
 
@@ -928,6 +972,8 @@ public class ProductEntryModelImpl
 
 		productEntryCacheModel.environment = getEnvironment();
 
+		productEntryCacheModel.accountEnvironments = isAccountEnvironments();
+
 		productEntryCacheModel.licenses = isLicenses();
 
 		productEntryCacheModel.versionsListType = getVersionsListType();
@@ -1024,6 +1070,7 @@ public class ProductEntryModelImpl
 	private int _environment;
 	private int _originalEnvironment;
 	private boolean _setOriginalEnvironment;
+	private boolean _accountEnvironments;
 	private boolean _licenses;
 	private boolean _originalLicenses;
 	private boolean _setOriginalLicenses;

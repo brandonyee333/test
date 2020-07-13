@@ -190,6 +190,27 @@ public interface ProductEntryModel extends BaseModel<ProductEntry> {
 	public void setEnvironment(int environment);
 
 	/**
+	 * Returns the account environments of this product entry.
+	 *
+	 * @return the account environments of this product entry
+	 */
+	public boolean getAccountEnvironments();
+
+	/**
+	 * Returns <code>true</code> if this product entry is account environments.
+	 *
+	 * @return <code>true</code> if this product entry is account environments; <code>false</code> otherwise
+	 */
+	public boolean isAccountEnvironments();
+
+	/**
+	 * Sets whether this product entry is account environments.
+	 *
+	 * @param accountEnvironments the account environments of this product entry
+	 */
+	public void setAccountEnvironments(boolean accountEnvironments);
+
+	/**
 	 * Returns the licenses of this product entry.
 	 *
 	 * @return the licenses of this product entry
