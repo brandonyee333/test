@@ -37,6 +37,9 @@ public class AnalyticsEventsChannels {
 
 	public AnalyticsEventsChannels() {
 		_channels.put(
+			Channel.ANALYTICS_EVENTS_ACTIVITY,
+			_analyticsEventsActivityPredicate());
+		_channels.put(
 			Channel.ANALYTICS_EVENTS_BLOG, _analyticsEventsBlogPredicate());
 		_channels.put(
 			Channel.ANALYTICS_EVENTS_CUSTOM_ASSET,
@@ -67,6 +70,18 @@ public class AnalyticsEventsChannels {
 		}
 
 		return channels;
+	}
+
+	private Predicate<AnalyticsEvent> _analyticsEventsActivityPredicate() {
+		return analyticsEvent -> {
+			if (_dataSourceAssetPKFieldNames.get(
+					analyticsEvent.getApplicationId()) == null) {
+
+				return false;
+			}
+
+			return true;
+		};
 	}
 
 	private Predicate<AnalyticsEvent> _analyticsEventsBlogPredicate() {
@@ -234,6 +249,19 @@ public class AnalyticsEventsChannels {
 			return true;
 		};
 	}
+
+	private static final Map<String, String> _dataSourceAssetPKFieldNames =
+		new HashMap<String, String>() {
+			{
+				put("Blog", "entryId");
+				put("Comment", "classPK");
+				put("Custom", "assetId");
+				put("Document", "fileEntryId");
+				put("Form", "formId");
+				put("Page", "canonicalUrl");
+				put("WebContent", "articleId");
+			}
+		};
 
 	private Map<Channel, Predicate<AnalyticsEvent>> _channels = new HashMap<>();
 
