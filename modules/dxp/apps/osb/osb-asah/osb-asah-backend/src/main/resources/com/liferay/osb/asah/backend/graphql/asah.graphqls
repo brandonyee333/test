@@ -34,26 +34,26 @@ enum JobRunStatus {
 	RUNNING
 }
 
-enum JobStatus {
-	FAILED
-	PENDING
-	READY
-	SCHEDULED
-	TRAINING
+enum JobRunDataPeriod {
+	LAST_7_DAYS
+	LAST_30_DAYS
+	LAST_180_DAYS
+	LAST_365_DAYS
 }
 
-enum JobTrainingFrequency {
+enum JobRunFrequency {
 	EVERY_7_DAYS
 	EVERY_14_DAYS
 	EVERY_30_DAYS
 	MANUAL
 }
 
-enum JobTrainingPeriod {
-	LAST_7_DAYS
-	LAST_30_DAYS
-	LAST_180_DAYS
-	LAST_365_DAYS
+enum JobStatus {
+	FAILED
+	PENDING
+	READY
+	RUNNING
+	SCHEDULED
 }
 
 enum JobType {
@@ -379,12 +379,12 @@ type Keyword {
 type Job {
 	id: String
 	name: String
-	nextTrainingDate: String
+	nextRunDate: String
 	parameters: [JobParameter]
 	status: JobStatus
-	trainingDate: String
-	trainingFrequency: JobTrainingFrequency
-	trainingPeriod: JobTrainingPeriod
+	runDate: String
+	runFrequency: JobRunFrequency
+	runDataPeriod: JobRunDataPeriod
 	type: JobType
 }
 
@@ -458,9 +458,9 @@ type MutationType {
 	createJob(
 		name: String!
 		parameters: [JobParameterInput]
+		runDataPeriod: JobRunDataPeriod
+		runFrequency: JobRunFrequency
 		runNow: Boolean
-		trainingFrequency: JobTrainingFrequency
-		trainingPeriod: JobTrainingPeriod
 		type: JobType!
 	): Job
 
@@ -500,16 +500,16 @@ type MutationType {
 
 	runJob(
 		jobId: String!,
-		trainingPeriod: JobTrainingPeriod!
+		runDataPeriod: JobRunDataPeriod!
 	): Job
 
 	updateJob(
 		jobId: String!
 		name: String!
 		parameters: [JobParameterInput]
+		runDataPeriod: JobRunDataPeriod
+		runFrequency: JobRunFrequency
 		runNow: Boolean
-		trainingFrequency: JobTrainingFrequency
-		trainingPeriod: JobTrainingPeriod
 	): Job
 }
 
