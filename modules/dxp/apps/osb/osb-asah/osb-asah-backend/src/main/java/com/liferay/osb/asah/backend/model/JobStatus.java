@@ -19,6 +19,6 @@ package com.liferay.osb.asah.backend.model;
  */
 public enum JobStatus {
 
-	FAILED, PENDING, READY, SCHEDULED, TRAINING
+	FAILED, PENDING, READY, RUNNING, SCHEDULED
 
 }
