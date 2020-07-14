@@ -69,7 +69,7 @@ boolean changeStructure = GetterUtil.getBoolean(request.getAttribute("edit_artic
 	int index = message.indexOf("{");
 	%>
 
-	<liferay-ui:message arguments="<%= {message.substring(index)} %>" key="unable-to-validate-referenced-file-entry-because-it-cannot-be-found-with-the-following-parameters-x" />
+	<liferay-ui:message arguments="<%= message.substring(index) %>" key="unable-to-validate-referenced-file-entry-because-it-cannot-be-found-with-the-following-parameters-x" />
 </liferay-ui:error>
 
 <liferay-ui:error exception="<%= NoSuchImageException.class %>" message="please-select-an-existing-small-image" />
