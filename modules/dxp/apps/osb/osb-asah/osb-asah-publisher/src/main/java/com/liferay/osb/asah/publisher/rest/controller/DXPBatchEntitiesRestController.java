@@ -134,14 +134,11 @@ public class DXPBatchEntitiesRestController {
 		StorageConfiguration.Builder builder = StorageConfiguration.builder(
 			_analyticsBatchResourcesStoragePath + "/" + resourceName);
 
-		builder.chunkSize(_DEFAULT_CHUNK_SIZE);
 		builder.googleBucket(_analyticsBatchResourcesBucket);
 		builder.googleBucketFolder(dataSourceId);
 
 		return builder.build();
 	}
-
-	private static final long _DEFAULT_CHUNK_SIZE = 64 * 1024 * 1024;
 
 	private static final Log _log = LogFactory.getLog(
 		DXPBatchEntitiesRestController.class);
