@@ -28,14 +28,14 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-@GraphQLTypeWiring(fieldName = "trainingDate", typeName = "Job")
-public class JobTrainingDateDataFetcher implements DataFetcher<String> {
+@GraphQLTypeWiring(fieldName = "runDate", typeName = "Job")
+public class JobRunDateDataFetcher implements DataFetcher<String> {
 
 	@Override
 	public String get(DataFetchingEnvironment dataFetchingEnvironment) {
 		Job job = dataFetchingEnvironment.getSource();
 
-		return _jobDog.getJobTrainingDateString(job.getId());
+		return _jobDog.getJobRunDateString(job.getId());
 	}
 
 	@Autowired

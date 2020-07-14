@@ -326,8 +326,8 @@ public class RecommendationRestController extends BaseRestController {
 			setId(job.getId());
 			setJobParameters(job.getJobParameters());
 			setJobStatus(jobStatus);
-			setJobTrainingFrequency(job.getJobTrainingFrequency());
-			setJobTrainingPeriod(job.getJobTrainingPeriod());
+			setJobRunFrequency(job.getJobRunFrequency());
+			setJobRunDataPeriod(job.getJobRunDataPeriod());
 			setJobType(job.getJobType());
 			setName(job.getName());
 		}

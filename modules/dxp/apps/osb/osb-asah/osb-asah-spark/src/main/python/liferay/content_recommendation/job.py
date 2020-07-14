@@ -134,7 +134,7 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 
 		self._minimum_interactions_threshold = 3
 		self._minimum_view_duration_threshold = 5000
-		self._training_periods_days_delta = {
+		self._run_data_periods_days_delta = {
 		    'LAST_7_DAYS': 7,
 		    'LAST_30_DAYS': 30,
 		    'LAST_180_DAYS': 180,
@@ -178,8 +178,8 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 
 		job_run_context = job_run.get('context')
 
-		return self._training_periods_days_delta.get(
-		    job_run_context.get('trainingPeriod')
+		return self._run_data_periods_days_delta.get(
+		    job_run_context.get('runDataPeriod')
 		)
 
 	def run(self):

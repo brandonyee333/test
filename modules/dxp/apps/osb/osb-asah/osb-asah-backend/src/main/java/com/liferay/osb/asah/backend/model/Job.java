@@ -75,14 +75,14 @@ public class Job {
 		return _jobParameters;
 	}
 
-	@JsonProperty("trainingFrequency")
-	public JobTrainingFrequency getJobTrainingFrequency() {
-		return _jobTrainingFrequency;
+	@JsonProperty("runDataPeriod")
+	public JobRunDataPeriod getJobRunDataPeriod() {
+		return _jobRunDataPeriod;
 	}
 
-	@JsonProperty("trainingPeriod")
-	public JobTrainingPeriod getJobTrainingPeriod() {
-		return _jobTrainingPeriod;
+	@JsonProperty("runFrequency")
+	public JobRunFrequency getJobRunFrequency() {
+		return _jobRunFrequency;
 	}
 
 	@JsonProperty("type")
@@ -114,8 +114,8 @@ public class Job {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_createdDate, _id, _jobParameters, _jobTrainingFrequency,
-			_jobTrainingPeriod, _jobType, _lastUpdatedDate, _name);
+			_createdDate, _id, _jobParameters, _jobRunDataPeriod,
+			_jobRunFrequency, _jobType, _lastUpdatedDate, _name);
 	}
 
 	public void setCreatedDate(Date createdDate) {
@@ -132,14 +132,12 @@ public class Job {
 		_jobParameters = jobParameters;
 	}
 
-	public void setJobTrainingFrequency(
-		JobTrainingFrequency jobTrainingFrequency) {
-
-		_jobTrainingFrequency = jobTrainingFrequency;
+	public void setJobRunDataPeriod(JobRunDataPeriod jobRunDataPeriod) {
+		_jobRunDataPeriod = jobRunDataPeriod;
 	}
 
-	public void setJobTrainingPeriod(JobTrainingPeriod jobTrainingPeriod) {
-		_jobTrainingPeriod = jobTrainingPeriod;
+	public void setJobRunFrequency(JobRunFrequency jobRunFrequency) {
+		_jobRunFrequency = jobRunFrequency;
 	}
 
 	public void setJobType(JobType jobType) {
@@ -164,8 +162,8 @@ public class Job {
 		if (Objects.equals(_createdDate, job._createdDate) &&
 			Objects.equals(_id, job._id) &&
 			Objects.equals(_jobParameters, job._jobParameters) &&
-			Objects.equals(_jobTrainingFrequency, job._jobTrainingFrequency) &&
-			Objects.equals(_jobTrainingPeriod, job._jobTrainingPeriod) &&
+			Objects.equals(_jobRunDataPeriod, job._jobRunDataPeriod) &&
+			Objects.equals(_jobRunFrequency, job._jobRunFrequency) &&
 			Objects.equals(_jobType, job._jobType) &&
 			Objects.equals(_lastUpdatedDate, job._lastUpdatedDate) &&
 			Objects.equals(_name, job._name)) {
@@ -179,8 +177,8 @@ public class Job {
 	private Date _createdDate;
 	private String _id;
 	private List<JobParameter> _jobParameters = new ArrayList<>();
-	private JobTrainingFrequency _jobTrainingFrequency;
-	private JobTrainingPeriod _jobTrainingPeriod;
+	private JobRunDataPeriod _jobRunDataPeriod;
+	private JobRunFrequency _jobRunFrequency;
 	private JobType _jobType;
 	private Date _lastUpdatedDate;
 	private String _name;

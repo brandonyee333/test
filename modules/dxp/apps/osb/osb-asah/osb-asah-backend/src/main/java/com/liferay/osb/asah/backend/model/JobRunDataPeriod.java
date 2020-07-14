@@ -17,7 +17,7 @@ package com.liferay.osb.asah.backend.model;
 /**
  * @author Marcellus Tavares
  */
-public enum JobTrainingPeriod {
+public enum JobRunDataPeriod {
 
 	LAST_7_DAYS, LAST_30_DAYS, LAST_180_DAYS, LAST_365_DAYS
 

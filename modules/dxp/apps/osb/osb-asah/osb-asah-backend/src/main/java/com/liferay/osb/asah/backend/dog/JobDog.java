@@ -17,11 +17,11 @@ package com.liferay.osb.asah.backend.dog;
 import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobParameter;
 import com.liferay.osb.asah.backend.model.JobRun;
+import com.liferay.osb.asah.backend.model.JobRunDataPeriod;
+import com.liferay.osb.asah.backend.model.JobRunFrequency;
 import com.liferay.osb.asah.backend.model.JobRunStatus;
 import com.liferay.osb.asah.backend.model.JobRunsMonthlyStatistics;
 import com.liferay.osb.asah.backend.model.JobStatus;
-import com.liferay.osb.asah.backend.model.JobTrainingFrequency;
-import com.liferay.osb.asah.backend.model.JobTrainingPeriod;
 import com.liferay.osb.asah.backend.model.JobType;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -76,9 +76,8 @@ import org.springframework.stereotype.Component;
 public class JobDog {
 
 	public Job addJob(
-		List<JobParameter> jobParameters,
-		JobTrainingFrequency jobTrainingFrequency,
-		JobTrainingPeriod jobTrainingPeriod, JobType jobType, String name,
+		List<JobParameter> jobParameters, JobRunDataPeriod jobRunDataPeriod,
+		JobRunFrequency jobRunFrequency, JobType jobType, String name,
 		boolean runNow) {
 
 		Job job = new Job();
@@ -90,8 +89,8 @@ public class JobDog {
 
 		job.setName(name);
 		job.setJobParameters(jobParameters);
-		job.setJobTrainingFrequency(jobTrainingFrequency);
-		job.setJobTrainingPeriod(jobTrainingPeriod);
+		job.setJobRunDataPeriod(jobRunDataPeriod);
+		job.setJobRunFrequency(jobRunFrequency);
 		job.setJobType(jobType);
 
 		_scheduleOSBAsahTask(job);
@@ -99,7 +98,7 @@ public class JobDog {
 		job = _jobElasticsearchRepository.add(job);
 
 		if (runNow) {
-			runJob(job.getId(), jobTrainingPeriod);
+			runJob(job.getId(), jobRunDataPeriod);
 		}
 
 		return job;
@@ -125,13 +124,12 @@ public class JobDog {
 		return _jobElasticsearchRepository.get(id);
 	}
 
-	public String getJobNextTrainingDateString(String id) {
+	public String getJobNextRunDateString(String id) {
 		Job job = getJob(id);
 
-		JobTrainingFrequency jobTrainingFrequency =
-			job.getJobTrainingFrequency();
+		JobRunFrequency jobRunFrequency = job.getJobRunFrequency();
 
-		if (jobTrainingFrequency == JobTrainingFrequency.MANUAL) {
+		if (jobRunFrequency == JobRunFrequency.MANUAL) {
 			return null;
 		}
 
@@ -154,8 +152,7 @@ public class JobDog {
 		}
 
 		CronSequenceGenerator cronSequenceGenerator = new CronSequenceGenerator(
-			jobTrainingFrequency.getCronExpression(),
-			TimeZone.getTimeZone("UTC"));
+			jobRunFrequency.getCronExpression(), TimeZone.getTimeZone("UTC"));
 
 		return DateUtil.toUTCString(cronSequenceGenerator.next(startDate));
 	}
@@ -165,6 +162,26 @@ public class JobDog {
 
 		return _jobElasticsearchRepository.search(
 			_buildKeywordsQueryBuilder(keywords), size, sort, start);
+	}
+
+	public String getJobRunDateString(String id) {
+		JobRun jobRun = _jobRunElasticsearchRepository.fetchFirst(
+			searchSourceBuilder -> {
+				searchSourceBuilder.query(
+					BoolQueryBuilderUtil.filter(
+						QueryBuilders.termQuery("job.id", id)
+					).filter(
+						QueryBuilders.termQuery("status", "COMPLETED")
+					));
+				searchSourceBuilder.sort(
+					SortBuilderUtil.fieldSort("id", SortOrder.DESC));
+			});
+
+		if (jobRun == null) {
+			return null;
+		}
+
+		return jobRun.getCompletedDateISO();
 	}
 
 	public ResultBag<JobRun> getJobRunResultBag(
@@ -210,7 +227,7 @@ public class JobDog {
 
 		if (jobRun != null) {
 			if (jobRun.getJobRunStatus() == JobRunStatus.RUNNING) {
-				return JobStatus.TRAINING;
+				return JobStatus.RUNNING;
 			}
 
 			return JobStatus.FAILED;
@@ -218,34 +235,14 @@ public class JobDog {
 
 		Job job = getJob(id);
 
-		if (job.getJobTrainingFrequency() == JobTrainingFrequency.MANUAL) {
+		if (job.getJobRunFrequency() == JobRunFrequency.MANUAL) {
 			return JobStatus.PENDING;
 		}
 
 		return JobStatus.SCHEDULED;
 	}
 
-	public String getJobTrainingDateString(String id) {
-		JobRun jobRun = _jobRunElasticsearchRepository.fetchFirst(
-			searchSourceBuilder -> {
-				searchSourceBuilder.query(
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery("job.id", id)
-					).filter(
-						QueryBuilders.termQuery("status", "COMPLETED")
-					));
-				searchSourceBuilder.sort(
-					SortBuilderUtil.fieldSort("id", SortOrder.DESC));
-			});
-
-		if (jobRun == null) {
-			return null;
-		}
-
-		return jobRun.getCompletedDateISO();
-	}
-
-	public Job runJob(String id, JobTrainingPeriod jobTrainingPeriod) {
+	public Job runJob(String id, JobRunDataPeriod jobRunDataPeriod) {
 		JobRun jobRun = _fetchLatestJobRun(id);
 
 		if ((jobRun != null) &&
@@ -263,7 +260,7 @@ public class JobDog {
 			JSONUtil.put(
 				"job", ObjectMapperUtil.convertValue(job, JSONObject.class)
 			).put(
-				"trainingPeriod", jobTrainingPeriod.toString()
+				"runDataPeriod", jobRunDataPeriod.toString()
 			).put(
 				"trigger", "MANUAL"
 			));
@@ -273,26 +270,25 @@ public class JobDog {
 
 	public Job updateJob(
 		String id, List<JobParameter> jobParameters,
-		JobTrainingFrequency jobTrainingFrequency,
-		JobTrainingPeriod jobTrainingPeriod, String name, boolean runNow) {
+		JobRunDataPeriod jobRunDataPeriod, JobRunFrequency jobRunFrequency,
+		String name, boolean runNow) {
 
 		Job job = _jobElasticsearchRepository.get(id);
 
-		JobTrainingFrequency oldJobTrainingFrequency =
-			job.getJobTrainingFrequency();
+		JobRunFrequency oldJobRunFrequency = job.getJobRunFrequency();
 
 		job.setLastUpdatedDate(new Date());
 		job.setName(name);
 		job.setJobParameters(jobParameters);
-		job.setJobTrainingFrequency(jobTrainingFrequency);
-		job.setJobTrainingPeriod(jobTrainingPeriod);
+		job.setJobRunFrequency(jobRunFrequency);
+		job.setJobRunDataPeriod(jobRunDataPeriod);
 
-		_rescheduleOSBAsahTask(job, oldJobTrainingFrequency);
+		_rescheduleOSBAsahTask(job, oldJobRunFrequency);
 
 		job = _jobElasticsearchRepository.update(id, job);
 
 		if (runNow) {
-			runJob(id, jobTrainingPeriod);
+			runJob(id, jobRunDataPeriod);
 		}
 
 		return job;
@@ -323,15 +319,14 @@ public class JobDog {
 	}
 
 	private int _countCurrentMonthScheduledJobRuns(
-		JobTrainingFrequency jobTrainingFrequency, Date startDate) {
+		JobRunFrequency jobRunFrequency, Date startDate) {
 
 		int count = 0;
 
 		LocalDateTime nowLocalDateTime = LocalDateTime.now(ZoneId.of("UTC"));
 
 		CronSequenceGenerator cronSequenceGenerator = new CronSequenceGenerator(
-			jobTrainingFrequency.getCronExpression(),
-			TimeZone.getTimeZone("UTC"));
+			jobRunFrequency.getCronExpression(), TimeZone.getTimeZone("UTC"));
 
 		while (true) {
 			startDate = cronSequenceGenerator.next(startDate);
@@ -360,7 +355,7 @@ public class JobDog {
 	private int _countCurrentMonthScheduledJobRuns(
 		List<JobRun> currentMonthJobRuns, Job job) {
 
-		if (job.getJobTrainingFrequency() == JobTrainingFrequency.MANUAL) {
+		if (job.getJobRunFrequency() == JobRunFrequency.MANUAL) {
 			return 0;
 		}
 
@@ -374,7 +369,7 @@ public class JobDog {
 		}
 
 		return _countCurrentMonthScheduledJobRuns(
-			job.getJobTrainingFrequency(), startDate);
+			job.getJobRunFrequency(), startDate);
 	}
 
 	private long _countJobRunsByStatus(
@@ -480,12 +475,11 @@ public class JobDog {
 	}
 
 	private void _rescheduleOSBAsahTask(
-		Job job, JobTrainingFrequency oldJobTrainingFrequency) {
+		Job job, JobRunFrequency oldJobRunFrequency) {
 
-		JobTrainingFrequency newJobTrainingFrequency =
-			job.getJobTrainingFrequency();
+		JobRunFrequency newJobRunFrequency = job.getJobRunFrequency();
 
-		if (newJobTrainingFrequency == oldJobTrainingFrequency) {
+		if (newJobRunFrequency == oldJobRunFrequency) {
 			return;
 		}
 
@@ -495,10 +489,9 @@ public class JobDog {
 	}
 
 	private void _scheduleOSBAsahTask(Job job) {
-		JobTrainingFrequency jobTrainingFrequency =
-			job.getJobTrainingFrequency();
+		JobRunFrequency jobRunFrequency = job.getJobRunFrequency();
 
-		if (jobTrainingFrequency == JobTrainingFrequency.MANUAL) {
+		if (jobRunFrequency == JobRunFrequency.MANUAL) {
 			return;
 		}
 
@@ -508,7 +501,7 @@ public class JobDog {
 				JSONUtil.put(
 					"job",
 					ObjectMapperUtil.convertValue(job, JSONObject.class)),
-				jobTrainingFrequency.getCronExpression());
+				jobRunFrequency.getCronExpression());
 
 		job.setOSBAsahTaskId(osbAsahTaskJSONObject.getString("id"));
 	}

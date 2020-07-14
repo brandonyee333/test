@@ -18,8 +18,8 @@ import com.liferay.osb.asah.backend.dog.JobDog;
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobParameter;
-import com.liferay.osb.asah.backend.model.JobTrainingFrequency;
-import com.liferay.osb.asah.backend.model.JobTrainingPeriod;
+import com.liferay.osb.asah.backend.model.JobRunDataPeriod;
+import com.liferay.osb.asah.backend.model.JobRunFrequency;
 import com.liferay.osb.asah.backend.model.JobType;
 import com.liferay.osb.asah.common.util.ListUtil;
 
@@ -42,10 +42,10 @@ public class CreateJobMutationDataFetcher implements DataFetcher<Job> {
 			ListUtil.map(
 				dataFetchingEnvironment.getArgument("parameters"),
 				JobParameter::of),
-			JobTrainingFrequency.valueOf(
-				dataFetchingEnvironment.getArgument("trainingFrequency")),
-			JobTrainingPeriod.valueOf(
-				dataFetchingEnvironment.getArgument("trainingPeriod")),
+			JobRunDataPeriod.valueOf(
+				dataFetchingEnvironment.getArgument("runDataPeriod")),
+			JobRunFrequency.valueOf(
+				dataFetchingEnvironment.getArgument("runFrequency")),
 			JobType.valueOf(dataFetchingEnvironment.getArgument("type")),
 			dataFetchingEnvironment.getArgument("name"),
 			dataFetchingEnvironment.getArgument("runNow"));

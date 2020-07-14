@@ -77,10 +77,10 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 			JSONUtil.put(
 				"context",
 				JSONUtil.put(
-					"trainingPeriod",
+					"runDataPeriod",
 					contextJSONObject.optString(
-						"trainingPeriod",
-						jobJSONObject.getString("trainingPeriod")))
+						"runDataPeriod",
+						jobJSONObject.getString("runDataPeriod")))
 			).put(
 				"createdDate", dateString
 			).put(

@@ -17,7 +17,7 @@ package com.liferay.osb.asah.backend.model;
 /**
  * @author Marcellus Tavares
  */
-public enum JobTrainingFrequency {
+public enum JobRunFrequency {
 
 	EVERY_7_DAYS("0 0 0 */7 * ?"), EVERY_14_DAYS("0 0 0 */14 * ?"),
 	EVERY_30_DAYS("0 0 0 */30 * ?"), MANUAL(null);
@@ -26,7 +26,7 @@ public enum JobTrainingFrequency {
 		return _cronExpression;
 	}
 
-	private JobTrainingFrequency(String cronExpression) {
+	private JobRunFrequency(String cronExpression) {
 		_cronExpression = cronExpression;
 	}
 

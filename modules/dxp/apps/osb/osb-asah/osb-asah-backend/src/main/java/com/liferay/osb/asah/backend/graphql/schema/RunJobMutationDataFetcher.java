@@ -17,7 +17,7 @@ package com.liferay.osb.asah.backend.graphql.schema;
 import com.liferay.osb.asah.backend.dog.JobDog;
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.backend.model.Job;
-import com.liferay.osb.asah.backend.model.JobTrainingPeriod;
+import com.liferay.osb.asah.backend.model.JobRunDataPeriod;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
@@ -36,8 +36,8 @@ public class RunJobMutationDataFetcher implements DataFetcher<Job> {
 	public Job get(DataFetchingEnvironment dataFetchingEnvironment) {
 		return _jobDog.runJob(
 			dataFetchingEnvironment.getArgument("jobId"),
-			JobTrainingPeriod.valueOf(
-				dataFetchingEnvironment.getArgument("trainingPeriod")));
+			JobRunDataPeriod.valueOf(
+				dataFetchingEnvironment.getArgument("runDataPeriod")));
 	}
 
 	@Autowired

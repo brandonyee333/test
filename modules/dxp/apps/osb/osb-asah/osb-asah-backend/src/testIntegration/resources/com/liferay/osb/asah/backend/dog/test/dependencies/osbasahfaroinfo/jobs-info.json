@@ -14,8 +14,8 @@
 				"value": "value2"
 			}
 		],
-		"trainingFrequency": "EVERY_7_DAYS",
-		"trainingPeriod": "LAST_30_DAYS",
+		"runDataPeriod": "LAST_30_DAYS",
+		"runFrequency": "EVERY_7_DAYS",
 		"type": "CONTENT_RECOMMENDATION_ITEM_SIMILARITY"
 	}
 ]
