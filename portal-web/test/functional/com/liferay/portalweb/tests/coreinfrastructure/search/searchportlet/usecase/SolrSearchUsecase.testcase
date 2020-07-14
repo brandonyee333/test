@@ -497,6 +497,31 @@ definition {
 		}
 	}
 
+	@description = "This is a use case for LPS-25877."
+	@priority = "5"
+	test SearchPortletIdAfterLogout {
+		ProductMenu.gotoPortlet(
+			category = "Users",
+			panel = "Control Panel",
+			portlet = "Users and Organizations");
+
+		Organization.addCP(
+			orgName = "Organization Name",
+			orgType = "Organization");
+
+		User.logoutPG();
+
+		Search.searchPG(searchTerm = "portletId:com_liferay_users_admin_web_portlet_UsersAdminPortlet");
+
+		Search.viewSearchNoPG(
+			searchAssetTitle = "Test Test",
+			searchAssetType = "User");
+
+		Search.viewSearchNoPG(
+			searchAssetTitle = "Organization Name",
+			searchAssetType = "Organization");
+	}
+
 	@priority = "5"
 	test SearchTwiceHideSitesFacet {
 		ProductMenu.gotoPortlet(
