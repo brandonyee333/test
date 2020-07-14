@@ -139,6 +139,8 @@ public class SessionFinalizerNanite implements Nanite {
 					lastSuccessfulSessionFinalizerDate
 				)
 			)
+		).setSourceExcludes(
+			"interactions"
 		).iterate();
 
 		while (true) {
