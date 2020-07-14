@@ -144,7 +144,7 @@ public class DXPBatchEntitiesRestController {
 		DXPBatchEntitiesRestController.class);
 
 	@Value(
-		"${osb.asah.analytics.batch.resources.google.bucket:analytics-cloud-analytics-resoruces}"
+		"${osb.asah.analytics.batch.resources.google.bucket:analytics-cloud-analytics-resources}"
 	)
 	private String _analyticsBatchResourcesBucket;
 
