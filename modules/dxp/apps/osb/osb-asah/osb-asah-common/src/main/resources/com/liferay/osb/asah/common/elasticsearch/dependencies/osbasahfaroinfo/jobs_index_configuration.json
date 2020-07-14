@@ -26,10 +26,10 @@
 				"parameters": {
 					"type": "object"
 				},
-				"trainingFrequency": {
+				"runDataPeriod": {
 					"type": "keyword"
 				},
-				"trainingPeriod": {
+				"runFrequency": {
 					"type": "keyword"
 				},
 				"type": {
