@@ -158,6 +158,11 @@ public class AccountAttachmentServlet extends HttpServlet {
 				OSBCustomerConstants.USER_DEFAULT_USER_ID,
 				accountEntry.getAccountEntryId(), 0, ovp,
 				AccountAttachmentConstants.TYPE_OEM_INSTRUCTIONS);
+
+			String redirect = ParamUtil.getString(
+				uploadServletRequest, "redirect");
+
+			httpServletResponse.sendRedirect(redirect);
 		}
 		catch (PrincipalException pe) {
 			httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
