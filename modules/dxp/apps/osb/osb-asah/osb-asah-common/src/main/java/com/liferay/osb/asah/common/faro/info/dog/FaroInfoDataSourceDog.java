@@ -274,8 +274,6 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 	public void init() {
 		super.init();
 
-		_cerebroRawElasticsearchInvoker =
-			elasticsearchInvokerFactory.forCerebroRaw();
 		_dxpRawElasticsearchInvoker = elasticsearchInvokerFactory.forDXPRaw();
 		_salesforceElasticsearchInvoker =
 			elasticsearchInvokerFactory.forSalesforceRaw();
@@ -556,9 +554,6 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 				"groups", "organizations", "roles", "teams", "user-groups",
 				"users");
 			_deleteData(
-				dataSourceId, "dataSourceId", _cerebroRawElasticsearchInvoker,
-				"analytics-events");
-			_deleteData(
 				dataSourceId, "dataSourceId", elasticsearchInvoker,
 				"organizations");
 			_deleteIndividualReferences(dataSourceId);
@@ -707,8 +702,6 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 
 	private static final Log _log = LogFactory.getLog(
 		FaroInfoDataSourceDog.class);
-
-	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
 
 	@Autowired
 	private DXPExtractorConfigurationDog _dxpExtractorConfigurationDog;

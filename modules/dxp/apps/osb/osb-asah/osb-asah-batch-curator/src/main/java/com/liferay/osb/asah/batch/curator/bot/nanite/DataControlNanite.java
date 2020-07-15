@@ -68,8 +68,6 @@ public class DataControlNanite extends BaseNanite {
 
 		_cerebroInfoElasticsearchInvoker =
 			elasticsearchInvokerFactory.forCerebroInfo();
-		_cerebroRawElasticsearchInvoker =
-			elasticsearchInvokerFactory.forCerebroRaw();
 		_dxpRawElasticsearchInvoker = elasticsearchInvokerFactory.forDXPRaw();
 		_salesforceRawElasticsearchInvoker =
 			elasticsearchInvokerFactory.forSalesforceRaw();
@@ -475,7 +473,6 @@ public class DataControlNanite extends BaseNanite {
 	private static final Log _log = LogFactory.getLog(DataControlNanite.class);
 
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
-	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
 	@Autowired

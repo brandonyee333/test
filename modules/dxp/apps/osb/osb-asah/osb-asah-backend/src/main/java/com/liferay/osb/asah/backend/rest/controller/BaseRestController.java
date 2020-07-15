@@ -51,8 +51,6 @@ public abstract class BaseRestController {
 
 	@PostConstruct
 	public void init() {
-		cerebroRawElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroRaw();
 		dxpRawElasticsearchInvoker = _elasticsearchInvokerFactory.forDXPRaw();
 		faroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forFaroInfo();
@@ -256,7 +254,6 @@ public abstract class BaseRestController {
 			transformationJSONArrayFunction, transformationName);
 	}
 
-	protected ElasticsearchInvoker cerebroRawElasticsearchInvoker;
 	protected ElasticsearchInvoker dxpRawElasticsearchInvoker;
 	protected ElasticsearchInvoker faroInfoElasticsearchInvoker;
 	protected ElasticsearchInvoker salesforceRawElasticsearchInvoker;
