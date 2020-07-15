@@ -14,10 +14,10 @@
 
 package com.liferay.osb.asah.extractor.processor.test;
 
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
+import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.extractor.processor.AnalyticsEventsMessageProcessor;
 import com.liferay.osb.asah.extractor.spring.OSBAsahExtractorSpringBootApplication;
@@ -25,10 +25,8 @@ import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.elasticsearch.MessageBusChannel;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
-import org.elasticsearch.index.query.QueryBuilders;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -60,27 +58,21 @@ public class AnalyticsEventsMessageProcessorTest {
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroRaw();
+		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
+			50, AnalyticsEvent::toAnalyticsEvent);
 
-		JSONArray analyticsEventsJSONArray = elasticsearchInvoker.get(
-			"analytics-events");
+		Assert.assertNotEquals(0, analyticsEvents.size());
 
-		Assert.assertNotEquals(0, analyticsEventsJSONArray.length());
+		AnalyticsEvent analyticsEvent = analyticsEvents.get(0);
 
-		JSONObject analyticsEvent = analyticsEventsJSONArray.getJSONObject(0);
+		Assert.assertEquals("Page", analyticsEvent.getApplicationId());
+		Assert.assertEquals("pageViewed", analyticsEvent.getEventId());
 
-		Assert.assertEquals("Page", analyticsEvent.getString("applicationId"));
-		Assert.assertEquals("pageViewed", analyticsEvent.getString("eventId"));
+		Map<String, Object> context = analyticsEvent.getContext();
 
-		JSONObject contextJSONObject = analyticsEvent.getJSONObject("context");
-
-		Assert.assertEquals(
-			"Chrome", contextJSONObject.getString("browserName"));
-		Assert.assertEquals(
-			"Desktop", contextJSONObject.getString("deviceType"));
-		Assert.assertEquals(
-			"macOS", contextJSONObject.getString("platformName"));
+		Assert.assertEquals("Chrome", context.get("browserName"));
+		Assert.assertEquals("Desktop", context.get("deviceType"));
+		Assert.assertEquals("macOS", context.get("platformName"));
 	}
 
 	@ElasticsearchIndex(
@@ -102,13 +94,10 @@ public class AnalyticsEventsMessageProcessorTest {
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroRaw();
+		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
+			50, AnalyticsEvent::toAnalyticsEvent);
 
-		Assert.assertNotEquals(
-			0,
-			elasticsearchInvoker.count(
-				"analytics-events", QueryBuilders.matchAllQuery()));
+		Assert.assertNotEquals(0, analyticsEvents.size());
 	}
 
 	@ElasticsearchIndex(
@@ -143,13 +132,10 @@ public class AnalyticsEventsMessageProcessorTest {
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroRaw();
+		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
+			50, AnalyticsEvent::toAnalyticsEvent);
 
-		Assert.assertNotEquals(
-			0,
-			elasticsearchInvoker.count(
-				"analytics-events", QueryBuilders.matchAllQuery()));
+		Assert.assertNotEquals(0, analyticsEvents.size());
 	}
 
 	@ElasticsearchIndex(
@@ -171,13 +157,10 @@ public class AnalyticsEventsMessageProcessorTest {
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroRaw();
+		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
+			50, AnalyticsEvent::toAnalyticsEvent);
 
-		Assert.assertEquals(
-			0,
-			elasticsearchInvoker.count(
-				"analytics-events", QueryBuilders.matchAllQuery()));
+		Assert.assertEquals(0, analyticsEvents.size());
 	}
 
 	@ElasticsearchIndex(
@@ -199,22 +182,14 @@ public class AnalyticsEventsMessageProcessorTest {
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroRaw();
+		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
+			50, AnalyticsEvent::toAnalyticsEvent);
 
-		JSONArray analyticsEventsJSONArray = elasticsearchInvoker.get(
-			"analytics-events");
-
-		for (int i = 0; i < analyticsEventsJSONArray.length(); i++) {
-			JSONObject analyticsEventJSONObject =
-				analyticsEventsJSONArray.getJSONObject(i);
-
-			JSONObject contextJSONObject =
-				analyticsEventJSONObject.getJSONObject("context");
+		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
+			Map<String, Object> context = analyticsEvent.getContext();
 
 			Assert.assertEquals(
-				contextJSONObject.getString("url"),
-				contextJSONObject.getString("canonicalUrl"));
+				context.get("url"), context.get("canonicalUrl"));
 		}
 	}
 
@@ -237,29 +212,21 @@ public class AnalyticsEventsMessageProcessorTest {
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroRaw();
+		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
+			50, AnalyticsEvent::toAnalyticsEvent);
 
-		JSONArray analyticsEventsJSONArray = elasticsearchInvoker.get(
-			"analytics-events");
-
-		for (int i = 0; i < analyticsEventsJSONArray.length(); i++) {
-			JSONObject analyticsEventJSONObject =
-				analyticsEventsJSONArray.getJSONObject(i);
-
-			JSONObject contextJSONObject =
-				analyticsEventJSONObject.getJSONObject("context");
+		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
+			Map<String, Object> context = analyticsEvent.getContext();
 
 			Assert.assertNotEquals(
-				contextJSONObject.getString("url"),
-				contextJSONObject.getString("canonicalUrl"));
+				context.get("url"), context.get("canonicalUrl"));
 		}
 	}
 
 	@Autowired
 	private AnalyticsEventsMessageProcessor _analyticsEventsMessageProcessor;
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_PAGE)
+	private MessageSubscriber _messageSubscriber;
 
 }
