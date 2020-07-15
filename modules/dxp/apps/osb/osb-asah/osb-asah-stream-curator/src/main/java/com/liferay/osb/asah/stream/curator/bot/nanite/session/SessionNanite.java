@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.messaging.MockMessageSubscriber;
 import com.liferay.osb.asah.common.model.Acquisition;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.UserSession;
@@ -456,6 +457,10 @@ public class SessionNanite implements Nanite {
 						"%s processed %d events in %d ms",
 						clazz.getSimpleName(), analyticsEvents.size(),
 						System.currentTimeMillis() - start));
+			}
+
+			if (_messageSubscriber instanceof MockMessageSubscriber) {
+				return;
 			}
 		}
 	}
