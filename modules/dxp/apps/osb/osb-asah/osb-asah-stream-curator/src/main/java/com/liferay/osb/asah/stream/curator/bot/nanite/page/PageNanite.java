@@ -195,7 +195,7 @@ public class PageNanite extends BaseStreamNanite<Page> {
 		double interactionScore = _computeInteractionScore(page);
 		double viewScore = _computeViewScore(page);
 
-		return (interactionScore * 4 + viewScore) / 5.0;
+		return ((interactionScore * 4) + viewScore) / 5.0;
 	}
 
 	private double _computeFormScore(Page page) {
@@ -222,7 +222,8 @@ public class PageNanite extends BaseStreamNanite<Page> {
 		}
 
 		double score =
-			scrollSpeedScore + scrollDepthScore + readTimeScore + 3 * formScore;
+			scrollSpeedScore + scrollDepthScore + readTimeScore +
+				(3 * formScore);
 
 		return score / 6.0;
 	}

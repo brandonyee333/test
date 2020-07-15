@@ -159,7 +159,7 @@ public class InterestsRestController extends BaseRestController {
 			@RequestParam(defaultValue = "0.01") double termWeightThreshold)
 		throws Exception {
 
-		if ((page * size + size) > 100) {
+		if (((page * size) + size) > 100) {
 			throw new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
 				"page * size + size must not exceed 100");

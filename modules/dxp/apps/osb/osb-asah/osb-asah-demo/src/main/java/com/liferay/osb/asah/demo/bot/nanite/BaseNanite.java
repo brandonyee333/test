@@ -53,7 +53,7 @@ public abstract class BaseNanite implements Nanite {
 	protected Date getNextDate(Date date, int minDelay, int maxDelay) {
 		int delay = DataSourceUtil.getInt(minDelay, maxDelay);
 
-		return new Date(date.getTime() + delay * 1000L);
+		return new Date(date.getTime() + (delay * 1000L));
 	}
 
 	protected void saveAnalyticsEvent(

@@ -78,7 +78,7 @@ public class AssetEngagementScoresNanite extends BaseEngagementScoresNanite {
 			assetJSONObject, dayDateString);
 		double viewScore = _computeViewScore(assetJSONObject, dayDateString);
 
-		return (4 * interactionScore + viewScore) / 5;
+		return ((4 * interactionScore) + viewScore) / 5;
 	}
 
 	private double _computeInteractionScore(

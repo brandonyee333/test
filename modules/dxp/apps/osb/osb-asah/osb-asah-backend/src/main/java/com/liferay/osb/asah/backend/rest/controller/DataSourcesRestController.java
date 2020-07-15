@@ -800,7 +800,7 @@ public class DataSourcesRestController extends BaseRestController {
 				"dateRecorded", DateUtil.newDateString()
 			).put(
 				"processedOperations",
-				totalOperations * 2 -
+				(totalOperations * 2) -
 					salesforceRawElasticsearchInvoker.count(
 						"audit-events",
 						BoolQueryBuilderUtil.filter(

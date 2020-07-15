@@ -179,16 +179,16 @@ public class SalesforceExtractorNanite implements Nanite {
 			String tableName = describeSObjectResult.getName();
 
 			runLogAdditionalFields[4 * i] = "total" + tableName + "Operations";
-			runLogAdditionalFields[4 * i + 2] = "initial" + tableName + "Run";
+			runLogAdditionalFields[(4 * i) + 2] = "initial" + tableName + "Run";
 
 			if (_isNewTable(describeSObjectResult, tablesJSONObject)) {
 				QueryResult queryResult = _salesforcePartnerClientInvoker.query(
 					_salesforceExtractorConfiguration,
 					SOQLUtil.getCountSOQL(tableName));
 
-				runLogAdditionalFields[4 * i + 1] = queryResult.getSize();
+				runLogAdditionalFields[(4 * i) + 1] = queryResult.getSize();
 
-				runLogAdditionalFields[4 * i + 3] = true;
+				runLogAdditionalFields[(4 * i) + 3] = true;
 			}
 			else {
 				JSONObject tableJSONObject = tablesJSONObject.optJSONObject(
@@ -217,10 +217,10 @@ public class SalesforceExtractorNanite implements Nanite {
 				DeletedRecord[] deletedRecords =
 					getDeletedResult.getDeletedRecords();
 
-				runLogAdditionalFields[4 * i + 1] =
+				runLogAdditionalFields[(4 * i) + 1] =
 					salesforceKeys.length + deletedRecords.length;
 
-				runLogAdditionalFields[4 * i + 3] = false;
+				runLogAdditionalFields[(4 * i) + 3] = false;
 			}
 		}
 
