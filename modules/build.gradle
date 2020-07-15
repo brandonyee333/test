@@ -17,6 +17,8 @@ buildscript {
 	apply from: rootProject.file("build-buildscript.gradle"), to: buildscript
 }
 
+apply plugin: "com.liferay.yarn.defaults.plugin"
+
 ext {
 	projectTemplateTokens = [
 		"biz.aQute.bnd.version": "4.3.0",
