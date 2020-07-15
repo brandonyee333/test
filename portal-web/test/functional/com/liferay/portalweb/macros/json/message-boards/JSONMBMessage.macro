@@ -40,7 +40,6 @@ definition {
 
 		var serviceContext = JSONServiceContextUtil.setServiceContext(
 			addGroupPermissions = "true",
-			addGuestPermissions = "true",
 			assetTagNames = "${assetTagNames}",
 			workflowAction = "${workflowAction}");
 
