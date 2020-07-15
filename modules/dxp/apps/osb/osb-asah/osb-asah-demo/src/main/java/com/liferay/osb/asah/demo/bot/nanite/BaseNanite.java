@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.demo.bot.nanite;
 
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
@@ -49,7 +48,7 @@ public abstract class BaseNanite implements Nanite {
 		return new Date(date.getTime() + (delay * 1000L));
 	}
 
-	protected void saveAnalyticsEvent(
+	protected void sendAnalyticsEvent(
 		String applicationId, Map<String, Object> context, Date eventDate,
 		String eventId, Map<String, String> eventProperties, String userId) {
 
@@ -64,15 +63,8 @@ public abstract class BaseNanite implements Nanite {
 		analyticsEvent.setEventProperties(eventProperties);
 		analyticsEvent.setUserId(userId);
 
-		_send(analyticsEvent);
-	}
-
-	private void _send(AnalyticsEvent analyticsEvent) {
 		_messageBus.sendMessage(getChannel(), analyticsEvent.toJSON());
 	}
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@Autowired
 	private MessageBus _messageBus;

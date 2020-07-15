@@ -127,7 +127,7 @@ public class BlogNanite extends BaseNanite {
 		eventProperties.put("tagName", DataSourceUtil.getTagName());
 		eventProperties.put("text", DataSourceUtil.getString());
 
-		saveAnalyticsEvent(
+		sendAnalyticsEvent(
 			"Blog", context, eventDate, "blogClicked", eventProperties, userId);
 	}
 
@@ -140,7 +140,7 @@ public class BlogNanite extends BaseNanite {
 		eventProperties.put("entryId", String.valueOf(entryId));
 		eventProperties.put("title", DataSourceUtil.getString());
 
-		saveAnalyticsEvent(
+		sendAnalyticsEvent(
 			"Blog", context, eventDate, "blogViewed", eventProperties, userId);
 	}
 
@@ -153,7 +153,7 @@ public class BlogNanite extends BaseNanite {
 		eventProperties.put("className", "com.liferay.blogs.model.BlogsEntry");
 		eventProperties.put("classPK", String.valueOf(entryId));
 
-		saveAnalyticsEvent(
+		sendAnalyticsEvent(
 			"Comment", context, eventDate, "posted", eventProperties, userId);
 	}
 
@@ -166,14 +166,14 @@ public class BlogNanite extends BaseNanite {
 		eventProperties.put("depth", String.valueOf(depth));
 		eventProperties.put("entryId", String.valueOf(entryId));
 
-		saveAnalyticsEvent(
+		sendAnalyticsEvent(
 			"Blog", context, eventDate, "depth", eventProperties, userId);
 	}
 
 	private void _generatePageViewedAnalyticsEvent(
 		Map<String, Object> context, Date eventDate, String userId) {
 
-		saveAnalyticsEvent(
+		sendAnalyticsEvent(
 			"Page", context, eventDate, "pageViewed", new HashMap<>(), userId);
 	}
 
@@ -188,7 +188,7 @@ public class BlogNanite extends BaseNanite {
 		eventProperties.put(
 			"score", String.valueOf(DataSourceUtil.getInt(1, 5)));
 
-		saveAnalyticsEvent(
+		sendAnalyticsEvent(
 			"Ratings", context, eventDate, "VOTE", eventProperties, userId);
 	}
 
@@ -202,8 +202,8 @@ public class BlogNanite extends BaseNanite {
 		eventProperties.put("classPK", String.valueOf(entryId));
 		eventProperties.put("type", socialNetwork);
 
-		saveAnalyticsEvent(
-			"shared", context, eventDate, "SocialBookmarks", eventProperties,
+		sendAnalyticsEvent(
+			"SocialBookmarks", context, eventDate, "shared", eventProperties,
 			userId);
 	}
 

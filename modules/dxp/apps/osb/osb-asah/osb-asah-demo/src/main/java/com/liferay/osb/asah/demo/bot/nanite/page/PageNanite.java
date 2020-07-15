@@ -71,7 +71,7 @@ public class PageNanite extends BaseNanite {
 
 		eventProperties.put("depth", DataSourceUtil.getDepth());
 
-		saveAnalyticsEvent(
+		sendAnalyticsEvent(
 			"Page", context, eventDate, "pageDepthReached", eventProperties,
 			userId);
 	}
@@ -79,7 +79,7 @@ public class PageNanite extends BaseNanite {
 	private void _generatePageViewedAnalyticsEvent(
 		Map<String, Object> context, Date eventDate, String userId) {
 
-		saveAnalyticsEvent(
+		sendAnalyticsEvent(
 			"Page", context, eventDate, "pageViewed", new HashMap<>(), userId);
 	}
 

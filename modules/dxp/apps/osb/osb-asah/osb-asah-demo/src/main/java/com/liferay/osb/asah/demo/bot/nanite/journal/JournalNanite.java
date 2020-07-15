@@ -72,7 +72,7 @@ public class JournalNanite extends BaseNanite {
 	private void _generatePageViewedAnalyticsEvent(
 		Map<String, Object> context, Date eventDate, String userId) {
 
-		saveAnalyticsEvent(
+		sendAnalyticsEvent(
 			"Page", context, eventDate, "pageViewed", new HashMap<>(), userId);
 	}
 
@@ -88,7 +88,7 @@ public class JournalNanite extends BaseNanite {
 		eventProperties.put(
 			"score", String.valueOf(DataSourceUtil.getInt(1, 5)));
 
-		saveAnalyticsEvent(
+		sendAnalyticsEvent(
 			"Ratings", context, eventDate, "VOTE", eventProperties, userId);
 	}
 
@@ -104,7 +104,7 @@ public class JournalNanite extends BaseNanite {
 		eventProperties.put("tagName", DataSourceUtil.getTagName());
 		eventProperties.put("text", DataSourceUtil.getString());
 
-		saveAnalyticsEvent(
+		sendAnalyticsEvent(
 			"WebContent", context, eventDate, "webContentClicked",
 			eventProperties, userId);
 	}
@@ -118,7 +118,7 @@ public class JournalNanite extends BaseNanite {
 		eventProperties.put("articleId", String.valueOf(articleId));
 		eventProperties.put("title", DataSourceUtil.getString());
 
-		saveAnalyticsEvent(
+		sendAnalyticsEvent(
 			"WebContent", context, eventDate, "webContentViewed",
 			eventProperties, userId);
 	}

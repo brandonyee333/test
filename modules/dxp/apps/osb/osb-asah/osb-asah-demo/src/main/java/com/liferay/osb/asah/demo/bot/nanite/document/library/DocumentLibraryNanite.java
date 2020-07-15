@@ -87,7 +87,7 @@ public class DocumentLibraryNanite extends BaseNanite {
 			"com.liferay.document.library.kernel.model.DLFileEntry");
 		eventProperties.put("classPK", String.valueOf(fileEntryId));
 
-		saveAnalyticsEvent(
+		sendAnalyticsEvent(
 			"Comment", context, eventDate, "posted", eventProperties, userId);
 	}
 
@@ -100,7 +100,7 @@ public class DocumentLibraryNanite extends BaseNanite {
 		eventProperties.put("fileEntryId", String.valueOf(fileEntryId));
 		eventProperties.put("title", DataSourceUtil.getString());
 
-		saveAnalyticsEvent(
+		sendAnalyticsEvent(
 			"Document", context, eventDate, "documentDownloaded",
 			eventProperties, userId);
 	}
@@ -113,7 +113,7 @@ public class DocumentLibraryNanite extends BaseNanite {
 
 		eventProperties.put("fileEntryId", String.valueOf(fileEntryId));
 
-		saveAnalyticsEvent(
+		sendAnalyticsEvent(
 			"Document", context, eventDate, "documentPreviewed",
 			eventProperties, userId);
 	}
@@ -121,7 +121,7 @@ public class DocumentLibraryNanite extends BaseNanite {
 	private void _generatePageViewedAnalyticsEvent(
 		Map<String, Object> context, Date eventDate, String userId) {
 
-		saveAnalyticsEvent(
+		sendAnalyticsEvent(
 			"Page", context, eventDate, "pageViewed", new HashMap<>(), userId);
 	}
 
@@ -138,7 +138,7 @@ public class DocumentLibraryNanite extends BaseNanite {
 		eventProperties.put(
 			"score", String.valueOf(DataSourceUtil.getInt(1, 5)));
 
-		saveAnalyticsEvent(
+		sendAnalyticsEvent(
 			"Ratings", context, eventDate, "VOTE", eventProperties, userId);
 	}
 

@@ -135,7 +135,7 @@ public class FormNanite extends BaseNanite {
 		eventProperties.put("focusDuration", String.valueOf(focusDuration));
 		eventProperties.put("formId", String.valueOf(formId));
 
-		saveAnalyticsEvent(
+		sendAnalyticsEvent(
 			"Form", context, eventDate, "fieldBlurred", eventProperties,
 			userId);
 	}
@@ -149,7 +149,7 @@ public class FormNanite extends BaseNanite {
 		eventProperties.put("fieldName", fieldName);
 		eventProperties.put("formId", String.valueOf(formId));
 
-		saveAnalyticsEvent(
+		sendAnalyticsEvent(
 			"Form", context, eventDate, "fieldFocused", eventProperties,
 			userId);
 	}
@@ -162,7 +162,7 @@ public class FormNanite extends BaseNanite {
 
 		eventProperties.put("formId", String.valueOf(formId));
 
-		saveAnalyticsEvent(
+		sendAnalyticsEvent(
 			"Form", context, eventDate, "formSubmitted", eventProperties,
 			userId);
 	}
@@ -176,7 +176,7 @@ public class FormNanite extends BaseNanite {
 		eventProperties.put("formId", String.valueOf(formId));
 		eventProperties.put("title", DataSourceUtil.getString());
 
-		saveAnalyticsEvent(
+		sendAnalyticsEvent(
 			"Form", context, eventDate, "formViewed", eventProperties, userId);
 	}
 
@@ -189,14 +189,14 @@ public class FormNanite extends BaseNanite {
 		eventProperties.put("formId", String.valueOf(formId));
 		eventProperties.put("page", String.valueOf(page));
 
-		saveAnalyticsEvent(
+		sendAnalyticsEvent(
 			"Form", context, eventDate, "pageViewed", eventProperties, userId);
 	}
 
 	private void _generatePageViewedAnalyticsEvent(
 		Map<String, Object> context, Date eventDate, String userId) {
 
-		saveAnalyticsEvent(
+		sendAnalyticsEvent(
 			"Page", context, eventDate, "pageViewed", new HashMap<>(), userId);
 	}
 
