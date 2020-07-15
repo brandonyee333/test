@@ -14,31 +14,34 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.blog.traffic.source;
 
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.messaging.Channel;
+import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
-import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNanite;
+import com.liferay.osb.asah.stream.curator.bot.nanite.BaseStreamNanite;
 import com.liferay.osb.asah.stream.curator.model.blog.BlogTrafficSource;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-
 /**
  * @author Inácio Nery
  */
-public class BlogTrafficSourceNanite extends BaseNanite<BlogTrafficSource> {
+public class BlogTrafficSourceNanite
+	extends BaseStreamNanite<BlogTrafficSource> {
 
 	@Override
 	public String getCollectionName() {
@@ -71,6 +74,11 @@ public class BlogTrafficSourceNanite extends BaseNanite<BlogTrafficSource> {
 	}
 
 	@Override
+	protected MessageSubscriber getMessageSubscriber() {
+		return _messageSubscriber;
+	}
+
+	@Override
 	protected Supplier<BlogTrafficSource> getModelSupplier() {
 		return BlogTrafficSource::new;
 	}
@@ -87,13 +95,26 @@ public class BlogTrafficSourceNanite extends BaseNanite<BlogTrafficSource> {
 	}
 
 	@Override
-	protected QueryBuilder getQueryBuilder() {
-		return BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery("applicationId", "Blog")
-		).filter(
-			QueryBuilders.termQuery("eventId", "blogViewed")
-		).mustNot(
-			QueryBuilders.termQuery("context.referrer", "")
+	protected List<AnalyticsEvent> pullAnalyticsEvents() throws Exception {
+		List<AnalyticsEvent> analyticsEvents = super.pullAnalyticsEvents();
+
+		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+
+		return stream.filter(
+			analyticsEvent -> {
+				Map<String, Object> context = analyticsEvent.getContext();
+
+				if (Objects.equals(analyticsEvent.getApplicationId(), "Blog") &&
+					Objects.equals(analyticsEvent.getEventId(), "blogViewed") &&
+					StringUtils.isNotBlank((String)context.get("referrer"))) {
+
+					return true;
+				}
+
+				return false;
+			}
+		).collect(
+			Collectors.toList()
 		);
 	}
 
@@ -143,5 +164,8 @@ public class BlogTrafficSourceNanite extends BaseNanite<BlogTrafficSource> {
 
 	private static final Pattern _pattern = Pattern.compile(
 		"^https?://([^:/]+)");
+
+	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_BLOG)
+	private MessageSubscriber _messageSubscriber;
 
 }
