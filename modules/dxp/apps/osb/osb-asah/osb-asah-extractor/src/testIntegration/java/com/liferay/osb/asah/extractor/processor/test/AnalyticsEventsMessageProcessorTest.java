@@ -160,7 +160,8 @@ public class AnalyticsEventsMessageProcessorTest {
 		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
 			50, AnalyticsEvent::toAnalyticsEvent);
 
-		Assert.assertEquals(0, analyticsEvents.size());
+		Assert.assertEquals(
+			analyticsEvents.toString(), 0, analyticsEvents.size());
 	}
 
 	@ElasticsearchIndex(
