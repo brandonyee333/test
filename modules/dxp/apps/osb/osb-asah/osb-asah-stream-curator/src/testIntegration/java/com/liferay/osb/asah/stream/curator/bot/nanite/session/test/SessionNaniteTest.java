@@ -17,10 +17,12 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.session.test;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.session.SessionNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.elasticsearch.MessageBusChannel;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.elasticsearch.index.query.QueryBuilders;
@@ -43,9 +45,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
 public class SessionNaniteTest {
 
-	@ElasticsearchIndex(
-		name = "analytics-events", resourcePath = "session_raw_6.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_RAW
+	@MessageBusChannel(
+		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
+		resourcePath = "session_raw_6.json"
 	)
 	@Test
 	public void testAnalyticsEventsAreTimeDelimited() {
@@ -60,9 +62,9 @@ public class SessionNaniteTest {
 		Assert.assertEquals(4, userSessionsJSONArray.length());
 	}
 
-	@ElasticsearchIndex(
-		name = "analytics-events", resourcePath = "session_raw_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_RAW
+	@MessageBusChannel(
+		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
+		resourcePath = "session_raw_2.json"
 	)
 	@Test
 	public void testCreateOpenSession() {
@@ -97,16 +99,16 @@ public class SessionNaniteTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "analytics-events", resourcePath = "session_raw_3.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_RAW
-	)
-	@ElasticsearchIndex(
 		name = "pages", resourcePath = "page_info_old_4.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
 		name = "user-sessions", resourcePath = "session_info_old_6.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@MessageBusChannel(
+		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
+		resourcePath = "session_raw_3.json"
 	)
 	@Test
 	public void testCreatePastSession() {
@@ -159,12 +161,12 @@ public class SessionNaniteTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "analytics-events", resourcePath = "session_raw_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_RAW
-	)
-	@ElasticsearchIndex(
 		name = "user-sessions", resourcePath = "session_info_old_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@MessageBusChannel(
+		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
+		resourcePath = "session_raw_1.json"
 	)
 	@Test
 	public void testExpiredSession() {
@@ -206,55 +208,16 @@ public class SessionNaniteTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "analytics-events", resourcePath = "session_raw_6.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_RAW
-	)
-	@Test
-	public void testOSBAsahMarkerIsUpdated() {
-		_sessionNanite.run();
-
-		ElasticsearchInvoker cerebroRawElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroRaw();
-
-		JSONArray analyticsEventsJSONArray = new JSONArray(
-			cerebroRawElasticsearchInvoker.get(
-				"analytics-events",
-				searchSourceBuilder -> {
-					searchSourceBuilder.size(1);
-					searchSourceBuilder.sort("id", SortOrder.DESC);
-					searchSourceBuilder.fetchSource("id", null);
-				}));
-
-		JSONObject analyticsEventJSONObject =
-			analyticsEventsJSONArray.getJSONObject(0);
-
-		String id = analyticsEventJSONObject.getString("id");
-
-		ElasticsearchInvoker cerebroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-
-		Assert.assertTrue(
-			cerebroInfoElasticsearchInvoker.exists(
-				"OSBAsahMarkers",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery("id", "SessionNanite")
-				).filter(
-					QueryBuilders.termQuery(
-						"lastSuccessfulAnalyticsEventId", id)
-				)));
-	}
-
-	@ElasticsearchIndex(
-		name = "analytics-events", resourcePath = "session_raw_4.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_RAW
-	)
-	@ElasticsearchIndex(
 		name = "pages", resourcePath = "page_info_old_5.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
 		name = "user-sessions", resourcePath = "session_info_old_7.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@MessageBusChannel(
+		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
+		resourcePath = "session_raw_4.json"
 	)
 	@Test
 	public void testPastEventUpdateCompletedSession() {
@@ -268,25 +231,10 @@ public class SessionNaniteTest {
 
 		Assert.assertEquals(1, userSessionsJSONArray.length());
 
-		ElasticsearchInvoker cerebroRawElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroRaw();
-
-		JSONArray analyticsEventsJSONArray = cerebroRawElasticsearchInvoker.get(
-			"analytics-events");
-
-		Assert.assertEquals(1, analyticsEventsJSONArray.length());
-
 		JSONObject userSessionJSONObject = userSessionsJSONArray.getJSONObject(
 			0);
 
 		Assert.assertFalse(userSessionJSONObject.getBoolean("bounced"));
-
-		JSONObject analyticsEventJSONObject =
-			analyticsEventsJSONArray.getJSONObject(0);
-
-		Assert.assertEquals(
-			analyticsEventJSONObject.getString("eventDate"),
-			userSessionJSONObject.getString("lastEventDate"));
 
 		Assert.assertEquals(
 			"http://192.168.108.90:8089/page1",
@@ -318,12 +266,12 @@ public class SessionNaniteTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "analytics-events", resourcePath = "session_raw_5.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_RAW
-	)
-	@ElasticsearchIndex(
 		name = "user-sessions", resourcePath = "session_info_old_8.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@MessageBusChannel(
+		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
+		resourcePath = "session_raw_5.json"
 	)
 	@Test
 	public void testPastEventUpdateOpenSession() {
@@ -336,14 +284,6 @@ public class SessionNaniteTest {
 			"user-sessions");
 
 		Assert.assertEquals(1, userSessionsJSONArray.length());
-
-		ElasticsearchInvoker cerebroRawElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroRaw();
-
-		JSONArray analyticsEventsJSONArray = cerebroRawElasticsearchInvoker.get(
-			"analytics-events");
-
-		Assert.assertEquals(1, analyticsEventsJSONArray.length());
 
 		JSONObject userSessionJSONObject = userSessionsJSONArray.getJSONObject(
 			0);
@@ -359,12 +299,12 @@ public class SessionNaniteTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "analytics-events", resourcePath = "session_raw_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_RAW
-	)
-	@ElasticsearchIndex(
 		name = "user-sessions", resourcePath = "session_info_old_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@MessageBusChannel(
+		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
+		resourcePath = "session_raw_2.json"
 	)
 	@Test
 	public void testUpdateSession() {
