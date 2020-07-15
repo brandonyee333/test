@@ -102,9 +102,8 @@ public class BlogSocialShareNanite extends BaseStreamNanite<BlogSocialShare> {
 					analyticsEvent.getEventProperties();
 
 				if (Objects.equals(
-						analyticsEvent.getApplicationId(), "shared") &&
-					Objects.equals(
-						analyticsEvent.getEventId(), "SocialBookmarks") &&
+						analyticsEvent.getApplicationId(), "SocialBookmarks") &&
+					Objects.equals(analyticsEvent.getEventId(), "shared") &&
 					Objects.equals(
 						eventProperties.get("className"),
 						"com.liferay.blogs.model.BlogsEntry")) {
