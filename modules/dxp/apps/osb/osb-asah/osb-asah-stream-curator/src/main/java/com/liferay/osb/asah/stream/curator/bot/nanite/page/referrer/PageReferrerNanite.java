@@ -18,7 +18,7 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
-import com.liferay.osb.asah.stream.curator.bot.nanite.BaseStreamNanite;
+import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.stream.curator.model.page.PageReferrer;
 
 import java.util.Date;
@@ -37,14 +37,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
  * @author Marcellus Tavares
  */
 @Component
-public class PageReferrerNanite extends BaseStreamNanite<PageReferrer> {
+public class PageReferrerNanite extends BaseNanite<PageReferrer> {
 
 	@Override
 	public String getCollectionName() {

@@ -17,7 +17,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.journal.click;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
-import com.liferay.osb.asah.stream.curator.bot.nanite.BaseStreamNanite;
+import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.stream.curator.model.journal.JournalClick;
 
 import java.util.List;
@@ -38,7 +38,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Inácio Nery
  * @author Brian Wing Shun Chan
  */
-public class JournalClickNanite extends BaseStreamNanite<JournalClick> {
+public class JournalClickNanite extends BaseNanite<JournalClick> {
 
 	@Override
 	public String getCollectionName() {

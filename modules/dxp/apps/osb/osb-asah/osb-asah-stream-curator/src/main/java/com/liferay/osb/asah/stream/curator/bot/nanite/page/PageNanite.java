@@ -18,7 +18,7 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
-import com.liferay.osb.asah.stream.curator.bot.nanite.BaseStreamNanite;
+import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.stream.curator.model.page.Page;
 import com.liferay.osb.asah.stream.curator.model.page.PageScroll;
 
@@ -47,14 +47,13 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
  * @author Inácio Nery
  */
 @Component
-public class PageNanite extends BaseStreamNanite<Page> {
+public class PageNanite extends BaseNanite<Page> {
 
 	@Override
 	public String getCollectionName() {
