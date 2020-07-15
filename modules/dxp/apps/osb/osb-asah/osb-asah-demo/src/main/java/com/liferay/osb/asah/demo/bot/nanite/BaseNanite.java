@@ -14,21 +14,14 @@
 
 package com.liferay.osb.asah.demo.bot.nanite;
 
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.messaging.Channel;
+import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.demo.util.DataSourceUtil;
 
 import java.util.Date;
 import java.util.Map;
-
-import javax.annotation.PostConstruct;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -44,11 +37,11 @@ public abstract class BaseNanite implements Nanite {
 		for (int i = 0; i < count; i++) {
 			generateAnalyticsEvents();
 		}
-
-		_flush();
 	}
 
 	protected abstract void generateAnalyticsEvents();
+
+	protected abstract Channel getChannel();
 
 	protected Date getNextDate(Date date, int minDelay, int maxDelay) {
 		int delay = DataSourceUtil.getInt(minDelay, maxDelay);
@@ -71,45 +64,17 @@ public abstract class BaseNanite implements Nanite {
 		analyticsEvent.setEventProperties(eventProperties);
 		analyticsEvent.setUserId(userId);
 
-		_save(analyticsEvent);
+		_send(analyticsEvent);
 	}
 
-	private void _flush() {
-		if (_log.isInfoEnabled()) {
-			_log.info("Flushing " + _bufferJSONArray.length() + " events");
-		}
-
-		try {
-			_cerebroRawElasticsearchInvoker.add(
-				"analytics-events", _bufferJSONArray);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-
-		_bufferJSONArray = new JSONArray();
+	private void _send(AnalyticsEvent analyticsEvent) {
+		_messageBus.sendMessage(getChannel(), analyticsEvent.toJSON());
 	}
-
-	@PostConstruct
-	private void _init() {
-		_cerebroRawElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroRaw();
-	}
-
-	private void _save(AnalyticsEvent analyticsEvent) {
-		if (_bufferJSONArray.length() == 50) {
-			_flush();
-		}
-
-		_bufferJSONArray.put(new JSONObject(analyticsEvent.toJSON()));
-	}
-
-	private static final Log _log = LogFactory.getLog(BaseNanite.class);
-
-	private JSONArray _bufferJSONArray = new JSONArray();
-	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+
+	@Autowired
+	private MessageBus _messageBus;
 
 }

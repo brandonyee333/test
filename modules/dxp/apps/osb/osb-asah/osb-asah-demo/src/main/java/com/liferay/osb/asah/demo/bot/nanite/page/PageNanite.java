@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.demo.bot.nanite.page;
 
+import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.demo.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.demo.util.DataSourceUtil;
@@ -56,6 +57,11 @@ public class PageNanite extends BaseNanite {
 			context.put("title", DataSourceUtil.getString());
 			context.put("url", DataSourceUtil.getURL());
 		}
+	}
+
+	@Override
+	protected Channel getChannel() {
+		return Channel.ANALYTICS_EVENTS_PAGE;
 	}
 
 	private void _generatePageDepthReachedAnalyticsEvent(

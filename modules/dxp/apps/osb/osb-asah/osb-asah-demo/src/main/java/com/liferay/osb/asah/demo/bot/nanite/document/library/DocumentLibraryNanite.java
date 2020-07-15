@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.demo.bot.nanite.document.library;
 
+import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.demo.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.demo.util.DataSourceUtil;
 
@@ -68,6 +69,11 @@ public class DocumentLibraryNanite extends BaseNanite {
 			_generateRatingsAnalyticsEvent(
 				context, eventDate, fileEntryId, userId);
 		}
+	}
+
+	@Override
+	protected Channel getChannel() {
+		return Channel.ANALYTICS_EVENTS_DOCUMENT;
 	}
 
 	private void _generateCommentAnalyticsEvent(

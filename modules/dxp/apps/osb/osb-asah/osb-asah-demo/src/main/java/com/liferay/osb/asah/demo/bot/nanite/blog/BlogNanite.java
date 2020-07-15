@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.demo.bot.nanite.blog;
 
+import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.demo.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.demo.util.DataSourceUtil;
 
@@ -107,6 +108,11 @@ public class BlogNanite extends BaseNanite {
 
 			_generateRatingsAnalyticsEvent(context, entryId, eventDate, userId);
 		}
+	}
+
+	@Override
+	protected Channel getChannel() {
+		return Channel.ANALYTICS_EVENTS_BLOG;
 	}
 
 	private void _generateBlogClickedAnalyticsEvent(

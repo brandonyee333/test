@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.demo.bot.nanite.form;
 
+import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.demo.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.demo.util.DataSourceUtil;
 
@@ -69,6 +70,11 @@ public class FormNanite extends BaseNanite {
 			_generatePageViewedAnalyticsEvent(
 				context, eventDate, formId, i, userId);
 		}
+	}
+
+	@Override
+	protected Channel getChannel() {
+		return Channel.ANALYTICS_EVENTS_FORM;
 	}
 
 	private List<String> _createFieldNames() {

@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.demo.bot.nanite.journal;
 
+import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.demo.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.demo.util.DataSourceUtil;
 
@@ -61,6 +62,11 @@ public class JournalNanite extends BaseNanite {
 
 		_generateWebContentViewedAnalyticsEvent(
 			articleId, context, eventDate, userId);
+	}
+
+	@Override
+	protected Channel getChannel() {
+		return Channel.ANALYTICS_EVENTS_JOURNAL;
 	}
 
 	private void _generatePageViewedAnalyticsEvent(
