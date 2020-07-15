@@ -1949,12 +1949,15 @@ artifact.url=${remote.repository.url}/com/liferay/portal/com.liferay.${processed
 	<macrodef name="setup-yarn">
 		<sequential>
 			<if>
-				<not>
-					<and>
-						<equals arg1="${os.name}" arg2="SunOS" />
-						<isset property="env.JENKINS_HOME" />
-					</and>
-				</not>
+				<and>
+					<available file="${project.dir}/modules/yarn.lock" />
+					<not>
+						<and>
+							<equals arg1="${os.name}" arg2="SunOS" />
+							<isset property="env.JENKINS_HOME" />
+						</and>
+					</not>
+				</and>
 				<then>
 					<if>
 						<isset property="env.FIX_PACKS_RELEASE_ENVIRONMENT" />
