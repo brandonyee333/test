@@ -48,10 +48,6 @@
 			"href": "{url}/admin/nanites",
 			"templated": true
 		},
-		"analytics-event-values": {
-			"href": "{url}/analytics-events/values{?fieldName,filter,page,size,value}",
-			"templated": true
-		},
 		"asset": {
 			"href": "{url}/assets/{id}",
 			"templated": true
