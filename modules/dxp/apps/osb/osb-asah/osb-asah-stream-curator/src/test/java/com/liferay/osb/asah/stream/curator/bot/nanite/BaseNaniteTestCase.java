@@ -17,8 +17,6 @@ package com.liferay.osb.asah.stream.curator.bot.nanite;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 
-import java.util.function.Consumer;
-
 import org.elasticsearch.index.query.QueryBuilder;
 
 import org.json.JSONArray;
@@ -72,19 +70,9 @@ public abstract class BaseNaniteTestCase {
 		ReflectionTestUtils.setField(
 			nanite, "_cerebroInfoElasticsearchInvoker", elasticsearchInvoker);
 		ReflectionTestUtils.setField(
-			nanite, "_cerebroRawElasticsearchInvoker", elasticsearchInvoker);
-		ReflectionTestUtils.setField(
 			nanite, "_faroInfoElasticsearchInvoker", elasticsearchInvoker);
 
 		String fileName = getJSONFileName(clazz);
-
-		Mockito.when(
-			elasticsearchInvoker.get(
-				Mockito.eq("analytics-events"), Mockito.any(Consumer.class))
-		).thenReturn(
-			ResourceUtil.readResourceToString(fileName + "raw.json", nanite),
-			"[]"
-		);
 
 		Mockito.when(
 			elasticsearchInvoker.get(
