@@ -16,12 +16,8 @@
 
 <%@ include file="/init.jsp" %>
 
-<%
-PortletURL displayStyleURL = renderResponse.createRenderURL();
-%>
-
 <liferay-frontend:management-bar-display-buttons
 	displayViews="<%= ddlDisplayContext.getDDLRecordSetDisplayViews() %>"
-	portletURL="<%= displayStyleURL %>"
+	portletURL="<%= renderResponse.createRenderURL() %>"
 	selectedDisplayStyle="<%= ddlDisplayContext.getDDLRecordSetDisplayStyle() %>"
 />

@@ -189,7 +189,6 @@ page import="com.liferay.portal.kernel.service.UserLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.service.permission.PortletPermissionUtil" %><%@
 page import="com.liferay.portal.kernel.servlet.BrowserSnifferUtil" %><%@
-page import="com.liferay.portal.kernel.servlet.taglib.ui.JavaScriptMenuItem" %><%@
 page import="com.liferay.portal.kernel.servlet.taglib.ui.Menu" %><%@
 page import="com.liferay.portal.kernel.servlet.taglib.ui.ToolbarItem" %><%@
 page import="com.liferay.portal.kernel.servlet.taglib.ui.URLMenuItem" %><%@

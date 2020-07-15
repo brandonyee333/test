@@ -59,7 +59,7 @@ boolean overridable = ParamUtil.getBoolean(request, "overridable");
 		<aui:fieldset-group markupview="lexicon">
 			<aui:fieldset>
 				<p class="text-muted" id="<portlet:namespace />messageContainer">
-					<liferay-ui:message arguments="<%= new String[] {HtmlUtil.escape(oldName)} %>" key="an-entry-with-name-x-already-exists" translateArguments="<%= false %>" />
+					<liferay-ui:message arguments="<%= HtmlUtil.escape(oldName) %>" key="an-entry-with-name-x-already-exists" translateArguments="<%= false %>" />
 				</p>
 
 				<c:choose>

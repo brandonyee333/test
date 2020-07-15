@@ -114,7 +114,7 @@
 				%>
 
 				<%= StringPool.COMMA %>
-				<liferay-ui:message arguments="<%= new String[] {createdDateDescription} %>" key="x-ago" />
+				<liferay-ui:message arguments="<%= createdDateDescription %>" key="x-ago" />
 			</h5>
 
 			<h4>

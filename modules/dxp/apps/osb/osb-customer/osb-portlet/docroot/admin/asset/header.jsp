@@ -110,7 +110,7 @@ Integer salesforceOpportunityType = (Integer)request.getAttribute("header.jsp-sa
 		%>
 
 		<div class="portlet-msg-alert">
-			<liferay-ui:message arguments="<%= new Object[] {sb.toString()} %>" key="please-approve-the-following-update-tasks-before-approving-this-task-x" />
+			<liferay-ui:message arguments="<%= sb.toString() %>" key="please-approve-the-following-update-tasks-before-approving-this-task-x" />
 		</div>
 	</c:if>
 </c:if>

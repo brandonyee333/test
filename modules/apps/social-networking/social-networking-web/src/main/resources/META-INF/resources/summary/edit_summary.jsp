@@ -30,7 +30,7 @@ String aboutMe = HtmlUtil.escape(ExpandoValueLocalServiceUtil.getData(themeDispl
 	<aui:model-context bean="<%= user2.getContact() %>" model="<%= Contact.class %>" />
 
 	<div class="alert alert-info">
-		<liferay-ui:message arguments="<%= new Object[] {themeDisplay.getURLMyAccount()} %>" key="use-my-account-to-change-regular-account-settings" translateArguments="<%= false %>" />
+		<liferay-ui:message arguments="<%= themeDisplay.getURLMyAccount() %>" key="use-my-account-to-change-regular-account-settings" translateArguments="<%= false %>" />
 	</div>
 
 	<aui:input name="jobTitle" />

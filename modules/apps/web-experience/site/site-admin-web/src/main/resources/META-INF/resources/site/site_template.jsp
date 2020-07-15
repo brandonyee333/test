@@ -57,7 +57,7 @@ if (Validator.isNotNull(publicLayoutSet.getLayoutSetPrototypeUuid())) {
 				boolean layoutsUpdateable = GetterUtil.getBoolean(publicLayoutSetPrototype.getSettingsProperty("layoutsUpdateable"), true);
 				%>
 
-				<liferay-ui:message arguments="<%= new Object[] {HtmlUtil.escape(publicLayoutSetPrototype.getName(locale))} %>" key="these-pages-are-linked-to-site-template-x" translateArguments="<%= false %>" />
+				<liferay-ui:message arguments="<%= HtmlUtil.escape(publicLayoutSetPrototype.getName(locale)) %>" key="these-pages-are-linked-to-site-template-x" translateArguments="<%= false %>" />
 
 				<aui:field-wrapper label="site-template-settings">
 					<aui:input disabled="<%= true %>" name="active" type="checkbox" value="<%= publicLayoutSetPrototype.isActive() %>" />
@@ -65,7 +65,7 @@ if (Validator.isNotNull(publicLayoutSet.getLayoutSetPrototypeUuid())) {
 				</aui:field-wrapper>
 			</c:when>
 			<c:otherwise>
-				<liferay-ui:message arguments="<%= new Object[] {HtmlUtil.escape(publicLayoutSetPrototype.getName(locale))} %>" key="this-site-was-cloned-from-site-template-x" translateArguments="<%= false %>" />
+				<liferay-ui:message arguments="<%= HtmlUtil.escape(publicLayoutSetPrototype.getName(locale)) %>" key="this-site-was-cloned-from-site-template-x" translateArguments="<%= false %>" />
 			</c:otherwise>
 		</c:choose>
 	</aui:fieldset>
@@ -80,7 +80,7 @@ if (Validator.isNotNull(publicLayoutSet.getLayoutSetPrototypeUuid())) {
 				boolean layoutsUpdateable = GetterUtil.getBoolean(privateLayoutSetPrototype.getSettingsProperty("layoutsUpdateable"), true);
 				%>
 
-				<liferay-ui:message arguments="<%= new Object[] {HtmlUtil.escape(privateLayoutSetPrototype.getName(locale))} %>" key="these-pages-are-linked-to-site-template-x" translateArguments="<%= false %>" />
+				<liferay-ui:message arguments="<%= HtmlUtil.escape(privateLayoutSetPrototype.getName(locale)) %>" key="these-pages-are-linked-to-site-template-x" translateArguments="<%= false %>" />
 
 				<aui:field-wrapper label="site-template-settings">
 					<aui:input disabled="<%= true %>" name="active" type="checkbox" value="<%= privateLayoutSetPrototype.isActive() %>" />
@@ -88,7 +88,7 @@ if (Validator.isNotNull(publicLayoutSet.getLayoutSetPrototypeUuid())) {
 				</aui:field-wrapper>
 			</c:when>
 			<c:otherwise>
-				<liferay-ui:message arguments="<%= new Object[] {HtmlUtil.escape(privateLayoutSetPrototype.getName(locale))} %>" key="this-site-was-cloned-from-site-template-x" translateArguments="<%= false %>" />
+				<liferay-ui:message arguments="<%= HtmlUtil.escape(privateLayoutSetPrototype.getName(locale)) %>" key="this-site-was-cloned-from-site-template-x" translateArguments="<%= false %>" />
 			</c:otherwise>
 		</c:choose>
 	</aui:fieldset>

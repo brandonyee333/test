@@ -99,7 +99,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 		%>
 
 		<c:if test="<%= curAccountEntry != null %>">
-			<liferay-ui:message arguments="<%= new Object[] {HtmlUtil.escape(curAccountEntry.getName())} %>" key="the-corp-project-is-already-linked-to-x" />
+			<liferay-ui:message arguments="<%= HtmlUtil.escape(curAccountEntry.getName()) %>" key="the-corp-project-is-already-linked-to-x" />
 		</c:if>
 	</liferay-ui:error>
 

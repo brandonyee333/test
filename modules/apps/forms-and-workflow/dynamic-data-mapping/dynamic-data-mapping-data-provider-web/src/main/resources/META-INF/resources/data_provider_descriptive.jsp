@@ -20,8 +20,6 @@
 ResultRow row = (ResultRow)request.getAttribute(WebKeys.SEARCH_CONTAINER_RESULT_ROW);
 
 DDMDataProviderInstance ddmDataProviderInstance = (DDMDataProviderInstance)row.getObject();
-
-String href = (String)request.getAttribute(WebKeys.SEARCH_ENTRY_HREF);
 %>
 
 <liferay-ui:app-view-entry
@@ -41,5 +39,5 @@ String href = (String)request.getAttribute(WebKeys.SEARCH_ENTRY_HREF);
 	thumbnailSrc="<%= ddmDataProviderDisplayContext.getUserPortraitURL(ddmDataProviderInstance.getUserId()) %>"
 	thumbnailStyle="max-height: 128px; max-width: 128px;"
 	title="<%= ddmDataProviderInstance.getName(locale) %>"
-	url="<%= href %>"
+	url="<%= (String)request.getAttribute(WebKeys.SEARCH_ENTRY_HREF) %>"
 />
