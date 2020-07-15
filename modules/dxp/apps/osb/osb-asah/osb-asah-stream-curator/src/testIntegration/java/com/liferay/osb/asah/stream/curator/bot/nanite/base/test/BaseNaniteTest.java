@@ -16,10 +16,12 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.base.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.elasticsearch.MessageBusChannel;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.junit.Test;
@@ -43,11 +45,6 @@ public class BaseNaniteTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "analytics-events",
-		resourcePath = "default_base_raw_segments.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_RAW
-	)
-	@ElasticsearchIndex(
 		name = "individual-segments",
 		resourcePath = "default_base_individual_segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -59,6 +56,10 @@ public class BaseNaniteTest {
 	@ElasticsearchIndex(
 		name = "OSBAsahMarkers",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@MessageBusChannel(
+		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
+		resourcePath = "default_base_raw_segments.json"
 	)
 	@Test
 	public void testIndividualSegments() throws Exception {
@@ -78,9 +79,9 @@ public class BaseNaniteTest {
 		name = "default-base", resourcePath = "default_base_info_old.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "analytics-events", resourcePath = "default_base_raw_urls.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_RAW
+	@MessageBusChannel(
+		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
+		resourcePath = "default_base_raw_urls.json"
 	)
 	@Test
 	public void testMergeURLs() throws Exception {
