@@ -55,6 +55,7 @@ import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRespon
 import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsRequest;
 import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequestBuilder;
+import org.elasticsearch.action.admin.indices.template.delete.DeleteIndexTemplateRequestBuilder;
 import org.elasticsearch.action.admin.indices.template.get.GetIndexTemplatesRequestBuilder;
 import org.elasticsearch.action.admin.indices.template.get.GetIndexTemplatesResponse;
 import org.elasticsearch.action.admin.indices.template.put.PutIndexTemplateRequestBuilder;
@@ -117,6 +118,38 @@ public class ElasticsearchIndexManagerImpl
 				_log.warn("Unable to add alias for " + indexName);
 			}
 		}
+	}
+
+	@Override
+	public void addTemplate(
+		String collectionName, WeDeployDataService weDeployDataService) {
+
+		IndicesAdminClient indicesAdminClient = _adminClient.indices();
+
+		String templateName =
+			weDeployDataService.toString() + "_" + collectionName;
+
+		List<IndexTemplateMetaData> indexTemplateMetaDatas = _getTemplates(
+			indicesAdminClient, templateName);
+
+		if (!indexTemplateMetaDatas.isEmpty()) {
+			IndexTemplateMetaData indexTemplateMetaData =
+				indexTemplateMetaDatas.get(0);
+
+			if (indexTemplateMetaData.getVersion() >=
+					ReleaseInfo.getSchemaVersion()) {
+
+				return;
+			}
+		}
+
+		JSONObject configurationJSONObject = new JSONObject(
+			readIndexConfiguration(collectionName, weDeployDataService));
+
+		_addTemplate(
+			indicesAdminClient, templateName,
+			Collections.singletonList("*_" + templateName),
+			configurationJSONObject.toMap());
 	}
 
 	@Override
@@ -275,6 +308,33 @@ public class ElasticsearchIndexManagerImpl
 
 			_deleteIndex(indexName);
 		}
+	}
+
+	@Override
+	public boolean deleteTemplate(
+		String collectionName, WeDeployDataService weDeployDataService) {
+
+		IndicesAdminClient indicesAdminClient = _adminClient.indices();
+
+		String templateName =
+			weDeployDataService.toString() + "_" + collectionName;
+
+		List<IndexTemplateMetaData> indexTemplateMetaDatas = _getTemplates(
+			indicesAdminClient, templateName);
+
+		if (indexTemplateMetaDatas.isEmpty()) {
+			return false;
+		}
+
+		DeleteIndexTemplateRequestBuilder deleteIndexTemplateRequestBuilder =
+			indicesAdminClient.prepareDeleteTemplate(templateName);
+
+		ClientUtil.waitForConnection(_client);
+
+		AcknowledgedResponse acknowledgedResponse =
+			deleteIndexTemplateRequestBuilder.get();
+
+		return acknowledgedResponse.isAcknowledged();
 	}
 
 	@Override
