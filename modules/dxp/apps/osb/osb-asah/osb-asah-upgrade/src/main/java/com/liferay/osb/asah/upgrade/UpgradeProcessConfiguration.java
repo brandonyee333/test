@@ -21,6 +21,8 @@ import com.liferay.osb.asah.upgrade.v2_6_0.OSBAsahTasksIndexMappingUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_6_0.PagesIndexMappingUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_6_1.RemoveDanglingFieldMappingsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.AssetsUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_7_0.JobRunsUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_7_0.JobsUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -45,7 +47,9 @@ public class UpgradeProcessConfiguration {
 		upgradeProcess.addUpgradeSteps(
 			"2.6.0", "2.6.1", _removeDanglingFieldMappingsUpgradeStep);
 
-		upgradeProcess.addUpgradeSteps("2.6.1", "2.7.0", _assetsUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"2.6.1", "2.7.0", _assetsUpgradeStep, _jobRunsUpgradeStep,
+			_jobsUpgradeStep);
 
 		return upgradeProcess;
 	}
@@ -62,6 +66,12 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private FaroInfoOrganizationsUpgradeStep _faroInfoOrganizationsUpgradeStep;
+
+	@Autowired
+	private JobRunsUpgradeStep _jobRunsUpgradeStep;
+
+	@Autowired
+	private JobsUpgradeStep _jobsUpgradeStep;
 
 	@Autowired
 	private OSBAsahTasksIndexMappingUpgradeStep
