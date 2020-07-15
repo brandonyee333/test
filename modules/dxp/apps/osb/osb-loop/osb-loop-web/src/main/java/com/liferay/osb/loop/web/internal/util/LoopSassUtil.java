@@ -116,7 +116,7 @@ public class LoopSassUtil {
 
 			Map<String, String> styleEntries = elementEntry.getValue();
 
-			StringBuilder sb = new StringBuilder(styleEntries.size() * 4 + 1);
+			StringBuilder sb = new StringBuilder((styleEntries.size() * 4) + 1);
 
 			for (Map.Entry<String, String> styleEntry :
 					styleEntries.entrySet()) {

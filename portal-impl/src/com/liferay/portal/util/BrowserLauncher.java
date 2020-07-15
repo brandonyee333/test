@@ -86,7 +86,7 @@ public class BrowserLauncher implements Runnable {
 			runtime.exec(new String[] {"sh", "-c", StringPool.BLANK});
 		}
 
-		StringBundler sb = new StringBundler(_BROWSERS.length * 5 - 1);
+		StringBundler sb = new StringBundler((_BROWSERS.length * 5) - 1);
 
 		for (int i = 0; i < _BROWSERS.length; i++) {
 			if (i != 0) {

@@ -160,7 +160,7 @@ public class JournalArticleExpirationTest {
 		Calendar calendar = new GregorianCalendar();
 
 		calendar.setTime(
-			new Date(System.currentTimeMillis() + timeUnit * timeValue));
+			new Date(System.currentTimeMillis() + (timeUnit * timeValue)));
 
 		User user = UserLocalServiceUtil.getUser(TestPropsValues.getUserId());
 

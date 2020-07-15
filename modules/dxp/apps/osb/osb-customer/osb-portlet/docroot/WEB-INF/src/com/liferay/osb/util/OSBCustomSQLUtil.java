@@ -120,7 +120,7 @@ public class OSBCustomSQLUtil {
 				sql, oldSqlSB.toString(), StringPool.BLANK);
 		}
 
-		StringBundler newSqlSB = new StringBundler(values.length * 4 + 3);
+		StringBundler newSqlSB = new StringBundler((values.length * 4) + 3);
 
 		newSqlSB.append("(");
 

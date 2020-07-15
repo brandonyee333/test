@@ -514,7 +514,7 @@ public class ShoppingItemFinderImpl
 			return StringPool.BLANK;
 		}
 
-		StringBundler sb = new StringBundler(categoryIds.size() * 2 - 1);
+		StringBundler sb = new StringBundler((categoryIds.size() * 2) - 1);
 
 		for (int i = 0; i < categoryIds.size(); i++) {
 			sb.append("categoryId = ? ");

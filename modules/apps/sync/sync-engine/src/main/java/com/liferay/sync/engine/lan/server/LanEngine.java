@@ -118,7 +118,7 @@ public class LanEngine {
 			public void run() {
 				SyncLanClientService.deleteSyncLanClients(
 					System.currentTimeMillis() -
-						PropsValues.SYNC_LAN_SERVER_BROADCAST_INTERVAL * 3);
+						(PropsValues.SYNC_LAN_SERVER_BROADCAST_INTERVAL * 3));
 			}
 
 		};

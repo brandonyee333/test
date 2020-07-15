@@ -174,7 +174,7 @@ public class ThemeContributorDynamicInclude implements DynamicInclude {
 
 		_cssResourceURLs = cssResourceURLs.toArray(new String[0]);
 
-		StringBundler sb = new StringBundler(cssResourceURLs.size() * 2 + 1);
+		StringBundler sb = new StringBundler((cssResourceURLs.size() * 2) + 1);
 
 		for (String cssResourceURL : cssResourceURLs) {
 			sb.append("&");
@@ -187,7 +187,7 @@ public class ThemeContributorDynamicInclude implements DynamicInclude {
 
 		_jsResourceURLs = jsResourceURLs.toArray(new String[0]);
 
-		sb = new StringBundler(jsResourceURLs.size() * 2 + 1);
+		sb = new StringBundler((jsResourceURLs.size() * 2) + 1);
 
 		for (String jsResourceURL : jsResourceURLs) {
 			sb.append("&");

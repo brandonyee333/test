@@ -156,7 +156,7 @@ public class DefaultStatsTranslator implements StatsTranslator {
 			return field;
 		}
 
-		StringBundler sb = new StringBundler(solrStats.size() * 3 + 2);
+		StringBundler sb = new StringBundler((solrStats.size() * 3) + 2);
 
 		sb.append("{!");
 

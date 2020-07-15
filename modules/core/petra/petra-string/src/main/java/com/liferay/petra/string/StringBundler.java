@@ -370,7 +370,7 @@ public class StringBundler implements Serializable {
 
 		public void resetAndEnsureCapacity(int newLength) {
 			if (_value.length < newLength) {
-				int length = _value.length * 2 + 2;
+				int length = (_value.length * 2) + 2;
 
 				if (length < newLength) {
 					length = newLength;

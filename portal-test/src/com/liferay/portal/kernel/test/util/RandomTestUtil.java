@@ -131,7 +131,7 @@ public class RandomTestUtil {
 			return value;
 		}
 
-		return (int)(Math.abs(value) % range + min);
+		return (int)((Math.abs(value) % range) + min);
 	}
 
 	public static Map<Locale, String> randomLocaleStringMap() {

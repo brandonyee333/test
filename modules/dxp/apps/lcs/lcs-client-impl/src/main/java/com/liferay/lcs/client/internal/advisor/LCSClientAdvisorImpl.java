@@ -207,7 +207,7 @@ public class LCSClientAdvisorImpl implements LCSClientAdvisor {
 			return layoutFullURL;
 		}
 
-		StringBundler sb = new StringBundler(4 * parms.size() + 1);
+		StringBundler sb = new StringBundler((4 * parms.size()) + 1);
 
 		sb.append(layoutFullURL);
 		sb.append(StringPool.QUESTION);

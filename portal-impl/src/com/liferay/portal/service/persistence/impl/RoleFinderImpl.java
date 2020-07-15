@@ -1151,7 +1151,7 @@ public class RoleFinderImpl extends RoleFinderBaseImpl implements RoleFinder {
 			return StringPool.BLANK;
 		}
 
-		StringBundler sb = new StringBundler(groupIds.length * 3 - 1);
+		StringBundler sb = new StringBundler((groupIds.length * 3) - 1);
 
 		for (int i = 0; i < groupIds.length; i++) {
 			sb.append(table);

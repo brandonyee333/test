@@ -169,7 +169,7 @@ public class MethodKey implements Externalizable {
 			return _toString;
 		}
 
-		StringBundler sb = new StringBundler(4 + _parameterTypes.length * 2);
+		StringBundler sb = new StringBundler(4 + (_parameterTypes.length * 2));
 
 		sb.append(_declaringClass.getName());
 		sb.append(StringPool.PERIOD);

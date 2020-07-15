@@ -50,7 +50,7 @@ public class SelectDDMFormFieldValueRenderer
 		}
 
 		StringBundler sb = new StringBundler(
-			optionsValuesJSONArray.length() * 2 - 1);
+			(optionsValuesJSONArray.length() * 2) - 1);
 
 		for (int i = 0; i < optionsValuesJSONArray.length(); i++) {
 			String optionValue = optionsValuesJSONArray.getString(i);

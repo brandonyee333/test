@@ -290,7 +290,7 @@ public class BlogsEntryFinderImpl
 			return StringPool.BLANK;
 		}
 
-		StringBundler sb = new StringBundler(organizationIds.size() * 2 - 1);
+		StringBundler sb = new StringBundler((organizationIds.size() * 2) - 1);
 
 		for (int i = 0; i < organizationIds.size(); i++) {
 			sb.append("Users_Orgs.organizationId = ? ");

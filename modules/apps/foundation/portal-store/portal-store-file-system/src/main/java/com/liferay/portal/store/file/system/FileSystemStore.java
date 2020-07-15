@@ -697,7 +697,7 @@ public class FileSystemStore extends BaseStore {
 
 		@Override
 		public int hashCode() {
-			return (int)(_companyId * 11 + _repositoryId);
+			return (int)((_companyId * 11) + _repositoryId);
 		}
 
 		private long _companyId;

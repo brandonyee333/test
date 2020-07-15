@@ -175,7 +175,7 @@ public class JiraIssueEngine implements TestrayIssueEngine {
 
 		JSONObject fieldsJSONObject = null;
 
-		StringBundler sb = new StringBundler(fields.length * 2 + 3);
+		StringBundler sb = new StringBundler((fields.length * 2) + 3);
 
 		sb.append(TestrayIssueEngineJiraWebValues.JIRA_REST_API_ISSUE_URL);
 		sb.append(issueName);

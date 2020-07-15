@@ -170,7 +170,7 @@ public class FastDateFormatFactoryImpl implements FastDateFormatFactory {
 	}
 
 	protected String getKey(Object... arguments) {
-		StringBundler sb = new StringBundler(arguments.length * 2 - 1);
+		StringBundler sb = new StringBundler((arguments.length * 2) - 1);
 
 		for (int i = 0; i < arguments.length; i++) {
 			sb.append(arguments[i]);
