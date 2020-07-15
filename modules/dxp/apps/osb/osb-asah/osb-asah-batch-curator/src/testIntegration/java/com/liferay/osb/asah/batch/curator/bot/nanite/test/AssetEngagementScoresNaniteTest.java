@@ -20,12 +20,13 @@ import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootAp
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorConfigurationDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.http.ChannelHttp;
+import com.liferay.osb.asah.common.messaging.Channel;
+import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
+import com.liferay.osb.asah.test.util.messaging.MessageBusTestHelper;
 import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.spring.cache.OSBAsahRedisDisabledTestConfiguration;
@@ -36,25 +37,23 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Vishal Reddy
  * @author Edward Kwok-Yu Wong
  */
-@ContextConfiguration(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 @Import(
 	{
 		CerebroQueueHttpTestConfiguration.class,
@@ -62,32 +61,27 @@ import org.springframework.test.context.ContextConfiguration;
 	}
 )
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class AssetEngagementScoresNaniteTest extends BaseNaniteTestCase {
 
-	@Before
-	@Override
-	public void setUp() throws Exception {
-		super.setUp();
-
-		_cerebroRawElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroRaw();
-
+	@Test
+	public void test() throws Exception {
 		JSONObject dataSourceJSONObject = _faroInfoDataSourceDog.addDataSource(
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
 
 		String analyticsEventsJSON = ResourceUtil.readResourceToString(
-			"dependencies/osbasahcerebroraw/analytics-events-1.json", this);
+			"dependencies/analytics-events-1.json", this);
 
 		JSONArray analyticsEventsJSONArray = new JSONArray(
 			analyticsEventsJSON.replace(
 				"[$DATA_SOURCE_ID$]", dataSourceJSONObject.getString("id")));
 
-		_cerebroRawElasticsearchInvoker.add(
-			"analytics-events", analyticsEventsJSONArray, 50);
-	}
+		MessageBusTestHelper messageBusTestHelper = new MessageBusTestHelper(
+			_messageBus);
 
-	@Test
-	public void test() throws Exception {
+		messageBusTestHelper.prepareMessageBusChannel(
+			Channel.ANALYTICS_EVENTS_ACTIVITY, analyticsEventsJSONArray);
+
 		_activitiesNanite.run();
 
 		String activityStartDayDateString = "2018-09-10T00:00:00.000Z";
@@ -185,15 +179,13 @@ public class AssetEngagementScoresNaniteTest extends BaseNaniteTestCase {
 	@Autowired
 	private AssetEngagementScoresNanite _assetEngagementScoresNanite;
 
-	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
-
 	@MockBean
 	private ChannelHttp _channelHttp;
 
 	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
+	private MessageBus _messageBus;
 
 }
