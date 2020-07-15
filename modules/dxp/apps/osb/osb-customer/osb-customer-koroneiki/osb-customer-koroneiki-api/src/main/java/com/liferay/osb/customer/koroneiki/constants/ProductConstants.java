@@ -19,14 +19,24 @@ package com.liferay.osb.customer.koroneiki.constants;
  */
 public class ProductConstants {
 
+	public static final String NAME_DIGITAL_ENTERPRISE = "Digital Enterprise";
+
 	public static final String NAME_FLOATING = "Floating Subscription";
 
 	public static final String NAME_GOLD = "Gold Subscription";
+
+	public static final String NAME_LIFERAY_DXP = "Liferay DXP";
 
 	public static final String NAME_LIMITED = "Limited Subscription";
 
 	public static final String NAME_PLATINUM = "Platinum Subscription";
 
+	public static final String NAME_PORTAL = "Portal";
+
 	public static final String NAME_SILVER = "Silver Subscription";
+
+	public static final String PROPERTY_TYPE = "type";
+
+	public static final String TYPE_PRIMARY = "primary";
 
 }

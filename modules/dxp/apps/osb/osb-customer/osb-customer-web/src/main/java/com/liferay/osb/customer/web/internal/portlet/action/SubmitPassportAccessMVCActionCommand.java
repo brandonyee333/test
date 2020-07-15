@@ -14,19 +14,25 @@
 
 package com.liferay.osb.customer.web.internal.portlet.action;
 
-import com.liferay.osb.customer.admin.model.AccountEntry;
-import com.liferay.osb.customer.admin.service.AccountEntryLocalServiceUtil;
+import com.liferay.osb.customer.admin.constants.EntitlementConstants;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.exception.EmailAddressDomainException;
 import com.liferay.osb.customer.exception.SubscriptionException;
+import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
+import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.service.AuditFormLocalService;
 import com.liferay.osb.customer.service.TrainingBaseWebService;
 import com.liferay.osb.customer.web.internal.constants.PassportAccessPortletKeys;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Entitlement;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.PostalAddress;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.RequiredFieldException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
@@ -34,9 +40,12 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.HashMap;
@@ -75,7 +84,7 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 			String endUserEmailAddress = ParamUtil.getString(
 				actionRequest, "endUserWorkEmailAddress");
 
-			if (!hasPermission(themeDisplay.getUserId(), endUserEmailAddress)) {
+			if (!hasPermission(themeDisplay.getUser(), endUserEmailAddress)) {
 				throw new SubscriptionException();
 			}
 
@@ -122,58 +131,127 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 		}
 	}
 
-	protected boolean hasPermission(long userId, String endUserEmailAddress)
-		throws PortalException {
+	protected boolean hasPermission(User user, String endUserEmailAddress)
+		throws Exception {
 
-		if (!isVerifiedUser(userId)) {
+		if (!isVerifiedUser(user.getUserId())) {
 			return false;
 		}
 
-		if (isLiferayEmployee(userId) || isPartner(userId)) {
+		if (isLiferayEmployee(user.getUserId()) ||
+			isPartner(user.getUserId())) {
+
 			return true;
 		}
 
-		if (isCustomer(userId)) {
-			List<AccountEntry> accountEntries =
-				AccountEntryLocalServiceUtil.getUserActiveAccountEntries(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+		if (isCustomer(user.getUserId())) {
+			List<Account> accounts = _accountWebService.search(
+				StringPool.BLANK,
+				"customerContactUuids/any(s:s eq '" + user.getUserUuid() + "')",
+				1, 1000, StringPool.BLANK);
 
-			for (AccountEntry accountEntry : accountEntries) {
-				/*
-				Address address = accountEntry.getAddress();
+			for (Account account : accounts) {
+				PostalAddress[] postalAddresses = account.getPostalAddresses();
 
-				Country country = address.getCountry();
-
-				String countryName = country.getName();
-
-				if (!ArrayUtil.contains(_NO_ACCESS_COUNTRIES, countryName)) {
-					return true;
+				if (postalAddresses == null) {
+					continue;
 				}
-				*/
+
+				for (PostalAddress postalAddress : postalAddresses) {
+					if (ArrayUtil.contains(
+							_NO_ACCESS_COUNTRIES,
+							postalAddress.getAddressCountry())) {
+
+						return false;
+					}
+				}
 			}
+
+			return true;
 		}
-		else {
-			String domain = endUserEmailAddress.substring(
-				endUserEmailAddress.indexOf(StringPool.AT) + 1);
 
-			if (_badDomains.contains(domain)) {
-				return false;
+		String domain = endUserEmailAddress.substring(
+			endUserEmailAddress.indexOf(StringPool.AT) + 1);
+
+		if (_badDomains.contains(domain)) {
+			return false;
+		}
+
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("customerContactEmailAddresses/any(s:contains(s, '@");
+		sb.append(domain);
+		sb.append("')) and status eq '");
+		sb.append(Account.Status.APPROVED);
+		sb.append("'");
+
+		List<Account> accounts = _accountWebService.search(
+			StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
+
+		for (Account account : accounts) {
+			Entitlement[] entitlements = account.getEntitlements();
+
+			if (entitlements != null) {
+				for (Entitlement entitlement : entitlements) {
+					String entitlementName = entitlement.getName();
+
+					if (entitlementName.equals(
+							EntitlementConstants.NAME_PARTNER)) {
+
+						return true;
+					}
+				}
 			}
 
-			/*
+			PostalAddress[] postalAddresses = account.getPostalAddresses();
 
-			if (AccountCustomerLocalServiceUtil.countPassportCustomersByDomain(
-					domain) > 0) {
+			if (postalAddresses != null) {
+				boolean noAccessCountry = false;
 
-				return true;
+				for (PostalAddress postalAddress : postalAddresses) {
+					if (ArrayUtil.contains(
+							_NO_ACCESS_COUNTRIES,
+							postalAddress.getAddressCountry())) {
+
+						noAccessCountry = true;
+
+						break;
+					}
+				}
+
+				if (noAccessCountry) {
+					continue;
+				}
 			}
 
-			if (PartnerWorkerLocalServiceUtil.countPassportPartnersByDomain(
-					domain) > 0) {
+			ProductPurchase[] productPurchases = account.getProductPurchases();
 
-				return true;
+			if (productPurchases != null) {
+				for (ProductPurchase productPurchase : productPurchases) {
+					Product product = productPurchase.getProduct();
+
+					Map<String, String> properties = product.getProperties();
+
+					String type = properties.get(
+						ProductConstants.PROPERTY_TYPE);
+
+					if (Validator.isNotNull(type) &&
+						type.equals(ProductConstants.TYPE_PRIMARY)) {
+
+						String productName = product.getName();
+
+						if (productName.startsWith(
+								ProductConstants.NAME_DIGITAL_ENTERPRISE) ||
+							productName.startsWith(
+								ProductConstants.NAME_LIFERAY_DXP) ||
+							productName.startsWith(
+								ProductConstants.NAME_PORTAL)) {
+
+							return true;
+						}
+					}
+				}
 			}
-			*/
 		}
 
 		return false;
@@ -222,7 +300,7 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	private static final String[] _NO_ACCESS_COUNTRIES = {
-		"china", "india", "japan"
+		"China", "India", "Japan"
 	};
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -241,6 +319,9 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 			_log.error(e, e);
 		}
 	}
+
+	@Reference
+	private AccountWebService _accountWebService;
 
 	@Reference
 	private AuditFormLocalService _auditFormLocalService;
