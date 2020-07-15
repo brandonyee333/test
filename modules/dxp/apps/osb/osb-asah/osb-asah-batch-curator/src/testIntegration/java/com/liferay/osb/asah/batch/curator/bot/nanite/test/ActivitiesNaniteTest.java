@@ -17,11 +17,12 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 import com.liferay.osb.asah.batch.curator.bot.nanite.ActivitiesNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.messaging.Channel;
+import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
+import com.liferay.osb.asah.test.util.messaging.MessageBusTestHelper;
 import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.spring.cache.OSBAsahRedisDisabledTestConfiguration;
@@ -39,14 +40,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Vishal Reddy
  * @author Leslie Wong
  */
-@ContextConfiguration(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 @Import(
 	{
 		CerebroQueueHttpTestConfiguration.class,
@@ -54,15 +54,13 @@ import org.springframework.test.context.ContextConfiguration;
 	}
 )
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 
 	@Before
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-
-		_cerebroRawElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroRaw();
 
 		_dataSourceJSONObject = faroInfoElasticsearchInvoker.add(
 			"data-sources",
@@ -71,9 +69,18 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 
 	@Test
 	public void testCommentPostedActivityIsAdded() throws Exception {
-		_cerebroRawElasticsearchInvoker.add(
-			"analytics-events",
-			_getAnalyticsEventJSONArray("analytics-events-1.json"), 50);
+		String analyticsEventsJSON = ResourceUtil.readResourceToString(
+			"dependencies/analytics-events-1.json", this);
+
+		JSONArray analyticsEventsJSONArray = new JSONArray(
+			analyticsEventsJSON.replace(
+				"[$DATA_SOURCE_ID$]", _dataSourceJSONObject.getString("id")));
+
+		MessageBusTestHelper messageBusTestHelper = new MessageBusTestHelper(
+			_messageBus);
+
+		messageBusTestHelper.prepareMessageBusChannel(
+			Channel.ANALYTICS_EVENTS_ACTIVITY, analyticsEventsJSONArray);
 
 		_activitiesNanite.run();
 
@@ -106,9 +113,18 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 
 	@Test
 	public void testFormSubmittedPropertiesAreAdded() throws Exception {
-		_cerebroRawElasticsearchInvoker.add(
-			"analytics-events",
-			_getAnalyticsEventJSONArray("analytics-events-3.json"), 50);
+		String analyticsEventsJSON = ResourceUtil.readResourceToString(
+			"dependencies/analytics-events-3.json", this);
+
+		JSONArray analyticsEventsJSONArray = new JSONArray(
+			analyticsEventsJSON.replace(
+				"[$DATA_SOURCE_ID$]", _dataSourceJSONObject.getString("id")));
+
+		MessageBusTestHelper messageBusTestHelper = new MessageBusTestHelper(
+			_messageBus);
+
+		messageBusTestHelper.prepareMessageBusChannel(
+			Channel.ANALYTICS_EVENTS_ACTIVITY, analyticsEventsJSONArray);
 
 		_activitiesNanite.run();
 
@@ -129,9 +145,18 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 
 	@Test
 	public void testKeywordsLowercase() throws Exception {
-		_cerebroRawElasticsearchInvoker.add(
-			"analytics-events",
-			_getAnalyticsEventJSONArray("analytics-events-1.json"), 50);
+		String analyticsEventsJSON = ResourceUtil.readResourceToString(
+			"dependencies/analytics-events-1.json", this);
+
+		JSONArray analyticsEventsJSONArray = new JSONArray(
+			analyticsEventsJSON.replace(
+				"[$DATA_SOURCE_ID$]", _dataSourceJSONObject.getString("id")));
+
+		MessageBusTestHelper messageBusTestHelper = new MessageBusTestHelper(
+			_messageBus);
+
+		messageBusTestHelper.prepareMessageBusChannel(
+			Channel.ANALYTICS_EVENTS_ACTIVITY, analyticsEventsJSONArray);
 
 		_activitiesNanite.run();
 
@@ -155,24 +180,12 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 			keywords);
 	}
 
-	private JSONArray _getAnalyticsEventJSONArray(String resourceName)
-		throws Exception {
-
-		String analyticsEventsJSON = ResourceUtil.readResourceToString(
-			"dependencies/osbasahcerebroraw/" + resourceName, this);
-
-		return new JSONArray(
-			analyticsEventsJSON.replace(
-				"[$DATA_SOURCE_ID$]", _dataSourceJSONObject.getString("id")));
-	}
-
 	@Autowired
 	private ActivitiesNanite _activitiesNanite;
 
-	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
 	private JSONObject _dataSourceJSONObject;
 
 	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+	private MessageBus _messageBus;
 
 }
