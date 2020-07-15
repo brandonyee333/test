@@ -62,23 +62,22 @@ class BaseDataFrameReaderSparkJob(BaseSparkJob):
 
 		if self.latest:
 			jvm = self.spark_session._jvm
-
 			spark_context = self.spark_session.sparkContext
 
 			file_system = jvm.org.apache.hadoop.fs.FileSystem
 
-			uri = jvm.java.net.URI(bucket_path)
+			file_system_instance = file_system.get(
+			    jvm.java.net.URI(bucket_path),
+			    spark_context._jsc.hadoopConfiguration()
+			)
 
-			hadoop_configuration = spark_context._jsc.hadoopConfiguration()
+			file_status_list = file_system_instance.listStatus(
+			    jvm.org.apache.hadoop.fs.Path(bucket_path)
+			)
 
-			path = jvm.org.apache.hadoop.fs.Path(bucket_path)
-
-			file_system_instance = file_system.get(uri, hadoop_configuration)
-
-			file_status_list = file_system_instance.listStatus(path)
-
-			file_status_list_sorted = \
-                                sorted(file_status_list, key=lambda f: f.getModificationTime())
+			file_status_list_sorted = sorted(
+			    file_status_list, key=lambda f: f.getModificationTime()
+			)
 
 			bucket_path = str(file_status_list_sorted[-1].getPath())
 
