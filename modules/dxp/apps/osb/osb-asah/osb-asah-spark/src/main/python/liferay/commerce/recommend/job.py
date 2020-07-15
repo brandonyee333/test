@@ -24,11 +24,19 @@ from pyspark.sql.functions import col, explode, when, coalesce, regexp_replace, 
 import logging
 
 class BaseDataFrameReaderSparkJob(BaseSparkJob):
-	def __init__(self, spark_application, file_pattern, table_name, cache=True):
+	def __init__(
+	    self,
+	    spark_application,
+	    file_pattern,
+	    table_name,
+	    cache=True,
+	    latest=True
+	):
 		super(BaseDataFrameReaderSparkJob, self).__init__(spark_application)
 
 		self.cache = cache
 		self.file_pattern = file_pattern
+		self.latest = latest
 		self.table_name = table_name
 
 	def run(self):
@@ -46,11 +54,39 @@ class BaseDataFrameReaderSparkJob(BaseSparkJob):
 	def _get_bucket_path(self):
 		configuration = self.spark_application_configuration
 
-		return "{}/{}/{}/{}/".format(
+		bucket_path = "{}/{}/{}/{}/".format(
 		    configuration.get('google.storage.bucket'),
 		    self.spark_application.args.lcp_project_id,
 		    configuration.get('dataSourceId'), self.file_pattern
 		)
+
+		if self.latest:
+			jvm = self.spark_session._jvm
+
+			spark_context = self.spark_session.sparkContext
+
+			file_system = jvm.org.apache.hadoop.fs.FileSystem
+
+			uri = jvm.java.net.URI(bucket_path)
+
+			hadoop_configuration = spark_context._jsc.hadoopConfiguration()
+
+			path = jvm.org.apache.hadoop.fs.Path(bucket_path)
+
+			file_system_instance = file_system.get(uri, hadoop_configuration)
+
+			file_status_list = file_system_instance.listStatus(path)
+
+			file_status_list_sorted = \
+                                sorted(file_status_list, key=lambda f: f.getModificationTime())
+
+			bucket_path = str(file_status_list_sorted[-1].getPath())
+
+		self.spark_application.log.info(
+		    "Loading data from: {}".format(bucket_path)
+		)
+
+		return bucket_path
 
 	@abstractmethod
 	def _post_process(self, data_frame):
