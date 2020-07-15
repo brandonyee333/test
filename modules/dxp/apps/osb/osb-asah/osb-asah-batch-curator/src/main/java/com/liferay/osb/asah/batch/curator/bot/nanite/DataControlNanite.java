@@ -297,20 +297,6 @@ public class DataControlNanite extends BaseNanite {
 					zipOutputStream));
 		}
 
-		QueryBuilder liferayIndividualQueryBuilder =
-			_buildIndividualQueryBuilder(
-				"LIFERAY", individualJSONObject, "userId");
-
-		if (liferayIndividualQueryBuilder != null) {
-			zipFileBuilder.addToZip(
-				"analytics-events.json",
-				zipOutputStream -> _writeToZip(
-					"analytics-events", _cerebroRawElasticsearchInvoker,
-					_buildIndividualQueryBuilder(
-						"LIFERAY", individualJSONObject, "userId"),
-					zipOutputStream));
-		}
-
 		QueryBuilder individualIdQueryBuilder = QueryBuilders.termQuery(
 			"individualId", individualJSONObject.getString("id"));
 
