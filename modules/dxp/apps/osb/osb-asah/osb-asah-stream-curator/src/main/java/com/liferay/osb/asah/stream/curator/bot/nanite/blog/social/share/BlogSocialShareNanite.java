@@ -14,28 +14,30 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.blog.social.share;
 
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.messaging.Channel;
+import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
-import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNanite;
+import com.liferay.osb.asah.stream.curator.bot.nanite.BaseStreamNanite;
 import com.liferay.osb.asah.stream.curator.model.blog.BlogSocialShare;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-
 /**
  * @author Inácio Nery
  */
-public class BlogSocialShareNanite extends BaseNanite<BlogSocialShare> {
+public class BlogSocialShareNanite extends BaseStreamNanite<BlogSocialShare> {
 
 	@Override
 	public String getCollectionName() {
@@ -68,6 +70,11 @@ public class BlogSocialShareNanite extends BaseNanite<BlogSocialShare> {
 	}
 
 	@Override
+	protected MessageSubscriber getMessageSubscriber() {
+		return _messageSubscriber;
+	}
+
+	@Override
 	protected Supplier<BlogSocialShare> getModelSupplier() {
 		return BlogSocialShare::new;
 	}
@@ -84,15 +91,31 @@ public class BlogSocialShareNanite extends BaseNanite<BlogSocialShare> {
 	}
 
 	@Override
-	protected QueryBuilder getQueryBuilder() {
-		return BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery("applicationId", "shared")
-		).filter(
-			QueryBuilders.termQuery("eventId", "SocialBookmarks")
-		).filter(
-			QueryBuilders.termQuery(
-				"eventProperties.className",
-				"com.liferay.blogs.model.BlogsEntry")
+	protected List<AnalyticsEvent> pullAnalyticsEvents() throws Exception {
+		List<AnalyticsEvent> analyticsEvents = super.pullAnalyticsEvents();
+
+		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+
+		return stream.filter(
+			analyticsEvent -> {
+				Map<String, String> eventProperties =
+					analyticsEvent.getEventProperties();
+
+				if (Objects.equals(
+						analyticsEvent.getApplicationId(), "shared") &&
+					Objects.equals(
+						analyticsEvent.getEventId(), "SocialBookmarks") &&
+					Objects.equals(
+						eventProperties.get("className"),
+						"com.liferay.blogs.model.BlogsEntry")) {
+
+					return true;
+				}
+
+				return false;
+			}
+		).collect(
+			Collectors.toList()
 		);
 	}
 
@@ -111,5 +134,8 @@ public class BlogSocialShareNanite extends BaseNanite<BlogSocialShare> {
 
 	private static final Log _log = LogFactory.getLog(
 		BlogSocialShareNanite.class);
+
+	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_BLOG)
+	private MessageSubscriber _messageSubscriber;
 
 }
