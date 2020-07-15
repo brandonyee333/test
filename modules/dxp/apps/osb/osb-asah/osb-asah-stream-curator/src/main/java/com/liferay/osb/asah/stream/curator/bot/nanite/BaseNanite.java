@@ -19,17 +19,14 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
-import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.stream.curator.bot.nanite.util.NaniteUtil;
 import com.liferay.osb.asah.stream.curator.model.BaseAssetModel;
 import com.liferay.osb.asah.stream.curator.model.Model;
 import com.liferay.osb.asah.stream.curator.model.ModelMapper;
 import com.liferay.osb.asah.stream.curator.model.page.BasePageModel;
-
-import io.prometheus.client.Counter;
-import io.prometheus.client.Gauge;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,7 +49,6 @@ import org.apache.commons.logging.Log;
 import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
@@ -63,6 +59,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Inácio Nery
  * @author Brian Wing Shun Chan
+ * @author Marcellus Tavares
  */
 public abstract class BaseNanite<T extends Model> implements Nanite {
 
@@ -75,8 +72,6 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	public void init() {
 		_cerebroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forCerebroInfo();
-		_cerebroRawElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroRaw();
 		_faroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forFaroInfo();
 	}
@@ -98,56 +93,16 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	}
 
 	protected void doRun() throws Exception {
-		JSONObject osbAsahMarkerJSONObject = _getOSBAsahMarkerJSONObject();
-
 		while (true) {
 			long start = System.currentTimeMillis();
 
-			String lastSuccessfulAnalyticsEventId =
-				osbAsahMarkerJSONObject.optString(
-					"lastSuccessfulAnalyticsEventId", "0");
-
-			BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-				QueryBuilders.rangeQuery(
-					"id"
-				).gt(
-					lastSuccessfulAnalyticsEventId
-				)
-			).filter(
-				getQueryBuilder()
-			);
-
-			_monitorNaniteQueueSize(boolQueryBuilder);
-
-			String analyticsEventsJSON = _cerebroRawElasticsearchInvoker.get(
-				"analytics-events",
-				searchSourceBuilder -> {
-					searchSourceBuilder.query(boolQueryBuilder);
-					searchSourceBuilder.size(50);
-					searchSourceBuilder.sort("id");
-				});
-
-			List<AnalyticsEvent> analyticsEvents =
-				AnalyticsEvent.toAnalyticsEvents(analyticsEventsJSON);
+			List<AnalyticsEvent> analyticsEvents = pullAnalyticsEvents();
 
 			if (analyticsEvents.isEmpty()) {
 				break;
 			}
 
-			_cerebroInfoElasticsearchInvoker.save(
-				getCollectionName(),
-				ModelMapper.toJSONArray(getModels(analyticsEvents)));
-
-			AnalyticsEvent lastAnalyticsEvent = analyticsEvents.get(
-				analyticsEvents.size() - 1);
-
-			osbAsahMarkerJSONObject.put(
-				"lastSuccessfulAnalyticsEventId", lastAnalyticsEvent.getId());
-
-			_cerebroInfoElasticsearchInvoker.update(
-				"OSBAsahMarkers", osbAsahMarkerJSONObject);
-
-			_monitorNaniteProcessedEventsCount(analyticsEvents.size());
+			saveModels(getModels(analyticsEvents));
 
 			Log log = getLog();
 
@@ -181,6 +136,8 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	protected abstract Predicate<T> getFilterPredicate();
 
 	protected abstract Log getLog();
+
+	protected abstract MessageSubscriber getMessageSubscriber();
 
 	protected Collection<T> getModels(List<AnalyticsEvent> analyticsEvents) {
 		Stream<AnalyticsEvent> analyticsEventsStream =
@@ -225,8 +182,6 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 	protected abstract Function<T, String> getPrimaryKeyGeneratorFunction();
 
-	protected abstract QueryBuilder getQueryBuilder();
-
 	protected T mergeModels(T oldModel, T newModel) {
 		if (oldModel.getSegmentNames() != null) {
 			oldModel.addSegmentNames(newModel.getSegmentNames());
@@ -261,6 +216,13 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		_mergeURLs(oldModel, newModel);
 
 		return oldModel;
+	}
+
+	protected List<AnalyticsEvent> pullAnalyticsEvents() throws Exception {
+		MessageSubscriber messageSubscriber = getMessageSubscriber();
+
+		return messageSubscriber.pullMessages(
+			50, AnalyticsEvent::toAnalyticsEvent);
 	}
 
 	protected void saveModels(Collection<T> models) {
@@ -379,25 +341,6 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		};
 	}
 
-	private JSONObject _getOSBAsahMarkerJSONObject() {
-		Class<?> clazz = getClass();
-
-		JSONObject osbAsahMarkerJSONObject =
-			_cerebroInfoElasticsearchInvoker.fetch(
-				"OSBAsahMarkers", clazz.getSimpleName());
-
-		if (osbAsahMarkerJSONObject == null) {
-			osbAsahMarkerJSONObject = new JSONObject();
-
-			osbAsahMarkerJSONObject.put("id", clazz.getSimpleName());
-
-			_cerebroInfoElasticsearchInvoker.add(
-				"OSBAsahMarkers", osbAsahMarkerJSONObject);
-		}
-
-		return osbAsahMarkerJSONObject;
-	}
-
 	private void _mergeURLs(T oldModel, T newModel) {
 		if (oldModel.isAsset() && newModel.isAsset()) {
 			BaseAssetModel oldAssetModel = (BaseAssetModel)oldModel;
@@ -405,26 +348,6 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 			oldAssetModel.addURLs(newAssetModel.getURLs());
 		}
-	}
-
-	private void _monitorNaniteProcessedEventsCount(int total) {
-		Class<?> clazz = getClass();
-
-		Counter.Child child = _analyticsEventsCount.labels(
-			clazz.getSimpleName());
-
-		child.inc(total);
-	}
-
-	private void _monitorNaniteQueueSize(QueryBuilder queryBuilder) {
-		Class<?> clazz = getClass();
-
-		Gauge.Child child = _analyticsEventsQueueSize.labels(
-			clazz.getSimpleName());
-
-		child.set(
-			_cerebroRawElasticsearchInvoker.count(
-				"analytics-events", queryBuilder));
 	}
 
 	private void _setAssetPrimaryKey(T model) {
@@ -550,15 +473,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		}
 	}
 
-	private static final Counter _analyticsEventsCount = PrometheusUtil.counter(
-		"curator_analytics_events_count",
-		"The number of analytics events processed", "nanite");
-	private static final Gauge _analyticsEventsQueueSize = PrometheusUtil.gauge(
-		"curator_analytics_events_queue_size",
-		"The number of analytics events queued to be curated", "nanite");
-
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
-	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
