@@ -46,8 +46,8 @@ public class DataprocSparkManager implements SparkManager {
 
 	@Override
 	public void submitJob(
-		List<String> arguments, String configuration, String name,
-		Map<String, String> properties) {
+		List<String> arguments, String configuration, List<String> jars,
+		String name, Map<String, String> properties) {
 
 		try {
 			JobControllerClient jobControllerClient =
@@ -55,7 +55,7 @@ public class DataprocSparkManager implements SparkManager {
 
 			jobControllerClient.submitJob(
 				_buildSubmitJobRequest(
-					arguments, configuration, name, properties));
+					arguments, configuration, jars, name, properties));
 
 			jobControllerClient.close();
 		}
@@ -65,14 +65,14 @@ public class DataprocSparkManager implements SparkManager {
 	}
 
 	private Job _buildJob(
-		List<String> arguments, String configuration, String name,
-		Map<String, String> properties) {
+		List<String> arguments, String configuration, List<String> jars,
+		String name, Map<String, String> properties) {
 
 		Job.Builder builder = Job.newBuilder();
 
 		builder.setPlacement(_buildJobPlacement());
 		builder.setPysparkJob(
-			_buildPySparkJob(arguments, configuration, name, properties));
+			_buildPySparkJob(arguments, configuration, jars, name, properties));
 
 		return builder.build();
 	}
@@ -96,8 +96,8 @@ public class DataprocSparkManager implements SparkManager {
 	}
 
 	private PySparkJob _buildPySparkJob(
-		List<String> arguments, String configuration, String name,
-		Map<String, String> properties) {
+		List<String> arguments, String configuration, List<String> jars,
+		String name, Map<String, String> properties) {
 
 		PySparkJob.Builder builder = PySparkJob.newBuilder();
 
@@ -112,6 +112,10 @@ public class DataprocSparkManager implements SparkManager {
 		builder.addFileUris(
 			String.format("gs://%s/resources/%s", _bucket, configuration));
 
+		for (String jar : jars) {
+			builder.addJarFileUris(String.format("gs://%s/%s", _bucket, jar));
+		}
+
 		builder.setMainPythonFileUri(
 			String.format("gs://%s/osb-asah-spark.py", _bucket));
 
@@ -123,12 +127,13 @@ public class DataprocSparkManager implements SparkManager {
 	}
 
 	private SubmitJobRequest _buildSubmitJobRequest(
-		List<String> arguments, String configuration, String name,
-		Map<String, String> properties) {
+		List<String> arguments, String configuration, List<String> jars,
+		String name, Map<String, String> properties) {
 
 		SubmitJobRequest.Builder builder = SubmitJobRequest.newBuilder();
 
-		builder.setJob(_buildJob(arguments, configuration, name, properties));
+		builder.setJob(
+			_buildJob(arguments, configuration, jars, name, properties));
 		builder.setProjectId(_projectId);
 		builder.setRegion(_region);
 

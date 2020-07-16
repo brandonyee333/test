@@ -38,8 +38,8 @@ public class LocalSparkManager implements SparkManager {
 
 	@Override
 	public void submitJob(
-		List<String> arguments, String configuration, String name,
-		Map<String, String> properties) {
+		List<String> arguments, String configuration, List<String> jars,
+		String name, Map<String, String> properties) {
 
 		_http.exchange(
 			_livyServerURL, "/batches", HttpMethod.POST,
