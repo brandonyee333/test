@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.annotation.PostConstruct;
 
@@ -76,29 +77,14 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 				"status", "RUNNING"
 			));
 
-		List<String> jars = Collections.emptyList();
-
-		JSONArray parameters = jobJSONObject.getJSONArray("parameters");
-
-		for (int i = 0; i < parameters.length(); i++) {
-			JSONObject jsonObject = parameters.getJSONObject(i);
-
-			if (jsonObject.getString("name").equals("spark:jars")) {
-				String value = jsonObject.getString("value");
-
-				jars = Arrays.asList(value.split(","));
-
-				break;
-			}
-		}
-
 		_sparkManager.submitJob(
 			Arrays.asList(
 				"--elasticsearch-hostname",
 				ServiceConstants.LCP_ENGINE_ELASTICSEARCH_SERVER_IP,
 				"--job-run-id", jobRunJSONObject.getString("id"),
 				"--lcp-project-id", ServiceConstants.LCP_PROJECT_ID),
-			"commerce_application.yaml", jars,
+			"commerce_application.yaml",
+			_collectJobSparkJars(jobJSONObject.getJSONArray("parameters")),
 			_jobTypeApplicationClassNameMap.get(jobType),
 			new HashMap<String, String>() {
 				{
@@ -110,6 +96,25 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 						"org.apache.spark.serializer.KryoSerializer");
 				}
 			});
+	}
+
+	private List<String> _collectJobSparkJars(
+		JSONArray jobParametersJSONArray) {
+
+		for (int i = 0; i < jobParametersJSONArray.length(); i++) {
+			JSONObject jobParameterJSONObject =
+				jobParametersJSONArray.getJSONObject(i);
+
+			if (Objects.equals(
+					jobParameterJSONObject.getString("name"), "spark:jars")) {
+
+				String value = jobParameterJSONObject.getString("value");
+
+				return Arrays.asList(value.split(","));
+			}
+		}
+
+		return Collections.emptyList();
 	}
 
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
