@@ -234,7 +234,6 @@ public class GraphQLRestController {
 			builder, "individuals", "results", "IndividualBag");
 		_defineCustomPropertyName(builder, "jobRuns", "results", "JobRunBag");
 		_defineCustomPropertyName(builder, "jobs", "results", "JobBag");
-		_defineCustomPropertyName(builder, "metric", "goalMetric", "Goal");
 		_defineCustomPropertyName(builder, "metrics", "results", "MetricBag");
 		_defineCustomPropertyName(
 			builder, "pageAssets", "results", "PageAssetBag");
