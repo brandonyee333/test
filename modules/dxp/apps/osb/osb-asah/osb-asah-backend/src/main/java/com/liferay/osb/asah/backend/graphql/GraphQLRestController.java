@@ -247,7 +247,9 @@ public class GraphQLRestController {
 			builder, "variantMetrics", "variantMetricsList",
 			"ExperimentMetrics");
 
-		_wireGraphQLTypeProperties(builder);
+		_wireGraphQLTypesProperties(
+			builder,
+			_scanAnnotatedGraphQLTypes("com.liferay.osb.asah.backend"));
 
 		for (DataFetcher dataFetcher : _dataFetchers) {
 			Class<?> clazz = dataFetcher.getClass();
@@ -352,6 +354,37 @@ public class GraphQLRestController {
 		}
 	}
 
+	private Set<Class<?>> _scanAnnotatedGraphQLTypes(String basePackage) {
+		ClassPathScanningCandidateComponentProvider
+			classPathScanningCandidateComponentProvider =
+				new ClassPathScanningCandidateComponentProvider(false);
+
+		classPathScanningCandidateComponentProvider.addIncludeFilter(
+			new AnnotationTypeFilter(GraphQLType.class));
+
+		Set<BeanDefinition> beanDefinitions =
+			classPathScanningCandidateComponentProvider.findCandidateComponents(
+				basePackage);
+
+		Stream<BeanDefinition> stream = beanDefinitions.stream();
+
+		return stream.map(
+			beanDefinition -> {
+				try {
+					return Class.forName(beanDefinition.getBeanClassName());
+				}
+				catch (ClassNotFoundException cnfe) {
+					throw new IllegalStateException(
+						"Unable to load class " +
+							beanDefinition.getBeanClassName(),
+						cnfe);
+				}
+			}
+		).collect(
+			Collectors.toSet()
+		);
+	}
+
 	private String _toString(ExecutionResult executionResult)
 		throws IOException {
 
@@ -374,42 +407,6 @@ public class GraphQLRestController {
 		}
 
 		return _objectMapper.writeValueAsString(map);
-	}
-
-	private void _wireGraphQLTypeProperties(RuntimeWiring.Builder builder) {
-		ClassPathScanningCandidateComponentProvider
-			classPathScanningCandidateComponentProvider =
-				new ClassPathScanningCandidateComponentProvider(false);
-
-		classPathScanningCandidateComponentProvider.addIncludeFilter(
-			new AnnotationTypeFilter(GraphQLType.class));
-
-		Set<BeanDefinition> beanDefinitions =
-			classPathScanningCandidateComponentProvider.findCandidateComponents(
-				"com.liferay.osb.asah.backend");
-
-		for (BeanDefinition beanDefinition : beanDefinitions) {
-			try {
-				Class<?> clazz = Class.forName(
-					beanDefinition.getBeanClassName());
-
-				GraphQLType graphQLType = AnnotationUtils.getAnnotation(
-					clazz, GraphQLType.class);
-
-				String typeName = graphQLType.value();
-
-				if (StringUtils.isBlank(typeName)) {
-					typeName = StringUtils.substringAfterLast(
-						clazz.getName(), ".");
-				}
-
-				_wireGraphQLTypeProperties(
-					builder, clazz.getMethods(), typeName);
-			}
-			catch (ClassNotFoundException cnfe) {
-				_log.error(cnfe);
-			}
-		}
 	}
 
 	private void _wireGraphQLTypeProperties(
@@ -437,6 +434,25 @@ public class GraphQLRestController {
 			typeName,
 			typeWiring -> typeWiring.dataFetcher(
 				fieldName, new PropertyDataFetcher(propertyName)));
+	}
+
+	private void _wireGraphQLTypesProperties(
+		RuntimeWiring.Builder builder, Set<Class<?>> graphQLTypesClasses) {
+
+		for (Class<?> graphQLTypesClass : graphQLTypesClasses) {
+			GraphQLType graphQLType = AnnotationUtils.getAnnotation(
+				graphQLTypesClass, GraphQLType.class);
+
+			String typeName = graphQLType.value();
+
+			if (StringUtils.isBlank(typeName)) {
+				typeName = StringUtils.substringAfterLast(
+					graphQLTypesClass.getName(), ".");
+			}
+
+			_wireGraphQLTypeProperties(
+				builder, graphQLTypesClass.getMethods(), typeName);
+		}
 	}
 
 	private static final Log _log = LogFactory.getLog(
