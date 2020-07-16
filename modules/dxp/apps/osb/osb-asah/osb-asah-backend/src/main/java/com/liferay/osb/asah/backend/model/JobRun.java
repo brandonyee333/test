@@ -18,6 +18,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.liferay.osb.asah.backend.graphql.GraphQLProperty;
+import com.liferay.osb.asah.backend.graphql.GraphQLType;
 import com.liferay.osb.asah.common.date.DateUtil;
 
 import java.util.Date;
@@ -27,6 +29,7 @@ import java.util.Objects;
 /**
  * @author Marcellus Tavares
  */
+@GraphQLType
 public class JobRun {
 
 	@Override
@@ -65,6 +68,7 @@ public class JobRun {
 		return new Date(_completedDate.getTime());
 	}
 
+	@GraphQLProperty("completedDate")
 	@JsonIgnore
 	public String getCompletedDateISO() {
 		if (_completedDate == null) {
@@ -94,6 +98,7 @@ public class JobRun {
 		return _id;
 	}
 
+	@GraphQLProperty("status")
 	@JsonProperty("status")
 	public JobRunStatus getJobRunStatus() {
 		return _jobRunStatus;
