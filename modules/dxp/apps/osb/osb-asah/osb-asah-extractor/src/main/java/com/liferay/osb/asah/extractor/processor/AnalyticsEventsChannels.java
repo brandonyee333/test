@@ -19,7 +19,6 @@ import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,8 +74,14 @@ public class AnalyticsEventsChannels {
 
 	private Predicate<AnalyticsEvent> _analyticsEventsActivityPredicate() {
 		return analyticsEvent -> {
-			if (_activityApplicationIds.contains(
-					analyticsEvent.getApplicationId())) {
+			String applicationId = analyticsEvent.getApplicationId();
+
+			if (Objects.equals(applicationId, "Blog") ||
+				Objects.equals(applicationId, "Comment") ||
+				Objects.equals(applicationId, "Document") ||
+				Objects.equals(applicationId, "Form") ||
+				Objects.equals(applicationId, "Page") ||
+				Objects.equals(applicationId, "WebContent")) {
 
 				return true;
 			}
@@ -252,9 +257,6 @@ public class AnalyticsEventsChannels {
 			return true;
 		};
 	}
-
-	private static final List<String> _activityApplicationIds = Arrays.asList(
-		"Blog", "Comment", "Custom", "Document", "Form", "Page", "WebContent");
 
 	private Map<Channel, Predicate<AnalyticsEvent>> _channels = new HashMap<>();
 
