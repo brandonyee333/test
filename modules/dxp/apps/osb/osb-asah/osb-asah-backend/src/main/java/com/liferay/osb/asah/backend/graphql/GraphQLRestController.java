@@ -221,17 +221,11 @@ public class GraphQLRestController {
 			builder, "confidenceInterval", "confidenceIntervalArray",
 			"VariantMetrics");
 		_defineCustomPropertyName(
-			builder, "createDate", "createDateISO", "Experiment");
-		_defineCustomPropertyName(
 			builder, "dashboards", "results", "DashboardBag");
 		_defineCustomPropertyName(
 			builder, "dataControlTasks", "results", "DataControlTaskBag");
 		_defineCustomPropertyName(
 			builder, "dxpEntities", "results", "DXPEntityBag");
-		_defineCustomPropertyName(
-			builder, "dxpExperienceName", "DXPExperienceName", "Experiment");
-		_defineCustomPropertyName(
-			builder, "dxpSegmentName", "DXPSegmentName", "Experiment");
 		_defineCustomPropertyName(
 			builder, "dxpVariantId", "DXPVariantId", "DXPVariant");
 		_defineCustomPropertyName(
@@ -239,11 +233,7 @@ public class GraphQLRestController {
 		_defineCustomPropertyName(
 			builder, "dxpVariantName", "DXPVariantName", "DXPVariant");
 		_defineCustomPropertyName(
-			builder, "dxpVariants", "DXPVariants", "Experiment");
-		_defineCustomPropertyName(
 			builder, "experiments", "results", "ExperimentBag");
-		_defineCustomPropertyName(
-			builder, "finishedDate", "finishedDateISO", "Experiment");
 		_defineCustomPropertyName(
 			builder, "individuals", "results", "IndividualBag");
 		_defineCustomPropertyName(builder, "jobRuns", "results", "JobRunBag");
@@ -251,21 +241,13 @@ public class GraphQLRestController {
 		_defineCustomPropertyName(builder, "metric", "goalMetric", "Goal");
 		_defineCustomPropertyName(builder, "metrics", "results", "MetricBag");
 		_defineCustomPropertyName(
-			builder, "modifiedDate", "modifiedDateISO", "Experiment");
-		_defineCustomPropertyName(
 			builder, "pageAssets", "results", "PageAssetBag");
 		_defineCustomPropertyName(
-			builder, "startedDate", "startedDateISO", "Experiment");
-		_defineCustomPropertyName(
 			builder, "status", "dataExportTaskStatus", "DataExportTask");
-		_defineCustomPropertyName(
-			builder, "status", "experimentStatus", "Experiment");
 		_defineCustomPropertyName(
 			builder, "suppressions", "results", "SuppressionBag");
 		_defineCustomPropertyName(
 			builder, "type", "dataExportTaskType", "DataExportTask");
-		_defineCustomPropertyName(
-			builder, "type", "experimentType", "Experiment");
 		_defineCustomPropertyName(builder, "url", "URL", "PageAsset");
 		_defineCustomPropertyName(
 			builder, "variantMetrics", "variantMetricsList",
