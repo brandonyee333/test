@@ -227,11 +227,7 @@ public class GraphQLRestController {
 		_defineCustomPropertyName(
 			builder, "dxpEntities", "results", "DXPEntityBag");
 		_defineCustomPropertyName(
-			builder, "dxpVariantId", "DXPVariantId", "DXPVariant");
-		_defineCustomPropertyName(
 			builder, "dxpVariantId", "DXPVariantId", "VariantMetrics");
-		_defineCustomPropertyName(
-			builder, "dxpVariantName", "DXPVariantName", "DXPVariant");
 		_defineCustomPropertyName(
 			builder, "experiments", "results", "ExperimentBag");
 		_defineCustomPropertyName(

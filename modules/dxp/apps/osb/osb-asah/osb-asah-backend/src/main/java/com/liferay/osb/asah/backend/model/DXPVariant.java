@@ -16,6 +16,9 @@ package com.liferay.osb.asah.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.liferay.osb.asah.backend.graphql.GraphQLProperty;
+import com.liferay.osb.asah.backend.graphql.GraphQLType;
+
 import java.util.Objects;
 
 import javax.validation.constraints.Max;
@@ -27,6 +30,7 @@ import org.hibernate.validator.constraints.NotBlank;
 /**
  * @author André Miranda
  */
+@GraphQLType
 public class DXPVariant {
 
 	@Override
@@ -59,12 +63,14 @@ public class DXPVariant {
 		return _changes;
 	}
 
+	@GraphQLProperty("dxpVariantId")
 	@JsonProperty("dxpVariantId")
 	@NotBlank
 	public String getDXPVariantId() {
 		return _dxpVariantId;
 	}
 
+	@GraphQLProperty("dxpVariantName")
 	@JsonProperty("dxpVariantName")
 	@NotBlank
 	public String getDXPVariantName() {
