@@ -16,9 +16,11 @@ package com.liferay.osb.asah.stream.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.function.UnsafeFunction;
-import com.liferay.osb.asah.common.messaging.MockMessageSubscriber;
+import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+
+import java.util.Collections;
 
 import org.elasticsearch.index.query.QueryBuilder;
 
@@ -84,19 +86,20 @@ public abstract class BaseNaniteTestCase {
 
 		String fileName = getJSONFileName(clazz);
 
-		MockMessageSubscriber mockMessageSubscriber = Mockito.mock(
-			MockMessageSubscriber.class);
+		MessageSubscriber messageSubscriber = Mockito.mock(
+			MessageSubscriber.class);
 
 		ReflectionTestUtils.setField(
-			nanite, "_messageSubscriber", mockMessageSubscriber);
+			nanite, "_messageSubscriber", messageSubscriber);
 
 		Mockito.when(
-			mockMessageSubscriber.pullMessages(
+			messageSubscriber.pullMessages(
 				Mockito.anyInt(), Mockito.any(UnsafeFunction.class))
 		).thenReturn(
 			AnalyticsEvent.toAnalyticsEvents(
 				ResourceUtil.readResourceToString(
-					fileName + "raw.json", nanite))
+					fileName + "raw.json", nanite)),
+			Collections.emptyList()
 		);
 
 		prepare(elasticsearchInvoker, nanite, fileName);

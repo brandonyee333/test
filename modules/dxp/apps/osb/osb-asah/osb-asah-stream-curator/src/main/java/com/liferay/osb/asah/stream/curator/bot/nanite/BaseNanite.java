@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
-import com.liferay.osb.asah.common.messaging.MockMessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.stream.curator.bot.nanite.util.NaniteUtil;
@@ -115,10 +114,6 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 						"%s processed %d events in %d ms",
 						clazz.getSimpleName(), analyticsEvents.size(),
 						System.currentTimeMillis() - start));
-			}
-
-			if (getMessageSubscriber() instanceof MockMessageSubscriber) {
-				return;
 			}
 		}
 	}
