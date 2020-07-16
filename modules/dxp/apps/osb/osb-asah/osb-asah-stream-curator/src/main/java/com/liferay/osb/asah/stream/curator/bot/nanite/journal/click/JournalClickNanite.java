@@ -124,7 +124,7 @@ public class JournalClickNanite extends BaseNanite<JournalClick> {
 
 	private static final Log _log = LogFactory.getLog(JournalClickNanite.class);
 
-	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_ACTIVITY)
+	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_JOURNAL)
 	private MessageSubscriber _messageSubscriber;
 
 }
