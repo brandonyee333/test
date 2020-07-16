@@ -68,6 +68,10 @@ public interface ShoppingOrderLocalService
 	/**
 	 * Adds the shopping order to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ShoppingOrderLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param shoppingOrder the shopping order
 	 * @return the shopping order that was added
 	 */
@@ -105,6 +109,10 @@ public interface ShoppingOrderLocalService
 	/**
 	 * Deletes the shopping order with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ShoppingOrderLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param orderId the primary key of the shopping order
 	 * @return the shopping order that was removed
 	 * @throws PortalException if a shopping order with the primary key could not be found
@@ -115,6 +123,10 @@ public interface ShoppingOrderLocalService
 
 	/**
 	 * Deletes the shopping order from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ShoppingOrderLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param shoppingOrder the shopping order
 	 * @return the shopping order that was removed
@@ -320,6 +332,10 @@ public interface ShoppingOrderLocalService
 
 	/**
 	 * Updates the shopping order in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ShoppingOrderLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param shoppingOrder the shopping order
 	 * @return the shopping order that was updated

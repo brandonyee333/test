@@ -49,6 +49,10 @@ public class ZendeskSectionLocalServiceWrapper
 	/**
 	 * Adds the zendesk section to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ZendeskSectionLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param zendeskSection the zendesk section
 	 * @return the zendesk section that was added
 	 */
@@ -91,6 +95,10 @@ public class ZendeskSectionLocalServiceWrapper
 	/**
 	 * Deletes the zendesk section with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ZendeskSectionLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param zendeskSectionId the primary key of the zendesk section
 	 * @return the zendesk section that was removed
 	 * @throws PortalException if a zendesk section with the primary key could not be found
@@ -107,6 +115,10 @@ public class ZendeskSectionLocalServiceWrapper
 
 	/**
 	 * Deletes the zendesk section from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ZendeskSectionLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param zendeskSection the zendesk section
 	 * @return the zendesk section that was removed
@@ -345,6 +357,10 @@ public class ZendeskSectionLocalServiceWrapper
 
 	/**
 	 * Updates the zendesk section in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ZendeskSectionLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param zendeskSection the zendesk section
 	 * @return the zendesk section that was updated

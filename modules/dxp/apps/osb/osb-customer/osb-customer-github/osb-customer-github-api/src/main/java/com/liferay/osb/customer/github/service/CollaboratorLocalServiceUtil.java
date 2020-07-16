@@ -41,6 +41,10 @@ public class CollaboratorLocalServiceUtil {
 	/**
 	 * Adds the collaborator to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect CollaboratorLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param collaborator the collaborator
 	 * @return the collaborator that was added
 	 */
@@ -76,6 +80,10 @@ public class CollaboratorLocalServiceUtil {
 	/**
 	 * Deletes the collaborator from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect CollaboratorLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param collaborator the collaborator
 	 * @return the collaborator that was removed
 	 * @throws PortalException
@@ -90,6 +98,10 @@ public class CollaboratorLocalServiceUtil {
 
 	/**
 	 * Deletes the collaborator with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect CollaboratorLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param collaboratorId the primary key of the collaborator
 	 * @return the collaborator that was removed
@@ -307,6 +319,10 @@ public class CollaboratorLocalServiceUtil {
 
 	/**
 	 * Updates the collaborator in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect CollaboratorLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param collaborator the collaborator
 	 * @return the collaborator that was updated

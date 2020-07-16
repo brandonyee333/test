@@ -79,6 +79,10 @@ public interface WSRPConsumerPortletLocalService
 	/**
 	 * Adds the wsrp consumer portlet to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WSRPConsumerPortletLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param wsrpConsumerPortlet the wsrp consumer portlet
 	 * @return the wsrp consumer portlet that was added
 	 */
@@ -106,6 +110,10 @@ public interface WSRPConsumerPortletLocalService
 	/**
 	 * Deletes the wsrp consumer portlet with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WSRPConsumerPortletLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param wsrpConsumerPortletId the primary key of the wsrp consumer portlet
 	 * @return the wsrp consumer portlet that was removed
 	 * @throws PortalException if a wsrp consumer portlet with the primary key could not be found
@@ -120,6 +128,10 @@ public interface WSRPConsumerPortletLocalService
 
 	/**
 	 * Deletes the wsrp consumer portlet from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WSRPConsumerPortletLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param wsrpConsumerPortlet the wsrp consumer portlet
 	 * @return the wsrp consumer portlet that was removed
@@ -331,6 +343,10 @@ public interface WSRPConsumerPortletLocalService
 
 	/**
 	 * Updates the wsrp consumer portlet in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WSRPConsumerPortletLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param wsrpConsumerPortlet the wsrp consumer portlet
 	 * @return the wsrp consumer portlet that was updated

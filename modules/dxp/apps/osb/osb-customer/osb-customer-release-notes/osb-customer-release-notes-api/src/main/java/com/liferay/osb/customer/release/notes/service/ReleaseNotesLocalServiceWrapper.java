@@ -45,6 +45,10 @@ public class ReleaseNotesLocalServiceWrapper
 	/**
 	 * Adds the release notes to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ReleaseNotesLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param releaseNotes the release notes
 	 * @return the release notes that was added
 	 */
@@ -84,6 +88,10 @@ public class ReleaseNotesLocalServiceWrapper
 	/**
 	 * Deletes the release notes with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ReleaseNotesLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param releaseNotesId the primary key of the release notes
 	 * @return the release notes that was removed
 	 * @throws PortalException if a release notes with the primary key could not be found
@@ -98,6 +106,10 @@ public class ReleaseNotesLocalServiceWrapper
 
 	/**
 	 * Deletes the release notes from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ReleaseNotesLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param releaseNotes the release notes
 	 * @return the release notes that was removed
@@ -327,6 +339,10 @@ public class ReleaseNotesLocalServiceWrapper
 
 	/**
 	 * Updates the release notes in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ReleaseNotesLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param releaseNotes the release notes
 	 * @return the release notes that was updated

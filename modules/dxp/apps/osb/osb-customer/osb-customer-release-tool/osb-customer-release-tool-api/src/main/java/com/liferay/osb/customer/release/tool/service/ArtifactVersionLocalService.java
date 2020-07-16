@@ -65,6 +65,10 @@ public interface ArtifactVersionLocalService
 	/**
 	 * Adds the artifact version to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ArtifactVersionLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param artifactVersion the artifact version
 	 * @return the artifact version that was added
 	 */
@@ -87,6 +91,10 @@ public interface ArtifactVersionLocalService
 	/**
 	 * Deletes the artifact version from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ArtifactVersionLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param artifactVersion the artifact version
 	 * @return the artifact version that was removed
 	 */
@@ -96,6 +104,10 @@ public interface ArtifactVersionLocalService
 
 	/**
 	 * Deletes the artifact version with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ArtifactVersionLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param artifactVersionId the primary key of the artifact version
 	 * @return the artifact version that was removed
@@ -243,6 +255,10 @@ public interface ArtifactVersionLocalService
 
 	/**
 	 * Updates the artifact version in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ArtifactVersionLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param artifactVersion the artifact version
 	 * @return the artifact version that was updated

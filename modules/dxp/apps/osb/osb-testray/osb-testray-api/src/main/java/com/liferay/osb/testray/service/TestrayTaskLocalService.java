@@ -1,15 +1,15 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.service;
@@ -17,7 +17,6 @@ package com.liferay.osb.testray.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.testray.model.TestrayTask;
-
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
@@ -46,167 +45,202 @@ import java.util.List;
  *
  * @author Ethan Bustad
  * @see TestrayTaskLocalServiceUtil
- * @see com.liferay.osb.testray.service.base.TestrayTaskLocalServiceBaseImpl
- * @see com.liferay.osb.testray.service.impl.TestrayTaskLocalServiceImpl
  * @generated
  */
 @ProviderType
-@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
-	PortalException.class, SystemException.class})
-public interface TestrayTaskLocalService extends BaseLocalService,
-	PersistedModelLocalService {
+@Transactional(
+	isolation = Isolation.PORTAL,
+	rollbackFor = {PortalException.class, SystemException.class}
+)
+public interface TestrayTaskLocalService
+	extends BaseLocalService, PersistedModelLocalService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link TestrayTaskLocalServiceUtil} to access the testray task local service. Add custom service methods to {@link com.liferay.osb.testray.service.impl.TestrayTaskLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link TestrayTaskLocalServiceUtil} to access the testray task local service. Add custom service methods to <code>com.liferay.osb.testray.service.impl.TestrayTaskLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasTestrayCaseTypeTestrayTask(long testrayCaseTypeId,
-		long testrayTaskId);
+	public void addTestrayCaseTypeTestrayTask(
+		long testrayCaseTypeId, long testrayTaskId);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasTestrayCaseTypeTestrayTasks(long testrayCaseTypeId);
+	public void addTestrayCaseTypeTestrayTask(
+		long testrayCaseTypeId, TestrayTask testrayTask);
+
+	public void addTestrayCaseTypeTestrayTasks(
+		long testrayCaseTypeId, List<TestrayTask> testrayTasks);
+
+	public void addTestrayCaseTypeTestrayTasks(
+		long testrayCaseTypeId, long[] testrayTaskIds);
 
 	/**
-	* Adds the testray task to the database. Also notifies the appropriate model listeners.
-	*
-	* @param testrayTask the testray task
-	* @return the testray task that was added
-	*/
+	 * Adds the testray task to the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect TestrayTaskLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
+	 * @param testrayTask the testray task
+	 * @return the testray task that was added
+	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public TestrayTask addTestrayTask(TestrayTask testrayTask);
 
+	public void clearTestrayCaseTypeTestrayTasks(long testrayCaseTypeId);
+
 	/**
-	* Creates a new testray task with the primary key. Does not add the testray task to the database.
-	*
-	* @param testrayTaskId the primary key for the new testray task
-	* @return the new testray task
-	*/
+	 * Creates a new testray task with the primary key. Does not add the testray task to the database.
+	 *
+	 * @param testrayTaskId the primary key for the new testray task
+	 * @return the new testray task
+	 */
+	@Transactional(enabled = false)
 	public TestrayTask createTestrayTask(long testrayTaskId);
 
 	/**
-	* Deletes the testray task from the database. Also notifies the appropriate model listeners.
-	*
-	* @param testrayTask the testray task
-	* @return the testray task that was removed
-	*/
-	@Indexable(type = IndexableType.DELETE)
-	public TestrayTask deleteTestrayTask(TestrayTask testrayTask);
+	 * @throws PortalException
+	 */
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException;
+
+	public void deleteTestrayCaseTypeTestrayTask(
+		long testrayCaseTypeId, long testrayTaskId);
+
+	public void deleteTestrayCaseTypeTestrayTask(
+		long testrayCaseTypeId, TestrayTask testrayTask);
+
+	public void deleteTestrayCaseTypeTestrayTasks(
+		long testrayCaseTypeId, List<TestrayTask> testrayTasks);
+
+	public void deleteTestrayCaseTypeTestrayTasks(
+		long testrayCaseTypeId, long[] testrayTaskIds);
 
 	/**
-	* Deletes the testray task with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param testrayTaskId the primary key of the testray task
-	* @return the testray task that was removed
-	* @throws PortalException if a testray task with the primary key could not be found
-	*/
+	 * Deletes the testray task with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect TestrayTaskLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
+	 * @param testrayTaskId the primary key of the testray task
+	 * @return the testray task that was removed
+	 * @throws PortalException if a testray task with the primary key could not be found
+	 */
 	@Indexable(type = IndexableType.DELETE)
 	public TestrayTask deleteTestrayTask(long testrayTaskId)
 		throws PortalException;
 
+	/**
+	 * Deletes the testray task from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect TestrayTaskLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
+	 * @param testrayTask the testray task
+	 * @return the testray task that was removed
+	 */
+	@Indexable(type = IndexableType.DELETE)
+	public TestrayTask deleteTestrayTask(TestrayTask testrayTask);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DynamicQuery dynamicQuery();
+
+	/**
+	 * Performs a dynamic query on the database and returns the matching rows.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the matching rows
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery);
+
+	/**
+	 * Performs a dynamic query on the database and returns a range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.testray.model.impl.TestrayTaskModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @return the range of matching rows
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end);
+
+	/**
+	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.testray.model.impl.TestrayTaskModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching rows
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator);
+
+	/**
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the number of rows matching the dynamic query
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param projection the projection to apply to the query
+	 * @return the number of rows matching the dynamic query
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long dynamicQueryCount(
+		DynamicQuery dynamicQuery, Projection projection);
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public TestrayTask fetchTestrayTask(long testrayTaskId);
-
-	/**
-	* Returns the testray task with the primary key.
-	*
-	* @param testrayTaskId the primary key of the testray task
-	* @return the testray task
-	* @throws PortalException if a testray task with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TestrayTask getTestrayTask(long testrayTaskId)
-		throws PortalException;
-
-	/**
-	* Updates the testray task in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param testrayTask the testray task
-	* @return the testray task that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public TestrayTask updateTestrayTask(TestrayTask testrayTask);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
-	* @throws PortalException
-	*/
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
+	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getTestrayCaseTypeTestrayTasksCount(long testrayCaseTypeId);
-
 	/**
-	* Returns the number of testray tasks.
-	*
-	* @return the number of testray tasks
-	*/
+	 * Returns the testrayCaseTypeIds of the testray case types associated with the testray task.
+	 *
+	 * @param testrayTaskId the testrayTaskId of the testray task
+	 * @return long[] the testrayCaseTypeIds of testray case types associated with the testray task
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getTestrayTasksCount();
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
-	/**
-	* Performs a dynamic query on the database and returns the matching rows.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the matching rows
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery);
-
-	/**
-	* Performs a dynamic query on the database and returns a range of the matching rows.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.testray.model.impl.TestrayTaskModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param dynamicQuery the dynamic query
-	* @param start the lower bound of the range of model instances
-	* @param end the upper bound of the range of model instances (not inclusive)
-	* @return the range of matching rows
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end);
-
-	/**
-	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.testray.model.impl.TestrayTaskModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param dynamicQuery the dynamic query
-	* @param start the lower bound of the range of model instances
-	* @param end the upper bound of the range of model instances (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching rows
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end, OrderByComparator<T> orderByComparator);
+	public long[] getTestrayCaseTypePrimaryKeys(long testrayTaskId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TestrayTask> getTestrayCaseTypeTestrayTasks(
@@ -221,75 +255,63 @@ public interface TestrayTaskLocalService extends BaseLocalService,
 		long testrayCaseTypeId, int start, int end,
 		OrderByComparator<TestrayTask> orderByComparator);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getTestrayCaseTypeTestrayTasksCount(long testrayCaseTypeId);
+
 	/**
-	* Returns a range of all the testray tasks.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.testray.model.impl.TestrayTaskModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of testray tasks
-	* @param end the upper bound of the range of testray tasks (not inclusive)
-	* @return the range of testray tasks
-	*/
+	 * Returns the testray task with the primary key.
+	 *
+	 * @param testrayTaskId the primary key of the testray task
+	 * @return the testray task
+	 * @throws PortalException if a testray task with the primary key could not be found
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TestrayTask getTestrayTask(long testrayTaskId)
+		throws PortalException;
+
+	/**
+	 * Returns a range of all the testray tasks.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.testray.model.impl.TestrayTaskModelImpl</code>.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of testray tasks
+	 * @param end the upper bound of the range of testray tasks (not inclusive)
+	 * @return the range of testray tasks
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TestrayTask> getTestrayTasks(int start, int end);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
+	 * Returns the number of testray tasks.
+	 *
+	 * @return the number of testray tasks
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	public int getTestrayTasksCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasTestrayCaseTypeTestrayTask(
+		long testrayCaseTypeId, long testrayTaskId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasTestrayCaseTypeTestrayTasks(long testrayCaseTypeId);
+
+	public void setTestrayCaseTypeTestrayTasks(
+		long testrayCaseTypeId, long[] testrayTaskIds);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	 * Updates the testray task in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect TestrayTaskLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
+	 * @param testrayTask the testray task
+	 * @return the testray task that was updated
+	 */
+	@Indexable(type = IndexableType.REINDEX)
+	public TestrayTask updateTestrayTask(TestrayTask testrayTask);
 
-	/**
-	* Returns the testrayCaseTypeIds of the testray case types associated with the testray task.
-	*
-	* @param testrayTaskId the testrayTaskId of the testray task
-	* @return long[] the testrayCaseTypeIds of testray case types associated with the testray task
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long[] getTestrayCaseTypePrimaryKeys(long testrayTaskId);
-
-	public void addTestrayCaseTypeTestrayTask(long testrayCaseTypeId,
-		TestrayTask testrayTask);
-
-	public void addTestrayCaseTypeTestrayTask(long testrayCaseTypeId,
-		long testrayTaskId);
-
-	public void addTestrayCaseTypeTestrayTasks(long testrayCaseTypeId,
-		List<TestrayTask> testrayTasks);
-
-	public void addTestrayCaseTypeTestrayTasks(long testrayCaseTypeId,
-		long[] testrayTaskIds);
-
-	public void clearTestrayCaseTypeTestrayTasks(long testrayCaseTypeId);
-
-	public void deleteTestrayCaseTypeTestrayTask(long testrayCaseTypeId,
-		TestrayTask testrayTask);
-
-	public void deleteTestrayCaseTypeTestrayTask(long testrayCaseTypeId,
-		long testrayTaskId);
-
-	public void deleteTestrayCaseTypeTestrayTasks(long testrayCaseTypeId,
-		List<TestrayTask> testrayTasks);
-
-	public void deleteTestrayCaseTypeTestrayTasks(long testrayCaseTypeId,
-		long[] testrayTaskIds);
-
-	public void setTestrayCaseTypeTestrayTasks(long testrayCaseTypeId,
-		long[] testrayTaskIds);
 }

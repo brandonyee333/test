@@ -64,6 +64,10 @@ public interface WatsonReportAuditLocalService
 	/**
 	 * Adds the watson report audit to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonReportAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonReportAudit the watson report audit
 	 * @return the watson report audit that was added
 	 */
@@ -90,6 +94,10 @@ public interface WatsonReportAuditLocalService
 	/**
 	 * Deletes the watson report audit with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonReportAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonReportAuditId the primary key of the watson report audit
 	 * @return the watson report audit that was removed
 	 * @throws PortalException if a watson report audit with the primary key could not be found
@@ -100,6 +108,10 @@ public interface WatsonReportAuditLocalService
 
 	/**
 	 * Deletes the watson report audit from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonReportAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonReportAudit the watson report audit
 	 * @return the watson report audit that was removed
@@ -233,6 +245,10 @@ public interface WatsonReportAuditLocalService
 
 	/**
 	 * Updates the watson report audit in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonReportAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonReportAudit the watson report audit
 	 * @return the watson report audit that was updated

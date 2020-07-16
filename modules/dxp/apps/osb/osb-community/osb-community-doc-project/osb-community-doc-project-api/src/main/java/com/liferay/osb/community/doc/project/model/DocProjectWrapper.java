@@ -1,25 +1,21 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.community.doc.project.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.exportimport.kernel.lar.StagedModelType;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -39,8 +35,8 @@ import java.util.Objects;
  * @see DocProject
  * @generated
  */
-@ProviderType
 public class DocProjectWrapper implements DocProject, ModelWrapper<DocProject> {
+
 	public DocProjectWrapper(DocProject docProject) {
 		_docProject = docProject;
 	}
@@ -70,7 +66,7 @@ public class DocProjectWrapper implements DocProject, ModelWrapper<DocProject> {
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
 		attributes.put("iconFileName", getIconFileName());
-		attributes.put("unlisted", getUnlisted());
+		attributes.put("unlisted", isUnlisted());
 		attributes.put("type", getType());
 		attributes.put("typeSettings", getTypeSettings());
 		attributes.put("status", getStatus());
@@ -172,13 +168,53 @@ public class DocProjectWrapper implements DocProject, ModelWrapper<DocProject> {
 	}
 
 	@Override
-	public DocProject toEscapedModel() {
-		return new DocProjectWrapper(_docProject.toEscapedModel());
+	public Object clone() {
+		return new DocProjectWrapper((DocProject)_docProject.clone());
 	}
 
 	@Override
-	public DocProject toUnescapedModel() {
-		return new DocProjectWrapper(_docProject.toUnescapedModel());
+	public int compareTo(DocProject docProject) {
+		return _docProject.compareTo(docProject);
+	}
+
+	/**
+	 * Returns the company ID of this doc project.
+	 *
+	 * @return the company ID of this doc project
+	 */
+	@Override
+	public long getCompanyId() {
+		return _docProject.getCompanyId();
+	}
+
+	/**
+	 * Returns the create date of this doc project.
+	 *
+	 * @return the create date of this doc project
+	 */
+	@Override
+	public Date getCreateDate() {
+		return _docProject.getCreateDate();
+	}
+
+	/**
+	 * Returns the description of this doc project.
+	 *
+	 * @return the description of this doc project
+	 */
+	@Override
+	public String getDescription() {
+		return _docProject.getDescription();
+	}
+
+	/**
+	 * Returns the doc project ID of this doc project.
+	 *
+	 * @return the doc project ID of this doc project
+	 */
+	@Override
+	public long getDocProjectId() {
+		return _docProject.getDocProjectId();
 	}
 
 	@Override
@@ -186,14 +222,156 @@ public class DocProjectWrapper implements DocProject, ModelWrapper<DocProject> {
 		return _docProject.getDocProjectTypeSettings();
 	}
 
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _docProject.getExpandoBridge();
+	}
+
 	/**
-	* Returns the unlisted of this doc project.
-	*
-	* @return the unlisted of this doc project
-	*/
+	 * Returns the group ID of this doc project.
+	 *
+	 * @return the group ID of this doc project
+	 */
+	@Override
+	public long getGroupId() {
+		return _docProject.getGroupId();
+	}
+
+	/**
+	 * Returns the icon file name of this doc project.
+	 *
+	 * @return the icon file name of this doc project
+	 */
+	@Override
+	public String getIconFileName() {
+		return _docProject.getIconFileName();
+	}
+
+	@Override
+	public java.io.InputStream getIconInputStream()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _docProject.getIconInputStream();
+	}
+
+	/**
+	 * Returns the modified date of this doc project.
+	 *
+	 * @return the modified date of this doc project
+	 */
+	@Override
+	public Date getModifiedDate() {
+		return _docProject.getModifiedDate();
+	}
+
+	/**
+	 * Returns the name of this doc project.
+	 *
+	 * @return the name of this doc project
+	 */
+	@Override
+	public String getName() {
+		return _docProject.getName();
+	}
+
+	/**
+	 * Returns the primary key of this doc project.
+	 *
+	 * @return the primary key of this doc project
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _docProject.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _docProject.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the status of this doc project.
+	 *
+	 * @return the status of this doc project
+	 */
+	@Override
+	public int getStatus() {
+		return _docProject.getStatus();
+	}
+
+	/**
+	 * Returns the type of this doc project.
+	 *
+	 * @return the type of this doc project
+	 */
+	@Override
+	public String getType() {
+		return _docProject.getType();
+	}
+
+	/**
+	 * Returns the type settings of this doc project.
+	 *
+	 * @return the type settings of this doc project
+	 */
+	@Override
+	public String getTypeSettings() {
+		return _docProject.getTypeSettings();
+	}
+
+	/**
+	 * Returns the unlisted of this doc project.
+	 *
+	 * @return the unlisted of this doc project
+	 */
 	@Override
 	public boolean getUnlisted() {
 		return _docProject.getUnlisted();
+	}
+
+	/**
+	 * Returns the user ID of this doc project.
+	 *
+	 * @return the user ID of this doc project
+	 */
+	@Override
+	public long getUserId() {
+		return _docProject.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this doc project.
+	 *
+	 * @return the user name of this doc project
+	 */
+	@Override
+	public String getUserName() {
+		return _docProject.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this doc project.
+	 *
+	 * @return the user uuid of this doc project
+	 */
+	@Override
+	public String getUserUuid() {
+		return _docProject.getUserUuid();
+	}
+
+	/**
+	 * Returns the uuid of this doc project.
+	 *
+	 * @return the uuid of this doc project
+	 */
+	@Override
+	public String getUuid() {
+		return _docProject.getUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _docProject.hashCode();
 	}
 
 	@Override
@@ -212,219 +390,13 @@ public class DocProjectWrapper implements DocProject, ModelWrapper<DocProject> {
 	}
 
 	/**
-	* Returns <code>true</code> if this doc project is unlisted.
-	*
-	* @return <code>true</code> if this doc project is unlisted; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this doc project is unlisted.
+	 *
+	 * @return <code>true</code> if this doc project is unlisted; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isUnlisted() {
 		return _docProject.isUnlisted();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _docProject.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<DocProject> toCacheModel() {
-		return _docProject.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(DocProject docProject) {
-		return _docProject.compareTo(docProject);
-	}
-
-	/**
-	* Returns the status of this doc project.
-	*
-	* @return the status of this doc project
-	*/
-	@Override
-	public int getStatus() {
-		return _docProject.getStatus();
-	}
-
-	@Override
-	public int hashCode() {
-		return _docProject.hashCode();
-	}
-
-	@Override
-	public java.io.InputStream getIconInputStream()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _docProject.getIconInputStream();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _docProject.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new DocProjectWrapper((DocProject)_docProject.clone());
-	}
-
-	/**
-	* Returns the description of this doc project.
-	*
-	* @return the description of this doc project
-	*/
-	@Override
-	public java.lang.String getDescription() {
-		return _docProject.getDescription();
-	}
-
-	/**
-	* Returns the icon file name of this doc project.
-	*
-	* @return the icon file name of this doc project
-	*/
-	@Override
-	public java.lang.String getIconFileName() {
-		return _docProject.getIconFileName();
-	}
-
-	/**
-	* Returns the name of this doc project.
-	*
-	* @return the name of this doc project
-	*/
-	@Override
-	public java.lang.String getName() {
-		return _docProject.getName();
-	}
-
-	/**
-	* Returns the type of this doc project.
-	*
-	* @return the type of this doc project
-	*/
-	@Override
-	public java.lang.String getType() {
-		return _docProject.getType();
-	}
-
-	/**
-	* Returns the type settings of this doc project.
-	*
-	* @return the type settings of this doc project
-	*/
-	@Override
-	public java.lang.String getTypeSettings() {
-		return _docProject.getTypeSettings();
-	}
-
-	/**
-	* Returns the user name of this doc project.
-	*
-	* @return the user name of this doc project
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _docProject.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this doc project.
-	*
-	* @return the user uuid of this doc project
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _docProject.getUserUuid();
-	}
-
-	/**
-	* Returns the uuid of this doc project.
-	*
-	* @return the uuid of this doc project
-	*/
-	@Override
-	public java.lang.String getUuid() {
-		return _docProject.getUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _docProject.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _docProject.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this doc project.
-	*
-	* @return the create date of this doc project
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _docProject.getCreateDate();
-	}
-
-	/**
-	* Returns the modified date of this doc project.
-	*
-	* @return the modified date of this doc project
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _docProject.getModifiedDate();
-	}
-
-	/**
-	* Returns the company ID of this doc project.
-	*
-	* @return the company ID of this doc project
-	*/
-	@Override
-	public long getCompanyId() {
-		return _docProject.getCompanyId();
-	}
-
-	/**
-	* Returns the doc project ID of this doc project.
-	*
-	* @return the doc project ID of this doc project
-	*/
-	@Override
-	public long getDocProjectId() {
-		return _docProject.getDocProjectId();
-	}
-
-	/**
-	* Returns the group ID of this doc project.
-	*
-	* @return the group ID of this doc project
-	*/
-	@Override
-	public long getGroupId() {
-		return _docProject.getGroupId();
-	}
-
-	/**
-	* Returns the primary key of this doc project.
-	*
-	* @return the primary key of this doc project
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _docProject.getPrimaryKey();
-	}
-
-	/**
-	* Returns the user ID of this doc project.
-	*
-	* @return the user ID of this doc project
-	*/
-	@Override
-	public long getUserId() {
-		return _docProject.getUserId();
 	}
 
 	@Override
@@ -438,43 +410,50 @@ public class DocProjectWrapper implements DocProject, ModelWrapper<DocProject> {
 	}
 
 	/**
-	* Sets the company ID of this doc project.
-	*
-	* @param companyId the company ID of this doc project
-	*/
+	 * Sets the company ID of this doc project.
+	 *
+	 * @param companyId the company ID of this doc project
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_docProject.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this doc project.
-	*
-	* @param createDate the create date of this doc project
-	*/
+	 * Sets the create date of this doc project.
+	 *
+	 * @param createDate the create date of this doc project
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_docProject.setCreateDate(createDate);
 	}
 
 	/**
-	* Sets the description of this doc project.
-	*
-	* @param description the description of this doc project
-	*/
+	 * Sets the description of this doc project.
+	 *
+	 * @param description the description of this doc project
+	 */
 	@Override
-	public void setDescription(java.lang.String description) {
+	public void setDescription(String description) {
 		_docProject.setDescription(description);
 	}
 
 	/**
-	* Sets the doc project ID of this doc project.
-	*
-	* @param docProjectId the doc project ID of this doc project
-	*/
+	 * Sets the doc project ID of this doc project.
+	 *
+	 * @param docProjectId the doc project ID of this doc project
+	 */
 	@Override
 	public void setDocProjectId(long docProjectId) {
 		_docProject.setDocProjectId(docProjectId);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_docProject.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -483,53 +462,47 @@ public class DocProjectWrapper implements DocProject, ModelWrapper<DocProject> {
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_docProject.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_docProject.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the group ID of this doc project.
-	*
-	* @param groupId the group ID of this doc project
-	*/
+	 * Sets the group ID of this doc project.
+	 *
+	 * @param groupId the group ID of this doc project
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_docProject.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the icon file name of this doc project.
-	*
-	* @param iconFileName the icon file name of this doc project
-	*/
+	 * Sets the icon file name of this doc project.
+	 *
+	 * @param iconFileName the icon file name of this doc project
+	 */
 	@Override
-	public void setIconFileName(java.lang.String iconFileName) {
+	public void setIconFileName(String iconFileName) {
 		_docProject.setIconFileName(iconFileName);
 	}
 
 	/**
-	* Sets the modified date of this doc project.
-	*
-	* @param modifiedDate the modified date of this doc project
-	*/
+	 * Sets the modified date of this doc project.
+	 *
+	 * @param modifiedDate the modified date of this doc project
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_docProject.setModifiedDate(modifiedDate);
 	}
 
 	/**
-	* Sets the name of this doc project.
-	*
-	* @param name the name of this doc project
-	*/
+	 * Sets the name of this doc project.
+	 *
+	 * @param name the name of this doc project
+	 */
 	@Override
-	public void setName(java.lang.String name) {
+	public void setName(String name) {
 		_docProject.setName(name);
 	}
 
@@ -539,10 +512,10 @@ public class DocProjectWrapper implements DocProject, ModelWrapper<DocProject> {
 	}
 
 	/**
-	* Sets the primary key of this doc project.
-	*
-	* @param primaryKey the primary key of this doc project
-	*/
+	 * Sets the primary key of this doc project.
+	 *
+	 * @param primaryKey the primary key of this doc project
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_docProject.setPrimaryKey(primaryKey);
@@ -554,96 +527,123 @@ public class DocProjectWrapper implements DocProject, ModelWrapper<DocProject> {
 	}
 
 	/**
-	* Sets the status of this doc project.
-	*
-	* @param status the status of this doc project
-	*/
+	 * Sets the status of this doc project.
+	 *
+	 * @param status the status of this doc project
+	 */
 	@Override
 	public void setStatus(int status) {
 		_docProject.setStatus(status);
 	}
 
 	/**
-	* Sets the type of this doc project.
-	*
-	* @param type the type of this doc project
-	*/
+	 * Sets the type of this doc project.
+	 *
+	 * @param type the type of this doc project
+	 */
 	@Override
-	public void setType(java.lang.String type) {
+	public void setType(String type) {
 		_docProject.setType(type);
 	}
 
 	/**
-	* Sets the type settings of this doc project.
-	*
-	* @param typeSettings the type settings of this doc project
-	*/
+	 * Sets the type settings of this doc project.
+	 *
+	 * @param typeSettings the type settings of this doc project
+	 */
 	@Override
-	public void setTypeSettings(java.lang.String typeSettings) {
+	public void setTypeSettings(String typeSettings) {
 		_docProject.setTypeSettings(typeSettings);
 	}
 
 	/**
-	* Sets whether this doc project is unlisted.
-	*
-	* @param unlisted the unlisted of this doc project
-	*/
+	 * Sets whether this doc project is unlisted.
+	 *
+	 * @param unlisted the unlisted of this doc project
+	 */
 	@Override
 	public void setUnlisted(boolean unlisted) {
 		_docProject.setUnlisted(unlisted);
 	}
 
 	/**
-	* Sets the user ID of this doc project.
-	*
-	* @param userId the user ID of this doc project
-	*/
+	 * Sets the user ID of this doc project.
+	 *
+	 * @param userId the user ID of this doc project
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_docProject.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this doc project.
-	*
-	* @param userName the user name of this doc project
-	*/
+	 * Sets the user name of this doc project.
+	 *
+	 * @param userName the user name of this doc project
+	 */
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_docProject.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this doc project.
-	*
-	* @param userUuid the user uuid of this doc project
-	*/
+	 * Sets the user uuid of this doc project.
+	 *
+	 * @param userUuid the user uuid of this doc project
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_docProject.setUserUuid(userUuid);
 	}
 
 	/**
-	* Sets the uuid of this doc project.
-	*
-	* @param uuid the uuid of this doc project
-	*/
+	 * Sets the uuid of this doc project.
+	 *
+	 * @param uuid the uuid of this doc project
+	 */
 	@Override
-	public void setUuid(java.lang.String uuid) {
+	public void setUuid(String uuid) {
 		_docProject.setUuid(uuid);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public com.liferay.portal.kernel.model.CacheModel<DocProject>
+		toCacheModel() {
+
+		return _docProject.toCacheModel();
+	}
+
+	@Override
+	public DocProject toEscapedModel() {
+		return new DocProjectWrapper(_docProject.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _docProject.toString();
+	}
+
+	@Override
+	public DocProject toUnescapedModel() {
+		return new DocProjectWrapper(_docProject.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _docProject.toXmlString();
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof DocProjectWrapper)) {
+		if (!(object instanceof DocProjectWrapper)) {
 			return false;
 		}
 
-		DocProjectWrapper docProjectWrapper = (DocProjectWrapper)obj;
+		DocProjectWrapper docProjectWrapper = (DocProjectWrapper)object;
 
 		if (Objects.equals(_docProject, docProjectWrapper._docProject)) {
 			return true;
@@ -678,4 +678,5 @@ public class DocProjectWrapper implements DocProject, ModelWrapper<DocProject> {
 	}
 
 	private final DocProject _docProject;
+
 }

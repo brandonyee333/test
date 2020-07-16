@@ -36,6 +36,10 @@ public class WatsonResourceAuditLocalServiceWrapper
 	/**
 	 * Adds the watson resource audit to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonResourceAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonResourceAudit the watson resource audit
 	 * @return the watson resource audit that was added
 	 */
@@ -76,6 +80,10 @@ public class WatsonResourceAuditLocalServiceWrapper
 	/**
 	 * Deletes the watson resource audit with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonResourceAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonResourceAuditId the primary key of the watson resource audit
 	 * @return the watson resource audit that was removed
 	 * @throws PortalException if a watson resource audit with the primary key could not be found
@@ -91,6 +99,10 @@ public class WatsonResourceAuditLocalServiceWrapper
 
 	/**
 	 * Deletes the watson resource audit from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonResourceAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonResourceAudit the watson resource audit
 	 * @return the watson resource audit that was removed
@@ -287,6 +299,10 @@ public class WatsonResourceAuditLocalServiceWrapper
 
 	/**
 	 * Updates the watson resource audit in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonResourceAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonResourceAudit the watson resource audit
 	 * @return the watson resource audit that was updated

@@ -64,6 +64,10 @@ public interface WatsonActivityAuditLocalService
 	/**
 	 * Adds the watson activity audit to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonActivityAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonActivityAudit the watson activity audit
 	 * @return the watson activity audit that was added
 	 */
@@ -91,6 +95,10 @@ public interface WatsonActivityAuditLocalService
 	/**
 	 * Deletes the watson activity audit with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonActivityAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonActivityAuditId the primary key of the watson activity audit
 	 * @return the watson activity audit that was removed
 	 * @throws PortalException if a watson activity audit with the primary key could not be found
@@ -102,6 +110,10 @@ public interface WatsonActivityAuditLocalService
 
 	/**
 	 * Deletes the watson activity audit from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonActivityAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonActivityAudit the watson activity audit
 	 * @return the watson activity audit that was removed
@@ -238,6 +250,10 @@ public interface WatsonActivityAuditLocalService
 
 	/**
 	 * Updates the watson activity audit in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonActivityAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonActivityAudit the watson activity audit
 	 * @return the watson activity audit that was updated

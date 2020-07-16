@@ -36,6 +36,10 @@ public class WatsonAddressLocalServiceWrapper
 	/**
 	 * Adds the watson address to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonAddressLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonAddress the watson address
 	 * @return the watson address that was added
 	 */
@@ -73,6 +77,10 @@ public class WatsonAddressLocalServiceWrapper
 	/**
 	 * Deletes the watson address with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonAddressLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonAddressId the primary key of the watson address
 	 * @return the watson address that was removed
 	 * @throws PortalException if a watson address with the primary key could not be found
@@ -87,6 +95,10 @@ public class WatsonAddressLocalServiceWrapper
 
 	/**
 	 * Deletes the watson address from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonAddressLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonAddress the watson address
 	 * @return the watson address that was removed
@@ -276,6 +288,10 @@ public class WatsonAddressLocalServiceWrapper
 
 	/**
 	 * Updates the watson address in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonAddressLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonAddress the watson address
 	 * @return the watson address that was updated

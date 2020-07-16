@@ -41,6 +41,10 @@ public class WatsonIncidentRelAuditLocalServiceUtil {
 	/**
 	 * Adds the watson incident rel audit to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonIncidentRelAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonIncidentRelAudit the watson incident rel audit
 	 * @return the watson incident rel audit that was added
 	 */
@@ -79,6 +83,10 @@ public class WatsonIncidentRelAuditLocalServiceUtil {
 	/**
 	 * Deletes the watson incident rel audit with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonIncidentRelAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonIncidentRelAuditId the primary key of the watson incident rel audit
 	 * @return the watson incident rel audit that was removed
 	 * @throws PortalException if a watson incident rel audit with the primary key could not be found
@@ -93,6 +101,10 @@ public class WatsonIncidentRelAuditLocalServiceUtil {
 
 	/**
 	 * Deletes the watson incident rel audit from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonIncidentRelAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonIncidentRelAudit the watson incident rel audit
 	 * @return the watson incident rel audit that was removed
@@ -273,6 +285,10 @@ public class WatsonIncidentRelAuditLocalServiceUtil {
 
 	/**
 	 * Updates the watson incident rel audit in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonIncidentRelAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonIncidentRelAudit the watson incident rel audit
 	 * @return the watson incident rel audit that was updated

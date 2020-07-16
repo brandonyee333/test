@@ -41,6 +41,10 @@ public class WatsonAddressAuditLocalServiceUtil {
 	/**
 	 * Adds the watson address audit to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonAddressAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonAddressAudit the watson address audit
 	 * @return the watson address audit that was added
 	 */
@@ -77,6 +81,10 @@ public class WatsonAddressAuditLocalServiceUtil {
 	/**
 	 * Deletes the watson address audit with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonAddressAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonAddressAuditId the primary key of the watson address audit
 	 * @return the watson address audit that was removed
 	 * @throws PortalException if a watson address audit with the primary key could not be found
@@ -90,6 +98,10 @@ public class WatsonAddressAuditLocalServiceUtil {
 
 	/**
 	 * Deletes the watson address audit from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonAddressAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonAddressAudit the watson address audit
 	 * @return the watson address audit that was removed
@@ -266,6 +278,10 @@ public class WatsonAddressAuditLocalServiceUtil {
 
 	/**
 	 * Updates the watson address audit in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonAddressAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonAddressAudit the watson address audit
 	 * @return the watson address audit that was updated

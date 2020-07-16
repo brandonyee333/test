@@ -74,6 +74,10 @@ public class UserThreadLocalServiceWrapper
 	/**
 	 * Adds the user thread to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect UserThreadLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param userThread the user thread
 	 * @return the user thread that was added
 	 */
@@ -118,6 +122,10 @@ public class UserThreadLocalServiceWrapper
 	/**
 	 * Deletes the user thread with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect UserThreadLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param userThreadId the primary key of the user thread
 	 * @return the user thread that was removed
 	 * @throws PortalException if a user thread with the primary key could not be found
@@ -139,6 +147,10 @@ public class UserThreadLocalServiceWrapper
 
 	/**
 	 * Deletes the user thread from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect UserThreadLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param userThread the user thread
 	 * @return the user thread that was removed
@@ -406,6 +418,10 @@ public class UserThreadLocalServiceWrapper
 
 	/**
 	 * Updates the user thread in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect UserThreadLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param userThread the user thread
 	 * @return the user thread that was updated

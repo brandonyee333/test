@@ -36,6 +36,10 @@ public class JIRAComponentLocalServiceWrapper
 	/**
 	 * Adds the jira component to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect JIRAComponentLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param jiraComponent the jira component
 	 * @return the jira component that was added
 	 */
@@ -73,6 +77,10 @@ public class JIRAComponentLocalServiceWrapper
 	/**
 	 * Deletes the jira component from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect JIRAComponentLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param jiraComponent the jira component
 	 * @return the jira component that was removed
 	 */
@@ -87,6 +95,10 @@ public class JIRAComponentLocalServiceWrapper
 
 	/**
 	 * Deletes the jira component with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect JIRAComponentLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param jiraComponentId the primary key of the jira component
 	 * @return the jira component that was removed
@@ -298,6 +310,10 @@ public class JIRAComponentLocalServiceWrapper
 
 	/**
 	 * Updates the jira component in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect JIRAComponentLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param jiraComponent the jira component
 	 * @return the jira component that was updated

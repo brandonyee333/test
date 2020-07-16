@@ -1,27 +1,25 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.community.github.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-
 import com.liferay.osb.community.github.exception.NoSuchGitHubRepositoryException;
 import com.liferay.osb.community.github.model.GitHubRepository;
 import com.liferay.osb.community.github.service.GitHubRepositoryLocalServiceUtil;
 import com.liferay.osb.community.github.service.persistence.GitHubRepositoryPersistence;
 import com.liferay.osb.community.github.service.persistence.GitHubRepositoryUtil;
-
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -35,20 +33,10 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
-
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-
-import org.junit.runner.RunWith;
 
 import java.io.Serializable;
 
@@ -60,16 +48,27 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 /**
  * @generated
  */
 @RunWith(Arquillian.class)
 public class GitHubRepositoryPersistenceTest {
+
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
-			PersistenceTestRule.INSTANCE,
-			new TransactionalTestRule(Propagation.REQUIRED,
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
+			new TransactionalTestRule(
+				Propagation.REQUIRED,
 				"com.liferay.osb.community.github.service"));
 
 	@Before
@@ -109,7 +108,8 @@ public class GitHubRepositoryPersistenceTest {
 
 		_persistence.remove(newGitHubRepository);
 
-		GitHubRepository existingGitHubRepository = _persistence.fetchByPrimaryKey(newGitHubRepository.getPrimaryKey());
+		GitHubRepository existingGitHubRepository =
+			_persistence.fetchByPrimaryKey(newGitHubRepository.getPrimaryKey());
 
 		Assert.assertNull(existingGitHubRepository);
 	}
@@ -151,35 +151,45 @@ public class GitHubRepositoryPersistenceTest {
 
 		_gitHubRepositories.add(_persistence.update(newGitHubRepository));
 
-		GitHubRepository existingGitHubRepository = _persistence.findByPrimaryKey(newGitHubRepository.getPrimaryKey());
+		GitHubRepository existingGitHubRepository =
+			_persistence.findByPrimaryKey(newGitHubRepository.getPrimaryKey());
 
-		Assert.assertEquals(existingGitHubRepository.getGitHubRepositoryId(),
+		Assert.assertEquals(
+			existingGitHubRepository.getGitHubRepositoryId(),
 			newGitHubRepository.getGitHubRepositoryId());
-		Assert.assertEquals(existingGitHubRepository.getCompanyId(),
+		Assert.assertEquals(
+			existingGitHubRepository.getCompanyId(),
 			newGitHubRepository.getCompanyId());
-		Assert.assertEquals(existingGitHubRepository.getUserId(),
+		Assert.assertEquals(
+			existingGitHubRepository.getUserId(),
 			newGitHubRepository.getUserId());
-		Assert.assertEquals(existingGitHubRepository.getUserName(),
+		Assert.assertEquals(
+			existingGitHubRepository.getUserName(),
 			newGitHubRepository.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingGitHubRepository.getCreateDate()),
+		Assert.assertEquals(
+			Time.getShortTimestamp(existingGitHubRepository.getCreateDate()),
 			Time.getShortTimestamp(newGitHubRepository.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingGitHubRepository.getModifiedDate()),
+		Assert.assertEquals(
+			Time.getShortTimestamp(existingGitHubRepository.getModifiedDate()),
 			Time.getShortTimestamp(newGitHubRepository.getModifiedDate()));
-		Assert.assertEquals(existingGitHubRepository.getOwner(),
+		Assert.assertEquals(
+			existingGitHubRepository.getOwner(),
 			newGitHubRepository.getOwner());
-		Assert.assertEquals(existingGitHubRepository.getName(),
-			newGitHubRepository.getName());
-		Assert.assertEquals(existingGitHubRepository.getCommits(),
+		Assert.assertEquals(
+			existingGitHubRepository.getName(), newGitHubRepository.getName());
+		Assert.assertEquals(
+			existingGitHubRepository.getCommits(),
 			newGitHubRepository.getCommits());
-		Assert.assertEquals(existingGitHubRepository.getOpenIssues(),
+		Assert.assertEquals(
+			existingGitHubRepository.getOpenIssues(),
 			newGitHubRepository.getOpenIssues());
-		Assert.assertEquals(existingGitHubRepository.getStars(),
+		Assert.assertEquals(
+			existingGitHubRepository.getStars(),
 			newGitHubRepository.getStars());
-		Assert.assertEquals(existingGitHubRepository.getUrl(),
-			newGitHubRepository.getUrl());
-		Assert.assertEquals(Time.getShortTimestamp(
+		Assert.assertEquals(
+			existingGitHubRepository.getUrl(), newGitHubRepository.getUrl());
+		Assert.assertEquals(
+			Time.getShortTimestamp(
 				existingGitHubRepository.getRepositoryCreateDate()),
 			Time.getShortTimestamp(
 				newGitHubRepository.getRepositoryCreateDate()));
@@ -187,9 +197,9 @@ public class GitHubRepositoryPersistenceTest {
 
 	@Test
 	public void testCountByO_N() throws Exception {
-		_persistence.countByO_N(StringPool.BLANK, StringPool.BLANK);
+		_persistence.countByO_N("", "");
 
-		_persistence.countByO_N(StringPool.NULL, StringPool.NULL);
+		_persistence.countByO_N("null", "null");
 
 		_persistence.countByO_N((String)null, (String)null);
 	}
@@ -198,7 +208,8 @@ public class GitHubRepositoryPersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		GitHubRepository newGitHubRepository = addGitHubRepository();
 
-		GitHubRepository existingGitHubRepository = _persistence.findByPrimaryKey(newGitHubRepository.getPrimaryKey());
+		GitHubRepository existingGitHubRepository =
+			_persistence.findByPrimaryKey(newGitHubRepository.getPrimaryKey());
 
 		Assert.assertEquals(existingGitHubRepository, newGitHubRepository);
 	}
@@ -212,23 +223,25 @@ public class GitHubRepositoryPersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			getOrderByComparator());
+		_persistence.findAll(
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
 	}
 
 	protected OrderByComparator<GitHubRepository> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create("OSBCommunity_GitHubRepository",
-			"gitHubRepositoryId", true, "companyId", true, "userId", true,
-			"userName", true, "createDate", true, "modifiedDate", true,
-			"owner", true, "name", true, "commits", true, "openIssues", true,
-			"stars", true, "url", true, "repositoryCreateDate", true);
+		return OrderByComparatorFactoryUtil.create(
+			"OSBCommunity_GitHubRepository", "gitHubRepositoryId", true,
+			"companyId", true, "userId", true, "userName", true, "createDate",
+			true, "modifiedDate", true, "owner", true, "name", true, "commits",
+			true, "openIssues", true, "stars", true, "url", true,
+			"repositoryCreateDate", true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		GitHubRepository newGitHubRepository = addGitHubRepository();
 
-		GitHubRepository existingGitHubRepository = _persistence.fetchByPrimaryKey(newGitHubRepository.getPrimaryKey());
+		GitHubRepository existingGitHubRepository =
+			_persistence.fetchByPrimaryKey(newGitHubRepository.getPrimaryKey());
 
 		Assert.assertEquals(existingGitHubRepository, newGitHubRepository);
 	}
@@ -237,7 +250,8 @@ public class GitHubRepositoryPersistenceTest {
 	public void testFetchByPrimaryKeyMissing() throws Exception {
 		long pk = RandomTestUtil.nextLong();
 
-		GitHubRepository missingGitHubRepository = _persistence.fetchByPrimaryKey(pk);
+		GitHubRepository missingGitHubRepository =
+			_persistence.fetchByPrimaryKey(pk);
 
 		Assert.assertNull(missingGitHubRepository);
 	}
@@ -245,6 +259,7 @@ public class GitHubRepositoryPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
+
 		GitHubRepository newGitHubRepository1 = addGitHubRepository();
 		GitHubRepository newGitHubRepository2 = addGitHubRepository();
 
@@ -253,18 +268,22 @@ public class GitHubRepositoryPersistenceTest {
 		primaryKeys.add(newGitHubRepository1.getPrimaryKey());
 		primaryKeys.add(newGitHubRepository2.getPrimaryKey());
 
-		Map<Serializable, GitHubRepository> gitHubRepositories = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, GitHubRepository> gitHubRepositories =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(2, gitHubRepositories.size());
-		Assert.assertEquals(newGitHubRepository1,
+		Assert.assertEquals(
+			newGitHubRepository1,
 			gitHubRepositories.get(newGitHubRepository1.getPrimaryKey()));
-		Assert.assertEquals(newGitHubRepository2,
+		Assert.assertEquals(
+			newGitHubRepository2,
 			gitHubRepositories.get(newGitHubRepository2.getPrimaryKey()));
 	}
 
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
+
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -274,7 +293,8 @@ public class GitHubRepositoryPersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, GitHubRepository> gitHubRepositories = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, GitHubRepository> gitHubRepositories =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(gitHubRepositories.isEmpty());
 	}
@@ -282,6 +302,7 @@ public class GitHubRepositoryPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
+
 		GitHubRepository newGitHubRepository = addGitHubRepository();
 
 		long pk = RandomTestUtil.nextLong();
@@ -291,36 +312,39 @@ public class GitHubRepositoryPersistenceTest {
 		primaryKeys.add(newGitHubRepository.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, GitHubRepository> gitHubRepositories = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, GitHubRepository> gitHubRepositories =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, gitHubRepositories.size());
-		Assert.assertEquals(newGitHubRepository,
+		Assert.assertEquals(
+			newGitHubRepository,
 			gitHubRepositories.get(newGitHubRepository.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, GitHubRepository> gitHubRepositories = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, GitHubRepository> gitHubRepositories =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(gitHubRepositories.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
 		GitHubRepository newGitHubRepository = addGitHubRepository();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newGitHubRepository.getPrimaryKey());
 
-		Map<Serializable, GitHubRepository> gitHubRepositories = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, GitHubRepository> gitHubRepositories =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, gitHubRepositories.size());
-		Assert.assertEquals(newGitHubRepository,
+		Assert.assertEquals(
+			newGitHubRepository,
 			gitHubRepositories.get(newGitHubRepository.getPrimaryKey()));
 	}
 
@@ -328,15 +352,19 @@ public class GitHubRepositoryPersistenceTest {
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery = GitHubRepositoryLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			GitHubRepositoryLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<GitHubRepository>() {
+		actionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<GitHubRepository>() {
+
 				@Override
 				public void performAction(GitHubRepository gitHubRepository) {
 					Assert.assertNotNull(gitHubRepository);
 
 					count.increment();
 				}
+
 			});
 
 		actionableDynamicQuery.performActions();
@@ -345,17 +373,19 @@ public class GitHubRepositoryPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting()
-		throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
 		GitHubRepository newGitHubRepository = addGitHubRepository();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(GitHubRepository.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			GitHubRepository.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("gitHubRepositoryId",
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"gitHubRepositoryId",
 				newGitHubRepository.getGitHubRepositoryId()));
 
-		List<GitHubRepository> result = _persistence.findWithDynamicQuery(dynamicQuery);
+		List<GitHubRepository> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
 
 		Assert.assertEquals(1, result.size());
 
@@ -366,32 +396,35 @@ public class GitHubRepositoryPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(GitHubRepository.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			GitHubRepository.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("gitHubRepositoryId",
-				RandomTestUtil.nextLong()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"gitHubRepositoryId", RandomTestUtil.nextLong()));
 
-		List<GitHubRepository> result = _persistence.findWithDynamicQuery(dynamicQuery);
+		List<GitHubRepository> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
 
 		Assert.assertEquals(0, result.size());
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting()
-		throws Exception {
+	public void testDynamicQueryByProjectionExisting() throws Exception {
 		GitHubRepository newGitHubRepository = addGitHubRepository();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(GitHubRepository.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			GitHubRepository.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property(
-				"gitHubRepositoryId"));
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.property("gitHubRepositoryId"));
 
-		Object newGitHubRepositoryId = newGitHubRepository.getGitHubRepositoryId();
+		Object newGitHubRepositoryId =
+			newGitHubRepository.getGitHubRepositoryId();
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("gitHubRepositoryId",
-				new Object[] { newGitHubRepositoryId }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"gitHubRepositoryId", new Object[] {newGitHubRepositoryId}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -404,14 +437,16 @@ public class GitHubRepositoryPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(GitHubRepository.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			GitHubRepository.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property(
-				"gitHubRepositoryId"));
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.property("gitHubRepositoryId"));
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("gitHubRepositoryId",
-				new Object[] { RandomTestUtil.nextLong() }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"gitHubRepositoryId",
+				new Object[] {RandomTestUtil.nextLong()}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -424,14 +459,21 @@ public class GitHubRepositoryPersistenceTest {
 
 		_persistence.clearCache();
 
-		GitHubRepository existingGitHubRepository = _persistence.findByPrimaryKey(newGitHubRepository.getPrimaryKey());
+		GitHubRepository existingGitHubRepository =
+			_persistence.findByPrimaryKey(newGitHubRepository.getPrimaryKey());
 
-		Assert.assertTrue(Objects.equals(existingGitHubRepository.getOwner(),
-				ReflectionTestUtil.invoke(existingGitHubRepository,
-					"getOriginalOwner", new Class<?>[0])));
-		Assert.assertTrue(Objects.equals(existingGitHubRepository.getName(),
-				ReflectionTestUtil.invoke(existingGitHubRepository,
-					"getOriginalName", new Class<?>[0])));
+		Assert.assertTrue(
+			Objects.equals(
+				existingGitHubRepository.getOwner(),
+				ReflectionTestUtil.invoke(
+					existingGitHubRepository, "getOriginalOwner",
+					new Class<?>[0])));
+		Assert.assertTrue(
+			Objects.equals(
+				existingGitHubRepository.getName(),
+				ReflectionTestUtil.invoke(
+					existingGitHubRepository, "getOriginalName",
+					new Class<?>[0])));
 	}
 
 	protected GitHubRepository addGitHubRepository() throws Exception {
@@ -468,7 +510,9 @@ public class GitHubRepositoryPersistenceTest {
 		return gitHubRepository;
 	}
 
-	private List<GitHubRepository> _gitHubRepositories = new ArrayList<GitHubRepository>();
+	private List<GitHubRepository> _gitHubRepositories =
+		new ArrayList<GitHubRepository>();
 	private GitHubRepositoryPersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
+
 }

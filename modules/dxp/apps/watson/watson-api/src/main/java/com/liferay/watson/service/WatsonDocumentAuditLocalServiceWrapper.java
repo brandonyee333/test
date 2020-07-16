@@ -36,6 +36,10 @@ public class WatsonDocumentAuditLocalServiceWrapper
 	/**
 	 * Adds the watson document audit to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonDocumentAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonDocumentAudit the watson document audit
 	 * @return the watson document audit that was added
 	 */
@@ -76,6 +80,10 @@ public class WatsonDocumentAuditLocalServiceWrapper
 	/**
 	 * Deletes the watson document audit with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonDocumentAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonDocumentAuditId the primary key of the watson document audit
 	 * @return the watson document audit that was removed
 	 * @throws PortalException if a watson document audit with the primary key could not be found
@@ -91,6 +99,10 @@ public class WatsonDocumentAuditLocalServiceWrapper
 
 	/**
 	 * Deletes the watson document audit from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonDocumentAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonDocumentAudit the watson document audit
 	 * @return the watson document audit that was removed
@@ -287,6 +299,10 @@ public class WatsonDocumentAuditLocalServiceWrapper
 
 	/**
 	 * Updates the watson document audit in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonDocumentAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonDocumentAudit the watson document audit
 	 * @return the watson document audit that was updated

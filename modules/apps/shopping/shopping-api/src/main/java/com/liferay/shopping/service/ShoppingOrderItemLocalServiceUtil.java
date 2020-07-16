@@ -41,6 +41,10 @@ public class ShoppingOrderItemLocalServiceUtil {
 	/**
 	 * Adds the shopping order item to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ShoppingOrderItemLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param shoppingOrderItem the shopping order item
 	 * @return the shopping order item that was added
 	 */
@@ -77,6 +81,10 @@ public class ShoppingOrderItemLocalServiceUtil {
 	/**
 	 * Deletes the shopping order item with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ShoppingOrderItemLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param orderItemId the primary key of the shopping order item
 	 * @return the shopping order item that was removed
 	 * @throws PortalException if a shopping order item with the primary key could not be found
@@ -90,6 +98,10 @@ public class ShoppingOrderItemLocalServiceUtil {
 
 	/**
 	 * Deletes the shopping order item from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ShoppingOrderItemLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param shoppingOrderItem the shopping order item
 	 * @return the shopping order item that was removed
@@ -272,6 +284,10 @@ public class ShoppingOrderItemLocalServiceUtil {
 
 	/**
 	 * Updates the shopping order item in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ShoppingOrderItemLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param shoppingOrderItem the shopping order item
 	 * @return the shopping order item that was updated

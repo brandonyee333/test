@@ -41,6 +41,10 @@ public class AuditFormLocalServiceUtil {
 	/**
 	 * Adds the audit form to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AuditFormLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param auditForm the audit form
 	 * @return the audit form that was added
 	 */
@@ -74,6 +78,10 @@ public class AuditFormLocalServiceUtil {
 	/**
 	 * Deletes the audit form from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AuditFormLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param auditForm the audit form
 	 * @return the audit form that was removed
 	 */
@@ -85,6 +93,10 @@ public class AuditFormLocalServiceUtil {
 
 	/**
 	 * Deletes the audit form with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AuditFormLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param auditFormId the primary key of the audit form
 	 * @return the audit form that was removed
@@ -273,6 +285,10 @@ public class AuditFormLocalServiceUtil {
 
 	/**
 	 * Updates the audit form in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AuditFormLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param auditForm the audit form
 	 * @return the audit form that was updated

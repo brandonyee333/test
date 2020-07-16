@@ -60,6 +60,10 @@ public class ZendeskArticleLocalServiceUtil {
 	/**
 	 * Adds the zendesk article to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ZendeskArticleLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param zendeskArticle the zendesk article
 	 * @return the zendesk article that was added
 	 */
@@ -99,6 +103,10 @@ public class ZendeskArticleLocalServiceUtil {
 	/**
 	 * Deletes the zendesk article with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ZendeskArticleLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param zendeskArticleId the primary key of the zendesk article
 	 * @return the zendesk article that was removed
 	 * @throws PortalException if a zendesk article with the primary key could not be found
@@ -113,6 +121,10 @@ public class ZendeskArticleLocalServiceUtil {
 
 	/**
 	 * Deletes the zendesk article from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ZendeskArticleLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param zendeskArticle the zendesk article
 	 * @return the zendesk article that was removed
@@ -353,6 +365,10 @@ public class ZendeskArticleLocalServiceUtil {
 
 	/**
 	 * Updates the zendesk article in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ZendeskArticleLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param zendeskArticle the zendesk article
 	 * @return the zendesk article that was updated

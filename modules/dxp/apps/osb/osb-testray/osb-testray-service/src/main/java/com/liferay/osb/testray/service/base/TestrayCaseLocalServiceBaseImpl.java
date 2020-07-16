@@ -1,20 +1,18 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.service.base;
-
-import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.testray.model.TestrayCase;
 import com.liferay.osb.testray.service.TestrayCaseLocalService;
@@ -39,7 +37,6 @@ import com.liferay.osb.testray.service.persistence.TestraySubtaskPersistence;
 import com.liferay.osb.testray.service.persistence.TestraySuitePersistence;
 import com.liferay.osb.testray.service.persistence.TestrayTaskPersistence;
 import com.liferay.osb.testray.service.persistence.TestrayTeamPersistence;
-
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -59,8 +56,10 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -80,21 +79,24 @@ import javax.sql.DataSource;
  *
  * @author Ethan Bustad
  * @see com.liferay.osb.testray.service.impl.TestrayCaseLocalServiceImpl
- * @see com.liferay.osb.testray.service.TestrayCaseLocalServiceUtil
  * @generated
  */
-@ProviderType
 public abstract class TestrayCaseLocalServiceBaseImpl
-	extends BaseLocalServiceImpl implements TestrayCaseLocalService,
-		IdentifiableOSGiService {
+	extends BaseLocalServiceImpl
+	implements IdentifiableOSGiService, TestrayCaseLocalService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link com.liferay.osb.testray.service.TestrayCaseLocalServiceUtil} to access the testray case local service.
+	 * Never modify or reference this class directly. Use <code>TestrayCaseLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.testray.service.TestrayCaseLocalServiceUtil</code>.
 	 */
 
 	/**
 	 * Adds the testray case to the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect TestrayCaseLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param testrayCase the testray case
 	 * @return the testray case that was added
@@ -114,12 +116,17 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @return the new testray case
 	 */
 	@Override
+	@Transactional(enabled = false)
 	public TestrayCase createTestrayCase(long testrayCaseId) {
 		return testrayCasePersistence.create(testrayCaseId);
 	}
 
 	/**
 	 * Deletes the testray case with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect TestrayCaseLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param testrayCaseId the primary key of the testray case
 	 * @return the testray case that was removed
@@ -129,11 +136,16 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	@Override
 	public TestrayCase deleteTestrayCase(long testrayCaseId)
 		throws PortalException {
+
 		return testrayCasePersistence.remove(testrayCaseId);
 	}
 
 	/**
 	 * Deletes the testray case from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect TestrayCaseLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param testrayCase the testray case
 	 * @return the testray case that was removed
@@ -148,8 +160,8 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(TestrayCase.class,
-			clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(
+			TestrayCase.class, clazz.getClassLoader());
 	}
 
 	/**
@@ -167,7 +179,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.testray.model.impl.TestrayCaseModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.testray.model.impl.TestrayCaseModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -176,17 +188,18 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end) {
-		return testrayCasePersistence.findWithDynamicQuery(dynamicQuery, start,
-			end);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
+
+		return testrayCasePersistence.findWithDynamicQuery(
+			dynamicQuery, start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.testray.model.impl.TestrayCaseModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.testray.model.impl.TestrayCaseModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -196,10 +209,12 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end, OrderByComparator<T> orderByComparator) {
-		return testrayCasePersistence.findWithDynamicQuery(dynamicQuery, start,
-			end, orderByComparator);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
+
+		return testrayCasePersistence.findWithDynamicQuery(
+			dynamicQuery, start, end, orderByComparator);
 	}
 
 	/**
@@ -221,10 +236,11 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection) {
-		return testrayCasePersistence.countWithDynamicQuery(dynamicQuery,
-			projection);
+	public long dynamicQueryCount(
+		DynamicQuery dynamicQuery, Projection projection) {
+
+		return testrayCasePersistence.countWithDynamicQuery(
+			dynamicQuery, projection);
 	}
 
 	@Override
@@ -242,12 +258,14 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	@Override
 	public TestrayCase getTestrayCase(long testrayCaseId)
 		throws PortalException {
+
 		return testrayCasePersistence.findByPrimaryKey(testrayCaseId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			new DefaultActionableDynamicQuery();
 
 		actionableDynamicQuery.setBaseLocalService(testrayCaseLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
@@ -259,10 +277,14 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
+	public IndexableActionableDynamicQuery
+		getIndexableActionableDynamicQuery() {
 
-		indexableActionableDynamicQuery.setBaseLocalService(testrayCaseLocalService);
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
+			new IndexableActionableDynamicQuery();
+
+		indexableActionableDynamicQuery.setBaseLocalService(
+			testrayCaseLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(TestrayCase.class);
 
@@ -274,6 +296,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
+
 		actionableDynamicQuery.setBaseLocalService(testrayCaseLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(TestrayCase.class);
@@ -287,12 +310,22 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-		return testrayCaseLocalService.deleteTestrayCase((TestrayCase)persistedModel);
+
+		return testrayCaseLocalService.deleteTestrayCase(
+			(TestrayCase)persistedModel);
 	}
 
+	public BasePersistence<TestrayCase> getBasePersistence() {
+		return testrayCasePersistence;
+	}
+
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
+
 		return testrayCasePersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -300,7 +333,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * Returns a range of all the testray cases.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.testray.model.impl.TestrayCaseModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.testray.model.impl.TestrayCaseModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray cases
@@ -325,6 +358,10 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	/**
 	 * Updates the testray case in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect TestrayCaseLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param testrayCase the testray case
 	 * @return the testray case that was updated
 	 */
@@ -337,32 +374,36 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	/**
 	 */
 	@Override
-	public void addTestrayBuildTestrayCase(long testrayBuildId,
-		long testrayCaseId) {
+	public void addTestrayBuildTestrayCase(
+		long testrayBuildId, long testrayCaseId) {
+
 		testrayBuildPersistence.addTestrayCase(testrayBuildId, testrayCaseId);
 	}
 
 	/**
 	 */
 	@Override
-	public void addTestrayBuildTestrayCase(long testrayBuildId,
-		TestrayCase testrayCase) {
+	public void addTestrayBuildTestrayCase(
+		long testrayBuildId, TestrayCase testrayCase) {
+
 		testrayBuildPersistence.addTestrayCase(testrayBuildId, testrayCase);
 	}
 
 	/**
 	 */
 	@Override
-	public void addTestrayBuildTestrayCases(long testrayBuildId,
-		long[] testrayCaseIds) {
+	public void addTestrayBuildTestrayCases(
+		long testrayBuildId, long[] testrayCaseIds) {
+
 		testrayBuildPersistence.addTestrayCases(testrayBuildId, testrayCaseIds);
 	}
 
 	/**
 	 */
 	@Override
-	public void addTestrayBuildTestrayCases(long testrayBuildId,
-		List<TestrayCase> testrayCases) {
+	public void addTestrayBuildTestrayCases(
+		long testrayBuildId, List<TestrayCase> testrayCases) {
+
 		testrayBuildPersistence.addTestrayCases(testrayBuildId, testrayCases);
 	}
 
@@ -376,34 +417,40 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	/**
 	 */
 	@Override
-	public void deleteTestrayBuildTestrayCase(long testrayBuildId,
-		long testrayCaseId) {
-		testrayBuildPersistence.removeTestrayCase(testrayBuildId, testrayCaseId);
+	public void deleteTestrayBuildTestrayCase(
+		long testrayBuildId, long testrayCaseId) {
+
+		testrayBuildPersistence.removeTestrayCase(
+			testrayBuildId, testrayCaseId);
 	}
 
 	/**
 	 */
 	@Override
-	public void deleteTestrayBuildTestrayCase(long testrayBuildId,
-		TestrayCase testrayCase) {
+	public void deleteTestrayBuildTestrayCase(
+		long testrayBuildId, TestrayCase testrayCase) {
+
 		testrayBuildPersistence.removeTestrayCase(testrayBuildId, testrayCase);
 	}
 
 	/**
 	 */
 	@Override
-	public void deleteTestrayBuildTestrayCases(long testrayBuildId,
-		long[] testrayCaseIds) {
-		testrayBuildPersistence.removeTestrayCases(testrayBuildId,
-			testrayCaseIds);
+	public void deleteTestrayBuildTestrayCases(
+		long testrayBuildId, long[] testrayCaseIds) {
+
+		testrayBuildPersistence.removeTestrayCases(
+			testrayBuildId, testrayCaseIds);
 	}
 
 	/**
 	 */
 	@Override
-	public void deleteTestrayBuildTestrayCases(long testrayBuildId,
-		List<TestrayCase> testrayCases) {
-		testrayBuildPersistence.removeTestrayCases(testrayBuildId, testrayCases);
+	public void deleteTestrayBuildTestrayCases(
+		long testrayBuildId, List<TestrayCase> testrayCases) {
+
+		testrayBuildPersistence.removeTestrayCases(
+			testrayBuildId, testrayCases);
 	}
 
 	/**
@@ -427,19 +474,22 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	/**
 	 */
 	@Override
-	public List<TestrayCase> getTestrayBuildTestrayCases(long testrayBuildId,
-		int start, int end) {
-		return testrayBuildPersistence.getTestrayCases(testrayBuildId, start,
-			end);
+	public List<TestrayCase> getTestrayBuildTestrayCases(
+		long testrayBuildId, int start, int end) {
+
+		return testrayBuildPersistence.getTestrayCases(
+			testrayBuildId, start, end);
 	}
 
 	/**
 	 */
 	@Override
-	public List<TestrayCase> getTestrayBuildTestrayCases(long testrayBuildId,
-		int start, int end, OrderByComparator<TestrayCase> orderByComparator) {
-		return testrayBuildPersistence.getTestrayCases(testrayBuildId, start,
-			end, orderByComparator);
+	public List<TestrayCase> getTestrayBuildTestrayCases(
+		long testrayBuildId, int start, int end,
+		OrderByComparator<TestrayCase> orderByComparator) {
+
+		return testrayBuildPersistence.getTestrayCases(
+			testrayBuildId, start, end, orderByComparator);
 	}
 
 	/**
@@ -452,10 +502,11 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	/**
 	 */
 	@Override
-	public boolean hasTestrayBuildTestrayCase(long testrayBuildId,
-		long testrayCaseId) {
-		return testrayBuildPersistence.containsTestrayCase(testrayBuildId,
-			testrayCaseId);
+	public boolean hasTestrayBuildTestrayCase(
+		long testrayBuildId, long testrayCaseId) {
+
+		return testrayBuildPersistence.containsTestrayCase(
+			testrayBuildId, testrayCaseId);
 	}
 
 	/**
@@ -468,45 +519,50 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	/**
 	 */
 	@Override
-	public void setTestrayBuildTestrayCases(long testrayBuildId,
-		long[] testrayCaseIds) {
+	public void setTestrayBuildTestrayCases(
+		long testrayBuildId, long[] testrayCaseIds) {
+
 		testrayBuildPersistence.setTestrayCases(testrayBuildId, testrayCaseIds);
 	}
 
 	/**
 	 */
 	@Override
-	public void addTestrayComponentTestrayCase(long testrayComponentId,
-		long testrayCaseId) {
-		testrayComponentPersistence.addTestrayCase(testrayComponentId,
-			testrayCaseId);
+	public void addTestrayComponentTestrayCase(
+		long testrayComponentId, long testrayCaseId) {
+
+		testrayComponentPersistence.addTestrayCase(
+			testrayComponentId, testrayCaseId);
 	}
 
 	/**
 	 */
 	@Override
-	public void addTestrayComponentTestrayCase(long testrayComponentId,
-		TestrayCase testrayCase) {
-		testrayComponentPersistence.addTestrayCase(testrayComponentId,
-			testrayCase);
+	public void addTestrayComponentTestrayCase(
+		long testrayComponentId, TestrayCase testrayCase) {
+
+		testrayComponentPersistence.addTestrayCase(
+			testrayComponentId, testrayCase);
 	}
 
 	/**
 	 */
 	@Override
-	public void addTestrayComponentTestrayCases(long testrayComponentId,
-		long[] testrayCaseIds) {
-		testrayComponentPersistence.addTestrayCases(testrayComponentId,
-			testrayCaseIds);
+	public void addTestrayComponentTestrayCases(
+		long testrayComponentId, long[] testrayCaseIds) {
+
+		testrayComponentPersistence.addTestrayCases(
+			testrayComponentId, testrayCaseIds);
 	}
 
 	/**
 	 */
 	@Override
-	public void addTestrayComponentTestrayCases(long testrayComponentId,
-		List<TestrayCase> testrayCases) {
-		testrayComponentPersistence.addTestrayCases(testrayComponentId,
-			testrayCases);
+	public void addTestrayComponentTestrayCases(
+		long testrayComponentId, List<TestrayCase> testrayCases) {
+
+		testrayComponentPersistence.addTestrayCases(
+			testrayComponentId, testrayCases);
 	}
 
 	/**
@@ -519,37 +575,41 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	/**
 	 */
 	@Override
-	public void deleteTestrayComponentTestrayCase(long testrayComponentId,
-		long testrayCaseId) {
-		testrayComponentPersistence.removeTestrayCase(testrayComponentId,
-			testrayCaseId);
+	public void deleteTestrayComponentTestrayCase(
+		long testrayComponentId, long testrayCaseId) {
+
+		testrayComponentPersistence.removeTestrayCase(
+			testrayComponentId, testrayCaseId);
 	}
 
 	/**
 	 */
 	@Override
-	public void deleteTestrayComponentTestrayCase(long testrayComponentId,
-		TestrayCase testrayCase) {
-		testrayComponentPersistence.removeTestrayCase(testrayComponentId,
-			testrayCase);
+	public void deleteTestrayComponentTestrayCase(
+		long testrayComponentId, TestrayCase testrayCase) {
+
+		testrayComponentPersistence.removeTestrayCase(
+			testrayComponentId, testrayCase);
 	}
 
 	/**
 	 */
 	@Override
-	public void deleteTestrayComponentTestrayCases(long testrayComponentId,
-		long[] testrayCaseIds) {
-		testrayComponentPersistence.removeTestrayCases(testrayComponentId,
-			testrayCaseIds);
+	public void deleteTestrayComponentTestrayCases(
+		long testrayComponentId, long[] testrayCaseIds) {
+
+		testrayComponentPersistence.removeTestrayCases(
+			testrayComponentId, testrayCaseIds);
 	}
 
 	/**
 	 */
 	@Override
-	public void deleteTestrayComponentTestrayCases(long testrayComponentId,
-		List<TestrayCase> testrayCases) {
-		testrayComponentPersistence.removeTestrayCases(testrayComponentId,
-			testrayCases);
+	public void deleteTestrayComponentTestrayCases(
+		long testrayComponentId, List<TestrayCase> testrayCases) {
+
+		testrayComponentPersistence.removeTestrayCases(
+			testrayComponentId, testrayCases);
 	}
 
 	/**
@@ -560,7 +620,8 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	@Override
 	public long[] getTestrayComponentPrimaryKeys(long testrayCaseId) {
-		return testrayCasePersistence.getTestrayComponentPrimaryKeys(testrayCaseId);
+		return testrayCasePersistence.getTestrayComponentPrimaryKeys(
+			testrayCaseId);
 	}
 
 	/**
@@ -568,6 +629,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	@Override
 	public List<TestrayCase> getTestrayComponentTestrayCases(
 		long testrayComponentId) {
+
 		return testrayComponentPersistence.getTestrayCases(testrayComponentId);
 	}
 
@@ -576,8 +638,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	@Override
 	public List<TestrayCase> getTestrayComponentTestrayCases(
 		long testrayComponentId, int start, int end) {
-		return testrayComponentPersistence.getTestrayCases(testrayComponentId,
-			start, end);
+
+		return testrayComponentPersistence.getTestrayCases(
+			testrayComponentId, start, end);
 	}
 
 	/**
@@ -586,76 +649,85 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	public List<TestrayCase> getTestrayComponentTestrayCases(
 		long testrayComponentId, int start, int end,
 		OrderByComparator<TestrayCase> orderByComparator) {
-		return testrayComponentPersistence.getTestrayCases(testrayComponentId,
-			start, end, orderByComparator);
+
+		return testrayComponentPersistence.getTestrayCases(
+			testrayComponentId, start, end, orderByComparator);
 	}
 
 	/**
 	 */
 	@Override
 	public int getTestrayComponentTestrayCasesCount(long testrayComponentId) {
-		return testrayComponentPersistence.getTestrayCasesSize(testrayComponentId);
+		return testrayComponentPersistence.getTestrayCasesSize(
+			testrayComponentId);
 	}
 
 	/**
 	 */
 	@Override
-	public boolean hasTestrayComponentTestrayCase(long testrayComponentId,
-		long testrayCaseId) {
-		return testrayComponentPersistence.containsTestrayCase(testrayComponentId,
-			testrayCaseId);
+	public boolean hasTestrayComponentTestrayCase(
+		long testrayComponentId, long testrayCaseId) {
+
+		return testrayComponentPersistence.containsTestrayCase(
+			testrayComponentId, testrayCaseId);
 	}
 
 	/**
 	 */
 	@Override
 	public boolean hasTestrayComponentTestrayCases(long testrayComponentId) {
-		return testrayComponentPersistence.containsTestrayCases(testrayComponentId);
+		return testrayComponentPersistence.containsTestrayCases(
+			testrayComponentId);
 	}
 
 	/**
 	 */
 	@Override
-	public void setTestrayComponentTestrayCases(long testrayComponentId,
-		long[] testrayCaseIds) {
-		testrayComponentPersistence.setTestrayCases(testrayComponentId,
-			testrayCaseIds);
+	public void setTestrayComponentTestrayCases(
+		long testrayComponentId, long[] testrayCaseIds) {
+
+		testrayComponentPersistence.setTestrayCases(
+			testrayComponentId, testrayCaseIds);
 	}
 
 	/**
 	 */
 	@Override
-	public void addTestrayRequirementTestrayCase(long testrayRequirementId,
-		long testrayCaseId) {
-		testrayRequirementPersistence.addTestrayCase(testrayRequirementId,
-			testrayCaseId);
+	public void addTestrayRequirementTestrayCase(
+		long testrayRequirementId, long testrayCaseId) {
+
+		testrayRequirementPersistence.addTestrayCase(
+			testrayRequirementId, testrayCaseId);
 	}
 
 	/**
 	 */
 	@Override
-	public void addTestrayRequirementTestrayCase(long testrayRequirementId,
-		TestrayCase testrayCase) {
-		testrayRequirementPersistence.addTestrayCase(testrayRequirementId,
-			testrayCase);
+	public void addTestrayRequirementTestrayCase(
+		long testrayRequirementId, TestrayCase testrayCase) {
+
+		testrayRequirementPersistence.addTestrayCase(
+			testrayRequirementId, testrayCase);
 	}
 
 	/**
 	 */
 	@Override
-	public void addTestrayRequirementTestrayCases(long testrayRequirementId,
-		long[] testrayCaseIds) {
-		testrayRequirementPersistence.addTestrayCases(testrayRequirementId,
-			testrayCaseIds);
+	public void addTestrayRequirementTestrayCases(
+		long testrayRequirementId, long[] testrayCaseIds) {
+
+		testrayRequirementPersistence.addTestrayCases(
+			testrayRequirementId, testrayCaseIds);
 	}
 
 	/**
 	 */
 	@Override
-	public void addTestrayRequirementTestrayCases(long testrayRequirementId,
-		List<TestrayCase> testrayCases) {
-		testrayRequirementPersistence.addTestrayCases(testrayRequirementId,
-			testrayCases);
+	public void addTestrayRequirementTestrayCases(
+		long testrayRequirementId, List<TestrayCase> testrayCases) {
+
+		testrayRequirementPersistence.addTestrayCases(
+			testrayRequirementId, testrayCases);
 	}
 
 	/**
@@ -668,19 +740,21 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	/**
 	 */
 	@Override
-	public void deleteTestrayRequirementTestrayCase(long testrayRequirementId,
-		long testrayCaseId) {
-		testrayRequirementPersistence.removeTestrayCase(testrayRequirementId,
-			testrayCaseId);
+	public void deleteTestrayRequirementTestrayCase(
+		long testrayRequirementId, long testrayCaseId) {
+
+		testrayRequirementPersistence.removeTestrayCase(
+			testrayRequirementId, testrayCaseId);
 	}
 
 	/**
 	 */
 	@Override
-	public void deleteTestrayRequirementTestrayCase(long testrayRequirementId,
-		TestrayCase testrayCase) {
-		testrayRequirementPersistence.removeTestrayCase(testrayRequirementId,
-			testrayCase);
+	public void deleteTestrayRequirementTestrayCase(
+		long testrayRequirementId, TestrayCase testrayCase) {
+
+		testrayRequirementPersistence.removeTestrayCase(
+			testrayRequirementId, testrayCase);
 	}
 
 	/**
@@ -688,8 +762,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	@Override
 	public void deleteTestrayRequirementTestrayCases(
 		long testrayRequirementId, long[] testrayCaseIds) {
-		testrayRequirementPersistence.removeTestrayCases(testrayRequirementId,
-			testrayCaseIds);
+
+		testrayRequirementPersistence.removeTestrayCases(
+			testrayRequirementId, testrayCaseIds);
 	}
 
 	/**
@@ -697,8 +772,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	@Override
 	public void deleteTestrayRequirementTestrayCases(
 		long testrayRequirementId, List<TestrayCase> testrayCases) {
-		testrayRequirementPersistence.removeTestrayCases(testrayRequirementId,
-			testrayCases);
+
+		testrayRequirementPersistence.removeTestrayCases(
+			testrayRequirementId, testrayCases);
 	}
 
 	/**
@@ -709,7 +785,8 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	@Override
 	public long[] getTestrayRequirementPrimaryKeys(long testrayCaseId) {
-		return testrayCasePersistence.getTestrayRequirementPrimaryKeys(testrayCaseId);
+		return testrayCasePersistence.getTestrayRequirementPrimaryKeys(
+			testrayCaseId);
 	}
 
 	/**
@@ -717,7 +794,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	@Override
 	public List<TestrayCase> getTestrayRequirementTestrayCases(
 		long testrayRequirementId) {
-		return testrayRequirementPersistence.getTestrayCases(testrayRequirementId);
+
+		return testrayRequirementPersistence.getTestrayCases(
+			testrayRequirementId);
 	}
 
 	/**
@@ -725,8 +804,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	@Override
 	public List<TestrayCase> getTestrayRequirementTestrayCases(
 		long testrayRequirementId, int start, int end) {
-		return testrayRequirementPersistence.getTestrayCases(testrayRequirementId,
-			start, end);
+
+		return testrayRequirementPersistence.getTestrayCases(
+			testrayRequirementId, start, end);
 	}
 
 	/**
@@ -735,71 +815,84 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	public List<TestrayCase> getTestrayRequirementTestrayCases(
 		long testrayRequirementId, int start, int end,
 		OrderByComparator<TestrayCase> orderByComparator) {
-		return testrayRequirementPersistence.getTestrayCases(testrayRequirementId,
-			start, end, orderByComparator);
+
+		return testrayRequirementPersistence.getTestrayCases(
+			testrayRequirementId, start, end, orderByComparator);
 	}
 
 	/**
 	 */
 	@Override
-	public int getTestrayRequirementTestrayCasesCount(long testrayRequirementId) {
-		return testrayRequirementPersistence.getTestrayCasesSize(testrayRequirementId);
+	public int getTestrayRequirementTestrayCasesCount(
+		long testrayRequirementId) {
+
+		return testrayRequirementPersistence.getTestrayCasesSize(
+			testrayRequirementId);
 	}
 
 	/**
 	 */
 	@Override
-	public boolean hasTestrayRequirementTestrayCase(long testrayRequirementId,
-		long testrayCaseId) {
-		return testrayRequirementPersistence.containsTestrayCase(testrayRequirementId,
-			testrayCaseId);
+	public boolean hasTestrayRequirementTestrayCase(
+		long testrayRequirementId, long testrayCaseId) {
+
+		return testrayRequirementPersistence.containsTestrayCase(
+			testrayRequirementId, testrayCaseId);
 	}
 
 	/**
 	 */
 	@Override
-	public boolean hasTestrayRequirementTestrayCases(long testrayRequirementId) {
-		return testrayRequirementPersistence.containsTestrayCases(testrayRequirementId);
+	public boolean hasTestrayRequirementTestrayCases(
+		long testrayRequirementId) {
+
+		return testrayRequirementPersistence.containsTestrayCases(
+			testrayRequirementId);
 	}
 
 	/**
 	 */
 	@Override
-	public void setTestrayRequirementTestrayCases(long testrayRequirementId,
-		long[] testrayCaseIds) {
-		testrayRequirementPersistence.setTestrayCases(testrayRequirementId,
-			testrayCaseIds);
+	public void setTestrayRequirementTestrayCases(
+		long testrayRequirementId, long[] testrayCaseIds) {
+
+		testrayRequirementPersistence.setTestrayCases(
+			testrayRequirementId, testrayCaseIds);
 	}
 
 	/**
 	 */
 	@Override
-	public void addTestraySuiteTestrayCase(long testraySuiteId,
-		long testrayCaseId) {
+	public void addTestraySuiteTestrayCase(
+		long testraySuiteId, long testrayCaseId) {
+
 		testraySuitePersistence.addTestrayCase(testraySuiteId, testrayCaseId);
 	}
 
 	/**
 	 */
 	@Override
-	public void addTestraySuiteTestrayCase(long testraySuiteId,
-		TestrayCase testrayCase) {
+	public void addTestraySuiteTestrayCase(
+		long testraySuiteId, TestrayCase testrayCase) {
+
 		testraySuitePersistence.addTestrayCase(testraySuiteId, testrayCase);
 	}
 
 	/**
 	 */
 	@Override
-	public void addTestraySuiteTestrayCases(long testraySuiteId,
-		long[] testrayCaseIds) {
+	public void addTestraySuiteTestrayCases(
+		long testraySuiteId, long[] testrayCaseIds) {
+
 		testraySuitePersistence.addTestrayCases(testraySuiteId, testrayCaseIds);
 	}
 
 	/**
 	 */
 	@Override
-	public void addTestraySuiteTestrayCases(long testraySuiteId,
-		List<TestrayCase> testrayCases) {
+	public void addTestraySuiteTestrayCases(
+		long testraySuiteId, List<TestrayCase> testrayCases) {
+
 		testraySuitePersistence.addTestrayCases(testraySuiteId, testrayCases);
 	}
 
@@ -813,34 +906,40 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	/**
 	 */
 	@Override
-	public void deleteTestraySuiteTestrayCase(long testraySuiteId,
-		long testrayCaseId) {
-		testraySuitePersistence.removeTestrayCase(testraySuiteId, testrayCaseId);
+	public void deleteTestraySuiteTestrayCase(
+		long testraySuiteId, long testrayCaseId) {
+
+		testraySuitePersistence.removeTestrayCase(
+			testraySuiteId, testrayCaseId);
 	}
 
 	/**
 	 */
 	@Override
-	public void deleteTestraySuiteTestrayCase(long testraySuiteId,
-		TestrayCase testrayCase) {
+	public void deleteTestraySuiteTestrayCase(
+		long testraySuiteId, TestrayCase testrayCase) {
+
 		testraySuitePersistence.removeTestrayCase(testraySuiteId, testrayCase);
 	}
 
 	/**
 	 */
 	@Override
-	public void deleteTestraySuiteTestrayCases(long testraySuiteId,
-		long[] testrayCaseIds) {
-		testraySuitePersistence.removeTestrayCases(testraySuiteId,
-			testrayCaseIds);
+	public void deleteTestraySuiteTestrayCases(
+		long testraySuiteId, long[] testrayCaseIds) {
+
+		testraySuitePersistence.removeTestrayCases(
+			testraySuiteId, testrayCaseIds);
 	}
 
 	/**
 	 */
 	@Override
-	public void deleteTestraySuiteTestrayCases(long testraySuiteId,
-		List<TestrayCase> testrayCases) {
-		testraySuitePersistence.removeTestrayCases(testraySuiteId, testrayCases);
+	public void deleteTestraySuiteTestrayCases(
+		long testraySuiteId, List<TestrayCase> testrayCases) {
+
+		testraySuitePersistence.removeTestrayCases(
+			testraySuiteId, testrayCases);
 	}
 
 	/**
@@ -864,19 +963,22 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	/**
 	 */
 	@Override
-	public List<TestrayCase> getTestraySuiteTestrayCases(long testraySuiteId,
-		int start, int end) {
-		return testraySuitePersistence.getTestrayCases(testraySuiteId, start,
-			end);
+	public List<TestrayCase> getTestraySuiteTestrayCases(
+		long testraySuiteId, int start, int end) {
+
+		return testraySuitePersistence.getTestrayCases(
+			testraySuiteId, start, end);
 	}
 
 	/**
 	 */
 	@Override
-	public List<TestrayCase> getTestraySuiteTestrayCases(long testraySuiteId,
-		int start, int end, OrderByComparator<TestrayCase> orderByComparator) {
-		return testraySuitePersistence.getTestrayCases(testraySuiteId, start,
-			end, orderByComparator);
+	public List<TestrayCase> getTestraySuiteTestrayCases(
+		long testraySuiteId, int start, int end,
+		OrderByComparator<TestrayCase> orderByComparator) {
+
+		return testraySuitePersistence.getTestrayCases(
+			testraySuiteId, start, end, orderByComparator);
 	}
 
 	/**
@@ -889,10 +991,11 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	/**
 	 */
 	@Override
-	public boolean hasTestraySuiteTestrayCase(long testraySuiteId,
-		long testrayCaseId) {
-		return testraySuitePersistence.containsTestrayCase(testraySuiteId,
-			testrayCaseId);
+	public boolean hasTestraySuiteTestrayCase(
+		long testraySuiteId, long testrayCaseId) {
+
+		return testraySuitePersistence.containsTestrayCase(
+			testraySuiteId, testrayCaseId);
 	}
 
 	/**
@@ -905,8 +1008,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	/**
 	 */
 	@Override
-	public void setTestraySuiteTestrayCases(long testraySuiteId,
-		long[] testrayCaseIds) {
+	public void setTestraySuiteTestrayCases(
+		long testraySuiteId, long[] testrayCaseIds) {
+
 		testraySuitePersistence.setTestrayCases(testraySuiteId, testrayCaseIds);
 	}
 
@@ -915,7 +1019,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the testray archive local service
 	 */
-	public com.liferay.osb.testray.service.TestrayArchiveLocalService getTestrayArchiveLocalService() {
+	public com.liferay.osb.testray.service.TestrayArchiveLocalService
+		getTestrayArchiveLocalService() {
+
 		return testrayArchiveLocalService;
 	}
 
@@ -925,7 +1031,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @param testrayArchiveLocalService the testray archive local service
 	 */
 	public void setTestrayArchiveLocalService(
-		com.liferay.osb.testray.service.TestrayArchiveLocalService testrayArchiveLocalService) {
+		com.liferay.osb.testray.service.TestrayArchiveLocalService
+			testrayArchiveLocalService) {
+
 		this.testrayArchiveLocalService = testrayArchiveLocalService;
 	}
 
@@ -945,6 +1053,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	public void setTestrayArchivePersistence(
 		TestrayArchivePersistence testrayArchivePersistence) {
+
 		this.testrayArchivePersistence = testrayArchivePersistence;
 	}
 
@@ -953,7 +1062,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the testray assignment local service
 	 */
-	public com.liferay.osb.testray.service.TestrayAssignmentLocalService getTestrayAssignmentLocalService() {
+	public com.liferay.osb.testray.service.TestrayAssignmentLocalService
+		getTestrayAssignmentLocalService() {
+
 		return testrayAssignmentLocalService;
 	}
 
@@ -963,7 +1074,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @param testrayAssignmentLocalService the testray assignment local service
 	 */
 	public void setTestrayAssignmentLocalService(
-		com.liferay.osb.testray.service.TestrayAssignmentLocalService testrayAssignmentLocalService) {
+		com.liferay.osb.testray.service.TestrayAssignmentLocalService
+			testrayAssignmentLocalService) {
+
 		this.testrayAssignmentLocalService = testrayAssignmentLocalService;
 	}
 
@@ -983,6 +1096,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	public void setTestrayAssignmentPersistence(
 		TestrayAssignmentPersistence testrayAssignmentPersistence) {
+
 		this.testrayAssignmentPersistence = testrayAssignmentPersistence;
 	}
 
@@ -991,7 +1105,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the testray build local service
 	 */
-	public com.liferay.osb.testray.service.TestrayBuildLocalService getTestrayBuildLocalService() {
+	public com.liferay.osb.testray.service.TestrayBuildLocalService
+		getTestrayBuildLocalService() {
+
 		return testrayBuildLocalService;
 	}
 
@@ -1001,7 +1117,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @param testrayBuildLocalService the testray build local service
 	 */
 	public void setTestrayBuildLocalService(
-		com.liferay.osb.testray.service.TestrayBuildLocalService testrayBuildLocalService) {
+		com.liferay.osb.testray.service.TestrayBuildLocalService
+			testrayBuildLocalService) {
+
 		this.testrayBuildLocalService = testrayBuildLocalService;
 	}
 
@@ -1021,6 +1139,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	public void setTestrayBuildPersistence(
 		TestrayBuildPersistence testrayBuildPersistence) {
+
 		this.testrayBuildPersistence = testrayBuildPersistence;
 	}
 
@@ -1040,6 +1159,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	public void setTestrayCaseLocalService(
 		TestrayCaseLocalService testrayCaseLocalService) {
+
 		this.testrayCaseLocalService = testrayCaseLocalService;
 	}
 
@@ -1059,6 +1179,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	public void setTestrayCasePersistence(
 		TestrayCasePersistence testrayCasePersistence) {
+
 		this.testrayCasePersistence = testrayCasePersistence;
 	}
 
@@ -1067,7 +1188,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the testray case result local service
 	 */
-	public com.liferay.osb.testray.service.TestrayCaseResultLocalService getTestrayCaseResultLocalService() {
+	public com.liferay.osb.testray.service.TestrayCaseResultLocalService
+		getTestrayCaseResultLocalService() {
+
 		return testrayCaseResultLocalService;
 	}
 
@@ -1077,7 +1200,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @param testrayCaseResultLocalService the testray case result local service
 	 */
 	public void setTestrayCaseResultLocalService(
-		com.liferay.osb.testray.service.TestrayCaseResultLocalService testrayCaseResultLocalService) {
+		com.liferay.osb.testray.service.TestrayCaseResultLocalService
+			testrayCaseResultLocalService) {
+
 		this.testrayCaseResultLocalService = testrayCaseResultLocalService;
 	}
 
@@ -1097,6 +1222,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	public void setTestrayCaseResultPersistence(
 		TestrayCaseResultPersistence testrayCaseResultPersistence) {
+
 		this.testrayCaseResultPersistence = testrayCaseResultPersistence;
 	}
 
@@ -1105,7 +1231,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the testray case result warning local service
 	 */
-	public com.liferay.osb.testray.service.TestrayCaseResultWarningLocalService getTestrayCaseResultWarningLocalService() {
+	public com.liferay.osb.testray.service.TestrayCaseResultWarningLocalService
+		getTestrayCaseResultWarningLocalService() {
+
 		return testrayCaseResultWarningLocalService;
 	}
 
@@ -1115,8 +1243,11 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @param testrayCaseResultWarningLocalService the testray case result warning local service
 	 */
 	public void setTestrayCaseResultWarningLocalService(
-		com.liferay.osb.testray.service.TestrayCaseResultWarningLocalService testrayCaseResultWarningLocalService) {
-		this.testrayCaseResultWarningLocalService = testrayCaseResultWarningLocalService;
+		com.liferay.osb.testray.service.TestrayCaseResultWarningLocalService
+			testrayCaseResultWarningLocalService) {
+
+		this.testrayCaseResultWarningLocalService =
+			testrayCaseResultWarningLocalService;
 	}
 
 	/**
@@ -1124,7 +1255,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the testray case result warning persistence
 	 */
-	public TestrayCaseResultWarningPersistence getTestrayCaseResultWarningPersistence() {
+	public TestrayCaseResultWarningPersistence
+		getTestrayCaseResultWarningPersistence() {
+
 		return testrayCaseResultWarningPersistence;
 	}
 
@@ -1134,8 +1267,11 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @param testrayCaseResultWarningPersistence the testray case result warning persistence
 	 */
 	public void setTestrayCaseResultWarningPersistence(
-		TestrayCaseResultWarningPersistence testrayCaseResultWarningPersistence) {
-		this.testrayCaseResultWarningPersistence = testrayCaseResultWarningPersistence;
+		TestrayCaseResultWarningPersistence
+			testrayCaseResultWarningPersistence) {
+
+		this.testrayCaseResultWarningPersistence =
+			testrayCaseResultWarningPersistence;
 	}
 
 	/**
@@ -1143,7 +1279,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the testray case type local service
 	 */
-	public com.liferay.osb.testray.service.TestrayCaseTypeLocalService getTestrayCaseTypeLocalService() {
+	public com.liferay.osb.testray.service.TestrayCaseTypeLocalService
+		getTestrayCaseTypeLocalService() {
+
 		return testrayCaseTypeLocalService;
 	}
 
@@ -1153,7 +1291,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @param testrayCaseTypeLocalService the testray case type local service
 	 */
 	public void setTestrayCaseTypeLocalService(
-		com.liferay.osb.testray.service.TestrayCaseTypeLocalService testrayCaseTypeLocalService) {
+		com.liferay.osb.testray.service.TestrayCaseTypeLocalService
+			testrayCaseTypeLocalService) {
+
 		this.testrayCaseTypeLocalService = testrayCaseTypeLocalService;
 	}
 
@@ -1173,6 +1313,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	public void setTestrayCaseTypePersistence(
 		TestrayCaseTypePersistence testrayCaseTypePersistence) {
+
 		this.testrayCaseTypePersistence = testrayCaseTypePersistence;
 	}
 
@@ -1181,7 +1322,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the testray component local service
 	 */
-	public com.liferay.osb.testray.service.TestrayComponentLocalService getTestrayComponentLocalService() {
+	public com.liferay.osb.testray.service.TestrayComponentLocalService
+		getTestrayComponentLocalService() {
+
 		return testrayComponentLocalService;
 	}
 
@@ -1191,7 +1334,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @param testrayComponentLocalService the testray component local service
 	 */
 	public void setTestrayComponentLocalService(
-		com.liferay.osb.testray.service.TestrayComponentLocalService testrayComponentLocalService) {
+		com.liferay.osb.testray.service.TestrayComponentLocalService
+			testrayComponentLocalService) {
+
 		this.testrayComponentLocalService = testrayComponentLocalService;
 	}
 
@@ -1211,6 +1356,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	public void setTestrayComponentPersistence(
 		TestrayComponentPersistence testrayComponentPersistence) {
+
 		this.testrayComponentPersistence = testrayComponentPersistence;
 	}
 
@@ -1219,7 +1365,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the testray factor local service
 	 */
-	public com.liferay.osb.testray.service.TestrayFactorLocalService getTestrayFactorLocalService() {
+	public com.liferay.osb.testray.service.TestrayFactorLocalService
+		getTestrayFactorLocalService() {
+
 		return testrayFactorLocalService;
 	}
 
@@ -1229,7 +1377,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @param testrayFactorLocalService the testray factor local service
 	 */
 	public void setTestrayFactorLocalService(
-		com.liferay.osb.testray.service.TestrayFactorLocalService testrayFactorLocalService) {
+		com.liferay.osb.testray.service.TestrayFactorLocalService
+			testrayFactorLocalService) {
+
 		this.testrayFactorLocalService = testrayFactorLocalService;
 	}
 
@@ -1249,6 +1399,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	public void setTestrayFactorPersistence(
 		TestrayFactorPersistence testrayFactorPersistence) {
+
 		this.testrayFactorPersistence = testrayFactorPersistence;
 	}
 
@@ -1257,7 +1408,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the testray factor category local service
 	 */
-	public com.liferay.osb.testray.service.TestrayFactorCategoryLocalService getTestrayFactorCategoryLocalService() {
+	public com.liferay.osb.testray.service.TestrayFactorCategoryLocalService
+		getTestrayFactorCategoryLocalService() {
+
 		return testrayFactorCategoryLocalService;
 	}
 
@@ -1267,8 +1420,11 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @param testrayFactorCategoryLocalService the testray factor category local service
 	 */
 	public void setTestrayFactorCategoryLocalService(
-		com.liferay.osb.testray.service.TestrayFactorCategoryLocalService testrayFactorCategoryLocalService) {
-		this.testrayFactorCategoryLocalService = testrayFactorCategoryLocalService;
+		com.liferay.osb.testray.service.TestrayFactorCategoryLocalService
+			testrayFactorCategoryLocalService) {
+
+		this.testrayFactorCategoryLocalService =
+			testrayFactorCategoryLocalService;
 	}
 
 	/**
@@ -1276,7 +1432,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the testray factor category persistence
 	 */
-	public TestrayFactorCategoryPersistence getTestrayFactorCategoryPersistence() {
+	public TestrayFactorCategoryPersistence
+		getTestrayFactorCategoryPersistence() {
+
 		return testrayFactorCategoryPersistence;
 	}
 
@@ -1287,7 +1445,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	public void setTestrayFactorCategoryPersistence(
 		TestrayFactorCategoryPersistence testrayFactorCategoryPersistence) {
-		this.testrayFactorCategoryPersistence = testrayFactorCategoryPersistence;
+
+		this.testrayFactorCategoryPersistence =
+			testrayFactorCategoryPersistence;
 	}
 
 	/**
@@ -1295,7 +1455,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the testray factor option local service
 	 */
-	public com.liferay.osb.testray.service.TestrayFactorOptionLocalService getTestrayFactorOptionLocalService() {
+	public com.liferay.osb.testray.service.TestrayFactorOptionLocalService
+		getTestrayFactorOptionLocalService() {
+
 		return testrayFactorOptionLocalService;
 	}
 
@@ -1305,7 +1467,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @param testrayFactorOptionLocalService the testray factor option local service
 	 */
 	public void setTestrayFactorOptionLocalService(
-		com.liferay.osb.testray.service.TestrayFactorOptionLocalService testrayFactorOptionLocalService) {
+		com.liferay.osb.testray.service.TestrayFactorOptionLocalService
+			testrayFactorOptionLocalService) {
+
 		this.testrayFactorOptionLocalService = testrayFactorOptionLocalService;
 	}
 
@@ -1325,6 +1489,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	public void setTestrayFactorOptionPersistence(
 		TestrayFactorOptionPersistence testrayFactorOptionPersistence) {
+
 		this.testrayFactorOptionPersistence = testrayFactorOptionPersistence;
 	}
 
@@ -1333,7 +1498,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the testray issue local service
 	 */
-	public com.liferay.osb.testray.service.TestrayIssueLocalService getTestrayIssueLocalService() {
+	public com.liferay.osb.testray.service.TestrayIssueLocalService
+		getTestrayIssueLocalService() {
+
 		return testrayIssueLocalService;
 	}
 
@@ -1343,7 +1510,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @param testrayIssueLocalService the testray issue local service
 	 */
 	public void setTestrayIssueLocalService(
-		com.liferay.osb.testray.service.TestrayIssueLocalService testrayIssueLocalService) {
+		com.liferay.osb.testray.service.TestrayIssueLocalService
+			testrayIssueLocalService) {
+
 		this.testrayIssueLocalService = testrayIssueLocalService;
 	}
 
@@ -1363,6 +1532,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	public void setTestrayIssuePersistence(
 		TestrayIssuePersistence testrayIssuePersistence) {
+
 		this.testrayIssuePersistence = testrayIssuePersistence;
 	}
 
@@ -1371,7 +1541,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the testray product version local service
 	 */
-	public com.liferay.osb.testray.service.TestrayProductVersionLocalService getTestrayProductVersionLocalService() {
+	public com.liferay.osb.testray.service.TestrayProductVersionLocalService
+		getTestrayProductVersionLocalService() {
+
 		return testrayProductVersionLocalService;
 	}
 
@@ -1381,8 +1553,11 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @param testrayProductVersionLocalService the testray product version local service
 	 */
 	public void setTestrayProductVersionLocalService(
-		com.liferay.osb.testray.service.TestrayProductVersionLocalService testrayProductVersionLocalService) {
-		this.testrayProductVersionLocalService = testrayProductVersionLocalService;
+		com.liferay.osb.testray.service.TestrayProductVersionLocalService
+			testrayProductVersionLocalService) {
+
+		this.testrayProductVersionLocalService =
+			testrayProductVersionLocalService;
 	}
 
 	/**
@@ -1390,7 +1565,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the testray product version persistence
 	 */
-	public TestrayProductVersionPersistence getTestrayProductVersionPersistence() {
+	public TestrayProductVersionPersistence
+		getTestrayProductVersionPersistence() {
+
 		return testrayProductVersionPersistence;
 	}
 
@@ -1401,7 +1578,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	public void setTestrayProductVersionPersistence(
 		TestrayProductVersionPersistence testrayProductVersionPersistence) {
-		this.testrayProductVersionPersistence = testrayProductVersionPersistence;
+
+		this.testrayProductVersionPersistence =
+			testrayProductVersionPersistence;
 	}
 
 	/**
@@ -1409,7 +1588,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the testray project local service
 	 */
-	public com.liferay.osb.testray.service.TestrayProjectLocalService getTestrayProjectLocalService() {
+	public com.liferay.osb.testray.service.TestrayProjectLocalService
+		getTestrayProjectLocalService() {
+
 		return testrayProjectLocalService;
 	}
 
@@ -1419,7 +1600,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @param testrayProjectLocalService the testray project local service
 	 */
 	public void setTestrayProjectLocalService(
-		com.liferay.osb.testray.service.TestrayProjectLocalService testrayProjectLocalService) {
+		com.liferay.osb.testray.service.TestrayProjectLocalService
+			testrayProjectLocalService) {
+
 		this.testrayProjectLocalService = testrayProjectLocalService;
 	}
 
@@ -1439,6 +1622,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	public void setTestrayProjectPersistence(
 		TestrayProjectPersistence testrayProjectPersistence) {
+
 		this.testrayProjectPersistence = testrayProjectPersistence;
 	}
 
@@ -1447,7 +1631,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the testray requirement local service
 	 */
-	public com.liferay.osb.testray.service.TestrayRequirementLocalService getTestrayRequirementLocalService() {
+	public com.liferay.osb.testray.service.TestrayRequirementLocalService
+		getTestrayRequirementLocalService() {
+
 		return testrayRequirementLocalService;
 	}
 
@@ -1457,7 +1643,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @param testrayRequirementLocalService the testray requirement local service
 	 */
 	public void setTestrayRequirementLocalService(
-		com.liferay.osb.testray.service.TestrayRequirementLocalService testrayRequirementLocalService) {
+		com.liferay.osb.testray.service.TestrayRequirementLocalService
+			testrayRequirementLocalService) {
+
 		this.testrayRequirementLocalService = testrayRequirementLocalService;
 	}
 
@@ -1477,6 +1665,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	public void setTestrayRequirementPersistence(
 		TestrayRequirementPersistence testrayRequirementPersistence) {
+
 		this.testrayRequirementPersistence = testrayRequirementPersistence;
 	}
 
@@ -1485,7 +1674,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the testray routine local service
 	 */
-	public com.liferay.osb.testray.service.TestrayRoutineLocalService getTestrayRoutineLocalService() {
+	public com.liferay.osb.testray.service.TestrayRoutineLocalService
+		getTestrayRoutineLocalService() {
+
 		return testrayRoutineLocalService;
 	}
 
@@ -1495,7 +1686,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @param testrayRoutineLocalService the testray routine local service
 	 */
 	public void setTestrayRoutineLocalService(
-		com.liferay.osb.testray.service.TestrayRoutineLocalService testrayRoutineLocalService) {
+		com.liferay.osb.testray.service.TestrayRoutineLocalService
+			testrayRoutineLocalService) {
+
 		this.testrayRoutineLocalService = testrayRoutineLocalService;
 	}
 
@@ -1515,6 +1708,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	public void setTestrayRoutinePersistence(
 		TestrayRoutinePersistence testrayRoutinePersistence) {
+
 		this.testrayRoutinePersistence = testrayRoutinePersistence;
 	}
 
@@ -1523,7 +1717,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the testray run local service
 	 */
-	public com.liferay.osb.testray.service.TestrayRunLocalService getTestrayRunLocalService() {
+	public com.liferay.osb.testray.service.TestrayRunLocalService
+		getTestrayRunLocalService() {
+
 		return testrayRunLocalService;
 	}
 
@@ -1533,7 +1729,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @param testrayRunLocalService the testray run local service
 	 */
 	public void setTestrayRunLocalService(
-		com.liferay.osb.testray.service.TestrayRunLocalService testrayRunLocalService) {
+		com.liferay.osb.testray.service.TestrayRunLocalService
+			testrayRunLocalService) {
+
 		this.testrayRunLocalService = testrayRunLocalService;
 	}
 
@@ -1553,6 +1751,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	public void setTestrayRunPersistence(
 		TestrayRunPersistence testrayRunPersistence) {
+
 		this.testrayRunPersistence = testrayRunPersistence;
 	}
 
@@ -1561,7 +1760,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the testray subtask local service
 	 */
-	public com.liferay.osb.testray.service.TestraySubtaskLocalService getTestraySubtaskLocalService() {
+	public com.liferay.osb.testray.service.TestraySubtaskLocalService
+		getTestraySubtaskLocalService() {
+
 		return testraySubtaskLocalService;
 	}
 
@@ -1571,7 +1772,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @param testraySubtaskLocalService the testray subtask local service
 	 */
 	public void setTestraySubtaskLocalService(
-		com.liferay.osb.testray.service.TestraySubtaskLocalService testraySubtaskLocalService) {
+		com.liferay.osb.testray.service.TestraySubtaskLocalService
+			testraySubtaskLocalService) {
+
 		this.testraySubtaskLocalService = testraySubtaskLocalService;
 	}
 
@@ -1591,6 +1794,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	public void setTestraySubtaskPersistence(
 		TestraySubtaskPersistence testraySubtaskPersistence) {
+
 		this.testraySubtaskPersistence = testraySubtaskPersistence;
 	}
 
@@ -1599,7 +1803,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the testray suite local service
 	 */
-	public com.liferay.osb.testray.service.TestraySuiteLocalService getTestraySuiteLocalService() {
+	public com.liferay.osb.testray.service.TestraySuiteLocalService
+		getTestraySuiteLocalService() {
+
 		return testraySuiteLocalService;
 	}
 
@@ -1609,7 +1815,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @param testraySuiteLocalService the testray suite local service
 	 */
 	public void setTestraySuiteLocalService(
-		com.liferay.osb.testray.service.TestraySuiteLocalService testraySuiteLocalService) {
+		com.liferay.osb.testray.service.TestraySuiteLocalService
+			testraySuiteLocalService) {
+
 		this.testraySuiteLocalService = testraySuiteLocalService;
 	}
 
@@ -1629,6 +1837,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	public void setTestraySuitePersistence(
 		TestraySuitePersistence testraySuitePersistence) {
+
 		this.testraySuitePersistence = testraySuitePersistence;
 	}
 
@@ -1637,7 +1846,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the testray task local service
 	 */
-	public com.liferay.osb.testray.service.TestrayTaskLocalService getTestrayTaskLocalService() {
+	public com.liferay.osb.testray.service.TestrayTaskLocalService
+		getTestrayTaskLocalService() {
+
 		return testrayTaskLocalService;
 	}
 
@@ -1647,7 +1858,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @param testrayTaskLocalService the testray task local service
 	 */
 	public void setTestrayTaskLocalService(
-		com.liferay.osb.testray.service.TestrayTaskLocalService testrayTaskLocalService) {
+		com.liferay.osb.testray.service.TestrayTaskLocalService
+			testrayTaskLocalService) {
+
 		this.testrayTaskLocalService = testrayTaskLocalService;
 	}
 
@@ -1667,6 +1880,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	public void setTestrayTaskPersistence(
 		TestrayTaskPersistence testrayTaskPersistence) {
+
 		this.testrayTaskPersistence = testrayTaskPersistence;
 	}
 
@@ -1675,7 +1889,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the testray team local service
 	 */
-	public com.liferay.osb.testray.service.TestrayTeamLocalService getTestrayTeamLocalService() {
+	public com.liferay.osb.testray.service.TestrayTeamLocalService
+		getTestrayTeamLocalService() {
+
 		return testrayTeamLocalService;
 	}
 
@@ -1685,7 +1901,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @param testrayTeamLocalService the testray team local service
 	 */
 	public void setTestrayTeamLocalService(
-		com.liferay.osb.testray.service.TestrayTeamLocalService testrayTeamLocalService) {
+		com.liferay.osb.testray.service.TestrayTeamLocalService
+			testrayTeamLocalService) {
+
 		this.testrayTeamLocalService = testrayTeamLocalService;
 	}
 
@@ -1705,6 +1923,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	public void setTestrayTeamPersistence(
 		TestrayTeamPersistence testrayTeamPersistence) {
+
 		this.testrayTeamPersistence = testrayTeamPersistence;
 	}
 
@@ -1713,7 +1932,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
+	public com.liferay.counter.kernel.service.CounterLocalService
+		getCounterLocalService() {
+
 		return counterLocalService;
 	}
 
@@ -1723,7 +1944,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
+		com.liferay.counter.kernel.service.CounterLocalService
+			counterLocalService) {
+
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -1732,7 +1955,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
+	public com.liferay.portal.kernel.service.ClassNameLocalService
+		getClassNameLocalService() {
+
 		return classNameLocalService;
 	}
 
@@ -1742,7 +1967,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
+		com.liferay.portal.kernel.service.ClassNameLocalService
+			classNameLocalService) {
+
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -1762,6 +1989,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
+
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -1770,7 +1998,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
+	public com.liferay.portal.kernel.service.ResourceLocalService
+		getResourceLocalService() {
+
 		return resourceLocalService;
 	}
 
@@ -1780,7 +2010,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
+		com.liferay.portal.kernel.service.ResourceLocalService
+			resourceLocalService) {
+
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -1789,7 +2021,9 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
+	public com.liferay.portal.kernel.service.UserLocalService
+		getUserLocalService() {
+
 		return userLocalService;
 	}
 
@@ -1800,6 +2034,7 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
+
 		this.userLocalService = userLocalService;
 	}
 
@@ -1822,7 +2057,8 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register("com.liferay.osb.testray.model.TestrayCase",
+		persistedModelLocalServiceRegistry.register(
+			"com.liferay.osb.testray.model.TestrayCase",
 			testrayCaseLocalService);
 	}
 
@@ -1863,112 +2099,236 @@ public abstract class TestrayCaseLocalServiceBaseImpl
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
-					sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
+				dataSource, sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception e) {
-			throw new SystemException(e);
+		catch (Exception exception) {
+			throw new SystemException(exception);
 		}
 	}
 
-	@BeanReference(type = com.liferay.osb.testray.service.TestrayArchiveLocalService.class)
-	protected com.liferay.osb.testray.service.TestrayArchiveLocalService testrayArchiveLocalService;
+	@BeanReference(
+		type = com.liferay.osb.testray.service.TestrayArchiveLocalService.class
+	)
+	protected com.liferay.osb.testray.service.TestrayArchiveLocalService
+		testrayArchiveLocalService;
+
 	@BeanReference(type = TestrayArchivePersistence.class)
 	protected TestrayArchivePersistence testrayArchivePersistence;
-	@BeanReference(type = com.liferay.osb.testray.service.TestrayAssignmentLocalService.class)
-	protected com.liferay.osb.testray.service.TestrayAssignmentLocalService testrayAssignmentLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.testray.service.TestrayAssignmentLocalService.class
+	)
+	protected com.liferay.osb.testray.service.TestrayAssignmentLocalService
+		testrayAssignmentLocalService;
+
 	@BeanReference(type = TestrayAssignmentPersistence.class)
 	protected TestrayAssignmentPersistence testrayAssignmentPersistence;
-	@BeanReference(type = com.liferay.osb.testray.service.TestrayBuildLocalService.class)
-	protected com.liferay.osb.testray.service.TestrayBuildLocalService testrayBuildLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.testray.service.TestrayBuildLocalService.class
+	)
+	protected com.liferay.osb.testray.service.TestrayBuildLocalService
+		testrayBuildLocalService;
+
 	@BeanReference(type = TestrayBuildPersistence.class)
 	protected TestrayBuildPersistence testrayBuildPersistence;
+
 	@BeanReference(type = TestrayCaseLocalService.class)
 	protected TestrayCaseLocalService testrayCaseLocalService;
+
 	@BeanReference(type = TestrayCasePersistence.class)
 	protected TestrayCasePersistence testrayCasePersistence;
-	@BeanReference(type = com.liferay.osb.testray.service.TestrayCaseResultLocalService.class)
-	protected com.liferay.osb.testray.service.TestrayCaseResultLocalService testrayCaseResultLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.testray.service.TestrayCaseResultLocalService.class
+	)
+	protected com.liferay.osb.testray.service.TestrayCaseResultLocalService
+		testrayCaseResultLocalService;
+
 	@BeanReference(type = TestrayCaseResultPersistence.class)
 	protected TestrayCaseResultPersistence testrayCaseResultPersistence;
-	@BeanReference(type = com.liferay.osb.testray.service.TestrayCaseResultWarningLocalService.class)
-	protected com.liferay.osb.testray.service.TestrayCaseResultWarningLocalService testrayCaseResultWarningLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.testray.service.TestrayCaseResultWarningLocalService.class
+	)
+	protected
+		com.liferay.osb.testray.service.TestrayCaseResultWarningLocalService
+			testrayCaseResultWarningLocalService;
+
 	@BeanReference(type = TestrayCaseResultWarningPersistence.class)
-	protected TestrayCaseResultWarningPersistence testrayCaseResultWarningPersistence;
-	@BeanReference(type = com.liferay.osb.testray.service.TestrayCaseTypeLocalService.class)
-	protected com.liferay.osb.testray.service.TestrayCaseTypeLocalService testrayCaseTypeLocalService;
+	protected TestrayCaseResultWarningPersistence
+		testrayCaseResultWarningPersistence;
+
+	@BeanReference(
+		type = com.liferay.osb.testray.service.TestrayCaseTypeLocalService.class
+	)
+	protected com.liferay.osb.testray.service.TestrayCaseTypeLocalService
+		testrayCaseTypeLocalService;
+
 	@BeanReference(type = TestrayCaseTypePersistence.class)
 	protected TestrayCaseTypePersistence testrayCaseTypePersistence;
-	@BeanReference(type = com.liferay.osb.testray.service.TestrayComponentLocalService.class)
-	protected com.liferay.osb.testray.service.TestrayComponentLocalService testrayComponentLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.testray.service.TestrayComponentLocalService.class
+	)
+	protected com.liferay.osb.testray.service.TestrayComponentLocalService
+		testrayComponentLocalService;
+
 	@BeanReference(type = TestrayComponentPersistence.class)
 	protected TestrayComponentPersistence testrayComponentPersistence;
-	@BeanReference(type = com.liferay.osb.testray.service.TestrayFactorLocalService.class)
-	protected com.liferay.osb.testray.service.TestrayFactorLocalService testrayFactorLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.testray.service.TestrayFactorLocalService.class
+	)
+	protected com.liferay.osb.testray.service.TestrayFactorLocalService
+		testrayFactorLocalService;
+
 	@BeanReference(type = TestrayFactorPersistence.class)
 	protected TestrayFactorPersistence testrayFactorPersistence;
-	@BeanReference(type = com.liferay.osb.testray.service.TestrayFactorCategoryLocalService.class)
-	protected com.liferay.osb.testray.service.TestrayFactorCategoryLocalService testrayFactorCategoryLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.testray.service.TestrayFactorCategoryLocalService.class
+	)
+	protected com.liferay.osb.testray.service.TestrayFactorCategoryLocalService
+		testrayFactorCategoryLocalService;
+
 	@BeanReference(type = TestrayFactorCategoryPersistence.class)
 	protected TestrayFactorCategoryPersistence testrayFactorCategoryPersistence;
-	@BeanReference(type = com.liferay.osb.testray.service.TestrayFactorOptionLocalService.class)
-	protected com.liferay.osb.testray.service.TestrayFactorOptionLocalService testrayFactorOptionLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.testray.service.TestrayFactorOptionLocalService.class
+	)
+	protected com.liferay.osb.testray.service.TestrayFactorOptionLocalService
+		testrayFactorOptionLocalService;
+
 	@BeanReference(type = TestrayFactorOptionPersistence.class)
 	protected TestrayFactorOptionPersistence testrayFactorOptionPersistence;
-	@BeanReference(type = com.liferay.osb.testray.service.TestrayIssueLocalService.class)
-	protected com.liferay.osb.testray.service.TestrayIssueLocalService testrayIssueLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.testray.service.TestrayIssueLocalService.class
+	)
+	protected com.liferay.osb.testray.service.TestrayIssueLocalService
+		testrayIssueLocalService;
+
 	@BeanReference(type = TestrayIssuePersistence.class)
 	protected TestrayIssuePersistence testrayIssuePersistence;
-	@BeanReference(type = com.liferay.osb.testray.service.TestrayProductVersionLocalService.class)
-	protected com.liferay.osb.testray.service.TestrayProductVersionLocalService testrayProductVersionLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.testray.service.TestrayProductVersionLocalService.class
+	)
+	protected com.liferay.osb.testray.service.TestrayProductVersionLocalService
+		testrayProductVersionLocalService;
+
 	@BeanReference(type = TestrayProductVersionPersistence.class)
 	protected TestrayProductVersionPersistence testrayProductVersionPersistence;
-	@BeanReference(type = com.liferay.osb.testray.service.TestrayProjectLocalService.class)
-	protected com.liferay.osb.testray.service.TestrayProjectLocalService testrayProjectLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.testray.service.TestrayProjectLocalService.class
+	)
+	protected com.liferay.osb.testray.service.TestrayProjectLocalService
+		testrayProjectLocalService;
+
 	@BeanReference(type = TestrayProjectPersistence.class)
 	protected TestrayProjectPersistence testrayProjectPersistence;
-	@BeanReference(type = com.liferay.osb.testray.service.TestrayRequirementLocalService.class)
-	protected com.liferay.osb.testray.service.TestrayRequirementLocalService testrayRequirementLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.testray.service.TestrayRequirementLocalService.class
+	)
+	protected com.liferay.osb.testray.service.TestrayRequirementLocalService
+		testrayRequirementLocalService;
+
 	@BeanReference(type = TestrayRequirementPersistence.class)
 	protected TestrayRequirementPersistence testrayRequirementPersistence;
-	@BeanReference(type = com.liferay.osb.testray.service.TestrayRoutineLocalService.class)
-	protected com.liferay.osb.testray.service.TestrayRoutineLocalService testrayRoutineLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.testray.service.TestrayRoutineLocalService.class
+	)
+	protected com.liferay.osb.testray.service.TestrayRoutineLocalService
+		testrayRoutineLocalService;
+
 	@BeanReference(type = TestrayRoutinePersistence.class)
 	protected TestrayRoutinePersistence testrayRoutinePersistence;
-	@BeanReference(type = com.liferay.osb.testray.service.TestrayRunLocalService.class)
-	protected com.liferay.osb.testray.service.TestrayRunLocalService testrayRunLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.testray.service.TestrayRunLocalService.class
+	)
+	protected com.liferay.osb.testray.service.TestrayRunLocalService
+		testrayRunLocalService;
+
 	@BeanReference(type = TestrayRunPersistence.class)
 	protected TestrayRunPersistence testrayRunPersistence;
-	@BeanReference(type = com.liferay.osb.testray.service.TestraySubtaskLocalService.class)
-	protected com.liferay.osb.testray.service.TestraySubtaskLocalService testraySubtaskLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.testray.service.TestraySubtaskLocalService.class
+	)
+	protected com.liferay.osb.testray.service.TestraySubtaskLocalService
+		testraySubtaskLocalService;
+
 	@BeanReference(type = TestraySubtaskPersistence.class)
 	protected TestraySubtaskPersistence testraySubtaskPersistence;
-	@BeanReference(type = com.liferay.osb.testray.service.TestraySuiteLocalService.class)
-	protected com.liferay.osb.testray.service.TestraySuiteLocalService testraySuiteLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.testray.service.TestraySuiteLocalService.class
+	)
+	protected com.liferay.osb.testray.service.TestraySuiteLocalService
+		testraySuiteLocalService;
+
 	@BeanReference(type = TestraySuitePersistence.class)
 	protected TestraySuitePersistence testraySuitePersistence;
-	@BeanReference(type = com.liferay.osb.testray.service.TestrayTaskLocalService.class)
-	protected com.liferay.osb.testray.service.TestrayTaskLocalService testrayTaskLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.testray.service.TestrayTaskLocalService.class
+	)
+	protected com.liferay.osb.testray.service.TestrayTaskLocalService
+		testrayTaskLocalService;
+
 	@BeanReference(type = TestrayTaskPersistence.class)
 	protected TestrayTaskPersistence testrayTaskPersistence;
-	@BeanReference(type = com.liferay.osb.testray.service.TestrayTeamLocalService.class)
-	protected com.liferay.osb.testray.service.TestrayTeamLocalService testrayTeamLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.testray.service.TestrayTeamLocalService.class
+	)
+	protected com.liferay.osb.testray.service.TestrayTeamLocalService
+		testrayTeamLocalService;
+
 	@BeanReference(type = TestrayTeamPersistence.class)
 	protected TestrayTeamPersistence testrayTeamPersistence;
-	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
-	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
+
+	@ServiceReference(
+		type = com.liferay.counter.kernel.service.CounterLocalService.class
+	)
+	protected com.liferay.counter.kernel.service.CounterLocalService
+		counterLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService
+		classNameLocalService;
+
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
-	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
-	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ResourceLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ResourceLocalService
+		resourceLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.UserLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.UserLocalService
+		userLocalService;
+
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
+
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
+	protected PersistedModelLocalServiceRegistry
+		persistedModelLocalServiceRegistry;
+
 }

@@ -41,6 +41,10 @@ public class WatsonActivityLocalServiceUtil {
 	/**
 	 * Adds the watson activity to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonActivityLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonActivity the watson activity
 	 * @return the watson activity that was added
 	 */
@@ -76,6 +80,10 @@ public class WatsonActivityLocalServiceUtil {
 	/**
 	 * Deletes the watson activity with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonActivityLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonActivityId the primary key of the watson activity
 	 * @return the watson activity that was removed
 	 * @throws PortalException if a watson activity with the primary key could not be found
@@ -89,6 +97,10 @@ public class WatsonActivityLocalServiceUtil {
 
 	/**
 	 * Deletes the watson activity from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonActivityLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonActivity the watson activity
 	 * @return the watson activity that was removed
@@ -264,6 +276,10 @@ public class WatsonActivityLocalServiceUtil {
 
 	/**
 	 * Updates the watson activity in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonActivityLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonActivity the watson activity
 	 * @return the watson activity that was updated

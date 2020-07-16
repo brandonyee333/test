@@ -78,6 +78,10 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	/**
 	 * Adds the shopping coupon to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ShoppingCouponLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param shoppingCoupon the shopping coupon
 	 * @return the shopping coupon that was added
 	 */
@@ -104,6 +108,10 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	/**
 	 * Deletes the shopping coupon with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ShoppingCouponLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param couponId the primary key of the shopping coupon
 	 * @return the shopping coupon that was removed
 	 * @throws PortalException if a shopping coupon with the primary key could not be found
@@ -118,6 +126,10 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 
 	/**
 	 * Deletes the shopping coupon from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ShoppingCouponLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param shoppingCoupon the shopping coupon
 	 * @return the shopping coupon that was removed
@@ -328,6 +340,10 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 
 	/**
 	 * Updates the shopping coupon in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ShoppingCouponLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param shoppingCoupon the shopping coupon
 	 * @return the shopping coupon that was updated

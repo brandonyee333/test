@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,11 +34,13 @@ import java.util.Objects;
  * @see TestrayCaseResultWarning
  * @generated
  */
-@ProviderType
-public class TestrayCaseResultWarningWrapper implements TestrayCaseResultWarning,
-	ModelWrapper<TestrayCaseResultWarning> {
+public class TestrayCaseResultWarningWrapper
+	implements ModelWrapper<TestrayCaseResultWarning>,
+			   TestrayCaseResultWarning {
+
 	public TestrayCaseResultWarningWrapper(
 		TestrayCaseResultWarning testrayCaseResultWarning) {
+
 		_testrayCaseResultWarning = testrayCaseResultWarning;
 	}
 
@@ -59,8 +58,8 @@ public class TestrayCaseResultWarningWrapper implements TestrayCaseResultWarning
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("testrayCaseResultWarningId",
-			getTestrayCaseResultWarningId());
+		attributes.put(
+			"testrayCaseResultWarningId", getTestrayCaseResultWarningId());
 		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
@@ -76,7 +75,7 @@ public class TestrayCaseResultWarningWrapper implements TestrayCaseResultWarning
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
 		Long testrayCaseResultWarningId = (Long)attributes.get(
-				"testrayCaseResultWarningId");
+			"testrayCaseResultWarningId");
 
 		if (testrayCaseResultWarningId != null) {
 			setTestrayCaseResultWarningId(testrayCaseResultWarningId);
@@ -132,13 +131,139 @@ public class TestrayCaseResultWarningWrapper implements TestrayCaseResultWarning
 	}
 
 	@Override
-	public TestrayCaseResultWarning toEscapedModel() {
-		return new TestrayCaseResultWarningWrapper(_testrayCaseResultWarning.toEscapedModel());
+	public Object clone() {
+		return new TestrayCaseResultWarningWrapper(
+			(TestrayCaseResultWarning)_testrayCaseResultWarning.clone());
 	}
 
 	@Override
-	public TestrayCaseResultWarning toUnescapedModel() {
-		return new TestrayCaseResultWarningWrapper(_testrayCaseResultWarning.toUnescapedModel());
+	public int compareTo(TestrayCaseResultWarning testrayCaseResultWarning) {
+		return _testrayCaseResultWarning.compareTo(testrayCaseResultWarning);
+	}
+
+	/**
+	 * Returns the company ID of this testray case result warning.
+	 *
+	 * @return the company ID of this testray case result warning
+	 */
+	@Override
+	public long getCompanyId() {
+		return _testrayCaseResultWarning.getCompanyId();
+	}
+
+	/**
+	 * Returns the content of this testray case result warning.
+	 *
+	 * @return the content of this testray case result warning
+	 */
+	@Override
+	public String getContent() {
+		return _testrayCaseResultWarning.getContent();
+	}
+
+	/**
+	 * Returns the create date of this testray case result warning.
+	 *
+	 * @return the create date of this testray case result warning
+	 */
+	@Override
+	public Date getCreateDate() {
+		return _testrayCaseResultWarning.getCreateDate();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _testrayCaseResultWarning.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the group ID of this testray case result warning.
+	 *
+	 * @return the group ID of this testray case result warning
+	 */
+	@Override
+	public long getGroupId() {
+		return _testrayCaseResultWarning.getGroupId();
+	}
+
+	/**
+	 * Returns the modified date of this testray case result warning.
+	 *
+	 * @return the modified date of this testray case result warning
+	 */
+	@Override
+	public Date getModifiedDate() {
+		return _testrayCaseResultWarning.getModifiedDate();
+	}
+
+	/**
+	 * Returns the primary key of this testray case result warning.
+	 *
+	 * @return the primary key of this testray case result warning
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _testrayCaseResultWarning.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _testrayCaseResultWarning.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the testray case result ID of this testray case result warning.
+	 *
+	 * @return the testray case result ID of this testray case result warning
+	 */
+	@Override
+	public long getTestrayCaseResultId() {
+		return _testrayCaseResultWarning.getTestrayCaseResultId();
+	}
+
+	/**
+	 * Returns the testray case result warning ID of this testray case result warning.
+	 *
+	 * @return the testray case result warning ID of this testray case result warning
+	 */
+	@Override
+	public long getTestrayCaseResultWarningId() {
+		return _testrayCaseResultWarning.getTestrayCaseResultWarningId();
+	}
+
+	/**
+	 * Returns the user ID of this testray case result warning.
+	 *
+	 * @return the user ID of this testray case result warning
+	 */
+	@Override
+	public long getUserId() {
+		return _testrayCaseResultWarning.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this testray case result warning.
+	 *
+	 * @return the user name of this testray case result warning
+	 */
+	@Override
+	public String getUserName() {
+		return _testrayCaseResultWarning.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this testray case result warning.
+	 *
+	 * @return the user uuid of this testray case result warning
+	 */
+	@Override
+	public String getUserUuid() {
+		return _testrayCaseResultWarning.getUserUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _testrayCaseResultWarning.hashCode();
 	}
 
 	@Override
@@ -157,156 +282,6 @@ public class TestrayCaseResultWarningWrapper implements TestrayCaseResultWarning
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _testrayCaseResultWarning.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<TestrayCaseResultWarning> toCacheModel() {
-		return _testrayCaseResultWarning.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(TestrayCaseResultWarning testrayCaseResultWarning) {
-		return _testrayCaseResultWarning.compareTo(testrayCaseResultWarning);
-	}
-
-	@Override
-	public int hashCode() {
-		return _testrayCaseResultWarning.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _testrayCaseResultWarning.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new TestrayCaseResultWarningWrapper((TestrayCaseResultWarning)_testrayCaseResultWarning.clone());
-	}
-
-	/**
-	* Returns the content of this testray case result warning.
-	*
-	* @return the content of this testray case result warning
-	*/
-	@Override
-	public java.lang.String getContent() {
-		return _testrayCaseResultWarning.getContent();
-	}
-
-	/**
-	* Returns the user name of this testray case result warning.
-	*
-	* @return the user name of this testray case result warning
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _testrayCaseResultWarning.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this testray case result warning.
-	*
-	* @return the user uuid of this testray case result warning
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _testrayCaseResultWarning.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _testrayCaseResultWarning.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _testrayCaseResultWarning.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this testray case result warning.
-	*
-	* @return the create date of this testray case result warning
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _testrayCaseResultWarning.getCreateDate();
-	}
-
-	/**
-	* Returns the modified date of this testray case result warning.
-	*
-	* @return the modified date of this testray case result warning
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _testrayCaseResultWarning.getModifiedDate();
-	}
-
-	/**
-	* Returns the company ID of this testray case result warning.
-	*
-	* @return the company ID of this testray case result warning
-	*/
-	@Override
-	public long getCompanyId() {
-		return _testrayCaseResultWarning.getCompanyId();
-	}
-
-	/**
-	* Returns the group ID of this testray case result warning.
-	*
-	* @return the group ID of this testray case result warning
-	*/
-	@Override
-	public long getGroupId() {
-		return _testrayCaseResultWarning.getGroupId();
-	}
-
-	/**
-	* Returns the primary key of this testray case result warning.
-	*
-	* @return the primary key of this testray case result warning
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _testrayCaseResultWarning.getPrimaryKey();
-	}
-
-	/**
-	* Returns the testray case result ID of this testray case result warning.
-	*
-	* @return the testray case result ID of this testray case result warning
-	*/
-	@Override
-	public long getTestrayCaseResultId() {
-		return _testrayCaseResultWarning.getTestrayCaseResultId();
-	}
-
-	/**
-	* Returns the testray case result warning ID of this testray case result warning.
-	*
-	* @return the testray case result warning ID of this testray case result warning
-	*/
-	@Override
-	public long getTestrayCaseResultWarningId() {
-		return _testrayCaseResultWarning.getTestrayCaseResultWarningId();
-	}
-
-	/**
-	* Returns the user ID of this testray case result warning.
-	*
-	* @return the user ID of this testray case result warning
-	*/
-	@Override
-	public long getUserId() {
-		return _testrayCaseResultWarning.getUserId();
-	}
-
-	@Override
 	public void persist() {
 		_testrayCaseResultWarning.persist();
 	}
@@ -317,33 +292,40 @@ public class TestrayCaseResultWarningWrapper implements TestrayCaseResultWarning
 	}
 
 	/**
-	* Sets the company ID of this testray case result warning.
-	*
-	* @param companyId the company ID of this testray case result warning
-	*/
+	 * Sets the company ID of this testray case result warning.
+	 *
+	 * @param companyId the company ID of this testray case result warning
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_testrayCaseResultWarning.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the content of this testray case result warning.
-	*
-	* @param content the content of this testray case result warning
-	*/
+	 * Sets the content of this testray case result warning.
+	 *
+	 * @param content the content of this testray case result warning
+	 */
 	@Override
-	public void setContent(java.lang.String content) {
+	public void setContent(String content) {
 		_testrayCaseResultWarning.setContent(content);
 	}
 
 	/**
-	* Sets the create date of this testray case result warning.
-	*
-	* @param createDate the create date of this testray case result warning
-	*/
+	 * Sets the create date of this testray case result warning.
+	 *
+	 * @param createDate the create date of this testray case result warning
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_testrayCaseResultWarning.setCreateDate(createDate);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_testrayCaseResultWarning.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -352,31 +334,25 @@ public class TestrayCaseResultWarningWrapper implements TestrayCaseResultWarning
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_testrayCaseResultWarning.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_testrayCaseResultWarning.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the group ID of this testray case result warning.
-	*
-	* @param groupId the group ID of this testray case result warning
-	*/
+	 * Sets the group ID of this testray case result warning.
+	 *
+	 * @param groupId the group ID of this testray case result warning
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_testrayCaseResultWarning.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the modified date of this testray case result warning.
-	*
-	* @param modifiedDate the modified date of this testray case result warning
-	*/
+	 * Sets the modified date of this testray case result warning.
+	 *
+	 * @param modifiedDate the modified date of this testray case result warning
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_testrayCaseResultWarning.setModifiedDate(modifiedDate);
@@ -388,10 +364,10 @@ public class TestrayCaseResultWarningWrapper implements TestrayCaseResultWarning
 	}
 
 	/**
-	* Sets the primary key of this testray case result warning.
-	*
-	* @param primaryKey the primary key of this testray case result warning
-	*/
+	 * Sets the primary key of this testray case result warning.
+	 *
+	 * @param primaryKey the primary key of this testray case result warning
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_testrayCaseResultWarning.setPrimaryKey(primaryKey);
@@ -403,69 +379,102 @@ public class TestrayCaseResultWarningWrapper implements TestrayCaseResultWarning
 	}
 
 	/**
-	* Sets the testray case result ID of this testray case result warning.
-	*
-	* @param testrayCaseResultId the testray case result ID of this testray case result warning
-	*/
+	 * Sets the testray case result ID of this testray case result warning.
+	 *
+	 * @param testrayCaseResultId the testray case result ID of this testray case result warning
+	 */
 	@Override
 	public void setTestrayCaseResultId(long testrayCaseResultId) {
 		_testrayCaseResultWarning.setTestrayCaseResultId(testrayCaseResultId);
 	}
 
 	/**
-	* Sets the testray case result warning ID of this testray case result warning.
-	*
-	* @param testrayCaseResultWarningId the testray case result warning ID of this testray case result warning
-	*/
+	 * Sets the testray case result warning ID of this testray case result warning.
+	 *
+	 * @param testrayCaseResultWarningId the testray case result warning ID of this testray case result warning
+	 */
 	@Override
 	public void setTestrayCaseResultWarningId(long testrayCaseResultWarningId) {
-		_testrayCaseResultWarning.setTestrayCaseResultWarningId(testrayCaseResultWarningId);
+		_testrayCaseResultWarning.setTestrayCaseResultWarningId(
+			testrayCaseResultWarningId);
 	}
 
 	/**
-	* Sets the user ID of this testray case result warning.
-	*
-	* @param userId the user ID of this testray case result warning
-	*/
+	 * Sets the user ID of this testray case result warning.
+	 *
+	 * @param userId the user ID of this testray case result warning
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_testrayCaseResultWarning.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this testray case result warning.
-	*
-	* @param userName the user name of this testray case result warning
-	*/
+	 * Sets the user name of this testray case result warning.
+	 *
+	 * @param userName the user name of this testray case result warning
+	 */
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_testrayCaseResultWarning.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this testray case result warning.
-	*
-	* @param userUuid the user uuid of this testray case result warning
-	*/
+	 * Sets the user uuid of this testray case result warning.
+	 *
+	 * @param userUuid the user uuid of this testray case result warning
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_testrayCaseResultWarning.setUserUuid(userUuid);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public com.liferay.portal.kernel.model.CacheModel<TestrayCaseResultWarning>
+		toCacheModel() {
+
+		return _testrayCaseResultWarning.toCacheModel();
+	}
+
+	@Override
+	public TestrayCaseResultWarning toEscapedModel() {
+		return new TestrayCaseResultWarningWrapper(
+			_testrayCaseResultWarning.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _testrayCaseResultWarning.toString();
+	}
+
+	@Override
+	public TestrayCaseResultWarning toUnescapedModel() {
+		return new TestrayCaseResultWarningWrapper(
+			_testrayCaseResultWarning.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _testrayCaseResultWarning.toXmlString();
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof TestrayCaseResultWarningWrapper)) {
+		if (!(object instanceof TestrayCaseResultWarningWrapper)) {
 			return false;
 		}
 
-		TestrayCaseResultWarningWrapper testrayCaseResultWarningWrapper = (TestrayCaseResultWarningWrapper)obj;
+		TestrayCaseResultWarningWrapper testrayCaseResultWarningWrapper =
+			(TestrayCaseResultWarningWrapper)object;
 
-		if (Objects.equals(_testrayCaseResultWarning,
-					testrayCaseResultWarningWrapper._testrayCaseResultWarning)) {
+		if (Objects.equals(
+				_testrayCaseResultWarning,
+				testrayCaseResultWarningWrapper._testrayCaseResultWarning)) {
+
 			return true;
 		}
 
@@ -493,4 +502,5 @@ public class TestrayCaseResultWarningWrapper implements TestrayCaseResultWarning
 	}
 
 	private final TestrayCaseResultWarning _testrayCaseResultWarning;
+
 }

@@ -101,6 +101,10 @@ public abstract class WatsonChildLocalServiceBaseImpl
 	/**
 	 * Adds the watson child to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonChildLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonChild the watson child
 	 * @return the watson child that was added
 	 */
@@ -127,6 +131,10 @@ public abstract class WatsonChildLocalServiceBaseImpl
 	/**
 	 * Deletes the watson child with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonChildLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonChildId the primary key of the watson child
 	 * @return the watson child that was removed
 	 * @throws PortalException if a watson child with the primary key could not be found
@@ -141,6 +149,10 @@ public abstract class WatsonChildLocalServiceBaseImpl
 
 	/**
 	 * Deletes the watson child from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonChildLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonChild the watson child
 	 * @return the watson child that was removed
@@ -352,6 +364,10 @@ public abstract class WatsonChildLocalServiceBaseImpl
 
 	/**
 	 * Updates the watson child in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonChildLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonChild the watson child
 	 * @return the watson child that was updated

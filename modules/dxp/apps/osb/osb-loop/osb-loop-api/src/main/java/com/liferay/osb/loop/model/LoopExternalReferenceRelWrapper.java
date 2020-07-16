@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -36,11 +33,13 @@ import java.util.Objects;
  * @see LoopExternalReferenceRel
  * @generated
  */
-@ProviderType
-public class LoopExternalReferenceRelWrapper implements LoopExternalReferenceRel,
-	ModelWrapper<LoopExternalReferenceRel> {
+public class LoopExternalReferenceRelWrapper
+	implements LoopExternalReferenceRel,
+			   ModelWrapper<LoopExternalReferenceRel> {
+
 	public LoopExternalReferenceRelWrapper(
 		LoopExternalReferenceRel loopExternalReferenceRel) {
+
 		_loopExternalReferenceRel = loopExternalReferenceRel;
 	}
 
@@ -58,8 +57,8 @@ public class LoopExternalReferenceRelWrapper implements LoopExternalReferenceRel
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("loopExternalReferenceRelId",
-			getLoopExternalReferenceRelId());
+		attributes.put(
+			"loopExternalReferenceRelId", getLoopExternalReferenceRelId());
 		attributes.put("classNameId", getClassNameId());
 		attributes.put("classPK", getClassPK());
 		attributes.put("externalReferenceName", getExternalReferenceName());
@@ -71,7 +70,7 @@ public class LoopExternalReferenceRelWrapper implements LoopExternalReferenceRel
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
 		Long loopExternalReferenceRelId = (Long)attributes.get(
-				"loopExternalReferenceRelId");
+			"loopExternalReferenceRelId");
 
 		if (loopExternalReferenceRelId != null) {
 			setLoopExternalReferenceRelId(loopExternalReferenceRelId);
@@ -90,14 +89,14 @@ public class LoopExternalReferenceRelWrapper implements LoopExternalReferenceRel
 		}
 
 		String externalReferenceName = (String)attributes.get(
-				"externalReferenceName");
+			"externalReferenceName");
 
 		if (externalReferenceName != null) {
 			setExternalReferenceName(externalReferenceName);
 		}
 
 		String externalReferencePK = (String)attributes.get(
-				"externalReferencePK");
+			"externalReferencePK");
 
 		if (externalReferencePK != null) {
 			setExternalReferencePK(externalReferencePK);
@@ -105,13 +104,99 @@ public class LoopExternalReferenceRelWrapper implements LoopExternalReferenceRel
 	}
 
 	@Override
-	public LoopExternalReferenceRel toEscapedModel() {
-		return new LoopExternalReferenceRelWrapper(_loopExternalReferenceRel.toEscapedModel());
+	public Object clone() {
+		return new LoopExternalReferenceRelWrapper(
+			(LoopExternalReferenceRel)_loopExternalReferenceRel.clone());
 	}
 
 	@Override
-	public LoopExternalReferenceRel toUnescapedModel() {
-		return new LoopExternalReferenceRelWrapper(_loopExternalReferenceRel.toUnescapedModel());
+	public int compareTo(LoopExternalReferenceRel loopExternalReferenceRel) {
+		return _loopExternalReferenceRel.compareTo(loopExternalReferenceRel);
+	}
+
+	/**
+	 * Returns the fully qualified class name of this loop external reference rel.
+	 *
+	 * @return the fully qualified class name of this loop external reference rel
+	 */
+	@Override
+	public String getClassName() {
+		return _loopExternalReferenceRel.getClassName();
+	}
+
+	/**
+	 * Returns the class name ID of this loop external reference rel.
+	 *
+	 * @return the class name ID of this loop external reference rel
+	 */
+	@Override
+	public long getClassNameId() {
+		return _loopExternalReferenceRel.getClassNameId();
+	}
+
+	/**
+	 * Returns the class pk of this loop external reference rel.
+	 *
+	 * @return the class pk of this loop external reference rel
+	 */
+	@Override
+	public long getClassPK() {
+		return _loopExternalReferenceRel.getClassPK();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _loopExternalReferenceRel.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the external reference name of this loop external reference rel.
+	 *
+	 * @return the external reference name of this loop external reference rel
+	 */
+	@Override
+	public String getExternalReferenceName() {
+		return _loopExternalReferenceRel.getExternalReferenceName();
+	}
+
+	/**
+	 * Returns the external reference pk of this loop external reference rel.
+	 *
+	 * @return the external reference pk of this loop external reference rel
+	 */
+	@Override
+	public String getExternalReferencePK() {
+		return _loopExternalReferenceRel.getExternalReferencePK();
+	}
+
+	/**
+	 * Returns the loop external reference rel ID of this loop external reference rel.
+	 *
+	 * @return the loop external reference rel ID of this loop external reference rel
+	 */
+	@Override
+	public long getLoopExternalReferenceRelId() {
+		return _loopExternalReferenceRel.getLoopExternalReferenceRelId();
+	}
+
+	/**
+	 * Returns the primary key of this loop external reference rel.
+	 *
+	 * @return the primary key of this loop external reference rel
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _loopExternalReferenceRel.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _loopExternalReferenceRel.getPrimaryKeyObj();
+	}
+
+	@Override
+	public int hashCode() {
+		return _loopExternalReferenceRel.hashCode();
 	}
 
 	@Override
@@ -130,116 +215,6 @@ public class LoopExternalReferenceRelWrapper implements LoopExternalReferenceRel
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _loopExternalReferenceRel.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<LoopExternalReferenceRel> toCacheModel() {
-		return _loopExternalReferenceRel.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(LoopExternalReferenceRel loopExternalReferenceRel) {
-		return _loopExternalReferenceRel.compareTo(loopExternalReferenceRel);
-	}
-
-	@Override
-	public int hashCode() {
-		return _loopExternalReferenceRel.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _loopExternalReferenceRel.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new LoopExternalReferenceRelWrapper((LoopExternalReferenceRel)_loopExternalReferenceRel.clone());
-	}
-
-	/**
-	* Returns the fully qualified class name of this loop external reference rel.
-	*
-	* @return the fully qualified class name of this loop external reference rel
-	*/
-	@Override
-	public java.lang.String getClassName() {
-		return _loopExternalReferenceRel.getClassName();
-	}
-
-	/**
-	* Returns the external reference name of this loop external reference rel.
-	*
-	* @return the external reference name of this loop external reference rel
-	*/
-	@Override
-	public java.lang.String getExternalReferenceName() {
-		return _loopExternalReferenceRel.getExternalReferenceName();
-	}
-
-	/**
-	* Returns the external reference pk of this loop external reference rel.
-	*
-	* @return the external reference pk of this loop external reference rel
-	*/
-	@Override
-	public java.lang.String getExternalReferencePK() {
-		return _loopExternalReferenceRel.getExternalReferencePK();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _loopExternalReferenceRel.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _loopExternalReferenceRel.toXmlString();
-	}
-
-	/**
-	* Returns the class name ID of this loop external reference rel.
-	*
-	* @return the class name ID of this loop external reference rel
-	*/
-	@Override
-	public long getClassNameId() {
-		return _loopExternalReferenceRel.getClassNameId();
-	}
-
-	/**
-	* Returns the class pk of this loop external reference rel.
-	*
-	* @return the class pk of this loop external reference rel
-	*/
-	@Override
-	public long getClassPK() {
-		return _loopExternalReferenceRel.getClassPK();
-	}
-
-	/**
-	* Returns the loop external reference rel ID of this loop external reference rel.
-	*
-	* @return the loop external reference rel ID of this loop external reference rel
-	*/
-	@Override
-	public long getLoopExternalReferenceRelId() {
-		return _loopExternalReferenceRel.getLoopExternalReferenceRelId();
-	}
-
-	/**
-	* Returns the primary key of this loop external reference rel.
-	*
-	* @return the primary key of this loop external reference rel
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _loopExternalReferenceRel.getPrimaryKey();
-	}
-
-	@Override
 	public void persist() {
 		_loopExternalReferenceRel.persist();
 	}
@@ -250,28 +225,35 @@ public class LoopExternalReferenceRelWrapper implements LoopExternalReferenceRel
 	}
 
 	@Override
-	public void setClassName(java.lang.String className) {
+	public void setClassName(String className) {
 		_loopExternalReferenceRel.setClassName(className);
 	}
 
 	/**
-	* Sets the class name ID of this loop external reference rel.
-	*
-	* @param classNameId the class name ID of this loop external reference rel
-	*/
+	 * Sets the class name ID of this loop external reference rel.
+	 *
+	 * @param classNameId the class name ID of this loop external reference rel
+	 */
 	@Override
 	public void setClassNameId(long classNameId) {
 		_loopExternalReferenceRel.setClassNameId(classNameId);
 	}
 
 	/**
-	* Sets the class pk of this loop external reference rel.
-	*
-	* @param classPK the class pk of this loop external reference rel
-	*/
+	 * Sets the class pk of this loop external reference rel.
+	 *
+	 * @param classPK the class pk of this loop external reference rel
+	 */
 	@Override
 	public void setClassPK(long classPK) {
 		_loopExternalReferenceRel.setClassPK(classPK);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_loopExternalReferenceRel.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -280,44 +262,40 @@ public class LoopExternalReferenceRelWrapper implements LoopExternalReferenceRel
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_loopExternalReferenceRel.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_loopExternalReferenceRel.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the external reference name of this loop external reference rel.
-	*
-	* @param externalReferenceName the external reference name of this loop external reference rel
-	*/
+	 * Sets the external reference name of this loop external reference rel.
+	 *
+	 * @param externalReferenceName the external reference name of this loop external reference rel
+	 */
 	@Override
-	public void setExternalReferenceName(java.lang.String externalReferenceName) {
-		_loopExternalReferenceRel.setExternalReferenceName(externalReferenceName);
+	public void setExternalReferenceName(String externalReferenceName) {
+		_loopExternalReferenceRel.setExternalReferenceName(
+			externalReferenceName);
 	}
 
 	/**
-	* Sets the external reference pk of this loop external reference rel.
-	*
-	* @param externalReferencePK the external reference pk of this loop external reference rel
-	*/
+	 * Sets the external reference pk of this loop external reference rel.
+	 *
+	 * @param externalReferencePK the external reference pk of this loop external reference rel
+	 */
 	@Override
-	public void setExternalReferencePK(java.lang.String externalReferencePK) {
+	public void setExternalReferencePK(String externalReferencePK) {
 		_loopExternalReferenceRel.setExternalReferencePK(externalReferencePK);
 	}
 
 	/**
-	* Sets the loop external reference rel ID of this loop external reference rel.
-	*
-	* @param loopExternalReferenceRelId the loop external reference rel ID of this loop external reference rel
-	*/
+	 * Sets the loop external reference rel ID of this loop external reference rel.
+	 *
+	 * @param loopExternalReferenceRelId the loop external reference rel ID of this loop external reference rel
+	 */
 	@Override
 	public void setLoopExternalReferenceRelId(long loopExternalReferenceRelId) {
-		_loopExternalReferenceRel.setLoopExternalReferenceRelId(loopExternalReferenceRelId);
+		_loopExternalReferenceRel.setLoopExternalReferenceRelId(
+			loopExternalReferenceRelId);
 	}
 
 	@Override
@@ -326,10 +304,10 @@ public class LoopExternalReferenceRelWrapper implements LoopExternalReferenceRel
 	}
 
 	/**
-	* Sets the primary key of this loop external reference rel.
-	*
-	* @param primaryKey the primary key of this loop external reference rel
-	*/
+	 * Sets the primary key of this loop external reference rel.
+	 *
+	 * @param primaryKey the primary key of this loop external reference rel
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_loopExternalReferenceRel.setPrimaryKey(primaryKey);
@@ -341,19 +319,51 @@ public class LoopExternalReferenceRelWrapper implements LoopExternalReferenceRel
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public com.liferay.portal.kernel.model.CacheModel<LoopExternalReferenceRel>
+		toCacheModel() {
+
+		return _loopExternalReferenceRel.toCacheModel();
+	}
+
+	@Override
+	public LoopExternalReferenceRel toEscapedModel() {
+		return new LoopExternalReferenceRelWrapper(
+			_loopExternalReferenceRel.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _loopExternalReferenceRel.toString();
+	}
+
+	@Override
+	public LoopExternalReferenceRel toUnescapedModel() {
+		return new LoopExternalReferenceRelWrapper(
+			_loopExternalReferenceRel.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _loopExternalReferenceRel.toXmlString();
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof LoopExternalReferenceRelWrapper)) {
+		if (!(object instanceof LoopExternalReferenceRelWrapper)) {
 			return false;
 		}
 
-		LoopExternalReferenceRelWrapper loopExternalReferenceRelWrapper = (LoopExternalReferenceRelWrapper)obj;
+		LoopExternalReferenceRelWrapper loopExternalReferenceRelWrapper =
+			(LoopExternalReferenceRelWrapper)object;
 
-		if (Objects.equals(_loopExternalReferenceRel,
-					loopExternalReferenceRelWrapper._loopExternalReferenceRel)) {
+		if (Objects.equals(
+				_loopExternalReferenceRel,
+				loopExternalReferenceRelWrapper._loopExternalReferenceRel)) {
+
 			return true;
 		}
 
@@ -381,4 +391,5 @@ public class LoopExternalReferenceRelWrapper implements LoopExternalReferenceRel
 	}
 
 	private final LoopExternalReferenceRel _loopExternalReferenceRel;
+
 }

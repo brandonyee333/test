@@ -78,6 +78,10 @@ public interface WSRPProducerLocalService
 	/**
 	 * Adds the wsrp producer to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WSRPProducerLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param wsrpProducer the wsrp producer
 	 * @return the wsrp producer that was added
 	 */
@@ -103,6 +107,10 @@ public interface WSRPProducerLocalService
 	/**
 	 * Deletes the wsrp producer with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WSRPProducerLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param wsrpProducerId the primary key of the wsrp producer
 	 * @return the wsrp producer that was removed
 	 * @throws PortalException if a wsrp producer with the primary key could not be found
@@ -113,6 +121,10 @@ public interface WSRPProducerLocalService
 
 	/**
 	 * Deletes the wsrp producer from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WSRPProducerLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param wsrpProducer the wsrp producer
 	 * @return the wsrp producer that was removed
@@ -322,6 +334,10 @@ public interface WSRPProducerLocalService
 
 	/**
 	 * Updates the wsrp producer in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WSRPProducerLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param wsrpProducer the wsrp producer
 	 * @return the wsrp producer that was updated

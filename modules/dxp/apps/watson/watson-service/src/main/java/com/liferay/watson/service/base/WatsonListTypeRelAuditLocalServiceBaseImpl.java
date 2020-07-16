@@ -101,6 +101,10 @@ public abstract class WatsonListTypeRelAuditLocalServiceBaseImpl
 	/**
 	 * Adds the watson list type rel audit to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonListTypeRelAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonListTypeRelAudit the watson list type rel audit
 	 * @return the watson list type rel audit that was added
 	 */
@@ -132,6 +136,10 @@ public abstract class WatsonListTypeRelAuditLocalServiceBaseImpl
 	/**
 	 * Deletes the watson list type rel audit with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonListTypeRelAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonListTypeRelAuditId the primary key of the watson list type rel audit
 	 * @return the watson list type rel audit that was removed
 	 * @throws PortalException if a watson list type rel audit with the primary key could not be found
@@ -148,6 +156,10 @@ public abstract class WatsonListTypeRelAuditLocalServiceBaseImpl
 
 	/**
 	 * Deletes the watson list type rel audit from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonListTypeRelAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonListTypeRelAudit the watson list type rel audit
 	 * @return the watson list type rel audit that was removed
@@ -376,6 +388,10 @@ public abstract class WatsonListTypeRelAuditLocalServiceBaseImpl
 
 	/**
 	 * Updates the watson list type rel audit in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonListTypeRelAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonListTypeRelAudit the watson list type rel audit
 	 * @return the watson list type rel audit that was updated

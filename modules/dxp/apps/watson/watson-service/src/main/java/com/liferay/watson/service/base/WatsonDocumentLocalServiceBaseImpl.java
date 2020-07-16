@@ -101,6 +101,10 @@ public abstract class WatsonDocumentLocalServiceBaseImpl
 	/**
 	 * Adds the watson document to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonDocumentLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonDocument the watson document
 	 * @return the watson document that was added
 	 */
@@ -127,6 +131,10 @@ public abstract class WatsonDocumentLocalServiceBaseImpl
 	/**
 	 * Deletes the watson document with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonDocumentLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonDocumentId the primary key of the watson document
 	 * @return the watson document that was removed
 	 * @throws PortalException if a watson document with the primary key could not be found
@@ -141,6 +149,10 @@ public abstract class WatsonDocumentLocalServiceBaseImpl
 
 	/**
 	 * Deletes the watson document from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonDocumentLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonDocument the watson document
 	 * @return the watson document that was removed
@@ -352,6 +364,10 @@ public abstract class WatsonDocumentLocalServiceBaseImpl
 
 	/**
 	 * Updates the watson document in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonDocumentLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonDocument the watson document
 	 * @return the watson document that was updated

@@ -1,27 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.testray.model.TestrayBuild;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -34,23 +30,23 @@ import java.util.Date;
  * The cache model class for representing TestrayBuild in entity cache.
  *
  * @author Ethan Bustad
- * @see TestrayBuild
  * @generated
  */
-@ProviderType
-public class TestrayBuildCacheModel implements CacheModel<TestrayBuild>,
-	Externalizable {
+public class TestrayBuildCacheModel
+	implements CacheModel<TestrayBuild>, Externalizable {
+
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof TestrayBuildCacheModel)) {
+		if (!(object instanceof TestrayBuildCacheModel)) {
 			return false;
 		}
 
-		TestrayBuildCacheModel testrayBuildCacheModel = (TestrayBuildCacheModel)obj;
+		TestrayBuildCacheModel testrayBuildCacheModel =
+			(TestrayBuildCacheModel)object;
 
 		if (testrayBuildId == testrayBuildCacheModel.testrayBuildId) {
 			return true;
@@ -123,7 +119,7 @@ public class TestrayBuildCacheModel implements CacheModel<TestrayBuild>,
 		testrayBuildImpl.setUserId(userId);
 
 		if (userName == null) {
-			testrayBuildImpl.setUserName(StringPool.BLANK);
+			testrayBuildImpl.setUserName("");
 		}
 		else {
 			testrayBuildImpl.setUserName(userName);
@@ -149,21 +145,21 @@ public class TestrayBuildCacheModel implements CacheModel<TestrayBuild>,
 		testrayBuildImpl.setTestrayProjectId(testrayProjectId);
 
 		if (name == null) {
-			testrayBuildImpl.setName(StringPool.BLANK);
+			testrayBuildImpl.setName("");
 		}
 		else {
 			testrayBuildImpl.setName(name);
 		}
 
 		if (description == null) {
-			testrayBuildImpl.setDescription(StringPool.BLANK);
+			testrayBuildImpl.setDescription("");
 		}
 		else {
 			testrayBuildImpl.setDescription(description);
 		}
 
 		if (descriptionType == null) {
-			testrayBuildImpl.setDescriptionType(StringPool.BLANK);
+			testrayBuildImpl.setDescriptionType("");
 		}
 		else {
 			testrayBuildImpl.setDescriptionType(descriptionType);
@@ -179,14 +175,14 @@ public class TestrayBuildCacheModel implements CacheModel<TestrayBuild>,
 		}
 
 		if (gitHash == null) {
-			testrayBuildImpl.setGitHash(StringPool.BLANK);
+			testrayBuildImpl.setGitHash("");
 		}
 		else {
 			testrayBuildImpl.setGitHash(gitHash);
 		}
 
 		if (githubCompareURLs == null) {
-			testrayBuildImpl.setGithubCompareURLs(StringPool.BLANK);
+			testrayBuildImpl.setGithubCompareURLs("");
 		}
 		else {
 			testrayBuildImpl.setGithubCompareURLs(githubCompareURLs);
@@ -235,8 +231,7 @@ public class TestrayBuildCacheModel implements CacheModel<TestrayBuild>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(testrayBuildId);
 
 		objectOutput.writeLong(groupId);
@@ -246,7 +241,7 @@ public class TestrayBuildCacheModel implements CacheModel<TestrayBuild>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -264,21 +259,21 @@ public class TestrayBuildCacheModel implements CacheModel<TestrayBuild>,
 		objectOutput.writeLong(testrayProjectId);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (descriptionType == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(descriptionType);
@@ -288,14 +283,14 @@ public class TestrayBuildCacheModel implements CacheModel<TestrayBuild>,
 		objectOutput.writeLong(dueDate);
 
 		if (gitHash == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(gitHash);
 		}
 
 		if (githubCompareURLs == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(githubCompareURLs);
@@ -326,4 +321,5 @@ public class TestrayBuildCacheModel implements CacheModel<TestrayBuild>,
 	public String githubCompareURLs;
 	public boolean promoted;
 	public int status;
+
 }

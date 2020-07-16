@@ -64,6 +64,10 @@ public interface WatsonRelationshipLocalService
 	/**
 	 * Adds the watson relationship to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonRelationshipLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonRelationship the watson relationship
 	 * @return the watson relationship that was added
 	 */
@@ -91,6 +95,10 @@ public interface WatsonRelationshipLocalService
 	/**
 	 * Deletes the watson relationship with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonRelationshipLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonRelationshipId the primary key of the watson relationship
 	 * @return the watson relationship that was removed
 	 * @throws PortalException if a watson relationship with the primary key could not be found
@@ -102,6 +110,10 @@ public interface WatsonRelationshipLocalService
 
 	/**
 	 * Deletes the watson relationship from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonRelationshipLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonRelationship the watson relationship
 	 * @return the watson relationship that was removed
@@ -236,6 +248,10 @@ public interface WatsonRelationshipLocalService
 
 	/**
 	 * Updates the watson relationship in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonRelationshipLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonRelationship the watson relationship
 	 * @return the watson relationship that was updated

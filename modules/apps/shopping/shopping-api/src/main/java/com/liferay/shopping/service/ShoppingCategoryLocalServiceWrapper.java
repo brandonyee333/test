@@ -88,6 +88,10 @@ public class ShoppingCategoryLocalServiceWrapper
 	/**
 	 * Adds the shopping category to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ShoppingCategoryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param shoppingCategory the shopping category
 	 * @return the shopping category that was added
 	 */
@@ -149,6 +153,10 @@ public class ShoppingCategoryLocalServiceWrapper
 	/**
 	 * Deletes the shopping category with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ShoppingCategoryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param categoryId the primary key of the shopping category
 	 * @return the shopping category that was removed
 	 * @throws PortalException if a shopping category with the primary key could not be found
@@ -163,6 +171,10 @@ public class ShoppingCategoryLocalServiceWrapper
 
 	/**
 	 * Deletes the shopping category from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ShoppingCategoryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param shoppingCategory the shopping category
 	 * @return the shopping category that was removed
@@ -435,6 +447,10 @@ public class ShoppingCategoryLocalServiceWrapper
 
 	/**
 	 * Updates the shopping category in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ShoppingCategoryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param shoppingCategory the shopping category
 	 * @return the shopping category that was updated

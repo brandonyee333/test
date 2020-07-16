@@ -1,20 +1,18 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.service.persistence.impl;
-
-import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.testray.exception.NoSuchTestraySubtaskException;
 import com.liferay.osb.testray.model.TestraySubtask;
@@ -23,7 +21,6 @@ import com.liferay.osb.testray.model.impl.TestraySubtaskModelImpl;
 import com.liferay.osb.testray.service.persistence.TestrayCaseResultPersistence;
 import com.liferay.osb.testray.service.persistence.TestrayIssuePersistence;
 import com.liferay.osb.testray.service.persistence.TestraySubtaskPersistence;
-
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -33,22 +30,23 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.service.persistence.CompanyProvider;
-import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapper;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapperFactory;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -67,34 +65,29 @@ import java.util.Set;
  * </p>
  *
  * @author Ethan Bustad
- * @see TestraySubtaskPersistence
- * @see com.liferay.osb.testray.service.persistence.TestraySubtaskUtil
  * @generated
  */
-@ProviderType
-public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySubtask>
+public class TestraySubtaskPersistenceImpl
+	extends BasePersistenceImpl<TestraySubtask>
 	implements TestraySubtaskPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link TestraySubtaskUtil} to access the testray subtask persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use <code>TestraySubtaskUtil</code> to access the testray subtask persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = TestraySubtaskImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
-			TestraySubtaskModelImpl.FINDER_CACHE_ENABLED,
-			TestraySubtaskImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
-			TestraySubtaskModelImpl.FINDER_CACHE_ENABLED,
-			TestraySubtaskImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
-			TestraySubtaskModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		TestraySubtaskImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
 
 	public TestraySubtaskPersistenceImpl() {
 		setModelClass(TestraySubtask.class);
@@ -107,7 +100,8 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 */
 	@Override
 	public void cacheResult(TestraySubtask testraySubtask) {
-		entityCache.putResult(TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
 			TestraySubtaskImpl.class, testraySubtask.getPrimaryKey(),
 			testraySubtask);
 
@@ -123,8 +117,10 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	public void cacheResult(List<TestraySubtask> testraySubtasks) {
 		for (TestraySubtask testraySubtask : testraySubtasks) {
 			if (entityCache.getResult(
-						TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
-						TestraySubtaskImpl.class, testraySubtask.getPrimaryKey()) == null) {
+					TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
+					TestraySubtaskImpl.class, testraySubtask.getPrimaryKey()) ==
+						null) {
+
 				cacheResult(testraySubtask);
 			}
 			else {
@@ -137,7 +133,7 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * Clears the cache for all testray subtasks.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -153,12 +149,13 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * Clears the cache for the testray subtask.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(TestraySubtask testraySubtask) {
-		entityCache.removeResult(TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(
+			TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
 			TestraySubtaskImpl.class, testraySubtask.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -171,8 +168,21 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (TestraySubtask testraySubtask : testraySubtasks) {
-			entityCache.removeResult(TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(
+				TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
 				TestraySubtaskImpl.class, testraySubtask.getPrimaryKey());
+		}
+	}
+
+	public void clearCache(Set<Serializable> primaryKeys) {
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (Serializable primaryKey : primaryKeys) {
+			entityCache.removeResult(
+				TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
+				TestraySubtaskImpl.class, primaryKey);
 		}
 	}
 
@@ -189,7 +199,7 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 		testraySubtask.setNew(true);
 		testraySubtask.setPrimaryKey(testraySubtaskId);
 
-		testraySubtask.setCompanyId(companyProvider.getCompanyId());
+		testraySubtask.setCompanyId(CompanyThreadLocal.getCompanyId());
 
 		return testraySubtask;
 	}
@@ -204,6 +214,7 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	@Override
 	public TestraySubtask remove(long testraySubtaskId)
 		throws NoSuchTestraySubtaskException {
+
 		return remove((Serializable)testraySubtaskId);
 	}
 
@@ -217,30 +228,31 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	@Override
 	public TestraySubtask remove(Serializable primaryKey)
 		throws NoSuchTestraySubtaskException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			TestraySubtask testraySubtask = (TestraySubtask)session.get(TestraySubtaskImpl.class,
-					primaryKey);
+			TestraySubtask testraySubtask = (TestraySubtask)session.get(
+				TestraySubtaskImpl.class, primaryKey);
 
 			if (testraySubtask == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchTestraySubtaskException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchTestraySubtaskException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(testraySubtask);
 		}
-		catch (NoSuchTestraySubtaskException nsee) {
-			throw nsee;
+		catch (NoSuchTestraySubtaskException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -249,11 +261,11 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 
 	@Override
 	protected TestraySubtask removeImpl(TestraySubtask testraySubtask) {
-		testraySubtask = toUnwrappedModel(testraySubtask);
+		testraySubtaskToTestrayCaseResultTableMapper.
+			deleteLeftPrimaryKeyTableMappings(testraySubtask.getPrimaryKey());
 
-		testraySubtaskToTestrayCaseResultTableMapper.deleteLeftPrimaryKeyTableMappings(testraySubtask.getPrimaryKey());
-
-		testraySubtaskToTestrayIssueTableMapper.deleteLeftPrimaryKeyTableMappings(testraySubtask.getPrimaryKey());
+		testraySubtaskToTestrayIssueTableMapper.
+			deleteLeftPrimaryKeyTableMappings(testraySubtask.getPrimaryKey());
 
 		Session session = null;
 
@@ -261,16 +273,17 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 			session = openSession();
 
 			if (!session.contains(testraySubtask)) {
-				testraySubtask = (TestraySubtask)session.get(TestraySubtaskImpl.class,
-						testraySubtask.getPrimaryKeyObj());
+				testraySubtask = (TestraySubtask)session.get(
+					TestraySubtaskImpl.class,
+					testraySubtask.getPrimaryKeyObj());
 			}
 
 			if (testraySubtask != null) {
 				session.delete(testraySubtask);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -285,13 +298,30 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 
 	@Override
 	public TestraySubtask updateImpl(TestraySubtask testraySubtask) {
-		testraySubtask = toUnwrappedModel(testraySubtask);
-
 		boolean isNew = testraySubtask.isNew();
 
-		TestraySubtaskModelImpl testraySubtaskModelImpl = (TestraySubtaskModelImpl)testraySubtask;
+		if (!(testraySubtask instanceof TestraySubtaskModelImpl)) {
+			InvocationHandler invocationHandler = null;
 
-		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+			if (ProxyUtil.isProxyClass(testraySubtask.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(
+					testraySubtask);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in testraySubtask proxy " +
+						invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom TestraySubtask implementation " +
+					testraySubtask.getClass());
+		}
+
+		TestraySubtaskModelImpl testraySubtaskModelImpl =
+			(TestraySubtaskModelImpl)testraySubtask;
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -309,8 +339,8 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 				testraySubtask.setModifiedDate(now);
 			}
 			else {
-				testraySubtask.setModifiedDate(serviceContext.getModifiedDate(
-						now));
+				testraySubtask.setModifiedDate(
+					serviceContext.getModifiedDate(now));
 			}
 		}
 
@@ -328,8 +358,8 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 				testraySubtask = (TestraySubtask)session.merge(testraySubtask);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -338,12 +368,13 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
 		if (isNew) {
-			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
-				FINDER_ARGS_EMPTY);
+			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
 			TestraySubtaskImpl.class, testraySubtask.getPrimaryKey(),
 			testraySubtask, false);
 
@@ -352,37 +383,8 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 		return testraySubtask;
 	}
 
-	protected TestraySubtask toUnwrappedModel(TestraySubtask testraySubtask) {
-		if (testraySubtask instanceof TestraySubtaskImpl) {
-			return testraySubtask;
-		}
-
-		TestraySubtaskImpl testraySubtaskImpl = new TestraySubtaskImpl();
-
-		testraySubtaskImpl.setNew(testraySubtask.isNew());
-		testraySubtaskImpl.setPrimaryKey(testraySubtask.getPrimaryKey());
-
-		testraySubtaskImpl.setTestraySubtaskId(testraySubtask.getTestraySubtaskId());
-		testraySubtaskImpl.setGroupId(testraySubtask.getGroupId());
-		testraySubtaskImpl.setCompanyId(testraySubtask.getCompanyId());
-		testraySubtaskImpl.setUserId(testraySubtask.getUserId());
-		testraySubtaskImpl.setUserName(testraySubtask.getUserName());
-		testraySubtaskImpl.setCreateDate(testraySubtask.getCreateDate());
-		testraySubtaskImpl.setModifiedDate(testraySubtask.getModifiedDate());
-		testraySubtaskImpl.setCommentMBMessageId(testraySubtask.getCommentMBMessageId());
-		testraySubtaskImpl.setMergedToTestraySubtaskId(testraySubtask.getMergedToTestraySubtaskId());
-		testraySubtaskImpl.setSplitFromTestraySubtaskId(testraySubtask.getSplitFromTestraySubtaskId());
-		testraySubtaskImpl.setTestrayTaskId(testraySubtask.getTestrayTaskId());
-		testraySubtaskImpl.setName(testraySubtask.getName());
-		testraySubtaskImpl.setScore(testraySubtask.getScore());
-		testraySubtaskImpl.setStatusUpdateDate(testraySubtask.getStatusUpdateDate());
-		testraySubtaskImpl.setStatus(testraySubtask.getStatus());
-
-		return testraySubtaskImpl;
-	}
-
 	/**
-	 * Returns the testray subtask with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the testray subtask with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the testray subtask
 	 * @return the testray subtask
@@ -391,6 +393,7 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	@Override
 	public TestraySubtask findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchTestraySubtaskException {
+
 		TestraySubtask testraySubtask = fetchByPrimaryKey(primaryKey);
 
 		if (testraySubtask == null) {
@@ -398,15 +401,15 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchTestraySubtaskException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchTestraySubtaskException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return testraySubtask;
 	}
 
 	/**
-	 * Returns the testray subtask with the primary key or throws a {@link NoSuchTestraySubtaskException} if it could not be found.
+	 * Returns the testray subtask with the primary key or throws a <code>NoSuchTestraySubtaskException</code> if it could not be found.
 	 *
 	 * @param testraySubtaskId the primary key of the testray subtask
 	 * @return the testray subtask
@@ -415,6 +418,7 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	@Override
 	public TestraySubtask findByPrimaryKey(long testraySubtaskId)
 		throws NoSuchTestraySubtaskException {
+
 		return findByPrimaryKey((Serializable)testraySubtaskId);
 	}
 
@@ -426,8 +430,9 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 */
 	@Override
 	public TestraySubtask fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
-				TestraySubtaskImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
+			TestraySubtaskImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -441,22 +446,24 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 			try {
 				session = openSession();
 
-				testraySubtask = (TestraySubtask)session.get(TestraySubtaskImpl.class,
-						primaryKey);
+				testraySubtask = (TestraySubtask)session.get(
+					TestraySubtaskImpl.class, primaryKey);
 
 				if (testraySubtask != null) {
 					cacheResult(testraySubtask);
 				}
 				else {
-					entityCache.putResult(TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
 						TestraySubtaskImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
-				entityCache.removeResult(TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception exception) {
+				entityCache.removeResult(
+					TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
 					TestraySubtaskImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -480,11 +487,13 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	@Override
 	public Map<Serializable, TestraySubtask> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, TestraySubtask> map = new HashMap<Serializable, TestraySubtask>();
+		Map<Serializable, TestraySubtask> map =
+			new HashMap<Serializable, TestraySubtask>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -503,8 +512,9 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
-					TestraySubtaskImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
+				TestraySubtaskImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -524,31 +534,33 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler sb = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
-		query.append(_SQL_SELECT_TESTRAYSUBTASK_WHERE_PKS_IN);
+		sb.append(_SQL_SELECT_TESTRAYSUBTASK_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append((long)primaryKey);
+			sb.append((long)primaryKey);
 
-			query.append(StringPool.COMMA);
+			sb.append(",");
 		}
 
-		query.setIndex(query.index() - 1);
+		sb.setIndex(sb.index() - 1);
 
-		query.append(StringPool.CLOSE_PARENTHESIS);
+		sb.append(")");
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query q = session.createQuery(sql);
+			Query query = session.createQuery(sql);
 
-			for (TestraySubtask testraySubtask : (List<TestraySubtask>)q.list()) {
+			for (TestraySubtask testraySubtask :
+					(List<TestraySubtask>)query.list()) {
+
 				map.put(testraySubtask.getPrimaryKeyObj(), testraySubtask);
 
 				cacheResult(testraySubtask);
@@ -557,12 +569,13 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
 					TestraySubtaskImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -585,7 +598,7 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * Returns a range of all the testray subtasks.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestraySubtaskModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestraySubtaskModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray subtasks
@@ -601,7 +614,7 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * Returns an ordered range of all the testray subtasks.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestraySubtaskModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestraySubtaskModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray subtasks
@@ -610,8 +623,10 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * @return the ordered range of testray subtasks
 	 */
 	@Override
-	public List<TestraySubtask> findAll(int start, int end,
+	public List<TestraySubtask> findAll(
+		int start, int end,
 		OrderByComparator<TestraySubtask> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -619,62 +634,62 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * Returns an ordered range of all the testray subtasks.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestraySubtaskModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestraySubtaskModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray subtasks
 	 * @param end the upper bound of the range of testray subtasks (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of testray subtasks
 	 */
 	@Override
-	public List<TestraySubtask> findAll(int start, int end,
-		OrderByComparator<TestraySubtask> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+	public List<TestraySubtask> findAll(
+		int start, int end, OrderByComparator<TestraySubtask> orderByComparator,
+		boolean useFinderCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-			finderArgs = FINDER_ARGS_EMPTY;
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-			finderArgs = new Object[] { start, end, orderByComparator };
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindAll;
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<TestraySubtask> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<TestraySubtask>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<TestraySubtask>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
-				query.append(_SQL_SELECT_TESTRAYSUBTASK);
+				sb.append(_SQL_SELECT_TESTRAYSUBTASK);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
-				sql = query.toString();
+				sql = sb.toString();
 			}
 			else {
 				sql = _SQL_SELECT_TESTRAYSUBTASK;
 
-				if (pagination) {
-					sql = sql.concat(TestraySubtaskModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(TestraySubtaskModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -682,29 +697,23 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<TestraySubtask>)QueryUtil.list(q,
-							getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<TestraySubtask>)QueryUtil.list(q,
-							getDialect(), start, end);
-				}
+				list = (List<TestraySubtask>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -732,8 +741,8 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -741,18 +750,18 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(_SQL_COUNT_TESTRAYSUBTASK);
+				Query query = session.createQuery(_SQL_COUNT_TESTRAYSUBTASK);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
-					FINDER_ARGS_EMPTY);
+			catch (Exception exception) {
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -770,7 +779,9 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 */
 	@Override
 	public long[] getTestrayCaseResultPrimaryKeys(long pk) {
-		long[] pks = testraySubtaskToTestrayCaseResultTableMapper.getRightPrimaryKeys(pk);
+		long[] pks =
+			testraySubtaskToTestrayCaseResultTableMapper.getRightPrimaryKeys(
+				pk);
 
 		return pks.clone();
 	}
@@ -782,8 +793,9 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * @return the testray case results associated with the testray subtask
 	 */
 	@Override
-	public List<com.liferay.osb.testray.model.TestrayCaseResult> getTestrayCaseResults(
-		long pk) {
+	public List<com.liferay.osb.testray.model.TestrayCaseResult>
+		getTestrayCaseResults(long pk) {
+
 		return getTestrayCaseResults(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
@@ -791,7 +803,7 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * Returns a range of all the testray case results associated with the testray subtask.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestraySubtaskModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestraySubtaskModelImpl</code>.
 	 * </p>
 	 *
 	 * @param pk the primary key of the testray subtask
@@ -800,8 +812,9 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * @return the range of testray case results associated with the testray subtask
 	 */
 	@Override
-	public List<com.liferay.osb.testray.model.TestrayCaseResult> getTestrayCaseResults(
-		long pk, int start, int end) {
+	public List<com.liferay.osb.testray.model.TestrayCaseResult>
+		getTestrayCaseResults(long pk, int start, int end) {
+
 		return getTestrayCaseResults(pk, start, end, null);
 	}
 
@@ -809,7 +822,7 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * Returns an ordered range of all the testray case results associated with the testray subtask.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestraySubtaskModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestraySubtaskModelImpl</code>.
 	 * </p>
 	 *
 	 * @param pk the primary key of the testray subtask
@@ -819,11 +832,14 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * @return the ordered range of testray case results associated with the testray subtask
 	 */
 	@Override
-	public List<com.liferay.osb.testray.model.TestrayCaseResult> getTestrayCaseResults(
-		long pk, int start, int end,
-		OrderByComparator<com.liferay.osb.testray.model.TestrayCaseResult> orderByComparator) {
-		return testraySubtaskToTestrayCaseResultTableMapper.getRightBaseModels(pk,
-			start, end, orderByComparator);
+	public List<com.liferay.osb.testray.model.TestrayCaseResult>
+		getTestrayCaseResults(
+			long pk, int start, int end,
+			OrderByComparator<com.liferay.osb.testray.model.TestrayCaseResult>
+				orderByComparator) {
+
+		return testraySubtaskToTestrayCaseResultTableMapper.getRightBaseModels(
+			pk, start, end, orderByComparator);
 	}
 
 	/**
@@ -834,7 +850,9 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 */
 	@Override
 	public int getTestrayCaseResultsSize(long pk) {
-		long[] pks = testraySubtaskToTestrayCaseResultTableMapper.getRightPrimaryKeys(pk);
+		long[] pks =
+			testraySubtaskToTestrayCaseResultTableMapper.getRightPrimaryKeys(
+				pk);
 
 		return pks.length;
 	}
@@ -847,9 +865,11 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * @return <code>true</code> if the testray case result is associated with the testray subtask; <code>false</code> otherwise
 	 */
 	@Override
-	public boolean containsTestrayCaseResult(long pk, long testrayCaseResultPK) {
-		return testraySubtaskToTestrayCaseResultTableMapper.containsTableMapping(pk,
-			testrayCaseResultPK);
+	public boolean containsTestrayCaseResult(
+		long pk, long testrayCaseResultPK) {
+
+		return testraySubtaskToTestrayCaseResultTableMapper.
+			containsTableMapping(pk, testrayCaseResultPK);
 	}
 
 	/**
@@ -879,12 +899,12 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 		TestraySubtask testraySubtask = fetchByPrimaryKey(pk);
 
 		if (testraySubtask == null) {
-			testraySubtaskToTestrayCaseResultTableMapper.addTableMapping(companyProvider.getCompanyId(),
-				pk, testrayCaseResultPK);
+			testraySubtaskToTestrayCaseResultTableMapper.addTableMapping(
+				CompanyThreadLocal.getCompanyId(), pk, testrayCaseResultPK);
 		}
 		else {
-			testraySubtaskToTestrayCaseResultTableMapper.addTableMapping(testraySubtask.getCompanyId(),
-				pk, testrayCaseResultPK);
+			testraySubtaskToTestrayCaseResultTableMapper.addTableMapping(
+				testraySubtask.getCompanyId(), pk, testrayCaseResultPK);
 		}
 	}
 
@@ -895,17 +915,21 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * @param testrayCaseResult the testray case result
 	 */
 	@Override
-	public void addTestrayCaseResult(long pk,
+	public void addTestrayCaseResult(
+		long pk,
 		com.liferay.osb.testray.model.TestrayCaseResult testrayCaseResult) {
+
 		TestraySubtask testraySubtask = fetchByPrimaryKey(pk);
 
 		if (testraySubtask == null) {
-			testraySubtaskToTestrayCaseResultTableMapper.addTableMapping(companyProvider.getCompanyId(),
-				pk, testrayCaseResult.getPrimaryKey());
+			testraySubtaskToTestrayCaseResultTableMapper.addTableMapping(
+				CompanyThreadLocal.getCompanyId(), pk,
+				testrayCaseResult.getPrimaryKey());
 		}
 		else {
-			testraySubtaskToTestrayCaseResultTableMapper.addTableMapping(testraySubtask.getCompanyId(),
-				pk, testrayCaseResult.getPrimaryKey());
+			testraySubtaskToTestrayCaseResultTableMapper.addTableMapping(
+				testraySubtask.getCompanyId(), pk,
+				testrayCaseResult.getPrimaryKey());
 		}
 	}
 
@@ -922,14 +946,14 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 		TestraySubtask testraySubtask = fetchByPrimaryKey(pk);
 
 		if (testraySubtask == null) {
-			companyId = companyProvider.getCompanyId();
+			companyId = CompanyThreadLocal.getCompanyId();
 		}
 		else {
 			companyId = testraySubtask.getCompanyId();
 		}
 
-		testraySubtaskToTestrayCaseResultTableMapper.addTableMappings(companyId,
-			pk, testrayCaseResultPKs);
+		testraySubtaskToTestrayCaseResultTableMapper.addTableMappings(
+			companyId, pk, testrayCaseResultPKs);
 	}
 
 	/**
@@ -939,11 +963,17 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * @param testrayCaseResults the testray case results
 	 */
 	@Override
-	public void addTestrayCaseResults(long pk,
-		List<com.liferay.osb.testray.model.TestrayCaseResult> testrayCaseResults) {
-		addTestrayCaseResults(pk,
-			ListUtil.toLongArray(testrayCaseResults,
-				com.liferay.osb.testray.model.TestrayCaseResult.TESTRAY_CASE_RESULT_ID_ACCESSOR));
+	public void addTestrayCaseResults(
+		long pk,
+		List<com.liferay.osb.testray.model.TestrayCaseResult>
+			testrayCaseResults) {
+
+		addTestrayCaseResults(
+			pk,
+			ListUtil.toLongArray(
+				testrayCaseResults,
+				com.liferay.osb.testray.model.TestrayCaseResult.
+					TESTRAY_CASE_RESULT_ID_ACCESSOR));
 	}
 
 	/**
@@ -953,7 +983,8 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 */
 	@Override
 	public void clearTestrayCaseResults(long pk) {
-		testraySubtaskToTestrayCaseResultTableMapper.deleteLeftPrimaryKeyTableMappings(pk);
+		testraySubtaskToTestrayCaseResultTableMapper.
+			deleteLeftPrimaryKeyTableMappings(pk);
 	}
 
 	/**
@@ -964,8 +995,8 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 */
 	@Override
 	public void removeTestrayCaseResult(long pk, long testrayCaseResultPK) {
-		testraySubtaskToTestrayCaseResultTableMapper.deleteTableMapping(pk,
-			testrayCaseResultPK);
+		testraySubtaskToTestrayCaseResultTableMapper.deleteTableMapping(
+			pk, testrayCaseResultPK);
 	}
 
 	/**
@@ -975,10 +1006,12 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * @param testrayCaseResult the testray case result
 	 */
 	@Override
-	public void removeTestrayCaseResult(long pk,
+	public void removeTestrayCaseResult(
+		long pk,
 		com.liferay.osb.testray.model.TestrayCaseResult testrayCaseResult) {
-		testraySubtaskToTestrayCaseResultTableMapper.deleteTableMapping(pk,
-			testrayCaseResult.getPrimaryKey());
+
+		testraySubtaskToTestrayCaseResultTableMapper.deleteTableMapping(
+			pk, testrayCaseResult.getPrimaryKey());
 	}
 
 	/**
@@ -989,8 +1022,8 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 */
 	@Override
 	public void removeTestrayCaseResults(long pk, long[] testrayCaseResultPKs) {
-		testraySubtaskToTestrayCaseResultTableMapper.deleteTableMappings(pk,
-			testrayCaseResultPKs);
+		testraySubtaskToTestrayCaseResultTableMapper.deleteTableMappings(
+			pk, testrayCaseResultPKs);
 	}
 
 	/**
@@ -1000,11 +1033,17 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * @param testrayCaseResults the testray case results
 	 */
 	@Override
-	public void removeTestrayCaseResults(long pk,
-		List<com.liferay.osb.testray.model.TestrayCaseResult> testrayCaseResults) {
-		removeTestrayCaseResults(pk,
-			ListUtil.toLongArray(testrayCaseResults,
-				com.liferay.osb.testray.model.TestrayCaseResult.TESTRAY_CASE_RESULT_ID_ACCESSOR));
+	public void removeTestrayCaseResults(
+		long pk,
+		List<com.liferay.osb.testray.model.TestrayCaseResult>
+			testrayCaseResults) {
+
+		removeTestrayCaseResults(
+			pk,
+			ListUtil.toLongArray(
+				testrayCaseResults,
+				com.liferay.osb.testray.model.TestrayCaseResult.
+					TESTRAY_CASE_RESULT_ID_ACCESSOR));
 	}
 
 	/**
@@ -1015,16 +1054,19 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 */
 	@Override
 	public void setTestrayCaseResults(long pk, long[] testrayCaseResultPKs) {
-		Set<Long> newTestrayCaseResultPKsSet = SetUtil.fromArray(testrayCaseResultPKs);
-		Set<Long> oldTestrayCaseResultPKsSet = SetUtil.fromArray(testraySubtaskToTestrayCaseResultTableMapper.getRightPrimaryKeys(
-					pk));
+		Set<Long> newTestrayCaseResultPKsSet = SetUtil.fromArray(
+			testrayCaseResultPKs);
+		Set<Long> oldTestrayCaseResultPKsSet = SetUtil.fromArray(
+			testraySubtaskToTestrayCaseResultTableMapper.getRightPrimaryKeys(
+				pk));
 
-		Set<Long> removeTestrayCaseResultPKsSet = new HashSet<Long>(oldTestrayCaseResultPKsSet);
+		Set<Long> removeTestrayCaseResultPKsSet = new HashSet<Long>(
+			oldTestrayCaseResultPKsSet);
 
 		removeTestrayCaseResultPKsSet.removeAll(newTestrayCaseResultPKsSet);
 
-		testraySubtaskToTestrayCaseResultTableMapper.deleteTableMappings(pk,
-			ArrayUtil.toLongArray(removeTestrayCaseResultPKsSet));
+		testraySubtaskToTestrayCaseResultTableMapper.deleteTableMappings(
+			pk, ArrayUtil.toLongArray(removeTestrayCaseResultPKsSet));
 
 		newTestrayCaseResultPKsSet.removeAll(oldTestrayCaseResultPKsSet);
 
@@ -1033,14 +1075,14 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 		TestraySubtask testraySubtask = fetchByPrimaryKey(pk);
 
 		if (testraySubtask == null) {
-			companyId = companyProvider.getCompanyId();
+			companyId = CompanyThreadLocal.getCompanyId();
 		}
 		else {
 			companyId = testraySubtask.getCompanyId();
 		}
 
-		testraySubtaskToTestrayCaseResultTableMapper.addTableMappings(companyId,
-			pk, ArrayUtil.toLongArray(newTestrayCaseResultPKsSet));
+		testraySubtaskToTestrayCaseResultTableMapper.addTableMappings(
+			companyId, pk, ArrayUtil.toLongArray(newTestrayCaseResultPKsSet));
 	}
 
 	/**
@@ -1050,22 +1092,25 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * @param testrayCaseResults the testray case results to be associated with the testray subtask
 	 */
 	@Override
-	public void setTestrayCaseResults(long pk,
-		List<com.liferay.osb.testray.model.TestrayCaseResult> testrayCaseResults) {
+	public void setTestrayCaseResults(
+		long pk,
+		List<com.liferay.osb.testray.model.TestrayCaseResult>
+			testrayCaseResults) {
+
 		try {
 			long[] testrayCaseResultPKs = new long[testrayCaseResults.size()];
 
 			for (int i = 0; i < testrayCaseResults.size(); i++) {
-				com.liferay.osb.testray.model.TestrayCaseResult testrayCaseResult =
-					testrayCaseResults.get(i);
+				com.liferay.osb.testray.model.TestrayCaseResult
+					testrayCaseResult = testrayCaseResults.get(i);
 
 				testrayCaseResultPKs[i] = testrayCaseResult.getPrimaryKey();
 			}
 
 			setTestrayCaseResults(pk, testrayCaseResultPKs);
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 	}
 
@@ -1077,7 +1122,8 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 */
 	@Override
 	public long[] getTestrayIssuePrimaryKeys(long pk) {
-		long[] pks = testraySubtaskToTestrayIssueTableMapper.getRightPrimaryKeys(pk);
+		long[] pks =
+			testraySubtaskToTestrayIssueTableMapper.getRightPrimaryKeys(pk);
 
 		return pks.clone();
 	}
@@ -1091,6 +1137,7 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	@Override
 	public List<com.liferay.osb.testray.model.TestrayIssue> getTestrayIssues(
 		long pk) {
+
 		return getTestrayIssues(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
@@ -1098,7 +1145,7 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * Returns a range of all the testray issues associated with the testray subtask.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestraySubtaskModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestraySubtaskModelImpl</code>.
 	 * </p>
 	 *
 	 * @param pk the primary key of the testray subtask
@@ -1109,6 +1156,7 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	@Override
 	public List<com.liferay.osb.testray.model.TestrayIssue> getTestrayIssues(
 		long pk, int start, int end) {
+
 		return getTestrayIssues(pk, start, end, null);
 	}
 
@@ -1116,7 +1164,7 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * Returns an ordered range of all the testray issues associated with the testray subtask.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestraySubtaskModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestraySubtaskModelImpl</code>.
 	 * </p>
 	 *
 	 * @param pk the primary key of the testray subtask
@@ -1128,9 +1176,11 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	@Override
 	public List<com.liferay.osb.testray.model.TestrayIssue> getTestrayIssues(
 		long pk, int start, int end,
-		OrderByComparator<com.liferay.osb.testray.model.TestrayIssue> orderByComparator) {
-		return testraySubtaskToTestrayIssueTableMapper.getRightBaseModels(pk,
-			start, end, orderByComparator);
+		OrderByComparator<com.liferay.osb.testray.model.TestrayIssue>
+			orderByComparator) {
+
+		return testraySubtaskToTestrayIssueTableMapper.getRightBaseModels(
+			pk, start, end, orderByComparator);
 	}
 
 	/**
@@ -1141,7 +1191,8 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 */
 	@Override
 	public int getTestrayIssuesSize(long pk) {
-		long[] pks = testraySubtaskToTestrayIssueTableMapper.getRightPrimaryKeys(pk);
+		long[] pks =
+			testraySubtaskToTestrayIssueTableMapper.getRightPrimaryKeys(pk);
 
 		return pks.length;
 	}
@@ -1155,8 +1206,8 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 */
 	@Override
 	public boolean containsTestrayIssue(long pk, long testrayIssuePK) {
-		return testraySubtaskToTestrayIssueTableMapper.containsTableMapping(pk,
-			testrayIssuePK);
+		return testraySubtaskToTestrayIssueTableMapper.containsTableMapping(
+			pk, testrayIssuePK);
 	}
 
 	/**
@@ -1186,12 +1237,12 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 		TestraySubtask testraySubtask = fetchByPrimaryKey(pk);
 
 		if (testraySubtask == null) {
-			testraySubtaskToTestrayIssueTableMapper.addTableMapping(companyProvider.getCompanyId(),
-				pk, testrayIssuePK);
+			testraySubtaskToTestrayIssueTableMapper.addTableMapping(
+				CompanyThreadLocal.getCompanyId(), pk, testrayIssuePK);
 		}
 		else {
-			testraySubtaskToTestrayIssueTableMapper.addTableMapping(testraySubtask.getCompanyId(),
-				pk, testrayIssuePK);
+			testraySubtaskToTestrayIssueTableMapper.addTableMapping(
+				testraySubtask.getCompanyId(), pk, testrayIssuePK);
 		}
 	}
 
@@ -1202,17 +1253,20 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * @param testrayIssue the testray issue
 	 */
 	@Override
-	public void addTestrayIssue(long pk,
-		com.liferay.osb.testray.model.TestrayIssue testrayIssue) {
+	public void addTestrayIssue(
+		long pk, com.liferay.osb.testray.model.TestrayIssue testrayIssue) {
+
 		TestraySubtask testraySubtask = fetchByPrimaryKey(pk);
 
 		if (testraySubtask == null) {
-			testraySubtaskToTestrayIssueTableMapper.addTableMapping(companyProvider.getCompanyId(),
-				pk, testrayIssue.getPrimaryKey());
+			testraySubtaskToTestrayIssueTableMapper.addTableMapping(
+				CompanyThreadLocal.getCompanyId(), pk,
+				testrayIssue.getPrimaryKey());
 		}
 		else {
-			testraySubtaskToTestrayIssueTableMapper.addTableMapping(testraySubtask.getCompanyId(),
-				pk, testrayIssue.getPrimaryKey());
+			testraySubtaskToTestrayIssueTableMapper.addTableMapping(
+				testraySubtask.getCompanyId(), pk,
+				testrayIssue.getPrimaryKey());
 		}
 	}
 
@@ -1229,14 +1283,14 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 		TestraySubtask testraySubtask = fetchByPrimaryKey(pk);
 
 		if (testraySubtask == null) {
-			companyId = companyProvider.getCompanyId();
+			companyId = CompanyThreadLocal.getCompanyId();
 		}
 		else {
 			companyId = testraySubtask.getCompanyId();
 		}
 
-		testraySubtaskToTestrayIssueTableMapper.addTableMappings(companyId, pk,
-			testrayIssuePKs);
+		testraySubtaskToTestrayIssueTableMapper.addTableMappings(
+			companyId, pk, testrayIssuePKs);
 	}
 
 	/**
@@ -1246,11 +1300,16 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * @param testrayIssues the testray issues
 	 */
 	@Override
-	public void addTestrayIssues(long pk,
+	public void addTestrayIssues(
+		long pk,
 		List<com.liferay.osb.testray.model.TestrayIssue> testrayIssues) {
-		addTestrayIssues(pk,
-			ListUtil.toLongArray(testrayIssues,
-				com.liferay.osb.testray.model.TestrayIssue.TESTRAY_ISSUE_ID_ACCESSOR));
+
+		addTestrayIssues(
+			pk,
+			ListUtil.toLongArray(
+				testrayIssues,
+				com.liferay.osb.testray.model.TestrayIssue.
+					TESTRAY_ISSUE_ID_ACCESSOR));
 	}
 
 	/**
@@ -1260,7 +1319,8 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 */
 	@Override
 	public void clearTestrayIssues(long pk) {
-		testraySubtaskToTestrayIssueTableMapper.deleteLeftPrimaryKeyTableMappings(pk);
+		testraySubtaskToTestrayIssueTableMapper.
+			deleteLeftPrimaryKeyTableMappings(pk);
 	}
 
 	/**
@@ -1271,8 +1331,8 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 */
 	@Override
 	public void removeTestrayIssue(long pk, long testrayIssuePK) {
-		testraySubtaskToTestrayIssueTableMapper.deleteTableMapping(pk,
-			testrayIssuePK);
+		testraySubtaskToTestrayIssueTableMapper.deleteTableMapping(
+			pk, testrayIssuePK);
 	}
 
 	/**
@@ -1282,10 +1342,11 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * @param testrayIssue the testray issue
 	 */
 	@Override
-	public void removeTestrayIssue(long pk,
-		com.liferay.osb.testray.model.TestrayIssue testrayIssue) {
-		testraySubtaskToTestrayIssueTableMapper.deleteTableMapping(pk,
-			testrayIssue.getPrimaryKey());
+	public void removeTestrayIssue(
+		long pk, com.liferay.osb.testray.model.TestrayIssue testrayIssue) {
+
+		testraySubtaskToTestrayIssueTableMapper.deleteTableMapping(
+			pk, testrayIssue.getPrimaryKey());
 	}
 
 	/**
@@ -1296,8 +1357,8 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 */
 	@Override
 	public void removeTestrayIssues(long pk, long[] testrayIssuePKs) {
-		testraySubtaskToTestrayIssueTableMapper.deleteTableMappings(pk,
-			testrayIssuePKs);
+		testraySubtaskToTestrayIssueTableMapper.deleteTableMappings(
+			pk, testrayIssuePKs);
 	}
 
 	/**
@@ -1307,11 +1368,16 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * @param testrayIssues the testray issues
 	 */
 	@Override
-	public void removeTestrayIssues(long pk,
+	public void removeTestrayIssues(
+		long pk,
 		List<com.liferay.osb.testray.model.TestrayIssue> testrayIssues) {
-		removeTestrayIssues(pk,
-			ListUtil.toLongArray(testrayIssues,
-				com.liferay.osb.testray.model.TestrayIssue.TESTRAY_ISSUE_ID_ACCESSOR));
+
+		removeTestrayIssues(
+			pk,
+			ListUtil.toLongArray(
+				testrayIssues,
+				com.liferay.osb.testray.model.TestrayIssue.
+					TESTRAY_ISSUE_ID_ACCESSOR));
 	}
 
 	/**
@@ -1323,15 +1389,16 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	@Override
 	public void setTestrayIssues(long pk, long[] testrayIssuePKs) {
 		Set<Long> newTestrayIssuePKsSet = SetUtil.fromArray(testrayIssuePKs);
-		Set<Long> oldTestrayIssuePKsSet = SetUtil.fromArray(testraySubtaskToTestrayIssueTableMapper.getRightPrimaryKeys(
-					pk));
+		Set<Long> oldTestrayIssuePKsSet = SetUtil.fromArray(
+			testraySubtaskToTestrayIssueTableMapper.getRightPrimaryKeys(pk));
 
-		Set<Long> removeTestrayIssuePKsSet = new HashSet<Long>(oldTestrayIssuePKsSet);
+		Set<Long> removeTestrayIssuePKsSet = new HashSet<Long>(
+			oldTestrayIssuePKsSet);
 
 		removeTestrayIssuePKsSet.removeAll(newTestrayIssuePKsSet);
 
-		testraySubtaskToTestrayIssueTableMapper.deleteTableMappings(pk,
-			ArrayUtil.toLongArray(removeTestrayIssuePKsSet));
+		testraySubtaskToTestrayIssueTableMapper.deleteTableMappings(
+			pk, ArrayUtil.toLongArray(removeTestrayIssuePKsSet));
 
 		newTestrayIssuePKsSet.removeAll(oldTestrayIssuePKsSet);
 
@@ -1340,14 +1407,14 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 		TestraySubtask testraySubtask = fetchByPrimaryKey(pk);
 
 		if (testraySubtask == null) {
-			companyId = companyProvider.getCompanyId();
+			companyId = CompanyThreadLocal.getCompanyId();
 		}
 		else {
 			companyId = testraySubtask.getCompanyId();
 		}
 
-		testraySubtaskToTestrayIssueTableMapper.addTableMappings(companyId, pk,
-			ArrayUtil.toLongArray(newTestrayIssuePKsSet));
+		testraySubtaskToTestrayIssueTableMapper.addTableMappings(
+			companyId, pk, ArrayUtil.toLongArray(newTestrayIssuePKsSet));
 	}
 
 	/**
@@ -1357,21 +1424,24 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * @param testrayIssues the testray issues to be associated with the testray subtask
 	 */
 	@Override
-	public void setTestrayIssues(long pk,
+	public void setTestrayIssues(
+		long pk,
 		List<com.liferay.osb.testray.model.TestrayIssue> testrayIssues) {
+
 		try {
 			long[] testrayIssuePKs = new long[testrayIssues.size()];
 
 			for (int i = 0; i < testrayIssues.size(); i++) {
-				com.liferay.osb.testray.model.TestrayIssue testrayIssue = testrayIssues.get(i);
+				com.liferay.osb.testray.model.TestrayIssue testrayIssue =
+					testrayIssues.get(i);
 
 				testrayIssuePKs[i] = testrayIssue.getPrimaryKey();
 			}
 
 			setTestrayIssues(pk, testrayIssuePKs);
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 	}
 
@@ -1384,13 +1454,35 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 	 * Initializes the testray subtask persistence.
 	 */
 	public void afterPropertiesSet() {
-		testraySubtaskToTestrayCaseResultTableMapper = TableMapperFactory.getTableMapper("OSB_TestraySubtasks_TestrayCaseResults",
-				"companyId", "testraySubtaskId", "testrayCaseResultId", this,
+		testraySubtaskToTestrayCaseResultTableMapper =
+			TableMapperFactory.getTableMapper(
+				"OSB_TestraySubtasks_TestrayCaseResults", "companyId",
+				"testraySubtaskId", "testrayCaseResultId", this,
 				testrayCaseResultPersistence);
 
-		testraySubtaskToTestrayIssueTableMapper = TableMapperFactory.getTableMapper("OSB_TestraySubtasks_TestrayIssues",
-				"companyId", "testraySubtaskId", "testrayIssueId", this,
+		testraySubtaskToTestrayIssueTableMapper =
+			TableMapperFactory.getTableMapper(
+				"OSB_TestraySubtasks_TestrayIssues", "companyId",
+				"testraySubtaskId", "testrayIssueId", this,
 				testrayIssuePersistence);
+
+		_finderPathWithPaginationFindAll = new FinderPath(
+			TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
+			TestraySubtaskModelImpl.FINDER_CACHE_ENABLED,
+			TestraySubtaskImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
+			TestraySubtaskModelImpl.FINDER_CACHE_ENABLED,
+			TestraySubtaskImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"findAll", new String[0]);
+
+		_finderPathCountAll = new FinderPath(
+			TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
+			TestraySubtaskModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
 	}
 
 	public void destroy() {
@@ -1405,22 +1497,41 @@ public class TestraySubtaskPersistenceImpl extends BasePersistenceImpl<TestraySu
 			"OSB_TestraySubtasks_TestrayIssues");
 	}
 
-	@ServiceReference(type = CompanyProviderWrapper.class)
-	protected CompanyProvider companyProvider;
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
+
 	@BeanReference(type = TestrayCaseResultPersistence.class)
 	protected TestrayCaseResultPersistence testrayCaseResultPersistence;
-	protected TableMapper<TestraySubtask, com.liferay.osb.testray.model.TestrayCaseResult> testraySubtaskToTestrayCaseResultTableMapper;
+
+	protected TableMapper
+		<TestraySubtask, com.liferay.osb.testray.model.TestrayCaseResult>
+			testraySubtaskToTestrayCaseResultTableMapper;
+
 	@BeanReference(type = TestrayIssuePersistence.class)
 	protected TestrayIssuePersistence testrayIssuePersistence;
-	protected TableMapper<TestraySubtask, com.liferay.osb.testray.model.TestrayIssue> testraySubtaskToTestrayIssueTableMapper;
-	private static final String _SQL_SELECT_TESTRAYSUBTASK = "SELECT testraySubtask FROM TestraySubtask testraySubtask";
-	private static final String _SQL_SELECT_TESTRAYSUBTASK_WHERE_PKS_IN = "SELECT testraySubtask FROM TestraySubtask testraySubtask WHERE testraySubtaskId IN (";
-	private static final String _SQL_COUNT_TESTRAYSUBTASK = "SELECT COUNT(testraySubtask) FROM TestraySubtask testraySubtask";
+
+	protected TableMapper
+		<TestraySubtask, com.liferay.osb.testray.model.TestrayIssue>
+			testraySubtaskToTestrayIssueTableMapper;
+
+	private static final String _SQL_SELECT_TESTRAYSUBTASK =
+		"SELECT testraySubtask FROM TestraySubtask testraySubtask";
+
+	private static final String _SQL_SELECT_TESTRAYSUBTASK_WHERE_PKS_IN =
+		"SELECT testraySubtask FROM TestraySubtask testraySubtask WHERE testraySubtaskId IN (";
+
+	private static final String _SQL_COUNT_TESTRAYSUBTASK =
+		"SELECT COUNT(testraySubtask) FROM TestraySubtask testraySubtask";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "testraySubtask.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No TestraySubtask exists with the primary key ";
-	private static final Log _log = LogFactoryUtil.getLog(TestraySubtaskPersistenceImpl.class);
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No TestraySubtask exists with the primary key ";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		TestraySubtaskPersistenceImpl.class);
+
 }

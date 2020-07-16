@@ -1,15 +1,15 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.watson.login.service.base;
@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
-
 import com.liferay.watson.login.model.WatsonTokenAuthEntry;
 import com.liferay.watson.login.service.WatsonTokenAuthEntryService;
 import com.liferay.watson.login.service.persistence.WatsonTokenAuthEntryPersistence;
@@ -42,16 +41,16 @@ import javax.sql.DataSource;
  *
  * @author Steven Smith
  * @see com.liferay.watson.login.service.impl.WatsonTokenAuthEntryServiceImpl
- * @see com.liferay.watson.login.service.WatsonTokenAuthEntryServiceUtil
  * @generated
  */
 public abstract class WatsonTokenAuthEntryServiceBaseImpl
-	extends BaseServiceImpl implements WatsonTokenAuthEntryService,
-		IdentifiableOSGiService {
+	extends BaseServiceImpl
+	implements IdentifiableOSGiService, WatsonTokenAuthEntryService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link com.liferay.watson.login.service.WatsonTokenAuthEntryServiceUtil} to access the watson token auth entry remote service.
+	 * Never modify or reference this class directly. Use <code>WatsonTokenAuthEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.watson.login.service.WatsonTokenAuthEntryServiceUtil</code>.
 	 */
 
 	/**
@@ -59,7 +58,9 @@ public abstract class WatsonTokenAuthEntryServiceBaseImpl
 	 *
 	 * @return the watson token auth entry local service
 	 */
-	public com.liferay.watson.login.service.WatsonTokenAuthEntryLocalService getWatsonTokenAuthEntryLocalService() {
+	public com.liferay.watson.login.service.WatsonTokenAuthEntryLocalService
+		getWatsonTokenAuthEntryLocalService() {
+
 		return watsonTokenAuthEntryLocalService;
 	}
 
@@ -69,8 +70,11 @@ public abstract class WatsonTokenAuthEntryServiceBaseImpl
 	 * @param watsonTokenAuthEntryLocalService the watson token auth entry local service
 	 */
 	public void setWatsonTokenAuthEntryLocalService(
-		com.liferay.watson.login.service.WatsonTokenAuthEntryLocalService watsonTokenAuthEntryLocalService) {
-		this.watsonTokenAuthEntryLocalService = watsonTokenAuthEntryLocalService;
+		com.liferay.watson.login.service.WatsonTokenAuthEntryLocalService
+			watsonTokenAuthEntryLocalService) {
+
+		this.watsonTokenAuthEntryLocalService =
+			watsonTokenAuthEntryLocalService;
 	}
 
 	/**
@@ -89,6 +93,7 @@ public abstract class WatsonTokenAuthEntryServiceBaseImpl
 	 */
 	public void setWatsonTokenAuthEntryService(
 		WatsonTokenAuthEntryService watsonTokenAuthEntryService) {
+
 		this.watsonTokenAuthEntryService = watsonTokenAuthEntryService;
 	}
 
@@ -97,7 +102,9 @@ public abstract class WatsonTokenAuthEntryServiceBaseImpl
 	 *
 	 * @return the watson token auth entry persistence
 	 */
-	public WatsonTokenAuthEntryPersistence getWatsonTokenAuthEntryPersistence() {
+	public WatsonTokenAuthEntryPersistence
+		getWatsonTokenAuthEntryPersistence() {
+
 		return watsonTokenAuthEntryPersistence;
 	}
 
@@ -108,6 +115,7 @@ public abstract class WatsonTokenAuthEntryServiceBaseImpl
 	 */
 	public void setWatsonTokenAuthEntryPersistence(
 		WatsonTokenAuthEntryPersistence watsonTokenAuthEntryPersistence) {
+
 		this.watsonTokenAuthEntryPersistence = watsonTokenAuthEntryPersistence;
 	}
 
@@ -116,7 +124,9 @@ public abstract class WatsonTokenAuthEntryServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
+	public com.liferay.counter.kernel.service.CounterLocalService
+		getCounterLocalService() {
+
 		return counterLocalService;
 	}
 
@@ -126,7 +136,9 @@ public abstract class WatsonTokenAuthEntryServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
+		com.liferay.counter.kernel.service.CounterLocalService
+			counterLocalService) {
+
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -135,7 +147,9 @@ public abstract class WatsonTokenAuthEntryServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
+	public com.liferay.portal.kernel.service.ClassNameLocalService
+		getClassNameLocalService() {
+
 		return classNameLocalService;
 	}
 
@@ -145,7 +159,9 @@ public abstract class WatsonTokenAuthEntryServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
+		com.liferay.portal.kernel.service.ClassNameLocalService
+			classNameLocalService) {
+
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -154,7 +170,9 @@ public abstract class WatsonTokenAuthEntryServiceBaseImpl
 	 *
 	 * @return the class name remote service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameService getClassNameService() {
+	public com.liferay.portal.kernel.service.ClassNameService
+		getClassNameService() {
+
 		return classNameService;
 	}
 
@@ -165,6 +183,7 @@ public abstract class WatsonTokenAuthEntryServiceBaseImpl
 	 */
 	public void setClassNameService(
 		com.liferay.portal.kernel.service.ClassNameService classNameService) {
+
 		this.classNameService = classNameService;
 	}
 
@@ -184,6 +203,7 @@ public abstract class WatsonTokenAuthEntryServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
+
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -192,7 +212,9 @@ public abstract class WatsonTokenAuthEntryServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
+	public com.liferay.portal.kernel.service.ResourceLocalService
+		getResourceLocalService() {
+
 		return resourceLocalService;
 	}
 
@@ -202,7 +224,9 @@ public abstract class WatsonTokenAuthEntryServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
+		com.liferay.portal.kernel.service.ResourceLocalService
+			resourceLocalService) {
+
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -211,7 +235,9 @@ public abstract class WatsonTokenAuthEntryServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
+	public com.liferay.portal.kernel.service.UserLocalService
+		getUserLocalService() {
+
 		return userLocalService;
 	}
 
@@ -222,6 +248,7 @@ public abstract class WatsonTokenAuthEntryServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
+
 		this.userLocalService = userLocalService;
 	}
 
@@ -241,6 +268,7 @@ public abstract class WatsonTokenAuthEntryServiceBaseImpl
 	 */
 	public void setUserService(
 		com.liferay.portal.kernel.service.UserService userService) {
+
 		this.userService = userService;
 	}
 
@@ -293,43 +321,75 @@ public abstract class WatsonTokenAuthEntryServiceBaseImpl
 	 */
 	protected void runSQL(String sql) {
 		try {
-			DataSource dataSource = watsonTokenAuthEntryPersistence.getDataSource();
+			DataSource dataSource =
+				watsonTokenAuthEntryPersistence.getDataSource();
 
 			DB db = DBManagerUtil.getDB();
 
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
-					sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
+				dataSource, sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception e) {
-			throw new SystemException(e);
+		catch (Exception exception) {
+			throw new SystemException(exception);
 		}
 	}
 
-	@BeanReference(type = com.liferay.watson.login.service.WatsonTokenAuthEntryLocalService.class)
-	protected com.liferay.watson.login.service.WatsonTokenAuthEntryLocalService watsonTokenAuthEntryLocalService;
+	@BeanReference(
+		type = com.liferay.watson.login.service.WatsonTokenAuthEntryLocalService.class
+	)
+	protected com.liferay.watson.login.service.WatsonTokenAuthEntryLocalService
+		watsonTokenAuthEntryLocalService;
+
 	@BeanReference(type = WatsonTokenAuthEntryService.class)
 	protected WatsonTokenAuthEntryService watsonTokenAuthEntryService;
+
 	@BeanReference(type = WatsonTokenAuthEntryPersistence.class)
 	protected WatsonTokenAuthEntryPersistence watsonTokenAuthEntryPersistence;
-	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
-	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameService.class)
-	protected com.liferay.portal.kernel.service.ClassNameService classNameService;
+
+	@ServiceReference(
+		type = com.liferay.counter.kernel.service.CounterLocalService.class
+	)
+	protected com.liferay.counter.kernel.service.CounterLocalService
+		counterLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService
+		classNameLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ClassNameService.class
+	)
+	protected com.liferay.portal.kernel.service.ClassNameService
+		classNameService;
+
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
-	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
-	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.UserService.class)
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ResourceLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ResourceLocalService
+		resourceLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.UserLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.UserLocalService
+		userLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.UserService.class
+	)
 	protected com.liferay.portal.kernel.service.UserService userService;
+
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
+
 }

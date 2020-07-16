@@ -1,27 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.testray.model.TestrayIssue;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -34,23 +30,23 @@ import java.util.Date;
  * The cache model class for representing TestrayIssue in entity cache.
  *
  * @author Ethan Bustad
- * @see TestrayIssue
  * @generated
  */
-@ProviderType
-public class TestrayIssueCacheModel implements CacheModel<TestrayIssue>,
-	Externalizable {
+public class TestrayIssueCacheModel
+	implements CacheModel<TestrayIssue>, Externalizable {
+
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof TestrayIssueCacheModel)) {
+		if (!(object instanceof TestrayIssueCacheModel)) {
 			return false;
 		}
 
-		TestrayIssueCacheModel testrayIssueCacheModel = (TestrayIssueCacheModel)obj;
+		TestrayIssueCacheModel testrayIssueCacheModel =
+			(TestrayIssueCacheModel)object;
 
 		if (testrayIssueId == testrayIssueCacheModel.testrayIssueId) {
 			return true;
@@ -99,7 +95,7 @@ public class TestrayIssueCacheModel implements CacheModel<TestrayIssue>,
 		testrayIssueImpl.setUserId(userId);
 
 		if (userName == null) {
-			testrayIssueImpl.setUserName(StringPool.BLANK);
+			testrayIssueImpl.setUserName("");
 		}
 		else {
 			testrayIssueImpl.setUserName(userName);
@@ -120,7 +116,7 @@ public class TestrayIssueCacheModel implements CacheModel<TestrayIssue>,
 		}
 
 		if (name == null) {
-			testrayIssueImpl.setName(StringPool.BLANK);
+			testrayIssueImpl.setName("");
 		}
 		else {
 			testrayIssueImpl.setName(name);
@@ -147,8 +143,7 @@ public class TestrayIssueCacheModel implements CacheModel<TestrayIssue>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(testrayIssueId);
 
 		objectOutput.writeLong(groupId);
@@ -158,7 +153,7 @@ public class TestrayIssueCacheModel implements CacheModel<TestrayIssue>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -168,7 +163,7 @@ public class TestrayIssueCacheModel implements CacheModel<TestrayIssue>,
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
@@ -183,4 +178,5 @@ public class TestrayIssueCacheModel implements CacheModel<TestrayIssue>,
 	public long createDate;
 	public long modifiedDate;
 	public String name;
+
 }

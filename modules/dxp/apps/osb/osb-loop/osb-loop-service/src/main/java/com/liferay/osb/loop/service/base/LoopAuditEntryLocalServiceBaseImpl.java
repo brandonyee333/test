@@ -1,20 +1,18 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.service.base;
-
-import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.loop.model.LoopAuditEntry;
 import com.liferay.osb.loop.service.LoopAuditEntryLocalService;
@@ -34,7 +32,6 @@ import com.liferay.osb.loop.service.persistence.LoopTopicPersistence;
 import com.liferay.osb.loop.service.persistence.LoopUserNotificationEventPersistence;
 import com.liferay.osb.loop.service.persistence.LoopUserNotificationRecordPersistence;
 import com.liferay.osb.loop.service.persistence.LoopUserNotificationSubscriptionPersistence;
-
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -54,8 +51,10 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -75,21 +74,24 @@ import javax.sql.DataSource;
  *
  * @author Ethan Bustad
  * @see com.liferay.osb.loop.service.impl.LoopAuditEntryLocalServiceImpl
- * @see com.liferay.osb.loop.service.LoopAuditEntryLocalServiceUtil
  * @generated
  */
-@ProviderType
 public abstract class LoopAuditEntryLocalServiceBaseImpl
-	extends BaseLocalServiceImpl implements LoopAuditEntryLocalService,
-		IdentifiableOSGiService {
+	extends BaseLocalServiceImpl
+	implements IdentifiableOSGiService, LoopAuditEntryLocalService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link com.liferay.osb.loop.service.LoopAuditEntryLocalServiceUtil} to access the loop audit entry local service.
+	 * Never modify or reference this class directly. Use <code>LoopAuditEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.loop.service.LoopAuditEntryLocalServiceUtil</code>.
 	 */
 
 	/**
 	 * Adds the loop audit entry to the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect LoopAuditEntryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param loopAuditEntry the loop audit entry
 	 * @return the loop audit entry that was added
@@ -109,12 +111,17 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @return the new loop audit entry
 	 */
 	@Override
+	@Transactional(enabled = false)
 	public LoopAuditEntry createLoopAuditEntry(long loopAuditEntryId) {
 		return loopAuditEntryPersistence.create(loopAuditEntryId);
 	}
 
 	/**
 	 * Deletes the loop audit entry with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect LoopAuditEntryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param loopAuditEntryId the primary key of the loop audit entry
 	 * @return the loop audit entry that was removed
@@ -124,11 +131,16 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	@Override
 	public LoopAuditEntry deleteLoopAuditEntry(long loopAuditEntryId)
 		throws PortalException {
+
 		return loopAuditEntryPersistence.remove(loopAuditEntryId);
 	}
 
 	/**
 	 * Deletes the loop audit entry from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect LoopAuditEntryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param loopAuditEntry the loop audit entry
 	 * @return the loop audit entry that was removed
@@ -143,8 +155,8 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(LoopAuditEntry.class,
-			clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(
+			LoopAuditEntry.class, clazz.getClassLoader());
 	}
 
 	/**
@@ -162,7 +174,7 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.loop.model.impl.LoopAuditEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.loop.model.impl.LoopAuditEntryModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -171,17 +183,18 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end) {
-		return loopAuditEntryPersistence.findWithDynamicQuery(dynamicQuery,
-			start, end);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
+
+		return loopAuditEntryPersistence.findWithDynamicQuery(
+			dynamicQuery, start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.loop.model.impl.LoopAuditEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.loop.model.impl.LoopAuditEntryModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -191,10 +204,12 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end, OrderByComparator<T> orderByComparator) {
-		return loopAuditEntryPersistence.findWithDynamicQuery(dynamicQuery,
-			start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
+
+		return loopAuditEntryPersistence.findWithDynamicQuery(
+			dynamicQuery, start, end, orderByComparator);
 	}
 
 	/**
@@ -216,10 +231,11 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection) {
-		return loopAuditEntryPersistence.countWithDynamicQuery(dynamicQuery,
-			projection);
+	public long dynamicQueryCount(
+		DynamicQuery dynamicQuery, Projection projection) {
+
+		return loopAuditEntryPersistence.countWithDynamicQuery(
+			dynamicQuery, projection);
 	}
 
 	@Override
@@ -237,12 +253,14 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	@Override
 	public LoopAuditEntry getLoopAuditEntry(long loopAuditEntryId)
 		throws PortalException {
+
 		return loopAuditEntryPersistence.findByPrimaryKey(loopAuditEntryId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			new DefaultActionableDynamicQuery();
 
 		actionableDynamicQuery.setBaseLocalService(loopAuditEntryLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
@@ -254,10 +272,14 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
+	public IndexableActionableDynamicQuery
+		getIndexableActionableDynamicQuery() {
 
-		indexableActionableDynamicQuery.setBaseLocalService(loopAuditEntryLocalService);
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
+			new IndexableActionableDynamicQuery();
+
+		indexableActionableDynamicQuery.setBaseLocalService(
+			loopAuditEntryLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(LoopAuditEntry.class);
 
@@ -269,6 +291,7 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
+
 		actionableDynamicQuery.setBaseLocalService(loopAuditEntryLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(LoopAuditEntry.class);
@@ -282,12 +305,22 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-		return loopAuditEntryLocalService.deleteLoopAuditEntry((LoopAuditEntry)persistedModel);
+
+		return loopAuditEntryLocalService.deleteLoopAuditEntry(
+			(LoopAuditEntry)persistedModel);
 	}
 
+	public BasePersistence<LoopAuditEntry> getBasePersistence() {
+		return loopAuditEntryPersistence;
+	}
+
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
+
 		return loopAuditEntryPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -295,7 +328,7 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * Returns a range of all the loop audit entries.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.loop.model.impl.LoopAuditEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.loop.model.impl.LoopAuditEntryModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of loop audit entries
@@ -319,6 +352,10 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 
 	/**
 	 * Updates the loop audit entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect LoopAuditEntryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param loopAuditEntry the loop audit entry
 	 * @return the loop audit entry that was updated
@@ -345,6 +382,7 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 */
 	public void setLoopAuditEntryLocalService(
 		LoopAuditEntryLocalService loopAuditEntryLocalService) {
+
 		this.loopAuditEntryLocalService = loopAuditEntryLocalService;
 	}
 
@@ -364,6 +402,7 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 */
 	public void setLoopAuditEntryPersistence(
 		LoopAuditEntryPersistence loopAuditEntryPersistence) {
+
 		this.loopAuditEntryPersistence = loopAuditEntryPersistence;
 	}
 
@@ -372,7 +411,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 *
 	 * @return the loop division local service
 	 */
-	public com.liferay.osb.loop.service.LoopDivisionLocalService getLoopDivisionLocalService() {
+	public com.liferay.osb.loop.service.LoopDivisionLocalService
+		getLoopDivisionLocalService() {
+
 		return loopDivisionLocalService;
 	}
 
@@ -382,7 +423,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @param loopDivisionLocalService the loop division local service
 	 */
 	public void setLoopDivisionLocalService(
-		com.liferay.osb.loop.service.LoopDivisionLocalService loopDivisionLocalService) {
+		com.liferay.osb.loop.service.LoopDivisionLocalService
+			loopDivisionLocalService) {
+
 		this.loopDivisionLocalService = loopDivisionLocalService;
 	}
 
@@ -402,6 +445,7 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 */
 	public void setLoopDivisionPersistence(
 		LoopDivisionPersistence loopDivisionPersistence) {
+
 		this.loopDivisionPersistence = loopDivisionPersistence;
 	}
 
@@ -410,7 +454,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 *
 	 * @return the loop division rel local service
 	 */
-	public com.liferay.osb.loop.service.LoopDivisionRelLocalService getLoopDivisionRelLocalService() {
+	public com.liferay.osb.loop.service.LoopDivisionRelLocalService
+		getLoopDivisionRelLocalService() {
+
 		return loopDivisionRelLocalService;
 	}
 
@@ -420,7 +466,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @param loopDivisionRelLocalService the loop division rel local service
 	 */
 	public void setLoopDivisionRelLocalService(
-		com.liferay.osb.loop.service.LoopDivisionRelLocalService loopDivisionRelLocalService) {
+		com.liferay.osb.loop.service.LoopDivisionRelLocalService
+			loopDivisionRelLocalService) {
+
 		this.loopDivisionRelLocalService = loopDivisionRelLocalService;
 	}
 
@@ -440,6 +488,7 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 */
 	public void setLoopDivisionRelPersistence(
 		LoopDivisionRelPersistence loopDivisionRelPersistence) {
+
 		this.loopDivisionRelPersistence = loopDivisionRelPersistence;
 	}
 
@@ -448,7 +497,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 *
 	 * @return the loop external reference rel local service
 	 */
-	public com.liferay.osb.loop.service.LoopExternalReferenceRelLocalService getLoopExternalReferenceRelLocalService() {
+	public com.liferay.osb.loop.service.LoopExternalReferenceRelLocalService
+		getLoopExternalReferenceRelLocalService() {
+
 		return loopExternalReferenceRelLocalService;
 	}
 
@@ -458,8 +509,11 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @param loopExternalReferenceRelLocalService the loop external reference rel local service
 	 */
 	public void setLoopExternalReferenceRelLocalService(
-		com.liferay.osb.loop.service.LoopExternalReferenceRelLocalService loopExternalReferenceRelLocalService) {
-		this.loopExternalReferenceRelLocalService = loopExternalReferenceRelLocalService;
+		com.liferay.osb.loop.service.LoopExternalReferenceRelLocalService
+			loopExternalReferenceRelLocalService) {
+
+		this.loopExternalReferenceRelLocalService =
+			loopExternalReferenceRelLocalService;
 	}
 
 	/**
@@ -467,7 +521,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 *
 	 * @return the loop external reference rel persistence
 	 */
-	public LoopExternalReferenceRelPersistence getLoopExternalReferenceRelPersistence() {
+	public LoopExternalReferenceRelPersistence
+		getLoopExternalReferenceRelPersistence() {
+
 		return loopExternalReferenceRelPersistence;
 	}
 
@@ -477,8 +533,11 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @param loopExternalReferenceRelPersistence the loop external reference rel persistence
 	 */
 	public void setLoopExternalReferenceRelPersistence(
-		LoopExternalReferenceRelPersistence loopExternalReferenceRelPersistence) {
-		this.loopExternalReferenceRelPersistence = loopExternalReferenceRelPersistence;
+		LoopExternalReferenceRelPersistence
+			loopExternalReferenceRelPersistence) {
+
+		this.loopExternalReferenceRelPersistence =
+			loopExternalReferenceRelPersistence;
 	}
 
 	/**
@@ -486,7 +545,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 *
 	 * @return the loop job title local service
 	 */
-	public com.liferay.osb.loop.service.LoopJobTitleLocalService getLoopJobTitleLocalService() {
+	public com.liferay.osb.loop.service.LoopJobTitleLocalService
+		getLoopJobTitleLocalService() {
+
 		return loopJobTitleLocalService;
 	}
 
@@ -496,7 +557,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @param loopJobTitleLocalService the loop job title local service
 	 */
 	public void setLoopJobTitleLocalService(
-		com.liferay.osb.loop.service.LoopJobTitleLocalService loopJobTitleLocalService) {
+		com.liferay.osb.loop.service.LoopJobTitleLocalService
+			loopJobTitleLocalService) {
+
 		this.loopJobTitleLocalService = loopJobTitleLocalService;
 	}
 
@@ -516,6 +579,7 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 */
 	public void setLoopJobTitlePersistence(
 		LoopJobTitlePersistence loopJobTitlePersistence) {
+
 		this.loopJobTitlePersistence = loopJobTitlePersistence;
 	}
 
@@ -524,7 +588,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 *
 	 * @return the loop participant assignment local service
 	 */
-	public com.liferay.osb.loop.service.LoopParticipantAssignmentLocalService getLoopParticipantAssignmentLocalService() {
+	public com.liferay.osb.loop.service.LoopParticipantAssignmentLocalService
+		getLoopParticipantAssignmentLocalService() {
+
 		return loopParticipantAssignmentLocalService;
 	}
 
@@ -534,8 +600,11 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @param loopParticipantAssignmentLocalService the loop participant assignment local service
 	 */
 	public void setLoopParticipantAssignmentLocalService(
-		com.liferay.osb.loop.service.LoopParticipantAssignmentLocalService loopParticipantAssignmentLocalService) {
-		this.loopParticipantAssignmentLocalService = loopParticipantAssignmentLocalService;
+		com.liferay.osb.loop.service.LoopParticipantAssignmentLocalService
+			loopParticipantAssignmentLocalService) {
+
+		this.loopParticipantAssignmentLocalService =
+			loopParticipantAssignmentLocalService;
 	}
 
 	/**
@@ -543,7 +612,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 *
 	 * @return the loop participant assignment persistence
 	 */
-	public LoopParticipantAssignmentPersistence getLoopParticipantAssignmentPersistence() {
+	public LoopParticipantAssignmentPersistence
+		getLoopParticipantAssignmentPersistence() {
+
 		return loopParticipantAssignmentPersistence;
 	}
 
@@ -553,8 +624,11 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @param loopParticipantAssignmentPersistence the loop participant assignment persistence
 	 */
 	public void setLoopParticipantAssignmentPersistence(
-		LoopParticipantAssignmentPersistence loopParticipantAssignmentPersistence) {
-		this.loopParticipantAssignmentPersistence = loopParticipantAssignmentPersistence;
+		LoopParticipantAssignmentPersistence
+			loopParticipantAssignmentPersistence) {
+
+		this.loopParticipantAssignmentPersistence =
+			loopParticipantAssignmentPersistence;
 	}
 
 	/**
@@ -562,7 +636,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 *
 	 * @return the loop person local service
 	 */
-	public com.liferay.osb.loop.service.LoopPersonLocalService getLoopPersonLocalService() {
+	public com.liferay.osb.loop.service.LoopPersonLocalService
+		getLoopPersonLocalService() {
+
 		return loopPersonLocalService;
 	}
 
@@ -572,7 +648,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @param loopPersonLocalService the loop person local service
 	 */
 	public void setLoopPersonLocalService(
-		com.liferay.osb.loop.service.LoopPersonLocalService loopPersonLocalService) {
+		com.liferay.osb.loop.service.LoopPersonLocalService
+			loopPersonLocalService) {
+
 		this.loopPersonLocalService = loopPersonLocalService;
 	}
 
@@ -592,6 +670,7 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 */
 	public void setLoopPersonPersistence(
 		LoopPersonPersistence loopPersonPersistence) {
+
 		this.loopPersonPersistence = loopPersonPersistence;
 	}
 
@@ -600,7 +679,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 *
 	 * @return the loop person rel local service
 	 */
-	public com.liferay.osb.loop.service.LoopPersonRelLocalService getLoopPersonRelLocalService() {
+	public com.liferay.osb.loop.service.LoopPersonRelLocalService
+		getLoopPersonRelLocalService() {
+
 		return loopPersonRelLocalService;
 	}
 
@@ -610,7 +691,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @param loopPersonRelLocalService the loop person rel local service
 	 */
 	public void setLoopPersonRelLocalService(
-		com.liferay.osb.loop.service.LoopPersonRelLocalService loopPersonRelLocalService) {
+		com.liferay.osb.loop.service.LoopPersonRelLocalService
+			loopPersonRelLocalService) {
+
 		this.loopPersonRelLocalService = loopPersonRelLocalService;
 	}
 
@@ -630,6 +713,7 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 */
 	public void setLoopPersonRelPersistence(
 		LoopPersonRelPersistence loopPersonRelPersistence) {
+
 		this.loopPersonRelPersistence = loopPersonRelPersistence;
 	}
 
@@ -638,7 +722,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 *
 	 * @return the loop stats entry local service
 	 */
-	public com.liferay.osb.loop.service.LoopStatsEntryLocalService getLoopStatsEntryLocalService() {
+	public com.liferay.osb.loop.service.LoopStatsEntryLocalService
+		getLoopStatsEntryLocalService() {
+
 		return loopStatsEntryLocalService;
 	}
 
@@ -648,7 +734,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @param loopStatsEntryLocalService the loop stats entry local service
 	 */
 	public void setLoopStatsEntryLocalService(
-		com.liferay.osb.loop.service.LoopStatsEntryLocalService loopStatsEntryLocalService) {
+		com.liferay.osb.loop.service.LoopStatsEntryLocalService
+			loopStatsEntryLocalService) {
+
 		this.loopStatsEntryLocalService = loopStatsEntryLocalService;
 	}
 
@@ -668,6 +756,7 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 */
 	public void setLoopStatsEntryPersistence(
 		LoopStatsEntryPersistence loopStatsEntryPersistence) {
+
 		this.loopStatsEntryPersistence = loopStatsEntryPersistence;
 	}
 
@@ -676,7 +765,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 *
 	 * @return the loop stream local service
 	 */
-	public com.liferay.osb.loop.service.LoopStreamLocalService getLoopStreamLocalService() {
+	public com.liferay.osb.loop.service.LoopStreamLocalService
+		getLoopStreamLocalService() {
+
 		return loopStreamLocalService;
 	}
 
@@ -686,7 +777,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @param loopStreamLocalService the loop stream local service
 	 */
 	public void setLoopStreamLocalService(
-		com.liferay.osb.loop.service.LoopStreamLocalService loopStreamLocalService) {
+		com.liferay.osb.loop.service.LoopStreamLocalService
+			loopStreamLocalService) {
+
 		this.loopStreamLocalService = loopStreamLocalService;
 	}
 
@@ -706,6 +799,7 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 */
 	public void setLoopStreamPersistence(
 		LoopStreamPersistence loopStreamPersistence) {
+
 		this.loopStreamPersistence = loopStreamPersistence;
 	}
 
@@ -714,7 +808,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 *
 	 * @return the loop stream entry local service
 	 */
-	public com.liferay.osb.loop.service.LoopStreamEntryLocalService getLoopStreamEntryLocalService() {
+	public com.liferay.osb.loop.service.LoopStreamEntryLocalService
+		getLoopStreamEntryLocalService() {
+
 		return loopStreamEntryLocalService;
 	}
 
@@ -724,7 +820,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @param loopStreamEntryLocalService the loop stream entry local service
 	 */
 	public void setLoopStreamEntryLocalService(
-		com.liferay.osb.loop.service.LoopStreamEntryLocalService loopStreamEntryLocalService) {
+		com.liferay.osb.loop.service.LoopStreamEntryLocalService
+			loopStreamEntryLocalService) {
+
 		this.loopStreamEntryLocalService = loopStreamEntryLocalService;
 	}
 
@@ -744,6 +842,7 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 */
 	public void setLoopStreamEntryPersistence(
 		LoopStreamEntryPersistence loopStreamEntryPersistence) {
+
 		this.loopStreamEntryPersistence = loopStreamEntryPersistence;
 	}
 
@@ -752,7 +851,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 *
 	 * @return the loop topic local service
 	 */
-	public com.liferay.osb.loop.service.LoopTopicLocalService getLoopTopicLocalService() {
+	public com.liferay.osb.loop.service.LoopTopicLocalService
+		getLoopTopicLocalService() {
+
 		return loopTopicLocalService;
 	}
 
@@ -762,7 +863,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @param loopTopicLocalService the loop topic local service
 	 */
 	public void setLoopTopicLocalService(
-		com.liferay.osb.loop.service.LoopTopicLocalService loopTopicLocalService) {
+		com.liferay.osb.loop.service.LoopTopicLocalService
+			loopTopicLocalService) {
+
 		this.loopTopicLocalService = loopTopicLocalService;
 	}
 
@@ -782,6 +885,7 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 */
 	public void setLoopTopicPersistence(
 		LoopTopicPersistence loopTopicPersistence) {
+
 		this.loopTopicPersistence = loopTopicPersistence;
 	}
 
@@ -790,7 +894,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 *
 	 * @return the loop topic assignment local service
 	 */
-	public com.liferay.osb.loop.service.LoopTopicAssignmentLocalService getLoopTopicAssignmentLocalService() {
+	public com.liferay.osb.loop.service.LoopTopicAssignmentLocalService
+		getLoopTopicAssignmentLocalService() {
+
 		return loopTopicAssignmentLocalService;
 	}
 
@@ -800,7 +906,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @param loopTopicAssignmentLocalService the loop topic assignment local service
 	 */
 	public void setLoopTopicAssignmentLocalService(
-		com.liferay.osb.loop.service.LoopTopicAssignmentLocalService loopTopicAssignmentLocalService) {
+		com.liferay.osb.loop.service.LoopTopicAssignmentLocalService
+			loopTopicAssignmentLocalService) {
+
 		this.loopTopicAssignmentLocalService = loopTopicAssignmentLocalService;
 	}
 
@@ -820,6 +928,7 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 */
 	public void setLoopTopicAssignmentPersistence(
 		LoopTopicAssignmentPersistence loopTopicAssignmentPersistence) {
+
 		this.loopTopicAssignmentPersistence = loopTopicAssignmentPersistence;
 	}
 
@@ -828,7 +937,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 *
 	 * @return the loop user notification event local service
 	 */
-	public com.liferay.osb.loop.service.LoopUserNotificationEventLocalService getLoopUserNotificationEventLocalService() {
+	public com.liferay.osb.loop.service.LoopUserNotificationEventLocalService
+		getLoopUserNotificationEventLocalService() {
+
 		return loopUserNotificationEventLocalService;
 	}
 
@@ -838,8 +949,11 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @param loopUserNotificationEventLocalService the loop user notification event local service
 	 */
 	public void setLoopUserNotificationEventLocalService(
-		com.liferay.osb.loop.service.LoopUserNotificationEventLocalService loopUserNotificationEventLocalService) {
-		this.loopUserNotificationEventLocalService = loopUserNotificationEventLocalService;
+		com.liferay.osb.loop.service.LoopUserNotificationEventLocalService
+			loopUserNotificationEventLocalService) {
+
+		this.loopUserNotificationEventLocalService =
+			loopUserNotificationEventLocalService;
 	}
 
 	/**
@@ -847,7 +961,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 *
 	 * @return the loop user notification event persistence
 	 */
-	public LoopUserNotificationEventPersistence getLoopUserNotificationEventPersistence() {
+	public LoopUserNotificationEventPersistence
+		getLoopUserNotificationEventPersistence() {
+
 		return loopUserNotificationEventPersistence;
 	}
 
@@ -857,8 +973,11 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @param loopUserNotificationEventPersistence the loop user notification event persistence
 	 */
 	public void setLoopUserNotificationEventPersistence(
-		LoopUserNotificationEventPersistence loopUserNotificationEventPersistence) {
-		this.loopUserNotificationEventPersistence = loopUserNotificationEventPersistence;
+		LoopUserNotificationEventPersistence
+			loopUserNotificationEventPersistence) {
+
+		this.loopUserNotificationEventPersistence =
+			loopUserNotificationEventPersistence;
 	}
 
 	/**
@@ -866,7 +985,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 *
 	 * @return the loop user notification record local service
 	 */
-	public com.liferay.osb.loop.service.LoopUserNotificationRecordLocalService getLoopUserNotificationRecordLocalService() {
+	public com.liferay.osb.loop.service.LoopUserNotificationRecordLocalService
+		getLoopUserNotificationRecordLocalService() {
+
 		return loopUserNotificationRecordLocalService;
 	}
 
@@ -876,8 +997,11 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @param loopUserNotificationRecordLocalService the loop user notification record local service
 	 */
 	public void setLoopUserNotificationRecordLocalService(
-		com.liferay.osb.loop.service.LoopUserNotificationRecordLocalService loopUserNotificationRecordLocalService) {
-		this.loopUserNotificationRecordLocalService = loopUserNotificationRecordLocalService;
+		com.liferay.osb.loop.service.LoopUserNotificationRecordLocalService
+			loopUserNotificationRecordLocalService) {
+
+		this.loopUserNotificationRecordLocalService =
+			loopUserNotificationRecordLocalService;
 	}
 
 	/**
@@ -885,7 +1009,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 *
 	 * @return the loop user notification record persistence
 	 */
-	public LoopUserNotificationRecordPersistence getLoopUserNotificationRecordPersistence() {
+	public LoopUserNotificationRecordPersistence
+		getLoopUserNotificationRecordPersistence() {
+
 		return loopUserNotificationRecordPersistence;
 	}
 
@@ -895,8 +1021,11 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @param loopUserNotificationRecordPersistence the loop user notification record persistence
 	 */
 	public void setLoopUserNotificationRecordPersistence(
-		LoopUserNotificationRecordPersistence loopUserNotificationRecordPersistence) {
-		this.loopUserNotificationRecordPersistence = loopUserNotificationRecordPersistence;
+		LoopUserNotificationRecordPersistence
+			loopUserNotificationRecordPersistence) {
+
+		this.loopUserNotificationRecordPersistence =
+			loopUserNotificationRecordPersistence;
 	}
 
 	/**
@@ -904,7 +1033,11 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 *
 	 * @return the loop user notification subscription local service
 	 */
-	public com.liferay.osb.loop.service.LoopUserNotificationSubscriptionLocalService getLoopUserNotificationSubscriptionLocalService() {
+	public
+		com.liferay.osb.loop.service.
+			LoopUserNotificationSubscriptionLocalService
+				getLoopUserNotificationSubscriptionLocalService() {
+
 		return loopUserNotificationSubscriptionLocalService;
 	}
 
@@ -914,8 +1047,12 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @param loopUserNotificationSubscriptionLocalService the loop user notification subscription local service
 	 */
 	public void setLoopUserNotificationSubscriptionLocalService(
-		com.liferay.osb.loop.service.LoopUserNotificationSubscriptionLocalService loopUserNotificationSubscriptionLocalService) {
-		this.loopUserNotificationSubscriptionLocalService = loopUserNotificationSubscriptionLocalService;
+		com.liferay.osb.loop.service.
+			LoopUserNotificationSubscriptionLocalService
+				loopUserNotificationSubscriptionLocalService) {
+
+		this.loopUserNotificationSubscriptionLocalService =
+			loopUserNotificationSubscriptionLocalService;
 	}
 
 	/**
@@ -923,7 +1060,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 *
 	 * @return the loop user notification subscription persistence
 	 */
-	public LoopUserNotificationSubscriptionPersistence getLoopUserNotificationSubscriptionPersistence() {
+	public LoopUserNotificationSubscriptionPersistence
+		getLoopUserNotificationSubscriptionPersistence() {
+
 		return loopUserNotificationSubscriptionPersistence;
 	}
 
@@ -933,8 +1072,11 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @param loopUserNotificationSubscriptionPersistence the loop user notification subscription persistence
 	 */
 	public void setLoopUserNotificationSubscriptionPersistence(
-		LoopUserNotificationSubscriptionPersistence loopUserNotificationSubscriptionPersistence) {
-		this.loopUserNotificationSubscriptionPersistence = loopUserNotificationSubscriptionPersistence;
+		LoopUserNotificationSubscriptionPersistence
+			loopUserNotificationSubscriptionPersistence) {
+
+		this.loopUserNotificationSubscriptionPersistence =
+			loopUserNotificationSubscriptionPersistence;
 	}
 
 	/**
@@ -942,7 +1084,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
+	public com.liferay.counter.kernel.service.CounterLocalService
+		getCounterLocalService() {
+
 		return counterLocalService;
 	}
 
@@ -952,7 +1096,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
+		com.liferay.counter.kernel.service.CounterLocalService
+			counterLocalService) {
+
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -961,7 +1107,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
+	public com.liferay.portal.kernel.service.ClassNameLocalService
+		getClassNameLocalService() {
+
 		return classNameLocalService;
 	}
 
@@ -971,7 +1119,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
+		com.liferay.portal.kernel.service.ClassNameLocalService
+			classNameLocalService) {
+
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -991,6 +1141,7 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
+
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -999,7 +1150,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
+	public com.liferay.portal.kernel.service.ResourceLocalService
+		getResourceLocalService() {
+
 		return resourceLocalService;
 	}
 
@@ -1009,7 +1162,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
+		com.liferay.portal.kernel.service.ResourceLocalService
+			resourceLocalService) {
+
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -1018,7 +1173,9 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
+	public com.liferay.portal.kernel.service.UserLocalService
+		getUserLocalService() {
+
 		return userLocalService;
 	}
 
@@ -1029,6 +1186,7 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
+
 		this.userLocalService = userLocalService;
 	}
 
@@ -1051,7 +1209,8 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register("com.liferay.osb.loop.model.LoopAuditEntry",
+		persistedModelLocalServiceRegistry.register(
+			"com.liferay.osb.loop.model.LoopAuditEntry",
 			loopAuditEntryLocalService);
 	}
 
@@ -1092,92 +1251,197 @@ public abstract class LoopAuditEntryLocalServiceBaseImpl
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
-					sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
+				dataSource, sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception e) {
-			throw new SystemException(e);
+		catch (Exception exception) {
+			throw new SystemException(exception);
 		}
 	}
 
 	@BeanReference(type = LoopAuditEntryLocalService.class)
 	protected LoopAuditEntryLocalService loopAuditEntryLocalService;
+
 	@BeanReference(type = LoopAuditEntryPersistence.class)
 	protected LoopAuditEntryPersistence loopAuditEntryPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopDivisionLocalService.class)
-	protected com.liferay.osb.loop.service.LoopDivisionLocalService loopDivisionLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopDivisionLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopDivisionLocalService
+		loopDivisionLocalService;
+
 	@BeanReference(type = LoopDivisionPersistence.class)
 	protected LoopDivisionPersistence loopDivisionPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopDivisionRelLocalService.class)
-	protected com.liferay.osb.loop.service.LoopDivisionRelLocalService loopDivisionRelLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopDivisionRelLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopDivisionRelLocalService
+		loopDivisionRelLocalService;
+
 	@BeanReference(type = LoopDivisionRelPersistence.class)
 	protected LoopDivisionRelPersistence loopDivisionRelPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopExternalReferenceRelLocalService.class)
-	protected com.liferay.osb.loop.service.LoopExternalReferenceRelLocalService loopExternalReferenceRelLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopExternalReferenceRelLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopExternalReferenceRelLocalService
+		loopExternalReferenceRelLocalService;
+
 	@BeanReference(type = LoopExternalReferenceRelPersistence.class)
-	protected LoopExternalReferenceRelPersistence loopExternalReferenceRelPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopJobTitleLocalService.class)
-	protected com.liferay.osb.loop.service.LoopJobTitleLocalService loopJobTitleLocalService;
+	protected LoopExternalReferenceRelPersistence
+		loopExternalReferenceRelPersistence;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopJobTitleLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopJobTitleLocalService
+		loopJobTitleLocalService;
+
 	@BeanReference(type = LoopJobTitlePersistence.class)
 	protected LoopJobTitlePersistence loopJobTitlePersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopParticipantAssignmentLocalService.class)
-	protected com.liferay.osb.loop.service.LoopParticipantAssignmentLocalService loopParticipantAssignmentLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopParticipantAssignmentLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopParticipantAssignmentLocalService
+		loopParticipantAssignmentLocalService;
+
 	@BeanReference(type = LoopParticipantAssignmentPersistence.class)
-	protected LoopParticipantAssignmentPersistence loopParticipantAssignmentPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopPersonLocalService.class)
-	protected com.liferay.osb.loop.service.LoopPersonLocalService loopPersonLocalService;
+	protected LoopParticipantAssignmentPersistence
+		loopParticipantAssignmentPersistence;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopPersonLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopPersonLocalService
+		loopPersonLocalService;
+
 	@BeanReference(type = LoopPersonPersistence.class)
 	protected LoopPersonPersistence loopPersonPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopPersonRelLocalService.class)
-	protected com.liferay.osb.loop.service.LoopPersonRelLocalService loopPersonRelLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopPersonRelLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopPersonRelLocalService
+		loopPersonRelLocalService;
+
 	@BeanReference(type = LoopPersonRelPersistence.class)
 	protected LoopPersonRelPersistence loopPersonRelPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopStatsEntryLocalService.class)
-	protected com.liferay.osb.loop.service.LoopStatsEntryLocalService loopStatsEntryLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopStatsEntryLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopStatsEntryLocalService
+		loopStatsEntryLocalService;
+
 	@BeanReference(type = LoopStatsEntryPersistence.class)
 	protected LoopStatsEntryPersistence loopStatsEntryPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopStreamLocalService.class)
-	protected com.liferay.osb.loop.service.LoopStreamLocalService loopStreamLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopStreamLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopStreamLocalService
+		loopStreamLocalService;
+
 	@BeanReference(type = LoopStreamPersistence.class)
 	protected LoopStreamPersistence loopStreamPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopStreamEntryLocalService.class)
-	protected com.liferay.osb.loop.service.LoopStreamEntryLocalService loopStreamEntryLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopStreamEntryLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopStreamEntryLocalService
+		loopStreamEntryLocalService;
+
 	@BeanReference(type = LoopStreamEntryPersistence.class)
 	protected LoopStreamEntryPersistence loopStreamEntryPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopTopicLocalService.class)
-	protected com.liferay.osb.loop.service.LoopTopicLocalService loopTopicLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopTopicLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopTopicLocalService
+		loopTopicLocalService;
+
 	@BeanReference(type = LoopTopicPersistence.class)
 	protected LoopTopicPersistence loopTopicPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopTopicAssignmentLocalService.class)
-	protected com.liferay.osb.loop.service.LoopTopicAssignmentLocalService loopTopicAssignmentLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopTopicAssignmentLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopTopicAssignmentLocalService
+		loopTopicAssignmentLocalService;
+
 	@BeanReference(type = LoopTopicAssignmentPersistence.class)
 	protected LoopTopicAssignmentPersistence loopTopicAssignmentPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopUserNotificationEventLocalService.class)
-	protected com.liferay.osb.loop.service.LoopUserNotificationEventLocalService loopUserNotificationEventLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopUserNotificationEventLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopUserNotificationEventLocalService
+		loopUserNotificationEventLocalService;
+
 	@BeanReference(type = LoopUserNotificationEventPersistence.class)
-	protected LoopUserNotificationEventPersistence loopUserNotificationEventPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopUserNotificationRecordLocalService.class)
-	protected com.liferay.osb.loop.service.LoopUserNotificationRecordLocalService loopUserNotificationRecordLocalService;
+	protected LoopUserNotificationEventPersistence
+		loopUserNotificationEventPersistence;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopUserNotificationRecordLocalService.class
+	)
+	protected
+		com.liferay.osb.loop.service.LoopUserNotificationRecordLocalService
+			loopUserNotificationRecordLocalService;
+
 	@BeanReference(type = LoopUserNotificationRecordPersistence.class)
-	protected LoopUserNotificationRecordPersistence loopUserNotificationRecordPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopUserNotificationSubscriptionLocalService.class)
-	protected com.liferay.osb.loop.service.LoopUserNotificationSubscriptionLocalService loopUserNotificationSubscriptionLocalService;
+	protected LoopUserNotificationRecordPersistence
+		loopUserNotificationRecordPersistence;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopUserNotificationSubscriptionLocalService.class
+	)
+	protected
+		com.liferay.osb.loop.service.
+			LoopUserNotificationSubscriptionLocalService
+				loopUserNotificationSubscriptionLocalService;
+
 	@BeanReference(type = LoopUserNotificationSubscriptionPersistence.class)
-	protected LoopUserNotificationSubscriptionPersistence loopUserNotificationSubscriptionPersistence;
-	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
-	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
+	protected LoopUserNotificationSubscriptionPersistence
+		loopUserNotificationSubscriptionPersistence;
+
+	@ServiceReference(
+		type = com.liferay.counter.kernel.service.CounterLocalService.class
+	)
+	protected com.liferay.counter.kernel.service.CounterLocalService
+		counterLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService
+		classNameLocalService;
+
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
-	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
-	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ResourceLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ResourceLocalService
+		resourceLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.UserLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.UserLocalService
+		userLocalService;
+
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
+
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
+	protected PersistedModelLocalServiceRegistry
+		persistedModelLocalServiceRegistry;
+
 }

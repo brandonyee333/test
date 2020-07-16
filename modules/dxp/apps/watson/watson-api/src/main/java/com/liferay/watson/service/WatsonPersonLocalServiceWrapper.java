@@ -36,6 +36,10 @@ public class WatsonPersonLocalServiceWrapper
 	/**
 	 * Adds the watson person to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonPersonLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonPerson the watson person
 	 * @return the watson person that was added
 	 */
@@ -73,6 +77,10 @@ public class WatsonPersonLocalServiceWrapper
 	/**
 	 * Deletes the watson person with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonPersonLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonPersonId the primary key of the watson person
 	 * @return the watson person that was removed
 	 * @throws PortalException if a watson person with the primary key could not be found
@@ -87,6 +95,10 @@ public class WatsonPersonLocalServiceWrapper
 
 	/**
 	 * Deletes the watson person from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonPersonLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonPerson the watson person
 	 * @return the watson person that was removed
@@ -275,6 +287,10 @@ public class WatsonPersonLocalServiceWrapper
 
 	/**
 	 * Updates the watson person in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonPersonLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonPerson the watson person
 	 * @return the watson person that was updated

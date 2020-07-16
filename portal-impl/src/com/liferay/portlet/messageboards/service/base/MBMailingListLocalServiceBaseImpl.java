@@ -80,6 +80,10 @@ public abstract class MBMailingListLocalServiceBaseImpl
 	/**
 	 * Adds the message boards mailing list to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect MBMailingListLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param mbMailingList the message boards mailing list
 	 * @return the message boards mailing list that was added
 	 */
@@ -106,6 +110,10 @@ public abstract class MBMailingListLocalServiceBaseImpl
 	/**
 	 * Deletes the message boards mailing list with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect MBMailingListLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param mailingListId the primary key of the message boards mailing list
 	 * @return the message boards mailing list that was removed
 	 * @throws PortalException if a message boards mailing list with the primary key could not be found
@@ -120,6 +128,10 @@ public abstract class MBMailingListLocalServiceBaseImpl
 
 	/**
 	 * Deletes the message boards mailing list from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect MBMailingListLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param mbMailingList the message boards mailing list
 	 * @return the message boards mailing list that was removed
@@ -460,6 +472,10 @@ public abstract class MBMailingListLocalServiceBaseImpl
 
 	/**
 	 * Updates the message boards mailing list in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect MBMailingListLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param mbMailingList the message boards mailing list
 	 * @return the message boards mailing list that was updated

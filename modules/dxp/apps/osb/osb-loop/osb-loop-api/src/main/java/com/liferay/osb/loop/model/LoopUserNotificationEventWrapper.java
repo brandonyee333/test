@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -36,12 +33,13 @@ import java.util.Objects;
  * @see LoopUserNotificationEvent
  * @generated
  */
-@ProviderType
 public class LoopUserNotificationEventWrapper
 	implements LoopUserNotificationEvent,
-		ModelWrapper<LoopUserNotificationEvent> {
+			   ModelWrapper<LoopUserNotificationEvent> {
+
 	public LoopUserNotificationEventWrapper(
 		LoopUserNotificationEvent loopUserNotificationEvent) {
+
 		_loopUserNotificationEvent = loopUserNotificationEvent;
 	}
 
@@ -59,8 +57,8 @@ public class LoopUserNotificationEventWrapper
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("loopUserNotificationEventId",
-			getLoopUserNotificationEventId());
+		attributes.put(
+			"loopUserNotificationEventId", getLoopUserNotificationEventId());
 		attributes.put("createTime", getCreateTime());
 		attributes.put("recipientUserId", getRecipientUserId());
 		attributes.put("classNameId", getClassNameId());
@@ -69,8 +67,8 @@ public class LoopUserNotificationEventWrapper
 		attributes.put("groupClassPK", getGroupClassPK());
 		attributes.put("groupKey", getGroupKey());
 		attributes.put("type", getType());
-		attributes.put("received", getReceived());
-		attributes.put("opened", getOpened());
+		attributes.put("received", isReceived());
+		attributes.put("opened", isOpened());
 
 		return attributes;
 	}
@@ -78,7 +76,7 @@ public class LoopUserNotificationEventWrapper
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
 		Long loopUserNotificationEventId = (Long)attributes.get(
-				"loopUserNotificationEventId");
+			"loopUserNotificationEventId");
 
 		if (loopUserNotificationEventId != null) {
 			setLoopUserNotificationEventId(loopUserNotificationEventId);
@@ -146,33 +144,169 @@ public class LoopUserNotificationEventWrapper
 	}
 
 	@Override
-	public LoopUserNotificationEvent toEscapedModel() {
-		return new LoopUserNotificationEventWrapper(_loopUserNotificationEvent.toEscapedModel());
+	public Object clone() {
+		return new LoopUserNotificationEventWrapper(
+			(LoopUserNotificationEvent)_loopUserNotificationEvent.clone());
 	}
 
 	@Override
-	public LoopUserNotificationEvent toUnescapedModel() {
-		return new LoopUserNotificationEventWrapper(_loopUserNotificationEvent.toUnescapedModel());
+	public int compareTo(LoopUserNotificationEvent loopUserNotificationEvent) {
+		return _loopUserNotificationEvent.compareTo(loopUserNotificationEvent);
 	}
 
 	/**
-	* Returns the opened of this loop user notification event.
-	*
-	* @return the opened of this loop user notification event
-	*/
+	 * Returns the fully qualified class name of this loop user notification event.
+	 *
+	 * @return the fully qualified class name of this loop user notification event
+	 */
+	@Override
+	public String getClassName() {
+		return _loopUserNotificationEvent.getClassName();
+	}
+
+	/**
+	 * Returns the class name ID of this loop user notification event.
+	 *
+	 * @return the class name ID of this loop user notification event
+	 */
+	@Override
+	public long getClassNameId() {
+		return _loopUserNotificationEvent.getClassNameId();
+	}
+
+	/**
+	 * Returns the class pk of this loop user notification event.
+	 *
+	 * @return the class pk of this loop user notification event
+	 */
+	@Override
+	public long getClassPK() {
+		return _loopUserNotificationEvent.getClassPK();
+	}
+
+	/**
+	 * Returns the create time of this loop user notification event.
+	 *
+	 * @return the create time of this loop user notification event
+	 */
+	@Override
+	public long getCreateTime() {
+		return _loopUserNotificationEvent.getCreateTime();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _loopUserNotificationEvent.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the group class name ID of this loop user notification event.
+	 *
+	 * @return the group class name ID of this loop user notification event
+	 */
+	@Override
+	public long getGroupClassNameId() {
+		return _loopUserNotificationEvent.getGroupClassNameId();
+	}
+
+	/**
+	 * Returns the group class pk of this loop user notification event.
+	 *
+	 * @return the group class pk of this loop user notification event
+	 */
+	@Override
+	public long getGroupClassPK() {
+		return _loopUserNotificationEvent.getGroupClassPK();
+	}
+
+	/**
+	 * Returns the group key of this loop user notification event.
+	 *
+	 * @return the group key of this loop user notification event
+	 */
+	@Override
+	public long getGroupKey() {
+		return _loopUserNotificationEvent.getGroupKey();
+	}
+
+	/**
+	 * Returns the loop user notification event ID of this loop user notification event.
+	 *
+	 * @return the loop user notification event ID of this loop user notification event
+	 */
+	@Override
+	public long getLoopUserNotificationEventId() {
+		return _loopUserNotificationEvent.getLoopUserNotificationEventId();
+	}
+
+	/**
+	 * Returns the opened of this loop user notification event.
+	 *
+	 * @return the opened of this loop user notification event
+	 */
 	@Override
 	public boolean getOpened() {
 		return _loopUserNotificationEvent.getOpened();
 	}
 
 	/**
-	* Returns the received of this loop user notification event.
-	*
-	* @return the received of this loop user notification event
-	*/
+	 * Returns the primary key of this loop user notification event.
+	 *
+	 * @return the primary key of this loop user notification event
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _loopUserNotificationEvent.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _loopUserNotificationEvent.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the received of this loop user notification event.
+	 *
+	 * @return the received of this loop user notification event
+	 */
 	@Override
 	public boolean getReceived() {
 		return _loopUserNotificationEvent.getReceived();
+	}
+
+	/**
+	 * Returns the recipient user ID of this loop user notification event.
+	 *
+	 * @return the recipient user ID of this loop user notification event
+	 */
+	@Override
+	public long getRecipientUserId() {
+		return _loopUserNotificationEvent.getRecipientUserId();
+	}
+
+	/**
+	 * Returns the recipient user uuid of this loop user notification event.
+	 *
+	 * @return the recipient user uuid of this loop user notification event
+	 */
+	@Override
+	public String getRecipientUserUuid() {
+		return _loopUserNotificationEvent.getRecipientUserUuid();
+	}
+
+	/**
+	 * Returns the type of this loop user notification event.
+	 *
+	 * @return the type of this loop user notification event
+	 */
+	@Override
+	public int getType() {
+		return _loopUserNotificationEvent.getType();
+	}
+
+	@Override
+	public int hashCode() {
+		return _loopUserNotificationEvent.hashCode();
 	}
 
 	@Override
@@ -191,183 +325,23 @@ public class LoopUserNotificationEventWrapper
 	}
 
 	/**
-	* Returns <code>true</code> if this loop user notification event is opened.
-	*
-	* @return <code>true</code> if this loop user notification event is opened; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this loop user notification event is opened.
+	 *
+	 * @return <code>true</code> if this loop user notification event is opened; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isOpened() {
 		return _loopUserNotificationEvent.isOpened();
 	}
 
 	/**
-	* Returns <code>true</code> if this loop user notification event is received.
-	*
-	* @return <code>true</code> if this loop user notification event is received; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this loop user notification event is received.
+	 *
+	 * @return <code>true</code> if this loop user notification event is received; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isReceived() {
 		return _loopUserNotificationEvent.isReceived();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _loopUserNotificationEvent.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<LoopUserNotificationEvent> toCacheModel() {
-		return _loopUserNotificationEvent.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(LoopUserNotificationEvent loopUserNotificationEvent) {
-		return _loopUserNotificationEvent.compareTo(loopUserNotificationEvent);
-	}
-
-	/**
-	* Returns the type of this loop user notification event.
-	*
-	* @return the type of this loop user notification event
-	*/
-	@Override
-	public int getType() {
-		return _loopUserNotificationEvent.getType();
-	}
-
-	@Override
-	public int hashCode() {
-		return _loopUserNotificationEvent.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _loopUserNotificationEvent.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new LoopUserNotificationEventWrapper((LoopUserNotificationEvent)_loopUserNotificationEvent.clone());
-	}
-
-	/**
-	* Returns the fully qualified class name of this loop user notification event.
-	*
-	* @return the fully qualified class name of this loop user notification event
-	*/
-	@Override
-	public java.lang.String getClassName() {
-		return _loopUserNotificationEvent.getClassName();
-	}
-
-	/**
-	* Returns the recipient user uuid of this loop user notification event.
-	*
-	* @return the recipient user uuid of this loop user notification event
-	*/
-	@Override
-	public java.lang.String getRecipientUserUuid() {
-		return _loopUserNotificationEvent.getRecipientUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _loopUserNotificationEvent.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _loopUserNotificationEvent.toXmlString();
-	}
-
-	/**
-	* Returns the class name ID of this loop user notification event.
-	*
-	* @return the class name ID of this loop user notification event
-	*/
-	@Override
-	public long getClassNameId() {
-		return _loopUserNotificationEvent.getClassNameId();
-	}
-
-	/**
-	* Returns the class pk of this loop user notification event.
-	*
-	* @return the class pk of this loop user notification event
-	*/
-	@Override
-	public long getClassPK() {
-		return _loopUserNotificationEvent.getClassPK();
-	}
-
-	/**
-	* Returns the create time of this loop user notification event.
-	*
-	* @return the create time of this loop user notification event
-	*/
-	@Override
-	public long getCreateTime() {
-		return _loopUserNotificationEvent.getCreateTime();
-	}
-
-	/**
-	* Returns the group class name ID of this loop user notification event.
-	*
-	* @return the group class name ID of this loop user notification event
-	*/
-	@Override
-	public long getGroupClassNameId() {
-		return _loopUserNotificationEvent.getGroupClassNameId();
-	}
-
-	/**
-	* Returns the group class pk of this loop user notification event.
-	*
-	* @return the group class pk of this loop user notification event
-	*/
-	@Override
-	public long getGroupClassPK() {
-		return _loopUserNotificationEvent.getGroupClassPK();
-	}
-
-	/**
-	* Returns the group key of this loop user notification event.
-	*
-	* @return the group key of this loop user notification event
-	*/
-	@Override
-	public long getGroupKey() {
-		return _loopUserNotificationEvent.getGroupKey();
-	}
-
-	/**
-	* Returns the loop user notification event ID of this loop user notification event.
-	*
-	* @return the loop user notification event ID of this loop user notification event
-	*/
-	@Override
-	public long getLoopUserNotificationEventId() {
-		return _loopUserNotificationEvent.getLoopUserNotificationEventId();
-	}
-
-	/**
-	* Returns the primary key of this loop user notification event.
-	*
-	* @return the primary key of this loop user notification event
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _loopUserNotificationEvent.getPrimaryKey();
-	}
-
-	/**
-	* Returns the recipient user ID of this loop user notification event.
-	*
-	* @return the recipient user ID of this loop user notification event
-	*/
-	@Override
-	public long getRecipientUserId() {
-		return _loopUserNotificationEvent.getRecipientUserId();
 	}
 
 	@Override
@@ -381,38 +355,45 @@ public class LoopUserNotificationEventWrapper
 	}
 
 	@Override
-	public void setClassName(java.lang.String className) {
+	public void setClassName(String className) {
 		_loopUserNotificationEvent.setClassName(className);
 	}
 
 	/**
-	* Sets the class name ID of this loop user notification event.
-	*
-	* @param classNameId the class name ID of this loop user notification event
-	*/
+	 * Sets the class name ID of this loop user notification event.
+	 *
+	 * @param classNameId the class name ID of this loop user notification event
+	 */
 	@Override
 	public void setClassNameId(long classNameId) {
 		_loopUserNotificationEvent.setClassNameId(classNameId);
 	}
 
 	/**
-	* Sets the class pk of this loop user notification event.
-	*
-	* @param classPK the class pk of this loop user notification event
-	*/
+	 * Sets the class pk of this loop user notification event.
+	 *
+	 * @param classPK the class pk of this loop user notification event
+	 */
 	@Override
 	public void setClassPK(long classPK) {
 		_loopUserNotificationEvent.setClassPK(classPK);
 	}
 
 	/**
-	* Sets the create time of this loop user notification event.
-	*
-	* @param createTime the create time of this loop user notification event
-	*/
+	 * Sets the create time of this loop user notification event.
+	 *
+	 * @param createTime the create time of this loop user notification event
+	 */
 	@Override
 	public void setCreateTime(long createTime) {
 		_loopUserNotificationEvent.setCreateTime(createTime);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_loopUserNotificationEvent.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -421,54 +402,51 @@ public class LoopUserNotificationEventWrapper
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_loopUserNotificationEvent.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_loopUserNotificationEvent.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the group class name ID of this loop user notification event.
-	*
-	* @param groupClassNameId the group class name ID of this loop user notification event
-	*/
+	 * Sets the group class name ID of this loop user notification event.
+	 *
+	 * @param groupClassNameId the group class name ID of this loop user notification event
+	 */
 	@Override
 	public void setGroupClassNameId(long groupClassNameId) {
 		_loopUserNotificationEvent.setGroupClassNameId(groupClassNameId);
 	}
 
 	/**
-	* Sets the group class pk of this loop user notification event.
-	*
-	* @param groupClassPK the group class pk of this loop user notification event
-	*/
+	 * Sets the group class pk of this loop user notification event.
+	 *
+	 * @param groupClassPK the group class pk of this loop user notification event
+	 */
 	@Override
 	public void setGroupClassPK(long groupClassPK) {
 		_loopUserNotificationEvent.setGroupClassPK(groupClassPK);
 	}
 
 	/**
-	* Sets the group key of this loop user notification event.
-	*
-	* @param groupKey the group key of this loop user notification event
-	*/
+	 * Sets the group key of this loop user notification event.
+	 *
+	 * @param groupKey the group key of this loop user notification event
+	 */
 	@Override
 	public void setGroupKey(long groupKey) {
 		_loopUserNotificationEvent.setGroupKey(groupKey);
 	}
 
 	/**
-	* Sets the loop user notification event ID of this loop user notification event.
-	*
-	* @param loopUserNotificationEventId the loop user notification event ID of this loop user notification event
-	*/
+	 * Sets the loop user notification event ID of this loop user notification event.
+	 *
+	 * @param loopUserNotificationEventId the loop user notification event ID of this loop user notification event
+	 */
 	@Override
-	public void setLoopUserNotificationEventId(long loopUserNotificationEventId) {
-		_loopUserNotificationEvent.setLoopUserNotificationEventId(loopUserNotificationEventId);
+	public void setLoopUserNotificationEventId(
+		long loopUserNotificationEventId) {
+
+		_loopUserNotificationEvent.setLoopUserNotificationEventId(
+			loopUserNotificationEventId);
 	}
 
 	@Override
@@ -477,20 +455,20 @@ public class LoopUserNotificationEventWrapper
 	}
 
 	/**
-	* Sets whether this loop user notification event is opened.
-	*
-	* @param opened the opened of this loop user notification event
-	*/
+	 * Sets whether this loop user notification event is opened.
+	 *
+	 * @param opened the opened of this loop user notification event
+	 */
 	@Override
 	public void setOpened(boolean opened) {
 		_loopUserNotificationEvent.setOpened(opened);
 	}
 
 	/**
-	* Sets the primary key of this loop user notification event.
-	*
-	* @param primaryKey the primary key of this loop user notification event
-	*/
+	 * Sets the primary key of this loop user notification event.
+	 *
+	 * @param primaryKey the primary key of this loop user notification event
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_loopUserNotificationEvent.setPrimaryKey(primaryKey);
@@ -502,59 +480,91 @@ public class LoopUserNotificationEventWrapper
 	}
 
 	/**
-	* Sets whether this loop user notification event is received.
-	*
-	* @param received the received of this loop user notification event
-	*/
+	 * Sets whether this loop user notification event is received.
+	 *
+	 * @param received the received of this loop user notification event
+	 */
 	@Override
 	public void setReceived(boolean received) {
 		_loopUserNotificationEvent.setReceived(received);
 	}
 
 	/**
-	* Sets the recipient user ID of this loop user notification event.
-	*
-	* @param recipientUserId the recipient user ID of this loop user notification event
-	*/
+	 * Sets the recipient user ID of this loop user notification event.
+	 *
+	 * @param recipientUserId the recipient user ID of this loop user notification event
+	 */
 	@Override
 	public void setRecipientUserId(long recipientUserId) {
 		_loopUserNotificationEvent.setRecipientUserId(recipientUserId);
 	}
 
 	/**
-	* Sets the recipient user uuid of this loop user notification event.
-	*
-	* @param recipientUserUuid the recipient user uuid of this loop user notification event
-	*/
+	 * Sets the recipient user uuid of this loop user notification event.
+	 *
+	 * @param recipientUserUuid the recipient user uuid of this loop user notification event
+	 */
 	@Override
-	public void setRecipientUserUuid(java.lang.String recipientUserUuid) {
+	public void setRecipientUserUuid(String recipientUserUuid) {
 		_loopUserNotificationEvent.setRecipientUserUuid(recipientUserUuid);
 	}
 
 	/**
-	* Sets the type of this loop user notification event.
-	*
-	* @param type the type of this loop user notification event
-	*/
+	 * Sets the type of this loop user notification event.
+	 *
+	 * @param type the type of this loop user notification event
+	 */
 	@Override
 	public void setType(int type) {
 		_loopUserNotificationEvent.setType(type);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public com.liferay.portal.kernel.model.CacheModel<LoopUserNotificationEvent>
+		toCacheModel() {
+
+		return _loopUserNotificationEvent.toCacheModel();
+	}
+
+	@Override
+	public LoopUserNotificationEvent toEscapedModel() {
+		return new LoopUserNotificationEventWrapper(
+			_loopUserNotificationEvent.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _loopUserNotificationEvent.toString();
+	}
+
+	@Override
+	public LoopUserNotificationEvent toUnescapedModel() {
+		return new LoopUserNotificationEventWrapper(
+			_loopUserNotificationEvent.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _loopUserNotificationEvent.toXmlString();
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof LoopUserNotificationEventWrapper)) {
+		if (!(object instanceof LoopUserNotificationEventWrapper)) {
 			return false;
 		}
 
-		LoopUserNotificationEventWrapper loopUserNotificationEventWrapper = (LoopUserNotificationEventWrapper)obj;
+		LoopUserNotificationEventWrapper loopUserNotificationEventWrapper =
+			(LoopUserNotificationEventWrapper)object;
 
-		if (Objects.equals(_loopUserNotificationEvent,
-					loopUserNotificationEventWrapper._loopUserNotificationEvent)) {
+		if (Objects.equals(
+				_loopUserNotificationEvent,
+				loopUserNotificationEventWrapper._loopUserNotificationEvent)) {
+
 			return true;
 		}
 
@@ -582,4 +592,5 @@ public class LoopUserNotificationEventWrapper
 	}
 
 	private final LoopUserNotificationEvent _loopUserNotificationEvent;
+
 }

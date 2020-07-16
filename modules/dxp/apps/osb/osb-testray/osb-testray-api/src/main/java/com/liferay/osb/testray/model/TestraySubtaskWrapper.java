@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,9 +34,9 @@ import java.util.Objects;
  * @see TestraySubtask
  * @generated
  */
-@ProviderType
-public class TestraySubtaskWrapper implements TestraySubtask,
-	ModelWrapper<TestraySubtask> {
+public class TestraySubtaskWrapper
+	implements ModelWrapper<TestraySubtask>, TestraySubtask {
+
 	public TestraySubtaskWrapper(TestraySubtask testraySubtask) {
 		_testraySubtask = testraySubtask;
 	}
@@ -66,9 +63,10 @@ public class TestraySubtaskWrapper implements TestraySubtask,
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("commentMBMessageId", getCommentMBMessageId());
-		attributes.put("mergedToTestraySubtaskId", getMergedToTestraySubtaskId());
-		attributes.put("splitFromTestraySubtaskId",
-			getSplitFromTestraySubtaskId());
+		attributes.put(
+			"mergedToTestraySubtaskId", getMergedToTestraySubtaskId());
+		attributes.put(
+			"splitFromTestraySubtaskId", getSplitFromTestraySubtaskId());
 		attributes.put("testrayTaskId", getTestrayTaskId());
 		attributes.put("name", getName());
 		attributes.put("score", getScore());
@@ -129,14 +127,14 @@ public class TestraySubtaskWrapper implements TestraySubtask,
 		}
 
 		Long mergedToTestraySubtaskId = (Long)attributes.get(
-				"mergedToTestraySubtaskId");
+			"mergedToTestraySubtaskId");
 
 		if (mergedToTestraySubtaskId != null) {
 			setMergedToTestraySubtaskId(mergedToTestraySubtaskId);
 		}
 
 		Long splitFromTestraySubtaskId = (Long)attributes.get(
-				"splitFromTestraySubtaskId");
+			"splitFromTestraySubtaskId");
 
 		if (splitFromTestraySubtaskId != null) {
 			setSplitFromTestraySubtaskId(splitFromTestraySubtaskId);
@@ -174,13 +172,199 @@ public class TestraySubtaskWrapper implements TestraySubtask,
 	}
 
 	@Override
-	public TestraySubtask toEscapedModel() {
-		return new TestraySubtaskWrapper(_testraySubtask.toEscapedModel());
+	public Object clone() {
+		return new TestraySubtaskWrapper(
+			(TestraySubtask)_testraySubtask.clone());
 	}
 
 	@Override
-	public TestraySubtask toUnescapedModel() {
-		return new TestraySubtaskWrapper(_testraySubtask.toUnescapedModel());
+	public int compareTo(TestraySubtask testraySubtask) {
+		return _testraySubtask.compareTo(testraySubtask);
+	}
+
+	/**
+	 * Returns the comment mb message ID of this testray subtask.
+	 *
+	 * @return the comment mb message ID of this testray subtask
+	 */
+	@Override
+	public long getCommentMBMessageId() {
+		return _testraySubtask.getCommentMBMessageId();
+	}
+
+	/**
+	 * Returns the company ID of this testray subtask.
+	 *
+	 * @return the company ID of this testray subtask
+	 */
+	@Override
+	public long getCompanyId() {
+		return _testraySubtask.getCompanyId();
+	}
+
+	/**
+	 * Returns the create date of this testray subtask.
+	 *
+	 * @return the create date of this testray subtask
+	 */
+	@Override
+	public Date getCreateDate() {
+		return _testraySubtask.getCreateDate();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _testraySubtask.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the group ID of this testray subtask.
+	 *
+	 * @return the group ID of this testray subtask
+	 */
+	@Override
+	public long getGroupId() {
+		return _testraySubtask.getGroupId();
+	}
+
+	/**
+	 * Returns the merged to testray subtask ID of this testray subtask.
+	 *
+	 * @return the merged to testray subtask ID of this testray subtask
+	 */
+	@Override
+	public long getMergedToTestraySubtaskId() {
+		return _testraySubtask.getMergedToTestraySubtaskId();
+	}
+
+	/**
+	 * Returns the modified date of this testray subtask.
+	 *
+	 * @return the modified date of this testray subtask
+	 */
+	@Override
+	public Date getModifiedDate() {
+		return _testraySubtask.getModifiedDate();
+	}
+
+	/**
+	 * Returns the name of this testray subtask.
+	 *
+	 * @return the name of this testray subtask
+	 */
+	@Override
+	public String getName() {
+		return _testraySubtask.getName();
+	}
+
+	/**
+	 * Returns the primary key of this testray subtask.
+	 *
+	 * @return the primary key of this testray subtask
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _testraySubtask.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _testraySubtask.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the score of this testray subtask.
+	 *
+	 * @return the score of this testray subtask
+	 */
+	@Override
+	public int getScore() {
+		return _testraySubtask.getScore();
+	}
+
+	/**
+	 * Returns the split from testray subtask ID of this testray subtask.
+	 *
+	 * @return the split from testray subtask ID of this testray subtask
+	 */
+	@Override
+	public long getSplitFromTestraySubtaskId() {
+		return _testraySubtask.getSplitFromTestraySubtaskId();
+	}
+
+	/**
+	 * Returns the status of this testray subtask.
+	 *
+	 * @return the status of this testray subtask
+	 */
+	@Override
+	public int getStatus() {
+		return _testraySubtask.getStatus();
+	}
+
+	/**
+	 * Returns the status update date of this testray subtask.
+	 *
+	 * @return the status update date of this testray subtask
+	 */
+	@Override
+	public Date getStatusUpdateDate() {
+		return _testraySubtask.getStatusUpdateDate();
+	}
+
+	/**
+	 * Returns the testray subtask ID of this testray subtask.
+	 *
+	 * @return the testray subtask ID of this testray subtask
+	 */
+	@Override
+	public long getTestraySubtaskId() {
+		return _testraySubtask.getTestraySubtaskId();
+	}
+
+	/**
+	 * Returns the testray task ID of this testray subtask.
+	 *
+	 * @return the testray task ID of this testray subtask
+	 */
+	@Override
+	public long getTestrayTaskId() {
+		return _testraySubtask.getTestrayTaskId();
+	}
+
+	/**
+	 * Returns the user ID of this testray subtask.
+	 *
+	 * @return the user ID of this testray subtask
+	 */
+	@Override
+	public long getUserId() {
+		return _testraySubtask.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this testray subtask.
+	 *
+	 * @return the user name of this testray subtask
+	 */
+	@Override
+	public String getUserName() {
+		return _testraySubtask.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this testray subtask.
+	 *
+	 * @return the user uuid of this testray subtask
+	 */
+	@Override
+	public String getUserUuid() {
+		return _testraySubtask.getUserUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _testraySubtask.hashCode();
 	}
 
 	@Override
@@ -199,216 +383,6 @@ public class TestraySubtaskWrapper implements TestraySubtask,
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _testraySubtask.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<TestraySubtask> toCacheModel() {
-		return _testraySubtask.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(TestraySubtask testraySubtask) {
-		return _testraySubtask.compareTo(testraySubtask);
-	}
-
-	/**
-	* Returns the score of this testray subtask.
-	*
-	* @return the score of this testray subtask
-	*/
-	@Override
-	public int getScore() {
-		return _testraySubtask.getScore();
-	}
-
-	/**
-	* Returns the status of this testray subtask.
-	*
-	* @return the status of this testray subtask
-	*/
-	@Override
-	public int getStatus() {
-		return _testraySubtask.getStatus();
-	}
-
-	@Override
-	public int hashCode() {
-		return _testraySubtask.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _testraySubtask.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new TestraySubtaskWrapper((TestraySubtask)_testraySubtask.clone());
-	}
-
-	/**
-	* Returns the name of this testray subtask.
-	*
-	* @return the name of this testray subtask
-	*/
-	@Override
-	public java.lang.String getName() {
-		return _testraySubtask.getName();
-	}
-
-	/**
-	* Returns the user name of this testray subtask.
-	*
-	* @return the user name of this testray subtask
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _testraySubtask.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this testray subtask.
-	*
-	* @return the user uuid of this testray subtask
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _testraySubtask.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _testraySubtask.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _testraySubtask.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this testray subtask.
-	*
-	* @return the create date of this testray subtask
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _testraySubtask.getCreateDate();
-	}
-
-	/**
-	* Returns the modified date of this testray subtask.
-	*
-	* @return the modified date of this testray subtask
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _testraySubtask.getModifiedDate();
-	}
-
-	/**
-	* Returns the status update date of this testray subtask.
-	*
-	* @return the status update date of this testray subtask
-	*/
-	@Override
-	public Date getStatusUpdateDate() {
-		return _testraySubtask.getStatusUpdateDate();
-	}
-
-	/**
-	* Returns the comment mb message ID of this testray subtask.
-	*
-	* @return the comment mb message ID of this testray subtask
-	*/
-	@Override
-	public long getCommentMBMessageId() {
-		return _testraySubtask.getCommentMBMessageId();
-	}
-
-	/**
-	* Returns the company ID of this testray subtask.
-	*
-	* @return the company ID of this testray subtask
-	*/
-	@Override
-	public long getCompanyId() {
-		return _testraySubtask.getCompanyId();
-	}
-
-	/**
-	* Returns the group ID of this testray subtask.
-	*
-	* @return the group ID of this testray subtask
-	*/
-	@Override
-	public long getGroupId() {
-		return _testraySubtask.getGroupId();
-	}
-
-	/**
-	* Returns the merged to testray subtask ID of this testray subtask.
-	*
-	* @return the merged to testray subtask ID of this testray subtask
-	*/
-	@Override
-	public long getMergedToTestraySubtaskId() {
-		return _testraySubtask.getMergedToTestraySubtaskId();
-	}
-
-	/**
-	* Returns the primary key of this testray subtask.
-	*
-	* @return the primary key of this testray subtask
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _testraySubtask.getPrimaryKey();
-	}
-
-	/**
-	* Returns the split from testray subtask ID of this testray subtask.
-	*
-	* @return the split from testray subtask ID of this testray subtask
-	*/
-	@Override
-	public long getSplitFromTestraySubtaskId() {
-		return _testraySubtask.getSplitFromTestraySubtaskId();
-	}
-
-	/**
-	* Returns the testray subtask ID of this testray subtask.
-	*
-	* @return the testray subtask ID of this testray subtask
-	*/
-	@Override
-	public long getTestraySubtaskId() {
-		return _testraySubtask.getTestraySubtaskId();
-	}
-
-	/**
-	* Returns the testray task ID of this testray subtask.
-	*
-	* @return the testray task ID of this testray subtask
-	*/
-	@Override
-	public long getTestrayTaskId() {
-		return _testraySubtask.getTestrayTaskId();
-	}
-
-	/**
-	* Returns the user ID of this testray subtask.
-	*
-	* @return the user ID of this testray subtask
-	*/
-	@Override
-	public long getUserId() {
-		return _testraySubtask.getUserId();
-	}
-
-	@Override
 	public void persist() {
 		_testraySubtask.persist();
 	}
@@ -419,33 +393,40 @@ public class TestraySubtaskWrapper implements TestraySubtask,
 	}
 
 	/**
-	* Sets the comment mb message ID of this testray subtask.
-	*
-	* @param commentMBMessageId the comment mb message ID of this testray subtask
-	*/
+	 * Sets the comment mb message ID of this testray subtask.
+	 *
+	 * @param commentMBMessageId the comment mb message ID of this testray subtask
+	 */
 	@Override
 	public void setCommentMBMessageId(long commentMBMessageId) {
 		_testraySubtask.setCommentMBMessageId(commentMBMessageId);
 	}
 
 	/**
-	* Sets the company ID of this testray subtask.
-	*
-	* @param companyId the company ID of this testray subtask
-	*/
+	 * Sets the company ID of this testray subtask.
+	 *
+	 * @param companyId the company ID of this testray subtask
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_testraySubtask.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this testray subtask.
-	*
-	* @param createDate the create date of this testray subtask
-	*/
+	 * Sets the create date of this testray subtask.
+	 *
+	 * @param createDate the create date of this testray subtask
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_testraySubtask.setCreateDate(createDate);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_testraySubtask.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -454,53 +435,47 @@ public class TestraySubtaskWrapper implements TestraySubtask,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_testraySubtask.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_testraySubtask.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the group ID of this testray subtask.
-	*
-	* @param groupId the group ID of this testray subtask
-	*/
+	 * Sets the group ID of this testray subtask.
+	 *
+	 * @param groupId the group ID of this testray subtask
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_testraySubtask.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the merged to testray subtask ID of this testray subtask.
-	*
-	* @param mergedToTestraySubtaskId the merged to testray subtask ID of this testray subtask
-	*/
+	 * Sets the merged to testray subtask ID of this testray subtask.
+	 *
+	 * @param mergedToTestraySubtaskId the merged to testray subtask ID of this testray subtask
+	 */
 	@Override
 	public void setMergedToTestraySubtaskId(long mergedToTestraySubtaskId) {
 		_testraySubtask.setMergedToTestraySubtaskId(mergedToTestraySubtaskId);
 	}
 
 	/**
-	* Sets the modified date of this testray subtask.
-	*
-	* @param modifiedDate the modified date of this testray subtask
-	*/
+	 * Sets the modified date of this testray subtask.
+	 *
+	 * @param modifiedDate the modified date of this testray subtask
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_testraySubtask.setModifiedDate(modifiedDate);
 	}
 
 	/**
-	* Sets the name of this testray subtask.
-	*
-	* @param name the name of this testray subtask
-	*/
+	 * Sets the name of this testray subtask.
+	 *
+	 * @param name the name of this testray subtask
+	 */
 	@Override
-	public void setName(java.lang.String name) {
+	public void setName(String name) {
 		_testraySubtask.setName(name);
 	}
 
@@ -510,10 +485,10 @@ public class TestraySubtaskWrapper implements TestraySubtask,
 	}
 
 	/**
-	* Sets the primary key of this testray subtask.
-	*
-	* @param primaryKey the primary key of this testray subtask
-	*/
+	 * Sets the primary key of this testray subtask.
+	 *
+	 * @param primaryKey the primary key of this testray subtask
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_testraySubtask.setPrimaryKey(primaryKey);
@@ -525,109 +500,138 @@ public class TestraySubtaskWrapper implements TestraySubtask,
 	}
 
 	/**
-	* Sets the score of this testray subtask.
-	*
-	* @param score the score of this testray subtask
-	*/
+	 * Sets the score of this testray subtask.
+	 *
+	 * @param score the score of this testray subtask
+	 */
 	@Override
 	public void setScore(int score) {
 		_testraySubtask.setScore(score);
 	}
 
 	/**
-	* Sets the split from testray subtask ID of this testray subtask.
-	*
-	* @param splitFromTestraySubtaskId the split from testray subtask ID of this testray subtask
-	*/
+	 * Sets the split from testray subtask ID of this testray subtask.
+	 *
+	 * @param splitFromTestraySubtaskId the split from testray subtask ID of this testray subtask
+	 */
 	@Override
 	public void setSplitFromTestraySubtaskId(long splitFromTestraySubtaskId) {
 		_testraySubtask.setSplitFromTestraySubtaskId(splitFromTestraySubtaskId);
 	}
 
 	/**
-	* Sets the status of this testray subtask.
-	*
-	* @param status the status of this testray subtask
-	*/
+	 * Sets the status of this testray subtask.
+	 *
+	 * @param status the status of this testray subtask
+	 */
 	@Override
 	public void setStatus(int status) {
 		_testraySubtask.setStatus(status);
 	}
 
 	/**
-	* Sets the status update date of this testray subtask.
-	*
-	* @param statusUpdateDate the status update date of this testray subtask
-	*/
+	 * Sets the status update date of this testray subtask.
+	 *
+	 * @param statusUpdateDate the status update date of this testray subtask
+	 */
 	@Override
 	public void setStatusUpdateDate(Date statusUpdateDate) {
 		_testraySubtask.setStatusUpdateDate(statusUpdateDate);
 	}
 
 	/**
-	* Sets the testray subtask ID of this testray subtask.
-	*
-	* @param testraySubtaskId the testray subtask ID of this testray subtask
-	*/
+	 * Sets the testray subtask ID of this testray subtask.
+	 *
+	 * @param testraySubtaskId the testray subtask ID of this testray subtask
+	 */
 	@Override
 	public void setTestraySubtaskId(long testraySubtaskId) {
 		_testraySubtask.setTestraySubtaskId(testraySubtaskId);
 	}
 
 	/**
-	* Sets the testray task ID of this testray subtask.
-	*
-	* @param testrayTaskId the testray task ID of this testray subtask
-	*/
+	 * Sets the testray task ID of this testray subtask.
+	 *
+	 * @param testrayTaskId the testray task ID of this testray subtask
+	 */
 	@Override
 	public void setTestrayTaskId(long testrayTaskId) {
 		_testraySubtask.setTestrayTaskId(testrayTaskId);
 	}
 
 	/**
-	* Sets the user ID of this testray subtask.
-	*
-	* @param userId the user ID of this testray subtask
-	*/
+	 * Sets the user ID of this testray subtask.
+	 *
+	 * @param userId the user ID of this testray subtask
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_testraySubtask.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this testray subtask.
-	*
-	* @param userName the user name of this testray subtask
-	*/
+	 * Sets the user name of this testray subtask.
+	 *
+	 * @param userName the user name of this testray subtask
+	 */
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_testraySubtask.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this testray subtask.
-	*
-	* @param userUuid the user uuid of this testray subtask
-	*/
+	 * Sets the user uuid of this testray subtask.
+	 *
+	 * @param userUuid the user uuid of this testray subtask
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_testraySubtask.setUserUuid(userUuid);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public com.liferay.portal.kernel.model.CacheModel<TestraySubtask>
+		toCacheModel() {
+
+		return _testraySubtask.toCacheModel();
+	}
+
+	@Override
+	public TestraySubtask toEscapedModel() {
+		return new TestraySubtaskWrapper(_testraySubtask.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _testraySubtask.toString();
+	}
+
+	@Override
+	public TestraySubtask toUnescapedModel() {
+		return new TestraySubtaskWrapper(_testraySubtask.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _testraySubtask.toXmlString();
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof TestraySubtaskWrapper)) {
+		if (!(object instanceof TestraySubtaskWrapper)) {
 			return false;
 		}
 
-		TestraySubtaskWrapper testraySubtaskWrapper = (TestraySubtaskWrapper)obj;
+		TestraySubtaskWrapper testraySubtaskWrapper =
+			(TestraySubtaskWrapper)object;
 
-		if (Objects.equals(_testraySubtask,
-					testraySubtaskWrapper._testraySubtask)) {
+		if (Objects.equals(
+				_testraySubtask, testraySubtaskWrapper._testraySubtask)) {
+
 			return true;
 		}
 
@@ -655,4 +659,5 @@ public class TestraySubtaskWrapper implements TestraySubtask,
 	}
 
 	private final TestraySubtask _testraySubtask;
+
 }

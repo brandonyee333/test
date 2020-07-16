@@ -1,20 +1,18 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.model;
-
-import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -27,8 +25,8 @@ import java.util.List;
  * @author Ethan Bustad
  * @generated
  */
-@ProviderType
 public class LoopStatsEntrySoap implements Serializable {
+
 	public static LoopStatsEntrySoap toSoapModel(LoopStatsEntry model) {
 		LoopStatsEntrySoap soapModel = new LoopStatsEntrySoap();
 
@@ -51,11 +49,14 @@ public class LoopStatsEntrySoap implements Serializable {
 		return soapModels;
 	}
 
-	public static LoopStatsEntrySoap[][] toSoapModels(LoopStatsEntry[][] models) {
+	public static LoopStatsEntrySoap[][] toSoapModels(
+		LoopStatsEntry[][] models) {
+
 		LoopStatsEntrySoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new LoopStatsEntrySoap[models.length][models[0].length];
+			soapModels =
+				new LoopStatsEntrySoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new LoopStatsEntrySoap[0][0];
@@ -68,8 +69,11 @@ public class LoopStatsEntrySoap implements Serializable {
 		return soapModels;
 	}
 
-	public static LoopStatsEntrySoap[] toSoapModels(List<LoopStatsEntry> models) {
-		List<LoopStatsEntrySoap> soapModels = new ArrayList<LoopStatsEntrySoap>(models.size());
+	public static LoopStatsEntrySoap[] toSoapModels(
+		List<LoopStatsEntry> models) {
+
+		List<LoopStatsEntrySoap> soapModels = new ArrayList<LoopStatsEntrySoap>(
+			models.size());
 
 		for (LoopStatsEntry model : models) {
 			soapModels.add(toSoapModel(model));
@@ -134,4 +138,5 @@ public class LoopStatsEntrySoap implements Serializable {
 	private long _classNameId;
 	private long _classPK;
 	private double _score;
+
 }

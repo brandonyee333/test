@@ -1,20 +1,18 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.service.base;
-
-import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.loop.model.LoopUserNotificationSubscription;
 import com.liferay.osb.loop.service.LoopUserNotificationSubscriptionLocalService;
@@ -34,7 +32,6 @@ import com.liferay.osb.loop.service.persistence.LoopTopicPersistence;
 import com.liferay.osb.loop.service.persistence.LoopUserNotificationEventPersistence;
 import com.liferay.osb.loop.service.persistence.LoopUserNotificationRecordPersistence;
 import com.liferay.osb.loop.service.persistence.LoopUserNotificationSubscriptionPersistence;
-
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -54,8 +51,10 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -75,22 +74,25 @@ import javax.sql.DataSource;
  *
  * @author Ethan Bustad
  * @see com.liferay.osb.loop.service.impl.LoopUserNotificationSubscriptionLocalServiceImpl
- * @see com.liferay.osb.loop.service.LoopUserNotificationSubscriptionLocalServiceUtil
  * @generated
  */
-@ProviderType
 public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	extends BaseLocalServiceImpl
-	implements LoopUserNotificationSubscriptionLocalService,
-		IdentifiableOSGiService {
+	implements IdentifiableOSGiService,
+			   LoopUserNotificationSubscriptionLocalService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link com.liferay.osb.loop.service.LoopUserNotificationSubscriptionLocalServiceUtil} to access the loop user notification subscription local service.
+	 * Never modify or reference this class directly. Use <code>LoopUserNotificationSubscriptionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.loop.service.LoopUserNotificationSubscriptionLocalServiceUtil</code>.
 	 */
 
 	/**
 	 * Adds the loop user notification subscription to the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect LoopUserNotificationSubscriptionLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param loopUserNotificationSubscription the loop user notification subscription
 	 * @return the loop user notification subscription that was added
@@ -99,9 +101,11 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	@Override
 	public LoopUserNotificationSubscription addLoopUserNotificationSubscription(
 		LoopUserNotificationSubscription loopUserNotificationSubscription) {
+
 		loopUserNotificationSubscription.setNew(true);
 
-		return loopUserNotificationSubscriptionPersistence.update(loopUserNotificationSubscription);
+		return loopUserNotificationSubscriptionPersistence.update(
+			loopUserNotificationSubscription);
 	}
 
 	/**
@@ -111,13 +115,21 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @return the new loop user notification subscription
 	 */
 	@Override
-	public LoopUserNotificationSubscription createLoopUserNotificationSubscription(
-		long loopUserNotificationSubscriptionId) {
-		return loopUserNotificationSubscriptionPersistence.create(loopUserNotificationSubscriptionId);
+	@Transactional(enabled = false)
+	public LoopUserNotificationSubscription
+		createLoopUserNotificationSubscription(
+			long loopUserNotificationSubscriptionId) {
+
+		return loopUserNotificationSubscriptionPersistence.create(
+			loopUserNotificationSubscriptionId);
 	}
 
 	/**
 	 * Deletes the loop user notification subscription with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect LoopUserNotificationSubscriptionLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param loopUserNotificationSubscriptionId the primary key of the loop user notification subscription
 	 * @return the loop user notification subscription that was removed
@@ -125,30 +137,41 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public LoopUserNotificationSubscription deleteLoopUserNotificationSubscription(
-		long loopUserNotificationSubscriptionId) throws PortalException {
-		return loopUserNotificationSubscriptionPersistence.remove(loopUserNotificationSubscriptionId);
+	public LoopUserNotificationSubscription
+			deleteLoopUserNotificationSubscription(
+				long loopUserNotificationSubscriptionId)
+		throws PortalException {
+
+		return loopUserNotificationSubscriptionPersistence.remove(
+			loopUserNotificationSubscriptionId);
 	}
 
 	/**
 	 * Deletes the loop user notification subscription from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect LoopUserNotificationSubscriptionLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param loopUserNotificationSubscription the loop user notification subscription
 	 * @return the loop user notification subscription that was removed
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public LoopUserNotificationSubscription deleteLoopUserNotificationSubscription(
-		LoopUserNotificationSubscription loopUserNotificationSubscription) {
-		return loopUserNotificationSubscriptionPersistence.remove(loopUserNotificationSubscription);
+	public LoopUserNotificationSubscription
+		deleteLoopUserNotificationSubscription(
+			LoopUserNotificationSubscription loopUserNotificationSubscription) {
+
+		return loopUserNotificationSubscriptionPersistence.remove(
+			loopUserNotificationSubscription);
 	}
 
 	@Override
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(LoopUserNotificationSubscription.class,
-			clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(
+			LoopUserNotificationSubscription.class, clazz.getClassLoader());
 	}
 
 	/**
@@ -159,14 +182,15 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 */
 	@Override
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
-		return loopUserNotificationSubscriptionPersistence.findWithDynamicQuery(dynamicQuery);
+		return loopUserNotificationSubscriptionPersistence.findWithDynamicQuery(
+			dynamicQuery);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.loop.model.impl.LoopUserNotificationSubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.loop.model.impl.LoopUserNotificationSubscriptionModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -175,17 +199,18 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end) {
-		return loopUserNotificationSubscriptionPersistence.findWithDynamicQuery(dynamicQuery,
-			start, end);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
+
+		return loopUserNotificationSubscriptionPersistence.findWithDynamicQuery(
+			dynamicQuery, start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.loop.model.impl.LoopUserNotificationSubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.loop.model.impl.LoopUserNotificationSubscriptionModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -195,10 +220,12 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end, OrderByComparator<T> orderByComparator) {
-		return loopUserNotificationSubscriptionPersistence.findWithDynamicQuery(dynamicQuery,
-			start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
+
+		return loopUserNotificationSubscriptionPersistence.findWithDynamicQuery(
+			dynamicQuery, start, end, orderByComparator);
 	}
 
 	/**
@@ -209,7 +236,8 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 */
 	@Override
 	public long dynamicQueryCount(DynamicQuery dynamicQuery) {
-		return loopUserNotificationSubscriptionPersistence.countWithDynamicQuery(dynamicQuery);
+		return loopUserNotificationSubscriptionPersistence.
+			countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
@@ -220,16 +248,20 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection) {
-		return loopUserNotificationSubscriptionPersistence.countWithDynamicQuery(dynamicQuery,
-			projection);
+	public long dynamicQueryCount(
+		DynamicQuery dynamicQuery, Projection projection) {
+
+		return loopUserNotificationSubscriptionPersistence.
+			countWithDynamicQuery(dynamicQuery, projection);
 	}
 
 	@Override
-	public LoopUserNotificationSubscription fetchLoopUserNotificationSubscription(
-		long loopUserNotificationSubscriptionId) {
-		return loopUserNotificationSubscriptionPersistence.fetchByPrimaryKey(loopUserNotificationSubscriptionId);
+	public LoopUserNotificationSubscription
+		fetchLoopUserNotificationSubscription(
+			long loopUserNotificationSubscriptionId) {
+
+		return loopUserNotificationSubscriptionPersistence.fetchByPrimaryKey(
+			loopUserNotificationSubscriptionId);
 	}
 
 	/**
@@ -241,17 +273,23 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 */
 	@Override
 	public LoopUserNotificationSubscription getLoopUserNotificationSubscription(
-		long loopUserNotificationSubscriptionId) throws PortalException {
-		return loopUserNotificationSubscriptionPersistence.findByPrimaryKey(loopUserNotificationSubscriptionId);
+			long loopUserNotificationSubscriptionId)
+		throws PortalException {
+
+		return loopUserNotificationSubscriptionPersistence.findByPrimaryKey(
+			loopUserNotificationSubscriptionId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			new DefaultActionableDynamicQuery();
 
-		actionableDynamicQuery.setBaseLocalService(loopUserNotificationSubscriptionLocalService);
+		actionableDynamicQuery.setBaseLocalService(
+			loopUserNotificationSubscriptionLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
-		actionableDynamicQuery.setModelClass(LoopUserNotificationSubscription.class);
+		actionableDynamicQuery.setModelClass(
+			LoopUserNotificationSubscription.class);
 
 		actionableDynamicQuery.setPrimaryKeyPropertyName(
 			"loopUserNotificationSubscriptionId");
@@ -260,12 +298,17 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
+	public IndexableActionableDynamicQuery
+		getIndexableActionableDynamicQuery() {
 
-		indexableActionableDynamicQuery.setBaseLocalService(loopUserNotificationSubscriptionLocalService);
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
+			new IndexableActionableDynamicQuery();
+
+		indexableActionableDynamicQuery.setBaseLocalService(
+			loopUserNotificationSubscriptionLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
-		indexableActionableDynamicQuery.setModelClass(LoopUserNotificationSubscription.class);
+		indexableActionableDynamicQuery.setModelClass(
+			LoopUserNotificationSubscription.class);
 
 		indexableActionableDynamicQuery.setPrimaryKeyPropertyName(
 			"loopUserNotificationSubscriptionId");
@@ -275,9 +318,12 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-		actionableDynamicQuery.setBaseLocalService(loopUserNotificationSubscriptionLocalService);
+
+		actionableDynamicQuery.setBaseLocalService(
+			loopUserNotificationSubscriptionLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
-		actionableDynamicQuery.setModelClass(LoopUserNotificationSubscription.class);
+		actionableDynamicQuery.setModelClass(
+			LoopUserNotificationSubscription.class);
 
 		actionableDynamicQuery.setPrimaryKeyPropertyName(
 			"loopUserNotificationSubscriptionId");
@@ -289,20 +335,34 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-		return loopUserNotificationSubscriptionLocalService.deleteLoopUserNotificationSubscription((LoopUserNotificationSubscription)persistedModel);
+
+		return loopUserNotificationSubscriptionLocalService.
+			deleteLoopUserNotificationSubscription(
+				(LoopUserNotificationSubscription)persistedModel);
 	}
 
+	public BasePersistence<LoopUserNotificationSubscription>
+		getBasePersistence() {
+
+		return loopUserNotificationSubscriptionPersistence;
+	}
+
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
-		return loopUserNotificationSubscriptionPersistence.findByPrimaryKey(primaryKeyObj);
+
+		return loopUserNotificationSubscriptionPersistence.findByPrimaryKey(
+			primaryKeyObj);
 	}
 
 	/**
 	 * Returns a range of all the loop user notification subscriptions.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.loop.model.impl.LoopUserNotificationSubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.loop.model.impl.LoopUserNotificationSubscriptionModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of loop user notification subscriptions
@@ -310,8 +370,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @return the range of loop user notification subscriptions
 	 */
 	@Override
-	public List<LoopUserNotificationSubscription> getLoopUserNotificationSubscriptions(
-		int start, int end) {
+	public List<LoopUserNotificationSubscription>
+		getLoopUserNotificationSubscriptions(int start, int end) {
+
 		return loopUserNotificationSubscriptionPersistence.findAll(start, end);
 	}
 
@@ -328,14 +389,21 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	/**
 	 * Updates the loop user notification subscription in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect LoopUserNotificationSubscriptionLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param loopUserNotificationSubscription the loop user notification subscription
 	 * @return the loop user notification subscription that was updated
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
-	public LoopUserNotificationSubscription updateLoopUserNotificationSubscription(
-		LoopUserNotificationSubscription loopUserNotificationSubscription) {
-		return loopUserNotificationSubscriptionPersistence.update(loopUserNotificationSubscription);
+	public LoopUserNotificationSubscription
+		updateLoopUserNotificationSubscription(
+			LoopUserNotificationSubscription loopUserNotificationSubscription) {
+
+		return loopUserNotificationSubscriptionPersistence.update(
+			loopUserNotificationSubscription);
 	}
 
 	/**
@@ -343,7 +411,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the loop audit entry local service
 	 */
-	public com.liferay.osb.loop.service.LoopAuditEntryLocalService getLoopAuditEntryLocalService() {
+	public com.liferay.osb.loop.service.LoopAuditEntryLocalService
+		getLoopAuditEntryLocalService() {
+
 		return loopAuditEntryLocalService;
 	}
 
@@ -353,7 +423,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @param loopAuditEntryLocalService the loop audit entry local service
 	 */
 	public void setLoopAuditEntryLocalService(
-		com.liferay.osb.loop.service.LoopAuditEntryLocalService loopAuditEntryLocalService) {
+		com.liferay.osb.loop.service.LoopAuditEntryLocalService
+			loopAuditEntryLocalService) {
+
 		this.loopAuditEntryLocalService = loopAuditEntryLocalService;
 	}
 
@@ -373,6 +445,7 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 */
 	public void setLoopAuditEntryPersistence(
 		LoopAuditEntryPersistence loopAuditEntryPersistence) {
+
 		this.loopAuditEntryPersistence = loopAuditEntryPersistence;
 	}
 
@@ -381,7 +454,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the loop division local service
 	 */
-	public com.liferay.osb.loop.service.LoopDivisionLocalService getLoopDivisionLocalService() {
+	public com.liferay.osb.loop.service.LoopDivisionLocalService
+		getLoopDivisionLocalService() {
+
 		return loopDivisionLocalService;
 	}
 
@@ -391,7 +466,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @param loopDivisionLocalService the loop division local service
 	 */
 	public void setLoopDivisionLocalService(
-		com.liferay.osb.loop.service.LoopDivisionLocalService loopDivisionLocalService) {
+		com.liferay.osb.loop.service.LoopDivisionLocalService
+			loopDivisionLocalService) {
+
 		this.loopDivisionLocalService = loopDivisionLocalService;
 	}
 
@@ -411,6 +488,7 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 */
 	public void setLoopDivisionPersistence(
 		LoopDivisionPersistence loopDivisionPersistence) {
+
 		this.loopDivisionPersistence = loopDivisionPersistence;
 	}
 
@@ -419,7 +497,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the loop division rel local service
 	 */
-	public com.liferay.osb.loop.service.LoopDivisionRelLocalService getLoopDivisionRelLocalService() {
+	public com.liferay.osb.loop.service.LoopDivisionRelLocalService
+		getLoopDivisionRelLocalService() {
+
 		return loopDivisionRelLocalService;
 	}
 
@@ -429,7 +509,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @param loopDivisionRelLocalService the loop division rel local service
 	 */
 	public void setLoopDivisionRelLocalService(
-		com.liferay.osb.loop.service.LoopDivisionRelLocalService loopDivisionRelLocalService) {
+		com.liferay.osb.loop.service.LoopDivisionRelLocalService
+			loopDivisionRelLocalService) {
+
 		this.loopDivisionRelLocalService = loopDivisionRelLocalService;
 	}
 
@@ -449,6 +531,7 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 */
 	public void setLoopDivisionRelPersistence(
 		LoopDivisionRelPersistence loopDivisionRelPersistence) {
+
 		this.loopDivisionRelPersistence = loopDivisionRelPersistence;
 	}
 
@@ -457,7 +540,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the loop external reference rel local service
 	 */
-	public com.liferay.osb.loop.service.LoopExternalReferenceRelLocalService getLoopExternalReferenceRelLocalService() {
+	public com.liferay.osb.loop.service.LoopExternalReferenceRelLocalService
+		getLoopExternalReferenceRelLocalService() {
+
 		return loopExternalReferenceRelLocalService;
 	}
 
@@ -467,8 +552,11 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @param loopExternalReferenceRelLocalService the loop external reference rel local service
 	 */
 	public void setLoopExternalReferenceRelLocalService(
-		com.liferay.osb.loop.service.LoopExternalReferenceRelLocalService loopExternalReferenceRelLocalService) {
-		this.loopExternalReferenceRelLocalService = loopExternalReferenceRelLocalService;
+		com.liferay.osb.loop.service.LoopExternalReferenceRelLocalService
+			loopExternalReferenceRelLocalService) {
+
+		this.loopExternalReferenceRelLocalService =
+			loopExternalReferenceRelLocalService;
 	}
 
 	/**
@@ -476,7 +564,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the loop external reference rel persistence
 	 */
-	public LoopExternalReferenceRelPersistence getLoopExternalReferenceRelPersistence() {
+	public LoopExternalReferenceRelPersistence
+		getLoopExternalReferenceRelPersistence() {
+
 		return loopExternalReferenceRelPersistence;
 	}
 
@@ -486,8 +576,11 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @param loopExternalReferenceRelPersistence the loop external reference rel persistence
 	 */
 	public void setLoopExternalReferenceRelPersistence(
-		LoopExternalReferenceRelPersistence loopExternalReferenceRelPersistence) {
-		this.loopExternalReferenceRelPersistence = loopExternalReferenceRelPersistence;
+		LoopExternalReferenceRelPersistence
+			loopExternalReferenceRelPersistence) {
+
+		this.loopExternalReferenceRelPersistence =
+			loopExternalReferenceRelPersistence;
 	}
 
 	/**
@@ -495,7 +588,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the loop job title local service
 	 */
-	public com.liferay.osb.loop.service.LoopJobTitleLocalService getLoopJobTitleLocalService() {
+	public com.liferay.osb.loop.service.LoopJobTitleLocalService
+		getLoopJobTitleLocalService() {
+
 		return loopJobTitleLocalService;
 	}
 
@@ -505,7 +600,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @param loopJobTitleLocalService the loop job title local service
 	 */
 	public void setLoopJobTitleLocalService(
-		com.liferay.osb.loop.service.LoopJobTitleLocalService loopJobTitleLocalService) {
+		com.liferay.osb.loop.service.LoopJobTitleLocalService
+			loopJobTitleLocalService) {
+
 		this.loopJobTitleLocalService = loopJobTitleLocalService;
 	}
 
@@ -525,6 +622,7 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 */
 	public void setLoopJobTitlePersistence(
 		LoopJobTitlePersistence loopJobTitlePersistence) {
+
 		this.loopJobTitlePersistence = loopJobTitlePersistence;
 	}
 
@@ -533,7 +631,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the loop participant assignment local service
 	 */
-	public com.liferay.osb.loop.service.LoopParticipantAssignmentLocalService getLoopParticipantAssignmentLocalService() {
+	public com.liferay.osb.loop.service.LoopParticipantAssignmentLocalService
+		getLoopParticipantAssignmentLocalService() {
+
 		return loopParticipantAssignmentLocalService;
 	}
 
@@ -543,8 +643,11 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @param loopParticipantAssignmentLocalService the loop participant assignment local service
 	 */
 	public void setLoopParticipantAssignmentLocalService(
-		com.liferay.osb.loop.service.LoopParticipantAssignmentLocalService loopParticipantAssignmentLocalService) {
-		this.loopParticipantAssignmentLocalService = loopParticipantAssignmentLocalService;
+		com.liferay.osb.loop.service.LoopParticipantAssignmentLocalService
+			loopParticipantAssignmentLocalService) {
+
+		this.loopParticipantAssignmentLocalService =
+			loopParticipantAssignmentLocalService;
 	}
 
 	/**
@@ -552,7 +655,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the loop participant assignment persistence
 	 */
-	public LoopParticipantAssignmentPersistence getLoopParticipantAssignmentPersistence() {
+	public LoopParticipantAssignmentPersistence
+		getLoopParticipantAssignmentPersistence() {
+
 		return loopParticipantAssignmentPersistence;
 	}
 
@@ -562,8 +667,11 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @param loopParticipantAssignmentPersistence the loop participant assignment persistence
 	 */
 	public void setLoopParticipantAssignmentPersistence(
-		LoopParticipantAssignmentPersistence loopParticipantAssignmentPersistence) {
-		this.loopParticipantAssignmentPersistence = loopParticipantAssignmentPersistence;
+		LoopParticipantAssignmentPersistence
+			loopParticipantAssignmentPersistence) {
+
+		this.loopParticipantAssignmentPersistence =
+			loopParticipantAssignmentPersistence;
 	}
 
 	/**
@@ -571,7 +679,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the loop person local service
 	 */
-	public com.liferay.osb.loop.service.LoopPersonLocalService getLoopPersonLocalService() {
+	public com.liferay.osb.loop.service.LoopPersonLocalService
+		getLoopPersonLocalService() {
+
 		return loopPersonLocalService;
 	}
 
@@ -581,7 +691,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @param loopPersonLocalService the loop person local service
 	 */
 	public void setLoopPersonLocalService(
-		com.liferay.osb.loop.service.LoopPersonLocalService loopPersonLocalService) {
+		com.liferay.osb.loop.service.LoopPersonLocalService
+			loopPersonLocalService) {
+
 		this.loopPersonLocalService = loopPersonLocalService;
 	}
 
@@ -601,6 +713,7 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 */
 	public void setLoopPersonPersistence(
 		LoopPersonPersistence loopPersonPersistence) {
+
 		this.loopPersonPersistence = loopPersonPersistence;
 	}
 
@@ -609,7 +722,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the loop person rel local service
 	 */
-	public com.liferay.osb.loop.service.LoopPersonRelLocalService getLoopPersonRelLocalService() {
+	public com.liferay.osb.loop.service.LoopPersonRelLocalService
+		getLoopPersonRelLocalService() {
+
 		return loopPersonRelLocalService;
 	}
 
@@ -619,7 +734,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @param loopPersonRelLocalService the loop person rel local service
 	 */
 	public void setLoopPersonRelLocalService(
-		com.liferay.osb.loop.service.LoopPersonRelLocalService loopPersonRelLocalService) {
+		com.liferay.osb.loop.service.LoopPersonRelLocalService
+			loopPersonRelLocalService) {
+
 		this.loopPersonRelLocalService = loopPersonRelLocalService;
 	}
 
@@ -639,6 +756,7 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 */
 	public void setLoopPersonRelPersistence(
 		LoopPersonRelPersistence loopPersonRelPersistence) {
+
 		this.loopPersonRelPersistence = loopPersonRelPersistence;
 	}
 
@@ -647,7 +765,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the loop stats entry local service
 	 */
-	public com.liferay.osb.loop.service.LoopStatsEntryLocalService getLoopStatsEntryLocalService() {
+	public com.liferay.osb.loop.service.LoopStatsEntryLocalService
+		getLoopStatsEntryLocalService() {
+
 		return loopStatsEntryLocalService;
 	}
 
@@ -657,7 +777,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @param loopStatsEntryLocalService the loop stats entry local service
 	 */
 	public void setLoopStatsEntryLocalService(
-		com.liferay.osb.loop.service.LoopStatsEntryLocalService loopStatsEntryLocalService) {
+		com.liferay.osb.loop.service.LoopStatsEntryLocalService
+			loopStatsEntryLocalService) {
+
 		this.loopStatsEntryLocalService = loopStatsEntryLocalService;
 	}
 
@@ -677,6 +799,7 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 */
 	public void setLoopStatsEntryPersistence(
 		LoopStatsEntryPersistence loopStatsEntryPersistence) {
+
 		this.loopStatsEntryPersistence = loopStatsEntryPersistence;
 	}
 
@@ -685,7 +808,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the loop stream local service
 	 */
-	public com.liferay.osb.loop.service.LoopStreamLocalService getLoopStreamLocalService() {
+	public com.liferay.osb.loop.service.LoopStreamLocalService
+		getLoopStreamLocalService() {
+
 		return loopStreamLocalService;
 	}
 
@@ -695,7 +820,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @param loopStreamLocalService the loop stream local service
 	 */
 	public void setLoopStreamLocalService(
-		com.liferay.osb.loop.service.LoopStreamLocalService loopStreamLocalService) {
+		com.liferay.osb.loop.service.LoopStreamLocalService
+			loopStreamLocalService) {
+
 		this.loopStreamLocalService = loopStreamLocalService;
 	}
 
@@ -715,6 +842,7 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 */
 	public void setLoopStreamPersistence(
 		LoopStreamPersistence loopStreamPersistence) {
+
 		this.loopStreamPersistence = loopStreamPersistence;
 	}
 
@@ -723,7 +851,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the loop stream entry local service
 	 */
-	public com.liferay.osb.loop.service.LoopStreamEntryLocalService getLoopStreamEntryLocalService() {
+	public com.liferay.osb.loop.service.LoopStreamEntryLocalService
+		getLoopStreamEntryLocalService() {
+
 		return loopStreamEntryLocalService;
 	}
 
@@ -733,7 +863,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @param loopStreamEntryLocalService the loop stream entry local service
 	 */
 	public void setLoopStreamEntryLocalService(
-		com.liferay.osb.loop.service.LoopStreamEntryLocalService loopStreamEntryLocalService) {
+		com.liferay.osb.loop.service.LoopStreamEntryLocalService
+			loopStreamEntryLocalService) {
+
 		this.loopStreamEntryLocalService = loopStreamEntryLocalService;
 	}
 
@@ -753,6 +885,7 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 */
 	public void setLoopStreamEntryPersistence(
 		LoopStreamEntryPersistence loopStreamEntryPersistence) {
+
 		this.loopStreamEntryPersistence = loopStreamEntryPersistence;
 	}
 
@@ -761,7 +894,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the loop topic local service
 	 */
-	public com.liferay.osb.loop.service.LoopTopicLocalService getLoopTopicLocalService() {
+	public com.liferay.osb.loop.service.LoopTopicLocalService
+		getLoopTopicLocalService() {
+
 		return loopTopicLocalService;
 	}
 
@@ -771,7 +906,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @param loopTopicLocalService the loop topic local service
 	 */
 	public void setLoopTopicLocalService(
-		com.liferay.osb.loop.service.LoopTopicLocalService loopTopicLocalService) {
+		com.liferay.osb.loop.service.LoopTopicLocalService
+			loopTopicLocalService) {
+
 		this.loopTopicLocalService = loopTopicLocalService;
 	}
 
@@ -791,6 +928,7 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 */
 	public void setLoopTopicPersistence(
 		LoopTopicPersistence loopTopicPersistence) {
+
 		this.loopTopicPersistence = loopTopicPersistence;
 	}
 
@@ -799,7 +937,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the loop topic assignment local service
 	 */
-	public com.liferay.osb.loop.service.LoopTopicAssignmentLocalService getLoopTopicAssignmentLocalService() {
+	public com.liferay.osb.loop.service.LoopTopicAssignmentLocalService
+		getLoopTopicAssignmentLocalService() {
+
 		return loopTopicAssignmentLocalService;
 	}
 
@@ -809,7 +949,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @param loopTopicAssignmentLocalService the loop topic assignment local service
 	 */
 	public void setLoopTopicAssignmentLocalService(
-		com.liferay.osb.loop.service.LoopTopicAssignmentLocalService loopTopicAssignmentLocalService) {
+		com.liferay.osb.loop.service.LoopTopicAssignmentLocalService
+			loopTopicAssignmentLocalService) {
+
 		this.loopTopicAssignmentLocalService = loopTopicAssignmentLocalService;
 	}
 
@@ -829,6 +971,7 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 */
 	public void setLoopTopicAssignmentPersistence(
 		LoopTopicAssignmentPersistence loopTopicAssignmentPersistence) {
+
 		this.loopTopicAssignmentPersistence = loopTopicAssignmentPersistence;
 	}
 
@@ -837,7 +980,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the loop user notification event local service
 	 */
-	public com.liferay.osb.loop.service.LoopUserNotificationEventLocalService getLoopUserNotificationEventLocalService() {
+	public com.liferay.osb.loop.service.LoopUserNotificationEventLocalService
+		getLoopUserNotificationEventLocalService() {
+
 		return loopUserNotificationEventLocalService;
 	}
 
@@ -847,8 +992,11 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @param loopUserNotificationEventLocalService the loop user notification event local service
 	 */
 	public void setLoopUserNotificationEventLocalService(
-		com.liferay.osb.loop.service.LoopUserNotificationEventLocalService loopUserNotificationEventLocalService) {
-		this.loopUserNotificationEventLocalService = loopUserNotificationEventLocalService;
+		com.liferay.osb.loop.service.LoopUserNotificationEventLocalService
+			loopUserNotificationEventLocalService) {
+
+		this.loopUserNotificationEventLocalService =
+			loopUserNotificationEventLocalService;
 	}
 
 	/**
@@ -856,7 +1004,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the loop user notification event persistence
 	 */
-	public LoopUserNotificationEventPersistence getLoopUserNotificationEventPersistence() {
+	public LoopUserNotificationEventPersistence
+		getLoopUserNotificationEventPersistence() {
+
 		return loopUserNotificationEventPersistence;
 	}
 
@@ -866,8 +1016,11 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @param loopUserNotificationEventPersistence the loop user notification event persistence
 	 */
 	public void setLoopUserNotificationEventPersistence(
-		LoopUserNotificationEventPersistence loopUserNotificationEventPersistence) {
-		this.loopUserNotificationEventPersistence = loopUserNotificationEventPersistence;
+		LoopUserNotificationEventPersistence
+			loopUserNotificationEventPersistence) {
+
+		this.loopUserNotificationEventPersistence =
+			loopUserNotificationEventPersistence;
 	}
 
 	/**
@@ -875,7 +1028,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the loop user notification record local service
 	 */
-	public com.liferay.osb.loop.service.LoopUserNotificationRecordLocalService getLoopUserNotificationRecordLocalService() {
+	public com.liferay.osb.loop.service.LoopUserNotificationRecordLocalService
+		getLoopUserNotificationRecordLocalService() {
+
 		return loopUserNotificationRecordLocalService;
 	}
 
@@ -885,8 +1040,11 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @param loopUserNotificationRecordLocalService the loop user notification record local service
 	 */
 	public void setLoopUserNotificationRecordLocalService(
-		com.liferay.osb.loop.service.LoopUserNotificationRecordLocalService loopUserNotificationRecordLocalService) {
-		this.loopUserNotificationRecordLocalService = loopUserNotificationRecordLocalService;
+		com.liferay.osb.loop.service.LoopUserNotificationRecordLocalService
+			loopUserNotificationRecordLocalService) {
+
+		this.loopUserNotificationRecordLocalService =
+			loopUserNotificationRecordLocalService;
 	}
 
 	/**
@@ -894,7 +1052,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the loop user notification record persistence
 	 */
-	public LoopUserNotificationRecordPersistence getLoopUserNotificationRecordPersistence() {
+	public LoopUserNotificationRecordPersistence
+		getLoopUserNotificationRecordPersistence() {
+
 		return loopUserNotificationRecordPersistence;
 	}
 
@@ -904,8 +1064,11 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @param loopUserNotificationRecordPersistence the loop user notification record persistence
 	 */
 	public void setLoopUserNotificationRecordPersistence(
-		LoopUserNotificationRecordPersistence loopUserNotificationRecordPersistence) {
-		this.loopUserNotificationRecordPersistence = loopUserNotificationRecordPersistence;
+		LoopUserNotificationRecordPersistence
+			loopUserNotificationRecordPersistence) {
+
+		this.loopUserNotificationRecordPersistence =
+			loopUserNotificationRecordPersistence;
 	}
 
 	/**
@@ -913,7 +1076,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the loop user notification subscription local service
 	 */
-	public LoopUserNotificationSubscriptionLocalService getLoopUserNotificationSubscriptionLocalService() {
+	public LoopUserNotificationSubscriptionLocalService
+		getLoopUserNotificationSubscriptionLocalService() {
+
 		return loopUserNotificationSubscriptionLocalService;
 	}
 
@@ -923,8 +1088,11 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @param loopUserNotificationSubscriptionLocalService the loop user notification subscription local service
 	 */
 	public void setLoopUserNotificationSubscriptionLocalService(
-		LoopUserNotificationSubscriptionLocalService loopUserNotificationSubscriptionLocalService) {
-		this.loopUserNotificationSubscriptionLocalService = loopUserNotificationSubscriptionLocalService;
+		LoopUserNotificationSubscriptionLocalService
+			loopUserNotificationSubscriptionLocalService) {
+
+		this.loopUserNotificationSubscriptionLocalService =
+			loopUserNotificationSubscriptionLocalService;
 	}
 
 	/**
@@ -932,7 +1100,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the loop user notification subscription persistence
 	 */
-	public LoopUserNotificationSubscriptionPersistence getLoopUserNotificationSubscriptionPersistence() {
+	public LoopUserNotificationSubscriptionPersistence
+		getLoopUserNotificationSubscriptionPersistence() {
+
 		return loopUserNotificationSubscriptionPersistence;
 	}
 
@@ -942,8 +1112,11 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @param loopUserNotificationSubscriptionPersistence the loop user notification subscription persistence
 	 */
 	public void setLoopUserNotificationSubscriptionPersistence(
-		LoopUserNotificationSubscriptionPersistence loopUserNotificationSubscriptionPersistence) {
-		this.loopUserNotificationSubscriptionPersistence = loopUserNotificationSubscriptionPersistence;
+		LoopUserNotificationSubscriptionPersistence
+			loopUserNotificationSubscriptionPersistence) {
+
+		this.loopUserNotificationSubscriptionPersistence =
+			loopUserNotificationSubscriptionPersistence;
 	}
 
 	/**
@@ -951,7 +1124,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
+	public com.liferay.counter.kernel.service.CounterLocalService
+		getCounterLocalService() {
+
 		return counterLocalService;
 	}
 
@@ -961,7 +1136,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
+		com.liferay.counter.kernel.service.CounterLocalService
+			counterLocalService) {
+
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -970,7 +1147,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
+	public com.liferay.portal.kernel.service.ClassNameLocalService
+		getClassNameLocalService() {
+
 		return classNameLocalService;
 	}
 
@@ -980,7 +1159,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
+		com.liferay.portal.kernel.service.ClassNameLocalService
+			classNameLocalService) {
+
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -1000,6 +1181,7 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
+
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -1008,7 +1190,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
+	public com.liferay.portal.kernel.service.ResourceLocalService
+		getResourceLocalService() {
+
 		return resourceLocalService;
 	}
 
@@ -1018,7 +1202,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
+		com.liferay.portal.kernel.service.ResourceLocalService
+			resourceLocalService) {
+
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -1027,7 +1213,9 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
+	public com.liferay.portal.kernel.service.UserLocalService
+		getUserLocalService() {
+
 		return userLocalService;
 	}
 
@@ -1038,6 +1226,7 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
+
 		this.userLocalService = userLocalService;
 	}
 
@@ -1060,7 +1249,8 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register("com.liferay.osb.loop.model.LoopUserNotificationSubscription",
+		persistedModelLocalServiceRegistry.register(
+			"com.liferay.osb.loop.model.LoopUserNotificationSubscription",
 			loopUserNotificationSubscriptionLocalService);
 	}
 
@@ -1094,99 +1284,204 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 	 */
 	protected void runSQL(String sql) {
 		try {
-			DataSource dataSource = loopUserNotificationSubscriptionPersistence.getDataSource();
+			DataSource dataSource =
+				loopUserNotificationSubscriptionPersistence.getDataSource();
 
 			DB db = DBManagerUtil.getDB();
 
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
-					sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
+				dataSource, sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception e) {
-			throw new SystemException(e);
+		catch (Exception exception) {
+			throw new SystemException(exception);
 		}
 	}
 
-	@BeanReference(type = com.liferay.osb.loop.service.LoopAuditEntryLocalService.class)
-	protected com.liferay.osb.loop.service.LoopAuditEntryLocalService loopAuditEntryLocalService;
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopAuditEntryLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopAuditEntryLocalService
+		loopAuditEntryLocalService;
+
 	@BeanReference(type = LoopAuditEntryPersistence.class)
 	protected LoopAuditEntryPersistence loopAuditEntryPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopDivisionLocalService.class)
-	protected com.liferay.osb.loop.service.LoopDivisionLocalService loopDivisionLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopDivisionLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopDivisionLocalService
+		loopDivisionLocalService;
+
 	@BeanReference(type = LoopDivisionPersistence.class)
 	protected LoopDivisionPersistence loopDivisionPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopDivisionRelLocalService.class)
-	protected com.liferay.osb.loop.service.LoopDivisionRelLocalService loopDivisionRelLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopDivisionRelLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopDivisionRelLocalService
+		loopDivisionRelLocalService;
+
 	@BeanReference(type = LoopDivisionRelPersistence.class)
 	protected LoopDivisionRelPersistence loopDivisionRelPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopExternalReferenceRelLocalService.class)
-	protected com.liferay.osb.loop.service.LoopExternalReferenceRelLocalService loopExternalReferenceRelLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopExternalReferenceRelLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopExternalReferenceRelLocalService
+		loopExternalReferenceRelLocalService;
+
 	@BeanReference(type = LoopExternalReferenceRelPersistence.class)
-	protected LoopExternalReferenceRelPersistence loopExternalReferenceRelPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopJobTitleLocalService.class)
-	protected com.liferay.osb.loop.service.LoopJobTitleLocalService loopJobTitleLocalService;
+	protected LoopExternalReferenceRelPersistence
+		loopExternalReferenceRelPersistence;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopJobTitleLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopJobTitleLocalService
+		loopJobTitleLocalService;
+
 	@BeanReference(type = LoopJobTitlePersistence.class)
 	protected LoopJobTitlePersistence loopJobTitlePersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopParticipantAssignmentLocalService.class)
-	protected com.liferay.osb.loop.service.LoopParticipantAssignmentLocalService loopParticipantAssignmentLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopParticipantAssignmentLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopParticipantAssignmentLocalService
+		loopParticipantAssignmentLocalService;
+
 	@BeanReference(type = LoopParticipantAssignmentPersistence.class)
-	protected LoopParticipantAssignmentPersistence loopParticipantAssignmentPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopPersonLocalService.class)
-	protected com.liferay.osb.loop.service.LoopPersonLocalService loopPersonLocalService;
+	protected LoopParticipantAssignmentPersistence
+		loopParticipantAssignmentPersistence;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopPersonLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopPersonLocalService
+		loopPersonLocalService;
+
 	@BeanReference(type = LoopPersonPersistence.class)
 	protected LoopPersonPersistence loopPersonPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopPersonRelLocalService.class)
-	protected com.liferay.osb.loop.service.LoopPersonRelLocalService loopPersonRelLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopPersonRelLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopPersonRelLocalService
+		loopPersonRelLocalService;
+
 	@BeanReference(type = LoopPersonRelPersistence.class)
 	protected LoopPersonRelPersistence loopPersonRelPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopStatsEntryLocalService.class)
-	protected com.liferay.osb.loop.service.LoopStatsEntryLocalService loopStatsEntryLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopStatsEntryLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopStatsEntryLocalService
+		loopStatsEntryLocalService;
+
 	@BeanReference(type = LoopStatsEntryPersistence.class)
 	protected LoopStatsEntryPersistence loopStatsEntryPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopStreamLocalService.class)
-	protected com.liferay.osb.loop.service.LoopStreamLocalService loopStreamLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopStreamLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopStreamLocalService
+		loopStreamLocalService;
+
 	@BeanReference(type = LoopStreamPersistence.class)
 	protected LoopStreamPersistence loopStreamPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopStreamEntryLocalService.class)
-	protected com.liferay.osb.loop.service.LoopStreamEntryLocalService loopStreamEntryLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopStreamEntryLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopStreamEntryLocalService
+		loopStreamEntryLocalService;
+
 	@BeanReference(type = LoopStreamEntryPersistence.class)
 	protected LoopStreamEntryPersistence loopStreamEntryPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopTopicLocalService.class)
-	protected com.liferay.osb.loop.service.LoopTopicLocalService loopTopicLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopTopicLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopTopicLocalService
+		loopTopicLocalService;
+
 	@BeanReference(type = LoopTopicPersistence.class)
 	protected LoopTopicPersistence loopTopicPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopTopicAssignmentLocalService.class)
-	protected com.liferay.osb.loop.service.LoopTopicAssignmentLocalService loopTopicAssignmentLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopTopicAssignmentLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopTopicAssignmentLocalService
+		loopTopicAssignmentLocalService;
+
 	@BeanReference(type = LoopTopicAssignmentPersistence.class)
 	protected LoopTopicAssignmentPersistence loopTopicAssignmentPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopUserNotificationEventLocalService.class)
-	protected com.liferay.osb.loop.service.LoopUserNotificationEventLocalService loopUserNotificationEventLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopUserNotificationEventLocalService.class
+	)
+	protected com.liferay.osb.loop.service.LoopUserNotificationEventLocalService
+		loopUserNotificationEventLocalService;
+
 	@BeanReference(type = LoopUserNotificationEventPersistence.class)
-	protected LoopUserNotificationEventPersistence loopUserNotificationEventPersistence;
-	@BeanReference(type = com.liferay.osb.loop.service.LoopUserNotificationRecordLocalService.class)
-	protected com.liferay.osb.loop.service.LoopUserNotificationRecordLocalService loopUserNotificationRecordLocalService;
+	protected LoopUserNotificationEventPersistence
+		loopUserNotificationEventPersistence;
+
+	@BeanReference(
+		type = com.liferay.osb.loop.service.LoopUserNotificationRecordLocalService.class
+	)
+	protected
+		com.liferay.osb.loop.service.LoopUserNotificationRecordLocalService
+			loopUserNotificationRecordLocalService;
+
 	@BeanReference(type = LoopUserNotificationRecordPersistence.class)
-	protected LoopUserNotificationRecordPersistence loopUserNotificationRecordPersistence;
+	protected LoopUserNotificationRecordPersistence
+		loopUserNotificationRecordPersistence;
+
 	@BeanReference(type = LoopUserNotificationSubscriptionLocalService.class)
-	protected LoopUserNotificationSubscriptionLocalService loopUserNotificationSubscriptionLocalService;
+	protected LoopUserNotificationSubscriptionLocalService
+		loopUserNotificationSubscriptionLocalService;
+
 	@BeanReference(type = LoopUserNotificationSubscriptionPersistence.class)
-	protected LoopUserNotificationSubscriptionPersistence loopUserNotificationSubscriptionPersistence;
-	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
-	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
+	protected LoopUserNotificationSubscriptionPersistence
+		loopUserNotificationSubscriptionPersistence;
+
+	@ServiceReference(
+		type = com.liferay.counter.kernel.service.CounterLocalService.class
+	)
+	protected com.liferay.counter.kernel.service.CounterLocalService
+		counterLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService
+		classNameLocalService;
+
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
-	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
-	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ResourceLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ResourceLocalService
+		resourceLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.UserLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.UserLocalService
+		userLocalService;
+
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
+
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
+	protected PersistedModelLocalServiceRegistry
+		persistedModelLocalServiceRegistry;
+
 }

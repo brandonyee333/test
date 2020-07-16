@@ -41,6 +41,10 @@ public class WatsonChildAuditLocalServiceUtil {
 	/**
 	 * Adds the watson child audit to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonChildAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonChildAudit the watson child audit
 	 * @return the watson child audit that was added
 	 */
@@ -76,6 +80,10 @@ public class WatsonChildAuditLocalServiceUtil {
 	/**
 	 * Deletes the watson child audit with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonChildAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonChildAuditId the primary key of the watson child audit
 	 * @return the watson child audit that was removed
 	 * @throws PortalException if a watson child audit with the primary key could not be found
@@ -89,6 +97,10 @@ public class WatsonChildAuditLocalServiceUtil {
 
 	/**
 	 * Deletes the watson child audit from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonChildAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonChildAudit the watson child audit
 	 * @return the watson child audit that was removed
@@ -265,6 +277,10 @@ public class WatsonChildAuditLocalServiceUtil {
 
 	/**
 	 * Updates the watson child audit in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonChildAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonChildAudit the watson child audit
 	 * @return the watson child audit that was updated

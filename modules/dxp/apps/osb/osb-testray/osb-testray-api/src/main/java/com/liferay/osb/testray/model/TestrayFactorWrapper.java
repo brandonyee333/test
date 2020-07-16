@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,9 +34,9 @@ import java.util.Objects;
  * @see TestrayFactor
  * @generated
  */
-@ProviderType
-public class TestrayFactorWrapper implements TestrayFactor,
-	ModelWrapper<TestrayFactor> {
+public class TestrayFactorWrapper
+	implements ModelWrapper<TestrayFactor>, TestrayFactor {
+
 	public TestrayFactorWrapper(TestrayFactor testrayFactor) {
 		_testrayFactor = testrayFactor;
 	}
@@ -68,8 +65,8 @@ public class TestrayFactorWrapper implements TestrayFactor,
 		attributes.put("classNameId", getClassNameId());
 		attributes.put("classPK", getClassPK());
 		attributes.put("testrayFactorCategoryId", getTestrayFactorCategoryId());
-		attributes.put("testrayFactorCategoryName",
-			getTestrayFactorCategoryName());
+		attributes.put(
+			"testrayFactorCategoryName", getTestrayFactorCategoryName());
 		attributes.put("testrayFactorOptionId", getTestrayFactorOptionId());
 		attributes.put("testrayFactorOptionName", getTestrayFactorOptionName());
 
@@ -133,28 +130,28 @@ public class TestrayFactorWrapper implements TestrayFactor,
 		}
 
 		Long testrayFactorCategoryId = (Long)attributes.get(
-				"testrayFactorCategoryId");
+			"testrayFactorCategoryId");
 
 		if (testrayFactorCategoryId != null) {
 			setTestrayFactorCategoryId(testrayFactorCategoryId);
 		}
 
 		String testrayFactorCategoryName = (String)attributes.get(
-				"testrayFactorCategoryName");
+			"testrayFactorCategoryName");
 
 		if (testrayFactorCategoryName != null) {
 			setTestrayFactorCategoryName(testrayFactorCategoryName);
 		}
 
 		Long testrayFactorOptionId = (Long)attributes.get(
-				"testrayFactorOptionId");
+			"testrayFactorOptionId");
 
 		if (testrayFactorOptionId != null) {
 			setTestrayFactorOptionId(testrayFactorOptionId);
 		}
 
 		String testrayFactorOptionName = (String)attributes.get(
-				"testrayFactorOptionName");
+			"testrayFactorOptionName");
 
 		if (testrayFactorOptionName != null) {
 			setTestrayFactorOptionName(testrayFactorOptionName);
@@ -162,13 +159,188 @@ public class TestrayFactorWrapper implements TestrayFactor,
 	}
 
 	@Override
-	public TestrayFactor toEscapedModel() {
-		return new TestrayFactorWrapper(_testrayFactor.toEscapedModel());
+	public Object clone() {
+		return new TestrayFactorWrapper((TestrayFactor)_testrayFactor.clone());
 	}
 
 	@Override
-	public TestrayFactor toUnescapedModel() {
-		return new TestrayFactorWrapper(_testrayFactor.toUnescapedModel());
+	public int compareTo(TestrayFactor testrayFactor) {
+		return _testrayFactor.compareTo(testrayFactor);
+	}
+
+	/**
+	 * Returns the fully qualified class name of this testray factor.
+	 *
+	 * @return the fully qualified class name of this testray factor
+	 */
+	@Override
+	public String getClassName() {
+		return _testrayFactor.getClassName();
+	}
+
+	/**
+	 * Returns the class name ID of this testray factor.
+	 *
+	 * @return the class name ID of this testray factor
+	 */
+	@Override
+	public long getClassNameId() {
+		return _testrayFactor.getClassNameId();
+	}
+
+	/**
+	 * Returns the class pk of this testray factor.
+	 *
+	 * @return the class pk of this testray factor
+	 */
+	@Override
+	public long getClassPK() {
+		return _testrayFactor.getClassPK();
+	}
+
+	/**
+	 * Returns the company ID of this testray factor.
+	 *
+	 * @return the company ID of this testray factor
+	 */
+	@Override
+	public long getCompanyId() {
+		return _testrayFactor.getCompanyId();
+	}
+
+	/**
+	 * Returns the create date of this testray factor.
+	 *
+	 * @return the create date of this testray factor
+	 */
+	@Override
+	public Date getCreateDate() {
+		return _testrayFactor.getCreateDate();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _testrayFactor.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the group ID of this testray factor.
+	 *
+	 * @return the group ID of this testray factor
+	 */
+	@Override
+	public long getGroupId() {
+		return _testrayFactor.getGroupId();
+	}
+
+	/**
+	 * Returns the modified date of this testray factor.
+	 *
+	 * @return the modified date of this testray factor
+	 */
+	@Override
+	public Date getModifiedDate() {
+		return _testrayFactor.getModifiedDate();
+	}
+
+	/**
+	 * Returns the primary key of this testray factor.
+	 *
+	 * @return the primary key of this testray factor
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _testrayFactor.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _testrayFactor.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the testray factor category ID of this testray factor.
+	 *
+	 * @return the testray factor category ID of this testray factor
+	 */
+	@Override
+	public long getTestrayFactorCategoryId() {
+		return _testrayFactor.getTestrayFactorCategoryId();
+	}
+
+	/**
+	 * Returns the testray factor category name of this testray factor.
+	 *
+	 * @return the testray factor category name of this testray factor
+	 */
+	@Override
+	public String getTestrayFactorCategoryName() {
+		return _testrayFactor.getTestrayFactorCategoryName();
+	}
+
+	/**
+	 * Returns the testray factor ID of this testray factor.
+	 *
+	 * @return the testray factor ID of this testray factor
+	 */
+	@Override
+	public long getTestrayFactorId() {
+		return _testrayFactor.getTestrayFactorId();
+	}
+
+	/**
+	 * Returns the testray factor option ID of this testray factor.
+	 *
+	 * @return the testray factor option ID of this testray factor
+	 */
+	@Override
+	public long getTestrayFactorOptionId() {
+		return _testrayFactor.getTestrayFactorOptionId();
+	}
+
+	/**
+	 * Returns the testray factor option name of this testray factor.
+	 *
+	 * @return the testray factor option name of this testray factor
+	 */
+	@Override
+	public String getTestrayFactorOptionName() {
+		return _testrayFactor.getTestrayFactorOptionName();
+	}
+
+	/**
+	 * Returns the user ID of this testray factor.
+	 *
+	 * @return the user ID of this testray factor
+	 */
+	@Override
+	public long getUserId() {
+		return _testrayFactor.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this testray factor.
+	 *
+	 * @return the user name of this testray factor
+	 */
+	@Override
+	public String getUserName() {
+		return _testrayFactor.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this testray factor.
+	 *
+	 * @return the user uuid of this testray factor
+	 */
+	@Override
+	public String getUserUuid() {
+		return _testrayFactor.getUserUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _testrayFactor.hashCode();
 	}
 
 	@Override
@@ -187,206 +359,6 @@ public class TestrayFactorWrapper implements TestrayFactor,
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _testrayFactor.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<TestrayFactor> toCacheModel() {
-		return _testrayFactor.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(TestrayFactor testrayFactor) {
-		return _testrayFactor.compareTo(testrayFactor);
-	}
-
-	@Override
-	public int hashCode() {
-		return _testrayFactor.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _testrayFactor.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new TestrayFactorWrapper((TestrayFactor)_testrayFactor.clone());
-	}
-
-	/**
-	* Returns the fully qualified class name of this testray factor.
-	*
-	* @return the fully qualified class name of this testray factor
-	*/
-	@Override
-	public java.lang.String getClassName() {
-		return _testrayFactor.getClassName();
-	}
-
-	/**
-	* Returns the testray factor category name of this testray factor.
-	*
-	* @return the testray factor category name of this testray factor
-	*/
-	@Override
-	public java.lang.String getTestrayFactorCategoryName() {
-		return _testrayFactor.getTestrayFactorCategoryName();
-	}
-
-	/**
-	* Returns the testray factor option name of this testray factor.
-	*
-	* @return the testray factor option name of this testray factor
-	*/
-	@Override
-	public java.lang.String getTestrayFactorOptionName() {
-		return _testrayFactor.getTestrayFactorOptionName();
-	}
-
-	/**
-	* Returns the user name of this testray factor.
-	*
-	* @return the user name of this testray factor
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _testrayFactor.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this testray factor.
-	*
-	* @return the user uuid of this testray factor
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _testrayFactor.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _testrayFactor.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _testrayFactor.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this testray factor.
-	*
-	* @return the create date of this testray factor
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _testrayFactor.getCreateDate();
-	}
-
-	/**
-	* Returns the modified date of this testray factor.
-	*
-	* @return the modified date of this testray factor
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _testrayFactor.getModifiedDate();
-	}
-
-	/**
-	* Returns the class name ID of this testray factor.
-	*
-	* @return the class name ID of this testray factor
-	*/
-	@Override
-	public long getClassNameId() {
-		return _testrayFactor.getClassNameId();
-	}
-
-	/**
-	* Returns the class pk of this testray factor.
-	*
-	* @return the class pk of this testray factor
-	*/
-	@Override
-	public long getClassPK() {
-		return _testrayFactor.getClassPK();
-	}
-
-	/**
-	* Returns the company ID of this testray factor.
-	*
-	* @return the company ID of this testray factor
-	*/
-	@Override
-	public long getCompanyId() {
-		return _testrayFactor.getCompanyId();
-	}
-
-	/**
-	* Returns the group ID of this testray factor.
-	*
-	* @return the group ID of this testray factor
-	*/
-	@Override
-	public long getGroupId() {
-		return _testrayFactor.getGroupId();
-	}
-
-	/**
-	* Returns the primary key of this testray factor.
-	*
-	* @return the primary key of this testray factor
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _testrayFactor.getPrimaryKey();
-	}
-
-	/**
-	* Returns the testray factor category ID of this testray factor.
-	*
-	* @return the testray factor category ID of this testray factor
-	*/
-	@Override
-	public long getTestrayFactorCategoryId() {
-		return _testrayFactor.getTestrayFactorCategoryId();
-	}
-
-	/**
-	* Returns the testray factor ID of this testray factor.
-	*
-	* @return the testray factor ID of this testray factor
-	*/
-	@Override
-	public long getTestrayFactorId() {
-		return _testrayFactor.getTestrayFactorId();
-	}
-
-	/**
-	* Returns the testray factor option ID of this testray factor.
-	*
-	* @return the testray factor option ID of this testray factor
-	*/
-	@Override
-	public long getTestrayFactorOptionId() {
-		return _testrayFactor.getTestrayFactorOptionId();
-	}
-
-	/**
-	* Returns the user ID of this testray factor.
-	*
-	* @return the user ID of this testray factor
-	*/
-	@Override
-	public long getUserId() {
-		return _testrayFactor.getUserId();
-	}
-
-	@Override
 	public void persist() {
 		_testrayFactor.persist();
 	}
@@ -397,48 +369,55 @@ public class TestrayFactorWrapper implements TestrayFactor,
 	}
 
 	@Override
-	public void setClassName(java.lang.String className) {
+	public void setClassName(String className) {
 		_testrayFactor.setClassName(className);
 	}
 
 	/**
-	* Sets the class name ID of this testray factor.
-	*
-	* @param classNameId the class name ID of this testray factor
-	*/
+	 * Sets the class name ID of this testray factor.
+	 *
+	 * @param classNameId the class name ID of this testray factor
+	 */
 	@Override
 	public void setClassNameId(long classNameId) {
 		_testrayFactor.setClassNameId(classNameId);
 	}
 
 	/**
-	* Sets the class pk of this testray factor.
-	*
-	* @param classPK the class pk of this testray factor
-	*/
+	 * Sets the class pk of this testray factor.
+	 *
+	 * @param classPK the class pk of this testray factor
+	 */
 	@Override
 	public void setClassPK(long classPK) {
 		_testrayFactor.setClassPK(classPK);
 	}
 
 	/**
-	* Sets the company ID of this testray factor.
-	*
-	* @param companyId the company ID of this testray factor
-	*/
+	 * Sets the company ID of this testray factor.
+	 *
+	 * @param companyId the company ID of this testray factor
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_testrayFactor.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this testray factor.
-	*
-	* @param createDate the create date of this testray factor
-	*/
+	 * Sets the create date of this testray factor.
+	 *
+	 * @param createDate the create date of this testray factor
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_testrayFactor.setCreateDate(createDate);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_testrayFactor.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -447,31 +426,25 @@ public class TestrayFactorWrapper implements TestrayFactor,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_testrayFactor.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_testrayFactor.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the group ID of this testray factor.
-	*
-	* @param groupId the group ID of this testray factor
-	*/
+	 * Sets the group ID of this testray factor.
+	 *
+	 * @param groupId the group ID of this testray factor
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_testrayFactor.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the modified date of this testray factor.
-	*
-	* @param modifiedDate the modified date of this testray factor
-	*/
+	 * Sets the modified date of this testray factor.
+	 *
+	 * @param modifiedDate the modified date of this testray factor
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_testrayFactor.setModifiedDate(modifiedDate);
@@ -483,10 +456,10 @@ public class TestrayFactorWrapper implements TestrayFactor,
 	}
 
 	/**
-	* Sets the primary key of this testray factor.
-	*
-	* @param primaryKey the primary key of this testray factor
-	*/
+	 * Sets the primary key of this testray factor.
+	 *
+	 * @param primaryKey the primary key of this testray factor
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_testrayFactor.setPrimaryKey(primaryKey);
@@ -498,100 +471,128 @@ public class TestrayFactorWrapper implements TestrayFactor,
 	}
 
 	/**
-	* Sets the testray factor category ID of this testray factor.
-	*
-	* @param testrayFactorCategoryId the testray factor category ID of this testray factor
-	*/
+	 * Sets the testray factor category ID of this testray factor.
+	 *
+	 * @param testrayFactorCategoryId the testray factor category ID of this testray factor
+	 */
 	@Override
 	public void setTestrayFactorCategoryId(long testrayFactorCategoryId) {
 		_testrayFactor.setTestrayFactorCategoryId(testrayFactorCategoryId);
 	}
 
 	/**
-	* Sets the testray factor category name of this testray factor.
-	*
-	* @param testrayFactorCategoryName the testray factor category name of this testray factor
-	*/
+	 * Sets the testray factor category name of this testray factor.
+	 *
+	 * @param testrayFactorCategoryName the testray factor category name of this testray factor
+	 */
 	@Override
-	public void setTestrayFactorCategoryName(
-		java.lang.String testrayFactorCategoryName) {
+	public void setTestrayFactorCategoryName(String testrayFactorCategoryName) {
 		_testrayFactor.setTestrayFactorCategoryName(testrayFactorCategoryName);
 	}
 
 	/**
-	* Sets the testray factor ID of this testray factor.
-	*
-	* @param testrayFactorId the testray factor ID of this testray factor
-	*/
+	 * Sets the testray factor ID of this testray factor.
+	 *
+	 * @param testrayFactorId the testray factor ID of this testray factor
+	 */
 	@Override
 	public void setTestrayFactorId(long testrayFactorId) {
 		_testrayFactor.setTestrayFactorId(testrayFactorId);
 	}
 
 	/**
-	* Sets the testray factor option ID of this testray factor.
-	*
-	* @param testrayFactorOptionId the testray factor option ID of this testray factor
-	*/
+	 * Sets the testray factor option ID of this testray factor.
+	 *
+	 * @param testrayFactorOptionId the testray factor option ID of this testray factor
+	 */
 	@Override
 	public void setTestrayFactorOptionId(long testrayFactorOptionId) {
 		_testrayFactor.setTestrayFactorOptionId(testrayFactorOptionId);
 	}
 
 	/**
-	* Sets the testray factor option name of this testray factor.
-	*
-	* @param testrayFactorOptionName the testray factor option name of this testray factor
-	*/
+	 * Sets the testray factor option name of this testray factor.
+	 *
+	 * @param testrayFactorOptionName the testray factor option name of this testray factor
+	 */
 	@Override
-	public void setTestrayFactorOptionName(
-		java.lang.String testrayFactorOptionName) {
+	public void setTestrayFactorOptionName(String testrayFactorOptionName) {
 		_testrayFactor.setTestrayFactorOptionName(testrayFactorOptionName);
 	}
 
 	/**
-	* Sets the user ID of this testray factor.
-	*
-	* @param userId the user ID of this testray factor
-	*/
+	 * Sets the user ID of this testray factor.
+	 *
+	 * @param userId the user ID of this testray factor
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_testrayFactor.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this testray factor.
-	*
-	* @param userName the user name of this testray factor
-	*/
+	 * Sets the user name of this testray factor.
+	 *
+	 * @param userName the user name of this testray factor
+	 */
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_testrayFactor.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this testray factor.
-	*
-	* @param userUuid the user uuid of this testray factor
-	*/
+	 * Sets the user uuid of this testray factor.
+	 *
+	 * @param userUuid the user uuid of this testray factor
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_testrayFactor.setUserUuid(userUuid);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public com.liferay.portal.kernel.model.CacheModel<TestrayFactor>
+		toCacheModel() {
+
+		return _testrayFactor.toCacheModel();
+	}
+
+	@Override
+	public TestrayFactor toEscapedModel() {
+		return new TestrayFactorWrapper(_testrayFactor.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _testrayFactor.toString();
+	}
+
+	@Override
+	public TestrayFactor toUnescapedModel() {
+		return new TestrayFactorWrapper(_testrayFactor.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _testrayFactor.toXmlString();
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof TestrayFactorWrapper)) {
+		if (!(object instanceof TestrayFactorWrapper)) {
 			return false;
 		}
 
-		TestrayFactorWrapper testrayFactorWrapper = (TestrayFactorWrapper)obj;
+		TestrayFactorWrapper testrayFactorWrapper =
+			(TestrayFactorWrapper)object;
 
-		if (Objects.equals(_testrayFactor, testrayFactorWrapper._testrayFactor)) {
+		if (Objects.equals(
+				_testrayFactor, testrayFactorWrapper._testrayFactor)) {
+
 			return true;
 		}
 
@@ -619,4 +620,5 @@ public class TestrayFactorWrapper implements TestrayFactor,
 	}
 
 	private final TestrayFactor _testrayFactor;
+
 }

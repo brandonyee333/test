@@ -65,6 +65,10 @@ public interface ResourceBlockPermissionLocalService
 	/**
 	 * Adds the resource block permission to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ResourceBlockPermissionLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param resourceBlockPermission the resource block permission
 	 * @return the resource block permission that was added
 	 */
@@ -96,6 +100,10 @@ public interface ResourceBlockPermissionLocalService
 	/**
 	 * Deletes the resource block permission with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ResourceBlockPermissionLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param resourceBlockPermissionId the primary key of the resource block permission
 	 * @return the resource block permission that was removed
 	 * @throws PortalException if a resource block permission with the primary key could not be found
@@ -107,6 +115,10 @@ public interface ResourceBlockPermissionLocalService
 
 	/**
 	 * Deletes the resource block permission from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ResourceBlockPermissionLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param resourceBlockPermission the resource block permission
 	 * @return the resource block permission that was removed
@@ -272,6 +284,10 @@ public interface ResourceBlockPermissionLocalService
 
 	/**
 	 * Updates the resource block permission in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ResourceBlockPermissionLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param resourceBlockPermission the resource block permission
 	 * @return the resource block permission that was updated

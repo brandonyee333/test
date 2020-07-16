@@ -36,6 +36,10 @@ public class ShoppingItemPriceLocalServiceWrapper
 	/**
 	 * Adds the shopping item price to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ShoppingItemPriceLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param shoppingItemPrice the shopping item price
 	 * @return the shopping item price that was added
 	 */
@@ -76,6 +80,10 @@ public class ShoppingItemPriceLocalServiceWrapper
 	/**
 	 * Deletes the shopping item price with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ShoppingItemPriceLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param itemPriceId the primary key of the shopping item price
 	 * @return the shopping item price that was removed
 	 * @throws PortalException if a shopping item price with the primary key could not be found
@@ -91,6 +99,10 @@ public class ShoppingItemPriceLocalServiceWrapper
 
 	/**
 	 * Deletes the shopping item price from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ShoppingItemPriceLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param shoppingItemPrice the shopping item price
 	 * @return the shopping item price that was removed
@@ -291,6 +303,10 @@ public class ShoppingItemPriceLocalServiceWrapper
 
 	/**
 	 * Updates the shopping item price in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ShoppingItemPriceLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param shoppingItemPrice the shopping item price
 	 * @return the shopping item price that was updated

@@ -1,27 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.community.doc.project.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.community.doc.project.model.DocProject;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -34,23 +30,23 @@ import java.util.Date;
  * The cache model class for representing DocProject in entity cache.
  *
  * @author Ryan Park
- * @see DocProject
  * @generated
  */
-@ProviderType
-public class DocProjectCacheModel implements CacheModel<DocProject>,
-	Externalizable {
+public class DocProjectCacheModel
+	implements CacheModel<DocProject>, Externalizable {
+
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof DocProjectCacheModel)) {
+		if (!(object instanceof DocProjectCacheModel)) {
 			return false;
 		}
 
-		DocProjectCacheModel docProjectCacheModel = (DocProjectCacheModel)obj;
+		DocProjectCacheModel docProjectCacheModel =
+			(DocProjectCacheModel)object;
 
 		if (docProjectId == docProjectCacheModel.docProjectId) {
 			return true;
@@ -108,7 +104,7 @@ public class DocProjectCacheModel implements CacheModel<DocProject>,
 		DocProjectImpl docProjectImpl = new DocProjectImpl();
 
 		if (uuid == null) {
-			docProjectImpl.setUuid(StringPool.BLANK);
+			docProjectImpl.setUuid("");
 		}
 		else {
 			docProjectImpl.setUuid(uuid);
@@ -120,7 +116,7 @@ public class DocProjectCacheModel implements CacheModel<DocProject>,
 		docProjectImpl.setUserId(userId);
 
 		if (userName == null) {
-			docProjectImpl.setUserName(StringPool.BLANK);
+			docProjectImpl.setUserName("");
 		}
 		else {
 			docProjectImpl.setUserName(userName);
@@ -141,21 +137,21 @@ public class DocProjectCacheModel implements CacheModel<DocProject>,
 		}
 
 		if (name == null) {
-			docProjectImpl.setName(StringPool.BLANK);
+			docProjectImpl.setName("");
 		}
 		else {
 			docProjectImpl.setName(name);
 		}
 
 		if (description == null) {
-			docProjectImpl.setDescription(StringPool.BLANK);
+			docProjectImpl.setDescription("");
 		}
 		else {
 			docProjectImpl.setDescription(description);
 		}
 
 		if (iconFileName == null) {
-			docProjectImpl.setIconFileName(StringPool.BLANK);
+			docProjectImpl.setIconFileName("");
 		}
 		else {
 			docProjectImpl.setIconFileName(iconFileName);
@@ -164,14 +160,14 @@ public class DocProjectCacheModel implements CacheModel<DocProject>,
 		docProjectImpl.setUnlisted(unlisted);
 
 		if (type == null) {
-			docProjectImpl.setType(StringPool.BLANK);
+			docProjectImpl.setType("");
 		}
 		else {
 			docProjectImpl.setType(type);
 		}
 
 		if (typeSettings == null) {
-			docProjectImpl.setTypeSettings(StringPool.BLANK);
+			docProjectImpl.setTypeSettings("");
 		}
 		else {
 			docProjectImpl.setTypeSettings(typeSettings);
@@ -185,7 +181,9 @@ public class DocProjectCacheModel implements CacheModel<DocProject>,
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		uuid = objectInput.readUTF();
 
 		docProjectId = objectInput.readLong();
@@ -204,16 +202,15 @@ public class DocProjectCacheModel implements CacheModel<DocProject>,
 
 		unlisted = objectInput.readBoolean();
 		type = objectInput.readUTF();
-		typeSettings = objectInput.readUTF();
+		typeSettings = (String)objectInput.readObject();
 
 		status = objectInput.readInt();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -228,7 +225,7 @@ public class DocProjectCacheModel implements CacheModel<DocProject>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -238,21 +235,21 @@ public class DocProjectCacheModel implements CacheModel<DocProject>,
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (iconFileName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(iconFileName);
@@ -261,17 +258,17 @@ public class DocProjectCacheModel implements CacheModel<DocProject>,
 		objectOutput.writeBoolean(unlisted);
 
 		if (type == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(type);
 		}
 
 		if (typeSettings == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(typeSettings);
+			objectOutput.writeObject(typeSettings);
 		}
 
 		objectOutput.writeInt(status);
@@ -292,4 +289,5 @@ public class DocProjectCacheModel implements CacheModel<DocProject>,
 	public String type;
 	public String typeSettings;
 	public int status;
+
 }

@@ -101,6 +101,10 @@ public abstract class WatsonHistoryLocalServiceBaseImpl
 	/**
 	 * Adds the watson history to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonHistoryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonHistory the watson history
 	 * @return the watson history that was added
 	 */
@@ -127,6 +131,10 @@ public abstract class WatsonHistoryLocalServiceBaseImpl
 	/**
 	 * Deletes the watson history with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonHistoryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonHistoryId the primary key of the watson history
 	 * @return the watson history that was removed
 	 * @throws PortalException if a watson history with the primary key could not be found
@@ -141,6 +149,10 @@ public abstract class WatsonHistoryLocalServiceBaseImpl
 
 	/**
 	 * Deletes the watson history from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonHistoryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonHistory the watson history
 	 * @return the watson history that was removed
@@ -352,6 +364,10 @@ public abstract class WatsonHistoryLocalServiceBaseImpl
 
 	/**
 	 * Updates the watson history in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonHistoryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonHistory the watson history
 	 * @return the watson history that was updated

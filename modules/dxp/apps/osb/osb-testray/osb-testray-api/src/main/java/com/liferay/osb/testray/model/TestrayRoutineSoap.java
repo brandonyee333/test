@@ -1,20 +1,18 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.model;
-
-import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -28,8 +26,8 @@ import java.util.List;
  * @author Ethan Bustad
  * @generated
  */
-@ProviderType
 public class TestrayRoutineSoap implements Serializable {
+
 	public static TestrayRoutineSoap toSoapModel(TestrayRoutine model) {
 		TestrayRoutineSoap soapModel = new TestrayRoutineSoap();
 
@@ -42,7 +40,7 @@ public class TestrayRoutineSoap implements Serializable {
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setTestrayProjectId(model.getTestrayProjectId());
 		soapModel.setName(model.getName());
-		soapModel.setAutoanalyze(model.getAutoanalyze());
+		soapModel.setAutoanalyze(model.isAutoanalyze());
 
 		return soapModel;
 	}
@@ -57,11 +55,14 @@ public class TestrayRoutineSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static TestrayRoutineSoap[][] toSoapModels(TestrayRoutine[][] models) {
+	public static TestrayRoutineSoap[][] toSoapModels(
+		TestrayRoutine[][] models) {
+
 		TestrayRoutineSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new TestrayRoutineSoap[models.length][models[0].length];
+			soapModels =
+				new TestrayRoutineSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new TestrayRoutineSoap[0][0];
@@ -74,8 +75,11 @@ public class TestrayRoutineSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static TestrayRoutineSoap[] toSoapModels(List<TestrayRoutine> models) {
-		List<TestrayRoutineSoap> soapModels = new ArrayList<TestrayRoutineSoap>(models.size());
+	public static TestrayRoutineSoap[] toSoapModels(
+		List<TestrayRoutine> models) {
+
+		List<TestrayRoutineSoap> soapModels = new ArrayList<TestrayRoutineSoap>(
+			models.size());
 
 		for (TestrayRoutine model : models) {
 			soapModels.add(toSoapModel(model));
@@ -189,4 +193,5 @@ public class TestrayRoutineSoap implements Serializable {
 	private long _testrayProjectId;
 	private String _name;
 	private boolean _autoanalyze;
+
 }

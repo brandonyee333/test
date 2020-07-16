@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,9 +34,9 @@ import java.util.Objects;
  * @see TestrayCase
  * @generated
  */
-@ProviderType
-public class TestrayCaseWrapper implements TestrayCase,
-	ModelWrapper<TestrayCase> {
+public class TestrayCaseWrapper
+	implements ModelWrapper<TestrayCase>, TestrayCase {
+
 	public TestrayCaseWrapper(TestrayCase testrayCase) {
 		_testrayCase = testrayCase;
 	}
@@ -173,7 +170,8 @@ public class TestrayCaseWrapper implements TestrayCase,
 			setPriority(priority);
 		}
 
-		Integer estimatedDuration = (Integer)attributes.get("estimatedDuration");
+		Integer estimatedDuration = (Integer)attributes.get(
+			"estimatedDuration");
 
 		if (estimatedDuration != null) {
 			setEstimatedDuration(estimatedDuration);
@@ -199,13 +197,238 @@ public class TestrayCaseWrapper implements TestrayCase,
 	}
 
 	@Override
-	public TestrayCase toEscapedModel() {
-		return new TestrayCaseWrapper(_testrayCase.toEscapedModel());
+	public Object clone() {
+		return new TestrayCaseWrapper((TestrayCase)_testrayCase.clone());
 	}
 
 	@Override
-	public TestrayCase toUnescapedModel() {
-		return new TestrayCaseWrapper(_testrayCase.toUnescapedModel());
+	public int compareTo(TestrayCase testrayCase) {
+		return _testrayCase.compareTo(testrayCase);
+	}
+
+	/**
+	 * Returns the case number of this testray case.
+	 *
+	 * @return the case number of this testray case
+	 */
+	@Override
+	public long getCaseNumber() {
+		return _testrayCase.getCaseNumber();
+	}
+
+	/**
+	 * Returns the company ID of this testray case.
+	 *
+	 * @return the company ID of this testray case
+	 */
+	@Override
+	public long getCompanyId() {
+		return _testrayCase.getCompanyId();
+	}
+
+	/**
+	 * Returns the create date of this testray case.
+	 *
+	 * @return the create date of this testray case
+	 */
+	@Override
+	public Date getCreateDate() {
+		return _testrayCase.getCreateDate();
+	}
+
+	/**
+	 * Returns the description of this testray case.
+	 *
+	 * @return the description of this testray case
+	 */
+	@Override
+	public String getDescription() {
+		return _testrayCase.getDescription();
+	}
+
+	/**
+	 * Returns the description type of this testray case.
+	 *
+	 * @return the description type of this testray case
+	 */
+	@Override
+	public String getDescriptionType() {
+		return _testrayCase.getDescriptionType();
+	}
+
+	/**
+	 * Returns the estimated duration of this testray case.
+	 *
+	 * @return the estimated duration of this testray case
+	 */
+	@Override
+	public int getEstimatedDuration() {
+		return _testrayCase.getEstimatedDuration();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _testrayCase.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the group ID of this testray case.
+	 *
+	 * @return the group ID of this testray case
+	 */
+	@Override
+	public long getGroupId() {
+		return _testrayCase.getGroupId();
+	}
+
+	/**
+	 * Returns the modified date of this testray case.
+	 *
+	 * @return the modified date of this testray case
+	 */
+	@Override
+	public Date getModifiedDate() {
+		return _testrayCase.getModifiedDate();
+	}
+
+	/**
+	 * Returns the name of this testray case.
+	 *
+	 * @return the name of this testray case
+	 */
+	@Override
+	public String getName() {
+		return _testrayCase.getName();
+	}
+
+	/**
+	 * Returns the origination key of this testray case.
+	 *
+	 * @return the origination key of this testray case
+	 */
+	@Override
+	public long getOriginationKey() {
+		return _testrayCase.getOriginationKey();
+	}
+
+	/**
+	 * Returns the primary key of this testray case.
+	 *
+	 * @return the primary key of this testray case
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _testrayCase.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _testrayCase.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the priority of this testray case.
+	 *
+	 * @return the priority of this testray case
+	 */
+	@Override
+	public int getPriority() {
+		return _testrayCase.getPriority();
+	}
+
+	/**
+	 * Returns the steps of this testray case.
+	 *
+	 * @return the steps of this testray case
+	 */
+	@Override
+	public String getSteps() {
+		return _testrayCase.getSteps();
+	}
+
+	/**
+	 * Returns the steps type of this testray case.
+	 *
+	 * @return the steps type of this testray case
+	 */
+	@Override
+	public String getStepsType() {
+		return _testrayCase.getStepsType();
+	}
+
+	/**
+	 * Returns the testray case ID of this testray case.
+	 *
+	 * @return the testray case ID of this testray case
+	 */
+	@Override
+	public long getTestrayCaseId() {
+		return _testrayCase.getTestrayCaseId();
+	}
+
+	/**
+	 * Returns the testray case type ID of this testray case.
+	 *
+	 * @return the testray case type ID of this testray case
+	 */
+	@Override
+	public long getTestrayCaseTypeId() {
+		return _testrayCase.getTestrayCaseTypeId();
+	}
+
+	/**
+	 * Returns the testray component ID of this testray case.
+	 *
+	 * @return the testray component ID of this testray case
+	 */
+	@Override
+	public long getTestrayComponentId() {
+		return _testrayCase.getTestrayComponentId();
+	}
+
+	/**
+	 * Returns the testray project ID of this testray case.
+	 *
+	 * @return the testray project ID of this testray case
+	 */
+	@Override
+	public long getTestrayProjectId() {
+		return _testrayCase.getTestrayProjectId();
+	}
+
+	/**
+	 * Returns the user ID of this testray case.
+	 *
+	 * @return the user ID of this testray case
+	 */
+	@Override
+	public long getUserId() {
+		return _testrayCase.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this testray case.
+	 *
+	 * @return the user name of this testray case
+	 */
+	@Override
+	public String getUserName() {
+		return _testrayCase.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this testray case.
+	 *
+	 * @return the user uuid of this testray case
+	 */
+	@Override
+	public String getUserUuid() {
+		return _testrayCase.getUserUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _testrayCase.hashCode();
 	}
 
 	@Override
@@ -224,256 +447,6 @@ public class TestrayCaseWrapper implements TestrayCase,
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _testrayCase.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<TestrayCase> toCacheModel() {
-		return _testrayCase.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(TestrayCase testrayCase) {
-		return _testrayCase.compareTo(testrayCase);
-	}
-
-	/**
-	* Returns the estimated duration of this testray case.
-	*
-	* @return the estimated duration of this testray case
-	*/
-	@Override
-	public int getEstimatedDuration() {
-		return _testrayCase.getEstimatedDuration();
-	}
-
-	/**
-	* Returns the priority of this testray case.
-	*
-	* @return the priority of this testray case
-	*/
-	@Override
-	public int getPriority() {
-		return _testrayCase.getPriority();
-	}
-
-	@Override
-	public int hashCode() {
-		return _testrayCase.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _testrayCase.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new TestrayCaseWrapper((TestrayCase)_testrayCase.clone());
-	}
-
-	/**
-	* Returns the description of this testray case.
-	*
-	* @return the description of this testray case
-	*/
-	@Override
-	public java.lang.String getDescription() {
-		return _testrayCase.getDescription();
-	}
-
-	/**
-	* Returns the description type of this testray case.
-	*
-	* @return the description type of this testray case
-	*/
-	@Override
-	public java.lang.String getDescriptionType() {
-		return _testrayCase.getDescriptionType();
-	}
-
-	/**
-	* Returns the name of this testray case.
-	*
-	* @return the name of this testray case
-	*/
-	@Override
-	public java.lang.String getName() {
-		return _testrayCase.getName();
-	}
-
-	/**
-	* Returns the steps of this testray case.
-	*
-	* @return the steps of this testray case
-	*/
-	@Override
-	public java.lang.String getSteps() {
-		return _testrayCase.getSteps();
-	}
-
-	/**
-	* Returns the steps type of this testray case.
-	*
-	* @return the steps type of this testray case
-	*/
-	@Override
-	public java.lang.String getStepsType() {
-		return _testrayCase.getStepsType();
-	}
-
-	/**
-	* Returns the user name of this testray case.
-	*
-	* @return the user name of this testray case
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _testrayCase.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this testray case.
-	*
-	* @return the user uuid of this testray case
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _testrayCase.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _testrayCase.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _testrayCase.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this testray case.
-	*
-	* @return the create date of this testray case
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _testrayCase.getCreateDate();
-	}
-
-	/**
-	* Returns the modified date of this testray case.
-	*
-	* @return the modified date of this testray case
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _testrayCase.getModifiedDate();
-	}
-
-	/**
-	* Returns the case number of this testray case.
-	*
-	* @return the case number of this testray case
-	*/
-	@Override
-	public long getCaseNumber() {
-		return _testrayCase.getCaseNumber();
-	}
-
-	/**
-	* Returns the company ID of this testray case.
-	*
-	* @return the company ID of this testray case
-	*/
-	@Override
-	public long getCompanyId() {
-		return _testrayCase.getCompanyId();
-	}
-
-	/**
-	* Returns the group ID of this testray case.
-	*
-	* @return the group ID of this testray case
-	*/
-	@Override
-	public long getGroupId() {
-		return _testrayCase.getGroupId();
-	}
-
-	/**
-	* Returns the origination key of this testray case.
-	*
-	* @return the origination key of this testray case
-	*/
-	@Override
-	public long getOriginationKey() {
-		return _testrayCase.getOriginationKey();
-	}
-
-	/**
-	* Returns the primary key of this testray case.
-	*
-	* @return the primary key of this testray case
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _testrayCase.getPrimaryKey();
-	}
-
-	/**
-	* Returns the testray case ID of this testray case.
-	*
-	* @return the testray case ID of this testray case
-	*/
-	@Override
-	public long getTestrayCaseId() {
-		return _testrayCase.getTestrayCaseId();
-	}
-
-	/**
-	* Returns the testray case type ID of this testray case.
-	*
-	* @return the testray case type ID of this testray case
-	*/
-	@Override
-	public long getTestrayCaseTypeId() {
-		return _testrayCase.getTestrayCaseTypeId();
-	}
-
-	/**
-	* Returns the testray component ID of this testray case.
-	*
-	* @return the testray component ID of this testray case
-	*/
-	@Override
-	public long getTestrayComponentId() {
-		return _testrayCase.getTestrayComponentId();
-	}
-
-	/**
-	* Returns the testray project ID of this testray case.
-	*
-	* @return the testray project ID of this testray case
-	*/
-	@Override
-	public long getTestrayProjectId() {
-		return _testrayCase.getTestrayProjectId();
-	}
-
-	/**
-	* Returns the user ID of this testray case.
-	*
-	* @return the user ID of this testray case
-	*/
-	@Override
-	public long getUserId() {
-		return _testrayCase.getUserId();
-	}
-
-	@Override
 	public void persist() {
 		_testrayCase.persist();
 	}
@@ -484,63 +457,70 @@ public class TestrayCaseWrapper implements TestrayCase,
 	}
 
 	/**
-	* Sets the case number of this testray case.
-	*
-	* @param caseNumber the case number of this testray case
-	*/
+	 * Sets the case number of this testray case.
+	 *
+	 * @param caseNumber the case number of this testray case
+	 */
 	@Override
 	public void setCaseNumber(long caseNumber) {
 		_testrayCase.setCaseNumber(caseNumber);
 	}
 
 	/**
-	* Sets the company ID of this testray case.
-	*
-	* @param companyId the company ID of this testray case
-	*/
+	 * Sets the company ID of this testray case.
+	 *
+	 * @param companyId the company ID of this testray case
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_testrayCase.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this testray case.
-	*
-	* @param createDate the create date of this testray case
-	*/
+	 * Sets the create date of this testray case.
+	 *
+	 * @param createDate the create date of this testray case
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_testrayCase.setCreateDate(createDate);
 	}
 
 	/**
-	* Sets the description of this testray case.
-	*
-	* @param description the description of this testray case
-	*/
+	 * Sets the description of this testray case.
+	 *
+	 * @param description the description of this testray case
+	 */
 	@Override
-	public void setDescription(java.lang.String description) {
+	public void setDescription(String description) {
 		_testrayCase.setDescription(description);
 	}
 
 	/**
-	* Sets the description type of this testray case.
-	*
-	* @param descriptionType the description type of this testray case
-	*/
+	 * Sets the description type of this testray case.
+	 *
+	 * @param descriptionType the description type of this testray case
+	 */
 	@Override
-	public void setDescriptionType(java.lang.String descriptionType) {
+	public void setDescriptionType(String descriptionType) {
 		_testrayCase.setDescriptionType(descriptionType);
 	}
 
 	/**
-	* Sets the estimated duration of this testray case.
-	*
-	* @param estimatedDuration the estimated duration of this testray case
-	*/
+	 * Sets the estimated duration of this testray case.
+	 *
+	 * @param estimatedDuration the estimated duration of this testray case
+	 */
 	@Override
 	public void setEstimatedDuration(int estimatedDuration) {
 		_testrayCase.setEstimatedDuration(estimatedDuration);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_testrayCase.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -549,43 +529,37 @@ public class TestrayCaseWrapper implements TestrayCase,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_testrayCase.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_testrayCase.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the group ID of this testray case.
-	*
-	* @param groupId the group ID of this testray case
-	*/
+	 * Sets the group ID of this testray case.
+	 *
+	 * @param groupId the group ID of this testray case
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_testrayCase.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the modified date of this testray case.
-	*
-	* @param modifiedDate the modified date of this testray case
-	*/
+	 * Sets the modified date of this testray case.
+	 *
+	 * @param modifiedDate the modified date of this testray case
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_testrayCase.setModifiedDate(modifiedDate);
 	}
 
 	/**
-	* Sets the name of this testray case.
-	*
-	* @param name the name of this testray case
-	*/
+	 * Sets the name of this testray case.
+	 *
+	 * @param name the name of this testray case
+	 */
 	@Override
-	public void setName(java.lang.String name) {
+	public void setName(String name) {
 		_testrayCase.setName(name);
 	}
 
@@ -595,20 +569,20 @@ public class TestrayCaseWrapper implements TestrayCase,
 	}
 
 	/**
-	* Sets the origination key of this testray case.
-	*
-	* @param originationKey the origination key of this testray case
-	*/
+	 * Sets the origination key of this testray case.
+	 *
+	 * @param originationKey the origination key of this testray case
+	 */
 	@Override
 	public void setOriginationKey(long originationKey) {
 		_testrayCase.setOriginationKey(originationKey);
 	}
 
 	/**
-	* Sets the primary key of this testray case.
-	*
-	* @param primaryKey the primary key of this testray case
-	*/
+	 * Sets the primary key of this testray case.
+	 *
+	 * @param primaryKey the primary key of this testray case
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_testrayCase.setPrimaryKey(primaryKey);
@@ -620,116 +594,143 @@ public class TestrayCaseWrapper implements TestrayCase,
 	}
 
 	/**
-	* Sets the priority of this testray case.
-	*
-	* @param priority the priority of this testray case
-	*/
+	 * Sets the priority of this testray case.
+	 *
+	 * @param priority the priority of this testray case
+	 */
 	@Override
 	public void setPriority(int priority) {
 		_testrayCase.setPriority(priority);
 	}
 
 	/**
-	* Sets the steps of this testray case.
-	*
-	* @param steps the steps of this testray case
-	*/
+	 * Sets the steps of this testray case.
+	 *
+	 * @param steps the steps of this testray case
+	 */
 	@Override
-	public void setSteps(java.lang.String steps) {
+	public void setSteps(String steps) {
 		_testrayCase.setSteps(steps);
 	}
 
 	/**
-	* Sets the steps type of this testray case.
-	*
-	* @param stepsType the steps type of this testray case
-	*/
+	 * Sets the steps type of this testray case.
+	 *
+	 * @param stepsType the steps type of this testray case
+	 */
 	@Override
-	public void setStepsType(java.lang.String stepsType) {
+	public void setStepsType(String stepsType) {
 		_testrayCase.setStepsType(stepsType);
 	}
 
 	/**
-	* Sets the testray case ID of this testray case.
-	*
-	* @param testrayCaseId the testray case ID of this testray case
-	*/
+	 * Sets the testray case ID of this testray case.
+	 *
+	 * @param testrayCaseId the testray case ID of this testray case
+	 */
 	@Override
 	public void setTestrayCaseId(long testrayCaseId) {
 		_testrayCase.setTestrayCaseId(testrayCaseId);
 	}
 
 	/**
-	* Sets the testray case type ID of this testray case.
-	*
-	* @param testrayCaseTypeId the testray case type ID of this testray case
-	*/
+	 * Sets the testray case type ID of this testray case.
+	 *
+	 * @param testrayCaseTypeId the testray case type ID of this testray case
+	 */
 	@Override
 	public void setTestrayCaseTypeId(long testrayCaseTypeId) {
 		_testrayCase.setTestrayCaseTypeId(testrayCaseTypeId);
 	}
 
 	/**
-	* Sets the testray component ID of this testray case.
-	*
-	* @param testrayComponentId the testray component ID of this testray case
-	*/
+	 * Sets the testray component ID of this testray case.
+	 *
+	 * @param testrayComponentId the testray component ID of this testray case
+	 */
 	@Override
 	public void setTestrayComponentId(long testrayComponentId) {
 		_testrayCase.setTestrayComponentId(testrayComponentId);
 	}
 
 	/**
-	* Sets the testray project ID of this testray case.
-	*
-	* @param testrayProjectId the testray project ID of this testray case
-	*/
+	 * Sets the testray project ID of this testray case.
+	 *
+	 * @param testrayProjectId the testray project ID of this testray case
+	 */
 	@Override
 	public void setTestrayProjectId(long testrayProjectId) {
 		_testrayCase.setTestrayProjectId(testrayProjectId);
 	}
 
 	/**
-	* Sets the user ID of this testray case.
-	*
-	* @param userId the user ID of this testray case
-	*/
+	 * Sets the user ID of this testray case.
+	 *
+	 * @param userId the user ID of this testray case
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_testrayCase.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this testray case.
-	*
-	* @param userName the user name of this testray case
-	*/
+	 * Sets the user name of this testray case.
+	 *
+	 * @param userName the user name of this testray case
+	 */
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_testrayCase.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this testray case.
-	*
-	* @param userUuid the user uuid of this testray case
-	*/
+	 * Sets the user uuid of this testray case.
+	 *
+	 * @param userUuid the user uuid of this testray case
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_testrayCase.setUserUuid(userUuid);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public com.liferay.portal.kernel.model.CacheModel<TestrayCase>
+		toCacheModel() {
+
+		return _testrayCase.toCacheModel();
+	}
+
+	@Override
+	public TestrayCase toEscapedModel() {
+		return new TestrayCaseWrapper(_testrayCase.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _testrayCase.toString();
+	}
+
+	@Override
+	public TestrayCase toUnescapedModel() {
+		return new TestrayCaseWrapper(_testrayCase.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _testrayCase.toXmlString();
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof TestrayCaseWrapper)) {
+		if (!(object instanceof TestrayCaseWrapper)) {
 			return false;
 		}
 
-		TestrayCaseWrapper testrayCaseWrapper = (TestrayCaseWrapper)obj;
+		TestrayCaseWrapper testrayCaseWrapper = (TestrayCaseWrapper)object;
 
 		if (Objects.equals(_testrayCase, testrayCaseWrapper._testrayCase)) {
 			return true;
@@ -759,4 +760,5 @@ public class TestrayCaseWrapper implements TestrayCase,
 	}
 
 	private final TestrayCase _testrayCase;
+
 }

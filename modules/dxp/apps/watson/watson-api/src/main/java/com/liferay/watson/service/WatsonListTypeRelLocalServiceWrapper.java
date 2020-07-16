@@ -36,6 +36,10 @@ public class WatsonListTypeRelLocalServiceWrapper
 	/**
 	 * Adds the watson list type rel to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonListTypeRelLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonListTypeRel the watson list type rel
 	 * @return the watson list type rel that was added
 	 */
@@ -76,6 +80,10 @@ public class WatsonListTypeRelLocalServiceWrapper
 	/**
 	 * Deletes the watson list type rel with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonListTypeRelLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonListTypeRelId the primary key of the watson list type rel
 	 * @return the watson list type rel that was removed
 	 * @throws PortalException if a watson list type rel with the primary key could not be found
@@ -91,6 +99,10 @@ public class WatsonListTypeRelLocalServiceWrapper
 
 	/**
 	 * Deletes the watson list type rel from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonListTypeRelLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonListTypeRel the watson list type rel
 	 * @return the watson list type rel that was removed
@@ -284,6 +296,10 @@ public class WatsonListTypeRelLocalServiceWrapper
 
 	/**
 	 * Updates the watson list type rel in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonListTypeRelLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonListTypeRel the watson list type rel
 	 * @return the watson list type rel that was updated

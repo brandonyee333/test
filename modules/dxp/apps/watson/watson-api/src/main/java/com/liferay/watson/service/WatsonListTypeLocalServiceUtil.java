@@ -41,6 +41,10 @@ public class WatsonListTypeLocalServiceUtil {
 	/**
 	 * Adds the watson list type to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonListTypeLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonListType the watson list type
 	 * @return the watson list type that was added
 	 */
@@ -76,6 +80,10 @@ public class WatsonListTypeLocalServiceUtil {
 	/**
 	 * Deletes the watson list type with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonListTypeLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonListTypeId the primary key of the watson list type
 	 * @return the watson list type that was removed
 	 * @throws PortalException if a watson list type with the primary key could not be found
@@ -89,6 +97,10 @@ public class WatsonListTypeLocalServiceUtil {
 
 	/**
 	 * Deletes the watson list type from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonListTypeLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonListType the watson list type
 	 * @return the watson list type that was removed
@@ -264,6 +276,10 @@ public class WatsonListTypeLocalServiceUtil {
 
 	/**
 	 * Updates the watson list type in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonListTypeLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonListType the watson list type
 	 * @return the watson list type that was updated

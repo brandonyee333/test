@@ -1,27 +1,24 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.service.persistence.impl;
-
-import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.testray.exception.NoSuchTestrayFactorCategoryException;
 import com.liferay.osb.testray.model.TestrayFactorCategory;
 import com.liferay.osb.testray.model.impl.TestrayFactorCategoryImpl;
 import com.liferay.osb.testray.model.impl.TestrayFactorCategoryModelImpl;
 import com.liferay.osb.testray.service.persistence.TestrayFactorCategoryPersistence;
-
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -31,17 +28,18 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.service.persistence.CompanyProvider;
-import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -61,48 +59,34 @@ import java.util.Set;
  * </p>
  *
  * @author Ethan Bustad
- * @see TestrayFactorCategoryPersistence
- * @see com.liferay.osb.testray.service.persistence.TestrayFactorCategoryUtil
  * @generated
  */
-@ProviderType
-public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<TestrayFactorCategory>
+public class TestrayFactorCategoryPersistenceImpl
+	extends BasePersistenceImpl<TestrayFactorCategory>
 	implements TestrayFactorCategoryPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link TestrayFactorCategoryUtil} to access the testray factor category persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use <code>TestrayFactorCategoryUtil</code> to access the testray factor category persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = TestrayFactorCategoryImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayFactorCategoryModelImpl.FINDER_CACHE_ENABLED,
-			TestrayFactorCategoryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayFactorCategoryModelImpl.FINDER_CACHE_ENABLED,
-			TestrayFactorCategoryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayFactorCategoryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
-	public static final FinderPath FINDER_PATH_FETCH_BY_G_N = new FinderPath(TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayFactorCategoryModelImpl.FINDER_CACHE_ENABLED,
-			TestrayFactorCategoryImpl.class, FINDER_CLASS_NAME_ENTITY,
-			"fetchByG_N",
-			new String[] { Long.class.getName(), String.class.getName() },
-			TestrayFactorCategoryModelImpl.GROUPID_COLUMN_BITMASK |
-			TestrayFactorCategoryModelImpl.NAME_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_G_N = new FinderPath(TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayFactorCategoryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_N",
-			new String[] { Long.class.getName(), String.class.getName() });
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		TestrayFactorCategoryImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
+	private FinderPath _finderPathFetchByG_N;
+	private FinderPath _finderPathCountByG_N;
 
 	/**
-	 * Returns the testray factor category where groupId = &#63; and name = &#63; or throws a {@link NoSuchTestrayFactorCategoryException} if it could not be found.
+	 * Returns the testray factor category where groupId = &#63; and name = &#63; or throws a <code>NoSuchTestrayFactorCategoryException</code> if it could not be found.
 	 *
 	 * @param groupId the group ID
 	 * @param name the name
@@ -112,26 +96,27 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 	@Override
 	public TestrayFactorCategory findByG_N(long groupId, String name)
 		throws NoSuchTestrayFactorCategoryException {
+
 		TestrayFactorCategory testrayFactorCategory = fetchByG_N(groupId, name);
 
 		if (testrayFactorCategory == null) {
-			StringBundler msg = new StringBundler(6);
+			StringBundler sb = new StringBundler(6);
 
-			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			msg.append("groupId=");
-			msg.append(groupId);
+			sb.append("groupId=");
+			sb.append(groupId);
 
-			msg.append(", name=");
-			msg.append(name);
+			sb.append(", name=");
+			sb.append(name);
 
-			msg.append(StringPool.CLOSE_CURLY_BRACE);
+			sb.append("}");
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(msg.toString());
+				_log.debug(sb.toString());
 			}
 
-			throw new NoSuchTestrayFactorCategoryException(msg.toString());
+			throw new NoSuchTestrayFactorCategoryException(sb.toString());
 		}
 
 		return testrayFactorCategory;
@@ -154,73 +139,81 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 	 *
 	 * @param groupId the group ID
 	 * @param name the name
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching testray factor category, or <code>null</code> if a matching testray factor category could not be found
 	 */
 	@Override
-	public TestrayFactorCategory fetchByG_N(long groupId, String name,
-		boolean retrieveFromCache) {
-		Object[] finderArgs = new Object[] { groupId, name };
+	public TestrayFactorCategory fetchByG_N(
+		long groupId, String name, boolean useFinderCache) {
+
+		name = Objects.toString(name, "");
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {groupId, name};
+		}
 
 		Object result = null;
 
-		if (retrieveFromCache) {
-			result = finderCache.getResult(FINDER_PATH_FETCH_BY_G_N,
-					finderArgs, this);
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByG_N, finderArgs, this);
 		}
 
 		if (result instanceof TestrayFactorCategory) {
-			TestrayFactorCategory testrayFactorCategory = (TestrayFactorCategory)result;
+			TestrayFactorCategory testrayFactorCategory =
+				(TestrayFactorCategory)result;
 
 			if ((groupId != testrayFactorCategory.getGroupId()) ||
-					!Objects.equals(name, testrayFactorCategory.getName())) {
+				!Objects.equals(name, testrayFactorCategory.getName())) {
+
 				result = null;
 			}
 		}
 
 		if (result == null) {
-			StringBundler query = new StringBundler(4);
+			StringBundler sb = new StringBundler(4);
 
-			query.append(_SQL_SELECT_TESTRAYFACTORCATEGORY_WHERE);
+			sb.append(_SQL_SELECT_TESTRAYFACTORCATEGORY_WHERE);
 
-			query.append(_FINDER_COLUMN_G_N_GROUPID_2);
+			sb.append(_FINDER_COLUMN_G_N_GROUPID_2);
 
 			boolean bindName = false;
 
-			if (name == null) {
-				query.append(_FINDER_COLUMN_G_N_NAME_1);
-			}
-			else if (name.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_G_N_NAME_3);
+			if (name.isEmpty()) {
+				sb.append(_FINDER_COLUMN_G_N_NAME_3);
 			}
 			else {
 				bindName = true;
 
-				query.append(_FINDER_COLUMN_G_N_NAME_2);
+				sb.append(_FINDER_COLUMN_G_N_NAME_2);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(groupId);
+				queryPos.add(groupId);
 
 				if (bindName) {
-					qPos.add(name);
+					queryPos.add(name);
 				}
 
-				List<TestrayFactorCategory> list = q.list();
+				List<TestrayFactorCategory> list = query.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(FINDER_PATH_FETCH_BY_G_N, finderArgs,
-						list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByG_N, finderArgs, list);
+					}
 				}
 				else {
 					TestrayFactorCategory testrayFactorCategory = list.get(0);
@@ -228,19 +221,14 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 					result = testrayFactorCategory;
 
 					cacheResult(testrayFactorCategory);
-
-					if ((testrayFactorCategory.getGroupId() != groupId) ||
-							(testrayFactorCategory.getName() == null) ||
-							!testrayFactorCategory.getName().equals(name)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_G_N,
-							finderArgs, testrayFactorCategory);
-					}
 				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_FETCH_BY_G_N, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(_finderPathFetchByG_N, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -265,6 +253,7 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 	@Override
 	public TestrayFactorCategory removeByG_N(long groupId, String name)
 		throws NoSuchTestrayFactorCategoryException {
+
 		TestrayFactorCategory testrayFactorCategory = findByG_N(groupId, name);
 
 		return remove(testrayFactorCategory);
@@ -279,58 +268,57 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 	 */
 	@Override
 	public int countByG_N(long groupId, String name) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_N;
+		name = Objects.toString(name, "");
 
-		Object[] finderArgs = new Object[] { groupId, name };
+		FinderPath finderPath = _finderPathCountByG_N;
+
+		Object[] finderArgs = new Object[] {groupId, name};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(3);
+			StringBundler sb = new StringBundler(3);
 
-			query.append(_SQL_COUNT_TESTRAYFACTORCATEGORY_WHERE);
+			sb.append(_SQL_COUNT_TESTRAYFACTORCATEGORY_WHERE);
 
-			query.append(_FINDER_COLUMN_G_N_GROUPID_2);
+			sb.append(_FINDER_COLUMN_G_N_GROUPID_2);
 
 			boolean bindName = false;
 
-			if (name == null) {
-				query.append(_FINDER_COLUMN_G_N_NAME_1);
-			}
-			else if (name.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_G_N_NAME_3);
+			if (name.isEmpty()) {
+				sb.append(_FINDER_COLUMN_G_N_NAME_3);
 			}
 			else {
 				bindName = true;
 
-				query.append(_FINDER_COLUMN_G_N_NAME_2);
+				sb.append(_FINDER_COLUMN_G_N_NAME_2);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(groupId);
+				queryPos.add(groupId);
 
 				if (bindName) {
-					qPos.add(name);
+					queryPos.add(name);
 				}
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -340,10 +328,14 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_G_N_GROUPID_2 = "testrayFactorCategory.groupId = ? AND ";
-	private static final String _FINDER_COLUMN_G_N_NAME_1 = "testrayFactorCategory.name IS NULL";
-	private static final String _FINDER_COLUMN_G_N_NAME_2 = "testrayFactorCategory.name = ?";
-	private static final String _FINDER_COLUMN_G_N_NAME_3 = "(testrayFactorCategory.name IS NULL OR testrayFactorCategory.name = '')";
+	private static final String _FINDER_COLUMN_G_N_GROUPID_2 =
+		"testrayFactorCategory.groupId = ? AND ";
+
+	private static final String _FINDER_COLUMN_G_N_NAME_2 =
+		"testrayFactorCategory.name = ?";
+
+	private static final String _FINDER_COLUMN_G_N_NAME_3 =
+		"(testrayFactorCategory.name IS NULL OR testrayFactorCategory.name = '')";
 
 	public TestrayFactorCategoryPersistenceImpl() {
 		setModelClass(TestrayFactorCategory.class);
@@ -356,15 +348,18 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 	 */
 	@Override
 	public void cacheResult(TestrayFactorCategory testrayFactorCategory) {
-		entityCache.putResult(TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
 			TestrayFactorCategoryImpl.class,
 			testrayFactorCategory.getPrimaryKey(), testrayFactorCategory);
 
-		finderCache.putResult(FINDER_PATH_FETCH_BY_G_N,
+		finderCache.putResult(
+			_finderPathFetchByG_N,
 			new Object[] {
 				testrayFactorCategory.getGroupId(),
 				testrayFactorCategory.getName()
-			}, testrayFactorCategory);
+			},
+			testrayFactorCategory);
 
 		testrayFactorCategory.resetOriginalValues();
 	}
@@ -375,12 +370,17 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 	 * @param testrayFactorCategories the testray factor categories
 	 */
 	@Override
-	public void cacheResult(List<TestrayFactorCategory> testrayFactorCategories) {
-		for (TestrayFactorCategory testrayFactorCategory : testrayFactorCategories) {
+	public void cacheResult(
+		List<TestrayFactorCategory> testrayFactorCategories) {
+
+		for (TestrayFactorCategory testrayFactorCategory :
+				testrayFactorCategories) {
+
 			if (entityCache.getResult(
-						TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
-						TestrayFactorCategoryImpl.class,
-						testrayFactorCategory.getPrimaryKey()) == null) {
+					TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
+					TestrayFactorCategoryImpl.class,
+					testrayFactorCategory.getPrimaryKey()) == null) {
+
 				cacheResult(testrayFactorCategory);
 			}
 			else {
@@ -393,7 +393,7 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 	 * Clears the cache for all testray factor categories.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -409,72 +409,93 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 	 * Clears the cache for the testray factor category.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(TestrayFactorCategory testrayFactorCategory) {
-		entityCache.removeResult(TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(
+			TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
 			TestrayFactorCategoryImpl.class,
 			testrayFactorCategory.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
-		clearUniqueFindersCache((TestrayFactorCategoryModelImpl)testrayFactorCategory,
-			true);
+		clearUniqueFindersCache(
+			(TestrayFactorCategoryModelImpl)testrayFactorCategory, true);
 	}
 
 	@Override
-	public void clearCache(List<TestrayFactorCategory> testrayFactorCategories) {
+	public void clearCache(
+		List<TestrayFactorCategory> testrayFactorCategories) {
+
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
-		for (TestrayFactorCategory testrayFactorCategory : testrayFactorCategories) {
-			entityCache.removeResult(TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
+		for (TestrayFactorCategory testrayFactorCategory :
+				testrayFactorCategories) {
+
+			entityCache.removeResult(
+				TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
 				TestrayFactorCategoryImpl.class,
 				testrayFactorCategory.getPrimaryKey());
 
-			clearUniqueFindersCache((TestrayFactorCategoryModelImpl)testrayFactorCategory,
-				true);
+			clearUniqueFindersCache(
+				(TestrayFactorCategoryModelImpl)testrayFactorCategory, true);
+		}
+	}
+
+	public void clearCache(Set<Serializable> primaryKeys) {
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (Serializable primaryKey : primaryKeys) {
+			entityCache.removeResult(
+				TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
+				TestrayFactorCategoryImpl.class, primaryKey);
 		}
 	}
 
 	protected void cacheUniqueFindersCache(
 		TestrayFactorCategoryModelImpl testrayFactorCategoryModelImpl) {
-		Object[] args = new Object[] {
-				testrayFactorCategoryModelImpl.getGroupId(),
-				testrayFactorCategoryModelImpl.getName()
-			};
 
-		finderCache.putResult(FINDER_PATH_COUNT_BY_G_N, args, Long.valueOf(1),
-			false);
-		finderCache.putResult(FINDER_PATH_FETCH_BY_G_N, args,
-			testrayFactorCategoryModelImpl, false);
+		Object[] args = new Object[] {
+			testrayFactorCategoryModelImpl.getGroupId(),
+			testrayFactorCategoryModelImpl.getName()
+		};
+
+		finderCache.putResult(
+			_finderPathCountByG_N, args, Long.valueOf(1), false);
+		finderCache.putResult(
+			_finderPathFetchByG_N, args, testrayFactorCategoryModelImpl, false);
 	}
 
 	protected void clearUniqueFindersCache(
 		TestrayFactorCategoryModelImpl testrayFactorCategoryModelImpl,
 		boolean clearCurrent) {
+
 		if (clearCurrent) {
 			Object[] args = new Object[] {
-					testrayFactorCategoryModelImpl.getGroupId(),
-					testrayFactorCategoryModelImpl.getName()
-				};
+				testrayFactorCategoryModelImpl.getGroupId(),
+				testrayFactorCategoryModelImpl.getName()
+			};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_N, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_G_N, args);
+			finderCache.removeResult(_finderPathCountByG_N, args);
+			finderCache.removeResult(_finderPathFetchByG_N, args);
 		}
 
 		if ((testrayFactorCategoryModelImpl.getColumnBitmask() &
-				FINDER_PATH_FETCH_BY_G_N.getColumnBitmask()) != 0) {
-			Object[] args = new Object[] {
-					testrayFactorCategoryModelImpl.getOriginalGroupId(),
-					testrayFactorCategoryModelImpl.getOriginalName()
-				};
+			 _finderPathFetchByG_N.getColumnBitmask()) != 0) {
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_N, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_G_N, args);
+			Object[] args = new Object[] {
+				testrayFactorCategoryModelImpl.getOriginalGroupId(),
+				testrayFactorCategoryModelImpl.getOriginalName()
+			};
+
+			finderCache.removeResult(_finderPathCountByG_N, args);
+			finderCache.removeResult(_finderPathFetchByG_N, args);
 		}
 	}
 
@@ -486,12 +507,13 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 	 */
 	@Override
 	public TestrayFactorCategory create(long testrayFactorCategoryId) {
-		TestrayFactorCategory testrayFactorCategory = new TestrayFactorCategoryImpl();
+		TestrayFactorCategory testrayFactorCategory =
+			new TestrayFactorCategoryImpl();
 
 		testrayFactorCategory.setNew(true);
 		testrayFactorCategory.setPrimaryKey(testrayFactorCategoryId);
 
-		testrayFactorCategory.setCompanyId(companyProvider.getCompanyId());
+		testrayFactorCategory.setCompanyId(CompanyThreadLocal.getCompanyId());
 
 		return testrayFactorCategory;
 	}
@@ -506,6 +528,7 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 	@Override
 	public TestrayFactorCategory remove(long testrayFactorCategoryId)
 		throws NoSuchTestrayFactorCategoryException {
+
 		return remove((Serializable)testrayFactorCategoryId);
 	}
 
@@ -519,30 +542,32 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 	@Override
 	public TestrayFactorCategory remove(Serializable primaryKey)
 		throws NoSuchTestrayFactorCategoryException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			TestrayFactorCategory testrayFactorCategory = (TestrayFactorCategory)session.get(TestrayFactorCategoryImpl.class,
-					primaryKey);
+			TestrayFactorCategory testrayFactorCategory =
+				(TestrayFactorCategory)session.get(
+					TestrayFactorCategoryImpl.class, primaryKey);
 
 			if (testrayFactorCategory == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchTestrayFactorCategoryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchTestrayFactorCategoryException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(testrayFactorCategory);
 		}
-		catch (NoSuchTestrayFactorCategoryException nsee) {
-			throw nsee;
+		catch (NoSuchTestrayFactorCategoryException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -552,7 +577,6 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 	@Override
 	protected TestrayFactorCategory removeImpl(
 		TestrayFactorCategory testrayFactorCategory) {
-		testrayFactorCategory = toUnwrappedModel(testrayFactorCategory);
 
 		Session session = null;
 
@@ -560,16 +584,17 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 			session = openSession();
 
 			if (!session.contains(testrayFactorCategory)) {
-				testrayFactorCategory = (TestrayFactorCategory)session.get(TestrayFactorCategoryImpl.class,
-						testrayFactorCategory.getPrimaryKeyObj());
+				testrayFactorCategory = (TestrayFactorCategory)session.get(
+					TestrayFactorCategoryImpl.class,
+					testrayFactorCategory.getPrimaryKeyObj());
 			}
 
 			if (testrayFactorCategory != null) {
 				session.delete(testrayFactorCategory);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -585,13 +610,33 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 	@Override
 	public TestrayFactorCategory updateImpl(
 		TestrayFactorCategory testrayFactorCategory) {
-		testrayFactorCategory = toUnwrappedModel(testrayFactorCategory);
 
 		boolean isNew = testrayFactorCategory.isNew();
 
-		TestrayFactorCategoryModelImpl testrayFactorCategoryModelImpl = (TestrayFactorCategoryModelImpl)testrayFactorCategory;
+		if (!(testrayFactorCategory instanceof
+				TestrayFactorCategoryModelImpl)) {
 
-		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(testrayFactorCategory.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(
+					testrayFactorCategory);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in testrayFactorCategory proxy " +
+						invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom TestrayFactorCategory implementation " +
+					testrayFactorCategory.getClass());
+		}
+
+		TestrayFactorCategoryModelImpl testrayFactorCategoryModelImpl =
+			(TestrayFactorCategoryModelImpl)testrayFactorCategory;
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -600,8 +645,8 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 				testrayFactorCategory.setCreateDate(now);
 			}
 			else {
-				testrayFactorCategory.setCreateDate(serviceContext.getCreateDate(
-						now));
+				testrayFactorCategory.setCreateDate(
+					serviceContext.getCreateDate(now));
 			}
 		}
 
@@ -610,8 +655,8 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 				testrayFactorCategory.setModifiedDate(now);
 			}
 			else {
-				testrayFactorCategory.setModifiedDate(serviceContext.getModifiedDate(
-						now));
+				testrayFactorCategory.setModifiedDate(
+					serviceContext.getModifiedDate(now));
 			}
 		}
 
@@ -626,11 +671,12 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 				testrayFactorCategory.setNew(false);
 			}
 			else {
-				testrayFactorCategory = (TestrayFactorCategory)session.merge(testrayFactorCategory);
+				testrayFactorCategory = (TestrayFactorCategory)session.merge(
+					testrayFactorCategory);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -641,16 +687,17 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 		if (!TestrayFactorCategoryModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else
-		 if (isNew) {
-			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
-				FINDER_ARGS_EMPTY);
+		else if (isNew) {
+			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
 			TestrayFactorCategoryImpl.class,
-			testrayFactorCategory.getPrimaryKey(), testrayFactorCategory, false);
+			testrayFactorCategory.getPrimaryKey(), testrayFactorCategory,
+			false);
 
 		clearUniqueFindersCache(testrayFactorCategoryModelImpl, false);
 		cacheUniqueFindersCache(testrayFactorCategoryModelImpl);
@@ -660,31 +707,8 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 		return testrayFactorCategory;
 	}
 
-	protected TestrayFactorCategory toUnwrappedModel(
-		TestrayFactorCategory testrayFactorCategory) {
-		if (testrayFactorCategory instanceof TestrayFactorCategoryImpl) {
-			return testrayFactorCategory;
-		}
-
-		TestrayFactorCategoryImpl testrayFactorCategoryImpl = new TestrayFactorCategoryImpl();
-
-		testrayFactorCategoryImpl.setNew(testrayFactorCategory.isNew());
-		testrayFactorCategoryImpl.setPrimaryKey(testrayFactorCategory.getPrimaryKey());
-
-		testrayFactorCategoryImpl.setTestrayFactorCategoryId(testrayFactorCategory.getTestrayFactorCategoryId());
-		testrayFactorCategoryImpl.setGroupId(testrayFactorCategory.getGroupId());
-		testrayFactorCategoryImpl.setCompanyId(testrayFactorCategory.getCompanyId());
-		testrayFactorCategoryImpl.setUserId(testrayFactorCategory.getUserId());
-		testrayFactorCategoryImpl.setUserName(testrayFactorCategory.getUserName());
-		testrayFactorCategoryImpl.setCreateDate(testrayFactorCategory.getCreateDate());
-		testrayFactorCategoryImpl.setModifiedDate(testrayFactorCategory.getModifiedDate());
-		testrayFactorCategoryImpl.setName(testrayFactorCategory.getName());
-
-		return testrayFactorCategoryImpl;
-	}
-
 	/**
-	 * Returns the testray factor category with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the testray factor category with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the testray factor category
 	 * @return the testray factor category
@@ -693,22 +717,24 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 	@Override
 	public TestrayFactorCategory findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchTestrayFactorCategoryException {
-		TestrayFactorCategory testrayFactorCategory = fetchByPrimaryKey(primaryKey);
+
+		TestrayFactorCategory testrayFactorCategory = fetchByPrimaryKey(
+			primaryKey);
 
 		if (testrayFactorCategory == null) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchTestrayFactorCategoryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchTestrayFactorCategoryException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return testrayFactorCategory;
 	}
 
 	/**
-	 * Returns the testray factor category with the primary key or throws a {@link NoSuchTestrayFactorCategoryException} if it could not be found.
+	 * Returns the testray factor category with the primary key or throws a <code>NoSuchTestrayFactorCategoryException</code> if it could not be found.
 	 *
 	 * @param testrayFactorCategoryId the primary key of the testray factor category
 	 * @return the testray factor category
@@ -717,6 +743,7 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 	@Override
 	public TestrayFactorCategory findByPrimaryKey(long testrayFactorCategoryId)
 		throws NoSuchTestrayFactorCategoryException {
+
 		return findByPrimaryKey((Serializable)testrayFactorCategoryId);
 	}
 
@@ -728,14 +755,16 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 	 */
 	@Override
 	public TestrayFactorCategory fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
-				TestrayFactorCategoryImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayFactorCategoryImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
 		}
 
-		TestrayFactorCategory testrayFactorCategory = (TestrayFactorCategory)serializable;
+		TestrayFactorCategory testrayFactorCategory =
+			(TestrayFactorCategory)serializable;
 
 		if (testrayFactorCategory == null) {
 			Session session = null;
@@ -743,22 +772,24 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 			try {
 				session = openSession();
 
-				testrayFactorCategory = (TestrayFactorCategory)session.get(TestrayFactorCategoryImpl.class,
-						primaryKey);
+				testrayFactorCategory = (TestrayFactorCategory)session.get(
+					TestrayFactorCategoryImpl.class, primaryKey);
 
 				if (testrayFactorCategory != null) {
 					cacheResult(testrayFactorCategory);
 				}
 				else {
-					entityCache.putResult(TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
 						TestrayFactorCategoryImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
-				entityCache.removeResult(TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception exception) {
+				entityCache.removeResult(
+					TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
 					TestrayFactorCategoryImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -775,25 +806,30 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 	 * @return the testray factor category, or <code>null</code> if a testray factor category with the primary key could not be found
 	 */
 	@Override
-	public TestrayFactorCategory fetchByPrimaryKey(long testrayFactorCategoryId) {
+	public TestrayFactorCategory fetchByPrimaryKey(
+		long testrayFactorCategoryId) {
+
 		return fetchByPrimaryKey((Serializable)testrayFactorCategoryId);
 	}
 
 	@Override
 	public Map<Serializable, TestrayFactorCategory> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, TestrayFactorCategory> map = new HashMap<Serializable, TestrayFactorCategory>();
+		Map<Serializable, TestrayFactorCategory> map =
+			new HashMap<Serializable, TestrayFactorCategory>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
 
 			Serializable primaryKey = iterator.next();
 
-			TestrayFactorCategory testrayFactorCategory = fetchByPrimaryKey(primaryKey);
+			TestrayFactorCategory testrayFactorCategory = fetchByPrimaryKey(
+				primaryKey);
 
 			if (testrayFactorCategory != null) {
 				map.put(primaryKey, testrayFactorCategory);
@@ -805,8 +841,9 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
-					TestrayFactorCategoryImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
+				TestrayFactorCategoryImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -826,46 +863,51 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler sb = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
-		query.append(_SQL_SELECT_TESTRAYFACTORCATEGORY_WHERE_PKS_IN);
+		sb.append(_SQL_SELECT_TESTRAYFACTORCATEGORY_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append((long)primaryKey);
+			sb.append((long)primaryKey);
 
-			query.append(StringPool.COMMA);
+			sb.append(",");
 		}
 
-		query.setIndex(query.index() - 1);
+		sb.setIndex(sb.index() - 1);
 
-		query.append(StringPool.CLOSE_PARENTHESIS);
+		sb.append(")");
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query q = session.createQuery(sql);
+			Query query = session.createQuery(sql);
 
-			for (TestrayFactorCategory testrayFactorCategory : (List<TestrayFactorCategory>)q.list()) {
-				map.put(testrayFactorCategory.getPrimaryKeyObj(),
+			for (TestrayFactorCategory testrayFactorCategory :
+					(List<TestrayFactorCategory>)query.list()) {
+
+				map.put(
+					testrayFactorCategory.getPrimaryKeyObj(),
 					testrayFactorCategory);
 
 				cacheResult(testrayFactorCategory);
 
-				uncachedPrimaryKeys.remove(testrayFactorCategory.getPrimaryKeyObj());
+				uncachedPrimaryKeys.remove(
+					testrayFactorCategory.getPrimaryKeyObj());
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
 					TestrayFactorCategoryImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -888,7 +930,7 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 	 * Returns a range of all the testray factor categories.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestrayFactorCategoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayFactorCategoryModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray factor categories
@@ -904,7 +946,7 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 	 * Returns an ordered range of all the testray factor categories.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestrayFactorCategoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayFactorCategoryModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray factor categories
@@ -913,8 +955,10 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 	 * @return the ordered range of testray factor categories
 	 */
 	@Override
-	public List<TestrayFactorCategory> findAll(int start, int end,
+	public List<TestrayFactorCategory> findAll(
+		int start, int end,
 		OrderByComparator<TestrayFactorCategory> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -922,62 +966,63 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 	 * Returns an ordered range of all the testray factor categories.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TestrayFactorCategoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayFactorCategoryModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray factor categories
 	 * @param end the upper bound of the range of testray factor categories (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of testray factor categories
 	 */
 	@Override
-	public List<TestrayFactorCategory> findAll(int start, int end,
+	public List<TestrayFactorCategory> findAll(
+		int start, int end,
 		OrderByComparator<TestrayFactorCategory> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+		boolean useFinderCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-			finderArgs = FINDER_ARGS_EMPTY;
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-			finderArgs = new Object[] { start, end, orderByComparator };
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindAll;
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<TestrayFactorCategory> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<TestrayFactorCategory>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<TestrayFactorCategory>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
-				query.append(_SQL_SELECT_TESTRAYFACTORCATEGORY);
+				sb.append(_SQL_SELECT_TESTRAYFACTORCATEGORY);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
-				sql = query.toString();
+				sql = sb.toString();
 			}
 			else {
 				sql = _SQL_SELECT_TESTRAYFACTORCATEGORY;
 
-				if (pagination) {
-					sql = sql.concat(TestrayFactorCategoryModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(TestrayFactorCategoryModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -985,29 +1030,23 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<TestrayFactorCategory>)QueryUtil.list(q,
-							getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<TestrayFactorCategory>)QueryUtil.list(q,
-							getDialect(), start, end);
-				}
+				list = (List<TestrayFactorCategory>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1035,8 +1074,8 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -1044,18 +1083,19 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(_SQL_COUNT_TESTRAYFACTORCATEGORY);
+				Query query = session.createQuery(
+					_SQL_COUNT_TESTRAYFACTORCATEGORY);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
-					FINDER_ARGS_EMPTY);
+			catch (Exception exception) {
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1074,6 +1114,39 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 	 * Initializes the testray factor category persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(
+			TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayFactorCategoryModelImpl.FINDER_CACHE_ENABLED,
+			TestrayFactorCategoryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayFactorCategoryModelImpl.FINDER_CACHE_ENABLED,
+			TestrayFactorCategoryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+			new String[0]);
+
+		_finderPathCountAll = new FinderPath(
+			TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayFactorCategoryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
+
+		_finderPathFetchByG_N = new FinderPath(
+			TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayFactorCategoryModelImpl.FINDER_CACHE_ENABLED,
+			TestrayFactorCategoryImpl.class, FINDER_CLASS_NAME_ENTITY,
+			"fetchByG_N",
+			new String[] {Long.class.getName(), String.class.getName()},
+			TestrayFactorCategoryModelImpl.GROUPID_COLUMN_BITMASK |
+			TestrayFactorCategoryModelImpl.NAME_COLUMN_BITMASK);
+
+		_finderPathCountByG_N = new FinderPath(
+			TestrayFactorCategoryModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayFactorCategoryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_N",
+			new String[] {Long.class.getName(), String.class.getName()});
 	}
 
 	public void destroy() {
@@ -1083,19 +1156,37 @@ public class TestrayFactorCategoryPersistenceImpl extends BasePersistenceImpl<Te
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@ServiceReference(type = CompanyProviderWrapper.class)
-	protected CompanyProvider companyProvider;
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_TESTRAYFACTORCATEGORY = "SELECT testrayFactorCategory FROM TestrayFactorCategory testrayFactorCategory";
-	private static final String _SQL_SELECT_TESTRAYFACTORCATEGORY_WHERE_PKS_IN = "SELECT testrayFactorCategory FROM TestrayFactorCategory testrayFactorCategory WHERE testrayFactorCategoryId IN (";
-	private static final String _SQL_SELECT_TESTRAYFACTORCATEGORY_WHERE = "SELECT testrayFactorCategory FROM TestrayFactorCategory testrayFactorCategory WHERE ";
-	private static final String _SQL_COUNT_TESTRAYFACTORCATEGORY = "SELECT COUNT(testrayFactorCategory) FROM TestrayFactorCategory testrayFactorCategory";
-	private static final String _SQL_COUNT_TESTRAYFACTORCATEGORY_WHERE = "SELECT COUNT(testrayFactorCategory) FROM TestrayFactorCategory testrayFactorCategory WHERE ";
-	private static final String _ORDER_BY_ENTITY_ALIAS = "testrayFactorCategory.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No TestrayFactorCategory exists with the primary key ";
-	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No TestrayFactorCategory exists with the key {";
-	private static final Log _log = LogFactoryUtil.getLog(TestrayFactorCategoryPersistenceImpl.class);
+
+	private static final String _SQL_SELECT_TESTRAYFACTORCATEGORY =
+		"SELECT testrayFactorCategory FROM TestrayFactorCategory testrayFactorCategory";
+
+	private static final String _SQL_SELECT_TESTRAYFACTORCATEGORY_WHERE_PKS_IN =
+		"SELECT testrayFactorCategory FROM TestrayFactorCategory testrayFactorCategory WHERE testrayFactorCategoryId IN (";
+
+	private static final String _SQL_SELECT_TESTRAYFACTORCATEGORY_WHERE =
+		"SELECT testrayFactorCategory FROM TestrayFactorCategory testrayFactorCategory WHERE ";
+
+	private static final String _SQL_COUNT_TESTRAYFACTORCATEGORY =
+		"SELECT COUNT(testrayFactorCategory) FROM TestrayFactorCategory testrayFactorCategory";
+
+	private static final String _SQL_COUNT_TESTRAYFACTORCATEGORY_WHERE =
+		"SELECT COUNT(testrayFactorCategory) FROM TestrayFactorCategory testrayFactorCategory WHERE ";
+
+	private static final String _ORDER_BY_ENTITY_ALIAS =
+		"testrayFactorCategory.";
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No TestrayFactorCategory exists with the primary key ";
+
+	private static final String _NO_SUCH_ENTITY_WITH_KEY =
+		"No TestrayFactorCategory exists with the key {";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		TestrayFactorCategoryPersistenceImpl.class);
+
 }

@@ -64,6 +64,10 @@ public interface WatsonVehicleAuditLocalService
 	/**
 	 * Adds the watson vehicle audit to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonVehicleAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonVehicleAudit the watson vehicle audit
 	 * @return the watson vehicle audit that was added
 	 */
@@ -91,6 +95,10 @@ public interface WatsonVehicleAuditLocalService
 	/**
 	 * Deletes the watson vehicle audit with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonVehicleAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonVehicleAuditId the primary key of the watson vehicle audit
 	 * @return the watson vehicle audit that was removed
 	 * @throws PortalException if a watson vehicle audit with the primary key could not be found
@@ -102,6 +110,10 @@ public interface WatsonVehicleAuditLocalService
 
 	/**
 	 * Deletes the watson vehicle audit from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonVehicleAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonVehicleAudit the watson vehicle audit
 	 * @return the watson vehicle audit that was removed
@@ -236,6 +248,10 @@ public interface WatsonVehicleAuditLocalService
 
 	/**
 	 * Updates the watson vehicle audit in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonVehicleAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonVehicleAudit the watson vehicle audit
 	 * @return the watson vehicle audit that was updated

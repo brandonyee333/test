@@ -50,6 +50,10 @@ public class TicketAttachmentLocalServiceWrapper
 	/**
 	 * Adds the ticket attachment to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect TicketAttachmentLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param ticketAttachment the ticket attachment
 	 * @return the ticket attachment that was added
 	 */
@@ -92,6 +96,10 @@ public class TicketAttachmentLocalServiceWrapper
 	/**
 	 * Deletes the ticket attachment with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect TicketAttachmentLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param ticketAttachmentId the primary key of the ticket attachment
 	 * @return the ticket attachment that was removed
 	 * @throws PortalException if a ticket attachment with the primary key could not be found
@@ -107,6 +115,10 @@ public class TicketAttachmentLocalServiceWrapper
 
 	/**
 	 * Deletes the ticket attachment from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect TicketAttachmentLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param ticketAttachment the ticket attachment
 	 * @return the ticket attachment that was removed
@@ -311,6 +323,10 @@ public class TicketAttachmentLocalServiceWrapper
 
 	/**
 	 * Updates the ticket attachment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect TicketAttachmentLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param ticketAttachment the ticket attachment
 	 * @return the ticket attachment that was updated

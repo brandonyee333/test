@@ -38,6 +38,10 @@ public class WatsonRelationshipAuditLocalServiceWrapper
 	/**
 	 * Adds the watson relationship audit to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonRelationshipAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonRelationshipAudit the watson relationship audit
 	 * @return the watson relationship audit that was added
 	 */
@@ -80,6 +84,10 @@ public class WatsonRelationshipAuditLocalServiceWrapper
 	/**
 	 * Deletes the watson relationship audit with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonRelationshipAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonRelationshipAuditId the primary key of the watson relationship audit
 	 * @return the watson relationship audit that was removed
 	 * @throws PortalException if a watson relationship audit with the primary key could not be found
@@ -95,6 +103,10 @@ public class WatsonRelationshipAuditLocalServiceWrapper
 
 	/**
 	 * Deletes the watson relationship audit from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonRelationshipAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonRelationshipAudit the watson relationship audit
 	 * @return the watson relationship audit that was removed
@@ -294,6 +306,10 @@ public class WatsonRelationshipAuditLocalServiceWrapper
 
 	/**
 	 * Updates the watson relationship audit in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonRelationshipAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonRelationshipAudit the watson relationship audit
 	 * @return the watson relationship audit that was updated

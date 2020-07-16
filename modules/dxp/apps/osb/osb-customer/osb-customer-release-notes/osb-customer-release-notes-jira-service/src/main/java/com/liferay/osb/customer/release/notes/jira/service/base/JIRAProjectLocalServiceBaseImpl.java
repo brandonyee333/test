@@ -80,6 +80,10 @@ public abstract class JIRAProjectLocalServiceBaseImpl
 	/**
 	 * Adds the jira project to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect JIRAProjectLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param jiraProject the jira project
 	 * @return the jira project that was added
 	 */
@@ -106,6 +110,10 @@ public abstract class JIRAProjectLocalServiceBaseImpl
 	/**
 	 * Deletes the jira project with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect JIRAProjectLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param jiraProjectId the primary key of the jira project
 	 * @return the jira project that was removed
 	 * @throws PortalException if a jira project with the primary key could not be found
@@ -120,6 +128,10 @@ public abstract class JIRAProjectLocalServiceBaseImpl
 
 	/**
 	 * Deletes the jira project from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect JIRAProjectLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param jiraProject the jira project
 	 * @return the jira project that was removed
@@ -331,6 +343,10 @@ public abstract class JIRAProjectLocalServiceBaseImpl
 
 	/**
 	 * Updates the jira project in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect JIRAProjectLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param jiraProject the jira project
 	 * @return the jira project that was updated

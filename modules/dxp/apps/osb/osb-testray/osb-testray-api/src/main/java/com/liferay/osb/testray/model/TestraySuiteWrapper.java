@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,9 +34,9 @@ import java.util.Objects;
  * @see TestraySuite
  * @generated
  */
-@ProviderType
-public class TestraySuiteWrapper implements TestraySuite,
-	ModelWrapper<TestraySuite> {
+public class TestraySuiteWrapper
+	implements ModelWrapper<TestraySuite>, TestraySuite {
+
 	public TestraySuiteWrapper(TestraySuite testraySuite) {
 		_testraySuite = testraySuite;
 	}
@@ -143,13 +140,158 @@ public class TestraySuiteWrapper implements TestraySuite,
 	}
 
 	@Override
-	public TestraySuite toEscapedModel() {
-		return new TestraySuiteWrapper(_testraySuite.toEscapedModel());
+	public Object clone() {
+		return new TestraySuiteWrapper((TestraySuite)_testraySuite.clone());
 	}
 
 	@Override
-	public TestraySuite toUnescapedModel() {
-		return new TestraySuiteWrapper(_testraySuite.toUnescapedModel());
+	public int compareTo(TestraySuite testraySuite) {
+		return _testraySuite.compareTo(testraySuite);
+	}
+
+	/**
+	 * Returns the case parameters of this testray suite.
+	 *
+	 * @return the case parameters of this testray suite
+	 */
+	@Override
+	public String getCaseParameters() {
+		return _testraySuite.getCaseParameters();
+	}
+
+	/**
+	 * Returns the company ID of this testray suite.
+	 *
+	 * @return the company ID of this testray suite
+	 */
+	@Override
+	public long getCompanyId() {
+		return _testraySuite.getCompanyId();
+	}
+
+	/**
+	 * Returns the create date of this testray suite.
+	 *
+	 * @return the create date of this testray suite
+	 */
+	@Override
+	public Date getCreateDate() {
+		return _testraySuite.getCreateDate();
+	}
+
+	/**
+	 * Returns the description of this testray suite.
+	 *
+	 * @return the description of this testray suite
+	 */
+	@Override
+	public String getDescription() {
+		return _testraySuite.getDescription();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _testraySuite.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the group ID of this testray suite.
+	 *
+	 * @return the group ID of this testray suite
+	 */
+	@Override
+	public long getGroupId() {
+		return _testraySuite.getGroupId();
+	}
+
+	/**
+	 * Returns the modified date of this testray suite.
+	 *
+	 * @return the modified date of this testray suite
+	 */
+	@Override
+	public Date getModifiedDate() {
+		return _testraySuite.getModifiedDate();
+	}
+
+	/**
+	 * Returns the name of this testray suite.
+	 *
+	 * @return the name of this testray suite
+	 */
+	@Override
+	public String getName() {
+		return _testraySuite.getName();
+	}
+
+	/**
+	 * Returns the primary key of this testray suite.
+	 *
+	 * @return the primary key of this testray suite
+	 */
+	@Override
+	public long getPrimaryKey() {
+		return _testraySuite.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _testraySuite.getPrimaryKeyObj();
+	}
+
+	/**
+	 * Returns the testray project ID of this testray suite.
+	 *
+	 * @return the testray project ID of this testray suite
+	 */
+	@Override
+	public long getTestrayProjectId() {
+		return _testraySuite.getTestrayProjectId();
+	}
+
+	/**
+	 * Returns the testray suite ID of this testray suite.
+	 *
+	 * @return the testray suite ID of this testray suite
+	 */
+	@Override
+	public long getTestraySuiteId() {
+		return _testraySuite.getTestraySuiteId();
+	}
+
+	/**
+	 * Returns the user ID of this testray suite.
+	 *
+	 * @return the user ID of this testray suite
+	 */
+	@Override
+	public long getUserId() {
+		return _testraySuite.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this testray suite.
+	 *
+	 * @return the user name of this testray suite
+	 */
+	@Override
+	public String getUserName() {
+		return _testraySuite.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this testray suite.
+	 *
+	 * @return the user uuid of this testray suite
+	 */
+	@Override
+	public String getUserUuid() {
+		return _testraySuite.getUserUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _testraySuite.hashCode();
 	}
 
 	@Override
@@ -168,176 +310,6 @@ public class TestraySuiteWrapper implements TestraySuite,
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _testraySuite.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<TestraySuite> toCacheModel() {
-		return _testraySuite.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(TestraySuite testraySuite) {
-		return _testraySuite.compareTo(testraySuite);
-	}
-
-	@Override
-	public int hashCode() {
-		return _testraySuite.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _testraySuite.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new TestraySuiteWrapper((TestraySuite)_testraySuite.clone());
-	}
-
-	/**
-	* Returns the case parameters of this testray suite.
-	*
-	* @return the case parameters of this testray suite
-	*/
-	@Override
-	public java.lang.String getCaseParameters() {
-		return _testraySuite.getCaseParameters();
-	}
-
-	/**
-	* Returns the description of this testray suite.
-	*
-	* @return the description of this testray suite
-	*/
-	@Override
-	public java.lang.String getDescription() {
-		return _testraySuite.getDescription();
-	}
-
-	/**
-	* Returns the name of this testray suite.
-	*
-	* @return the name of this testray suite
-	*/
-	@Override
-	public java.lang.String getName() {
-		return _testraySuite.getName();
-	}
-
-	/**
-	* Returns the user name of this testray suite.
-	*
-	* @return the user name of this testray suite
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _testraySuite.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this testray suite.
-	*
-	* @return the user uuid of this testray suite
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _testraySuite.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _testraySuite.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _testraySuite.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this testray suite.
-	*
-	* @return the create date of this testray suite
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _testraySuite.getCreateDate();
-	}
-
-	/**
-	* Returns the modified date of this testray suite.
-	*
-	* @return the modified date of this testray suite
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _testraySuite.getModifiedDate();
-	}
-
-	/**
-	* Returns the company ID of this testray suite.
-	*
-	* @return the company ID of this testray suite
-	*/
-	@Override
-	public long getCompanyId() {
-		return _testraySuite.getCompanyId();
-	}
-
-	/**
-	* Returns the group ID of this testray suite.
-	*
-	* @return the group ID of this testray suite
-	*/
-	@Override
-	public long getGroupId() {
-		return _testraySuite.getGroupId();
-	}
-
-	/**
-	* Returns the primary key of this testray suite.
-	*
-	* @return the primary key of this testray suite
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _testraySuite.getPrimaryKey();
-	}
-
-	/**
-	* Returns the testray project ID of this testray suite.
-	*
-	* @return the testray project ID of this testray suite
-	*/
-	@Override
-	public long getTestrayProjectId() {
-		return _testraySuite.getTestrayProjectId();
-	}
-
-	/**
-	* Returns the testray suite ID of this testray suite.
-	*
-	* @return the testray suite ID of this testray suite
-	*/
-	@Override
-	public long getTestraySuiteId() {
-		return _testraySuite.getTestraySuiteId();
-	}
-
-	/**
-	* Returns the user ID of this testray suite.
-	*
-	* @return the user ID of this testray suite
-	*/
-	@Override
-	public long getUserId() {
-		return _testraySuite.getUserId();
-	}
-
-	@Override
 	public void persist() {
 		_testraySuite.persist();
 	}
@@ -348,43 +320,50 @@ public class TestraySuiteWrapper implements TestraySuite,
 	}
 
 	/**
-	* Sets the case parameters of this testray suite.
-	*
-	* @param caseParameters the case parameters of this testray suite
-	*/
+	 * Sets the case parameters of this testray suite.
+	 *
+	 * @param caseParameters the case parameters of this testray suite
+	 */
 	@Override
-	public void setCaseParameters(java.lang.String caseParameters) {
+	public void setCaseParameters(String caseParameters) {
 		_testraySuite.setCaseParameters(caseParameters);
 	}
 
 	/**
-	* Sets the company ID of this testray suite.
-	*
-	* @param companyId the company ID of this testray suite
-	*/
+	 * Sets the company ID of this testray suite.
+	 *
+	 * @param companyId the company ID of this testray suite
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_testraySuite.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this testray suite.
-	*
-	* @param createDate the create date of this testray suite
-	*/
+	 * Sets the create date of this testray suite.
+	 *
+	 * @param createDate the create date of this testray suite
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_testraySuite.setCreateDate(createDate);
 	}
 
 	/**
-	* Sets the description of this testray suite.
-	*
-	* @param description the description of this testray suite
-	*/
+	 * Sets the description of this testray suite.
+	 *
+	 * @param description the description of this testray suite
+	 */
 	@Override
-	public void setDescription(java.lang.String description) {
+	public void setDescription(String description) {
 		_testraySuite.setDescription(description);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
+		_testraySuite.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -393,43 +372,37 @@ public class TestraySuiteWrapper implements TestraySuite,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_testraySuite.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_testraySuite.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
-	* Sets the group ID of this testray suite.
-	*
-	* @param groupId the group ID of this testray suite
-	*/
+	 * Sets the group ID of this testray suite.
+	 *
+	 * @param groupId the group ID of this testray suite
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_testraySuite.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the modified date of this testray suite.
-	*
-	* @param modifiedDate the modified date of this testray suite
-	*/
+	 * Sets the modified date of this testray suite.
+	 *
+	 * @param modifiedDate the modified date of this testray suite
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_testraySuite.setModifiedDate(modifiedDate);
 	}
 
 	/**
-	* Sets the name of this testray suite.
-	*
-	* @param name the name of this testray suite
-	*/
+	 * Sets the name of this testray suite.
+	 *
+	 * @param name the name of this testray suite
+	 */
 	@Override
-	public void setName(java.lang.String name) {
+	public void setName(String name) {
 		_testraySuite.setName(name);
 	}
 
@@ -439,10 +412,10 @@ public class TestraySuiteWrapper implements TestraySuite,
 	}
 
 	/**
-	* Sets the primary key of this testray suite.
-	*
-	* @param primaryKey the primary key of this testray suite
-	*/
+	 * Sets the primary key of this testray suite.
+	 *
+	 * @param primaryKey the primary key of this testray suite
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_testraySuite.setPrimaryKey(primaryKey);
@@ -454,66 +427,93 @@ public class TestraySuiteWrapper implements TestraySuite,
 	}
 
 	/**
-	* Sets the testray project ID of this testray suite.
-	*
-	* @param testrayProjectId the testray project ID of this testray suite
-	*/
+	 * Sets the testray project ID of this testray suite.
+	 *
+	 * @param testrayProjectId the testray project ID of this testray suite
+	 */
 	@Override
 	public void setTestrayProjectId(long testrayProjectId) {
 		_testraySuite.setTestrayProjectId(testrayProjectId);
 	}
 
 	/**
-	* Sets the testray suite ID of this testray suite.
-	*
-	* @param testraySuiteId the testray suite ID of this testray suite
-	*/
+	 * Sets the testray suite ID of this testray suite.
+	 *
+	 * @param testraySuiteId the testray suite ID of this testray suite
+	 */
 	@Override
 	public void setTestraySuiteId(long testraySuiteId) {
 		_testraySuite.setTestraySuiteId(testraySuiteId);
 	}
 
 	/**
-	* Sets the user ID of this testray suite.
-	*
-	* @param userId the user ID of this testray suite
-	*/
+	 * Sets the user ID of this testray suite.
+	 *
+	 * @param userId the user ID of this testray suite
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_testraySuite.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this testray suite.
-	*
-	* @param userName the user name of this testray suite
-	*/
+	 * Sets the user name of this testray suite.
+	 *
+	 * @param userName the user name of this testray suite
+	 */
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_testraySuite.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this testray suite.
-	*
-	* @param userUuid the user uuid of this testray suite
-	*/
+	 * Sets the user uuid of this testray suite.
+	 *
+	 * @param userUuid the user uuid of this testray suite
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_testraySuite.setUserUuid(userUuid);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public com.liferay.portal.kernel.model.CacheModel<TestraySuite>
+		toCacheModel() {
+
+		return _testraySuite.toCacheModel();
+	}
+
+	@Override
+	public TestraySuite toEscapedModel() {
+		return new TestraySuiteWrapper(_testraySuite.toEscapedModel());
+	}
+
+	@Override
+	public String toString() {
+		return _testraySuite.toString();
+	}
+
+	@Override
+	public TestraySuite toUnescapedModel() {
+		return new TestraySuiteWrapper(_testraySuite.toUnescapedModel());
+	}
+
+	@Override
+	public String toXmlString() {
+		return _testraySuite.toXmlString();
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof TestraySuiteWrapper)) {
+		if (!(object instanceof TestraySuiteWrapper)) {
 			return false;
 		}
 
-		TestraySuiteWrapper testraySuiteWrapper = (TestraySuiteWrapper)obj;
+		TestraySuiteWrapper testraySuiteWrapper = (TestraySuiteWrapper)object;
 
 		if (Objects.equals(_testraySuite, testraySuiteWrapper._testraySuite)) {
 			return true;
@@ -543,4 +543,5 @@ public class TestraySuiteWrapper implements TestraySuite,
 	}
 
 	private final TestraySuite _testraySuite;
+
 }

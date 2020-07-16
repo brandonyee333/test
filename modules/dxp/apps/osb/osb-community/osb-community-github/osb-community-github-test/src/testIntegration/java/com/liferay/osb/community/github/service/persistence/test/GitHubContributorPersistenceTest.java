@@ -1,27 +1,25 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.community.github.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-
 import com.liferay.osb.community.github.exception.NoSuchGitHubContributorException;
 import com.liferay.osb.community.github.model.GitHubContributor;
 import com.liferay.osb.community.github.service.GitHubContributorLocalServiceUtil;
 import com.liferay.osb.community.github.service.persistence.GitHubContributorPersistence;
 import com.liferay.osb.community.github.service.persistence.GitHubContributorUtil;
-
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -39,15 +37,6 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-
-import org.junit.runner.RunWith;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -57,16 +46,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 /**
  * @generated
  */
 @RunWith(Arquillian.class)
 public class GitHubContributorPersistenceTest {
+
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
-			PersistenceTestRule.INSTANCE,
-			new TransactionalTestRule(Propagation.REQUIRED,
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
+			new TransactionalTestRule(
+				Propagation.REQUIRED,
 				"com.liferay.osb.community.github.service"));
 
 	@Before
@@ -106,7 +106,9 @@ public class GitHubContributorPersistenceTest {
 
 		_persistence.remove(newGitHubContributor);
 
-		GitHubContributor existingGitHubContributor = _persistence.fetchByPrimaryKey(newGitHubContributor.getPrimaryKey());
+		GitHubContributor existingGitHubContributor =
+			_persistence.fetchByPrimaryKey(
+				newGitHubContributor.getPrimaryKey());
 
 		Assert.assertNull(existingGitHubContributor);
 	}
@@ -144,31 +146,41 @@ public class GitHubContributorPersistenceTest {
 
 		_gitHubContributors.add(_persistence.update(newGitHubContributor));
 
-		GitHubContributor existingGitHubContributor = _persistence.findByPrimaryKey(newGitHubContributor.getPrimaryKey());
+		GitHubContributor existingGitHubContributor =
+			_persistence.findByPrimaryKey(newGitHubContributor.getPrimaryKey());
 
-		Assert.assertEquals(existingGitHubContributor.getGitHubContributorId(),
+		Assert.assertEquals(
+			existingGitHubContributor.getGitHubContributorId(),
 			newGitHubContributor.getGitHubContributorId());
-		Assert.assertEquals(existingGitHubContributor.getCompanyId(),
+		Assert.assertEquals(
+			existingGitHubContributor.getCompanyId(),
 			newGitHubContributor.getCompanyId());
-		Assert.assertEquals(existingGitHubContributor.getUserId(),
+		Assert.assertEquals(
+			existingGitHubContributor.getUserId(),
 			newGitHubContributor.getUserId());
-		Assert.assertEquals(existingGitHubContributor.getUserName(),
+		Assert.assertEquals(
+			existingGitHubContributor.getUserName(),
 			newGitHubContributor.getUserName());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingGitHubContributor.getCreateDate()),
+		Assert.assertEquals(
+			Time.getShortTimestamp(existingGitHubContributor.getCreateDate()),
 			Time.getShortTimestamp(newGitHubContributor.getCreateDate()));
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingGitHubContributor.getModifiedDate()),
+		Assert.assertEquals(
+			Time.getShortTimestamp(existingGitHubContributor.getModifiedDate()),
 			Time.getShortTimestamp(newGitHubContributor.getModifiedDate()));
-		Assert.assertEquals(existingGitHubContributor.getGitHubRepositoryId(),
+		Assert.assertEquals(
+			existingGitHubContributor.getGitHubRepositoryId(),
 			newGitHubContributor.getGitHubRepositoryId());
-		Assert.assertEquals(existingGitHubContributor.getName(),
+		Assert.assertEquals(
+			existingGitHubContributor.getName(),
 			newGitHubContributor.getName());
-		Assert.assertEquals(existingGitHubContributor.getAvatarURL(),
+		Assert.assertEquals(
+			existingGitHubContributor.getAvatarURL(),
 			newGitHubContributor.getAvatarURL());
-		Assert.assertEquals(existingGitHubContributor.getContributions(),
+		Assert.assertEquals(
+			existingGitHubContributor.getContributions(),
 			newGitHubContributor.getContributions());
-		Assert.assertEquals(existingGitHubContributor.getProfileURL(),
+		Assert.assertEquals(
+			existingGitHubContributor.getProfileURL(),
 			newGitHubContributor.getProfileURL());
 	}
 
@@ -183,7 +195,8 @@ public class GitHubContributorPersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		GitHubContributor newGitHubContributor = addGitHubContributor();
 
-		GitHubContributor existingGitHubContributor = _persistence.findByPrimaryKey(newGitHubContributor.getPrimaryKey());
+		GitHubContributor existingGitHubContributor =
+			_persistence.findByPrimaryKey(newGitHubContributor.getPrimaryKey());
 
 		Assert.assertEquals(existingGitHubContributor, newGitHubContributor);
 	}
@@ -197,23 +210,25 @@ public class GitHubContributorPersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			getOrderByComparator());
+		_persistence.findAll(
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
 	}
 
 	protected OrderByComparator<GitHubContributor> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create("OSBCommunity_GitHubContributor",
-			"gitHubContributorId", true, "companyId", true, "userId", true,
-			"userName", true, "createDate", true, "modifiedDate", true,
-			"gitHubRepositoryId", true, "name", true, "avatarURL", true,
-			"contributions", true, "profileURL", true);
+		return OrderByComparatorFactoryUtil.create(
+			"OSBCommunity_GitHubContributor", "gitHubContributorId", true,
+			"companyId", true, "userId", true, "userName", true, "createDate",
+			true, "modifiedDate", true, "gitHubRepositoryId", true, "name",
+			true, "avatarURL", true, "contributions", true, "profileURL", true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		GitHubContributor newGitHubContributor = addGitHubContributor();
 
-		GitHubContributor existingGitHubContributor = _persistence.fetchByPrimaryKey(newGitHubContributor.getPrimaryKey());
+		GitHubContributor existingGitHubContributor =
+			_persistence.fetchByPrimaryKey(
+				newGitHubContributor.getPrimaryKey());
 
 		Assert.assertEquals(existingGitHubContributor, newGitHubContributor);
 	}
@@ -222,7 +237,8 @@ public class GitHubContributorPersistenceTest {
 	public void testFetchByPrimaryKeyMissing() throws Exception {
 		long pk = RandomTestUtil.nextLong();
 
-		GitHubContributor missingGitHubContributor = _persistence.fetchByPrimaryKey(pk);
+		GitHubContributor missingGitHubContributor =
+			_persistence.fetchByPrimaryKey(pk);
 
 		Assert.assertNull(missingGitHubContributor);
 	}
@@ -230,6 +246,7 @@ public class GitHubContributorPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
+
 		GitHubContributor newGitHubContributor1 = addGitHubContributor();
 		GitHubContributor newGitHubContributor2 = addGitHubContributor();
 
@@ -238,18 +255,22 @@ public class GitHubContributorPersistenceTest {
 		primaryKeys.add(newGitHubContributor1.getPrimaryKey());
 		primaryKeys.add(newGitHubContributor2.getPrimaryKey());
 
-		Map<Serializable, GitHubContributor> gitHubContributors = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, GitHubContributor> gitHubContributors =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(2, gitHubContributors.size());
-		Assert.assertEquals(newGitHubContributor1,
+		Assert.assertEquals(
+			newGitHubContributor1,
 			gitHubContributors.get(newGitHubContributor1.getPrimaryKey()));
-		Assert.assertEquals(newGitHubContributor2,
+		Assert.assertEquals(
+			newGitHubContributor2,
 			gitHubContributors.get(newGitHubContributor2.getPrimaryKey()));
 	}
 
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
+
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -259,7 +280,8 @@ public class GitHubContributorPersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, GitHubContributor> gitHubContributors = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, GitHubContributor> gitHubContributors =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(gitHubContributors.isEmpty());
 	}
@@ -267,6 +289,7 @@ public class GitHubContributorPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
+
 		GitHubContributor newGitHubContributor = addGitHubContributor();
 
 		long pk = RandomTestUtil.nextLong();
@@ -276,36 +299,39 @@ public class GitHubContributorPersistenceTest {
 		primaryKeys.add(newGitHubContributor.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, GitHubContributor> gitHubContributors = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, GitHubContributor> gitHubContributors =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, gitHubContributors.size());
-		Assert.assertEquals(newGitHubContributor,
+		Assert.assertEquals(
+			newGitHubContributor,
 			gitHubContributors.get(newGitHubContributor.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, GitHubContributor> gitHubContributors = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, GitHubContributor> gitHubContributors =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertTrue(gitHubContributors.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
 		GitHubContributor newGitHubContributor = addGitHubContributor();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newGitHubContributor.getPrimaryKey());
 
-		Map<Serializable, GitHubContributor> gitHubContributors = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, GitHubContributor> gitHubContributors =
+			_persistence.fetchByPrimaryKeys(primaryKeys);
 
 		Assert.assertEquals(1, gitHubContributors.size());
-		Assert.assertEquals(newGitHubContributor,
+		Assert.assertEquals(
+			newGitHubContributor,
 			gitHubContributors.get(newGitHubContributor.getPrimaryKey()));
 	}
 
@@ -313,15 +339,20 @@ public class GitHubContributorPersistenceTest {
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery = GitHubContributorLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			GitHubContributorLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<GitHubContributor>() {
+		actionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod
+				<GitHubContributor>() {
+
 				@Override
 				public void performAction(GitHubContributor gitHubContributor) {
 					Assert.assertNotNull(gitHubContributor);
 
 					count.increment();
 				}
+
 			});
 
 		actionableDynamicQuery.performActions();
@@ -330,17 +361,19 @@ public class GitHubContributorPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting()
-		throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
 		GitHubContributor newGitHubContributor = addGitHubContributor();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(GitHubContributor.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			GitHubContributor.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("gitHubContributorId",
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"gitHubContributorId",
 				newGitHubContributor.getGitHubContributorId()));
 
-		List<GitHubContributor> result = _persistence.findWithDynamicQuery(dynamicQuery);
+		List<GitHubContributor> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
 
 		Assert.assertEquals(1, result.size());
 
@@ -351,32 +384,35 @@ public class GitHubContributorPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(GitHubContributor.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			GitHubContributor.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("gitHubContributorId",
-				RandomTestUtil.nextLong()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"gitHubContributorId", RandomTestUtil.nextLong()));
 
-		List<GitHubContributor> result = _persistence.findWithDynamicQuery(dynamicQuery);
+		List<GitHubContributor> result = _persistence.findWithDynamicQuery(
+			dynamicQuery);
 
 		Assert.assertEquals(0, result.size());
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting()
-		throws Exception {
+	public void testDynamicQueryByProjectionExisting() throws Exception {
 		GitHubContributor newGitHubContributor = addGitHubContributor();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(GitHubContributor.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			GitHubContributor.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property(
-				"gitHubContributorId"));
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.property("gitHubContributorId"));
 
-		Object newGitHubContributorId = newGitHubContributor.getGitHubContributorId();
+		Object newGitHubContributorId =
+			newGitHubContributor.getGitHubContributorId();
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("gitHubContributorId",
-				new Object[] { newGitHubContributorId }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"gitHubContributorId", new Object[] {newGitHubContributorId}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -384,27 +420,29 @@ public class GitHubContributorPersistenceTest {
 
 		Object existingGitHubContributorId = result.get(0);
 
-		Assert.assertEquals(existingGitHubContributorId, newGitHubContributorId);
+		Assert.assertEquals(
+			existingGitHubContributorId, newGitHubContributorId);
 	}
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(GitHubContributor.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			GitHubContributor.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property(
-				"gitHubContributorId"));
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.property("gitHubContributorId"));
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("gitHubContributorId",
-				new Object[] { RandomTestUtil.nextLong() }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"gitHubContributorId",
+				new Object[] {RandomTestUtil.nextLong()}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
 		Assert.assertEquals(0, result.size());
 	}
 
-	protected GitHubContributor addGitHubContributor()
-		throws Exception {
+	protected GitHubContributor addGitHubContributor() throws Exception {
 		long pk = RandomTestUtil.nextLong();
 
 		GitHubContributor gitHubContributor = _persistence.create(pk);
@@ -434,7 +472,9 @@ public class GitHubContributorPersistenceTest {
 		return gitHubContributor;
 	}
 
-	private List<GitHubContributor> _gitHubContributors = new ArrayList<GitHubContributor>();
+	private List<GitHubContributor> _gitHubContributors =
+		new ArrayList<GitHubContributor>();
 	private GitHubContributorPersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
+
 }

@@ -69,6 +69,10 @@ public interface WallEntryLocalService
 	/**
 	 * Adds the wall entry to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WallEntryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param wallEntry the wall entry
 	 * @return the wall entry that was added
 	 */
@@ -96,6 +100,10 @@ public interface WallEntryLocalService
 	/**
 	 * Deletes the wall entry with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WallEntryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param wallEntryId the primary key of the wall entry
 	 * @return the wall entry that was removed
 	 * @throws PortalException if a wall entry with the primary key could not be found
@@ -105,6 +113,10 @@ public interface WallEntryLocalService
 
 	/**
 	 * Deletes the wall entry from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WallEntryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param wallEntry the wall entry
 	 * @return the wall entry that was removed
@@ -256,6 +268,10 @@ public interface WallEntryLocalService
 
 	/**
 	 * Updates the wall entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WallEntryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param wallEntry the wall entry
 	 * @return the wall entry that was updated

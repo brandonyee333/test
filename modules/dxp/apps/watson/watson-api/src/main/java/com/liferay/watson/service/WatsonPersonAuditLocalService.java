@@ -64,6 +64,10 @@ public interface WatsonPersonAuditLocalService
 	/**
 	 * Adds the watson person audit to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonPersonAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonPersonAudit the watson person audit
 	 * @return the watson person audit that was added
 	 */
@@ -90,6 +94,10 @@ public interface WatsonPersonAuditLocalService
 	/**
 	 * Deletes the watson person audit with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonPersonAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonPersonAuditId the primary key of the watson person audit
 	 * @return the watson person audit that was removed
 	 * @throws PortalException if a watson person audit with the primary key could not be found
@@ -100,6 +108,10 @@ public interface WatsonPersonAuditLocalService
 
 	/**
 	 * Deletes the watson person audit from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonPersonAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonPersonAudit the watson person audit
 	 * @return the watson person audit that was removed
@@ -233,6 +245,10 @@ public interface WatsonPersonAuditLocalService
 
 	/**
 	 * Updates the watson person audit in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonPersonAuditLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonPersonAudit the watson person audit
 	 * @return the watson person audit that was updated

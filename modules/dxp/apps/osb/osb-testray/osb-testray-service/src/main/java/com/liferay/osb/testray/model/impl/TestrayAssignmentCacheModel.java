@@ -1,27 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.testray.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.testray.model.TestrayAssignment;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -34,25 +30,27 @@ import java.util.Date;
  * The cache model class for representing TestrayAssignment in entity cache.
  *
  * @author Ethan Bustad
- * @see TestrayAssignment
  * @generated
  */
-@ProviderType
-public class TestrayAssignmentCacheModel implements CacheModel<TestrayAssignment>,
-	Externalizable {
+public class TestrayAssignmentCacheModel
+	implements CacheModel<TestrayAssignment>, Externalizable {
+
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof TestrayAssignmentCacheModel)) {
+		if (!(object instanceof TestrayAssignmentCacheModel)) {
 			return false;
 		}
 
-		TestrayAssignmentCacheModel testrayAssignmentCacheModel = (TestrayAssignmentCacheModel)obj;
+		TestrayAssignmentCacheModel testrayAssignmentCacheModel =
+			(TestrayAssignmentCacheModel)object;
 
-		if (testrayAssignmentId == testrayAssignmentCacheModel.testrayAssignmentId) {
+		if (testrayAssignmentId ==
+				testrayAssignmentCacheModel.testrayAssignmentId) {
+
 			return true;
 		}
 
@@ -95,7 +93,8 @@ public class TestrayAssignmentCacheModel implements CacheModel<TestrayAssignment
 
 	@Override
 	public TestrayAssignment toEntityModel() {
-		TestrayAssignmentImpl testrayAssignmentImpl = new TestrayAssignmentImpl();
+		TestrayAssignmentImpl testrayAssignmentImpl =
+			new TestrayAssignmentImpl();
 
 		testrayAssignmentImpl.setTestrayAssignmentId(testrayAssignmentId);
 		testrayAssignmentImpl.setGroupId(groupId);
@@ -103,7 +102,7 @@ public class TestrayAssignmentCacheModel implements CacheModel<TestrayAssignment
 		testrayAssignmentImpl.setUserId(userId);
 
 		if (userName == null) {
-			testrayAssignmentImpl.setUserName(StringPool.BLANK);
+			testrayAssignmentImpl.setUserName("");
 		}
 		else {
 			testrayAssignmentImpl.setUserName(userName);
@@ -153,8 +152,7 @@ public class TestrayAssignmentCacheModel implements CacheModel<TestrayAssignment
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(testrayAssignmentId);
 
 		objectOutput.writeLong(groupId);
@@ -164,7 +162,7 @@ public class TestrayAssignmentCacheModel implements CacheModel<TestrayAssignment
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -190,4 +188,5 @@ public class TestrayAssignmentCacheModel implements CacheModel<TestrayAssignment
 	public long assignedUserId;
 	public long classNameId;
 	public long classPK;
+
 }

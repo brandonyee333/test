@@ -1,24 +1,21 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.asset.sharing.service.persistence;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -26,9 +23,9 @@ import java.io.Serializable;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
-public class AssetSharingEntryPK implements Comparable<AssetSharingEntryPK>,
-	Serializable {
+public class AssetSharingEntryPK
+	implements Comparable<AssetSharingEntryPK>, Serializable {
+
 	public long classNameId;
 	public long classPK;
 	public long sharedToClassNameId;
@@ -37,8 +34,10 @@ public class AssetSharingEntryPK implements Comparable<AssetSharingEntryPK>,
 	public AssetSharingEntryPK() {
 	}
 
-	public AssetSharingEntryPK(long classNameId, long classPK,
-		long sharedToClassNameId, long sharedToClassPK) {
+	public AssetSharingEntryPK(
+		long classNameId, long classPK, long sharedToClassNameId,
+		long sharedToClassPK) {
+
 		this.classNameId = classNameId;
 		this.classPK = classPK;
 		this.sharedToClassNameId = sharedToClassNameId;
@@ -145,20 +144,21 @@ public class AssetSharingEntryPK implements Comparable<AssetSharingEntryPK>,
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof AssetSharingEntryPK)) {
+		if (!(object instanceof AssetSharingEntryPK)) {
 			return false;
 		}
 
-		AssetSharingEntryPK pk = (AssetSharingEntryPK)obj;
+		AssetSharingEntryPK pk = (AssetSharingEntryPK)object;
 
 		if ((classNameId == pk.classNameId) && (classPK == pk.classPK) &&
-				(sharedToClassNameId == pk.sharedToClassNameId) &&
-				(sharedToClassPK == pk.sharedToClassPK)) {
+			(sharedToClassNameId == pk.sharedToClassNameId) &&
+			(sharedToClassPK == pk.sharedToClassPK)) {
+
 			return true;
 		}
 		else {
@@ -180,34 +180,26 @@ public class AssetSharingEntryPK implements Comparable<AssetSharingEntryPK>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(20);
+		StringBundler sb = new StringBundler(10);
 
-		sb.append(StringPool.OPEN_CURLY_BRACE);
+		sb.append("{");
 
-		sb.append("classNameId");
-		sb.append(StringPool.EQUAL);
+		sb.append("classNameId=");
+
 		sb.append(classNameId);
+		sb.append(", classPK=");
 
-		sb.append(StringPool.COMMA);
-		sb.append(StringPool.SPACE);
-		sb.append("classPK");
-		sb.append(StringPool.EQUAL);
 		sb.append(classPK);
+		sb.append(", sharedToClassNameId=");
 
-		sb.append(StringPool.COMMA);
-		sb.append(StringPool.SPACE);
-		sb.append("sharedToClassNameId");
-		sb.append(StringPool.EQUAL);
 		sb.append(sharedToClassNameId);
+		sb.append(", sharedToClassPK=");
 
-		sb.append(StringPool.COMMA);
-		sb.append(StringPool.SPACE);
-		sb.append("sharedToClassPK");
-		sb.append(StringPool.EQUAL);
 		sb.append(sharedToClassPK);
 
-		sb.append(StringPool.CLOSE_CURLY_BRACE);
+		sb.append("}");
 
 		return sb.toString();
 	}
+
 }

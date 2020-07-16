@@ -35,6 +35,10 @@ public class JIRAIssueLocalServiceWrapper
 	/**
 	 * Adds the jira issue to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect JIRAIssueLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param jiraIssue the jira issue
 	 * @return the jira issue that was added
 	 */
@@ -63,6 +67,10 @@ public class JIRAIssueLocalServiceWrapper
 	/**
 	 * Deletes the jira issue from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect JIRAIssueLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param jiraIssue the jira issue
 	 * @return the jira issue that was removed
 	 */
@@ -77,6 +85,10 @@ public class JIRAIssueLocalServiceWrapper
 
 	/**
 	 * Deletes the jira issue with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect JIRAIssueLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param jiraIssueId the primary key of the jira issue
 	 * @return the jira issue that was removed
@@ -321,6 +333,10 @@ public class JIRAIssueLocalServiceWrapper
 
 	/**
 	 * Updates the jira issue in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect JIRAIssueLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param jiraIssue the jira issue
 	 * @return the jira issue that was updated

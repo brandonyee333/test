@@ -101,6 +101,10 @@ public abstract class WatsonVehicleLocalServiceBaseImpl
 	/**
 	 * Adds the watson vehicle to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonVehicleLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonVehicle the watson vehicle
 	 * @return the watson vehicle that was added
 	 */
@@ -127,6 +131,10 @@ public abstract class WatsonVehicleLocalServiceBaseImpl
 	/**
 	 * Deletes the watson vehicle with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonVehicleLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonVehicleId the primary key of the watson vehicle
 	 * @return the watson vehicle that was removed
 	 * @throws PortalException if a watson vehicle with the primary key could not be found
@@ -141,6 +149,10 @@ public abstract class WatsonVehicleLocalServiceBaseImpl
 
 	/**
 	 * Deletes the watson vehicle from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonVehicleLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonVehicle the watson vehicle
 	 * @return the watson vehicle that was removed
@@ -352,6 +364,10 @@ public abstract class WatsonVehicleLocalServiceBaseImpl
 
 	/**
 	 * Updates the watson vehicle in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonVehicleLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonVehicle the watson vehicle
 	 * @return the watson vehicle that was updated

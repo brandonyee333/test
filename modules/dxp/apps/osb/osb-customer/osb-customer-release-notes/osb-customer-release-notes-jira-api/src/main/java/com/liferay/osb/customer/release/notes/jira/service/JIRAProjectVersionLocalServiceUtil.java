@@ -41,6 +41,10 @@ public class JIRAProjectVersionLocalServiceUtil {
 	/**
 	 * Adds the jira project version to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect JIRAProjectVersionLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param jiraProjectVersion the jira project version
 	 * @return the jira project version that was added
 	 */
@@ -69,6 +73,10 @@ public class JIRAProjectVersionLocalServiceUtil {
 	/**
 	 * Deletes the jira project version from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect JIRAProjectVersionLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param jiraProjectVersion the jira project version
 	 * @return the jira project version that was removed
 	 */
@@ -83,6 +91,10 @@ public class JIRAProjectVersionLocalServiceUtil {
 
 	/**
 	 * Deletes the jira project version with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect JIRAProjectVersionLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param jiraProjectVersionId the primary key of the jira project version
 	 * @return the jira project version that was removed
@@ -283,6 +295,10 @@ public class JIRAProjectVersionLocalServiceUtil {
 
 	/**
 	 * Updates the jira project version in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect JIRAProjectVersionLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param jiraProjectVersion the jira project version
 	 * @return the jira project version that was updated

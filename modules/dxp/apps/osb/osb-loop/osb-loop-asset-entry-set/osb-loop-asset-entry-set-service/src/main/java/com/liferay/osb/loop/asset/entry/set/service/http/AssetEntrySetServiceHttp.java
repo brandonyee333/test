@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.asset.entry.set.service.http;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetServiceUtil;
-
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
@@ -27,10 +24,11 @@ import com.liferay.portal.kernel.util.MethodKey;
 
 /**
  * Provides the HTTP utility for the
- * {@link AssetEntrySetServiceUtil} service utility. The
+ * <code>AssetEntrySetServiceUtil</code> service
+ * utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it requires an additional
- * {@link HttpPrincipal} parameter.
+ * <code>HttpPrincipal</code> parameter.
  *
  * <p>
  * The benefits of using the HTTP utility is that it is fast and allows for
@@ -49,18 +47,18 @@ import com.liferay.portal.kernel.util.MethodKey;
  *
  * @author Brian Wing Shun Chan
  * @see AssetEntrySetServiceSoap
- * @see HttpPrincipal
- * @see AssetEntrySetServiceUtil
  * @generated
  */
-@ProviderType
 public class AssetEntrySetServiceHttp {
+
 	public static com.liferay.portal.kernel.json.JSONObject addFileAttachment(
-		HttpPrincipal httpPrincipal, java.io.File file)
+			HttpPrincipal httpPrincipal, java.io.File file)
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		try {
-			MethodKey methodKey = new MethodKey(AssetEntrySetServiceUtil.class,
-					"addFileAttachment", _addFileAttachmentParameterTypes0);
+			MethodKey methodKey = new MethodKey(
+				AssetEntrySetServiceUtil.class, "addFileAttachment",
+				_addFileAttachmentParameterTypes0);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, file);
 
@@ -69,25 +67,33 @@ public class AssetEntrySetServiceHttp {
 			try {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
 			}
 
 			return (com.liferay.portal.kernel.json.JSONObject)returnObj;
 		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
 
-			throw se;
+			_log.error(systemException, systemException);
+
+			throw systemException;
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(AssetEntrySetServiceHttp.class);
-	private static final Class<?>[] _addFileAttachmentParameterTypes0 = new Class[] {
-			java.io.File.class
-		};
+	private static Log _log = LogFactoryUtil.getLog(
+		AssetEntrySetServiceHttp.class);
+
+	private static final Class<?>[] _addFileAttachmentParameterTypes0 =
+		new Class[] {java.io.File.class};
+
 }

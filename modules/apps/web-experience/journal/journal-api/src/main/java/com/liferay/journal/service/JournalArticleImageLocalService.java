@@ -68,6 +68,10 @@ public interface JournalArticleImageLocalService
 	/**
 	 * Adds the journal article image to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect JournalArticleImageLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param journalArticleImage the journal article image
 	 * @return the journal article image that was added
 	 */
@@ -97,6 +101,10 @@ public interface JournalArticleImageLocalService
 	/**
 	 * Deletes the journal article image from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect JournalArticleImageLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param journalArticleImage the journal article image
 	 * @return the journal article image that was removed
 	 */
@@ -106,6 +114,10 @@ public interface JournalArticleImageLocalService
 
 	/**
 	 * Deletes the journal article image with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect JournalArticleImageLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param articleImageId the primary key of the journal article image
 	 * @return the journal article image that was removed
@@ -272,6 +284,10 @@ public interface JournalArticleImageLocalService
 
 	/**
 	 * Updates the journal article image in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect JournalArticleImageLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param journalArticleImage the journal article image
 	 * @return the journal article image that was updated

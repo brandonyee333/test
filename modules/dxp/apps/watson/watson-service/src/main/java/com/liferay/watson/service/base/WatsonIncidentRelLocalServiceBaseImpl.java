@@ -101,6 +101,10 @@ public abstract class WatsonIncidentRelLocalServiceBaseImpl
 	/**
 	 * Adds the watson incident rel to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonIncidentRelLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonIncidentRel the watson incident rel
 	 * @return the watson incident rel that was added
 	 */
@@ -129,6 +133,10 @@ public abstract class WatsonIncidentRelLocalServiceBaseImpl
 	/**
 	 * Deletes the watson incident rel with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonIncidentRelLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param watsonIncidentRelId the primary key of the watson incident rel
 	 * @return the watson incident rel that was removed
 	 * @throws PortalException if a watson incident rel with the primary key could not be found
@@ -143,6 +151,10 @@ public abstract class WatsonIncidentRelLocalServiceBaseImpl
 
 	/**
 	 * Deletes the watson incident rel from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonIncidentRelLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonIncidentRel the watson incident rel
 	 * @return the watson incident rel that was removed
@@ -360,6 +372,10 @@ public abstract class WatsonIncidentRelLocalServiceBaseImpl
 
 	/**
 	 * Updates the watson incident rel in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect WatsonIncidentRelLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param watsonIncidentRel the watson incident rel
 	 * @return the watson incident rel that was updated
