@@ -30,6 +30,7 @@ enum DataControlTaskType {
 enum JobRunStatus {
 	COMPLETED
 	FAILED
+	PUBLISHED
 	RUNNING
 }
 
