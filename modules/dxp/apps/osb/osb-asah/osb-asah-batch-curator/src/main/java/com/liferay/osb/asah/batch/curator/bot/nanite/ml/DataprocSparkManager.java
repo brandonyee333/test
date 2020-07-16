@@ -113,7 +113,8 @@ public class DataprocSparkManager implements SparkManager {
 			String.format("gs://%s/resources/%s", _bucket, configuration));
 
 		for (String jar : jars) {
-			builder.addJarFileUris(String.format("gs://%s/%s", _bucket, jar));
+			builder.addJarFileUris(
+				String.format("gs://%s/libs/%s", _bucket, jar));
 		}
 
 		builder.setMainPythonFileUri(
