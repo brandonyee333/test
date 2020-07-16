@@ -257,12 +257,6 @@ public class GraphQLRestController {
 		_defineCustomPropertyName(
 			builder, "pageAssets", "results", "PageAssetBag");
 		_defineCustomPropertyName(
-			builder, "parameters", "jobParameters", "Job");
-		_defineCustomPropertyName(
-			builder, "runDataPeriod", "jobRunDataPeriod", "Job");
-		_defineCustomPropertyName(
-			builder, "runFrequency", "jobRunFrequency", "Job");
-		_defineCustomPropertyName(
 			builder, "startedDate", "startedDateISO", "Experiment");
 		_defineCustomPropertyName(
 			builder, "status", "dataExportTaskStatus", "DataExportTask");
@@ -275,7 +269,6 @@ public class GraphQLRestController {
 			builder, "type", "dataExportTaskType", "DataExportTask");
 		_defineCustomPropertyName(
 			builder, "type", "experimentType", "Experiment");
-		_defineCustomPropertyName(builder, "type", "jobType", "Job");
 		_defineCustomPropertyName(builder, "url", "URL", "PageAsset");
 		_defineCustomPropertyName(
 			builder, "variantMetrics", "variantMetricsList",

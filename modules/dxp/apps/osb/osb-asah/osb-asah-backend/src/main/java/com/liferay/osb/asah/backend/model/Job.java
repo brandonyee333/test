@@ -17,6 +17,8 @@ package com.liferay.osb.asah.backend.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.liferay.osb.asah.backend.graphql.GraphQLProperty;
+import com.liferay.osb.asah.backend.graphql.GraphQLType;
 import com.liferay.osb.asah.common.date.DateUtil;
 
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ import java.util.Objects;
 /**
  * @author Marcellus Tavares
  */
+@GraphQLType
 public class Job {
 
 	@Override
@@ -70,21 +73,25 @@ public class Job {
 		return _id;
 	}
 
+	@GraphQLProperty("parameters")
 	@JsonProperty("parameters")
 	public List<JobParameter> getJobParameters() {
 		return _jobParameters;
 	}
 
+	@GraphQLProperty("runDataPeriod")
 	@JsonProperty("runDataPeriod")
 	public JobRunDataPeriod getJobRunDataPeriod() {
 		return _jobRunDataPeriod;
 	}
 
+	@GraphQLProperty("runFrequency")
 	@JsonProperty("runFrequency")
 	public JobRunFrequency getJobRunFrequency() {
 		return _jobRunFrequency;
 	}
 
+	@GraphQLProperty("type")
 	@JsonProperty("type")
 	public JobType getJobType() {
 		return _jobType;
