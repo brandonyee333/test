@@ -21,11 +21,14 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,13 +76,29 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 				"status", "RUNNING"
 			));
 
+		List<String> jars = Collections.emptyList();
+
+		JSONArray parameters = jobJSONObject.getJSONArray("parameters");
+
+		for (int i = 0; i < parameters.length(); i++) {
+			JSONObject jsonObject = parameters.getJSONObject(i);
+
+			if (jsonObject.getString("name").equals("spark:jars")) {
+				String value = jsonObject.getString("value");
+
+				jars = Arrays.asList(value.split(","));
+
+				break;
+			}
+		}
+
 		_sparkManager.submitJob(
 			Arrays.asList(
 				"--elasticsearch-hostname",
 				ServiceConstants.LCP_ENGINE_ELASTICSEARCH_SERVER_IP,
 				"--job-run-id", jobRunJSONObject.getString("id"),
 				"--lcp-project-id", ServiceConstants.LCP_PROJECT_ID),
-			"commerce_application.yaml",
+			"commerce_application.yaml", jars,
 			_jobTypeApplicationClassNameMap.get(jobType),
 			new HashMap<String, String>() {
 				{

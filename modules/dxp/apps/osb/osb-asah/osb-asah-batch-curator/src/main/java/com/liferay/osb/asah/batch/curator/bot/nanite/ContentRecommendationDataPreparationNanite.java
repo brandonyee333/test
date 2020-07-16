@@ -106,7 +106,7 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 				ServiceConstants.LCP_ENGINE_ELASTICSEARCH_SERVER_IP,
 				"--job-run-id", jobRunJSONObject.getString("id"),
 				"--lcp-project-id", ServiceConstants.LCP_PROJECT_ID),
-			"content_recommendation.yaml",
+			"content_recommendation.yaml", Collections.emptyList(),
 			"liferay.content_recommendation.ContentRecommendationApplication",
 			Collections.emptyMap());
 	}
