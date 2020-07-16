@@ -243,7 +243,6 @@ public class GraphQLRestController {
 			builder, "suppressions", "results", "SuppressionBag");
 		_defineCustomPropertyName(
 			builder, "type", "dataExportTaskType", "DataExportTask");
-		_defineCustomPropertyName(builder, "url", "URL", "PageAsset");
 		_defineCustomPropertyName(
 			builder, "variantMetrics", "variantMetricsList",
 			"ExperimentMetrics");

@@ -16,12 +16,16 @@ package com.liferay.osb.asah.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.liferay.osb.asah.backend.graphql.GraphQLProperty;
+import com.liferay.osb.asah.backend.graphql.GraphQLType;
+
 import java.util.List;
 import java.util.Objects;
 
 /**
  * @author Marcellus Tavares
  */
+@GraphQLType
 public class PageAsset {
 
 	@Override
@@ -70,6 +74,7 @@ public class PageAsset {
 		return _title;
 	}
 
+	@GraphQLProperty("url")
 	public String getURL() {
 		return _url;
 	}
