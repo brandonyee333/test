@@ -211,39 +211,39 @@ public class GraphQLRestController {
 			typeWiring -> typeWiring.typeResolver(
 				_buildDXPEntityTypeResolver()));
 
-		_defineCustomPropertyName(
+		_wireGraphQLTypeProperty(
 			builder, "activities", "results", "ActivityBag");
-		_defineCustomPropertyName(
+		_wireGraphQLTypeProperty(
 			builder, "assetMetrics", "results", "AssetMetricBag");
-		_defineCustomPropertyName(
+		_wireGraphQLTypeProperty(
 			builder, "compositions", "results", "CompositionBag");
-		_defineCustomPropertyName(
+		_wireGraphQLTypeProperty(
 			builder, "confidenceInterval", "confidenceIntervalArray",
 			"VariantMetrics");
-		_defineCustomPropertyName(
+		_wireGraphQLTypeProperty(
 			builder, "dashboards", "results", "DashboardBag");
-		_defineCustomPropertyName(
+		_wireGraphQLTypeProperty(
 			builder, "dataControlTasks", "results", "DataControlTaskBag");
-		_defineCustomPropertyName(
+		_wireGraphQLTypeProperty(
 			builder, "dxpEntities", "results", "DXPEntityBag");
-		_defineCustomPropertyName(
+		_wireGraphQLTypeProperty(
 			builder, "dxpVariantId", "DXPVariantId", "VariantMetrics");
-		_defineCustomPropertyName(
+		_wireGraphQLTypeProperty(
 			builder, "experiments", "results", "ExperimentBag");
-		_defineCustomPropertyName(
+		_wireGraphQLTypeProperty(
 			builder, "individuals", "results", "IndividualBag");
-		_defineCustomPropertyName(builder, "jobRuns", "results", "JobRunBag");
-		_defineCustomPropertyName(builder, "jobs", "results", "JobBag");
-		_defineCustomPropertyName(builder, "metrics", "results", "MetricBag");
-		_defineCustomPropertyName(
+		_wireGraphQLTypeProperty(builder, "jobRuns", "results", "JobRunBag");
+		_wireGraphQLTypeProperty(builder, "jobs", "results", "JobBag");
+		_wireGraphQLTypeProperty(builder, "metrics", "results", "MetricBag");
+		_wireGraphQLTypeProperty(
 			builder, "pageAssets", "results", "PageAssetBag");
-		_defineCustomPropertyName(
+		_wireGraphQLTypeProperty(
 			builder, "status", "dataExportTaskStatus", "DataExportTask");
-		_defineCustomPropertyName(
+		_wireGraphQLTypeProperty(
 			builder, "suppressions", "results", "SuppressionBag");
-		_defineCustomPropertyName(
+		_wireGraphQLTypeProperty(
 			builder, "type", "dataExportTaskType", "DataExportTask");
-		_defineCustomPropertyName(
+		_wireGraphQLTypeProperty(
 			builder, "variantMetrics", "variantMetricsList",
 			"ExperimentMetrics");
 
@@ -285,16 +285,6 @@ public class GraphQLRestController {
 			new InputStreamReader(
 				clazz.getResourceAsStream("asah.graphqls"),
 				Charset.defaultCharset()));
-	}
-
-	private void _defineCustomPropertyName(
-		RuntimeWiring.Builder builder, String fieldName, String propertyName,
-		String typeName) {
-
-		builder.type(
-			typeName,
-			typeWiring -> typeWiring.dataFetcher(
-				fieldName, new PropertyDataFetcher(propertyName)));
 	}
 
 	private String _getGraphQLExecutionResult(GraphQLRequest graphQLRequest)
@@ -433,10 +423,20 @@ public class GraphQLRestController {
 				continue;
 			}
 
-			_defineCustomPropertyName(
+			_wireGraphQLTypeProperty(
 				builder, graphQLProperty.value(),
 				StringUtils.removeStart(method.getName(), "get"), typeName);
 		}
+	}
+
+	private void _wireGraphQLTypeProperty(
+		RuntimeWiring.Builder builder, String fieldName, String propertyName,
+		String typeName) {
+
+		builder.type(
+			typeName,
+			typeWiring -> typeWiring.dataFetcher(
+				fieldName, new PropertyDataFetcher(propertyName)));
 	}
 
 	private static final Log _log = LogFactory.getLog(
