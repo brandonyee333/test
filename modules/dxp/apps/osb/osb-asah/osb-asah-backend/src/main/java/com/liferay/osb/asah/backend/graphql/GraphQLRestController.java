@@ -50,6 +50,8 @@ import io.prometheus.client.SimpleTimer;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import java.lang.reflect.Method;
+
 import java.nio.charset.Charset;
 
 import java.time.LocalDate;
@@ -66,15 +68,20 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -274,6 +281,8 @@ public class GraphQLRestController {
 			builder, "variantMetrics", "variantMetricsList",
 			"ExperimentMetrics");
 
+		_wireGraphQLTypeProperties(builder);
+
 		for (DataFetcher dataFetcher : _dataFetchers) {
 			Class<?> clazz = dataFetcher.getClass();
 
@@ -409,6 +418,59 @@ public class GraphQLRestController {
 		}
 
 		return _objectMapper.writeValueAsString(map);
+	}
+
+	private void _wireGraphQLTypeProperties(RuntimeWiring.Builder builder) {
+		ClassPathScanningCandidateComponentProvider
+			classPathScanningCandidateComponentProvider =
+				new ClassPathScanningCandidateComponentProvider(false);
+
+		classPathScanningCandidateComponentProvider.addIncludeFilter(
+			new AnnotationTypeFilter(GraphQLType.class));
+
+		Set<BeanDefinition> beanDefinitions =
+			classPathScanningCandidateComponentProvider.findCandidateComponents(
+				"com.liferay.osb.asah.backend");
+
+		for (BeanDefinition beanDefinition : beanDefinitions) {
+			try {
+				Class<?> clazz = Class.forName(
+					beanDefinition.getBeanClassName());
+
+				GraphQLType graphQLType = AnnotationUtils.getAnnotation(
+					clazz, GraphQLType.class);
+
+				String typeName = graphQLType.value();
+
+				if (StringUtils.isBlank(typeName)) {
+					typeName = StringUtils.substringAfterLast(
+						clazz.getName(), ".");
+				}
+
+				_wireGraphQLTypeProperties(
+					builder, clazz.getMethods(), typeName);
+			}
+			catch (ClassNotFoundException cnfe) {
+				_log.error(cnfe);
+			}
+		}
+	}
+
+	private void _wireGraphQLTypeProperties(
+		RuntimeWiring.Builder builder, Method[] methods, String typeName) {
+
+		for (Method method : methods) {
+			GraphQLProperty graphQLProperty = AnnotationUtils.getAnnotation(
+				method, GraphQLProperty.class);
+
+			if (graphQLProperty == null) {
+				continue;
+			}
+
+			_defineCustomPropertyName(
+				builder, graphQLProperty.value(),
+				StringUtils.removeStart(method.getName(), "get"), typeName);
+		}
 	}
 
 	private static final Log _log = LogFactory.getLog(
