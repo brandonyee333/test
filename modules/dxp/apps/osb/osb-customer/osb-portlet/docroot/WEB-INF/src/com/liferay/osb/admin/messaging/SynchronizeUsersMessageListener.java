@@ -164,6 +164,7 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 			StringBundler sb = new StringBundler(3);
 
 			sb.append(getUserIdsSQL);
+
 			sb.append(" and User_.userId not in (select Users_Roles.userId ");
 			sb.append("from Users_Roles where Users_Roles.roleId = ?)");
 
@@ -263,6 +264,37 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 			OSBConstants.ACCOUNT_ENTRY_LRDCOM_ID, sb.toString());
 
 		updateRoles(OSBConstants.ROLE_LIFERAY_EMPLOYEE_ID, sb.toString());
+
+		sb = new StringBundler(23);
+
+		sb.append("select distinct(OSB_AccountCustomer.userId) from ");
+		sb.append("OSB_AccountCustomer inner join Users_Roles on ");
+		sb.append("Users_Roles.userId = OSB_AccountCustomer.userId inner ");
+		sb.append("join OSB_AccountEntry on OSB_AccountEntry.accountEntryId ");
+		sb.append("= OSB_AccountCustomer.accountEntryId inner join ");
+		sb.append("OSB_OfferingEntry on OSB_OfferingEntry.accountEntryId = ");
+		sb.append("OSB_AccountCustomer.accountEntryId inner join ");
+		sb.append("OSB_ProductEntry on OSB_ProductEntry.productEntryId = ");
+		sb.append("OSB_OfferingEntry.productEntryId where ");
+		sb.append("(Users_Roles.roleId = '");
+		sb.append(OSBConstants.ROLE_VERIFIED_USER_ID);
+		sb.append("') and (OSB_AccountEntry.type_ != '");
+		sb.append(AccountEntryConstants.TYPE_TRIAL);
+		sb.append("') and (OSB_ProductEntry.name like '%Commerce Connector ");
+		sb.append("to PunchOut2Go%') and (OSB_OfferingEntry.type_ = '");
+		sb.append(OfferingEntryConstants.TYPE_REGULAR);
+		sb.append("') and (OSB_OfferingEntry.status = ");
+		sb.append(OfferingEntryConstants.STATUS_ACTIVE);
+		sb.append(") and (OSB_AccountCustomer.userId not in (select ");
+		sb.append("Users_Orgs.userId from Users_Orgs where ");
+		sb.append("Users_Orgs.organizationId = '");
+		sb.append(OSBConstants.ORGANIZATION_LIFERAY_INC_ID);
+		sb.append("'))");
+
+		updateOrganizationUserIds(
+			OSBConstants.
+				ORGANIZATION_CUSTOMER_COMMERCE_CONNECTOR_TO_PUNCHOUT2GO_ID,
+			sb.toString(), "OSB_AccountCustomer.userId");
 
 		sb = new StringBundler(23);
 

@@ -40,6 +40,9 @@ public class OSBCustomerConstants {
 
 	public static final long ORGANIZATION_PARTNER_ID = 1747324;
 
+	public static final long
+		ROLE_CUSTOMER_COMMERCE_CONNECTOR_TO_PUNCHOUT2GO_ID = 120129734;
+
 	public static final long ROLE_CUSTOMER_COMMERCE_CONNECTOR_TO_SALESFORCE_ID =
 		3525738;
 
