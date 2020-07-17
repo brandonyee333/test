@@ -83,7 +83,9 @@ public class AccountSynchronizer {
 						ContactRoleConstants.SUPPORT_CONTACT_ROLES,
 						contactRole.getName())) {
 
-					_customerSynchronizer.add(account, contact, contactRole);
+					_customerSynchronizer.add(account, contact);
+
+					break;
 				}
 			}
 		}

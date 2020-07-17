@@ -14,12 +14,57 @@
 
 package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 
+import com.liferay.osb.customer.admin.constants.ExternalIdMapperConstants;
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
+import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
+import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
+import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
+import com.liferay.osb.customer.zendesk.model.ZendeskOrganizationMembership;
+import com.liferay.osb.customer.zendesk.model.ZendeskUser;
+import com.liferay.osb.customer.zendesk.synchronizer.AccountSynchronizer;
+import com.liferay.osb.customer.zendesk.synchronizer.CustomerSynchronizer;
+import com.liferay.osb.customer.zendesk.synchronizer.PartnerWorkerSynchronizer;
+import com.liferay.osb.customer.zendesk.synchronizer.UserSynchronizer;
 import com.liferay.osb.customer.zendesk.synchronizer.constants.ZendeskDestinationNames;
+import com.liferay.osb.customer.zendesk.synchronizer.util.AccountUtil;
+import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
+import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
+import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
+import com.liferay.portal.kernel.messaging.Destination;
+import com.liferay.portal.kernel.messaging.DestinationConfiguration;
+import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ClassNameLocalService;
+import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.HashMapDictionary;
+import com.liferay.portal.kernel.util.StringPool;
 
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Jenny Chen
@@ -32,11 +77,7 @@ import org.osgi.service.component.annotations.Component;
 public class SynchronizeAccountEntryMessageListener
 	extends BaseMessageListener {
 
-	@Override
-	protected void doReceive(Message message) throws Exception {
-	}
-
-	/*@Activate
+	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
 
@@ -77,8 +118,12 @@ public class SynchronizeAccountEntryMessageListener
 		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
 			accountEntryId);
 
-		if ((!hasZendeskOrganization(accountEntry) &&
-			 !accountEntry.isActiveSupport()) ||
+		Account account = _accountWebService.fetchAccount(
+			accountEntry.getKoroneikiAccountKey());
+
+		if ((account == null) ||
+			(!hasZendeskOrganization(accountEntry) &&
+			 !_accountUtil.hasActiveSupport(account)) ||
 			(accountEntry.getAccountEntryId() ==
 				OSBCustomerConstants.ACCOUNT_ENTRY_LRDCOM_ID)) {
 
@@ -90,7 +135,7 @@ public class SynchronizeAccountEntryMessageListener
 		}
 
 		try {
-			synchronize(accountEntry);
+			synchronize(accountEntry, account);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -146,30 +191,42 @@ public class SynchronizeAccountEntryMessageListener
 		_destinationFactory = destinationFactory;
 	}
 
-	protected void synchronize(AccountEntry accountEntry)
-		throws PortalException {
+	protected void synchronize(AccountEntry accountEntry, Account account)
+		throws Exception {
 
-		_accountEntrySynchronizer.update(accountEntry);
+		_accountSynchronizer.update(account);
 
-		TODO
-		Map<Long, AccountCustomer> accountCustomerMap = new HashMap<>();
+		Map<String, Contact> customerContactsMap = new HashMap<>();
 
-		for (AccountCustomer accountCustomer :
-				accountEntry.getAccountCustomers()) {
+		List<Contact> contacts = _contactWebService.getAccountContacts(
+			accountEntry.getKoroneikiAccountKey(), 1, 1000);
 
-			accountCustomerMap.put(
-				accountCustomer.getUserId(), accountCustomer);
+		for (Contact contact : contacts) {
+			ContactRole[] contactRoles = contact.getContactRoles();
+
+			for (ContactRole contactRole : contactRoles) {
+				if (ArrayUtil.contains(
+						ContactRoleConstants.SUPPORT_CONTACT_ROLES,
+						contactRole.getName())) {
+
+					customerContactsMap.put(contact.getUuid(), contact);
+
+					break;
+				}
+			}
 		}
 
-		Map<Long, PartnerWorker> partnerWorkerMap = new HashMap<>();
+		Map<String, Contact> partnerContactsMap = new HashMap<>();
 
-		if (accountEntry.isPartnerManagedSupport()) {
-			PartnerEntry partnerEntry = accountEntry.getPartnerEntry();
+		Team firstLineSupportTeam = _accountUtil.getFirstLineSupportTeam(
+			account);
 
-			for (PartnerWorker partnerWorker :
-					partnerEntry.getPartnerWorkers()) {
+		if (firstLineSupportTeam != null) {
+			List<Contact> teamContacts = _contactWebService.getTeamContacts(
+				firstLineSupportTeam.getKey(), 1, 1000);
 
-				partnerWorkerMap.put(partnerWorker.getUserId(), partnerWorker);
+			for (Contact contact : teamContacts) {
+				partnerContactsMap.put(contact.getUuid(), contact);
 			}
 		}
 
@@ -180,21 +237,15 @@ public class SynchronizeAccountEntryMessageListener
 		List<ZendeskUser> zendeskUsers = getZendeskUsers(zendeskOrganizationId);
 
 		for (ZendeskUser zendeskUser : zendeskUsers) {
-			User user = _userLocalService.fetchUserByUuidAndCompanyId(
-				zendeskUser.getExternalId(), accountEntry.getCompanyId());
+			Contact customerContact = customerContactsMap.remove(
+				zendeskUser.getExternalId());
+			Contact partnerContact = partnerContactsMap.remove(
+				zendeskUser.getExternalId());
 
-			if (user == null) {
-				continue;
-			}
-
-			AccountCustomer accountCustomer = accountCustomerMap.remove(
-				user.getUserId());
-			PartnerWorker partnerWorker = partnerWorkerMap.remove(
-				user.getUserId());
-
-			if ((accountCustomer == null) && (partnerWorker == null)) {
-				_accountEntrySynchronizer.reassignTickets(
-					user.getUserId(), accountEntry.getAccountEntryId(),
+			if ((customerContact == null) && (partnerContact == null)) {
+				_accountSynchronizer.reassignTickets(
+					zendeskUser.getExternalId(),
+					accountEntry.getAccountEntryId(), account.getKey(),
 					zendeskOrganizationId, zendeskUser.getZendeskUserId());
 
 				_asyncZendeskOrganizationMembershipWebService.
@@ -203,39 +254,43 @@ public class SynchronizeAccountEntryMessageListener
 						new long[] {zendeskOrganizationId});
 			}
 			else {
-				_userSynchronizer.sync(zendeskUser, user);
+				User user = _userIdentityProvider.fetchUserByEmailAddress(
+					zendeskUser.getEmail());
+
+				if (user != null) {
+					_userSynchronizer.sync(zendeskUser, user);
+				}
 			}
 		}
 
-		for (AccountCustomer accountCustomer : accountCustomerMap.values()) {
-			_accountCustomerSynchronizer.add(accountCustomer);
-
-			_accountCustomerSynchronizer.addOrganizationSubscription(
-				accountCustomer);
+		for (Contact contact : customerContactsMap.values()) {
+			_customerSynchronizer.add(account, contact);
 		}
 
-		for (PartnerWorker partnerWorker : partnerWorkerMap.values()) {
-			_partnerWorkerSynchronizer.add(partnerWorker);
+		for (Contact contact : partnerContactsMap.values()) {
+			//_partnerWorkerSynchronizer.add(account, contact);
 		}
 
 		_accountEntryLocalService.updateLastZendeskAuditDate(
 			OSBCustomerConstants.USER_DEFAULT_USER_ID,
 			accountEntry.getAccountEntryId(), "Synced project to Zendesk.",
 			StringPool.BLANK);
-
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SynchronizeAccountEntryMessageListener.class);
 
 	@Reference
-	private AccountCustomerSynchronizer _accountCustomerSynchronizer;
-
-	@Reference
 	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference
-	private AccountSynchronizer _accountEntrySynchronizer;
+	private AccountSynchronizer _accountSynchronizer;
+
+	@Reference
+	private AccountUtil _accountUtil;
+
+	@Reference
+	private AccountWebService _accountWebService;
 
 	@Reference(target = "(async=true)")
 	private ZendeskOrganizationMembershipWebService
@@ -246,6 +301,12 @@ public class SynchronizeAccountEntryMessageListener
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
 
+	@Reference
+	private ContactWebService _contactWebService;
+
+	@Reference
+	private CustomerSynchronizer _customerSynchronizer;
+
 	private DestinationFactory _destinationFactory;
 
 	@Reference
@@ -255,6 +316,9 @@ public class SynchronizeAccountEntryMessageListener
 	private PartnerWorkerSynchronizer _partnerWorkerSynchronizer;
 
 	private ServiceRegistration<Destination> _serviceRegistration;
+
+	@Reference(target = "(provider=okta)")
+	private UserIdentityProvider _userIdentityProvider;
 
 	@Reference
 	private UserLocalService _userLocalService;
@@ -270,6 +334,6 @@ public class SynchronizeAccountEntryMessageListener
 		_zendeskOrganizationMembershipWebService;
 
 	@Reference
-	private ZendeskUserWebService _zendeskUserWebService;*/
+	private ZendeskUserWebService _zendeskUserWebService;
 
 }

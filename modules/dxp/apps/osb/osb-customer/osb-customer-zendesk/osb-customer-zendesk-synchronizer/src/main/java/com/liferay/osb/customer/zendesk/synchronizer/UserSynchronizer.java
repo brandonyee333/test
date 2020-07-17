@@ -18,7 +18,10 @@ import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
+import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
+import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactAccountViewWebService;
+import com.liferay.osb.customer.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.synchronizer.util.AccountUtil;
@@ -30,6 +33,7 @@ import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactAccountView;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.User;
@@ -37,7 +41,9 @@ import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashSet;
@@ -64,6 +70,38 @@ public class UserSynchronizer {
 		}
 	}
 
+	public void sync(ZendeskUser zendeskUser, User user) throws Exception {
+		String emailAddress = user.getEmailAddress();
+
+		String fullName = user.getFullName();
+
+		if (hasPartnerWorker(user)) {
+			fullName = fullName + " [P]";
+		}
+
+		String zendeskLocale = _zendeskLocaleUtil.convertToZendeskLocale(
+			user.getLanguageId());
+
+		if (Validator.isNull(zendeskLocale)) {
+			zendeskLocale = _zendeskLocaleUtil.convertToZendeskLocale(
+				LocaleUtil.US);
+		}
+
+		Set<String> tags = getTags(user);
+
+		if (!StringUtil.equalsIgnoreCase(
+				emailAddress, zendeskUser.getEmail()) ||
+			!StringUtil.equalsIgnoreCase(fullName, zendeskUser.getName()) ||
+			!StringUtil.equalsIgnoreCase(
+				zendeskLocale, zendeskUser.getLocale()) ||
+			!tags.equals(zendeskUser.getTags())) {
+
+			_asyncZendeskUserWebService.createOrUpdateZendeskUser(
+				user.getUuid(), StringPool.BLANK, zendeskLocale, fullName, null,
+				tags);
+		}
+	}
+
 	public long update(User user, String organizationName) throws Exception {
 		String zendeskLocale = _zendeskLocaleUtil.convertToZendeskLocale(
 			user.getLanguageId());
@@ -78,9 +116,9 @@ public class UserSynchronizer {
 
 		String fullName = user.getFullName();
 
-		/*if (hasPartnerWorker(user.getUserId())) {
+		if (hasPartnerWorker(user)) {
 			fullName = fullName + " [P]";
-		}*/
+		}
 
 		if (zendeskUserId != 0) {
 			_asyncZendeskUserWebService.createOrUpdateZendeskUser(
@@ -232,40 +270,6 @@ public class UserSynchronizer {
 			zendeskUserId, zendeskUserIdentityId, "phone_number");
 	}
 
-	public void sync(ZendeskUser zendeskUser, User user)
-		throws PortalException {
-
-		String emailAddress = user.getEmailAddress();
-
-		String fullName = user.getFullName();
-
-		if (hasPartnerWorker(user.getUserId())) {
-			fullName = fullName + " [P]";
-		}
-
-		String zendeskLocale = _zendeskLocaleUtil.convertToZendeskLocale(
-			user.getLanguageId());
-
-		if (Validator.isNull(zendeskLocale)) {
-			zendeskLocale = _zendeskLocaleUtil.convertToZendeskLocale(
-				LocaleUtil.US);
-		}
-
-		Set<String> tags = getTags(user.getUserId());
-
-		if (!StringUtil.equalsIgnoreCase(
-				emailAddress, zendeskUser.getEmail()) ||
-			!StringUtil.equalsIgnoreCase(fullName, zendeskUser.getName()) ||
-			!StringUtil.equalsIgnoreCase(
-				zendeskLocale, zendeskUser.getLocale()) ||
-			!tags.equals(zendeskUser.getTags())) {
-
-			_asyncZendeskUserWebService.createOrUpdateZendeskUser(
-				user.getUuid(), StringPool.BLANK, zendeskLocale, fullName, null,
-				tags);
-		}
-	}
-
 	public void updateEmailAddress(long userId, String emailAddress)
 		throws PortalException {
 
@@ -314,29 +318,50 @@ public class UserSynchronizer {
 		}
 	}
 
-	protected boolean hasPartnerWorker(long userId) throws PortalException {
+	*/
+
+	protected boolean hasPartnerWorker(User user) throws Exception {
 		if (_organizationLocalService.hasUserOrganization(
-				userId, OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
+				user.getUserId(),
+				OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 
 			return false;
 		}
 
-		TODO
-		List<PartnerWorker> partnerWorkers =
-			PartnerWorkerLocalServiceUtil.getUserPartnerWorkers(userId);
+		TeamRole teamRole = _teamRoleWebService.fetchTeamRole(
+			TeamRole.Type.ACCOUNT.toString(),
+			TeamRoleConstants.NAME_FIRST_LINE_SUPPORT);
 
-		if (!partnerWorkers.isEmpty()) {
+		if (teamRole == null) {
+			return false;
+		}
+
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("contactUuids/any(s:s eq '");
+		sb.append(user.getUserUuid());
+		sb.append("') and accountKeysTeamRoleKeys/any(s:contains(s, '");
+		sb.append(teamRole.getKey());
+		sb.append("'))");
+
+		List<Account> accounts = _accountWebService.search(
+			StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
+
+		if (!accounts.isEmpty()) {
 			return true;
 		}
 
 		return false;
-	}*/
+	}
 
 	@Reference
 	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference
 	private AccountUtil _accountUtil;
+
+	@Reference
+	private AccountWebService _accountWebService;
 
 	@Reference(target = "(async=true)")
 	private ZendeskUserIdentityWebService _asyncZendeskUserIdentityWebService;
@@ -355,6 +380,9 @@ public class UserSynchronizer {
 
 	@Reference
 	private PhoneUtil _phoneUtil;
+
+	@Reference
+	private TeamRoleWebService _teamRoleWebService;
 
 	@Reference
 	private UserLocalService _userLocalService;

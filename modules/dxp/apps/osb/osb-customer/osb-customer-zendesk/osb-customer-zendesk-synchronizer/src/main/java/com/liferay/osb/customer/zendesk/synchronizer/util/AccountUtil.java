@@ -15,10 +15,14 @@
 package com.liferay.osb.customer.zendesk.synchronizer.util;
 
 import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
+import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
+import com.liferay.osb.customer.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.portal.kernel.util.StringBundler;
 
 import java.util.Date;
@@ -33,6 +37,29 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, service = AccountUtil.class)
 public class AccountUtil {
+
+	public Team getFirstLineSupportTeam(Account account) throws Exception {
+		Team[] assignedTeams = account.getAssignedTeams();
+
+		if (assignedTeams != null) {
+			for (Team team : assignedTeams) {
+				List<TeamRole> teamRoles = _teamRoleWebService.getTeamRoles(
+					account.getKey(), team.getKey());
+
+				for (TeamRole teamRole : teamRoles) {
+					String teamRoleName = teamRole.getName();
+
+					if (teamRoleName.equals(
+							TeamRoleConstants.NAME_FIRST_LINE_SUPPORT)) {
+
+						return team;
+					}
+				}
+			}
+		}
+
+		return null;
+	}
 
 	public List<ProductPurchase> getProductPurchases(String accountKey)
 		throws Exception {
@@ -94,5 +121,8 @@ public class AccountUtil {
 
 	@Reference
 	private ProductPurchaseWebService _productPurchaseWebService;
+
+	@Reference
+	private TeamRoleWebService _teamRoleWebService;
 
 }

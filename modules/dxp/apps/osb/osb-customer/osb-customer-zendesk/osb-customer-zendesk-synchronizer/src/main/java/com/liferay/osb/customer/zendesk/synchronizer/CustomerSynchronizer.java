@@ -17,7 +17,6 @@ package com.liferay.osb.customer.zendesk.synchronizer;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
-import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.customer.zendesk.synchronizer.util.AccountUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
@@ -25,9 +24,7 @@ import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.util.ArrayUtil;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -38,34 +35,19 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = CustomerSynchronizer.class)
 public class CustomerSynchronizer {
 
-	public void add(Account account, Contact contact, ContactRole contactRole)
-		throws Exception {
+	public void add(Account account, Contact contact) throws Exception {
+		User user = _userIdentityProvider.fetchUserByEmailAddress(
+			contact.getEmailAddress());
 
-		String name = contactRole.getName();
+		_userSynchronizer.update(user, account.getName());
 
-		if (!_accountUtil.hasActiveSupport(account) &&
-			!name.equals(ContactRoleConstants.NAME_SUPPORT_CLOSED_WATCHER)) {
+		if (_accountUtil.hasActiveTicketSupport(account)) {
+			AccountEntry accountEntry =
+				_accountEntryLocalService.getKoroneikiAccountEntry(
+					account.getKey());
 
-			return;
-		}
-
-		if (ArrayUtil.contains(
-				ContactRoleConstants.SUPPORT_CONTACT_ROLES,
-				contactRole.getName())) {
-
-			User user = _userIdentityProvider.fetchUserByEmailAddress(
-				contact.getEmailAddress());
-
-			_userSynchronizer.update(user, account.getName());
-
-			if (_accountUtil.hasActiveTicketSupport(account)) {
-				AccountEntry accountEntry =
-					_accountEntryLocalService.getKoroneikiAccountEntry(
-						account.getKey());
-
-				addOrganizationSubscription(
-					account, contact, accountEntry.getAccountEntryId());
-			}
+			addOrganizationSubscription(
+				account, contact, accountEntry.getAccountEntryId());
 		}
 	}
 

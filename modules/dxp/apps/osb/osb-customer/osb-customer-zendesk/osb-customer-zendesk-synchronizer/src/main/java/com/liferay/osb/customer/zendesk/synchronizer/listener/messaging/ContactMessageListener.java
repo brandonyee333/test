@@ -127,7 +127,7 @@ public class ContactMessageListener extends BaseMessageListener {
 		String topic = message.getString("topic");
 
 		if (topic.equals("koroneiki.account.contact.assigned")) {
-			onContactAssign(account, contact, contactRole);
+			onContactRoleAssign(account, contact, contactRole);
 		}
 		else if (topic.equals("koroneiki.account.contact.unassigned")) {
 			onContactUnassign(account, contact);
@@ -140,24 +140,24 @@ public class ContactMessageListener extends BaseMessageListener {
 		}
 	}
 
-	protected void onContactAssign(
-		Account account, Contact contact, ContactRole contactRole) {
-
-		try {
-			_customerSynchronizer.add(account, contact, contactRole);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new ZendeskIntegrationException(e);
-		}
-	}
-
 	protected void onContactRoleAssign(
 		Account account, Contact contact, ContactRole contactRole) {
 
 		try {
-			_customerSynchronizer.add(account, contact, contactRole);
+			String name = contactRole.getName();
+
+			if (!_accountUtil.hasActiveSupport(account) &&
+				!name.equals(
+					ContactRoleConstants.NAME_SUPPORT_CLOSED_WATCHER)) {
+
+				return;
+			}
+
+			if (ArrayUtil.contains(
+					ContactRoleConstants.SUPPORT_CONTACT_ROLES, name)) {
+
+				_customerSynchronizer.add(account, contact);
+			}
 		}
 		catch (Exception e) {
 			_log.error(e, e);

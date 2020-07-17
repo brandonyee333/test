@@ -14,10 +14,30 @@
 
 package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
+import com.liferay.osb.customer.admin.util.comparator.AccountEntryLastZendeskAuditDateComparator;
+import com.liferay.osb.customer.zendesk.synchronizer.configuration.ZendeskSynchronizerConfigurationValues;
+import com.liferay.osb.customer.zendesk.synchronizer.constants.ZendeskDestinationNames;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
+import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.messaging.MessageBusUtil;
+import com.liferay.portal.kernel.scheduler.SchedulerEngineHelper;
+import com.liferay.portal.kernel.scheduler.SchedulerEntry;
+import com.liferay.portal.kernel.scheduler.SchedulerEntryImpl;
+import com.liferay.portal.kernel.scheduler.TimeUnit;
+import com.liferay.portal.kernel.scheduler.Trigger;
+import com.liferay.portal.kernel.scheduler.TriggerFactory;
 
+import java.util.List;
+import java.util.Map;
+
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Modified;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
@@ -29,11 +49,7 @@ import org.osgi.service.component.annotations.Component;
 public class AutoSynchronizeAccountEntriesMessageListener
 	extends BaseMessageListener {
 
-	@Override
-	protected void doReceive(Message message) throws Exception {
-	}
-
-	/*@Activate
+	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
 		if (ZendeskSynchronizerConfigurationValues.
@@ -96,6 +112,6 @@ public class AutoSynchronizeAccountEntriesMessageListener
 	private SchedulerEngineHelper _schedulerEngineHelper;
 
 	@Reference
-	private TriggerFactory _triggerFactory;*/
+	private TriggerFactory _triggerFactory;
 
 }
