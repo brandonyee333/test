@@ -134,7 +134,6 @@ public class SessionNaniteTest {
 		Assert.assertNotNull(
 			"Past events did not create completed session",
 			userSessionJSONObject);
-
 		Assert.assertFalse(userSessionJSONObject.getBoolean("bounced"));
 		Assert.assertEquals(305000, userSessionJSONObject.getInt("duration"));
 		Assert.assertEquals(
@@ -195,14 +194,13 @@ public class SessionNaniteTest {
 
 		userSessionJSONObject = userSessionsJSONArray.getJSONObject(1);
 
+		Assert.assertFalse(userSessionJSONObject.getBoolean("bounced"));
 		Assert.assertEquals(
 			"0cbc8e60-99cd-11e9-9129-a75b6df1b957",
 			userSessionJSONObject.getString("userId"));
 
 		interactionsJSONArray = userSessionJSONObject.getJSONArray(
 			"interactions");
-
-		Assert.assertFalse(userSessionJSONObject.getBoolean("bounced"));
 
 		Assert.assertEquals(3, interactionsJSONArray.length());
 	}
@@ -259,7 +257,6 @@ public class SessionNaniteTest {
 		Assert.assertEquals(0, exitPageJSONObject.getInt("bounce"));
 		Assert.assertEquals(0, exitPageJSONObject.getInt("entrances"));
 		Assert.assertEquals(1, exitPageJSONObject.getInt("exits"));
-
 		Assert.assertEquals(
 			entryPageJSONObject.getString("sessionId"),
 			exitPageJSONObject.getString("sessionId"));
