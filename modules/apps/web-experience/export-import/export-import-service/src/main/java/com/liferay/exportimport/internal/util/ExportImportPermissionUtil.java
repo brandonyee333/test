@@ -25,7 +25,9 @@ import com.liferay.portal.kernel.service.ResourceBlockPermissionLocalServiceUtil
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,6 +38,24 @@ import java.util.Set;
 public class ExportImportPermissionUtil {
 
 	public static final String ROLE_TEAM_PREFIX = "ROLE_TEAM_,*";
+
+	public static void deleteResourcePermissions(
+			long companyId, String resourceName, String resourcePrimKey,
+			Collection<Long> roleIds)
+		throws PortalException {
+
+		for (long roleId : roleIds) {
+			ResourcePermission resourcePermission =
+				ResourcePermissionLocalServiceUtil.fetchResourcePermission(
+					companyId, resourceName, ResourceConstants.SCOPE_INDIVIDUAL,
+					resourcePrimKey, roleId);
+
+			if (resourcePermission != null) {
+				ResourcePermissionLocalServiceUtil.deleteResourcePermission(
+					resourcePermission.getResourcePermissionId());
+			}
+		}
+	}
 
 	public static Map<Long, Set<String>> getRoleIdsToActionIds(
 		long companyId, String resourceName, long resourcePK) {
@@ -110,9 +130,6 @@ public class ExportImportPermissionUtil {
 
 				mergedRoleIdsToActionIds.put(roleId, actionIds);
 			}
-			else {
-				mergedRoleIdsToActionIds.put(roleId, new String[0]);
-			}
 		}
 
 		mergedRoleIdsToActionIds.putAll(importedRoleIdsToActionIds);
@@ -140,23 +157,30 @@ public class ExportImportPermissionUtil {
 				companyId, resourceName, ResourceConstants.SCOPE_INDIVIDUAL,
 				resourcePK);
 
-		Map<Long, String[]> mergedRoleIdsToActionIds = new HashMap<>(
-			roleIdsToActionIds);
+		Set<Long> roleIdsToDelete = new HashSet<>();
 
 		for (ResourcePermission resourcePermission : resourcePermissions) {
-			mergedRoleIdsToActionIds.putIfAbsent(
-				resourcePermission.getRoleId(), new String[0]);
+			if (!roleIdsToActionIds.containsKey(
+					resourcePermission.getRoleId())) {
+
+				roleIdsToDelete.add(resourcePermission.getRoleId());
+			}
+		}
+
+		if (!roleIdsToDelete.isEmpty()) {
+			deleteResourcePermissions(
+				companyId, resourceName, resourcePK, roleIdsToDelete);
 		}
 
 		if (ResourceBlockLocalServiceUtil.isSupported(resourceName)) {
 			ResourceBlockLocalServiceUtil.setIndividualScopePermissions(
 				companyId, groupId, resourceName,
-				GetterUtil.getLong(resourcePK), mergedRoleIdsToActionIds);
+				GetterUtil.getLong(resourcePK), roleIdsToActionIds);
 		}
 		else {
 			ResourcePermissionLocalServiceUtil.setResourcePermissions(
 				companyId, resourceName, ResourceConstants.SCOPE_INDIVIDUAL,
-				resourcePK, mergedRoleIdsToActionIds);
+				resourcePK, roleIdsToActionIds);
 		}
 	}
 
