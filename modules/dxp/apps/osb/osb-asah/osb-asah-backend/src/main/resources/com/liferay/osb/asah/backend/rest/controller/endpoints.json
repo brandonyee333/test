@@ -251,6 +251,10 @@
 		"self": {
 			"href": "{url}"
 		},
+		"session-values": {
+			"href": "{url}/sessions/values{?fieldName,filter,page,size,value}",
+			"templated": true
+		},
 		"suppression-logs": {
 			"href": "{url}/suppressions/logs{?filter}",
 			"templated": true
