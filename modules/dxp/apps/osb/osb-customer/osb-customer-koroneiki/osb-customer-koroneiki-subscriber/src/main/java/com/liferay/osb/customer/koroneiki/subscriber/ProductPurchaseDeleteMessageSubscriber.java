@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.koroneiki.subscriber;
 
+import com.liferay.osb.customer.zendesk.constants.ZendeskDestinationNames;
 import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
 
@@ -33,7 +34,7 @@ public class ProductPurchaseDeleteMessageSubscriber
 	@Override
 	public void doReceive(Message message) throws Exception {
 		sendMessage(
-			"liferay/zendesk_productpurchase_sync",
+			ZendeskDestinationNames.PRODUCTPURCHASE_SYNC,
 			message.getDestinationName(), (String)message.getPayload());
 	}
 

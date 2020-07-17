@@ -23,13 +23,13 @@ import com.liferay.osb.customer.identity.management.provider.UserIdentityProvide
 import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
+import com.liferay.osb.customer.zendesk.constants.ZendeskDestinationNames;
 import com.liferay.osb.customer.zendesk.model.ZendeskOrganizationMembership;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.synchronizer.AccountSynchronizer;
 import com.liferay.osb.customer.zendesk.synchronizer.CustomerSynchronizer;
 import com.liferay.osb.customer.zendesk.synchronizer.PartnerWorkerSynchronizer;
 import com.liferay.osb.customer.zendesk.synchronizer.UserSynchronizer;
-import com.liferay.osb.customer.zendesk.synchronizer.constants.ZendeskDestinationNames;
 import com.liferay.osb.customer.zendesk.synchronizer.util.AccountUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;

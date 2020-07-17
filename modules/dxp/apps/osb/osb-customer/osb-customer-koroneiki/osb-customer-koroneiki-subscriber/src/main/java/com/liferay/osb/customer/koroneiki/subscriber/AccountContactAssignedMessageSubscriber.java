@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.koroneiki.subscriber;
 
+import com.liferay.osb.customer.zendesk.constants.ZendeskDestinationNames;
 import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
 
@@ -33,7 +34,7 @@ public class AccountContactAssignedMessageSubscriber
 	@Override
 	public void doReceive(Message message) throws Exception {
 		sendMessage(
-			"liferay/zendesk_account_contact_sync",
+			ZendeskDestinationNames.ACCOUNT_CONTACT_SYNC,
 			message.getDestinationName(), (String)message.getPayload());
 	}
 

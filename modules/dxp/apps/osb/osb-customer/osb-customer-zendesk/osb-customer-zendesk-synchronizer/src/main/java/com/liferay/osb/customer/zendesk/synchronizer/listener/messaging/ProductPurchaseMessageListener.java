@@ -16,8 +16,8 @@ package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
+import com.liferay.osb.customer.zendesk.constants.ZendeskDestinationNames;
 import com.liferay.osb.customer.zendesk.synchronizer.AccountSynchronizer;
-import com.liferay.osb.customer.zendesk.synchronizer.constants.ZendeskDestinationNames;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ProductPurchaseSerDes;

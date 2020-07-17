@@ -20,9 +20,9 @@ import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
+import com.liferay.osb.customer.zendesk.constants.ZendeskDestinationNames;
 import com.liferay.osb.customer.zendesk.synchronizer.AccountSynchronizer;
 import com.liferay.osb.customer.zendesk.synchronizer.CustomerSynchronizer;
-import com.liferay.osb.customer.zendesk.synchronizer.constants.ZendeskDestinationNames;
 import com.liferay.osb.customer.zendesk.synchronizer.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.synchronizer.util.AccountUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
@@ -73,7 +73,7 @@ public class ContactMessageListener extends BaseMessageListener {
 		DestinationConfiguration destinationConfiguration =
 			new DestinationConfiguration(
 				DestinationConfiguration.DESTINATION_TYPE_PARALLEL,
-				"liferay/zendesk_account_contact_sync");
+				ZendeskDestinationNames.ACCOUNT_CONTACT_SYNC);
 
 		Destination destination = _destinationFactory.createDestination(
 			destinationConfiguration);

@@ -15,8 +15,8 @@
 package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 
 import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
+import com.liferay.osb.customer.zendesk.constants.ZendeskDestinationNames;
 import com.liferay.osb.customer.zendesk.synchronizer.AccountSynchronizer;
-import com.liferay.osb.customer.zendesk.synchronizer.constants.ZendeskDestinationNames;
 import com.liferay.osb.customer.zendesk.synchronizer.exception.ZendeskIntegrationException;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
@@ -62,7 +62,7 @@ public class TeamRoleMessageListener extends BaseMessageListener {
 		DestinationConfiguration destinationConfiguration =
 			new DestinationConfiguration(
 				DestinationConfiguration.DESTINATION_TYPE_PARALLEL,
-				"liferay/zendesk_account_teamrole_sync");
+				ZendeskDestinationNames.ACCOUNT_TEAMROLE_SYNC);
 
 		Destination destination = _destinationFactory.createDestination(
 			destinationConfiguration);

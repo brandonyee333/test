@@ -18,6 +18,7 @@ import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.customer.zendesk.constants.ZendeskDestinationNames;
 import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
@@ -69,7 +70,7 @@ public class ProductPurchaseCreateMessageSubscriber
 		}
 
 		sendMessage(
-			"liferay/zendesk_productpurchase_sync",
+			ZendeskDestinationNames.PRODUCTPURCHASE_SYNC,
 			message.getDestinationName(), (String)message.getPayload());
 	}
 

@@ -16,6 +16,7 @@ package com.liferay.osb.customer.koroneiki.subscriber;
 
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
+import com.liferay.osb.customer.zendesk.constants.ZendeskDestinationNames;
 import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
@@ -51,7 +52,7 @@ public class AccountDeleteMessageSubscriber
 		}
 
 		sendMessage(
-			"liferay/zendesk_account_sync", message.getDestinationName(),
+			ZendeskDestinationNames.ACCOUNT_SYNC, message.getDestinationName(),
 			(String)message.getPayload());
 
 		_accountEntryLocalService.deleteAccountEntry(account.getKey());

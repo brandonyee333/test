@@ -15,8 +15,8 @@
 package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.customer.zendesk.constants.ZendeskDestinationNames;
 import com.liferay.osb.customer.zendesk.synchronizer.AccountSynchronizer;
-import com.liferay.osb.customer.zendesk.synchronizer.constants.ZendeskDestinationNames;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
@@ -58,7 +58,7 @@ public class TeamMessageListener extends BaseMessageListener {
 		DestinationConfiguration destinationConfiguration =
 			new DestinationConfiguration(
 				DestinationConfiguration.DESTINATION_TYPE_PARALLEL,
-				"liferay/zendesk_team_sync");
+				ZendeskDestinationNames.TEAM_SYNC);
 
 		Destination destination = _destinationFactory.createDestination(
 			destinationConfiguration);
