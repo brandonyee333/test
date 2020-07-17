@@ -17,6 +17,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.blog.social.share;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
+import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.stream.curator.model.blog.BlogSocialShare;
 
@@ -98,14 +99,12 @@ public class BlogSocialShareNanite extends BaseNanite<BlogSocialShare> {
 
 		return stream.filter(
 			analyticsEvent -> {
-				Map<String, String> eventProperties =
-					analyticsEvent.getEventProperties();
-
 				if (Objects.equals(
 						analyticsEvent.getApplicationId(), "SocialBookmarks") &&
 					Objects.equals(analyticsEvent.getEventId(), "shared") &&
 					Objects.equals(
-						eventProperties.get("className"),
+						MapUtil.getString(
+							analyticsEvent.getEventProperties(), "className"),
 						"com.liferay.blogs.model.BlogsEntry")) {
 
 					return true;

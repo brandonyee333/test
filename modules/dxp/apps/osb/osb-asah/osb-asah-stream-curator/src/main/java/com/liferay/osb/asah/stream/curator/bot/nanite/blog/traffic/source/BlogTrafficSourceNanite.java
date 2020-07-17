@@ -101,11 +101,11 @@ public class BlogTrafficSourceNanite extends BaseNanite<BlogTrafficSource> {
 
 		return stream.filter(
 			analyticsEvent -> {
-				Map<String, Object> context = analyticsEvent.getContext();
-
 				if (Objects.equals(analyticsEvent.getApplicationId(), "Blog") &&
 					Objects.equals(analyticsEvent.getEventId(), "blogViewed") &&
-					StringUtils.isNotBlank((String)context.get("referrer"))) {
+					StringUtils.isNotBlank(
+						MapUtil.getString(
+							analyticsEvent.getContext(), "referrer"))) {
 
 					return true;
 				}
