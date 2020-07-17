@@ -31,10 +31,6 @@ This service exposes endpoints to the [Faro frontend](https://github.com/liferay
 
 This service processes raw data into intelligent information using scheduled routines (e.g., once a day).
 
-### osb-asah-demo
-
-This service generates raw demo data.
-
 ### osb-asah-dxp-extractor
 
 This service extracts and saves raw data from a customer's Liferay DXP instance.

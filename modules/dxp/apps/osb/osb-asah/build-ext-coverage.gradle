@@ -27,7 +27,6 @@ task jacocoRootReport(type: JacocoReport)
 Set<Project> javaSubprojects = subprojects.findAll {
 	FileUtil.exists(it, "src/main/java") &&
 	it.name != "osb-asah-backend-ext-alfa" &&
-	it.name != "osb-asah-demo" &&
 	it.name != "osb-asah-test-util"
 }
 
@@ -143,7 +142,6 @@ jacocoRootReport {
 					dir: it,
 					exclude: [
 						"**/*Mock*",
-						"**/asah/demo/**",
 						"**/constants/*",
 						"**/exception/*Exception*",
 						"**/test/util/*"
