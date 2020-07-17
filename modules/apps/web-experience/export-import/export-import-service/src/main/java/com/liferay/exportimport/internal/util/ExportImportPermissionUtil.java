@@ -156,19 +156,19 @@ public class ExportImportPermissionUtil {
 				companyId, resourceName, ResourceConstants.SCOPE_INDIVIDUAL,
 				resourcePK);
 
-		Set<Long> roleIdsToDelete = new HashSet<>();
+		Set<Long> roleIds = new HashSet<>();
 
 		for (ResourcePermission resourcePermission : resourcePermissions) {
 			if (!roleIdsToActionIds.containsKey(
 					resourcePermission.getRoleId())) {
 
-				roleIdsToDelete.add(resourcePermission.getRoleId());
+				roleIds.add(resourcePermission.getRoleId());
 			}
 		}
 
-		if (!roleIdsToDelete.isEmpty()) {
+		if (!roleIds.isEmpty()) {
 			deleteResourcePermissions(
-				companyId, resourceName, resourcePK, roleIdsToDelete);
+				companyId, resourceName, resourcePK, roleIds);
 		}
 
 		if (ResourceBlockLocalServiceUtil.isSupported(resourceName)) {
