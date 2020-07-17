@@ -25,10 +25,15 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	immediate = true,
-	property = "topic.pattern=koroneiki.account.contact.unassigned",
-	service = AccountContactUnassignedMessageSubscriber.class
+	property = {
+		"topic.pattern=koroneiki.account.contact.assigned",
+		"topic.pattern=koroneiki.account.contact.unassigned",
+		"topic.pattern=koroneiki.account.contactrole.assigned",
+		"topic.pattern=koroneiki.account.contactrole.unassigned"
+	},
+	service = AccountContactRoleMessageSubscriber.class
 )
-public class AccountContactUnassignedMessageSubscriber
+public class AccountContactRoleMessageSubscriber
 	extends BaseMessageSubscriber implements MessageSubscriber {
 
 	@Override

@@ -14,10 +14,7 @@
 
 package com.liferay.osb.customer.koroneiki.subscriber.router;
 
-import com.liferay.osb.customer.koroneiki.subscriber.AccountContactAssignedMessageSubscriber;
-import com.liferay.osb.customer.koroneiki.subscriber.AccountContactRoleAssignedMessageSubscriber;
-import com.liferay.osb.customer.koroneiki.subscriber.AccountContactRoleUnassignedMessageSubscriber;
-import com.liferay.osb.customer.koroneiki.subscriber.AccountContactUnassignedMessageSubscriber;
+import com.liferay.osb.customer.koroneiki.subscriber.AccountContactRoleMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.subscriber.AccountDeleteMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.subscriber.AccountTeamRoleAssignedMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.subscriber.AccountTeamRoleUnassignedMessageSubscriber;
@@ -46,39 +43,11 @@ import org.osgi.service.component.annotations.Reference;
 public class KoroneikiMessageRouter extends BaseMessageRouter {
 
 	@Reference(unbind = "-")
-	protected void setAccountContactAssignedMessageSubscriber(
-		AccountContactAssignedMessageSubscriber
-			accountContactAssignedMessageSubscriber,
+	protected void setAccountContactRoleMessageSubscriber(
+		AccountContactRoleMessageSubscriber accountContactRoleMessageSubscriber,
 		Map<String, Object> properties) {
 
-		addRoute(accountContactAssignedMessageSubscriber, properties);
-	}
-
-	@Reference(unbind = "-")
-	protected void setAccountContactRoleAssignedMessageSubscriber(
-		AccountContactRoleAssignedMessageSubscriber
-			accountContactRoleAssignedMessageSubscriber,
-		Map<String, Object> properties) {
-
-		addRoute(accountContactRoleAssignedMessageSubscriber, properties);
-	}
-
-	@Reference(unbind = "-")
-	protected void setAccountContactRoleUnassignedMessageSubscriber(
-		AccountContactRoleUnassignedMessageSubscriber
-			accountContactRoleUnassignedMessageSubscriber,
-		Map<String, Object> properties) {
-
-		addRoute(accountContactRoleUnassignedMessageSubscriber, properties);
-	}
-
-	@Reference(unbind = "-")
-	protected void setAccountContactUnassignedMessageSubscriber(
-		AccountContactUnassignedMessageSubscriber
-			accountContactUnassignedMessageSubscriber,
-		Map<String, Object> properties) {
-
-		addRoute(accountContactUnassignedMessageSubscriber, properties);
+		addRoute(accountContactRoleMessageSubscriber, properties);
 	}
 
 	@Reference(unbind = "-")
