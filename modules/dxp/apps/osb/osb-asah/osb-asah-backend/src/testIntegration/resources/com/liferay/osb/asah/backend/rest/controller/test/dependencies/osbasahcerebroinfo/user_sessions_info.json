@@ -11,7 +11,7 @@
 		"city": null,
 		"completeReason": null,
 		"completed": false,
-		"country": null,
+		"country": "United States",
 		"dataSourceId": "355524992631037473",
 		"date": "${now-2d}",
 		"duration": 0,
@@ -55,7 +55,7 @@
 		],
 		"lastEventDate": "${now-2d}",
 		"platformName": "Linux",
-		"region": null,
+		"region": "California",
 		"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b957"
 	},
 	{
@@ -70,7 +70,7 @@
 		"city": null,
 		"completeReason": null,
 		"completed": false,
-		"country": null,
+		"country": "United States",
 		"dataSourceId": "355524992631037473",
 		"date": "${now-2d}",
 		"duration": 0,
@@ -114,7 +114,7 @@
 		],
 		"lastEventDate": "${now-2d}",
 		"platformName": "Linux",
-		"region": null,
+		"region": "Indiana",
 		"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b957"
 	},
 	{
@@ -173,7 +173,7 @@
 		],
 		"lastEventDate": "${now-2d}",
 		"platformName": "Linux",
-		"region": null,
+		"region": "Budapest",
 		"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b957"
 	},
 	{
@@ -232,7 +232,7 @@
 		],
 		"lastEventDate": "${now-2d}",
 		"platformName": "Linux",
-		"region": null,
+		"region": "Tokyo",
 		"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b957"
 	}
 ]
