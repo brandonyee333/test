@@ -62,7 +62,13 @@ definition {
 			locator1 = "TextInput#FILE",
 			value1 = "${fileName}");
 
-		PortletEntry.publish();
+		if ("${workflowEnable}" == "true") {
+			Button.clickSubmitForPublication();
+		}
+
+		else{
+			PortletEntry.publish();
+		}
 	}
 
 	macro translateFile {
