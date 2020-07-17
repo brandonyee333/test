@@ -65,22 +65,22 @@ public class TermsAggregationTransformationJSONArrayFunction
 					StringEscapeUtils.unescapeJava(_groupByPattern.toString()));
 		}
 
-		_contains = matcher.group("containsField");
+		contains = matcher.group("containsField");
 
 		String groupByField = matcher.group("groupByField");
 
-		_fieldName = groupByField.replace('/', '.');
+		fieldName = groupByField.replace('/', '.');
 
-		_responseFormatterFunction = responseFormatterFunction;
+		this.responseFormatterFunction = responseFormatterFunction;
 	}
 
 	public TermsAggregationTransformationJSONArrayFunction(
 		String contains, String fieldName,
 		Function<Terms.Bucket, Object> responseFormatterFunction) {
 
-		_contains = contains;
-		_fieldName = fieldName.replace('/', '.');
-		_responseFormatterFunction = responseFormatterFunction;
+		this.contains = contains;
+		this.fieldName = fieldName.replace('/', '.');
+		this.responseFormatterFunction = responseFormatterFunction;
 	}
 
 	@Override
@@ -95,15 +95,15 @@ public class TermsAggregationTransformationJSONArrayFunction
 			searchSourceBuilder -> {
 				TermsAggregationBuilder aggregationBuilder =
 					AggregationBuilders.terms(
-						_fieldName.replace('.', '/')
+						fieldName.replace('.', '/')
 					).field(
-						_fieldName
+						fieldName
 					).size(
 						Integer.MAX_VALUE
 					).subAggregation(
 						PipelineAggregatorBuilders.bucketSort(
 							"groupBySort",
-							_getGroupByFieldSortBuilders(sortOrderPairs)
+							getGroupByFieldSortBuilders(sortOrderPairs)
 						).from(
 							Math.max(0, page * size)
 						).size(
@@ -117,7 +117,7 @@ public class TermsAggregationTransformationJSONArrayFunction
 					AggregationBuilders.cardinality(
 						"totalElements"
 					).field(
-						_fieldName
+						fieldName
 					));
 
 				BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -126,8 +126,8 @@ public class TermsAggregationTransformationJSONArrayFunction
 					boolQueryBuilder.filter(queryBuilder);
 				}
 
-				QueryBuilder includeQueryBuilder = _getIncludeQueryBuilder(
-					_fieldName, _contains);
+				QueryBuilder includeQueryBuilder = getIncludeQueryBuilder(
+					fieldName, contains);
 
 				if (includeQueryBuilder != null) {
 					boolQueryBuilder.filter(includeQueryBuilder);
@@ -143,26 +143,26 @@ public class TermsAggregationTransformationJSONArrayFunction
 		Aggregations aggregations = searchResponse.getAggregations();
 
 		if (DogUtil.isEmpty(aggregations)) {
-			return _getTransformationJSONArray(Collections.emptyList(), null);
+			return getTransformationJSONArray(Collections.emptyList(), null);
 		}
 
-		Terms terms = aggregations.get(_fieldName.replace('.', '/'));
+		Terms terms = aggregations.get(fieldName.replace('.', '/'));
 
 		InternalCardinality internalCardinality = aggregations.get(
 			"totalElements");
 
-		_totalElements = internalCardinality.getValue();
+		totalElements = internalCardinality.getValue();
 
-		return _getTransformationJSONArray(
-			terms.getBuckets(), _fieldName.replace('.', '/'));
+		return getTransformationJSONArray(
+			terms.getBuckets(), fieldName.replace('.', '/'));
 	}
 
 	@Override
 	public long getTotalElements() {
-		return _totalElements;
+		return totalElements;
 	}
 
-	private List<FieldSortBuilder> _getGroupByFieldSortBuilders(
+	protected List<FieldSortBuilder> getGroupByFieldSortBuilders(
 		List<Pair<String, SortOrder>> sortOrderPairs) {
 
 		if ((sortOrderPairs == null) || sortOrderPairs.isEmpty()) {
@@ -186,7 +186,7 @@ public class TermsAggregationTransformationJSONArrayFunction
 		return groupByFieldSortBuilders;
 	}
 
-	private QueryBuilder _getIncludeQueryBuilder(
+	protected QueryBuilder getIncludeQueryBuilder(
 		String fieldName, String contains) {
 
 		if (contains == null) {
@@ -199,15 +199,15 @@ public class TermsAggregationTransformationJSONArrayFunction
 				StringUtil.unquote(contains)));
 	}
 
-	private JSONArray _getTransformationJSONArray(
+	protected JSONArray getTransformationJSONArray(
 		List<? extends Terms.Bucket> buckets, String fieldName) {
 
 		JSONArray transformationsJSONArray = new JSONArray();
 
 		for (Terms.Bucket bucket : buckets) {
-			if (_responseFormatterFunction != null) {
+			if (responseFormatterFunction != null) {
 				transformationsJSONArray.put(
-					_responseFormatterFunction.apply(bucket));
+					responseFormatterFunction.apply(bucket));
 			}
 			else {
 				transformationsJSONArray.put(
@@ -223,13 +223,13 @@ public class TermsAggregationTransformationJSONArrayFunction
 		return transformationsJSONArray;
 	}
 
+	protected final String contains;
+	protected final String fieldName;
+	protected final Function<Terms.Bucket, Object> responseFormatterFunction;
+	protected long totalElements;
+
 	private static final Pattern _groupByPattern = Pattern.compile(
 		"groupby\\(\\((?<groupByField>[^)]+)\\)\\)" +
 			"(/contains\\(\\((?<containsField>[^)]+)\\)\\))?");
-
-	private final String _contains;
-	private final String _fieldName;
-	private final Function<Terms.Bucket, Object> _responseFormatterFunction;
-	private long _totalElements;
 
 }
