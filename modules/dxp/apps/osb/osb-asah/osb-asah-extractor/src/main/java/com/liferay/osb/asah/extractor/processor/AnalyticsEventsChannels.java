@@ -121,6 +121,17 @@ public class AnalyticsEventsChannels {
 				return true;
 			}
 
+			if (Objects.equals(
+					analyticsEvent.getApplicationId(), "SocialBookmarks") &&
+				Objects.equals(analyticsEvent.getEventId(), "shared") &&
+				Objects.equals(
+					MapUtil.getString(
+						analyticsEvent.getEventProperties(), "className"),
+					"com.liferay.blogs.model.BlogsEntry")) {
+
+				return true;
+			}
+
 			return false;
 		};
 	}
