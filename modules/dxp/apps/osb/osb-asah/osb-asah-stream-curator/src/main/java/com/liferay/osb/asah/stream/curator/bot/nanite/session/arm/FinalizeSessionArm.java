@@ -74,10 +74,12 @@ public class FinalizeSessionArm {
 	public void init() {
 		_cerebroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forCerebroInfo();
+		_faroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
 	}
 
 	public void processSession(UserSession userSession) throws Exception {
-		updateAssets(userSession);
+		updateAssetsAndActivities(userSession);
 
 		JSONObject partialUserSessionJSONObject = new JSONObject();
 
@@ -127,7 +129,11 @@ public class FinalizeSessionArm {
 		processSession(userSession);
 	}
 
-	public void updateAssets(UserSession userSession) throws Exception {
+	public void updateAssetsAndActivities(UserSession userSession)
+		throws Exception {
+
+		_updateActivities(userSession);
+
 		_updateAssetBuckets(userSession);
 
 		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
@@ -301,6 +307,34 @@ public class FinalizeSessionArm {
 		).collect(
 			Collectors.toList()
 		);
+	}
+
+	private void _updateActivities(UserSession userSession) {
+		Script script = new Script(
+			Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
+			"ctx._source.sessionId = params.sessionId",
+			Collections.singletonMap("sessionId", userSession.getId()));
+
+		_faroInfoElasticsearchInvoker.updateByQueryWithRetry(
+			BoolQueryBuilderUtil.filter(
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery(
+						"dataSourceId", userSession.getDataSourceId())
+				).filter(
+					QueryBuilders.rangeQuery(
+						"endTime"
+					).gte(
+						DateUtil.toUTCString(userSession.getFirstEventDate())
+					).lte(
+						DateUtil.toUTCString(userSession.getLastEventDate())
+					)
+				).filter(
+					QueryBuilders.termQuery("userId", userSession.getUserId())
+				)
+			).mustNot(
+				QueryBuilders.existsQuery("sessionId")
+			),
+			true, script, "activities");
 	}
 
 	private void _updateAssetBuckets(UserSession userSession) {
@@ -624,5 +658,7 @@ public class FinalizeSessionArm {
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 }

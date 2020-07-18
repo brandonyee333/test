@@ -80,6 +80,9 @@
 				"ownerId": {
 					"type": "keyword"
 				},
+				"sessionId": {
+					"type": "keyword"
+				},
 				"startTime": {
 					"type": "date"
 				},

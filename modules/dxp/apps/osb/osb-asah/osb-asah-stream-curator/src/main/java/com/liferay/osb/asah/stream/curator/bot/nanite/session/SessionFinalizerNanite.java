@@ -123,7 +123,7 @@ public class SessionFinalizerNanite implements Nanite {
 		JSONArrayIterator.of(
 			"user-sessions", _cerebroInfoElasticsearchInvoker,
 			userSessionJSONObject -> {
-				_finalizeSessionArm.updateAssets(
+				_finalizeSessionArm.updateAssetsAndActivities(
 					_objectMapper.readValue(
 						userSessionJSONObject.toString(), UserSession.class));
 
