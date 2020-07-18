@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.backend.rest.response.embedded;
+package com.liferay.osb.asah.backend.rest.response;
 
 import com.liferay.osb.asah.backend.dog.DogUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
