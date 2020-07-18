@@ -32,7 +32,8 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.lucene.search.join.ScoreMode;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -40,9 +41,8 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.BucketOrder;
-import org.elasticsearch.search.aggregations.bucket.nested.InternalNested;
-import org.elasticsearch.search.aggregations.bucket.nested.ReverseNested;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.metrics.cardinality.InternalCardinality;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -87,15 +87,23 @@ public class SiteInterestCompositionDog {
 			_getTotalSessions(channelId, dataSourceId, timeRange));
 	}
 
-	private void _addTimeRangeFilter(
-		BoolQueryBuilder boolQueryBuilder, TimeRange timeRange) {
+	private BoolQueryBuilder _getActivitiesBoolQueryBuilder(
+		String channelId, String dataSourceId, TimeRange timeRange) {
 
-		boolQueryBuilder.filter(
-			QueryBuilders.nestedQuery(
-				"interactions",
-				_searchQueryHelper.createRangeQueryBuilder(
-					"interactions.eventDate", timeRange),
-				ScoreMode.None));
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+			_searchQueryHelper.createRangeQueryBuilder("endTime", timeRange)
+		).filter(
+			QueryBuilders.termQuery("applicationId", "Page")
+		).filter(
+			QueryBuilders.termQuery("eventId", "pageViewed")
+		);
+
+		BoolQueryBuilderUtil.filterTerm(
+			boolQueryBuilder, "channelId", channelId);
+		BoolQueryBuilderUtil.filterTerm(
+			boolQueryBuilder, "dataSourceId", dataSourceId);
+
+		return boolQueryBuilder;
 	}
 
 	private Map<String, Set<String>> _getKeywords(
@@ -108,19 +116,19 @@ public class SiteInterestCompositionDog {
 			searchSourceBuilder -> {
 				searchSourceBuilder.aggregation(
 					AggregationBuilders.terms(
-						"canonicalUrls"
+						"keywords/keyword"
 					).field(
-						"canonicalUrl"
+						"keywords.keyword"
+					).order(
+						BucketOrder.compound(
+							BucketOrder.count(false), BucketOrder.key(true))
 					).size(
 						Integer.MAX_VALUE
 					).subAggregation(
 						AggregationBuilders.terms(
-							"keywords/keyword"
+							"assetId"
 						).field(
-							"keywords.keyword"
-						).order(
-							BucketOrder.compound(
-								BucketOrder.count(false), BucketOrder.key(true))
+							"id"
 						).size(
 							Integer.MAX_VALUE
 						)
@@ -148,40 +156,37 @@ public class SiteInterestCompositionDog {
 			return keywords;
 		}
 
-		Terms terms = aggregations.get("canonicalUrls");
-
 		Map<String, Set<String>> sessionIds = _getSessionIds(
 			channelId, dataSourceId, timeRange);
 
-		for (Map.Entry<String, Set<String>> entry : sessionIds.entrySet()) {
-			String canonicalUrl = entry.getKey();
+		Terms terms = aggregations.get("keywords/keyword");
 
-			Terms.Bucket bucket = terms.getBucketByKey(canonicalUrl);
+		for (Terms.Bucket bucket : terms.getBuckets()) {
+			String keyword = bucket.getKeyAsString();
 
-			if (bucket == null) {
+			Aggregations assetIdAggregations = bucket.getAggregations();
+
+			Terms assetIdTerms = assetIdAggregations.get("assetId");
+
+			Set<String> assetSessionIds = new HashSet<>();
+
+			for (Terms.Bucket assetIdBucket : assetIdTerms.getBuckets()) {
+				String assetId = assetIdBucket.getKeyAsString();
+
+				if (sessionIds.containsKey(assetId)) {
+					assetSessionIds.addAll(sessionIds.get(assetId));
+				}
+			}
+
+			if (assetSessionIds.isEmpty()) {
+				if (_log.isWarnEnabled()) {
+					_log.warn("No sessions found keyword " + keyword);
+				}
+
 				continue;
 			}
 
-			Aggregations bucketAggregations = bucket.getAggregations();
-
-			Terms bucketTerms = bucketAggregations.get("keywords/keyword");
-
-			for (Terms.Bucket termsBucket : bucketTerms.getBuckets()) {
-				String keyword = termsBucket.getKeyAsString();
-
-				Set<String> curSessionIds = null;
-
-				if (keywords.containsKey(keyword)) {
-					curSessionIds = keywords.get(keyword);
-				}
-				else {
-					curSessionIds = new HashSet<>();
-				}
-
-				curSessionIds.addAll(sessionIds.get(canonicalUrl));
-
-				keywords.put(keyword, curSessionIds);
-			}
+			keywords.put(keyword, assetSessionIds);
 		}
 
 		return keywords;
@@ -192,42 +197,29 @@ public class SiteInterestCompositionDog {
 
 		Map<String, Set<String>> sessionIds = new HashMap<>();
 
-		BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+		BoolQueryBuilder boolQueryBuilder = _getActivitiesBoolQueryBuilder(
+			channelId, dataSourceId, timeRange);
 
-		BoolQueryBuilderUtil.filterTerm(
-			boolQueryBuilder, "channelId", channelId);
-		BoolQueryBuilderUtil.filterTerm(
-			boolQueryBuilder, "dataSourceId", dataSourceId);
-
-		_addTimeRangeFilter(boolQueryBuilder, timeRange);
-
-		SearchResponse searchResponse = _cerebroInfoElasticsearchInvoker.search(
-			"user-sessions",
+		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
+			"activities",
 			searchSourceBuilder -> {
 				searchSourceBuilder.aggregation(
-					AggregationBuilders.nested(
-						"interactions", "interactions"
+					AggregationBuilders.terms(
+						"assetId"
+					).field(
+						"object.id"
+					).size(
+						Integer.MAX_VALUE
 					).subAggregation(
 						AggregationBuilders.terms(
-							"canonicalUrls"
+							"sessionId"
 						).field(
-							"interactions.context.canonicalUrl"
+							"sessionId"
 						).size(
 							Integer.MAX_VALUE
-						).subAggregation(
-							AggregationBuilders.reverseNested(
-								"reverseNested"
-							).subAggregation(
-								AggregationBuilders.terms(
-									"sessionIds"
-								).field(
-									"id"
-								).size(
-									Integer.MAX_VALUE
-								)
-							)
 						)
 					));
+
 				searchSourceBuilder.query(boolQueryBuilder);
 				searchSourceBuilder.size(0);
 			});
@@ -238,30 +230,22 @@ public class SiteInterestCompositionDog {
 			return sessionIds;
 		}
 
-		InternalNested internalNested = aggregations.get("interactions");
-
-		Aggregations nestedAggregations = internalNested.getAggregations();
-
-		Terms terms = nestedAggregations.get("canonicalUrls");
+		Terms terms = aggregations.get("assetId");
 
 		for (Terms.Bucket bucket : terms.getBuckets()) {
-			Aggregations bucketAggregations = bucket.getAggregations();
+			String assetId = bucket.getKeyAsString();
 
-			ReverseNested reverseNested = bucketAggregations.get(
-				"reverseNested");
+			Aggregations sessionIdAggregations = bucket.getAggregations();
 
-			Aggregations reverseNestedAggregations =
-				reverseNested.getAggregations();
+			Terms sessionIdTerms = sessionIdAggregations.get("sessionId");
 
-			Terms sessionIdsTerms = reverseNestedAggregations.get("sessionIds");
+			Set<String> assetSessionIds = new HashSet<>();
 
-			Set<String> curSessionIds = new HashSet<>();
-
-			for (Terms.Bucket termBucket : sessionIdsTerms.getBuckets()) {
-				curSessionIds.add(termBucket.getKeyAsString());
+			for (Terms.Bucket sessionIdBucket : sessionIdTerms.getBuckets()) {
+				assetSessionIds.add(sessionIdBucket.getKeyAsString());
 			}
 
-			sessionIds.put(bucket.getKeyAsString(), curSessionIds);
+			sessionIds.put(assetId, assetSessionIds);
 		}
 
 		return sessionIds;
@@ -270,17 +254,32 @@ public class SiteInterestCompositionDog {
 	private long _getTotalSessions(
 		String channelId, String dataSourceId, TimeRange timeRange) {
 
-		BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+		BoolQueryBuilder boolQueryBuilder = _getActivitiesBoolQueryBuilder(
+			channelId, dataSourceId, timeRange);
 
-		BoolQueryBuilderUtil.filterTerm(
-			boolQueryBuilder, "channelId", channelId);
-		BoolQueryBuilderUtil.filterTerm(
-			boolQueryBuilder, "dataSourceId", dataSourceId);
+		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
+			"activities",
+			searchSourceBuilder -> {
+				searchSourceBuilder.aggregation(
+					AggregationBuilders.cardinality(
+						"sessionIds"
+					).field(
+						"sessionId"
+					));
+				searchSourceBuilder.query(boolQueryBuilder);
+				searchSourceBuilder.size(0);
+			});
 
-		_addTimeRangeFilter(boolQueryBuilder, timeRange);
+		Aggregations aggregations = searchResponse.getAggregations();
 
-		return _cerebroInfoElasticsearchInvoker.count(
-			"user-sessions", boolQueryBuilder);
+		if (DogUtil.isEmpty(aggregations)) {
+			return 0;
+		}
+
+		InternalCardinality internalCardinality = aggregations.get(
+			"sessionIds");
+
+		return internalCardinality.getValue();
 	}
 
 	@PostConstruct
@@ -290,6 +289,9 @@ public class SiteInterestCompositionDog {
 		_faroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forFaroInfo();
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		SiteInterestCompositionDog.class);
 
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
