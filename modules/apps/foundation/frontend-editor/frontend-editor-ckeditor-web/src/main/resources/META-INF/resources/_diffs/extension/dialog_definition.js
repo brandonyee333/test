@@ -6,16 +6,26 @@ CKEDITOR.on(
 
 			var onShow = dialogDefinition.onShow;
 
+			var dialog;
+
 			dialogDefinition.onShow = function() {
+				dialog = this;
+
 				if (typeof onShow === 'function') {
 					onShow.apply(this, arguments);
 				}
 
-				var editorElement = this.getParentEditor().container;
+				centerDialog();
+			};
+
+			var centerDialog = function () {
+				var instance = dialog;
+
+				var editorElement = instance.getParentEditor().container;
 
 				var documentPosition = editorElement.getLast().getDocumentPosition();
 
-				var dialogSize = this.getSize();
+				var dialogSize = instance.getSize();
 
 				var x =
 					documentPosition.x +
@@ -29,7 +39,7 @@ CKEDITOR.on(
 						2 -
 						window.scrollY);
 
-				this.move(x, y, false);
+				instance.move(x, y, false);
 			};
 		}
 	}
