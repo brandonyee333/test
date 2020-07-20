@@ -132,9 +132,9 @@ public class DXPBatchEntitiesRestController {
 		String dataSourceId, String resourceName) {
 
 		StorageConfiguration.Builder builder = StorageConfiguration.builder(
-			_analyticsBatchResourcesStoragePath + "/" + resourceName);
+			_dxpBatchEntitiesStoragePath + "/" + resourceName);
 
-		builder.googleBucket(_analyticsBatchResourcesBucket);
+		builder.googleBucket(_dxpBatchEntitiesBucket);
 		builder.googleBucketFolder(dataSourceId);
 
 		return builder.build();
@@ -144,12 +144,12 @@ public class DXPBatchEntitiesRestController {
 		DXPBatchEntitiesRestController.class);
 
 	@Value(
-		"${osb.asah.analytics.batch.resources.google.bucket:analytics-cloud-analytics-resources}"
+		"${osb.asah.dxp.batch.entities.google.bucket:analytics-cloud-dxp-batch-entities}"
 	)
-	private String _analyticsBatchResourcesBucket;
+	private String _dxpBatchEntitiesBucket;
 
-	@Value("${osb.asah.analytics.batch.resources.storage.path:/tmp/}")
-	private String _analyticsBatchResourcesStoragePath;
+	@Value("${osb.asah.dxp.batch.entities.storage.path:/tmp/}")
+	private String _dxpBatchEntitiesStoragePath;
 
 	@Autowired
 	private StorageFactory _storageFactory;

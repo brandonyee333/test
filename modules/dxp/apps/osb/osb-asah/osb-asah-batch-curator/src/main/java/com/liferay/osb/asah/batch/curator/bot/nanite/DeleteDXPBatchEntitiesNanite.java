@@ -114,7 +114,7 @@ public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 	}
 
 	private Iterable<Blob> _listBucket(String prefix) {
-		Bucket bucket = _storage.get(_analyticsBatchResourcesBucket);
+		Bucket bucket = _storage.get(_dxpBatchEntitiesBucket);
 
 		Page<Blob> blobs = bucket.list(
 			Storage.BlobListOption.prefix(prefix),
@@ -136,9 +136,9 @@ public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 		DeleteDXPBatchEntitiesNanite.class);
 
 	@Value(
-		"${osb.asah.analytics.batch.resources.google.bucket:analytics-cloud-analytics-resources}"
+		"${osb.asah.dxp.batch.entities.google.bucket:analytics-cloud-dxp-batch-entities}"
 	)
-	private String _analyticsBatchResourcesBucket;
+	private String _dxpBatchEntitiesBucket;
 
 	private Storage _storage;
 
