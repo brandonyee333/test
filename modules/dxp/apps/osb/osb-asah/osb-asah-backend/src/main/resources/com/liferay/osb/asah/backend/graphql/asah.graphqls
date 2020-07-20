@@ -612,13 +612,14 @@ type QueryType {
 	): [PageMetric]
 
 	assets(
+		canonicalUrl: String,
 		channelId: String,
 		country: String,
 		deviceType: String,
 		rangeEnd: String,
 		rangeKey: Int,
 		rangeStart: String,
-		url: String!
+		url: String
 	): [AssetMetric]
 
 	blog(
@@ -848,6 +849,7 @@ type QueryType {
 	): DXPEntityBag
 
 	page(
+		canonicalUrl: String,
 		channelId: String,
 		country: String,
 		deviceType: String,
@@ -856,7 +858,7 @@ type QueryType {
 		rangeKey: Int,
 		rangeStart: String,
 		title: String,
-		url: String!
+		url: String
 	): PageMetric
 
 	pageAssets(
