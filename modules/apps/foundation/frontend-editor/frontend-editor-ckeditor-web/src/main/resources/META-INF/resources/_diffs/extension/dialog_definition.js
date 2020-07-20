@@ -6,12 +6,11 @@ CKEDITOR.on(
 
 			var dialogDefinition = event.data.definition;
 
+			var dialog = event.data.dialog;
+
 			var onShow = dialogDefinition.onShow;
 
-			var dialog;
-
 			dialogDefinition.onShow = function() {
-				dialog = this;
 
 				if (typeof onShow === 'function') {
 					onShow.apply(this, arguments);
@@ -21,13 +20,11 @@ CKEDITOR.on(
 			};
 
 			var centerDialog = function () {
-				var instance = dialog;
-
-				var editorElement = instance.getParentEditor().container;
+				var editorElement = dialog.getParentEditor().container;
 
 				var documentPosition = editorElement.getLast().getDocumentPosition();
 
-				var dialogSize = instance.getSize();
+				var dialogSize = dialog.getSize();
 
 				var x =
 					documentPosition.x +
@@ -41,7 +38,7 @@ CKEDITOR.on(
 						2 -
 						window.scrollY);
 
-				instance.move(x, y, false);
+				dialog.move(x, y, false);
 			};
 
 			AUI().use('aui-debounce', A => {
