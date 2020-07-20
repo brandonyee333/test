@@ -197,8 +197,8 @@ public class OSBAsahBatchCuratorBot {
 	}
 
 	@Scheduled(cron = "0 0 0 * * ?")
-	public void runDeleteDXPBatchResourcesNanite() {
-		run("DeleteDXPBatchResourcesNanite");
+	public void runDeleteDXPBatchEntitiesNanite() {
+		run("DeleteDXPBatchEntitiesNanite");
 	}
 
 	@Scheduled(cron = "0 0 0 * * ?")
