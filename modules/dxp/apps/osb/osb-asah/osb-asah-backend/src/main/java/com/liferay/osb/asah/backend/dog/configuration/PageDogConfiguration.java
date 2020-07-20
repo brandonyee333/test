@@ -57,9 +57,9 @@ public class PageDogConfiguration extends BaseDogConfiguration {
 	@Override
 	public AssetResolver<PageMetric> getAssetResolver() {
 		AssetResolver.Builder<PageMetric> builder = AssetResolver.builder(
-			"url");
+			"canonicalUrl");
 
-		builder.searchableFieldNames("url", "title");
+		builder.searchableFieldNames("canonicalUrl", "title");
 		builder.supplier(PageMetric::new);
 
 		return builder.build();
