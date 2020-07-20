@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
+import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -48,8 +49,10 @@ import org.elasticsearch.script.Script;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -198,7 +201,9 @@ public class OSBAsahBatchCuratorBot {
 
 	@Scheduled(cron = "0 0 0 * * ?")
 	public void runDeleteDXPBatchEntitiesNanite() {
-		run("DeleteDXPBatchEntitiesNanite");
+		if (_deleteDXPBatchEntitiesRunnable != null) {
+			_deleteDXPBatchEntitiesRunnable.run();
+		}
 	}
 
 	@Scheduled(cron = "0 0 0 * * ?")
@@ -264,6 +269,12 @@ public class OSBAsahBatchCuratorBot {
 		return false;
 	}
 
+	@Bean(name = "deleteDXPBatchEntitiesRunnable")
+	@ConditionalOnGoogleApplicationCredentials
+	private Runnable _deleteDXPBatchEntitiesRunnable() {
+		return () -> run("DeleteDXPBatchEntitiesNanite");
+	}
+
 	private void _executeOSBAsahTasks() {
 		try {
 			JSONArrayIterator.of(
@@ -304,6 +315,10 @@ public class OSBAsahBatchCuratorBot {
 
 	private static final Log _log = LogFactory.getLog(
 		OSBAsahBatchCuratorBot.class);
+
+	@Autowired(required = false)
+	@Qualifier("deleteDXPBatchEntitiesRunnable")
+	private Runnable _deleteDXPBatchEntitiesRunnable;
 
 	private ElasticsearchInvoker _elasticsearchInvoker;
 

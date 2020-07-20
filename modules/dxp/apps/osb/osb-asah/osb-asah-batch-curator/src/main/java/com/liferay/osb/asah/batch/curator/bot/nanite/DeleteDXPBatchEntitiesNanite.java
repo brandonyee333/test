@@ -21,6 +21,7 @@ import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
+import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 
 import java.util.Objects;
 
@@ -38,6 +39,7 @@ import org.springframework.stereotype.Component;
  * @author Riccardo Ferrari
  */
 @Component
+@ConditionalOnGoogleApplicationCredentials
 public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 
 	@Override
