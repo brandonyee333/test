@@ -38,7 +38,7 @@ import org.springframework.stereotype.Component;
  * @author Riccardo Ferrari
  */
 @Component
-public class DeleteDXPBatchResourcesNanite extends BaseNanite {
+public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
@@ -133,7 +133,7 @@ public class DeleteDXPBatchResourcesNanite extends BaseNanite {
 	};
 
 	private static final Log _log = LogFactory.getLog(
-		DeleteDXPBatchResourcesNanite.class);
+		DeleteDXPBatchEntitiesNanite.class);
 
 	@Value(
 		"${osb.asah.analytics.batch.resources.google.bucket:analytics-cloud-analytics-resources}"
