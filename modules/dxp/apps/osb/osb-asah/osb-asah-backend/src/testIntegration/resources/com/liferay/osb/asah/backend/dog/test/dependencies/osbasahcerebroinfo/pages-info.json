@@ -2,6 +2,7 @@
 	{
 		"bounce": 1,
 		"browserName": "Chrome",
+		"canonicalUrl": "http://192.168.108.90:8080/",
 		"channelId": "1",
 		"city": null,
 		"country": null,
@@ -54,6 +55,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "http://192.168.108.90:8080/",
 		"channelId": "1",
 		"city": null,
 		"country": null,
@@ -96,6 +98,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "http://192.168.108.90:8080/",
 		"channelId": "1",
 		"city": null,
 		"country": null,
@@ -138,6 +141,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "http://192.168.108.90:8080/",
 		"channelId": "1",
 		"city": null,
 		"country": null,
@@ -180,6 +184,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "http://192.168.108.90:8080/",
 		"channelId": "1",
 		"city": null,
 		"country": null,
@@ -221,6 +226,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "http://192.168.108.90:8080/search?q=Liferay%20DXP",
 		"channelId": "2",
 		"city": null,
 		"country": null,
@@ -261,6 +267,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "http://192.168.108.90:8080/search?q=Liferay",
 		"channelId": "2",
 		"city": null,
 		"country": null,
@@ -301,6 +308,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "http://192.168.108.90:8080/",
 		"channelId": "2",
 		"city": null,
 		"country": null,
@@ -346,6 +354,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "http://192.168.108.90:8080/search?q=%20liferay",
 		"channelId": "2",
 		"city": null,
 		"country": null,
@@ -386,6 +395,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "http://192.168.108.90:8080/",
 		"channelId": "2",
 		"city": null,
 		"country": null,
@@ -426,6 +436,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "http://192.168.108.90:8080/",
 		"channelId": "2",
 		"city": null,
 		"country": null,
@@ -466,6 +477,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "http://192.168.108.90:8080/",
 		"channelId": "2",
 		"city": null,
 		"country": null,
@@ -506,6 +518,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "http://192.168.108.90:8080/",
 		"channelId": "2",
 		"city": null,
 		"country": null,
@@ -546,6 +559,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "http://192.168.108.90:8080/",
 		"channelId": "2",
 		"city": null,
 		"country": null,
@@ -586,6 +600,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "http://192.168.108.90:8080/",
 		"channelId": "2",
 		"city": null,
 		"country": null,
@@ -626,6 +641,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "http://192.168.108.90:8080/",
 		"channelId": "2",
 		"city": null,
 		"country": null,

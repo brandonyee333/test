@@ -454,11 +454,11 @@ public class MetricDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
-	public void testPagesExperimentAssetIdsFilter() {
+	public void testPageAssetIdsFilter() {
 		Set<String> assetIds = Collections.singleton(
-			"http://192.168.108.90:8080/search?q=Liferay");
+			"http://192.168.108.90:8080/");
 
-		List<AssetMetric> assetMetrics = _metricDog.getAssetMetrics(
+		List<PageMetric> pageMetrics = _metricDog.getAssetMetrics(
 			assetIds, new SearchQueryContext(),
 			new HashSet<String>() {
 				{
@@ -467,15 +467,17 @@ public class MetricDogTest {
 			},
 			1000, null, 0);
 
-		Assert.assertNotNull(assetMetrics);
+		Assert.assertNotNull(pageMetrics);
 
-		Assert.assertEquals(1, assetMetrics.size(), 0);
+		Assert.assertEquals(1, pageMetrics.size(), 0);
 
-		AssetMetric assetMetric = assetMetrics.get(0);
+		PageMetric pageMetric = pageMetrics.get(0);
 
-		List<String> urls = assetMetric.getURLs();
+		Assert.assertTrue(assetIds.contains(pageMetric.getAssetId()));
 
-		Assert.assertTrue(assetIds.containsAll(urls));
+		Metric viewsMetric = pageMetric.getViewsMetric();
+
+		Assert.assertEquals(6, viewsMetric.getValue(), 0);
 	}
 
 	@ElasticsearchIndex(
