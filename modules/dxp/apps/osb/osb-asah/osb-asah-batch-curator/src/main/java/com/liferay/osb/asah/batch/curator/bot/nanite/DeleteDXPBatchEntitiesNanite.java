@@ -125,11 +125,11 @@ public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 
 	private static final String[] _SKIP_FOLDERS = {
 		"com.liferay.headless.commerce.machine.learning.dto.v1_0." +
+			"ProductContentRecommendation",
+		"com.liferay.headless.commerce.machine.learning.dto.v1_0." +
 			"ProductInteractionRecommendation",
 		"com.liferay.headless.commerce.machine.learning.dto.v1_0." +
-			"UserRecommendation",
-		"com.liferay.headless.commerce.machine.learning.dto.v1_0." +
-			"ProductContentRecommendation"
+			"UserRecommendation"
 	};
 
 	private static final Log _log = LogFactory.getLog(
