@@ -47,15 +47,15 @@ public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 		_cleanUp(ServiceConstants.LCP_PROJECT_ID + "/");
 	}
 
-	private void _cleanUp(String prefix) {
-		if (_isFolderSkipped(prefix)) {
+	private void _cleanUp(String directoryPrefix) {
+		if (_isDirectorySkipped(directoryPrefix)) {
 			return;
 		}
 
 		Blob latestBlob = null;
 
-		for (Blob blob : _listBucket(prefix)) {
-			if (Objects.equals(blob.getName(), prefix)) {
+		for (Blob blob : _listBucket(directoryPrefix)) {
+			if (Objects.equals(blob.getName(), directoryPrefix)) {
 				continue;
 			}
 
@@ -101,11 +101,12 @@ public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 		_storage = storageOptions.getService();
 	}
 
-	private boolean _isFolderSkipped(String prefix) {
-		String folderName = prefix.substring(0, prefix.length() - 1);
+	private boolean _isDirectorySkipped(String directoryPrefix) {
+		String directoryName = directoryPrefix.substring(
+			0, directoryPrefix.length() - 1);
 
-		for (String skipFolder : _SKIP_FOLDERS) {
-			if (folderName.endsWith(skipFolder)) {
+		for (String skipDirectoryName : _SKIP_DIRECTORY_NAMES) {
+			if (directoryName.endsWith(skipDirectoryName)) {
 				return true;
 			}
 		}
@@ -113,17 +114,17 @@ public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 		return false;
 	}
 
-	private Iterable<Blob> _listBucket(String prefix) {
+	private Iterable<Blob> _listBucket(String directoryPrefix) {
 		Bucket bucket = _storage.get(_dxpBatchEntitiesBucket);
 
 		Page<Blob> blobs = bucket.list(
-			Storage.BlobListOption.prefix(prefix),
+			Storage.BlobListOption.prefix(directoryPrefix),
 			Storage.BlobListOption.currentDirectory());
 
 		return blobs.iterateAll();
 	}
 
-	private static final String[] _SKIP_FOLDERS = {
+	private static final String[] _SKIP_DIRECTORY_NAMES = {
 		"com.liferay.headless.commerce.machine.learning.dto.v1_0." +
 			"ProductContentRecommendation",
 		"com.liferay.headless.commerce.machine.learning.dto.v1_0." +
