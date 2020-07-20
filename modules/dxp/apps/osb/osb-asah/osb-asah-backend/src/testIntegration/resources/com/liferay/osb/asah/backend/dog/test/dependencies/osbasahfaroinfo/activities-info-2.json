@@ -1,0 +1,210 @@
+[
+	{
+		"activityKey": "Page#pageViewed#355525458918155906",
+		"activityType": "BROWSE",
+		"applicationId": "Page",
+		"channelId": "1",
+		"dataSourceId": "355524992631037473",
+		"day": "${now-1d}",
+		"endTime": "${now-1d}",
+		"eventId": "pageViewed",
+		"eventProperties": {
+			"page": "/web/guest/home",
+			"pageViewActivityId": "abcb521f-b35d-451d-b77f-e402ecb5cabf"
+		},
+		"groupId": "348853726639670821",
+		"id": "348853926240043267",
+		"object": {
+			"dataSourceAssetPK": "https://www.terrance-lueilwitz.biz",
+			"id": "355525458918155906",
+			"name": "empower holistic ROI",
+			"objectType": "Page",
+			"url": "https://www.terrance-lueilwitz.biz"
+		},
+		"ownerId": "366909392432123952",
+		"startTime": "${now-1d}",
+		"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b957"
+	},
+	{
+		"activityKey": "Page#pageViewed#355525458918155906",
+		"activityType": "BROWSE",
+		"applicationId": "Page",
+		"channelId": "2",
+		"dataSourceId": "355524992631037473",
+		"day": "${now-2d}",
+		"endTime": "${now-2d}",
+		"eventId": "pageViewed",
+		"eventProperties": {
+			"page": "/web/guest/home",
+			"pageViewActivityId": "abcb521f-b35d-451d-b77f-e402ecb5cabf"
+		},
+		"groupId": "348853726639670821",
+		"id": "348853926240043268",
+		"object": {
+			"dataSourceAssetPK": "https://www.terrance-lueilwitz.biz",
+			"id": "355525458918155906",
+			"name": "empower holistic ROI",
+			"objectType": "Page",
+			"url": "https://www.terrance-lueilwitz.biz"
+		},
+		"ownerId": "366909392432123952",
+		"startTime": "${now-2d}",
+		"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b957"
+	},
+	{
+		"activityKey": "Page#pageViewed#355525460725123362",
+		"activityType": "BROWSE",
+		"applicationId": "Page",
+		"channelId": "1",
+		"dataSourceId": "355524992631037473",
+		"day": "${now-5m}",
+		"endTime": "${now-5m}",
+		"eventId": "pageViewed",
+		"eventProperties": {
+			"page": "/web/guest/home",
+			"pageViewActivityId": "abcb521f-b35d-451d-b77f-e402ecb5cabf"
+		},
+		"groupId": "348853726639670821",
+		"id": "348853926240043269",
+		"object": {
+			"dataSourceAssetPK": "https://www.jamey-shields.info",
+			"id": "355525460725123362",
+			"name": "engineer intuitive models",
+			"objectType": "Page",
+			"url": "https://www.jamey-shields.info"
+		},
+		"ownerId": "366909392432123952",
+		"startTime": "${now-5m}",
+		"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b957"
+	},
+	{
+		"activityKey": "Page#pageViewed#355525462778184556",
+		"activityType": "BROWSE",
+		"applicationId": "Page",
+		"channelId": "2",
+		"dataSourceId": "355524992631037473",
+		"day": "${now-5d}",
+		"endTime": "${now-5d}",
+		"eventId": "pageViewed",
+		"eventProperties": {
+			"page": "/web/guest/home",
+			"pageViewActivityId": "abcb521f-b35d-451d-b77f-e402ecb5cabf"
+		},
+		"groupId": "348853726639670821",
+		"id": "348853926240043270",
+		"object": {
+			"dataSourceAssetPK": "https://www.iva-tillman.com",
+			"id": "355525462778184556",
+			"name": "seize compelling action-items",
+			"objectType": "Page",
+			"url": "https://www.iva-tillman.com"
+		},
+		"ownerId": "366909392432123952",
+		"startTime": "${now-5d}",
+		"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b957"
+	},
+	{
+		"activityKey": "Page#pageViewed#355525462778184556",
+		"activityType": "BROWSE",
+		"applicationId": "Page",
+		"channelId": "1",
+		"dataSourceId": "355524992631037473",
+		"day": "${now-27d}",
+		"endTime": "${now-27d}",
+		"eventId": "pageViewed",
+		"eventProperties": {
+			"page": "/web/guest/home",
+			"pageViewActivityId": "abcb521f-b35d-451d-b77f-e402ecb5cabf"
+		},
+		"groupId": "348853726639670821",
+		"id": "348853926240043271",
+		"object": {
+			"dataSourceAssetPK": "https://www.iva-tillman.com",
+			"id": "355525462778184556",
+			"name": "seize compelling action-items",
+			"objectType": "Page",
+			"url": "https://www.iva-tillman.com"
+		},
+		"ownerId": "366909392432123952",
+		"startTime": "${now-27d}",
+		"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b957"
+	},
+	{
+		"activityKey": "Page#pageViewed#355525462778184556",
+		"activityType": "BROWSE",
+		"applicationId": "Page",
+		"channelId": "2",
+		"dataSourceId": "355524992631037473",
+		"day": "${now-70d}",
+		"endTime": "${now-70d}",
+		"eventId": "pageViewed",
+		"eventProperties": {
+			"page": "/web/guest/home",
+			"pageViewActivityId": "abcb521f-b35d-451d-b77f-e402ecb5cabf"
+		},
+		"groupId": "348853726639670821",
+		"id": "348853926240043272",
+		"object": {
+			"dataSourceAssetPK": "https://www.iva-tillman.com",
+			"id": "355525462778184556",
+			"name": "seize compelling action-items",
+			"objectType": "Page",
+			"url": "https://www.iva-tillman.com"
+		},
+		"ownerId": "366909392432123952",
+		"startTime": "${now-70d}",
+		"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b957"
+	},
+	{
+		"activityKey": "Page#pageViewed#355525462778184556",
+		"activityType": "BROWSE",
+		"applicationId": "Page",
+		"channelId": "1",
+		"dataSourceId": "355524992631037473",
+		"day": "${now-179d}",
+		"endTime": "${now-179d}",
+		"eventId": "pageViewed",
+		"eventProperties": {
+			"page": "/web/guest/home",
+			"pageViewActivityId": "abcb521f-b35d-451d-b77f-e402ecb5cabf"
+		},
+		"groupId": "348853726639670821",
+		"id": "348853926240043273",
+		"object": {
+			"dataSourceAssetPK": "https://www.iva-tillman.com",
+			"id": "355525462778184556",
+			"name": "seize compelling action-items",
+			"objectType": "Page",
+			"url": "https://www.iva-tillman.com"
+		},
+		"ownerId": "366909392432123953",
+		"startTime": "${now-179d}",
+		"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b958"
+	},
+	{
+		"activityKey": "Page#pageViewed#355525462778184556",
+		"activityType": "BROWSE",
+		"applicationId": "Page",
+		"channelId": "1",
+		"dataSourceId": "355524992631037473",
+		"day": "${now-364d}",
+		"endTime": "${now-364d}",
+		"eventId": "pageViewed",
+		"eventProperties": {
+			"page": "/web/guest/home",
+			"pageViewActivityId": "abcb521f-b35d-451d-b77f-e402ecb5cabf"
+		},
+		"groupId": "348853726639670821",
+		"id": "348853926240043274",
+		"object": {
+			"dataSourceAssetPK": "https://www.iva-tillman.com",
+			"id": "355525462778184556",
+			"name": "seize compelling action-items",
+			"objectType": "Page",
+			"url": "https://www.iva-tillman.com"
+		},
+		"ownerId": "366909392432123954",
+		"startTime": "${now-364d}",
+		"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b959"
+	}
+]

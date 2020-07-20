@@ -21,12 +21,12 @@ import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
  * @author Geyson Silva
  */
 @ElasticsearchIndex(
-	name = "assets", resourcePath = "assets_info.json",
+	name = "activities", resourcePath = "activities_info.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 @ElasticsearchIndex(
-	name = "user-sessions", resourcePath = "user_sessions_info.json",
-	weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	name = "assets", resourcePath = "assets_info.json",
+	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 public class SiteInterestGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {

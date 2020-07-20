@@ -1,0 +1,106 @@
+[
+	{
+		"activityKey": "Page#pageViewed#355525458918155906",
+		"activityType": "BROWSE",
+		"applicationId": "Page",
+		"channelId": "1",
+		"dataSourceId": "355524992631037473",
+		"day": "${now-2dT00:00:00.000Z}",
+		"endTime": "${now-2d}",
+		"eventId": "pageViewed",
+		"eventProperties": {
+			"page": "/web/guest/home",
+			"pageViewActivityId": "abcb521f-b35d-451d-b77f-e402ecb5cabf"
+		},
+		"groupId": "348853726639670821",
+		"id": "348853926240043267",
+		"object": {
+			"dataSourceAssetPK": "https://www.terrance-lueilwitz.biz",
+			"id": "355525458918155906",
+			"name": "empower holistic ROI",
+			"objectType": "Page",
+			"url": "https://www.terrance-lueilwitz.biz"
+		},
+		"ownerId": "366909392432123952",
+		"startTime": "${now-2d}",
+		"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b957"
+	},
+	{
+		"activityKey": "Page#pageViewed#355525458918155906",
+		"activityType": "BROWSE",
+		"applicationId": "Page",
+		"channelId": "2",
+		"dataSourceId": "355524992631037473",
+		"day": "${now-2dT00:00:00.000Z}",
+		"endTime": "${now-2d}",
+		"eventId": "pageViewed",
+		"eventProperties": {
+			"page": "/web/guest/home",
+			"pageViewActivityId": "abcb521f-b35d-451d-b77f-e402ecb5cabf"
+		},
+		"groupId": "348853726639670821",
+		"id": "348853926240043268",
+		"object": {
+			"dataSourceAssetPK": "https://www.terrance-lueilwitz.biz",
+			"id": "355525458918155906",
+			"name": "extend clicks-and-mortar e-tailers",
+			"objectType": "Page",
+			"url": "https://www.terrance-lueilwitz.biz"
+		},
+		"ownerId": "366909392432123952",
+		"startTime": "${now-2d}",
+		"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b957"
+	},
+	{
+		"activityKey": "Page#pageViewed#355525460725123362",
+		"activityType": "BROWSE",
+		"applicationId": "Page",
+		"channelId": "1",
+		"dataSourceId": "355524992631037473",
+		"day": "${now-2dT00:00:00.000Z}",
+		"endTime": "${now-2d}",
+		"eventId": "pageViewed",
+		"eventProperties": {
+			"page": "/web/guest/home",
+			"pageViewActivityId": "abcb521f-b35d-451d-b77f-e402ecb5cabf"
+		},
+		"groupId": "348853726639670821",
+		"id": "348853926240043269",
+		"object": {
+			"dataSourceAssetPK": "https://www.jamey-shields.info",
+			"id": "355525460725123362",
+			"name": "engineer intuitive models",
+			"objectType": "Page",
+			"url": "https://www.jamey-shields.info"
+		},
+		"ownerId": "366909392432123952",
+		"startTime": "${now-2d}",
+		"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b957"
+	},
+	{
+		"activityKey": "Page#pageViewed#355525462778184556",
+		"activityType": "BROWSE",
+		"applicationId": "Page",
+		"channelId": "2",
+		"dataSourceId": "355524992631037473",
+		"day": "${now-2dT00:00:00.000Z}",
+		"endTime": "${now-2d}",
+		"eventId": "pageViewed",
+		"eventProperties": {
+			"page": "/web/guest/home",
+			"pageViewActivityId": "abcb521f-b35d-451d-b77f-e402ecb5cabf"
+		},
+		"groupId": "348853726639670821",
+		"id": "348853926240043270",
+		"object": {
+			"dataSourceAssetPK": "https://www.iva-tillman.com",
+			"id": "355525462778184556",
+			"name": "seize compelling action-items",
+			"objectType": "Page",
+			"url": "https://www.iva-tillman.com"
+		},
+		"ownerId": "366909392432123952",
+		"startTime": "${now-2d}",
+		"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b957"
+	}
+]
