@@ -93,6 +93,7 @@ import com.liferay.portal.util.ShutdownUtil;
 import com.liferay.portlet.ActionResponseImpl;
 import com.liferay.portlet.admin.util.CleanUpPermissionsUtil;
 import com.liferay.portlet.admin.util.CleanUpPortletPreferencesUtil;
+import com.liferay.server.admin.web.internal.util.DictionaryReindexer;
 
 import java.io.File;
 import java.io.Serializable;
@@ -495,12 +496,10 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 	protected void reindexDictionaries(ActionRequest actionRequest)
 		throws Exception {
 
-		long[] companyIds = _portalInstancesLocalService.getCompanyIds();
+		DictionaryReindexer dictionaryReindexer = new DictionaryReindexer(
+			_indexWriterHelper, _portalInstancesLocalService);
 
-		for (long companyId : companyIds) {
-			_indexWriterHelper.indexQuerySuggestionDictionaries(companyId);
-			_indexWriterHelper.indexSpellCheckerDictionaries(companyId);
-		}
+		dictionaryReindexer.reindexDictionaries();
 	}
 
 	protected void runScript(
