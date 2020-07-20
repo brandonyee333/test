@@ -42,13 +42,11 @@ public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
-		String prefix = ServiceConstants.LCP_PROJECT_ID + "/";
-
-		_cleanUp(prefix);
+		_cleanUp(ServiceConstants.LCP_PROJECT_ID + "/");
 	}
 
 	private void _cleanUp(String prefix) {
-		if (_isSkip(prefix)) {
+		if (_isFolderSkipped(prefix)) {
 			return;
 		}
 
@@ -101,11 +99,11 @@ public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 		_storage = storageOptions.getService();
 	}
 
-	private boolean _isSkip(String prefix) {
+	private boolean _isFolderSkipped(String prefix) {
 		String folderName = prefix.substring(0, prefix.length() - 1);
 
-		for (String skip : _SKIP_LIST) {
-			if (folderName.endsWith(skip)) {
+		for (String skipFolder : _SKIP_FOLDERS) {
+			if (folderName.endsWith(skipFolder)) {
 				return true;
 			}
 		}
@@ -123,7 +121,7 @@ public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 		return blobs.iterateAll();
 	}
 
-	private static final String[] _SKIP_LIST = {
+	private static final String[] _SKIP_FOLDERS = {
 		"com.liferay.headless.commerce.machine.learning.dto.v1_0." +
 			"ProductInteractionRecommendation",
 		"com.liferay.headless.commerce.machine.learning.dto.v1_0." +
