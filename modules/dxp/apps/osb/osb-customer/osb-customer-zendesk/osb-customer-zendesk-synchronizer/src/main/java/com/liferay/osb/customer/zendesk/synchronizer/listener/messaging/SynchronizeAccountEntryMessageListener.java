@@ -28,7 +28,7 @@ import com.liferay.osb.customer.zendesk.model.ZendeskOrganizationMembership;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.synchronizer.AccountSynchronizer;
 import com.liferay.osb.customer.zendesk.synchronizer.CustomerSynchronizer;
-import com.liferay.osb.customer.zendesk.synchronizer.PartnerWorkerSynchronizer;
+import com.liferay.osb.customer.zendesk.synchronizer.TeamSynchronizer;
 import com.liferay.osb.customer.zendesk.synchronizer.UserSynchronizer;
 import com.liferay.osb.customer.zendesk.synchronizer.util.AccountUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
@@ -49,7 +49,6 @@ import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
-import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.StringPool;
@@ -216,7 +215,7 @@ public class SynchronizeAccountEntryMessageListener
 			}
 		}
 
-		Map<String, Contact> partnerContactsMap = new HashMap<>();
+		Map<String, Contact> firstLineSupportContactsMap = new HashMap<>();
 
 		Team firstLineSupportTeam = _accountUtil.getFirstLineSupportTeam(
 			account);
@@ -226,7 +225,7 @@ public class SynchronizeAccountEntryMessageListener
 				firstLineSupportTeam.getKey(), 1, 1000);
 
 			for (Contact contact : teamContacts) {
-				partnerContactsMap.put(contact.getUuid(), contact);
+				firstLineSupportContactsMap.put(contact.getUuid(), contact);
 			}
 		}
 
@@ -239,10 +238,12 @@ public class SynchronizeAccountEntryMessageListener
 		for (ZendeskUser zendeskUser : zendeskUsers) {
 			Contact customerContact = customerContactsMap.remove(
 				zendeskUser.getExternalId());
-			Contact partnerContact = partnerContactsMap.remove(
-				zendeskUser.getExternalId());
+			Contact firstLineSupportContact =
+				firstLineSupportContactsMap.remove(zendeskUser.getExternalId());
 
-			if ((customerContact == null) && (partnerContact == null)) {
+			if ((customerContact == null) &&
+				(firstLineSupportContact == null)) {
+
 				_accountSynchronizer.reassignTickets(
 					zendeskUser.getExternalId(),
 					accountEntry.getAccountEntryId(), account.getKey(),
@@ -267,8 +268,8 @@ public class SynchronizeAccountEntryMessageListener
 			_customerSynchronizer.add(account, contact);
 		}
 
-		for (Contact contact : partnerContactsMap.values()) {
-			//_partnerWorkerSynchronizer.add(account, contact);
+		for (Contact contact : firstLineSupportContactsMap.values()) {
+			_teamSynchronizer.add(firstLineSupportTeam, contact);
 		}
 
 		_accountEntryLocalService.updateLastZendeskAuditDate(
@@ -312,16 +313,13 @@ public class SynchronizeAccountEntryMessageListener
 	@Reference
 	private ExternalIdMapperLocalService _externalIdMapperLocalService;
 
-	@Reference
-	private PartnerWorkerSynchronizer _partnerWorkerSynchronizer;
-
 	private ServiceRegistration<Destination> _serviceRegistration;
+
+	@Reference
+	private TeamSynchronizer _teamSynchronizer;
 
 	@Reference(target = "(provider=okta)")
 	private UserIdentityProvider _userIdentityProvider;
-
-	@Reference
-	private UserLocalService _userLocalService;
 
 	@Reference
 	private UserSynchronizer _userSynchronizer;

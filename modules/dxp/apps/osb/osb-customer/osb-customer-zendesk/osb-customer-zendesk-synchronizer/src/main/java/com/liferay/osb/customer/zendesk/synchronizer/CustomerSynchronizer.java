@@ -39,6 +39,10 @@ public class CustomerSynchronizer {
 		User user = _userIdentityProvider.fetchUserByEmailAddress(
 			contact.getEmailAddress());
 
+		if (user == null) {
+			return;
+		}
+
 		_userSynchronizer.update(user, account.getName());
 
 		if (_accountUtil.hasActiveTicketSupport(account)) {
@@ -54,6 +58,10 @@ public class CustomerSynchronizer {
 	public void remove(Contact contact, long accountEntryId) throws Exception {
 		User user = _userIdentityProvider.fetchUserByEmailAddress(
 			contact.getEmailAddress());
+
+		if (user == null) {
+			return;
+		}
 
 		long zendeskOrganizationId =
 			_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
@@ -73,6 +81,10 @@ public class CustomerSynchronizer {
 		User user = _userIdentityProvider.fetchUserByEmailAddress(
 			contact.getEmailAddress());
 
+		if (user == null) {
+			return;
+		}
+
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 			user.getUserId());
 
@@ -87,6 +99,10 @@ public class CustomerSynchronizer {
 
 		User user = _userIdentityProvider.fetchUserByEmailAddress(
 			contact.getEmailAddress());
+
+		if (user == null) {
+			return;
+		}
 
 		long zendeskOrganizationId =
 			_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);

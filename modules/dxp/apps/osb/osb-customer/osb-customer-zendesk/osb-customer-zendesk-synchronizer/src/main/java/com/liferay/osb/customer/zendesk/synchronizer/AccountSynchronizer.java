@@ -30,11 +30,13 @@ import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.customer.zendesk.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.constants.ZendeskTicketConstants;
+import com.liferay.osb.customer.zendesk.exception.PartnerWorkerRemovalException;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.synchronizer.util.AccountUtil;
 import com.liferay.osb.customer.zendesk.synchronizer.util.AddressUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
+import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
@@ -91,23 +93,36 @@ public class AccountSynchronizer {
 		}
 	}
 
-	public void addPartnerManagedSupport(Account account, Team team)
+	public void addFirstLineSupport(Account account, Team team)
 		throws Exception {
+
+		AccountEntry accountEntry =
+			_accountEntryLocalService.fetchKoroneikiAccountEntry(
+				account.getKey());
+
+		if (accountEntry == null) {
+			return;
+		}
 
 		List<Contact> contacts = _contactWebService.getTeamContacts(
 			team.getKey(), 1, 1000);
 
 		for (Contact contact : contacts) {
-			for (ContactRole contactRole : contact.getContactRoles()) {
-				String name = contactRole.getName();
+			User user = _userIdentityProvider.fetchUserByEmailAddress(
+				contact.getEmailAddress());
 
-				if (ArrayUtil.contains(
-						ContactRoleConstants.PARTNER_CONTACT_ROLES, name)) {
-
-					/*_partnerWorkerSynchronizer.add(
-						accountEntry.getAccountEntryId(), partnerWorker);*/
-				}
+			if (user == null) {
+				continue;
 			}
+
+			long zendeskOrganizationId =
+				_zendeskMapperUtil.fetchZendeskOrganizationId(
+					accountEntry.getAccountEntryId());
+
+			long zendeskUserId = _userSynchronizer.update(user, null);
+
+			addOrganizationMemberships(
+				zendeskUserId, new long[] {zendeskOrganizationId});
 		}
 	}
 
@@ -137,6 +152,73 @@ public class AccountSynchronizer {
 		}
 
 		if (!zendeskTickets.isEmpty()) {
+			_zendeskTicketWebService.updateZendeskTickets(zendeskTickets);
+		}
+	}
+
+	public void reassignTickets(long accountEntryId, Team team, Contact contact)
+		throws Exception {
+
+		User user = _userIdentityProvider.fetchUserByEmailAddress(
+			contact.getEmailAddress());
+
+		if (user == null) {
+			return;
+		}
+
+		long zendeskOrganizationId =
+			_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
+		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+			user.getUserId());
+
+		if ((zendeskOrganizationId > 0) && (zendeskUserId > 0)) {
+			Set<String> criteria = new HashSet<>();
+
+			criteria.add("organization:" + zendeskOrganizationId);
+			criteria.add("requester:" + zendeskUserId);
+			criteria.add("status<closed");
+
+			List<ZendeskTicket> zendeskTickets =
+				_zendeskTicketWebService.getZendeskTickets(criteria);
+
+			if (zendeskTickets.isEmpty()) {
+				return;
+			}
+
+			User newUser = null;
+
+			List<Contact> contacts = _contactWebService.getTeamContacts(
+				team.getKey(), 1, 1000);
+
+			for (Contact curContact : contacts) {
+				String contactKey = curContact.getKey();
+
+				if (contactKey.equals(contact.getKey())) {
+					continue;
+				}
+
+				User curUser = _userIdentityProvider.fetchUserByEmailAddress(
+					contact.getEmailAddress());
+
+				if (curUser == null) {
+					continue;
+				}
+
+				newUser = curUser;
+			}
+
+			if (newUser == null) {
+				throw new PartnerWorkerRemovalException();
+			}
+
+			long newZendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+				newUser.getUserId());
+
+			for (ZendeskTicket zendeskTicket : zendeskTickets) {
+				zendeskTicket.setRequesterId(newZendeskUserId);
+				zendeskTicket.setZendeskOrganizationId(zendeskOrganizationId);
+			}
+
 			_zendeskTicketWebService.updateZendeskTickets(zendeskTickets);
 		}
 	}
@@ -257,8 +339,8 @@ public class AccountSynchronizer {
 
 		removeAccountCustomers(account);
 
-		if (partnerManagedSupport(account)) {
-			removePartnerManagedSupport(account);
+		if (firstLineSupport(account)) {
+			removeFirstLineSupport(account);
 		}
 
 		_asyncZendeskOrganizationWebService.deleteZendeskOrganization(
@@ -279,23 +361,40 @@ public class AccountSynchronizer {
 		}
 	}
 
-	public void removePartnerManagedSupport(Account account, Team team)
+	public void removeFirstLineSupport(Account account, Team team)
 		throws Exception {
+
+		AccountEntry accountEntry =
+			_accountEntryLocalService.fetchKoroneikiAccountEntry(
+				account.getKey());
+
+		if (accountEntry == null) {
+			return;
+		}
 
 		List<Contact> contacts = _contactWebService.getTeamContacts(
 			team.getKey(), 1, 1000);
 
 		for (Contact contact : contacts) {
-			for (ContactRole contactRole : contact.getContactRoles()) {
-				String contactRoleName = contactRole.getName();
+			User user = _userIdentityProvider.fetchUserByEmailAddress(
+				contact.getEmailAddress());
 
-				if (contactRoleName.equals("Partner Manager") ||
-					contactRoleName.equals("Partner Member")) {
-
-					/*_partnerWorkerSynchronizer.remove(
-						accountEntry.getAccountEntryId(), partnerWorker);*/
-				}
+			if (user == null) {
+				continue;
 			}
+
+			long zendeskOrganizationId =
+				_zendeskMapperUtil.fetchZendeskOrganizationId(
+					accountEntry.getAccountEntryId());
+			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+				user.getUserId());
+
+			if ((zendeskOrganizationId > 0) && (zendeskUserId > 0)) {
+				removeOrganizationMemberships(
+					zendeskUserId, new long[] {zendeskOrganizationId});
+			}
+
+			_userSynchronizer.update(user, null);
 		}
 	}
 
@@ -320,7 +419,7 @@ public class AccountSynchronizer {
 			countryName = postalAddresses[0].getAddressCountry();
 		}
 
-		boolean partnerManagedSupport = false;
+		boolean firstLineSupport = false;
 		String partnerName = StringPool.BLANK;
 		String partnerJiraProject = StringPool.BLANK;
 
@@ -336,7 +435,7 @@ public class AccountSynchronizer {
 					if (name.equals(
 							TeamRoleConstants.NAME_FIRST_LINE_SUPPORT)) {
 
-						partnerManagedSupport = true;
+						firstLineSupport = true;
 
 						partnerName = team.getName();
 
@@ -358,7 +457,7 @@ public class AccountSynchronizer {
 					}
 				}
 
-				if (partnerManagedSupport) {
+				if (firstLineSupport) {
 					break;
 				}
 			}
@@ -372,10 +471,10 @@ public class AccountSynchronizer {
 		_zendeskOrganizationWebService.createOrUpdateZendeskOrganization(
 			account.getCode(), countryName, address, account.getKey(),
 			account.getName(), accountEntry.getInstructions(),
-			String.valueOf(partnerManagedSupport), partnerJiraProject,
-			partnerName, getSupportLevel(account.getKey()),
-			account.getStatusAsString(), supportLanguage, supportRegion,
-			account.getTierAsString(), getTags(account));
+			String.valueOf(firstLineSupport), partnerJiraProject, partnerName,
+			getSupportLevel(account.getKey()), account.getStatusAsString(),
+			supportLanguage, supportRegion, account.getTierAsString(),
+			getTags(account));
 
 		if (!externalIdMappers) {
 			_asyncZendeskUserWebService.createOrUpdateZendeskUser(
@@ -393,8 +492,52 @@ public class AccountSynchronizer {
 			User user = _userIdentityProvider.fetchUserByEmailAddress(
 				contact.getEmailAddress());
 
+			if (user == null) {
+				continue;
+			}
+
 			_userSynchronizer.updateTags(user);
 		}
+	}
+
+	protected void addOrganizationMemberships(
+			long zendeskUserId, long[] zendeskOrganizationIds)
+		throws PortalException {
+
+		if (ArrayUtil.isEmpty(zendeskOrganizationIds)) {
+			return;
+		}
+
+		_zendeskOrganizationMembershipWebService.createOrganizationMemberships(
+			zendeskUserId, zendeskOrganizationIds);
+
+		for (long zendeskOrganizationId : zendeskOrganizationIds) {
+			_asyncZendeskUserWebService.
+				createZendeskUserOrganizationSubscription(
+					zendeskUserId, zendeskOrganizationId);
+		}
+	}
+
+	protected boolean firstLineSupport(Account account) {
+		if (account.getAssignedTeams() == null) {
+			return false;
+		}
+
+		for (Team team : account.getAssignedTeams()) {
+			if (team.getTeamRoles() == null) {
+				continue;
+			}
+
+			for (TeamRole teamRole : team.getTeamRoles()) {
+				String name = teamRole.getName();
+
+				if (name.equals(TeamRoleConstants.NAME_FIRST_LINE_SUPPORT)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	protected String getDefaultUserEmail(long accountEntryId) {
@@ -453,31 +596,7 @@ public class AccountSynchronizer {
 		return tags;
 	}
 
-	protected boolean partnerManagedSupport(Account account) {
-		if (account.getAssignedTeams() == null) {
-			return false;
-		}
-
-		for (Team team : account.getAssignedTeams()) {
-			if (team.getTeamRoles() == null) {
-				continue;
-			}
-
-			for (TeamRole teamRole : team.getTeamRoles()) {
-				String name = teamRole.getName();
-
-				if (name.equals(TeamRoleConstants.NAME_FIRST_LINE_SUPPORT)) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-
-	protected void removePartnerManagedSupport(Account account)
-		throws Exception {
-
+	protected void removeFirstLineSupport(Account account) throws Exception {
 		if (account.getAssignedTeams() == null) {
 			return;
 		}
@@ -491,10 +610,22 @@ public class AccountSynchronizer {
 				String name = teamRole.getName();
 
 				if (name.equals(TeamRoleConstants.NAME_FIRST_LINE_SUPPORT)) {
-					removePartnerManagedSupport(account, team);
+					removeFirstLineSupport(account, team);
 				}
 			}
 		}
+	}
+
+	protected void removeOrganizationMemberships(
+			long zendeskUserId, long[] zendeskOrganizationIds)
+		throws PortalException {
+
+		if (ArrayUtil.isEmpty(zendeskOrganizationIds)) {
+			return;
+		}
+
+		_zendeskOrganizationMembershipWebService.deleteOrganizationMemberships(
+			zendeskUserId, zendeskOrganizationIds);
 	}
 
 	@Reference
@@ -541,6 +672,10 @@ public class AccountSynchronizer {
 
 	@Reference
 	private ZendeskMapperUtil _zendeskMapperUtil;
+
+	@Reference(target = "(async=true)")
+	private ZendeskOrganizationMembershipWebService
+		_zendeskOrganizationMembershipWebService;
 
 	@Reference
 	private ZendeskOrganizationWebService _zendeskOrganizationWebService;

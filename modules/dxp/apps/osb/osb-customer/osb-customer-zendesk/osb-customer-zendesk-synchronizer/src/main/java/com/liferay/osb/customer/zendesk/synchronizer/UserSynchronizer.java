@@ -22,6 +22,7 @@ import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactAccountViewWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamRoleWebService;
+import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.synchronizer.util.AccountUtil;
@@ -33,6 +34,7 @@ import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactAccountView;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Phone;
@@ -232,29 +234,10 @@ public class UserSynchronizer {
 
 		// Partner
 
-		/*List<PartnerWorker> partnerWorkers =
-			PartnerWorkerLocalServiceUtil.getUserPartnerWorkers(userId);
-
-		for (PartnerWorker partnerWorker : partnerWorkers) {
+		if (hasPartnerWorker(user)) {
 			tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
-
-			PartnerEntry partnerEntry = partnerWorker.getPartnerEntry();
-
-			List<AccountEntry> accountEntries =
-				partnerEntry.getPartnerManagedAccountEntries();
-
-			if (accountEntries.isEmpty()) {
-				continue;
-			}
-
-			if (partnerWorker.getRole() !=
-					PartnerWorkerConstants.ROLE_WATCHER) {
-
-				tags.add(ZendeskTagConstants.OSB_PARTNER);
-
-				break;
-			}
-		}*/
+			tags.add(ZendeskTagConstants.OSB_PARTNER);
+		}
 
 		return tags;
 	}
@@ -338,16 +321,16 @@ public class UserSynchronizer {
 
 		StringBundler sb = new StringBundler(5);
 
-		sb.append("contactUuids/any(s:s eq '");
-		sb.append(user.getUserUuid());
+		sb.append("contactEmailAddresses/any(s:s eq '");
+		sb.append(user.getEmailAddress());
 		sb.append("') and accountKeysTeamRoleKeys/any(s:contains(s, '");
 		sb.append(teamRole.getKey());
 		sb.append("'))");
 
-		List<Account> accounts = _accountWebService.search(
+		List<Team> teams = _teamWebService.search(
 			StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
 
-		if (!accounts.isEmpty()) {
+		if (!teams.isEmpty()) {
 			return true;
 		}
 
@@ -383,6 +366,9 @@ public class UserSynchronizer {
 
 	@Reference
 	private TeamRoleWebService _teamRoleWebService;
+
+	@Reference
+	private TeamWebService _teamWebService;
 
 	@Reference
 	private UserLocalService _userLocalService;

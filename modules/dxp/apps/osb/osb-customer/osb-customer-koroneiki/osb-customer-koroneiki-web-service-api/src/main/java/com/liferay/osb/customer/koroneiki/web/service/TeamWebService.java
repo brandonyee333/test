@@ -25,4 +25,9 @@ public interface TeamWebService {
 
 	public List<Team> getAssignedTeams(String accountKey) throws Exception;
 
+	public List<Team> search(
+			String search, String filterString, int page, int pageSize,
+			String sortString)
+		throws Exception;
+
 }

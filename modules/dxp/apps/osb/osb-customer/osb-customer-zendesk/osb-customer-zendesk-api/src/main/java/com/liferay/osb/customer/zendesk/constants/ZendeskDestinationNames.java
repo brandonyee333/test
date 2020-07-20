@@ -34,6 +34,9 @@ public class ZendeskDestinationNames {
 	public static final String PRODUCTPURCHASE_SYNC =
 		"liferay/zendesk_productpurchase_sync";
 
+	public static final String TEAM_CONTACT_ROLE_SYNC =
+		"liferay/zendesk_team_contact_role_sync";
+
 	public static final String TEAM_SYNC = "liferay/zendesk_team_sync";
 
 }

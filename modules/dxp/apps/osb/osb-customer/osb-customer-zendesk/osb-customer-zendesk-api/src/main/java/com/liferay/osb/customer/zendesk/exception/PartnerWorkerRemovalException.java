@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.model.listener.exception;
+package com.liferay.osb.customer.zendesk.exception;
 
 import com.liferay.portal.kernel.exception.PortalException;
 

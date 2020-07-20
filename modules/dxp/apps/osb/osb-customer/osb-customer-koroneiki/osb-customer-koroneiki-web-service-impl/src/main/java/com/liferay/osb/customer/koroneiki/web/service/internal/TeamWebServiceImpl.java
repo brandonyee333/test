@@ -18,6 +18,7 @@ import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.customer.koroneiki.web.service.internal.configuration.KoroneikiConfiguration;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Page;
+import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Pagination;
 import com.liferay.osb.koroneiki.phloem.rest.client.resource.v1_0.TeamResource;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 
@@ -42,6 +43,21 @@ public class TeamWebServiceImpl implements TeamWebService {
 		Page<Team> teamsPage =
 			_teamResource.getAccountAccountKeyAssignedTeamsPage(
 				accountKey, null);
+
+		if ((teamsPage != null) && (teamsPage.getItems() != null)) {
+			return new ArrayList<>(teamsPage.getItems());
+		}
+
+		return Collections.emptyList();
+	}
+
+	public List<Team> search(
+			String search, String filterString, int page, int pageSize,
+			String sortString)
+		throws Exception {
+
+		Page<Team> teamsPage = _teamResource.getTeamsPage(
+			search, filterString, Pagination.of(page, pageSize), sortString);
 
 		if ((teamsPage != null) && (teamsPage.getItems() != null)) {
 			return new ArrayList<>(teamsPage.getItems());
