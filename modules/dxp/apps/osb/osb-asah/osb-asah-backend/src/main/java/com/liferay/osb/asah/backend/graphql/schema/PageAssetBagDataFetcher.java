@@ -64,8 +64,16 @@ public class PageAssetBagDataFetcher
 		return _assetDog.getPageAssetResultBag(
 			dataFetchingEnvironment.getArgument("keywords"), propertyFilters,
 			dataFetchingEnvironment.getArgument("size"),
-			Sort.of(dataFetchingEnvironment.getArgument("sort")),
+			_getSort(dataFetchingEnvironment.getArgument("sort")),
 			dataFetchingEnvironment.getArgument("start"));
+	}
+
+	private Sort _getSort(Map<String, String> sort) {
+		if (Objects.equals(sort.get("column"), "title")) {
+			return new Sort("name", sort.get("type"));
+		}
+
+		return Sort.of(sort);
 	}
 
 	@Autowired
