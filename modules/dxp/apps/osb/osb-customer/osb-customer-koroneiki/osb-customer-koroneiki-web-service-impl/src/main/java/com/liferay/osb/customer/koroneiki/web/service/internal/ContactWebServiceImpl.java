@@ -30,6 +30,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
@@ -46,7 +48,11 @@ public class ContactWebServiceImpl implements ContactWebService {
 		HttpInvoker.HttpResponse httpResponse =
 			_contactResource.getContactByUuidContactUuidHttpResponse(uuid);
 
-		if (httpResponse.getStatusCode() == 404) {
+		if ((httpResponse.getStatusCode() ==
+				HttpServletResponse.SC_BAD_REQUEST) ||
+			(httpResponse.getStatusCode() ==
+				HttpServletResponse.SC_NOT_FOUND)) {
+
 			return null;
 		}
 

@@ -14,17 +14,20 @@
 
 package com.liferay.osb.customer.web.internal.portlet.action;
 
-import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.web.internal.constants.PassportAccessPortletKeys;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.PostalAddress;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.List;
@@ -57,7 +60,7 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 			WebKeys.THEME_DISPLAY);
 
 		try {
-			if (hasPermission(themeDisplay.getUserId())) {
+			if (hasPermission(themeDisplay.getUser())) {
 				return "/passport/view.jsp";
 			}
 		}
@@ -68,27 +71,38 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 		return "/passport/contact_support.jsp";
 	}
 
-	protected boolean hasPermission(long userId) throws PortalException {
-		if (isLiferayEmployee(userId) || isPartner(userId)) {
+	protected boolean hasPermission(User user) throws Exception {
+		if (isLiferayEmployee(user.getUserId()) ||
+			isPartner(user.getUserId())) {
+
 			return true;
 		}
 
-		if (isCustomer(userId)) {
-			List<AccountEntry> accountEntries =
-				_accountEntryLocalService.getUserActiveAccountEntries(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+		if (isCustomer(user.getUserId())) {
+			List<Account> accounts = _accountWebService.search(
+				StringPool.BLANK,
+				"customerContactEmailAddresses/any(s:s eq '" +
+					user.getEmailAddress() + "')",
+				1, 1000, StringPool.BLANK);
 
-			for (AccountEntry accountEntry : accountEntries) {
-				for (long supportRegionId :
-						accountEntry.getSupportRegionIds()) {
+			for (Account account : accounts) {
+				PostalAddress[] postalAddresses = account.getPostalAddresses();
 
-					if (!ArrayUtil.contains(
-							_APAC_SUPPORT_REGION_IDS, supportRegionId)) {
+				if (postalAddresses == null) {
+					continue;
+				}
 
-						return true;
+				for (PostalAddress postalAddress : postalAddresses) {
+					if (ArrayUtil.contains(
+							_NO_ACCESS_COUNTRIES,
+							postalAddress.getAddressCountry())) {
+
+						return false;
 					}
 				}
 			}
+
+			return true;
 		}
 
 		return false;
@@ -126,12 +140,15 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 		return false;
 	}
 
-	private static final long[] _APAC_SUPPORT_REGION_IDS = {
-		42356498, 42356502, 45637701
+	private static final String[] _NO_ACCESS_COUNTRIES = {
+		"China", "India", "Japan"
 	};
 
 	@Reference
 	private AccountEntryLocalService _accountEntryLocalService;
+
+	@Reference
+	private AccountWebService _accountWebService;
 
 	@Reference
 	private OrganizationLocalService _organizationLocalService;

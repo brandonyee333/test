@@ -147,7 +147,8 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 		if (isCustomer(user.getUserId())) {
 			List<Account> accounts = _accountWebService.search(
 				StringPool.BLANK,
-				"customerContactUuids/any(s:s eq '" + user.getUserUuid() + "')",
+				"customerContactEmailAddresses/any(s:s eq '" +
+					user.getEmailAddress() + "')",
 				1, 1000, StringPool.BLANK);
 
 			for (Account account : accounts) {
