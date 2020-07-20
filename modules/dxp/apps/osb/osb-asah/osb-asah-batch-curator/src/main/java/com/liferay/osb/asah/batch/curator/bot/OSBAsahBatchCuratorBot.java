@@ -170,6 +170,8 @@ public class OSBAsahBatchCuratorBot {
 
 		run("ExperimentNanite");
 
+		run("AssignCanonicalUrlNanite");
+
 		_executeOSBAsahTasks();
 
 		_scheduleOSBAsahTasks();
