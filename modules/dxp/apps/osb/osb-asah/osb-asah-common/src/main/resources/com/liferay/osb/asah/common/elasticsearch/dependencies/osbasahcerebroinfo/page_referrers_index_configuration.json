@@ -11,6 +11,9 @@
 				"browserName": {
 					"type": "keyword"
 				},
+				"canonicalUrl": {
+					"type": "keyword"
+				},
 				"channelId": {
 					"type": "keyword"
 				},

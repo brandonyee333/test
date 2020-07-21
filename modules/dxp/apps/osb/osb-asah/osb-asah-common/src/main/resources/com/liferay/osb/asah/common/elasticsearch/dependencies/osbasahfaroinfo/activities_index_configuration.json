@@ -53,6 +53,10 @@
 				},
 				"object": {
 					"properties": {
+						"canonicalUrl": {
+							"normalizer": "case_insensitive_sort",
+							"type": "keyword"
+						},
 						"dataSourceAssetPK": {
 							"type": "keyword"
 						},
