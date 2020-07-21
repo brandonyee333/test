@@ -33,8 +33,6 @@ import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ContactSerDes;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.TeamSerDes;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
@@ -168,9 +166,6 @@ public class TeamContactRoleMessageListener extends BaseMessageListener {
 				accountEntry.getAccountEntryId(), team, contact);
 		}
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		TeamContactRoleMessageListener.class);
 
 	@Reference
 	private AccountEntryLocalService _accountEntryLocalService;

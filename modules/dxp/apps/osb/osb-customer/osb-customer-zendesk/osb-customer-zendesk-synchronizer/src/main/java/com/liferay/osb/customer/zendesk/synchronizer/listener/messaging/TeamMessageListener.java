@@ -14,12 +14,14 @@
 
 package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 
+import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.customer.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.customer.zendesk.constants.ZendeskDestinationNames;
 import com.liferay.osb.customer.zendesk.synchronizer.AccountSynchronizer;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.TeamSerDes;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -30,6 +32,8 @@ import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.util.HashMapDictionary;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.Dictionary;
 import java.util.List;
@@ -92,25 +96,27 @@ public class TeamMessageListener extends BaseMessageListener {
 
 		Team team = TeamSerDes.toDTO(jsonObject.getString("team"));
 
-		ExternalLink[] externalLinks = team.getExternalLinks();
+		TeamRole teamRole = _teamRoleWebService.fetchTeamRole(
+			TeamRole.Type.ACCOUNT.toString(),
+			TeamRoleConstants.NAME_FIRST_LINE_SUPPORT);
 
-		if (externalLinks == null) {
+		if (teamRole == null) {
 			return;
 		}
 
-		for (ExternalLink externalLink : externalLinks) {
-			String domain = externalLink.getDomain();
+		StringBundler sb = new StringBundler(5);
 
-			if (!domain.equals("jira")) {
-				continue;
-			}
+		sb.append("assignedTeamKeyTeamRoleKeys/any(s:s eq '");
+		sb.append(team.getKey());
+		sb.append(StringPool.UNDERLINE);
+		sb.append(teamRole.getKey());
+		sb.append("')");
 
-			List<Account> accounts = _accountWebService.getTeamAssignedAccounts(
-				team.getKey(), 1, 1000);
+		List<Account> accounts = _accountWebService.search(
+			StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
 
-			for (Account account : accounts) {
-				_accountSynchronizer.update(account);
-			}
+		for (Account account : accounts) {
+			_accountSynchronizer.update(account);
 		}
 	}
 
@@ -129,5 +135,8 @@ public class TeamMessageListener extends BaseMessageListener {
 	private JSONFactory _jsonFactory;
 
 	private ServiceRegistration<Destination> _serviceRegistration;
+
+	@Reference
+	private TeamRoleWebService _teamRoleWebService;
 
 }
