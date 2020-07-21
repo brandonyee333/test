@@ -17,8 +17,6 @@ package com.liferay.portal.kernel.templateparser;
 import com.liferay.document.library.kernel.service.DLAppLocalServiceUtil;
 import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.petra.string.CharPool;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -32,6 +30,7 @@ import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
@@ -128,16 +127,38 @@ public class TemplateNode extends LinkedHashMap<String, Object> {
 		if (type.equals("document_library")) {
 			String data = (String)get("data");
 
+			if (Validator.isNull(data)) {
+				return StringPool.BLANK;
+			}
+
+			String prefix = PortalUtil.getPathContext() + "/documents/";
+
+			if (!data.startsWith(prefix)) {
+				return data;
+			}
+
+			String path = data.substring(prefix.length());
+
+			int index = path.lastIndexOf(StringPool.QUESTION);
+
+			if (index != -1) {
+				path = path.substring(0, index);
+			}
+
+			String[] parameters = StringUtil.split(path, StringPool.SLASH);
+
+			if (parameters.length != 4) {
+				return data;
+			}
+
+			String uuid = GetterUtil.getString(parameters[3]);
+			long groupId = GetterUtil.getLong(parameters[0]);
+
+			if (Validator.isNull(uuid) && (groupId == 0)) {
+				return data;
+			}
+
 			try {
-				JSONObject jsonObject = JSONFactoryUtil.createJSONObject(data);
-
-				String uuid = jsonObject.getString("uuid");
-				long groupId = jsonObject.getLong("groupId");
-
-				if (Validator.isNull(uuid) && (groupId == 0)) {
-					return StringPool.BLANK;
-				}
-
 				FileEntry fileEntry =
 					DLAppLocalServiceUtil.getFileEntryByUuidAndGroupId(
 						uuid, groupId);
@@ -147,9 +168,12 @@ public class TemplateNode extends LinkedHashMap<String, Object> {
 					StringPool.BLANK, false, true);
 			}
 			catch (Exception e) {
-			}
+				if (_log.isDebugEnabled()) {
+					_log.debug(e, e);
+				}
 
-			return StringPool.BLANK;
+				return data;
+			}
 		}
 		else if (type.equals("link_to_layout")) {
 			String data = (String)get("data");
