@@ -58,6 +58,16 @@ public class PageAssetBagDataFetcher
 						propertyFilter.setPropertyName("name");
 					}
 
+					if (Objects.equals(
+							propertyFilter.getPropertyName(), "keywords")) {
+
+						propertyFilter.setPropertyName("keywords.keyword");
+
+						propertyFilter.and(
+							new PropertyFilter(
+								"keywords.type = keyword", false));
+					}
+
 					return propertyFilter;
 				});
 
