@@ -26,6 +26,7 @@ import com.liferay.osb.asah.backend.dog.resolver.AssetResolver;
 import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
 import com.liferay.osb.asah.backend.model.AssetId;
 import com.liferay.osb.asah.backend.model.PropertyFilter;
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.ResultBag;
 
@@ -77,15 +78,9 @@ public class DogUtil {
 
 		for (PropertyFilter propertyFilter : propertyFilters) {
 			QueryBuilder propertyQueryBuilder = buildPropertyQueryBuilder(
-				propertyFilter.getOperator(), propertyFilter.getPropertyName(),
-				propertyFilter.getPropertyValue());
+				propertyFilter);
 
-			if (propertyFilter.isNegate()) {
-				boolQueryBuilder.mustNot(propertyQueryBuilder);
-			}
-			else {
-				boolQueryBuilder.filter(propertyQueryBuilder);
-			}
+			boolQueryBuilder.filter(propertyQueryBuilder);
 		}
 	}
 
@@ -121,13 +116,17 @@ public class DogUtil {
 	}
 
 	public static QueryBuilder buildPropertyQueryBuilder(
-		String operator, String propertyName, String propertyValue) {
+		PropertyFilter propertyFilter) {
 
-		if (Objects.equals(operator, "~")) {
-			return QueryBuilders.regexpQuery(propertyName, propertyValue);
+		QueryBuilder queryBuilder = _buildPropertyQueryBuilder(
+			propertyFilter.getOperator(), propertyFilter.getPropertyName(),
+			propertyFilter.getPropertyValue());
+
+		if (propertyFilter.isNegate()) {
+			return BoolQueryBuilderUtil.mustNot(queryBuilder);
 		}
 
-		return QueryBuilders.termQuery(propertyName, propertyValue);
+		return queryBuilder;
 	}
 
 	public static SearchSourceBuilder buildSearchSourceBuilder(
@@ -276,6 +275,16 @@ public class DogUtil {
 
 			log.error(shardSearchFailure.getCause());
 		}
+	}
+
+	private static QueryBuilder _buildPropertyQueryBuilder(
+		String operator, String propertyName, String propertyValue) {
+
+		if (Objects.equals(operator, "~")) {
+			return QueryBuilders.regexpQuery(propertyName, propertyValue);
+		}
+
+		return QueryBuilders.termQuery(propertyName, propertyValue);
 	}
 
 	private static <T> Function<SearchHit, T>
