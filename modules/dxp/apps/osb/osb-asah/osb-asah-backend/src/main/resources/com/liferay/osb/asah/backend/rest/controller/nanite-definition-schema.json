@@ -1,0 +1,9 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"additionalProperties": false,
+	"items": {
+		"type": "string"
+	},
+	"title": "A JSON Schema for Nanite Definition.",
+	"type": "array"
+}

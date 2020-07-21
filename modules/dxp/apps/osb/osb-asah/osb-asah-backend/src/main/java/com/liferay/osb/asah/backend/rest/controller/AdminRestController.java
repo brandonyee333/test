@@ -26,6 +26,8 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import java.nio.charset.StandardCharsets;
 
@@ -42,8 +44,13 @@ import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.ValidationException;
+import org.everit.json.schema.loader.SchemaLoader;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -106,6 +113,21 @@ public class AdminRestController extends BaseRestController {
 				_elasticsearchInvokerFactory.forWeDeployDataService(
 					weDeployDataService));
 		}
+
+		Class<?> clazz = getClass();
+
+		try (InputStream inputStream = clazz.getResourceAsStream(
+				"nanite-definition-schema.json")) {
+
+			_naniteDefinitionSchema = SchemaLoader.load(
+				new JSONObject(new JSONTokener(inputStream)));
+		}
+		catch (IOException ioe) {
+			_log.error(ioe);
+
+			throw new IllegalStateException(
+				"Unable to read nanite definition schema", ioe);
+		}
 	}
 
 	@PostMapping("/data/{weDeployDataServiceName}/{collectionName}")
@@ -143,10 +165,13 @@ public class AdminRestController extends BaseRestController {
 		ElasticsearchInvoker elasticsearchInvoker =
 			_elasticsearchInvokerFactory.forFaroInfo();
 
+		JSONArray jsonArray = new JSONArray(json);
+
+		_validate(jsonArray);
+
 		elasticsearchInvoker.delete(
 			"OSBAsahMarkers",
-			QueryBuilders.termsQuery(
-				"id", JSONUtil.toStringList(new JSONArray(json))));
+			QueryBuilders.termsQuery("id", JSONUtil.toStringList(jsonArray)));
 
 		_nanitesHttp.run(json);
 	}
@@ -225,6 +250,10 @@ public class AdminRestController extends BaseRestController {
 		}
 	}
 
+	private void _validate(JSONArray jsonArray) throws ValidationException {
+		_naniteDefinitionSchema.validate(jsonArray);
+	}
+
 	private static final Log _log = LogFactory.getLog(
 		AdminRestController.class);
 
@@ -242,6 +271,8 @@ public class AdminRestController extends BaseRestController {
 
 	@Autowired
 	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
+
+	private Schema _naniteDefinitionSchema;
 
 	@Autowired
 	private NanitesHttp _nanitesHttp;
