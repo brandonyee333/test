@@ -23,12 +23,15 @@ import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
 import org.elasticsearch.index.query.QueryBuilders;
+
+import org.everit.json.schema.ValidationException;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -222,6 +225,17 @@ public class AdminRestControllerTest {
 
 		Assert.assertEquals(
 			0, _elasticsearchInvoker.count("OSBAsahMarkers", null));
+	}
+
+	@Test(expected = ValidationException.class)
+	public void testRunWithInvalidSchema() {
+		JSONArray jsonArray = new JSONArray();
+
+		jsonArray.put(
+			JSONUtil.put(
+				RandomTestUtil.randomString(), RandomTestUtil.randomString()));
+
+		_adminRestController.run(jsonArray.toString());
 	}
 
 	@Autowired
