@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.permission.PermissionCheckerUtil;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
@@ -117,7 +118,8 @@ public class AnalyticsMessageSenderClientImpl
 			HttpPost httpPost = new HttpPost(url);
 
 			if (Validator.isNotNull(body)) {
-				httpPost.setEntity(new StringEntity(body));
+				httpPost.setEntity(
+					new StringEntity(body, StandardCharsets.UTF_8));
 			}
 
 			httpUriRequest = httpPost;
