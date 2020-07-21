@@ -147,6 +147,8 @@ public class OSBAsahBatchCuratorBot {
 
 		run("AssetEngagementScoresNanite");
 
+		run("AssignCanonicalUrlNanite");
+
 		run("DataControlNanite");
 
 		run("DataExportNanite");
@@ -169,8 +171,6 @@ public class OSBAsahBatchCuratorBot {
 		run("StaleDynamicIndividualSegmentsNanite");
 
 		run("ExperimentNanite");
-
-		run("AssignCanonicalUrlNanite");
 
 		_executeOSBAsahTasks();
 
