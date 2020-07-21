@@ -25,10 +25,8 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
@@ -41,6 +39,8 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.BucketOrder;
+import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
+import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.cardinality.InternalCardinality;
 
@@ -57,17 +57,8 @@ public class SiteInterestCompositionDog {
 		String channelId, String dataSourceId, int size, int start,
 		TimeRange timeRange) {
 
-		List<Composition> compositions = new ArrayList<>();
-
-		Map<String, Set<String>> keywords = _getKeywords(
+		List<Composition> compositions = _getKeywordCompositions(
 			channelId, dataSourceId, timeRange);
-
-		for (Map.Entry<String, Set<String>> keyword : keywords.entrySet()) {
-			Set<String> sessionIds = keyword.getValue();
-
-			compositions.add(
-				new Composition(sessionIds.size(), keyword.getKey()));
-		}
 
 		Comparator<Composition> comparator = Comparator.comparing(
 			Composition::getCount, Comparator.reverseOrder());
@@ -106,10 +97,10 @@ public class SiteInterestCompositionDog {
 		return boolQueryBuilder;
 	}
 
-	private Map<String, Set<String>> _getKeywords(
+	private List<Composition> _getKeywordCompositions(
 		String channelId, String dataSourceId, TimeRange timeRange) {
 
-		Map<String, Set<String>> keywords = new HashMap<>();
+		List<Composition> keywordCompositions = new ArrayList<>();
 
 		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
 			"assets",
@@ -153,10 +144,10 @@ public class SiteInterestCompositionDog {
 		Aggregations aggregations = searchResponse.getAggregations();
 
 		if (DogUtil.isEmpty(aggregations)) {
-			return keywords;
+			return keywordCompositions;
 		}
 
-		Map<String, Set<String>> sessionIds = _getSessionIds(
+		Map<String, Long> userCounts = _getUserCounts(
 			channelId, dataSourceId, timeRange);
 
 		Terms terms = aggregations.get("keywords/keyword");
@@ -168,87 +159,29 @@ public class SiteInterestCompositionDog {
 
 			Terms assetIdTerms = assetIdAggregations.get("assetId");
 
-			Set<String> assetSessionIds = new HashSet<>();
+			long keywordUserCounts = 0;
 
 			for (Terms.Bucket assetIdBucket : assetIdTerms.getBuckets()) {
 				String assetId = assetIdBucket.getKeyAsString();
 
-				if (sessionIds.containsKey(assetId)) {
-					assetSessionIds.addAll(sessionIds.get(assetId));
+				if (userCounts.containsKey(assetId)) {
+					keywordUserCounts += userCounts.get(assetId);
 				}
 			}
 
-			if (assetSessionIds.isEmpty()) {
+			if (keywordUserCounts == 0) {
 				if (_log.isWarnEnabled()) {
-					_log.warn("No sessions found keyword " + keyword);
+					_log.warn("No users found for keyword " + keyword);
 				}
 
 				continue;
 			}
 
-			keywords.put(keyword, assetSessionIds);
+			keywordCompositions.add(
+				new Composition(keywordUserCounts, keyword));
 		}
 
-		return keywords;
-	}
-
-	private Map<String, Set<String>> _getSessionIds(
-		String channelId, String dataSourceId, TimeRange timeRange) {
-
-		Map<String, Set<String>> sessionIds = new HashMap<>();
-
-		BoolQueryBuilder boolQueryBuilder = _getActivitiesBoolQueryBuilder(
-			channelId, dataSourceId, timeRange);
-
-		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
-			"activities",
-			searchSourceBuilder -> {
-				searchSourceBuilder.aggregation(
-					AggregationBuilders.terms(
-						"assetId"
-					).field(
-						"object.id"
-					).size(
-						Integer.MAX_VALUE
-					).subAggregation(
-						AggregationBuilders.terms(
-							"sessionId"
-						).field(
-							"sessionId"
-						).size(
-							Integer.MAX_VALUE
-						)
-					));
-
-				searchSourceBuilder.query(boolQueryBuilder);
-				searchSourceBuilder.size(0);
-			});
-
-		Aggregations aggregations = searchResponse.getAggregations();
-
-		if (DogUtil.isEmpty(aggregations)) {
-			return sessionIds;
-		}
-
-		Terms terms = aggregations.get("assetId");
-
-		for (Terms.Bucket bucket : terms.getBuckets()) {
-			String assetId = bucket.getKeyAsString();
-
-			Aggregations sessionIdAggregations = bucket.getAggregations();
-
-			Terms sessionIdTerms = sessionIdAggregations.get("sessionId");
-
-			Set<String> assetSessionIds = new HashSet<>();
-
-			for (Terms.Bucket sessionIdBucket : sessionIdTerms.getBuckets()) {
-				assetSessionIds.add(sessionIdBucket.getKeyAsString());
-			}
-
-			sessionIds.put(assetId, assetSessionIds);
-		}
-
-		return sessionIds;
+		return keywordCompositions;
 	}
 
 	private long _getTotalSessions(
@@ -280,6 +213,79 @@ public class SiteInterestCompositionDog {
 			"sessionIds");
 
 		return internalCardinality.getValue();
+	}
+
+	private Map<String, Long> _getUserCounts(
+		String channelId, String dataSourceId, TimeRange timeRange) {
+
+		Map<String, Long> userCounts = new HashMap<>();
+
+		BoolQueryBuilder boolQueryBuilder = _getActivitiesBoolQueryBuilder(
+			channelId, dataSourceId, timeRange);
+
+		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
+			"activities",
+			searchSourceBuilder -> {
+				searchSourceBuilder.aggregation(
+					AggregationBuilders.terms(
+						"assetId"
+					).field(
+						"object.id"
+					).size(
+						Integer.MAX_VALUE
+					).subAggregation(
+						AggregationBuilders.dateHistogram(
+							"endTimes"
+						).dateHistogramInterval(
+							DateHistogramInterval.DAY
+						).field(
+							"endTime"
+						).minDocCount(
+							1
+						).subAggregation(
+							AggregationBuilders.cardinality(
+								"userCount"
+							).field(
+								"userId"
+							)
+						)
+					));
+
+				searchSourceBuilder.query(boolQueryBuilder);
+				searchSourceBuilder.size(0);
+			});
+
+		Aggregations aggregations = searchResponse.getAggregations();
+
+		if (DogUtil.isEmpty(aggregations)) {
+			return userCounts;
+		}
+
+		Terms terms = aggregations.get("assetId");
+
+		for (Terms.Bucket bucket : terms.getBuckets()) {
+			String assetId = bucket.getKeyAsString();
+
+			Aggregations userIdAggregations = bucket.getAggregations();
+
+			Histogram histogram = userIdAggregations.get("endTimes");
+
+			long userCount = 0;
+
+			for (Histogram.Bucket histogramBucket : histogram.getBuckets()) {
+				Aggregations userCountAggregations =
+					histogramBucket.getAggregations();
+
+				InternalCardinality internalCardinality =
+					userCountAggregations.get("userCount");
+
+				userCount += internalCardinality.getValue();
+			}
+
+			userCounts.put(assetId, userCount);
+		}
+
+		return userCounts;
 	}
 
 	@PostConstruct
