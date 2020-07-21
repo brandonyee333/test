@@ -123,10 +123,23 @@ public class DogUtil {
 			propertyFilter.getPropertyValue());
 
 		if (propertyFilter.isNegate()) {
-			return BoolQueryBuilderUtil.mustNot(queryBuilder);
+			queryBuilder = BoolQueryBuilderUtil.mustNot(queryBuilder);
 		}
 
-		return queryBuilder;
+		List<PropertyFilter> propertyFilters =
+			propertyFilter.getPropertyFilters();
+
+		if (propertyFilters.isEmpty()) {
+			return queryBuilder;
+		}
+
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+			queryBuilder);
+
+		addBoolQueryBuilderPropertyFilters(
+			boolQueryBuilder, propertyFilter.getPropertyFilters());
+
+		return boolQueryBuilder;
 	}
 
 	public static SearchSourceBuilder buildSearchSourceBuilder(

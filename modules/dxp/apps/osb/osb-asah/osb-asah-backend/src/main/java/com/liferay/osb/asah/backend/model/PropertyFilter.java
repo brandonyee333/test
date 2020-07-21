@@ -47,6 +47,10 @@ public class PropertyFilter {
 		_propertyValue = filterTokens.get(2);
 	}
 
+	public void and(PropertyFilter propertyFilter) {
+		_propertyFilters.add(propertyFilter);
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -61,6 +65,7 @@ public class PropertyFilter {
 
 		if (Objects.equals(_negate, propertyFilter._negate) &&
 			Objects.equals(_operator, propertyFilter._operator) &&
+			Objects.equals(_propertyFilters, propertyFilter._propertyFilters) &&
 			Objects.equals(_propertyName, propertyFilter._propertyName) &&
 			Objects.equals(
 				_propertyNamespace, propertyFilter._propertyNamespace) &&
@@ -74,6 +79,10 @@ public class PropertyFilter {
 
 	public String getOperator() {
 		return _operator;
+	}
+
+	public List<PropertyFilter> getPropertyFilters() {
+		return _propertyFilters;
 	}
 
 	public String getPropertyName() {
@@ -91,8 +100,8 @@ public class PropertyFilter {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_operator, _negate, _propertyName, _propertyNamespace,
-			_propertyValue);
+			_operator, _negate, _propertyFilters, _propertyName,
+			_propertyNamespace, _propertyValue);
 	}
 
 	public boolean isNegate() {
@@ -138,6 +147,7 @@ public class PropertyFilter {
 
 	private boolean _negate;
 	private String _operator;
+	private List<PropertyFilter> _propertyFilters = new ArrayList<>();
 	private String _propertyName;
 	private String _propertyNamespace = "";
 	private String _propertyValue;
