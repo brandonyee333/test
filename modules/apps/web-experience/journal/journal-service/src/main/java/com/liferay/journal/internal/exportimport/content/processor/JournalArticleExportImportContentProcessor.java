@@ -506,6 +506,10 @@ public class JournalArticleExportImportContentProcessor
 
 			jsonObject.put("className", JournalArticle.class.getName());
 			jsonObject.put("classPK", journalArticle.getResourcePrimKey());
+			jsonObject.put(
+				"title",
+				journalArticle.getTitle(journalArticle.getDefaultLanguageId()));
+			jsonObject.put("titleMap", journalArticle.getTitleMap());
 
 			content = StringUtil.replace(
 				content, journalArticleReference, jsonObject.toString());
