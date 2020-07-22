@@ -14,10 +14,12 @@
 
 package com.liferay.osb.asah.common.elasticsearch;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.elasticsearch.ResourceNotFoundException;
 import org.elasticsearch.action.admin.indices.refresh.RefreshResponse;
+import org.elasticsearch.action.search.MultiSearchResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
@@ -84,6 +86,9 @@ public interface ElasticsearchInvoker {
 		throws ResourceNotFoundException;
 
 	public String getIndexAlias(String collectionName);
+
+	public MultiSearchResponse multiSearch(
+		String collectionName, List<SearchSourceBuilder> searchRequestBuilders);
 
 	public RefreshResponse refresh();
 

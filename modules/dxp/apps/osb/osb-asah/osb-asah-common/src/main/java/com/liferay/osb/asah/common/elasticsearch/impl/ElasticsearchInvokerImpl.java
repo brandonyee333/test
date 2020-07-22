@@ -458,6 +458,26 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	}
 
 	@Override
+	public MultiSearchResponse multiSearch(
+		String collectionName,
+		List<SearchSourceBuilder> searchRequestBuilders) {
+
+		MultiSearchRequestBuilder multiSearchRequestBuilder =
+			_client.prepareMultiSearch();
+
+		multiSearchRequestBuilder.setIndicesOptions(
+			IndicesOptions.lenientExpandOpen());
+
+		for (SearchSourceBuilder searchRequestBuilder : searchRequestBuilders) {
+			multiSearchRequestBuilder.add(
+				_createSearchRequestBuilder(
+					collectionName, searchRequestBuilder));
+		}
+
+		return multiSearchRequestBuilder.get();
+	}
+
+	@Override
 	public RefreshResponse refresh() {
 		RefreshRequestBuilder refreshRequestBuilder = new RefreshRequestBuilder(
 			_client, RefreshAction.INSTANCE);
