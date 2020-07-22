@@ -14,7 +14,7 @@
 
 package com.liferay.osb.customer.github.internal.model.listener;
 
-import com.liferay.osb.customer.github.constants.GitHubCollaboratorConstants;
+import com.liferay.osb.customer.github.constants.GitHubConstants;
 import com.liferay.osb.customer.github.model.Collaborator;
 import com.liferay.osb.customer.github.service.CollaboratorLocalService;
 import com.liferay.osb.customer.github.web.service.GitHubWebService;
@@ -102,7 +102,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 					List<Collaborator> userCollaborators =
 						_collaboratorLocalService.getCollaborators(
 							collaborator.getGitHubUserName(),
-							GitHubCollaboratorConstants.STATUSES_ACTIVE);
+							GitHubConstants.STATUSES_ACTIVE);
 
 					if (userCollaborators.size() == 1) {
 						_gitHubWebService.deleteCollaborator(

@@ -14,7 +14,7 @@
 
 package com.liferay.osb.customer.github.service.impl;
 
-import com.liferay.osb.customer.github.constants.GitHubCollaboratorConstants;
+import com.liferay.osb.customer.github.constants.GitHubConstants;
 import com.liferay.osb.customer.github.exception.CollaboratorEmailAddressException;
 import com.liferay.osb.customer.github.exception.CollaboratorFullNameException;
 import com.liferay.osb.customer.github.exception.CollaboratorGitHubUserNameException;
@@ -86,8 +86,7 @@ public class CollaboratorLocalServiceImpl
 		throws PortalException {
 
 		List<Collaborator> collaborators = getCollaborators(
-			collaborator.getGitHubUserName(),
-			GitHubCollaboratorConstants.STATUSES_ACTIVE);
+			collaborator.getGitHubUserName(), GitHubConstants.STATUSES_ACTIVE);
 
 		if (collaborators.size() == 1) {
 			_gitHubWebService.deleteCollaborator(

@@ -12,17 +12,13 @@
  *
  */
 
-package com.liferay.osb.customer.github.constants;
-
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
+package com.liferay.osb.customer.github.web.service.search;
 
 /**
  * @author Jenny Chen
  */
-public class GitHubCollaboratorConstants {
+public interface QueryFactory {
 
-	public static final int[] STATUSES_ACTIVE = {
-		WorkflowConstants.STATUS_APPROVED, WorkflowConstants.STATUS_PENDING
-	};
+	public Query createQuery();
 
 }

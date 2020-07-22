@@ -12,25 +12,27 @@
  *
  */
 
-package com.liferay.osb.customer.github.web.service;
+package com.liferay.osb.customer.github.constants;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONObject;
-
-import java.util.Set;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 /**
  * @author Jenny Chen
  */
-public interface GitHubWebService {
+public class GitHubConstants {
 
-	public JSONObject addCollaborator(String userName) throws PortalException;
+	public static final String FIRST = "first";
 
-	public JSONObject deleteCollaborator(String userName)
-		throws PortalException;
+	public static final String LAST = "last";
 
-	public Set<String> getCollaborators() throws PortalException;
+	public static final String NEXT = "next";
 
-	public JSONObject getUser(String userName) throws PortalException;
+	public static final String PREV = "prev";
+
+	public static final String REL = "rel";
+
+	public static final int[] STATUSES_ACTIVE = {
+		WorkflowConstants.STATUS_APPROVED, WorkflowConstants.STATUS_PENDING
+	};
 
 }

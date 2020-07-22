@@ -12,25 +12,21 @@
  *
  */
 
-package com.liferay.osb.customer.github.web.service;
+package com.liferay.osb.customer.github.web.service.search;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONObject;
-
-import java.util.Set;
+import java.util.List;
 
 /**
  * @author Jenny Chen
  */
-public interface GitHubWebService {
+public interface SearchHits<T> {
 
-	public JSONObject addCollaborator(String userName) throws PortalException;
+	public int getNextPage();
 
-	public JSONObject deleteCollaborator(String userName)
-		throws PortalException;
+	public List<T> getResults();
 
-	public Set<String> getCollaborators() throws PortalException;
+	public void setNextPage(int nextPage);
 
-	public JSONObject getUser(String userName) throws PortalException;
+	public void setResults(List<T> results);
 
 }

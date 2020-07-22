@@ -12,25 +12,21 @@
  *
  */
 
-package com.liferay.osb.customer.github.web.service;
+package com.liferay.osb.customer.github.internal.web.service.search;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.osb.customer.github.web.service.search.Query;
+import com.liferay.osb.customer.github.web.service.search.QueryFactory;
 
-import java.util.Set;
+import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Jenny Chen
  */
-public interface GitHubWebService {
+@Component(immediate = true, service = QueryFactory.class)
+public class QueryFactoryImpl implements QueryFactory {
 
-	public JSONObject addCollaborator(String userName) throws PortalException;
-
-	public JSONObject deleteCollaborator(String userName)
-		throws PortalException;
-
-	public Set<String> getCollaborators() throws PortalException;
-
-	public JSONObject getUser(String userName) throws PortalException;
+	public Query createQuery() {
+		return new QueryImpl();
+	}
 
 }

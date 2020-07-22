@@ -179,7 +179,8 @@ export default function AddSourceCodeAccessModal({
 						response.data.errorMessage.match(/get-a-single-user/) ||
 						response.data.errorMessage.match(
 							/add-user-as-a-collaborator/
-						)
+						) ||
+						response.data.errorMessage.match(/add-a-repository-collaborator/)
 					) {
 						setCustomError(
 							Liferay.Language.get(

@@ -7,4 +7,5 @@ Export-Package:\
 	com.liferay.osb.customer.github.model,\
 	com.liferay.osb.customer.github.service,\
 	com.liferay.osb.customer.github.service.persistence,\
-	com.liferay.osb.customer.github.web.service
+	com.liferay.osb.customer.github.web.service,\
+	com.liferay.osb.customer.github.web.service.search
