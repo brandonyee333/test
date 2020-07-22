@@ -45,7 +45,6 @@ import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.everit.json.schema.Schema;
-import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
 
 import org.json.JSONArray;
@@ -167,7 +166,7 @@ public class AdminRestController extends BaseRestController {
 
 		JSONArray jsonArray = new JSONArray(json);
 
-		_validate(jsonArray);
+		_naniteDefinitionSchema.validate(jsonArray);
 
 		elasticsearchInvoker.delete(
 			"OSBAsahMarkers",
@@ -248,10 +247,6 @@ public class AdminRestController extends BaseRestController {
 				}
 			).iterate();
 		}
-	}
-
-	private void _validate(JSONArray jsonArray) throws ValidationException {
-		_naniteDefinitionSchema.validate(jsonArray);
 	}
 
 	private static final Log _log = LogFactory.getLog(

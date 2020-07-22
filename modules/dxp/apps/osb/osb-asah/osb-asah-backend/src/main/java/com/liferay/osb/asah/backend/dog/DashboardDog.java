@@ -54,7 +54,6 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import org.everit.json.schema.Schema;
-import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
 
 import org.json.JSONObject;
@@ -135,7 +134,7 @@ public class DashboardDog {
 		String dashboardId, String definition, String modifiedByUserId,
 		String modifiedByUserName) {
 
-		_validate(definition);
+		_dashboardDefinitionSchema.validate(new JSONObject(definition));
 
 		JSONObject jsonObject = new JSONObject();
 
@@ -219,10 +218,6 @@ public class DashboardDog {
 			throw new IllegalStateException(
 				"Unable to read dashboard definition schema", ioe);
 		}
-	}
-
-	private void _validate(String definition) throws ValidationException {
-		_dashboardDefinitionSchema.validate(new JSONObject(definition));
 	}
 
 	private static final Log _log = LogFactory.getLog(DashboardDog.class);
