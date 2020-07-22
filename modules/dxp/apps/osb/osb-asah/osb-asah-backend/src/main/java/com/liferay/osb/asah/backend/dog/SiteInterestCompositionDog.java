@@ -39,6 +39,7 @@ import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.script.Script;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.composite.CompositeAggregation;
@@ -231,71 +232,34 @@ public class SiteInterestCompositionDog {
 	private long _getTotalUsers(
 		String channelId, String dataSourceId, TimeRange timeRange) {
 
-		BoolQueryBuilder boolQueryBuilder = _getActivitiesBoolQueryBuilder(
-			channelId, dataSourceId, timeRange);
+		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
+			"activities",
+			searchSourceBuilder -> {
+				searchSourceBuilder.query(
+					_getActivitiesBoolQueryBuilder(
+						channelId, dataSourceId, timeRange));
 
-		TermsValuesSourceBuilder termsValuesSourceBuilder =
-			new TermsValuesSourceBuilder("day");
+				searchSourceBuilder.size(0);
 
-		termsValuesSourceBuilder.field("day");
+				searchSourceBuilder.aggregation(
+					AggregationBuilders.cardinality(
+						"totalUsers"
+					).script(
+						new Script(
+							Script.DEFAULT_SCRIPT_TYPE,
+							Script.DEFAULT_SCRIPT_LANG,
+							"doc['day'] + ' ' + doc['userId'] + ' ' + " +
+								"doc['object.id']",
+							Collections.emptyMap())
+					));
+			});
 
-		CompositeAggregationBuilder compositeAggregationBuilder =
-			AggregationBuilders.composite(
-				"composite", Collections.singletonList(termsValuesSourceBuilder)
-			).size(
-				10000
-			).subAggregation(
-				AggregationBuilders.cardinality(
-					"userCount"
-				).field(
-					"userId"
-				)
-			);
+		Aggregations aggregations = searchResponse.getAggregations();
 
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
+		InternalCardinality internalCardinality = aggregations.get(
+			"totalUsers");
 
-		searchSourceBuilder.aggregation(compositeAggregationBuilder);
-		searchSourceBuilder.query(boolQueryBuilder);
-		searchSourceBuilder.size(0);
-
-		long totalUsers = 0;
-
-		while (true) {
-			SearchResponse searchResponse =
-				_faroInfoElasticsearchInvoker.search(
-					"activities", searchSourceBuilder);
-
-			Aggregations aggregations = searchResponse.getAggregations();
-
-			if (DogUtil.isEmpty(aggregations)) {
-				return 0;
-			}
-
-			CompositeAggregation compositeAggregation = aggregations.get(
-				"composite");
-
-			List<? extends CompositeAggregation.Bucket> buckets =
-				compositeAggregation.getBuckets();
-
-			if (buckets.isEmpty()) {
-				break;
-			}
-
-			for (CompositeAggregation.Bucket bucket : buckets) {
-				Aggregations userCountAggregations = bucket.getAggregations();
-
-				InternalCardinality internalCardinality =
-					userCountAggregations.get("userCount");
-
-				totalUsers += internalCardinality.getValue();
-			}
-
-			compositeAggregationBuilder.aggregateAfter(
-				compositeAggregation.afterKey());
-		}
-
-		return totalUsers;
+		return internalCardinality.getValue();
 	}
 
 	private Map<String, Set<String>> _getUserIds(
