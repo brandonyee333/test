@@ -29,11 +29,11 @@ public interface ZendeskOrganizationMembershipWebService {
 
 	public void createOrganizationMemberships(
 			long zendeskUserId, long[] zendeskOrganizationIds)
-		throws PortalException;
+		throws Exception;
 
 	public void deleteOrganizationMemberships(
 			long zendeskUserId, long[] zendeskOrganizationIds)
-		throws PortalException;
+		throws Exception;
 
 	public List<ZendeskOrganizationMembership> getOrganizationMemberships(
 			long zendeskOrganizationId)

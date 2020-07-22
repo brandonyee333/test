@@ -33,13 +33,13 @@ public interface ZendeskUserWebService {
 	public ZendeskUser createOrUpdateZendeskUser(
 			String externalId, String email, String zendeskLocale, String name,
 			String organizationName, Set<String> tags)
-		throws PortalException;
+		throws Exception;
 
 	public void createZendeskUserOrganizationSubscription(
 			long zendeskUserId, long zendeskOrganizationId)
-		throws PortalException;
+		throws Exception;
 
-	public void deleteZendeskUser(long zendeskUserId) throws PortalException;
+	public void deleteZendeskUser(long zendeskUserId) throws Exception;
 
 	public ZendeskUser getZendeskUser(long zendeskUserId)
 		throws PortalException;
@@ -57,6 +57,6 @@ public interface ZendeskUserWebService {
 		throws PortalException;
 
 	public void updateZendeskUserTags(long zendeskUserId, Set<String> tags)
-		throws PortalException;
+		throws Exception;
 
 }

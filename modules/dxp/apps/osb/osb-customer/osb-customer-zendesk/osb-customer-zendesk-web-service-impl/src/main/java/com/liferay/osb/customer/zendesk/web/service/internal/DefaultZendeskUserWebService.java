@@ -19,10 +19,11 @@ import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.customer.zendesk.web.service.internal.search.SearchHitsImpl;
-import com.liferay.osb.customer.zendesk.web.service.internal.util.MessagePublisherUtil;
 import com.liferay.osb.customer.zendesk.web.service.internal.util.ZendeskConverter;
 import com.liferay.osb.customer.zendesk.web.service.search.Query;
 import com.liferay.osb.customer.zendesk.web.service.search.SearchHits;
+import com.liferay.osb.distributed.messaging.Message;
+import com.liferay.osb.distributed.messaging.publishing.MessagePublisher;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -54,7 +55,7 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 	public ZendeskUser createOrUpdateZendeskUser(
 			String externalId, String email, String zendeskLocale, String name,
 			String organizationName, Set<String> tags)
-		throws PortalException {
+		throws Exception {
 
 		String endpoint =
 			ZendeskRESTEndpoints.URL_API_V2 +
@@ -66,8 +67,9 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 		JSONObject responseJSONObject = zendeskBaseWebService.post(
 			endpoint, jsonObject.toString());
 
-		messagePublisherUtil.sendEventNotification(
-			"zendesk.user.create.or.update", responseJSONObject);
+		messagePublisher.publish(
+			"zendesk.user.create.or.update",
+			new Message(responseJSONObject.toString()));
 
 		JSONObject userJSONObject = responseJSONObject.getJSONObject("user");
 
@@ -76,12 +78,12 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 
 	public void createZendeskUserOrganizationSubscription(
 			long zendeskUserId, long zendeskOrganizationId)
-		throws PortalException {
+		throws Exception {
 
 		throw new UnsupportedOperationException();
 	}
 
-	public void deleteZendeskUser(long zendeskUserId) throws PortalException {
+	public void deleteZendeskUser(long zendeskUserId) throws Exception {
 		throw new UnsupportedOperationException();
 	}
 
@@ -164,7 +166,7 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 	}
 
 	public void updateZendeskUserTags(long zendeskUserId, Set<String> tags)
-		throws PortalException {
+		throws Exception {
 
 		throw new UnsupportedOperationException();
 	}
@@ -242,7 +244,7 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 	protected Http http;
 
 	@Reference
-	protected MessagePublisherUtil messagePublisherUtil;
+	protected MessagePublisher messagePublisher;
 
 	@Reference
 	protected ZendeskBaseWebService zendeskBaseWebService;

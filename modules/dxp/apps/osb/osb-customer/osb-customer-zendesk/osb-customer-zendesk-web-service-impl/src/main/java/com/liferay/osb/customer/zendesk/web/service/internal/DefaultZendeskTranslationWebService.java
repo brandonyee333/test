@@ -19,8 +19,8 @@ import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
 import com.liferay.osb.customer.zendesk.constants.ZendeskTranslationConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskTranslation;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTranslationWebService;
-import com.liferay.osb.customer.zendesk.web.service.internal.util.MessagePublisherUtil;
 import com.liferay.osb.customer.zendesk.web.service.internal.util.ZendeskConverter;
+import com.liferay.osb.distributed.messaging.publishing.MessagePublisher;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -43,7 +43,7 @@ public class DefaultZendeskTranslationWebService
 	public ZendeskTranslation addZendeskTranslation(
 			String sourceType, long sourceId, String zendeskLocale,
 			String title, String body)
-		throws PortalException {
+		throws Exception {
 
 		throw new UnsupportedOperationException();
 	}
@@ -64,7 +64,7 @@ public class DefaultZendeskTranslationWebService
 	public ZendeskTranslation updateZendeskTranslation(
 			String sourceType, long sourceId, String zendeskLocale,
 			String title, String body)
-		throws PortalException {
+		throws Exception {
 
 		throw new UnsupportedOperationException();
 	}
@@ -117,7 +117,7 @@ public class DefaultZendeskTranslationWebService
 	}
 
 	@Reference
-	protected MessagePublisherUtil messagePublisherUtil;
+	protected MessagePublisher messagePublisher;
 
 	@Reference
 	protected ZendeskBaseWebService zendeskBaseWebService;

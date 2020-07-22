@@ -17,8 +17,6 @@ package com.liferay.osb.customer.zendesk.web.service.internal;
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskRequest;
 import com.liferay.osb.customer.zendesk.model.ZendeskTranslation;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTranslationWebService;
-import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -39,7 +37,7 @@ public class AsyncZendeskTranslationWebService
 	public ZendeskTranslation addZendeskTranslation(
 			String sourceType, long sourceId, String zendeskLocale,
 			String title, String body)
-		throws PortalException {
+		throws Exception {
 
 		String endpoint = getBaseEndpoint(sourceType, sourceId);
 
@@ -49,7 +47,8 @@ public class AsyncZendeskTranslationWebService
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint + "/translations.json", "post", null, jsonObject, null);
 
-		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
+		messagePublisher.publish(
+			"zendesk.service", zendeskRequest.getMessage());
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
@@ -64,7 +63,7 @@ public class AsyncZendeskTranslationWebService
 	public ZendeskTranslation updateZendeskTranslation(
 			String sourceType, long sourceId, String zendeskLocale,
 			String title, String body)
-		throws PortalException {
+		throws Exception {
 
 		String endpoint = getBaseEndpoint(sourceType, sourceId);
 
@@ -76,7 +75,8 @@ public class AsyncZendeskTranslationWebService
 				endpoint, "/translations/", zendeskLocale, ".json"),
 			"put", null, jsonObject, null);
 
-		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
+		messagePublisher.publish(
+			"zendesk.service", zendeskRequest.getMessage());
 
 		if (_log.isInfoEnabled()) {
 			_log.info(

@@ -18,8 +18,8 @@ import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
 import com.liferay.osb.customer.zendesk.model.ZendeskUserIdentity;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserIdentityWebService;
-import com.liferay.osb.customer.zendesk.web.service.internal.util.MessagePublisherUtil;
 import com.liferay.osb.customer.zendesk.web.service.internal.util.ZendeskConverter;
+import com.liferay.osb.distributed.messaging.publishing.MessagePublisher;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -43,14 +43,14 @@ public class DefaultZendeskUserIdentityWebService
 
 	public void createZendeskUserIdentity(
 			long zendeskUserId, String type, String value)
-		throws PortalException {
+		throws Exception {
 
 		throw new UnsupportedOperationException();
 	}
 
 	public void deleteZendeskUserIdentity(
 			long zendeskUserId, long zendeskUserIdentityId, String type)
-		throws PortalException {
+		throws Exception {
 
 		throw new UnsupportedOperationException();
 	}
@@ -74,13 +74,13 @@ public class DefaultZendeskUserIdentityWebService
 
 	public void updateZendeskUserIdentity(
 			long zendeskUserId, long zendeskUserIdentityId, String value)
-		throws PortalException {
+		throws Exception {
 
 		throw new UnsupportedOperationException();
 	}
 
 	@Reference
-	protected MessagePublisherUtil messagePublisherUtil;
+	protected MessagePublisher messagePublisher;
 
 	@Reference
 	protected ZendeskBaseWebService zendeskBaseWebService;

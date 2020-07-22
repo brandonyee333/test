@@ -30,7 +30,7 @@ public interface ZendeskTranslationWebService {
 	public ZendeskTranslation addZendeskTranslation(
 			String sourceType, long sourceId, String zendeskLocale,
 			String title, String body)
-		throws PortalException;
+		throws Exception;
 
 	public List<ZendeskTranslation> getZendeskTranslations(
 			String sourceType, long sourceId)
@@ -39,6 +39,6 @@ public interface ZendeskTranslationWebService {
 	public ZendeskTranslation updateZendeskTranslation(
 			String sourceType, long sourceId, String zendeskLocale,
 			String title, String body)
-		throws PortalException;
+		throws Exception;
 
 }

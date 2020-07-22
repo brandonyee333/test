@@ -18,8 +18,6 @@ import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskRequest;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
-import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -42,7 +40,7 @@ public class AsyncZendeskUserWebService
 	public ZendeskUser createOrUpdateZendeskUser(
 			String externalId, String email, String zendeskLocale, String name,
 			String organizationName, Set<String> tags)
-		throws PortalException {
+		throws Exception {
 
 		String endpoint =
 			ZendeskRESTEndpoints.URL_API_V2 +
@@ -55,7 +53,8 @@ public class AsyncZendeskUserWebService
 			endpoint, "post", null, jsonObject,
 			"zendesk.user.create.or.update");
 
-		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
+		messagePublisher.publish(
+			"zendesk.service", zendeskRequest.getMessage());
 
 		return null;
 	}
@@ -63,7 +62,7 @@ public class AsyncZendeskUserWebService
 	@Override
 	public void createZendeskUserOrganizationSubscription(
 			long zendeskUserId, long zendeskOrganizationId)
-		throws PortalException {
+		throws Exception {
 
 		String endpoint =
 			ZendeskRESTEndpoints.URL_API_V2 +
@@ -84,10 +83,11 @@ public class AsyncZendeskUserWebService
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "post", null, jsonObject, null);
 
-		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
+		messagePublisher.publish(
+			"zendesk.service", zendeskRequest.getMessage());
 	}
 
-	public void deleteZendeskUser(long zendeskUserId) throws PortalException {
+	public void deleteZendeskUser(long zendeskUserId) throws Exception {
 		String endpoint = StringBundler.concat(
 			ZendeskRESTEndpoints.URL_API_V2, "users/",
 			String.valueOf(zendeskUserId), ".json");
@@ -95,12 +95,13 @@ public class AsyncZendeskUserWebService
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "delete", null, null, "zendesk.user.delete");
 
-		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
+		messagePublisher.publish(
+			"zendesk.service", zendeskRequest.getMessage());
 	}
 
 	@Override
 	public void updateZendeskUserTags(long zendeskUserId, Set<String> tags)
-		throws PortalException {
+		throws Exception {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
@@ -119,7 +120,8 @@ public class AsyncZendeskUserWebService
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "post", null, jsonObject, null);
 
-		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
+		messagePublisher.publish(
+			"zendesk.service", zendeskRequest.getMessage());
 	}
 
 }

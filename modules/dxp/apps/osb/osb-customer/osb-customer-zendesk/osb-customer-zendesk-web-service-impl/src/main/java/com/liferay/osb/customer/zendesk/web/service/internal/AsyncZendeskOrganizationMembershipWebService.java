@@ -18,7 +18,6 @@ import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskRequest;
 import com.liferay.osb.customer.zendesk.model.ZendeskOrganizationMembership;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -46,7 +45,7 @@ public class AsyncZendeskOrganizationMembershipWebService
 	@Override
 	public void createOrganizationMemberships(
 			long zendeskUserId, long[] zendeskOrganizationIds)
-		throws PortalException {
+		throws Exception {
 
 		String endpoint =
 			ZendeskRESTEndpoints.URL_API_V2 +
@@ -71,13 +70,14 @@ public class AsyncZendeskOrganizationMembershipWebService
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "post", null, jsonObject, null);
 
-		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
+		messagePublisher.publish(
+			"zendesk.service", zendeskRequest.getMessage());
 	}
 
 	@Override
 	public void deleteOrganizationMemberships(
 			long zendeskUserId, long[] zendeskOrganizationIds)
-		throws PortalException {
+		throws Exception {
 
 		String endpoint =
 			ZendeskRESTEndpoints.URL_API_V2 +
@@ -118,7 +118,8 @@ public class AsyncZendeskOrganizationMembershipWebService
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "delete", parameters, null, null);
 
-		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
+		messagePublisher.publish(
+			"zendesk.service", zendeskRequest.getMessage());
 	}
 
 }

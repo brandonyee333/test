@@ -1,0 +1,8 @@
+dependencies {
+	compileInclude fileTree(dir: "lib-distributed-messaging", include: "*.jar")
+}
+
+deployDependencies {
+	from configurations.compileOnly
+	include "amqp-client-*.jar"
+}

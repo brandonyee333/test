@@ -18,8 +18,9 @@ import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
 import com.liferay.osb.customer.zendesk.model.ZendeskOrganization;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebService;
-import com.liferay.osb.customer.zendesk.web.service.internal.util.MessagePublisherUtil;
 import com.liferay.osb.customer.zendesk.web.service.internal.util.ZendeskConverter;
+import com.liferay.osb.distributed.messaging.Message;
+import com.liferay.osb.distributed.messaging.publishing.MessagePublisher;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -50,7 +51,7 @@ public class DefaultZendeskOrganizationWebService
 			String partnerCode, String sla, String status,
 			String supportLanguage, String supportRegion, String tier,
 			Set<String> tags)
-		throws PortalException {
+		throws Exception {
 
 		String endpoint =
 			ZendeskRESTEndpoints.URL_API_V2 +
@@ -65,8 +66,9 @@ public class DefaultZendeskOrganizationWebService
 		JSONObject responseJSONObject = zendeskBaseWebService.post(
 			endpoint, zendeskOrganizationJSONObject.toString());
 
-		messagePublisherUtil.sendEventNotification(
-			"zendesk.organization.create", responseJSONObject);
+		messagePublisher.publish(
+			"zendesk.organization.create",
+			new Message(responseJSONObject.toString()));
 
 		JSONObject organizationJSONObject = responseJSONObject.getJSONObject(
 			"organization");
@@ -75,7 +77,7 @@ public class DefaultZendeskOrganizationWebService
 	}
 
 	public void deleteZendeskOrganization(long zendeskOrganizationId)
-		throws PortalException {
+		throws Exception {
 
 		throw new UnsupportedOperationException();
 	}
@@ -187,7 +189,7 @@ public class DefaultZendeskOrganizationWebService
 	}
 
 	@Reference
-	protected MessagePublisherUtil messagePublisherUtil;
+	protected MessagePublisher messagePublisher;
 
 	@Reference
 	protected ZendeskBaseWebService zendeskBaseWebService;

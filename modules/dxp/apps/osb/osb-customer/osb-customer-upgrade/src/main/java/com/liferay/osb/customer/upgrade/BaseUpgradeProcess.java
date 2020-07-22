@@ -14,11 +14,14 @@
 
 package com.liferay.osb.customer.upgrade;
 
-import com.liferay.osb.customer.upgrade.util.MessagePublisherUtil;
+import com.liferay.osb.distributed.messaging.Message;
+import com.liferay.osb.distributed.messaging.publishing.MessagePublisher;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
@@ -32,11 +35,15 @@ public abstract class BaseUpgradeProcess extends UpgradeProcess {
 			jsonObject.put("schema", schema);
 			jsonObject.put("sql", sql);
 
-			MessagePublisherUtil.sendMessage("metrics.upgrade", jsonObject);
+			messagePublisher.publish(
+				"metrics.upgrade", new Message(jsonObject.toString()));
 		}
 		catch (Exception e) {
 			throw new PortalException(e);
 		}
 	}
+
+	@Reference
+	protected MessagePublisher messagePublisher;
 
 }

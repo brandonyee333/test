@@ -1,0 +1,4 @@
+Bundle-Name: Liferay OSB Customer Distributed Messaging Subscriber
+Bundle-SymbolicName: com.liferay.osb.customer.distributed.messaging.subscriber
+Bundle-Version: 1.0.0
+-dsannotations-options: inherit

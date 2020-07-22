@@ -34,10 +34,10 @@ public interface ZendeskOrganizationWebService {
 			String partnerCode, String sla, String status,
 			String supportLanguage, String supportRegion, String tier,
 			Set<String> tags)
-		throws PortalException;
+		throws Exception;
 
 	public void deleteZendeskOrganization(long zendeskOrganizationId)
-		throws PortalException;
+		throws Exception;
 
 	public ZendeskOrganization getZendeskOrganization(String externalId)
 		throws PortalException;

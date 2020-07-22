@@ -1,0 +1,5 @@
+Bundle-Name: Liferay OSB Customer Legacy Message ubscriber
+Bundle-SymbolicName: com.liferay.osb.customer.legacy.message.subscriber
+Bundle-Version: 1.0.0
+Export-Package: com.liferay.osb.customer.legacy.message.subscriber
+-dsannotations-options: inherit

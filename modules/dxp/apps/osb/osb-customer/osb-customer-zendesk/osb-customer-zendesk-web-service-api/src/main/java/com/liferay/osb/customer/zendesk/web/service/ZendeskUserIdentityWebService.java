@@ -29,11 +29,11 @@ public interface ZendeskUserIdentityWebService {
 
 	public void createZendeskUserIdentity(
 			long zendeskUserId, String type, String value)
-		throws PortalException;
+		throws Exception;
 
 	public void deleteZendeskUserIdentity(
 			long zendeskUserId, long zendeskUserIdentityId, String type)
-		throws PortalException;
+		throws Exception;
 
 	public List<ZendeskUserIdentity> getZendeskUserIdentities(
 			long zendeskUserId)
@@ -41,6 +41,6 @@ public interface ZendeskUserIdentityWebService {
 
 	public void updateZendeskUserIdentity(
 			long zendeskUserId, long zendeskUserIdentityId, String value)
-		throws PortalException;
+		throws Exception;
 
 }

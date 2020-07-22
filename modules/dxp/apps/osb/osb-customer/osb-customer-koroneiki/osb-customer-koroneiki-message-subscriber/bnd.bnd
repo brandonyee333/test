@@ -1,0 +1,5 @@
+Bundle-Name: Liferay OSB Customer Koroneiki Message Subscriber
+Bundle-SymbolicName: com.liferay.osb.customer.koroneiki.message.subscriber
+Bundle-Version: 1.0.0
+Export-Package: com.liferay.osb.customer.koroneiki.message.subscriber
+-dsannotations-options: inherit

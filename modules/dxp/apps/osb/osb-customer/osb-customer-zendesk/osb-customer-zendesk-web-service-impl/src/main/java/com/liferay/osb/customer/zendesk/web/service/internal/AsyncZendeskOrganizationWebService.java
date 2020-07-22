@@ -17,8 +17,6 @@ package com.liferay.osb.customer.zendesk.web.service.internal;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskRequest;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebService;
-import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.exception.PortalException;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -35,7 +33,7 @@ public class AsyncZendeskOrganizationWebService
 
 	@Override
 	public void deleteZendeskOrganization(long zendeskOrganizationId)
-		throws PortalException {
+		throws Exception {
 
 		String endpoint = StringBundler.concat(
 			ZendeskRESTEndpoints.URL_API_V2, "organizations/",
@@ -44,7 +42,8 @@ public class AsyncZendeskOrganizationWebService
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "delete", null, null, "zendesk.organization.delete");
 
-		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
+		messagePublisher.publish(
+			"zendesk.service", zendeskRequest.getMessage());
 	}
 
 }

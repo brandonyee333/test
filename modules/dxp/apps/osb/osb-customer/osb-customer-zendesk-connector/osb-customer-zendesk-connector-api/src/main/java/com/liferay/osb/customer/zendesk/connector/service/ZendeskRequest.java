@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.zendesk.connector.service;
 
+import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.Validator;
@@ -69,6 +70,12 @@ public class ZendeskRequest {
 
 	public String getEndpoint() {
 		return _endpoint;
+	}
+
+	public Message getMessage() {
+		JSONObject jsonObject = toJSONObject();
+
+		return new Message(jsonObject.toString());
 	}
 
 	public String getMethod() {
