@@ -24,6 +24,7 @@ import com.liferay.osb.asah.upgrade.v2_7_0.AssetsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.CanonicalUrlMappingUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.JobRunsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.JobsUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_7_0.PageActivitiesContextUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.SessionActivitiesUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,8 @@ public class UpgradeProcessConfiguration {
 		upgradeProcess.addUpgradeSteps(
 			"2.6.1", "2.7.0", _assetsUpgradeStep,
 			_canonicalUrlMappingUpgradeStep, _jobRunsUpgradeStep,
-			_jobsUpgradeStep, _sessionActivitiesUpgradeStep);
+			_jobsUpgradeStep, _pageActivitiesContextUpgradeStep,
+			_sessionActivitiesUpgradeStep);
 
 		return upgradeProcess;
 	}
@@ -82,6 +84,9 @@ public class UpgradeProcessConfiguration {
 	@Autowired
 	private OSBAsahTasksIndexMappingUpgradeStep
 		_osbAsahTasksIndexMappingUpgradeStep;
+
+	@Autowired
+	private PageActivitiesContextUpgradeStep _pageActivitiesContextUpgradeStep;
 
 	@Autowired
 	private PagesIndexMappingUpgradeStep _pagesIndexMappingUpgradeStep;
