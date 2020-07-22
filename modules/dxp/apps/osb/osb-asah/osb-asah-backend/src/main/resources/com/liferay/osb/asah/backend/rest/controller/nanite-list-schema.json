@@ -4,6 +4,6 @@
 	"items": {
 		"type": "string"
 	},
-	"title": "A JSON Schema for Nanite Definition.",
+	"title": "A JSON Schema for Nanite list.",
 	"type": "array"
 }

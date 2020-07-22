@@ -116,16 +116,16 @@ public class AdminRestController extends BaseRestController {
 		Class<?> clazz = getClass();
 
 		try (InputStream inputStream = clazz.getResourceAsStream(
-				"nanite-definition-schema.json")) {
+				"nanite-list-schema.json")) {
 
-			_naniteDefinitionSchema = SchemaLoader.load(
+			_naniteListSchema = SchemaLoader.load(
 				new JSONObject(new JSONTokener(inputStream)));
 		}
 		catch (IOException ioe) {
 			_log.error(ioe);
 
 			throw new IllegalStateException(
-				"Unable to read nanite definition schema", ioe);
+				"Unable to read nanite list schema", ioe);
 		}
 	}
 
@@ -166,7 +166,7 @@ public class AdminRestController extends BaseRestController {
 
 		JSONArray jsonArray = new JSONArray(json);
 
-		_naniteDefinitionSchema.validate(jsonArray);
+		_naniteListSchema.validate(jsonArray);
 
 		elasticsearchInvoker.delete(
 			"OSBAsahMarkers",
@@ -267,7 +267,7 @@ public class AdminRestController extends BaseRestController {
 	@Autowired
 	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
-	private Schema _naniteDefinitionSchema;
+	private Schema _naniteListSchema;
 
 	@Autowired
 	private NanitesHttp _nanitesHttp;
