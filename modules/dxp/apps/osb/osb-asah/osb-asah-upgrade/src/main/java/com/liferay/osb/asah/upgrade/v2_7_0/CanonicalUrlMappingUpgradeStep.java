@@ -21,9 +21,6 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,14 +39,9 @@ public class CanonicalUrlMappingUpgradeStep implements UpgradeStep {
 		_faroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forFaroInfo();
 
-		List<String> collectionNames = Arrays.asList(
-			"blog-clicks", "blog-social-shares", "blog-traffic-sources",
-			"blogs", "custom-assets", "document-libraries", "forms",
-			"journal-clicks", "journals");
-
-		collectionNames.forEach(
-			collectionName -> _addMappingField(
-				collectionName, "canonicalUrls"));
+		for (String collectionName : _ASSET_COLLECTION_NAMES) {
+			_addMappingField(collectionName, "canonicalUrls");
+		}
 
 		_addMappingField("page-referrers", "canonicalUrl");
 
@@ -67,7 +59,8 @@ public class CanonicalUrlMappingUpgradeStep implements UpgradeStep {
 								"normalizer", "case_insensitive_sort"
 							).put(
 								"type", "keyword"
-							))))));
+							))))),
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		_addMappingField(
 			"visited-pages",
@@ -79,26 +72,33 @@ public class CanonicalUrlMappingUpgradeStep implements UpgradeStep {
 						"normalizer", "case_insensitive_sort"
 					).put(
 						"type", "keyword"
-					))));
-	}
-
-	private void _addMappingField(
-		String collectionName, JSONObject mappingJSONObject) {
-
-		_elasticsearchIndexManager.updateMapping(
-			collectionName, mappingJSONObject.toString(), collectionName,
+					))),
 			WeDeployDataService.OSB_ASAH_FARO_INFO);
 	}
 
-	private void _addMappingField(String collectionName, String propertyName) {
+	private void _addMappingField(
+		String collectionName, JSONObject mappingJSONObject,
+		WeDeployDataService weDeployDataService) {
+
 		_elasticsearchIndexManager.updateMapping(
+			collectionName, mappingJSONObject.toString(), collectionName,
+			weDeployDataService);
+	}
+
+	private void _addMappingField(String collectionName, String propertyName) {
+		_addMappingField(
 			collectionName,
 			JSONUtil.put(
 				"properties",
-				JSONUtil.put(propertyName, JSONUtil.put("type", "keyword"))
-			).toString(),
-			collectionName, WeDeployDataService.OSB_ASAH_CEREBRO_INFO);
+				JSONUtil.put(propertyName, JSONUtil.put("type", "keyword"))),
+			WeDeployDataService.OSB_ASAH_CEREBRO_INFO);
 	}
+
+	private static final String[] _ASSET_COLLECTION_NAMES = {
+		"blog-clicks", "blog-social-shares", "blog-traffic-sources", "blogs",
+		"custom-assets", "document-libraries", "forms", "journal-clicks",
+		"journals"
+	};
 
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
