@@ -88,7 +88,6 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 
 		_cerebroInfoElasticsearchInvoker =
 			elasticsearchInvokerFactory.forCerebroInfo();
-
 		_faroInfoElasticsearchInvoker =
 			elasticsearchInvokerFactory.forFaroInfo();
 
