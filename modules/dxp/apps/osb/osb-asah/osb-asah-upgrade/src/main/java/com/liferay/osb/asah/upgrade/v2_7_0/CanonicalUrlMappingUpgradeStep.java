@@ -43,8 +43,6 @@ public class CanonicalUrlMappingUpgradeStep implements UpgradeStep {
 			_addMappingField(collectionName, "canonicalUrls");
 		}
 
-		_addMappingField("page-referrers", "canonicalUrl");
-
 		_addMappingField(
 			"activities",
 			JSONUtil.put(
@@ -61,7 +59,7 @@ public class CanonicalUrlMappingUpgradeStep implements UpgradeStep {
 								"type", "keyword"
 							))))),
 			WeDeployDataService.OSB_ASAH_FARO_INFO);
-
+		_addMappingField("page-referrers", "canonicalUrl");
 		_addMappingField(
 			"visited-pages",
 			JSONUtil.put(
