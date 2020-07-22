@@ -7,6 +7,7 @@ definition {
 	property testray.main.component.name = "Patching Tool";
 	var testBuildFixPackZipURL = PropsUtil.get("test.build.fix.pack.zip.url");
 	var testBuildFixPackZipURLPrevious = PropsUtil.get("test.build.fix.pack.zip.url.previous");
+	var testBuildFixPackZipURLLatestHeavy = PropsUtil.get("test.build.fix.pack.zip.url.latest.heavy");
 
 	setUp {
 		SignIn.signInTestSetup();
@@ -87,6 +88,83 @@ definition {
 		BlogsEntry.viewEntry(
 			entryContent = "Blogs Entry Content",
 			entryTitle = "Blogs Entry Title");
+	}
+
+	@description = "Ensures that a fix pack can be reverted to the latest heavy fix pack."
+	@priority = "5"
+	test RevertToLatestHeavyFixPack {
+		property skip.install-patch = "true";
+		property test.name.skip.portal.instance = "PatchingTool#RevertToLatestHeavyFixPack";
+
+		if ("${testBuildFixPackZipURLPrevious}" == "${testBuildFixPackZipURLLatestHeavy}") {
+			echo("Skip test since the heavey fixpack equal to previous fixpack");
+		}
+		else {
+			SignOut.signOut();
+
+			Portlet.shutdownServer();
+
+			PatchingTool.installPatch(patchFileZipURL = "${testBuildFixPackZipURL}");
+
+			Portlet.startServer(
+				deleteLiferayHome = "true",
+				keepCachedAppServerData = "true");
+
+			SignIn.signIn();
+
+			BlogsNavigator.openBlogsAdmin(siteURLKey = "guest");
+
+			Blogs.addEntry(
+				entryContent = "Blogs Entry Content",
+				entryTitle = "Blogs Entry Title");
+
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "guest");
+
+			WebContentNavigator.gotoAddCP();
+
+			WebContent.addCP(
+				webContentContent = "WC WebContent Content",
+				webContentTitle = "WC WebContent Title");
+
+			PortletEntry.publish();
+
+			DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
+
+			DMDocument.addCP(
+				dmDocumentDescription = "DM Document Description",
+				dmDocumentFile = "Document_1.txt",
+				dmDocumentTitle = "DM Document Title");
+
+			Portlet.shutdownServer();
+
+			PatchingTool.uninstallPatches();
+
+			PatchingTool.installPatch(patchFileZipURL = "${testBuildFixPackZipURLLatestHeavy}");
+
+			Portlet.startServer(
+				deleteLiferayHome = "true",
+				keepCachedAppServerData = "true");
+
+			SignIn.signIn();
+
+			BlogsNavigator.openBlogsAdmin(siteURLKey = "guest");
+
+			Portlet.changeDisplayStyle(displayStyle = "Descriptive");
+
+			BlogsEntry.viewEntryTable(entryTitle = "Blogs Entry Title");
+
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "guest");
+
+			WebContent.viewTitle(webContentTitle = "WC WebContent Title");
+
+			DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
+
+			Portlet.changeDisplayStyle(displayStyle = "Icon");
+
+			DMNavigator.gotoDocumentCP(dmDocumentTitle = "DM Document Title");
+
+			DMDocument.viewCP(dmDocumentTitle = "DM Document Title");
+		}
 	}
 
 }
