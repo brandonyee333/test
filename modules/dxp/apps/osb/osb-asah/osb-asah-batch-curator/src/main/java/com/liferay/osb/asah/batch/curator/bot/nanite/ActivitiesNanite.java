@@ -86,6 +86,9 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 	public void init() {
 		super.init();
 
+		_cerebroInfoElasticsearchInvoker =
+			elasticsearchInvokerFactory.forCerebroInfo();
+
 		_faroInfoElasticsearchInvoker =
 			elasticsearchInvokerFactory.forFaroInfo();
 
@@ -264,39 +267,46 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 			analyticsEvent.getEventDate());
 		String ownerId = activityGroupJSONObject.optString("ownerId");
 
+		JSONObject activityJSONObject = JSONUtil.put(
+			"activityKey", applicationId + "#" + eventId + "#" + assetId
+		).put(
+			"activityType", "BROWSE"
+		).put(
+			"applicationId", applicationId
+		).put(
+			"channelId", analyticsEvent.getChannelId()
+		).put(
+			"dataSourceId", analyticsEvent.getDataSourceId()
+		).put(
+			"day", DateUtil.newDayDateString(eventDateString)
+		).put(
+			"endTime", eventDateString
+		).put(
+			"eventContext", new JSONObject(analyticsEvent.getContext())
+		).put(
+			"eventId", eventId
+		).put(
+			"eventProperties", _getEventPropertiesJSONObject(analyticsEvent)
+		).put(
+			"groupId", activityGroupJSONObject.get("id")
+		).put(
+			"object", objectJSONObject
+		).put(
+			"ownerId", ownerId
+		).put(
+			"startTime", eventDateString
+		).put(
+			"userId", analyticsEvent.getUserId()
+		);
+
+		String sessionId = _getSessionId(analyticsEvent, ownerId);
+
+		if (sessionId != null) {
+			activityJSONObject.put("sessionId", sessionId);
+		}
+
 		addActivityJSONObject(
-			JSONUtil.put(
-				"activityKey", applicationId + "#" + eventId + "#" + assetId
-			).put(
-				"activityType", "BROWSE"
-			).put(
-				"applicationId", applicationId
-			).put(
-				"channelId", analyticsEvent.getChannelId()
-			).put(
-				"dataSourceId", analyticsEvent.getDataSourceId()
-			).put(
-				"day", DateUtil.newDayDateString(eventDateString)
-			).put(
-				"endTime", eventDateString
-			).put(
-				"eventContext", new JSONObject(analyticsEvent.getContext())
-			).put(
-				"eventId", eventId
-			).put(
-				"eventProperties", _getEventPropertiesJSONObject(analyticsEvent)
-			).put(
-				"groupId", activityGroupJSONObject.get("id")
-			).put(
-				"object", objectJSONObject
-			).put(
-				"ownerId", ownerId
-			).put(
-				"startTime", eventDateString
-			).put(
-				"userId", analyticsEvent.getUserId()
-			),
-			applicationId, eventId, ownerId);
+			activityJSONObject, applicationId, eventId, ownerId);
 	}
 
 	private JSONObject _getAssetJSONObject(
@@ -600,6 +610,45 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 		return eventPropertiesJSONObject.optString("pageViewActivityId", null);
 	}
 
+	private String _getSessionId(
+		AnalyticsEvent analyticsEvent, String ownerId) {
+
+		JSONObject userSessionJSONObject =
+			_cerebroInfoElasticsearchInvoker.fetch(
+				"user-sessions",
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery(
+						"channelId", analyticsEvent.getChannelId())
+				).filter(
+					QueryBuilders.termQuery(
+						"dataSourceId", analyticsEvent.getDataSourceId())
+				).filter(
+					QueryBuilders.rangeQuery(
+						"firstEventDate"
+					).lte(
+						DateUtil.toUTCString(analyticsEvent.getEventDate())
+					)
+				).filter(
+					QueryBuilders.termQuery("individualId", ownerId)
+				).filter(
+					QueryBuilders.rangeQuery(
+						"lastEventDate"
+					).gte(
+						DateUtil.toUTCString(analyticsEvent.getEventDate())
+					)
+				).filter(
+					QueryBuilders.termQuery(
+						"userId", analyticsEvent.getUserId())
+				),
+				null, null, "id");
+
+		if (userSessionJSONObject == null) {
+			return null;
+		}
+
+		return userSessionJSONObject.getString("id");
+	}
+
 	private static final Log _log = LogFactory.getLog(ActivitiesNanite.class);
 
 	private static final Map<String, String> _dataSourceAssetPKFieldNames =
@@ -616,6 +665,7 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 		};
 
 	private boolean _active;
+	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
