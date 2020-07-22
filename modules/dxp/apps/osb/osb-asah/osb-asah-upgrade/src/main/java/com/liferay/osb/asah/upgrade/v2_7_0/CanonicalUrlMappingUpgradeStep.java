@@ -42,12 +42,14 @@ public class CanonicalUrlMappingUpgradeStep implements UpgradeStep {
 		_faroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forFaroInfo();
 
-		List<String> indexNames = Arrays.asList(
+		List<String> collectionNames = Arrays.asList(
 			"blog-clicks", "blog-social-shares", "blog-traffic-sources",
 			"blogs", "custom-assets", "document-libraries", "forms",
 			"journal-clicks", "journals");
 
-		indexNames.forEach(index -> _addMappingField(index, "canonicalUrls"));
+		collectionNames.forEach(
+			collectionName -> _addMappingField(
+				collectionName, "canonicalUrls"));
 
 		_addMappingField("page-referrers", "canonicalUrl");
 
