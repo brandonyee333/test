@@ -61,8 +61,17 @@ public class SiteInterestCompositionDog {
 		String channelId, String dataSourceId, int size, int start,
 		TimeRange timeRange) {
 
-		List<Composition> compositions = _getKeywordCompositions(
+		List<Composition> compositions = new ArrayList<>();
+
+		Map<String, Set<String>> keywords = _getKeywords(
 			channelId, dataSourceId, timeRange);
+
+		for (Map.Entry<String, Set<String>> keyword : keywords.entrySet()) {
+			Set<String> sessionIds = keyword.getValue();
+
+			compositions.add(
+				new Composition(sessionIds.size(), keyword.getKey()));
+		}
 
 		Comparator<Composition> comparator = Comparator.comparing(
 			Composition::getCount, Comparator.reverseOrder());
@@ -101,10 +110,10 @@ public class SiteInterestCompositionDog {
 		return boolQueryBuilder;
 	}
 
-	private List<Composition> _getKeywordCompositions(
+	private Map<String, Set<String>> _getKeywords(
 		String channelId, String dataSourceId, TimeRange timeRange) {
 
-		List<Composition> keywordCompositions = new ArrayList<>();
+		Map<String, Set<String>> keywords = new HashMap<>();
 
 		TermsValuesSourceBuilder keywordTermsValuesSourceBuilder =
 			new TermsValuesSourceBuilder("keywords/keyword");
@@ -149,7 +158,7 @@ public class SiteInterestCompositionDog {
 
 		searchSourceBuilder.size(0);
 
-		Map<String, Set<String>> keywords = new HashMap<>();
+		Map<String, Set<String>> assets = new HashMap<>();
 
 		while (true) {
 			SearchResponse searchResponse =
@@ -159,7 +168,7 @@ public class SiteInterestCompositionDog {
 			Aggregations aggregations = searchResponse.getAggregations();
 
 			if (DogUtil.isEmpty(aggregations)) {
-				return keywordCompositions;
+				return keywords;
 			}
 
 			CompositeAggregation compositeAggregation = aggregations.get(
@@ -177,47 +186,46 @@ public class SiteInterestCompositionDog {
 
 				String keyword = (String)keys.get("keywords/keyword");
 
-				Set<String> assetIds = keywords.getOrDefault(
+				Set<String> assetIds = assets.getOrDefault(
 					keyword, new HashSet<>());
 
 				assetIds.add((String)keys.get("assetIds"));
 
-				keywords.put(keyword, assetIds);
+				assets.put(keyword, assetIds);
 			}
 
 			compositeAggregationBuilder.aggregateAfter(
 				compositeAggregation.afterKey());
 		}
 
-		Map<String, Long> userCounts = _getUserCounts(
+		Map<String, Set<String>> users = _getUserIds(
 			channelId, dataSourceId, timeRange);
 
-		for (Map.Entry<String, Set<String>> entry : keywords.entrySet()) {
+		for (Map.Entry<String, Set<String>> entry : assets.entrySet()) {
 			Set<String> assetIds = entry.getValue();
 
-			long keywordUserCounts = 0;
+			Set<String> userIds = new HashSet<>();
 
 			for (String assetId : assetIds) {
-				if (userCounts.containsKey(assetId)) {
-					keywordUserCounts += userCounts.get(assetId);
+				if (users.containsKey(assetId)) {
+					userIds.addAll(users.get(assetId));
 				}
 			}
 
 			String keyword = entry.getKey();
 
-			if (keywordUserCounts == 0) {
-				if (_log.isWarnEnabled()) {
-					_log.warn("No users found for keyword " + keyword);
+			if (userIds.isEmpty()) {
+				if (_log.isInfoEnabled()) {
+					_log.info("No users found for keyword " + keyword);
 				}
 
 				continue;
 			}
 
-			keywordCompositions.add(
-				new Composition(keywordUserCounts, keyword));
+			keywords.put(keyword, userIds);
 		}
 
-		return keywordCompositions;
+		return keywords;
 	}
 
 	private long _getTotalUsers(
@@ -290,10 +298,10 @@ public class SiteInterestCompositionDog {
 		return totalUsers;
 	}
 
-	private Map<String, Long> _getUserCounts(
+	private Map<String, Set<String>> _getUserIds(
 		String channelId, String dataSourceId, TimeRange timeRange) {
 
-		Map<String, Long> userCounts = new HashMap<>();
+		Map<String, Set<String>> users = new HashMap<>();
 
 		TermsValuesSourceBuilder assetIdsTermsValuesSourceBuilder =
 			new TermsValuesSourceBuilder("assetIds");
@@ -305,6 +313,11 @@ public class SiteInterestCompositionDog {
 
 		dayTermsValuesSourceBuilder.field("day");
 
+		TermsValuesSourceBuilder userIdTermsValuesSourceBuilder =
+			new TermsValuesSourceBuilder("userIds");
+
+		userIdTermsValuesSourceBuilder.field("userId");
+
 		CompositeAggregationBuilder compositeAggregationBuilder =
 			AggregationBuilders.composite(
 				"composite",
@@ -312,16 +325,11 @@ public class SiteInterestCompositionDog {
 					{
 						add(assetIdsTermsValuesSourceBuilder);
 						add(dayTermsValuesSourceBuilder);
+						add(userIdTermsValuesSourceBuilder);
 					}
 				}
 			).size(
 				10000
-			).subAggregation(
-				AggregationBuilders.cardinality(
-					"userCount"
-				).field(
-					"userId"
-				)
 			);
 
 		SearchSourceBuilder searchSourceBuilder =
@@ -340,7 +348,7 @@ public class SiteInterestCompositionDog {
 			Aggregations aggregations = searchResponse.getAggregations();
 
 			if (DogUtil.isEmpty(aggregations)) {
-				return userCounts;
+				return users;
 			}
 
 			CompositeAggregation compositeAggregation = aggregations.get(
@@ -358,23 +366,22 @@ public class SiteInterestCompositionDog {
 
 				String assetId = (String)keys.get("assetIds");
 
-				long userCount = userCounts.getOrDefault(assetId, 0L);
+				Set<String> userCount = users.getOrDefault(
+					assetId, new HashSet<>());
 
-				Aggregations userCountAggregations = bucket.getAggregations();
+				Long days = (Long)keys.get("days");
+				String userIds = (String)keys.get("userIds");
 
-				InternalCardinality internalCardinality =
-					userCountAggregations.get("userCount");
+				userCount.add(userIds + days);
 
-				userCount += internalCardinality.getValue();
-
-				userCounts.put(assetId, userCount);
+				users.put(assetId, userCount);
 			}
 
 			compositeAggregationBuilder.aggregateAfter(
 				compositeAggregation.afterKey());
 		}
 
-		return userCounts;
+		return users;
 	}
 
 	@PostConstruct
