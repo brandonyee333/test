@@ -499,10 +499,6 @@ public class LayoutAdminPortlet extends MVCPortlet {
 					layoutTypeSettingsProperties);
 			}
 
-			layout = layoutService.updateLayout(
-				groupId, privateLayout, layoutId,
-				layoutTypeSettingsProperties.toString());
-
 			if (!currentType.equals(LayoutConstants.TYPE_PORTLET)) {
 				portletPreferencesLocalService.deletePortletPreferences(
 					0, PortletKeys.PREFS_OWNER_TYPE_LAYOUT, layout.getPlid());
@@ -525,11 +521,11 @@ public class LayoutAdminPortlet extends MVCPortlet {
 
 			layoutTypeSettingsProperties.putAll(
 				layout.getTypeSettingsProperties());
-
-			layout = layoutService.updateLayout(
-				groupId, privateLayout, layoutId,
-				layoutTypeSettingsProperties.toString());
 		}
+
+		layout = layoutService.updateLayout(
+			groupId, privateLayout, layoutId,
+			layoutTypeSettingsProperties.toString());
 
 		HttpServletResponse response = portal.getHttpServletResponse(
 			actionResponse);
