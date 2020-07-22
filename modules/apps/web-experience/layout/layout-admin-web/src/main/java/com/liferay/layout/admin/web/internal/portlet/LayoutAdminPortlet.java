@@ -103,6 +103,7 @@ import com.liferay.sites.kernel.util.SitesUtil;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -505,6 +506,18 @@ public class LayoutAdminPortlet extends MVCPortlet {
 			if (!currentType.equals(LayoutConstants.TYPE_PORTLET)) {
 				portletPreferencesLocalService.deletePortletPreferences(
 					0, PortletKeys.PREFS_OWNER_TYPE_LAYOUT, layout.getPlid());
+
+				Set<String> keys = new HashSet<>();
+
+				for (String key : layoutTypeSettingsProperties.keySet()) {
+					if (key.startsWith("column-")) {
+						keys.add(key);
+					}
+				}
+
+				for (String key : keys) {
+					layoutTypeSettingsProperties.remove(key);
+				}
 			}
 		}
 		else {
