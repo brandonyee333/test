@@ -172,7 +172,7 @@ public class AdminRestController extends BaseRestController {
 			"OSBAsahMarkers",
 			QueryBuilders.termsQuery("id", JSONUtil.toStringList(jsonArray)));
 
-		_nanitesHttp.run(json);
+		_nanitesHttp.run(jsonArray);
 	}
 
 	private File _createSnapshot(String fileName) throws Exception {
