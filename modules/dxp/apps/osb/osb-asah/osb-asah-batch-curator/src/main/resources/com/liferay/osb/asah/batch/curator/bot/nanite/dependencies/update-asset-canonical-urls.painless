@@ -1,6 +1,7 @@
 if (ctx._source.canonicalUrls == null) {
     ctx._source.canonicalUrls = new HashSet();
-} else {
+}
+else {
     ctx._source.canonicalUrls = new HashSet(ctx._source.canonicalUrls);
 }
 
