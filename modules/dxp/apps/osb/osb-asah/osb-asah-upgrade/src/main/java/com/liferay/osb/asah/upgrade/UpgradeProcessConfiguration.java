@@ -21,6 +21,7 @@ import com.liferay.osb.asah.upgrade.v2_6_0.OSBAsahTasksIndexMappingUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_6_0.PagesIndexMappingUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_6_1.RemoveDanglingFieldMappingsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.AssetsUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_7_0.CanonicalUrlMappingUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.JobRunsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.JobsUpgradeStep;
 
@@ -48,7 +49,8 @@ public class UpgradeProcessConfiguration {
 			"2.6.0", "2.6.1", _removeDanglingFieldMappingsUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
-			"2.6.1", "2.7.0", _assetsUpgradeStep, _jobRunsUpgradeStep,
+			"2.6.1", "2.7.0", _assetsUpgradeStep,
+			_canonicalUrlMappingUpgradeStep, _jobRunsUpgradeStep,
 			_jobsUpgradeStep);
 
 		return upgradeProcess;
@@ -60,6 +62,9 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private AssetsUpgradeStep _assetsUpgradeStep;
+
+	@Autowired
+	private CanonicalUrlMappingUpgradeStep _canonicalUrlMappingUpgradeStep;
 
 	@Autowired
 	private CerebroInfoUpgradeStep _cerebroInfoUpgradeStep;
