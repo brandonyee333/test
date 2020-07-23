@@ -196,6 +196,9 @@ public class VisitedPagesTransformationJSONArrayFunction
 
 				visitedPagesJSONArray.put(
 					JSONUtil.put(
+						"canonicalUrl",
+						assetJSONObject.getString("canonicalUrl")
+					).put(
 						"dataSourceId",
 						assetJSONObject.getString("dataSourceId")
 					).put(
