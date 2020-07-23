@@ -457,18 +457,20 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	}
 
 	private void _setModelURL(AnalyticsEvent analyticsEvent, T model) {
+		String canonicalUrl = MapUtil.getString(
+			analyticsEvent.getContext(), "canonicalUrl");
 		String url = MapUtil.getString(analyticsEvent.getContext(), "url");
 
 		if (model.isAsset()) {
 			BaseAssetModel baseAssetModel = (BaseAssetModel)model;
 
+			baseAssetModel.addCanonicalUrl(canonicalUrl);
 			baseAssetModel.addURL(url);
 		}
 		else {
 			BasePageModel basePageModel = (BasePageModel)model;
 
-			basePageModel.setCanonicalUrl(
-				MapUtil.getString(analyticsEvent.getContext(), "canonicalUrl"));
+			basePageModel.setCanonicalUrl(canonicalUrl);
 			basePageModel.setURL(url);
 		}
 	}

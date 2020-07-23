@@ -216,6 +216,11 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 
 		JSONObject objectJSONObject = new JSONObject();
 
+		Map<String, Object> context = analyticsEvent.getContext();
+
+		objectJSONObject.put(
+			"canonicalUrl", MapUtil.getString(context, "canonicalUrl"));
+
 		String dataSourceAssetPK = null;
 
 		Map<String, String> eventProperties =
@@ -224,8 +229,6 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 		if (eventProperties != null) {
 			dataSourceAssetPK = eventProperties.get(dataSourceAssetPKFieldName);
 		}
-
-		Map<String, Object> context = analyticsEvent.getContext();
 
 		if (dataSourceAssetPK == null) {
 			dataSourceAssetPK = MapUtil.getString(
