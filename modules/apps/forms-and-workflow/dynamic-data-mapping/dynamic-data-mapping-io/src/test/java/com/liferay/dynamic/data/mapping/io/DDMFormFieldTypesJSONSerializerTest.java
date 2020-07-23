@@ -26,6 +26,8 @@ import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ReflectionUtil;
 
 import java.lang.reflect.Field;
@@ -34,7 +36,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -59,6 +63,8 @@ public class DDMFormFieldTypesJSONSerializerTest extends BaseDDMTestCase {
 		setUpDDMFormFieldTypesJSONSerializer();
 		setUpDDMFormJSONSerializer();
 		setUpDDMFormLayoutJSONSerializer();
+
+		setUpPortalUtil();
 	}
 
 	@Test
@@ -190,6 +196,22 @@ public class DDMFormFieldTypesJSONSerializerTest extends BaseDDMTestCase {
 			DDMFormLayoutJSONSerializerImpl.class, "_jsonFactory");
 
 		field.set(_ddmFormLayoutJSONSerializer, new JSONFactoryImpl());
+	}
+
+	protected void setUpPortalUtil() {
+		PortalUtil portalUtil = new PortalUtil();
+
+		Portal portal = mock(Portal.class);
+
+		ResourceBundle resourceBundle = mock(ResourceBundle.class);
+
+		when(
+			portal.getResourceBundle(Matchers.any(Locale.class))
+		).thenReturn(
+			resourceBundle
+		);
+
+		portalUtil.setPortal(portal);
 	}
 
 	protected void whenDDMFormFieldTypeGetDDMFormFieldTypeSettings(
