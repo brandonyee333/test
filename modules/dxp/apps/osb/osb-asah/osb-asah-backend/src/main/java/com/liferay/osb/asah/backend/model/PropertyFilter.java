@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import org.apache.commons.lang3.StringUtils;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Marcellus Tavares
@@ -128,22 +128,25 @@ public class PropertyFilter {
 		_propertyValue = propertyValue;
 	}
 
-	private static List<String> _getFilterTokens(String filterString) {
-		List<String> tokens = new ArrayList<>();
+	private List<String> _getFilterTokens(String filterString) {
+		Matcher matcher = _filterStringPattern.matcher(filterString);
 
-		for (String token : filterString.split(" ")) {
-			if (!StringUtils.isBlank(token)) {
-				tokens.add(token);
-			}
-		}
-
-		if (tokens.size() != 3) {
+		if (!matcher.matches()) {
 			throw new IllegalArgumentException(
 				"Invalid filter " + filterString);
 		}
 
-		return tokens;
+		return new ArrayList<String>() {
+			{
+				add(matcher.group(1));
+				add(matcher.group(2));
+				add(matcher.group(3));
+			}
+		};
 	}
+
+	private static Pattern _filterStringPattern = Pattern.compile(
+		"(.+)\\s([=~])\\s(.+)");
 
 	private boolean _negate;
 	private String _operator;
