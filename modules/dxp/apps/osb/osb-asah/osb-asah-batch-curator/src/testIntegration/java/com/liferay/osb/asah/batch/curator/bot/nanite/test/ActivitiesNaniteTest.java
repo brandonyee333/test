@@ -68,6 +68,39 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 	}
 
 	@Test
+	public void testCanonicalUrlSet() throws Exception {
+		String analyticsEventsJSON = ResourceUtil.readResourceToString(
+			"dependencies/analytics-events-1.json", this);
+
+		JSONArray analyticsEventsJSONArray = new JSONArray(
+			analyticsEventsJSON.replace(
+				"[$DATA_SOURCE_ID$]", _dataSourceJSONObject.getString("id")));
+
+		MessageBusTestHelper messageBusTestHelper = new MessageBusTestHelper(
+			_messageBus);
+
+		messageBusTestHelper.prepareMessageBusChannel(
+			Channel.ANALYTICS_EVENTS_ACTIVITY, analyticsEventsJSONArray);
+
+		_activitiesNanite.run();
+
+		Assert.assertEquals(
+			1,
+			faroInfoElasticsearchInvoker.count(
+				"activities",
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery(
+						"userId", "34209dc0-a1b7-11e8-bf1b-f987e25a7caa")
+				).filter(
+					QueryBuilders.termQuery("eventId", "pageViewed")
+				).filter(
+					QueryBuilders.termQuery(
+						"object.canonicalUrl",
+						"https://customer.liferay.com/documentation/search")
+				)));
+	}
+
+	@Test
 	public void testCommentPostedActivityIsAdded() throws Exception {
 		String analyticsEventsJSON = ResourceUtil.readResourceToString(
 			"dependencies/analytics-events-1.json", this);

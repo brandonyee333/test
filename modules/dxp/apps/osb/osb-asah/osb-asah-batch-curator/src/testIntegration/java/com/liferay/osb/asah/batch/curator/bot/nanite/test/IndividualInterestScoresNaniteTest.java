@@ -269,6 +269,22 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 			previousDayDateString, dayDateString, true);
 	}
 
+	@Test
+	public void testVisitedPagesWithCanonicalUrl() throws Exception {
+		String dayDateString = DateUtil.newDayDateString();
+
+		_addActivities(dayDateString);
+
+		_individualInterestScoresNanite.run(dayDateString);
+
+		Assert.assertEquals(
+			0,
+			faroInfoElasticsearchInvoker.count(
+				"visited-pages",
+				BoolQueryBuilderUtil.mustNot(
+					QueryBuilders.existsQuery("canonicalUrl"))));
+	}
+
 	private void _addActivities(String dateString) throws Exception {
 		JSONObject activityGroupJSONObject = faroInfoElasticsearchInvoker.add(
 			"activity-groups",

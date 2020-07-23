@@ -911,6 +911,8 @@ public class FaroInfoTestUtil {
 		return JSONUtil.put(
 			"assetType", "Page"
 		).put(
+			"canonicalUrl", RandomTestUtil.randomURL()
+		).put(
 			"dataSourceAssetPK", RandomTestUtil.randomURL()
 		).put(
 			"dataSourceId", dataSourceId
