@@ -680,6 +680,10 @@ type QueryType {
 		types: [DataControlTaskType]
 	): DataControlTaskBag
 
+	dataSource(
+		dataSourceId: String!,
+	): DataSource
+
 	dataSources(
 		credentialsType: String,
 		size: Int,

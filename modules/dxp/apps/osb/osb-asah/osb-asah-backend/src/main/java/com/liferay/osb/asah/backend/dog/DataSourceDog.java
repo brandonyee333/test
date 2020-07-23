@@ -39,6 +39,23 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataSourceDog {
 
+	public DataSource getDataSource(String dataSourceId) {
+		ElasticsearchInvoker elasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
+
+		JSONObject dataSourceJSONObject = elasticsearchInvoker.fetch(
+			"data-sources", dataSourceId);
+
+		if (dataSourceJSONObject == null) {
+			return null;
+		}
+
+		return new DataSource(
+			dataSourceJSONObject.getString("id"),
+			dataSourceJSONObject.getString("name"),
+			dataSourceJSONObject.optString("url"));
+	}
+
 	public List<DataSource> getDataSources(
 		String credentialsType, Integer size, Sort sort, String type) {
 
