@@ -116,31 +116,31 @@ public class SiteInterestCompositionDog {
 
 		Map<String, Set<String>> keywords = new HashMap<>();
 
-		TermsValuesSourceBuilder keywordTermsValuesSourceBuilder =
-			new TermsValuesSourceBuilder("keywords/keyword");
-
-		keywordTermsValuesSourceBuilder.field("keywords.keyword");
+		SearchSourceBuilder searchSourceBuilder =
+			SearchSourceBuilder.searchSource();
 
 		TermsValuesSourceBuilder assetIdTermsValuesSourceBuilder =
 			new TermsValuesSourceBuilder("assetIds");
 
 		assetIdTermsValuesSourceBuilder.field("id");
 
+		TermsValuesSourceBuilder keywordTermsValuesSourceBuilder =
+			new TermsValuesSourceBuilder("keywords/keyword");
+
+		keywordTermsValuesSourceBuilder.field("keywords.keyword");
+
 		CompositeAggregationBuilder compositeAggregationBuilder =
 			AggregationBuilders.composite(
 				"composite",
 				new ArrayList<CompositeValuesSourceBuilder<?>>() {
 					{
-						add(keywordTermsValuesSourceBuilder);
 						add(assetIdTermsValuesSourceBuilder);
+						add(keywordTermsValuesSourceBuilder);
 					}
 				}
 			).size(
 				10000
 			);
-
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
 
 		searchSourceBuilder.aggregation(compositeAggregationBuilder);
 
@@ -199,21 +199,19 @@ public class SiteInterestCompositionDog {
 				compositeAggregation.afterKey());
 		}
 
-		Map<String, Set<String>> users = _getUserIds(
+		Map<String, Set<String>> users = _getUsers(
 			channelId, dataSourceId, timeRange);
 
 		for (Map.Entry<String, Set<String>> entry : assets.entrySet()) {
-			Set<String> assetIds = entry.getValue();
+			String keyword = entry.getKey();
 
 			Set<String> userIds = new HashSet<>();
 
-			for (String assetId : assetIds) {
+			for (String assetId : entry.getValue()) {
 				if (users.containsKey(assetId)) {
 					userIds.addAll(users.get(assetId));
 				}
 			}
-
-			String keyword = entry.getKey();
 
 			if (userIds.isEmpty()) {
 				if (_log.isInfoEnabled()) {
@@ -235,12 +233,6 @@ public class SiteInterestCompositionDog {
 		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
 			"activities",
 			searchSourceBuilder -> {
-				searchSourceBuilder.query(
-					_getActivitiesBoolQueryBuilder(
-						channelId, dataSourceId, timeRange));
-
-				searchSourceBuilder.size(0);
-
 				searchSourceBuilder.aggregation(
 					AggregationBuilders.cardinality(
 						"totalUsers"
@@ -252,6 +244,10 @@ public class SiteInterestCompositionDog {
 								"doc['object.id']",
 							Collections.emptyMap())
 					));
+				searchSourceBuilder.query(
+					_getActivitiesBoolQueryBuilder(
+						channelId, dataSourceId, timeRange));
+				searchSourceBuilder.size(0);
 			});
 
 		Aggregations aggregations = searchResponse.getAggregations();
@@ -262,10 +258,13 @@ public class SiteInterestCompositionDog {
 		return internalCardinality.getValue();
 	}
 
-	private Map<String, Set<String>> _getUserIds(
+	private Map<String, Set<String>> _getUsers(
 		String channelId, String dataSourceId, TimeRange timeRange) {
 
 		Map<String, Set<String>> users = new HashMap<>();
+
+		SearchSourceBuilder searchSourceBuilder =
+			SearchSourceBuilder.searchSource();
 
 		TermsValuesSourceBuilder assetIdsTermsValuesSourceBuilder =
 			new TermsValuesSourceBuilder("assetIds");
@@ -296,10 +295,8 @@ public class SiteInterestCompositionDog {
 				10000
 			);
 
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
 		searchSourceBuilder.aggregation(compositeAggregationBuilder);
+
 		searchSourceBuilder.query(
 			_getActivitiesBoolQueryBuilder(channelId, dataSourceId, timeRange));
 		searchSourceBuilder.size(0);
@@ -350,16 +347,12 @@ public class SiteInterestCompositionDog {
 
 	@PostConstruct
 	private void _init() {
-		_cerebroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
 		_faroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forFaroInfo();
 	}
 
 	private static final Log _log = LogFactory.getLog(
 		SiteInterestCompositionDog.class);
-
-	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
