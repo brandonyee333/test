@@ -12,15 +12,15 @@
  *
  */
 
-package com.liferay.osb.asah.batch.curator.bot.nanite.util;
+package com.liferay.osb.asah.batch.curator.bot.nanite.model;
 
 /**
  * @author Gabriel Ibson
  * @author Geyson Silva
  */
-public class DataSourcePKNameCanonicalURL {
+public class KeywordInfo {
 
-	public DataSourcePKNameCanonicalURL(
+	public KeywordInfo(
 		String canonicalUrl, String dataSourceAssetPK, String name) {
 
 		_canonicalUrl = canonicalUrl;
