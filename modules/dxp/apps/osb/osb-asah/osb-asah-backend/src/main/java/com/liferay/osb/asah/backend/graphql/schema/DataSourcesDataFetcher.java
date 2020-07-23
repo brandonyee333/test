@@ -34,7 +34,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @GraphQLTypeWiring(fieldName = "dataSources", typeName = "QueryType")
-public class DataSourceDataFetcher implements DataFetcher<List<DataSource>> {
+public class DataSourcesDataFetcher implements DataFetcher<List<DataSource>> {
 
 	@Override
 	public List<DataSource> get(
