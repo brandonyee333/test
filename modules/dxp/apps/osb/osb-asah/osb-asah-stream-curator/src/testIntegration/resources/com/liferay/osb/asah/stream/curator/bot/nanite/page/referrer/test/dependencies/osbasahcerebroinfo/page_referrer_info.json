@@ -2,6 +2,7 @@
 	{
 		"access": 5,
 		"browserName": "IE",
+		"canonicalUrl": "http://liferay.com/home",
 		"channelId": "1",
 		"country": "USA",
 		"dataSourceId": "liferay.com",

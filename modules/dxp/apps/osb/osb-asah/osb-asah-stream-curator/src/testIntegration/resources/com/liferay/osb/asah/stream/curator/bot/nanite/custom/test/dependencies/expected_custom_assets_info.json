@@ -4,6 +4,9 @@
 		"assetId": "1",
 		"assetPrimaryKey": "79d7baf8f55d894e8fa54a21fb0f53f4e61d02a1b61fbb0cd6fcd5a583dc8991",
 		"browserName": "Firefox",
+		"canonicalUrls": [
+			"http://liferay.com/home"
+		],
 		"category": "default",
 		"channelId": "1",
 		"city": "Recife",
