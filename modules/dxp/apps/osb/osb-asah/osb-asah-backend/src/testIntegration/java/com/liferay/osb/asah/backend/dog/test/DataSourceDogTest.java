@@ -43,11 +43,33 @@ public class DataSourceDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
+	public void testDataSourceNotFound() {
+		Assert.assertNull(_dataSourceDog.getDataSource("0"));
+	}
+
+	@ElasticsearchIndex(
+		name = "data-sources", resourcePath = "data-sources-info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
 	public void testGetAllDataSources() {
 		List<DataSource> dataSources = _dataSourceDog.getDataSources(
 			null, null, null, null);
 
 		Assert.assertEquals(dataSources.toString(), 4, dataSources.size());
+	}
+
+	@ElasticsearchIndex(
+		name = "data-sources", resourcePath = "data-sources-info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetDataSource() {
+		DataSource dataSource = _dataSourceDog.getDataSource("200");
+
+		Assert.assertNotNull(dataSource);
+		Assert.assertEquals("Liferay 1", dataSource.getName());
+		Assert.assertEquals("http://portal:8081", dataSource.getUrl());
 	}
 
 	@ElasticsearchIndex(
