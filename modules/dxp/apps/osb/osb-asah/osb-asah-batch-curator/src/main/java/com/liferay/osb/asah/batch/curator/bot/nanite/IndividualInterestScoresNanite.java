@@ -331,9 +331,12 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 		for (int i = 0; i < assetsJSONArray.length(); i++) {
 			JSONObject assetJSONObject = assetsJSONArray.getJSONObject(i);
 
-			String canonicalUrl = assetJSONObject.getString("canonicalUrl");
 			String dataSourceAssetPK = assetJSONObject.getString(
 				"dataSourceAssetPK");
+
+			String canonicalUrl = assetJSONObject.optString(
+				"canonicalUrl", dataSourceAssetPK);
+
 			String name = assetJSONObject.getString("name");
 
 			JSONArray keywordsJSONArray = assetJSONObject.getJSONArray(
