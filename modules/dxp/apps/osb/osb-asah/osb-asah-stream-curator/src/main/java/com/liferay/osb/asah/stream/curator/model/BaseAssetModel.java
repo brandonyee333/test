@@ -22,6 +22,14 @@ import java.util.Set;
  */
 public abstract class BaseAssetModel extends BaseModel {
 
+	public void addCanonicalUrl(String canonicalUrl) {
+		_canonicalUrls.add(canonicalUrl);
+	}
+
+	public void addCanonicalUrls(Set<String> canonicalUrls) {
+		_canonicalUrls.addAll(canonicalUrls);
+	}
+
 	public void addURL(String url) {
 		_urls.add(url);
 	}
@@ -36,6 +44,10 @@ public abstract class BaseAssetModel extends BaseModel {
 
 	public String getAssetPrimaryKey() {
 		return _assetPrimaryKey;
+	}
+
+	public Set<String> getCanonicalUrls() {
+		return _canonicalUrls;
 	}
 
 	public Set<String> getURLs() {
@@ -57,6 +69,7 @@ public abstract class BaseAssetModel extends BaseModel {
 
 	private String _assetId;
 	private String _assetPrimaryKey;
+	private final Set<String> _canonicalUrls = new HashSet<>();
 	private final Set<String> _urls = new HashSet<>();
 
 }
