@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite.model;
 
+import java.util.Objects;
+
 /**
  * @author Gabriel Ibson
  * @author Geyson Silva
@@ -28,6 +30,29 @@ public class KeywordInfo {
 		_name = name;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof KeywordInfo)) {
+			return false;
+		}
+
+		KeywordInfo keywordInfo = (KeywordInfo)obj;
+
+		if (Objects.equals(_canonicalUrl, keywordInfo._canonicalUrl) &&
+			Objects.equals(
+				_dataSourceAssetPK, keywordInfo._dataSourceAssetPK) &&
+			Objects.equals(_name, keywordInfo._name)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	public String getCanonicalUrl() {
 		return _canonicalUrl;
 	}
@@ -38,6 +63,11 @@ public class KeywordInfo {
 
 	public String getName() {
 		return _name;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(_canonicalUrl, _dataSourceAssetPK, _name);
 	}
 
 	private final String _canonicalUrl;
