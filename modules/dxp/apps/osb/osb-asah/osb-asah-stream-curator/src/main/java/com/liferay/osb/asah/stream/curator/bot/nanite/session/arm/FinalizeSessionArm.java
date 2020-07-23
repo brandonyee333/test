@@ -79,7 +79,7 @@ public class FinalizeSessionArm {
 	}
 
 	public void processSession(UserSession userSession) throws Exception {
-		updateAssetsAndActivities(userSession);
+		updateActivitiesAndAssets(userSession);
 
 		JSONObject partialUserSessionJSONObject = new JSONObject();
 
@@ -129,7 +129,7 @@ public class FinalizeSessionArm {
 		processSession(userSession);
 	}
 
-	public void updateAssetsAndActivities(UserSession userSession)
+	public void updateActivitiesAndAssets(UserSession userSession)
 		throws Exception {
 
 		_updateActivities(userSession);
