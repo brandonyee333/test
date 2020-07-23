@@ -158,11 +158,11 @@ public abstract class BaseTransformationJSONArrayFunction
 
 			startDayDateString = DateUtil.toString(calendar.getTime());
 
-			int deltaDays = DateUtil.getDeltaDays(
-				startDayDateString, endDayDateString);
+			int daysCount =
+				DateUtil.getDeltaDays(startDayDateString, endDayDateString) + 1;
 
 			startDayDateString = DateUtil.addDays(
-				startDayDateString, 1 - deltaDays);
+				startDayDateString, -daysCount);
 
 			return startDayDateString;
 		}
