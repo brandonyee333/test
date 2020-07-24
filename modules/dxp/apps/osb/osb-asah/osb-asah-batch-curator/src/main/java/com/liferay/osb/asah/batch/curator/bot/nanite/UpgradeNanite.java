@@ -50,7 +50,7 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-public class PageActivitiesContextUpgradeStep implements UpgradeStep {
+public class UpgradeNanite implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) {
@@ -218,7 +218,7 @@ public class PageActivitiesContextUpgradeStep implements UpgradeStep {
 	}
 
 	private static final Log _log = LogFactory.getLog(
-		PageActivitiesContextUpgradeStep.class);
+		UpgradeNanite.class);
 
 	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
 
