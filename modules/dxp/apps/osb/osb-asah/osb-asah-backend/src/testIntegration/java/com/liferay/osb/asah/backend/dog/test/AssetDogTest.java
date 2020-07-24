@@ -81,7 +81,27 @@ public class AssetDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testGetPageAssetResultBagWithPropertyFilter() {
+	public void testGetPageAssetResultBagWithNamePropertyFilter() {
+		ResultBag<PageAsset> pageAssetResultBag =
+			_assetDog.getPageAssetResultBag(
+				null,
+				Arrays.asList(
+					new PropertyFilter(
+						"name = engineer intuitive models", false)),
+				20, Sort.desc("id"), 0);
+
+		Assert.assertEquals(1, pageAssetResultBag.getTotal());
+		Assert.assertEquals(
+			Arrays.asList("engineer intuitive models"),
+			_getPageAssetTitles(pageAssetResultBag.getResults()));
+	}
+
+	@ElasticsearchIndex(
+		name = "assets", resourcePath = "assets-info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetPageAssetResultBagWithURLPropertyFilter() {
 		ResultBag<PageAsset> pageAssetResultBag =
 			_assetDog.getPageAssetResultBag(
 				null,
