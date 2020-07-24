@@ -155,6 +155,8 @@ public class OSBAsahBatchCuratorBot {
 
 		run("DeleteTempFilesNanite");
 
+		run("ExperimentNanite");
+
 		run(
 			"IndividualEngagementScoresNanite",
 			"IndividualSegmentEngagementScoresNanite",
@@ -167,8 +169,6 @@ public class OSBAsahBatchCuratorBot {
 		run("IndividualInterestScoresNanite");
 
 		run("StaleDynamicIndividualSegmentsNanite");
-
-		run("ExperimentNanite");
 
 		run("UpgradeNanite");
 
