@@ -12,9 +12,9 @@
  *
  */
 
-package com.liferay.osb.asah.batch.curator.bot.nanite.test;
+package com.liferay.osb.asah.batch.curator.bot.nanite.arm.test;
 
-import com.liferay.osb.asah.batch.curator.bot.nanite.AssignCanonicalUrlNanite;
+import com.liferay.osb.asah.batch.curator.bot.nanite.arm.AssignCanonicalUrlArm;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
@@ -42,21 +42,20 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 @Import(CerebroQueueHttpTestConfiguration.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class AssignCanonicalUrlNaniteTest extends BaseNaniteTestCase {
+public class AssignCanonicalUrlArmTest {
 
 	@Before
-	@Override
-	public void setUp() throws Exception {
-		super.setUp();
-
+	public void setUp() {
 		_cerebroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forCerebroInfo();
 		_cerebroRawElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forCerebroRaw();
+		_faroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
 	}
 
 	@Test
-	public void test() throws Exception {
+	public void test() {
 		JSONArray activitiesJSONArray = new JSONArray();
 		JSONArray analyticsEventsJSONArray = new JSONArray();
 		JSONArray blogsJSONArray = new JSONArray();
@@ -97,7 +96,7 @@ public class AssignCanonicalUrlNaniteTest extends BaseNaniteTestCase {
 			visitedPagesJSONArray.put(JSONUtil.put("url", url));
 		}
 
-		faroInfoElasticsearchInvoker.add("activities", activitiesJSONArray);
+		_faroInfoElasticsearchInvoker.add("activities", activitiesJSONArray);
 		_cerebroRawElasticsearchInvoker.add(
 			"analytics-events", analyticsEventsJSONArray);
 		_cerebroInfoElasticsearchInvoker.add("blogs", blogsJSONArray);
@@ -105,14 +104,14 @@ public class AssignCanonicalUrlNaniteTest extends BaseNaniteTestCase {
 		_cerebroInfoElasticsearchInvoker.add(
 			"page-referrers", pageReferrersJSONArray);
 		_cerebroInfoElasticsearchInvoker.add("pages", pagesJSONArray);
-		faroInfoElasticsearchInvoker.add(
+		_faroInfoElasticsearchInvoker.add(
 			"visited-pages", visitedPagesJSONArray);
 
-		_assignCanonicalUrlNanite.run(null);
+		_assignCanonicalUrlArm.assignCanonicalUrls();
 
 		Assert.assertEquals(
 			activitiesJSONArray.length(),
-			faroInfoElasticsearchInvoker.count(
+			_faroInfoElasticsearchInvoker.count(
 				"activities",
 				QueryBuilders.existsQuery("object.canonicalUrl")));
 		Assert.assertEquals(
@@ -133,17 +132,19 @@ public class AssignCanonicalUrlNaniteTest extends BaseNaniteTestCase {
 				"pages", QueryBuilders.existsQuery("canonicalUrl")));
 		Assert.assertEquals(
 			visitedPagesJSONArray.length(),
-			faroInfoElasticsearchInvoker.count(
+			_faroInfoElasticsearchInvoker.count(
 				"visited-pages", QueryBuilders.existsQuery("canonicalUrl")));
 	}
 
 	@Autowired
-	private AssignCanonicalUrlNanite _assignCanonicalUrlNanite;
+	private AssignCanonicalUrlArm _assignCanonicalUrlArm;
 
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 }
