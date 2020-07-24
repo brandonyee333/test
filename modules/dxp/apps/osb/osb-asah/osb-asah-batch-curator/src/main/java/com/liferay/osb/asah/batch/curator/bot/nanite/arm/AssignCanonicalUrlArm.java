@@ -14,9 +14,9 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite.arm;
 
-import com.liferay.osb.asah.batch.curator.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 
 import java.util.Collections;
@@ -41,31 +41,16 @@ import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilde
 
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
  * @author André Miranda
  */
 @Component
-public class AssignCanonicalUrlArm extends BaseNanite {
+public class AssignCanonicalUrlArm {
 
-	@PostConstruct
-	public void init() {
-		super.init();
-
-		_cerebroInfoElasticsearchInvoker =
-			elasticsearchInvokerFactory.forCerebroInfo();
-		_cerebroRawElasticsearchInvoker =
-			elasticsearchInvokerFactory.forCerebroRaw();
-		_faroInfoElasticsearchInvoker =
-			elasticsearchInvokerFactory.forFaroInfo();
-
-		_updateAssetCanonicalUrlsScriptSource = ScriptUtil.loadScriptSource(
-			getClass(), "update-asset-canonical-urls.painless");
-	}
-
-	@Override
-	public void run(JSONObject contextJSONObject) throws Exception {
+	public void assignCanonicalUrls() {
 		_resolveURLs(
 			(canonicalUrl, url) -> {
 				_updateActivities(canonicalUrl, url);
@@ -162,6 +147,19 @@ public class AssignCanonicalUrlArm extends BaseNanite {
 			collectionName, _faroInfoElasticsearchInvoker, "url",
 			BoolQueryBuilderUtil.mustNot(
 				QueryBuilders.existsQuery("canonicalUrl")));
+	}
+
+	@PostConstruct
+	private void _init() {
+		_cerebroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroInfo();
+		_cerebroRawElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroRaw();
+		_faroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
+
+		_updateAssetCanonicalUrlsScriptSource = ScriptUtil.loadScriptSource(
+			getClass(), "update-asset-canonical-urls.painless");
 	}
 
 	private void _resolveURLs(
@@ -266,6 +264,10 @@ public class AssignCanonicalUrlArm extends BaseNanite {
 
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
+
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 	private String _updateAssetCanonicalUrlsScriptSource;
 
