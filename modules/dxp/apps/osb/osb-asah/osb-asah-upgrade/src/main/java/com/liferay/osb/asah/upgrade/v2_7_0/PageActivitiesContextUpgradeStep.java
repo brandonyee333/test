@@ -60,6 +60,11 @@ public class PageActivitiesContextUpgradeStep implements UpgradeStep {
 			_faroInfoElasticsearchInvoker.searchScroll(
 				"activities",
 				searchSourceBuilder -> {
+					searchSourceBuilder.fetchSource(
+						new String[] {
+							"id", "object.url", "startTime", "userId"
+						},
+						null);
 					searchSourceBuilder.query(
 						BoolQueryBuilderUtil.filter(
 							QueryBuilders.termQuery("applicationId", "Page")
@@ -69,11 +74,6 @@ public class PageActivitiesContextUpgradeStep implements UpgradeStep {
 					searchSourceBuilder.size(500);
 					searchSourceBuilder.sort(
 						SortBuilderUtil.fieldSort("id", SortOrder.DESC));
-					searchSourceBuilder.fetchSource(
-						new String[] {
-							"id", "object.url", "startTime", "userId"
-						},
-						null);
 				},
 				keepAliveSeconds);
 
