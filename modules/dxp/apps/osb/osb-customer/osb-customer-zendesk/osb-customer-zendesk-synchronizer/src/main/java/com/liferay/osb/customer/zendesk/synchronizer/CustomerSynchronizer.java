@@ -15,15 +15,12 @@
 package com.liferay.osb.customer.zendesk.synchronizer;
 
 import com.liferay.osb.customer.admin.model.AccountEntry;
-import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.zendesk.synchronizer.util.AccountUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
-import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.portal.kernel.model.User;
 
 import org.osgi.service.component.annotations.Component;
@@ -35,36 +32,20 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = CustomerSynchronizer.class)
 public class CustomerSynchronizer {
 
-	public void add(Account account, Contact contact) throws Exception {
-		User user = _userIdentityProvider.fetchUserByEmailAddress(
-			contact.getEmailAddress());
-
-		if (user == null) {
-			return;
-		}
+	public void add(User user, Account account, AccountEntry accountEntry)
+		throws Exception {
 
 		_userSynchronizer.update(user, account.getName());
 
 		if (_accountUtil.hasActiveTicketSupport(account)) {
-			AccountEntry accountEntry =
-				_accountEntryLocalService.getKoroneikiAccountEntry(
-					account.getKey());
-
-			addOrganizationSubscription(
-				account, contact, accountEntry.getAccountEntryId());
+			addOrganizationSubscription(account, accountEntry, user);
 		}
 	}
 
-	public void remove(Contact contact, long accountEntryId) throws Exception {
-		User user = _userIdentityProvider.fetchUserByEmailAddress(
-			contact.getEmailAddress());
-
-		if (user == null) {
-			return;
-		}
-
+	public void remove(User user, AccountEntry accountEntry) throws Exception {
 		long zendeskOrganizationId =
-			_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
+			_zendeskMapperUtil.fetchZendeskOrganizationId(
+				accountEntry.getAccountEntryId());
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 			user.getUserId());
 
@@ -77,14 +58,7 @@ public class CustomerSynchronizer {
 		}
 	}
 
-	public void update(Contact contact) throws Exception {
-		User user = _userIdentityProvider.fetchUserByEmailAddress(
-			contact.getEmailAddress());
-
-		if (user == null) {
-			return;
-		}
-
+	public void update(User user) throws Exception {
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 			user.getUserId());
 
@@ -94,18 +68,12 @@ public class CustomerSynchronizer {
 	}
 
 	protected void addOrganizationSubscription(
-			Account account, Contact contact, long accountEntryId)
+			Account account, AccountEntry accountEntry, User user)
 		throws Exception {
 
-		User user = _userIdentityProvider.fetchUserByEmailAddress(
-			contact.getEmailAddress());
-
-		if (user == null) {
-			return;
-		}
-
 		long zendeskOrganizationId =
-			_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
+			_zendeskMapperUtil.fetchZendeskOrganizationId(
+				accountEntry.getAccountEntryId());
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 			user.getUserId());
 
@@ -114,9 +82,6 @@ public class CustomerSynchronizer {
 				zendeskUserId, zendeskOrganizationId);
 		}
 	}
-
-	@Reference
-	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference
 	private AccountUtil _accountUtil;
@@ -133,9 +98,6 @@ public class CustomerSynchronizer {
 	@Reference(target = "(async=true)")
 	private ZendeskOrganizationMembershipWebService
 		_zendeskOrganizationMembershipWebService;
-
-	@Reference
-	private ZendeskTicketWebService _zendeskTicketWebService;
 
 	@Reference(target = "(async=true)")
 	private ZendeskUserWebService _zendeskUserWebService;

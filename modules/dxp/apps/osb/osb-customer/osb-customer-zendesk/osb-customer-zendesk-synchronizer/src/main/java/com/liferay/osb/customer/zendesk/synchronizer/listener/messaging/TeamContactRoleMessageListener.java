@@ -16,6 +16,7 @@ package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
+import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
@@ -39,6 +40,7 @@ import com.liferay.portal.kernel.messaging.DestinationConfiguration;
 import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -103,29 +105,35 @@ public class TeamContactRoleMessageListener extends BaseMessageListener {
 			(String)message.getPayload());
 
 		Team team = TeamSerDes.toDTO(jsonObject.getString("team"));
+
 		Contact contact = ContactSerDes.toDTO(jsonObject.getString("contact"));
+
+		User user = _userIdentityProvider.fetchUserByEmailAddress(
+			contact.getEmailAddress());
+
+		if (user == null) {
+			return;
+		}
 
 		String topic = message.getString("topic");
 
 		if (topic.equals("koroneiki.team.contactrole.assigned")) {
-			_teamSynchronizer.add(team, contact);
+			_teamSynchronizer.add(team, user);
 		}
 		else if (topic.equals("koroneiki.team.contactrole.unassigned")) {
 			List<ContactRole> contactRoles =
 				_contactRoleWebService.getTeamContactRoles(
-					team.getKey(), contact.getUuid(), 1, 1000);
+					team.getKey(), user.getUuid(), 1, 1000);
 
 			if (contactRoles.isEmpty()) {
-				reassignTeamTickets(team, contact);
+				reassignTeamTickets(team, user);
 
-				_teamSynchronizer.remove(team, contact);
+				_teamSynchronizer.remove(team, user);
 			}
 		}
 	}
 
-	protected void reassignTeamTickets(Team team, Contact contact)
-		throws Exception {
-
+	protected void reassignTeamTickets(Team team, User user) throws Exception {
 		TeamRole teamRole = _teamRoleWebService.fetchTeamRole(
 			TeamRole.Type.ACCOUNT.toString(),
 			TeamRoleConstants.NAME_FIRST_LINE_SUPPORT);
@@ -154,16 +162,7 @@ public class TeamContactRoleMessageListener extends BaseMessageListener {
 				continue;
 			}
 
-			long zendeskOrganizationId =
-				_zendeskMapperUtil.fetchZendeskOrganizationId(
-					accountEntry.getAccountEntryId());
-
-			if (zendeskOrganizationId <= 0) {
-				continue;
-			}
-
-			_accountSynchronizer.reassignTickets(
-				accountEntry.getAccountEntryId(), team, contact);
+			_accountSynchronizer.reassignTickets(accountEntry, team, user);
 		}
 	}
 
@@ -194,6 +193,9 @@ public class TeamContactRoleMessageListener extends BaseMessageListener {
 
 	@Reference
 	private TeamSynchronizer _teamSynchronizer;
+
+	@Reference(target = "(provider=okta)")
+	private UserIdentityProvider _userIdentityProvider;
 
 	@Reference
 	private ZendeskMapperUtil _zendeskMapperUtil;

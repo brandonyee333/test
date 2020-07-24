@@ -36,7 +36,6 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactAccountView;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
@@ -61,7 +60,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = UserSynchronizer.class)
 public class UserSynchronizer {
 
-	public void addPhone(long userId, Phone phone) throws PortalException {
+	public void addPhone(long userId, Phone phone) throws Exception {
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
 
 		String number = _phoneUtil.convertToE164(phone);
@@ -72,7 +71,7 @@ public class UserSynchronizer {
 		}
 	}
 
-	public void sync(ZendeskUser zendeskUser, User user) throws Exception {
+	public void sync(User user, ZendeskUser zendeskUser) throws Exception {
 		String emailAddress = user.getEmailAddress();
 
 		String fullName = user.getFullName();

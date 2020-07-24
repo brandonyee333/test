@@ -14,8 +14,9 @@
 
 package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
-import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.customer.zendesk.constants.ZendeskDestinationNames;
 import com.liferay.osb.customer.zendesk.synchronizer.AccountSynchronizer;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
@@ -92,11 +93,22 @@ public class ProductPurchaseMessageListener extends BaseMessageListener {
 		ProductPurchase productPurchase = ProductPurchaseSerDes.toDTO(
 			jsonObject.getString("productPurchase"));
 
+		AccountEntry accountEntry =
+			_accountEntryLocalService.fetchKoroneikiAccountEntry(
+				productPurchase.getAccountKey());
+
+		if (accountEntry == null) {
+			return;
+		}
+
 		Account account = _accountWebService.getAccount(
 			productPurchase.getAccountKey());
 
-		_accountSynchronizer.update(account);
+		_accountSynchronizer.update(account, accountEntry);
 	}
+
+	@Reference
+	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference
 	private AccountSynchronizer _accountSynchronizer;
@@ -111,9 +123,6 @@ public class ProductPurchaseMessageListener extends BaseMessageListener {
 
 	@Reference
 	private JSONFactory _jsonFactory;
-
-	@Reference
-	private ProductPurchaseWebService _productPurchaseWebService;
 
 	private ServiceRegistration<Destination> _serviceRegistration;
 

@@ -75,34 +75,9 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = AccountSynchronizer.class)
 public class AccountSynchronizer {
 
-	public void addAccountCustomers(Account account) throws Exception {
-		List<Contact> contacts = _contactWebService.getAccountContacts(
-			account.getKey(), 1, 1000);
-
-		for (Contact contact : contacts) {
-			for (ContactRole contactRole : contact.getContactRoles()) {
-				if (ArrayUtil.contains(
-						ContactRoleConstants.SUPPORT_CONTACT_ROLES,
-						contactRole.getName())) {
-
-					_customerSynchronizer.add(account, contact);
-
-					break;
-				}
-			}
-		}
-	}
-
-	public void addFirstLineSupport(Account account, Team team)
+	public void addFirstLineSupport(
+			Account account, AccountEntry accountEntry, Team team)
 		throws Exception {
-
-		AccountEntry accountEntry =
-			_accountEntryLocalService.fetchKoroneikiAccountEntry(
-				account.getKey());
-
-		if (accountEntry == null) {
-			return;
-		}
 
 		List<Contact> contacts = _contactWebService.getTeamContacts(
 			team.getKey(), 1, 1000);
@@ -126,10 +101,8 @@ public class AccountSynchronizer {
 		}
 	}
 
-	public void closeZendeskTickets(Account account) throws PortalException {
-		AccountEntry accountEntry =
-			_accountEntryLocalService.fetchKoroneikiAccountEntry(
-				account.getKey());
+	public void closeZendeskTickets(Account account, AccountEntry accountEntry)
+		throws PortalException {
 
 		long zendeskOrganizationId =
 			_zendeskMapperUtil.fetchZendeskOrganizationId(
@@ -156,77 +129,78 @@ public class AccountSynchronizer {
 		}
 	}
 
-	public void reassignTickets(long accountEntryId, Team team, Contact contact)
+	public void reassignTickets(AccountEntry accountEntry, Team team, User user)
 		throws Exception {
 
-		User user = _userIdentityProvider.fetchUserByEmailAddress(
-			contact.getEmailAddress());
-
-		if (user == null) {
-			return;
-		}
-
 		long zendeskOrganizationId =
-			_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
+			_zendeskMapperUtil.fetchZendeskOrganizationId(
+				accountEntry.getAccountEntryId());
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 			user.getUserId());
 
-		if ((zendeskOrganizationId > 0) && (zendeskUserId > 0)) {
-			Set<String> criteria = new HashSet<>();
-
-			criteria.add("organization:" + zendeskOrganizationId);
-			criteria.add("requester:" + zendeskUserId);
-			criteria.add("status<closed");
-
-			List<ZendeskTicket> zendeskTickets =
-				_zendeskTicketWebService.getZendeskTickets(criteria);
-
-			if (zendeskTickets.isEmpty()) {
-				return;
-			}
-
-			User newUser = null;
-
-			List<Contact> contacts = _contactWebService.getTeamContacts(
-				team.getKey(), 1, 1000);
-
-			for (Contact curContact : contacts) {
-				String contactKey = curContact.getKey();
-
-				if (contactKey.equals(contact.getKey())) {
-					continue;
-				}
-
-				User curUser = _userIdentityProvider.fetchUserByEmailAddress(
-					contact.getEmailAddress());
-
-				if (curUser == null) {
-					continue;
-				}
-
-				newUser = curUser;
-			}
-
-			if (newUser == null) {
-				throw new PartnerWorkerRemovalException();
-			}
-
-			long newZendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-				newUser.getUserId());
-
-			for (ZendeskTicket zendeskTicket : zendeskTickets) {
-				zendeskTicket.setRequesterId(newZendeskUserId);
-				zendeskTicket.setZendeskOrganizationId(zendeskOrganizationId);
-			}
-
-			_zendeskTicketWebService.updateZendeskTickets(zendeskTickets);
+		if ((zendeskOrganizationId == 0) || (zendeskUserId == 0)) {
+			return;
 		}
+
+		Set<String> criteria = new HashSet<>();
+
+		criteria.add("organization:" + zendeskOrganizationId);
+		criteria.add("requester:" + zendeskUserId);
+		criteria.add("status<closed");
+
+		List<ZendeskTicket> zendeskTickets =
+			_zendeskTicketWebService.getZendeskTickets(criteria);
+
+		if (zendeskTickets.isEmpty()) {
+			return;
+		}
+
+		User newUser = null;
+
+		List<Contact> contacts = _contactWebService.getTeamContacts(
+			team.getKey(), 1, 1000);
+
+		for (Contact contact : contacts) {
+			String emailAddress = contact.getEmailAddress();
+
+			if (emailAddress.equals(user.getEmailAddress())) {
+				continue;
+			}
+
+			User curUser = _userIdentityProvider.fetchUserByEmailAddress(
+				emailAddress);
+
+			if (curUser == null) {
+				continue;
+			}
+
+			newUser = curUser;
+		}
+
+		if (newUser == null) {
+			throw new PartnerWorkerRemovalException();
+		}
+
+		long newZendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+			newUser.getUserId());
+
+		for (ZendeskTicket zendeskTicket : zendeskTickets) {
+			zendeskTicket.setRequesterId(newZendeskUserId);
+			zendeskTicket.setZendeskOrganizationId(zendeskOrganizationId);
+		}
+
+		_zendeskTicketWebService.updateZendeskTickets(zendeskTickets);
 	}
 
 	public void reassignTickets(
-			String userUuid, long accountEntryId, String accountKey,
-			long zendeskOrganizationId, long zendeskUserId)
+			String accountKey, AccountEntry accountEntry, User user)
 		throws Exception {
+
+		long zendeskOrganizationId =
+			_zendeskMapperUtil.fetchZendeskOrganizationId(
+				accountEntry.getAccountEntryId());
+		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+			user.getUserId());
 
 		if ((zendeskOrganizationId == 0) || (zendeskUserId == 0)) {
 			return;
@@ -253,7 +227,9 @@ public class AccountSynchronizer {
 
 			if (!ArrayUtil.isEmpty(contacts)) {
 				for (Contact contact : contacts) {
-					if (userUuid.equals(contact.getUuid())) {
+					String emailAddress = contact.getEmailAddress();
+
+					if (emailAddress.equals(user.getEmailAddress())) {
 						continue;
 					}
 
@@ -269,20 +245,20 @@ public class AccountSynchronizer {
 						if (name.equals(
 								ContactRoleConstants.NAME_SUPPORT_DEVELOPER)) {
 
-							User user =
+							User curUser =
 								_userIdentityProvider.fetchUserByEmailAddress(
 									contact.getEmailAddress());
 
 							newZendeskUserId =
 								_zendeskMapperUtil.fetchZendeskUserId(
-									user.getUserId());
+									curUser.getUserId());
 						}
 					}
 				}
 			}
 			else {
 				zendeskUser = _zendeskUserWebService.getZendeskUserByEmail(
-					getDefaultUserEmail(accountEntryId));
+					getDefaultUserEmail(accountEntry.getAccountEntryId()));
 
 				newZendeskUserId = zendeskUser.getZendeskUserId();
 			}
@@ -296,10 +272,8 @@ public class AccountSynchronizer {
 		}
 	}
 
-	public void remove(Account account) throws Exception {
-		AccountEntry accountEntry =
-			_accountEntryLocalService.getKoroneikiAccountEntry(
-				account.getKey());
+	public void remove(Account account, AccountEntry accountEntry)
+		throws Exception {
 
 		long zendeskOrganizationId =
 			_zendeskMapperUtil.fetchZendeskOrganizationId(
@@ -337,40 +311,37 @@ public class AccountSynchronizer {
 				zendeskUser.getZendeskUserId());
 		}
 
-		removeAccountCustomers(account);
+		removeCustomers(account, accountEntry);
 
-		if (firstLineSupport(account)) {
-			removeFirstLineSupport(account);
+		if (hasFirstLineSupport(account)) {
+			removeFirstLineSupport(account, accountEntry);
 		}
 
 		_asyncZendeskOrganizationWebService.deleteZendeskOrganization(
 			zendeskOrganizationId);
 	}
 
-	public void removeAccountCustomers(Account account) throws Exception {
-		AccountEntry accountEntry =
-			_accountEntryLocalService.getKoroneikiAccountEntry(
-				account.getKey());
+	public void removeCustomers(Account account, AccountEntry accountEntry)
+		throws Exception {
 
 		List<Contact> contacts = _contactWebService.getAccountContacts(
 			account.getKey(), 1, 1000);
 
 		for (Contact contact : contacts) {
-			_customerSynchronizer.remove(
-				contact, accountEntry.getAccountEntryId());
+			User user = _userIdentityProvider.fetchUserByEmailAddress(
+				contact.getEmailAddress());
+
+			if (user == null) {
+				continue;
+			}
+
+			_customerSynchronizer.remove(user, accountEntry);
 		}
 	}
 
-	public void removeFirstLineSupport(Account account, Team team)
+	public void removeFirstLineSupport(
+			Account account, AccountEntry accountEntry, Team team)
 		throws Exception {
-
-		AccountEntry accountEntry =
-			_accountEntryLocalService.fetchKoroneikiAccountEntry(
-				account.getKey());
-
-		if (accountEntry == null) {
-			return;
-		}
 
 		List<Contact> contacts = _contactWebService.getTeamContacts(
 			team.getKey(), 1, 1000);
@@ -398,10 +369,8 @@ public class AccountSynchronizer {
 		}
 	}
 
-	public void update(Account account) throws Exception {
-		AccountEntry accountEntry =
-			_accountEntryLocalService.getKoroneikiAccountEntry(
-				account.getKey());
+	public void update(Account account, AccountEntry accountEntry)
+		throws Exception {
 
 		boolean externalIdMappers =
 			_externalIdMapperLocalService.hasExternalIdMappers(
@@ -484,25 +453,9 @@ public class AccountSynchronizer {
 		}
 	}
 
-	public void updateTags(Account account) throws Exception {
-		List<Contact> contacts = _contactWebService.getAccountContacts(
-			account.getKey(), 1, 1000);
-
-		for (Contact contact : contacts) {
-			User user = _userIdentityProvider.fetchUserByEmailAddress(
-				contact.getEmailAddress());
-
-			if (user == null) {
-				continue;
-			}
-
-			_userSynchronizer.updateTags(user);
-		}
-	}
-
 	protected void addOrganizationMemberships(
 			long zendeskUserId, long[] zendeskOrganizationIds)
-		throws PortalException {
+		throws Exception {
 
 		if (ArrayUtil.isEmpty(zendeskOrganizationIds)) {
 			return;
@@ -516,28 +469,6 @@ public class AccountSynchronizer {
 				createZendeskUserOrganizationSubscription(
 					zendeskUserId, zendeskOrganizationId);
 		}
-	}
-
-	protected boolean firstLineSupport(Account account) {
-		if (account.getAssignedTeams() == null) {
-			return false;
-		}
-
-		for (Team team : account.getAssignedTeams()) {
-			if (team.getTeamRoles() == null) {
-				continue;
-			}
-
-			for (TeamRole teamRole : team.getTeamRoles()) {
-				String name = teamRole.getName();
-
-				if (name.equals(TeamRoleConstants.NAME_FIRST_LINE_SUPPORT)) {
-					return true;
-				}
-			}
-		}
-
-		return false;
 	}
 
 	protected String getDefaultUserEmail(long accountEntryId) {
@@ -596,7 +527,32 @@ public class AccountSynchronizer {
 		return tags;
 	}
 
-	protected void removeFirstLineSupport(Account account) throws Exception {
+	protected boolean hasFirstLineSupport(Account account) {
+		if (account.getAssignedTeams() == null) {
+			return false;
+		}
+
+		for (Team team : account.getAssignedTeams()) {
+			if (team.getTeamRoles() == null) {
+				continue;
+			}
+
+			for (TeamRole teamRole : team.getTeamRoles()) {
+				String name = teamRole.getName();
+
+				if (name.equals(TeamRoleConstants.NAME_FIRST_LINE_SUPPORT)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	protected void removeFirstLineSupport(
+			Account account, AccountEntry accountEntry)
+		throws Exception {
+
 		if (account.getAssignedTeams() == null) {
 			return;
 		}
@@ -610,7 +566,7 @@ public class AccountSynchronizer {
 				String name = teamRole.getName();
 
 				if (name.equals(TeamRoleConstants.NAME_FIRST_LINE_SUPPORT)) {
-					removeFirstLineSupport(account, team);
+					removeFirstLineSupport(account, accountEntry, team);
 				}
 			}
 		}
@@ -618,7 +574,7 @@ public class AccountSynchronizer {
 
 	protected void removeOrganizationMemberships(
 			long zendeskUserId, long[] zendeskOrganizationIds)
-		throws PortalException {
+		throws Exception {
 
 		if (ArrayUtil.isEmpty(zendeskOrganizationIds)) {
 			return;

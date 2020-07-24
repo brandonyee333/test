@@ -14,6 +14,8 @@
 
 package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.zendesk.constants.ZendeskDestinationNames;
 import com.liferay.osb.customer.zendesk.synchronizer.AccountSynchronizer;
@@ -119,9 +121,18 @@ public class TeamAccountRoleMessageListener extends BaseMessageListener {
 
 	protected void onTeamRoleAssign(Account account, Team team) {
 		try {
-			_accountSynchronizer.update(account);
+			AccountEntry accountEntry =
+				_accountEntryLocalService.fetchKoroneikiAccountEntry(
+					account.getKey());
 
-			_accountSynchronizer.addFirstLineSupport(account, team);
+			if (accountEntry == null) {
+				return;
+			}
+
+			_accountSynchronizer.update(account, accountEntry);
+
+			_accountSynchronizer.addFirstLineSupport(
+				account, accountEntry, team);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -132,9 +143,18 @@ public class TeamAccountRoleMessageListener extends BaseMessageListener {
 
 	protected void onTeamRoleUnassign(Account account, Team team) {
 		try {
-			_accountSynchronizer.update(account);
+			AccountEntry accountEntry =
+				_accountEntryLocalService.fetchKoroneikiAccountEntry(
+					account.getKey());
 
-			_accountSynchronizer.removeFirstLineSupport(account, team);
+			if (accountEntry == null) {
+				return;
+			}
+
+			_accountSynchronizer.update(account, accountEntry);
+
+			_accountSynchronizer.removeFirstLineSupport(
+				account, accountEntry, team);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -145,6 +165,9 @@ public class TeamAccountRoleMessageListener extends BaseMessageListener {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		TeamAccountRoleMessageListener.class);
+
+	@Reference
+	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference
 	private AccountSynchronizer _accountSynchronizer;

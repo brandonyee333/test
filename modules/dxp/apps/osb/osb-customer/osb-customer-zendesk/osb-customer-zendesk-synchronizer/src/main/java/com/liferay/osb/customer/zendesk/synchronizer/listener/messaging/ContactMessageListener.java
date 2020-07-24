@@ -124,24 +124,32 @@ public class ContactMessageListener extends BaseMessageListener {
 			return;
 		}
 
+		User user = _userIdentityProvider.fetchUserByEmailAddress(
+			contact.getEmailAddress());
+
+		if (user == null) {
+			return;
+		}
+
 		String topic = message.getString("topic");
 
 		if (topic.equals("koroneiki.account.contact.assigned")) {
-			onContactRoleAssign(account, contact, contactRole);
+			onContactRoleAssign(account, accountEntry, user, contactRole);
 		}
 		else if (topic.equals("koroneiki.account.contact.unassigned")) {
-			onContactUnassign(account, contact);
+			onContactUnassign(account, accountEntry, user);
 		}
 		else if (topic.equals("koroneiki.account.contactrole.assigned")) {
-			onContactRoleAssign(account, contact, contactRole);
+			onContactRoleAssign(account, accountEntry, user, contactRole);
 		}
 		else {
-			onContactRoleUnassign(account, contact, contactRole);
+			onContactRoleUnassign(account, accountEntry, user, contactRole);
 		}
 	}
 
 	protected void onContactRoleAssign(
-		Account account, Contact contact, ContactRole contactRole) {
+		Account account, AccountEntry accountEntry, User user,
+		ContactRole contactRole) {
 
 		try {
 			String name = contactRole.getName();
@@ -156,7 +164,7 @@ public class ContactMessageListener extends BaseMessageListener {
 			if (ArrayUtil.contains(
 					ContactRoleConstants.SUPPORT_CONTACT_ROLES, name)) {
 
-				_customerSynchronizer.add(account, contact);
+				_customerSynchronizer.add(user, account, accountEntry);
 			}
 		}
 		catch (Exception e) {
@@ -167,7 +175,8 @@ public class ContactMessageListener extends BaseMessageListener {
 	}
 
 	protected void onContactRoleUnassign(
-		Account account, Contact contact, ContactRole contactRole) {
+		Account account, AccountEntry accountEntry, User user,
+		ContactRole contactRole) {
 
 		try {
 			if (!ArrayUtil.contains(
@@ -179,22 +188,17 @@ public class ContactMessageListener extends BaseMessageListener {
 
 			List<ContactRole> contactRoles =
 				_contactRoleWebService.getAccountContactRoles(
-					account.getKey(), contact.getUuid(), 1, 1000);
+					account.getKey(), user.getUuid(), 1, 1000);
 
 			for (ContactRole curContactRole : contactRoles) {
 				if (ArrayUtil.contains(
 						ContactRoleConstants.SUPPORT_CONTACT_ROLES,
 						curContactRole.getName())) {
 
-					_customerSynchronizer.update(contact);
+					_customerSynchronizer.update(user);
 				}
 				else {
-					AccountEntry accountEntry =
-						_accountEntryLocalService.getKoroneikiAccountEntry(
-							account.getKey());
-
-					_customerSynchronizer.remove(
-						contact, accountEntry.getAccountEntryId());
+					_customerSynchronizer.remove(user, accountEntry);
 				}
 			}
 		}
@@ -205,32 +209,14 @@ public class ContactMessageListener extends BaseMessageListener {
 		}
 	}
 
-	protected void onContactUnassign(Account account, Contact contact) {
+	protected void onContactUnassign(
+		Account account, AccountEntry accountEntry, User user) {
+
 		try {
-			User user = _userIdentityProvider.fetchUserByEmailAddress(
-				contact.getEmailAddress());
-
-			if (user == null) {
-				return;
-			}
-
-			AccountEntry accountEntry =
-				_accountEntryLocalService.getKoroneikiAccountEntry(
-					account.getKey());
-
-			long zendeskOrganizationId =
-				_zendeskMapperUtil.fetchZendeskOrganizationId(
-					accountEntry.getAccountEntryId());
-
-			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-				user.getUserId());
-
 			_accountSynchronizer.reassignTickets(
-				user.getUuid(), accountEntry.getAccountEntryId(),
-				account.getKey(), zendeskOrganizationId, zendeskUserId);
+				account.getKey(), accountEntry, user);
 
-			_customerSynchronizer.remove(
-				contact, accountEntry.getAccountEntryId());
+			_customerSynchronizer.remove(user, accountEntry);
 		}
 		catch (Exception e) {
 			_log.error(e, e);

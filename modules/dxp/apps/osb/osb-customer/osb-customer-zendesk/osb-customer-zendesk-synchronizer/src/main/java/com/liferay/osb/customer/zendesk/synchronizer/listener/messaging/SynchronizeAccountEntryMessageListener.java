@@ -134,7 +134,7 @@ public class SynchronizeAccountEntryMessageListener
 		}
 
 		try {
-			synchronize(accountEntry, account);
+			synchronize(account, accountEntry);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -190,17 +190,24 @@ public class SynchronizeAccountEntryMessageListener
 		_destinationFactory = destinationFactory;
 	}
 
-	protected void synchronize(AccountEntry accountEntry, Account account)
+	protected void synchronize(Account account, AccountEntry accountEntry)
 		throws Exception {
 
-		_accountSynchronizer.update(account);
+		_accountSynchronizer.update(account, accountEntry);
 
-		Map<String, Contact> customerContactsMap = new HashMap<>();
+		Map<String, User> customerUsersMap = new HashMap<>();
 
 		List<Contact> contacts = _contactWebService.getAccountContacts(
 			accountEntry.getKoroneikiAccountKey(), 1, 1000);
 
 		for (Contact contact : contacts) {
+			User user = _userIdentityProvider.fetchUserByEmailAddress(
+				contact.getEmailAddress());
+
+			if (user == null) {
+				continue;
+			}
+
 			ContactRole[] contactRoles = contact.getContactRoles();
 
 			for (ContactRole contactRole : contactRoles) {
@@ -208,14 +215,14 @@ public class SynchronizeAccountEntryMessageListener
 						ContactRoleConstants.SUPPORT_CONTACT_ROLES,
 						contactRole.getName())) {
 
-					customerContactsMap.put(contact.getUuid(), contact);
+					customerUsersMap.put(user.getUuid(), user);
 
 					break;
 				}
 			}
 		}
 
-		Map<String, Contact> firstLineSupportContactsMap = new HashMap<>();
+		Map<String, User> firstLineSupportUsersMap = new HashMap<>();
 
 		Team firstLineSupportTeam = _accountUtil.getFirstLineSupportTeam(
 			account);
@@ -225,7 +232,14 @@ public class SynchronizeAccountEntryMessageListener
 				firstLineSupportTeam.getKey(), 1, 1000);
 
 			for (Contact contact : teamContacts) {
-				firstLineSupportContactsMap.put(contact.getUuid(), contact);
+				User user = _userIdentityProvider.fetchUserByEmailAddress(
+					contact.getEmailAddress());
+
+				if (user == null) {
+					continue;
+				}
+
+				firstLineSupportUsersMap.put(user.getUuid(), user);
 			}
 		}
 
@@ -236,18 +250,21 @@ public class SynchronizeAccountEntryMessageListener
 		List<ZendeskUser> zendeskUsers = getZendeskUsers(zendeskOrganizationId);
 
 		for (ZendeskUser zendeskUser : zendeskUsers) {
-			Contact customerContact = customerContactsMap.remove(
+			User customerUser = customerUsersMap.remove(
 				zendeskUser.getExternalId());
-			Contact firstLineSupportContact =
-				firstLineSupportContactsMap.remove(zendeskUser.getExternalId());
+			User firstLineSupportUser = firstLineSupportUsersMap.remove(
+				zendeskUser.getExternalId());
 
-			if ((customerContact == null) &&
-				(firstLineSupportContact == null)) {
+			User user = _userIdentityProvider.fetchUserByEmailAddress(
+				zendeskUser.getEmail());
 
+			if (user == null) {
+				continue;
+			}
+
+			if ((customerUser == null) && (firstLineSupportUser == null)) {
 				_accountSynchronizer.reassignTickets(
-					zendeskUser.getExternalId(),
-					accountEntry.getAccountEntryId(), account.getKey(),
-					zendeskOrganizationId, zendeskUser.getZendeskUserId());
+					account.getKey(), accountEntry, user);
 
 				_asyncZendeskOrganizationMembershipWebService.
 					deleteOrganizationMemberships(
@@ -255,21 +272,16 @@ public class SynchronizeAccountEntryMessageListener
 						new long[] {zendeskOrganizationId});
 			}
 			else {
-				User user = _userIdentityProvider.fetchUserByEmailAddress(
-					zendeskUser.getEmail());
-
-				if (user != null) {
-					_userSynchronizer.sync(zendeskUser, user);
-				}
+				_userSynchronizer.sync(user, zendeskUser);
 			}
 		}
 
-		for (Contact contact : customerContactsMap.values()) {
-			_customerSynchronizer.add(account, contact);
+		for (User user : customerUsersMap.values()) {
+			_customerSynchronizer.add(user, account, accountEntry);
 		}
 
-		for (Contact contact : firstLineSupportContactsMap.values()) {
-			_teamSynchronizer.add(firstLineSupportTeam, contact);
+		for (User user : firstLineSupportUsersMap.values()) {
+			_teamSynchronizer.add(firstLineSupportTeam, user);
 		}
 
 		_accountEntryLocalService.updateLastZendeskAuditDate(

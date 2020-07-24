@@ -19,12 +19,16 @@ import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
+import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.customer.zendesk.constants.ZendeskDestinationNames;
 import com.liferay.osb.customer.zendesk.synchronizer.AccountSynchronizer;
+import com.liferay.osb.customer.zendesk.synchronizer.UserSynchronizer;
 import com.liferay.osb.customer.zendesk.synchronizer.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.synchronizer.util.AccountUtil;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.AccountSerDes;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactory;
@@ -37,10 +41,12 @@ import com.liferay.portal.kernel.messaging.DestinationConfiguration;
 import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 
 import java.util.Dictionary;
+import java.util.List;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -102,10 +108,7 @@ public class AccountMessageListener extends BaseMessageListener {
 
 		String topic = message.getString("topic");
 
-		if (topic.equals("koroneiki.account.create")) {
-			onCreate(account);
-		}
-		else if (topic.equals("koroneiki.account.delete")) {
+		if (topic.equals("koroneiki.account.delete")) {
 			onDelete(account);
 		}
 		else {
@@ -113,22 +116,17 @@ public class AccountMessageListener extends BaseMessageListener {
 		}
 	}
 
-	protected void onCreate(Account account) {
-		try {
-			if (_accountUtil.hasActiveSupport(account)) {
-				_accountSynchronizer.update(account);
-			}
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new ZendeskIntegrationException(e);
-		}
-	}
-
 	protected void onDelete(Account account) {
 		try {
-			_accountSynchronizer.remove(account);
+			AccountEntry accountEntry =
+				_accountEntryLocalService.fetchKoroneikiAccountEntry(
+					account.getKey());
+
+			if (accountEntry == null) {
+				return;
+			}
+
+			_accountSynchronizer.remove(account, accountEntry);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -156,15 +154,28 @@ public class AccountMessageListener extends BaseMessageListener {
 				return;
 			}
 
-			_accountSynchronizer.update(account);
+			_accountSynchronizer.update(account, accountEntry);
 
 			if (!_accountUtil.hasActiveTicketSupport(account)) {
-				_accountSynchronizer.closeZendeskTickets(account);
-				_accountSynchronizer.updateTags(account);
+				_accountSynchronizer.closeZendeskTickets(account, accountEntry);
+
+				List<Contact> contacts = _contactWebService.getAccountContacts(
+					account.getKey(), 1, 1000);
+
+				for (Contact contact : contacts) {
+					User user = _userIdentityProvider.fetchUserByEmailAddress(
+						contact.getEmailAddress());
+
+					if (user == null) {
+						continue;
+					}
+
+					_userSynchronizer.updateTags(user);
+				}
 			}
 
 			if (!_accountUtil.hasActiveSupport(account)) {
-				_accountSynchronizer.removeAccountCustomers(account);
+				_accountSynchronizer.removeCustomers(account, accountEntry);
 			}
 		}
 		catch (Exception e) {
@@ -208,6 +219,9 @@ public class AccountMessageListener extends BaseMessageListener {
 	private ClassNameLocalService _classNameLocalService;
 
 	@Reference
+	private ContactWebService _contactWebService;
+
+	@Reference
 	private DestinationFactory _destinationFactory;
 
 	@Reference
@@ -220,5 +234,11 @@ public class AccountMessageListener extends BaseMessageListener {
 	private ProductPurchaseWebService _productPurchaseWebService;
 
 	private ServiceRegistration<Destination> _serviceRegistration;
+
+	@Reference(target = "(provider=okta)")
+	private UserIdentityProvider _userIdentityProvider;
+
+	@Reference
+	private UserSynchronizer _userSynchronizer;
 
 }

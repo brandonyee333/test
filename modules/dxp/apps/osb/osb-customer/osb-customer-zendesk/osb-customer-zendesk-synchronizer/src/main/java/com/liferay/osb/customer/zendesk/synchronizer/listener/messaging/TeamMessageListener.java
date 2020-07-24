@@ -14,6 +14,8 @@
 
 package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamRoleWebService;
@@ -116,9 +118,20 @@ public class TeamMessageListener extends BaseMessageListener {
 			StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
 
 		for (Account account : accounts) {
-			_accountSynchronizer.update(account);
+			AccountEntry accountEntry =
+				_accountEntryLocalService.fetchKoroneikiAccountEntry(
+					account.getKey());
+
+			if (accountEntry == null) {
+				continue;
+			}
+
+			_accountSynchronizer.update(account, accountEntry);
 		}
 	}
+
+	@Reference
+	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference
 	private AccountSynchronizer _accountSynchronizer;

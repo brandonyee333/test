@@ -16,7 +16,6 @@ package com.liferay.osb.customer.zendesk.synchronizer;
 
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
-import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamRoleWebService;
@@ -24,10 +23,8 @@ import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -45,14 +42,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = TeamSynchronizer.class)
 public class TeamSynchronizer {
 
-	public void add(Team team, Contact contact) throws Exception {
-		User user = _userIdentityProvider.fetchUserByEmailAddress(
-			contact.getEmailAddress());
-
-		if (user == null) {
-			return;
-		}
-
+	public void add(Team team, User user) throws Exception {
 		long[] zendeskOrganizationIds = getZendeskOrganizationIds(team);
 
 		long zendeskUserId = _userSynchronizer.update(user, null);
@@ -60,14 +50,7 @@ public class TeamSynchronizer {
 		addOrganizationMemberships(zendeskUserId, zendeskOrganizationIds);
 	}
 
-	public void remove(Team team, Contact contact) throws Exception {
-		User user = _userIdentityProvider.fetchUserByEmailAddress(
-			contact.getEmailAddress());
-
-		if (user == null) {
-			return;
-		}
-
+	public void remove(Team team, User user) throws Exception {
 		long[] zendeskOrganizationIds = getZendeskOrganizationIds(team);
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 			user.getUserId());
@@ -82,7 +65,7 @@ public class TeamSynchronizer {
 
 	protected void addOrganizationMemberships(
 			long zendeskUserId, long[] zendeskOrganizationIds)
-		throws PortalException {
+		throws Exception {
 
 		if (ArrayUtil.isEmpty(zendeskOrganizationIds)) {
 			return;
@@ -143,7 +126,7 @@ public class TeamSynchronizer {
 
 	protected void removeOrganizationMemberships(
 			long zendeskUserId, long[] zendeskOrganizationIds)
-		throws PortalException {
+		throws Exception {
 
 		if (ArrayUtil.isEmpty(zendeskOrganizationIds)) {
 			return;
@@ -164,9 +147,6 @@ public class TeamSynchronizer {
 
 	@Reference
 	private TeamRoleWebService _teamRoleWebService;
-
-	@Reference(target = "(provider=okta)")
-	private UserIdentityProvider _userIdentityProvider;
 
 	@Reference
 	private UserSynchronizer _userSynchronizer;
