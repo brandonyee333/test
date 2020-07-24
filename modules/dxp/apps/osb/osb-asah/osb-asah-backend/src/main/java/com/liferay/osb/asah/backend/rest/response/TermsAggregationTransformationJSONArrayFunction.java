@@ -127,7 +127,7 @@ public class TermsAggregationTransformationJSONArrayFunction
 				}
 
 				QueryBuilder includeQueryBuilder = getIncludeQueryBuilder(
-					fieldName, contains);
+					contains, fieldName);
 
 				if (includeQueryBuilder != null) {
 					boolQueryBuilder.filter(includeQueryBuilder);
@@ -187,7 +187,7 @@ public class TermsAggregationTransformationJSONArrayFunction
 	}
 
 	protected QueryBuilder getIncludeQueryBuilder(
-		String fieldName, String contains) {
+		String contains, String fieldName) {
 
 		if (contains == null) {
 			return null;

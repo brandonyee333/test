@@ -101,7 +101,7 @@ public class NestedTermsAggregationTransformationJSONArrayFunction
 				}
 
 				QueryBuilder includeQueryBuilder = getIncludeQueryBuilder(
-					fieldName, contains);
+					contains, fieldName);
 
 				if (includeQueryBuilder != null) {
 					boolQueryBuilder.filter(includeQueryBuilder);
@@ -137,14 +137,14 @@ public class NestedTermsAggregationTransformationJSONArrayFunction
 
 	@Override
 	protected QueryBuilder getIncludeQueryBuilder(
-		String fieldName, String contains) {
+		String contains, String fieldName) {
 
 		if (contains == null) {
 			return null;
 		}
 
 		return QueryBuilders.nestedQuery(
-			_path, super.getIncludeQueryBuilder(fieldName, contains),
+			_path, super.getIncludeQueryBuilder(contains, fieldName),
 			ScoreMode.None);
 	}
 
