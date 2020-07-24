@@ -73,7 +73,7 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 		Map<String, List<KeywordInfo>> keywordInfosMap = _getKeywordInfosMap();
 
 		Map<String, Long> totalKeywordsPageViewsMap = _getKeywordsPageViewsMap(
-			keywordInfosMap, _getURLPageViewsMap(dayDateString, null, null));
+			keywordInfosMap, _getURLsPageViewsMap(dayDateString, null, null));
 
 		Set<String> individualsIds = _getIndividualsIds(dayDateString);
 
@@ -362,7 +362,7 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 	private Map<String, Long> _getKeywordsPageViewsMap(
 		Map<String, List<KeywordInfo>> keywordInfosMap,
-		Map<String, Long> urlPageViewsMap) {
+		Map<String, Long> urlsPageViewsMap) {
 
 		Map<String, Long> keywordsPageViewsMap = new HashMap<>();
 
@@ -374,7 +374,7 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 			for (KeywordInfo keywordInfo : entry.getValue()) {
 				keywordsPageViewsMap.merge(
 					keyword,
-					urlPageViewsMap.getOrDefault(
+					urlsPageViewsMap.getOrDefault(
 						keywordInfo.getDataSourceAssetPK(), 0L),
 					Long::sum);
 			}
@@ -383,7 +383,7 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 		return keywordsPageViewsMap;
 	}
 
-	private Map<String, Long> _getURLPageViewsMap(
+	private Map<String, Long> _getURLsPageViewsMap(
 		String endDayDateString, String individualId,
 		String startDayDateString) {
 
@@ -470,7 +470,7 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 		Map<String, Long> keywordsPageViewsMap = _getKeywordsPageViewsMap(
 			keywordInfosMap,
-			_getURLPageViewsMap(dayDateString, individualId, null));
+			_getURLsPageViewsMap(dayDateString, individualId, null));
 
 		return keywordsPageViewsMap.entrySet();
 	}
@@ -485,7 +485,7 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 		long individualPageViews = _getIndividualPageViews(
 			dayDateString, individualId);
 
-		Map<String, Long> urlsPageViewsMap = _getURLPageViewsMap(
+		Map<String, Long> urlsPageViewsMap = _getURLsPageViewsMap(
 			dayDateString, individualId, DateUtil.addDays(dayDateString, -30));
 
 		Map<String, Long> keywordsPageViewsMap = _getKeywordsPageViewsMap(
