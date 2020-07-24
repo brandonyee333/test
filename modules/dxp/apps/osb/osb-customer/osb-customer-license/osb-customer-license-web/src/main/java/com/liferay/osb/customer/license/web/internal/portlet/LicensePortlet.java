@@ -470,10 +470,14 @@ public class LicensePortlet extends MVCPortlet {
 			cause instanceof LicenseKeySetNameException ||
 			cause instanceof MaximumLicenseKeyException) {
 
-			//cause instanceof OfferingEntryStatusException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(cause, cause);
+			}
 
 			return true;
 		}
+
+		_log.error(cause, cause);
 
 		return false;
 	}
