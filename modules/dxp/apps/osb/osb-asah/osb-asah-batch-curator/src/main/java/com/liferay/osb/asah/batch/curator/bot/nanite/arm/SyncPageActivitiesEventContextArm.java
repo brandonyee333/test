@@ -49,9 +49,9 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-public class PageActivityArm {
+public class SyncPageActivitiesEventContextArm {
 
-	public void syncPageActivitiesEventContext() {
+	public void execute() {
 		long keepAliveSeconds = 120;
 
 		SearchResponse searchResponse =
@@ -215,7 +215,8 @@ public class PageActivityArm {
 		return jsonArray;
 	}
 
-	private static final Log _log = LogFactory.getLog(PageActivityArm.class);
+	private static final Log _log = LogFactory.getLog(
+		SyncPageActivitiesEventContextArm.class);
 
 	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
 

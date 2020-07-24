@@ -107,7 +107,7 @@ public class AssignCanonicalUrlArmTest {
 		_faroInfoElasticsearchInvoker.add(
 			"visited-pages", visitedPagesJSONArray);
 
-		_assignCanonicalUrlArm.assignCanonicalUrls();
+		_assignCanonicalUrlArm.execute();
 
 		Assert.assertEquals(
 			activitiesJSONArray.length(),

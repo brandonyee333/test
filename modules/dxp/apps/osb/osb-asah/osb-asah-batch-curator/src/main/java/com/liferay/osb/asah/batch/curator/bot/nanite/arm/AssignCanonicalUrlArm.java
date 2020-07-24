@@ -50,7 +50,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AssignCanonicalUrlArm {
 
-	public void assignCanonicalUrls() {
+	public void execute() {
 		_resolveURLs(
 			(canonicalUrl, url) -> {
 				_updateActivities(canonicalUrl, url);
