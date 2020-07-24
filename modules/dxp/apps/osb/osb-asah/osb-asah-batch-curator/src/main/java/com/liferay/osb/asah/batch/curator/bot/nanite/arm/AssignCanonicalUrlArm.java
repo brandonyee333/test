@@ -12,8 +12,9 @@
  *
  */
 
-package com.liferay.osb.asah.batch.curator.bot.nanite;
+package com.liferay.osb.asah.batch.curator.bot.nanite.arm;
 
+import com.liferay.osb.asah.batch.curator.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
@@ -46,7 +47,7 @@ import org.springframework.stereotype.Component;
  * @author André Miranda
  */
 @Component
-public class AssignCanonicalUrlNanite extends BaseNanite {
+public class AssignCanonicalUrlArm extends BaseNanite {
 
 	@PostConstruct
 	public void init() {
@@ -261,7 +262,7 @@ public class AssignCanonicalUrlNanite extends BaseNanite {
 			"doc['canonicalUrls'].values.length");
 
 	private static final Log _log = LogFactory.getLog(
-		AssignCanonicalUrlNanite.class);
+		AssignCanonicalUrlArm.class);
 
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
