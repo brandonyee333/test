@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.function.Function;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -132,6 +133,19 @@ public class NestedTermsAggregationTransformationJSONArrayFunction
 
 		return getTransformationJSONArray(
 			terms.getBuckets(), fieldName.replace('.', '/'));
+	}
+
+	@Override
+	protected QueryBuilder getIncludeQueryBuilder(
+		String fieldName, String contains) {
+
+		if (contains == null) {
+			return null;
+		}
+
+		return QueryBuilders.nestedQuery(
+			_path, super.getIncludeQueryBuilder(fieldName, contains),
+			ScoreMode.None);
 	}
 
 	private final String _path;
