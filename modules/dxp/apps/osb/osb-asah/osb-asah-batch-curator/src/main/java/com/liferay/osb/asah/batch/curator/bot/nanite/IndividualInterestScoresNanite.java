@@ -383,6 +383,17 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 		return keywordsPageViewsMap;
 	}
 
+	private Set<Map.Entry<String, Long>> _getURLsPageViewsEntrySet(
+		String dayDateString, String individualId,
+		Map<String, List<KeywordInfo>> keywordInfosMap) {
+
+		Map<String, Long> keywordsPageViewsMap = _getKeywordsPageViewsMap(
+			keywordInfosMap,
+			_getURLsPageViewsMap(dayDateString, individualId, null));
+
+		return keywordsPageViewsMap.entrySet();
+	}
+
 	private Map<String, Long> _getURLsPageViewsMap(
 		String endDayDateString, String individualId,
 		String startDayDateString) {
@@ -462,17 +473,6 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 		}
 
 		return urlsPageViewsMap;
-	}
-
-	private Set<Map.Entry<String, Long>> _getURLsPageViewsEntrySet(
-		String dayDateString, String individualId,
-		Map<String, List<KeywordInfo>> keywordInfosMap) {
-
-		Map<String, Long> keywordsPageViewsMap = _getKeywordsPageViewsMap(
-			keywordInfosMap,
-			_getURLsPageViewsMap(dayDateString, individualId, null));
-
-		return keywordsPageViewsMap.entrySet();
 	}
 
 	private void _process(
