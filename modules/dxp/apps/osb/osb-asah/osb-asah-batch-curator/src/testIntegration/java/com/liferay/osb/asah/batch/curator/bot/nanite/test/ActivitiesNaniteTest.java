@@ -89,14 +89,14 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 			faroInfoElasticsearchInvoker.count(
 				"activities",
 				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"userId", "34209dc0-a1b7-11e8-bf1b-f987e25a7caa")
-				).filter(
 					QueryBuilders.termQuery("eventId", "pageViewed")
 				).filter(
 					QueryBuilders.termQuery(
 						"object.canonicalUrl",
 						"https://customer.liferay.com/documentation/search")
+				).filter(
+					QueryBuilders.termQuery(
+						"userId", "34209dc0-a1b7-11e8-bf1b-f987e25a7caa")
 				)));
 	}
 
