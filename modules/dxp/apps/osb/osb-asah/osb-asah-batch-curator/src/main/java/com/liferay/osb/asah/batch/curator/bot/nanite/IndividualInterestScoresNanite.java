@@ -184,7 +184,7 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 	private void _addVisitedPages(
 		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder,
 		String dayDateString, String individualId, String keyword,
-		Map<String, Long> urlsPageViewsMap, List<KeywordInfo> keywordInfos) {
+		List<KeywordInfo> keywordInfos, Map<String, Long> urlsPageViewsMap) {
 
 		for (KeywordInfo keywordInfo : keywordInfos) {
 			Long pageViews = urlsPageViewsMap.get(
@@ -545,7 +545,7 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 			_addVisitedPages(
 				elasticsearchBulkRequestBuilder, dayDateString, individualId,
-				keyword, urlsPageViewsMap, keywordInfosMap.get(keyword));
+				keyword, keywordInfosMap.get(keyword), urlsPageViewsMap);
 		}
 
 		if (elasticsearchBulkRequestBuilder.hasActions()) {
