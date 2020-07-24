@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
+import com.liferay.osb.asah.batch.curator.bot.nanite.arm.AssignCanonicalUrlArm;
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.PageActivityArm;
 
 import org.json.JSONObject;
@@ -30,7 +31,12 @@ public class UpgradeNanite extends BaseNanite {
 	@Override
 	public void run(JSONObject contextJSONObject) {
 		_pageActivityArm.syncPageActivitiesEventContext();
+
+		_assignCanonicalUrlArm.assignCanonicalUrls();
 	}
+
+	@Autowired
+	private AssignCanonicalUrlArm _assignCanonicalUrlArm;
 
 	@Autowired
 	private PageActivityArm _pageActivityArm;
