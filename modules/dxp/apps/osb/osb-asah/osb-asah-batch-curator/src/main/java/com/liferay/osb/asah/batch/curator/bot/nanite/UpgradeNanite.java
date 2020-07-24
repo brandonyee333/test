@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.upgrade.UpgradeStep;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,10 +49,10 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-public class UpgradeNanite implements UpgradeStep {
+public class UpgradeNanite extends BaseNanite {
 
 	@Override
-	public void upgrade(String version) {
+	public void run(JSONObject contextJSONObject) {
 		long keepAliveSeconds = 120;
 
 		SearchResponse searchResponse =
@@ -217,8 +216,7 @@ public class UpgradeNanite implements UpgradeStep {
 		return jsonArray;
 	}
 
-	private static final Log _log = LogFactory.getLog(
-		UpgradeNanite.class);
+	private static final Log _log = LogFactory.getLog(UpgradeNanite.class);
 
 	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
 
