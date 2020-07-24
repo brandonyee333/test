@@ -51,8 +51,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PageActivityArm {
 
-	@Override
-	public void run(JSONObject contextJSONObject) {
+	public void syncPageActivitiesEventContext() {
 		long keepAliveSeconds = 120;
 
 		SearchResponse searchResponse =

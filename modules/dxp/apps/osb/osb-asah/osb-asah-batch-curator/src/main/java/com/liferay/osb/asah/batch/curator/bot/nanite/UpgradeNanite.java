@@ -29,7 +29,7 @@ public class UpgradeNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) {
-		_pageActivityArm.run(null);
+		_pageActivityArm.syncPageActivitiesEventContext();
 	}
 
 	@Autowired
