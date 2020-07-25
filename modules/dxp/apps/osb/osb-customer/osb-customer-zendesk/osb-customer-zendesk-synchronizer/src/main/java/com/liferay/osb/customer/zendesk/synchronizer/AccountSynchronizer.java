@@ -101,7 +101,8 @@ public class AccountSynchronizer {
 		}
 	}
 
-	public void closeZendeskTickets(Account account, AccountEntry accountEntry)
+	public void closeZendeskTickets(
+			Account account, AccountEntry accountEntry, User user)
 		throws PortalException {
 
 		long zendeskOrganizationId =
@@ -111,6 +112,14 @@ public class AccountSynchronizer {
 		Set<String> criteria = new HashSet<>();
 
 		criteria.add("organization:" + zendeskOrganizationId);
+
+		if (user != null) {
+			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+				user.getUserId());
+
+			criteria.add("requester:" + zendeskUserId);
+		}
+
 		criteria.add("status<" + ZendeskTicketConstants.STATUS_CLOSED);
 
 		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUserByEmail(

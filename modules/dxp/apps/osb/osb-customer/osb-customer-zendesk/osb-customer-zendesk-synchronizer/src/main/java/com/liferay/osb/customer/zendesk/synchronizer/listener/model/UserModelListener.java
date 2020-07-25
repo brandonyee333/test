@@ -14,11 +14,41 @@
 
 package com.liferay.osb.customer.zendesk.synchronizer.listener.model;
 
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
+import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.customer.koroneiki.web.service.TeamRoleWebService;
+import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
+import com.liferay.osb.customer.zendesk.exception.PartnerWorkerRemovalException;
+import com.liferay.osb.customer.zendesk.synchronizer.AccountSynchronizer;
+import com.liferay.osb.customer.zendesk.synchronizer.CustomerSynchronizer;
+import com.liferay.osb.customer.zendesk.synchronizer.UserSynchronizer;
+import com.liferay.osb.customer.zendesk.synchronizer.exception.AccountCustomerRemovalException;
+import com.liferay.osb.customer.zendesk.synchronizer.exception.ZendeskIntegrationException;
+import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
+import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
+import com.liferay.petra.lang.CentralizedThreadLocal;
+import com.liferay.portal.kernel.exception.ModelListenerException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
+import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
@@ -26,7 +56,6 @@ import org.osgi.service.component.annotations.Component;
 @Component(immediate = true, service = ModelListener.class)
 public class UserModelListener extends BaseModelListener<User> {
 
-	/*@Override
 	public void onAfterAddAssociation(
 			Object classPK, String associationClassName,
 			Object associationClassPK)
@@ -73,7 +102,9 @@ public class UserModelListener extends BaseModelListener<User> {
 					(organizationId ==
 						OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 
-					_userSynchronizer.updateTags(userId);
+					User user = _userLocalService.getUser(userId);
+
+					_userSynchronizer.updateTags(user);
 				}
 			}
 		}
@@ -122,53 +153,88 @@ public class UserModelListener extends BaseModelListener<User> {
 				return;
 			}
 
-			TODO
-			List<AccountCustomer> accountCustomers =
-				AccountCustomerLocalServiceUtil.getUserAccountCustomers(
-					user.getUserId());
+			StringBundler sb = new StringBundler(3);
 
-			for (AccountCustomer accountCustomer : accountCustomers) {
+			sb.append("customerContactEmailAddresses/any(s:s eq '");
+			sb.append(user.getEmailAddress());
+			sb.append("')");
+
+			List<Account> accounts = _accountWebService.search(
+				StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
+
+			for (Account account : accounts) {
+				AccountEntry accountEntry =
+					_accountEntryLocalService.fetchKoroneikiAccountEntry(
+						account.getKey());
+
+				if (accountEntry == null) {
+					continue;
+				}
+
 				try {
-					_accountEntrySynchronizer.reassignTickets(accountCustomer);
+					_accountSynchronizer.reassignTickets(
+						account.getKey(), accountEntry, user);
 				}
 				catch (AccountCustomerRemovalException acre) {
-					_accountEntrySynchronizer.closeZendeskTickets(
-						accountCustomer.getAccountEntry());
+					_accountSynchronizer.closeZendeskTickets(
+						account, accountEntry, null);
 				}
 			}
 
-			List<PartnerWorker> partnerWorkers =
-				PartnerWorkerLocalServiceUtil.getUserPartnerWorkers(
-					user.getUserId());
+			TeamRole teamRole = _teamRoleWebService.fetchTeamRole(
+				TeamRole.Type.ACCOUNT.toString(),
+				TeamRoleConstants.NAME_FIRST_LINE_SUPPORT);
 
-			for (PartnerWorker partnerWorker : partnerWorkers) {
-				PartnerEntry partnerEntry = partnerWorker.getPartnerEntry();
+			if (teamRole == null) {
+				return;
+			}
 
-				List<AccountEntry> accountEntries =
-					partnerEntry.getPartnerManagedAccountEntries();
+			sb = new StringBundler(5);
 
-				for (AccountEntry accountEntry : accountEntries) {
+			sb.append("contactEmailAddresses/any(s:s eq '");
+			sb.append(user.getEmailAddress());
+			sb.append("') and accountKeysTeamRoleKeys/any(s:contains(s, '");
+			sb.append(teamRole.getKey());
+			sb.append("'))");
+
+			List<Team> teams = _teamWebService.search(
+				StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
+
+			for (Team team : teams) {
+				StringBundler assignedAccountsSB = new StringBundler(5);
+
+				assignedAccountsSB.append(
+					"assignedTeamKeyTeamRoleKeys/any(s:s eq '");
+				assignedAccountsSB.append(team.getKey());
+				assignedAccountsSB.append(StringPool.UNDERLINE);
+				assignedAccountsSB.append(teamRole.getKey());
+				assignedAccountsSB.append("')");
+
+				List<Account> assignedAccounts = _accountWebService.search(
+					StringPool.BLANK, assignedAccountsSB.toString(), 1, 1000,
+					StringPool.BLANK);
+
+				for (Account account : assignedAccounts) {
+					AccountEntry accountEntry =
+						_accountEntryLocalService.fetchKoroneikiAccountEntry(
+							account.getKey());
+
+					if (accountEntry == null) {
+						continue;
+					}
+
 					try {
-						long zendeskOrganizationId =
-							_zendeskMapperUtil.fetchZendeskOrganizationId(
-								accountEntry.getAccountEntryId());
-
-						if (zendeskOrganizationId <= 0) {
-							continue;
-						}
-
-						_accountEntrySynchronizer.reassignTickets(
-							partnerWorker, accountEntry.getAccountEntryId());
+						_accountSynchronizer.reassignTickets(
+							accountEntry, team, user);
 					}
 					catch (PartnerWorkerRemovalException pwre) {
-						_accountEntrySynchronizer.closeZendeskTickets(
-							user.getUserId(), accountEntry);
+						_accountSynchronizer.closeZendeskTickets(
+							account, accountEntry, user);
 					}
 				}
 			}
 
 			_zendeskUserWebService.deleteZendeskUser(zendeskUserId);
-
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -196,10 +262,22 @@ public class UserModelListener extends BaseModelListener<User> {
 		new CentralizedThreadLocal<>(UserModelListener.class + "._oldUser");
 
 	@Reference
-	private AccountCustomerSynchronizer _accountCustomerSynchronizer;
+	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference
-	private AccountEntrySynchronizer _accountEntrySynchronizer;
+	private AccountSynchronizer _accountSynchronizer;
+
+	@Reference
+	private AccountWebService _accountWebService;
+
+	@Reference
+	private CustomerSynchronizer _customerSynchronizer;
+
+	@Reference
+	private TeamRoleWebService _teamRoleWebService;
+
+	@Reference
+	private TeamWebService _teamWebService;
 
 	@Reference
 	private UserLocalService _userLocalService;
@@ -211,6 +289,6 @@ public class UserModelListener extends BaseModelListener<User> {
 	private ZendeskMapperUtil _zendeskMapperUtil;
 
 	@Reference(target = "(async=true)")
-	private ZendeskUserWebService _zendeskUserWebService;*/
+	private ZendeskUserWebService _zendeskUserWebService;
 
 }

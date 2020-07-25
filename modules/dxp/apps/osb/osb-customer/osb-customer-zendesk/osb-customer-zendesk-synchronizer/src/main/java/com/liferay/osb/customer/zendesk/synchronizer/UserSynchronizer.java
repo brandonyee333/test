@@ -24,7 +24,9 @@ import com.liferay.osb.customer.koroneiki.web.service.ContactAccountViewWebServi
 import com.liferay.osb.customer.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
+import com.liferay.osb.customer.zendesk.constants.ZendeskUserIdentityConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
+import com.liferay.osb.customer.zendesk.model.ZendeskUserIdentity;
 import com.liferay.osb.customer.zendesk.synchronizer.util.AccountUtil;
 import com.liferay.osb.customer.zendesk.util.PhoneUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskLocaleUtil;
@@ -68,6 +70,17 @@ public class UserSynchronizer {
 		if ((zendeskUserId > 0) && Validator.isNotNull(number)) {
 			_asyncZendeskUserIdentityWebService.createZendeskUserIdentity(
 				zendeskUserId, "phone_number", number);
+		}
+	}
+
+	public void deletePhone(long userId, Phone phone) throws Exception {
+		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
+		long zendeskUserIdentityId =
+			_zendeskMapperUtil.fetchZendeskUserIdentityId(phone.getPhoneId());
+
+		if ((zendeskUserId > 0) && (zendeskUserIdentityId > 0)) {
+			_asyncZendeskUserIdentityWebService.deleteZendeskUserIdentity(
+				zendeskUserId, zendeskUserIdentityId, "phone_number");
 		}
 	}
 
@@ -140,6 +153,53 @@ public class UserSynchronizer {
 		}
 
 		return zendeskUserId;
+	}
+
+	public void updateEmailAddress(long userId, String emailAddress)
+		throws Exception {
+
+		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
+
+		if (zendeskUserId <= 0) {
+			return;
+		}
+
+		List<ZendeskUserIdentity> zendeskUserIdentities =
+			_zendeskUserIdentityWebService.getZendeskUserIdentities(
+				zendeskUserId);
+
+		for (ZendeskUserIdentity zendeskUserIdentity : zendeskUserIdentities) {
+			String type = zendeskUserIdentity.getType();
+
+			if (type.equals(ZendeskUserIdentityConstants.TYPE_EMAIL) &&
+				zendeskUserIdentity.isPrimary()) {
+
+				_asyncZendeskUserIdentityWebService.updateZendeskUserIdentity(
+					zendeskUserId,
+					zendeskUserIdentity.getZendeskUserIdentityId(),
+					emailAddress);
+
+				break;
+			}
+		}
+	}
+
+	public void updatePhone(long userId, Phone phone) throws Exception {
+		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
+		long zendeskUserIdentityId =
+			_zendeskMapperUtil.fetchZendeskUserIdentityId(phone.getPhoneId());
+
+		if ((zendeskUserId > 0) && (zendeskUserIdentityId > 0)) {
+			String number = _phoneUtil.convertToE164(phone);
+
+			if (Validator.isNotNull(number)) {
+				_asyncZendeskUserIdentityWebService.updateZendeskUserIdentity(
+					zendeskUserId, zendeskUserIdentityId, number);
+			}
+		}
+		else {
+			addPhone(userId, phone);
+		}
 	}
 
 	public void updateTags(User user) throws Exception {
@@ -240,67 +300,6 @@ public class UserSynchronizer {
 
 		return tags;
 	}
-
-	/*
-
-	public void deletePhone(long userId, Phone phone) throws PortalException {
-		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
-		long zendeskUserIdentityId =
-			_zendeskMapperUtil.fetchZendeskUserIdentityId(phone.getPhoneId());
-
-		_asyncZendeskUserIdentityWebService.deleteZendeskUserIdentity(
-			zendeskUserId, zendeskUserIdentityId, "phone_number");
-	}
-
-	public void updateEmailAddress(long userId, String emailAddress)
-		throws PortalException {
-
-		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
-
-		if (zendeskUserId <= 0) {
-			return;
-		}
-
-		List<ZendeskUserIdentity> zendeskUserIdentities =
-			_zendeskUserIdentityWebService.getZendeskUserIdentities(
-				zendeskUserId);
-
-		for (ZendeskUserIdentity zendeskUserIdentity : zendeskUserIdentities) {
-			String type = zendeskUserIdentity.getType();
-
-			if (type.equals(ZendeskUserIdentityConstants.TYPE_EMAIL) &&
-				zendeskUserIdentity.isPrimary()) {
-
-				_asyncZendeskUserIdentityWebService.updateZendeskUserIdentity(
-					zendeskUserId,
-					zendeskUserIdentity.getZendeskUserIdentityId(),
-					emailAddress);
-
-				break;
-			}
-		}
-	}
-
-	public void updatePhone(long userId, Phone phone) throws PortalException {
-		long zendeskUserIdentityId =
-			_zendeskMapperUtil.fetchZendeskUserIdentityId(phone.getPhoneId());
-
-		if (zendeskUserIdentityId > 0) {
-			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
-
-			String number = _phoneUtil.convertToE164(phone);
-
-			if (Validator.isNotNull(number)) {
-				_asyncZendeskUserIdentityWebService.updateZendeskUserIdentity(
-					zendeskUserId, zendeskUserIdentityId, number);
-			}
-		}
-		else {
-			addPhone(userId, phone);
-		}
-	}
-
-	*/
 
 	protected boolean hasPartnerWorker(User user) throws Exception {
 		if (_organizationLocalService.hasUserOrganization(

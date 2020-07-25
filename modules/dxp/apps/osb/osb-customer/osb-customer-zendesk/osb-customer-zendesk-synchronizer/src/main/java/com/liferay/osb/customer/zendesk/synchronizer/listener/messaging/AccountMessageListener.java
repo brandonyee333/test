@@ -157,7 +157,8 @@ public class AccountMessageListener extends BaseMessageListener {
 			_accountSynchronizer.update(account, accountEntry);
 
 			if (!_accountUtil.hasActiveTicketSupport(account)) {
-				_accountSynchronizer.closeZendeskTickets(account, accountEntry);
+				_accountSynchronizer.closeZendeskTickets(
+					account, accountEntry, null);
 
 				List<Contact> contacts = _contactWebService.getAccountContacts(
 					account.getKey(), 1, 1000);
