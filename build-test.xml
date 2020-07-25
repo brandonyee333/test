@@ -12432,27 +12432,34 @@ url=${short.hostname}:8080</echo>
 		<get-testcase-property property.name="remote.elasticsearch6.enabled" />
 
 		<if>
-			<equals arg1="${remote.elasticsearch6.enabled}" arg2="true" />
+			<or>
+				<equals arg1="${remote.elasticsearch.enabled}" arg2="true" />
+				<equals arg1="${suite.search.engine}" arg2="remote-elasticsearch2" />
+			</or>
+			<then>
+				<ant antfile="build-test-elasticsearch.xml" target="stop-elasticsearch" />
+
+				<get-testcase-property property.name="elastic.kibana.enabled" />
+
+				<if>
+					<equals arg1="${elastic.kibana.enabled}" arg2="true" />
+					<then>
+						<print-file file.name="${elastic.kibana.dir}/bin/kibana.log" />
+
+						<ant antfile="build-test-elasticsearch.xml" target="stop-kibana" />
+					</then>
+				</if>
+			</then>
+		</if>
+
+		<if>
+			<or>
+				<equals arg1="${remote.elasticsearch6.enabled}" arg2="true" />
+				<equals arg1="${suite.search.engine}" arg2="remote-elasticsearch6" />
+			</or>
 			<then>
 				<ant antfile="build-test-elasticsearch6.xml" target="stop-elasticsearch" />
 			</then>
-			<elseif>
-				<equals arg1="${remote.elasticsearch.enabled}" arg2="true" />
-				<then>
-					<ant antfile="build-test-elasticsearch.xml" target="stop-elasticsearch" />
-
-					<get-testcase-property property.name="elastic.kibana.enabled" />
-
-					<if>
-						<equals arg1="${elastic.kibana.enabled}" arg2="true" />
-						<then>
-							<print-file file.name="${elastic.kibana.dir}/bin/kibana.log" />
-
-							<ant antfile="build-test-elasticsearch.xml" target="stop-kibana" />
-						</then>
-					</if>
-				</then>
-			</elseif>
 		</if>
 
 		<get-testcase-property property.name="solr.enabled" />
