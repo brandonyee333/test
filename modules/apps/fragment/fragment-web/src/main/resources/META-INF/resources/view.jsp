@@ -58,7 +58,8 @@ List<FragmentCollectionContributor> fragmentCollectionContributors = fragmentDis
 											<li>
 												<c:if test="<%= FragmentPermission.contains(permissionChecker, scopeGroupId, FragmentActionKeys.MANAGE_FRAGMENT_ENTRIES) %>">
 													<clay:link
-														buttonStyle="borderless"
+														borderless="<%= true %>"
+														button="<%= true %>"
 														href="<%= editFragmentCollectionURL %>"
 														icon="plus"
 													/>

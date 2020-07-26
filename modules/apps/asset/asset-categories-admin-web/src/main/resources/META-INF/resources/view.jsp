@@ -53,7 +53,8 @@
 													%>
 
 													<clay:link
-														buttonStyle="borderless"
+														borderless="<%= true %>"
+														button="<%= true %>"
 														href="<%= editVocabularyURL.toString() %>"
 														icon="plus"
 													/>

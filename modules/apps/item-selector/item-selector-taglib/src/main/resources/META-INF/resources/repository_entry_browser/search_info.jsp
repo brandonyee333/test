@@ -60,10 +60,12 @@
 			<liferay-ui:message key="search" />
 
 			<clay:link
-				buttonStyle="secondary"
-				elementClasses='<%= "btn-sm" + (searchEverywhere ? " active" : "") %>'
+				button="<%= true %>"
+				cssClass='<%= searchEverywhere ? "active" : "" %>'
+				displayType="secondary"
 				href="<%= searchEverywhereURL.toString() %>"
-				label='<%= LanguageUtil.get(resourceBundle, "everywhere") %>'
+				label="everywhere"
+				small="<%= true %>"
 			/>
 
 			<%
@@ -71,8 +73,9 @@
 			%>
 
 			<clay:link
-				buttonStyle="secondary"
-				elementClasses='<%= "btn-sm" + (!searchEverywhere ? " active" : "") %>'
+				button="<%= true %>"
+				cssClass='<%= !searchEverywhere ? "active" : "" %>'
+				displayType="secondary"
 				href="<%= searchFolderURL.toString() %>"
 				icon="folder"
 				label="<%= folder.getName() %>"

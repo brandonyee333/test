@@ -33,10 +33,14 @@ if (assetPublisherDisplayContext.isEnableTagBasedNavigation() && !assetPublisher
 
 			<div class="btn-group-item">
 				<clay:link
-					elementClasses="btn btn-outline-borderless btn-outline-secondary btn-sm"
+					borderless="<%= true %>"
+					button="<%= true %>"
+					displayType="secondary"
 					href="<%= rssURL.toString() %>"
 					icon="rss-full"
-					label='<%= LanguageUtil.get(request, "rss") %>'
+					label="rss"
+					outline="<%= true %>"
+					small="<%= true %>"
 				/>
 			</div>
 
@@ -53,10 +57,11 @@ if (assetPublisherDisplayContext.isEnableTagBasedNavigation() && !assetPublisher
 					</portlet:actionURL>
 
 					<clay:link
-						buttonStyle="secondary"
-						elementClasses="btn-sm"
+						button="<%= true %>"
+						displayType="secondary"
 						href="<%= unsubscribeURL %>"
-						label='<%= LanguageUtil.get(request, "unsubscribe") %>'
+						label="unsubscribe"
+						small="<%= true %>"
 					/>
 				</c:when>
 				<c:otherwise>
@@ -65,10 +70,11 @@ if (assetPublisherDisplayContext.isEnableTagBasedNavigation() && !assetPublisher
 					</portlet:actionURL>
 
 					<clay:link
-						buttonStyle="secondary"
-						elementClasses="btn-sm"
+						button="<%= true %>"
+						displayType="secondary"
 						href="<%= subscribeURL %>"
-						label='<%= LanguageUtil.get(request, "subscribe") %>'
+						label="subscribe"
+						small="<%= true %>"
 					/>
 				</c:otherwise>
 			</c:choose>

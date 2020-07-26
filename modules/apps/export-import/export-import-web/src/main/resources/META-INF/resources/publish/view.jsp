@@ -159,10 +159,11 @@ simplePublishURL.setParameter("targetGroupId", String.valueOf(liveGroupId));
 
 			<clay:content-col>
 				<clay:link
-					buttonStyle="link"
-					elementClasses="btn-sm"
+					button="<%= true %>"
+					displayType="link"
 					href="<%= simplePublishURL.toString() %>"
-					label='<%= LanguageUtil.get(request, "switch-to-simple-publication") %>'
+					label="switch-to-simple-publication"
+					small="<%= true %>"
 				/>
 			</clay:content-col>
 		</clay:content-row>
