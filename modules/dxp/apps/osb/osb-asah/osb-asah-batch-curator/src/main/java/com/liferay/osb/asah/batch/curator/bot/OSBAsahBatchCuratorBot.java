@@ -170,7 +170,9 @@ public class OSBAsahBatchCuratorBot {
 
 		run("StaleDynamicIndividualSegmentsNanite");
 
-		run("UpgradeNanite");
+		if (_getEventCount() < 50000) {
+			run("UpgradeNanite");
+		}
 
 		_executeOSBAsahTasks();
 
@@ -294,6 +296,14 @@ public class OSBAsahBatchCuratorBot {
 		catch (Exception e) {
 			_log.error("Unable to run existing tasks on startup", e);
 		}
+	}
+
+	private long _getEventCount() {
+		ElasticsearchInvoker elasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroRaw();
+
+		return elasticsearchInvoker.count(
+			"analytics-events", QueryBuilders.matchAllQuery());
 	}
 
 	private void _scheduleOSBAsahTasks() {
