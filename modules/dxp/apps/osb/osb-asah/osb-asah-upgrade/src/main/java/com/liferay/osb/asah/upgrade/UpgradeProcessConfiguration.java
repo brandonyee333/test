@@ -14,11 +14,6 @@
 
 package com.liferay.osb.asah.upgrade;
 
-import com.liferay.osb.asah.upgrade.v2_6_0.ActivitiesIndexMappingUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_6_0.CerebroInfoUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_6_0.FaroInfoOrganizationsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_6_0.OSBAsahTasksIndexMappingUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_6_0.PagesIndexMappingUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_6_1.RemoveDanglingFieldMappingsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.AssetsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.CanonicalUrlMappingUpgradeStep;
@@ -41,12 +36,6 @@ public class UpgradeProcessConfiguration {
 		UpgradeProcess upgradeProcess = new UpgradeProcess();
 
 		upgradeProcess.addUpgradeSteps(
-			"2.5.1", "2.6.0", _activitiesIndexMappingUpgradeStep,
-			_cerebroInfoUpgradeStep, _faroInfoOrganizationsUpgradeStep,
-			_osbAsahTasksIndexMappingUpgradeStep,
-			_pagesIndexMappingUpgradeStep);
-
-		upgradeProcess.addUpgradeSteps(
 			"2.6.0", "2.6.1", _removeDanglingFieldMappingsUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
@@ -58,33 +47,16 @@ public class UpgradeProcessConfiguration {
 	}
 
 	@Autowired
-	private ActivitiesIndexMappingUpgradeStep
-		_activitiesIndexMappingUpgradeStep;
-
-	@Autowired
 	private AssetsUpgradeStep _assetsUpgradeStep;
 
 	@Autowired
 	private CanonicalUrlMappingUpgradeStep _canonicalUrlMappingUpgradeStep;
 
 	@Autowired
-	private CerebroInfoUpgradeStep _cerebroInfoUpgradeStep;
-
-	@Autowired
-	private FaroInfoOrganizationsUpgradeStep _faroInfoOrganizationsUpgradeStep;
-
-	@Autowired
 	private JobRunsUpgradeStep _jobRunsUpgradeStep;
 
 	@Autowired
 	private JobsUpgradeStep _jobsUpgradeStep;
-
-	@Autowired
-	private OSBAsahTasksIndexMappingUpgradeStep
-		_osbAsahTasksIndexMappingUpgradeStep;
-
-	@Autowired
-	private PagesIndexMappingUpgradeStep _pagesIndexMappingUpgradeStep;
 
 	@Autowired
 	private RemoveDanglingFieldMappingsUpgradeStep
