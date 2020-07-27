@@ -33,8 +33,8 @@ catch (NoSuchLicenseEntryException nslee) {
 
 long productEntryId = BeanParamUtil.getLong(licenseEntry, request, "productEntryId");
 String type = BeanParamUtil.getString(licenseEntry, request, "type");
-int portalVersionMin = BeanParamUtil.getInteger(licenseEntry, request, "portalVersionMin");
-int portalVersionMax = BeanParamUtil.getInteger(licenseEntry, request, "portalVersionMax");
+int versionMin = BeanParamUtil.getInteger(licenseEntry, request, "versionMin");
+int versionMax = BeanParamUtil.getInteger(licenseEntry, request, "versionMax");
 %>
 
 <portlet:actionURL name="updateLicenseEntry" var="updateLicenseEntryURL">
@@ -52,7 +52,7 @@ int portalVersionMax = BeanParamUtil.getInteger(licenseEntry, request, "portalVe
 	/>
 
 	<liferay-ui:error exception="<%= LicenseEntryNameException.class %>" message="please-enter-a-valid-name" />
-	<liferay-ui:error exception="<%= LicenseEntryPortalVersionException.class %>" message="please-enter-a-valid-portal-version-range" />
+	<liferay-ui:error exception="<%= LicenseEntryVersionException.class %>" message="please-enter-a-valid-version-range" />
 
 	<table class="lfr-table">
 		<tr>
@@ -112,7 +112,7 @@ int portalVersionMax = BeanParamUtil.getInteger(licenseEntry, request, "portalVe
 		</tr>
 		<tr>
 			<td>
-				<liferay-ui:message key="portal-version-range-minimum" />
+				<liferay-ui:message key="version-range-minimum" />
 			</td>
 			<td>
 
@@ -120,7 +120,7 @@ int portalVersionMax = BeanParamUtil.getInteger(licenseEntry, request, "portalVe
 				List<ListType> portalVersionTypes = ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS);
 				%>
 
-				<aui:select label="" name="portalVersionMin">
+				<aui:select label="" name="versionMin">
 
 					<%
 					String previousNamePrefix = StringPool.BLANK;
@@ -139,7 +139,7 @@ int portalVersionMax = BeanParamUtil.getInteger(licenseEntry, request, "portalVe
 							<aui:option disabled="<% true %>" label="--------" />
 						</c:if>
 
-						<aui:option label="<%= portalVersionType.getName() %>" selected="<%= portalVersionType.getListTypeId() == portalVersionMin %>" value="<%= portalVersionType.getListTypeId() %>" />
+						<aui:option label="<%= portalVersionType.getName() %>" selected="<%= portalVersionType.getListTypeId() == versionMin %>" value="<%= portalVersionType.getListTypeId() %>" />
 
 					<%
 						previousNamePrefix = namePrefix;
@@ -151,10 +151,10 @@ int portalVersionMax = BeanParamUtil.getInteger(licenseEntry, request, "portalVe
 		</tr>
 		<tr>
 			<td>
-				<liferay-ui:message key="portal-version-range-maximum" />
+				<liferay-ui:message key="version-range-maximum" />
 			</td>
 			<td>
-				<aui:select label="" name="portalVersionMax">
+				<aui:select label="" name="versionMax">
 
 					<%
 					ListType lastVersionType = portalVersionTypes.get(portalVersionTypes.size() - 2);
@@ -162,7 +162,7 @@ int portalVersionMax = BeanParamUtil.getInteger(licenseEntry, request, "portalVe
 					for (ListType portalVersionType : portalVersionTypes) {
 					%>
 
-						<aui:option label="<%= (portalVersionType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER) ? (lastVersionType.getName() + StringPool.PLUS) : portalVersionType.getName() %>" selected="<%= portalVersionType.getListTypeId() == portalVersionMax %>" value="<%= portalVersionType.getListTypeId() %>" />
+						<aui:option label="<%= (portalVersionType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER) ? (lastVersionType.getName() + StringPool.PLUS) : portalVersionType.getName() %>" selected="<%= portalVersionType.getListTypeId() == versionMax %>" value="<%= portalVersionType.getListTypeId() %>" />
 
 					<%
 					}

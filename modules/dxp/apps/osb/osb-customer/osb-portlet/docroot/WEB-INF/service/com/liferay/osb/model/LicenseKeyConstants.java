@@ -48,6 +48,10 @@ public class LicenseKeyConstants {
 	public static final int STATE_OVERLOAD = 6;
 
 	public static int getLicenseVersion(int productVersion) {
+		if (productVersion >= ProductEntryConstants.COMMERCE_VERSION_2_0) {
+			return 3;
+		}
+
 		if (productVersion >=
 				ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_1_10) {
 

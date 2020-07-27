@@ -20,8 +20,8 @@
 		<column name="productEntryId" type="long" />
 		<column name="name" type="String" />
 		<column name="type" type="String" />
-		<column name="portalVersionMin" type="int" />
-		<column name="portalVersionMax" type="int" />
+		<column name="versionMin" type="int" />
+		<column name="versionMax" type="int" />
 
 		<!-- Order -->
 
@@ -38,9 +38,9 @@
 			<finder-column name="productEntryId" />
 			<finder-column name="type" />
 		</finder>
-		<finder name="PEI_PV" return-type="Collection">
+		<finder name="PEI_V" return-type="Collection">
 			<finder-column name="productEntryId" />
-			<finder-column comparator="&lt;=" name="portalVersionMin" />
+			<finder-column comparator="&lt;=" name="versionMin" />
 		</finder>
 
 		<!-- References -->
@@ -227,7 +227,7 @@
 		<exception>DuplicateIPAddress</exception>
 		<exception>DuplicateMACAddress</exception>
 		<exception>LicenseEntryName</exception>
-		<exception>LicenseEntryPortalVersion</exception>
+		<exception>LicenseEntryVersion</exception>
 		<exception>LicenseKeyActive</exception>
 		<exception>LicenseKeyDescription</exception>
 		<exception>LicenseKeyHostName</exception>

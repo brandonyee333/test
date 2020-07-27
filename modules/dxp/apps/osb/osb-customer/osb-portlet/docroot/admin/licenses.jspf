@@ -64,8 +64,8 @@
 
 		<liferay-ui:search-container-column-text
 			href="<%= rowURL %>"
-			name="portal-version"
-			property="portalVersionLabel"
+			name="version"
+			property="versionLabel"
 		/>
 
 		<c:if test="<%= permissionChecker.isOmniadmin() %>">

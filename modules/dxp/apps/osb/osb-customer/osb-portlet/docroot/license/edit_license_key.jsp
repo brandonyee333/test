@@ -298,7 +298,14 @@ portletURL.setParameter("aggregateLicense", String.valueOf(aggregateLicense));
 
 					<aui:col md="6">
 						<h2 class="control-label">
-							<liferay-ui:message key="choose-liferay-version" />
+							<c:choose>
+								<c:when test="<%= (productEntry != null) && productEntry.isCommerce() %>">
+									<liferay-ui:message key="choose-commerce-version" />
+								</c:when>
+								<c:otherwise>
+									<liferay-ui:message key="choose-liferay-version" />
+								</c:otherwise>
+							</c:choose>
 						</h2>
 
 						<%
@@ -315,7 +322,7 @@ portletURL.setParameter("aggregateLicense", String.valueOf(aggregateLicense));
 								String previousNamePrefix = StringPool.BLANK;
 
 								for (ListType productVersionType : productVersionTypes) {
-									if ((productVersionType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_4_4_0) || (productVersionType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER)) {
+									if ((productVersionType.getListTypeId() == ProductEntryConstants.COMMERCE_VERSION_1_0) || (productVersionType.getListTypeId() == ProductEntryConstants.COMMERCE_VERSION_1_1) || (productVersionType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_4_4_0) || (productVersionType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER)) {
 										continue;
 									}
 

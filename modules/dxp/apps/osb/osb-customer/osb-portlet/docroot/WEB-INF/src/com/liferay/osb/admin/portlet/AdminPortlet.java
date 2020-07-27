@@ -34,7 +34,7 @@ import com.liferay.osb.exception.DuplicateProductEntryException;
 import com.liferay.osb.exception.DuplicateSupportRegionException;
 import com.liferay.osb.exception.DuplicateSupportResponseException;
 import com.liferay.osb.exception.LicenseEntryNameException;
-import com.liferay.osb.exception.LicenseEntryPortalVersionException;
+import com.liferay.osb.exception.LicenseEntryVersionException;
 import com.liferay.osb.exception.NoSuchAccountEntryException;
 import com.liferay.osb.exception.NoSuchOfferingDefinitionException;
 import com.liferay.osb.exception.NoSuchProductEntryException;
@@ -701,20 +701,18 @@ public class AdminPortlet extends OSBPortlet {
 			actionRequest, "productEntryId");
 		String name = ParamUtil.getString(actionRequest, "name");
 		String type = ParamUtil.getString(actionRequest, "type");
-		int portalVersionMin = ParamUtil.getInteger(
-			actionRequest, "portalVersionMin");
-		int portalVersionMax = ParamUtil.getInteger(
-			actionRequest, "portalVersionMax");
+		int versionMin = ParamUtil.getInteger(actionRequest, "versionMin");
+		int versionMax = ParamUtil.getInteger(actionRequest, "versionMax");
 
 		if (licenseEntryId <= 0) {
 			LicenseEntryLocalServiceUtil.addLicenseEntry(
 				themeDisplay.getUserId(), productEntryId, name, type,
-				portalVersionMin, portalVersionMax);
+				versionMin, versionMax);
 		}
 		else {
 			LicenseEntryLocalServiceUtil.updateLicenseEntry(
-				licenseEntryId, productEntryId, name, type, portalVersionMin,
-				portalVersionMax);
+				licenseEntryId, productEntryId, name, type, versionMin,
+				versionMax);
 		}
 	}
 
@@ -1239,7 +1237,7 @@ public class AdminPortlet extends OSBPortlet {
 			cause instanceof FileExtensionException ||
 			cause instanceof FileNameException ||
 			cause instanceof LicenseEntryNameException ||
-			cause instanceof LicenseEntryPortalVersionException ||
+			cause instanceof LicenseEntryVersionException ||
 			cause instanceof ModelListenerException ||
 			cause instanceof NoSuchAccountEntryException ||
 			cause instanceof NoSuchListTypeException ||

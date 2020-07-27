@@ -28,14 +28,14 @@ public class LicenseEntryImpl extends LicenseEntryBaseImpl {
 	public LicenseEntryImpl() {
 	}
 
-	public String getPortalVersionLabel() {
-		return LicenseEntryConstants.getPortalVersionLabel(
-			getPortalVersionMin(), getPortalVersionMax());
-	}
-
 	public ProductEntry getProductEntry() throws PortalException {
 		return ProductEntryLocalServiceUtil.getProductEntry(
 			getProductEntryId());
+	}
+
+	public String getVersionLabel() {
+		return LicenseEntryConstants.getVersionLabel(
+			getVersionMin(), getVersionMax());
 	}
 
 }

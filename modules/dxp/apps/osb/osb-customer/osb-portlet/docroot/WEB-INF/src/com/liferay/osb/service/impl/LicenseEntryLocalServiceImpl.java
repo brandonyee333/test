@@ -15,7 +15,7 @@
 package com.liferay.osb.service.impl;
 
 import com.liferay.osb.exception.LicenseEntryNameException;
-import com.liferay.osb.exception.LicenseEntryPortalVersionException;
+import com.liferay.osb.exception.LicenseEntryVersionException;
 import com.liferay.osb.model.LicenseEntry;
 import com.liferay.osb.service.base.LicenseEntryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -36,13 +36,13 @@ public class LicenseEntryLocalServiceImpl
 
 	public LicenseEntry addLicenseEntry(
 			long userId, long productEntryId, String name, String type,
-			int portalVersionMin, int portalVersionMax)
+			int versionMin, int versionMax)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
-		validate(name, portalVersionMin, portalVersionMax);
+		validate(name, versionMin, versionMax);
 
 		long licenseEntryId = counterLocalService.increment();
 
@@ -56,8 +56,8 @@ public class LicenseEntryLocalServiceImpl
 		licenseEntry.setProductEntryId(productEntryId);
 		licenseEntry.setName(name);
 		licenseEntry.setType(type);
-		licenseEntry.setPortalVersionMin(portalVersionMin);
-		licenseEntry.setPortalVersionMax(portalVersionMax);
+		licenseEntry.setVersionMin(versionMin);
+		licenseEntry.setVersionMax(versionMax);
 
 		return licenseEntryPersistence.update(licenseEntry);
 	}
@@ -67,10 +67,10 @@ public class LicenseEntryLocalServiceImpl
 	}
 
 	public List<LicenseEntry> getLicenseEntries(
-		long productEntryId, int portalVersion) {
+		long productEntryId, int version) {
 
-		List<LicenseEntry> licenseEntries =
-			licenseEntryPersistence.findByPEI_PV(productEntryId, portalVersion);
+		List<LicenseEntry> licenseEntries = licenseEntryPersistence.findByPEI_V(
+			productEntryId, version);
 
 		licenseEntries = ListUtil.copy(licenseEntries);
 
@@ -79,8 +79,8 @@ public class LicenseEntryLocalServiceImpl
 		while (itr.hasNext()) {
 			LicenseEntry licenseEntry = itr.next();
 
-			if ((licenseEntry.getPortalVersionMax() != 0) &&
-				(portalVersion > licenseEntry.getPortalVersionMax())) {
+			if ((licenseEntry.getVersionMax() != 0) &&
+				(version > licenseEntry.getVersionMax())) {
 
 				itr.remove();
 			}
@@ -97,10 +97,10 @@ public class LicenseEntryLocalServiceImpl
 
 	public LicenseEntry updateLicenseEntry(
 			long licenseEntryId, long productEntryId, String name, String type,
-			int portalVersionMin, int portalVersionMax)
+			int versionMin, int versionMax)
 		throws PortalException {
 
-		validate(name, portalVersionMin, portalVersionMax);
+		validate(name, versionMin, versionMax);
 
 		LicenseEntry licenseEntry = licenseEntryPersistence.findByPrimaryKey(
 			licenseEntryId);
@@ -109,22 +109,21 @@ public class LicenseEntryLocalServiceImpl
 		licenseEntry.setProductEntryId(productEntryId);
 		licenseEntry.setName(name);
 		licenseEntry.setType(type);
-		licenseEntry.setPortalVersionMin(portalVersionMin);
-		licenseEntry.setPortalVersionMax(portalVersionMax);
+		licenseEntry.setVersionMin(versionMin);
+		licenseEntry.setVersionMax(versionMax);
 
 		return licenseEntryPersistence.update(licenseEntry);
 	}
 
-	protected void validate(
-			String name, int portalVersionMin, int portalVersionMax)
+	protected void validate(String name, int versionMin, int versionMax)
 		throws PortalException {
 
 		if (Validator.isNull(name)) {
 			throw new LicenseEntryNameException();
 		}
 
-		if ((portalVersionMax != 0) && (portalVersionMin >= portalVersionMax)) {
-			throw new LicenseEntryPortalVersionException();
+		if ((versionMax != 0) && (versionMin >= versionMax)) {
+			throw new LicenseEntryVersionException();
 		}
 	}
 
