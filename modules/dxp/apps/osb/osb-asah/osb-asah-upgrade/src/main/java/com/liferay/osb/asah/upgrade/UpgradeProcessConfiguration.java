@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.upgrade;
 
-import com.liferay.osb.asah.upgrade.v2_6_1.RemoveDanglingFieldMappingsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.AssetsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.CanonicalUrlMappingUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.JobRunsUpgradeStep;
@@ -36,9 +35,6 @@ public class UpgradeProcessConfiguration {
 		UpgradeProcess upgradeProcess = new UpgradeProcess();
 
 		upgradeProcess.addUpgradeSteps(
-			"2.6.0", "2.6.1", _removeDanglingFieldMappingsUpgradeStep);
-
-		upgradeProcess.addUpgradeSteps(
 			"2.6.1", "2.7.0", _assetsUpgradeStep,
 			_canonicalUrlMappingUpgradeStep, _jobRunsUpgradeStep,
 			_jobsUpgradeStep, _sessionActivitiesUpgradeStep);
@@ -57,10 +53,6 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private JobsUpgradeStep _jobsUpgradeStep;
-
-	@Autowired
-	private RemoveDanglingFieldMappingsUpgradeStep
-		_removeDanglingFieldMappingsUpgradeStep;
 
 	@Autowired
 	private SessionActivitiesUpgradeStep _sessionActivitiesUpgradeStep;
