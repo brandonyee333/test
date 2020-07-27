@@ -29,6 +29,6 @@ public class ReleaseInfo {
 
 	private static final int _SCHEMA_VERSION = 7;
 
-	private static final String _VERSION = "2.6.0";
+	private static final String _VERSION = "2.6.1";
 
 }
