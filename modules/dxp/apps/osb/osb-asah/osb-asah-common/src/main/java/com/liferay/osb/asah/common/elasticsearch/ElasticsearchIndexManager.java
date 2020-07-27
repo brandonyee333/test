@@ -27,9 +27,6 @@ public interface ElasticsearchIndexManager {
 
 	public void addAlias(String indexAlias, String indexName);
 
-	public void addTemplate(
-		String collectionName, WeDeployDataService weDeployDataService);
-
 	public void addTemplates();
 
 	public boolean aliasExists(String indexAlias);
@@ -46,9 +43,6 @@ public interface ElasticsearchIndexManager {
 	public void create(String configurationSource, String indexName);
 
 	public void delete(String... indexNames);
-
-	public boolean deleteTemplate(
-		String collectionName, WeDeployDataService weDeployDataService);
 
 	public boolean exists(String indexName);
 
