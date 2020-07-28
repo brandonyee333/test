@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.AssignCanonicalUrlArm;
+import com.liferay.osb.asah.batch.curator.bot.nanite.arm.AssignSessionActivitiesArm;
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.SyncPageActivitiesEventContextArm;
 
 import org.json.JSONObject;
@@ -29,14 +30,19 @@ import org.springframework.stereotype.Component;
 public class UpgradeNanite extends BaseNanite {
 
 	@Override
-	public void run(JSONObject contextJSONObject) {
+	public void run(JSONObject contextJSONObject) throws Exception {
 		_syncPageActivitiesEventContextArm.execute();
 
 		_assignCanonicalUrlArm.execute();
+
+		_assignSessionActivitiesArm.execute();
 	}
 
 	@Autowired
 	private AssignCanonicalUrlArm _assignCanonicalUrlArm;
+
+	@Autowired
+	private AssignSessionActivitiesArm _assignSessionActivitiesArm;
 
 	@Autowired
 	private SyncPageActivitiesEventContextArm
