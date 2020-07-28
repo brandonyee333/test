@@ -453,20 +453,20 @@ public class AccountEntryFinderImpl
 		LinkedHashMap<String, Object> params, boolean andOperator) {
 
 		sql = CustomSQLUtil.replaceKeywords(
-			sql, "lower(OSB_AccountEntry.koroneikiAccountKey)", StringPool.LIKE,
+			sql, "LOWER(OSB_AccountEntry.koroneikiAccountKey)", StringPool.LIKE,
 			false, koroneikiAccountKeys);
 		sql = CustomSQLUtil.replaceKeywords(
-			sql, "lower(OSB_AccountEntry.dossieraAccountKey)", StringPool.LIKE,
+			sql, "LOWER(OSB_AccountEntry.dossieraAccountKey)", StringPool.LIKE,
 			false, dossieraAccountKeys);
 		sql = CustomSQLUtil.replaceKeywords(
-			sql, "lower(OSB_AccountEntry.name)", StringPool.LIKE, false, names);
+			sql, "LOWER(OSB_AccountEntry.name)", StringPool.LIKE, false, names);
 		sql = CustomSQLUtil.replaceKeywords(
-			sql, "lower(OSB_AccountEntry.code_)", StringPool.LIKE, false,
+			sql, "LOWER(OSB_AccountEntry.code_)", StringPool.LIKE, false,
 			codes);
 		sql = CustomSQLUtil.replaceKeywords(
 			sql, "OSB_AccountEntry.status", false, statuses);
 		sql = CustomSQLUtil.replaceKeywords(
-			sql, "lower(OSB_AccountEntry.instructions)", StringPool.LIKE, false,
+			sql, "LOWER(OSB_AccountEntry.instructions)", StringPool.LIKE, false,
 			instructions);
 
 		sql = StringUtil.replace(sql, "[$JOIN$]", getJoin(params));

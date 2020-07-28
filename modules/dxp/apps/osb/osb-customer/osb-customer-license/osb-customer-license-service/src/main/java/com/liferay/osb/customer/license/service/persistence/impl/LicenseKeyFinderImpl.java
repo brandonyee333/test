@@ -657,45 +657,45 @@ public class LicenseKeyFinderImpl
 		}
 
 		sql = CustomSQLUtil.replaceKeywords(
-			sql, "lower(OSB_AccountEntry.name)", StringPool.LIKE, true,
+			sql, "LOWER(OSB_AccountEntry.name)", StringPool.LIKE, true,
 			accountEntryNames);
 		sql = CustomSQLUtil.replaceKeywords(
-			sql, "lower(OSB_AccountEntry.code_)", StringPool.LIKE, true,
+			sql, "LOWER(OSB_AccountEntry.code_)", StringPool.LIKE, true,
 			accountEntryNames);
 		sql = CustomSQLUtil.replaceKeywords(
-			sql, "lower(OSB_LicenseKeySet.name)", StringPool.LIKE, false,
+			sql, "LOWER(OSB_LicenseKeySet.name)", StringPool.LIKE, false,
 			licenseKeySetNames);
 		sql = CustomSQLUtil.replaceKeywords(
 			sql, "OSB_LicenseKey.licenseEntryId", false, licenseEntryIds);
 		sql = CustomSQLUtil.replaceKeywords(
 			sql, "OSB_LicenseKey.productEntryId", false, productEntryIds);
 		sql = CustomSQLUtil.replaceKeywords(
-			sql, "lower(OSB_LicenseKey.productEntryName)", StringPool.LIKE,
+			sql, "LOWER(OSB_LicenseKey.productEntryName)", StringPool.LIKE,
 			false, productEntryNames);
 		sql = CustomSQLUtil.replaceKeywords(
-			sql, "lower(OSB_LicenseKey.productId)", StringPool.EQUAL, false,
+			sql, "LOWER(OSB_LicenseKey.productId)", StringPool.EQUAL, false,
 			productIds);
 		sql = CustomSQLUtil.replaceKeywords(
 			sql, "OSB_LicenseKey.productVersion", false, productVersions);
 		sql = CustomSQLUtil.replaceKeywords(
-			sql, "lower(OSB_LicenseKey.owner)", StringPool.LIKE, false, owners);
+			sql, "LOWER(OSB_LicenseKey.owner)", StringPool.LIKE, false, owners);
 		sql = CustomSQLUtil.replaceKeywords(
-			sql, "lower(OSB_LicenseKey.description)", StringPool.LIKE, false,
+			sql, "LOWER(OSB_LicenseKey.description)", StringPool.LIKE, false,
 			descriptions);
 		sql = CustomSQLUtil.replaceKeywords(
-			sql, "lower(OSB_LicenseKey.hostName)", StringPool.LIKE, false,
+			sql, "LOWER(OSB_LicenseKey.hostName)", StringPool.LIKE, false,
 			hostNames);
 		sql = CustomSQLUtil.replaceKeywords(
-			sql, "lower(OSB_LicenseKey.ipAddresses)", StringPool.LIKE, false,
+			sql, "LOWER(OSB_LicenseKey.ipAddresses)", StringPool.LIKE, false,
 			ipAddresses);
 		sql = CustomSQLUtil.replaceKeywords(
-			sql, "lower(OSB_LicenseKey.macAddresses)", StringPool.LIKE, false,
+			sql, "LOWER(OSB_LicenseKey.macAddresses)", StringPool.LIKE, false,
 			macAddresses);
 		sql = CustomSQLUtil.replaceKeywords(
-			sql, "lower(OSB_LicenseKey.serverId)", StringPool.LIKE, false,
+			sql, "LOWER(OSB_LicenseKey.serverId)", StringPool.LIKE, false,
 			serverIds);
 		sql = CustomSQLUtil.replaceKeywords(
-			sql, "lower(OSB_LicenseKey.key_)", StringPool.LIKE, false, keys);
+			sql, "LOWER(OSB_LicenseKey.key_)", StringPool.LIKE, false, keys);
 
 		sql = StringUtil.replace(sql, "[$JOIN$]", getJoin(params));
 		sql = StringUtil.replace(sql, "[$WHERE$]", getWhere(params));
