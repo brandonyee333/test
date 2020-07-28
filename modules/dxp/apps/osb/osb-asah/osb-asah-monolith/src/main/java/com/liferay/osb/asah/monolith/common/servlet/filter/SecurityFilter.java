@@ -61,8 +61,9 @@ public class SecurityFilter extends BaseSecurityFilter {
 			return super.isInvalidRequest(httpServletRequest);
 		}
 
-		if (StringUtils.contains(
-				httpServletRequest.getRequestURI(), "/api/") ||
+		if (StringUtils.contains(httpServletRequest.getRequestURI(), "/api/") ||
+			StringUtils.contains(
+				httpServletRequest.getRequestURI(), "/dxp-batch-entities") ||
 			StringUtils.equals(
 				httpServletRequest.getRequestURI(), "/dxp-entities")) {
 
