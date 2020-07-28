@@ -62,7 +62,7 @@ public class SecurityFilter extends BaseSecurityFilter {
 		}
 
 		if (StringUtils.contains(
-				httpServletRequest.getRequestURI(), "/api/1.0") ||
+				httpServletRequest.getRequestURI(), "/api/") ||
 			StringUtils.equals(
 				httpServletRequest.getRequestURI(), "/dxp-entities")) {
 
