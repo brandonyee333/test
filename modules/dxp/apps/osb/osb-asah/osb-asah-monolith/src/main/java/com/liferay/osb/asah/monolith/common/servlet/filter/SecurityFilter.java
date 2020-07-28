@@ -53,6 +53,14 @@ public class SecurityFilter extends BaseSecurityFilter {
 			return true;
 		}
 
+		if (StringUtils.startsWith(
+				httpServletRequest.getRequestURI(), "/api/recommendations") ||
+			StringUtils.startsWith(
+				httpServletRequest.getRequestURI(), "/api/reports")) {
+
+			return super.isInvalidRequest(httpServletRequest);
+		}
+
 		if (StringUtils.contains(
 				httpServletRequest.getRequestURI(), "/api/1.0") ||
 			StringUtils.equals(
