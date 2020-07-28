@@ -547,7 +547,7 @@ public class SessionNanite implements Nanite {
 	@Autowired
 	private FinalizeSessionArm _finalizeSessionArm;
 
-	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_MESSAGE)
+	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_SESSION)
 	private MessageSubscriber _messageSubscriber;
 
 	private final ObjectMapper _objectMapper = new ObjectMapper() {

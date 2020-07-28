@@ -46,7 +46,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class SessionNaniteTest {
 
 	@MessageBusChannel(
-		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
+		channel = Channel.ANALYTICS_EVENTS_SESSION,
 		resourcePath = "session_raw_6.json"
 	)
 	@Test
@@ -63,7 +63,7 @@ public class SessionNaniteTest {
 	}
 
 	@MessageBusChannel(
-		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
+		channel = Channel.ANALYTICS_EVENTS_SESSION,
 		resourcePath = "session_raw_2.json"
 	)
 	@Test
@@ -107,7 +107,7 @@ public class SessionNaniteTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@MessageBusChannel(
-		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
+		channel = Channel.ANALYTICS_EVENTS_SESSION,
 		resourcePath = "session_raw_3.json"
 	)
 	@Test
@@ -164,7 +164,7 @@ public class SessionNaniteTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@MessageBusChannel(
-		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
+		channel = Channel.ANALYTICS_EVENTS_SESSION,
 		resourcePath = "session_raw_1.json"
 	)
 	@Test
@@ -214,7 +214,7 @@ public class SessionNaniteTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@MessageBusChannel(
-		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
+		channel = Channel.ANALYTICS_EVENTS_SESSION,
 		resourcePath = "session_raw_4.json"
 	)
 	@Test
@@ -267,7 +267,7 @@ public class SessionNaniteTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@MessageBusChannel(
-		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
+		channel = Channel.ANALYTICS_EVENTS_SESSION,
 		resourcePath = "session_raw_5.json"
 	)
 	@Test
@@ -300,7 +300,7 @@ public class SessionNaniteTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@MessageBusChannel(
-		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
+		channel = Channel.ANALYTICS_EVENTS_SESSION,
 		resourcePath = "session_raw_2.json"
 	)
 	@Test
