@@ -54,6 +54,9 @@ public class AnalyticsEventsChannels {
 			_analyticsEventsJournalPredicate());
 		_channels.put(
 			Channel.ANALYTICS_EVENTS_PAGE, _analyticsEventsPagePredicate());
+		_channels.put(
+			Channel.ANALYTICS_EVENTS_SESSION,
+			_analyticsEventsSessionPredicate());
 	}
 
 	public List<Channel> getChannels(AnalyticsEvent analyticsEvent) {
@@ -267,6 +270,10 @@ public class AnalyticsEventsChannels {
 
 			return true;
 		};
+	}
+
+	private Predicate<AnalyticsEvent> _analyticsEventsSessionPredicate() {
+		return analyticsEvent -> true;
 	}
 
 	private Map<Channel, Predicate<AnalyticsEvent>> _channels = new HashMap<>();
