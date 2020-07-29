@@ -93,9 +93,9 @@ public class JobDog {
 		job.setJobRunFrequency(jobRunFrequency);
 		job.setJobType(jobType);
 
-		_scheduleOSBAsahTask(job);
-
 		job = _jobElasticsearchRepository.add(job);
+
+		_scheduleOSBAsahTask(job);
 
 		if (runNow) {
 			runJob(job.getId(), jobRunDataPeriod);
