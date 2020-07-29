@@ -171,7 +171,7 @@ public class JobDog {
 					BoolQueryBuilderUtil.filter(
 						QueryBuilders.termQuery("job.id", id)
 					).filter(
-						QueryBuilders.termQuery("status", "COMPLETED")
+						QueryBuilders.termQuery("status", "PUBLISHED")
 					));
 				searchSourceBuilder.sort(
 					SortBuilderUtil.fieldSort("id", SortOrder.DESC));
