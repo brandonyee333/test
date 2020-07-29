@@ -98,7 +98,7 @@ public class AssignSessionActivitiesArm {
 			}
 		).setSourceIncludes(
 			new String[] {
-				"firstEventDate", "lastEventDate", "id", "individualId",
+				"firstEventDate", "id", "individualId", "lastEventDate",
 				"userId"
 			}
 		).iterate();
