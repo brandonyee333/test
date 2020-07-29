@@ -338,6 +338,8 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 			if (serviceRegistration != null) {
 				serviceRegistration.unregister();
 			}
+
+			_bundleContext.ungetService(serviceReference);
 		}
 
 	}
