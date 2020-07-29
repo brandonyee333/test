@@ -148,7 +148,7 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 						expirationDateCal.setTime(productPurchaseDisplay.getEndDate());
 					}
 					else {
-						startDateCal.setTime(licenseKey.getExpirationDate());
+						expirationDateCal.setTime(licenseKey.getExpirationDate());
 					}
 
 					String rowHREF = null;
