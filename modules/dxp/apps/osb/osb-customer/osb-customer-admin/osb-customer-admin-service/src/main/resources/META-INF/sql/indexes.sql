@@ -1,9 +1,6 @@
 create index IX_1B961F96 on OSB_AccountAttachment (accountEntryId, accountProjectId, fileName[$COLUMN_LENGTH:75$], type_);
 create index IX_D44EEA51 on OSB_AccountAttachment (accountEntryId, accountProjectId, type_);
 
-create index IX_66F378D7 on OSB_AccountEntries_SupportRegions (companyId);
-create index IX_B9459F3D on OSB_AccountEntries_SupportRegions (supportRegionId);
-
 create index IX_4304C568 on OSB_AccountEntry (dossieraAccountKey[$COLUMN_LENGTH:75$]);
 create index IX_32D8BC5 on OSB_AccountEntry (koroneikiAccountKey[$COLUMN_LENGTH:75$]);
 create index IX_9004ACB7 on OSB_AccountEntry (name[$COLUMN_LENGTH:500$], code_[$COLUMN_LENGTH:75$]);
@@ -31,5 +28,3 @@ create index IX_884EBE59 on OSB_ProductEntry (environment);
 create unique index IX_9EC71E05 on OSB_ProductEntry (koroneikiProductKey[$COLUMN_LENGTH:75$]);
 create index IX_88B6ADB0 on OSB_ProductEntry (licenses);
 create unique index IX_190AFA9 on OSB_ProductEntry (name[$COLUMN_LENGTH:75$]);
-
-create unique index IX_DC67F8E7 on OSB_SupportRegion (name[$COLUMN_LENGTH:75$]);

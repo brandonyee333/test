@@ -212,27 +212,6 @@ public class AccountEntryModelImpl
 		return models;
 	}
 
-	public static final String
-		MAPPING_TABLE_OSB_ACCOUNTENTRIES_SUPPORTREGIONS_NAME =
-			"OSB_AccountEntries_SupportRegions";
-
-	public static final Object[][]
-		MAPPING_TABLE_OSB_ACCOUNTENTRIES_SUPPORTREGIONS_COLUMNS = {
-			{"companyId", Types.BIGINT}, {"accountEntryId", Types.BIGINT},
-			{"supportRegionId", Types.BIGINT}
-		};
-
-	public static final String
-		MAPPING_TABLE_OSB_ACCOUNTENTRIES_SUPPORTREGIONS_SQL_CREATE =
-			"create table OSB_AccountEntries_SupportRegions (companyId LONG not null,accountEntryId LONG not null,supportRegionId LONG not null,primary key (accountEntryId, supportRegionId))";
-
-	public static final boolean
-		FINDER_CACHE_ENABLED_OSB_ACCOUNTENTRIES_SUPPORTREGIONS =
-			GetterUtil.getBoolean(
-				com.liferay.osb.customer.admin.service.util.ServiceProps.get(
-					"value.object.finder.cache.enabled.OSB_AccountEntries_SupportRegions"),
-				true);
-
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.osb.customer.admin.service.util.ServiceProps.get(
 			"lock.expiration.time.com.liferay.osb.customer.admin.model.AccountEntry"));

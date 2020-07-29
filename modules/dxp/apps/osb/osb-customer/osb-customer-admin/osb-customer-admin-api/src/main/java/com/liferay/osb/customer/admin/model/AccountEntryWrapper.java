@@ -462,16 +462,6 @@ public class AccountEntryWrapper
 	}
 
 	@Override
-	public long[] getSupportRegionIds() {
-		return _accountEntry.getSupportRegionIds();
-	}
-
-	@Override
-	public java.util.List<SupportRegion> getSupportRegions() {
-		return _accountEntry.getSupportRegions();
-	}
-
-	@Override
 	public String getTier() throws Exception {
 		return _accountEntry.getTier();
 	}
@@ -795,11 +785,6 @@ public class AccountEntryWrapper
 	@Override
 	public void setStatus(int status) {
 		_accountEntry.setStatus(status);
-	}
-
-	@Override
-	public void setSupportRegionIds(long[] supportRegionIds) {
-		_accountEntry.setSupportRegionIds(supportRegionIds);
 	}
 
 	/**

@@ -67,6 +67,10 @@ public interface AccountEnvironmentAttachmentLocalService
 	/**
 	 * Adds the account environment attachment to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountEnvironmentAttachmentLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param accountEnvironmentAttachment the account environment attachment
 	 * @return the account environment attachment that was added
 	 */
@@ -97,6 +101,10 @@ public interface AccountEnvironmentAttachmentLocalService
 	/**
 	 * Deletes the account environment attachment from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountEnvironmentAttachmentLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param accountEnvironmentAttachment the account environment attachment
 	 * @return the account environment attachment that was removed
 	 * @throws PortalException
@@ -108,6 +116,10 @@ public interface AccountEnvironmentAttachmentLocalService
 
 	/**
 	 * Deletes the account environment attachment with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountEnvironmentAttachmentLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param accountEnvironmentAttachmentId the primary key of the account environment attachment
 	 * @return the account environment attachment that was removed
@@ -271,6 +283,10 @@ public interface AccountEnvironmentAttachmentLocalService
 
 	/**
 	 * Updates the account environment attachment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountEnvironmentAttachmentLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param accountEnvironmentAttachment the account environment attachment
 	 * @return the account environment attachment that was updated

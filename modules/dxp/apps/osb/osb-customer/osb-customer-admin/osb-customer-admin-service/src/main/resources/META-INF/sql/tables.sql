@@ -10,13 +10,6 @@ create table OSB_AccountAttachment (
 	type_ INTEGER
 );
 
-create table OSB_AccountEntries_SupportRegions (
-	companyId LONG not null,
-	accountEntryId LONG not null,
-	supportRegionId LONG not null,
-	primary key (accountEntryId, supportRegionId)
-);
-
 create table OSB_AccountEntry (
 	accountEntryId LONG not null primary key,
 	companyId LONG,

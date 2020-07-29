@@ -19,8 +19,6 @@ import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.model.impl.AccountEntryImpl;
 import com.liferay.osb.customer.admin.model.impl.AccountEntryModelImpl;
 import com.liferay.osb.customer.admin.service.persistence.AccountEntryPersistence;
-import com.liferay.osb.customer.admin.service.persistence.SupportRegionPersistence;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -34,10 +32,6 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
-import com.liferay.portal.kernel.service.persistence.impl.TableMapper;
-import com.liferay.portal.kernel.service.persistence.impl.TableMapperFactory;
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -1767,9 +1761,6 @@ public class AccountEntryPersistenceImpl
 
 	@Override
 	protected AccountEntry removeImpl(AccountEntry accountEntry) {
-		accountEntryToSupportRegionTableMapper.
-			deleteLeftPrimaryKeyTableMappings(accountEntry.getPrimaryKey());
-
 		Session session = null;
 
 		try {
@@ -2308,343 +2299,6 @@ public class AccountEntryPersistenceImpl
 		return count.intValue();
 	}
 
-	/**
-	 * Returns the primaryKeys of support regions associated with the account entry.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @return long[] of the primaryKeys of support regions associated with the account entry
-	 */
-	@Override
-	public long[] getSupportRegionPrimaryKeys(long pk) {
-		long[] pks = accountEntryToSupportRegionTableMapper.getRightPrimaryKeys(
-			pk);
-
-		return pks.clone();
-	}
-
-	/**
-	 * Returns all the support regions associated with the account entry.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @return the support regions associated with the account entry
-	 */
-	@Override
-	public List<com.liferay.osb.customer.admin.model.SupportRegion>
-		getSupportRegions(long pk) {
-
-		return getSupportRegions(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-	}
-
-	/**
-	 * Returns a range of all the support regions associated with the account entry.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AccountEntryModelImpl</code>.
-	 * </p>
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param start the lower bound of the range of account entries
-	 * @param end the upper bound of the range of account entries (not inclusive)
-	 * @return the range of support regions associated with the account entry
-	 */
-	@Override
-	public List<com.liferay.osb.customer.admin.model.SupportRegion>
-		getSupportRegions(long pk, int start, int end) {
-
-		return getSupportRegions(pk, start, end, null);
-	}
-
-	/**
-	 * Returns an ordered range of all the support regions associated with the account entry.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AccountEntryModelImpl</code>.
-	 * </p>
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param start the lower bound of the range of account entries
-	 * @param end the upper bound of the range of account entries (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of support regions associated with the account entry
-	 */
-	@Override
-	public List<com.liferay.osb.customer.admin.model.SupportRegion>
-		getSupportRegions(
-			long pk, int start, int end,
-			OrderByComparator
-				<com.liferay.osb.customer.admin.model.SupportRegion>
-					orderByComparator) {
-
-		return accountEntryToSupportRegionTableMapper.getRightBaseModels(
-			pk, start, end, orderByComparator);
-	}
-
-	/**
-	 * Returns the number of support regions associated with the account entry.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @return the number of support regions associated with the account entry
-	 */
-	@Override
-	public int getSupportRegionsSize(long pk) {
-		long[] pks = accountEntryToSupportRegionTableMapper.getRightPrimaryKeys(
-			pk);
-
-		return pks.length;
-	}
-
-	/**
-	 * Returns <code>true</code> if the support region is associated with the account entry.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param supportRegionPK the primary key of the support region
-	 * @return <code>true</code> if the support region is associated with the account entry; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean containsSupportRegion(long pk, long supportRegionPK) {
-		return accountEntryToSupportRegionTableMapper.containsTableMapping(
-			pk, supportRegionPK);
-	}
-
-	/**
-	 * Returns <code>true</code> if the account entry has any support regions associated with it.
-	 *
-	 * @param pk the primary key of the account entry to check for associations with support regions
-	 * @return <code>true</code> if the account entry has any support regions associated with it; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean containsSupportRegions(long pk) {
-		if (getSupportRegionsSize(pk) > 0) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	/**
-	 * Adds an association between the account entry and the support region. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param supportRegionPK the primary key of the support region
-	 */
-	@Override
-	public void addSupportRegion(long pk, long supportRegionPK) {
-		AccountEntry accountEntry = fetchByPrimaryKey(pk);
-
-		if (accountEntry == null) {
-			accountEntryToSupportRegionTableMapper.addTableMapping(
-				CompanyThreadLocal.getCompanyId(), pk, supportRegionPK);
-		}
-		else {
-			accountEntryToSupportRegionTableMapper.addTableMapping(
-				accountEntry.getCompanyId(), pk, supportRegionPK);
-		}
-	}
-
-	/**
-	 * Adds an association between the account entry and the support region. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param supportRegion the support region
-	 */
-	@Override
-	public void addSupportRegion(
-		long pk,
-		com.liferay.osb.customer.admin.model.SupportRegion supportRegion) {
-
-		AccountEntry accountEntry = fetchByPrimaryKey(pk);
-
-		if (accountEntry == null) {
-			accountEntryToSupportRegionTableMapper.addTableMapping(
-				CompanyThreadLocal.getCompanyId(), pk,
-				supportRegion.getPrimaryKey());
-		}
-		else {
-			accountEntryToSupportRegionTableMapper.addTableMapping(
-				accountEntry.getCompanyId(), pk, supportRegion.getPrimaryKey());
-		}
-	}
-
-	/**
-	 * Adds an association between the account entry and the support regions. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param supportRegionPKs the primary keys of the support regions
-	 */
-	@Override
-	public void addSupportRegions(long pk, long[] supportRegionPKs) {
-		long companyId = 0;
-
-		AccountEntry accountEntry = fetchByPrimaryKey(pk);
-
-		if (accountEntry == null) {
-			companyId = CompanyThreadLocal.getCompanyId();
-		}
-		else {
-			companyId = accountEntry.getCompanyId();
-		}
-
-		accountEntryToSupportRegionTableMapper.addTableMappings(
-			companyId, pk, supportRegionPKs);
-	}
-
-	/**
-	 * Adds an association between the account entry and the support regions. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param supportRegions the support regions
-	 */
-	@Override
-	public void addSupportRegions(
-		long pk,
-		List<com.liferay.osb.customer.admin.model.SupportRegion>
-			supportRegions) {
-
-		addSupportRegions(
-			pk,
-			ListUtil.toLongArray(
-				supportRegions,
-				com.liferay.osb.customer.admin.model.SupportRegion.
-					SUPPORT_REGION_ID_ACCESSOR));
-	}
-
-	/**
-	 * Clears all associations between the account entry and its support regions. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the account entry to clear the associated support regions from
-	 */
-	@Override
-	public void clearSupportRegions(long pk) {
-		accountEntryToSupportRegionTableMapper.
-			deleteLeftPrimaryKeyTableMappings(pk);
-	}
-
-	/**
-	 * Removes the association between the account entry and the support region. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param supportRegionPK the primary key of the support region
-	 */
-	@Override
-	public void removeSupportRegion(long pk, long supportRegionPK) {
-		accountEntryToSupportRegionTableMapper.deleteTableMapping(
-			pk, supportRegionPK);
-	}
-
-	/**
-	 * Removes the association between the account entry and the support region. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param supportRegion the support region
-	 */
-	@Override
-	public void removeSupportRegion(
-		long pk,
-		com.liferay.osb.customer.admin.model.SupportRegion supportRegion) {
-
-		accountEntryToSupportRegionTableMapper.deleteTableMapping(
-			pk, supportRegion.getPrimaryKey());
-	}
-
-	/**
-	 * Removes the association between the account entry and the support regions. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param supportRegionPKs the primary keys of the support regions
-	 */
-	@Override
-	public void removeSupportRegions(long pk, long[] supportRegionPKs) {
-		accountEntryToSupportRegionTableMapper.deleteTableMappings(
-			pk, supportRegionPKs);
-	}
-
-	/**
-	 * Removes the association between the account entry and the support regions. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param supportRegions the support regions
-	 */
-	@Override
-	public void removeSupportRegions(
-		long pk,
-		List<com.liferay.osb.customer.admin.model.SupportRegion>
-			supportRegions) {
-
-		removeSupportRegions(
-			pk,
-			ListUtil.toLongArray(
-				supportRegions,
-				com.liferay.osb.customer.admin.model.SupportRegion.
-					SUPPORT_REGION_ID_ACCESSOR));
-	}
-
-	/**
-	 * Sets the support regions associated with the account entry, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param supportRegionPKs the primary keys of the support regions to be associated with the account entry
-	 */
-	@Override
-	public void setSupportRegions(long pk, long[] supportRegionPKs) {
-		Set<Long> newSupportRegionPKsSet = SetUtil.fromArray(supportRegionPKs);
-		Set<Long> oldSupportRegionPKsSet = SetUtil.fromArray(
-			accountEntryToSupportRegionTableMapper.getRightPrimaryKeys(pk));
-
-		Set<Long> removeSupportRegionPKsSet = new HashSet<Long>(
-			oldSupportRegionPKsSet);
-
-		removeSupportRegionPKsSet.removeAll(newSupportRegionPKsSet);
-
-		accountEntryToSupportRegionTableMapper.deleteTableMappings(
-			pk, ArrayUtil.toLongArray(removeSupportRegionPKsSet));
-
-		newSupportRegionPKsSet.removeAll(oldSupportRegionPKsSet);
-
-		long companyId = 0;
-
-		AccountEntry accountEntry = fetchByPrimaryKey(pk);
-
-		if (accountEntry == null) {
-			companyId = CompanyThreadLocal.getCompanyId();
-		}
-		else {
-			companyId = accountEntry.getCompanyId();
-		}
-
-		accountEntryToSupportRegionTableMapper.addTableMappings(
-			companyId, pk, ArrayUtil.toLongArray(newSupportRegionPKsSet));
-	}
-
-	/**
-	 * Sets the support regions associated with the account entry, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param supportRegions the support regions to be associated with the account entry
-	 */
-	@Override
-	public void setSupportRegions(
-		long pk,
-		List<com.liferay.osb.customer.admin.model.SupportRegion>
-			supportRegions) {
-
-		try {
-			long[] supportRegionPKs = new long[supportRegions.size()];
-
-			for (int i = 0; i < supportRegions.size(); i++) {
-				com.liferay.osb.customer.admin.model.SupportRegion
-					supportRegion = supportRegions.get(i);
-
-				supportRegionPKs[i] = supportRegion.getPrimaryKey();
-			}
-
-			setSupportRegions(pk, supportRegionPKs);
-		}
-		catch (Exception exception) {
-			throw processException(exception);
-		}
-	}
-
 	@Override
 	public Set<String> getBadColumnNames() {
 		return _badColumnNames;
@@ -2659,12 +2313,6 @@ public class AccountEntryPersistenceImpl
 	 * Initializes the account entry persistence.
 	 */
 	public void afterPropertiesSet() {
-		accountEntryToSupportRegionTableMapper =
-			TableMapperFactory.getTableMapper(
-				"OSB_AccountEntries_SupportRegions", "companyId",
-				"accountEntryId", "supportRegionId", this,
-				supportRegionPersistence);
-
 		_finderPathWithPaginationFindAll = new FinderPath(
 			AccountEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AccountEntryModelImpl.FINDER_CACHE_ENABLED, AccountEntryImpl.class,
@@ -2740,9 +2388,6 @@ public class AccountEntryPersistenceImpl
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		TableMapperFactory.removeTableMapper(
-			"OSB_AccountEntries_SupportRegions");
 	}
 
 	@ServiceReference(type = EntityCache.class)
@@ -2750,13 +2395,6 @@ public class AccountEntryPersistenceImpl
 
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-
-	@BeanReference(type = SupportRegionPersistence.class)
-	protected SupportRegionPersistence supportRegionPersistence;
-
-	protected TableMapper
-		<AccountEntry, com.liferay.osb.customer.admin.model.SupportRegion>
-			accountEntryToSupportRegionTableMapper;
 
 	private static final String _SQL_SELECT_ACCOUNTENTRY =
 		"SELECT accountEntry FROM AccountEntry accountEntry";

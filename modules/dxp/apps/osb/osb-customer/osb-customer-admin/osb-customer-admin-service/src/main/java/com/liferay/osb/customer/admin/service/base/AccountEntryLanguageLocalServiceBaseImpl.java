@@ -27,7 +27,6 @@ import com.liferay.osb.customer.admin.service.persistence.ExternalIdMapperPersis
 import com.liferay.osb.customer.admin.service.persistence.LicenseEntryPersistence;
 import com.liferay.osb.customer.admin.service.persistence.ProductEntryFinder;
 import com.liferay.osb.customer.admin.service.persistence.ProductEntryPersistence;
-import com.liferay.osb.customer.admin.service.persistence.SupportRegionPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -85,6 +84,10 @@ public abstract class AccountEntryLanguageLocalServiceBaseImpl
 	/**
 	 * Adds the account entry language to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountEntryLanguageLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param accountEntryLanguage the account entry language
 	 * @return the account entry language that was added
 	 */
@@ -115,6 +118,10 @@ public abstract class AccountEntryLanguageLocalServiceBaseImpl
 	/**
 	 * Deletes the account entry language with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountEntryLanguageLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param accountEntryLanguageId the primary key of the account entry language
 	 * @return the account entry language that was removed
 	 * @throws PortalException if a account entry language with the primary key could not be found
@@ -130,6 +137,10 @@ public abstract class AccountEntryLanguageLocalServiceBaseImpl
 
 	/**
 	 * Deletes the account entry language from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountEntryLanguageLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param accountEntryLanguage the account entry language
 	 * @return the account entry language that was removed
@@ -357,6 +368,10 @@ public abstract class AccountEntryLanguageLocalServiceBaseImpl
 
 	/**
 	 * Updates the account entry language in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountEntryLanguageLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param accountEntryLanguage the account entry language
 	 * @return the account entry language that was updated
@@ -802,49 +817,6 @@ public abstract class AccountEntryLanguageLocalServiceBaseImpl
 	}
 
 	/**
-	 * Returns the support region local service.
-	 *
-	 * @return the support region local service
-	 */
-	public com.liferay.osb.customer.admin.service.SupportRegionLocalService
-		getSupportRegionLocalService() {
-
-		return supportRegionLocalService;
-	}
-
-	/**
-	 * Sets the support region local service.
-	 *
-	 * @param supportRegionLocalService the support region local service
-	 */
-	public void setSupportRegionLocalService(
-		com.liferay.osb.customer.admin.service.SupportRegionLocalService
-			supportRegionLocalService) {
-
-		this.supportRegionLocalService = supportRegionLocalService;
-	}
-
-	/**
-	 * Returns the support region persistence.
-	 *
-	 * @return the support region persistence
-	 */
-	public SupportRegionPersistence getSupportRegionPersistence() {
-		return supportRegionPersistence;
-	}
-
-	/**
-	 * Sets the support region persistence.
-	 *
-	 * @param supportRegionPersistence the support region persistence
-	 */
-	public void setSupportRegionPersistence(
-		SupportRegionPersistence supportRegionPersistence) {
-
-		this.supportRegionPersistence = supportRegionPersistence;
-	}
-
-	/**
 	 * Returns the counter local service.
 	 *
 	 * @return the counter local service
@@ -1115,15 +1087,6 @@ public abstract class AccountEntryLanguageLocalServiceBaseImpl
 
 	@BeanReference(type = ProductEntryFinder.class)
 	protected ProductEntryFinder productEntryFinder;
-
-	@BeanReference(
-		type = com.liferay.osb.customer.admin.service.SupportRegionLocalService.class
-	)
-	protected com.liferay.osb.customer.admin.service.SupportRegionLocalService
-		supportRegionLocalService;
-
-	@BeanReference(type = SupportRegionPersistence.class)
-	protected SupportRegionPersistence supportRegionPersistence;
 
 	@ServiceReference(
 		type = com.liferay.counter.kernel.service.CounterLocalService.class

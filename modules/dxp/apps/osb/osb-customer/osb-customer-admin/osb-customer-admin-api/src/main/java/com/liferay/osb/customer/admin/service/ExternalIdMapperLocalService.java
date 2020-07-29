@@ -64,6 +64,10 @@ public interface ExternalIdMapperLocalService
 	/**
 	 * Adds the external ID mapper to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ExternalIdMapperLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param externalIdMapper the external ID mapper
 	 * @return the external ID mapper that was added
 	 */
@@ -86,6 +90,10 @@ public interface ExternalIdMapperLocalService
 	/**
 	 * Deletes the external ID mapper from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ExternalIdMapperLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param externalIdMapper the external ID mapper
 	 * @return the external ID mapper that was removed
 	 */
@@ -95,6 +103,10 @@ public interface ExternalIdMapperLocalService
 
 	/**
 	 * Deletes the external ID mapper with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ExternalIdMapperLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param externalIdMapperId the primary key of the external ID mapper
 	 * @return the external ID mapper that was removed
@@ -253,6 +265,10 @@ public interface ExternalIdMapperLocalService
 
 	/**
 	 * Updates the external ID mapper in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ExternalIdMapperLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param externalIdMapper the external ID mapper
 	 * @return the external ID mapper that was updated

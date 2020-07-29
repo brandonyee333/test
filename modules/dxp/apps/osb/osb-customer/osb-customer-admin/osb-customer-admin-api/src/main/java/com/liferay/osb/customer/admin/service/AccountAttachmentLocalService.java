@@ -67,6 +67,10 @@ public interface AccountAttachmentLocalService
 	/**
 	 * Adds the account attachment to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountAttachmentLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param accountAttachment the account attachment
 	 * @return the account attachment that was added
 	 */
@@ -96,6 +100,10 @@ public interface AccountAttachmentLocalService
 	/**
 	 * Deletes the account attachment from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountAttachmentLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param accountAttachment the account attachment
 	 * @return the account attachment that was removed
 	 * @throws PortalException
@@ -107,6 +115,10 @@ public interface AccountAttachmentLocalService
 
 	/**
 	 * Deletes the account attachment with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountAttachmentLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param accountAttachmentId the primary key of the account attachment
 	 * @return the account attachment that was removed
@@ -267,6 +279,10 @@ public interface AccountAttachmentLocalService
 
 	/**
 	 * Updates the account attachment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountAttachmentLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param accountAttachment the account attachment
 	 * @return the account attachment that was updated

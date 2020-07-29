@@ -141,16 +141,4 @@
 		<field name="licenses" type="boolean" />
 		<field name="versionsListType" type="String" />
 	</model>
-	<model name="com.liferay.osb.customer.admin.model.SupportRegion">
-		<field name="supportRegionId" type="long" />
-		<field name="companyId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="modifiedDate" type="Date" />
-		<field name="name" type="String" />
-		<field name="description" type="String" />
-		<field name="timeZoneId" type="String" />
-		<field name="managerUserId" type="long" />
-	</model>
 </model-hints>

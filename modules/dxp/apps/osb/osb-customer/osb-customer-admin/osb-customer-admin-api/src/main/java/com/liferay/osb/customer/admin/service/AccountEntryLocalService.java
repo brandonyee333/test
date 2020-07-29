@@ -66,6 +66,10 @@ public interface AccountEntryLocalService
 	/**
 	 * Adds the account entry to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountEntryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param accountEntry the account entry
 	 * @return the account entry that was added
 	 */
@@ -75,23 +79,8 @@ public interface AccountEntryLocalService
 	public AccountEntry addAccountEntry(
 			long userId, String koroneikiAccountKey, String dossieraAccountKey,
 			String corpProjectUuid, long corpProjectId, String name,
-			String code, String instructions, int status, String[] languageIds,
-			long[] supportRegionIds)
+			String code, String instructions, int status, String[] languageIds)
 		throws PortalException;
-
-	public void addSupportRegionAccountEntries(
-		long supportRegionId, List<AccountEntry> accountEntries);
-
-	public void addSupportRegionAccountEntries(
-		long supportRegionId, long[] accountEntryIds);
-
-	public void addSupportRegionAccountEntry(
-		long supportRegionId, AccountEntry accountEntry);
-
-	public void addSupportRegionAccountEntry(
-		long supportRegionId, long accountEntryId);
-
-	public void clearSupportRegionAccountEntries(long supportRegionId);
 
 	/**
 	 * Creates a new account entry with the primary key. Does not add the account entry to the database.
@@ -105,6 +94,10 @@ public interface AccountEntryLocalService
 	/**
 	 * Deletes the account entry from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountEntryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param accountEntry the account entry
 	 * @return the account entry that was removed
 	 */
@@ -113,6 +106,10 @@ public interface AccountEntryLocalService
 
 	/**
 	 * Deletes the account entry with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountEntryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param accountEntryId the primary key of the account entry
 	 * @return the account entry that was removed
@@ -134,18 +131,6 @@ public interface AccountEntryLocalService
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
-
-	public void deleteSupportRegionAccountEntries(
-		long supportRegionId, List<AccountEntry> accountEntries);
-
-	public void deleteSupportRegionAccountEntries(
-		long supportRegionId, long[] accountEntryIds);
-
-	public void deleteSupportRegionAccountEntry(
-		long supportRegionId, AccountEntry accountEntry);
-
-	public void deleteSupportRegionAccountEntry(
-		long supportRegionId, long accountEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DynamicQuery dynamicQuery();
@@ -281,40 +266,8 @@ public interface AccountEntryLocalService
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AccountEntry> getSupportRegionAccountEntries(
-		long supportRegionId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AccountEntry> getSupportRegionAccountEntries(
-		long supportRegionId, int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AccountEntry> getSupportRegionAccountEntries(
-		long supportRegionId, int start, int end,
-		OrderByComparator<AccountEntry> orderByComparator);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getSupportRegionAccountEntriesCount(long supportRegionId);
-
-	/**
-	 * Returns the supportRegionIds of the support regions associated with the account entry.
-	 *
-	 * @param accountEntryId the accountEntryId of the account entry
-	 * @return long[] the supportRegionIds of support regions associated with the account entry
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long[] getSupportRegionPrimaryKeys(long accountEntryId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountEntry> getUserActiveAccountEntries(
 		long userId, int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasSupportRegionAccountEntries(long supportRegionId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasSupportRegionAccountEntry(
-		long supportRegionId, long accountEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountEntry> search(
@@ -341,11 +294,12 @@ public interface AccountEntryLocalService
 		String code, int[] statuses, String instructions,
 		LinkedHashMap<String, Object> params, boolean andOperator);
 
-	public void setSupportRegionAccountEntries(
-		long supportRegionId, long[] accountEntryIds);
-
 	/**
 	 * Updates the account entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountEntryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param accountEntry the account entry
 	 * @return the account entry that was updated
@@ -357,7 +311,7 @@ public interface AccountEntryLocalService
 			long userId, long accountEntryId, String koroneikiAccountKey,
 			String dossieraAccountKey, String corpProjectUuid,
 			long corpProjectId, String name, String code, String instructions,
-			int status, String[] languageIds, long[] supportRegionIds)
+			int status, String[] languageIds)
 		throws PortalException;
 
 	public AccountEntry updateInstructions(

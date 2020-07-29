@@ -27,7 +27,6 @@ import com.liferay.osb.customer.admin.service.persistence.ExternalIdMapperPersis
 import com.liferay.osb.customer.admin.service.persistence.LicenseEntryPersistence;
 import com.liferay.osb.customer.admin.service.persistence.ProductEntryFinder;
 import com.liferay.osb.customer.admin.service.persistence.ProductEntryPersistence;
-import com.liferay.osb.customer.admin.service.persistence.SupportRegionPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -684,72 +683,6 @@ public abstract class ProductEntryServiceBaseImpl
 	}
 
 	/**
-	 * Returns the support region local service.
-	 *
-	 * @return the support region local service
-	 */
-	public com.liferay.osb.customer.admin.service.SupportRegionLocalService
-		getSupportRegionLocalService() {
-
-		return supportRegionLocalService;
-	}
-
-	/**
-	 * Sets the support region local service.
-	 *
-	 * @param supportRegionLocalService the support region local service
-	 */
-	public void setSupportRegionLocalService(
-		com.liferay.osb.customer.admin.service.SupportRegionLocalService
-			supportRegionLocalService) {
-
-		this.supportRegionLocalService = supportRegionLocalService;
-	}
-
-	/**
-	 * Returns the support region remote service.
-	 *
-	 * @return the support region remote service
-	 */
-	public com.liferay.osb.customer.admin.service.SupportRegionService
-		getSupportRegionService() {
-
-		return supportRegionService;
-	}
-
-	/**
-	 * Sets the support region remote service.
-	 *
-	 * @param supportRegionService the support region remote service
-	 */
-	public void setSupportRegionService(
-		com.liferay.osb.customer.admin.service.SupportRegionService
-			supportRegionService) {
-
-		this.supportRegionService = supportRegionService;
-	}
-
-	/**
-	 * Returns the support region persistence.
-	 *
-	 * @return the support region persistence
-	 */
-	public SupportRegionPersistence getSupportRegionPersistence() {
-		return supportRegionPersistence;
-	}
-
-	/**
-	 * Sets the support region persistence.
-	 *
-	 * @param supportRegionPersistence the support region persistence
-	 */
-	public void setSupportRegionPersistence(
-		SupportRegionPersistence supportRegionPersistence) {
-
-		this.supportRegionPersistence = supportRegionPersistence;
-	}
-
-	/**
 	 * Returns the counter local service.
 	 *
 	 * @return the counter local service
@@ -1107,21 +1040,6 @@ public abstract class ProductEntryServiceBaseImpl
 
 	@BeanReference(type = ProductEntryFinder.class)
 	protected ProductEntryFinder productEntryFinder;
-
-	@BeanReference(
-		type = com.liferay.osb.customer.admin.service.SupportRegionLocalService.class
-	)
-	protected com.liferay.osb.customer.admin.service.SupportRegionLocalService
-		supportRegionLocalService;
-
-	@BeanReference(
-		type = com.liferay.osb.customer.admin.service.SupportRegionService.class
-	)
-	protected com.liferay.osb.customer.admin.service.SupportRegionService
-		supportRegionService;
-
-	@BeanReference(type = SupportRegionPersistence.class)
-	protected SupportRegionPersistence supportRegionPersistence;
 
 	@ServiceReference(
 		type = com.liferay.counter.kernel.service.CounterLocalService.class

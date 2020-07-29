@@ -41,6 +41,10 @@ public class AccountEntryLanguageLocalServiceUtil {
 	/**
 	 * Adds the account entry language to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountEntryLanguageLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param accountEntryLanguage the account entry language
 	 * @return the account entry language that was added
 	 */
@@ -67,6 +71,10 @@ public class AccountEntryLanguageLocalServiceUtil {
 	/**
 	 * Deletes the account entry language from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountEntryLanguageLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param accountEntryLanguage the account entry language
 	 * @return the account entry language that was removed
 	 */
@@ -80,6 +88,10 @@ public class AccountEntryLanguageLocalServiceUtil {
 
 	/**
 	 * Deletes the account entry language with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountEntryLanguageLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param accountEntryLanguageId the primary key of the account entry language
 	 * @return the account entry language that was removed
@@ -282,6 +294,10 @@ public class AccountEntryLanguageLocalServiceUtil {
 
 	/**
 	 * Updates the account entry language in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountEntryLanguageLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param accountEntryLanguage the account entry language
 	 * @return the account entry language that was updated

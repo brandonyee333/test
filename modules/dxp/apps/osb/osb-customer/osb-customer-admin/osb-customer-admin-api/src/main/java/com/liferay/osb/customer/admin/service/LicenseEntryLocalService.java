@@ -64,6 +64,10 @@ public interface LicenseEntryLocalService
 	/**
 	 * Adds the license entry to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect LicenseEntryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param licenseEntry the license entry
 	 * @return the license entry that was added
 	 */
@@ -87,6 +91,10 @@ public interface LicenseEntryLocalService
 	/**
 	 * Deletes the license entry from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect LicenseEntryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param licenseEntry the license entry
 	 * @return the license entry that was removed
 	 */
@@ -95,6 +103,10 @@ public interface LicenseEntryLocalService
 
 	/**
 	 * Deletes the license entry with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect LicenseEntryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param licenseEntryId the primary key of the license entry
 	 * @return the license entry that was removed
@@ -247,6 +259,10 @@ public interface LicenseEntryLocalService
 
 	/**
 	 * Updates the license entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect LicenseEntryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param licenseEntry the license entry
 	 * @return the license entry that was updated

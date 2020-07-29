@@ -27,7 +27,6 @@ import com.liferay.osb.customer.admin.service.persistence.ExternalIdMapperPersis
 import com.liferay.osb.customer.admin.service.persistence.LicenseEntryPersistence;
 import com.liferay.osb.customer.admin.service.persistence.ProductEntryFinder;
 import com.liferay.osb.customer.admin.service.persistence.ProductEntryPersistence;
-import com.liferay.osb.customer.admin.service.persistence.SupportRegionPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -87,6 +86,10 @@ public abstract class AccountEntryLocalServiceBaseImpl
 	/**
 	 * Adds the account entry to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountEntryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param accountEntry the account entry
 	 * @return the account entry that was added
 	 */
@@ -113,6 +116,10 @@ public abstract class AccountEntryLocalServiceBaseImpl
 	/**
 	 * Deletes the account entry with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountEntryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param accountEntryId the primary key of the account entry
 	 * @return the account entry that was removed
 	 * @throws PortalException if a account entry with the primary key could not be found
@@ -127,6 +134,10 @@ public abstract class AccountEntryLocalServiceBaseImpl
 
 	/**
 	 * Deletes the account entry from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountEntryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param accountEntry the account entry
 	 * @return the account entry that was removed
@@ -339,6 +350,10 @@ public abstract class AccountEntryLocalServiceBaseImpl
 	/**
 	 * Updates the account entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountEntryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param accountEntry the account entry
 	 * @return the account entry that was updated
 	 */
@@ -346,168 +361,6 @@ public abstract class AccountEntryLocalServiceBaseImpl
 	@Override
 	public AccountEntry updateAccountEntry(AccountEntry accountEntry) {
 		return accountEntryPersistence.update(accountEntry);
-	}
-
-	/**
-	 */
-	@Override
-	public void addSupportRegionAccountEntry(
-		long supportRegionId, long accountEntryId) {
-
-		supportRegionPersistence.addAccountEntry(
-			supportRegionId, accountEntryId);
-	}
-
-	/**
-	 */
-	@Override
-	public void addSupportRegionAccountEntry(
-		long supportRegionId, AccountEntry accountEntry) {
-
-		supportRegionPersistence.addAccountEntry(supportRegionId, accountEntry);
-	}
-
-	/**
-	 */
-	@Override
-	public void addSupportRegionAccountEntries(
-		long supportRegionId, long[] accountEntryIds) {
-
-		supportRegionPersistence.addAccountEntries(
-			supportRegionId, accountEntryIds);
-	}
-
-	/**
-	 */
-	@Override
-	public void addSupportRegionAccountEntries(
-		long supportRegionId, List<AccountEntry> accountEntries) {
-
-		supportRegionPersistence.addAccountEntries(
-			supportRegionId, accountEntries);
-	}
-
-	/**
-	 */
-	@Override
-	public void clearSupportRegionAccountEntries(long supportRegionId) {
-		supportRegionPersistence.clearAccountEntries(supportRegionId);
-	}
-
-	/**
-	 */
-	@Override
-	public void deleteSupportRegionAccountEntry(
-		long supportRegionId, long accountEntryId) {
-
-		supportRegionPersistence.removeAccountEntry(
-			supportRegionId, accountEntryId);
-	}
-
-	/**
-	 */
-	@Override
-	public void deleteSupportRegionAccountEntry(
-		long supportRegionId, AccountEntry accountEntry) {
-
-		supportRegionPersistence.removeAccountEntry(
-			supportRegionId, accountEntry);
-	}
-
-	/**
-	 */
-	@Override
-	public void deleteSupportRegionAccountEntries(
-		long supportRegionId, long[] accountEntryIds) {
-
-		supportRegionPersistence.removeAccountEntries(
-			supportRegionId, accountEntryIds);
-	}
-
-	/**
-	 */
-	@Override
-	public void deleteSupportRegionAccountEntries(
-		long supportRegionId, List<AccountEntry> accountEntries) {
-
-		supportRegionPersistence.removeAccountEntries(
-			supportRegionId, accountEntries);
-	}
-
-	/**
-	 * Returns the supportRegionIds of the support regions associated with the account entry.
-	 *
-	 * @param accountEntryId the accountEntryId of the account entry
-	 * @return long[] the supportRegionIds of support regions associated with the account entry
-	 */
-	@Override
-	public long[] getSupportRegionPrimaryKeys(long accountEntryId) {
-		return accountEntryPersistence.getSupportRegionPrimaryKeys(
-			accountEntryId);
-	}
-
-	/**
-	 */
-	@Override
-	public List<AccountEntry> getSupportRegionAccountEntries(
-		long supportRegionId) {
-
-		return supportRegionPersistence.getAccountEntries(supportRegionId);
-	}
-
-	/**
-	 */
-	@Override
-	public List<AccountEntry> getSupportRegionAccountEntries(
-		long supportRegionId, int start, int end) {
-
-		return supportRegionPersistence.getAccountEntries(
-			supportRegionId, start, end);
-	}
-
-	/**
-	 */
-	@Override
-	public List<AccountEntry> getSupportRegionAccountEntries(
-		long supportRegionId, int start, int end,
-		OrderByComparator<AccountEntry> orderByComparator) {
-
-		return supportRegionPersistence.getAccountEntries(
-			supportRegionId, start, end, orderByComparator);
-	}
-
-	/**
-	 */
-	@Override
-	public int getSupportRegionAccountEntriesCount(long supportRegionId) {
-		return supportRegionPersistence.getAccountEntriesSize(supportRegionId);
-	}
-
-	/**
-	 */
-	@Override
-	public boolean hasSupportRegionAccountEntry(
-		long supportRegionId, long accountEntryId) {
-
-		return supportRegionPersistence.containsAccountEntry(
-			supportRegionId, accountEntryId);
-	}
-
-	/**
-	 */
-	@Override
-	public boolean hasSupportRegionAccountEntries(long supportRegionId) {
-		return supportRegionPersistence.containsAccountEntries(supportRegionId);
-	}
-
-	/**
-	 */
-	@Override
-	public void setSupportRegionAccountEntries(
-		long supportRegionId, long[] accountEntryIds) {
-
-		supportRegionPersistence.setAccountEntries(
-			supportRegionId, accountEntryIds);
 	}
 
 	/**
@@ -942,49 +795,6 @@ public abstract class AccountEntryLocalServiceBaseImpl
 	}
 
 	/**
-	 * Returns the support region local service.
-	 *
-	 * @return the support region local service
-	 */
-	public com.liferay.osb.customer.admin.service.SupportRegionLocalService
-		getSupportRegionLocalService() {
-
-		return supportRegionLocalService;
-	}
-
-	/**
-	 * Sets the support region local service.
-	 *
-	 * @param supportRegionLocalService the support region local service
-	 */
-	public void setSupportRegionLocalService(
-		com.liferay.osb.customer.admin.service.SupportRegionLocalService
-			supportRegionLocalService) {
-
-		this.supportRegionLocalService = supportRegionLocalService;
-	}
-
-	/**
-	 * Returns the support region persistence.
-	 *
-	 * @return the support region persistence
-	 */
-	public SupportRegionPersistence getSupportRegionPersistence() {
-		return supportRegionPersistence;
-	}
-
-	/**
-	 * Sets the support region persistence.
-	 *
-	 * @param supportRegionPersistence the support region persistence
-	 */
-	public void setSupportRegionPersistence(
-		SupportRegionPersistence supportRegionPersistence) {
-
-		this.supportRegionPersistence = supportRegionPersistence;
-	}
-
-	/**
 	 * Returns the counter local service.
 	 *
 	 * @return the counter local service
@@ -1338,15 +1148,6 @@ public abstract class AccountEntryLocalServiceBaseImpl
 
 	@BeanReference(type = ProductEntryFinder.class)
 	protected ProductEntryFinder productEntryFinder;
-
-	@BeanReference(
-		type = com.liferay.osb.customer.admin.service.SupportRegionLocalService.class
-	)
-	protected com.liferay.osb.customer.admin.service.SupportRegionLocalService
-		supportRegionLocalService;
-
-	@BeanReference(type = SupportRegionPersistence.class)
-	protected SupportRegionPersistence supportRegionPersistence;
 
 	@ServiceReference(
 		type = com.liferay.counter.kernel.service.CounterLocalService.class

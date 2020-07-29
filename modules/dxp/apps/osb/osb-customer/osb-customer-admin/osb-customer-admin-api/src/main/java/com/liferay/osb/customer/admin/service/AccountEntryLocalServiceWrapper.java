@@ -36,6 +36,10 @@ public class AccountEntryLocalServiceWrapper
 	/**
 	 * Adds the account entry to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountEntryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param accountEntry the account entry
 	 * @return the account entry that was added
 	 */
@@ -50,55 +54,12 @@ public class AccountEntryLocalServiceWrapper
 	public com.liferay.osb.customer.admin.model.AccountEntry addAccountEntry(
 			long userId, String koroneikiAccountKey, String dossieraAccountKey,
 			String corpProjectUuid, long corpProjectId, String name,
-			String code, String instructions, int status, String[] languageIds,
-			long[] supportRegionIds)
+			String code, String instructions, int status, String[] languageIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _accountEntryLocalService.addAccountEntry(
 			userId, koroneikiAccountKey, dossieraAccountKey, corpProjectUuid,
-			corpProjectId, name, code, instructions, status, languageIds,
-			supportRegionIds);
-	}
-
-	@Override
-	public void addSupportRegionAccountEntries(
-		long supportRegionId,
-		java.util.List<com.liferay.osb.customer.admin.model.AccountEntry>
-			accountEntries) {
-
-		_accountEntryLocalService.addSupportRegionAccountEntries(
-			supportRegionId, accountEntries);
-	}
-
-	@Override
-	public void addSupportRegionAccountEntries(
-		long supportRegionId, long[] accountEntryIds) {
-
-		_accountEntryLocalService.addSupportRegionAccountEntries(
-			supportRegionId, accountEntryIds);
-	}
-
-	@Override
-	public void addSupportRegionAccountEntry(
-		long supportRegionId,
-		com.liferay.osb.customer.admin.model.AccountEntry accountEntry) {
-
-		_accountEntryLocalService.addSupportRegionAccountEntry(
-			supportRegionId, accountEntry);
-	}
-
-	@Override
-	public void addSupportRegionAccountEntry(
-		long supportRegionId, long accountEntryId) {
-
-		_accountEntryLocalService.addSupportRegionAccountEntry(
-			supportRegionId, accountEntryId);
-	}
-
-	@Override
-	public void clearSupportRegionAccountEntries(long supportRegionId) {
-		_accountEntryLocalService.clearSupportRegionAccountEntries(
-			supportRegionId);
+			corpProjectId, name, code, instructions, status, languageIds);
 	}
 
 	/**
@@ -117,6 +78,10 @@ public class AccountEntryLocalServiceWrapper
 	/**
 	 * Deletes the account entry from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountEntryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param accountEntry the account entry
 	 * @return the account entry that was removed
 	 */
@@ -129,6 +94,10 @@ public class AccountEntryLocalServiceWrapper
 
 	/**
 	 * Deletes the account entry with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountEntryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param accountEntryId the primary key of the account entry
 	 * @return the account entry that was removed
@@ -169,41 +138,6 @@ public class AccountEntryLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _accountEntryLocalService.deletePersistedModel(persistedModel);
-	}
-
-	@Override
-	public void deleteSupportRegionAccountEntries(
-		long supportRegionId,
-		java.util.List<com.liferay.osb.customer.admin.model.AccountEntry>
-			accountEntries) {
-
-		_accountEntryLocalService.deleteSupportRegionAccountEntries(
-			supportRegionId, accountEntries);
-	}
-
-	@Override
-	public void deleteSupportRegionAccountEntries(
-		long supportRegionId, long[] accountEntryIds) {
-
-		_accountEntryLocalService.deleteSupportRegionAccountEntries(
-			supportRegionId, accountEntryIds);
-	}
-
-	@Override
-	public void deleteSupportRegionAccountEntry(
-		long supportRegionId,
-		com.liferay.osb.customer.admin.model.AccountEntry accountEntry) {
-
-		_accountEntryLocalService.deleteSupportRegionAccountEntry(
-			supportRegionId, accountEntry);
-	}
-
-	@Override
-	public void deleteSupportRegionAccountEntry(
-		long supportRegionId, long accountEntryId) {
-
-		_accountEntryLocalService.deleteSupportRegionAccountEntry(
-			supportRegionId, accountEntryId);
 	}
 
 	@Override
@@ -407,71 +341,10 @@ public class AccountEntryLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.osb.customer.admin.model.AccountEntry>
-		getSupportRegionAccountEntries(long supportRegionId) {
-
-		return _accountEntryLocalService.getSupportRegionAccountEntries(
-			supportRegionId);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.customer.admin.model.AccountEntry>
-		getSupportRegionAccountEntries(
-			long supportRegionId, int start, int end) {
-
-		return _accountEntryLocalService.getSupportRegionAccountEntries(
-			supportRegionId, start, end);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.customer.admin.model.AccountEntry>
-		getSupportRegionAccountEntries(
-			long supportRegionId, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.osb.customer.admin.model.AccountEntry>
-					orderByComparator) {
-
-		return _accountEntryLocalService.getSupportRegionAccountEntries(
-			supportRegionId, start, end, orderByComparator);
-	}
-
-	@Override
-	public int getSupportRegionAccountEntriesCount(long supportRegionId) {
-		return _accountEntryLocalService.getSupportRegionAccountEntriesCount(
-			supportRegionId);
-	}
-
-	/**
-	 * Returns the supportRegionIds of the support regions associated with the account entry.
-	 *
-	 * @param accountEntryId the accountEntryId of the account entry
-	 * @return long[] the supportRegionIds of support regions associated with the account entry
-	 */
-	@Override
-	public long[] getSupportRegionPrimaryKeys(long accountEntryId) {
-		return _accountEntryLocalService.getSupportRegionPrimaryKeys(
-			accountEntryId);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.customer.admin.model.AccountEntry>
 		getUserActiveAccountEntries(long userId, int start, int end) {
 
 		return _accountEntryLocalService.getUserActiveAccountEntries(
 			userId, start, end);
-	}
-
-	@Override
-	public boolean hasSupportRegionAccountEntries(long supportRegionId) {
-		return _accountEntryLocalService.hasSupportRegionAccountEntries(
-			supportRegionId);
-	}
-
-	@Override
-	public boolean hasSupportRegionAccountEntry(
-		long supportRegionId, long accountEntryId) {
-
-		return _accountEntryLocalService.hasSupportRegionAccountEntry(
-			supportRegionId, accountEntryId);
 	}
 
 	@Override
@@ -524,16 +397,12 @@ public class AccountEntryLocalServiceWrapper
 			instructions, params, andOperator);
 	}
 
-	@Override
-	public void setSupportRegionAccountEntries(
-		long supportRegionId, long[] accountEntryIds) {
-
-		_accountEntryLocalService.setSupportRegionAccountEntries(
-			supportRegionId, accountEntryIds);
-	}
-
 	/**
 	 * Updates the account entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect AccountEntryLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param accountEntry the account entry
 	 * @return the account entry that was updated
@@ -550,13 +419,13 @@ public class AccountEntryLocalServiceWrapper
 			long userId, long accountEntryId, String koroneikiAccountKey,
 			String dossieraAccountKey, String corpProjectUuid,
 			long corpProjectId, String name, String code, String instructions,
-			int status, String[] languageIds, long[] supportRegionIds)
+			int status, String[] languageIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _accountEntryLocalService.updateAccountEntry(
 			userId, accountEntryId, koroneikiAccountKey, dossieraAccountKey,
 			corpProjectUuid, corpProjectId, name, code, instructions, status,
-			languageIds, supportRegionIds);
+			languageIds);
 	}
 
 	@Override
