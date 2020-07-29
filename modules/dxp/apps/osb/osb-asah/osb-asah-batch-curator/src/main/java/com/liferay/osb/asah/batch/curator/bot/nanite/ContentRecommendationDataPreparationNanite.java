@@ -117,7 +117,7 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery("job.id", jobId)
 			).filter(
-				QueryBuilders.termQuery("status", "COMPLETED")
+				QueryBuilders.termsQuery("status", "COMPLETED", "PUBLISHED")
 			).filter(
 				QueryBuilders.rangeQuery(
 					"completedDate"
