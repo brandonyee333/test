@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.language.LanguageResources;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -49,11 +50,14 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Michael C. Han
@@ -121,9 +125,8 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 					emitter.emit(templateHandler.getClassName());
 
 					bundleContext.ungetService(serviceReference);
-
-					registerPortalInstanceLifecycleListener(templateHandler);
-				});
+				},
+				new TemplateHandlerServiceTrackerCustomizer());
 	}
 
 	@Deactivate
@@ -132,10 +135,10 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 	}
 
 	protected void registerPortalInstanceLifecycleListener(
-		TemplateHandler templateHandler) {
+		TemplateHandler templateHandler, int serviceRanking) {
 
 		ServiceRegistration<?> serviceRegistration = _serviceRegistrations.get(
-			templateHandler.getClassName());
+			templateHandler);
 
 		if (serviceRegistration != null) {
 			serviceRegistration.unregister();
@@ -144,13 +147,15 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 		PortalInstanceLifecycleListener portalInstanceLifecycleListener =
 			new TemplateHandlerPortalInstanceLifecycleListener(templateHandler);
 
+		Dictionary<String, Object> properties = new HashMapDictionary<>();
+
+		properties.put(Constants.SERVICE_RANKING, serviceRanking);
+
 		serviceRegistration = _bundleContext.registerService(
 			PortalInstanceLifecycleListener.class,
-			portalInstanceLifecycleListener,
-			new HashMapDictionary<String, Object>());
+			portalInstanceLifecycleListener, properties);
 
-		_serviceRegistrations.put(
-			templateHandler.getClassName(), serviceRegistration);
+		_serviceRegistrations.put(templateHandler, serviceRegistration);
 	}
 
 	@Reference(unbind = "-")
@@ -188,8 +193,8 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 	private DDMTemplateManager _ddmTemplateManager;
 	private GroupLocalService _groupLocalService;
 	private Portal _portal;
-	private final Map<String, ServiceRegistration<?>> _serviceRegistrations =
-		new ConcurrentHashMap<>();
+	private final Map<TemplateHandler, ServiceRegistration<?>>
+		_serviceRegistrations = new ConcurrentHashMap<>();
 	private UserLocalService _userLocalService;
 
 	private class TemplateHandlerPortalInstanceLifecycleListener
@@ -313,6 +318,46 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 			"com.liferay.portlet.display.template.PortletDisplayTemplate";
 
 		private final TemplateHandler _templateHandler;
+
+	}
+
+	private class TemplateHandlerServiceTrackerCustomizer
+		implements ServiceTrackerCustomizer<TemplateHandler, TemplateHandler> {
+
+		@Override
+		public TemplateHandler addingService(
+			ServiceReference<TemplateHandler> serviceReference) {
+
+			TemplateHandler templateHandler = _bundleContext.getService(
+				serviceReference);
+
+			int serviceRanking = GetterUtil.getInteger(
+				serviceReference.getProperty(Constants.SERVICE_RANKING));
+
+			registerPortalInstanceLifecycleListener(
+				templateHandler, serviceRanking);
+
+			return templateHandler;
+		}
+
+		@Override
+		public void modifiedService(
+			ServiceReference<TemplateHandler> serviceReference,
+			TemplateHandler templateHandler) {
+		}
+
+		@Override
+		public void removedService(
+			ServiceReference<TemplateHandler> serviceReference,
+			TemplateHandler templateHandler) {
+
+			ServiceRegistration<?> serviceRegistration =
+				_serviceRegistrations.remove(templateHandler);
+
+			if (serviceRegistration != null) {
+				serviceRegistration.unregister();
+			}
+		}
 
 	}
 
