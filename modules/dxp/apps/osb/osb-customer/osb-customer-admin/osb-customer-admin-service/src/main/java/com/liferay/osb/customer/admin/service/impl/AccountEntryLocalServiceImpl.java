@@ -153,14 +153,6 @@ public class AccountEntryLocalServiceImpl
 			koroneikiAccountKey);
 	}
 
-	public List<AccountEntry> getUserActiveAccountEntries(
-		long userId, int start, int end) {
-
-		// TODO
-
-		return null;
-	}
-
 	public List<AccountEntry> search(
 		String keywords, LinkedHashMap<String, Object> params, int start,
 		int end, OrderByComparator obc) {

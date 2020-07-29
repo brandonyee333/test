@@ -14,8 +14,10 @@
 
 package com.liferay.osb.customer.legacy.message.subscriber;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
+import com.liferay.osb.customer.legacy.web.service.util.LegacyConverter;
 import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -100,9 +102,7 @@ public abstract class BaseMessageSubscriber implements MessageSubscriber {
 	}
 
 	protected User addWebUser(JSONObject jsonObject) throws PortalException {
-		/*
-		TODO
-		User remoteUser = RemoteUserLocalServiceUtil.translate(jsonObject);
+		User remoteUser = legacyConverter.toUser(jsonObject);
 
 		Company company = companyLocalService.getCompany(
 			remoteUser.getCompanyId());
@@ -131,9 +131,6 @@ public abstract class BaseMessageSubscriber implements MessageSubscriber {
 		expandoBridge.setAttributes(remoteExpandoBridge.getAttributes(), false);
 
 		return user;
-		*/
-
-		return null;
 	}
 
 	protected abstract void doReceive(JSONObject jsonObject) throws Exception;
@@ -245,6 +242,9 @@ public abstract class BaseMessageSubscriber implements MessageSubscriber {
 
 	@Reference
 	protected JSONFactory jsonFactory;
+
+	@Reference
+	protected LegacyConverter legacyConverter;
 
 	@Reference
 	protected OrganizationLocalService organizationLocalService;

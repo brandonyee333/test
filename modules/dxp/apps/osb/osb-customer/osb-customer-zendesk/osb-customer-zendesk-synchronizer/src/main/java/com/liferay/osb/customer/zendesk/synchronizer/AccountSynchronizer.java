@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.zendesk.synchronizer;
 
+import com.liferay.osb.customer.admin.constants.AccountEntryConstants;
 import com.liferay.osb.customer.admin.constants.ExternalIdMapperConstants;
 import com.liferay.osb.customer.admin.exception.RequiredAccountEntryException;
 import com.liferay.osb.customer.admin.model.AccountEntry;
@@ -441,17 +442,16 @@ public class AccountSynchronizer {
 			}
 		}
 
-		// TODO
-
-		String supportLanguage = StringPool.BLANK;
+		String[] languageIds = accountEntry.getLanguageIds();
 
 		_zendeskOrganizationWebService.createOrUpdateZendeskOrganization(
 			account.getCode(), countryName, address, account.getKey(),
 			account.getName(), accountEntry.getInstructions(),
 			String.valueOf(firstLineSupport), partnerJiraProject, partnerName,
 			getSupportLevel(account.getKey()), account.getStatusAsString(),
-			supportLanguage, account.getRegionAsString(),
-			account.getTierAsString(), getTags(account));
+			AccountEntryConstants.getLanguageLabel(languageIds[0]),
+			account.getRegionAsString(), account.getTierAsString(),
+			getTags(account));
 
 		if (!externalIdMappers) {
 			_asyncZendeskUserWebService.createOrUpdateZendeskUser(
