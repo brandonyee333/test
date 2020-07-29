@@ -16,7 +16,7 @@
 			"id": "1"
 		},
 		"lastUpdatedDate": "${now-1d}",
-		"status": "COMPLETED"
+		"status": "PUBLISHED"
 	},
 	{
 		"createdDate": "${now}",

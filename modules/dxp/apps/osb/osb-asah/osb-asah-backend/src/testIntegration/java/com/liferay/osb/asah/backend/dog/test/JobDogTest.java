@@ -179,7 +179,7 @@ public class JobDogTest {
 			_getJobRunsProperty(jobRunResultBag.getResults(), JobRun::getId));
 		Assert.assertEquals(
 			Arrays.asList(
-				JobRunStatus.FAILED, JobRunStatus.COMPLETED,
+				JobRunStatus.FAILED, JobRunStatus.PUBLISHED,
 				JobRunStatus.FAILED),
 			_getJobRunsProperty(
 				jobRunResultBag.getResults(), JobRun::getJobRunStatus));
