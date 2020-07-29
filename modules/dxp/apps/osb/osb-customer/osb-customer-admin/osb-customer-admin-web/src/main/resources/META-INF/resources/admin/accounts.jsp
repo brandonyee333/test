@@ -60,27 +60,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 			/>
 
 			<liferay-ui:search-container-column-text
-				name="support-regions"
-			>
-
-				<%
-				List<SupportRegion> supportRegions = accountEntry.getSupportRegions();
-
-				for (int i = 0; i < supportRegions.size(); i++) {
-					SupportRegion supportRegion = supportRegions.get(i);
-				%>
-
-					<aui:a href="<%= rowURL.toString() %>" label="<%= supportRegion.getName() %>" />
-
-					<%= ((i + 1) < supportRegions.size()) ? "<br />" : "" %>
-
-				<%
-				}
-				%>
-
-			</liferay-ui:search-container-column-text>
-
-			<liferay-ui:search-container-column-text
 				href="<%= rowURL %>"
 				name="status"
 			>
@@ -109,20 +88,3 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 		/>
 	</liferay-ui:search-container>
 </aui:form>
-
-<aui:script>
-	function <portlet:namespace />toggleSupportRegions(accountEntryId, expand) {
-		var A = AUI();
-
-		if (expand) {
-			A.one('#<portlet:namespace />supportRegions_' + accountEntryId).show();
-			A.one('#<portlet:namespace />collapse_' + accountEntryId + '_supportRegions').show();
-			A.one('#<portlet:namespace />expand_' + accountEntryId + '_supportRegions').hide();
-		}
-		else {
-			A.one('#<portlet:namespace />supportRegions_' + accountEntryId).hide();
-			A.one('#<portlet:namespace />collapse_' + accountEntryId + '_supportRegions').hide();
-			A.one('#<portlet:namespace />expand_' + accountEntryId + '_supportRegions').show();
-		}
-	}
-</aui:script>

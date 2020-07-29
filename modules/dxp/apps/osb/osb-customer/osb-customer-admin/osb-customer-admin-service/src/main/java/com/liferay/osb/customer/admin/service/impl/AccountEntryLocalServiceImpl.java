@@ -21,7 +21,6 @@ import com.liferay.osb.customer.admin.exception.AccountEntryKoroneikiAccountKeyE
 import com.liferay.osb.customer.admin.model.AccountAttachment;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.model.AccountEnvironment;
-import com.liferay.osb.customer.admin.model.SupportRegion;
 import com.liferay.osb.customer.admin.service.base.AccountEntryLocalServiceBaseImpl;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -51,16 +50,14 @@ public class AccountEntryLocalServiceImpl
 	public AccountEntry addAccountEntry(
 			long userId, String koroneikiAccountKey, String dossieraAccountKey,
 			String corpProjectUuid, long corpProjectId, String name,
-			String code, String instructions, int status, String[] languageIds,
-			long[] supportRegionIds)
+			String code, String instructions, int status, String[] languageIds)
 		throws PortalException {
 
 		validate(0, koroneikiAccountKey);
 
 		return doAddAccountEntry(
 			userId, koroneikiAccountKey, dossieraAccountKey, corpProjectUuid,
-			corpProjectId, name, code, instructions, status, languageIds,
-			supportRegionIds);
+			corpProjectId, name, code, instructions, status, languageIds);
 	}
 
 	@Override
@@ -207,7 +204,7 @@ public class AccountEntryLocalServiceImpl
 			long userId, long accountEntryId, String koroneikiAccountKey,
 			String dossieraAccountKey, String corpProjectUuid,
 			long corpProjectId, String name, String code, String instructions,
-			int status, String[] languageIds, long[] supportRegionIds)
+			int status, String[] languageIds)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -234,11 +231,6 @@ public class AccountEntryLocalServiceImpl
 		if (!ArrayUtil.isEmpty(languageIds)) {
 			accountEntryLanguageLocalService.setAccountEntryLanguageIds(
 				accountEntryId, languageIds);
-		}
-
-		if (!ArrayUtil.isEmpty(supportRegionIds)) {
-			accountEntryPersistence.setSupportRegions(
-				accountEntryId, supportRegionIds);
 		}
 
 		updateAuditEntry(
@@ -351,8 +343,7 @@ public class AccountEntryLocalServiceImpl
 	protected AccountEntry doAddAccountEntry(
 			long userId, String koroneikiAccountKey, String dossieraAccountKey,
 			String corpProjectUuid, long corpProjectId, String name,
-			String code, String instructions, int status, String[] languageIds,
-			long[] supportRegionIds)
+			String code, String instructions, int status, String[] languageIds)
 		throws PortalException {
 
 		// Account entry
@@ -388,13 +379,6 @@ public class AccountEntryLocalServiceImpl
 				accountEntryId, languageIds);
 		}
 
-		// Support regions
-
-		if (!ArrayUtil.isEmpty(supportRegionIds)) {
-			accountEntryPersistence.setSupportRegions(
-				accountEntryId, supportRegionIds);
-		}
-
 		return accountEntryPersistence.update(accountEntry);
 	}
 
@@ -408,22 +392,6 @@ public class AccountEntryLocalServiceImpl
 		}
 
 		return StringUtil.merge(formattedLanguageIds);
-	}
-
-	protected String formatSupportRegionIds(long[] supportRegionIds) {
-		List<String> supportRegionNames = new ArrayList<>(
-			supportRegionIds.length);
-
-		for (long supportRegionId : supportRegionIds) {
-			SupportRegion supportRegion =
-				supportRegionPersistence.fetchByPrimaryKey(supportRegionId);
-
-			if (supportRegion != null) {
-				supportRegionNames.add(supportRegion.getName());
-			}
-		}
-
-		return StringUtil.merge(supportRegionNames);
 	}
 
 	protected void updateAuditEntry(
@@ -509,27 +477,6 @@ public class AccountEntryLocalServiceImpl
 				VisibilityConstants.LIFERAY_INC, oldLanguageIdsString,
 				StringUtil.merge(oldLanguageIds), languageIdsString,
 				StringUtil.merge(languageIds), StringPool.BLANK);
-		}
-
-		long[] oldSupportRegionIds = oldAccountEntry.getSupportRegionIds();
-		long[] supportRegionIds = accountEntry.getSupportRegionIds();
-
-		Arrays.sort(oldSupportRegionIds);
-		Arrays.sort(supportRegionIds);
-
-		if (!Arrays.equals(oldSupportRegionIds, supportRegionIds)) {
-			String oldSupportRegionIdsString = formatSupportRegionIds(
-				oldSupportRegionIds);
-			String sSupportRegionIdsString = formatSupportRegionIds(
-				supportRegionIds);
-
-			auditEntryLocalService.addAuditEntry(
-				userId, userName, createDate, classNameId, classPK, auditSetId,
-				classNameId, classPK, auditAction,
-				AuditEntryConstants.FIELD_SUPPORT_REGIONS,
-				VisibilityConstants.LIFERAY_INC, oldSupportRegionIdsString,
-				StringUtil.merge(oldSupportRegionIds), sSupportRegionIdsString,
-				StringUtil.merge(supportRegionIds), StringPool.BLANK);
 		}
 	}
 

@@ -33,18 +33,18 @@ public class FileRepository {
 		_fileRepositoryId = fileRepositoryProperties.get("fileRepositoryId");
 		_host = fileRepositoryProperties.get("host");
 		_name = fileRepositoryProperties.get("name");
-		_supportRegionIds = StringUtil.split(
-			fileRepositoryProperties.get("supportRegionIds"), 0L);
+		_supportRegions = StringUtil.split(
+			fileRepositoryProperties.get("supportRegions"));
 	}
 
 	public FileRepository(
 		String fileRepositoryId, String name, String host,
-		long[] supportRegionIds) {
+		String[] supportRegions) {
 
 		_fileRepositoryId = fileRepositoryId;
 		_name = name;
 		_host = host;
-		_supportRegionIds = supportRegionIds;
+		_supportRegions = supportRegions;
 	}
 
 	public String getFileRepositoryId() {
@@ -59,13 +59,13 @@ public class FileRepository {
 		return _name;
 	}
 
-	public long[] getSupportRegionIds() {
-		return _supportRegionIds;
+	public String[] getSupportRegions() {
+		return _supportRegions;
 	}
 
 	private final String _fileRepositoryId;
 	private final String _host;
 	private final String _name;
-	private final long[] _supportRegionIds;
+	private final String[] _supportRegions;
 
 }

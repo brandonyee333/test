@@ -41,7 +41,6 @@ page import="com.liferay.osb.customer.admin.exception.AccountEnvironmentNameExce
 page import="com.liferay.osb.customer.admin.exception.DuplicateAccountEnvironmentException" %><%@
 page import="com.liferay.osb.customer.admin.exception.NoSuchAccountEntryException" %><%@
 page import="com.liferay.osb.customer.admin.model.AccountEntry" %><%@
-page import="com.liferay.osb.customer.admin.model.SupportRegion" %><%@
 page import="com.liferay.osb.customer.admin.service.permission.AccountEnvironmentPermission" %><%@
 page import="com.liferay.osb.customer.constants.OSBActionKeys" %><%@
 page import="com.liferay.osb.customer.github.configuration.GitHubConfigurationValues" %><%@

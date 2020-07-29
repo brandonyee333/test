@@ -21,8 +21,6 @@ public class AccountEntryDetailsWebKeys {
 
 	public static final String ACCOUNT = "ACCOUNT";
 
-	public static final String ACCOUNT_ENTRY = "ACCOUNT_ENTRY";
-
 	public static final String ACCOUNT_ENVIRONMENT = "ACCOUNT_ENVIRONMENT";
 
 }

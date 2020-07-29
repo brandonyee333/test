@@ -73,9 +73,6 @@ public class AccountEntryFinderImpl
 	public static final String JOIN_BY_PRODUCT_ENTRY =
 		AccountEntryFinder.class.getName() + ".joinByProductEntry";
 
-	public static final String JOIN_BY_SUPPORT_REGION =
-		AccountEntryFinder.class.getName() + ".joinBySupportRegion";
-
 	public int countByKeywords(
 		String keywords, LinkedHashMap<String, Object> params) {
 
@@ -339,9 +336,6 @@ public class AccountEntryFinderImpl
 		else if (key.equals("productEntryIds")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_PRODUCT_ENTRY);
 		}
-		else if (key.equals("supportRegionIds")) {
-			join = CustomSQLUtil.get(getClass(), JOIN_BY_SUPPORT_REGION);
-		}
 
 		if (Validator.isNotNull(join)) {
 			int pos = join.indexOf("WHERE");
@@ -416,13 +410,6 @@ public class AccountEntryFinderImpl
 
 			join = CustomSQLUtil.replaceKeywords(
 				join, "OSB_OfferingEntry.productEntryId", true, (long[])value);
-		}
-		else if (key.equals("supportRegionIds")) {
-			join = CustomSQLUtil.get(getClass(), JOIN_BY_SUPPORT_REGION);
-
-			join = CustomSQLUtil.replaceKeywords(
-				join, "OSB_AccountEntries_SupportRegions.supportRegionId", true,
-				(long[])value);
 		}
 		else if (key.equals("status")) {
 			join = CustomSQLUtil.get(getClass(), FILTER_BY_STATUS);

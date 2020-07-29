@@ -18,9 +18,7 @@ import com.liferay.document.library.kernel.exception.FileExtensionException;
 import com.liferay.document.library.kernel.exception.FileNameException;
 import com.liferay.osb.customer.admin.constants.AccountAttachmentConstants;
 import com.liferay.osb.customer.admin.exception.AccountEntryLanguageIdException;
-import com.liferay.osb.customer.admin.exception.AccountEntrySupportRegionException;
 import com.liferay.osb.customer.admin.exception.DuplicateProductEntryException;
-import com.liferay.osb.customer.admin.exception.DuplicateSupportRegionException;
 import com.liferay.osb.customer.admin.exception.LicenseEntryNameException;
 import com.liferay.osb.customer.admin.exception.LicenseEntryPortalVersionException;
 import com.liferay.osb.customer.admin.exception.NoSuchAccountEntryException;
@@ -28,8 +26,6 @@ import com.liferay.osb.customer.admin.exception.NoSuchProductEntryException;
 import com.liferay.osb.customer.admin.exception.ProductEntryEnvironmentException;
 import com.liferay.osb.customer.admin.exception.ProductEntryKoroneikiProductKeyException;
 import com.liferay.osb.customer.admin.exception.RequiredProductEntryException;
-import com.liferay.osb.customer.admin.exception.RequiredSupportRegionException;
-import com.liferay.osb.customer.admin.exception.SupportRegionNameException;
 import com.liferay.osb.customer.admin.exception.ZendeskTagException;
 import com.liferay.osb.customer.admin.model.AccountAttachment;
 import com.liferay.osb.customer.admin.model.AccountEntry;
@@ -38,7 +34,6 @@ import com.liferay.osb.customer.admin.service.AccountAttachmentLocalService;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.admin.service.LicenseEntryLocalService;
 import com.liferay.osb.customer.admin.service.ProductEntryLocalService;
-import com.liferay.osb.customer.admin.service.SupportRegionLocalService;
 import com.liferay.osb.customer.admin.web.internal.constants.CustomerAdminPortletKeys;
 import com.liferay.osb.customer.admin.web.internal.constants.CustomerAdminWebKeys;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
@@ -247,16 +242,6 @@ public class AdminPortlet extends MVCPortlet {
 		_productEntryLocalService.deleteProductEntry(productEntryId);
 	}
 
-	public void deleteSupportRegion(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long supportRegionId = ParamUtil.getLong(
-			actionRequest, "supportRegionId");
-
-		_supportRegionLocalService.deleteSupportRegion(supportRegionId);
-	}
-
 	@Override
 	public void render(
 			RenderRequest renderRequest, RenderResponse renderResponse)
@@ -340,15 +325,12 @@ public class AdminPortlet extends MVCPortlet {
 			actionRequest, "instructions");
 		String[] languageIds = StringUtil.split(
 			ParamUtil.getString(actionRequest, "languageIds"));
-		long[] supportRegionIds = StringUtil.split(
-			ParamUtil.getString(actionRequest, "supportRegionIds"), 0L);
 
 		if (accountEntryId <= 0) {
 			_accountEntryLocalService.addAccountEntry(
 				themeDisplay.getUserId(), koroneikiAccountKey,
 				dossieraAccountKey, StringPool.BLANK, 0, null, null,
-				instructions, WorkflowConstants.STATUS_APPROVED, languageIds,
-				supportRegionIds);
+				instructions, WorkflowConstants.STATUS_APPROVED, languageIds);
 		}
 		else {
 			AccountEntry accountEntry =
@@ -359,7 +341,7 @@ public class AdminPortlet extends MVCPortlet {
 				dossieraAccountKey, accountEntry.getCorpProjectUuid(),
 				accountEntry.getCorpProjectId(), accountEntry.getName(),
 				accountEntry.getCode(), instructions, accountEntry.getStatus(),
-				languageIds, supportRegionIds);
+				languageIds);
 		}
 
 		updateAccountAttachment(actionRequest);
@@ -437,30 +419,6 @@ public class AdminPortlet extends MVCPortlet {
 		if (product != null) {
 			_productEntryLocalService.updateName(
 				productEntry.getProductEntryId(), product.getName());
-		}
-	}
-
-	public void updateSupportRegion(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		long supportRegionId = ParamUtil.getLong(
-			actionRequest, "supportRegionId");
-
-		String name = ParamUtil.getString(actionRequest, "name");
-		String description = ParamUtil.getString(actionRequest, "description");
-		String timeZoneId = ParamUtil.getString(actionRequest, "timeZoneId");
-
-		if (supportRegionId > 0) {
-			_supportRegionLocalService.updateSupportRegion(
-				supportRegionId, name, description, timeZoneId);
-		}
-		else {
-			_supportRegionLocalService.addSupportRegion(
-				themeDisplay.getUserId(), name, description, timeZoneId);
 		}
 	}
 
@@ -588,9 +546,7 @@ public class AdminPortlet extends MVCPortlet {
 		}
 
 		if (cause instanceof AccountEntryLanguageIdException ||
-			cause instanceof AccountEntrySupportRegionException ||
 			cause instanceof DuplicateProductEntryException ||
-			cause instanceof DuplicateSupportRegionException ||
 			cause instanceof FileExtensionException ||
 			cause instanceof FileNameException ||
 			cause instanceof LicenseEntryNameException ||
@@ -603,8 +559,6 @@ public class AdminPortlet extends MVCPortlet {
 			cause instanceof ProductEntryEnvironmentException ||
 			cause instanceof ProductEntryKoroneikiProductKeyException ||
 			cause instanceof RequiredProductEntryException ||
-			cause instanceof RequiredSupportRegionException ||
-			cause instanceof SupportRegionNameException ||
 			cause instanceof UserEmailAddressException ||
 			cause instanceof ZendeskTagException) {
 
@@ -734,9 +688,6 @@ public class AdminPortlet extends MVCPortlet {
 
 	@Reference
 	private RoleLocalService _roleLocalService;
-
-	@Reference
-	private SupportRegionLocalService _supportRegionLocalService;
 
 	@Reference
 	private TeamRoleWebService _teamRoleWebService;

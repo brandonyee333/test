@@ -54,23 +54,7 @@ calendar.add(Calendar.YEAR, 1);
 						</td>
 					</tr>
 					<tr>
-						<td>
-							<aui:select label="support-region" name="<%= displayTerms.SUPPORT_REGION_IDS %>">
-								<aui:option label="" value="" />
-
-								<%
-								for (SupportRegion supportRegion : SupportRegionLocalServiceUtil.getSupportRegions(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
-								%>
-
-									<aui:option label="<%= supportRegion.getName() %>" selected="<%= ArrayUtil.contains(displayTerms.getSupportRegionIds(), supportRegion.getSupportRegionId()) %>" value="<%= supportRegion.getSupportRegionId() %>" />
-
-								<%
-								}
-								%>
-
-							</aui:select>
-						</td>
-						<td>
+						<td colspan="2">
 							<aui:select label="status" multiple="<%= true %>" name="<%= displayTerms.STATUSES %>">
 								<aui:option label="any" value="-1" />
 

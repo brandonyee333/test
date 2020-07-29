@@ -115,15 +115,6 @@
 				OSB_AccountEnvironment.productEntryId = ?
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.customer.admin.service.persistence.AccountEntryFinder.joinBySupportRegion">
-		<![CDATA[
-			INNER JOIN
-				OSB_AccountEntries_SupportRegions ON
-					OSB_AccountEntries_SupportRegions.accountEntryId = OSB_AccountEntry.accountEntryId
-			WHERE
-				OSB_AccountEntries_SupportRegions.supportRegionId = ?
-		]]>
-	</sql>
 	<sql id="com.liferay.osb.customer.admin.service.persistence.ProductEntryFinder.countByName">
 		<![CDATA[
 			SELECT

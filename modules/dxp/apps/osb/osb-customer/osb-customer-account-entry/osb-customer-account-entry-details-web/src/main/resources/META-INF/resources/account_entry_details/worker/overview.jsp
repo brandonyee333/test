@@ -18,7 +18,6 @@
 
 <%
 Account koroneikiAccount = accountEntryViewDisplayContext.getAccount();
-AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 %>
 
 <aui:row>
@@ -67,21 +66,7 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 						<liferay-ui:message key="support-region" />
 					</td>
 					<td>
-						<c:if test="<%= accountEntry != null %>">
-
-							<%
-							List<SupportRegion> supportRegions = accountEntry.getSupportRegions();
-							%>
-
-							<c:if test="<%= !supportRegions.isEmpty() %>">
-
-								<%
-								SupportRegion supportRegion = supportRegions.get(0);
-								%>
-
-								<%= HtmlUtil.escape(supportRegion.getName()) %>
-							</c:if>
-						</c:if>
+						<%= HtmlUtil.escape(koroneikiAccount.getRegionAsString()) %>
 					</td>
 				</tr>
 				<tr>

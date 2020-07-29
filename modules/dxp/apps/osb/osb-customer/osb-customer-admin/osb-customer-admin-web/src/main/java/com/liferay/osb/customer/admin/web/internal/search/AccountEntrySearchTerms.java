@@ -32,15 +32,10 @@ public class AccountEntrySearchTerms extends AccountEntryDisplayTerms {
 	}
 
 	public String getActiveFilters() {
-		StringBundler sb = new StringBundler(4);
+		StringBundler sb = new StringBundler(2);
 
 		if (hasSearchableStatusValues()) {
 			sb.append("status");
-			sb.append(StringPool.COMMA);
-		}
-
-		if (hasSearchableSupportRegionValues()) {
-			sb.append("support-region");
 			sb.append(StringPool.COMMA);
 		}
 
@@ -95,12 +90,6 @@ public class AccountEntrySearchTerms extends AccountEntryDisplayTerms {
 			params.put("productEntryIds", productEntryIds);
 		}
 
-		long[] supportRegionIds = getSupportRegionIds();
-
-		if (supportRegionIds.length > 0) {
-			params.put("supportRegionIds", supportRegionIds);
-		}
-
 		return params;
 	}
 
@@ -112,18 +101,8 @@ public class AccountEntrySearchTerms extends AccountEntryDisplayTerms {
 		return false;
 	}
 
-	public boolean hasSearchableSupportRegionValues() {
-		if (supportRegionIds.length > 0) {
-			return true;
-		}
-
-		return false;
-	}
-
 	public boolean hasSearchableValues() {
-		if (hasSearchableStatusValues() || hasSearchableSupportRegionValues() ||
-			Validator.isNotNull(keywords)) {
-
+		if (hasSearchableStatusValues() || Validator.isNotNull(keywords)) {
 			return true;
 		}
 

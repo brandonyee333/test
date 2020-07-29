@@ -25,7 +25,7 @@ public class PortletPropsKeys {
 
 	public static final String FILE_REPOSITORY_NAME = "file.repository.name";
 
-	public static final String FILE_REPOSITORY_SUPPORT_REGION_IDS =
-		"file.repository.support.region.ids";
+	public static final String FILE_REPOSITORY_SUPPORT_REGIONS =
+		"file.repository.support.regions";
 
 }

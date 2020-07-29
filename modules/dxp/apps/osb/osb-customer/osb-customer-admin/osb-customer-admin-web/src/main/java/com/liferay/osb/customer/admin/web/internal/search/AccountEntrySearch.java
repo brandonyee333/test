@@ -90,9 +90,6 @@ public class AccountEntrySearch extends SearchContainer<AccountEntry> {
 		iteratorURL.setParameter(
 			AccountEntryDisplayTerms.STATUSES,
 			ArrayUtil.toStringArray(displayTerms.getStatuses()));
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.SUPPORT_REGION_IDS,
-			ArrayUtil.toStringArray(displayTerms.getSupportRegionIds()));
 	}
 
 }

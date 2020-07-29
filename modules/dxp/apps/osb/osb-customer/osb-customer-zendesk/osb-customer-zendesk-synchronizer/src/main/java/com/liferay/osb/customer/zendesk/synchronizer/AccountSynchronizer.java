@@ -443,7 +443,6 @@ public class AccountSynchronizer {
 
 		// TODO
 
-		String supportRegion = StringPool.BLANK;
 		String supportLanguage = StringPool.BLANK;
 
 		_zendeskOrganizationWebService.createOrUpdateZendeskOrganization(
@@ -451,8 +450,8 @@ public class AccountSynchronizer {
 			account.getName(), accountEntry.getInstructions(),
 			String.valueOf(firstLineSupport), partnerJiraProject, partnerName,
 			getSupportLevel(account.getKey()), account.getStatusAsString(),
-			supportLanguage, supportRegion, account.getTierAsString(),
-			getTags(account));
+			supportLanguage, account.getRegionAsString(),
+			account.getTierAsString(), getTags(account));
 
 		if (!externalIdMappers) {
 			_asyncZendeskUserWebService.createOrUpdateZendeskUser(

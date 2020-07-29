@@ -54,8 +54,6 @@ public class AccountEntryDisplayTerms extends DisplayTerms {
 
 	public static final String STATUSES = "statuses";
 
-	public static final String SUPPORT_REGION_IDS = "supportRegionIds";
-
 	public AccountEntryDisplayTerms(PortletRequest portletRequest) {
 		super(portletRequest);
 
@@ -79,8 +77,6 @@ public class AccountEntryDisplayTerms extends DisplayTerms {
 		productEntryIds = ParamUtil.getLongValues(
 			portletRequest, PRODUCT_ENTRY_IDS);
 		statuses = ParamUtil.getIntegerValues(portletRequest, STATUSES);
-		supportRegionIds = ParamUtil.getLongValues(
-			portletRequest, SUPPORT_REGION_IDS);
 	}
 
 	public long[] getAccountEnvironmentEnvASIds() {
@@ -159,14 +155,6 @@ public class AccountEntryDisplayTerms extends DisplayTerms {
 		return statuses;
 	}
 
-	public long[] getSupportRegionIds() {
-		if (ArrayUtil.contains(supportRegionIds, 0)) {
-			return new long[0];
-		}
-
-		return supportRegionIds;
-	}
-
 	@Override
 	public boolean isAdvancedSearch() {
 		if (super.isAdvancedSearch() || !isSearch()) {
@@ -188,6 +176,5 @@ public class AccountEntryDisplayTerms extends DisplayTerms {
 	protected String name;
 	protected long[] productEntryIds;
 	protected int[] statuses;
-	protected long[] supportRegionIds;
 
 }

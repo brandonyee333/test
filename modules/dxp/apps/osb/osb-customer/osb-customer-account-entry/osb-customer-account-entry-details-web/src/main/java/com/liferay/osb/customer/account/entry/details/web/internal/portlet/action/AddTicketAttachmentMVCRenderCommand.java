@@ -18,6 +18,7 @@ import com.liferay.osb.customer.account.entry.details.web.internal.constants.Acc
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsWebKeys;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
+import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.ticket.constants.TicketActionKeys;
 import com.liferay.osb.customer.ticket.service.permission.TicketEntryPermissionChecker;
 import com.liferay.osb.customer.zendesk.exception.ZendeskTicketClosedException;
@@ -76,13 +77,18 @@ public class AddTicketAttachmentMVCRenderCommand extends BaseMVCRenderCommand {
 			accountEntryId);
 
 		renderRequest.setAttribute(
-			AccountEntryDetailsWebKeys.ACCOUNT_ENTRY, accountEntry);
+			AccountEntryDetailsWebKeys.ACCOUNT,
+			_accountWebService.getAccount(
+				accountEntry.getKoroneikiAccountKey()));
 
 		return "/account_entry_details/add_ticket_attachment.jsp";
 	}
 
 	@Reference
 	private AccountEntryLocalService _accountEntryLocalService;
+
+	@Reference
+	private AccountWebService _accountWebService;
 
 	@Reference
 	private ZendeskMapperUtil _zendeskMapperUtil;

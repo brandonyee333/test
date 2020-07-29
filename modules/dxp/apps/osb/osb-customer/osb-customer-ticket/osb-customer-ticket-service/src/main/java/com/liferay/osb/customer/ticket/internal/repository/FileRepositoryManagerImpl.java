@@ -21,7 +21,6 @@ import com.liferay.osb.customer.ticket.repository.FileRepository;
 import com.liferay.osb.customer.ticket.repository.FileRepositoryManager;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import org.osgi.service.component.annotations.Component;
@@ -31,28 +30,6 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(immediate = true, service = FileRepositoryManager.class)
 public class FileRepositoryManagerImpl implements FileRepositoryManager {
-
-	public FileRepository getFileRepository(long supportRegionId) {
-		FileRepository defaultFileRepository = null;
-
-		for (String fileRepositoryId :
-				TicketConfigurationValues.FILE_REPOSITORY_IDS) {
-
-			FileRepository fileRepository = getFileRepository(fileRepositoryId);
-
-			if (ArrayUtil.contains(
-					fileRepository.getSupportRegionIds(), supportRegionId)) {
-
-				return fileRepository;
-			}
-
-			if (defaultFileRepository == null) {
-				defaultFileRepository = fileRepository;
-			}
-		}
-
-		return defaultFileRepository;
-	}
 
 	public FileRepository getFileRepository(String fileRepositoryId) {
 		if (Validator.isNull(fileRepositoryId)) {
@@ -65,13 +42,33 @@ public class FileRepositoryManagerImpl implements FileRepositoryManager {
 		String name = TicketConfigurationUtil.get(
 			PortletPropsKeys.FILE_REPOSITORY_NAME,
 			new Filter(fileRepositoryId));
-		long[] supportRegionIds = GetterUtil.getLongValues(
-			TicketConfigurationUtil.getArray(
-				PortletPropsKeys.FILE_REPOSITORY_SUPPORT_REGION_IDS,
-				new Filter(fileRepositoryId)));
+		String[] supportRegions = TicketConfigurationUtil.getArray(
+			PortletPropsKeys.FILE_REPOSITORY_SUPPORT_REGIONS,
+			new Filter(fileRepositoryId));
 
-		return new FileRepository(
-			fileRepositoryId, name, host, supportRegionIds);
+		return new FileRepository(fileRepositoryId, name, host, supportRegions);
+	}
+
+	public FileRepository getSupportRegionFileRepository(String supportRegion) {
+		FileRepository defaultFileRepository = null;
+
+		for (String fileRepositoryId :
+				TicketConfigurationValues.FILE_REPOSITORY_IDS) {
+
+			FileRepository fileRepository = getFileRepository(fileRepositoryId);
+
+			if (ArrayUtil.contains(
+					fileRepository.getSupportRegions(), supportRegion)) {
+
+				return fileRepository;
+			}
+
+			if (defaultFileRepository == null) {
+				defaultFileRepository = fileRepository;
+			}
+		}
+
+		return defaultFileRepository;
 	}
 
 }

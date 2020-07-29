@@ -66,10 +66,6 @@
 		<column name="modifiedUserName" type="String" />
 		<column name="modifiedDate" type="Date" />
 
-		<!-- Relationships -->
-
-		<column entity="SupportRegion" mapping-table="AccountEntries_SupportRegions" name="supportRegions" type="Collection" />
-
 		<!-- Other fields -->
 
 		<column name="koroneikiAccountKey" type="String" />
@@ -395,48 +391,10 @@
 			<finder-column name="licenses" />
 		</finder>
 	</entity>
-	<entity local-service="true" name="SupportRegion" remote-service="true">
-
-		<!-- PK fields -->
-
-		<column name="supportRegionId" primary="true" type="long" />
-
-		<!-- Audit fields -->
-
-		<column name="companyId" type="long" />
-		<column name="userId" type="long" />
-		<column name="userName" type="String" />
-		<column name="createDate" type="Date" />
-		<column name="modifiedDate" type="Date" />
-
-		<!-- Other fields -->
-
-		<column name="name" type="String" />
-		<column name="description" type="String" />
-		<column name="timeZoneId" type="String" />
-		<column name="managerUserId" type="long" />
-
-		<!-- Relationships -->
-
-		<column entity="AccountEntry" mapping-table="AccountEntries_SupportRegions" name="accountEntries" type="Collection" />
-
-		<!-- Order -->
-
-		<order by="asc">
-			<order-column case-sensitive="false" name="name" />
-		</order>
-
-		<!-- Finder methods -->
-
-		<finder name="Name" return-type="SupportRegion" unique="true">
-			<finder-column name="name" />
-		</finder>
-	</entity>
 	<exceptions>
 		<exception>AccountAttachmentSize</exception>
 		<exception>AccountEntryKoroneikiAccountKey</exception>
 		<exception>AccountEntryLanguageId</exception>
-		<exception>AccountEntrySupportRegion</exception>
 		<exception>AccountEnvironmentAttachment</exception>
 		<exception>AccountEnvironmentAttachmentSize</exception>
 		<exception>AccountEnvironmentEnvAS</exception>
@@ -452,15 +410,12 @@
 		<exception>DuplicateAccountEnvironment</exception>
 		<exception>DuplicateAccountEnvironmentAttachment</exception>
 		<exception>DuplicateProductEntry</exception>
-		<exception>DuplicateSupportRegion</exception>
 		<exception>LicenseEntryName</exception>
 		<exception>LicenseEntryPortalVersion</exception>
 		<exception>ProductEntryEnvironment</exception>
 		<exception>ProductEntryKoroneikiProductKey</exception>
 		<exception>RequiredAccountEntry</exception>
 		<exception>RequiredProductEntry</exception>
-		<exception>RequiredSupportRegion</exception>
-		<exception>SupportRegionName</exception>
 		<exception>ZendeskTag</exception>
 	</exceptions>
 </service-builder>

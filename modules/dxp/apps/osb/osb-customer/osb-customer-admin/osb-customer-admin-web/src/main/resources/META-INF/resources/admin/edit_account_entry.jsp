@@ -65,7 +65,6 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	<liferay-util:include page="/common/exception.jsp" servletContext="<%= application %>" />
 
 	<liferay-ui:error exception="<%= AccountEntryLanguageIdException.class %>" message="please-select-valid-support-languages" />
-	<liferay-ui:error exception="<%= AccountEntrySupportRegionException.class %>" message="please-select-valid-support-regions" />
 
 	<aui:model-context bean="<%= accountEntry %>" model="<%= AccountEntry.class %>" />
 
@@ -365,9 +364,5 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 
 			<portlet:namespace />addColumn(row, '<input class="btn btn-default" onClick="<portlet:namespace />removeRow(\'' + inputName + '\', \'' + value + '\', \'' + tableId + '\', this);" type="button" value="<liferay-ui:message key="remove" />" />');
 		}
-	}
-
-	function <portlet:namespace />selectSupportRegion(supportRegionId, supportRegionName) {
-		<portlet:namespace />selectRow('supportRegionIds', supportRegionId, '<portlet:namespace />supportRegionSearchContainer', [supportRegionName]);
 	}
 </aui:script>

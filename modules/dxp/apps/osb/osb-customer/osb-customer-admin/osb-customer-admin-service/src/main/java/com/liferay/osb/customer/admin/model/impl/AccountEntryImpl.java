@@ -18,11 +18,9 @@ import com.liferay.osb.customer.admin.constants.WorkflowConstants;
 import com.liferay.osb.customer.admin.model.AccountAttachment;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.model.AccountEntryLanguage;
-import com.liferay.osb.customer.admin.model.SupportRegion;
 import com.liferay.osb.customer.admin.model.legacy.OfferingEntry;
 import com.liferay.osb.customer.admin.service.AccountAttachmentLocalServiceUtil;
 import com.liferay.osb.customer.admin.service.AccountEntryLanguageLocalServiceUtil;
-import com.liferay.osb.customer.admin.service.SupportRegionLocalServiceUtil;
 import com.liferay.portal.kernel.json.JSON;
 
 import java.util.List;
@@ -43,12 +41,6 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 
 		try {
 			accountEntry.setLanguageIds(getLanguageIds());
-		}
-		catch (Exception e) {
-		}
-
-		try {
-			accountEntry.setSupportRegionIds(getSupportRegionIds());
 		}
 		catch (Exception e) {
 		}
@@ -104,32 +96,6 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 		return WorkflowConstants.getStatusLabel(getStatus());
 	}
 
-	public long[] getSupportRegionIds() {
-		if (_supportRegionIds != null) {
-			return _supportRegionIds;
-		}
-
-		List<SupportRegion> supportRegions =
-			SupportRegionLocalServiceUtil.getAccountEntrySupportRegions(
-				getAccountEntryId());
-
-		long[] supportRegionIds = new long[supportRegions.size()];
-
-		for (int i = 0; i < supportRegions.size(); i++) {
-			SupportRegion supportRegion = supportRegions.get(i);
-
-			supportRegionIds[i] = supportRegion.getSupportRegionId();
-		}
-
-		return supportRegionIds;
-	}
-
-	@JSON
-	public List<SupportRegion> getSupportRegions() {
-		return SupportRegionLocalServiceUtil.getAccountEntrySupportRegions(
-			getAccountEntryId());
-	}
-
 	public String getTier() throws Exception {
 		return null;
 	}
@@ -142,12 +108,7 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 		_offeringEntries = offeringEntries;
 	}
 
-	public void setSupportRegionIds(long[] supportRegionIds) {
-		_supportRegionIds = supportRegionIds;
-	}
-
 	private String[] _languageIds;
 	private List<OfferingEntry> _offeringEntries;
-	private long[] _supportRegionIds;
 
 }

@@ -17,25 +17,21 @@
 <%@ include file="/account_entry_details/init.jsp" %>
 
 <%
-AccountEntry accountEntry = (AccountEntry)renderRequest.getAttribute(AccountEntryDetailsWebKeys.ACCOUNT_ENTRY);
+Account koroneikiAccount = (Account)renderRequest.getAttribute(AccountEntryDetailsWebKeys.ACCOUNT);
 
 long zendeskTicketId = ParamUtil.getLong(request, "zendeskTicketId");
 
-long[] supportRegionIds = accountEntry.getSupportRegionIds();
-
-FileRepository fileRepository = fileRepositoryManager.getFileRepository(supportRegionIds[0]);
-
-String fileRepositoryId = fileRepository.getFileRepositoryId();
+FileRepository fileRepository = fileRepositoryManager.getSupportRegionFileRepository(koroneikiAccount.getRegionAsString());
 %>
 
 <liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/file_repository_token" var="generateTokenURL">
-	<portlet:param name="fileRepositoryId" value="<%= fileRepositoryId %>" />
+	<portlet:param name="fileRepositoryId" value="<%= fileRepository.getFileRepositoryId() %>" />
 	<portlet:param name="zendeskTicketId" value="<%= String.valueOf(zendeskTicketId) %>" />
 </liferay-portlet:resourceURL>
 
 <portlet:actionURL name="addTicketAttachment" var="addTicketAttachmentURL">
 	<portlet:param name="redirect" value="<%= accountEntryDetailsConfiguration.zendeskTicketURL() + zendeskTicketId %>" />
-	<portlet:param name="fileRepositoryId" value="<%= fileRepositoryId %>" />
+	<portlet:param name="fileRepositoryId" value="<%= fileRepository.getFileRepositoryId() %>" />
 	<portlet:param name="zendeskTicketId" value="<%= String.valueOf(zendeskTicketId) %>" />
 </portlet:actionURL>
 
@@ -50,7 +46,7 @@ String fileRepositoryId = fileRepository.getFileRepositoryId();
 		{
 			addTicketAttachmentURL: '<%= addTicketAttachmentURL %>',
 			generateTokenURL: '<%= generateTokenURL %>',
-			uploadURL: '<%= fileRepositoryWebService.getUploadURL(fileRepositoryId) %>',
+			uploadURL: '<%= fileRepositoryWebService.getUploadURL(fileRepository.getFileRepositoryId()) %>',
 			zendeskTicketId: '<%= String.valueOf(zendeskTicketId) %>',
 			zendeskTicketURL: '<%= accountEntryDetailsConfiguration.zendeskTicketURL() + zendeskTicketId %>'
 		},
