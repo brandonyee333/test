@@ -161,10 +161,11 @@ public class IconTag extends BaseIconTag {
 
 		try {
 			if ("lexicon".equals(getMarkupView())) {
-				jspWriter.write("<svg class=\"lexicon-icon lexicon-icon-");
+				jspWriter.write("<svg aria-hidden=\"true\" ");
+				jspWriter.write("class=\"lexicon-icon lexicon-icon-");
 				jspWriter.write(GetterUtil.getString(getImage()));
 				jspWriter.write(
-					"\" focusable=\"false\" aria-hidden=\"true\" title=\"");
+					"\" focusable=\"false\" title=\"");
 
 				HttpServletRequest httpServletRequest =
 					(HttpServletRequest)pageContext.getRequest();
