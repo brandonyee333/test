@@ -213,7 +213,7 @@ public class JobDog {
 	}
 
 	public JobStatus getJobStatus(String id) {
-		if (_hasJobCompleted(id)) {
+		if (_hasJobRunPublished(id)) {
 			return JobStatus.READY;
 		}
 
@@ -455,12 +455,12 @@ public class JobDog {
 			size, sort, start);
 	}
 
-	private boolean _hasJobCompleted(String id) {
+	private boolean _hasJobRunPublished(String id) {
 		return _jobRunElasticsearchRepository.exists(
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery("job.id", id)
 			).filter(
-				QueryBuilders.termQuery("status", "COMPLETED")
+				QueryBuilders.termsQuery("status", "PUBLISHED")
 			));
 	}
 
