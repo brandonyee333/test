@@ -131,6 +131,10 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 
 	@Deactivate
 	protected void deactivate() {
+		_classNameTemplateHandlersServiceTrackerMap.close();
+
+		_classNameIdTemplateHandlersServiceTrackerMap.close();
+
 		_bundleContext = null;
 	}
 
