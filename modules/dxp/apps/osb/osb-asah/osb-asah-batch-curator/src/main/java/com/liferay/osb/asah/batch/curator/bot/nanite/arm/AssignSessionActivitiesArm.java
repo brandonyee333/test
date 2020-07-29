@@ -18,10 +18,10 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
-
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -46,11 +46,13 @@ public class AssignSessionActivitiesArm {
 					"firstEventDate");
 
 				if (StringUtil.isNull(firstEventDate)) {
-					_log.warn(
-						String.format(
-							"Skipping session %s due to missing first event " +
-								"date",
-							sessionId));
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							String.format(
+								"Skipping session %s due to missing first " +
+									"event date",
+								sessionId));
+					}
 
 					return null;
 				}
@@ -59,10 +61,13 @@ public class AssignSessionActivitiesArm {
 					"individualId");
 
 				if (StringUtil.isNull(individualId)) {
-					_log.warn(
-						String.format(
-							"Skipping session %s due to missing individual id",
-							sessionId));
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							String.format(
+								"Skipping session %s due to missing " +
+									"individual id",
+								sessionId));
+					}
 
 					return null;
 				}
@@ -71,10 +76,12 @@ public class AssignSessionActivitiesArm {
 					"lastEventDate");
 
 				if (StringUtil.isNull(lastEventDate)) {
-					_log.warn(
-						String.format(
-							"Skipping session %s due to missing start time",
-							sessionId));
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							String.format(
+								"Skipping session %s due to missing start time",
+								sessionId));
+					}
 
 					return null;
 				}
@@ -82,10 +89,12 @@ public class AssignSessionActivitiesArm {
 				String userId = userSessionJSONObject.optString("userId");
 
 				if (StringUtil.isNull(userId)) {
-					_log.warn(
-						String.format(
-							"Skipping session %s due to missing user id",
-							sessionId));
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							String.format(
+								"Skipping session %s due to missing user id",
+								sessionId));
+					}
 
 					return null;
 				}
@@ -105,8 +114,8 @@ public class AssignSessionActivitiesArm {
 	}
 
 	private void _upgradeActivities(
-		String firstEventDate, String individualId, String lastEventDate,
-		String sessionId, String userId)
+			String firstEventDate, String individualId, String lastEventDate,
+			String sessionId, String userId)
 		throws Exception {
 
 		ElasticsearchInvoker faroInfoElasticsearchInvoker =
@@ -124,8 +133,7 @@ public class AssignSessionActivitiesArm {
 					"id", activityJSONObject.getString("id")
 				).put(
 					"sessionId", sessionId
-				)
-			)
+				))
 		).setQueryBuilder(
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.rangeQuery(
