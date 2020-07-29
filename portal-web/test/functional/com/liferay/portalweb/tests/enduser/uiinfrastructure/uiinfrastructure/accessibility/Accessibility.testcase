@@ -42,7 +42,7 @@ definition {
 	@ignore = "true"
 	@priority = "4"
 	test ViewCollaborationPortlets {
-		property osgi.app.includes = "invitation, knowledge-base, twitter";
+		property osgi.app.includes = "invitation,knowledge-base,twitter";
 		property plugins.deployment.type = "osgi";
 
 		Page.add(pageName = "Collaboration Page");

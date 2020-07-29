@@ -33,7 +33,7 @@ definition {
 
 	@priority = "4"
 	test ChangeSocialBookmarkSitesForKBArticle {
-		property osgi.app.includes = "social-bookmarks, knowledge-base";
+		property osgi.app.includes = "social-bookmarks,knowledge-base";
 
 		Page.add(pageName = "Knowledge Base Display Page");
 
@@ -126,7 +126,7 @@ definition {
 
 	@priority = "3"
 	test ViewKBArticleWithAllSocialBookmarkSites {
-		property osgi.app.includes = "social-bookmarks, knowledge-base";
+		property osgi.app.includes = "social-bookmarks,knowledge-base";
 		var socialBookmarkSites = "twitter,facebook,plusone,addthis,delicious,digg,evernote,linkedin,newsvine,reddit,slashdot,stumbleupon,tuenti";
 
 		Page.add(pageName = "Knowledge Base Display Page");
