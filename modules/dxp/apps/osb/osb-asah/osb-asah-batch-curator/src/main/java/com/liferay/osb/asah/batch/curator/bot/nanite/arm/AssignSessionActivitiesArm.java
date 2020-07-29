@@ -48,7 +48,8 @@ public class AssignSessionActivitiesArm {
 				if (StringUtil.isNull(firstEventDate)) {
 					_log.warn(
 						String.format(
-							"Skipping session %s due to missing firstEventDate",
+							"Skipping session %s due to missing first event " +
+								"date",
 							sessionId));
 
 					return null;
@@ -60,7 +61,7 @@ public class AssignSessionActivitiesArm {
 				if (StringUtil.isNull(individualId)) {
 					_log.warn(
 						String.format(
-							"Skipping session %s due to missing individualId",
+							"Skipping session %s due to missing individual id",
 							sessionId));
 
 					return null;
@@ -72,7 +73,7 @@ public class AssignSessionActivitiesArm {
 				if (StringUtil.isNull(lastEventDate)) {
 					_log.warn(
 						String.format(
-							"Skipping session %s due to missing startTime",
+							"Skipping session %s due to missing start time",
 							sessionId));
 
 					return null;
@@ -83,7 +84,7 @@ public class AssignSessionActivitiesArm {
 				if (StringUtil.isNull(userId)) {
 					_log.warn(
 						String.format(
-							"Skipping session %s due to missing userId",
+							"Skipping session %s due to missing user id",
 							sessionId));
 
 					return null;
