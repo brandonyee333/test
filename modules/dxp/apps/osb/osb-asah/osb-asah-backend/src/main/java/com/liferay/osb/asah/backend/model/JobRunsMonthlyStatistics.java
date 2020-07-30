@@ -20,7 +20,10 @@ package com.liferay.osb.asah.backend.model;
 public class JobRunsMonthlyStatistics {
 
 	public long getAvailableJobRuns() {
-		return _availableJobRuns;
+		return Math.max(
+			0,
+			_maxJobRuns -
+				(_completedJobRuns + _publishedJobRuns + _runningJobRuns));
 	}
 
 	public long getCompletedJobRuns() {
@@ -41,10 +44,6 @@ public class JobRunsMonthlyStatistics {
 
 	public long getScheduledJobRuns() {
 		return _scheduledJobRuns;
-	}
-
-	public void setAvailableJobRuns(long availableJobRuns) {
-		_availableJobRuns = availableJobRuns;
 	}
 
 	public void setCompletedJobRuns(long completedJobRuns) {
@@ -71,7 +70,6 @@ public class JobRunsMonthlyStatistics {
 		_scheduledJobRuns = scheduledJobRuns;
 	}
 
-	private long _availableJobRuns;
 	private long _completedJobRuns;
 	private long _failedJobRuns;
 	private long _maxJobRuns;

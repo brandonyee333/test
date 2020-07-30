@@ -199,7 +199,6 @@ public class JobDog {
 
 		return new JobRunsMonthlyStatistics() {
 			{
-				setAvailableJobRuns(_maxMonthlyJobRuns - jobRuns.size());
 				setCompletedJobRuns(
 					_countJobRunsByStatus(jobRuns, JobRunStatus.COMPLETED));
 				setFailedJobRuns(
