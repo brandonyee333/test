@@ -73,7 +73,7 @@ public class BlogsContentEditorConfigContributor
 		sb.append(getAllowedContentText());
 		sb.append(" div(*); img[*](*){*}; ");
 		sb.append(getAllowedContentLists());
-		sb.append(" p {text-align}; ");
+		sb.append(" p[*](*){text-align}; ");
 		sb.append(getAllowedContentTable());
 		sb.append(" video[*](*);");
 
