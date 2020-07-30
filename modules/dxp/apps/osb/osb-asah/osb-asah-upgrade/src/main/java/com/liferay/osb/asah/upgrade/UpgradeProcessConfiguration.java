@@ -16,6 +16,7 @@ package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.upgrade.v2_7_0.AssetsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.CanonicalUrlMappingUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_7_0.FaroInfoIndividualsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.SessionActivitiesUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.UnprocessedAnalyticsEventsUpgradeStep;
 
@@ -35,7 +36,8 @@ public class UpgradeProcessConfiguration {
 
 		upgradeProcess.addUpgradeSteps(
 			"2.6.1", "2.7.0", _assetsUpgradeStep,
-			_canonicalUrlMappingUpgradeStep, _sessionActivitiesUpgradeStep,
+			_canonicalUrlMappingUpgradeStep, _faroInfoIndividualsUpgradeStep,
+			_sessionActivitiesUpgradeStep,
 			_unprocessedAnalyticsEventsUpgradeStep);
 
 		return upgradeProcess;
@@ -46,6 +48,9 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private CanonicalUrlMappingUpgradeStep _canonicalUrlMappingUpgradeStep;
+
+	@Autowired
+	private FaroInfoIndividualsUpgradeStep _faroInfoIndividualsUpgradeStep;
 
 	@Autowired
 	private SessionActivitiesUpgradeStep _sessionActivitiesUpgradeStep;
