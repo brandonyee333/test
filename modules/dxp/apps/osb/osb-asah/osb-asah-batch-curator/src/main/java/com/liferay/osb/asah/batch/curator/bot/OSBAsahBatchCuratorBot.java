@@ -170,7 +170,7 @@ public class OSBAsahBatchCuratorBot {
 
 		run("StaleDynamicIndividualSegmentsNanite");
 
-		if (_getEventCount() < 50000) {
+		if (_getAnalyticsEventsCount() < 50000) {
 			run("UpgradeNanite");
 		}
 
@@ -298,7 +298,7 @@ public class OSBAsahBatchCuratorBot {
 		}
 	}
 
-	private long _getEventCount() {
+	private long _getAnalyticsEventsCount() {
 		ElasticsearchInvoker elasticsearchInvoker =
 			_elasticsearchInvokerFactory.forCerebroRaw();
 
