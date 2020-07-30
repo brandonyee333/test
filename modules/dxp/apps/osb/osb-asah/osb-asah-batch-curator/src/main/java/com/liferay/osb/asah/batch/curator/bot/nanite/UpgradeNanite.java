@@ -17,6 +17,10 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.AssignCanonicalUrlArm;
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.AssignSessionActivitiesArm;
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.SyncPageActivitiesEventContextArm;
+import com.liferay.osb.asah.common.function.UnsafeRunnable;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.json.JSONObject;
 
@@ -31,12 +35,34 @@ public class UpgradeNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
-		_syncPageActivitiesEventContextArm.execute();
+		_execute(
+			_syncPageActivitiesEventContextArm.getClass(),
+			_syncPageActivitiesEventContextArm::execute);
 
-		_assignCanonicalUrlArm.execute();
+		_execute(
+			_assignCanonicalUrlArm.getClass(), _assignCanonicalUrlArm::execute);
 
-		_assignSessionActivitiesArm.execute();
+		_execute(
+			_assignSessionActivitiesArm.getClass(),
+			_assignSessionActivitiesArm::execute);
 	}
+
+	private void _execute(
+			Class<?> clazz, UnsafeRunnable<Exception> clazzUnsafeRunnable)
+		throws Exception {
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Start " + clazz.getName());
+		}
+
+		clazzUnsafeRunnable.run();
+
+		if (_log.isInfoEnabled()) {
+			_log.info("End " + clazz.getName());
+		}
+	}
+
+	private static final Log _log = LogFactory.getLog(UpgradeNanite.class);
 
 	@Autowired
 	private AssignCanonicalUrlArm _assignCanonicalUrlArm;

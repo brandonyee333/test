@@ -78,10 +78,6 @@ public class AssignCanonicalUrlArm {
 				this::_updateAssets, assetCollectionName,
 				this::_getAssetsSearchResponse);
 		}
-
-		if (_log.isInfoEnabled()) {
-			_log.info("Finished assigning canonical URLs");
-		}
 	}
 
 	private SearchResponse _getActivitiesSearchResponse(String collectionName) {
