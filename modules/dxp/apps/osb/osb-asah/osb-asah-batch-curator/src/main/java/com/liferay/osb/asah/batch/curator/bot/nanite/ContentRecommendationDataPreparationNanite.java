@@ -58,7 +58,7 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 
 		String jobId = jobJSONObject.getString("id");
 
-		if (_getCurrentMonthJobRunsCount(jobId) > _maxMonthlyJobRuns) {
+		if (_getCurrentMonthJobRunsCount(jobId) >= _maxMonthlyJobRuns) {
 			if (_log.isInfoEnabled()) {
 				_log.info(
 					String.format(
