@@ -16,6 +16,7 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.AssignCanonicalUrlArm;
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.AssignSessionActivitiesArm;
+import com.liferay.osb.asah.batch.curator.bot.nanite.arm.AssignSessionContextArm;
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.SyncPageActivitiesEventContextArm;
 import com.liferay.osb.asah.common.function.UnsafeRunnable;
 
@@ -45,6 +46,10 @@ public class UpgradeNanite extends BaseNanite {
 		_execute(
 			_assignSessionActivitiesArm.getClass(),
 			_assignSessionActivitiesArm::execute);
+
+		_execute(
+			_assignSessionContextArm.getClass(),
+			_assignSessionContextArm::execute);
 	}
 
 	private void _execute(
@@ -69,6 +74,9 @@ public class UpgradeNanite extends BaseNanite {
 
 	@Autowired
 	private AssignSessionActivitiesArm _assignSessionActivitiesArm;
+
+	@Autowired
+	private AssignSessionContextArm _assignSessionContextArm;
 
 	@Autowired
 	private SyncPageActivitiesEventContextArm
