@@ -66,8 +66,8 @@ public class LicenseEntryWrapper implements LicenseEntry,
 		attributes.put("productEntryId", getProductEntryId());
 		attributes.put("name", getName());
 		attributes.put("type", getType());
-		attributes.put("portalVersionMin", getPortalVersionMin());
-		attributes.put("portalVersionMax", getPortalVersionMax());
+		attributes.put("versionMin", getVersionMin());
+		attributes.put("versionMax", getVersionMax());
 
 		return attributes;
 	}
@@ -122,16 +122,16 @@ public class LicenseEntryWrapper implements LicenseEntry,
 			setType(type);
 		}
 
-		Integer portalVersionMin = (Integer)attributes.get("portalVersionMin");
+		Integer versionMin = (Integer)attributes.get("versionMin");
 
-		if (portalVersionMin != null) {
-			setPortalVersionMin(portalVersionMin);
+		if (versionMin != null) {
+			setVersionMin(versionMin);
 		}
 
-		Integer portalVersionMax = (Integer)attributes.get("portalVersionMax");
+		Integer versionMax = (Integer)attributes.get("versionMax");
 
-		if (portalVersionMax != null) {
-			setPortalVersionMax(portalVersionMax);
+		if (versionMax != null) {
+			setVersionMax(versionMax);
 		}
 	}
 
@@ -182,23 +182,23 @@ public class LicenseEntryWrapper implements LicenseEntry,
 	}
 
 	/**
-	* Returns the portal version max of this license entry.
+	* Returns the version max of this license entry.
 	*
-	* @return the portal version max of this license entry
+	* @return the version max of this license entry
 	*/
 	@Override
-	public int getPortalVersionMax() {
-		return _licenseEntry.getPortalVersionMax();
+	public int getVersionMax() {
+		return _licenseEntry.getVersionMax();
 	}
 
 	/**
-	* Returns the portal version min of this license entry.
+	* Returns the version min of this license entry.
 	*
-	* @return the portal version min of this license entry
+	* @return the version min of this license entry
 	*/
 	@Override
-	public int getPortalVersionMin() {
-		return _licenseEntry.getPortalVersionMin();
+	public int getVersionMin() {
+		return _licenseEntry.getVersionMin();
 	}
 
 	@Override
@@ -224,11 +224,6 @@ public class LicenseEntryWrapper implements LicenseEntry,
 	@Override
 	public java.lang.String getName() {
 		return _licenseEntry.getName();
-	}
-
-	@Override
-	public java.lang.String getPortalVersionLabel() {
-		return _licenseEntry.getPortalVersionLabel();
 	}
 
 	/**
@@ -259,6 +254,11 @@ public class LicenseEntryWrapper implements LicenseEntry,
 	@Override
 	public java.lang.String getUserUuid() {
 		return _licenseEntry.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String getVersionLabel() {
+		return _licenseEntry.getVersionLabel();
 	}
 
 	@Override
@@ -403,26 +403,6 @@ public class LicenseEntryWrapper implements LicenseEntry,
 	}
 
 	/**
-	* Sets the portal version max of this license entry.
-	*
-	* @param portalVersionMax the portal version max of this license entry
-	*/
-	@Override
-	public void setPortalVersionMax(int portalVersionMax) {
-		_licenseEntry.setPortalVersionMax(portalVersionMax);
-	}
-
-	/**
-	* Sets the portal version min of this license entry.
-	*
-	* @param portalVersionMin the portal version min of this license entry
-	*/
-	@Override
-	public void setPortalVersionMin(int portalVersionMin) {
-		_licenseEntry.setPortalVersionMin(portalVersionMin);
-	}
-
-	/**
 	* Sets the primary key of this license entry.
 	*
 	* @param primaryKey the primary key of this license entry
@@ -485,6 +465,26 @@ public class LicenseEntryWrapper implements LicenseEntry,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_licenseEntry.setUserUuid(userUuid);
+	}
+
+	/**
+	* Sets the version max of this license entry.
+	*
+	* @param versionMax the version max of this license entry
+	*/
+	@Override
+	public void setVersionMax(int versionMax) {
+		_licenseEntry.setVersionMax(versionMax);
+	}
+
+	/**
+	* Sets the version min of this license entry.
+	*
+	* @param versionMin the version min of this license entry
+	*/
+	@Override
+	public void setVersionMin(int versionMin) {
+		_licenseEntry.setVersionMin(versionMin);
 	}
 
 	@Override

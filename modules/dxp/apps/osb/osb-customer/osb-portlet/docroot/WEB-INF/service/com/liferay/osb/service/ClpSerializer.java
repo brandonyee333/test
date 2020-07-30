@@ -1816,8 +1816,8 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
-					"com.liferay.osb.exception.LicenseEntryPortalVersionException")) {
-			return new com.liferay.osb.exception.LicenseEntryPortalVersionException(throwable.getMessage(),
+					"com.liferay.osb.exception.LicenseEntryVersionException")) {
+			return new com.liferay.osb.exception.LicenseEntryVersionException(throwable.getMessage(),
 				throwable.getCause());
 		}
 

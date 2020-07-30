@@ -183,7 +183,7 @@ public class LicenseEntryLocalServiceClp implements LicenseEntryLocalService {
 	@Override
 	public com.liferay.osb.model.LicenseEntry addLicenseEntry(long userId,
 		long productEntryId, java.lang.String name, java.lang.String type,
-		int portalVersionMin, int portalVersionMax)
+		int versionMin, int versionMax)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
@@ -199,9 +199,9 @@ public class LicenseEntryLocalServiceClp implements LicenseEntryLocalService {
 						
 					ClpSerializer.translateInput(type),
 						
-					portalVersionMin,
+					versionMin,
 						
-					portalVersionMax
+					versionMax
 					});
 		}
 		catch (Throwable t) {
@@ -416,7 +416,7 @@ public class LicenseEntryLocalServiceClp implements LicenseEntryLocalService {
 	@Override
 	public com.liferay.osb.model.LicenseEntry updateLicenseEntry(
 		long licenseEntryId, long productEntryId, java.lang.String name,
-		java.lang.String type, int portalVersionMin, int portalVersionMax)
+		java.lang.String type, int versionMin, int versionMax)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
@@ -432,9 +432,9 @@ public class LicenseEntryLocalServiceClp implements LicenseEntryLocalService {
 						
 					ClpSerializer.translateInput(type),
 						
-					portalVersionMin,
+					versionMin,
 						
-					portalVersionMax
+					versionMax
 					});
 		}
 		catch (Throwable t) {
@@ -780,13 +780,13 @@ public class LicenseEntryLocalServiceClp implements LicenseEntryLocalService {
 
 	@Override
 	public java.util.List<com.liferay.osb.model.LicenseEntry> getLicenseEntries(
-		long productEntryId, int portalVersion) {
+		long productEntryId, int version) {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName23,
 					_methodParameterTypes23,
-					new Object[] { productEntryId, portalVersion });
+					new Object[] { productEntryId, version });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);

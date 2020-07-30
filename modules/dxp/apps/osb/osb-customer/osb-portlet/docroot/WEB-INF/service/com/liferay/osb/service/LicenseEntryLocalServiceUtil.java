@@ -55,11 +55,11 @@ public class LicenseEntryLocalServiceUtil {
 
 	public static com.liferay.osb.model.LicenseEntry addLicenseEntry(
 		long userId, long productEntryId, java.lang.String name,
-		java.lang.String type, int portalVersionMin, int portalVersionMax)
+		java.lang.String type, int versionMin, int versionMax)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addLicenseEntry(userId, productEntryId, name, type,
-			portalVersionMin, portalVersionMax);
+			versionMin, versionMax);
 	}
 
 	/**
@@ -134,11 +134,11 @@ public class LicenseEntryLocalServiceUtil {
 
 	public static com.liferay.osb.model.LicenseEntry updateLicenseEntry(
 		long licenseEntryId, long productEntryId, java.lang.String name,
-		java.lang.String type, int portalVersionMin, int portalVersionMax)
+		java.lang.String type, int versionMin, int versionMax)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateLicenseEntry(licenseEntryId, productEntryId, name,
-			type, portalVersionMin, portalVersionMax);
+			type, versionMin, versionMax);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
@@ -264,8 +264,8 @@ public class LicenseEntryLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.LicenseEntry> getLicenseEntries(
-		long productEntryId, int portalVersion) {
-		return getService().getLicenseEntries(productEntryId, portalVersion);
+		long productEntryId, int version) {
+		return getService().getLicenseEntries(productEntryId, version);
 	}
 
 	/**

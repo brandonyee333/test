@@ -54,8 +54,8 @@ public interface LicenseEntry extends LicenseEntryModel, PersistedModel {
 			}
 		};
 
-	public java.lang.String getPortalVersionLabel();
-
 	public ProductEntry getProductEntry()
 		throws com.liferay.portal.kernel.exception.PortalException;
+
+	public java.lang.String getVersionLabel();
 }

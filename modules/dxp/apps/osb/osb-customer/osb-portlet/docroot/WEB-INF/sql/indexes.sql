@@ -50,8 +50,8 @@ create index IX_A16BF735 on OSB_CorpProjectMessage (uuid_[$COLUMN_LENGTH:75$]);
 create index IX_86A7752 on OSB_ExternalIdMapper (classNameId, classPK, type_);
 create index IX_8FBE42CF on OSB_ExternalIdMapper (classNameId, type_, externalId[$COLUMN_LENGTH:75$]);
 
-create index IX_8B5D7FE4 on OSB_LicenseEntry (productEntryId, portalVersionMin);
 create unique index IX_7576438B on OSB_LicenseEntry (productEntryId, type_[$COLUMN_LENGTH:75$]);
+create index IX_19390E58 on OSB_LicenseEntry (productEntryId, versionMin);
 
 create index IX_D9E7AC39 on OSB_LicenseKey (accountEntryId);
 create index IX_5D0EB94A on OSB_LicenseKey (assetReceiptLicenseUuid[$COLUMN_LENGTH:75$], active_);

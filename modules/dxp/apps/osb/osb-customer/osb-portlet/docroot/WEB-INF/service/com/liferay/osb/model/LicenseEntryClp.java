@@ -89,8 +89,8 @@ public class LicenseEntryClp extends BaseModelImpl<LicenseEntry>
 		attributes.put("productEntryId", getProductEntryId());
 		attributes.put("name", getName());
 		attributes.put("type", getType());
-		attributes.put("portalVersionMin", getPortalVersionMin());
-		attributes.put("portalVersionMax", getPortalVersionMax());
+		attributes.put("versionMin", getVersionMin());
+		attributes.put("versionMax", getVersionMax());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -148,16 +148,16 @@ public class LicenseEntryClp extends BaseModelImpl<LicenseEntry>
 			setType(type);
 		}
 
-		Integer portalVersionMin = (Integer)attributes.get("portalVersionMin");
+		Integer versionMin = (Integer)attributes.get("versionMin");
 
-		if (portalVersionMin != null) {
-			setPortalVersionMin(portalVersionMin);
+		if (versionMin != null) {
+			setVersionMin(versionMin);
 		}
 
-		Integer portalVersionMax = (Integer)attributes.get("portalVersionMax");
+		Integer versionMax = (Integer)attributes.get("versionMax");
 
-		if (portalVersionMax != null) {
-			setPortalVersionMax(portalVersionMax);
+		if (versionMax != null) {
+			setVersionMax(versionMax);
 		}
 
 		_entityCacheEnabled = GetterUtil.getBoolean("entityCacheEnabled");
@@ -365,21 +365,21 @@ public class LicenseEntryClp extends BaseModelImpl<LicenseEntry>
 	}
 
 	@Override
-	public int getPortalVersionMin() {
-		return _portalVersionMin;
+	public int getVersionMin() {
+		return _versionMin;
 	}
 
 	@Override
-	public void setPortalVersionMin(int portalVersionMin) {
-		_portalVersionMin = portalVersionMin;
+	public void setVersionMin(int versionMin) {
+		_versionMin = versionMin;
 
 		if (_licenseEntryRemoteModel != null) {
 			try {
 				Class<?> clazz = _licenseEntryRemoteModel.getClass();
 
-				Method method = clazz.getMethod("setPortalVersionMin", int.class);
+				Method method = clazz.getMethod("setVersionMin", int.class);
 
-				method.invoke(_licenseEntryRemoteModel, portalVersionMin);
+				method.invoke(_licenseEntryRemoteModel, versionMin);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -388,44 +388,25 @@ public class LicenseEntryClp extends BaseModelImpl<LicenseEntry>
 	}
 
 	@Override
-	public int getPortalVersionMax() {
-		return _portalVersionMax;
+	public int getVersionMax() {
+		return _versionMax;
 	}
 
 	@Override
-	public void setPortalVersionMax(int portalVersionMax) {
-		_portalVersionMax = portalVersionMax;
+	public void setVersionMax(int versionMax) {
+		_versionMax = versionMax;
 
 		if (_licenseEntryRemoteModel != null) {
 			try {
 				Class<?> clazz = _licenseEntryRemoteModel.getClass();
 
-				Method method = clazz.getMethod("setPortalVersionMax", int.class);
+				Method method = clazz.getMethod("setVersionMax", int.class);
 
-				method.invoke(_licenseEntryRemoteModel, portalVersionMax);
+				method.invoke(_licenseEntryRemoteModel, versionMax);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
 			}
-		}
-	}
-
-	@Override
-	public java.lang.String getPortalVersionLabel() {
-		try {
-			String methodName = "getPortalVersionLabel";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
 		}
 	}
 
@@ -439,6 +420,25 @@ public class LicenseEntryClp extends BaseModelImpl<LicenseEntry>
 			Object[] parameterValues = new Object[] {  };
 
 			ProductEntry returnObj = (ProductEntry)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public java.lang.String getVersionLabel() {
+		try {
+			String methodName = "getVersionLabel";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
 					parameterTypes, parameterValues);
 
 			return returnObj;
@@ -525,8 +525,8 @@ public class LicenseEntryClp extends BaseModelImpl<LicenseEntry>
 		clone.setProductEntryId(getProductEntryId());
 		clone.setName(getName());
 		clone.setType(getType());
-		clone.setPortalVersionMin(getPortalVersionMin());
-		clone.setPortalVersionMax(getPortalVersionMax());
+		clone.setVersionMin(getVersionMin());
+		clone.setVersionMax(getVersionMax());
 
 		return clone;
 	}
@@ -605,10 +605,10 @@ public class LicenseEntryClp extends BaseModelImpl<LicenseEntry>
 		sb.append(getName());
 		sb.append(", type=");
 		sb.append(getType());
-		sb.append(", portalVersionMin=");
-		sb.append(getPortalVersionMin());
-		sb.append(", portalVersionMax=");
-		sb.append(getPortalVersionMax());
+		sb.append(", versionMin=");
+		sb.append(getVersionMin());
+		sb.append(", versionMax=");
+		sb.append(getVersionMax());
 		sb.append("}");
 
 		return sb.toString();
@@ -655,12 +655,12 @@ public class LicenseEntryClp extends BaseModelImpl<LicenseEntry>
 		sb.append(getType());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>portalVersionMin</column-name><column-value><![CDATA[");
-		sb.append(getPortalVersionMin());
+			"<column><column-name>versionMin</column-name><column-value><![CDATA[");
+		sb.append(getVersionMin());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>portalVersionMax</column-name><column-value><![CDATA[");
-		sb.append(getPortalVersionMax());
+			"<column><column-name>versionMax</column-name><column-value><![CDATA[");
+		sb.append(getVersionMax());
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
@@ -676,8 +676,8 @@ public class LicenseEntryClp extends BaseModelImpl<LicenseEntry>
 	private long _productEntryId;
 	private String _name;
 	private String _type;
-	private int _portalVersionMin;
-	private int _portalVersionMax;
+	private int _versionMin;
+	private int _versionMax;
 	private BaseModel<?> _licenseEntryRemoteModel;
 	private Class<?> _clpSerializerClass = ClpSerializer.class;
 	private boolean _entityCacheEnabled;

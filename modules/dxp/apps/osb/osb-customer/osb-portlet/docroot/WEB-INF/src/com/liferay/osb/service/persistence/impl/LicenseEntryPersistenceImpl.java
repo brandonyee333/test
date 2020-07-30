@@ -854,84 +854,82 @@ public class LicenseEntryPersistenceImpl extends BasePersistenceImpl<LicenseEntr
 	private static final String _FINDER_COLUMN_PEI_T_TYPE_1 = "licenseEntry.type IS NULL";
 	private static final String _FINDER_COLUMN_PEI_T_TYPE_2 = "licenseEntry.type = ?";
 	private static final String _FINDER_COLUMN_PEI_T_TYPE_3 = "(licenseEntry.type IS NULL OR licenseEntry.type = '')";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_PEI_PV = new FinderPath(LicenseEntryModelImpl.ENTITY_CACHE_ENABLED,
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_PEI_V = new FinderPath(LicenseEntryModelImpl.ENTITY_CACHE_ENABLED,
 			LicenseEntryModelImpl.FINDER_CACHE_ENABLED, LicenseEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByPEI_PV",
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByPEI_V",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				
 			Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_COUNT_BY_PEI_PV = new FinderPath(LicenseEntryModelImpl.ENTITY_CACHE_ENABLED,
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_COUNT_BY_PEI_V = new FinderPath(LicenseEntryModelImpl.ENTITY_CACHE_ENABLED,
 			LicenseEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByPEI_PV",
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByPEI_V",
 			new String[] { Long.class.getName(), Integer.class.getName() });
 
 	/**
-	 * Returns all the license entries where productEntryId = &#63; and portalVersionMin &le; &#63;.
+	 * Returns all the license entries where productEntryId = &#63; and versionMin &le; &#63;.
 	 *
 	 * @param productEntryId the product entry ID
-	 * @param portalVersionMin the portal version min
+	 * @param versionMin the version min
 	 * @return the matching license entries
 	 */
 	@Override
-	public List<LicenseEntry> findByPEI_PV(long productEntryId,
-		int portalVersionMin) {
-		return findByPEI_PV(productEntryId, portalVersionMin,
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	public List<LicenseEntry> findByPEI_V(long productEntryId, int versionMin) {
+		return findByPEI_V(productEntryId, versionMin, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the license entries where productEntryId = &#63; and portalVersionMin &le; &#63;.
+	 * Returns a range of all the license entries where productEntryId = &#63; and versionMin &le; &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param productEntryId the product entry ID
-	 * @param portalVersionMin the portal version min
+	 * @param versionMin the version min
 	 * @param start the lower bound of the range of license entries
 	 * @param end the upper bound of the range of license entries (not inclusive)
 	 * @return the range of matching license entries
 	 */
 	@Override
-	public List<LicenseEntry> findByPEI_PV(long productEntryId,
-		int portalVersionMin, int start, int end) {
-		return findByPEI_PV(productEntryId, portalVersionMin, start, end, null);
+	public List<LicenseEntry> findByPEI_V(long productEntryId, int versionMin,
+		int start, int end) {
+		return findByPEI_V(productEntryId, versionMin, start, end, null);
 	}
 
 	/**
-	 * Returns an ordered range of all the license entries where productEntryId = &#63; and portalVersionMin &le; &#63;.
+	 * Returns an ordered range of all the license entries where productEntryId = &#63; and versionMin &le; &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param productEntryId the product entry ID
-	 * @param portalVersionMin the portal version min
+	 * @param versionMin the version min
 	 * @param start the lower bound of the range of license entries
 	 * @param end the upper bound of the range of license entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching license entries
 	 */
 	@Override
-	public List<LicenseEntry> findByPEI_PV(long productEntryId,
-		int portalVersionMin, int start, int end,
-		OrderByComparator<LicenseEntry> orderByComparator) {
-		return findByPEI_PV(productEntryId, portalVersionMin, start, end,
+	public List<LicenseEntry> findByPEI_V(long productEntryId, int versionMin,
+		int start, int end, OrderByComparator<LicenseEntry> orderByComparator) {
+		return findByPEI_V(productEntryId, versionMin, start, end,
 			orderByComparator, true);
 	}
 
 	/**
-	 * Returns an ordered range of all the license entries where productEntryId = &#63; and portalVersionMin &le; &#63;.
+	 * Returns an ordered range of all the license entries where productEntryId = &#63; and versionMin &le; &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param productEntryId the product entry ID
-	 * @param portalVersionMin the portal version min
+	 * @param versionMin the version min
 	 * @param start the lower bound of the range of license entries
 	 * @param end the upper bound of the range of license entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -939,17 +937,16 @@ public class LicenseEntryPersistenceImpl extends BasePersistenceImpl<LicenseEntr
 	 * @return the ordered range of matching license entries
 	 */
 	@Override
-	public List<LicenseEntry> findByPEI_PV(long productEntryId,
-		int portalVersionMin, int start, int end,
-		OrderByComparator<LicenseEntry> orderByComparator,
+	public List<LicenseEntry> findByPEI_V(long productEntryId, int versionMin,
+		int start, int end, OrderByComparator<LicenseEntry> orderByComparator,
 		boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
-		finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_PEI_PV;
+		finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_PEI_V;
 		finderArgs = new Object[] {
-				productEntryId, portalVersionMin,
+				productEntryId, versionMin,
 				
 				start, end, orderByComparator
 			};
@@ -963,7 +960,7 @@ public class LicenseEntryPersistenceImpl extends BasePersistenceImpl<LicenseEntr
 			if ((list != null) && !list.isEmpty()) {
 				for (LicenseEntry licenseEntry : list) {
 					if ((productEntryId != licenseEntry.getProductEntryId()) ||
-							(portalVersionMin < licenseEntry.getPortalVersionMin())) {
+							(versionMin < licenseEntry.getVersionMin())) {
 						list = null;
 
 						break;
@@ -985,9 +982,9 @@ public class LicenseEntryPersistenceImpl extends BasePersistenceImpl<LicenseEntr
 
 			query.append(_SQL_SELECT_LICENSEENTRY_WHERE);
 
-			query.append(_FINDER_COLUMN_PEI_PV_PRODUCTENTRYID_2);
+			query.append(_FINDER_COLUMN_PEI_V_PRODUCTENTRYID_2);
 
-			query.append(_FINDER_COLUMN_PEI_PV_PORTALVERSIONMIN_2);
+			query.append(_FINDER_COLUMN_PEI_V_VERSIONMIN_2);
 
 			if (orderByComparator != null) {
 				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
@@ -1011,7 +1008,7 @@ public class LicenseEntryPersistenceImpl extends BasePersistenceImpl<LicenseEntr
 
 				qPos.add(productEntryId);
 
-				qPos.add(portalVersionMin);
+				qPos.add(versionMin);
 
 				if (!pagination) {
 					list = (List<LicenseEntry>)QueryUtil.list(q, getDialect(),
@@ -1044,20 +1041,20 @@ public class LicenseEntryPersistenceImpl extends BasePersistenceImpl<LicenseEntr
 	}
 
 	/**
-	 * Returns the first license entry in the ordered set where productEntryId = &#63; and portalVersionMin &le; &#63;.
+	 * Returns the first license entry in the ordered set where productEntryId = &#63; and versionMin &le; &#63;.
 	 *
 	 * @param productEntryId the product entry ID
-	 * @param portalVersionMin the portal version min
+	 * @param versionMin the version min
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching license entry
 	 * @throws NoSuchLicenseEntryException if a matching license entry could not be found
 	 */
 	@Override
-	public LicenseEntry findByPEI_PV_First(long productEntryId,
-		int portalVersionMin, OrderByComparator<LicenseEntry> orderByComparator)
+	public LicenseEntry findByPEI_V_First(long productEntryId, int versionMin,
+		OrderByComparator<LicenseEntry> orderByComparator)
 		throws NoSuchLicenseEntryException {
-		LicenseEntry licenseEntry = fetchByPEI_PV_First(productEntryId,
-				portalVersionMin, orderByComparator);
+		LicenseEntry licenseEntry = fetchByPEI_V_First(productEntryId,
+				versionMin, orderByComparator);
 
 		if (licenseEntry != null) {
 			return licenseEntry;
@@ -1070,8 +1067,8 @@ public class LicenseEntryPersistenceImpl extends BasePersistenceImpl<LicenseEntr
 		msg.append("productEntryId=");
 		msg.append(productEntryId);
 
-		msg.append(", portalVersionMin=");
-		msg.append(portalVersionMin);
+		msg.append(", versionMin=");
+		msg.append(versionMin);
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
@@ -1079,18 +1076,18 @@ public class LicenseEntryPersistenceImpl extends BasePersistenceImpl<LicenseEntr
 	}
 
 	/**
-	 * Returns the first license entry in the ordered set where productEntryId = &#63; and portalVersionMin &le; &#63;.
+	 * Returns the first license entry in the ordered set where productEntryId = &#63; and versionMin &le; &#63;.
 	 *
 	 * @param productEntryId the product entry ID
-	 * @param portalVersionMin the portal version min
+	 * @param versionMin the version min
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching license entry, or <code>null</code> if a matching license entry could not be found
 	 */
 	@Override
-	public LicenseEntry fetchByPEI_PV_First(long productEntryId,
-		int portalVersionMin, OrderByComparator<LicenseEntry> orderByComparator) {
-		List<LicenseEntry> list = findByPEI_PV(productEntryId,
-				portalVersionMin, 0, 1, orderByComparator);
+	public LicenseEntry fetchByPEI_V_First(long productEntryId, int versionMin,
+		OrderByComparator<LicenseEntry> orderByComparator) {
+		List<LicenseEntry> list = findByPEI_V(productEntryId, versionMin, 0, 1,
+				orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -1100,20 +1097,20 @@ public class LicenseEntryPersistenceImpl extends BasePersistenceImpl<LicenseEntr
 	}
 
 	/**
-	 * Returns the last license entry in the ordered set where productEntryId = &#63; and portalVersionMin &le; &#63;.
+	 * Returns the last license entry in the ordered set where productEntryId = &#63; and versionMin &le; &#63;.
 	 *
 	 * @param productEntryId the product entry ID
-	 * @param portalVersionMin the portal version min
+	 * @param versionMin the version min
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching license entry
 	 * @throws NoSuchLicenseEntryException if a matching license entry could not be found
 	 */
 	@Override
-	public LicenseEntry findByPEI_PV_Last(long productEntryId,
-		int portalVersionMin, OrderByComparator<LicenseEntry> orderByComparator)
+	public LicenseEntry findByPEI_V_Last(long productEntryId, int versionMin,
+		OrderByComparator<LicenseEntry> orderByComparator)
 		throws NoSuchLicenseEntryException {
-		LicenseEntry licenseEntry = fetchByPEI_PV_Last(productEntryId,
-				portalVersionMin, orderByComparator);
+		LicenseEntry licenseEntry = fetchByPEI_V_Last(productEntryId,
+				versionMin, orderByComparator);
 
 		if (licenseEntry != null) {
 			return licenseEntry;
@@ -1126,8 +1123,8 @@ public class LicenseEntryPersistenceImpl extends BasePersistenceImpl<LicenseEntr
 		msg.append("productEntryId=");
 		msg.append(productEntryId);
 
-		msg.append(", portalVersionMin=");
-		msg.append(portalVersionMin);
+		msg.append(", versionMin=");
+		msg.append(versionMin);
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
@@ -1135,24 +1132,24 @@ public class LicenseEntryPersistenceImpl extends BasePersistenceImpl<LicenseEntr
 	}
 
 	/**
-	 * Returns the last license entry in the ordered set where productEntryId = &#63; and portalVersionMin &le; &#63;.
+	 * Returns the last license entry in the ordered set where productEntryId = &#63; and versionMin &le; &#63;.
 	 *
 	 * @param productEntryId the product entry ID
-	 * @param portalVersionMin the portal version min
+	 * @param versionMin the version min
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching license entry, or <code>null</code> if a matching license entry could not be found
 	 */
 	@Override
-	public LicenseEntry fetchByPEI_PV_Last(long productEntryId,
-		int portalVersionMin, OrderByComparator<LicenseEntry> orderByComparator) {
-		int count = countByPEI_PV(productEntryId, portalVersionMin);
+	public LicenseEntry fetchByPEI_V_Last(long productEntryId, int versionMin,
+		OrderByComparator<LicenseEntry> orderByComparator) {
+		int count = countByPEI_V(productEntryId, versionMin);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<LicenseEntry> list = findByPEI_PV(productEntryId,
-				portalVersionMin, count - 1, count, orderByComparator);
+		List<LicenseEntry> list = findByPEI_V(productEntryId, versionMin,
+				count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -1162,18 +1159,18 @@ public class LicenseEntryPersistenceImpl extends BasePersistenceImpl<LicenseEntr
 	}
 
 	/**
-	 * Returns the license entries before and after the current license entry in the ordered set where productEntryId = &#63; and portalVersionMin &le; &#63;.
+	 * Returns the license entries before and after the current license entry in the ordered set where productEntryId = &#63; and versionMin &le; &#63;.
 	 *
 	 * @param licenseEntryId the primary key of the current license entry
 	 * @param productEntryId the product entry ID
-	 * @param portalVersionMin the portal version min
+	 * @param versionMin the version min
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next license entry
 	 * @throws NoSuchLicenseEntryException if a license entry with the primary key could not be found
 	 */
 	@Override
-	public LicenseEntry[] findByPEI_PV_PrevAndNext(long licenseEntryId,
-		long productEntryId, int portalVersionMin,
+	public LicenseEntry[] findByPEI_V_PrevAndNext(long licenseEntryId,
+		long productEntryId, int versionMin,
 		OrderByComparator<LicenseEntry> orderByComparator)
 		throws NoSuchLicenseEntryException {
 		LicenseEntry licenseEntry = findByPrimaryKey(licenseEntryId);
@@ -1185,13 +1182,13 @@ public class LicenseEntryPersistenceImpl extends BasePersistenceImpl<LicenseEntr
 
 			LicenseEntry[] array = new LicenseEntryImpl[3];
 
-			array[0] = getByPEI_PV_PrevAndNext(session, licenseEntry,
-					productEntryId, portalVersionMin, orderByComparator, true);
+			array[0] = getByPEI_V_PrevAndNext(session, licenseEntry,
+					productEntryId, versionMin, orderByComparator, true);
 
 			array[1] = licenseEntry;
 
-			array[2] = getByPEI_PV_PrevAndNext(session, licenseEntry,
-					productEntryId, portalVersionMin, orderByComparator, false);
+			array[2] = getByPEI_V_PrevAndNext(session, licenseEntry,
+					productEntryId, versionMin, orderByComparator, false);
 
 			return array;
 		}
@@ -1203,8 +1200,8 @@ public class LicenseEntryPersistenceImpl extends BasePersistenceImpl<LicenseEntr
 		}
 	}
 
-	protected LicenseEntry getByPEI_PV_PrevAndNext(Session session,
-		LicenseEntry licenseEntry, long productEntryId, int portalVersionMin,
+	protected LicenseEntry getByPEI_V_PrevAndNext(Session session,
+		LicenseEntry licenseEntry, long productEntryId, int versionMin,
 		OrderByComparator<LicenseEntry> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
@@ -1219,9 +1216,9 @@ public class LicenseEntryPersistenceImpl extends BasePersistenceImpl<LicenseEntr
 
 		query.append(_SQL_SELECT_LICENSEENTRY_WHERE);
 
-		query.append(_FINDER_COLUMN_PEI_PV_PRODUCTENTRYID_2);
+		query.append(_FINDER_COLUMN_PEI_V_PRODUCTENTRYID_2);
 
-		query.append(_FINDER_COLUMN_PEI_PV_PORTALVERSIONMIN_2);
+		query.append(_FINDER_COLUMN_PEI_V_VERSIONMIN_2);
 
 		if (orderByComparator != null) {
 			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
@@ -1293,7 +1290,7 @@ public class LicenseEntryPersistenceImpl extends BasePersistenceImpl<LicenseEntr
 
 		qPos.add(productEntryId);
 
-		qPos.add(portalVersionMin);
+		qPos.add(versionMin);
 
 		if (orderByComparator != null) {
 			Object[] values = orderByComparator.getOrderByConditionValues(licenseEntry);
@@ -1314,31 +1311,31 @@ public class LicenseEntryPersistenceImpl extends BasePersistenceImpl<LicenseEntr
 	}
 
 	/**
-	 * Removes all the license entries where productEntryId = &#63; and portalVersionMin &le; &#63; from the database.
+	 * Removes all the license entries where productEntryId = &#63; and versionMin &le; &#63; from the database.
 	 *
 	 * @param productEntryId the product entry ID
-	 * @param portalVersionMin the portal version min
+	 * @param versionMin the version min
 	 */
 	@Override
-	public void removeByPEI_PV(long productEntryId, int portalVersionMin) {
-		for (LicenseEntry licenseEntry : findByPEI_PV(productEntryId,
-				portalVersionMin, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+	public void removeByPEI_V(long productEntryId, int versionMin) {
+		for (LicenseEntry licenseEntry : findByPEI_V(productEntryId,
+				versionMin, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(licenseEntry);
 		}
 	}
 
 	/**
-	 * Returns the number of license entries where productEntryId = &#63; and portalVersionMin &le; &#63;.
+	 * Returns the number of license entries where productEntryId = &#63; and versionMin &le; &#63;.
 	 *
 	 * @param productEntryId the product entry ID
-	 * @param portalVersionMin the portal version min
+	 * @param versionMin the version min
 	 * @return the number of matching license entries
 	 */
 	@Override
-	public int countByPEI_PV(long productEntryId, int portalVersionMin) {
-		FinderPath finderPath = FINDER_PATH_WITH_PAGINATION_COUNT_BY_PEI_PV;
+	public int countByPEI_V(long productEntryId, int versionMin) {
+		FinderPath finderPath = FINDER_PATH_WITH_PAGINATION_COUNT_BY_PEI_V;
 
-		Object[] finderArgs = new Object[] { productEntryId, portalVersionMin };
+		Object[] finderArgs = new Object[] { productEntryId, versionMin };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -1347,9 +1344,9 @@ public class LicenseEntryPersistenceImpl extends BasePersistenceImpl<LicenseEntr
 
 			query.append(_SQL_COUNT_LICENSEENTRY_WHERE);
 
-			query.append(_FINDER_COLUMN_PEI_PV_PRODUCTENTRYID_2);
+			query.append(_FINDER_COLUMN_PEI_V_PRODUCTENTRYID_2);
 
-			query.append(_FINDER_COLUMN_PEI_PV_PORTALVERSIONMIN_2);
+			query.append(_FINDER_COLUMN_PEI_V_VERSIONMIN_2);
 
 			String sql = query.toString();
 
@@ -1364,7 +1361,7 @@ public class LicenseEntryPersistenceImpl extends BasePersistenceImpl<LicenseEntr
 
 				qPos.add(productEntryId);
 
-				qPos.add(portalVersionMin);
+				qPos.add(versionMin);
 
 				count = (Long)q.uniqueResult();
 
@@ -1383,8 +1380,8 @@ public class LicenseEntryPersistenceImpl extends BasePersistenceImpl<LicenseEntr
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_PEI_PV_PRODUCTENTRYID_2 = "licenseEntry.productEntryId = ? AND ";
-	private static final String _FINDER_COLUMN_PEI_PV_PORTALVERSIONMIN_2 = "licenseEntry.portalVersionMin <= ?";
+	private static final String _FINDER_COLUMN_PEI_V_PRODUCTENTRYID_2 = "licenseEntry.productEntryId = ? AND ";
+	private static final String _FINDER_COLUMN_PEI_V_VERSIONMIN_2 = "licenseEntry.versionMin <= ?";
 
 	public LicenseEntryPersistenceImpl() {
 		setModelClass(LicenseEntry.class);
@@ -1734,8 +1731,8 @@ public class LicenseEntryPersistenceImpl extends BasePersistenceImpl<LicenseEntr
 		licenseEntryImpl.setProductEntryId(licenseEntry.getProductEntryId());
 		licenseEntryImpl.setName(licenseEntry.getName());
 		licenseEntryImpl.setType(licenseEntry.getType());
-		licenseEntryImpl.setPortalVersionMin(licenseEntry.getPortalVersionMin());
-		licenseEntryImpl.setPortalVersionMax(licenseEntry.getPortalVersionMax());
+		licenseEntryImpl.setVersionMin(licenseEntry.getVersionMin());
+		licenseEntryImpl.setVersionMax(licenseEntry.getVersionMax());
 
 		return licenseEntryImpl;
 	}

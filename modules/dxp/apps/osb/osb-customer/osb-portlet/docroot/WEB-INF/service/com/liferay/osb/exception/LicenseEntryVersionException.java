@@ -19,20 +19,20 @@ import com.liferay.portal.kernel.exception.PortalException;
 /**
  * @author Brian Wing Shun Chan
  */
-public class LicenseEntryPortalVersionException extends PortalException {
+public class LicenseEntryVersionException extends PortalException {
 
-	public LicenseEntryPortalVersionException() {
+	public LicenseEntryVersionException() {
 	}
 
-	public LicenseEntryPortalVersionException(String msg) {
+	public LicenseEntryVersionException(String msg) {
 		super(msg);
 	}
 
-	public LicenseEntryPortalVersionException(String msg, Throwable cause) {
+	public LicenseEntryVersionException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
-	public LicenseEntryPortalVersionException(Throwable cause) {
+	public LicenseEntryVersionException(Throwable cause) {
 		super(cause);
 	}
 
