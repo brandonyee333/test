@@ -262,8 +262,8 @@ public class JobDog {
 		if (jobRunsMonthlyStatistics.getAvailableJobRuns() == 0) {
 			throw new IllegalStateException(
 				String.format(
-					"Unable to run job ID %s because this run surpasses " +
-						"the maximum allowed monthly runs threshold",
+					"Unable to run job ID %s because this run surpasses the " +
+						"maximum allowed monthly runs threshold",
 					id));
 		}
 
