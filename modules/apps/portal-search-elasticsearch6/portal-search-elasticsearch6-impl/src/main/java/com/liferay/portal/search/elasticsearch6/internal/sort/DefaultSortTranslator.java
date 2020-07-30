@@ -69,7 +69,9 @@ public class DefaultSortTranslator implements SortTranslator {
 
 			SortOrder sortOrder = SortOrder.ASC;
 
-			if (sort.isReverse() || sortFieldName.equals("_score")) {
+			String originalSortName = sort.getFieldName();
+
+			if (sort.isReverse() || !sortFieldName.equals(originalSortName)) {
 				sortOrder = SortOrder.DESC;
 			}
 
