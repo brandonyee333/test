@@ -153,22 +153,10 @@ public class SessionNanite implements Nanite {
 		userSession.setLastEventDate(lastAnalyticsEvent.getEventDate());
 		userSession.setPageViewsCount(_getPageViewsCount(analyticsEvents));
 		userSession.setPlatformName(MapUtil.getString(context, "platformName"));
+		userSession.setReferrers(_getReferrers(analyticsEvents));
 		userSession.setRegion(MapUtil.getString(context, "region"));
+		userSession.setUrls(_getUrls(analyticsEvents));
 		userSession.setUserId(userId);
-
-		Set<String> referrers = new HashSet<>();
-		Set<String> urls = new HashSet<>();
-
-		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
-			Map<String, Object> analyticsEventContext =
-				analyticsEvent.getContext();
-
-			referrers.add((String)analyticsEventContext.get("referrer"));
-			urls.add((String)analyticsEventContext.get("url"));
-		}
-
-		userSession.setReferrers(referrers);
-		userSession.setUrls(urls);
 
 		JSONObject jsonObject = _cerebroInfoElasticsearchInvoker.add(
 			getCollectionName(),
@@ -234,6 +222,28 @@ public class SessionNanite implements Nanite {
 				Objects.equals(analyticsEvent.getApplicationId(), "Page") &&
 				Objects.equals(analyticsEvent.getEventId(), "pageViewed")
 		).count();
+	}
+
+	private Set<String> _getReferrers(List<AnalyticsEvent> analyticsEvents) {
+		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+
+		return stream.map(
+			analyticsEvent -> MapUtil.getString(
+				analyticsEvent.getContext(), "referrers")
+		).collect(
+			Collectors.toSet()
+		);
+	}
+
+	private Set<String> _getUrls(List<AnalyticsEvent> analyticsEvents) {
+		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+
+		return stream.map(
+			analyticsEvent -> MapUtil.getString(
+				analyticsEvent.getContext(), "url")
+		).collect(
+			Collectors.toSet()
+		);
 	}
 
 	private JSONObject _getUserSession(String userId, Date firstEventDate) {
@@ -512,6 +522,8 @@ public class SessionNanite implements Nanite {
 						DateUtil.toUTCString(
 							lastAnalyticsEvent.getEventDate()));
 					put("pageViewsCount", pageViewsCount);
+					put("referrers", _getReferrers(analyticsEvents));
+					put("urls", _getUrls(analyticsEvents));
 				}
 			});
 
