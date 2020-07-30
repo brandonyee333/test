@@ -216,7 +216,10 @@ export default withRouter(
 				<div className="questions-container">
 					<div className="row">
 						<div className="c-mt-3 col col-xl-12">
-							<Breadcrumb section={section} />
+							<Breadcrumb
+								rootSection={context.rootTopic}
+								section={section}
+							/>
 						</div>
 
 						<div className="c-mt-3 col col-xl-12">

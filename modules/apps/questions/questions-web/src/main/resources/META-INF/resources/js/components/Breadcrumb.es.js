@@ -19,7 +19,7 @@ import {client, getSectionsByIdQuery} from '../utils/client.es';
 import BreadcrumbDropdown from './BreadcrumbDropdown.es';
 import Link from './Link.es';
 
-export default ({section}) => {
+export default ({rootSection, section}) => {
 	const MAX_SECTIONS_IN_BREADCRUMB = 3;
 	const [breadcrumbNodes, setBreadcrumbNodes] = useState([]);
 
@@ -47,39 +47,47 @@ export default ({section}) => {
 			})
 			.then(({data}) => data.messageBoardSection);
 
-	const buildBreadcrumbNodesData = useCallback((section, acc = []) => {
-		acc.push({
-			subCategories: getSubSections(section),
-			title: section.title,
-		});
+	const buildBreadcrumbNodesData = useCallback(
+		(rootSection, section, acc = []) => {
+			if (rootSection !== section.title) {
+				acc.push({
+					subCategories: getSubSections(section),
+					title: section.title,
+				});
 
-		if (section.parentMessageBoardSectionId) {
-			if (section.parentMessageBoardSection) {
-				return Promise.resolve(
-					buildBreadcrumbNodesData(
-						section.parentMessageBoardSection,
-						acc
-					)
-				);
+				if (section.parentMessageBoardSectionId) {
+					if (section.parentMessageBoardSection) {
+						return Promise.resolve(
+							buildBreadcrumbNodesData(
+								rootSection,
+								section.parentMessageBoardSection,
+								acc
+							)
+						);
+					}
+
+					return findParent(
+						section.parentMessageBoardSectionId
+					).then((section) =>
+						buildBreadcrumbNodesData(rootSection, section, acc)
+					);
+				}
 			}
 
-			return findParent(
-				section.parentMessageBoardSectionId
-			).then((section) => buildBreadcrumbNodesData(section, acc));
-		}
-
-		return Promise.resolve(acc.reverse());
-	}, []);
+			return Promise.resolve(acc.reverse());
+		},
+		[]
+	);
 
 	useEffect(() => {
 		if (!section) {
 			return;
 		}
 
-		buildBreadcrumbNodesData(section).then((acc) =>
+		buildBreadcrumbNodesData(rootSection, section).then((acc) =>
 			setBreadcrumbNodes(acc)
 		);
-	}, [buildBreadcrumbNodesData, section]);
+	}, [buildBreadcrumbNodesData, rootSection, section]);
 
 	return (
 		<section className="align-items-center d-flex">
