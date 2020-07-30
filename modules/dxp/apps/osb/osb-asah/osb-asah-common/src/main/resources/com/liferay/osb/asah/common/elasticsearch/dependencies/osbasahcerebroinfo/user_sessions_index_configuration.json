@@ -54,6 +54,9 @@
 				"date": {
 					"type": "date"
 				},
+				"deviceType": {
+					"type": "keyword"
+				},
 				"duration": {
 					"type": "long"
 				},
@@ -268,7 +271,13 @@
 				"platformName": {
 					"type": "keyword"
 				},
+				"referrers": {
+					"type": "keyword"
+				},
 				"region": {
+					"type": "keyword"
+				},
+				"urls": {
 					"type": "keyword"
 				},
 				"userId": {
