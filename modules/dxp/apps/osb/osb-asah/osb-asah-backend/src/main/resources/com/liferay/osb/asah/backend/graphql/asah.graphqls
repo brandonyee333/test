@@ -414,6 +414,7 @@ type JobRunsMonthlyStatistics {
 	availableJobRuns: Int
 	completedJobRuns: Int
 	failedJobRuns: Int
+	publishedJobRuns: Int
 	runningJobRuns: Int
 	scheduledJobRuns: Int
 }

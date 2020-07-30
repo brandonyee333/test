@@ -204,6 +204,9 @@ public class JobDog {
 					_countJobRunsByStatus(jobRuns, JobRunStatus.COMPLETED));
 				setFailedJobRuns(
 					_countJobRunsByStatus(jobRuns, JobRunStatus.FAILED));
+				setMaxJobRuns(_maxMonthlyJobRuns);
+				setPublishedJobRuns(
+					_countJobRunsByStatus(jobRuns, JobRunStatus.PUBLISHED));
 				setRunningJobRuns(
 					_countJobRunsByStatus(jobRuns, JobRunStatus.RUNNING));
 				setScheduledJobRuns(

@@ -31,6 +31,10 @@ public class JobRunsMonthlyStatistics {
 		return _failedJobRuns;
 	}
 
+	public long getPublishedJobRuns() {
+		return _publishedJobRuns;
+	}
+
 	public long getRunningJobRuns() {
 		return _runningJobRuns;
 	}
@@ -51,6 +55,14 @@ public class JobRunsMonthlyStatistics {
 		_failedJobRuns = failedJobRuns;
 	}
 
+	public void setMaxJobRuns(long maxJobRuns) {
+		_maxJobRuns = maxJobRuns;
+	}
+
+	public void setPublishedJobRuns(long publishedJobRuns) {
+		_publishedJobRuns = publishedJobRuns;
+	}
+
 	public void setRunningJobRuns(long runningJobRuns) {
 		_runningJobRuns = runningJobRuns;
 	}
@@ -62,6 +74,8 @@ public class JobRunsMonthlyStatistics {
 	private long _availableJobRuns;
 	private long _completedJobRuns;
 	private long _failedJobRuns;
+	private long _maxJobRuns;
+	private long _publishedJobRuns;
 	private long _runningJobRuns;
 	private long _scheduledJobRuns;
 
