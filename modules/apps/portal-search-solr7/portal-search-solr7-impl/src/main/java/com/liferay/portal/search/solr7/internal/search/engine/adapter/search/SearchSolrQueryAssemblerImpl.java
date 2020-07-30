@@ -253,8 +253,10 @@ public class SearchSolrQueryAssemblerImpl implements SearchSolrQueryAssembler {
 
 			SolrQuery.ORDER order = SolrQuery.ORDER.asc;
 
-			if (sort.isReverse() || sortFieldName.equals("score")) {
-				order = SolrQuery.ORDER.desc;
+			String originalSortName = sort.getFieldName();
+
+			if (sort.isReverse() || !sortFieldName.equals(originalSortName)) {
+				sortOrder = SortOrder.DESC;
 			}
 
 			solrQuery.addSort(new SolrQuery.SortClause(sortFieldName, order));
