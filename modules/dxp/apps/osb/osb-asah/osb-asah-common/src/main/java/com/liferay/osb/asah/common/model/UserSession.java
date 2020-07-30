@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author André Miranda
@@ -194,8 +195,16 @@ public class UserSession implements Serializable {
 		return _platformName;
 	}
 
+	public Set<String> getReferrers() {
+		return _referrers;
+	}
+
 	public String getRegion() {
 		return _region;
+	}
+
+	public Set<String> getUrls() {
+		return _urls;
 	}
 
 	public String getUserId() {
@@ -209,7 +218,7 @@ public class UserSession implements Serializable {
 			_completeDate, _completeReason, _country, _dataSourceId, _date,
 			_duration, _entryPage, _exitPage, _firstEventDate, _id,
 			_individualId, _interactions, _lastEventDate, _platformName,
-			_region, _userId);
+			_referrers, _region, _urls, _userId);
 	}
 
 	public void setAcquisition(Acquisition acquisition) {
@@ -308,8 +317,16 @@ public class UserSession implements Serializable {
 		_platformName = platformName;
 	}
 
+	public void setReferrers(Set<String> referrers) {
+		_referrers = referrers;
+	}
+
 	public void setRegion(String region) {
 		_region = region;
+	}
+
+	public void setUrls(Set<String> urls) {
+		_urls = urls;
 	}
 
 	public void setUserId(String userId) {
@@ -338,7 +355,9 @@ public class UserSession implements Serializable {
 	private Date _lastEventDate;
 	private Long _pageViewsCount;
 	private String _platformName;
+	private Set<String> _referrers;
 	private String _region;
+	private Set<String> _urls;
 	private String _userId;
 
 }

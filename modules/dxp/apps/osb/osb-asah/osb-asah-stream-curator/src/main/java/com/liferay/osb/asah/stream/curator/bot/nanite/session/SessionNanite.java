@@ -156,6 +156,20 @@ public class SessionNanite implements Nanite {
 		userSession.setRegion(MapUtil.getString(context, "region"));
 		userSession.setUserId(userId);
 
+		Set<String> referrers = new HashSet<>();
+		Set<String> urls = new HashSet<>();
+
+		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
+			Map<String, Object> analyticsEventContext =
+				analyticsEvent.getContext();
+
+			referrers.add((String)analyticsEventContext.get("referrer"));
+			urls.add((String)analyticsEventContext.get("url"));
+		}
+
+		userSession.setReferrers(referrers);
+		userSession.setUrls(urls);
+
 		JSONObject jsonObject = _cerebroInfoElasticsearchInvoker.add(
 			getCollectionName(),
 			_objectMapper.convertValue(userSession, JSONObject.class));
