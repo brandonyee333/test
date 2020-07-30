@@ -252,7 +252,19 @@ public class JobDog {
 
 			throw new IllegalStateException(
 				String.format(
-					"Unable to run job %s because it is already running", id));
+					"Unable to run job ID %s because it is already running",
+					id));
+		}
+
+		JobRunsMonthlyStatistics jobRunsMonthlyStatistics =
+			getJobRunsMonthlyStatistics(id);
+
+		if (jobRunsMonthlyStatistics.getAvailableJobRuns() == 0) {
+			throw new IllegalStateException(
+				String.format(
+					"Unable to run job ID %s because this run surpasses " +
+						"the maximum allowed monthly runs threshold",
+					id));
 		}
 
 		Job job = getJob(id);
