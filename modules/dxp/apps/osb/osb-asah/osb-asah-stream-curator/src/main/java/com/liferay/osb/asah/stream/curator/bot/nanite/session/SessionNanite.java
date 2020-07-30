@@ -136,6 +136,7 @@ public class SessionNanite implements Nanite {
 		userSession.setCountry(MapUtil.getString(context, "country"));
 		userSession.setDataSourceId(firstAnalyticsEvent.getDataSourceId());
 		userSession.setDate(firstAnalyticsEvent.getNormalizedEventDate());
+		userSession.setDeviceType(MapUtil.getString(context, "deviceType"));
 		userSession.setDuration(0L);
 		userSession.setEntryPage(url);
 		userSession.setFirstEventDate(firstAnalyticsEvent.getEventDate());

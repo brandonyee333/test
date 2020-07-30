@@ -135,6 +135,10 @@ public class UserSession implements Serializable {
 		return new Date(_date.getTime());
 	}
 
+	public String getDeviceType() {
+		return _deviceType;
+	}
+
 	public Long getDuration() {
 		return _duration;
 	}
@@ -216,7 +220,7 @@ public class UserSession implements Serializable {
 		return Objects.hash(
 			_acquisition, _bounced, _browserName, _channelId, _city, _completed,
 			_completeDate, _completeReason, _country, _dataSourceId, _date,
-			_duration, _entryPage, _exitPage, _firstEventDate, _id,
+			_deviceType, _duration, _entryPage, _exitPage, _firstEventDate, _id,
 			_individualId, _interactions, _lastEventDate, _platformName,
 			_referrers, _region, _urls, _userId);
 	}
@@ -267,6 +271,10 @@ public class UserSession implements Serializable {
 		if (date != null) {
 			_date = new Date(date.getTime());
 		}
+	}
+
+	public void setDeviceType(String deviceType) {
+		_deviceType = deviceType;
 	}
 
 	public void setDuration(Long duration) {
@@ -344,6 +352,7 @@ public class UserSession implements Serializable {
 	private String _country;
 	private String _dataSourceId;
 	private Date _date;
+	private String _deviceType;
 	private Long _duration;
 	private String _entryPage;
 	private String _exitPage;
