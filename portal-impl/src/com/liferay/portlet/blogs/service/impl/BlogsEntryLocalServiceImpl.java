@@ -2191,11 +2191,13 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		if (Stream.of(
 				PrefsPropsUtil.getStringArray(
 					PropsKeys.BLOGS_IMAGE_EXTENSIONS,
-					com.liferay.petra.string.StringPool.COMMA)).anyMatch(
-						extension ->
-							extension.equals(
-								com.liferay.petra.string.StringPool.STAR) ||
-							extensions.contains(extension))) {
+					com.liferay.petra.string.StringPool.COMMA)
+			).anyMatch(
+				extension ->
+					extension.equals(
+						com.liferay.petra.string.StringPool.STAR) ||
+					extensions.contains(extension)
+			)) {
 
 			return true;
 		}

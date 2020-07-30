@@ -138,7 +138,11 @@ public class PortalServiceChecker extends BaseChecker {
 		}
 
 		if (services.contains(
-				className.concat(StringPool.POUND).concat(methodName))) {
+				className.concat(
+					StringPool.POUND
+				).concat(
+					methodName
+				))) {
 
 			return true;
 		}
