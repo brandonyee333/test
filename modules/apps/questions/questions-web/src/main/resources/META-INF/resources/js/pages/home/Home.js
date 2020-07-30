@@ -12,21 +12,37 @@
  * details.
  */
 
-import {useQuery} from '@apollo/client';
 import ClayCard from '@clayui/card';
-import React, {useContext} from 'react';
+import ClayLoadingIndicator from '@clayui/loading-indicator';
+import React, {useContext, useEffect, useState} from 'react';
 
 import {AppContext} from '../../AppContext.es';
+import Alert from '../../components/Alert.es';
 import Link from '../../components/Link.es';
-import {getSectionsQuery} from '../../utils/client.es';
+import {getSectionsFromRootSection} from '../../utils/client.es';
 import lang from '../../utils/lang.es';
 
 export default () => {
 	const context = useContext(AppContext);
 
-	const {data} = useQuery(getSectionsQuery, {
-		variables: {siteKey: context.siteKey},
-	});
+	const [error, setError] = useState({});
+	const [loading, setLoading] = useState(true);
+	const [sections, setSections] = useState({});
+
+	useEffect(() => {
+		getSectionsFromRootSection(context.rootTopic, context.siteKey)
+			.then(({data, loading}) => {
+				setSections(data || []);
+				setLoading(loading);
+			})
+			.catch((error) => {
+				if (process.env.NODE_ENV === 'development') {
+					console.error(error);
+				}
+				setLoading(false);
+				setError({message: 'Loading Topics', title: 'Error'});
+			});
+	}, [context.rootTopic, context.siteKey]);
 
 	function descriptionTruncate(description) {
 		return description.length > 150
@@ -38,8 +54,10 @@ export default () => {
 		<section className="questions-section questions-section-cards">
 			<div className="questions-container">
 				<div className="row">
-					{data &&
-						data.messageBoardSections.items.map((section) => (
+					{!loading &&
+						sections &&
+						sections.items &&
+						sections.items.map((section) => (
 							<div
 								className="c-mb-4 col-lg-4 col-md-6 col-xl-3"
 								key={section.id}
@@ -93,6 +111,9 @@ export default () => {
 							</div>
 						))}
 				</div>
+				{loading && <ClayLoadingIndicator />}
+
+				<Alert info={error} />
 			</div>
 		</section>
 	);
