@@ -62,7 +62,7 @@ class ContentRecommendationApplication(BaseSparkApplication):
 		    'es.net.http.auth.pass',
 		    self.configuration.get('es.net.http.auth.pass')
 		)
-		spark_conf.set('es.nodes', self.args.elasticsearch_hostname)
+		spark_conf.set('es.nodes', self.configuration.get('es.nodes'))
 		spark_conf.set('es.nodes.wan.only', 'true')
 		spark_conf.set(
 		    'fs.s3a.access.key', self.configuration.get('aws.access.key.id')

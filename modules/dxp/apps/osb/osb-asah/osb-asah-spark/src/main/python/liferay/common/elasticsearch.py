@@ -14,7 +14,7 @@ from elasticsearch import Elasticsearch
 class ElasticsearchBridge:
 	def __init__(self, spark_application):
 		self.elasticsearch = Elasticsearch(
-		    spark_application.args.elasticsearch_hostname,
+		    spark_application.configuration.get('es.nodes'),
 		    http_auth=(
 		        spark_application.configuration.get('es.net.http.auth.user'),
 		        spark_application.configuration.get('es.net.http.auth.pass')
