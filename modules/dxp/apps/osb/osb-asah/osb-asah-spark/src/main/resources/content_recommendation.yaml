@@ -15,7 +15,7 @@ es:
                 user: $ES_NET_HTTP_AUTH_USER
 google:
     storage:
-        path: gs://analytics-cloud-uat-analytic-events
+        path: gs://analytics-cloud-analytic-events-uat
 spark:
     jars:
         packages: "org.apache.hadoop:hadoop-aws:2.7.3,org.elasticsearch:elasticsearch-spark-20_2.11:6.8.2"
