@@ -25,7 +25,6 @@ import com.liferay.osb.customer.admin.service.base.AccountEntryLocalServiceBaseI
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -50,14 +49,16 @@ public class AccountEntryLocalServiceImpl
 	public AccountEntry addAccountEntry(
 			long userId, String koroneikiAccountKey, String dossieraAccountKey,
 			String corpProjectUuid, long corpProjectId, String name,
-			String code, String instructions, int status, String[] languageIds)
+			String code, String instructions, Date supportEndDate,
+			Date ticketSupportEndDate, int status, String[] languageIds)
 		throws PortalException {
 
 		validate(0, koroneikiAccountKey);
 
 		return doAddAccountEntry(
 			userId, koroneikiAccountKey, dossieraAccountKey, corpProjectUuid,
-			corpProjectId, name, code, instructions, status, languageIds);
+			corpProjectId, name, code, instructions, supportEndDate,
+			ticketSupportEndDate, status, languageIds);
 	}
 
 	@Override
@@ -145,6 +146,12 @@ public class AccountEntryLocalServiceImpl
 		return accountEntryPersistence.findByPrimaryKey(accountEntryId);
 	}
 
+	public List<AccountEntry> getExpiredSupportAccountEntries(
+		int start, int end) {
+
+		return accountEntryFinder.findByExpiredSupport(start, end);
+	}
+
 	@Override
 	public AccountEntry getKoroneikiAccountEntry(String koroneikiAccountKey)
 		throws PortalException {
@@ -193,12 +200,60 @@ public class AccountEntryLocalServiceImpl
 	}
 
 	public AccountEntry updateAccountEntry(
+			long accountEntryId, Date supportEndDate, Date ticketSupportEndDate,
+			int status)
+		throws PortalException {
+
+		Date now = new Date();
+
+		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
+			accountEntryId);
+
+		AccountEntry oldAccountEntry = (AccountEntry)accountEntry.clone();
+
+		accountEntry.setModifiedDate(now);
+		accountEntry.setSupportEndDate(supportEndDate);
+
+		if ((status == WorkflowConstants.STATUS_APPROVED) &&
+			(supportEndDate != null) && supportEndDate.after(now)) {
+
+			accountEntry.setActiveSupport(true);
+		}
+		else {
+			accountEntry.setActiveSupport(false);
+		}
+
+		accountEntry.setTicketSupportEndDate(ticketSupportEndDate);
+
+		if ((status == WorkflowConstants.STATUS_APPROVED) &&
+			(ticketSupportEndDate != null) && ticketSupportEndDate.after(now)) {
+
+			accountEntry.setActiveTicketSupport(true);
+		}
+		else {
+			accountEntry.setActiveTicketSupport(false);
+		}
+
+		accountEntry.setTicketSupportEndDate(ticketSupportEndDate);
+		accountEntry.setStatus(status);
+
+		accountEntry = accountEntryPersistence.update(accountEntry);
+
+		updateAuditEntry(
+			OSBCustomerConstants.USER_DEFAULT_USER_ID, StringPool.BLANK,
+			oldAccountEntry, accountEntry);
+
+		return accountEntry;
+	}
+
+	public AccountEntry updateAccountEntry(
 			long userId, long accountEntryId, String koroneikiAccountKey,
 			String dossieraAccountKey, String corpProjectUuid,
 			long corpProjectId, String name, String code, String instructions,
 			int status, String[] languageIds)
 		throws PortalException {
 
+		Date now = new Date();
 		User user = userLocalService.getUser(userId);
 
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
@@ -218,6 +273,29 @@ public class AccountEntryLocalServiceImpl
 		accountEntry.setName(name);
 		accountEntry.setCode(code);
 		accountEntry.setInstructions(instructions);
+
+		Date supportEndDate = accountEntry.getSupportEndDate();
+
+		if ((status == WorkflowConstants.STATUS_APPROVED) &&
+			(supportEndDate != null) && supportEndDate.after(now)) {
+
+			accountEntry.setActiveSupport(true);
+		}
+		else {
+			accountEntry.setActiveSupport(false);
+		}
+
+		Date ticketSupportEndDate = accountEntry.getTicketSupportEndDate();
+
+		if ((status == WorkflowConstants.STATUS_APPROVED) &&
+			(ticketSupportEndDate != null) && ticketSupportEndDate.after(now)) {
+
+			accountEntry.setActiveTicketSupport(true);
+		}
+		else {
+			accountEntry.setActiveTicketSupport(false);
+		}
+
 		accountEntry.setStatus(status);
 
 		if (!ArrayUtil.isEmpty(languageIds)) {
@@ -285,12 +363,11 @@ public class AccountEntryLocalServiceImpl
 		}
 	}
 
+	/*
 	public AccountEntry updateStatus(
-			long userId, long accountEntryId, int status,
+			long accountEntryId, int status,
 			ServiceContext serviceContext)
 		throws PortalException {
-
-		userLocalService.getUser(userId);
 		Date now = new Date();
 
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
@@ -301,7 +378,6 @@ public class AccountEntryLocalServiceImpl
 
 			// TODO
 
-			//accountCustomerLocalService.resetClosedWorkers(accountEntryId);
 		}
 
 		if ((accountEntry.getStatus() != WorkflowConstants.STATUS_APPROVED) &&
@@ -330,12 +406,13 @@ public class AccountEntryLocalServiceImpl
 		}
 
 		return accountEntry;
-	}
+	}*/
 
 	protected AccountEntry doAddAccountEntry(
 			long userId, String koroneikiAccountKey, String dossieraAccountKey,
 			String corpProjectUuid, long corpProjectId, String name,
-			String code, String instructions, int status, String[] languageIds)
+			String code, String instructions, Date supportEndDate,
+			Date ticketSupportEndDate, int status, String[] languageIds)
 		throws PortalException {
 
 		// Account entry
@@ -362,6 +439,22 @@ public class AccountEntryLocalServiceImpl
 		accountEntry.setName(name);
 		accountEntry.setCode(code);
 		accountEntry.setInstructions(instructions);
+		accountEntry.setSupportEndDate(supportEndDate);
+
+		if ((status == WorkflowConstants.STATUS_APPROVED) &&
+			(supportEndDate != null) && supportEndDate.after(now)) {
+
+			accountEntry.setActiveSupport(true);
+		}
+
+		accountEntry.setTicketSupportEndDate(ticketSupportEndDate);
+
+		if ((status == WorkflowConstants.STATUS_APPROVED) &&
+			(ticketSupportEndDate != null) && ticketSupportEndDate.after(now)) {
+
+			accountEntry.setActiveTicketSupport(true);
+		}
+
 		accountEntry.setStatus(status);
 
 		// Languages

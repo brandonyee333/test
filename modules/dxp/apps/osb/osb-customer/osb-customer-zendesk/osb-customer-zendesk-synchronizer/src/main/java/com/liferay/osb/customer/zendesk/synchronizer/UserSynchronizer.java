@@ -19,6 +19,7 @@ import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
+import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactAccountViewWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamRoleWebService;
@@ -27,7 +28,6 @@ import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.constants.ZendeskUserIdentityConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.model.ZendeskUserIdentity;
-import com.liferay.osb.customer.zendesk.synchronizer.util.AccountUtil;
 import com.liferay.osb.customer.zendesk.util.PhoneUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskLocaleUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
@@ -224,16 +224,20 @@ public class UserSynchronizer {
 		for (ContactAccountView contactAccountView : contactAccountViews) {
 			Account account = contactAccountView.getAccount();
 
+			AccountEntry accountEntry =
+				_accountEntryLocalService.fetchKoroneikiAccountEntry(
+					account.getKey());
+
+			if (accountEntry == null) {
+				continue;
+			}
+
 			ContactRole[] contactRoles =
 				contactAccountView.getCustomerContactRoles();
 
-			if (_accountUtil.hasActiveSupport(account)) {
+			if (accountEntry.isActiveSupport()) {
 				tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 			}
-
-			AccountEntry accountEntry =
-				_accountEntryLocalService.getKoroneikiAccountEntry(
-					account.getKey());
 
 			long zendeskOrganizationId =
 				_zendeskMapperUtil.fetchZendeskOrganizationId(
@@ -255,7 +259,7 @@ public class UserSynchronizer {
 				}
 			}
 
-			if (_accountUtil.hasActiveTicketSupport(account)) {
+			if (accountEntry.isActiveTicketSupport()) {
 				if (watcher && (zendeskOrganizationId > 0)) {
 					tags.add(
 						ZendeskTagConstants.getWatcherTag(
@@ -339,7 +343,7 @@ public class UserSynchronizer {
 	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference
-	private AccountUtil _accountUtil;
+	private AccountReader _accountReader;
 
 	@Reference
 	private AccountWebService _accountWebService;

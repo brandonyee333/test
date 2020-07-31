@@ -12,10 +12,12 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.synchronizer.util;
+package com.liferay.osb.customer.koroneiki.service.internal.util;
 
+import com.liferay.osb.customer.admin.constants.WorkflowConstants;
 import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
 import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
+import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
@@ -23,11 +25,12 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -35,8 +38,8 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Kyle Bischof
  */
-@Component(immediate = true, service = AccountUtil.class)
-public class AccountUtil {
+@Component(immediate = true, service = AccountReader.class)
+public class AccountReaderImpl implements AccountReader {
 
 	public Team getFirstLineSupportTeam(Account account) throws Exception {
 		Team[] assignedTeams = account.getAssignedTeams();
@@ -73,11 +76,46 @@ public class AccountUtil {
 		return _productPurchaseWebService.search(sb.toString(), 1, 1000);
 	}
 
-	public boolean hasActiveSupport(Account account) throws Exception {
-		Date now = new Date();
+	public int getStatus(Account account) {
+		String statusLabel = StringUtil.toLowerCase(
+			StringUtil.replace(
+				account.getStatusAsString(), CharPool.SPACE, CharPool.DASH));
 
-		List<ProductPurchase> productPurchases = getProductPurchases(
-			account.getKey());
+		return WorkflowConstants.getLabelStatus(statusLabel);
+	}
+
+	public Date getSupportEndDate(List<ProductPurchase> productPurchases) {
+		Date supportEndDate = null;
+
+		for (ProductPurchase productPurchase : productPurchases) {
+			Product product = productPurchase.getProduct();
+
+			String name = product.getName();
+
+			if (name.equals(ProductConstants.NAME_GOLD) ||
+				name.equals(ProductConstants.NAME_PLATINUM)) {
+
+				if (productPurchase.getPerpetual()) {
+					return _END_DATE_PERPETUAL;
+				}
+
+				Date endDate = productPurchase.getEndDate();
+
+				if ((supportEndDate == null) ||
+					supportEndDate.before(endDate)) {
+
+					supportEndDate = endDate;
+				}
+			}
+		}
+
+		return supportEndDate;
+	}
+
+	public Date getTicketSupportEndDate(
+		List<ProductPurchase> productPurchases) {
+
+		Date ticketSupportEndDate = null;
 
 		for (ProductPurchase productPurchase : productPurchases) {
 			Product product = productPurchase.getProduct();
@@ -86,38 +124,26 @@ public class AccountUtil {
 
 			if (name.equals(ProductConstants.NAME_GOLD) ||
 				name.equals(ProductConstants.NAME_LIMITED) ||
-				name.equals(ProductConstants.NAME_PLATINUM) ||
-				name.equals(ProductConstants.NAME_SILVER)) {
+				name.equals(ProductConstants.NAME_PLATINUM)) {
 
 				if (productPurchase.getPerpetual()) {
-					return true;
+					return _END_DATE_PERPETUAL;
 				}
 
 				Date endDate = productPurchase.getEndDate();
 
-				if (now.before(endDate)) {
-					return true;
+				if ((ticketSupportEndDate == null) ||
+					ticketSupportEndDate.before(endDate)) {
+
+					ticketSupportEndDate = endDate;
 				}
 			}
 		}
 
-		return false;
+		return ticketSupportEndDate;
 	}
 
-	public boolean hasActiveTicketSupport(Account account) throws Exception {
-		List<ProductPurchase> productPurchases = getProductPurchases(
-			account.getKey());
-
-		for (ProductPurchase productPurchase : productPurchases) {
-			Map<String, String> properties = productPurchase.getProperties();
-
-			if (properties.get("Tickets") != null) {
-				return true;
-			}
-		}
-
-		return false;
-	}
+	private static final Date _END_DATE_PERPETUAL = new Date(4102444800000L);
 
 	@Reference
 	private ProductPurchaseWebService _productPurchaseWebService;

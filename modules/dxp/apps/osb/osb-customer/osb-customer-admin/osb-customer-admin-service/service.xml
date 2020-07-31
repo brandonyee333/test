@@ -75,7 +75,9 @@
 		<column name="name" type="String" />
 		<column name="code" type="String" />
 		<column name="instructions" type="String" />
+		<column name="supportEndDate" type="Date" />
 		<column name="activeSupport" type="boolean" />
+		<column name="ticketSupportEndDate" type="Date" />
 		<column name="activeTicketSupport" type="boolean" />
 		<column name="lastZendeskAuditDate" type="Date" />
 		<column name="status" type="int" />

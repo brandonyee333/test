@@ -26,12 +26,16 @@ import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.Type;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.CalendarUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
+import java.sql.Timestamp;
+
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -48,6 +52,9 @@ public class AccountEntryFinderImpl
 
 	public static final String FILTER_BY_STATUS =
 		AccountEntryFinder.class.getName() + ".filterByStatus";
+
+	public static final String FIND_BY_EXPIRED_SUPPORT =
+		AccountEntryFinder.class.getName() + ".findByExpiredSupport";
 
 	public static final String FIND_BY_KAK_DAK_N_C_I_S =
 		AccountEntryFinder.class.getName() + ".findByKAK_DAK_N_C_I_S";
@@ -111,6 +118,36 @@ public class AccountEntryFinderImpl
 		return countByKAK_DAK_N_C_I_S(
 			koroneikiAccountKeys, dossieraAccountKeys, names, codes, statuses,
 			instructionsArray, params, andOperator);
+	}
+
+	public List<AccountEntry> findByExpiredSupport(int start, int end) {
+		Timestamp now = CalendarUtil.getTimestamp(new Date());
+
+		String sql = CustomSQLUtil.get(getClass(), FIND_BY_EXPIRED_SUPPORT);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
+
+			q.addEntity("OSB_AccountEntry", AccountEntryImpl.class);
+
+			QueryPos qPos = QueryPos.getInstance(q);
+
+			qPos.add(now);
+			qPos.add(now);
+
+			return (List<AccountEntry>)QueryUtil.list(
+				q, getDialect(), start, end);
+		}
+		catch (Exception e) {
+			throw new SystemException(e);
+		}
+		finally {
+			closeSession(session);
+		}
 	}
 
 	public List<AccountEntry> findByKeywords(

@@ -26,6 +26,23 @@
 				OSB_AccountEntry.status = ?
 		]]>
 	</sql>
+	<sql id="com.liferay.osb.customer.admin.service.persistence.AccountEntryFinder.findByExpiredSupport">
+		<![CDATA[
+			SELECT
+				DISTINCT {OSB_AccountEntry.*}
+			FROM
+				OSB_AccountEntry
+			WHERE
+				(
+					(OSB_AccountEntry.activeSupport = [$TRUE$]) AND
+					(OSB_AccountEntry.supportEndDate <= ?)
+				) OR
+				(
+					(OSB_AccountEntry.activeTicketSupport = [$TRUE$]) AND
+					(OSB_AccountEntry.ticketSupportEndDate <= ?)
+				)
+		]]>
+	</sql>
 	<sql id="com.liferay.osb.customer.admin.service.persistence.AccountEntryFinder.findByKAK_DAK_N_C_I_S">
 		<![CDATA[
 			SELECT

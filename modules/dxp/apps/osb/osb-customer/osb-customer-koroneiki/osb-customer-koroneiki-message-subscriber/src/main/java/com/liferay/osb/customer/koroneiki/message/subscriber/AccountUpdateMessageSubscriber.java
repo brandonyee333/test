@@ -15,9 +15,7 @@
 package com.liferay.osb.customer.koroneiki.message.subscriber;
 
 import com.liferay.osb.customer.admin.model.AccountEntry;
-import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
-import com.liferay.osb.customer.zendesk.constants.ZendeskDestinationNames;
 import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
@@ -25,7 +23,6 @@ import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.AccountSerDes;
 import com.liferay.portal.kernel.json.JSONObject;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
@@ -45,28 +42,21 @@ public class AccountUpdateMessageSubscriber
 		Account account = AccountSerDes.toDTO(jsonObject.getString("account"));
 
 		AccountEntry accountEntry =
-			_accountEntryLocalService.fetchKoroneikiAccountEntry(
+			accountEntryLocalService.fetchKoroneikiAccountEntry(
 				account.getKey());
 
 		if (accountEntry == null) {
 			return;
 		}
 
-		_accountEntryLocalService.updateAccountEntry(
+		accountEntryLocalService.updateAccountEntry(
 			OSBCustomerConstants.USER_DEFAULT_USER_ID,
 			accountEntry.getAccountEntryId(), account.getKey(),
 			getDossieraAccountKey(account.getExternalLinks()),
 			getCorpProjectUuid(account.getExternalLinks()),
 			getCorpProjectId(account.getExternalLinks()), account.getName(),
-			account.getCode(), null, getStatus(account.getStatusAsString()),
-			null, new long[0]);
-
-		sendMessage(
-			ZendeskDestinationNames.ACCOUNT_SYNC, message.getDestinationName(),
-			(String)message.getPayload());
+			account.getCode(), accountEntry.getInstructions(),
+			accountReader.getStatus(account), accountEntry.getLanguageIds());
 	}
-
-	@Reference
-	private AccountEntryLocalService _accountEntryLocalService;
 
 }

@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.synchronizer.listener.model;
+package com.liferay.osb.customer.zendesk.synchronizer.model.listener;
 
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;

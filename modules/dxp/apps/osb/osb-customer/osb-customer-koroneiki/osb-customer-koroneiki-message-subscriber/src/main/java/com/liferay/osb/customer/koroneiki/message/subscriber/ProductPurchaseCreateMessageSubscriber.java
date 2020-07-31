@@ -15,10 +15,7 @@
 package com.liferay.osb.customer.koroneiki.message.subscriber;
 
 import com.liferay.osb.customer.admin.model.AccountEntry;
-import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
-import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
-import com.liferay.osb.customer.zendesk.constants.ZendeskDestinationNames;
 import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
@@ -26,8 +23,9 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ProductPurchaseSerDes;
 import com.liferay.portal.kernel.json.JSONObject;
 
+import java.util.List;
+
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
@@ -48,36 +46,38 @@ public class ProductPurchaseCreateMessageSubscriber
 		ProductPurchase productPurchase = ProductPurchaseSerDes.toDTO(
 			jsonObject.getString("productPurchase"));
 
+		List<ProductPurchase> productPurchases =
+			accountReader.getProductPurchases(productPurchase.getAccountKey());
+
+		Account account = accountWebService.getAccount(
+			productPurchase.getAccountKey());
+
 		AccountEntry accountEntry =
-			_accountEntryLocalService.fetchKoroneikiAccountEntry(
+			accountEntryLocalService.fetchKoroneikiAccountEntry(
 				productPurchase.getAccountKey());
 
 		if (accountEntry == null) {
-			Account account = _accountWebService.getAccount(
-				productPurchase.getAccountKey());
-
-			if (!isSyncAccount(account)) {
+			if (!isSyncAccount(productPurchases)) {
 				return;
 			}
 
-			_accountEntryLocalService.addAccountEntry(
+			accountEntryLocalService.addAccountEntry(
 				OSBCustomerConstants.USER_DEFAULT_USER_ID, account.getKey(),
 				getDossieraAccountKey(account.getExternalLinks()),
 				getCorpProjectUuid(account.getExternalLinks()),
 				getCorpProjectId(account.getExternalLinks()), account.getName(),
-				account.getCode(), null, getStatus(account.getStatusAsString()),
-				null, new long[0]);
+				account.getCode(), null,
+				accountReader.getSupportEndDate(productPurchases),
+				accountReader.getTicketSupportEndDate(productPurchases),
+				accountReader.getStatus(account), new String[0]);
 		}
-
-		sendMessage(
-			ZendeskDestinationNames.PRODUCTPURCHASE_SYNC,
-			message.getDestinationName(), (String)message.getPayload());
+		else {
+			accountEntryLocalService.updateAccountEntry(
+				accountEntry.getAccountEntryId(),
+				accountReader.getSupportEndDate(productPurchases),
+				accountReader.getTicketSupportEndDate(productPurchases),
+				accountReader.getStatus(account));
+		}
 	}
-
-	@Reference
-	private AccountEntryLocalService _accountEntryLocalService;
-
-	@Reference
-	private AccountWebService _accountWebService;
 
 }

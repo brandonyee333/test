@@ -30,12 +30,17 @@ public class UpgradeSchema extends UpgradeProcess {
 			"alter table OSB_AccountEntry add column koroneikiAccountKey " +
 				"varchar(75)");
 		runSQL(
-			"alter table OSB_ProductEntry add column koroneikiProductKey " +
-				"varchar(75)");
+			"alter table OSB_AccountEntry add column supportEndDate datetime");
+		runSQL(
+			"alter table OSB_AccountEntry add column ticketSupportEndDate " +
+				"datetime");
 
 		runSQL(
 			"alter table OSB_ProductEntry add column accountEnvironments " +
 				"tinyint");
+		runSQL(
+			"alter table OSB_ProductEntry add column koroneikiProductKey " +
+				"varchar(75)");
 	}
 
 }

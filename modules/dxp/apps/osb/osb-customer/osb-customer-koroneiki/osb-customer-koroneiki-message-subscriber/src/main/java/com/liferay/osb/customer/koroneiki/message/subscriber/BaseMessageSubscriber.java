@@ -14,15 +14,16 @@
 
 package com.liferay.osb.customer.koroneiki.message.subscriber;
 
-import com.liferay.osb.customer.admin.constants.WorkflowConstants;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
+import com.liferay.osb.customer.koroneiki.util.AccountReader;
+import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
 import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkDomain;
 import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkEntityName;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
@@ -32,10 +33,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.CharPool;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -120,30 +118,10 @@ public abstract class BaseMessageSubscriber implements MessageSubscriber {
 		return StringPool.BLANK;
 	}
 
-	protected List<ProductPurchase> getProductPurchases(String accountKey)
+	protected boolean isSyncAccount(List<ProductPurchase> productPurchases)
 		throws Exception {
 
-		StringBundler sb = new StringBundler(3);
-
-		sb.append("accountKey eq '");
-		sb.append(accountKey);
-		sb.append("' and state eq 'active'");
-
-		return productPurchaseWebService.search(sb.toString(), 1, 1000);
-	}
-
-	protected int getStatus(String label) {
-		String statusLabel = StringUtil.toLowerCase(
-			StringUtil.replace(label, CharPool.SPACE, CharPool.DASH));
-
-		return WorkflowConstants.getLabelStatus(statusLabel);
-	}
-
-	protected boolean isSyncAccount(Account account) throws Exception {
 		Date now = new Date();
-
-		List<ProductPurchase> productPurchases = getProductPurchases(
-			account.getKey());
 
 		for (ProductPurchase productPurchase : productPurchases) {
 			Product product = productPurchase.getProduct();
@@ -199,6 +177,15 @@ public abstract class BaseMessageSubscriber implements MessageSubscriber {
 
 		MessageBusUtil.sendMessage(destination, message);
 	}
+
+	@Reference
+	protected AccountEntryLocalService accountEntryLocalService;
+
+	@Reference
+	protected AccountReader accountReader;
+
+	@Reference
+	protected AccountWebService accountWebService;
 
 	@Reference
 	protected JSONFactory jsonFactory;

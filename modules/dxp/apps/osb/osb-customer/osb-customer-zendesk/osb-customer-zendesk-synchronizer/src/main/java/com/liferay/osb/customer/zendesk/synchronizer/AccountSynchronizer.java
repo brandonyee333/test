@@ -26,6 +26,7 @@ import com.liferay.osb.customer.identity.management.provider.UserIdentityProvide
 import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
 import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
+import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
@@ -34,7 +35,6 @@ import com.liferay.osb.customer.zendesk.constants.ZendeskTicketConstants;
 import com.liferay.osb.customer.zendesk.exception.PartnerWorkerRemovalException;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
-import com.liferay.osb.customer.zendesk.synchronizer.util.AccountUtil;
 import com.liferay.osb.customer.zendesk.synchronizer.util.AddressUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
@@ -75,6 +75,33 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, service = AccountSynchronizer.class)
 public class AccountSynchronizer {
+
+	public void addCustomers(Account account, AccountEntry accountEntry)
+		throws Exception {
+
+		List<Contact> contacts = _contactWebService.getAccountContacts(
+			account.getKey(), 1, 1000);
+
+		for (Contact contact : contacts) {
+			User user = _userIdentityProvider.fetchUserByEmailAddress(
+				contact.getEmailAddress());
+
+			if (user == null) {
+				continue;
+			}
+
+			for (ContactRole contactRole : contact.getContactRoles()) {
+				if (ArrayUtil.contains(
+						ContactRoleConstants.SUPPORT_CONTACT_ROLES,
+						contactRole.getName())) {
+
+					_customerSynchronizer.add(user, account, accountEntry);
+
+					break;
+				}
+			}
+		}
+	}
 
 	public void addFirstLineSupport(
 			Account account, AccountEntry accountEntry, Team team)
@@ -485,7 +512,7 @@ public class AccountSynchronizer {
 
 	protected String getSupportLevel(String accountKey) throws Exception {
 		List<ProductPurchase> productPurchases =
-			_accountUtil.getProductPurchases(accountKey);
+			_accountReader.getProductPurchases(accountKey);
 
 		for (ProductPurchase productPurchase : productPurchases) {
 			Product product = productPurchase.getProduct();
@@ -511,7 +538,7 @@ public class AccountSynchronizer {
 		Date now = new Date();
 
 		List<ProductPurchase> productPurchases =
-			_accountUtil.getProductPurchases(account.getKey());
+			_accountReader.getProductPurchases(account.getKey());
 
 		for (ProductPurchase productPurchase : productPurchases) {
 			Map<String, String> properties = productPurchase.getProperties();
@@ -596,7 +623,7 @@ public class AccountSynchronizer {
 	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference
-	private AccountUtil _accountUtil;
+	private AccountReader _accountReader;
 
 	@Reference
 	private AccountWebService _accountWebService;

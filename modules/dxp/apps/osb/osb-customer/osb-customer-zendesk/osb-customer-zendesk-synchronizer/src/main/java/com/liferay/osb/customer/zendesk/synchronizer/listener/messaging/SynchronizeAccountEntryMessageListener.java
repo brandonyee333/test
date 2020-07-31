@@ -21,6 +21,7 @@ import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
+import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.customer.zendesk.constants.ZendeskDestinationNames;
@@ -30,7 +31,6 @@ import com.liferay.osb.customer.zendesk.synchronizer.AccountSynchronizer;
 import com.liferay.osb.customer.zendesk.synchronizer.CustomerSynchronizer;
 import com.liferay.osb.customer.zendesk.synchronizer.TeamSynchronizer;
 import com.liferay.osb.customer.zendesk.synchronizer.UserSynchronizer;
-import com.liferay.osb.customer.zendesk.synchronizer.util.AccountUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
@@ -122,7 +122,7 @@ public class SynchronizeAccountEntryMessageListener
 
 		if ((account == null) ||
 			(!hasZendeskOrganization(accountEntry) &&
-			 !_accountUtil.hasActiveSupport(account)) ||
+			 !accountEntry.isActiveSupport()) ||
 			(accountEntry.getAccountEntryId() ==
 				OSBCustomerConstants.ACCOUNT_ENTRY_LRDCOM_ID)) {
 
@@ -224,7 +224,7 @@ public class SynchronizeAccountEntryMessageListener
 
 		Map<String, User> firstLineSupportUsersMap = new HashMap<>();
 
-		Team firstLineSupportTeam = _accountUtil.getFirstLineSupportTeam(
+		Team firstLineSupportTeam = _accountReader.getFirstLineSupportTeam(
 			account);
 
 		if (firstLineSupportTeam != null) {
@@ -297,10 +297,10 @@ public class SynchronizeAccountEntryMessageListener
 	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference
-	private AccountSynchronizer _accountSynchronizer;
+	private AccountReader _accountReader;
 
 	@Reference
-	private AccountUtil _accountUtil;
+	private AccountSynchronizer _accountSynchronizer;
 
 	@Reference
 	private AccountWebService _accountWebService;

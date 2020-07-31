@@ -16,7 +16,7 @@ package com.liferay.osb.customer.zendesk.synchronizer;
 
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
-import com.liferay.osb.customer.zendesk.synchronizer.util.AccountUtil;
+import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
@@ -37,7 +37,7 @@ public class CustomerSynchronizer {
 
 		_userSynchronizer.update(user, account.getName());
 
-		if (_accountUtil.hasActiveTicketSupport(account)) {
+		if (accountEntry.isActiveTicketSupport()) {
 			addOrganizationSubscription(account, accountEntry, user);
 		}
 	}
@@ -84,7 +84,7 @@ public class CustomerSynchronizer {
 	}
 
 	@Reference
-	private AccountUtil _accountUtil;
+	private AccountReader _accountReader;
 
 	@Reference(target = "(provider=okta)")
 	private UserIdentityProvider _userIdentityProvider;
