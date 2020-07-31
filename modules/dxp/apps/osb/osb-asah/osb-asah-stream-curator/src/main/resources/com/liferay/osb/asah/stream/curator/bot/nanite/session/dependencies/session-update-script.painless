@@ -2,8 +2,6 @@ ctx._source.bounced = params.bounced;
 ctx._source.interactions.addAll(params.interactions);
 ctx._source.interactionsCount = params.interactionsCount;
 ctx._source.pageViewsCount = params.pageViewsCount;
-ctx._source.referrers.addAll(params.referrers);
-ctx._source.urls.addAll(params.urls);
 
 def oldLastEventDate = ZonedDateTime.parse(ctx._source.lastEventDate);
 def newLastEventDate = ZonedDateTime.parse(params.lastEventDate);
@@ -11,3 +9,23 @@ def newLastEventDate = ZonedDateTime.parse(params.lastEventDate);
 if (oldLastEventDate.isBefore(newLastEventDate)) {
 	ctx._source.lastEventDate = params.lastEventDate;
 }
+
+def referrers = new HashSet();
+
+if (ctx._source.referrers != null) {
+	referrers = new HashSet(ctx._source.referrers);
+}
+
+referrers.addAll(params.referrers);
+
+ctx._source.referrers = referrers;
+
+def urls = new HashSet();
+
+if (ctx._source.urls != null) {
+	urls = new HashSet(ctx._source.urls);
+}
+
+urls.addAll(params.urls);
+
+ctx._source.urls = urls;

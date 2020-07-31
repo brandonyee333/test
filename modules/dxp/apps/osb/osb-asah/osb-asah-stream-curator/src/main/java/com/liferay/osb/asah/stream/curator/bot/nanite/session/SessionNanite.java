@@ -30,6 +30,7 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.Acquisition;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
+import com.liferay.osb.asah.common.model.AnalyticsEvents;
 import com.liferay.osb.asah.common.model.UserSession;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
@@ -44,11 +45,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -107,12 +105,12 @@ public class SessionNanite implements Nanite {
 	}
 
 	private void _createUserSession(
-		List<AnalyticsEvent> analyticsEvents, boolean completed,
-		String userId) {
+		AnalyticsEvents analyticsEvents, boolean completed, String userId) {
 
-		AnalyticsEvent firstAnalyticsEvent = analyticsEvents.get(0);
-		AnalyticsEvent lastAnalyticsEvent = analyticsEvents.get(
-			analyticsEvents.size() - 1);
+		AnalyticsEvent firstAnalyticsEvent =
+			analyticsEvents.getFirstAnalyticsEvent();
+		AnalyticsEvent lastAnalyticsEvent =
+			analyticsEvents.getLastAnalyticsEvent();
 
 		UserSession userSession = new UserSession();
 
@@ -149,15 +147,16 @@ public class SessionNanite implements Nanite {
 		}
 
 		userSession.setInteractionsCount(
-			_getInteractionsCount(analyticsEvents));
-		userSession.setInteractions(analyticsEvents);
+			analyticsEvents.getInteractionsCount());
+		userSession.setInteractions(analyticsEvents.getAnalyticsEventsList());
 		userSession.setLastEventDate(lastAnalyticsEvent.getEventDate());
-		userSession.setPageViewsCount(_getPageViewsCount(analyticsEvents));
+		userSession.setPageViewsCount(analyticsEvents.getPageViewsCount());
 		userSession.setPlatformName(MapUtil.getString(context, "platformName"));
-		userSession.setReferrers(_getReferrers(analyticsEvents));
 		userSession.setRegion(MapUtil.getString(context, "region"));
-		userSession.setUrls(_getUrls(analyticsEvents));
 		userSession.setUserId(userId);
+
+		userSession.setReferrers(analyticsEvents.getReferrers());
+		userSession.setUrls(analyticsEvents.getUrls());
 
 		JSONObject jsonObject = _cerebroInfoElasticsearchInvoker.add(
 			getCollectionName(),
@@ -203,48 +202,6 @@ public class SessionNanite implements Nanite {
 		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	private long _getInteractionsCount(List<AnalyticsEvent> analyticsEvents) {
-		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
-
-		return stream.map(
-			AnalyticsEvent::getEventId
-		).filter(
-			eventId -> !_nonInteractionEvents.contains(eventId)
-		).count();
-	}
-
-	private long _getPageViewsCount(List<AnalyticsEvent> analyticsEvents) {
-		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
-
-		return stream.filter(
-			analyticsEvent ->
-				Objects.equals(analyticsEvent.getApplicationId(), "Page") &&
-				Objects.equals(analyticsEvent.getEventId(), "pageViewed")
-		).count();
-	}
-
-	private Set<String> _getReferrers(List<AnalyticsEvent> analyticsEvents) {
-		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
-
-		return stream.map(
-			analyticsEvent -> MapUtil.getString(
-				analyticsEvent.getContext(), "referrers")
-		).collect(
-			Collectors.toSet()
-		);
-	}
-
-	private Set<String> _getUrls(List<AnalyticsEvent> analyticsEvents) {
-		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
-
-		return stream.map(
-			analyticsEvent -> MapUtil.getString(
-				analyticsEvent.getContext(), "url")
-		).collect(
-			Collectors.toSet()
-		);
 	}
 
 	private JSONObject _getUserSession(String userId, Date firstEventDate) {
@@ -315,9 +272,9 @@ public class SessionNanite implements Nanite {
 			"interactions", null);
 	}
 
-	private boolean _isSessionBounced(List<AnalyticsEvent> analyticsEvents) {
-		long interactionsCount = _getInteractionsCount(analyticsEvents);
-		long pageViewsCount = _getPageViewsCount(analyticsEvents);
+	private boolean _isSessionBounced(AnalyticsEvents analyticsEvents) {
+		long interactionsCount = analyticsEvents.getInteractionsCount();
+		long pageViewsCount = analyticsEvents.getPageViewsCount();
 
 		if ((interactionsCount < 1) && (pageViewsCount < 2)) {
 			return true;
@@ -395,12 +352,16 @@ public class SessionNanite implements Nanite {
 	}
 
 	private void _processAnalyticsEvents(
-		String userId, List<AnalyticsEvent> analyticsEvents) {
+		String userId, List<AnalyticsEvent> sessionAnalyticsEvents) {
 
-		analyticsEvents.sort(
+		sessionAnalyticsEvents.sort(
 			Comparator.comparing(AnalyticsEvent::getEventDate));
 
-		AnalyticsEvent firstAnalyticsEvent = analyticsEvents.get(0);
+		AnalyticsEvents analyticsEvents = new AnalyticsEvents(
+			sessionAnalyticsEvents);
+
+		AnalyticsEvent firstAnalyticsEvent =
+			analyticsEvents.getFirstAnalyticsEvent();
 
 		JSONObject userSessionJSONObject = _getUserSession(
 			userId, firstAnalyticsEvent.getEventDate());
@@ -430,8 +391,8 @@ public class SessionNanite implements Nanite {
 					"user-sessions", boolQueryBuilder)) {
 
 				try {
-					AnalyticsEvent lastAnalyticsEvent = analyticsEvents.get(
-						analyticsEvents.size() - 1);
+					AnalyticsEvent lastAnalyticsEvent =
+						analyticsEvents.getLastAnalyticsEvent();
 
 					Date lastAnalyticsEventDate =
 						lastAnalyticsEvent.getEventDate();
@@ -486,13 +447,15 @@ public class SessionNanite implements Nanite {
 	}
 
 	private void _updateUserSession(
-		List<AnalyticsEvent> analyticsEvents,
-		JSONObject userSessionJSONObject) {
+		AnalyticsEvents analyticsEvents, JSONObject userSessionJSONObject) {
 
-		AnalyticsEvent lastAnalyticsEvent = analyticsEvents.get(
-			analyticsEvents.size() - 1);
+		AnalyticsEvent lastAnalyticsEvent =
+			analyticsEvents.getLastAnalyticsEvent();
 
-		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+		List<AnalyticsEvent> analyticsEventsList =
+			analyticsEvents.getAnalyticsEventsList();
+
+		Stream<AnalyticsEvent> stream = analyticsEventsList.stream();
 
 		List<Map> analyticsEventMaps = stream.map(
 			analyticsEvent -> _objectMapper.convertValue(
@@ -502,10 +465,10 @@ public class SessionNanite implements Nanite {
 		);
 
 		long interactionsCount =
-			_getInteractionsCount(analyticsEvents) +
+			analyticsEvents.getInteractionsCount() +
 				userSessionJSONObject.optLong("interactionsCount");
 		long pageViewsCount =
-			_getPageViewsCount(analyticsEvents) +
+			analyticsEvents.getPageViewsCount() +
 				userSessionJSONObject.optLong("pageViewsCount");
 
 		Script script = new Script(
@@ -523,8 +486,10 @@ public class SessionNanite implements Nanite {
 						DateUtil.toUTCString(
 							lastAnalyticsEvent.getEventDate()));
 					put("pageViewsCount", pageViewsCount);
-					put("referrers", _getReferrers(analyticsEvents));
-					put("urls", _getUrls(analyticsEvents));
+					put(
+						"referrers",
+						new ArrayList<>(analyticsEvents.getReferrers()));
+					put("urls", new ArrayList<>(analyticsEvents.getUrls()));
 				}
 			});
 
@@ -550,19 +515,6 @@ public class SessionNanite implements Nanite {
 	}
 
 	private static final Log _log = LogFactory.getLog(SessionNanite.class);
-
-	private static final Set<String> _nonInteractionEvents =
-		new HashSet<String>() {
-			{
-				add("blogViewed");
-				add("documentPreviewed");
-				add("formViewed");
-				add("pageLoaded");
-				add("pageUnloaded");
-				add("pageViewed");
-				add("webContentViewed");
-			}
-		};
 
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
