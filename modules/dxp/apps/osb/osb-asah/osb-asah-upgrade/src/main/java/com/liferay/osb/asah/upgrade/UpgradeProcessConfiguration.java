@@ -18,6 +18,7 @@ import com.liferay.osb.asah.upgrade.v2_7_0.AssetsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.CanonicalUrlMappingUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.FaroInfoIndividualsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.SessionActivitiesUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_7_0.SessionContextUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.UnprocessedAnalyticsEventsUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class UpgradeProcessConfiguration {
 		upgradeProcess.addUpgradeSteps(
 			"2.6.1", "2.7.0", _assetsUpgradeStep,
 			_canonicalUrlMappingUpgradeStep, _faroInfoIndividualsUpgradeStep,
-			_sessionActivitiesUpgradeStep,
+			_sessionActivitiesUpgradeStep, _sessionContextUpgradeStep,
 			_unprocessedAnalyticsEventsUpgradeStep);
 
 		return upgradeProcess;
@@ -54,6 +55,9 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private SessionActivitiesUpgradeStep _sessionActivitiesUpgradeStep;
+
+	@Autowired
+	private SessionContextUpgradeStep _sessionContextUpgradeStep;
 
 	@Autowired
 	private UnprocessedAnalyticsEventsUpgradeStep
