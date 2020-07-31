@@ -7,6 +7,12 @@ aws:
             key: $AWS_SECRET_ACCESS_KEY
     storage:
         path: s3a://analytics-cloud-aws-personalize
+es:
+    net:
+        http:
+            auth:
+                pass: $ES_NET_HTTP_AUTH_PASS
+                user: $ES_NET_HTTP_AUTH_USER
 google:
     storage:
         path: gs://analytics-cloud-uat-analytic-events
