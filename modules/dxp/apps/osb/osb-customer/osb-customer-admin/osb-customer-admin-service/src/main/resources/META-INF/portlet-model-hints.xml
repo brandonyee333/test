@@ -32,7 +32,9 @@
 		<field name="instructions" type="String">
 			<hint-collection name="TEXTAREA" />
 		</field>
+		<field name="supportEndDate" type="Date" />
 		<field name="activeSupport" type="boolean" />
+		<field name="ticketSupportEndDate" type="Date" />
 		<field name="activeTicketSupport" type="boolean" />
 		<field name="lastZendeskAuditDate" type="Date" />
 		<field name="status" type="int" />

@@ -60,12 +60,15 @@ public class AccountEntryLocalServiceUtil {
 				long userId, String koroneikiAccountKey,
 				String dossieraAccountKey, String corpProjectUuid,
 				long corpProjectId, String name, String code,
-				String instructions, int status, String[] languageIds)
+				String instructions, java.util.Date supportEndDate,
+				java.util.Date ticketSupportEndDate, int status,
+				String[] languageIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addAccountEntry(
 			userId, koroneikiAccountKey, dossieraAccountKey, corpProjectUuid,
-			corpProjectId, name, code, instructions, status, languageIds);
+			corpProjectId, name, code, instructions, supportEndDate,
+			ticketSupportEndDate, status, languageIds);
 	}
 
 	/**
@@ -291,6 +294,13 @@ public class AccountEntryLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
+	public static java.util.List
+		<com.liferay.osb.customer.admin.model.AccountEntry>
+			getExpiredSupportAccountEntries(int start, int end) {
+
+		return getService().getExpiredSupportAccountEntries(start, end);
+	}
+
 	public static
 		com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
 			getIndexableActionableDynamicQuery() {
@@ -322,13 +332,6 @@ public class AccountEntryLocalServiceUtil {
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
-	}
-
-	public static java.util.List
-		<com.liferay.osb.customer.admin.model.AccountEntry>
-			getUserActiveAccountEntries(long userId, int start, int end) {
-
-		return getService().getUserActiveAccountEntries(userId, start, end);
 	}
 
 	public static java.util.List
@@ -395,6 +398,16 @@ public class AccountEntryLocalServiceUtil {
 
 	public static com.liferay.osb.customer.admin.model.AccountEntry
 			updateAccountEntry(
+				long accountEntryId, java.util.Date supportEndDate,
+				java.util.Date ticketSupportEndDate, int status)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().updateAccountEntry(
+			accountEntryId, supportEndDate, ticketSupportEndDate, status);
+	}
+
+	public static com.liferay.osb.customer.admin.model.AccountEntry
+			updateAccountEntry(
 				long userId, long accountEntryId, String koroneikiAccountKey,
 				String dossieraAccountKey, String corpProjectUuid,
 				long corpProjectId, String name, String code,
@@ -423,16 +436,6 @@ public class AccountEntryLocalServiceUtil {
 
 		getService().updateLastZendeskAuditDate(
 			userId, accountEntryId, auditLabel, auditValue);
-	}
-
-	public static com.liferay.osb.customer.admin.model.AccountEntry
-			updateStatus(
-				long userId, long accountEntryId, int status,
-				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return getService().updateStatus(
-			userId, accountEntryId, status, serviceContext);
 	}
 
 	public static AccountEntryLocalService getService() {

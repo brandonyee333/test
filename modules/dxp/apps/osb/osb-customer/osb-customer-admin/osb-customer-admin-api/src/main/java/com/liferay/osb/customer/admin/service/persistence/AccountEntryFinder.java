@@ -32,6 +32,9 @@ public interface AccountEntryFinder {
 		java.util.LinkedHashMap<String, Object> params, boolean andOperator);
 
 	public java.util.List<com.liferay.osb.customer.admin.model.AccountEntry>
+		findByExpiredSupport(int start, int end);
+
+	public java.util.List<com.liferay.osb.customer.admin.model.AccountEntry>
 		findByKeywords(
 			String keywords, java.util.LinkedHashMap<String, Object> params,
 			int start, int end,

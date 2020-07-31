@@ -62,7 +62,7 @@ public class AccountEntryCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(41);
+		StringBundler sb = new StringBundler(45);
 
 		sb.append("{accountEntryId=");
 		sb.append(accountEntryId);
@@ -94,8 +94,12 @@ public class AccountEntryCacheModel
 		sb.append(code);
 		sb.append(", instructions=");
 		sb.append(instructions);
+		sb.append(", supportEndDate=");
+		sb.append(supportEndDate);
 		sb.append(", activeSupport=");
 		sb.append(activeSupport);
+		sb.append(", ticketSupportEndDate=");
+		sb.append(ticketSupportEndDate);
 		sb.append(", activeTicketSupport=");
 		sb.append(activeTicketSupport);
 		sb.append(", lastZendeskAuditDate=");
@@ -191,7 +195,23 @@ public class AccountEntryCacheModel
 			accountEntryImpl.setInstructions(instructions);
 		}
 
+		if (supportEndDate == Long.MIN_VALUE) {
+			accountEntryImpl.setSupportEndDate(null);
+		}
+		else {
+			accountEntryImpl.setSupportEndDate(new Date(supportEndDate));
+		}
+
 		accountEntryImpl.setActiveSupport(activeSupport);
+
+		if (ticketSupportEndDate == Long.MIN_VALUE) {
+			accountEntryImpl.setTicketSupportEndDate(null);
+		}
+		else {
+			accountEntryImpl.setTicketSupportEndDate(
+				new Date(ticketSupportEndDate));
+		}
+
 		accountEntryImpl.setActiveTicketSupport(activeTicketSupport);
 
 		if (lastZendeskAuditDate == Long.MIN_VALUE) {
@@ -237,8 +257,10 @@ public class AccountEntryCacheModel
 		name = objectInput.readUTF();
 		code = objectInput.readUTF();
 		instructions = objectInput.readUTF();
+		supportEndDate = objectInput.readLong();
 
 		activeSupport = objectInput.readBoolean();
+		ticketSupportEndDate = objectInput.readLong();
 
 		activeTicketSupport = objectInput.readBoolean();
 		lastZendeskAuditDate = objectInput.readLong();
@@ -319,7 +341,10 @@ public class AccountEntryCacheModel
 			objectOutput.writeUTF(instructions);
 		}
 
+		objectOutput.writeLong(supportEndDate);
+
 		objectOutput.writeBoolean(activeSupport);
+		objectOutput.writeLong(ticketSupportEndDate);
 
 		objectOutput.writeBoolean(activeTicketSupport);
 		objectOutput.writeLong(lastZendeskAuditDate);
@@ -349,7 +374,9 @@ public class AccountEntryCacheModel
 	public String name;
 	public String code;
 	public String instructions;
+	public long supportEndDate;
 	public boolean activeSupport;
+	public long ticketSupportEndDate;
 	public boolean activeTicketSupport;
 	public long lastZendeskAuditDate;
 	public int status;

@@ -80,7 +80,9 @@ public class AccountEntryModelImpl
 		{"dossieraAccountKey", Types.VARCHAR},
 		{"corpProjectUuid", Types.VARCHAR}, {"corpProjectId", Types.BIGINT},
 		{"name", Types.VARCHAR}, {"code_", Types.VARCHAR},
-		{"instructions", Types.VARCHAR}, {"activeSupport", Types.BOOLEAN},
+		{"instructions", Types.VARCHAR}, {"supportEndDate", Types.TIMESTAMP},
+		{"activeSupport", Types.BOOLEAN},
+		{"ticketSupportEndDate", Types.TIMESTAMP},
 		{"activeTicketSupport", Types.BOOLEAN},
 		{"lastZendeskAuditDate", Types.TIMESTAMP}, {"status", Types.INTEGER},
 		{"corpEntryName", Types.VARCHAR}
@@ -105,7 +107,9 @@ public class AccountEntryModelImpl
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("code_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("instructions", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("supportEndDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("activeSupport", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("ticketSupportEndDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("activeTicketSupport", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("lastZendeskAuditDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
@@ -113,7 +117,7 @@ public class AccountEntryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table OSB_AccountEntry (accountEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,koroneikiAccountKey VARCHAR(75) null,dossieraAccountKey VARCHAR(75) null,corpProjectUuid VARCHAR(75) null,corpProjectId LONG,name VARCHAR(500) null,code_ VARCHAR(75) null,instructions STRING null,activeSupport BOOLEAN,activeTicketSupport BOOLEAN,lastZendeskAuditDate DATE null,status INTEGER,corpEntryName VARCHAR(75) null)";
+		"create table OSB_AccountEntry (accountEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,koroneikiAccountKey VARCHAR(75) null,dossieraAccountKey VARCHAR(75) null,corpProjectUuid VARCHAR(75) null,corpProjectId LONG,name VARCHAR(500) null,code_ VARCHAR(75) null,instructions STRING null,supportEndDate DATE null,activeSupport BOOLEAN,ticketSupportEndDate DATE null,activeTicketSupport BOOLEAN,lastZendeskAuditDate DATE null,status INTEGER,corpEntryName VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table OSB_AccountEntry";
 
@@ -182,7 +186,9 @@ public class AccountEntryModelImpl
 		model.setName(soapModel.getName());
 		model.setCode(soapModel.getCode());
 		model.setInstructions(soapModel.getInstructions());
+		model.setSupportEndDate(soapModel.getSupportEndDate());
 		model.setActiveSupport(soapModel.isActiveSupport());
+		model.setTicketSupportEndDate(soapModel.getTicketSupportEndDate());
 		model.setActiveTicketSupport(soapModel.isActiveTicketSupport());
 		model.setLastZendeskAuditDate(soapModel.getLastZendeskAuditDate());
 		model.setStatus(soapModel.getStatus());
@@ -680,6 +686,28 @@ public class AccountEntryModelImpl
 
 			});
 		attributeGetterFunctions.put(
+			"supportEndDate",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getSupportEndDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"supportEndDate",
+			new BiConsumer<AccountEntry, Object>() {
+
+				@Override
+				public void accept(
+					AccountEntry accountEntry, Object supportEndDateObject) {
+
+					accountEntry.setSupportEndDate((Date)supportEndDateObject);
+				}
+
+			});
+		attributeGetterFunctions.put(
 			"activeSupport",
 			new Function<AccountEntry, Object>() {
 
@@ -698,6 +726,30 @@ public class AccountEntryModelImpl
 					AccountEntry accountEntry, Object activeSupportObject) {
 
 					accountEntry.setActiveSupport((Boolean)activeSupportObject);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"ticketSupportEndDate",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getTicketSupportEndDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"ticketSupportEndDate",
+			new BiConsumer<AccountEntry, Object>() {
+
+				@Override
+				public void accept(
+					AccountEntry accountEntry,
+					Object ticketSupportEndDateObject) {
+
+					accountEntry.setTicketSupportEndDate(
+						(Date)ticketSupportEndDateObject);
 				}
 
 			});
@@ -1085,6 +1137,17 @@ public class AccountEntryModelImpl
 
 	@JSON
 	@Override
+	public Date getSupportEndDate() {
+		return _supportEndDate;
+	}
+
+	@Override
+	public void setSupportEndDate(Date supportEndDate) {
+		_supportEndDate = supportEndDate;
+	}
+
+	@JSON
+	@Override
 	public boolean getActiveSupport() {
 		return _activeSupport;
 	}
@@ -1098,6 +1161,17 @@ public class AccountEntryModelImpl
 	@Override
 	public void setActiveSupport(boolean activeSupport) {
 		_activeSupport = activeSupport;
+	}
+
+	@JSON
+	@Override
+	public Date getTicketSupportEndDate() {
+		return _ticketSupportEndDate;
+	}
+
+	@Override
+	public void setTicketSupportEndDate(Date ticketSupportEndDate) {
+		_ticketSupportEndDate = ticketSupportEndDate;
 	}
 
 	@JSON
@@ -1206,7 +1280,9 @@ public class AccountEntryModelImpl
 		accountEntryImpl.setName(getName());
 		accountEntryImpl.setCode(getCode());
 		accountEntryImpl.setInstructions(getInstructions());
+		accountEntryImpl.setSupportEndDate(getSupportEndDate());
 		accountEntryImpl.setActiveSupport(isActiveSupport());
+		accountEntryImpl.setTicketSupportEndDate(getTicketSupportEndDate());
 		accountEntryImpl.setActiveTicketSupport(isActiveTicketSupport());
 		accountEntryImpl.setLastZendeskAuditDate(getLastZendeskAuditDate());
 		accountEntryImpl.setStatus(getStatus());
@@ -1389,7 +1465,26 @@ public class AccountEntryModelImpl
 			accountEntryCacheModel.instructions = null;
 		}
 
+		Date supportEndDate = getSupportEndDate();
+
+		if (supportEndDate != null) {
+			accountEntryCacheModel.supportEndDate = supportEndDate.getTime();
+		}
+		else {
+			accountEntryCacheModel.supportEndDate = Long.MIN_VALUE;
+		}
+
 		accountEntryCacheModel.activeSupport = isActiveSupport();
+
+		Date ticketSupportEndDate = getTicketSupportEndDate();
+
+		if (ticketSupportEndDate != null) {
+			accountEntryCacheModel.ticketSupportEndDate =
+				ticketSupportEndDate.getTime();
+		}
+		else {
+			accountEntryCacheModel.ticketSupportEndDate = Long.MIN_VALUE;
+		}
 
 		accountEntryCacheModel.activeTicketSupport = isActiveTicketSupport();
 
@@ -1506,7 +1601,9 @@ public class AccountEntryModelImpl
 	private String _code;
 	private String _originalCode;
 	private String _instructions;
+	private Date _supportEndDate;
 	private boolean _activeSupport;
+	private Date _ticketSupportEndDate;
 	private boolean _activeTicketSupport;
 	private Date _lastZendeskAuditDate;
 	private int _status;

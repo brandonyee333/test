@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -36,6 +35,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -79,7 +79,8 @@ public interface AccountEntryLocalService
 	public AccountEntry addAccountEntry(
 			long userId, String koroneikiAccountKey, String dossieraAccountKey,
 			String corpProjectUuid, long corpProjectId, String name,
-			String code, String instructions, int status, String[] languageIds)
+			String code, String instructions, Date supportEndDate,
+			Date ticketSupportEndDate, int status, String[] languageIds)
 		throws PortalException;
 
 	/**
@@ -244,6 +245,10 @@ public interface AccountEntryLocalService
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountEntry> getExpiredSupportAccountEntries(
+		int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -264,10 +269,6 @@ public interface AccountEntryLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AccountEntry> getUserActiveAccountEntries(
-		long userId, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountEntry> search(
@@ -308,6 +309,11 @@ public interface AccountEntryLocalService
 	public AccountEntry updateAccountEntry(AccountEntry accountEntry);
 
 	public AccountEntry updateAccountEntry(
+			long accountEntryId, Date supportEndDate, Date ticketSupportEndDate,
+			int status)
+		throws PortalException;
+
+	public AccountEntry updateAccountEntry(
 			long userId, long accountEntryId, String koroneikiAccountKey,
 			String dossieraAccountKey, String corpProjectUuid,
 			long corpProjectId, String name, String code, String instructions,
@@ -321,11 +327,6 @@ public interface AccountEntryLocalService
 	public void updateLastZendeskAuditDate(
 			long userId, long accountEntryId, String auditLabel,
 			String auditValue)
-		throws PortalException;
-
-	public AccountEntry updateStatus(
-			long userId, long accountEntryId, int status,
-			ServiceContext serviceContext)
 		throws PortalException;
 
 }

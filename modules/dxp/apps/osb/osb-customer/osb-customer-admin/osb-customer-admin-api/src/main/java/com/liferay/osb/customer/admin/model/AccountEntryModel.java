@@ -322,6 +322,20 @@ public interface AccountEntryModel
 	public void setInstructions(String instructions);
 
 	/**
+	 * Returns the support end date of this account entry.
+	 *
+	 * @return the support end date of this account entry
+	 */
+	public Date getSupportEndDate();
+
+	/**
+	 * Sets the support end date of this account entry.
+	 *
+	 * @param supportEndDate the support end date of this account entry
+	 */
+	public void setSupportEndDate(Date supportEndDate);
+
+	/**
 	 * Returns the active support of this account entry.
 	 *
 	 * @return the active support of this account entry
@@ -341,6 +355,20 @@ public interface AccountEntryModel
 	 * @param activeSupport the active support of this account entry
 	 */
 	public void setActiveSupport(boolean activeSupport);
+
+	/**
+	 * Returns the ticket support end date of this account entry.
+	 *
+	 * @return the ticket support end date of this account entry
+	 */
+	public Date getTicketSupportEndDate();
+
+	/**
+	 * Sets the ticket support end date of this account entry.
+	 *
+	 * @param ticketSupportEndDate the ticket support end date of this account entry
+	 */
+	public void setTicketSupportEndDate(Date ticketSupportEndDate);
 
 	/**
 	 * Returns the active ticket support of this account entry.

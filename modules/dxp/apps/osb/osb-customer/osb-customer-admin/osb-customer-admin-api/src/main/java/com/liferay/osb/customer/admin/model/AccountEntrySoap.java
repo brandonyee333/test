@@ -46,7 +46,9 @@ public class AccountEntrySoap implements Serializable {
 		soapModel.setName(model.getName());
 		soapModel.setCode(model.getCode());
 		soapModel.setInstructions(model.getInstructions());
+		soapModel.setSupportEndDate(model.getSupportEndDate());
 		soapModel.setActiveSupport(model.isActiveSupport());
+		soapModel.setTicketSupportEndDate(model.getTicketSupportEndDate());
 		soapModel.setActiveTicketSupport(model.isActiveTicketSupport());
 		soapModel.setLastZendeskAuditDate(model.getLastZendeskAuditDate());
 		soapModel.setStatus(model.getStatus());
@@ -224,6 +226,14 @@ public class AccountEntrySoap implements Serializable {
 		_instructions = instructions;
 	}
 
+	public Date getSupportEndDate() {
+		return _supportEndDate;
+	}
+
+	public void setSupportEndDate(Date supportEndDate) {
+		_supportEndDate = supportEndDate;
+	}
+
 	public boolean getActiveSupport() {
 		return _activeSupport;
 	}
@@ -234,6 +244,14 @@ public class AccountEntrySoap implements Serializable {
 
 	public void setActiveSupport(boolean activeSupport) {
 		_activeSupport = activeSupport;
+	}
+
+	public Date getTicketSupportEndDate() {
+		return _ticketSupportEndDate;
+	}
+
+	public void setTicketSupportEndDate(Date ticketSupportEndDate) {
+		_ticketSupportEndDate = ticketSupportEndDate;
 	}
 
 	public boolean getActiveTicketSupport() {
@@ -287,7 +305,9 @@ public class AccountEntrySoap implements Serializable {
 	private String _name;
 	private String _code;
 	private String _instructions;
+	private Date _supportEndDate;
 	private boolean _activeSupport;
+	private Date _ticketSupportEndDate;
 	private boolean _activeTicketSupport;
 	private Date _lastZendeskAuditDate;
 	private int _status;

@@ -42,7 +42,9 @@
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property column="code_" name="code" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="instructions" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="supportEndDate" type="org.hibernate.type.TimestampType" />
 		<property name="activeSupport" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="ticketSupportEndDate" type="org.hibernate.type.TimestampType" />
 		<property name="activeTicketSupport" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="lastZendeskAuditDate" type="org.hibernate.type.TimestampType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />

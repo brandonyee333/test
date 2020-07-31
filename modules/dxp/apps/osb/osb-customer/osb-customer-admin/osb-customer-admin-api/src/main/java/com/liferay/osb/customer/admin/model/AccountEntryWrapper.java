@@ -70,7 +70,9 @@ public class AccountEntryWrapper
 		attributes.put("name", getName());
 		attributes.put("code", getCode());
 		attributes.put("instructions", getInstructions());
+		attributes.put("supportEndDate", getSupportEndDate());
 		attributes.put("activeSupport", isActiveSupport());
+		attributes.put("ticketSupportEndDate", getTicketSupportEndDate());
 		attributes.put("activeTicketSupport", isActiveTicketSupport());
 		attributes.put("lastZendeskAuditDate", getLastZendeskAuditDate());
 		attributes.put("status", getStatus());
@@ -173,10 +175,23 @@ public class AccountEntryWrapper
 			setInstructions(instructions);
 		}
 
+		Date supportEndDate = (Date)attributes.get("supportEndDate");
+
+		if (supportEndDate != null) {
+			setSupportEndDate(supportEndDate);
+		}
+
 		Boolean activeSupport = (Boolean)attributes.get("activeSupport");
 
 		if (activeSupport != null) {
 			setActiveSupport(activeSupport);
+		}
+
+		Date ticketSupportEndDate = (Date)attributes.get(
+			"ticketSupportEndDate");
+
+		if (ticketSupportEndDate != null) {
+			setTicketSupportEndDate(ticketSupportEndDate);
 		}
 
 		Boolean activeTicketSupport = (Boolean)attributes.get(
@@ -459,6 +474,26 @@ public class AccountEntryWrapper
 	@Override
 	public String getStatusLabel() {
 		return _accountEntry.getStatusLabel();
+	}
+
+	/**
+	 * Returns the support end date of this account entry.
+	 *
+	 * @return the support end date of this account entry
+	 */
+	@Override
+	public Date getSupportEndDate() {
+		return _accountEntry.getSupportEndDate();
+	}
+
+	/**
+	 * Returns the ticket support end date of this account entry.
+	 *
+	 * @return the ticket support end date of this account entry
+	 */
+	@Override
+	public Date getTicketSupportEndDate() {
+		return _accountEntry.getTicketSupportEndDate();
 	}
 
 	@Override
@@ -785,6 +820,26 @@ public class AccountEntryWrapper
 	@Override
 	public void setStatus(int status) {
 		_accountEntry.setStatus(status);
+	}
+
+	/**
+	 * Sets the support end date of this account entry.
+	 *
+	 * @param supportEndDate the support end date of this account entry
+	 */
+	@Override
+	public void setSupportEndDate(Date supportEndDate) {
+		_accountEntry.setSupportEndDate(supportEndDate);
+	}
+
+	/**
+	 * Sets the ticket support end date of this account entry.
+	 *
+	 * @param ticketSupportEndDate the ticket support end date of this account entry
+	 */
+	@Override
+	public void setTicketSupportEndDate(Date ticketSupportEndDate) {
+		_accountEntry.setTicketSupportEndDate(ticketSupportEndDate);
 	}
 
 	/**
