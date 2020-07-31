@@ -79,8 +79,6 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 
 		_sparkManager.submitJob(
 			Arrays.asList(
-				"--elasticsearch-hostname",
-				ServiceConstants.LCP_ENGINE_ELASTICSEARCH_SERVER_IP,
 				"--job-run-id", jobRunJSONObject.getString("id"),
 				"--lcp-project-id", ServiceConstants.LCP_PROJECT_ID),
 			"commerce_application.yaml",

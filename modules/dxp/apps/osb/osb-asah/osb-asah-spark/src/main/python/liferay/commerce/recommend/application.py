@@ -58,14 +58,12 @@ class BaseCommerceSparkApplication(BaseSparkApplication, metaclass=ABCMeta):
 		argument_parser = argparse.ArgumentParser(
 		    usage='{} liferay.commerce.recommend.<ApplicationName> '
 		    '--configuration <Configuration Path> '
-		    '--elasticsearch-hostname <Elasticsearch Hostname> '
 		    '--job-run-id <Job Run ID> '
 		    '--lcp-project-id <LCP Project ID>'.format(sys.argv[0])
 		)
 
 		argument_parser.add_argument('application')
 		argument_parser.add_argument('--configuration', required=True)
-		argument_parser.add_argument('--elasticsearch-hostname', required=True)
 		argument_parser.add_argument('--job-run-id', required=True)
 		argument_parser.add_argument('--lcp-project-id', required=True)
 

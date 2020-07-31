@@ -1,6 +1,13 @@
 commerce:
   ml:
     locale: en_US
+es:
+    net:
+        http:
+            auth:
+                pass: $ES_NET_HTTP_AUTH_PASS
+                user: $ES_NET_HTTP_AUTH_USER
+    nodes: http://localhost:9200
 google:
   storage:
     bucket: gs://analytics-cloud-analytic-events-uat
