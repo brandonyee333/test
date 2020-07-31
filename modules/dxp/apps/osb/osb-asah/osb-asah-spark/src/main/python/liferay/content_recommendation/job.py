@@ -145,9 +145,11 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		tokens = [token for token in filter_string.split(' ') if len(token) > 0]
 
 		if tokens[1] == '=':
-			expression = '(context.`{}` = "{}")'.format(tokens[0], tokens[2])
+			expression = '(lower(context.`{}`) = "{}")'.format(
+			    tokens[0], tokens[2].lower()
+			)
 		else:
-			expression = '(rlike(context.`{}`, "{}"))'.format(
+			expression = '(rlike(context.`{}`, "(?i){}"))'.format(
 			    tokens[0], tokens[2]
 			)
 
