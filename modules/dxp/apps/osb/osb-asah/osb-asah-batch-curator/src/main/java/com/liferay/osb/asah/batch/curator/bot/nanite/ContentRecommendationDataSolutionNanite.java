@@ -774,8 +774,6 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 
 		_sparkManager.submitJob(
 			Arrays.asList(
-				"--elasticsearch-hostname",
-				ServiceConstants.LCP_ENGINE_ELASTICSEARCH_SERVER_IP,
 				"--job-run-id", jobRunJSONObject.getString("id"),
 				"--lcp-project-id", ServiceConstants.LCP_PROJECT_ID),
 			"content_recommendation.yaml", Collections.emptyList(),
