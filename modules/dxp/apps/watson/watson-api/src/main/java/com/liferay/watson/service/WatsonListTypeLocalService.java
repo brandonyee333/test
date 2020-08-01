@@ -58,7 +58,7 @@ public interface WatsonListTypeLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link WatsonListTypeLocalServiceUtil} to access the watson list type local service. Add custom service methods to <code>com.liferay.watson.service.impl.WatsonListTypeLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.watson.service.impl.WatsonListTypeLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the watson list type local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link WatsonListTypeLocalServiceUtil} if injection and service tracking are not available.
 	 */
 
 	/**

@@ -58,7 +58,7 @@ public interface MeetupsEntryLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link MeetupsEntryLocalServiceUtil} to access the meetups entry local service. Add custom service methods to <code>com.liferay.social.networking.service.impl.MeetupsEntryLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.social.networking.service.impl.MeetupsEntryLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the meetups entry local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link MeetupsEntryLocalServiceUtil} if injection and service tracking are not available.
 	 */
 	public MeetupsEntry addMeetupsEntry(
 			long userId, String title, String description, int startDateMonth,

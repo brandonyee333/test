@@ -63,7 +63,7 @@ public interface UserThreadLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link UserThreadLocalServiceUtil} to access the user thread local service. Add custom service methods to <code>com.liferay.social.privatemessaging.service.impl.UserThreadLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.social.privatemessaging.service.impl.UserThreadLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the user thread local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link UserThreadLocalServiceUtil} if injection and service tracking are not available.
 	 */
 	public MBMessage addPrivateMessage(
 			long userId, long mbThreadId, String to, String subject,

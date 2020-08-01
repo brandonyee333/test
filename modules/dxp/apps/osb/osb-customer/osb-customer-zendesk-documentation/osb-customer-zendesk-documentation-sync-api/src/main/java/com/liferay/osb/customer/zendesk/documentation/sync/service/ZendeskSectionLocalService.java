@@ -60,7 +60,7 @@ public interface ZendeskSectionLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link ZendeskSectionLocalServiceUtil} to access the zendesk section local service. Add custom service methods to <code>com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskSectionLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskSectionLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the zendesk section local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link ZendeskSectionLocalServiceUtil} if injection and service tracking are not available.
 	 */
 	public ZendeskSection addZendeskSection(
 			long zendeskCategoryId, String documentationKey,

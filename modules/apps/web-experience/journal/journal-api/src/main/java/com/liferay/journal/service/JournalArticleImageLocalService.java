@@ -58,7 +58,7 @@ public interface JournalArticleImageLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link JournalArticleImageLocalServiceUtil} to access the journal article image local service. Add custom service methods to <code>com.liferay.journal.service.impl.JournalArticleImageLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.journal.service.impl.JournalArticleImageLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the journal article image local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link JournalArticleImageLocalServiceUtil} if injection and service tracking are not available.
 	 */
 	public void addArticleImageId(
 			long articleImageId, long groupId, String articleId, double version,

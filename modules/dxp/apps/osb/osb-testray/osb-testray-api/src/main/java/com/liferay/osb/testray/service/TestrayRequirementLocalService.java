@@ -58,7 +58,7 @@ public interface TestrayRequirementLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link TestrayRequirementLocalServiceUtil} to access the testray requirement local service. Add custom service methods to <code>com.liferay.osb.testray.service.impl.TestrayRequirementLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.testray.service.impl.TestrayRequirementLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the testray requirement local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link TestrayRequirementLocalServiceUtil} if injection and service tracking are not available.
 	 */
 	public void addTestrayCaseTestrayRequirement(
 		long testrayCaseId, long testrayRequirementId);

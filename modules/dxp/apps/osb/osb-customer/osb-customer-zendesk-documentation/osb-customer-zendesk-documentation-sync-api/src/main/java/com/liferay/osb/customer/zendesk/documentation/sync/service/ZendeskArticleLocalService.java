@@ -60,7 +60,7 @@ public interface ZendeskArticleLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link ZendeskArticleLocalServiceUtil} to access the zendesk article local service. Add custom service methods to <code>com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskArticleLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskArticleLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the zendesk article local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link ZendeskArticleLocalServiceUtil} if injection and service tracking are not available.
 	 */
 	public ZendeskArticle addZendeskArticle(
 			long zendeskSectionId, String documentationKey,

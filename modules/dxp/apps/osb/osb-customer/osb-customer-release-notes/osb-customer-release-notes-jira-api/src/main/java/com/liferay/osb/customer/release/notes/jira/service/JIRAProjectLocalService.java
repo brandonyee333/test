@@ -58,7 +58,7 @@ public interface JIRAProjectLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link JIRAProjectLocalServiceUtil} to access the jira project local service. Add custom service methods to <code>com.liferay.osb.customer.release.notes.jira.service.impl.JIRAProjectLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.customer.release.notes.jira.service.impl.JIRAProjectLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the jira project local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link JIRAProjectLocalServiceUtil} if injection and service tracking are not available.
 	 */
 
 	/**

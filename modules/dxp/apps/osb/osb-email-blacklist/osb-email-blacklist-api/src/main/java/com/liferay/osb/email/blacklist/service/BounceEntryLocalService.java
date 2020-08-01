@@ -59,7 +59,7 @@ public interface BounceEntryLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link BounceEntryLocalServiceUtil} to access the bounce entry local service. Add custom service methods to <code>com.liferay.osb.email.blacklist.service.impl.BounceEntryLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.email.blacklist.service.impl.BounceEntryLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the bounce entry local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link BounceEntryLocalServiceUtil} if injection and service tracking are not available.
 	 */
 
 	/**

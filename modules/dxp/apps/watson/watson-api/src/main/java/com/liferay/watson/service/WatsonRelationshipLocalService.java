@@ -58,7 +58,7 @@ public interface WatsonRelationshipLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link WatsonRelationshipLocalServiceUtil} to access the watson relationship local service. Add custom service methods to <code>com.liferay.watson.service.impl.WatsonRelationshipLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.watson.service.impl.WatsonRelationshipLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the watson relationship local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link WatsonRelationshipLocalServiceUtil} if injection and service tracking are not available.
 	 */
 
 	/**

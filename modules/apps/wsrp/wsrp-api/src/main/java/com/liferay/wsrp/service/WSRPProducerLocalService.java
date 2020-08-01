@@ -63,7 +63,7 @@ public interface WSRPProducerLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link WSRPProducerLocalServiceUtil} to access the wsrp producer local service. Add custom service methods to <code>com.liferay.wsrp.service.impl.WSRPProducerLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.wsrp.service.impl.WSRPProducerLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the wsrp producer local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link WSRPProducerLocalServiceUtil} if injection and service tracking are not available.
 	 */
 	public WSRPProducer addWSRPProducer(
 			long userId, long groupId, String name, String version,

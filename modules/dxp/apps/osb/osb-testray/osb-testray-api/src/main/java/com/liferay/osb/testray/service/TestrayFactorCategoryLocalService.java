@@ -58,7 +58,7 @@ public interface TestrayFactorCategoryLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link TestrayFactorCategoryLocalServiceUtil} to access the testray factor category local service. Add custom service methods to <code>com.liferay.osb.testray.service.impl.TestrayFactorCategoryLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.testray.service.impl.TestrayFactorCategoryLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the testray factor category local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link TestrayFactorCategoryLocalServiceUtil} if injection and service tracking are not available.
 	 */
 
 	/**

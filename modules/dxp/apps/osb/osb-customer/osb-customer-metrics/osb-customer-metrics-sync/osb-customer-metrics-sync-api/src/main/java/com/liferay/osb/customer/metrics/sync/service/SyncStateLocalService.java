@@ -58,7 +58,7 @@ public interface SyncStateLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link SyncStateLocalServiceUtil} to access the sync state local service. Add custom service methods to <code>com.liferay.osb.customer.metrics.sync.service.impl.SyncStateLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.customer.metrics.sync.service.impl.SyncStateLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the sync state local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link SyncStateLocalServiceUtil} if injection and service tracking are not available.
 	 */
 	public SyncState addSyncState(String modelName);
 

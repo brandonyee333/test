@@ -60,7 +60,7 @@ public interface ShoppingCategoryLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link ShoppingCategoryLocalServiceUtil} to access the shopping category local service. Add custom service methods to <code>com.liferay.shopping.service.impl.ShoppingCategoryLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.shopping.service.impl.ShoppingCategoryLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the shopping category local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link ShoppingCategoryLocalServiceUtil} if injection and service tracking are not available.
 	 */
 	public ShoppingCategory addCategory(
 			long userId, long parentCategoryId, String name, String description,

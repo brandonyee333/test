@@ -58,7 +58,7 @@ public interface TestrayRunLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link TestrayRunLocalServiceUtil} to access the testray run local service. Add custom service methods to <code>com.liferay.osb.testray.service.impl.TestrayRunLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.testray.service.impl.TestrayRunLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the testray run local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link TestrayRunLocalServiceUtil} if injection and service tracking are not available.
 	 */
 
 	/**

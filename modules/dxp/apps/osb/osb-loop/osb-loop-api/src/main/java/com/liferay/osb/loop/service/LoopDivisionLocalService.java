@@ -58,7 +58,7 @@ public interface LoopDivisionLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link LoopDivisionLocalServiceUtil} to access the loop division local service. Add custom service methods to <code>com.liferay.osb.loop.service.impl.LoopDivisionLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.loop.service.impl.LoopDivisionLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the loop division local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link LoopDivisionLocalServiceUtil} if injection and service tracking are not available.
 	 */
 
 	/**

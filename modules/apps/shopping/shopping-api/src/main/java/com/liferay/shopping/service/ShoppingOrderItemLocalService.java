@@ -58,7 +58,7 @@ public interface ShoppingOrderItemLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link ShoppingOrderItemLocalServiceUtil} to access the shopping order item local service. Add custom service methods to <code>com.liferay.shopping.service.impl.ShoppingOrderItemLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.shopping.service.impl.ShoppingOrderItemLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the shopping order item local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link ShoppingOrderItemLocalServiceUtil} if injection and service tracking are not available.
 	 */
 
 	/**

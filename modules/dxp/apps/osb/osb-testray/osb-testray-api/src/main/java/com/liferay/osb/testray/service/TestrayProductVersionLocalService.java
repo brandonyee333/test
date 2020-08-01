@@ -58,7 +58,7 @@ public interface TestrayProductVersionLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link TestrayProductVersionLocalServiceUtil} to access the testray product version local service. Add custom service methods to <code>com.liferay.osb.testray.service.impl.TestrayProductVersionLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.testray.service.impl.TestrayProductVersionLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the testray product version local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link TestrayProductVersionLocalServiceUtil} if injection and service tracking are not available.
 	 */
 
 	/**

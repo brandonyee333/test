@@ -58,7 +58,7 @@ public interface ReleaseNotesLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link ReleaseNotesLocalServiceUtil} to access the release notes local service. Add custom service methods to <code>com.liferay.osb.customer.release.notes.service.impl.ReleaseNotesLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.customer.release.notes.service.impl.ReleaseNotesLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the release notes local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link ReleaseNotesLocalServiceUtil} if injection and service tracking are not available.
 	 */
 	public ReleaseNotes addReleaseNotes(
 			long userId, String name, String jiraIssueKeys)

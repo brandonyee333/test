@@ -56,7 +56,7 @@ public interface TicketAttachmentService extends BaseService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link TicketAttachmentServiceUtil} to access the ticket attachment remote service. Add custom service methods to <code>com.liferay.osb.customer.ticket.service.impl.TicketAttachmentServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.customer.ticket.service.impl.TicketAttachmentServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the ticket attachment remote service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link TicketAttachmentServiceUtil} if injection and service tracking are not available.
 	 */
 	public TicketAttachment addTicketAttachment(
 			long accountEntryId, long zendeskTicketId, String fileRepositoryId,

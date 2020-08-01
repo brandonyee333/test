@@ -63,7 +63,7 @@ public interface DocProjectLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link DocProjectLocalServiceUtil} to access the doc project local service. Add custom service methods to <code>com.liferay.osb.community.doc.project.service.impl.DocProjectLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.community.doc.project.service.impl.DocProjectLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the doc project local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link DocProjectLocalServiceUtil} if injection and service tracking are not available.
 	 */
 
 	/**

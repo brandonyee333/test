@@ -59,7 +59,7 @@ public interface TicketAttachmentLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link TicketAttachmentLocalServiceUtil} to access the ticket attachment local service. Add custom service methods to <code>com.liferay.osb.customer.ticket.service.impl.TicketAttachmentLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.customer.ticket.service.impl.TicketAttachmentLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the ticket attachment local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link TicketAttachmentLocalServiceUtil} if injection and service tracking are not available.
 	 */
 	public TicketAttachment addTicketAttachment(
 			long userId, long accountEntryId, long zendeskTicketId,

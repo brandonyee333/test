@@ -59,7 +59,7 @@ public interface TokenAuthEntryLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link TokenAuthEntryLocalServiceUtil} to access the token auth entry local service. Add custom service methods to <code>com.liferay.osb.loop.token.auth.service.impl.TokenAuthEntryLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.loop.token.auth.service.impl.TokenAuthEntryLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the token auth entry local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link TokenAuthEntryLocalServiceUtil} if injection and service tracking are not available.
 	 */
 	public TokenAuthEntry addTokenAuthEntry(long userId, String device)
 		throws PortalException;

@@ -58,7 +58,7 @@ public interface LoopTopicLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link LoopTopicLocalServiceUtil} to access the loop topic local service. Add custom service methods to <code>com.liferay.osb.loop.service.impl.LoopTopicLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.loop.service.impl.LoopTopicLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the loop topic local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link LoopTopicLocalServiceUtil} if injection and service tracking are not available.
 	 */
 	public LoopTopic addLoopTopic(long userId, String name, String description)
 		throws PortalException;

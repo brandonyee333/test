@@ -58,7 +58,7 @@ public interface WatsonResourceAuditLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link WatsonResourceAuditLocalServiceUtil} to access the watson resource audit local service. Add custom service methods to <code>com.liferay.watson.service.impl.WatsonResourceAuditLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.watson.service.impl.WatsonResourceAuditLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the watson resource audit local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link WatsonResourceAuditLocalServiceUtil} if injection and service tracking are not available.
 	 */
 
 	/**

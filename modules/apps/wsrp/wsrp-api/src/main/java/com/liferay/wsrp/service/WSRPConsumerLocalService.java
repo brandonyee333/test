@@ -64,7 +64,7 @@ public interface WSRPConsumerLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link WSRPConsumerLocalServiceUtil} to access the wsrp consumer local service. Add custom service methods to <code>com.liferay.wsrp.service.impl.WSRPConsumerLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.wsrp.service.impl.WSRPConsumerLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the wsrp consumer local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link WSRPConsumerLocalServiceUtil} if injection and service tracking are not available.
 	 */
 	public WSRPConsumer addWSRPConsumer(
 			long companyId, String adminPortletId, String name, String url,

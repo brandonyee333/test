@@ -58,7 +58,7 @@ public interface WatsonVehicleAuditLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link WatsonVehicleAuditLocalServiceUtil} to access the watson vehicle audit local service. Add custom service methods to <code>com.liferay.watson.service.impl.WatsonVehicleAuditLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.watson.service.impl.WatsonVehicleAuditLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the watson vehicle audit local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link WatsonVehicleAuditLocalServiceUtil} if injection and service tracking are not available.
 	 */
 
 	/**
