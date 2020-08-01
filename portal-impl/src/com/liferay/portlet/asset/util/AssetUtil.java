@@ -943,7 +943,7 @@ public class AssetUtil {
 							arrayIndexOutOfBoundsException) {
 
 					_log.error(
-						"Unable to sort assets",
+						"Unable to get order by column",
 						arrayIndexOutOfBoundsException);
 
 					throw arrayIndexOutOfBoundsException;
