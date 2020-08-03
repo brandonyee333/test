@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.model;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -72,12 +73,24 @@ public class AnalyticsEvents {
 		return _analyticsEventsList.get(0);
 	}
 
+	public Date getFirstAnalyticsEventDate() {
+		AnalyticsEvent firstAnalyticsEvent = getFirstAnalyticsEvent();
+
+		return firstAnalyticsEvent.getEventDate();
+	}
+
 	public long getInteractionsCount() {
 		return _interactionsCount;
 	}
 
 	public AnalyticsEvent getLastAnalyticsEvent() {
 		return _analyticsEventsList.get(_analyticsEventsList.size() - 1);
+	}
+
+	public Date getLastAnalyticsEventDate() {
+		AnalyticsEvent lastAnalyticsEvent = getLastAnalyticsEvent();
+
+		return lastAnalyticsEvent.getEventDate();
 	}
 
 	public long getPageViewsCount() {

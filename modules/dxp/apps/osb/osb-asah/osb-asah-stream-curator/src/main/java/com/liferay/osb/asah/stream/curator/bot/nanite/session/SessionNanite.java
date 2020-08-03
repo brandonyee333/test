@@ -107,12 +107,10 @@ public class SessionNanite implements Nanite {
 	private void _createUserSession(
 		AnalyticsEvents analyticsEvents, boolean completed, String userId) {
 
+		UserSession userSession = new UserSession();
+
 		AnalyticsEvent firstAnalyticsEvent =
 			analyticsEvents.getFirstAnalyticsEvent();
-		AnalyticsEvent lastAnalyticsEvent =
-			analyticsEvents.getLastAnalyticsEvent();
-
-		UserSession userSession = new UserSession();
 
 		Map<String, Object> context = firstAnalyticsEvent.getContext();
 
@@ -149,14 +147,14 @@ public class SessionNanite implements Nanite {
 		userSession.setInteractionsCount(
 			analyticsEvents.getInteractionsCount());
 		userSession.setInteractions(analyticsEvents.getAnalyticsEventsList());
-		userSession.setLastEventDate(lastAnalyticsEvent.getEventDate());
+		userSession.setLastEventDate(
+			analyticsEvents.getLastAnalyticsEventDate());
 		userSession.setPageViewsCount(analyticsEvents.getPageViewsCount());
 		userSession.setPlatformName(MapUtil.getString(context, "platformName"));
-		userSession.setRegion(MapUtil.getString(context, "region"));
-		userSession.setUserId(userId);
-
 		userSession.setReferrers(analyticsEvents.getReferrers());
+		userSession.setRegion(MapUtil.getString(context, "region"));
 		userSession.setUrls(analyticsEvents.getUrls());
+		userSession.setUserId(userId);
 
 		JSONObject jsonObject = _cerebroInfoElasticsearchInvoker.add(
 			getCollectionName(),
@@ -360,11 +358,8 @@ public class SessionNanite implements Nanite {
 		AnalyticsEvents analyticsEvents = new AnalyticsEvents(
 			sessionAnalyticsEvents);
 
-		AnalyticsEvent firstAnalyticsEvent =
-			analyticsEvents.getFirstAnalyticsEvent();
-
 		JSONObject userSessionJSONObject = _getUserSession(
-			userId, firstAnalyticsEvent.getEventDate());
+			userId, analyticsEvents.getFirstAnalyticsEventDate());
 
 		if (userSessionJSONObject == null) {
 			BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
@@ -391,11 +386,8 @@ public class SessionNanite implements Nanite {
 					"user-sessions", boolQueryBuilder)) {
 
 				try {
-					AnalyticsEvent lastAnalyticsEvent =
-						analyticsEvents.getLastAnalyticsEvent();
-
 					Date lastAnalyticsEventDate =
-						lastAnalyticsEvent.getEventDate();
+						analyticsEvents.getLastAnalyticsEventDate();
 
 					Date yesterday = DateUtil.toUTCDate(
 						DateUtil.addDays(DateUtil.newDateString(), -1));
@@ -449,9 +441,6 @@ public class SessionNanite implements Nanite {
 	private void _updateUserSession(
 		AnalyticsEvents analyticsEvents, JSONObject userSessionJSONObject) {
 
-		AnalyticsEvent lastAnalyticsEvent =
-			analyticsEvents.getLastAnalyticsEvent();
-
 		List<AnalyticsEvent> analyticsEventsList =
 			analyticsEvents.getAnalyticsEventsList();
 
@@ -484,7 +473,7 @@ public class SessionNanite implements Nanite {
 					put(
 						"lastEventDate",
 						DateUtil.toUTCString(
-							lastAnalyticsEvent.getEventDate()));
+							analyticsEvents.getLastAnalyticsEventDate()));
 					put("pageViewsCount", pageViewsCount);
 					put(
 						"referrers",
