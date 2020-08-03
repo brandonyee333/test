@@ -5,4 +5,12 @@ else {
     ctx._source.canonicalUrls = new HashSet(ctx._source.canonicalUrls);
 }
 
+if (ctx._source.tempUrls == null) {
+    ctx._source.tempUrls = new HashSet(ctx._source.urls);
+}
+else {
+    ctx._source.tempUrls = new HashSet(ctx._source.tempUrls);
+}
+
 ctx._source.canonicalUrls.add(params.canonicalUrl);
+ctx._source.tempUrls.remove(params.url);

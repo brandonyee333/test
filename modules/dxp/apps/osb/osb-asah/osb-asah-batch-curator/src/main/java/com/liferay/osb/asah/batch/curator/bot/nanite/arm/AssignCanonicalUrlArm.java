@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -89,7 +90,7 @@ public class AssignCanonicalUrlArm {
 
 	private SearchResponse _getAssetsSearchResponse(String collectionName) {
 		return _getSearchResponse(
-			collectionName, _cerebroInfoElasticsearchInvoker, "urls",
+			collectionName, _cerebroInfoElasticsearchInvoker, "tempUrls",
 			QueryBuilders.scriptQuery(_ASSET_QUERY_SCRIPT));
 	}
 
@@ -219,7 +220,12 @@ public class AssignCanonicalUrlArm {
 			new Script(
 				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
 				_updateAssetCanonicalUrlsScriptSource,
-				Collections.singletonMap("canonicalUrl", canonicalUrl)),
+				new HashMap<String, Object>() {
+					{
+						put("canonicalUrl", canonicalUrl);
+						put("url", url);
+					}
+				}),
 			_ASSET_COLLECTION_NAMES);
 	}
 
@@ -252,8 +258,7 @@ public class AssignCanonicalUrlArm {
 	};
 
 	private static final Script _ASSET_QUERY_SCRIPT = new Script(
-		"doc['canonicalUrls'].value == null || doc['urls'].values.length > " +
-			"doc['canonicalUrls'].values.length");
+		"doc['tempUrls'].value == null || doc['tempUrls'].values.length > 0");
 
 	private static final Log _log = LogFactory.getLog(
 		AssignCanonicalUrlArm.class);
