@@ -14,12 +14,16 @@
 
 package com.liferay.osb.asah.upgrade.v2_7_0;
 
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
+
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.script.Script;
 
 import org.json.JSONObject;
 
@@ -43,6 +47,11 @@ public class CanonicalUrlMappingUpgradeStep implements UpgradeStep {
 			_addMappingField(collectionName, "canonicalUrls");
 			_addMappingField(collectionName, "tempUrls");
 		}
+
+		_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
+			BoolQueryBuilderUtil.mustNot(QueryBuilders.existsQuery("tempUrls")),
+			true, new Script("ctx._source.tempUrls = ctx._source.urls"),
+			_ASSET_COLLECTION_NAMES);
 
 		_addMappingField(
 			"activities",
