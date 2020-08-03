@@ -92,6 +92,9 @@
 				"sessionId": {
 					"type": "keyword"
 				},
+				"tempUrls": {
+					"type": "keyword"
+				},
 				"title": {
 					"fields": {
 						"search": {

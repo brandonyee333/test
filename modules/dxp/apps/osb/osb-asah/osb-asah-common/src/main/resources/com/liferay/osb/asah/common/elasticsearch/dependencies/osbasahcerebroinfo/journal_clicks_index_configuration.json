@@ -83,6 +83,9 @@
 				"segmentNames": {
 					"type": "keyword"
 				},
+				"tempUrls": {
+					"type": "keyword"
+				},
 				"title": {
 					"type": "keyword"
 				},

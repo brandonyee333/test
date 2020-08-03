@@ -107,6 +107,9 @@
 				"submissionsTime": {
 					"type": "long"
 				},
+				"tempUrls": {
+					"type": "keyword"
+				},
 				"title": {
 					"type": "keyword"
 				},

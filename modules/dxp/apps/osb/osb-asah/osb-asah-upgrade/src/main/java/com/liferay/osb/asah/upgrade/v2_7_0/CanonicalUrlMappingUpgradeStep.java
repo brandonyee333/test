@@ -41,6 +41,7 @@ public class CanonicalUrlMappingUpgradeStep implements UpgradeStep {
 
 		for (String collectionName : _ASSET_COLLECTION_NAMES) {
 			_addMappingField(collectionName, "canonicalUrls");
+			_addMappingField(collectionName, "tempUrls");
 		}
 
 		_addMappingField(

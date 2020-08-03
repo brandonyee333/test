@@ -126,6 +126,9 @@
 				"submissionsTime": {
 					"type": "long"
 				},
+				"tempUrls": {
+					"type": "keyword"
+				},
 				"title": {
 					"fields": {
 						"search": {
