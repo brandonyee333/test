@@ -87,7 +87,7 @@ public class SessionNaniteTest extends BaseNaniteTestCase {
 
 		Map<String, Object> params = script.getParams();
 
-		Assert.assertEquals(params.toString(), 7, params.size());
+		Assert.assertEquals(params.toString(), 8, params.size());
 	}
 
 }
