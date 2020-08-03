@@ -17,8 +17,8 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.AssignCanonicalUrlArm;
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.AssignSessionActivitiesArm;
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.AssignSessionContextArm;
-import com.liferay.osb.asah.batch.curator.bot.nanite.arm.SyncPageActivitiesEventContextArm;
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.AssignTempUrlsArm;
+import com.liferay.osb.asah.batch.curator.bot.nanite.arm.SyncPageActivitiesEventContextArm;
 import com.liferay.osb.asah.common.function.UnsafeRunnable;
 
 import org.apache.commons.logging.Log;
