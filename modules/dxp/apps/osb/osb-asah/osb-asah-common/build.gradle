@@ -21,7 +21,6 @@ bootRepackage {
 configurations.all {
 	exclude group: "org.apache.geronimo.bundles", module: "json"
 	exclude group: "com.vaadin.external.google", module: "android-json"
-	exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
 }
 
 dependencies {
@@ -39,7 +38,6 @@ dependencies {
 	compile group: "org.elasticsearch", name: "elasticsearch", version: "6.8.1"
 	compile group: "org.elasticsearch.client", name: "transport", version: "6.8.1"
 	compile group: "org.json", name: "json"
-	compile group: "org.springframework.boot", name: "spring-boot-starter-undertow"
 	compile group: "org.springframework.boot", name: "spring-boot-starter-web"
 	compile group: "org.springframework.data", name: "spring-data-redis"
 	compile group: "org.springframework.retry", name: "spring-retry"
