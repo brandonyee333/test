@@ -12,9 +12,8 @@
  *
  */
 
-package com.liferay.osb.asah.batch.curator.spring;
+package com.liferay.osb.asah.monolith.spring;
 
-import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
@@ -22,11 +21,10 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
 /**
- * @author Vishal Reddy
+ * @author Shinn Lok
  */
 @Configuration
-@MonolithExclude
-public class OSBAsahBatchCuratorSchedulingConfigurer
+public class OSBAsahMonolithSchedulingConfigurer
 	implements SchedulingConfigurer {
 
 	@Override
@@ -39,7 +37,7 @@ public class OSBAsahBatchCuratorSchedulingConfigurer
 		ThreadPoolTaskScheduler threadPoolTaskScheduler =
 			new ThreadPoolTaskScheduler();
 
-		threadPoolTaskScheduler.setPoolSize(12);
+		threadPoolTaskScheduler.setPoolSize(15);
 
 		threadPoolTaskScheduler.initialize();
 

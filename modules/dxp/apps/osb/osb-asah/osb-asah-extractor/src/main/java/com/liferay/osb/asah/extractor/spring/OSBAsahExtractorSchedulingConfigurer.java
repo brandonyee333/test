@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.extractor.spring;
 
+import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
@@ -24,6 +25,7 @@ import org.springframework.scheduling.config.ScheduledTaskRegistrar;
  * @author Shinn Lok
  */
 @Configuration
+@MonolithExclude
 public class OSBAsahExtractorSchedulingConfigurer
 	implements SchedulingConfigurer {
 
