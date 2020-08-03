@@ -34,7 +34,8 @@ public class AssignTempUrlsArm {
 
 	public void execute() {
 		_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
-			BoolQueryBuilderUtil.mustNot(QueryBuilders.existsQuery("tempUrls")),
+			BoolQueryBuilderUtil.mustNot(
+				QueryBuilders.existsQuery("canonicalUrls")),
 			true, new Script("ctx._source.tempUrls = ctx._source.urls"),
 			_ASSET_COLLECTION_NAMES);
 	}
