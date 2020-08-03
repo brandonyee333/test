@@ -258,7 +258,7 @@ public class AssignCanonicalUrlArm {
 	};
 
 	private static final Script _ASSET_QUERY_SCRIPT = new Script(
-		"doc['tempUrls'].value == null || doc['tempUrls'].values.length > 0");
+		"doc.containsKey('tempUrls') && doc['tempUrls'].values.length > 0");
 
 	private static final Log _log = LogFactory.getLog(
 		AssignCanonicalUrlArm.class);
