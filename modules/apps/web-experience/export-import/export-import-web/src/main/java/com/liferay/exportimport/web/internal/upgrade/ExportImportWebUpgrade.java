@@ -31,7 +31,7 @@ public class ExportImportWebUpgrade implements UpgradeStepRegistrator {
 	@Override
 	public void register(Registry registry) {
 		registry.register(
-			"com.liferay.exportimport.web", "0.0.0", "1.0.0",
+			"com.liferay.exportimport.web", "0.0.0", "1.0.1",
 			new DummyUpgradeStep());
 
 		registry.register(
