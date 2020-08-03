@@ -954,6 +954,13 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		String accountEntryName = LicenseUtil.trimText(accountEntry.getName());
 		String licenseEntryName = LicenseUtil.trimText(licenseEntry.getName());
 		String productEntryName = LicenseUtil.trimText(productEntry.getName());
+
+		String productId = ProductEntryConstants.PRODUCT_ID_PORTAL;
+
+		if (productEntry.isCommerce()) {
+			productId = ProductEntryConstants.PRODUCT_ID_COMMERCE;
+		}
+
 		String productVersionLabel = LicenseUtil.trimText(
 			LicenseKeyConstants.getProductVersionLabel(productVersion));
 
@@ -999,10 +1006,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		String key = KeyGenerator.generate(
 			accountEntryName, licenseEntryName, licenseEntryType,
-			licenseVersion, productEntryName,
-			ProductEntryConstants.PRODUCT_ID_PORTAL, productVersionLabel, owner,
-			maxServers, maxHttpSessions, 0, 0, 0, description, null, null, null,
-			serverIds, startDate, expirationDate);
+			licenseVersion, productEntryName, productId, productVersionLabel,
+			owner, maxServers, maxHttpSessions, 0, 0, 0, description, null,
+			null, null, serverIds, startDate, expirationDate);
 
 		LicenseKey licenseKey = null;
 
@@ -1028,7 +1034,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			licenseKey = doAddLicenseKey(
 				user, now, licenseKeySet, offeringEntry, licenseEntry,
 				accountEntryName, licenseEntryName, licenseEntryType,
-				licenseVersion, productEntryName, productVersion,
+				licenseVersion, productEntryName, productId, productVersion,
 				productVersionLabel, clusterId, owner, maxServers, 0, 0,
 				maxHttpSessions, 0, description, StringPool.BLANK,
 				StringPool.BLANK, macAddresses[i], serverIds[i], key, startDate,
@@ -1043,12 +1049,12 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		OfferingEntry offeringEntry, LicenseEntry licenseEntry,
 		String accountEntryName, String licenseEntryName,
 		String licenseEntryType, int licenseVersion, String productEntryName,
-		int productVersion, String productVersionLabel, long clusterId,
-		String owner, int maxServers, long maxConcurrentUsers, long maxUsers,
-		int maxHttpSessions, int sizing, String description, String hostName,
-		String ipAddresses, String macAddresses, String serverId, String key,
-		Date startDate, Date expirationDate, String additionalInfo,
-		boolean complimentary, boolean active) {
+		String productId, int productVersion, String productVersionLabel,
+		long clusterId, String owner, int maxServers, long maxConcurrentUsers,
+		long maxUsers, int maxHttpSessions, int sizing, String description,
+		String hostName, String ipAddresses, String macAddresses,
+		String serverId, String key, Date startDate, Date expirationDate,
+		String additionalInfo, boolean complimentary, boolean active) {
 
 		long licenseKeyId = counterLocalService.increment();
 
@@ -1073,7 +1079,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		licenseKey.setLicenseEntryType(licenseEntryType);
 		licenseKey.setLicenseVersion(licenseVersion);
 		licenseKey.setProductEntryName(productEntryName);
-		licenseKey.setProductId(ProductEntryConstants.PRODUCT_ID_PORTAL);
+		licenseKey.setProductId(productId);
 		licenseKey.setProductVersion(productVersion);
 		licenseKey.setProductVersionLabel(productVersionLabel);
 		licenseKey.setClusterId(clusterId);
@@ -1113,6 +1119,13 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		String accountEntryName = LicenseUtil.trimText(accountEntry.getName());
 		String licenseEntryName = LicenseUtil.trimText(licenseEntry.getName());
 		String productEntryName = LicenseUtil.trimText(productEntry.getName());
+
+		String productId = ProductEntryConstants.PRODUCT_ID_PORTAL;
+
+		if (productEntry.isCommerce()) {
+			productId = ProductEntryConstants.PRODUCT_ID_COMMERCE;
+		}
+
 		String productVersionLabel = LicenseUtil.trimText(
 			LicenseKeyConstants.getProductVersionLabel(productVersion));
 
@@ -1220,9 +1233,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 			String key = KeyGenerator.generate(
 				accountEntryName, licenseEntryName, licenseEntryType,
-				licenseVersion, productEntryName,
-				ProductEntryConstants.PRODUCT_ID_PORTAL, productVersionLabel,
-				owner, maxServers, maxHttpSessions,
+				licenseVersion, productEntryName, productId,
+				productVersionLabel, owner, maxServers, maxHttpSessions,
 				offeringEntry.getMaxConcurrentUsers(),
 				offeringEntry.getMaxUsers(), sizing, description, hostName,
 				curIpAddresses, curMacAddresses, new String[] {serverId},
@@ -1231,7 +1243,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			licenseKey = doAddLicenseKey(
 				user, now, licenseKeySet, offeringEntry, licenseEntry,
 				accountEntryName, licenseEntryName, licenseEntryType,
-				licenseVersion, productEntryName, productVersion,
+				licenseVersion, productEntryName, productId, productVersion,
 				productVersionLabel, clusterId, owner, maxServers,
 				offeringEntry.getMaxConcurrentUsers(),
 				offeringEntry.getMaxUsers(), maxHttpSessions, sizing,
