@@ -55,7 +55,9 @@ public class AssignSessionContextArm {
 				return elasticsearchBulkRequestBuilder;
 			}
 		).setQueryBuilder(
-			BoolQueryBuilderUtil.filter(
+			BoolQueryBuilderUtil.mustNot(
+				QueryBuilders.existsQuery("canonicalUrls")
+			).filter(
 				QueryBuilders.existsQuery("channelId")
 			).filter(
 				QueryBuilders.existsQuery("dataSourceId")
@@ -136,6 +138,7 @@ public class AssignSessionContextArm {
 			JSONObject userSessionJSONObject)
 		throws Exception {
 
+		Set<String> canonicalUrls = new HashSet<>();
 		Set<String> referrers = new HashSet<>();
 		Set<String> urls = new HashSet<>();
 
@@ -146,6 +149,13 @@ public class AssignSessionContextArm {
 					analyticsEventsJSONObject.optJSONObject("context");
 
 				if (contextJSONObject != null) {
+					String canonicalUrl = contextJSONObject.optString(
+						"canonicalUrl");
+
+					if (!StringUtil.isNull(canonicalUrl)) {
+						canonicalUrls.add(canonicalUrl);
+					}
+
 					String referrer = contextJSONObject.optString("referrer");
 
 					if (!StringUtil.isNull(referrer)) {
@@ -168,6 +178,8 @@ public class AssignSessionContextArm {
 		elasticsearchBulkRequestBuilder.update(
 			"user-sessions",
 			JSONUtil.put(
+				"canonicalUrls", canonicalUrls
+			).put(
 				"deviceType", _getDeviceType(userSessionJSONObject)
 			).put(
 				"id", userSessionJSONObject.getString("id")

@@ -35,6 +35,8 @@ public class SessionContextUpgradeStep implements UpgradeStep {
 			JSONUtil.put(
 				"properties",
 				JSONUtil.put(
+					"canonicalUrls", JSONUtil.put("type", "keyword")
+				).put(
 					"deviceType", JSONUtil.put("type", "keyword")
 				).put(
 					"referrers", JSONUtil.put("type", "keyword")
