@@ -87,6 +87,10 @@ public class UserSession implements Serializable {
 		return _browserName;
 	}
 
+	public Set<String> getCanonicalUrls() {
+		return _canonicalUrls;
+	}
+
 	public String getChannelId() {
 		return _channelId;
 	}
@@ -218,11 +222,11 @@ public class UserSession implements Serializable {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_acquisition, _bounced, _browserName, _channelId, _city, _completed,
-			_completeDate, _completeReason, _country, _dataSourceId, _date,
-			_deviceType, _duration, _entryPage, _exitPage, _firstEventDate, _id,
-			_individualId, _interactions, _lastEventDate, _platformName,
-			_referrers, _region, _urls, _userId);
+			_acquisition, _bounced, _browserName, _canonicalUrls, _channelId,
+			_city, _completed, _completeDate, _completeReason, _country,
+			_dataSourceId, _date, _deviceType, _duration, _entryPage, _exitPage,
+			_firstEventDate, _id, _individualId, _interactions, _lastEventDate,
+			_platformName, _referrers, _region, _urls, _userId);
 	}
 
 	public void setAcquisition(Acquisition acquisition) {
@@ -235,6 +239,10 @@ public class UserSession implements Serializable {
 
 	public void setBrowserName(String browserName) {
 		_browserName = browserName;
+	}
+
+	public void setCanonicalUrls(Set<String> canonicalUrls) {
+		_canonicalUrls = canonicalUrls;
 	}
 
 	public void setChannelId(String channelId) {
@@ -344,6 +352,7 @@ public class UserSession implements Serializable {
 	private Acquisition _acquisition;
 	private Boolean _bounced;
 	private String _browserName;
+	private Set<String> _canonicalUrls;
 	private String _channelId;
 	private String _city;
 	private Boolean _completed;

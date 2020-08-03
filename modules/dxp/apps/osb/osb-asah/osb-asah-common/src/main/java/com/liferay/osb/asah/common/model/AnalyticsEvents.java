@@ -48,6 +48,12 @@ public class AnalyticsEvents {
 
 			Map<String, Object> context = analyticsEvent.getContext();
 
+			String canonicalUrl = MapUtil.getString(context, "canonicalUrl");
+
+			if (!StringUtil.isNull(canonicalUrl)) {
+				_canonicalUrls.add(canonicalUrl);
+			}
+
 			String referrer = MapUtil.getString(context, "referrer");
 
 			if (!StringUtil.isNull(referrer)) {
@@ -67,6 +73,10 @@ public class AnalyticsEvents {
 
 	public List<AnalyticsEvent> getAnalyticsEventsList() {
 		return _analyticsEventsList;
+	}
+
+	public Set<String> getCanonicalUrls() {
+		return _canonicalUrls;
 	}
 
 	public AnalyticsEvent getFirstAnalyticsEvent() {
@@ -123,6 +133,7 @@ public class AnalyticsEvents {
 		};
 
 	private final List<AnalyticsEvent> _analyticsEventsList;
+	private final Set<String> _canonicalUrls = new HashSet<>();
 	private final long _interactionsCount;
 	private final long _pageViewsCount;
 	private final Set<String> _referrers = new HashSet<>();

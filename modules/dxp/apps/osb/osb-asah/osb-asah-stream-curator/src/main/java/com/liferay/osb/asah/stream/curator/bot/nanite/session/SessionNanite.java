@@ -121,6 +121,7 @@ public class SessionNanite implements Nanite {
 
 		userSession.setBounced(_isSessionBounced(analyticsEvents));
 		userSession.setBrowserName(MapUtil.getString(context, "browserName"));
+		userSession.setCanonicalUrls(analyticsEvents.getCanonicalUrls());
 		userSession.setChannelId(firstAnalyticsEvent.getChannelId());
 		userSession.setCity(MapUtil.getString(context, "city"));
 		userSession.setCompleted(completed);
@@ -468,6 +469,9 @@ public class SessionNanite implements Nanite {
 					put(
 						"bounced",
 						(interactionsCount < 1) && (pageViewsCount < 2));
+					put(
+						"canonicalUrls",
+						new ArrayList<>(analyticsEvents.getCanonicalUrls()));
 					put("interactions", analyticsEventMaps);
 					put("interactionsCount", interactionsCount);
 					put(

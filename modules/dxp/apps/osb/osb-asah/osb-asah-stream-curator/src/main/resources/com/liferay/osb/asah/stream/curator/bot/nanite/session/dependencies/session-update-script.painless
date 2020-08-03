@@ -10,6 +10,16 @@ if (oldLastEventDate.isBefore(newLastEventDate)) {
 	ctx._source.lastEventDate = params.lastEventDate;
 }
 
+def canonicalUrls = new HashSet();
+
+if (ctx._source.canonicalUrls != null) {
+	canonicalUrls = new HashSet(ctx._source.canonicalUrls);
+}
+
+canonicalUrls.addAll(params.canonicalUrls);
+
+ctx._source.canonicalUrls = canonicalUrls;
+
 def referrers = new HashSet();
 
 if (ctx._source.referrers != null) {
