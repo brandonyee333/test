@@ -2,7 +2,7 @@
 definition {
 
 	// Ignore all tests because related apps are deprecated
-
+	property osgi.app.includes = "youtube-web";
 	property portal.release = "false";
 	property portal.upstream = "true";
 	property testray.component.names = "YouTube";
@@ -31,7 +31,6 @@ definition {
 		}
 	}
 
-	@ignore = "true"
 	@priority = "4"
 	test AddYoutubeVideo {
 		Navigator.gotoPage(pageName = "Test Page Name");
@@ -59,7 +58,6 @@ definition {
 		IFrame.closeFrame();
 	}
 
-	@ignore = "true"
 	@priority = "4"
 	test YoutubePortletSmoke {
 		Navigator.gotoPage(pageName = "Test Page Name");

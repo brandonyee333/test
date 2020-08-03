@@ -3,7 +3,7 @@ definition {
 
 	// Ignore all tests because related apps are deprecated
 
-	property osgi.app.includes = "flash";
+	property osgi.app.includes = "flash-web";
 	property plugins.deployment.type = "osgi";
 	property portal.release = "true";
 	property portal.upstream = "true";
@@ -24,7 +24,6 @@ definition {
 		Page.tearDownCP();
 	}
 
-	@ignore = "true"
 	@priority = "4"
 	test FlashPortletSmoke {
 		var appName = "Flash";

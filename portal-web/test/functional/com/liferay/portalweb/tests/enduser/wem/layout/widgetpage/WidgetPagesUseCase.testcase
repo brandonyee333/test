@@ -378,9 +378,9 @@ definition {
 			userEmailAddress = "test@liferay.com");
 	}
 
-	@ignore = "true"
 	@priority = "3"
 	test ViewSecureContentAndPageAsGuest {
+		property portal.acceptance = "fiona";
 		property test.name.skip.portal.instance = "WidgetPagesUseCase#ViewSecureContentAndPageAsGuest";
 		property testray.component.names = "Message Boards,Site Pages Administration";
 
@@ -546,9 +546,9 @@ definition {
 			value1 = "You do not have the required permissions.");
 	}
 
-	@ignore = "true"
 	@priority = "3"
 	test ViewSecureContentAndPageAsSiteMember {
+		property portal.acceptance = "fiona";
 		property test.name.skip.portal.instance = "WidgetPagesUseCase#ViewSecureContentAndPageAsSiteMember";
 		property testray.component.names = "Message Boards,Site Pages Administration";
 
@@ -731,9 +731,9 @@ definition {
 			threadSubject = "MB Thread Message Subject GMMB3");
 	}
 
-	@ignore = "true"
 	@priority = "5"
 	test ViewSecureContentAndPageAsUser {
+		property portal.acceptance = "fiona";
 		property test.name.skip.portal.instance = "WidgetPagesUseCase#ViewSecureContentAndPageAsUser";
 		property testray.component.names = "Message Boards,Site Pages Administration,Training";
 
@@ -965,9 +965,9 @@ definition {
 			userName = "Test Test");
 	}
 
-	@ignore = "true"
 	@priority = "5"
 	test WebContentAdministrationSitesPageTypes {
+		property portal.acceptance = "fiona";
 		property osgi.app.includes = "directory-web";
 		property portal.release = "false";
 		property testray.component.names = "Site Pages Administration,Training";
