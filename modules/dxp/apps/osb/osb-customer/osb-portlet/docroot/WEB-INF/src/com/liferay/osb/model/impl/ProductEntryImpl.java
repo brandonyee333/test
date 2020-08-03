@@ -41,8 +41,7 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 
 	public List<ListType> getAllVersionsListTypes() {
 		if (isCommerce()) {
-			return ListTypeServiceUtil.getListTypes(
-				ProductEntryConstants.LIST_TYPE_COMMERCE_ALL_VERSIONS);
+			return getVersionsListTypes();
 		}
 
 		if (isPortal()) {

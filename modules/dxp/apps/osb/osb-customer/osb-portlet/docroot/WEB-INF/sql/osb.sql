@@ -384,3 +384,5 @@ insert into ListType (listTypeId, name, type_) values (46000, '1.0', 'com.lifera
 insert into ListType (listTypeId, name, type_) values (46001, '1.1', 'com.liferay.osb.model.ProductEntry.commerceMinorVersions');
 insert into ListType (listTypeId, name, type_) values (46002, '2.0', 'com.liferay.osb.model.ProductEntry.commerceMinorVersions');
 insert into ListType (listTypeId, name, type_) values (46003, '2.1', 'com.liferay.osb.model.ProductEntry.commerceMinorVersions');
+
+insert into ListType (listTypeId, name, type_) values (47000, '1', 'com.liferay.osb.model.ProductEntry.commerceLicenseProductVersions');

@@ -164,7 +164,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		String licenseEntryType = licenseEntry.getType();
 
 		int licenseVersion = LicenseKeyConstants.getLicenseVersion(
-			productVersion);
+			productEntry, productVersion);
 
 		Date now = new Date();
 

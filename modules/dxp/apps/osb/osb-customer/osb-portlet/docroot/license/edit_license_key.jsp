@@ -322,13 +322,17 @@ portletURL.setParameter("aggregateLicense", String.valueOf(aggregateLicense));
 								String previousNamePrefix = StringPool.BLANK;
 
 								for (ListType productVersionType : productVersionTypes) {
-									if ((productVersionType.getListTypeId() == ProductEntryConstants.COMMERCE_VERSION_1_0) || (productVersionType.getListTypeId() == ProductEntryConstants.COMMERCE_VERSION_1_1) || (productVersionType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_4_4_0) || (productVersionType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER)) {
+									if ((productVersionType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_4_4_0) || (productVersionType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER)) {
 										continue;
 									}
 
 									String name = productVersionType.getName();
 
-									String namePrefix = name.substring(0, 3);
+									String namePrefix = StringPool.BLANK;
+
+									if (name.length() >= 3) {
+										namePrefix = name.substring(0, 3);
+									}
 							%>
 
 									<c:if test="<%= Validator.isNotNull(previousNamePrefix) && !previousNamePrefix.equals(namePrefix) %>">
@@ -627,7 +631,7 @@ portletURL.setParameter("aggregateLicense", String.valueOf(aggregateLicense));
 					</c:if>
 
 					<c:choose>
-						<c:when test="<%= LicenseKeyConstants.getLicenseVersion(productVersion) >= 3 %>">
+						<c:when test="<%= LicenseKeyConstants.getLicenseVersion(productEntry, productVersion) >= 3 %>">
 							<c:if test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER) %>">
 								<aui:col md="12">
 									<h2 class="control-label">
@@ -746,7 +750,7 @@ portletURL.setParameter("aggregateLicense", String.valueOf(aggregateLicense));
 								</c:otherwise>
 							</c:choose>
 						</c:when>
-						<c:when test="<%= LicenseKeyConstants.getLicenseVersion(productVersion) == 2 %>">
+						<c:when test="<%= LicenseKeyConstants.getLicenseVersion(productEntry, productVersion) == 2 %>">
 							<c:choose>
 								<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER) %>">
 									<aui:col md="12">

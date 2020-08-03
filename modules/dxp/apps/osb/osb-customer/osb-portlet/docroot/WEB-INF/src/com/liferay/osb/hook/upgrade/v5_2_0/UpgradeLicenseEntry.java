@@ -86,26 +86,22 @@ public class UpgradeLicenseEntry extends BaseUpgradeProcess {
 		LicenseEntryLocalServiceUtil.addLicenseEntry(
 			OSBConstants.USER_AMOS_FONG_USER_ID, _commerceBackupProductEntryId,
 			"Liferay Commerce Subscription Backup",
-			LicenseEntryConstants.TYPE_PRODUCTION,
-			ProductEntryConstants.COMMERCE_VERSION_2_0, 0);
+			LicenseEntryConstants.TYPE_PRODUCTION, 0, 0);
 		LicenseEntryLocalServiceUtil.addLicenseEntry(
 			OSBConstants.USER_AMOS_FONG_USER_ID,
 			_commerceEnterpriseProductEntryId,
 			"Liferay Commerce Subscription Unlimited Enterprise-Wide",
-			LicenseEntryConstants.TYPE_ENTERPRISE,
-			ProductEntryConstants.COMMERCE_VERSION_2_0, 0);
+			LicenseEntryConstants.TYPE_ENTERPRISE, 0, 0);
 		LicenseEntryLocalServiceUtil.addLicenseEntry(
 			OSBConstants.USER_AMOS_FONG_USER_ID,
 			_commerceNonProductionProductEntryId,
 			"Liferay Commerce Subscription Non-Production",
-			LicenseEntryConstants.TYPE_PRODUCTION,
-			ProductEntryConstants.COMMERCE_VERSION_2_0, 0);
+			LicenseEntryConstants.TYPE_PRODUCTION, 0, 0);
 		LicenseEntryLocalServiceUtil.addLicenseEntry(
 			OSBConstants.USER_AMOS_FONG_USER_ID,
 			_commerceProductionProductEntryId,
 			"Liferay Commerce Subscription Production",
-			LicenseEntryConstants.TYPE_PRODUCTION,
-			ProductEntryConstants.COMMERCE_VERSION_2_0, 0);
+			LicenseEntryConstants.TYPE_PRODUCTION, 0, 0);
 	}
 
 	protected void updateOfferingDefinitions() throws Exception {
@@ -181,7 +177,7 @@ public class UpgradeLicenseEntry extends BaseUpgradeProcess {
 			productEntry = ProductEntryLocalServiceUtil.getProductEntryByName(
 				name);
 
-			productEntry.setVersionsListType("commerceMajorVersions");
+			productEntry.setVersionsListType("commerceLicenseProductVersions");
 
 			ProductEntryLocalServiceUtil.updateProductEntry(productEntry);
 		}
@@ -189,7 +185,7 @@ public class UpgradeLicenseEntry extends BaseUpgradeProcess {
 			productEntry = ProductEntryLocalServiceUtil.addProductEntry(
 				OSBConstants.USER_AMOS_FONG_USER_ID, name,
 				ProductEntryConstants.TYPE_REGULAR, environment,
-				"commerceMajorVersions", new String[0], null);
+				"commerceLicenseProductVersions", new String[0], null);
 		}
 
 		return productEntry.getProductEntryId();

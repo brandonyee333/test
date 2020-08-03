@@ -236,10 +236,7 @@ public class ProductEntryConstants {
 	public static final int[] TYPES = {TYPE_ADD_ON, TYPE_PRIMARY, TYPE_REGULAR};
 
 	public static String getAllListType(String majorListType) {
-		if (majorListType.equals(LIST_TYPE_COMMERCE_MAJOR_VERSIONS)) {
-			return LIST_TYPE_COMMERCE_ALL_VERSIONS;
-		}
-		else if (majorListType.equals(LIST_TYPE_PORTAL_MAJOR_VERSIONS)) {
+		if (majorListType.equals(LIST_TYPE_PORTAL_MAJOR_VERSIONS)) {
 			return LIST_TYPE_PORTAL_ALL_VERSIONS;
 		}
 		else if (majorListType.equals(
@@ -248,7 +245,7 @@ public class ProductEntryConstants {
 			return LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS;
 		}
 
-		return StringPool.BLANK;
+		return majorListType;
 	}
 
 	public static String getDisplayName(String productEntryName) {

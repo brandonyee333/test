@@ -103,12 +103,24 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			getPermissionChecker(), offeringEntry.getAccountEntryId(),
 			ActionKeys.ADD_LICENSE);
 
+		ProductEntry productEntry = null;
+
+		if (productEntryId > 0) {
+			productEntry = productEntryLocalService.getProductEntry(
+				productEntryId);
+		}
+		else {
+			productEntry = productEntryLocalService.getProductEntry(
+				offeringEntry.getProductEntryId());
+		}
+
 		LicenseEntry licenseEntry = licenseEntryPersistence.findByPrimaryKey(
 			licenseEntryId);
 
 		String licenseEntryType = licenseEntry.getType();
 
-		if ((LicenseKeyConstants.getLicenseVersion(productVersion) >= 3) &&
+		if ((LicenseKeyConstants.getLicenseVersion(
+				productEntry, productVersion) >= 3) &&
 			(licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) ||
 			 licenseEntryType.equals(
 				 LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) &&
