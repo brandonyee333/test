@@ -140,6 +140,17 @@ public class AccountWebServiceImpl implements AccountWebService {
 		return 0;
 	}
 
+	public void unassignContactRoles(
+			String agentName, String agentUID, String accountKey,
+			String contactEmailAddress, String[] contactRoleKeys)
+		throws Exception {
+
+		_accountResource.
+			deleteAccountContactByEmailAddresContactEmailAddressRole(
+				agentName, agentUID, accountKey, contactEmailAddress,
+				contactRoleKeys);
+	}
+
 	@Activate
 	protected void activate(Map<String, Object> properties) throws Exception {
 		KoroneikiConfiguration koroneikiConfiguration =

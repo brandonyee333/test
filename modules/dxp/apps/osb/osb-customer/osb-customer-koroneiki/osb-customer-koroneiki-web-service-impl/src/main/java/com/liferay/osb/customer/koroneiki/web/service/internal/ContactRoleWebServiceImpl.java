@@ -17,18 +17,24 @@ package com.liferay.osb.customer.koroneiki.web.service.internal;
 import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.internal.configuration.KoroneikiConfiguration;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
+import com.liferay.osb.koroneiki.phloem.rest.client.http.HttpInvoker;
 import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Page;
 import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Pagination;
 import com.liferay.osb.koroneiki.phloem.rest.client.resource.v1_0.ContactRoleResource;
+import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ContactRoleSerDes;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.util.Http;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
@@ -38,6 +44,21 @@ import org.osgi.service.component.annotations.Component;
 	immediate = true, service = ContactRoleWebService.class
 )
 public class ContactRoleWebServiceImpl implements ContactRoleWebService {
+
+	public ContactRole fetchContactRole(String type, String name)
+		throws Exception {
+
+		HttpInvoker.HttpResponse httpResponse =
+			_contactRoleResource.
+				getContactRoleContactRoleTypeContactRoleNameHttpResponse(
+					_http.encodePath(type), _http.encodePath(name));
+
+		if (httpResponse.getStatusCode() == HttpServletResponse.SC_NOT_FOUND) {
+			return null;
+		}
+
+		return ContactRoleSerDes.toDTO(httpResponse.getContent());
+	}
 
 	public List<ContactRole> getAccountContactRoles(
 			String accountKey, String contactUuid, int page, int pageSize)
@@ -92,5 +113,8 @@ public class ContactRoleWebServiceImpl implements ContactRoleWebService {
 	}
 
 	private ContactRoleResource _contactRoleResource;
+
+	@Reference
+	private Http _http;
 
 }

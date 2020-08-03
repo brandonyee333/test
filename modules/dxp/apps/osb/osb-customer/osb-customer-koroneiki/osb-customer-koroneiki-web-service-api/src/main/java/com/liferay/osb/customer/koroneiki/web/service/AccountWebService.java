@@ -51,4 +51,9 @@ public interface AccountWebService {
 	public long searchCount(String search, String filterString)
 		throws Exception;
 
+	public void unassignContactRoles(
+			String agentName, String agentUID, String accountKey,
+			String contactEmailAddress, String[] contactRoleKeys)
+		throws Exception;
+
 }
