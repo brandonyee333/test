@@ -17,7 +17,6 @@ package com.liferay.osb.asah.common.model;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -29,29 +28,21 @@ import java.util.Set;
  */
 public class AnalyticsEvents {
 
-	public AnalyticsEvents() {
-		_interactionsCount = 0;
-		_pageViewsCount = 0;
-	}
+	public AnalyticsEvents(List<AnalyticsEvent> analyticsEventsList) {
+		_analyticsEventsList = analyticsEventsList;
 
-	public AnalyticsEvents(List<AnalyticsEvent> analyticsEvents) {
-		addAnalyticsEventsList(analyticsEvents);
-	}
-
-	public void addAnalyticsEventsList(
-		List<AnalyticsEvent> analyticsEventsList) {
-
-		_analyticsEvents.addAll(analyticsEventsList);
+		int interactionsCount = 0;
+		int pageViewsCount = 0;
 
 		for (AnalyticsEvent analyticsEvent : analyticsEventsList) {
 			if (!_nonInteractionEvents.contains(analyticsEvent.getEventId())) {
-				_interactionsCount++;
+				interactionsCount++;
 			}
 
 			if (Objects.equals(analyticsEvent.getApplicationId(), "Page") &&
 				Objects.equals(analyticsEvent.getEventId(), "pageViewed")) {
 
-				_pageViewsCount++;
+				pageViewsCount++;
 			}
 
 			Map<String, Object> context = analyticsEvent.getContext();
@@ -68,14 +59,17 @@ public class AnalyticsEvents {
 				_urls.add(url);
 			}
 		}
+
+		_interactionsCount = interactionsCount;
+		_pageViewsCount = pageViewsCount;
 	}
 
 	public List<AnalyticsEvent> getAnalyticsEventsList() {
-		return _analyticsEvents;
+		return _analyticsEventsList;
 	}
 
 	public AnalyticsEvent getFirstAnalyticsEvent() {
-		return _analyticsEvents.get(0);
+		return _analyticsEventsList.get(0);
 	}
 
 	public long getInteractionsCount() {
@@ -83,7 +77,7 @@ public class AnalyticsEvents {
 	}
 
 	public AnalyticsEvent getLastAnalyticsEvent() {
-		return _analyticsEvents.get(_analyticsEvents.size() - 1);
+		return _analyticsEventsList.get(_analyticsEventsList.size() - 1);
 	}
 
 	public long getPageViewsCount() {
@@ -95,7 +89,7 @@ public class AnalyticsEvents {
 	}
 
 	public int getSize() {
-		return _analyticsEvents.size();
+		return _analyticsEventsList.size();
 	}
 
 	public Set<String> getUrls() {
@@ -115,9 +109,9 @@ public class AnalyticsEvents {
 			}
 		};
 
-	private final List<AnalyticsEvent> _analyticsEvents = new ArrayList<>();
-	private long _interactionsCount;
-	private long _pageViewsCount;
+	private final List<AnalyticsEvent> _analyticsEventsList;
+	private final long _interactionsCount;
+	private final long _pageViewsCount;
 	private final Set<String> _referrers = new HashSet<>();
 	private final Set<String> _urls = new HashSet<>();
 
