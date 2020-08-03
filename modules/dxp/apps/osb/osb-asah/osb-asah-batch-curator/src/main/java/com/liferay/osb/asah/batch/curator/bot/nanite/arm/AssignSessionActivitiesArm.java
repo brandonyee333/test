@@ -22,6 +22,8 @@ import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -38,7 +40,7 @@ public class AssignSessionActivitiesArm {
 
 	public void execute() throws Exception {
 		JSONArrayIterator.of(
-			"user-sessions", _elasticsearchInvokerFactory.forCerebroInfo(),
+			"user-sessions", _cerebroInfoElasticsearchInvoker,
 			userSessionJSONObject -> {
 				String sessionId = userSessionJSONObject.getString("id");
 
@@ -113,20 +115,25 @@ public class AssignSessionActivitiesArm {
 		).iterate();
 	}
 
+	@PostConstruct
+	private void _init() {
+		_cerebroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroInfo();
+		_faroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
+	}
+
 	private void _upgradeActivities(
 			String firstEventDate, String individualId, String lastEventDate,
 			String sessionId, String userId)
 		throws Exception {
 
-		ElasticsearchInvoker faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-
 		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
-			faroInfoElasticsearchInvoker.
+			_faroInfoElasticsearchInvoker.
 				createElasticsearchBulkRequestBuilder();
 
 		JSONArrayIterator.of(
-			"activities", faroInfoElasticsearchInvoker,
+			"activities", _faroInfoElasticsearchInvoker,
 			activityJSONObject -> elasticsearchBulkRequestBuilder.update(
 				"activities",
 				JSONUtil.put(
@@ -156,7 +163,11 @@ public class AssignSessionActivitiesArm {
 	private static final Log _log = LogFactory.getLog(
 		AssignSessionActivitiesArm.class);
 
+	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 }

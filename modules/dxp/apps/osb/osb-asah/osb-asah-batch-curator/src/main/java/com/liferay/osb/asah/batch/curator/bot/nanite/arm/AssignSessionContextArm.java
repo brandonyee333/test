@@ -42,15 +42,12 @@ import org.springframework.stereotype.Component;
 public class AssignSessionContextArm {
 
 	public void execute() throws Exception {
-		ElasticsearchInvoker cerebroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-
 		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
-			cerebroInfoElasticsearchInvoker.
+			_cerebroInfoElasticsearchInvoker.
 				createElasticsearchBulkRequestBuilder();
 
 		JSONArrayIterator.of(
-			"user-sessions", cerebroInfoElasticsearchInvoker,
+			"user-sessions", _cerebroInfoElasticsearchInvoker,
 			userSessionJSONObject -> {
 				_updateUserSession(
 					elasticsearchBulkRequestBuilder, userSessionJSONObject);
@@ -128,6 +125,8 @@ public class AssignSessionContextArm {
 
 	@PostConstruct
 	private void _init() {
+		_cerebroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroInfo();
 		_cerebroRawElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forCerebroRaw();
 	}
@@ -141,7 +140,7 @@ public class AssignSessionContextArm {
 		Set<String> urls = new HashSet<>();
 
 		JSONArrayIterator.of(
-			"analytics-events", _elasticsearchInvokerFactory.forCerebroRaw(),
+			"analytics-events", _cerebroRawElasticsearchInvoker,
 			analyticsEventsJSONObject -> {
 				JSONObject contextJSONObject =
 					analyticsEventsJSONObject.optJSONObject("context");
@@ -179,7 +178,8 @@ public class AssignSessionContextArm {
 			));
 	}
 
-	private static ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
+	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
