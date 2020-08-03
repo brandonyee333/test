@@ -97,13 +97,12 @@ public class DefinitionsRestController extends BaseRestController {
 			JSONArray pairsJSONArray = new JSONArray();
 
 			for (Pair<String, String> pair : pairs) {
-				JSONObject pairJSONObject = JSONUtil.put(
-					"dataSourceFieldName", pair.getValue()
-				).put(
-					"dataSourceName", pair.getKey()
-				);
-
-				pairsJSONArray.put(pairJSONObject);
+				pairsJSONArray.put(
+					JSONUtil.put(
+						"dataSourceFieldName", pair.getValue()
+					).put(
+						"dataSourceName", pair.getKey()
+					));
 			}
 
 			jsonObject.put("dataSources", pairsJSONArray);

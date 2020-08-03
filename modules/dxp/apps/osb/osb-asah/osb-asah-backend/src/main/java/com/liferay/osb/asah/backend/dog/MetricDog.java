@@ -570,13 +570,12 @@ public class MetricDog {
 
 		Stream<? extends Terms.Bucket> stream = termsBuckets.stream();
 
-		List<String> urls = stream.map(
-			Terms.Bucket::getKeyAsString
-		).collect(
-			Collectors.toList()
-		);
-
-		assetMetric.setURLs(urls);
+		assetMetric.setURLs(
+			stream.map(
+				Terms.Bucket::getKeyAsString
+			).collect(
+				Collectors.toList()
+			));
 	}
 
 	@Autowired

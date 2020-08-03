@@ -70,19 +70,17 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 				return false;
 			}
 
-			JSONObject dataSourceIndividualPKsJSONObject = JSONUtil.put(
-				"dataSourceId", dataSourceId
-			).put(
-				"dataSourceType", dataSourceType
-			).put(
-				"individualPKs", individualPKsJSONArray.put(dataId)
-			);
-
 			individualJSONObject.put(
 				"dataSourceIndividualPKs",
 				JSONUtil.replace(
 					dataSourceIndividualPKsJSONArray, "dataSourceId",
-					dataSourceIndividualPKsJSONObject));
+					JSONUtil.put(
+						"dataSourceId", dataSourceId
+					).put(
+						"dataSourceType", dataSourceType
+					).put(
+						"individualPKs", individualPKsJSONArray.put(dataId)
+					)));
 		}
 		else {
 			dataSourceIndividualPKsJSONArray.put(

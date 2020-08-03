@@ -76,13 +76,12 @@ public class QueueHttpImpl implements QueueHttp {
 		Queue<JSONObject> queue = _queues.computeIfAbsent(
 			queueName, key -> new ConcurrentLinkedQueue<>());
 
-		JSONObject messageJSONObject = JSONUtil.put(
-			"message", message
-		).put(
-			"sentAt", System.currentTimeMillis()
-		);
-
-		queue.add(messageJSONObject);
+		queue.add(
+			JSONUtil.put(
+				"message", message
+			).put(
+				"sentAt", System.currentTimeMillis()
+			));
 	}
 
 	private final Map<String, Queue<JSONObject>> _queues =

@@ -407,16 +407,16 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 			Stream<Object> stream = JSONUtil.toObjectStream(
 				channelJSONObject.getJSONArray("dataSources"));
 
-			List<JSONObject> dataSources = stream.map(
-				object -> (JSONObject)object
-			).filter(
-				jsonObject -> !Objects.equals(
-					jsonObject.get("id"), dataSourceId)
-			).collect(
-				Collectors.toList()
-			);
-
-			channelJSONObject.put("dataSources", dataSources);
+			channelJSONObject.put(
+				"dataSources",
+				stream.map(
+					object -> (JSONObject)object
+				).filter(
+					jsonObject -> !Objects.equals(
+						jsonObject.get("id"), dataSourceId)
+				).collect(
+					Collectors.toList()
+				));
 
 			elasticsearchInvoker.update("channels", channelJSONObject);
 		}

@@ -22,7 +22,6 @@ import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.Faro
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -223,14 +222,14 @@ public class ActivityGroupsRestController extends BaseRestController {
 
 				Stream<SearchHit> stream = Arrays.stream(searchHits.getHits());
 
-				List<JSONObject> jsonObjects = stream.map(
-					hit -> new JSONObject(hit.getSourceAsString())
-				).collect(
-					Collectors.toList()
-				);
-
 				embeddedJSONObject.put(
-					topHits.getName(), new JSONArray(jsonObjects));
+					topHits.getName(),
+					new JSONArray(
+						stream.map(
+							hit -> new JSONObject(hit.getSourceAsString())
+						).collect(
+							Collectors.toList()
+						)));
 			}
 
 			if (expandActivitiesCount) {

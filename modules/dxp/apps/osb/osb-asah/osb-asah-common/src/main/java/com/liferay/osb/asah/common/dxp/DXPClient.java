@@ -79,14 +79,13 @@ public class DXPClient extends BaseDXPClient {
 			experimentVariantsJSONArray::put
 		);
 
-		JSONObject bodyJSONObject = JSONUtil.put(
-			"confidenceLevel", confidenceLevel
-		).put(
-			"experimentVariants", experimentVariantsJSONArray
-		);
-
 		return postJSONObject(
-			getDataSourceJSONObject(dataSourceId), path, bodyJSONObject);
+			getDataSourceJSONObject(dataSourceId), path,
+			JSONUtil.put(
+				"confidenceLevel", confidenceLevel
+			).put(
+				"experimentVariants", experimentVariantsJSONArray
+			));
 	}
 
 	public JSONObject updateDXPExperimentStatus(

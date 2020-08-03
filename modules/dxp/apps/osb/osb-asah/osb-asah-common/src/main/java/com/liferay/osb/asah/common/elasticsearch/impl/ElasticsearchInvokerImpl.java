@@ -750,13 +750,12 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 		Stream<SearchHit> stream = Arrays.stream(searchHits.getHits());
 
-		List<JSONObject> jsonObjects = stream.map(
-			searchHit -> new JSONObject(searchHit.getSourceAsString())
-		).collect(
-			Collectors.toList()
-		);
-
-		return new JSONArray(jsonObjects);
+		return new JSONArray(
+			stream.map(
+				searchHit -> new JSONObject(searchHit.getSourceAsString())
+			).collect(
+				Collectors.toList()
+			));
 	}
 
 	private List<String> _getExistingIndices(
