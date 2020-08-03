@@ -37,7 +37,7 @@ public class OSBAsahBatchCuratorSchedulingConfigurer
 		ThreadPoolTaskScheduler threadPoolTaskScheduler =
 			new ThreadPoolTaskScheduler();
 
-		threadPoolTaskScheduler.setPoolSize(10);
+		threadPoolTaskScheduler.setPoolSize(12);
 
 		threadPoolTaskScheduler.initialize();
 
