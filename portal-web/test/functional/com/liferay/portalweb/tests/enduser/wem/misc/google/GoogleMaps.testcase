@@ -3,7 +3,7 @@ definition {
 
 	// Ignore all tests because related apps are deprecated
 
-	property osgi.app.includes = "google-maps";
+	property osgi.app.includes = "google-maps-web";
 	property plugins.deployment.type = "osgi";
 	property portal.release = "true";
 	property portal.upstream = "true";
@@ -24,9 +24,10 @@ definition {
 		Page.tearDownCP();
 	}
 
-	@ignore = "true"
 	@priority = "4"
 	test GoogleMapsPortletSmoke {
+		property portal.acceptance = "fiona";
+
 		var appName = "Google Maps";
 
 		Navigator.gotoPage(pageName = "Test Page");
