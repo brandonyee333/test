@@ -14,6 +14,7 @@
 
 package com.liferay.dynamic.data.lists.form.web.internal.portlet.action;
 
+import com.liferay.dynamic.data.lists.constants.DDLActionKeys;
 import com.liferay.dynamic.data.lists.form.web.internal.constants.DDLFormPortletKeys;
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
 import com.liferay.dynamic.data.lists.service.DDLRecordSetService;
@@ -25,9 +26,16 @@ import com.liferay.dynamic.data.mapping.model.Value;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.model.ResourcePermission;
+import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
+import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
+import com.liferay.portal.kernel.service.RoleService;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Portal;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -66,6 +74,8 @@ public class PublishRecordSetMVCResourceCommand extends BaseMVCResourceCommand {
 
 		_ddlRecordSetService.updateRecordSet(
 			recordSetId, settingsDDMFormValues);
+
+		updateRecordSetPermission(published, recordSetId, resourceRequest);
 	}
 
 	protected DDMForm getDDMForm(DDLRecordSet recordSet)
@@ -90,6 +100,18 @@ public class PublishRecordSetMVCResourceCommand extends BaseMVCResourceCommand {
 		_ddmFormValuesQueryFactory = ddmFormValuesQueryFactory;
 	}
 
+	@Reference(unbind = "-")
+	protected void setResourcePermissionLocalService(
+		ResourcePermissionLocalService resourcePermissionLocalService) {
+
+		_resourcePermissionLocalService = resourcePermissionLocalService;
+	}
+
+	@Reference(unbind = "-")
+	protected void setRoleService(RoleService roleService) {
+		_roleService = roleService;
+	}
+
 	protected void updatePublishedDDMFormFieldValue(
 			DDMFormValues ddmFormValues, boolean published)
 		throws PortalException {
@@ -106,7 +128,51 @@ public class PublishRecordSetMVCResourceCommand extends BaseMVCResourceCommand {
 			ddmFormValues.getDefaultLocale(), Boolean.toString(published));
 	}
 
+	protected void updateRecordSetPermission(
+			boolean published, long recordSetId,
+			ResourceRequest resourceRequest)
+		throws PortalException {
+
+		Role role = _roleService.getRole(
+			_portal.getCompanyId(resourceRequest), RoleConstants.GUEST);
+
+		ResourcePermission resourcePermission =
+			_resourcePermissionLocalService.fetchResourcePermission(
+				role.getCompanyId(), DDLRecordSet.class.getName(),
+				ResourceConstants.SCOPE_INDIVIDUAL, String.valueOf(recordSetId),
+				role.getRoleId());
+
+		if (resourcePermission == null) {
+			_resourcePermissionLocalService.setResourcePermissions(
+				role.getCompanyId(), DDLRecordSet.class.getName(),
+				ResourceConstants.SCOPE_INDIVIDUAL, String.valueOf(recordSetId),
+				role.getRoleId(), new String[] {DDLActionKeys.ADD_RECORD});
+
+			resourcePermission =
+				_resourcePermissionLocalService.fetchResourcePermission(
+					role.getCompanyId(), DDLRecordSet.class.getName(),
+					ResourceConstants.SCOPE_INDIVIDUAL,
+					String.valueOf(recordSetId), role.getRoleId());
+		}
+
+		if (published) {
+			resourcePermission.addResourceAction(DDLActionKeys.ADD_RECORD);
+		}
+		else {
+			resourcePermission.removeResourceAction(DDLActionKeys.ADD_RECORD);
+		}
+
+		_resourcePermissionLocalService.updateResourcePermission(
+			resourcePermission);
+	}
+
 	private DDLRecordSetService _ddlRecordSetService;
 	private DDMFormValuesQueryFactory _ddmFormValuesQueryFactory;
+
+	@Reference
+	private Portal _portal;
+
+	private ResourcePermissionLocalService _resourcePermissionLocalService;
+	private RoleService _roleService;
 
 }
