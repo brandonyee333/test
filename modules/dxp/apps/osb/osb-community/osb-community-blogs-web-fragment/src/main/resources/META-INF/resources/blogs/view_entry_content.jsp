@@ -74,7 +74,7 @@ String socialBookmarksDisplayPosition = blogsPortletInstanceConfiguration.social
 							</c:if>
 						</c:if>
 
-						<div class="entry-info text-muted ">
+						<div class="entry-info text-muted">
 							<c:if test="<%= !viewSingleEntry %>">
 								<small>
 									<strong><%= HtmlUtil.escape(entry.getUserName()) %></strong>
