@@ -17,6 +17,7 @@ package com.liferay.osb.asah.upgrade;
 import com.liferay.osb.asah.upgrade.v2_7_0.AssetsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.CanonicalUrlMappingUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.FaroInfoIndividualsUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_7_0.PageReferrersReindexUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.SessionActivitiesUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.SessionContextUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.UnprocessedAnalyticsEventsUpgradeStep;
@@ -38,8 +39,8 @@ public class UpgradeProcessConfiguration {
 		upgradeProcess.addUpgradeSteps(
 			"2.6.1", "2.7.0", _assetsUpgradeStep,
 			_canonicalUrlMappingUpgradeStep, _faroInfoIndividualsUpgradeStep,
-			_sessionActivitiesUpgradeStep, _sessionContextUpgradeStep,
-			_unprocessedAnalyticsEventsUpgradeStep);
+			_pageReferrersReindexUpgradeStep, _sessionActivitiesUpgradeStep,
+			_sessionContextUpgradeStep, _unprocessedAnalyticsEventsUpgradeStep);
 
 		return upgradeProcess;
 	}
@@ -52,6 +53,9 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private FaroInfoIndividualsUpgradeStep _faroInfoIndividualsUpgradeStep;
+
+	@Autowired
+	private PageReferrersReindexUpgradeStep _pageReferrersReindexUpgradeStep;
 
 	@Autowired
 	private SessionActivitiesUpgradeStep _sessionActivitiesUpgradeStep;
