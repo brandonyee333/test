@@ -106,12 +106,7 @@ definition {
 
 		Page.add(pageName = "Test Public Page");
 
-		ProductMenu.gotoSite(site = "Site Name");
-
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Site Administration",
-			portlet = "Site Settings");
+		Site.openSiteSettingsAdmin(siteURLKey = "site-name");
 
 		Site.addVirtualHostsURLCP(
 			publicPageVirtualHostURL = "www.able.com",

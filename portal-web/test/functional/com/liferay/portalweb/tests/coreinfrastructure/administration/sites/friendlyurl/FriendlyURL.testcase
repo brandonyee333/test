@@ -42,9 +42,7 @@ definition {
 			panel = "Site Administration",
 			portlet = "Pages");
 
-		SitePages.gotoPageMenuItem(
-			menuItem = "Configure",
-			pageName = "Test Page");
+		SitePageNavigator.gotoEditPage(page = "Test Page");
 
 		Type(
 			locator1 = "TextInput#FRIENDLY_URL",
@@ -77,9 +75,7 @@ definition {
 			panel = "Site Administration",
 			portlet = "Pages");
 
-		SitePages.gotoPageMenuItem(
-			menuItem = "Configure",
-			pageName = "Test Page");
+		SitePageNavigator.gotoEditPage(page = "Test Page");
 
 		Click(locator1 = "Dropdown#FRIENDLY_URL_LOCALE");
 

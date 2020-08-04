@@ -430,7 +430,7 @@ definition {
 	test ExportImportLayoutCircularReference {
 		JSONGroup.addGroup(groupName = "Site Name");
 
-		JSONLayout.addLayoutByGroupName(
+		JSONLayout.addPublicLayout(
 			groupName = "Site Name",
 			layoutName = "Site Page");
 
@@ -722,7 +722,7 @@ definition {
 	test ExportImportSiteWithAssetPublisherScopeSetting {
 		JSONGroup.addGroup(groupName = "Site Name A");
 
-		JSONLayout.addLayoutByGroupName(
+		JSONLayout.addPublicLayout(
 			groupName = "Site Name A",
 			layoutName = "Asset Publisher Page");
 
@@ -1105,7 +1105,7 @@ definition {
 
 		JSONGroup.addGroup(groupName = "Site Name B");
 
-		JSONLayout.addLayoutByGroupName(
+		JSONLayout.addPublicLayout(
 			groupName = "Site Name B",
 			layoutName = "Test Page");
 
@@ -1351,7 +1351,7 @@ definition {
 
 		JSONGroup.addGroup(groupName = "Site Name");
 
-		JSONLayout.addLayoutByGroupName(
+		JSONLayout.addPublicLayout(
 			groupName = "Site Name",
 			layoutName = "Test Page");
 
@@ -1503,7 +1503,7 @@ definition {
 
 		JSONGroup.addGroup(groupName = "Site B");
 
-		JSONLayout.addLayoutByGroupName(
+		JSONLayout.addPublicLayout(
 			groupName = "Site B",
 			layoutName = "Asset Publisher Page");
 
@@ -1582,11 +1582,11 @@ definition {
 	test ImportStagedSiteWithCircularReference {
 		JSONGroup.addGroup(groupName = "Site Name");
 
-		JSONLayout.addLayoutByGroupName(
+		JSONLayout.addPublicLayout(
 			groupName = "Site Name",
 			layoutName = "Page A");
 
-		JSONLayout.addLayoutByGroupName(
+		JSONLayout.addPublicLayout(
 			groupName = "Site Name",
 			layoutName = "Page B");
 
@@ -1749,7 +1749,7 @@ definition {
 	test ImportWCDReferenceAfterActivateStaging {
 		JSONGroup.addGroup(groupName = "Site Name A");
 
-		JSONLayout.addLayoutByGroupName(
+		JSONLayout.addPublicLayout(
 			groupName = "Site Name A",
 			layoutName = "Test Page");
 

@@ -88,12 +88,12 @@ definition {
 	}
 
 	macro definePermissionViaJSONAPI {
-		JSONPermission.editPermission(
+		JSONPermission.addPermission(
+			actionId = "${resourceAction}",
 			groupName = "Global",
-			method = "add-resource-permission",
-			resourceAction = "${resourceAction}",
-			resourceName = "${resourceName}",
-			roleName = "${roleName}");
+			name = "${resourceName}",
+			roleName = "${roleName}",
+			roleType = "${roleType}");
 	}
 
 	macro removePermissionCP {
@@ -130,12 +130,12 @@ definition {
 	}
 
 	macro removePermissionViaAPI {
-		JSONPermission.editPermission(
-			groupName = "Global",
-			method = "remove-resource-permission",
-			resourceAction = "${resourceAction}",
-			resourceName = "${resourceName}",
-			roleName = "${roleName}");
+		JSONPermission.removePermission(
+			actionId = "${resourceAction}",
+			groupName = "${groupName}",
+			name = "${resourceName}",
+			roleTitle = "${roleTitle}",
+			roleType = "${roleType}");
 	}
 
 	macro setUpOrgRoleLoginUserPG {
@@ -164,7 +164,7 @@ definition {
 			organizationName = "${orgName}",
 			userEmailAddress = "${userEmailAddress}");
 
-		JSONLayout.addLayoutByGroupName(
+		JSONLayout.addPublicLayout(
 			groupName = "${orgName}",
 			layoutName = "${pageName}");
 
@@ -243,7 +243,7 @@ definition {
 	}
 
 	macro setUpRegRolePG {
-		JSONLayout.addLayoutByGroupName(
+		JSONLayout.addPublicLayout(
 			groupName = "Guest",
 			layoutName = "${pageName}");
 
@@ -385,7 +385,7 @@ definition {
 			groupName = "${siteName}",
 			userEmailAddress = "${userEmailAddress}");
 
-		JSONLayout.addLayoutByGroupName(
+		JSONLayout.addPublicLayout(
 			groupName = "${siteName}",
 			layoutName = "${pageName}");
 

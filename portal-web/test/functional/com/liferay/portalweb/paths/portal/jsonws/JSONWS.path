@@ -10,13 +10,19 @@
 <tbody>
 <!--ADDRESS-->
 <tr>
-	<td>ADDRESS</td>
-	<td>//div[@id='apiServiceAddressServiceImplPanelContent']/div</td>
+	<td>ADDRESS_ADD_ADDRESS</td>
+	<td>//div[@id='apiServiceAddressServiceImplPanelContent']/div/ul/li/a[contains(.,'add-address')]</td>
 	<td></td>
 </tr>
 <tr>
-	<td>ADDRESS_ADD_ADDRESS</td>
-	<td>//div[@id='apiServiceAddressServiceImplPanelContent']/div/ul/li/a[contains(.,'add-address')]</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--COMPANY-->
+<tr>
+	<td>COMPANY_COMPANYID_FIELD</td>
+	<td>//textarea[@name='companyId']</td>
 	<td></td>
 </tr>
 <tr>
@@ -37,6 +43,21 @@
 </tr>
 <!--USER-->
 <tr>
+	<td>USER_ANYSPAN_FALSE</td>
+	<td>//span[contains(.,'${key_span}')]/following-sibling::label//input[contains(@id,'False') and @type='radio']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>USER_PASSWORD1</td>
+	<td>//label[contains(.,'password1')]/following-sibling::div//textarea</td>
+	<td></td>
+</tr>
+<tr>
+	<td>USER_PASSWORD2</td>
+	<td>//label[contains(.,'password2')]/following-sibling::div//textarea</td>
+	<td></td>
+</tr>
+<tr>
 	<td>USER_UPDATE_USER</td>
 	<td>//div[@id='apiServiceUserServiceImplPanelContent']/div/ul/li/a[contains(.,'update-user')]</td>
 	<td></td>
@@ -46,7 +67,17 @@
 	<td></td>
 	<td></td>
 </tr>
-<!--SECURITY_TEST_PAGE-->
+<!--SECURITY-->
+<tr>
+	<td>SECURITY_EMPTY_PAGE</td>
+	<td>//body[not(*)]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SECURITY_RESULT</td>
+	<td>//pre[@id='serviceOutput']</td>
+	<td></td>
+</tr>
 <tr>
 	<td>SECURITY_TEST_PAGE_POPULATED</td>
 	<td>//body/pre[contains(.,*)]</td>

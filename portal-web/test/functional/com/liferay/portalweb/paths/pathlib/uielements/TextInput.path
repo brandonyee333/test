@@ -464,7 +464,7 @@
 	<td></td>
 </tr>
 <tr>
-	<td>USER_NAME</td>
+	<td>TEXT</td>
 	<td>//input[@type='text']</td>
 	<td></td>
 </tr>

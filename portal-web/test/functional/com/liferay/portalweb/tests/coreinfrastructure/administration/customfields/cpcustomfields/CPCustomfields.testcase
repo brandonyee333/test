@@ -325,7 +325,7 @@ definition {
 	test UpdateDocumentWithCustomField {
 		JSONGroup.addGroup(groupName = "Site Name");
 
-		JSONLayout.addLayoutByGroupName(
+		JSONLayout.addPublicLayout(
 			groupName = "Site Name",
 			layoutName = "Documents and Media Page");
 

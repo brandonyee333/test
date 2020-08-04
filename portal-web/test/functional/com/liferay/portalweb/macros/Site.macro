@@ -856,8 +856,16 @@ definition {
 		PortletEntry.save();
 	}
 
+	macro openSiteMembershipsAdmin {
+		Navigator.openWithAppendToBaseURL(urlAppend = "group/${siteURLKey}/~/control_panel/manage/-/site_memberships");
+	}
+
 	macro openSitesAdmin {
 		Navigator.openWithAppendToBaseURL(urlAppend = "group/control_panel/manage/-/sites");
+	}
+
+	macro openSiteSettingsAdmin {
+		Navigator.openWithAppendToBaseURL(urlAppend = "group/${siteURLKey}/~/control_panel/manage/-/site/settings");
 	}
 
 	macro removeMemberCP {

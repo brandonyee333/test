@@ -264,7 +264,7 @@ definition {
 	macro editConnectorName {
 		DoubleClick(locator1 = "DDMEditStructure#SETTINGS_NAME");
 
-		Type(locator1 = "TextInput#USER_NAME", value1 = "${connectorName}");
+		Type(locator1 = "TextInput#TEXT", value1 = "${connectorName}");
 
 		AssertClick(locator1 = "Button#SAVE", value1 = "Save");
 
@@ -354,7 +354,7 @@ definition {
 	macro editNodeName {
 		DoubleClick(locator1 = "DDMEditStructure#SETTINGS_NAME");
 
-		Type(locator1 = "TextInput#USER_NAME", value1 = "${nodeName}");
+		Type(locator1 = "TextInput#TEXT", value1 = "${nodeName}");
 
 		AssertClick(locator1 = "Button#SAVE", value1 = "Save");
 

@@ -1918,7 +1918,7 @@ definition {
 			value1 = "Sign In");
 
 		Type(
-			locator1 = "TextInput#USER_NAME",
+			locator1 = "TextInput#TEXT",
 			value1 = "${userScreenName}");
 
 		Type(
