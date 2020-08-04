@@ -862,8 +862,6 @@ public class AssetUtil {
 
 		_searchRequestBuilderFactory.builder(
 			searchContext
-		).fetchSource(
-			true
 		).sorts(
 			getSearchSorts(assetEntryQuery, searchContext.getLocale())
 		);
