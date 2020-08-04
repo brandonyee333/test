@@ -94,7 +94,7 @@ public class DDLFormDisplayContext {
 
 		DDLRecordSet recordSet = getRecordSet();
 
-		if ((recordSet == null) || !hasViewPermission()) {
+		if (recordSet == null) {
 			renderRequest.setAttribute(
 				WebKeys.PORTLET_CONFIGURATOR_VISIBILITY, Boolean.TRUE);
 		}
@@ -207,6 +207,26 @@ public class DDLFormDisplayContext {
 		DDLRecordSetSettings recordSetSettings = recordSet.getSettingsModel();
 
 		return recordSetSettings.redirectURL();
+	}
+
+	public boolean hasViewPermission() throws PortalException {
+		if (_hasViewPermission != null) {
+			return _hasViewPermission;
+		}
+
+		_hasViewPermission = false;
+
+		DDLRecordSet recordSet = getRecordSet();
+
+		if (recordSet != null) {
+			ThemeDisplay themeDisplay = getThemeDisplay();
+
+			_hasViewPermission = DDLRecordSetPermission.contains(
+				themeDisplay.getPermissionChecker(), recordSet,
+				ActionKeys.VIEW);
+		}
+
+		return _hasViewPermission;
 	}
 
 	public boolean isFormAvailable() throws PortalException {
@@ -382,26 +402,6 @@ public class DDLFormDisplayContext {
 
 	protected ThemeDisplay getThemeDisplay() {
 		return (ThemeDisplay)_renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
-	}
-
-	protected boolean hasViewPermission() throws PortalException {
-		if (_hasViewPermission != null) {
-			return _hasViewPermission;
-		}
-
-		_hasViewPermission = false;
-
-		DDLRecordSet recordSet = getRecordSet();
-
-		if (recordSet != null) {
-			ThemeDisplay themeDisplay = getThemeDisplay();
-
-			_hasViewPermission = DDLRecordSetPermission.contains(
-				themeDisplay.getPermissionChecker(), recordSet,
-				ActionKeys.VIEW);
-		}
-
-		return _hasViewPermission;
 	}
 
 	protected boolean hasWorkflowEnabled(
