@@ -389,7 +389,7 @@ public class DDLFormDisplayContext {
 			return _hasViewPermission;
 		}
 
-		_hasViewPermission = true;
+		_hasViewPermission = false;
 
 		DDLRecordSet recordSet = getRecordSet();
 
