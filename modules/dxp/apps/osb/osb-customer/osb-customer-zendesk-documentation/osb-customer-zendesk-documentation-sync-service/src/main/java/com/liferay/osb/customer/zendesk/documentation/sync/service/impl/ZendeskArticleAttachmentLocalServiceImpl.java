@@ -52,8 +52,9 @@ public class ZendeskArticleAttachmentLocalServiceImpl
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
-				"Adding attachment " + zendeskArticle.getDocumentationKey() +
-					StringPool.POUND + filePath);
+				StringBundler.concat(
+					"Adding attachment ", zendeskArticle.getDocumentationKey(),
+					StringPool.POUND, filePath));
 		}
 
 		JSONObject jsonObject = addRemoteZendeskArticleAttachment(
@@ -95,9 +96,11 @@ public class ZendeskArticleAttachmentLocalServiceImpl
 		}
 
 		_zendeskBaseWebService.delete(
-			ZendeskRESTEndpoints.URL_API_V2 +
-				"help_center/articles/attachments/" +
-					zendeskArticleAttachment.getRemoteId() + ".json",
+			StringBundler.concat(
+				ZendeskRESTEndpoints.URL_API_V2,
+				"help_center/articles/attachments/",
+				String.valueOf(zendeskArticleAttachment.getRemoteId()),
+				".json"),
 			StringPool.BLANK);
 
 		zendeskArticleAttachmentPersistence.remove(zendeskArticleAttachment);
@@ -156,8 +159,9 @@ public class ZendeskArticleAttachmentLocalServiceImpl
 		Path fileNamePath = path.getFileName();
 
 		return _zendeskBaseWebService.post(
-			ZendeskRESTEndpoints.URL_API_V2 + "help_center/articles/" +
-				remoteArticleId + "/attachments.json",
+			StringBundler.concat(
+				ZendeskRESTEndpoints.URL_API_V2, "help_center/articles/",
+				String.valueOf(remoteArticleId), "/attachments.json"),
 			params, fileNamePath.toString(), bytes);
 	}
 

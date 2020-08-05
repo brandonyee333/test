@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
@@ -85,8 +86,9 @@ public class ZendeskSectionLocalServiceImpl
 		}
 
 		_zendeskBaseWebService.delete(
-			ZendeskRESTEndpoints.URL_API_V2 + "help_center/sections/" +
-				zendeskSection.getRemoteId() + ".json",
+			StringBundler.concat(
+				ZendeskRESTEndpoints.URL_API_V2, "help_center/sections/",
+				String.valueOf(zendeskSection.getRemoteId()), ".json"),
 			StringPool.BLANK);
 
 		return zendeskSectionPersistence.remove(zendeskSection);
@@ -208,8 +210,9 @@ public class ZendeskSectionLocalServiceImpl
 		jsonObjectString = jsonObjectString.replace("\"null\"", "null");
 
 		return _zendeskBaseWebService.post(
-			ZendeskRESTEndpoints.URL_API_V2 + "help_center/categories/" +
-				remoteCategoryId + "/sections.json",
+			StringBundler.concat(
+				ZendeskRESTEndpoints.URL_API_V2, "help_center/categories/",
+				String.valueOf(remoteCategoryId), "/sections.json"),
 			jsonObjectString);
 	}
 
@@ -236,8 +239,9 @@ public class ZendeskSectionLocalServiceImpl
 		jsonObjectString = jsonObjectString.replace("\"null\"", "null");
 
 		return _zendeskBaseWebService.put(
-			ZendeskRESTEndpoints.URL_API_V2 + "help_center/sections/" +
-				remoteId + ".json",
+			StringBundler.concat(
+				ZendeskRESTEndpoints.URL_API_V2, "help_center/sections/",
+				String.valueOf(remoteId), ".json"),
 			jsonObjectString);
 	}
 
@@ -257,8 +261,10 @@ public class ZendeskSectionLocalServiceImpl
 		jsonObject.put("translation", translationJSONObject);
 
 		_zendeskBaseWebService.put(
-			ZendeskRESTEndpoints.URL_API_V2 + "help_center/sections/" +
-				remoteId + "/translations/" + zendeskLocale + ".json",
+			StringBundler.concat(
+				ZendeskRESTEndpoints.URL_API_V2, "help_center/sections/",
+				String.valueOf(remoteId), "/translations/", zendeskLocale,
+				".json"),
 			jsonObject.toString());
 	}
 

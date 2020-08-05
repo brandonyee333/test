@@ -68,8 +68,10 @@ public abstract class BaseTranslator<T extends TranslatableModel> {
 			for (T model : results) {
 				if (_log.isInfoEnabled()) {
 					_log.info(
-						"Checking " + model.getSourceType() + StringPool.POUND +
-							model.getSourceId());
+						StringBundler.concat(
+							"Checking ", model.getSourceType(),
+							StringPool.POUND,
+							String.valueOf(model.getSourceId())));
 				}
 
 				if (isAdd(model)) {

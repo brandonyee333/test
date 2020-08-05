@@ -479,10 +479,10 @@ public class ZendeskBaseWebServiceImpl
 	}
 
 	private static String _getCredentials() {
-		String zendeskCredentials =
-			ZendeskConnectorConfigurationValues.ZENDESK_EMAIL_ADDRESS +
-				StringPool.SLASH + "token" + StringPool.COLON +
-					ZendeskConnectorConfigurationValues.ZENDESK_API_TOKEN;
+		String zendeskCredentials = StringBundler.concat(
+			ZendeskConnectorConfigurationValues.ZENDESK_EMAIL_ADDRESS,
+			StringPool.SLASH, "token", StringPool.COLON,
+			ZendeskConnectorConfigurationValues.ZENDESK_API_TOKEN);
 
 		return "Basic " + Base64.encode(zendeskCredentials.getBytes());
 	}

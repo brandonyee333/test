@@ -20,6 +20,7 @@ import com.liferay.osb.customer.zendesk.model.ZendeskTicketComment;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskAttachmentWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketCommentWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -106,9 +107,10 @@ public class CleanZendeskAttachmentsMessageListener
 
 					if (_log.isDebugEnabled()) {
 						_log.debug(
-							"Deleting " + zendeskAttachment.getFileName() +
-								" for ticket " +
-									zendeskTicket.getZendeskTicketId());
+							StringBundler.concat(
+								"Deleting " + zendeskAttachment.getFileName() +
+									" for ticket " +
+										zendeskTicket.getZendeskTicketId()));
 					}
 
 					_asyncZendeskAttachmentWebService.deleteZendeskAttachment(
