@@ -128,6 +128,10 @@ public class AccountEntryLocalServiceImpl
 			accountEntry.getAccountEntryId());
 	}
 
+	public AccountEntry fetchCorpProjectAccountEntry(String corpProjectUuid) {
+		return accountEntryPersistence.fetchByCorpProjectUuid(corpProjectUuid);
+	}
+
 	@Override
 	public AccountEntry fetchKoroneikiAccountEntry(String koroneikiAccountKey) {
 		return accountEntryPersistence.fetchByKoroneikiAccountKey(
@@ -362,51 +366,6 @@ public class AccountEntryLocalServiceImpl
 				false);
 		}
 	}
-
-	/*
-	public AccountEntry updateStatus(
-			long accountEntryId, int status,
-			ServiceContext serviceContext)
-		throws PortalException {
-		Date now = new Date();
-
-		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
-			accountEntryId);
-
-		if ((accountEntry.getStatus() != WorkflowConstants.STATUS_APPROVED) &&
-			(status == WorkflowConstants.STATUS_APPROVED)) {
-
-			// TODO
-
-		}
-
-		if ((accountEntry.getStatus() != WorkflowConstants.STATUS_APPROVED) &&
-			(accountEntry.getStatus() != status)) {
-
-			// Account entry
-
-			accountEntry.setModifiedDate(serviceContext.getModifiedDate(now));
-			accountEntry.setStatus(status);
-
-			accountEntry = accountEntryPersistence.update(accountEntry);
-		}
-
-		if (accountEntry.getStatus() != status) {
-			long classNameId = classNameLocalService.getClassNameId(
-				AccountEntry.class.getName());
-
-			auditEntryLocalService.addAuditEntry(
-				OSBCustomerConstants.USER_DEFAULT_USER_ID, StringPool.BLANK,
-				new Date(), classNameId, accountEntryId, 0, classNameId,
-				accountEntryId, AuditEntryConstants.ACTION_UPDATE,
-				AuditEntryConstants.FIELD_STATUS, VisibilityConstants.ADMIN,
-				WorkflowConstants.getStatusLabel(status),
-				String.valueOf(status), accountEntry.getStatusLabel(),
-				String.valueOf(accountEntry.getStatus()), StringPool.BLANK);
-		}
-
-		return accountEntry;
-	}*/
 
 	protected AccountEntry doAddAccountEntry(
 			long userId, String koroneikiAccountKey, String dossieraAccountKey,

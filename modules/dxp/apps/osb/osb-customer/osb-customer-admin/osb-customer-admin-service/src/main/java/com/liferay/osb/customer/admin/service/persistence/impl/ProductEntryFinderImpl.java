@@ -42,12 +42,6 @@ public class ProductEntryFinderImpl
 	public static final String COUNT_BY_NAME =
 		ProductEntryFinder.class.getName() + ".countByName";
 
-	public static final String FILTER_BY_LICENSE_OFFERING_ENTRIES =
-		ProductEntryFinder.class.getName() + ".filterByLicenseOfferingEntries";
-
-	public static final String FIND_BY_ACCOUNT_ENTRY =
-		ProductEntryFinder.class.getName() + ".findByAccountEntry";
-
 	public static final String FIND_BY_NAME =
 		ProductEntryFinder.class.getName() + ".findByName";
 
@@ -84,35 +78,6 @@ public class ProductEntryFinderImpl
 			}
 
 			return 0;
-		}
-		catch (Exception e) {
-			throw new SystemException(e);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	public List<ProductEntry> findByAccountEntry(
-		long accountEntryId, int start, int end) {
-
-		Session session = null;
-
-		try {
-			session = openSession();
-
-			String sql = CustomSQLUtil.get(getClass(), FIND_BY_ACCOUNT_ENTRY);
-
-			SQLQuery q = session.createSynchronizedSQLQuery(sql);
-
-			q.addEntity("OSB_ProductEntry", ProductEntryImpl.class);
-
-			QueryPos qPos = QueryPos.getInstance(q);
-
-			qPos.add(accountEntryId);
-
-			return (List<ProductEntry>)QueryUtil.list(
-				q, getDialect(), start, end);
 		}
 		catch (Exception e) {
 			throw new SystemException(e);
@@ -179,11 +144,6 @@ public class ProductEntryFinderImpl
 	protected String getJoin(String key, Object value) {
 		String join = StringPool.BLANK;
 
-		if (key.equals("licenseOfferingEntries")) {
-			join = CustomSQLUtil.get(
-				getClass(), FILTER_BY_LICENSE_OFFERING_ENTRIES);
-		}
-
 		if (Validator.isNotNull(join)) {
 			int pos = join.indexOf("WHERE");
 
@@ -216,11 +176,6 @@ public class ProductEntryFinderImpl
 
 	protected String getWhere(String key, Object value) {
 		String join = StringPool.BLANK;
-
-		if (key.equals("licenseOfferingEntries")) {
-			join = CustomSQLUtil.get(
-				getClass(), FILTER_BY_LICENSE_OFFERING_ENTRIES);
-		}
 
 		if (Validator.isNotNull(join)) {
 			int pos = join.indexOf("WHERE");

@@ -446,7 +446,8 @@ public class AccountEntryFinderImpl
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_PRODUCT_ENTRY);
 
 			join = CustomSQLUtil.replaceKeywords(
-				join, "OSB_OfferingEntry.productEntryId", true, (long[])value);
+				join, "OSB_AccountEnvironment.productEntryId", true,
+				(long[])value);
 		}
 		else if (key.equals("status")) {
 			join = CustomSQLUtil.get(getClass(), FILTER_BY_STATUS);
@@ -508,7 +509,6 @@ public class AccountEntryFinderImpl
 		}
 
 		for (Map.Entry<String, Object> entry : params.entrySet()) {
-			String key = entry.getKey();
 			Object value = entry.getValue();
 
 			if (value instanceof int[]) {
@@ -524,46 +524,6 @@ public class AccountEntryFinderImpl
 				if (Validator.isNotNull(valueLong)) {
 					qPos.add(valueLong);
 				}
-			}
-			else if (key.equals("primaryProductEntry")) {
-				Object[] valueArray = (Object[])entry.getValue();
-
-				qPos.add((Integer)valueArray[0]);
-
-				String valueString = StringUtil.toLowerCase(
-					(String)valueArray[1]);
-
-				valueString = StringUtil.quote(valueString, StringPool.PERCENT);
-
-				qPos.add(valueString);
-
-				String valueString2 = StringUtil.toLowerCase(
-					(String)valueArray[2]);
-
-				valueString2 = StringUtil.quote(
-					valueString2, StringPool.PERCENT);
-
-				qPos.add(valueString2);
-
-				String valueString3 = StringUtil.toLowerCase(
-					(String)valueArray[3]);
-
-				valueString3 = StringUtil.quote(
-					valueString3, StringPool.PERCENT);
-
-				qPos.add(valueString3);
-
-				qPos.add((Integer)valueArray[4]);
-
-				String valueString5 = StringUtil.toLowerCase(
-					(String)valueArray[5]);
-
-				valueString5 = StringUtil.quote(
-					valueString5, StringPool.PERCENT);
-
-				qPos.add(valueString5);
-
-				qPos.add((Integer)valueArray[6]);
 			}
 			else if (value instanceof long[]) {
 				long[] valueArray = (long[])value;

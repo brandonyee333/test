@@ -14,6 +14,8 @@
 
 package com.liferay.osb.customer.provisioning.trial.internal.servlet;
 
+import com.liferay.osb.customer.license.generator.KeyGenerator;
+import com.liferay.osb.customer.license.util.LicenseKeyExporter;
 import com.liferay.osb.customer.provisioning.trial.internal.configuration.ProvisioningTrialConfigurationValues;
 import com.liferay.osb.customer.provisioning.trial.internal.license.TrialLicenseManager;
 import com.liferay.osb.model.ProductEntryConstants;
@@ -38,6 +40,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
@@ -104,8 +107,7 @@ public class DXPTrialLicenseServlet extends HttpServlet {
 			_licenseManagerMap.put(
 				versionLabel,
 				new TrialLicenseManager(
-					ProductEntryConstants.PRODUCT_ID_PORTAL, version,
-					versionLabel));
+					_keyGenerator, _licenseKeyExporter, version, versionLabel));
 		}
 
 		TrialLicenseManager dxpTrialLicenseManager = _licenseManagerMap.get(
@@ -127,6 +129,12 @@ public class DXPTrialLicenseServlet extends HttpServlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DXPTrialLicenseServlet.class);
+
+	@Reference
+	private KeyGenerator _keyGenerator;
+
+	@Reference
+	private LicenseKeyExporter _licenseKeyExporter;
 
 	private final Map<String, TrialLicenseManager> _licenseManagerMap =
 		new ConcurrentHashMap<>();

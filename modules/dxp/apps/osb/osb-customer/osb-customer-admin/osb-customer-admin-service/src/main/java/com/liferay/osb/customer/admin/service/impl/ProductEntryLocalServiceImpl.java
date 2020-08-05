@@ -145,11 +145,6 @@ public class ProductEntryLocalServiceImpl
 			licenses, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
-	public List<ProductEntry> getProductEntries(long accountEntryId) {
-		return productEntryFinder.findByAccountEntry(
-			accountEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-	}
-
 	public ProductEntry getProductEntryByKoroneikiKey(
 			String koroneikiProductKey)
 		throws PortalException {

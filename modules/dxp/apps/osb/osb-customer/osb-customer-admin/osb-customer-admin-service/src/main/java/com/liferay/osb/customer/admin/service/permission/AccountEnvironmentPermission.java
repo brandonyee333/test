@@ -105,7 +105,7 @@ public class AccountEnvironmentPermission {
 			List<ContactRole> partnerContactRoles = getPartnerContactRoles(
 				accountEntry.getKoroneikiAccountKey(), user.getUuid());
 
-			for (ContactRole contactRole : contactRoles) {
+			for (ContactRole contactRole : partnerContactRoles) {
 				String name = contactRole.getName();
 
 				if (name.equals(ContactRoleConstants.NAME_PARTNER_MANAGER)) {
@@ -117,7 +117,7 @@ public class AccountEnvironmentPermission {
 				return false;
 			}
 
-			for (ContactRole contactRole : contactRoles) {
+			for (ContactRole contactRole : partnerContactRoles) {
 				String name = contactRole.getName();
 
 				if (name.equals(ContactRoleConstants.NAME_PARTNER_MEMBER)) {

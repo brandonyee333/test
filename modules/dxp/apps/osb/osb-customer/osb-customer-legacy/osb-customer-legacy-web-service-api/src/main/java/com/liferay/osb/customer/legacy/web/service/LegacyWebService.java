@@ -12,30 +12,16 @@
  *
  */
 
-package com.liferay.osb.service.impl;
+package com.liferay.osb.customer.legacy.web.service;
 
-import com.liferay.osb.remote.web.WebRESTWebServiceUtil;
-import com.liferay.osb.service.base.RemoteCorpEntryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.model.User;
 
 /**
  * @author Amos Fong
  */
-public class RemoteCorpEntryLocalServiceImpl
-	extends RemoteCorpEntryLocalServiceBaseImpl {
+public interface LegacyWebService {
 
-	public boolean hasCorpEntry(String dossieraAccountKey)
-		throws PortalException {
-
-		JSONObject jsonObject = WebRESTWebServiceUtil.getCorpEntry(
-			dossieraAccountKey);
-
-		if (jsonObject.length() > 0) {
-			return true;
-		}
-
-		return false;
-	}
+	public User getUser(String uuid) throws PortalException;
 
 }

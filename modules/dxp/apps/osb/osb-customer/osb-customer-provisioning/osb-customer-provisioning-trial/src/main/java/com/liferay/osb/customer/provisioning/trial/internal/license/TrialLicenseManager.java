@@ -14,14 +14,22 @@
 
 package com.liferay.osb.customer.provisioning.trial.internal.license;
 
+import com.liferay.osb.customer.admin.constants.LicenseEntryConstants;
+import com.liferay.osb.customer.admin.constants.ProductEntryConstants;
+import com.liferay.osb.customer.license.constants.LicenseKeyConstants;
+import com.liferay.osb.customer.license.generator.KeyGenerator;
+import com.liferay.osb.customer.license.util.LicenseKeyExporter;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.math.BigInteger;
 
 import java.text.Format;
+import java.text.SimpleDateFormat;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -37,9 +45,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TrialLicenseManager {
 
 	public TrialLicenseManager(
-		String productId, int version, String versionLabel) {
+		KeyGenerator keyGenerator, LicenseKeyExporter licenseKeyExporter,
+		int version, String versionLabel) {
 
-		_productId = productId;
+		_keyGenerator = keyGenerator;
+		_licenseKeyExporter = licenseKeyExporter;
 		_version = version;
 		_versionLabel = versionLabel;
 	}
@@ -107,8 +117,6 @@ public class TrialLicenseManager {
 	}
 
 	private String _generateLicenseXML(String day) throws Exception {
-		/*
-		TODO
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
 		Date startDate = dateFormat.parse(day);
@@ -118,7 +126,7 @@ public class TrialLicenseManager {
 		Map<String, String> properties = new ConcurrentHashMap<>();
 
 		if (_productId.equals(ProductEntryConstants.PRODUCT_ID_COMMERCE)) {
-			properties = KeyGenerator.getProperties(
+			properties = _keyGenerator.getProperties(
 				"Liferay Trial", "Liferay Commerce Subscription Development",
 				LicenseEntryConstants.TYPE_DEVELOPER,
 				LicenseKeyConstants.getAppLicenseVersion(),
@@ -128,7 +136,7 @@ public class TrialLicenseManager {
 				new String[0], startDate, expirationDate);
 		}
 		else {
-			properties = KeyGenerator.getProperties(
+			properties = _keyGenerator.getProperties(
 				"Liferay Trial", "Digital Enterprise Development",
 				LicenseEntryConstants.TYPE_DEVELOPER,
 				LicenseKeyConstants.getLicenseVersionByMajorProductVersion(
@@ -139,12 +147,9 @@ public class TrialLicenseManager {
 				new String[0], startDate, expirationDate);
 		}
 
-		String key = KeyGenerator.generate(properties);
+		String key = _keyGenerator.generate(properties);
 
-		return LicenseUtil.exportToXML(properties, key);
-		*/
-
-		return null;
+		return _licenseKeyExporter.toXML(properties, key);
 	}
 
 	private synchronized void _refreshDayHashes() {
@@ -177,7 +182,9 @@ public class TrialLicenseManager {
 	private final Format _dateFormat =
 		FastDateFormatFactoryUtil.getSimpleDateFormat("yyyyMMdd");
 	private Map<Long, String> _dayHashesMap = new HashMap<>();
+	private final KeyGenerator _keyGenerator;
 	private String _lastRefreshDay;
+	private final LicenseKeyExporter _licenseKeyExporter;
 	private final Map<String, String> _licenseXMLMap =
 		new ConcurrentHashMap<>();
 	private final String _productId;
