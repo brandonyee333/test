@@ -106,8 +106,13 @@ public class AssignSessionContextArm {
 
 	private QueryBuilder _getQueryBuilder(JSONObject userSessionJSONObject) {
 		return BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery(
-				"channelId", userSessionJSONObject.getString("channelId"))
+			BoolQueryBuilderUtil.should(
+				QueryBuilders.termQuery(
+					"channelId", userSessionJSONObject.getString("channelId"))
+			).should(
+				BoolQueryBuilderUtil.mustNot(
+					QueryBuilders.existsQuery("channelId"))
+			)
 		).filter(
 			QueryBuilders.termQuery(
 				"dataSourceId", userSessionJSONObject.getString("dataSourceId"))
