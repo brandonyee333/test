@@ -152,8 +152,9 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 						String uuid = columnJSONObject.getString("uuid_");
 
 						String classPK = getColumnValue(
-							"select userId from OSB_MetricsUser where uuid_ " +
-								"= '" + uuid + "'");
+							StringBundler.concat(
+								"select userId from OSB_MetricsUser where ",
+								"uuid_ = '", uuid, "'"));
 
 						if (classPK != null) {
 							jsonObject.put(prefix + "PK", classPK);

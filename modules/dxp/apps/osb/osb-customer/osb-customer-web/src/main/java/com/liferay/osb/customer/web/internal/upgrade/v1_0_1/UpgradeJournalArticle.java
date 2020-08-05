@@ -137,8 +137,9 @@ public class UpgradeJournalArticle extends UpgradeProcess {
 		throws Exception {
 
 		runSQL(
-			"update JournalArticle set content = REPLACE(content, '" +
-				oldDisclaimer + "', '" + newDisclaimer + "')");
+			StringBundler.concat(
+				"update JournalArticle set content = REPLACE(content, '",
+				oldDisclaimer, "', '", newDisclaimer, "')"));
 	}
 
 	private final JournalArticlePersistence _journalArticlePersistence;

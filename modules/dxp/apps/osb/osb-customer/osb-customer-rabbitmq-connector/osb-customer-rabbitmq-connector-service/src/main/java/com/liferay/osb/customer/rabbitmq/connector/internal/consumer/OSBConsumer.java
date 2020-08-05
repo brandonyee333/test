@@ -17,6 +17,7 @@ package com.liferay.osb.customer.rabbitmq.connector.internal.consumer;
 import com.liferay.osb.customer.rabbitmq.connector.consumer.Consumer;
 import com.liferay.osb.customer.rabbitmq.connector.processor.MessagePropertyKeys;
 import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -57,8 +58,9 @@ public class OSBConsumer extends DefaultConsumer implements Consumer {
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
-				"Received message " + envelope.getDeliveryTag() +
-					" with routing key " + envelope.getRoutingKey());
+				StringBundler.concat(
+					"Received message ", envelope.getDeliveryTag(),
+					" with routing key ", envelope.getRoutingKey()));
 		}
 
 		String message = null;

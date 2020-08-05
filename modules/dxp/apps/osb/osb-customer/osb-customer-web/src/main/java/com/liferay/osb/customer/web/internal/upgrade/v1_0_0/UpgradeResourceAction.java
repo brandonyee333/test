@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.web.internal.upgrade.v1_0_0;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.service.persistence.ResourceActionPersistence;
 import com.liferay.portal.kernel.service.persistence.ResourcePermissionPersistence;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
@@ -42,9 +43,10 @@ public class UpgradeResourceAction extends UpgradeProcess {
 
 	protected void upgradeResourceName(String tableName) throws Exception {
 		runSQL(
-			"update " + tableName + " set name = " +
-				"'com.liferay.osb.documentation.display' where name = " +
-					"'com.liferay.osb.knowledge.base.display'");
+			StringBundler.concat(
+				"update ", tableName, " set name = ",
+				"'com.liferay.osb.documentation.display' where name = ",
+				"'com.liferay.osb.knowledge.base.display'"));
 	}
 
 	private final ResourceActionPersistence _resourceActionPersistence;

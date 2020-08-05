@@ -17,6 +17,7 @@ package com.liferay.osb.customer.web.internal.upgrade.v1_0_0;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMStructurePersistence;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMTemplatePersistence;
 import com.liferay.journal.service.persistence.JournalArticlePersistence;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.PortletPreferences;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
@@ -87,11 +88,14 @@ public class UpgradeDDMTemplates extends UpgradeProcess {
 		throws Exception {
 
 		runSQL(
-			"update DDMStructure set structureKey = '" + newStructureKey +
-				"' where structureKey = '" + oldStructureKey + "'");
+			StringBundler.concat(
+				"update DDMStructure set structureKey = '", newStructureKey,
+				"' where structureKey = '", oldStructureKey, "'"));
 		runSQL(
-			"update JournalArticle set DDMStructureKey = '" + newStructureKey +
-				"' where DDMStructureKey = '" + oldStructureKey + "'");
+			StringBundler.concat(
+				"update JournalArticle set DDMStructureKey = '",
+				newStructureKey, "' where DDMStructureKey = '", oldStructureKey,
+				"'"));
 	}
 
 	protected void upgradeTemplateKeys(
@@ -99,11 +103,13 @@ public class UpgradeDDMTemplates extends UpgradeProcess {
 		throws Exception {
 
 		runSQL(
-			"update DDMTemplate set templateKey = '" + newTemplateKey +
-				"' where templateKey = '" + oldTemplateKey + "'");
+			StringBundler.concat(
+				"update DDMTemplate set templateKey = '", newTemplateKey,
+				"' where templateKey = '", oldTemplateKey, "'"));
 		runSQL(
-			"update JournalArticle set DDMTemplateKey = '" + newTemplateKey +
-				"' where DDMTemplateKey = '" + oldTemplateKey + "'");
+			StringBundler.concat(
+				"update JournalArticle set DDMTemplateKey = '", newTemplateKey,
+				"' where DDMTemplateKey = '", oldTemplateKey, "'"));
 	}
 
 	private final DDMStructurePersistence _ddmStructurePersistence;

@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.web.internal.upgrade.v1_1_0;
 
 import com.liferay.journal.service.persistence.JournalArticlePersistence;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
@@ -60,8 +61,10 @@ public class UpgradeJournalArticles extends UpgradeProcess {
 		throws Exception {
 
 		runSQL(
-			"update JournalArticle set DDMStructureKey = '" + newStructureKey +
-				"' where DDMStructureKey = '" + oldStructureKey + "'");
+			StringBundler.concat(
+				"update JournalArticle set DDMStructureKey = '",
+				newStructureKey, "' where DDMStructureKey = '", oldStructureKey,
+				"'"));
 	}
 
 	protected void upgradeTemplateKeys(
@@ -69,8 +72,9 @@ public class UpgradeJournalArticles extends UpgradeProcess {
 		throws Exception {
 
 		runSQL(
-			"update JournalArticle set DDMTemplateKey = '" + newTemplateKey +
-				"' where DDMTemplateKey = '" + oldTemplateKey + "'");
+			StringBundler.concat(
+				"update JournalArticle set DDMTemplateKey = '", newTemplateKey,
+				"' where DDMTemplateKey = '", oldTemplateKey, "'"));
 	}
 
 	private final JournalArticlePersistence _journalArticlePersistence;

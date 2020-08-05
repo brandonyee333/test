@@ -16,6 +16,7 @@ package com.liferay.osb.customer.rabbitmq.connector.internal.connection;
 
 import com.liferay.osb.customer.rabbitmq.connector.configuration.RabbitMQConnectorConfigurationValues;
 import com.liferay.osb.customer.rabbitmq.connector.connection.ConnectionManager;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -55,7 +56,9 @@ public class ConnectionManagerImpl implements ConnectionManager {
 
 		try {
 			if (_log.isInfoEnabled()) {
-				_log.info("Connecting to RabbitMQ at " + host + ":" + port);
+				_log.info(
+					StringBundler.concat(
+						"Connecting to RabbitMQ at ", host, ":", port));
 			}
 
 			_connection = connectionFactory.newConnection();

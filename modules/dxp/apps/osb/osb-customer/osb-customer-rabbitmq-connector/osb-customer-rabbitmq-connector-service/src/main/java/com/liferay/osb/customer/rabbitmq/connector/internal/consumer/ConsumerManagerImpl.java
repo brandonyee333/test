@@ -20,6 +20,7 @@ import com.liferay.osb.customer.rabbitmq.connector.consumer.Consumer;
 import com.liferay.osb.customer.rabbitmq.connector.consumer.ConsumerManager;
 import com.liferay.osb.customer.rabbitmq.connector.exception.DuplicateConsumerException;
 import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -98,7 +99,8 @@ public class ConsumerManagerImpl implements ConsumerManager {
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					"Consuming " + messageCount + " messages on " + queue);
+					StringBundler.concat(
+						"Consuming ", messageCount, " messages on ", queue));
 			}
 
 			for (int i = 0; i < messageCount; i++) {

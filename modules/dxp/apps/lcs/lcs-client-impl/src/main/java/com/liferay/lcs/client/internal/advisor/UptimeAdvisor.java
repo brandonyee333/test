@@ -23,6 +23,7 @@ import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.event.LCSEventListener;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.util.LCSPortletPreferences;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -352,7 +353,8 @@ public class UptimeAdvisor implements LCSEventListener {
 
 		@Override
 		public String toString() {
-			return "{endTime=" + endTime + ", startTime=" + startTime + "}";
+			return StringBundler.concat(
+				"{endTime=", endTime, ", startTime=", startTime, "}");
 		}
 
 		protected long endTime;

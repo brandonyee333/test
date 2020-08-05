@@ -19,6 +19,7 @@ import com.liferay.osb.customer.github.web.service.GitHubWebService;
 import com.liferay.petra.json.web.service.client.BaseJSONWebServiceClientImpl;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -179,12 +180,14 @@ public class GitHubWebServiceImpl
 	private static final Charset _CHARSET = Charset.forName("UTF-8");
 
 	private static final String _URL_GITHUB_REPOSITORY_COLLABORATORS =
-		"/repos/" +
+		StringBundler.concat(
+			"/repos/",
 			GitHubConfigurationValues.
-				REMOTE_REST_SERVICE_API_GITHUB_REPOSITORY_OWNER + "/" +
-					GitHubConfigurationValues.
-						REMOTE_REST_SERVICE_API_GITHUB_REPOSITORY_NAME +
-							"/collaborators";
+				REMOTE_REST_SERVICE_API_GITHUB_REPOSITORY_OWNER,
+			"/",
+			GitHubConfigurationValues.
+				REMOTE_REST_SERVICE_API_GITHUB_REPOSITORY_NAME,
+			"/collaborators");
 
 	private static final String _URL_GITHUB_USERS = "/users/";
 

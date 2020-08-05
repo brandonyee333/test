@@ -14,6 +14,7 @@
 
 package com.liferay.portal.workflow.kaleo.designer.util;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -179,8 +180,9 @@ public class KaleoDesignerUtil {
 		catch (Exception e) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
-					"Could not find Kaleo draft definition for {name=" + name +
-						", version=" + version + "}");
+					StringBundler.concat(
+						"Could not find Kaleo draft definition for {name=",
+						name, ", version=", version, "}"));
 			}
 		}
 
