@@ -239,7 +239,10 @@ public class AssetEntrySetUtil {
 		jsonObject.put("action", action);
 		jsonObject.put("data", assetEntrySetJSONObjectComposite);
 		jsonObject.put("modifiedBy", user.getEmailAddress());
-		jsonObject.put("modifiedTime", new Date().getTime());
+
+		Date now = new Date();
+
+		jsonObject.put("modifiedTime", now.getTime());
 
 		if ((oldAssetEntrySetJSONObjectComposite != null) &&
 			(oldAssetEntrySetJSONObjectComposite.length() > 0)) {
