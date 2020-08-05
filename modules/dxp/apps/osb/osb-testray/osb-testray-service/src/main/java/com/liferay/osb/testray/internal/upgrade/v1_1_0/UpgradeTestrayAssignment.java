@@ -14,6 +14,7 @@
 
 package com.liferay.osb.testray.internal.upgrade.v1_1_0;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 
 /**
@@ -36,8 +37,9 @@ public class UpgradeTestrayAssignment extends BaseUpgradeClassName {
 				getStaleClassName(className));
 
 			runSQL(
-				"update OSB_TestrayAssignment set classNameId = " +
-					newClassNameId + " where classNameId = " + oldClassNameId);
+				StringBundler.concat(
+					"update OSB_TestrayAssignment set classNameId = ",
+					newClassNameId, " where classNameId = ", oldClassNameId));
 		}
 	}
 

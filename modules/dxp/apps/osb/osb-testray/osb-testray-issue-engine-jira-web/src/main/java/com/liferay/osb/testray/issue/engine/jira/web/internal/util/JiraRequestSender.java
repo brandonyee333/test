@@ -150,9 +150,10 @@ public class JiraRequestSender {
 
 			if (!response.isSuccessful()) {
 				_log.error(
-					"API call to " + jiraRequest.getURL() + " by " +
-						jiraRequest.getUserName() +
-							" failed with status code " + response.getCode());
+					StringBundler.concat(
+						"API call to ", jiraRequest.getURL(), " by ",
+						jiraRequest.getUserName(), " failed with status code ",
+						response.getCode()));
 			}
 
 			retryInterval = _RETRY_INTERVAL_DEFAULT;

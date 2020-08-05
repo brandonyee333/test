@@ -14,6 +14,7 @@
 
 package com.liferay.osb.testray.web.internal.hook.filter;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -84,8 +85,9 @@ public class TestrayAPIFilter extends BaseFilter {
 		}
 		else if (_log.isDebugEnabled()) {
 			_log.debug(
-				"Filter enabled for URL " + currentURL + " with format " +
-					format + ".");
+				StringBundler.concat(
+					"Filter enabled for URL ", currentURL, " with format ",
+					format, "."));
 		}
 
 		return true;

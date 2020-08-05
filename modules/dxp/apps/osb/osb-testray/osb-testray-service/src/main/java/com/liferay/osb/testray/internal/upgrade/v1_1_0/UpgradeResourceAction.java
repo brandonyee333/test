@@ -14,6 +14,8 @@
 
 package com.liferay.osb.testray.internal.upgrade.v1_1_0;
 
+import com.liferay.petra.string.StringBundler;
+
 /**
  * @author Ethan Bustad
  */
@@ -23,8 +25,9 @@ public class UpgradeResourceAction extends BaseUpgradeClassName {
 	protected void doUpgrade() throws Exception {
 		for (String className : CLASS_NAMES) {
 			runSQL(
-				"update ResourceAction set name = '" + className +
-					"' where name = '" + getStaleClassName(className) + "'");
+				StringBundler.concat(
+					"update ResourceAction set name = '", className,
+					"' where name = '", getStaleClassName(className), "'"));
 		}
 	}
 

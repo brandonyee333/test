@@ -17,6 +17,7 @@ package com.liferay.osb.email.blacklist.amazon.ses.listener.internal.servlet;
 import com.liferay.osb.email.blacklist.amazon.ses.listener.internal.configuration.EmailBlacklistAmazonSESListenerConfiguration;
 import com.liferay.osb.email.blacklist.service.BlacklistEntryLocalService;
 import com.liferay.osb.email.blacklist.service.BounceEntryLocalService;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -191,8 +192,9 @@ public class EmailBlacklistAmazonSESNotificationServlet extends HttpServlet {
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
-				"Validating a message from SNS with user agent " + userAgent +
-					" and resource name " + resourceName);
+				StringBundler.concat(
+					"Validating a message from SNS with user agent ", userAgent,
+					" and resource name ", resourceName));
 		}
 
 		if (!_emailBlacklistAmazonSESListenerConfiguration.

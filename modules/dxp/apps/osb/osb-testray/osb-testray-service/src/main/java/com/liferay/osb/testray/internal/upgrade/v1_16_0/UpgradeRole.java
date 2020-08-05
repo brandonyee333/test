@@ -43,9 +43,10 @@ public class UpgradeRole extends UpgradeProcess {
 		}
 
 		runSQL(
-			"update Role_ set subtype=\"com.liferay.osb.testray\" where name " +
-				"in (" + _getRoleNamesString(_TESTRAY_ROLE_NAMES_TO_UPDATE) +
-					StringPool.CLOSE_PARENTHESIS);
+			StringBundler.concat(
+				"update Role_ set subtype=\"com.liferay.osb.testray\" where ",
+				"name in (", _getRoleNamesString(_TESTRAY_ROLE_NAMES_TO_UPDATE),
+				StringPool.CLOSE_PARENTHESIS));
 	}
 
 	private String _getRoleNamesString(String[] testrayRoleNames) {
