@@ -18,6 +18,7 @@ import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskRequest;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -87,9 +88,8 @@ public class AsyncZendeskUserWebService
 	}
 
 	public void deleteZendeskUser(long zendeskUserId) throws PortalException {
-		String endpoint =
-			ZendeskRESTEndpoints.URL_API_V2 + "users/" + zendeskUserId +
-				".json";
+		String endpoint = StringBundler.concat(
+			ZendeskRESTEndpoints.URL_API_V2, "users/", zendeskUserId, ".json");
 
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "delete", null, null, "zendesk.user.delete");
@@ -111,9 +111,9 @@ public class AsyncZendeskUserWebService
 
 		jsonObject.put("tags", jsonArray);
 
-		String endpoint =
-			ZendeskRESTEndpoints.URL_API_V2 + "users/" + zendeskUserId +
-				"/tags.json";
+		String endpoint = StringBundler.concat(
+			ZendeskRESTEndpoints.URL_API_V2, "users/", zendeskUserId,
+			"/tags.json");
 
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "post", null, jsonObject, null);

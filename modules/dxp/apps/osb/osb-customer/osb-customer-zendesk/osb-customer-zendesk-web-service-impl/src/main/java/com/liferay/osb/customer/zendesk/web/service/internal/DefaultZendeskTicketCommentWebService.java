@@ -23,6 +23,7 @@ import com.liferay.osb.customer.zendesk.web.service.internal.util.ZendeskConvert
 import com.liferay.osb.customer.zendesk.web.service.search.Query;
 import com.liferay.osb.customer.zendesk.web.service.search.QueryFactory;
 import com.liferay.osb.customer.zendesk.web.service.search.SearchHits;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -52,8 +53,9 @@ public class DefaultZendeskTicketCommentWebService
 			zendeskUserId, htmlBody);
 
 		JSONObject responseJSONObject = _zendeskBaseWebService.put(
-			ZendeskRESTEndpoints.URL_API_V2 + "tickets/" + zendeskTicketId +
-				".json",
+			StringBundler.concat(
+				ZendeskRESTEndpoints.URL_API_V2, "tickets/", zendeskTicketId,
+				".json"),
 			jsonObject.toString());
 
 		JSONObject auditJSONObject = responseJSONObject.getJSONObject("audit");
@@ -120,9 +122,9 @@ public class DefaultZendeskTicketCommentWebService
 			long zendeskTicketId, Query query)
 		throws PortalException {
 
-		String endpoint =
-			ZendeskRESTEndpoints.URL_API_V2 + "tickets/" + zendeskTicketId +
-				"/comments.json";
+		String endpoint = StringBundler.concat(
+			ZendeskRESTEndpoints.URL_API_V2, "tickets/", zendeskTicketId,
+			"/comments.json");
 
 		JSONObject responseJSONObject = _zendeskBaseWebService.get(
 			endpoint, query.getParameters());

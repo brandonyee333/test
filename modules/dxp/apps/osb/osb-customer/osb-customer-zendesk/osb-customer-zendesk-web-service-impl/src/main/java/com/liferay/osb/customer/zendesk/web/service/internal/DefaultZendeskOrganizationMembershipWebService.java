@@ -20,6 +20,7 @@ import com.liferay.osb.customer.zendesk.model.ZendeskOrganizationMembership;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
 import com.liferay.osb.customer.zendesk.web.service.internal.util.MessagePublisherUtil;
 import com.liferay.osb.customer.zendesk.web.service.internal.util.ZendeskConverter;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -58,9 +59,9 @@ public class DefaultZendeskOrganizationMembershipWebService
 			long zendeskOrganizationId)
 		throws PortalException {
 
-		String endpoint =
-			ZendeskRESTEndpoints.URL_API_V2 + "organizations/" +
-				zendeskOrganizationId + "/organization_memberships.json";
+		String endpoint = StringBundler.concat(
+			ZendeskRESTEndpoints.URL_API_V2, "organizations/",
+			zendeskOrganizationId, "/organization_memberships.json");
 
 		JSONObject organizationMembershipsJSONObject =
 			zendeskBaseWebService.get(endpoint, StringPool.BLANK);
@@ -77,9 +78,9 @@ public class DefaultZendeskOrganizationMembershipWebService
 			getZendeskUserOrganizationMemberships(long zendeskUserId)
 		throws PortalException {
 
-		String endpoint =
-			ZendeskRESTEndpoints.URL_API_V2 + "users/" + zendeskUserId +
-				"/organization_memberships.json";
+		String endpoint = StringBundler.concat(
+			ZendeskRESTEndpoints.URL_API_V2, "users/", zendeskUserId,
+			"/organization_memberships.json");
 
 		JSONObject organizationMembershipsJSONObject =
 			zendeskBaseWebService.get(endpoint, StringPool.BLANK);

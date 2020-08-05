@@ -23,6 +23,7 @@ import com.liferay.osb.customer.zendesk.web.service.internal.util.MessagePublish
 import com.liferay.osb.customer.zendesk.web.service.internal.util.ZendeskConverter;
 import com.liferay.osb.customer.zendesk.web.service.search.Query;
 import com.liferay.osb.customer.zendesk.web.service.search.SearchHits;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -87,9 +88,8 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 	public ZendeskUser getZendeskUser(long zendeskUserId)
 		throws PortalException {
 
-		String endpoint =
-			ZendeskRESTEndpoints.URL_API_V2 + "users/" + zendeskUserId +
-				".json";
+		String endpoint = StringBundler.concat(
+			ZendeskRESTEndpoints.URL_API_V2, "users/", zendeskUserId, ".json");
 
 		JSONObject jsonObject = zendeskBaseWebService.get(
 			endpoint, StringPool.BLANK);

@@ -24,6 +24,7 @@ import com.liferay.osb.customer.zendesk.web.service.internal.util.ZendeskConvert
 import com.liferay.osb.customer.zendesk.web.service.search.QueryFactory;
 import com.liferay.osb.customer.zendesk.web.service.search.SearchHits;
 import com.liferay.osb.customer.zendesk.web.service.search.ZendeskTicketQuery;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -52,8 +53,9 @@ public class DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 
 		try {
 			JSONObject responseJSONObject = zendeskBaseWebService.get(
-				ZendeskRESTEndpoints.URL_API_V2 + "tickets/" + zendeskTicketId +
-					".json",
+				StringBundler.concat(
+					ZendeskRESTEndpoints.URL_API_V2, "tickets/",
+					zendeskTicketId, ".json"),
 				StringPool.BLANK);
 
 			return zendeskConverter.toZendeskTicket(
@@ -108,9 +110,9 @@ public class DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 		for (ZendeskTicket zendeskTicket : zendeskTickets) {
 			JSONObject ticketJSONObject = JSONFactoryUtil.createJSONObject();
 
-			String endpoint =
-				ZendeskRESTEndpoints.URL_API_V2 + "tickets/" +
-					zendeskTicket.getZendeskTicketId() + ".json";
+			String endpoint = StringBundler.concat(
+				ZendeskRESTEndpoints.URL_API_V2, "tickets/",
+				zendeskTicket.getZendeskTicketId(), ".json");
 
 			ticketJSONObject.put(
 				"organization_id", zendeskTicket.getZendeskOrganizationId());

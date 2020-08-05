@@ -17,6 +17,7 @@ package com.liferay.osb.customer.zendesk.web.service.internal;
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskRequest;
 import com.liferay.osb.customer.zendesk.model.ZendeskTranslation;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTranslationWebService;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -52,8 +53,9 @@ public class AsyncZendeskTranslationWebService
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
-				"Adding " + zendeskLocale + " translation for " + sourceType +
-					StringPool.POUND + sourceId);
+				StringBundler.concat(
+					"Adding ", zendeskLocale, " translation for ", sourceType,
+					StringPool.POUND, sourceId));
 		}
 
 		return null;
@@ -70,15 +72,17 @@ public class AsyncZendeskTranslationWebService
 			null, title, body);
 
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
-			endpoint + "/translations/" + zendeskLocale + ".json", "put", null,
-			jsonObject, null);
+			StringBundler.concat(
+				endpoint, "/translations/", zendeskLocale, ".json"),
+			"put", null, jsonObject, null);
 
 		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
-				"Updating " + zendeskLocale + " translation for " + sourceType +
-					StringPool.POUND + sourceId);
+				StringBundler.concat(
+					"Updating ", zendeskLocale, " translation for ", sourceType,
+					StringPool.POUND, sourceId));
 		}
 
 		return null;
