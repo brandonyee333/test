@@ -61,7 +61,7 @@ public interface AccountAttachmentLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link AccountAttachmentLocalServiceUtil} to access the account attachment local service. Add custom service methods to <code>com.liferay.osb.customer.admin.service.impl.AccountAttachmentLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.customer.admin.service.impl.AccountAttachmentLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the account attachment local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link AccountAttachmentLocalServiceUtil} if injection and service tracking are not available.
 	 */
 
 	/**

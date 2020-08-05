@@ -27,9 +27,6 @@ public interface ProductEntryFinder {
 		String name, java.util.LinkedHashMap<String, Object> params);
 
 	public java.util.List<com.liferay.osb.customer.admin.model.ProductEntry>
-		findByAccountEntry(long accountEntryId, int start, int end);
-
-	public java.util.List<com.liferay.osb.customer.admin.model.ProductEntry>
 		findByName(
 			String name, java.util.LinkedHashMap<String, Object> params,
 			int start, int end);

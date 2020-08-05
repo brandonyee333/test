@@ -59,7 +59,7 @@ public interface ProductEntryLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link ProductEntryLocalServiceUtil} to access the product entry local service. Add custom service methods to <code>com.liferay.osb.customer.admin.service.impl.ProductEntryLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.customer.admin.service.impl.ProductEntryLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the product entry local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link ProductEntryLocalServiceUtil} if injection and service tracking are not available.
 	 */
 	public ProductEntry addProductEntry(
 			long userId, String koroneikiProductKey, String name,
@@ -244,9 +244,6 @@ public interface ProductEntryLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<ProductEntry> getProductEntries(int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<ProductEntry> getProductEntries(long accountEntryId);
 
 	/**
 	 * Returns the number of product entries.

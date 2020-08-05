@@ -132,6 +132,29 @@ public abstract class AccountEntryServiceBaseImpl
 	}
 
 	/**
+	 * Returns the account customer remote service.
+	 *
+	 * @return the account customer remote service
+	 */
+	public com.liferay.osb.customer.admin.service.AccountCustomerService
+		getAccountCustomerService() {
+
+		return accountCustomerService;
+	}
+
+	/**
+	 * Sets the account customer remote service.
+	 *
+	 * @param accountCustomerService the account customer remote service
+	 */
+	public void setAccountCustomerService(
+		com.liferay.osb.customer.admin.service.AccountCustomerService
+			accountCustomerService) {
+
+		this.accountCustomerService = accountCustomerService;
+	}
+
+	/**
 	 * Returns the account entry local service.
 	 *
 	 * @return the account entry local service
@@ -1044,6 +1067,12 @@ public abstract class AccountEntryServiceBaseImpl
 
 	@BeanReference(type = AccountAttachmentPersistence.class)
 	protected AccountAttachmentPersistence accountAttachmentPersistence;
+
+	@BeanReference(
+		type = com.liferay.osb.customer.admin.service.AccountCustomerService.class
+	)
+	protected com.liferay.osb.customer.admin.service.AccountCustomerService
+		accountCustomerService;
 
 	@BeanReference(
 		type = com.liferay.osb.customer.admin.service.AccountEntryLocalService.class

@@ -299,13 +299,6 @@ public class ProductEntryLocalServiceUtil {
 		return getService().getProductEntries(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.customer.admin.model.ProductEntry> getProductEntries(
-			long accountEntryId) {
-
-		return getService().getProductEntries(accountEntryId);
-	}
-
 	/**
 	 * Returns the number of product entries.
 	 *

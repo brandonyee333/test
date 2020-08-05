@@ -242,6 +242,14 @@ public class AccountEntryLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.customer.admin.model.AccountEntry
+		fetchCorpProjectAccountEntry(String corpProjectUuid) {
+
+		return _accountEntryLocalService.fetchCorpProjectAccountEntry(
+			corpProjectUuid);
+	}
+
+	@Override
+	public com.liferay.osb.customer.admin.model.AccountEntry
 		fetchKoroneikiAccountEntry(String koroneikiAccountKey) {
 
 		return _accountEntryLocalService.fetchKoroneikiAccountEntry(

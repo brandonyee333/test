@@ -369,6 +369,67 @@ public class AccountEntryUtil {
 	}
 
 	/**
+	 * Returns the account entry where corpProjectUuid = &#63; or throws a <code>NoSuchAccountEntryException</code> if it could not be found.
+	 *
+	 * @param corpProjectUuid the corp project uuid
+	 * @return the matching account entry
+	 * @throws NoSuchAccountEntryException if a matching account entry could not be found
+	 */
+	public static AccountEntry findByCorpProjectUuid(String corpProjectUuid)
+		throws com.liferay.osb.customer.admin.exception.
+			NoSuchAccountEntryException {
+
+		return getPersistence().findByCorpProjectUuid(corpProjectUuid);
+	}
+
+	/**
+	 * Returns the account entry where corpProjectUuid = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param corpProjectUuid the corp project uuid
+	 * @return the matching account entry, or <code>null</code> if a matching account entry could not be found
+	 */
+	public static AccountEntry fetchByCorpProjectUuid(String corpProjectUuid) {
+		return getPersistence().fetchByCorpProjectUuid(corpProjectUuid);
+	}
+
+	/**
+	 * Returns the account entry where corpProjectUuid = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param corpProjectUuid the corp project uuid
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching account entry, or <code>null</code> if a matching account entry could not be found
+	 */
+	public static AccountEntry fetchByCorpProjectUuid(
+		String corpProjectUuid, boolean useFinderCache) {
+
+		return getPersistence().fetchByCorpProjectUuid(
+			corpProjectUuid, useFinderCache);
+	}
+
+	/**
+	 * Removes the account entry where corpProjectUuid = &#63; from the database.
+	 *
+	 * @param corpProjectUuid the corp project uuid
+	 * @return the account entry that was removed
+	 */
+	public static AccountEntry removeByCorpProjectUuid(String corpProjectUuid)
+		throws com.liferay.osb.customer.admin.exception.
+			NoSuchAccountEntryException {
+
+		return getPersistence().removeByCorpProjectUuid(corpProjectUuid);
+	}
+
+	/**
+	 * Returns the number of account entries where corpProjectUuid = &#63;.
+	 *
+	 * @param corpProjectUuid the corp project uuid
+	 * @return the number of matching account entries
+	 */
+	public static int countByCorpProjectUuid(String corpProjectUuid) {
+		return getPersistence().countByCorpProjectUuid(corpProjectUuid);
+	}
+
+	/**
 	 * Returns all the account entries where name LIKE &#63; and code LIKE &#63;.
 	 *
 	 * @param name the name

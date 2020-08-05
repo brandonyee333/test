@@ -1,6 +1,7 @@
 create index IX_1B961F96 on OSB_AccountAttachment (accountEntryId, accountProjectId, fileName[$COLUMN_LENGTH:75$], type_);
 create index IX_D44EEA51 on OSB_AccountAttachment (accountEntryId, accountProjectId, type_);
 
+create index IX_64D9942E on OSB_AccountEntry (corpProjectUuid[$COLUMN_LENGTH:75$]);
 create index IX_4304C568 on OSB_AccountEntry (dossieraAccountKey[$COLUMN_LENGTH:75$]);
 create index IX_32D8BC5 on OSB_AccountEntry (koroneikiAccountKey[$COLUMN_LENGTH:75$]);
 create index IX_9004ACB7 on OSB_AccountEntry (name[$COLUMN_LENGTH:500$], code_[$COLUMN_LENGTH:75$]);

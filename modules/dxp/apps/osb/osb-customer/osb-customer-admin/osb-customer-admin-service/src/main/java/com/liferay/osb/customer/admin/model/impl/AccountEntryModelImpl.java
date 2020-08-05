@@ -150,13 +150,15 @@ public class AccountEntryModelImpl
 
 	public static final long CODE_COLUMN_BITMASK = 1L;
 
-	public static final long DOSSIERAACCOUNTKEY_COLUMN_BITMASK = 2L;
+	public static final long CORPPROJECTUUID_COLUMN_BITMASK = 2L;
 
-	public static final long KORONEIKIACCOUNTKEY_COLUMN_BITMASK = 4L;
+	public static final long DOSSIERAACCOUNTKEY_COLUMN_BITMASK = 4L;
 
-	public static final long NAME_COLUMN_BITMASK = 8L;
+	public static final long KORONEIKIACCOUNTKEY_COLUMN_BITMASK = 8L;
 
-	public static final long ACCOUNTENTRYID_COLUMN_BITMASK = 16L;
+	public static final long NAME_COLUMN_BITMASK = 16L;
+
+	public static final long ACCOUNTENTRYID_COLUMN_BITMASK = 32L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -1053,7 +1055,17 @@ public class AccountEntryModelImpl
 
 	@Override
 	public void setCorpProjectUuid(String corpProjectUuid) {
+		_columnBitmask |= CORPPROJECTUUID_COLUMN_BITMASK;
+
+		if (_originalCorpProjectUuid == null) {
+			_originalCorpProjectUuid = _corpProjectUuid;
+		}
+
 		_corpProjectUuid = corpProjectUuid;
+	}
+
+	public String getOriginalCorpProjectUuid() {
+		return GetterUtil.getString(_originalCorpProjectUuid);
 	}
 
 	@JSON
@@ -1357,6 +1369,9 @@ public class AccountEntryModelImpl
 		accountEntryModelImpl._originalDossieraAccountKey =
 			accountEntryModelImpl._dossieraAccountKey;
 
+		accountEntryModelImpl._originalCorpProjectUuid =
+			accountEntryModelImpl._corpProjectUuid;
+
 		accountEntryModelImpl._originalName = accountEntryModelImpl._name;
 
 		accountEntryModelImpl._originalCode = accountEntryModelImpl._code;
@@ -1595,6 +1610,7 @@ public class AccountEntryModelImpl
 	private String _dossieraAccountKey;
 	private String _originalDossieraAccountKey;
 	private String _corpProjectUuid;
+	private String _originalCorpProjectUuid;
 	private long _corpProjectId;
 	private String _name;
 	private String _originalName;

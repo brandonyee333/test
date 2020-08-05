@@ -312,13 +312,6 @@ public class ProductEntryLocalServiceWrapper
 		return _productEntryLocalService.getProductEntries(start, end);
 	}
 
-	@Override
-	public java.util.List<com.liferay.osb.customer.admin.model.ProductEntry>
-		getProductEntries(long accountEntryId) {
-
-		return _productEntryLocalService.getProductEntries(accountEntryId);
-	}
-
 	/**
 	 * Returns the number of product entries.
 	 *

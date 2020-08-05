@@ -235,6 +235,12 @@ public class AccountEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.customer.admin.model.AccountEntry
+		fetchCorpProjectAccountEntry(String corpProjectUuid) {
+
+		return getService().fetchCorpProjectAccountEntry(corpProjectUuid);
+	}
+
+	public static com.liferay.osb.customer.admin.model.AccountEntry
 		fetchKoroneikiAccountEntry(String koroneikiAccountKey) {
 
 		return getService().fetchKoroneikiAccountEntry(koroneikiAccountKey);

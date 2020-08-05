@@ -10,6 +10,7 @@
 	<bean class="com.liferay.osb.customer.admin.service.impl.AccountAttachmentLocalServiceImpl" id="com.liferay.osb.customer.admin.service.AccountAttachmentLocalService" />
 	<bean class="com.liferay.osb.customer.admin.service.impl.AccountAttachmentServiceImpl" id="com.liferay.osb.customer.admin.service.AccountAttachmentService" />
 	<bean class="com.liferay.osb.customer.admin.service.persistence.impl.AccountAttachmentPersistenceImpl" id="com.liferay.osb.customer.admin.service.persistence.AccountAttachmentPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.customer.admin.service.impl.AccountCustomerServiceImpl" id="com.liferay.osb.customer.admin.service.AccountCustomerService" />
 	<bean class="com.liferay.osb.customer.admin.service.impl.AccountEntryLocalServiceImpl" id="com.liferay.osb.customer.admin.service.AccountEntryLocalService" />
 	<bean class="com.liferay.osb.customer.admin.service.impl.AccountEntryServiceImpl" id="com.liferay.osb.customer.admin.service.AccountEntryService" />
 	<bean class="com.liferay.osb.customer.admin.service.persistence.impl.AccountEntryPersistenceImpl" id="com.liferay.osb.customer.admin.service.persistence.AccountEntryPersistence" parent="basePersistence" />

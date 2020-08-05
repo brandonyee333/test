@@ -61,7 +61,7 @@ public interface AccountEnvironmentLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link AccountEnvironmentLocalServiceUtil} to access the account environment local service. Add custom service methods to <code>com.liferay.osb.customer.admin.service.impl.AccountEnvironmentLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.customer.admin.service.impl.AccountEnvironmentLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the account environment local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link AccountEnvironmentLocalServiceUtil} if injection and service tracking are not available.
 	 */
 
 	/**

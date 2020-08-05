@@ -909,6 +909,260 @@ public class AccountEntryPersistenceImpl
 		_FINDER_COLUMN_DOSSIERAACCOUNTKEY_DOSSIERAACCOUNTKEY_3 =
 			"(accountEntry.dossieraAccountKey IS NULL OR accountEntry.dossieraAccountKey = '')";
 
+	private FinderPath _finderPathFetchByCorpProjectUuid;
+	private FinderPath _finderPathCountByCorpProjectUuid;
+
+	/**
+	 * Returns the account entry where corpProjectUuid = &#63; or throws a <code>NoSuchAccountEntryException</code> if it could not be found.
+	 *
+	 * @param corpProjectUuid the corp project uuid
+	 * @return the matching account entry
+	 * @throws NoSuchAccountEntryException if a matching account entry could not be found
+	 */
+	@Override
+	public AccountEntry findByCorpProjectUuid(String corpProjectUuid)
+		throws NoSuchAccountEntryException {
+
+		AccountEntry accountEntry = fetchByCorpProjectUuid(corpProjectUuid);
+
+		if (accountEntry == null) {
+			StringBundler sb = new StringBundler(4);
+
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			sb.append("corpProjectUuid=");
+			sb.append(corpProjectUuid);
+
+			sb.append("}");
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(sb.toString());
+			}
+
+			throw new NoSuchAccountEntryException(sb.toString());
+		}
+
+		return accountEntry;
+	}
+
+	/**
+	 * Returns the account entry where corpProjectUuid = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param corpProjectUuid the corp project uuid
+	 * @return the matching account entry, or <code>null</code> if a matching account entry could not be found
+	 */
+	@Override
+	public AccountEntry fetchByCorpProjectUuid(String corpProjectUuid) {
+		return fetchByCorpProjectUuid(corpProjectUuid, true);
+	}
+
+	/**
+	 * Returns the account entry where corpProjectUuid = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param corpProjectUuid the corp project uuid
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching account entry, or <code>null</code> if a matching account entry could not be found
+	 */
+	@Override
+	public AccountEntry fetchByCorpProjectUuid(
+		String corpProjectUuid, boolean useFinderCache) {
+
+		corpProjectUuid = Objects.toString(corpProjectUuid, "");
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {corpProjectUuid};
+		}
+
+		Object result = null;
+
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByCorpProjectUuid, finderArgs, this);
+		}
+
+		if (result instanceof AccountEntry) {
+			AccountEntry accountEntry = (AccountEntry)result;
+
+			if (!Objects.equals(
+					corpProjectUuid, accountEntry.getCorpProjectUuid())) {
+
+				result = null;
+			}
+		}
+
+		if (result == null) {
+			StringBundler sb = new StringBundler(3);
+
+			sb.append(_SQL_SELECT_ACCOUNTENTRY_WHERE);
+
+			boolean bindCorpProjectUuid = false;
+
+			if (corpProjectUuid.isEmpty()) {
+				sb.append(_FINDER_COLUMN_CORPPROJECTUUID_CORPPROJECTUUID_3);
+			}
+			else {
+				bindCorpProjectUuid = true;
+
+				sb.append(_FINDER_COLUMN_CORPPROJECTUUID_CORPPROJECTUUID_2);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindCorpProjectUuid) {
+					queryPos.add(corpProjectUuid);
+				}
+
+				List<AccountEntry> list = query.list();
+
+				if (list.isEmpty()) {
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByCorpProjectUuid, finderArgs,
+							list);
+					}
+				}
+				else {
+					if (list.size() > 1) {
+						Collections.sort(list, Collections.reverseOrder());
+
+						if (_log.isWarnEnabled()) {
+							if (!useFinderCache) {
+								finderArgs = new Object[] {corpProjectUuid};
+							}
+
+							_log.warn(
+								"AccountEntryPersistenceImpl.fetchByCorpProjectUuid(String, boolean) with parameters (" +
+									StringUtil.merge(finderArgs) +
+										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+						}
+					}
+
+					AccountEntry accountEntry = list.get(0);
+
+					result = accountEntry;
+
+					cacheResult(accountEntry);
+				}
+			}
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(
+						_finderPathFetchByCorpProjectUuid, finderArgs);
+				}
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		if (result instanceof List<?>) {
+			return null;
+		}
+		else {
+			return (AccountEntry)result;
+		}
+	}
+
+	/**
+	 * Removes the account entry where corpProjectUuid = &#63; from the database.
+	 *
+	 * @param corpProjectUuid the corp project uuid
+	 * @return the account entry that was removed
+	 */
+	@Override
+	public AccountEntry removeByCorpProjectUuid(String corpProjectUuid)
+		throws NoSuchAccountEntryException {
+
+		AccountEntry accountEntry = findByCorpProjectUuid(corpProjectUuid);
+
+		return remove(accountEntry);
+	}
+
+	/**
+	 * Returns the number of account entries where corpProjectUuid = &#63;.
+	 *
+	 * @param corpProjectUuid the corp project uuid
+	 * @return the number of matching account entries
+	 */
+	@Override
+	public int countByCorpProjectUuid(String corpProjectUuid) {
+		corpProjectUuid = Objects.toString(corpProjectUuid, "");
+
+		FinderPath finderPath = _finderPathCountByCorpProjectUuid;
+
+		Object[] finderArgs = new Object[] {corpProjectUuid};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(2);
+
+			sb.append(_SQL_COUNT_ACCOUNTENTRY_WHERE);
+
+			boolean bindCorpProjectUuid = false;
+
+			if (corpProjectUuid.isEmpty()) {
+				sb.append(_FINDER_COLUMN_CORPPROJECTUUID_CORPPROJECTUUID_3);
+			}
+			else {
+				bindCorpProjectUuid = true;
+
+				sb.append(_FINDER_COLUMN_CORPPROJECTUUID_CORPPROJECTUUID_2);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindCorpProjectUuid) {
+					queryPos.add(corpProjectUuid);
+				}
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String
+		_FINDER_COLUMN_CORPPROJECTUUID_CORPPROJECTUUID_2 =
+			"accountEntry.corpProjectUuid = ?";
+
+	private static final String
+		_FINDER_COLUMN_CORPPROJECTUUID_CORPPROJECTUUID_3 =
+			"(accountEntry.corpProjectUuid IS NULL OR accountEntry.corpProjectUuid = '')";
+
 	private FinderPath _finderPathWithPaginationFindByN_C;
 	private FinderPath _finderPathWithPaginationCountByN_C;
 
@@ -1558,6 +1812,10 @@ public class AccountEntryPersistenceImpl
 			_finderPathFetchByKoroneikiAccountKey,
 			new Object[] {accountEntry.getKoroneikiAccountKey()}, accountEntry);
 
+		finderCache.putResult(
+			_finderPathFetchByCorpProjectUuid,
+			new Object[] {accountEntry.getCorpProjectUuid()}, accountEntry);
+
 		accountEntry.resetOriginalValues();
 	}
 
@@ -1656,6 +1914,14 @@ public class AccountEntryPersistenceImpl
 		finderCache.putResult(
 			_finderPathFetchByKoroneikiAccountKey, args, accountEntryModelImpl,
 			false);
+
+		args = new Object[] {accountEntryModelImpl.getCorpProjectUuid()};
+
+		finderCache.putResult(
+			_finderPathCountByCorpProjectUuid, args, Long.valueOf(1), false);
+		finderCache.putResult(
+			_finderPathFetchByCorpProjectUuid, args, accountEntryModelImpl,
+			false);
 	}
 
 	protected void clearUniqueFindersCache(
@@ -1683,6 +1949,26 @@ public class AccountEntryPersistenceImpl
 				_finderPathCountByKoroneikiAccountKey, args);
 			finderCache.removeResult(
 				_finderPathFetchByKoroneikiAccountKey, args);
+		}
+
+		if (clearCurrent) {
+			Object[] args = new Object[] {
+				accountEntryModelImpl.getCorpProjectUuid()
+			};
+
+			finderCache.removeResult(_finderPathCountByCorpProjectUuid, args);
+			finderCache.removeResult(_finderPathFetchByCorpProjectUuid, args);
+		}
+
+		if ((accountEntryModelImpl.getColumnBitmask() &
+			 _finderPathFetchByCorpProjectUuid.getColumnBitmask()) != 0) {
+
+			Object[] args = new Object[] {
+				accountEntryModelImpl.getOriginalCorpProjectUuid()
+			};
+
+			finderCache.removeResult(_finderPathCountByCorpProjectUuid, args);
+			finderCache.removeResult(_finderPathFetchByCorpProjectUuid, args);
 		}
 	}
 
@@ -2365,6 +2651,19 @@ public class AccountEntryPersistenceImpl
 			AccountEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByDossieraAccountKey", new String[] {String.class.getName()});
+
+		_finderPathFetchByCorpProjectUuid = new FinderPath(
+			AccountEntryModelImpl.ENTITY_CACHE_ENABLED,
+			AccountEntryModelImpl.FINDER_CACHE_ENABLED, AccountEntryImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchByCorpProjectUuid",
+			new String[] {String.class.getName()},
+			AccountEntryModelImpl.CORPPROJECTUUID_COLUMN_BITMASK);
+
+		_finderPathCountByCorpProjectUuid = new FinderPath(
+			AccountEntryModelImpl.ENTITY_CACHE_ENABLED,
+			AccountEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCorpProjectUuid",
+			new String[] {String.class.getName()});
 
 		_finderPathWithPaginationFindByN_C = new FinderPath(
 			AccountEntryModelImpl.ENTITY_CACHE_ENABLED,
