@@ -330,7 +330,8 @@ public class AdminPortlet extends MVCPortlet {
 			_accountEntryLocalService.addAccountEntry(
 				themeDisplay.getUserId(), koroneikiAccountKey,
 				dossieraAccountKey, StringPool.BLANK, 0, null, null,
-				instructions, WorkflowConstants.STATUS_APPROVED, languageIds);
+				instructions, null, null, WorkflowConstants.STATUS_APPROVED,
+				languageIds);
 		}
 		else {
 			AccountEntry accountEntry =
