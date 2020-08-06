@@ -54,8 +54,8 @@ public class DefaultZendeskTicketCommentWebService
 
 		JSONObject responseJSONObject = _zendeskBaseWebService.put(
 			StringBundler.concat(
-				ZendeskRESTEndpoints.URL_API_V2, "tickets/", zendeskTicketId,
-				".json"),
+				ZendeskRESTEndpoints.URL_API_V2, "tickets/",
+				String.valueOf(zendeskTicketId), ".json"),
 			jsonObject.toString());
 
 		JSONObject auditJSONObject = responseJSONObject.getJSONObject("audit");
@@ -123,8 +123,8 @@ public class DefaultZendeskTicketCommentWebService
 		throws PortalException {
 
 		String endpoint = StringBundler.concat(
-			ZendeskRESTEndpoints.URL_API_V2, "tickets/", zendeskTicketId,
-			"/comments.json");
+			ZendeskRESTEndpoints.URL_API_V2, "tickets/",
+			String.valueOf(zendeskTicketId), "/comments.json");
 
 		JSONObject responseJSONObject = _zendeskBaseWebService.get(
 			endpoint, query.getParameters());

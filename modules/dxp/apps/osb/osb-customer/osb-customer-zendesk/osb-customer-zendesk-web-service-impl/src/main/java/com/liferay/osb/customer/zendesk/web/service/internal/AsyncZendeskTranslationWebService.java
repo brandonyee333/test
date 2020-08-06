@@ -55,7 +55,7 @@ public class AsyncZendeskTranslationWebService
 			_log.info(
 				StringBundler.concat(
 					"Adding ", zendeskLocale, " translation for ", sourceType,
-					StringPool.POUND, sourceId));
+					StringPool.POUND, String.valueOf(sourceId)));
 		}
 
 		return null;
@@ -82,7 +82,7 @@ public class AsyncZendeskTranslationWebService
 			_log.info(
 				StringBundler.concat(
 					"Updating ", zendeskLocale, " translation for ", sourceType,
-					StringPool.POUND, sourceId));
+					StringPool.POUND, String.valueOf(sourceId)));
 		}
 
 		return null;

@@ -55,7 +55,7 @@ public class DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 			JSONObject responseJSONObject = zendeskBaseWebService.get(
 				StringBundler.concat(
 					ZendeskRESTEndpoints.URL_API_V2, "tickets/",
-					zendeskTicketId, ".json"),
+					String.valueOf(zendeskTicketId), ".json"),
 				StringPool.BLANK);
 
 			return zendeskConverter.toZendeskTicket(
@@ -112,7 +112,7 @@ public class DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 
 			String endpoint = StringBundler.concat(
 				ZendeskRESTEndpoints.URL_API_V2, "tickets/",
-				zendeskTicket.getZendeskTicketId(), ".json");
+				String.valueOf(zendeskTicket.getZendeskTicketId()), ".json");
 
 			ticketJSONObject.put(
 				"organization_id", zendeskTicket.getZendeskOrganizationId());

@@ -59,7 +59,8 @@ public class OSBConsumer extends DefaultConsumer implements Consumer {
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				StringBundler.concat(
-					"Received message ", envelope.getDeliveryTag(),
+					"Received message ",
+					String.valueOf(envelope.getDeliveryTag()),
 					" with routing key ", envelope.getRoutingKey()));
 		}
 

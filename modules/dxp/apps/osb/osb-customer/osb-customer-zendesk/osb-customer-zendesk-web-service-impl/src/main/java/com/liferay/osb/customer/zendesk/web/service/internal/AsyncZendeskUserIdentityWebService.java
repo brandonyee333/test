@@ -41,8 +41,8 @@ public class AsyncZendeskUserIdentityWebService
 		throws PortalException {
 
 		String endpoint = StringBundler.concat(
-			ZendeskRESTEndpoints.URL_API_V2, "users/", zendeskUserId,
-			ZendeskRESTEndpoints.IDENTITIES);
+			ZendeskRESTEndpoints.URL_API_V2, "users/",
+			String.valueOf(zendeskUserId), ZendeskRESTEndpoints.IDENTITIES);
 
 		JSONObject identityJSONObject = JSONFactoryUtil.createJSONObject();
 
@@ -65,8 +65,9 @@ public class AsyncZendeskUserIdentityWebService
 		throws PortalException {
 
 		String endpoint = StringBundler.concat(
-			ZendeskRESTEndpoints.URL_API_V2, "users/", zendeskUserId,
-			"/identities/", zendeskUserIdentityId, ".json");
+			ZendeskRESTEndpoints.URL_API_V2, "users/",
+			String.valueOf(zendeskUserId), "/identities/",
+			String.valueOf(zendeskUserIdentityId), ".json");
 
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "delete", null, null, null);
@@ -80,8 +81,9 @@ public class AsyncZendeskUserIdentityWebService
 		throws PortalException {
 
 		String endpoint = StringBundler.concat(
-			ZendeskRESTEndpoints.URL_API_V2, "users/", zendeskUserId,
-			"/identities/", zendeskUserIdentityId, ".json");
+			ZendeskRESTEndpoints.URL_API_V2, "users/",
+			String.valueOf(zendeskUserId), "/identities/",
+			String.valueOf(zendeskUserIdentityId), ".json");
 
 		JSONObject identityJSONObject = JSONFactoryUtil.createJSONObject();
 

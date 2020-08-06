@@ -89,7 +89,8 @@ public class AsyncZendeskUserWebService
 
 	public void deleteZendeskUser(long zendeskUserId) throws PortalException {
 		String endpoint = StringBundler.concat(
-			ZendeskRESTEndpoints.URL_API_V2, "users/", zendeskUserId, ".json");
+			ZendeskRESTEndpoints.URL_API_V2, "users/",
+			String.valueOf(zendeskUserId), ".json");
 
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "delete", null, null, "zendesk.user.delete");
@@ -112,8 +113,8 @@ public class AsyncZendeskUserWebService
 		jsonObject.put("tags", jsonArray);
 
 		String endpoint = StringBundler.concat(
-			ZendeskRESTEndpoints.URL_API_V2, "users/", zendeskUserId,
-			"/tags.json");
+			ZendeskRESTEndpoints.URL_API_V2, "users/",
+			String.valueOf(zendeskUserId), "/tags.json");
 
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "post", null, jsonObject, null);

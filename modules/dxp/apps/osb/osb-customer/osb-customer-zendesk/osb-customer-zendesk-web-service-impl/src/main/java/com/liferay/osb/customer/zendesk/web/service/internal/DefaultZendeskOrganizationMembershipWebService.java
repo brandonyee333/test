@@ -61,7 +61,8 @@ public class DefaultZendeskOrganizationMembershipWebService
 
 		String endpoint = StringBundler.concat(
 			ZendeskRESTEndpoints.URL_API_V2, "organizations/",
-			zendeskOrganizationId, "/organization_memberships.json");
+			String.valueOf(zendeskOrganizationId),
+			"/organization_memberships.json");
 
 		JSONObject organizationMembershipsJSONObject =
 			zendeskBaseWebService.get(endpoint, StringPool.BLANK);
@@ -79,8 +80,8 @@ public class DefaultZendeskOrganizationMembershipWebService
 		throws PortalException {
 
 		String endpoint = StringBundler.concat(
-			ZendeskRESTEndpoints.URL_API_V2, "users/", zendeskUserId,
-			"/organization_memberships.json");
+			ZendeskRESTEndpoints.URL_API_V2, "users/",
+			String.valueOf(zendeskUserId), "/organization_memberships.json");
 
 		JSONObject organizationMembershipsJSONObject =
 			zendeskBaseWebService.get(endpoint, StringPool.BLANK);

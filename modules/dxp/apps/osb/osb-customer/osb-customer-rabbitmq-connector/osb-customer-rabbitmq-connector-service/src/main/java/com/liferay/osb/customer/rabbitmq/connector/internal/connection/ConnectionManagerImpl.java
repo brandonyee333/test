@@ -58,7 +58,8 @@ public class ConnectionManagerImpl implements ConnectionManager {
 			if (_log.isInfoEnabled()) {
 				_log.info(
 					StringBundler.concat(
-						"Connecting to RabbitMQ at ", host, ":", port));
+						"Connecting to RabbitMQ at ", host, ":",
+						String.valueOf(port)));
 			}
 
 			_connection = connectionFactory.newConnection();

@@ -89,7 +89,8 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 		throws PortalException {
 
 		String endpoint = StringBundler.concat(
-			ZendeskRESTEndpoints.URL_API_V2, "users/", zendeskUserId, ".json");
+			ZendeskRESTEndpoints.URL_API_V2, "users/",
+			String.valueOf(zendeskUserId), ".json");
 
 		JSONObject jsonObject = zendeskBaseWebService.get(
 			endpoint, StringPool.BLANK);

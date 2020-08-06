@@ -39,7 +39,7 @@ public class AsyncZendeskOrganizationWebService
 
 		String endpoint = StringBundler.concat(
 			ZendeskRESTEndpoints.URL_API_V2, "organizations/",
-			zendeskOrganizationId, ".json");
+			String.valueOf(zendeskOrganizationId), ".json");
 
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "delete", null, null, "zendesk.organization.delete");

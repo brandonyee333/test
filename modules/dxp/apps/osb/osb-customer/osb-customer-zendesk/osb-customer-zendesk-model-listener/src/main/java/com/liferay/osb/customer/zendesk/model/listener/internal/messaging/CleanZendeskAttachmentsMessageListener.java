@@ -108,9 +108,10 @@ public class CleanZendeskAttachmentsMessageListener
 					if (_log.isDebugEnabled()) {
 						_log.debug(
 							StringBundler.concat(
-								"Deleting " + zendeskAttachment.getFileName() +
-									" for ticket " +
-										zendeskTicket.getZendeskTicketId()));
+								"Deleting ", zendeskAttachment.getFileName(),
+								" for ticket ",
+								String.valueOf(
+									zendeskTicket.getZendeskTicketId())));
 					}
 
 					_asyncZendeskAttachmentWebService.deleteZendeskAttachment(

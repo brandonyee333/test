@@ -100,7 +100,8 @@ public class ConsumerManagerImpl implements ConsumerManager {
 			if (_log.isInfoEnabled()) {
 				_log.info(
 					StringBundler.concat(
-						"Consuming ", messageCount, " messages on ", queue));
+						"Consuming ", String.valueOf(messageCount),
+						" messages on ", queue));
 			}
 
 			for (int i = 0; i < messageCount; i++) {
