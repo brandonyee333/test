@@ -37,11 +37,6 @@ definition {
 
 		AssertLocation(value1 = "${portalURL}/web/test-site-name/home");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			panel = "Site Administration",
-			portlet = "Pages");
-
 		SitePageNavigator.gotoEditPage(page = "Test Page");
 
 		Type(
@@ -68,11 +63,6 @@ definition {
 			layoutName = "Test Page");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/test-site-name");
-
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			panel = "Site Administration",
-			portlet = "Pages");
 
 		SitePageNavigator.gotoEditPage(page = "Test Page");
 
