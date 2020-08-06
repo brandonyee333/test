@@ -14,6 +14,7 @@
 
 package com.liferay.saml.opensaml.integration.internal.profile;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -93,9 +94,10 @@ public abstract class BaseProfile {
 			SAMLObject samlObject = samlMessageContext.getInboundSAMLMessage();
 
 			_log.debug(
-				"Received message using binding " +
-					samlMessageContext.getCommunicationProfileId() + " " +
-						OpenSamlUtil.marshall(samlObject));
+				StringBundler.concat(
+					"Received message using binding ",
+					samlMessageContext.getCommunicationProfileId(), " ",
+					OpenSamlUtil.marshall(samlObject)));
 		}
 
 		EntityDescriptor entityDescriptor =
@@ -379,9 +381,10 @@ public abstract class BaseProfile {
 				String samlMessage = OpenSamlUtil.marshall(xmlObject);
 
 				_log.debug(
-					"Sending SAML message " + samlMessage + " to " +
-						endpoint.getLocation() + " with binding " +
-							endpoint.getBinding());
+					StringBundler.concat(
+						"Sending SAML message ", samlMessage, " to ",
+						endpoint.getLocation(), " with binding ",
+						endpoint.getBinding()));
 			}
 			catch (MarshallingException me) {
 			}
@@ -394,8 +397,9 @@ public abstract class BaseProfile {
 		}
 		catch (MessageEncodingException mee) {
 			throw new SamlException(
-				"Unable to send SAML message to " + endpoint.getLocation() +
-					" with binding " + endpoint.getBinding(),
+				StringBundler.concat(
+					"Unable to send SAML message to ", endpoint.getLocation(),
+					" with binding ", endpoint.getBinding()),
 				mee);
 		}
 	}

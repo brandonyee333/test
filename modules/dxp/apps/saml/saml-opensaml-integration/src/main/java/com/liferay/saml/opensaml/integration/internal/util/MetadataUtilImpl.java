@@ -14,6 +14,7 @@
 
 package com.liferay.saml.opensaml.integration.internal.util;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -100,8 +101,9 @@ public class MetadataUtilImpl implements MetadataUtil {
 			}
 			else if (_log.isWarnEnabled()) {
 				_log.warn(
-					"Unable to get SAML metadata from " + url + ": " +
-						e.getMessage());
+					StringBundler.concat(
+						"Unable to get SAML metadata from ", url, ": ",
+						e.getMessage()));
 			}
 		}
 		finally {

@@ -1425,9 +1425,10 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 		}
 
 		throw new DestinationException(
-			"Destination " + destination + " does not match any assertion " +
-				"consumer location with binding " +
-					samlMessageContext.getCommunicationProfileId());
+			StringBundler.concat(
+				"Destination ", destination, " does not match any assertion ",
+				"consumer location with binding ",
+				samlMessageContext.getCommunicationProfileId()));
 	}
 
 	protected void verifyInResponseTo(Response samlResponse)
@@ -1453,8 +1454,9 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 		}
 		else {
 			throw new InResponseToException(
-				"Response in response to " + inResponseTo + " does not match " +
-					"any authentication requests");
+				StringBundler.concat(
+					"Response in response to ", inResponseTo,
+					" does not match any authentication requests"));
 		}
 	}
 
@@ -1488,9 +1490,10 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 		}
 
 		throw new AssertionException(
-			"Date " + nowDateTime.toString() + " is before " +
-				lowerBoundDateTime.toString() + " including clock skew " +
-					clockSkew);
+			StringBundler.concat(
+				"Date ", nowDateTime.toString(), " is before ",
+				lowerBoundDateTime.toString(), " including clock skew ",
+				clockSkew));
 	}
 
 	protected void verifyNotOnOrAfterDateTime(
@@ -1506,9 +1509,10 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 		}
 
 		throw new ExpiredException(
-			"Date " + nowDateTime.toString() + " is after " +
-				upperBoundDateTime.toString() + " including clock skew " +
-					clockSkew);
+			StringBundler.concat(
+				"Date ", nowDateTime.toString(), " is after ",
+				upperBoundDateTime.toString(), " including clock skew ",
+				clockSkew));
 	}
 
 	protected void verifyReplay(
@@ -1534,8 +1538,9 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 
 			if ((samlSpMessage != null) && !samlSpMessage.isExpired()) {
 				throw new ReplayException(
-					"SAML assertion " + messageKey + " replayed from IdP " +
-						idpEntityId);
+					StringBundler.concat(
+						"SAML assertion ", messageKey, " replayed from IdP ",
+						idpEntityId));
 			}
 
 			if (samlSpMessage != null) {

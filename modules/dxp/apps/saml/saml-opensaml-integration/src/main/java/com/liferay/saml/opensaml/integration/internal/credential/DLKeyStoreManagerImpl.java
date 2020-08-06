@@ -16,6 +16,7 @@ package com.liferay.saml.opensaml.integration.internal.credential;
 
 import com.liferay.document.library.kernel.exception.NoSuchFileException;
 import com.liferay.document.library.kernel.store.DLStoreUtil;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.CompanyConstants;
@@ -86,8 +87,9 @@ public class DLKeyStoreManagerImpl extends BaseKeyStoreManagerImpl {
 		}
 		catch (Exception e) {
 			_log.error(
-				"Unable to load keystore: " + getCompanyId() + "/" +
-					_SAML_KEYSTORE_PATH,
+				StringBundler.concat(
+					"Unable to load keystore: ", getCompanyId(), "/",
+					_SAML_KEYSTORE_PATH),
 				e);
 		}
 

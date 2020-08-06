@@ -14,6 +14,7 @@
 
 package com.liferay.saml.opensaml.integration.internal.resolver;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -76,8 +77,9 @@ public class DefaultUserResolver implements UserResolver {
 				userResolverSAMLContext.resolveSubjectNameFormat();
 
 			_log.debug(
-				"Resolving user with name ID format " + subjectNameFormat +
-					" and value " + subjectNameIdentifier);
+				StringBundler.concat(
+					"Resolving user with name ID format ", subjectNameFormat,
+					" and value ", subjectNameIdentifier));
 		}
 
 		User user = null;
@@ -203,8 +205,9 @@ public class DefaultUserResolver implements UserResolver {
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(
-					"Attributes mapping for " + peerEntityId + " " +
-						userAttributeMappings);
+					StringBundler.concat(
+						"Attributes mapping for ", peerEntityId, " ",
+						userAttributeMappings));
 			}
 
 			Properties userAttributeMappingsProperties = new Properties();
@@ -319,9 +322,10 @@ public class DefaultUserResolver implements UserResolver {
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
-				"Importing user from LDAP with identifier " +
-					subjectNameIdentifier + " of type " +
-						subjectNameIdentifierType);
+				StringBundler.concat(
+					"Importing user from LDAP with identifier ",
+					subjectNameIdentifier, " of type ",
+					subjectNameIdentifierType));
 		}
 
 		User user = null;
@@ -349,8 +353,9 @@ public class DefaultUserResolver implements UserResolver {
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
-				"Importing user with identifier " + subjectNameIdentifier +
-					" of type " + subjectNameIdentifierType);
+				StringBundler.concat(
+					"Importing user with identifier ", subjectNameIdentifier,
+					" of type ", subjectNameIdentifierType));
 		}
 
 		Map<String, List<Serializable>> attributesMap = getAttributesMap(
@@ -385,8 +390,9 @@ public class DefaultUserResolver implements UserResolver {
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
-				"Updating user " + user.getUserId() + " with attributes map " +
-					MapUtil.toString(attributesMap));
+				StringBundler.concat(
+					"Updating user ", user.getUserId(), " with attributes map ",
+					MapUtil.toString(attributesMap)));
 		}
 
 		Date modifiedDate = null;
