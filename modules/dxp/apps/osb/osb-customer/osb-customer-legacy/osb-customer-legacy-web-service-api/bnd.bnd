@@ -1,5 +1,7 @@
 Bundle-Name: Liferay OSB Customer Legacy Web Service API
 Bundle-SymbolicName: com.liferay.osb.customer.legacy.web.service.api
 Bundle-Version: 1.0.0
-Export-Package: com.liferay.osb.customer.legacy.web.service.util
+Export-Package:\
+	com.liferay.osb.customer.legacy.web.service,\
+	com.liferay.osb.customer.legacy.web.service.util
 -dsannotations-options: inherit
