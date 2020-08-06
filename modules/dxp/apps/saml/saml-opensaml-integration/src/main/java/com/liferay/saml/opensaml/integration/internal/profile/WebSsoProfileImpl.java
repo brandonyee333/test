@@ -1493,7 +1493,7 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 			StringBundler.concat(
 				"Date ", nowDateTime.toString(), " is before ",
 				lowerBoundDateTime.toString(), " including clock skew ",
-				clockSkew));
+				String.valueOf(clockSkew)));
 	}
 
 	protected void verifyNotOnOrAfterDateTime(
@@ -1512,7 +1512,7 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 			StringBundler.concat(
 				"Date ", nowDateTime.toString(), " is after ",
 				upperBoundDateTime.toString(), " including clock skew ",
-				clockSkew));
+				String.valueOf(clockSkew)));
 	}
 
 	protected void verifyReplay(
