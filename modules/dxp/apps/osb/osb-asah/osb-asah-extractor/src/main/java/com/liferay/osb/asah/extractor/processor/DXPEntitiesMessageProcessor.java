@@ -488,7 +488,8 @@ public class DXPEntitiesMessageProcessor implements MessageListener {
 		JSONObject individualJSONObject = _faroInfoElasticsearchInvoker.fetch(
 			"individuals",
 			QueryBuilders.termQuery(
-				"emailAddressHashed", DigestUtils.sha256Hex(emailAddress)));
+				"emailAddressHashed",
+				DigestUtils.sha256Hex(StringUtils.lowerCase(emailAddress))));
 
 		try {
 			if (individualJSONObject == null) {

@@ -112,6 +112,8 @@ public class DataControlNanite extends BaseNanite {
 	private void _addSuppression(
 		JSONObject dataControlTaskJSONObject, String emailAddress) {
 
+		emailAddress = StringUtils.lowerCase(emailAddress);
+
 		if (faroInfoElasticsearchInvoker.exists(
 				"suppressions",
 				QueryBuilders.termQuery("emailAddress", emailAddress))) {

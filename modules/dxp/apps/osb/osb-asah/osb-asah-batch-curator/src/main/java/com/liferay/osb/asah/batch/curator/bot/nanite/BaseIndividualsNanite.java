@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -226,6 +227,8 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 
 			return;
 		}
+
+		email = StringUtils.lowerCase(email);
 
 		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
 			"individuals",

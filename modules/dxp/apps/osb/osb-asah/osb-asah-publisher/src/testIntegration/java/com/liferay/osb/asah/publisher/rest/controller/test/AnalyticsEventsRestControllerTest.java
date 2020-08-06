@@ -28,6 +28,7 @@ import com.liferay.osb.asah.test.util.spring.cache.OSBAsahRedisEnabledTestConfig
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 
 import org.assertj.core.api.Assertions;
 
@@ -78,7 +79,8 @@ public class AnalyticsEventsRestControllerTest {
 	)
 	@Test
 	public void testAddIndividual() {
-		String emailAddress = RandomTestUtil.randomEmailAddress();
+		String emailAddress = StringUtils.lowerCase(
+			RandomTestUtil.randomEmailAddress());
 
 		_exchange(
 			"/identity",

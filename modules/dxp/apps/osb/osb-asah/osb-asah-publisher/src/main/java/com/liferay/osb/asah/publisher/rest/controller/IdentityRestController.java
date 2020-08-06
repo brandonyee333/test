@@ -24,6 +24,7 @@ import io.prometheus.client.SimpleTimer;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 
 import org.json.JSONObject;
 
@@ -66,7 +67,9 @@ public class IdentityRestController {
 					"dataSourceId", jsonObject.getString("dataSourceId")
 				).put(
 					"emailAddressHashed",
-					DigestUtils.sha256Hex(identityJSONObject.getString("email"))
+					DigestUtils.sha256Hex(
+						StringUtils.lowerCase(
+							identityJSONObject.getString("email")))
 				).put(
 					"userId", jsonObject.getString("userId")
 				).toString(),
