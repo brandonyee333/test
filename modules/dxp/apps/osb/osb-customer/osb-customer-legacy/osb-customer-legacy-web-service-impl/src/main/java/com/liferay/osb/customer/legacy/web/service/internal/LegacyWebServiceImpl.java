@@ -36,16 +36,13 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.http.HttpMessage;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.nio.reactor.IOReactorException;
 
 import org.osgi.service.component.annotations.Activate;
@@ -83,11 +80,10 @@ public class LegacyWebServiceImpl
 
 	@Override
 	protected void addHeaders(
-		HttpMessage httpMessage, List<NameValuePair> headers) {
+		HttpMessage httpMessage, Map<String, String> headers) {
 
-		headers.add(
-			new BasicNameValuePair(
-				"Authorization", "token " + _legacyConfiguration.apiToken()));
+		headers.put(
+			"Authorization", "token " + _legacyConfiguration.apiToken());
 
 		super.addHeaders(httpMessage, headers);
 	}
