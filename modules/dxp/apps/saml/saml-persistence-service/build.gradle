@@ -18,6 +18,7 @@ dependencies {
 	compileOnly project(":apps:foundation:portal:portal-spring-extender")
 	compileOnly project(":apps:foundation:portal:portal-upgrade-api")
 	compileOnly project(":apps:static:portal-configuration:portal-configuration-metatype")
+	compileOnly project(":core:petra:petra-string")
 	compileOnly project(":dxp:apps:saml:saml-api")
 	compileOnly project(":dxp:apps:saml:saml-persistence-api")
 }
