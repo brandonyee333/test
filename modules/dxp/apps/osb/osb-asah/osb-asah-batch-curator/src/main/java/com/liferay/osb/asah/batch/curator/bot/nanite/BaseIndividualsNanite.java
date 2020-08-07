@@ -75,12 +75,12 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 	}
 
 	protected void delete(
-			String dataSourceId, String deletionDateString, String email)
+			String dataSourceId, String deletionDateString, String emailAddress)
 		throws Exception {
 
 		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
 			"individuals",
-			QueryBuilders.termQuery("demographics.email.value", email));
+			QueryBuilders.termQuery("demographics.email.value", emailAddress));
 
 		if (individualJSONObject == null) {
 			return;
@@ -203,11 +203,11 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 
 	protected void processData(
 			String dataId, String dataSourceId, JSONObject dataJSONObject,
-			String email)
+			String emailAddress)
 		throws Exception {
 
-		if ((email == null) ||
-			_faroInfoSuppressionDog.isSuppressed(email, null)) {
+		if ((emailAddress == null) ||
+			_faroInfoSuppressionDog.isSuppressed(emailAddress, null)) {
 
 			return;
 		}
@@ -228,15 +228,16 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 			return;
 		}
 
-		email = StringUtils.lowerCase(email);
+		emailAddress = StringUtils.lowerCase(emailAddress);
 
 		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
 			"individuals",
 			BoolQueryBuilderUtil.should(
-				QueryBuilders.termQuery("demographics.email.value", email)
+				QueryBuilders.termQuery(
+					"demographics.email.value", emailAddress)
 			).should(
 				QueryBuilders.termQuery(
-					"emailAddressHashed", DigestUtils.sha256Hex(email))
+					"emailAddressHashed", DigestUtils.sha256Hex(emailAddress))
 			));
 
 		if (individualJSONObject == null) {

@@ -256,10 +256,12 @@ public class DXPIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 	}
 
 	private static JSONObject _buildFaroAuditEventJSONObject(
-		String dataSourceId, String email, String eventType, long userId) {
+		String dataSourceId, String emailAddress, String eventType,
+		long userId) {
 
 		return JSONUtil.put(
-			"additionalInfo", String.valueOf(JSONUtil.put("email", email))
+			"additionalInfo",
+			String.valueOf(JSONUtil.put("email", emailAddress))
 		).put(
 			"dateCreated", DateUtil.newDateString()
 		).put(

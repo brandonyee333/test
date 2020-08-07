@@ -99,13 +99,13 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 	public JSONObject addIndividual(
 		JSONObject individualJSONObject, boolean updateMemberships) {
 
-		String email = StringUtils.lowerCase(
+		String emailAddress = StringUtils.lowerCase(
 			FaroInfoIndividualUtil.getIndividualEmail(
 				individualJSONObject.optJSONObject("demographics")));
 
-		if (StringUtils.isNotBlank(email)) {
+		if (StringUtils.isNotBlank(emailAddress)) {
 			individualJSONObject.put(
-				"emailAddressHashed", DigestUtils.sha256Hex(email));
+				"emailAddressHashed", DigestUtils.sha256Hex(emailAddress));
 		}
 
 		individualJSONObject = _faroInfoFieldDog.addOwnerJSONObject(

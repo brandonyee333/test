@@ -91,7 +91,7 @@ public class IndividualsUpgradeStep implements UpgradeStep {
 		Terms terms = aggregations.get("duplicate_emails");
 
 		for (Terms.Bucket bucket : terms.getBuckets()) {
-			String email = bucket.getKeyAsString();
+			String emailAddress = bucket.getKeyAsString();
 
 			JSONArray jsonArray = new JSONArray(
 				_elasticsearchInvoker.get(
@@ -99,7 +99,7 @@ public class IndividualsUpgradeStep implements UpgradeStep {
 					searchSourceBuilder -> {
 						searchSourceBuilder.query(
 							QueryBuilders.termQuery(
-								"demographics.email.value", email));
+								"demographics.email.value", emailAddress));
 						searchSourceBuilder.sort(
 							SortBuilderUtil.fieldSort(
 								"dateCreated", SortOrder.ASC));
@@ -127,7 +127,7 @@ public class IndividualsUpgradeStep implements UpgradeStep {
 
 			originalIndividualJSONObject.put(
 				"emailAddressHashed",
-				DigestUtils.sha256Hex(StringUtils.lowerCase(email)));
+				DigestUtils.sha256Hex(StringUtils.lowerCase(emailAddress)));
 
 			_elasticsearchInvoker.update(
 				"individuals", originalIndividualJSONObject.getString("id"),

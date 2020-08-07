@@ -192,10 +192,10 @@ public class FaroInfoIndividualUtil {
 			return null;
 		}
 
-		Object email = _getFieldValue(demographicsJSONObject, "email");
+		Object emailAddress = _getFieldValue(demographicsJSONObject, "email");
 
-		if (email != null) {
-			return String.valueOf(email);
+		if (emailAddress != null) {
+			return String.valueOf(emailAddress);
 		}
 
 		return null;

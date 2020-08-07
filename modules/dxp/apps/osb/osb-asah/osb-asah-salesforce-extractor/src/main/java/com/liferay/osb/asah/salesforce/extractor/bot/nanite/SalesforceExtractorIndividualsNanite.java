@@ -140,7 +140,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		JSONArray accountPKsJSONArray, String birthDate, String city,
 		String company, String contactId, String country,
 		String currencyIsoCode, String department, String description,
-		String doNotCall, String email, String fax, String firstName,
+		String doNotCall, String emailAddress, String fax, String firstName,
 		String fullName, String industry, String lastName, String leadId,
 		String middleName, String mobilePhone, String phone, String postalCode,
 		String salutation, String state, String street, String suffix,
@@ -167,7 +167,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		).put(
 			"doNotCall", doNotCall
 		).put(
-			"email", email
+			"email", emailAddress
 		).put(
 			"fax", fax
 		).put(
@@ -216,10 +216,10 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 					"Account", accountId);
 			}
 
-			String email = jsonObject.optString("Email", null);
+			String emailAddress = jsonObject.optString("Email", null);
 
 			individualJSONObject = _buildIndividualJSONObject(
-				_getAccountPKsJSONArray(accountId, email),
+				_getAccountPKsJSONArray(accountId, emailAddress),
 				jsonObject.optString("Birthdate", null),
 				jsonObject.optString("MailingCity", null),
 				accountJSONObject.optString("Name", null),
@@ -228,7 +228,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 				jsonObject.optString("CurrencyIsoCode", null),
 				jsonObject.optString("Department", null),
 				jsonObject.optString("Description", null),
-				jsonObject.optString("DoNotCall", null), email,
+				jsonObject.optString("DoNotCall", null), emailAddress,
 				jsonObject.optString("Fax", null),
 				jsonObject.optString("FirstName", null),
 				jsonObject.optString("Name", null), null,
@@ -276,8 +276,10 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		return individualJSONObject;
 	}
 
-	private JSONArray _getAccountPKsJSONArray(String accountId, String email) {
-		if (email == null) {
+	private JSONArray _getAccountPKsJSONArray(
+		String accountId, String emailAddress) {
+
+		if (emailAddress == null) {
 			if (accountId == null) {
 				return null;
 			}
@@ -306,7 +308,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 			BoolQueryBuilderUtil.filter(
 				_osbAsahDataSourceIdTermQueryBuilder
 			).filter(
-				QueryBuilders.termQuery("Email", email)
+				QueryBuilders.termQuery("Email", emailAddress)
 			));
 
 		searchSourceBuilder.size(0);
@@ -342,7 +344,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		return jsonArray;
 	}
 
-	private JSONObject _mergeContactsAndLeads(String email) {
+	private JSONObject _mergeContactsAndLeads(String emailAddress) {
 		JSONObject individualJSONObject = null;
 
 		JSONArray contactsJSONArray = _elasticsearchInvoker.get(
@@ -350,7 +352,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 			BoolQueryBuilderUtil.filter(
 				_osbAsahDataSourceIdTermQueryBuilder
 			).filter(
-				QueryBuilders.termQuery("Email", email)
+				QueryBuilders.termQuery("Email", emailAddress)
 			));
 
 		JSONArray leadsJSONArray = _elasticsearchInvoker.get(
@@ -358,7 +360,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 			BoolQueryBuilderUtil.filter(
 				_osbAsahDataSourceIdTermQueryBuilder
 			).filter(
-				QueryBuilders.termQuery("Email", email)
+				QueryBuilders.termQuery("Email", emailAddress)
 			));
 
 		for (int i = 0; i < contactsJSONArray.length(); i++) {
@@ -384,14 +386,14 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		JSONObject additionalInfoJSONObject =
 			auditEventJSONObject.getJSONObject("additionalInfo");
 
-		String email = additionalInfoJSONObject.optString("Email");
+		String emailAddress = additionalInfoJSONObject.optString("Email");
 
 		JSONObject oldIndividualJSONObject = _elasticsearchInvoker.fetch(
 			"individuals",
 			BoolQueryBuilderUtil.filter(
 				_osbAsahDataSourceIdTermQueryBuilder
 			).filter(
-				QueryBuilders.termQuery("email", email)
+				QueryBuilders.termQuery("email", emailAddress)
 			));
 
 		JSONObject newIndividualJSONObject = null;
@@ -421,7 +423,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 			}
 		}
 		else if (oldIndividualJSONObject != null) {
-			newIndividualJSONObject = _mergeContactsAndLeads(email);
+			newIndividualJSONObject = _mergeContactsAndLeads(emailAddress);
 
 			if (newIndividualJSONObject == null) {
 				_elasticsearchInvoker.delete(
