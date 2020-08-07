@@ -21,6 +21,7 @@ import com.liferay.osb.asah.upgrade.v2_7_0.PageReferrersReindexUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.SessionActivitiesUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.SessionContextUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_0.UnprocessedAnalyticsEventsUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_7_1.IndividualsUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -42,6 +43,9 @@ public class UpgradeProcessConfiguration {
 			_pageReferrersReindexUpgradeStep, _sessionActivitiesUpgradeStep,
 			_sessionContextUpgradeStep, _unprocessedAnalyticsEventsUpgradeStep);
 
+		upgradeProcess.addUpgradeSteps(
+			"2.7.0", "2.7.1", _individualsUpgradeStep);
+
 		return upgradeProcess;
 	}
 
@@ -53,6 +57,9 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private FaroInfoIndividualsUpgradeStep _faroInfoIndividualsUpgradeStep;
+
+	@Autowired
+	private IndividualsUpgradeStep _individualsUpgradeStep;
 
 	@Autowired
 	private PageReferrersReindexUpgradeStep _pageReferrersReindexUpgradeStep;
