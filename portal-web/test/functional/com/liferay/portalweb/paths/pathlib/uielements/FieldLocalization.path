@@ -9,6 +9,11 @@
 </thead>
 <tbody>
 <tr>
+	<td>FRIENDLY_URL_OPTION</td>
+	<td>//div[contains(@id,'friendlyURL')]//li[@data-value="${key_languageValue}"]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>OPTION</td>
 	<td>//li[@data-value="${key_languageValue}"]</td>
 	<td></td>

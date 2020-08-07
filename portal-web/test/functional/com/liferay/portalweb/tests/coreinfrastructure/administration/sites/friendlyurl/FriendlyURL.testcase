@@ -66,13 +66,15 @@ definition {
 
 		SitePageNavigator.gotoEditPage(page = "Test Page");
 
-		Click(locator1 = "Dropdown#FRIENDLY_URL_LOCALE");
+		var key_languageValue = "hu-HU";
 
-		MenuItem.click(menuItem = "hu-HU");
+		Click(locator1 = "FieldLocalization#OPTION");
 
 		Type(
 			locator1 = "TextInput#TEXT",
 			value1 = "Test Page");
+
+		Click(locator1 = "FieldLocalization#FRIENDLY_URL_OPTION");
 
 		Type(
 			locator1 = "TextInput#FRIENDLY_URL",
