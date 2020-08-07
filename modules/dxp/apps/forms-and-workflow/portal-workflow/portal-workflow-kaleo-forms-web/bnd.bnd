@@ -3,6 +3,10 @@ Bundle-SymbolicName: com.liferay.portal.workflow.kaleo.forms.web
 Bundle-Version: 1.0.59
 Export-Package: com.liferay.portal.workflow.kaleo.forms.web.constants
 Liferay-Releng-Module-Group-Title: Kaleo Forms
+Provide-Capability:\
+	liferay.resource.bundle;\
+		resource.bundle.aggregate:String="(bundle.symbolic.name=com.liferay.portal.workflow.kaleo.forms.lang)";\
+		resource.bundle.base.name="content.Language"
 Web-ContextPath: /portal-workflow-kaleo-forms-web
 -dsannotations-options: inherit
 -include: ../../../../../../modules/apps/forms-and-workflow/app.bnd
