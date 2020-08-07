@@ -14,13 +14,6 @@
 
 package com.liferay.osb.asah.upgrade;
 
-import com.liferay.osb.asah.upgrade.v2_7_0.AssetsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_7_0.CanonicalUrlMappingUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_7_0.FaroInfoIndividualsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_7_0.PageReferrersReindexUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_7_0.SessionActivitiesUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_7_0.SessionContextUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_7_0.UnprocessedAnalyticsEventsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_7_1.IndividualsUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,40 +31,12 @@ public class UpgradeProcessConfiguration {
 		UpgradeProcess upgradeProcess = new UpgradeProcess();
 
 		upgradeProcess.addUpgradeSteps(
-			"2.6.1", "2.7.0", _assetsUpgradeStep,
-			_canonicalUrlMappingUpgradeStep, _faroInfoIndividualsUpgradeStep,
-			_pageReferrersReindexUpgradeStep, _sessionActivitiesUpgradeStep,
-			_sessionContextUpgradeStep, _unprocessedAnalyticsEventsUpgradeStep);
-
-		upgradeProcess.addUpgradeSteps(
 			"2.7.0", "2.7.1", _individualsUpgradeStep);
 
 		return upgradeProcess;
 	}
 
 	@Autowired
-	private AssetsUpgradeStep _assetsUpgradeStep;
-
-	@Autowired
-	private CanonicalUrlMappingUpgradeStep _canonicalUrlMappingUpgradeStep;
-
-	@Autowired
-	private FaroInfoIndividualsUpgradeStep _faroInfoIndividualsUpgradeStep;
-
-	@Autowired
 	private IndividualsUpgradeStep _individualsUpgradeStep;
-
-	@Autowired
-	private PageReferrersReindexUpgradeStep _pageReferrersReindexUpgradeStep;
-
-	@Autowired
-	private SessionActivitiesUpgradeStep _sessionActivitiesUpgradeStep;
-
-	@Autowired
-	private SessionContextUpgradeStep _sessionContextUpgradeStep;
-
-	@Autowired
-	private UnprocessedAnalyticsEventsUpgradeStep
-		_unprocessedAnalyticsEventsUpgradeStep;
 
 }
