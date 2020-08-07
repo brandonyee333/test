@@ -4,7 +4,7 @@ Bundle-Version: 1.0.30
 Liferay-Releng-Module-Group-Title: Audit
 Provide-Capability:\
 	liferay.resource.bundle;\
-		resource.bundle.aggregate:String="(bundle.symbolic.name=com.liferay.portal.security.audit.lang)";\
+		resource.bundle.aggregate:String="(bundle.symbolic.name=com.liferay.monitoring.lang),(bundle.symbolic.name=com.liferay.portal.security.audit.lang)";\
 		resource.bundle.base.name="content.Language"
 Web-ContextPath: /portal-security-audit-web
 -include: ../../../../../../modules/apps/foundation/app.bnd
