@@ -14,6 +14,7 @@
 
 package com.liferay.saml.opensaml.integration.internal.profile;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -28,7 +29,6 @@ import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.URLCodec;
@@ -1493,7 +1493,7 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 			StringBundler.concat(
 				"Date ", nowDateTime.toString(), " is before ",
 				lowerBoundDateTime.toString(), " including clock skew ",
-				String.valueOf(clockSkew)));
+				clockSkew));
 	}
 
 	protected void verifyNotOnOrAfterDateTime(
@@ -1512,7 +1512,7 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 			StringBundler.concat(
 				"Date ", nowDateTime.toString(), " is after ",
 				upperBoundDateTime.toString(), " including clock skew ",
-				String.valueOf(clockSkew)));
+				clockSkew));
 	}
 
 	protected void verifyReplay(
