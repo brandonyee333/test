@@ -66,19 +66,9 @@ definition {
 
 		SitePageNavigator.gotoEditPage(page = "Test Page");
 
-		var key_languageValue = "hu-HU";
-
-		Click(locator1 = "FieldLocalization#OPTION");
-
-		Type(
-			locator1 = "TextInput#TEXT",
-			value1 = "Test Page");
-
-		Click(locator1 = "FieldLocalization#FRIENDLY_URL_OPTION");
-
-		Type(
-			locator1 = "TextInput#FRIENDLY_URL",
-			value1 = "/teszt-page");
+		Page.addFriendlyURLLocalizedPG(
+			friendlyUrlLocalized = "hu_HU",
+			localizedFriendlyURL = "/teszt-page");
 
 		Button.clickSave();
 
@@ -131,17 +121,13 @@ definition {
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "/web/usa-site-name/test-page");
 
-		LanguagePortlet.selectLanguagePG(
-			locale = "fr_FR",
-			textIcon = "français-France");
+		LanguagePortlet.selectLanguagePG(language = "French (France) contrast");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "/web/france-site-name/test-page");
 
 		AssertLocation(value1 = "${portalURL}/fr/web/france-site-name/test-page");
 
-		LanguagePortlet.selectLanguagePG(
-			locale = "fr_CA",
-			textIcon = "français-Canada");
+		LanguagePortlet.selectLanguagePG(language = "French (Canada)");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "/web/canada-site-name/test-page");
 

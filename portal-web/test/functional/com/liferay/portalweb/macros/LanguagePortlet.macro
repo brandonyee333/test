@@ -56,8 +56,14 @@ definition {
 		else if ("${language}" == "English (United States)") {
 			Click(locator1 = "Language#LANGUAGE_MENU_ENGLISH");
 		}
+		else if ("${language}" == "French (Canada)") {
+			Click(locator1 = "Language#LANGUAGE_MENU_FRENCH_CANADA");
+		}
 		else if ("${language}" == "French (France)") {
 			Click(locator1 = "Language#LANGUAGE_MENU_FRENCH");
+		}
+		else if ("${language}" == "French (France) contrast") {
+			Click(locator1 = "Language#LANGUAGE_MENU_FRENCH_FRANCE");
 		}
 		else if ("${language}" == "Finnish (Finland)") {
 			Click(locator1 = "Language#LANGUAGE_MENU_FINNISH");

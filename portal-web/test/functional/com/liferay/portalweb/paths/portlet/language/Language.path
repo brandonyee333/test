@@ -45,6 +45,16 @@
 	<td></td>
 </tr>
 <tr>
+	<td>LANGUAGE_MENU_FRENCH_CANADA</td>
+	<td>//a[*[name()='svg'][@message='français (Canada)']] | //span[*[name()='svg'][@message='français (Canada)']]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>LANGUAGE_MENU_FRENCH_FRANCE</td>
+	<td>//a[*[name()='svg'][@message='français (France)']] | //span[*[name()='svg'][@message='français (France)']]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>LANGUAGE_MENU_GERMAN</td>
 	<td>//a[*[name()='svg'][@message='Deutsch']] | //span[*[name()='svg'][@message='Deutsch']]</td>
 	<td></td>
