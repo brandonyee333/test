@@ -16,6 +16,9 @@ package com.liferay.osb.asah.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import com.liferay.osb.asah.backend.graphql.GraphQLProperty;
+import com.liferay.osb.asah.backend.graphql.GraphQLType;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,13 +26,14 @@ import java.util.Map;
 /**
  * @author André Miranda
  */
+@GraphQLType
 public class Individual {
 
 	public Individual() {
 	}
 
-	public Individual(String email, String id, String name) {
-		_email = email;
+	public Individual(String emailAddress, String id, String name) {
+		_emailAddress = emailAddress;
 		_id = id;
 		_name = name;
 	}
@@ -38,9 +42,10 @@ public class Individual {
 		return _demographics;
 	}
 
+	@GraphQLProperty("email")
 	@JsonIgnore
-	public String getEmail() {
-		return _email;
+	public String getEmailAddress() {
+		return _emailAddress;
 	}
 
 	public String getId() {
@@ -70,7 +75,7 @@ public class Individual {
 	}
 
 	private Map<String, String> _demographics = new HashMap<>();
-	private String _email;
+	private String _emailAddress;
 	private String _id;
 	private List<String> _individualSegmentIds;
 	private String _name;

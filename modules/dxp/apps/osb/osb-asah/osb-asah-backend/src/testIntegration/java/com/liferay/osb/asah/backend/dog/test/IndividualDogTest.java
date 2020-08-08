@@ -119,12 +119,12 @@ public class IndividualDogTest {
 		Individual individual = individuals.get(0);
 
 		Assert.assertEquals("Test1 Test1", individual.getName());
-		Assert.assertEquals("test1@liferay.com", individual.getEmail());
+		Assert.assertEquals("test1@liferay.com", individual.getEmailAddress());
 
 		individual = individuals.get(1);
 
 		Assert.assertEquals("Test2 Test2", individual.getName());
-		Assert.assertEquals("test2@liferay.com", individual.getEmail());
+		Assert.assertEquals("test2@liferay.com", individual.getEmailAddress());
 	}
 
 	@ElasticsearchIndex(
@@ -154,7 +154,7 @@ public class IndividualDogTest {
 		Individual individual = individuals.get(0);
 
 		Assert.assertEquals("John Doe", individual.getName());
-		Assert.assertEquals("john@acme.com", individual.getEmail());
+		Assert.assertEquals("john@acme.com", individual.getEmailAddress());
 	}
 
 	@ElasticsearchIndex(
@@ -184,7 +184,7 @@ public class IndividualDogTest {
 		Individual individual = individuals.get(0);
 
 		Assert.assertEquals("1", individual.getId());
-		Assert.assertEquals("john@acme.com", individual.getEmail());
+		Assert.assertEquals("john@acme.com", individual.getEmailAddress());
 	}
 
 	private Set<String> _getIndividualsDemographicsFieldValues(
