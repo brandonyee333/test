@@ -103,16 +103,42 @@ const openPortletWindow = ({bodyCssClass, portlet, uri, ...otherProps}) => {
 };
 
 const openSelectionModal = ({
+	buttonAddLabel = Liferay.Language.get('add'),
+	buttonCancelLabel = Liferay.Language.get('cancel'),
 	id,
+	multiple = false,
 	onSelect,
 	selectEventName,
 	selectedData,
 	title,
 	url,
 }) => {
+	let selectedItem;
+
 	const eventHandlers = [];
+	const select = ({processClose}) => {
+		onSelect(selectedItem);
+
+		processClose();
+	};
 
 	openModal({
+		buttons: multiple
+			? [
+					{
+						displayType: 'secondary',
+						label: buttonCancelLabel,
+						type: 'cancel',
+					},
+					{
+
+						//getDisabled: (selection) => !selection,
+
+						label: buttonAddLabel,
+						onClick: select,
+					},
+			  ]
+			: null,
 		id,
 		onClose: () => {
 			eventHandlers.forEach((eventHandler) => {
@@ -123,9 +149,11 @@ const openSelectionModal = ({
 		},
 		onOpen: ({container, processClose}) => {
 			const selectEventHandler = Liferay.on(selectEventName, (event) => {
-				onSelect(event.data || event);
+				selectedItem = event.data || event;
 
-				processClose();
+				if (!multiple) {
+					select({processClose});
+				}
 			});
 
 			eventHandlers.push(selectEventHandler);
@@ -210,7 +238,7 @@ const Modal = ({
 		}
 
 		if (onClick) {
-			onClick();
+			onClick({processClose});
 		}
 	};
 
