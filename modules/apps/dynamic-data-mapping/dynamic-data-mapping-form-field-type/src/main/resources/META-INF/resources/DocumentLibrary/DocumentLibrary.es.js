@@ -18,9 +18,9 @@ import {ClayInput} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
 import {usePage} from 'dynamic-data-mapping-form-renderer';
 import {
-	ItemSelectorDialog,
 	createActionURL,
 	createPortletURL,
+	openSelectionModal,
 } from 'frontend-js-web';
 import React, {useMemo, useState} from 'react';
 
@@ -215,33 +215,20 @@ const Main = ({
 	const {portletNamespace} = usePage();
 	const [currentValue, setCurrentValue] = useState(value);
 
-	const handleVisibleChange = (event) => {
-		if (event.selectedItem) {
-			onFocus({}, event);
-		}
-		else {
-			onBlur({}, event);
-		}
-	};
-
 	const handleSelectButtonClicked = ({
 		itemSelectorAuthToken,
 		portletNamespace,
 	}) => {
-		const itemSelectorDialog = new ItemSelectorDialog({
-			eventName: `${portletNamespace}selectDocumentLibrary`,
-			singleSelect: true,
+		openSelectionModal({
+			onSelect: handleFieldChanged,
+			selectEventName: `${portletNamespace}selectDocumentLibrary`,
+			title: 'select-file',
 			url: getDocumentLibrarySelectorURL({
 				groupId,
 				itemSelectorAuthToken,
 				portletNamespace,
 			}),
 		});
-
-		itemSelectorDialog.on('selectedItemChange', handleFieldChanged);
-		itemSelectorDialog.on('visibleChange', handleVisibleChange);
-
-		itemSelectorDialog.open();
 	};
 
 	const handleFieldChanged = (event) => {
