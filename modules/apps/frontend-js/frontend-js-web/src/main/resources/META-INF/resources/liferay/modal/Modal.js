@@ -66,8 +66,7 @@ const openPortletModal = ({
 				if (titleTextElement) {
 					title = `${titleTextElement.outerHTML} - ${title}`;
 				}
-			}
-			else {
+			} else {
 				title = `${titleElement.textContent} - ${title}`;
 			}
 		}
@@ -110,6 +109,7 @@ const openSelectionModal = ({
 	onSelect,
 	selectEventName,
 	selectedData,
+	size,
 	title,
 	url,
 }) => {
@@ -131,7 +131,6 @@ const openSelectionModal = ({
 						type: 'cancel',
 					},
 					{
-
 						//getDisabled: (selection) => !selection,
 
 						label: buttonAddLabel,
@@ -176,6 +175,7 @@ const openSelectionModal = ({
 				});
 			}
 		},
+		size,
 		title,
 		url,
 	});
@@ -208,8 +208,7 @@ const Modal = ({
 	const onButtonClick = ({formId, onClick, type}) => {
 		if (type === 'cancel') {
 			processClose();
-		}
-		else if (url && type === 'submit') {
+		} else if (url && type === 'submit') {
 			const iframe = document.querySelector('.liferay-modal iframe');
 
 			if (iframe) {
@@ -230,8 +229,7 @@ const Modal = ({
 					if (form) {
 						form.submit();
 					}
-				}
-				else if (forms.length >= 1) {
+				} else if (forms.length >= 1) {
 					forms[0].submit();
 				}
 			}
