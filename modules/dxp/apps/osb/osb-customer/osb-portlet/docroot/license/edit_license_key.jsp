@@ -449,8 +449,6 @@ portletURL.setParameter("aggregateLicense", String.valueOf(aggregateLicense));
 											Date firstEnabledDate = calendar.getTime();
 
 											calendar = CalendarFactoryUtil.getCalendar(2050, 1, 1);
-
-											Date lastEnabledDate = calendar.getTime();
 											%>
 
 											<liferay-ui:input-date
@@ -459,7 +457,7 @@ portletURL.setParameter("aggregateLicense", String.valueOf(aggregateLicense));
 												firstDayOfWeek="<%= cal.getFirstDayOfWeek() %>"
 												firstEnabledDate="<%= firstEnabledDate %>"
 												formName="fm"
-												lastEnabledDate="<%= lastEnabledDate %>"
+												lastEnabledDate="<%= calendar.getTime() %>"
 												monthParam='<%= availableOfferingEntry.getOfferingEntryId() + "startDateMonth" %>'
 												monthValue="<%= cal.get(Calendar.MONTH) %>"
 												yearParam='<%= availableOfferingEntry.getOfferingEntryId() + "startDateYear" %>'

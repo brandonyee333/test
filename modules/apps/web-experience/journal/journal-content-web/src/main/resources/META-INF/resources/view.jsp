@@ -106,18 +106,13 @@ if (journalContentDisplayContext.isShowArticle()) {
 						</div>
 
 						<c:if test="<%= articleDisplay.isPaginate() %>">
-
-							<%
-							PortletURL portletURL = renderResponse.createRenderURL();
-							%>
-
 							<liferay-ui:page-iterator
 								cur="<%= articleDisplay.getCurrentPage() %>"
 								curParam="page"
 								delta="<%= 1 %>"
 								id="articleDisplayPages"
 								maxPages="<%= 25 %>"
-								portletURL="<%= portletURL %>"
+								portletURL="<%= renderResponse.createRenderURL() %>"
 								total="<%= articleDisplay.getNumberOfPages() %>"
 								type="article"
 							/>

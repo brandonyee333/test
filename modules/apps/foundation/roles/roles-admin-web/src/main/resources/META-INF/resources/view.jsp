@@ -169,14 +169,10 @@ PortalUtil.addPortletBreadcrumbEntry(request, breadcrumbTitle, currentURL);
 		showPortletBreadcrumb="<%= true %>"
 	/>
 
-	<%
-	SearchContainer searchContainer = new RoleSearch(renderRequest, portletURL);
-	%>
-
 	<liferay-ui:search-container
 		id="roleSearch"
 		rowChecker="<%= new RoleChecker(renderResponse) %>"
-		searchContainer="<%= searchContainer %>"
+		searchContainer="<%= new RoleSearch(renderRequest, portletURL) %>"
 		var="roleSearchContainer"
 	>
 		<liferay-ui:search-container-results>

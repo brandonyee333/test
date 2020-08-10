@@ -16,14 +16,10 @@
 
 <%@ include file="/init.jsp" %>
 
-<%
-String searchContainerId = ParamUtil.getString(request, "searchContainerId");
-%>
-
 <liferay-frontend:management-bar
 	disabled="<%= journalDisplayContext.isDisabledManagementBar() %>"
 	includeCheckBox="<%= !user.isDefaultUser() && journalDisplayContext.isShowEditActions() %>"
-	searchContainerId="<%= searchContainerId %>"
+	searchContainerId='<%= ParamUtil.getString(request, "searchContainerId") %>'
 >
 	<liferay-frontend:management-bar-buttons>
 		<c:if test="<%= journalDisplayContext.isShowInfoPanel() %>">

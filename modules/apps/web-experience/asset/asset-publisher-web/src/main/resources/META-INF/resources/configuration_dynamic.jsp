@@ -154,12 +154,7 @@ String selectStyle = (String)request.getAttribute("configuration.jsp-selectStyle
 							%>
 
 								<div class='asset-subtype <%= (assetSelectedClassTypeIds.length < 1) ? StringPool.BLANK : "hide" %>' id="<portlet:namespace /><%= className %>Options">
-
-									<%
-									String label = ResourceActionsUtil.getModelResource(locale, assetRendererFactory.getClassName()) + StringPool.SPACE + assetRendererFactory.getSubtypeTitle(themeDisplay.getLocale());
-									%>
-
-									<aui:select label="<%= label %>" name='<%= "preferences--anyClassType" + className + "--" %>'>
+									<aui:select label="<%= ResourceActionsUtil.getModelResource(locale, assetRendererFactory.getClassName()) + StringPool.SPACE + assetRendererFactory.getSubtypeTitle(themeDisplay.getLocale()) %>" name='<%= "preferences--anyClassType" + className + "--" %>'>
 										<aui:option label="any" selected="<%= anyAssetSubtype %>" value="<%= true %>" />
 										<aui:option label='<%= LanguageUtil.get(request, "select-more-than-one") + StringPool.TRIPLE_PERIOD %>' selected="<%= !anyAssetSubtype && (assetSelectedClassTypeIds.length > 1) %>" value="<%= false %>" />
 
@@ -410,11 +405,7 @@ String selectStyle = (String)request.getAttribute("configuration.jsp-selectStyle
 									</c:if>
 								</aui:select>
 
-								<%
-								String orderByType1 = assetPublisherDisplayContext.getOrderByType1();
-								%>
-
-								<aui:select inlineField="<%= true %>" label="" name="preferences--orderByType1--" title="order-by-type" value="<%= orderByType1 %>">
+								<aui:select inlineField="<%= true %>" label="" name="preferences--orderByType1--" title="order-by-type" value="<%= assetPublisherDisplayContext.getOrderByType1() %>">
 									<aui:option label="ascending" value="ASC" />
 									<aui:option label="descending" value="DESC" />
 								</aui:select>

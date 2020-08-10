@@ -42,12 +42,7 @@ for (String analyticsType : analyticsTypes) {
 
 	<c:choose>
 		<c:when test='<%= StringUtil.equalsIgnoreCase(analyticsType, "google") %>'>
-
-			<%
-			String googleAnalyticsId = PropertiesParamUtil.getString(groupTypeSettings, request, "googleAnalyticsId");
-			%>
-
-			<aui:input helpMessage="set-the-google-analytics-id-that-is-used-for-this-set-of-pages" label="google-analytics-id" name="googleAnalyticsId" type="text" value="<%= googleAnalyticsId %>" />
+			<aui:input helpMessage="set-the-google-analytics-id-that-is-used-for-this-set-of-pages" label="google-analytics-id" name="googleAnalyticsId" type="text" value='<%= PropertiesParamUtil.getString(groupTypeSettings, request, "googleAnalyticsId") %>' />
 		</c:when>
 		<c:otherwise>
 
