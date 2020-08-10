@@ -16,6 +16,7 @@ package com.liferay.dynamic.data.lists.service.impl;
 
 import com.liferay.dynamic.data.lists.constants.DDLActionKeys;
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
+import com.liferay.dynamic.data.lists.model.DDLRecordSetConstants;
 import com.liferay.dynamic.data.lists.service.base.DDLRecordSetServiceBaseImpl;
 import com.liferay.dynamic.data.lists.service.permission.DDLPermission;
 import com.liferay.dynamic.data.lists.service.permission.DDLRecordSetPermission;
@@ -112,6 +113,13 @@ public class DDLRecordSetServiceImpl extends DDLRecordSetServiceBaseImpl {
 			return null;
 		}
 
+		if ((recordSet.getScope() == DDLRecordSetConstants.SCOPE_FORMS) &&
+			DDLRecordSetPermission.contains(
+				getPermissionChecker(), recordSet, DDLActionKeys.ADD_RECORD)) {
+
+			return recordSet;
+		}
+
 		DDLRecordSetPermission.check(
 			getPermissionChecker(), recordSet, ActionKeys.VIEW);
 
@@ -129,10 +137,20 @@ public class DDLRecordSetServiceImpl extends DDLRecordSetServiceBaseImpl {
 	 */
 	@Override
 	public DDLRecordSet getRecordSet(long recordSetId) throws PortalException {
+		DDLRecordSet recordSet = ddlRecordSetLocalService.getRecordSet(
+			recordSetId);
+
+		if ((recordSet.getScope() == DDLRecordSetConstants.SCOPE_FORMS) &&
+			DDLRecordSetPermission.contains(
+				getPermissionChecker(), recordSet, DDLActionKeys.ADD_RECORD)) {
+
+			return recordSet;
+		}
+
 		DDLRecordSetPermission.check(
 			getPermissionChecker(), recordSetId, ActionKeys.VIEW);
 
-		return ddlRecordSetLocalService.getRecordSet(recordSetId);
+		return recordSet;
 	}
 
 	/**
