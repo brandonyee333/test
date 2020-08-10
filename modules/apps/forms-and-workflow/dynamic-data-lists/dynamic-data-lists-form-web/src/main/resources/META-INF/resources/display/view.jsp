@@ -101,6 +101,12 @@ long recordSetId = ddlFormDisplayContext.getRecordSetId();
 
 						<liferay-ui:error-principal />
 
+						<c:if test="<%= !ddlFormDisplayContext.hasAddRecordPermission() %>">
+							<div class="alert alert-warning">
+								<liferay-ui:message key="you-do-not-have-the-permission-to-submit-this-form" />
+							</div>
+						</c:if>
+
 						<div class="ddl-form-basic-info">
 							<div class="container-fluid-1280">
 

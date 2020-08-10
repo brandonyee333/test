@@ -14,6 +14,7 @@
 
 package com.liferay.dynamic.data.lists.form.web.internal.display.context;
 
+import com.liferay.dynamic.data.lists.constants.DDLActionKeys;
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
 import com.liferay.dynamic.data.lists.model.DDLRecordSetSettings;
 import com.liferay.dynamic.data.lists.service.DDLRecordSetService;
@@ -128,6 +129,8 @@ public class DDLFormDisplayContext {
 		DDMFormRenderingContext ddmFormRenderingContext =
 			createDDMFormRenderingContext(ddmForm);
 
+		ddmFormRenderingContext.setReadOnly(!hasAddRecordPermission());
+
 		boolean showSubmitButton = isShowSubmitButton();
 
 		ddmFormRenderingContext.setShowSubmitButton(showSubmitButton);
@@ -207,6 +210,26 @@ public class DDLFormDisplayContext {
 		DDLRecordSetSettings recordSetSettings = recordSet.getSettingsModel();
 
 		return recordSetSettings.redirectURL();
+	}
+
+	public boolean hasAddRecordPermission() throws PortalException {
+		if (_hasAddRecordPermission != null) {
+			return _hasAddRecordPermission;
+		}
+
+		_hasAddRecordPermission = false;
+
+		DDLRecordSet recordSet = getRecordSet();
+
+		if (recordSet != null) {
+			ThemeDisplay themeDisplay = getThemeDisplay();
+
+			_hasAddRecordPermission = DDLRecordSetPermission.contains(
+				themeDisplay.getPermissionChecker(), recordSet,
+				DDLActionKeys.ADD_RECORD);
+		}
+
+		return _hasAddRecordPermission;
 	}
 
 	public boolean hasViewPermission() throws PortalException {
@@ -483,6 +506,7 @@ public class DDLFormDisplayContext {
 		_ddmFormFieldTypesJSONSerializer;
 	private final DDMFormRenderer _ddmFormRenderer;
 	private final DDMFormValuesFactory _ddmFormValuesFactory;
+	private Boolean _hasAddRecordPermission;
 	private Boolean _hasViewPermission;
 	private final JSONFactory _jsonFactory;
 	private DDLRecordSet _recordSet;
