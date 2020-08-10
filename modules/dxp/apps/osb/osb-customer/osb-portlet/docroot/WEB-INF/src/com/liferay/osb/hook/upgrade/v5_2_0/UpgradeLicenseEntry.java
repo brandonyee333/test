@@ -39,6 +39,7 @@ public class UpgradeLicenseEntry extends BaseUpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		updateListType();
 		getProductEntries();
 		updateLicenseEntries();
 		updateOfferingDefinitions();
@@ -102,6 +103,13 @@ public class UpgradeLicenseEntry extends BaseUpgradeProcess {
 			_commerceProductionProductEntryId,
 			"Liferay Commerce Subscription Production",
 			LicenseEntryConstants.TYPE_PRODUCTION, 0, 0);
+	}
+
+	protected void updateListType() throws Exception {
+		insertListType(
+			47000, "1",
+			"com.liferay.osb.model.ProductEntry." +
+				"commerceLicenseProductVersions");
 	}
 
 	protected void updateOfferingDefinitions() throws Exception {

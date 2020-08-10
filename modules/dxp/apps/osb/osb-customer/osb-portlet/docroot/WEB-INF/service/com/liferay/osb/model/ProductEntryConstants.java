@@ -26,6 +26,8 @@ import java.util.Date;
  */
 public class ProductEntryConstants {
 
+	public static final int COMMERCE_LICENSE_VERSION_1 = 47000;
+
 	public static final int COMMERCE_VERSION_1_0 = 44000;
 
 	public static final int COMMERCE_VERSION_1_1 = 44020;
@@ -85,6 +87,9 @@ public class ProductEntryConstants {
 
 	public static final String LIST_TYPE_COMMERCE_ALL_VERSIONS =
 		ProductEntry.class.getName() + ".commerceAllVersions";
+
+	public static final String LIST_TYPE_COMMERCE_LICENSE_PRODUCT_VERSIONS =
+		ProductEntry.class.getName() + ".commerceLicenseProductVersions";
 
 	public static final String LIST_TYPE_COMMERCE_MAJOR_VERSIONS =
 		ProductEntry.class.getName() + ".commerceMajorVersions";
@@ -384,8 +389,11 @@ public class ProductEntryConstants {
 	}
 
 	public static boolean isCommerce(long listTypeId) {
-		if ((listTypeId >= COMMERCE_VERSION_1_0) &&
-			(listTypeId < COMMERCE_VERSION_OTHER)) {
+		if (listTypeId == COMMERCE_LICENSE_VERSION_1) {
+			return true;
+		}
+		else if ((listTypeId >= COMMERCE_VERSION_1_0) &&
+				 (listTypeId < COMMERCE_VERSION_OTHER)) {
 
 			return true;
 		}
