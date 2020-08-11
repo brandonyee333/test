@@ -57,17 +57,16 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Rachael Koestartyo
  * @author Vishal Reddy
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@Import(
-	{
+@ContextConfiguration(
+	classes = {
 		DataSourceHttpTestConfiguration.class,
+		OSBAsahBackendSpringBootApplication.class,
 		OSBAsahRedisDisabledTestConfiguration.class
 	}
 )

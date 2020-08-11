@@ -36,21 +36,18 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author André Miranda
  */
-@ContextConfiguration(classes = OSBAsahBatchCuratorSpringBootApplication.class)
-@Import(
-	{
+@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@SpringBootTest(
+	classes = {
 		CerebroQueueHttpTestConfiguration.class,
+		OSBAsahBatchCuratorSpringBootApplication.class,
 		OSBAsahRedisDisabledTestConfiguration.class
 	}
 )
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest
 public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 
 	@Test

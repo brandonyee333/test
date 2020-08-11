@@ -49,7 +49,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -60,10 +59,12 @@ import org.springframework.http.ResponseEntity;
 /**
  * @author Inácio Nery
  */
-@Import(OSBAsahRedisEnabledTestConfiguration.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(
-	classes = OSBAsahPublisherSpringBootApplication.class,
+	classes = {
+		OSBAsahPublisherSpringBootApplication.class,
+		OSBAsahRedisEnabledTestConfiguration.class
+	},
 	webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 public class AnalyticsEventsRestControllerTest {

@@ -36,16 +36,17 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Victor Oliveira
  */
-@ContextConfiguration(classes = OSBAsahBatchCuratorSpringBootApplication.class)
-@Import(CerebroQueueHttpTestConfiguration.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest
+@SpringBootTest(
+	classes = {
+		CerebroQueueHttpTestConfiguration.class,
+		OSBAsahBatchCuratorSpringBootApplication.class
+	}
+)
 public class InterestTopicsNaniteTest extends BaseNaniteTestCase {
 
 	@ElasticsearchIndex(

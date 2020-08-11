@@ -59,18 +59,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 
 /**
  * @author Rachael Koestartyo
  */
-@Import(
-	SalesforceExtractorNaniteTest.SalesforceExtractorNaniteTestConfiguration.
-		class
-)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahSalesforceExtractorSpringBootApplication.class)
+@SpringBootTest(
+	classes = {
+		OSBAsahSalesforceExtractorSpringBootApplication.class,
+		SalesforceExtractorNaniteTest.
+			SalesforceExtractorNaniteTestConfiguration.class
+	}
+)
 public class SalesforceExtractorNaniteTest {
 
 	@Before

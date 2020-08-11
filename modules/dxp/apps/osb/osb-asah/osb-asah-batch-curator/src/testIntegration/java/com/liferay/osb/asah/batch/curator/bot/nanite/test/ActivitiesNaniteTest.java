@@ -41,20 +41,19 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 
 /**
  * @author Vishal Reddy
  * @author Leslie Wong
  */
-@Import(
-	{
+@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@SpringBootTest(
+	classes = {
 		CerebroQueueHttpTestConfiguration.class,
+		OSBAsahBatchCuratorSpringBootApplication.class,
 		OSBAsahRedisDisabledTestConfiguration.class
 	}
 )
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 
 	@Before

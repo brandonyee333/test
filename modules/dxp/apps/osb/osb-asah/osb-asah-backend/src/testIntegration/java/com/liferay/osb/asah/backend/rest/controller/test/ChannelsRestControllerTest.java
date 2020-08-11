@@ -49,7 +49,6 @@ import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.client.HttpClientErrorException;
@@ -57,8 +56,12 @@ import org.springframework.web.client.HttpClientErrorException;
 /**
  * @author Geyson Silva
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@Import(OSBAsahRedisDisabledTestConfiguration.class)
+@ContextConfiguration(
+	classes = {
+		OSBAsahBackendSpringBootApplication.class,
+		OSBAsahRedisDisabledTestConfiguration.class
+	}
+)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class ChannelsRestControllerTest {
 

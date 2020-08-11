@@ -47,21 +47,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 
 /**
  * @author Vishal Reddy
  * @author Edward Kwok-Yu Wong
  */
-@Import(
-	{
+@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@SpringBootTest(
+	classes = {
 		CerebroQueueHttpTestConfiguration.class,
+		OSBAsahBatchCuratorSpringBootApplication.class,
 		OSBAsahRedisDisabledTestConfiguration.class
 	}
 )
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class AssetEngagementScoresNaniteTest extends BaseNaniteTestCase {
 
 	@Test
