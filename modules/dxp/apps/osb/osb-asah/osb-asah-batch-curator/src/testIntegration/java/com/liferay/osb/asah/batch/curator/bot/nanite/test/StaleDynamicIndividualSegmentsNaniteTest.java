@@ -47,6 +47,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -56,6 +57,7 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 @Import(CerebroQueueHttpTestConfiguration.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@SpringBootTest
 public class StaleDynamicIndividualSegmentsNaniteTest
 	extends BaseNaniteTestCase {
 

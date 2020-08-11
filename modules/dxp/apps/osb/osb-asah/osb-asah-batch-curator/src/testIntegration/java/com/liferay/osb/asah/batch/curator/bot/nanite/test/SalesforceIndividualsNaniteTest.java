@@ -37,6 +37,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -54,6 +55,7 @@ import org.springframework.test.context.ContextConfiguration;
 	}
 )
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@SpringBootTest
 public class SalesforceIndividualsNaniteTest
 	extends BaseIndividualsNaniteTestCase {
 
