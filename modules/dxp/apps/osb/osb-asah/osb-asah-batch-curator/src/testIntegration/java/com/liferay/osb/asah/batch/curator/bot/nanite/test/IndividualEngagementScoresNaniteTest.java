@@ -25,7 +25,6 @@ import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.test.util.spring.cache.OSBAsahRedisDisabledTestConfiguration;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
@@ -60,8 +59,7 @@ import org.springframework.context.annotation.Primary;
 @SpringBootTest(
 	classes = {
 		CerebroQueueHttpTestConfiguration.class,
-		OSBAsahBatchCuratorSpringBootApplication.class,
-		OSBAsahRedisDisabledTestConfiguration.class
+		OSBAsahBatchCuratorSpringBootApplication.class
 	}
 )
 public class IndividualEngagementScoresNaniteTest extends BaseNaniteTestCase {

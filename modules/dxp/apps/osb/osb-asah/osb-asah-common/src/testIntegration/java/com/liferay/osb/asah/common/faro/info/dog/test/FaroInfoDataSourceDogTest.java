@@ -23,7 +23,6 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.test.util.spring.cache.OSBAsahRedisDisabledTestConfiguration;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -43,12 +42,7 @@ import org.springframework.test.context.ContextConfiguration;
 /**
  * @author André Miranda
  */
-@ContextConfiguration(
-	classes = {
-		OSBAsahSpringBootApplication.class,
-		OSBAsahRedisDisabledTestConfiguration.class
-	}
-)
+@ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class FaroInfoDataSourceDogTest extends BaseFaroInfoDogTestCase {
 

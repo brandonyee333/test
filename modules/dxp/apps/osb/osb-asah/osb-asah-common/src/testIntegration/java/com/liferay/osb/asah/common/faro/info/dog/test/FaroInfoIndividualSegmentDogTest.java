@@ -24,7 +24,6 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.test.util.spring.cache.OSBAsahRedisDisabledTestConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,12 +45,7 @@ import org.springframework.test.context.ContextConfiguration;
 /**
  * @author Michael Bowerman
  */
-@ContextConfiguration(
-	classes = {
-		OSBAsahSpringBootApplication.class,
-		OSBAsahRedisDisabledTestConfiguration.class
-	}
-)
+@ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 

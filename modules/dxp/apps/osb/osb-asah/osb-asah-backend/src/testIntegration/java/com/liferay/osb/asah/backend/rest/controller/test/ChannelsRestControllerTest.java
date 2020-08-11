@@ -26,7 +26,6 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.test.util.spring.cache.OSBAsahRedisDisabledTestConfiguration;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
@@ -56,12 +55,7 @@ import org.springframework.web.client.HttpClientErrorException;
 /**
  * @author Geyson Silva
  */
-@ContextConfiguration(
-	classes = {
-		OSBAsahBackendSpringBootApplication.class,
-		OSBAsahRedisDisabledTestConfiguration.class
-	}
-)
+@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class ChannelsRestControllerTest {
 

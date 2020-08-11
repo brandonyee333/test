@@ -24,7 +24,6 @@ import com.liferay.osb.asah.common.model.ExperimentStatus;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.test.util.spring.cache.OSBAsahRedisDisabledTestConfiguration;
 
 import org.json.JSONObject;
 
@@ -46,8 +45,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 @SpringBootTest(
 	classes = {
 		CerebroQueueHttpTestConfiguration.class,
-		OSBAsahBatchCuratorSpringBootApplication.class,
-		OSBAsahRedisDisabledTestConfiguration.class
+		OSBAsahBatchCuratorSpringBootApplication.class
 	}
 )
 public class ExperimentNaniteTest extends BaseNaniteTestCase {

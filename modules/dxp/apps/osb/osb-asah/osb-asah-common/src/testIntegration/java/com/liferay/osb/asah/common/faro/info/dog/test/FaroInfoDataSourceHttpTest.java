@@ -29,7 +29,6 @@ import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorC
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.test.util.spring.cache.OSBAsahRedisDisabledTestConfiguration;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.HashMap;
@@ -59,12 +58,7 @@ import org.springframework.test.context.ContextConfiguration;
 /**
  * @author Leslie Wong
  */
-@ContextConfiguration(
-	classes = {
-		OSBAsahSpringBootApplication.class,
-		OSBAsahRedisDisabledTestConfiguration.class
-	}
-)
+@ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 

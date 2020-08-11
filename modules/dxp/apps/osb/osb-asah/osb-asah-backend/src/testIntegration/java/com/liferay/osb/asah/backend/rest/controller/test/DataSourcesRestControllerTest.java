@@ -27,7 +27,6 @@ import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorC
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.faro.backend.http.DataSourceHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.test.util.spring.cache.OSBAsahRedisDisabledTestConfiguration;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 import com.liferay.petra.string.StringPool;
 
@@ -66,8 +65,7 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(
 	classes = {
 		DataSourceHttpTestConfiguration.class,
-		OSBAsahBackendSpringBootApplication.class,
-		OSBAsahRedisDisabledTestConfiguration.class
+		OSBAsahBackendSpringBootApplication.class
 	}
 )
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
