@@ -2,3 +2,7 @@ Bundle-Name: Liferay OSB Community Blogs Web Fragment
 Bundle-SymbolicName: com.liferay.osb.community.blogs.web.fragment
 Bundle-Version: 1.0.0
 Fragment-Host: com.liferay.blogs.web;bundle-version="2.0.3"
+Provide-Capability:\
+	liferay.resource.bundle;\
+		resource.bundle.aggregate:String="(bundle.symbolic.name=com.liferay.blogs.lang)";\
+		resource.bundle.base.name="content.Language"
