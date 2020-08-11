@@ -23,7 +23,6 @@ import com.liferay.osb.model.AccountWorkerConstants;
 import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.model.ExternalIdMapperConstants;
-import com.liferay.osb.model.OfferingDefinition;
 import com.liferay.osb.model.OfferingDefinitionConstants;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
@@ -41,7 +40,6 @@ import com.liferay.osb.model.impl.OrderEntryImpl;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.CorpProjectLocalServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
-import com.liferay.osb.service.OfferingDefinitionLocalServiceUtil;
 import com.liferay.osb.service.PartnerEntryLocalServiceUtil;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.service.RemoteUserLocalServiceUtil;
@@ -432,16 +430,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 		}
 
 		if (productEntry.isCommerce()) {
-			List<OfferingDefinition> offeringDefinitions =
-				OfferingDefinitionLocalServiceUtil.
-					getProductEntryOfferingDefinitions(
-						productEntry.getProductEntryId());
-
-			for (OfferingDefinition offeringDefinition : offeringDefinitions) {
-				if (offeringDefinition.getLicenses()) {
-					return true;
-				}
-			}
+			return true;
 		}
 
 		return false;
