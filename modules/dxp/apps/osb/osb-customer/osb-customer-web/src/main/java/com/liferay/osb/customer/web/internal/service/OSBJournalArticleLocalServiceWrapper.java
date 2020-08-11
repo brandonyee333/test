@@ -105,7 +105,7 @@ public class OSBJournalArticleLocalServiceWrapper
 		List<JournalArticle> articles = getArticles(groupId, articleId);
 
 		for (JournalArticle curArticle : articles) {
-			if (!urlTitle.equals(article.getUrlTitle())) {
+			if (!urlTitle.equals(curArticle.getUrlTitle())) {
 				curArticle.setUrlTitle(urlTitle);
 
 				updateJournalArticle(curArticle);
