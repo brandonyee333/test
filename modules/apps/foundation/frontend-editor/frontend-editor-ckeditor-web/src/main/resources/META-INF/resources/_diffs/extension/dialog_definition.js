@@ -28,10 +28,10 @@ CKEDITOR.on(
 				dialog.move(x, y, false);
 			};
 
-			AUI().use('aui-debounce', A => {
+			AUI().use('aui-debounce', function (A) {
 				boundingWindow.on(
 					'resize',
-					A.debounce(() => {
+					A.debounce(function () {
 						centerDialog();
 					}, 250)
 				);
