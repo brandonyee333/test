@@ -3,5 +3,9 @@ Bundle-SymbolicName: com.liferay.blogs.web
 Bundle-Version: 2.0.64
 Liferay-JS-Config: /META-INF/resources/blogs/js/config.js
 Liferay-Releng-Module-Group-Title: Blogs
+Provide-Capability:\
+	liferay.resource.bundle;\
+		resource.bundle.aggregate:String="(bundle.symbolic.name=com.liferay.blogs.lang)";\
+		resource.bundle.base.name="content.Language"
 Web-ContextPath: /blogs-web
 -dsannotations-options: inherit
