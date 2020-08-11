@@ -72,6 +72,9 @@ public class SearchQueryHelper {
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
 		_addAssetIdFilter(assetIdOptional, boolQueryBuilder);
+		_addCanonicalUrlFilter(
+			searchQueryContext.getAssetType(), boolQueryBuilder,
+			searchQueryContext.getCanonicalUrl());
 		_addChannelIdFilter(
 			boolQueryBuilder, searchQueryContext.getChannelId());
 		_addDataSourceIdFilter(
@@ -276,7 +279,8 @@ public class SearchQueryHelper {
 
 		_addAssetIdFilter(assetIdOptional, boolQueryBuilder);
 		_addCanonicalUrlFilter(
-			boolQueryBuilder, searchQueryContext.getCanonicalUrl());
+			searchQueryContext.getAssetType(), boolQueryBuilder,
+			searchQueryContext.getCanonicalUrl());
 		_addChannelIdFilter(
 			boolQueryBuilder, searchQueryContext.getChannelId());
 		_addDataSourceIdFilter(
@@ -306,6 +310,14 @@ public class SearchQueryHelper {
 		return searchSourceBuilder;
 	}
 
+	public String getCanonicalUrlFieldName(AssetType assetType) {
+		if (assetType == AssetType.PAGE) {
+			return "canonicalUrl";
+		}
+
+		return "canonicalUrls";
+	}
+
 	public String getURLFieldName(AssetType assetType) {
 		if (assetType == AssetType.PAGE) {
 			return "url";
@@ -331,11 +343,13 @@ public class SearchQueryHelper {
 	}
 
 	private void _addCanonicalUrlFilter(
-		BoolQueryBuilder boolQueryBuilder, String canonicalUrl) {
+		AssetType assetType, BoolQueryBuilder boolQueryBuilder,
+		String canonicalUrl) {
 
 		if (canonicalUrl != null) {
 			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("canonicalUrl", canonicalUrl));
+				QueryBuilders.termQuery(
+					getCanonicalUrlFieldName(assetType), canonicalUrl));
 		}
 	}
 
