@@ -47,6 +47,11 @@ public class IndividualSegmentEngagementScoresNanite
 	extends BaseEngagementScoresNanite {
 
 	@Override
+	public boolean isLogRunEnabled() {
+		return true;
+	}
+
+	@Override
 	public void run(String dayDateString) throws Exception {
 		run(Collections.emptyMap(), "individual-segments", dayDateString, null);
 

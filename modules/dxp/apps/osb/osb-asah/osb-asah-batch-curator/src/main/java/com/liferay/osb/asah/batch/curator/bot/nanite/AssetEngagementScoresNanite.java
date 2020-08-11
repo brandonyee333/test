@@ -43,6 +43,11 @@ public class AssetEngagementScoresNanite extends BaseEngagementScoresNanite {
 	public static final int DAYS = 10;
 
 	@Override
+	public boolean isLogRunEnabled() {
+		return true;
+	}
+
+	@Override
 	public void run(String dayDateString) throws Exception {
 		run(Collections.emptyMap(), "assets", dayDateString, null);
 	}

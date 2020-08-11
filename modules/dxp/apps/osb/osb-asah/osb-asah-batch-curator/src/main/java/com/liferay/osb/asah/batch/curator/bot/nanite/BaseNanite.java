@@ -38,6 +38,11 @@ public abstract class BaseNanite implements Nanite {
 			elasticsearchInvokerFactory.forFaroInfo();
 	}
 
+	@Override
+	public boolean isLogRunEnabled() {
+		return false;
+	}
+
 	protected JSONObject getOSBAsahMarkerJSONObject() {
 		Class<?> clazz = getClass();
 

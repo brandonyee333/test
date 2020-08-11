@@ -49,6 +49,11 @@ public class DataRetentionNanite extends BaseNanite {
 	}
 
 	@Override
+	public boolean isLogRunEnabled() {
+		return true;
+	}
+
+	@Override
 	public void run(JSONObject jsonObject) throws Exception {
 		Preference preference = _faroInfoPreferenceDog.getPreference(
 			"data-retention-period");

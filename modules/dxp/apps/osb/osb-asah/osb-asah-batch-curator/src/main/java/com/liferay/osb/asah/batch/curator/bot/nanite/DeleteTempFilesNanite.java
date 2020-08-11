@@ -41,6 +41,11 @@ import org.springframework.stereotype.Component;
 public class DeleteTempFilesNanite extends BaseNanite {
 
 	@Override
+	public boolean isLogRunEnabled() {
+		return true;
+	}
+
+	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
 		Path contextPath = _getPath(contextJSONObject);
 

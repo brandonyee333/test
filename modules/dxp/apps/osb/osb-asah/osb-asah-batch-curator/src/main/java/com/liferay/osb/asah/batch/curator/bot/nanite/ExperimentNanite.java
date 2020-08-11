@@ -58,6 +58,11 @@ import org.springframework.stereotype.Component;
 public class ExperimentNanite extends BaseNanite {
 
 	@Override
+	public boolean isLogRunEnabled() {
+		return true;
+	}
+
+	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
 		JSONArrayIterator.of(
 			"experiments", faroInfoElasticsearchInvoker, this::_updateExperiment

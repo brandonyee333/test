@@ -43,6 +43,11 @@ import org.springframework.stereotype.Component;
 public class InterestThresholdScoreNanite extends BaseNanite {
 
 	@Override
+	public boolean isLogRunEnabled() {
+		return true;
+	}
+
+	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
 		JSONObject osbAsahMarkerJSONObject = getOSBAsahMarkerJSONObject();
 

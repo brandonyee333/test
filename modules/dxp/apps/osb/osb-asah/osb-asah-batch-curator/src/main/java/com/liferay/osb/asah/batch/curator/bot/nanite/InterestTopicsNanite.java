@@ -60,6 +60,11 @@ import org.springframework.stereotype.Component;
 public class InterestTopicsNanite extends BaseNanite {
 
 	@Override
+	public boolean isLogRunEnabled() {
+		return true;
+	}
+
+	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
 		ParallelTopicModel parallelTopicModel = new ParallelTopicModel(
 			_ldaTopicsCount, _ldaAlphaSum, _ldaBeta);

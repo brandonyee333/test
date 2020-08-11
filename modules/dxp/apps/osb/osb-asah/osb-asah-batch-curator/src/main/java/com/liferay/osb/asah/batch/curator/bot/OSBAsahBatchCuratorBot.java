@@ -405,23 +405,30 @@ public class OSBAsahBatchCuratorBot {
 					continue;
 				}
 
-				if (_checkNanite(naniteClassName)) {
+				if (nanite.isLogRunEnabled() && _checkNanite(naniteClassName)) {
 					continue;
 				}
 
-				_runLogger.log(null, nanite, "STARTED", _elasticsearchInvoker);
+				if (nanite.isLogRunEnabled()) {
+					_runLogger.log(
+						null, nanite, "STARTED", _elasticsearchInvoker);
+				}
 
 				try {
 					nanite.run(null);
 
-					_runLogger.log(
-						null, nanite, "COMPLETED", _elasticsearchInvoker);
+					if (nanite.isLogRunEnabled()) {
+						_runLogger.log(
+							null, nanite, "COMPLETED", _elasticsearchInvoker);
+					}
 				}
 				catch (Exception e) {
 					_log.error(e, e);
 
-					_runLogger.log(
-						null, nanite, "FAILED", _elasticsearchInvoker);
+					if (nanite.isLogRunEnabled()) {
+						_runLogger.log(
+							null, nanite, "FAILED", _elasticsearchInvoker);
+					}
 				}
 			}
 		}

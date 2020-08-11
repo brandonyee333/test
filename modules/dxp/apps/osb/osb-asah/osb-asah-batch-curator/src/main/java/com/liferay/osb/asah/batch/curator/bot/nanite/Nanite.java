@@ -21,6 +21,8 @@ import org.json.JSONObject;
  */
 public interface Nanite {
 
+	public boolean isLogRunEnabled();
+
 	public void run(JSONObject contextJSONObject) throws Exception;
 
 }

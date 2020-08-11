@@ -37,6 +37,11 @@ import org.springframework.stereotype.Component;
 public class AccountEngagementScoresNanite extends BaseEngagementScoresNanite {
 
 	@Override
+	public boolean isLogRunEnabled() {
+		return true;
+	}
+
+	@Override
 	public void run(String dayDateString) throws Exception {
 		run(Collections.emptyMap(), "accounts", dayDateString, null);
 	}

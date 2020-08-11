@@ -61,6 +61,11 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 	public static final double MINIMUM_INTEREST_SCORE_THRESHOLD = 0.01;
 
 	@Override
+	public boolean isLogRunEnabled() {
+		return true;
+	}
+
+	@Override
 	public void run(String dayDateString) throws Exception {
 		_deleteInterestScores(dayDateString);
 

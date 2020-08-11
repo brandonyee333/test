@@ -169,6 +169,11 @@ public class IndividualEngagementScoresNanite
 	}
 
 	@Override
+	public boolean isLogRunEnabled() {
+		return true;
+	}
+
+	@Override
 	protected Log getLog() {
 		return _log;
 	}

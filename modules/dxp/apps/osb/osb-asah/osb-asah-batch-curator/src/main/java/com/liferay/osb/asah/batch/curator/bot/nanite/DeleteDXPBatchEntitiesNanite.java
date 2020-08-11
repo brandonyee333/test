@@ -43,6 +43,11 @@ import org.springframework.stereotype.Component;
 public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 
 	@Override
+	public boolean isLogRunEnabled() {
+		return true;
+	}
+
+	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
 		_cleanUp(ServiceConstants.LCP_PROJECT_ID + "/");
 	}
