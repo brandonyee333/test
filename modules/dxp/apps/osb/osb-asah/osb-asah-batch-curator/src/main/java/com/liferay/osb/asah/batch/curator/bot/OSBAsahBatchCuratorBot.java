@@ -148,15 +148,9 @@ public class OSBAsahBatchCuratorBot {
 
 		run("AssetEngagementScoresNanite");
 
-		run("DataControlNanite");
-
-		run("DataExportNanite");
-
 		run("DataRetentionNanite");
 
 		run("DeleteTempFilesNanite");
-
-		run("ExperimentNanite");
 
 		run(
 			"IndividualEngagementScoresNanite",
