@@ -16,6 +16,7 @@ package com.liferay.osb.asah.batch.curator.bot;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.BaseActivitiesNanite;
 import com.liferay.osb.asah.batch.curator.bot.nanite.Nanite;
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
@@ -88,7 +89,7 @@ public class OSBAsahBatchCuratorBot {
 			"AccountEngagementScoresNanite");
 	}
 
-	@Scheduled(cron = "0 0 */6 * * ?")
+	@Scheduled(fixedDelay = DateUtil.HOUR * 6)
 	public void curateExperiments() {
 		run("ExperimentNanite");
 	}
@@ -183,17 +184,17 @@ public class OSBAsahBatchCuratorBot {
 		_threadPoolTaskExecutor.execute(new NanitesRunnable(naniteClassNames));
 	}
 
-	@Scheduled(cron = "0 */1 * * * ?")
+	@Scheduled(fixedDelay = DateUtil.MINUTE)
 	public void runContentRecommendationDataSolutionNanite() {
 		run("ContentRecommendationDataSolutionNanite");
 	}
 
-	@Scheduled(cron = "0 */5 * * * ?")
+	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
 	public void runDataControlTasks() {
 		run("DataControlNanite");
 	}
 
-	@Scheduled(cron = "0 */5 * * * ?")
+	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
 	public void runDataExportTasks() {
 		run("DataExportNanite");
 	}
