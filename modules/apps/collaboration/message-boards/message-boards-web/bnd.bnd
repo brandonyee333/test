@@ -7,4 +7,8 @@ Export-Package:\
 	com.liferay.message.boards.web.social,\
 	com.liferay.message.boards.web.trash
 Liferay-Releng-Module-Group-Title: Message Boards
+Provide-Capability:\
+	liferay.resource.bundle;\
+		resource.bundle.aggregate:String="(bundle.symbolic.name=com.liferay.message.boards.lang)";\
+		resource.bundle.base.name="content.Language"
 Web-ContextPath: /message-boards-web
