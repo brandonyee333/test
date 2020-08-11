@@ -17,8 +17,6 @@ package com.liferay.portal.configuration.settings.internal;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactory;
 import com.liferay.portal.kernel.resource.manager.ClassLoaderResourceManager;
@@ -157,15 +155,6 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 	public PortletPreferences getPortletInstancePortletPreferences(
 		long companyId, long ownerId, int ownerType, long plid,
 		String portletId) {
-
-		if (plid != LayoutConstants.DEFAULT_PLID) {
-			Layout layout = _layoutLocalService.fetchLayout(plid);
-
-			if (layout != null) {
-				return _portletPreferencesFactory.getStrictPortletSetup(
-					layout, portletId);
-			}
-		}
 
 		if (PortletIdCodec.hasUserId(portletId)) {
 			ownerId = PortletIdCodec.decodeUserId(portletId);
