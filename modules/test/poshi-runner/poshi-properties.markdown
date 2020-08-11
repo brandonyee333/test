@@ -105,7 +105,7 @@ Despite the name, Poshi is product-agnostic and does not necessarily require a
 
 Sets the name of a Java process to print JStack output for when tests fail.
 
-###
+### proxy.server.enabled
 
 Sets a boolean that determines whether BrowserMob Proxy is enabled. The proxy can be configured with `com.liferay.poshi.runner.util.ProxyUtil`.
 
