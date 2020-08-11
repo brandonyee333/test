@@ -30,7 +30,7 @@ long recordSetId = ddlFormDisplayContext.getRecordSetId();
 			<liferay-ui:message key="select-an-existing-form-or-add-a-form-to-be-displayed-in-this-application" />
 		</div>
 	</c:when>
-	<c:when test="<%= !ddlFormDisplayContext.hasViewPermission() && !ddlFormDisplayContext.hasAddRecordPermission() %>">
+	<c:when test="<%= !ddlFormDisplayContext.hasAddRecordPermission() && !ddlFormDisplayContext.hasViewPermission() %>">
 		<div class="alert alert-warning">
 			<liferay-ui:message key="you-do-not-have-the-permission-to-view-this-form" />
 		</div>
