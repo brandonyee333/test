@@ -79,7 +79,7 @@ public class OSBAsahBatchCuratorBot {
 	public void clearCache() {
 	}
 
-	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY)
 	public void curateEngagements() {
 		run("AssetEngagementScoresNanite");
 
@@ -94,7 +94,7 @@ public class OSBAsahBatchCuratorBot {
 		run("ExperimentNanite");
 	}
 
-	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY)
 	public void curateInterests() {
 		run("InterestThresholdScoreNanite");
 
@@ -103,7 +103,7 @@ public class OSBAsahBatchCuratorBot {
 		run("IndividualInterestScoresNanite");
 	}
 
-	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY)
 	public void curateStaleDynamicIndividualSegments() {
 		run("StaleDynamicIndividualSegmentsNanite");
 	}
@@ -199,19 +199,19 @@ public class OSBAsahBatchCuratorBot {
 		run("DataExportNanite");
 	}
 
-	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY)
 	public void runDataRetentionNanite() {
 		run("DataRetentionNanite");
 	}
 
-	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY)
 	public void runDeleteDXPBatchEntitiesNanite() {
 		if (_deleteDXPBatchEntitiesRunnable != null) {
 			_deleteDXPBatchEntitiesRunnable.run();
 		}
 	}
 
-	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY)
 	public void runDeleteTempFilesNanite() {
 		run("DeleteTempFilesNanite");
 	}
@@ -325,6 +325,9 @@ public class OSBAsahBatchCuratorBot {
 			_log.error("Unable to schedule existing tasks on startup", e);
 		}
 	}
+
+	private static final String _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY =
+		"${random.int[0,60]} ${random.int[0,15]} 0 * * ?";
 
 	private static final Log _log = LogFactory.getLog(
 		OSBAsahBatchCuratorBot.class);
