@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portlet.configuration.kernel.util.PortletConfigurationUtil;
 import com.liferay.portlet.portletconfiguration.util.ConfigurationActionRequest;
-import com.liferay.portlet.portletconfiguration.util.ConfigurationPortletRequest;
 import com.liferay.portlet.portletconfiguration.util.ConfigurationRenderRequest;
 import com.liferay.portlet.portletconfiguration.util.ConfigurationResourceRequest;
 import com.liferay.portlet.portletconfiguration.util.PublicRenderParameterConfiguration;
@@ -146,21 +145,14 @@ public class ActionUtil {
 			PortletRequest portletRequest, Portlet portlet)
 		throws Exception {
 
-		PortletPreferences preferences = null;
+		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
 
-		if (portletRequest instanceof ConfigurationPortletRequest) {
-			preferences = portletRequest.getPreferences();
-		}
-		else {
-			ThemeDisplay themeDisplay =
-				(ThemeDisplay)portletRequest.getAttribute(
-					WebKeys.THEME_DISPLAY);
+		Layout layout = themeDisplay.getLayout();
 
-			Layout layout = themeDisplay.getLayout();
-
-			preferences = PortletPreferencesFactoryUtil.getLayoutPortletSetup(
+		PortletPreferences preferences =
+			PortletPreferencesFactoryUtil.getLayoutPortletSetup(
 				layout, portlet.getPortletId());
-		}
 
 		List<PublicRenderParameterConfiguration>
 			publicRenderParameterConfigurations = new ArrayList<>();
@@ -209,26 +201,20 @@ public class ActionUtil {
 	public static String getTitle(Portlet portlet, RenderRequest renderRequest)
 		throws Exception {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
 		ServletContext servletContext =
 			(ServletContext)renderRequest.getAttribute(WebKeys.CTX);
 
-		PortletPreferences portletSetup = null;
+		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
 
-		if (renderRequest instanceof ConfigurationPortletRequest) {
-			portletSetup = renderRequest.getPreferences();
-		}
-		else {
-			HttpServletRequest request = PortalUtil.getHttpServletRequest(
-				renderRequest);
+		HttpServletRequest request = PortalUtil.getHttpServletRequest(
+			renderRequest);
 
-			portletSetup = getLayoutPortletSetup(renderRequest, portlet);
+		PortletPreferences portletSetup = getLayoutPortletSetup(
+			renderRequest, portlet);
 
-			portletSetup = getPortletSetup(
-				request, renderRequest.getPreferences(), portletSetup);
-		}
+		portletSetup = getPortletSetup(
+			request, renderRequest.getPreferences(), portletSetup);
 
 		String title = PortletConfigurationUtil.getPortletTitle(
 			portletSetup, themeDisplay.getLanguageId());
