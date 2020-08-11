@@ -74,7 +74,8 @@ public class DDLRecordSearchTest {
 	@Before
 	public void setUp() throws Exception {
 		_group = GroupTestUtil.addGroup();
-		_user = UserTestUtil.addUser();
+
+		_user = UserTestUtil.addGroupAdminUser(_group);
 
 		DDLRecordSet recordSet = addRecordSet();
 
@@ -129,7 +130,7 @@ public class DDLRecordSearchTest {
 
 		Hits hits = DDLRecordLocalServiceUtil.search(searchContext);
 
-		Assert.assertEquals(hits.toString(), 1, hits.getLength());
+		Assert.assertEquals(hits.toString(), 0, hits.getLength());
 	}
 
 	@Test
