@@ -6,6 +6,6 @@ Liferay-JS-Config: /META-INF/resources/designer/js/config.js
 Liferay-Releng-Module-Group-Title: Kaleo Designer
 Provide-Capability:\
 	liferay.resource.bundle;\
-		resource.bundle.aggregate:String="(bundle.symbolic.name=com.liferay.dynamic.data.lists.lang),(bundle.symbolic.name=com.liferay.dynamic.data.mapping.lang),(bundle.symbolic.name=com.liferay.portal.workflow.kaleo.designer.lang),(bundle.symbolic.name=com.liferay.portal.workflow.lang)";\
+		resource.bundle.aggregate:String="(bundle.symbolic.name=com.liferay.dynamic.data.lists.form.lang),(bundle.symbolic.name=com.liferay.dynamic.data.lists.lang),(bundle.symbolic.name=com.liferay.portal.workflow.kaleo.designer.lang),(bundle.symbolic.name=com.liferay.portal.workflow.lang)";\
 		resource.bundle.base.name="content.Language"
 -include: ../../../../../../modules/apps/forms-and-workflow/app.bnd
