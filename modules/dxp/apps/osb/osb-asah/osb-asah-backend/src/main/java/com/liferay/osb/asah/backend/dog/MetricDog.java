@@ -109,6 +109,13 @@ public class MetricDog {
 			assetMetric.setAssetId(assetId);
 		}
 
+		URL canonicalUrl = searchQueryContext.getCanonicalUrl();
+
+		if (!canonicalUrl.equals(URL.any())) {
+			assetMetric.setCanonicalUrls(
+				Collections.singletonList(canonicalUrl.getURL()));
+		}
+
 		URL url = searchQueryContext.getURL();
 
 		if (!url.equals(URL.any())) {
@@ -127,7 +134,13 @@ public class MetricDog {
 			range = aggregations.get("ranges");
 		}
 
-		_setURLs(assetMetric, includePrevious, range);
+		Aggregations rangeBucketAggregations = _getRangeBucketAggregations(
+			includePrevious, range);
+
+		if (rangeBucketAggregations != null) {
+			_setCanonicalUrls(assetMetric, rangeBucketAggregations);
+			_setURLs(assetMetric, rangeBucketAggregations);
+		}
 
 		for (MetricResolver metricResolver : metricResolvers) {
 			Metric metric = _getMetric(
@@ -244,6 +257,16 @@ public class MetricDog {
 
 		Set<AggregationBuilder> aggregationBuilders = _getAggregationBuilders(
 			metricResolvers);
+
+		TermsAggregationBuilder canonicalUrlAggregationBuilder =
+			AggregationBuilders.terms("canonicalUrls");
+
+		canonicalUrlAggregationBuilder.field(
+			_searchQueryHelper.getCanonicalUrlFieldName(
+				searchQueryContext.getAssetType()));
+		canonicalUrlAggregationBuilder.size(Integer.MAX_VALUE);
+
+		aggregationBuilders.add(canonicalUrlAggregationBuilder);
 
 		TermsAggregationBuilder urlAggregationBuilder =
 			AggregationBuilders.terms("urls");
@@ -497,6 +520,27 @@ public class MetricDog {
 		return pipelineAggregationBuilders.stream();
 	}
 
+	private Aggregations _getRangeBucketAggregations(
+		boolean includePrevious, Range range) {
+
+		List<? extends Range.Bucket> rangeBuckets = range.getBuckets();
+
+		if (rangeBuckets.isEmpty()) {
+			return null;
+		}
+
+		Range.Bucket rangeBucket = null;
+
+		if (includePrevious) {
+			rangeBucket = rangeBuckets.get(1);
+		}
+		else {
+			rangeBucket = rangeBuckets.get(0);
+		}
+
+		return rangeBucket.getAggregations();
+	}
+
 	private Terms _getTermsAggregationResult(Aggregations aggregations) {
 		Range range = aggregations.get("ranges");
 
@@ -507,6 +551,29 @@ public class MetricDog {
 		Aggregations bucketAggregations = rangeBucket.getAggregations();
 
 		return bucketAggregations.get("terms");
+	}
+
+	private void _setCanonicalUrls(
+		AssetMetric assetMetric, Aggregations bucketAggregations) {
+
+		Terms terms = bucketAggregations.get("canonicalUrls");
+
+		List<? extends Terms.Bucket> termsBuckets = terms.getBuckets();
+
+		if (termsBuckets.isEmpty()) {
+			assetMetric.setCanonicalUrls(Collections.emptyList());
+
+			return;
+		}
+
+		Stream<? extends Terms.Bucket> stream = termsBuckets.stream();
+
+		assetMetric.setCanonicalUrls(
+			stream.map(
+				Terms.Bucket::getKeyAsString
+			).collect(
+				Collectors.toList()
+			));
 	}
 
 	private void _setModelMetrics(
@@ -530,24 +597,7 @@ public class MetricDog {
 	}
 
 	private void _setURLs(
-		AssetMetric assetMetric, boolean includePrevious, Range range) {
-
-		List<? extends Range.Bucket> rangeBuckets = range.getBuckets();
-
-		if (rangeBuckets.isEmpty()) {
-			return;
-		}
-
-		Range.Bucket rangeBucket = null;
-
-		if (includePrevious) {
-			rangeBucket = rangeBuckets.get(1);
-		}
-		else {
-			rangeBucket = rangeBuckets.get(0);
-		}
-
-		Aggregations bucketAggregations = rangeBucket.getAggregations();
+		AssetMetric assetMetric, Aggregations bucketAggregations) {
 
 		Terms terms = bucketAggregations.get("urls");
 
