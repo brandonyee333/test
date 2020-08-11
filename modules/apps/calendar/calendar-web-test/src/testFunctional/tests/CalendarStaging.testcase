@@ -146,6 +146,7 @@ definition {
 	test SchedulePublishToLiveWithEventAndResource {
 		property portal.acceptance = "quarantine";
 		property testray.component.names = "Training";
+		property test.relies.on = "quartz-scheduler";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
