@@ -2,3 +2,7 @@ Bundle-Name: Liferay OSB Community Message Boards Web Fragment
 Bundle-SymbolicName: com.liferay.osb.community.message.boards.web.fragment
 Bundle-Version: 1.0.0
 Fragment-Host: com.liferay.message.boards.web;bundle-version="1.2.39"
+Provide-Capability:\
+	liferay.resource.bundle;\
+		resource.bundle.aggregate:String="(bundle.symbolic.name=com.liferay.message.boards.lang)";\
+		resource.bundle.base.name="content.Language"
