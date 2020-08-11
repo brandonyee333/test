@@ -37,6 +37,7 @@ public class BlogMetric implements AssetMetric {
 		if (Objects.equals(_assetId, blogMetric._assetId) &&
 			Objects.equals(_assetMetrics, blogMetric._assetMetrics) &&
 			Objects.equals(_assetTitle, blogMetric._assetTitle) &&
+			Objects.equals(_canonicalUrls, blogMetric._canonicalUrls) &&
 			Objects.equals(_clicksMetric, blogMetric._clicksMetric) &&
 			Objects.equals(_commentsMetric, blogMetric._commentsMetric) &&
 			Objects.equals(_dataSourceId, blogMetric._dataSourceId) &&
@@ -69,6 +70,11 @@ public class BlogMetric implements AssetMetric {
 	@Override
 	public String getAssetType() {
 		return AssetType.BLOG.getValue();
+	}
+
+	@Override
+	public List<String> getCanonicalUrls() {
+		return _canonicalUrls;
 	}
 
 	public Metric getClicksMetric() {
@@ -109,7 +115,7 @@ public class BlogMetric implements AssetMetric {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_assetId, _assetMetrics, _assetTitle, _clicksMetric,
+			_assetId, _assetMetrics, _assetTitle, _canonicalUrls, _clicksMetric,
 			_commentsMetric, _dataSourceId, _ratingsMetric, _readingTimeMetric,
 			_urls, _viewsMetric);
 	}
@@ -127,6 +133,11 @@ public class BlogMetric implements AssetMetric {
 	@Override
 	public void setAssetTitle(String assetTitle) {
 		_assetTitle = assetTitle;
+	}
+
+	@Override
+	public void setCanonicalUrls(List<String> canonicalUrls) {
+		_canonicalUrls = canonicalUrls;
 	}
 
 	public void setClicksMetric(Metric clicksMetric) {
@@ -162,6 +173,7 @@ public class BlogMetric implements AssetMetric {
 	private String _assetId;
 	private List<AssetMetric> _assetMetrics;
 	private String _assetTitle;
+	private List<String> _canonicalUrls;
 	private Metric _clicksMetric = new Metric(BlogMetricType.CLICKS);
 	private Metric _commentsMetric = new Metric(BlogMetricType.COMMENTS);
 	private String _dataSourceId;

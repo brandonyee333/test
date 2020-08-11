@@ -29,6 +29,8 @@ public interface AssetMetric {
 
 	public String getAssetType();
 
+	public List<String> getCanonicalUrls();
+
 	public String getDataSourceId();
 
 	public Metric getDefaultMetric();
@@ -40,6 +42,8 @@ public interface AssetMetric {
 	public void setAssetMetrics(List<AssetMetric> assetMetrics);
 
 	public void setAssetTitle(String assetTitle);
+
+	public void setCanonicalUrls(List<String> canonicalUrls);
 
 	public void setDataSourceId(String dataSourceId);
 

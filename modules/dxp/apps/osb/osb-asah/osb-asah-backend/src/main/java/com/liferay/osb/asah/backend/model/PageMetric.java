@@ -53,6 +53,7 @@ public class PageMetric implements AssetMetric {
 				_avgTimeOnPageMetric, pageMetric._avgTimeOnPageMetric) &&
 			Objects.equals(_bounceMetric, pageMetric._bounceMetric) &&
 			Objects.equals(_bounceRateMetric, pageMetric._bounceRateMetric) &&
+			Objects.equals(_canonicalUrls, pageMetric._canonicalUrls) &&
 			Objects.equals(_ctpMetric, pageMetric._ctpMetric) &&
 			Objects.equals(_ctrMetric, pageMetric._ctrMetric) &&
 			Objects.equals(_dataSourceId, pageMetric._dataSourceId) &&
@@ -139,6 +140,11 @@ public class PageMetric implements AssetMetric {
 		return _bounceRateMetric;
 	}
 
+	@Override
+	public List<String> getCanonicalUrls() {
+		return _canonicalUrls;
+	}
+
 	public Metric getCTPMetric() {
 		return _ctpMetric;
 	}
@@ -210,11 +216,11 @@ public class PageMetric implements AssetMetric {
 	public int hashCode() {
 		return Objects.hash(
 			_assetMetrics, _assetTitle, _avgTimeOnPageMetric, _bounceMetric,
-			_bounceRateMetric, _ctpMetric, _ctrMetric, _dataSourceId,
-			_directAccessMetric, _engagementMetric, _entrancesMetric,
-			_exitRateMetric, _indirectAccessMetric, _maxScrollDepthMetric,
-			_readsMetric, _sessionsMetric, _timeOnPageMetric, _urls,
-			_viewsMetric, _visitorsMetric);
+			_bounceRateMetric, _canonicalUrls, _ctpMetric, _ctrMetric,
+			_dataSourceId, _directAccessMetric, _engagementMetric,
+			_entrancesMetric, _exitRateMetric, _indirectAccessMetric,
+			_maxScrollDepthMetric, _readsMetric, _sessionsMetric,
+			_timeOnPageMetric, _urls, _viewsMetric, _visitorsMetric);
 	}
 
 	@Override
@@ -262,6 +268,11 @@ public class PageMetric implements AssetMetric {
 		}
 
 		_bounceRateMetric = bounceRateMetric;
+	}
+
+	@Override
+	public void setCanonicalUrls(List<String> canonicalUrls) {
+		_canonicalUrls = canonicalUrls;
 	}
 
 	public void setCTPMetric(Metric ctpMetric) {
@@ -358,6 +369,11 @@ public class PageMetric implements AssetMetric {
 		sb.append(" for page with title ");
 		sb.append(_assetTitle);
 
+		if (!_canonicalUrls.isEmpty()) {
+			sb.append(", canonical URL ");
+			sb.append(_canonicalUrls.get(0));
+		}
+
 		if (!_urls.isEmpty()) {
 			sb.append(" and URL ");
 			sb.append(_urls.get(0));
@@ -377,6 +393,7 @@ public class PageMetric implements AssetMetric {
 		PageMetricType.AVG_TIME_ON_PAGE);
 	private Metric _bounceMetric = new Metric(PageMetricType.BOUNCE);
 	private Metric _bounceRateMetric = new Metric(PageMetricType.BOUNCE_RATE);
+	private List<String> _canonicalUrls;
 	private Metric _ctpMetric = new Metric(
 		PageMetricType.CLICK_THROUGH_PROBABILITY);
 	private Metric _ctrMetric = new Metric(PageMetricType.CLICK_THROUGH_RATE);

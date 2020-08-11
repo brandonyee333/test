@@ -39,6 +39,7 @@ public class CustomAssetMetric implements AssetMetric {
 			Objects.equals(_assetId, customAssetMetric._assetId) &&
 			Objects.equals(_assetMetrics, customAssetMetric._assetMetrics) &&
 			Objects.equals(_assetTitle, customAssetMetric._assetTitle) &&
+			Objects.equals(_canonicalUrls, customAssetMetric._canonicalUrls) &&
 			Objects.equals(_clicksMetric, customAssetMetric._clicksMetric) &&
 			Objects.equals(
 				_completionTimeMetric,
@@ -79,6 +80,11 @@ public class CustomAssetMetric implements AssetMetric {
 	@Override
 	public String getAssetType() {
 		return AssetType.CUSTOM.getValue();
+	}
+
+	@Override
+	public List<String> getCanonicalUrls() {
+		return _canonicalUrls;
 	}
 
 	public Metric getClicksMetric() {
@@ -124,7 +130,7 @@ public class CustomAssetMetric implements AssetMetric {
 	public int hashCode() {
 		return Objects.hash(
 			_abandonmentsMetric, _assetId, _assetMetrics, _assetTitle,
-			_clicksMetric, _completionTimeMetric, _dataSourceId,
+			_canonicalUrls, _clicksMetric, _completionTimeMetric, _dataSourceId,
 			_readingTimeMetric, _submissionsMetric, _urls, _viewsMetric);
 	}
 
@@ -145,6 +151,11 @@ public class CustomAssetMetric implements AssetMetric {
 	@Override
 	public void setAssetTitle(String assetTitle) {
 		_assetTitle = assetTitle;
+	}
+
+	@Override
+	public void setCanonicalUrls(List<String> canonicalUrls) {
+		_canonicalUrls = canonicalUrls;
 	}
 
 	public void setClicksMetric(Metric clicksMetric) {
@@ -186,6 +197,7 @@ public class CustomAssetMetric implements AssetMetric {
 	private String _assetId;
 	private List<AssetMetric> _assetMetrics;
 	private String _assetTitle;
+	private List<String> _canonicalUrls;
 	private Metric _clicksMetric = new Metric(CustomAssetMetricType.CLICKS);
 	private Metric _completionTimeMetric = new Metric(
 		CustomAssetMetricType.COMPLETION_TIME);

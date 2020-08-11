@@ -75,6 +75,11 @@ public class IndividualMetric implements AssetMetric {
 	}
 
 	@Override
+	public List<String> getCanonicalUrls() {
+		return _canonicalUrls;
+	}
+
+	@Override
 	public String getDataSourceId() {
 		return _dataSourceId;
 	}
@@ -125,6 +130,11 @@ public class IndividualMetric implements AssetMetric {
 	}
 
 	@Override
+	public void setCanonicalUrls(List<String> canonicalUrls) {
+		_canonicalUrls = canonicalUrls;
+	}
+
+	@Override
 	public void setDataSourceId(String dataSourceId) {
 		_dataSourceId = dataSourceId;
 	}
@@ -147,6 +157,7 @@ public class IndividualMetric implements AssetMetric {
 	private String _assetId;
 	private List<AssetMetric> _assetMetrics;
 	private String _assetTitle;
+	private List<String> _canonicalUrls;
 	private String _dataSourceId;
 	private Metric _knownIndividualsMetric = new Metric(
 		IndividualMetricType.KNOWN_INDIVIDUALS);
