@@ -1,11 +1,11 @@
 definition {
 
 	macro addOrganizationRole {
-		Variables.assertDefined(parameterList = "${roleTitle}");
+		Variables.assertDefined(parameterList = "${roleName}");
 
 		var descriptionMap = JSONRoleSetter.setDescriptionMap(description = "${roleDescription}");
 
-		var name = JSONRoleSetter.setName(name = "${roleTitle}");
+		var name = JSONRoleSetter.setName(name = "${roleName}");
 
 		var titleMap = JSONRoleSetter.setTitleMap(title = "${roleKey}");
 
@@ -19,11 +19,11 @@ definition {
 	}
 
 	macro addRegularRole {
-		Variables.assertDefined(parameterList = "${roleTitle}");
+		Variables.assertDefined(parameterList = "${roleName}");
 
 		var descriptionMap = JSONRoleSetter.setDescriptionMap(description = "${roleDescription}");
 
-		var name = JSONRoleSetter.setName(name = "${roleTitle}");
+		var name = JSONRoleSetter.setName(name = "${roleName}");
 
 		var titleMap = JSONRoleSetter.setTitleMap(title = "${roleKey}");
 
@@ -37,11 +37,11 @@ definition {
 	}
 
 	macro addSiteRole {
-		Variables.assertDefined(parameterList = "${roleTitle}");
+		Variables.assertDefined(parameterList = "${roleName}");
 
 		var descriptionMap = JSONRoleSetter.setDescriptionMap(description = "${roleDescription}");
 
-		var name = JSONRoleSetter.setName(name = "${roleTitle}");
+		var name = JSONRoleSetter.setName(name = "${roleName}");
 
 		var titleMap = JSONRoleSetter.setTitleMap(title = "${roleKey}");
 
@@ -55,9 +55,9 @@ definition {
 	}
 
 	macro assignRoleToUser {
-		Variables.assertDefined(parameterList = "${roleTitle},${userEmailAddress}");
+		Variables.assertDefined(parameterList = "${roleName},${userEmailAddress}");
 
-		var roleId = JSONRoleSetter.setRoleId(name = "${roleTitle}");
+		var roleId = JSONRoleSetter.setRoleId(name = "${roleName}");
 
 		var userId = JSONRoleSetter.setUserId(userEmailAddress = "${userEmailAddress}");
 

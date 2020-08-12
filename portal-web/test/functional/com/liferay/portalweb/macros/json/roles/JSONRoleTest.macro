@@ -5,28 +5,28 @@ definition {
 
 		// Add role
 
-		JSONRole.addOrganizationRole(roleTitle = "organization role");
+		JSONRole.addOrganizationRole(roleName = "organization role");
 
-		JSONRole.addRegularRole(roleTitle = "regular role");
+		JSONRole.addRegularRole(roleName = "regular role");
 
-		JSONRole.addSiteRole(roleTitle = "site role");
+		JSONRole.addSiteRole(roleName = "site role");
 
 		JSONRole.addOrganizationRole(
 			roleKey = "organization role 2",
-			roleTitle = "organization role 2");
+			roleName = "organization role 2");
 
 		JSONRole.addRegularRole(
 			roleKey = "regular role 2",
-			roleTitle = "regular role 2");
+			roleName = "regular role 2");
 
 		JSONRole.addSiteRole(
 			roleKey = "site role 2",
-			roleTitle = "site role 2");
+			roleName = "site role 2");
 
 		// User
 
 		JSONRole.assignRoleToUser(
-			roleTitle = "site role",
+			roleName = "site role",
 			userEmailAddress = "test@liferay.com");
 	}
 

@@ -37,11 +37,11 @@ definition {
 	}
 
 	macro assignGroupRoleToUser {
-		Variables.assertDefined(parameterList = "${groupName},${roleTitle},${userEmailAddress}");
+		Variables.assertDefined(parameterList = "${groupName},${roleName},${userEmailAddress}");
 
 		var groupId = JSONGroupSetter.setGroupId(groupName = "${groupName}");
 
-		var roleId = JSONRoleAPI._getRoleIdByName(name = "${roleTitle}");
+		var roleId = JSONRoleAPI._getRoleIdByName(name = "${roleName}");
 
 		var userId = JSONUserAPI._getUserIdByEmailAddress(userEmailAddress = "${userEmailAddress}");
 

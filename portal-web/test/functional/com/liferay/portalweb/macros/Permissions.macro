@@ -134,7 +134,7 @@ definition {
 			actionId = "${resourceAction}",
 			groupName = "${groupName}",
 			name = "${resourceName}",
-			roleTitle = "${roleTitle}",
+			roleTitle = "${roleName}",
 			roleType = "${roleType}");
 	}
 
@@ -164,7 +164,7 @@ definition {
 			organizationName = "${orgName}",
 			userEmailAddress = "${userEmailAddress}");
 
-		JSONLayout.addPublicLayout(
+		JSONLayout.addPublicLayoutByGroupName(
 			groupName = "${orgName}",
 			layoutName = "${pageName}");
 

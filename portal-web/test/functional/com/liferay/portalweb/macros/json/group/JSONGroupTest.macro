@@ -27,11 +27,11 @@ definition {
 
 		// Role
 
-		JSONRole.addSiteRole(roleTitle = "role title");
+		JSONRole.addSiteRole(roleName = "role title");
 
 		JSONGroup.assignGroupRoleToUser(
 			groupName = "group name",
-			roleTitle = "role title",
+			roleName = "role title",
 			userEmailAddress = "test2@liferay.com");
 
 		// Delete
