@@ -164,8 +164,7 @@ public class IconTag extends BaseIconTag {
 				jspWriter.write("<svg aria-hidden=\"true\" ");
 				jspWriter.write("class=\"lexicon-icon lexicon-icon-");
 				jspWriter.write(GetterUtil.getString(getImage()));
-				jspWriter.write(
-					"\" focusable=\"false\" title=\"");
+				jspWriter.write("\" focusable=\"false\" title=\"");
 
 				HttpServletRequest httpServletRequest =
 					(HttpServletRequest)pageContext.getRequest();
