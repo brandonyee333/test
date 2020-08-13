@@ -3,6 +3,9 @@
 		"journal": {
 			"assetId": "1",
 			"assetTitle": null,
+			"canonicalUrls": [
+				"http://liferay.com"
+			],
 			"urls": [
 				"http://liferay.com"
 			],

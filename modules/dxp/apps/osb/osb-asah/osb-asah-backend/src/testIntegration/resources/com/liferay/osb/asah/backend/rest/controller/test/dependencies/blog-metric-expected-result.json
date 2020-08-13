@@ -3,6 +3,9 @@
 		"blog": {
 			"assetId": "1",
 			"assetTitle": null,
+			"canonicalUrls": [
+				"http://liferay.com"
+			],
 			"commentsMetric": {
 				"segment": {
 					"metrics": [

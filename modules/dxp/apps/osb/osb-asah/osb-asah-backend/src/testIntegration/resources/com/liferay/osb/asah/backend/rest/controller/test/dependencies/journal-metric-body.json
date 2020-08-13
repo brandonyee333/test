@@ -2,6 +2,7 @@
 	"operationName": "JournalMetric",
 	"variables": {
 		"assetId": "1",
+		"canonicalUrl": "Any",
 		"channelId": "1",
 		"country": "Any",
 		"deviceType": "Any",

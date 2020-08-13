@@ -1,7 +1,8 @@
-query JournalMetric($assetId: String!, $channelId: String, $country: String, $deviceType: String, $rangeKey: Int!, $url: String!) {
-	journal(assetId: $assetId, channelId: $channelId, country: $country, deviceType: $deviceType, rangeKey: $rangeKey, url: $url) {
+query JournalMetric($assetId: String!, $canonicalUrl: String, $channelId: String, $country: String, $deviceType: String, $rangeKey: Int!, $url: String!) {
+	journal(assetId: $assetId, canonicalUrl: $canonicalUrl, channelId: $channelId, country: $country, deviceType: $deviceType, rangeKey: $rangeKey, url: $url) {
 		assetId
 		assetTitle
+		canonicalUrls
 		urls
 		viewsMetric {
 			browser {

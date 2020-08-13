@@ -1,6 +1,7 @@
 {
 	"operationName": "PageMetric",
 	"variables": {
+		"canonicalUrl": "Any",
 		"channelId": "1",
 		"rangeKey": 7,
 		"url": "Any"

@@ -11,6 +11,9 @@
 			},
 			"assetId": "1",
 			"assetTitle": null,
+			"canonicalUrls": [
+				"http://liferay.com"
+			],
 			"completionTimeMetric": {
 				"previousValue": 0.0,
 				"trend": {

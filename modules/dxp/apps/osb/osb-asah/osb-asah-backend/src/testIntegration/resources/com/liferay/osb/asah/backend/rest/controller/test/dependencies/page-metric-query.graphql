@@ -24,8 +24,8 @@ fragment metricFragment on Metric {
 	value
 }
 
-query PageMetric($channelId: String, $url: String!, $rangeKey: Int!, $location: String, $devices: String, $title: String) {
-	page(channelId: $channelId, url: $url, rangeKey: $rangeKey, country: $location, deviceType: $devices, title: $title) {
+query PageMetric($canonicalUrl: String, $channelId: String, $country: String, $deviceType: String, $rangeKey: Int!, $title: String, $url: String) {
+	page(canonicalUrl: $canonicalUrl, channelId: $channelId, country: $country, deviceType: $deviceType, rangeKey: $rangeKey, title: $title, url: $url) {
 		bounceRateMetric {
 			...metricFragment
 		}

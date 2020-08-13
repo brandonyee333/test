@@ -3,6 +3,9 @@
 		"document": {
 			"assetId": "1",
 			"assetTitle": null,
+			"canonicalUrls": [
+				"http://liferay.com"
+			],
 			"commentsMetric": {
 				"previousValue": 0.0,
 				"trend": {

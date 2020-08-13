@@ -65,10 +65,11 @@ fragment segmentFragment on Metric {
 	segmentedKnownUsersCount
 }
 
-query DocumentLibraryMetric($assetId: String!, $channelId: String, $location: String, $devices: String, $title: String, $url: String!, $rangeKey: Int!) {
-	document(assetId: $assetId, channelId: $channelId, country: $location, deviceType: $devices, url: $url, rangeKey: $rangeKey, title: $title) {
+query DocumentLibraryMetric($assetId: String!, $canonicalUrl: String, $channelId: String, $country: String, $deviceType: String, $title: String, $rangeKey: Int!, $url: String) {
+	document(assetId: $assetId, canonicalUrl: $canonicalUrl, channelId: $channelId, country: $country, deviceType: $deviceType, rangeKey: $rangeKey, title: $title, url: $url) {
 		assetId
 		assetTitle
+		canonicalUrls
 		commentsMetric {
 			...metricFragment
 		}

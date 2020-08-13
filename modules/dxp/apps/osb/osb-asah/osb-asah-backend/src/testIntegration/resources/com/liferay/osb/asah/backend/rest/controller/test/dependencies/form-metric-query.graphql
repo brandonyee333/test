@@ -54,13 +54,14 @@ fragment segmentFragment on Metric {
 	segmentedKnownUsersCount
 }
 
-query FormMetric($assetId: String!, $channelId: String, $location: String, $devices: String, $title: String, $url: String!, $rangeKey: Int!) {
-	form(assetId: $assetId, channelId: $channelId, country: $location, deviceType: $devices, url: $url, rangeKey: $rangeKey, title: $title) {
+query FormMetric($assetId: String!, $canonicalUrl: String, $channelId: String, $country: String, $deviceType: String, $rangeKey: Int!, $title: String, $url: String) {
+	form(assetId: $assetId, canonicalUrl: $canonicalUrl, channelId: $channelId, country: $country, deviceType: $deviceType, rangeKey: $rangeKey, title: $title, url: $url) {
 		abandonmentsMetric {
 			...metricFragment
 		}
 		assetId
 		assetTitle
+		canonicalUrls
 		completionTimeMetric {
 			...metricFragment
 		}

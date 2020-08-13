@@ -1,7 +1,8 @@
-query BlogMetric($channelId: String, $assetId: String!, $country: String, $deviceType: String, $rangeKey: Int!, $url: String!) {
-	blog(channelId: $channelId, assetId: $assetId, country: $country, deviceType: $deviceType, rangeKey: $rangeKey, url: $url) {
+query BlogMetric($assetId: String!, $canonicalUrl: String, $channelId: String, $country: String, $deviceType: String, $rangeKey: Int!, $url: String) {
+	blog(assetId: $assetId, canonicalUrl: $canonicalUrl, channelId: $channelId, country: $country, deviceType: $deviceType, rangeKey: $rangeKey, url: $url) {
 		assetId
 		assetTitle
+		canonicalUrls
 		commentsMetric {
 			segment {
 				metrics {
