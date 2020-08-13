@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 import java.util.Optional;
 import java.util.Set;
@@ -43,8 +44,6 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.PipelineAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.range.DateRangeAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-
-import org.joda.time.DateTimeZone;
 
 import org.springframework.stereotype.Component;
 
@@ -596,7 +595,7 @@ public class SearchQueryHelper {
 			AggregationBuilders.dateRange("ranges");
 
 		dateRangeAggregationBuilder.field("eventDate");
-		dateRangeAggregationBuilder.timeZone(DateTimeZone.forID(timeZoneId));
+		dateRangeAggregationBuilder.timeZone(ZoneId.of(timeZoneId));
 
 		if (TimeRange.LAST_24_HOURS.equals(timeRange)) {
 			dateRangeAggregationBuilder.addRange("current", "now-23h/h", "now");
@@ -650,7 +649,7 @@ public class SearchQueryHelper {
 			AggregationBuilders.dateRange("period_ranges");
 
 		dateRangeAggregationBuilder.field("eventDate");
-		dateRangeAggregationBuilder.timeZone(DateTimeZone.forID(timeZoneId));
+		dateRangeAggregationBuilder.timeZone(ZoneId.of(timeZoneId));
 
 		if (TimeRange.LAST_24_HOURS.equals(timeRange)) {
 			dateRangeAggregationBuilder.addRange("current", "now-23h/h", "now");

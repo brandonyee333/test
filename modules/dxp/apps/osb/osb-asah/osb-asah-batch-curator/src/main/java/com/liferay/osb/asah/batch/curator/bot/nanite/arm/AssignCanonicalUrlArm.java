@@ -29,6 +29,7 @@ import javax.annotation.PostConstruct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.search.TotalHits;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -178,10 +179,12 @@ public class AssignCanonicalUrlArm {
 			if (_log.isInfoEnabled()) {
 				SearchHits searchHits = searchResponse.getHits();
 
+				TotalHits totalHits = searchHits.getTotalHits();
+
 				_log.info(
 					String.format(
 						"%d documents left to be processed in %s index.",
-						searchHits.getTotalHits(), collectionName));
+						totalHits.value, collectionName));
 			}
 
 			for (Terms.Bucket termsBucket : termsBuckets) {

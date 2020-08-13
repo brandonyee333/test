@@ -35,6 +35,8 @@ import java.util.Date;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.lucene.search.TotalHits;
+
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -91,7 +93,9 @@ public class DataExportTaskDog {
 			"data-export-tasks", _faroInfoElasticsearchInvoker,
 			searchSourceBuilder);
 
-		if (searchHits.getTotalHits() == 0) {
+		TotalHits totalHits = searchHits.getTotalHits();
+
+		if (totalHits.value == 0) {
 			return null;
 		}
 

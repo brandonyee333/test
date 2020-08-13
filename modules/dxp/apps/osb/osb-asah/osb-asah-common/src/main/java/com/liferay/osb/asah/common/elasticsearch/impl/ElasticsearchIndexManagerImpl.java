@@ -62,9 +62,9 @@ import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.client.AdminClient;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.IndicesAdminClient;
-import org.elasticsearch.cluster.metadata.AliasMetaData;
-import org.elasticsearch.cluster.metadata.IndexTemplateMetaData;
-import org.elasticsearch.cluster.metadata.MappingMetaData;
+import org.elasticsearch.cluster.metadata.AliasMetadata;
+import org.elasticsearch.cluster.metadata.IndexTemplateMetadata;
+import org.elasticsearch.cluster.metadata.MappingMetadata;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -144,15 +144,15 @@ public class ElasticsearchIndexManagerImpl
 
 		Set<String> templateNames = configurationJSONObjects.keySet();
 
-		for (IndexTemplateMetaData indexTemplateMetaData :
+		for (IndexTemplateMetadata indexTemplateMetadata :
 				_getTemplates(
 					indicesAdminClient, templateNames.toArray(new String[0]))) {
 
-			if (indexTemplateMetaData.getVersion() >=
+			if (indexTemplateMetadata.getVersion() >=
 					ReleaseInfo.getSchemaVersion()) {
 
 				configurationJSONObjects.remove(
-					indexTemplateMetaData.getName());
+					indexTemplateMetadata.getName());
 			}
 		}
 
@@ -324,15 +324,15 @@ public class ElasticsearchIndexManagerImpl
 
 		GetMappingsResponse getMappingsResponse = actionFuture.actionGet();
 
-		ImmutableOpenMap<String, ImmutableOpenMap<String, MappingMetaData>>
+		ImmutableOpenMap<String, ImmutableOpenMap<String, MappingMetadata>>
 			mappings = getMappingsResponse.getMappings();
 
-		ImmutableOpenMap<String, MappingMetaData> immutableOpenMap =
+		ImmutableOpenMap<String, MappingMetadata> immutableOpenMap =
 			mappings.get(indexName);
 
-		MappingMetaData mappingMetaData = immutableOpenMap.get(collectionName);
+		MappingMetadata mappingMetadata = immutableOpenMap.get(collectionName);
 
-		return mappingMetaData.getSourceAsMap();
+		return mappingMetadata.getSourceAsMap();
 	}
 
 	public String getIndexName(String indexAlias) {
@@ -345,7 +345,7 @@ public class ElasticsearchIndexManagerImpl
 
 		GetAliasesResponse getAliasesResponse = actionFuture.actionGet();
 
-		ImmutableOpenMap<String, List<AliasMetaData>> immutableOpenMap =
+		ImmutableOpenMap<String, List<AliasMetadata>> immutableOpenMap =
 			getAliasesResponse.getAliases();
 
 		Iterator<String> iterator = immutableOpenMap.keysIt();
@@ -353,15 +353,15 @@ public class ElasticsearchIndexManagerImpl
 		while (iterator.hasNext()) {
 			String indexName = iterator.next();
 
-			List<AliasMetaData> aliasMetaDatas = immutableOpenMap.get(
+			List<AliasMetadata> aliasMetadatas = immutableOpenMap.get(
 				indexName);
 
-			if (aliasMetaDatas == null) {
+			if (aliasMetadatas == null) {
 				continue;
 			}
 
-			for (AliasMetaData aliasMetaData : aliasMetaDatas) {
-				if (StringUtils.equals(indexAlias, aliasMetaData.alias())) {
+			for (AliasMetadata aliasMetadata : aliasMetadatas) {
+				if (StringUtils.equals(indexAlias, aliasMetadata.alias())) {
 					return indexName;
 				}
 			}
@@ -472,10 +472,9 @@ public class ElasticsearchIndexManagerImpl
 	}
 
 	private void _clearIndex(String indexName) {
-		IndicesAdminClient indicesAdminClient = _adminClient.indices();
-
 		DeleteByQueryRequestBuilder deleteByQueryRequestBuilder =
-			DeleteByQueryAction.INSTANCE.newRequestBuilder(indicesAdminClient);
+			new DeleteByQueryRequestBuilder(
+				_adminClient.indices(), DeleteByQueryAction.INSTANCE);
 
 		deleteByQueryRequestBuilder = deleteByQueryRequestBuilder.filter(
 			QueryBuilders.matchAllQuery());
@@ -526,7 +525,7 @@ public class ElasticsearchIndexManagerImpl
 			collectionName, getIndexNamespace(weDeployDataService));
 	}
 
-	private List<IndexTemplateMetaData> _getTemplates(
+	private List<IndexTemplateMetadata> _getTemplates(
 		IndicesAdminClient indicesAdminClient, String... templateNames) {
 
 		GetIndexTemplatesRequestBuilder getIndexTemplatesRequestBuilder =

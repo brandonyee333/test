@@ -30,6 +30,7 @@ import java.util.stream.Stream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.search.TotalHits;
 
 import org.elasticsearch.ResourceNotFoundException;
 import org.elasticsearch.action.ActionFuture;
@@ -203,6 +204,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 		searchRequestBuilder.setQuery(queryBuilder);
 		searchRequestBuilder.setSize(0);
+		searchRequestBuilder.setTrackTotalHits(true);
 
 		ClientUtil.waitForConnection(_client);
 
@@ -210,7 +212,9 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 		SearchHits searchHits = searchResponse.getHits();
 
-		return searchHits.getTotalHits();
+		TotalHits totalHits = searchHits.getTotalHits();
+
+		return totalHits.value;
 	}
 
 	@Override
@@ -230,7 +234,8 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	public void delete(String collectionName, QueryBuilder queryBuilder) {
 		try {
 			DeleteByQueryRequestBuilder deleteByQueryRequestBuilder =
-				DeleteByQueryAction.INSTANCE.newRequestBuilder(_client);
+				new DeleteByQueryRequestBuilder(
+					_client, DeleteByQueryAction.INSTANCE);
 
 			deleteByQueryRequestBuilder = deleteByQueryRequestBuilder.filter(
 				queryBuilder);
@@ -276,7 +281,8 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		QueryBuilder queryBuilder, boolean refresh, String... collectionNames) {
 
 		DeleteByQueryRequestBuilder deleteByQueryRequestBuilder =
-			DeleteByQueryAction.INSTANCE.newRequestBuilder(_client);
+			new DeleteByQueryRequestBuilder(
+				_client, DeleteByQueryAction.INSTANCE);
 
 		deleteByQueryRequestBuilder.abortOnVersionConflict(false);
 		deleteByQueryRequestBuilder.filter(queryBuilder);
@@ -358,7 +364,9 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 		SearchHits searchHits = searchResponse.getHits();
 
-		if (searchHits.getTotalHits() < 1) {
+		TotalHits totalHits = searchHits.getTotalHits();
+
+		if (totalHits.value < 1) {
 			return null;
 		}
 
@@ -635,7 +643,8 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		}
 
 		UpdateByQueryRequestBuilder updateByQueryRequestBuilder =
-			UpdateByQueryAction.INSTANCE.newRequestBuilder(_client);
+			new UpdateByQueryRequestBuilder(
+				_client, UpdateByQueryAction.INSTANCE);
 
 		updateByQueryRequestBuilder.abortOnVersionConflict(false);
 		updateByQueryRequestBuilder.filter(queryBuilder);
@@ -744,7 +753,9 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 		SearchHits searchHits = searchResponse.getHits();
 
-		if (searchHits.getTotalHits() < 1) {
+		TotalHits totalHits = searchHits.getTotalHits();
+
+		if (totalHits.value < 1) {
 			return new JSONArray();
 		}
 
@@ -793,7 +804,9 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 			SearchHits searchHits = searchResponse.getHits();
 
-			if (searchHits.getTotalHits() > 0) {
+			TotalHits totalHits = searchHits.getTotalHits();
+
+			if (totalHits.value > 0) {
 				indices.add(getIndexAlias(collectionNames[i]));
 			}
 		}

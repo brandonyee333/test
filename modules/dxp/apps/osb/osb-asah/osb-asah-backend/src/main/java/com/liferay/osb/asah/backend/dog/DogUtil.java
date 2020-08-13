@@ -42,6 +42,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.apache.commons.logging.Log;
+import org.apache.lucene.search.TotalHits;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.ShardSearchFailure;
@@ -55,8 +56,8 @@ import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.PipelineAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.Cardinality;
 import org.elasticsearch.search.aggregations.metrics.NumericMetricsAggregation;
-import org.elasticsearch.search.aggregations.metrics.cardinality.Cardinality;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
@@ -227,7 +228,10 @@ public class DogUtil {
 		}
 
 		resultBag.setResults(models);
-		resultBag.setTotal(searchHits.getTotalHits());
+
+		TotalHits totalHits = searchHits.getTotalHits();
+
+		resultBag.setTotal(totalHits.value);
 
 		return resultBag;
 	}

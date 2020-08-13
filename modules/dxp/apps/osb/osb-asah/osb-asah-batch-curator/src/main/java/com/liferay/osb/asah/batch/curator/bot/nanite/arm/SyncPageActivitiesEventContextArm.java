@@ -28,6 +28,7 @@ import javax.annotation.PostConstruct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.search.TotalHits;
 
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkResponse;
@@ -169,7 +170,9 @@ public class SyncPageActivitiesEventContextArm {
 
 			SearchHits searchHits = searchResponse.getHits();
 
-			if (searchHits.getTotalHits() == 0) {
+			TotalHits totalHits = searchHits.getTotalHits();
+
+			if (totalHits.value == 0) {
 				continue;
 			}
 

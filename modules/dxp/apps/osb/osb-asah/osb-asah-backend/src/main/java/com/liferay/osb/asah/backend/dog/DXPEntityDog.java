@@ -35,6 +35,7 @@ import java.util.function.BiFunction;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.search.TotalHits;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -175,7 +176,9 @@ public class DXPEntityDog {
 					new JSONObject(searchHit.getSourceAsMap())));
 		}
 
-		return new ResultBag<>(dxpEntities, searchHits.getTotalHits());
+		TotalHits totalHits = searchHits.getTotalHits();
+
+		return new ResultBag<>(dxpEntities, totalHits.value);
 	}
 
 	private BoolQueryBuilder _getBoolQueryBuilder(

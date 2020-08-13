@@ -27,6 +27,7 @@ import java.util.stream.Stream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.search.TotalHits;
 
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.search.SearchResponse;
@@ -111,8 +112,9 @@ public class JSONArrayIterator {
 			SearchHit[] hits = searchHits.getHits();
 
 			if (_queueMonitorConsumer != null) {
-				long remaining =
-					searchHits.getTotalHits() - delta - processedCount;
+				TotalHits totalHits = searchHits.getTotalHits();
+
+				long remaining = totalHits.value - delta - processedCount;
 
 				_queueMonitorConsumer.accept((int)remaining);
 			}

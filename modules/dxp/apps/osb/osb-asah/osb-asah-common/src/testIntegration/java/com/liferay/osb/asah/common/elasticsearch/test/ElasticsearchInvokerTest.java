@@ -29,6 +29,7 @@ import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 import java.util.Collections;
 
 import org.apache.commons.lang3.RandomUtils;
+import org.apache.lucene.search.TotalHits;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.support.WriteRequest;
@@ -40,8 +41,8 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.metrics.sum.Sum;
-import org.elasticsearch.search.aggregations.metrics.sum.SumAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.Sum;
+import org.elasticsearch.search.aggregations.metrics.SumAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import org.json.JSONArray;
@@ -419,7 +420,9 @@ public class ElasticsearchInvokerTest {
 
 		SearchHits searchHits = searchResponse.getHits();
 
-		Assert.assertEquals(3, searchHits.totalHits);
+		TotalHits totalHits = searchHits.getTotalHits();
+
+		Assert.assertEquals(3, totalHits.value);
 
 		SearchHit[] hits = searchHits.getHits();
 

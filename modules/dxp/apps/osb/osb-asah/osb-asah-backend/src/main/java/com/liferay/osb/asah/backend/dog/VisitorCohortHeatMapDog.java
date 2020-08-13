@@ -64,8 +64,6 @@ import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.pipeline.InternalSimpleValue;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
-import org.joda.time.DateTimeZone;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -385,8 +383,7 @@ public class VisitorCohortHeatMapDog {
 		}
 
 		dateHistogramAggregationBuilder.format("8u-MM-dd");
-		dateHistogramAggregationBuilder.timeZone(
-			DateTimeZone.forID(timeZoneId));
+		dateHistogramAggregationBuilder.timeZone(ZoneId.of(timeZoneId));
 
 		return dateHistogramAggregationBuilder;
 	}

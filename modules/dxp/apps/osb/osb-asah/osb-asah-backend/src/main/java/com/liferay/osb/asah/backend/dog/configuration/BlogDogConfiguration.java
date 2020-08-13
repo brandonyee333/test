@@ -26,7 +26,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.metrics.avg.AvgAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.AvgAggregationBuilder;
 
 import org.springframework.context.annotation.Configuration;
 

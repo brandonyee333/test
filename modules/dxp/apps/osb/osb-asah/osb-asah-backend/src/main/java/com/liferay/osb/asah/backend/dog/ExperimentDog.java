@@ -64,6 +64,7 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.search.TotalHits;
 
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -73,7 +74,7 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.metrics.cardinality.CardinalityAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.CardinalityAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import org.json.JSONObject;
@@ -138,13 +139,15 @@ public class ExperimentDog {
 			"experiments", _faroInfoElasticsearchInvoker,
 			_buildExperimentSearchSourceBuilder(experimentId));
 
-		if (searchHits.getTotalHits() != 1) {
+		TotalHits totalHits = searchHits.getTotalHits();
+
+		if (totalHits.value != 1) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					String.format(
 						"Unable to retrieve experiment for the ID %s. Total " +
 							"hits returned %d.",
-						experimentId, searchHits.getTotalHits()));
+						experimentId, totalHits.value));
 			}
 
 			return null;
@@ -488,13 +491,15 @@ public class ExperimentDog {
 			"experiments", _faroInfoElasticsearchInvoker,
 			_buildExperimentMetricsSearchSourceBuilder(experimentId));
 
-		if (searchHits.getTotalHits() != 1) {
+		TotalHits totalHits = searchHits.getTotalHits();
+
+		if (totalHits.value != 1) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					String.format(
 						"Unable to retrieve experiment metrics for " +
 							"experiment ID %s. Returned %d total hits.",
-						experimentId, searchHits.getTotalHits()));
+						experimentId, totalHits.value));
 			}
 
 			return null;

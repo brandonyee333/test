@@ -35,6 +35,7 @@ import javax.annotation.PostConstruct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.search.TotalHits;
 
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -63,7 +64,9 @@ public class AccountDog {
 				_getAccountOrganizationFetchSourceExcludes(),
 				QueryBuilders.termQuery("id", id), 1, 0));
 
-		if (searchHits.getTotalHits() == 0) {
+		TotalHits totalHits = searchHits.getTotalHits();
+
+		if (totalHits.value == 0) {
 			throw new OSBAsahException(
 				HttpStatus.BAD_REQUEST, "There is no account with ID " + id);
 		}

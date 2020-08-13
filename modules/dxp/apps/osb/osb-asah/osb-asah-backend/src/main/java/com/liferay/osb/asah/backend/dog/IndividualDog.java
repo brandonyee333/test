@@ -39,6 +39,7 @@ import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.search.TotalHits;
 
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -79,7 +80,9 @@ public class IndividualDog {
 				_getIndividualDemographicsFetchSourceExcludes(),
 				QueryBuilders.termQuery("id", id), 1, 0));
 
-		if (searchHits.getTotalHits() == 0) {
+		TotalHits totalHits = searchHits.getTotalHits();
+
+		if (totalHits.value == 0) {
 			throw new OSBAsahException(
 				HttpStatus.BAD_REQUEST, "There is no individual with ID " + id);
 		}
