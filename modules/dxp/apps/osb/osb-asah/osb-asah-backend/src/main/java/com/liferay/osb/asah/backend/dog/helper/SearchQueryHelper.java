@@ -344,12 +344,13 @@ public class SearchQueryHelper {
 
 	private void _addCanonicalUrlFilter(
 		AssetType assetType, BoolQueryBuilder boolQueryBuilder,
-		String canonicalUrl) {
+		URL canonicalUrl) {
 
-		if (canonicalUrl != null) {
+		if (!canonicalUrl.equals(URL.any())) {
 			boolQueryBuilder.filter(
 				QueryBuilders.termQuery(
-					getCanonicalUrlFieldName(assetType), canonicalUrl));
+					getCanonicalUrlFieldName(assetType),
+					canonicalUrl.getURL()));
 		}
 	}
 
