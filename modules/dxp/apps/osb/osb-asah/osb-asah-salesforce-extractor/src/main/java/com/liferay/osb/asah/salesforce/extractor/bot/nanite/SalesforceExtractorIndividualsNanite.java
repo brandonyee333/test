@@ -138,7 +138,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 	}
 
 	private JSONObject _buildIndividualJSONObject(
-		JSONArray accountPKsJSONArray, String birthDate, String city,
+		JSONArray accountPKsJSONArray, String birthDateString, String city,
 		String company, String contactId, String country,
 		String currencyIsoCode, String department, String description,
 		String doNotCall, String emailAddress, String fax, String firstName,
@@ -150,7 +150,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		return JSONUtil.put(
 			"accountPKs", accountPKsJSONArray
 		).put(
-			"birthDate", birthDate
+			"birthDate", birthDateString
 		).put(
 			"city", city
 		).put(
@@ -219,17 +219,17 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 
 			String emailAddress = jsonObject.optString("Email", null);
 
-			String birthDate = jsonObject.optString("Birthdate", null);
+			String birthDateString = jsonObject.optString("Birthdate", null);
 
-			if (NumberUtils.isCreatable(birthDate) &&
-				(Long.parseLong(birthDate) < 0)) {
+			if (NumberUtils.isCreatable(birthDateString) &&
+				(Long.parseLong(birthDateString) < 0)) {
 
-				birthDate = DateUtil.toString(birthDate);
+				birthDateString = DateUtil.toString(birthDateString);
 			}
 
 			individualJSONObject = _buildIndividualJSONObject(
-				_getAccountPKsJSONArray(accountId, emailAddress), birthDate,
-				jsonObject.optString("MailingCity", null),
+				_getAccountPKsJSONArray(accountId, emailAddress),
+				birthDateString, jsonObject.optString("MailingCity", null),
 				accountJSONObject.optString("Name", null),
 				jsonObject.getString("id"),
 				jsonObject.optString("MailingCountry", null),
