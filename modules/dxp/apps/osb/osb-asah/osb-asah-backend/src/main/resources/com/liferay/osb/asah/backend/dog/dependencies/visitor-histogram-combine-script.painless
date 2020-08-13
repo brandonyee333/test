@@ -1,1 +1,1 @@
-return params._agg.minDateMap;
+return state.minDateMap;

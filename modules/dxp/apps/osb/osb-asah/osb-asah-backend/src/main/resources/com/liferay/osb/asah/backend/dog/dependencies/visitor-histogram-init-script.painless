@@ -1,1 +1,1 @@
-params._agg.minDateMap = new HashMap();
+state.minDateMap = new HashMap();
