@@ -39,6 +39,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -426,9 +427,7 @@ public class JobDog {
 		Stream<JobRun> stream = jobRuns.stream();
 
 		Optional<JobRun> lastScheduledJobRunOptional = stream.sorted(
-			Comparator.comparing(
-				JobRun::getId
-			).reversed()
+			Comparator.comparing(JobRun::getId, Collections.reverseOrder())
 		).filter(
 			jobRun -> Objects.equals(jobRun.getTrigger(), "SCHEDULE")
 		).findFirst();

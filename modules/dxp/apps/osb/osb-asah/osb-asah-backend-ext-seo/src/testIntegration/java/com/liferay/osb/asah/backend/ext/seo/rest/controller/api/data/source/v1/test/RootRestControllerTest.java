@@ -159,9 +159,12 @@ public class RootRestControllerTest {
 		);
 
 		Mockito.doAnswer(
-			invocationOnMock -> ResponseEntity.status(
-				HttpStatus.INTERNAL_SERVER_ERROR
-			).build()
+			invocationOnMock -> {
+				ResponseEntity.BodyBuilder bodyBuilder = ResponseEntity.status(
+					HttpStatus.INTERNAL_SERVER_ERROR);
+
+				return bodyBuilder.build();
+			}
 		).when(
 			_http
 		).exchangeResponseEntity(
@@ -370,9 +373,12 @@ public class RootRestControllerTest {
 		);
 
 		Mockito.doAnswer(
-			invocationOnMock -> ResponseEntity.status(
-				HttpStatus.INTERNAL_SERVER_ERROR
-			).build()
+			invocationOnMock -> {
+				ResponseEntity.BodyBuilder bodyBuilder = ResponseEntity.status(
+					HttpStatus.INTERNAL_SERVER_ERROR);
+
+				return bodyBuilder.build();
+			}
 		).when(
 			_http
 		).exchangeResponseEntity(
@@ -416,9 +422,12 @@ public class RootRestControllerTest {
 		);
 
 		Mockito.doAnswer(
-			invocationOnMock -> ResponseEntity.status(
-				HttpStatus.INTERNAL_SERVER_ERROR
-			).build()
+			invocationOnMock -> {
+				ResponseEntity.BodyBuilder bodyBuilder = ResponseEntity.status(
+					HttpStatus.INTERNAL_SERVER_ERROR);
+
+				return bodyBuilder.build();
+			}
 		).when(
 			_http
 		).exchangeResponseEntity(
@@ -442,9 +451,12 @@ public class RootRestControllerTest {
 		);
 
 		Mockito.doAnswer(
-			invocationOnMock -> ResponseEntity.status(
-				HttpStatus.INTERNAL_SERVER_ERROR
-			).build()
+			invocationOnMock -> {
+				ResponseEntity.BodyBuilder bodyBuilder = ResponseEntity.status(
+					HttpStatus.INTERNAL_SERVER_ERROR);
+
+				return bodyBuilder.build();
+			}
 		).when(
 			_http
 		).exchangeResponseEntity(

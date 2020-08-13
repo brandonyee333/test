@@ -193,14 +193,17 @@ public class IndividualDog {
 			).size(
 				Integer.MAX_VALUE
 			));
-		searchSourceBuilder.query(
+
+		BoolQueryBuilder filterBoolQueryBuilder =
 			_searchQueryHelper.createFilterBoolQueryBuilder(
 				DogUtil.getAssetIdOptional(
 					searchQueryContext.getAssetId(), dogConfiguration),
-				metricType, searchQueryContext
-			).filter(
-				QueryBuilders.termQuery("knownIndividual", true)
-			));
+				metricType, searchQueryContext);
+
+		searchSourceBuilder.query(
+			filterBoolQueryBuilder.filter(
+				QueryBuilders.termQuery("knownIndividual", true)));
+
 		searchSourceBuilder.size(0);
 
 		return searchSourceBuilder;
