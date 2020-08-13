@@ -105,7 +105,8 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertEquals(2, assetsJSONArray.length());
 
-		JSONObject assetJSONObject1 = assetsJSONArray.getJSONObject(0);
+		JSONObject assetJSONObject1 = JSONUtil.find(
+			assetsJSONArray, "id", "386700631786606770");
 
 		Assert.assertThat(
 			new String[] {"2"},
@@ -113,7 +114,8 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 				JSONUtil.toStringArray(
 					assetJSONObject1.getJSONArray("channelIds"))));
 
-		JSONObject assetJSONObject2 = assetsJSONArray.getJSONObject(1);
+		JSONObject assetJSONObject2 = JSONUtil.find(
+			assetsJSONArray, "id", "386700631786606772");
 
 		Assert.assertThat(
 			new String[] {"2", "4"},
