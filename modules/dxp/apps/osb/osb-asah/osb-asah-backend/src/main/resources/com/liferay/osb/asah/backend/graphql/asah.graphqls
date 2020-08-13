@@ -138,6 +138,7 @@ type BlogMetric implements AssetMetric {
 	assetMetrics: [AssetMetric]
 	assetTitle: String
 	assetType: String
+	canonicalUrls: [String]
 	commentsMetric: Metric
 	dataSourceId: String
 	defaultMetric: Metric
@@ -173,6 +174,7 @@ type CustomAssetMetric implements AssetMetric {
 	assetMetrics: [AssetMetric]
 	assetTitle: String
 	assetType: String
+	canonicalUrls: [String]
 	clicksMetric: Metric
 	completionTimeMetric: Metric
 	dataSourceId: String
@@ -228,6 +230,7 @@ type DocumentMetric implements AssetMetric {
 	assetMetrics: [AssetMetric]
 	assetTitle: String
 	assetType: String
+	canonicalUrls: [String]
 	commentsMetric: Metric
 	dataSourceId: String
 	defaultMetric: Metric
@@ -312,6 +315,7 @@ type FormMetric implements AssetMetric {
 	assetMetrics: [AssetMetric]
 	assetTitle: String
 	assetType: String
+	canonicalUrls: [String]
 	completionTimeMetric: Metric
 	dataSourceId: String
 	defaultMetric: Metric
@@ -424,6 +428,7 @@ type JournalMetric implements AssetMetric {
 	assetMetrics: [AssetMetric]
 	assetTitle: String
 	assetType: String
+	canonicalUrls: [String]
 	dataSourceId: String
 	defaultMetric: Metric
 	urls: [String]
@@ -624,6 +629,7 @@ type QueryType {
 
 	blog(
 		assetId: String!,
+		canonicalUrl: String,
 		channelId: String,
 		country: String,
 		deviceType: String,
@@ -632,7 +638,7 @@ type QueryType {
 		rangeKey: Int,
 		rangeStart: String,
 		title: String,
-		url: String!
+		url: String
 	): BlogMetric
 
 	blogs(
@@ -648,6 +654,7 @@ type QueryType {
 
 	custom(
 		assetId: String!,
+		canonicalUrl: String,
 		channelId: String,
 		country: String,
 		deviceType: String,
@@ -656,7 +663,7 @@ type QueryType {
 		rangeKey: Int,
 		rangeStart: String,
 		title: String,
-		url: String!
+		url: String
 	): CustomAssetMetric
 
 	dashboard(
@@ -695,6 +702,7 @@ type QueryType {
 
 	document(
 		assetId: String!,
+		canonicalUrl: String,
 		channelId: String,
 		country: String,
 		deviceType: String,
@@ -703,7 +711,7 @@ type QueryType {
 		rangeKey: Int,
 		rangeStart: String,
 		title: String,
-		url: String!
+		url: String
 	): DocumentMetric
 
 	documents(
@@ -736,6 +744,7 @@ type QueryType {
 
 	form(
 		assetId: String!,
+		canonicalUrl: String,
 		channelId: String,
 		country: String,
 		deviceType: String,
@@ -744,7 +753,7 @@ type QueryType {
 		rangeKey: Int,
 		rangeStart: String,
 		title: String,
-		url: String!
+		url: String
 	): FormMetric
 
 	forms(
@@ -819,6 +828,7 @@ type QueryType {
 
 	journal(
 		assetId: String!,
+		canonicalUrl: String,
 		channelId: String,
 		country: String,
 		deviceType: String,
@@ -827,7 +837,7 @@ type QueryType {
 		rangeKey: Int,
 		rangeStart: String,
 		title: String,
-		url: String!
+		url: String
 	): JournalMetric
 
 	journals(
