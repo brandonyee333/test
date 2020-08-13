@@ -141,16 +141,7 @@ public abstract class BaseDogConfiguration implements DogConfiguration {
 			valueSumFieldName);
 
 		sumAggregationBuilder.script(
-			new Script(
-				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
-				"doc[params.valueFieldName].value * " +
-					"doc[params.weightFieldName].value",
-				new HashMap() {
-					{
-						put("valueFieldName", valueFieldName);
-						put("weightFieldName", weightFieldName);
-					}
-				}));
+			_createMultiplicationScript(valueFieldName, weightFieldName));
 
 		builder.aggregate(sumAggregationBuilder);
 
@@ -223,6 +214,24 @@ public abstract class BaseDogConfiguration implements DogConfiguration {
 		sb.append("_field / params.");
 		sb.append(metricFieldName2);
 		sb.append(" : 0");
+
+		return new Script(sb.toString());
+	}
+
+	private Script _createMultiplicationScript(
+		String metricFieldName1, String metricFieldName2) {
+
+		StringBundler sb = new StringBundler(9);
+
+		sb.append("(doc['");
+		sb.append(metricFieldName1);
+		sb.append("'].length > 0 ? doc['");
+		sb.append(metricFieldName1);
+		sb.append("'].value : 0) * (doc['");
+		sb.append(metricFieldName2);
+		sb.append("'].length > 0 ? doc['");
+		sb.append(metricFieldName2);
+		sb.append("'].value : 0)");
 
 		return new Script(sb.toString());
 	}

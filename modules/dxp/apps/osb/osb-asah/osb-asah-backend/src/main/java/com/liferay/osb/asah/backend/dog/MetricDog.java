@@ -24,13 +24,13 @@ import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.URL;
+import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.petra.string.CharPool;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -42,7 +42,6 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.elasticsearch.script.Script;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
@@ -219,8 +218,10 @@ public class MetricDog {
 			dogConfiguration.getAssetResolver();
 
 		cardinalityAggregationBuilder.script(
-			_createPrimaryKeyAggregationScript(
-				assetResolver.getAssetIdFieldName()));
+			ScriptUtil.createScript(
+				getClass(), "primary-key-aggregation-script.painless",
+				Collections.singletonMap(
+					"assetIdFieldName", assetResolver.getAssetIdFieldName())));
 
 		cardinalityAggregationBuilder.precisionThreshold(1000);
 
@@ -342,18 +343,6 @@ public class MetricDog {
 			metricType.getAggregationName(), SortOrder.DESC);
 	}
 
-	private Script _createPrimaryKeyAggregationScript(String assetIdFieldName) {
-		return new Script(
-			Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
-			"doc[params.assetIdFieldName].value + '@' + doc['title'].value + " +
-				"'@' + doc['dataSourceId'].value",
-			new HashMap() {
-				{
-					put("assetIdFieldName", assetIdFieldName);
-				}
-			});
-	}
-
 	private TermsAggregationBuilder _createTermsAggregationBuilder(
 		AssetResolver<AssetMetric> assetResolver, int size) {
 
@@ -361,8 +350,10 @@ public class MetricDog {
 			AggregationBuilders.terms("terms");
 
 		termsAggregationBuilder.script(
-			_createPrimaryKeyAggregationScript(
-				assetResolver.getAssetIdFieldName()));
+			ScriptUtil.createScript(
+				getClass(), "primary-key-aggregation-script.painless",
+				Collections.singletonMap(
+					"assetIdFieldName", assetResolver.getAssetIdFieldName())));
 
 		if (size > 0) {
 			termsAggregationBuilder.size(size);

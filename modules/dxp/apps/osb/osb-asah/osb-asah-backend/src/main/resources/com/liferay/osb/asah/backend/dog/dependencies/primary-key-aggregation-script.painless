@@ -1,0 +1,28 @@
+def primaryKey = "";
+
+if (doc[params.assetIdFieldName].length > 0) {
+	primaryKey += doc[params.assetIdFieldName].value;
+}
+else {
+	primaryKey += "null";
+}
+
+primaryKey += "@";
+
+if (doc.title.length > 0) {
+	primaryKey += doc.title.value;
+}
+else {
+	primaryKey += "null";
+}
+
+primaryKey += "@";
+
+if (doc.dataSourceId.length > 0) {
+	primaryKey += doc.dataSourceId.value;
+}
+else {
+	primaryKey += "null";
+}
+
+return primaryKey;
