@@ -89,15 +89,7 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 				dataSourceJSONObject);
 		}
 
-		_messageBus.sendMessage(
-			Channel.DATA_SOURCES,
-			JSONUtil.put(
-				"channelId", dataSourceJSONObject.optString("channelId")
-			).put(
-				"dataSourceId", dataSourceJSONObject.getString("id")
-			).put(
-				"event", "add"
-			).toString());
+		_messageBus.sendMessage(Channel.DATA_SOURCES, "");
 
 		return elasticsearchInvoker.update(
 			"data-sources", dataSourceJSONObject.getString("id"),
@@ -131,13 +123,7 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 			_nanitesHttp.refreshAnalytics();
 		}
 
-		_messageBus.sendMessage(
-			Channel.DATA_SOURCES,
-			JSONUtil.put(
-				"dataSourceId", dataSourceId
-			).put(
-				"event", "delete"
-			).toString());
+		_messageBus.sendMessage(Channel.DATA_SOURCES, "");
 	}
 
 	public void deleteFieldMappings(
