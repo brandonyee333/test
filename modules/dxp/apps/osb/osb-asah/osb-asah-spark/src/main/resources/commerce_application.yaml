@@ -7,7 +7,8 @@ es:
             auth:
                 pass: $ES_NET_HTTP_AUTH_PASS
                 user: $ES_NET_HTTP_AUTH_USER
-    nodes: http://localhost:9200
+    nodes: http://localhost
+    port: 9200
 google:
   storage:
     bucket: gs://analytics-cloud-analytics-events-uat

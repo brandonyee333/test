@@ -62,6 +62,7 @@ class ContentRecommendationApplication(BaseSparkApplication):
 		)
 		spark_conf.set('es.nodes', self.configuration.get('es.nodes'))
 		spark_conf.set('es.nodes.wan.only', 'true')
+		spark_conf.set('es.port', self.configuration.get('es.port'))
 		spark_conf.set(
 		    'fs.s3a.access.key', self.configuration.get('aws.access.key.id')
 		)
