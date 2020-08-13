@@ -91,7 +91,7 @@ public class DataSourceCache implements MessageListener {
 
 		_cacheDataSources();
 
-		_messageBus.registerMessageListener(Channel.DATA_SOURCES, this);
+		_messageBus.registerMessageListener(Channel.DATA_SOURCES_UPDATED, this);
 	}
 
 	private Map<String, String> _channelIds;
