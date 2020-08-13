@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
@@ -28,7 +29,6 @@ import javax.annotation.PostConstruct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.search.TotalHits;
 
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkResponse;
@@ -168,11 +168,13 @@ public class SyncPageActivitiesEventContextArm {
 			SearchResponse searchResponse =
 				multiSearchItemResponse.getResponse();
 
+			if (searchResponse == null) {
+				continue;
+			}
+
 			SearchHits searchHits = searchResponse.getHits();
 
-			TotalHits totalHits = searchHits.getTotalHits();
-
-			if (totalHits.value == 0) {
+			if (!HitsUtil.hasHits(searchHits)) {
 				continue;
 			}
 

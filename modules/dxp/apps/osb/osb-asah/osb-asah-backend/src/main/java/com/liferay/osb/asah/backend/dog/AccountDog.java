@@ -19,6 +19,7 @@ import com.liferay.osb.asah.backend.model.FieldMapping;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
@@ -35,7 +36,6 @@ import javax.annotation.PostConstruct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.search.TotalHits;
 
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -64,9 +64,7 @@ public class AccountDog {
 				_getAccountOrganizationFetchSourceExcludes(),
 				QueryBuilders.termQuery("id", id), 1, 0));
 
-		TotalHits totalHits = searchHits.getTotalHits();
-
-		if (totalHits.value == 0) {
+		if (!HitsUtil.hasHits(searchHits)) {
 			throw new OSBAsahException(
 				HttpStatus.BAD_REQUEST, "There is no account with ID " + id);
 		}

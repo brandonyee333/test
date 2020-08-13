@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.json;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.function.UnsafeFunction;
 import com.liferay.osb.asah.common.function.UnsafeRunnable;
 
@@ -27,7 +28,6 @@ import java.util.stream.Stream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.search.TotalHits;
 
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.search.SearchResponse;
@@ -112,9 +112,9 @@ public class JSONArrayIterator {
 			SearchHit[] hits = searchHits.getHits();
 
 			if (_queueMonitorConsumer != null) {
-				TotalHits totalHits = searchHits.getTotalHits();
-
-				long remaining = totalHits.value - delta - processedCount;
+				long remaining =
+					HitsUtil.getTotalHitsCount(searchHits) - delta -
+						processedCount;
 
 				_queueMonitorConsumer.accept((int)remaining);
 			}

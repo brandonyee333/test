@@ -20,6 +20,7 @@ import com.liferay.osb.asah.backend.model.User;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.ResultBag;
@@ -35,7 +36,6 @@ import java.util.function.BiFunction;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.lucene.search.TotalHits;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -176,9 +176,8 @@ public class DXPEntityDog {
 					new JSONObject(searchHit.getSourceAsMap())));
 		}
 
-		TotalHits totalHits = searchHits.getTotalHits();
-
-		return new ResultBag<>(dxpEntities, totalHits.value);
+		return new ResultBag<>(
+			dxpEntities, HitsUtil.getTotalHitsCount(searchHits));
 	}
 
 	private BoolQueryBuilder _getBoolQueryBuilder(

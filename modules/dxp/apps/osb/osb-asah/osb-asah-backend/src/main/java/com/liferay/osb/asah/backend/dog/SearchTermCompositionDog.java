@@ -21,18 +21,16 @@ import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.lucene.search.TotalHits;
-
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.BucketOrder;
@@ -120,12 +118,9 @@ public class SearchTermCompositionDog {
 
 		InternalCardinality internalCardinality = aggregations.get("total");
 
-		SearchHits searchHits = searchResponse.getHits();
-
-		TotalHits totalHits = searchHits.getTotalHits();
-
 		return new CompositionResultBag(
-			compositions, internalCardinality.getValue(), totalHits.value);
+			compositions, internalCardinality.getValue(),
+			HitsUtil.getTotalHitsCount(searchResponse.getHits()));
 	}
 
 	@PostConstruct

@@ -35,6 +35,7 @@ import com.liferay.osb.asah.common.dxp.DXPClient;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
@@ -64,7 +65,6 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.search.TotalHits;
 
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -139,15 +139,15 @@ public class ExperimentDog {
 			"experiments", _faroInfoElasticsearchInvoker,
 			_buildExperimentSearchSourceBuilder(experimentId));
 
-		TotalHits totalHits = searchHits.getTotalHits();
+		long totalHitsCount = HitsUtil.getTotalHitsCount(searchHits);
 
-		if (totalHits.value != 1) {
+		if (totalHitsCount != 1) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					String.format(
 						"Unable to retrieve experiment for the ID %s. Total " +
 							"hits returned %d.",
-						experimentId, totalHits.value));
+						experimentId, totalHitsCount));
 			}
 
 			return null;
@@ -491,15 +491,15 @@ public class ExperimentDog {
 			"experiments", _faroInfoElasticsearchInvoker,
 			_buildExperimentMetricsSearchSourceBuilder(experimentId));
 
-		TotalHits totalHits = searchHits.getTotalHits();
+		long totalHitsCount = HitsUtil.getTotalHitsCount(searchHits);
 
-		if (totalHits.value != 1) {
+		if (totalHitsCount != 1) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					String.format(
 						"Unable to retrieve experiment metrics for " +
 							"experiment ID %s. Returned %d total hits.",
-						experimentId, totalHits.value));
+						experimentId, totalHitsCount));
 			}
 
 			return null;

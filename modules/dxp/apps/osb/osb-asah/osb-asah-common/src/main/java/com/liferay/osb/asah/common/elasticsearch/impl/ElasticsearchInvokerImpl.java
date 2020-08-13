@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.elasticsearch.ClientUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +31,6 @@ import java.util.stream.Stream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.search.TotalHits;
 
 import org.elasticsearch.ResourceNotFoundException;
 import org.elasticsearch.action.ActionFuture;
@@ -210,11 +210,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 		SearchResponse searchResponse = searchRequestBuilder.get();
 
-		SearchHits searchHits = searchResponse.getHits();
-
-		TotalHits totalHits = searchHits.getTotalHits();
-
-		return totalHits.value;
+		return HitsUtil.getTotalHitsCount(searchResponse.getHits());
 	}
 
 	@Override
@@ -364,9 +360,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 		SearchHits searchHits = searchResponse.getHits();
 
-		TotalHits totalHits = searchHits.getTotalHits();
-
-		if (totalHits.value < 1) {
+		if (!HitsUtil.hasHits(searchHits)) {
 			return null;
 		}
 
@@ -753,9 +747,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 		SearchHits searchHits = searchResponse.getHits();
 
-		TotalHits totalHits = searchHits.getTotalHits();
-
-		if (totalHits.value < 1) {
+		if (!HitsUtil.hasHits(searchHits)) {
 			return new JSONArray();
 		}
 
@@ -802,11 +794,13 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 			SearchResponse searchResponse =
 				multiSearchResponseItem.getResponse();
 
+			if (searchResponse == null) {
+				continue;
+			}
+
 			SearchHits searchHits = searchResponse.getHits();
 
-			TotalHits totalHits = searchHits.getTotalHits();
-
-			if (totalHits.value > 0) {
+			if (HitsUtil.hasHits(searchHits)) {
 				indices.add(getIndexAlias(collectionNames[i]));
 			}
 		}

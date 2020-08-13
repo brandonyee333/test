@@ -27,6 +27,7 @@ import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
 import com.liferay.osb.asah.backend.model.AssetId;
 import com.liferay.osb.asah.backend.model.PropertyFilter;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.ResultBag;
 
@@ -42,7 +43,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.apache.commons.logging.Log;
-import org.apache.lucene.search.TotalHits;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.ShardSearchFailure;
@@ -228,10 +228,7 @@ public class DogUtil {
 		}
 
 		resultBag.setResults(models);
-
-		TotalHits totalHits = searchHits.getTotalHits();
-
-		resultBag.setTotal(totalHits.value);
+		resultBag.setTotal(HitsUtil.getTotalHitsCount(searchHits));
 
 		return resultBag;
 	}

@@ -22,8 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.apache.lucene.search.TotalHits;
-
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
@@ -137,9 +135,7 @@ public class ElasticsearchRepository<T> {
 					searchHit.getSourceAsMap(), _modelClass));
 		}
 
-		TotalHits totalHits = searchHits.getTotalHits();
-
-		return new ResultBag<>(results, totalHits.value);
+		return new ResultBag<>(results, HitsUtil.getTotalHitsCount(searchHits));
 	}
 
 	private JSONObject _toJSONObject(T model) {

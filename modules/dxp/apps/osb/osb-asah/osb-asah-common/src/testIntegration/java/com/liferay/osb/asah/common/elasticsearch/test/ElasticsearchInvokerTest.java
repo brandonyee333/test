@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchConnection;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerImpl;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
@@ -29,7 +30,6 @@ import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 import java.util.Collections;
 
 import org.apache.commons.lang3.RandomUtils;
-import org.apache.lucene.search.TotalHits;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.support.WriteRequest;
@@ -420,9 +420,7 @@ public class ElasticsearchInvokerTest {
 
 		SearchHits searchHits = searchResponse.getHits();
 
-		TotalHits totalHits = searchHits.getTotalHits();
-
-		Assert.assertEquals(3, totalHits.value);
+		Assert.assertEquals(3, HitsUtil.getTotalHitsCount(searchHits));
 
 		SearchHit[] hits = searchHits.getHits();
 

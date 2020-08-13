@@ -148,8 +148,10 @@ public class ElasticsearchIndexManagerImpl
 				_getTemplates(
 					indicesAdminClient, templateNames.toArray(new String[0]))) {
 
-			if (indexTemplateMetadata.getVersion() >=
-					ReleaseInfo.getSchemaVersion()) {
+			Integer version = indexTemplateMetadata.getVersion();
+
+			if ((version != null) &&
+				(version >= ReleaseInfo.getSchemaVersion())) {
 
 				configurationJSONObjects.remove(
 					indexTemplateMetadata.getName());

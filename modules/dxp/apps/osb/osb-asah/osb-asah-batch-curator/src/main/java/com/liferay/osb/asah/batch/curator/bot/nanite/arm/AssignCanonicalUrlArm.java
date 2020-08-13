@@ -17,6 +17,7 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.arm;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 
 import java.util.Collections;
@@ -29,13 +30,11 @@ import javax.annotation.PostConstruct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.search.TotalHits;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
-import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
@@ -177,14 +176,11 @@ public class AssignCanonicalUrlArm {
 			}
 
 			if (_log.isInfoEnabled()) {
-				SearchHits searchHits = searchResponse.getHits();
-
-				TotalHits totalHits = searchHits.getTotalHits();
-
 				_log.info(
 					String.format(
 						"%d documents left to be processed in %s index.",
-						totalHits.value, collectionName));
+						HitsUtil.getTotalHitsCount(searchResponse.getHits()),
+						collectionName));
 			}
 
 			for (Terms.Bucket termsBucket : termsBuckets) {

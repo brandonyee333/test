@@ -23,6 +23,7 @@ import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
@@ -39,7 +40,6 @@ import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.lucene.search.TotalHits;
 
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -80,9 +80,7 @@ public class IndividualDog {
 				_getIndividualDemographicsFetchSourceExcludes(),
 				QueryBuilders.termQuery("id", id), 1, 0));
 
-		TotalHits totalHits = searchHits.getTotalHits();
-
-		if (totalHits.value == 0) {
+		if (!HitsUtil.hasHits(searchHits)) {
 			throw new OSBAsahException(
 				HttpStatus.BAD_REQUEST, "There is no individual with ID " + id);
 		}

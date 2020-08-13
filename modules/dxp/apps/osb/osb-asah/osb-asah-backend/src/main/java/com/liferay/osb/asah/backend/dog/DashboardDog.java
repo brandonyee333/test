@@ -24,6 +24,7 @@ import com.liferay.osb.asah.backend.model.Dashboard;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.ResultBag;
@@ -43,7 +44,6 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.search.TotalHits;
 
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -74,15 +74,15 @@ public class DashboardDog {
 			"custom-asset-dashboards", _cerebroInfoElasticsearchInvoker,
 			_buildDashboardSearchSourceBuilder(dashboardId));
 
-		TotalHits totalHits = searchHits.getTotalHits();
+		long totalHitsCount = HitsUtil.getTotalHitsCount(searchHits);
 
-		if (totalHits.value != 1) {
+		if (totalHitsCount != 1) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					String.format(
 						"Unable to retrieve the dashboard definition for the " +
 							"dashboard ID %s. Returned %d total hits.",
-						dashboardId, totalHits.value));
+						dashboardId, totalHitsCount));
 			}
 
 			return null;
@@ -122,10 +122,7 @@ public class DashboardDog {
 			}
 
 			resultBag.setResults(dashboards);
-
-			TotalHits totalHits = searchHits.getTotalHits();
-
-			resultBag.setTotal(totalHits.value);
+			resultBag.setTotal(HitsUtil.getTotalHitsCount(searchHits));
 
 			return resultBag;
 		}
