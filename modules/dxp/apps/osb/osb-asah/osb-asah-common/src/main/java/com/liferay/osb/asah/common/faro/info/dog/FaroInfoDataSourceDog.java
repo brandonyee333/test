@@ -89,11 +89,13 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 				dataSourceJSONObject);
 		}
 
-		_messageBus.sendMessage(Channel.DATA_SOURCES_UPDATED, "");
-
-		return elasticsearchInvoker.update(
+		dataSourceJSONObject = elasticsearchInvoker.update(
 			"data-sources", dataSourceJSONObject.getString("id"),
 			dataSourceJSONObject);
+
+		_messageBus.sendMessage(Channel.DATA_SOURCES_UPDATED, "");
+
+		return dataSourceJSONObject;
 	}
 
 	public void deleteDataSource(
