@@ -36,7 +36,6 @@ import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataException;
-import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerRegistryUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
@@ -137,11 +136,7 @@ public class AssetPublisherExportImportPortletPreferencesProcessor
 		throws PortletDataException {
 
 		try {
-			if (MapUtil.getBoolean(
-					portletDataContext.getParameterMap(),
-					PortletDataHandlerKeys.PORTLET_DATA) &&
-				!MergeLayoutPrototypesThreadLocal.isInProgress()) {
-
+			if (!MergeLayoutPrototypesThreadLocal.isInProgress()) {
 				exportAssetObjects(portletDataContext, portletPreferences);
 			}
 
