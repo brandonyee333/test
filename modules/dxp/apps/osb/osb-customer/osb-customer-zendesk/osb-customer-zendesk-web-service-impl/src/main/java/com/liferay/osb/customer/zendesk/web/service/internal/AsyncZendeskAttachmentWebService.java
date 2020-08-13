@@ -17,6 +17,7 @@ package com.liferay.osb.customer.zendesk.web.service.internal;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskRequest;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskAttachmentWebService;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -40,10 +41,10 @@ public class AsyncZendeskAttachmentWebService
 			long zendeskAttachmentId)
 		throws PortalException {
 
-		String endpoint =
-			ZendeskRESTEndpoints.URL_API_V2 + "tickets/" + zendeskTicketId +
-				"/comments/" + zendeskTicketCommentId + "/attachments/" +
-					zendeskAttachmentId + "/redact.json";
+		String endpoint = StringBundler.concat(
+			ZendeskRESTEndpoints.URL_API_V2, "tickets/", zendeskTicketId,
+			"/comments/", zendeskTicketCommentId, "/attachments/",
+			zendeskAttachmentId, "/redact.json");
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
