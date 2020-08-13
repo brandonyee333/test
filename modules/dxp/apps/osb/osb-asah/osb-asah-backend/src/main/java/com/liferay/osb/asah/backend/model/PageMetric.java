@@ -81,11 +81,11 @@ public class PageMetric implements AssetMetric {
 
 	@Override
 	public String getAssetId() {
-		if ((_urls == null) || _urls.isEmpty()) {
+		if ((_canonicalUrls == null) || _canonicalUrls.isEmpty()) {
 			return null;
 		}
 
-		return _urls.get(0);
+		return _canonicalUrls.get(0);
 	}
 
 	@Override
@@ -225,7 +225,7 @@ public class PageMetric implements AssetMetric {
 
 	@Override
 	public void setAssetId(String assetId) {
-		_urls = Collections.singletonList(assetId);
+		_canonicalUrls = Collections.singletonList(assetId);
 	}
 
 	@Override

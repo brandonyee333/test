@@ -45,9 +45,9 @@ public class PageDataFetcher extends BaseDataFetcher<List<AssetMetric>> {
 
 		AssetMetric assetMetric = _metricDog.getAssetMetric(searchQueryContext);
 
-		List<String> urls = assetMetric.getURLs();
+		List<String> canonicalUrls = assetMetric.getCanonicalUrls();
 
-		if (urls.isEmpty()) {
+		if (canonicalUrls.isEmpty()) {
 			return Collections.emptyList();
 		}
 
@@ -56,7 +56,7 @@ public class PageDataFetcher extends BaseDataFetcher<List<AssetMetric>> {
 		Map<String, Object> context = dataFetchingEnvironment.getContext();
 
 		return _metricDog.getAssetMetrics(
-			new HashSet<>(urls), searchQueryContext,
+			new HashSet<>(canonicalUrls), searchQueryContext,
 			(Set<String>)context.get("selectedMetrics"), 1000, null, 0);
 	}
 
