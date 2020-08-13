@@ -8,6 +8,28 @@
 				"accessDates": {
 					"type": "date"
 				},
+				"acquisition": {
+					"properties": {
+						"campaign": {
+							"type": "keyword"
+						},
+						"channel": {
+							"type": "keyword"
+						},
+						"content": {
+							"type": "keyword"
+						},
+						"medium": {
+							"type": "keyword"
+						},
+						"source": {
+							"type": "keyword"
+						},
+						"term": {
+							"type": "keyword"
+						}
+					}
+				},
 				"browserName": {
 					"type": "keyword"
 				},
