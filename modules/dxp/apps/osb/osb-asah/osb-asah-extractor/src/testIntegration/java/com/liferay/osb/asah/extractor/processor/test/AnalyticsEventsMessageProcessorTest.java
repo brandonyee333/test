@@ -14,11 +14,14 @@
 
 package com.liferay.osb.asah.extractor.processor.test;
 
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.extractor.cache.DataSourceCache;
 import com.liferay.osb.asah.extractor.processor.AnalyticsEventsMessageProcessor;
 import com.liferay.osb.asah.extractor.spring.OSBAsahExtractorSpringBootApplication;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -53,8 +56,7 @@ public class AnalyticsEventsMessageProcessorTest {
 	)
 	@Test
 	public void testProcessQueuedMessages() throws Exception {
-		ReflectionTestUtils.invokeMethod(
-			_analyticsEventsMessageProcessor, "_cacheActiveDataSourceIds");
+		ReflectionTestUtils.invokeMethod(_dataSourceCache, "_cacheDataSources");
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
@@ -87,10 +89,7 @@ public class AnalyticsEventsMessageProcessorTest {
 	public void testProcessQueuedMessagesAssignMissingChannelId()
 		throws Exception {
 
-		ReflectionTestUtils.invokeMethod(
-			_analyticsEventsMessageProcessor, "_cacheActiveDataSourceIds");
-		ReflectionTestUtils.invokeMethod(
-			_analyticsEventsMessageProcessor, "_cacheChannelIds");
+		ReflectionTestUtils.invokeMethod(_dataSourceCache, "_cacheDataSources");
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
@@ -116,19 +115,20 @@ public class AnalyticsEventsMessageProcessorTest {
 	public void testProcessQueuedMessagesDataSourceCreatedDynamically()
 		throws Exception {
 
-		ReflectionTestUtils.invokeMethod(
-			_analyticsEventsMessageProcessor, "_cacheActiveDataSourceIds");
-		ReflectionTestUtils.invokeMethod(
-			_analyticsEventsMessageProcessor, "_cacheChannelIds");
+		ReflectionTestUtils.invokeMethod(_dataSourceCache, "_cacheDataSources");
 
-		_analyticsEventsMessageProcessor.onMessage(
+		ElasticsearchInvoker elasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
+
+		elasticsearchInvoker.add(
+			"data-sources",
 			JSONUtil.put(
 				"channelId", "999"
 			).put(
-				"dataSourceId", "990121114030678099"
-			).put(
-				"event", "add"
-			).toString());
+				"id", "990121114030678099"
+			));
+
+		_dataSourceCache.onMessage("");
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
@@ -150,10 +150,7 @@ public class AnalyticsEventsMessageProcessorTest {
 	public void testProcessQueuedMessagesDiscardDueMissingChannelId()
 		throws Exception {
 
-		ReflectionTestUtils.invokeMethod(
-			_analyticsEventsMessageProcessor, "_cacheActiveDataSourceIds");
-		ReflectionTestUtils.invokeMethod(
-			_analyticsEventsMessageProcessor, "_cacheChannelIds");
+		ReflectionTestUtils.invokeMethod(_dataSourceCache, "_cacheDataSources");
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
@@ -176,10 +173,7 @@ public class AnalyticsEventsMessageProcessorTest {
 	public void testProcessQueuedMessagesMissingCanonicalUrl()
 		throws Exception {
 
-		ReflectionTestUtils.invokeMethod(
-			_analyticsEventsMessageProcessor, "_cacheActiveDataSourceIds");
-		ReflectionTestUtils.invokeMethod(
-			_analyticsEventsMessageProcessor, "_cacheChannelIds");
+		ReflectionTestUtils.invokeMethod(_dataSourceCache, "_cacheDataSources");
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
@@ -206,10 +200,7 @@ public class AnalyticsEventsMessageProcessorTest {
 	public void testProcessQueuedMessagesNotReplacingCanonicalUrl()
 		throws Exception {
 
-		ReflectionTestUtils.invokeMethod(
-			_analyticsEventsMessageProcessor, "_cacheActiveDataSourceIds");
-		ReflectionTestUtils.invokeMethod(
-			_analyticsEventsMessageProcessor, "_cacheChannelIds");
+		ReflectionTestUtils.invokeMethod(_dataSourceCache, "_cacheDataSources");
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
@@ -226,6 +217,12 @@ public class AnalyticsEventsMessageProcessorTest {
 
 	@Autowired
 	private AnalyticsEventsMessageProcessor _analyticsEventsMessageProcessor;
+
+	@Autowired
+	private DataSourceCache _dataSourceCache;
+
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_PAGE)
 	private MessageSubscriber _messageSubscriber;
