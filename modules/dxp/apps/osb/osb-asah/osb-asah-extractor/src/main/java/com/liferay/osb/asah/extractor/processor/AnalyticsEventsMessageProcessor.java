@@ -24,7 +24,6 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
-import com.liferay.osb.asah.common.messaging.MessageListener;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.AnalyticsEventsMessage;
@@ -34,6 +33,7 @@ import com.liferay.osb.asah.common.storage.StorageConfiguration;
 import com.liferay.osb.asah.common.storage.StorageFactory;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
+import com.liferay.osb.asah.extractor.cache.DataSourceCache;
 import com.liferay.osb.asah.extractor.fiftyonedegrees.FiftyOneDegreesDevice;
 import com.liferay.osb.asah.extractor.fiftyonedegrees.FiftyOneDegreesEngine;
 import com.liferay.osb.asah.extractor.ip.geocoder.IPGeocoder;
@@ -41,15 +41,11 @@ import com.liferay.osb.asah.extractor.ip.geocoder.IPInfo;
 
 import io.prometheus.client.Counter;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -70,28 +66,7 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-public class AnalyticsEventsMessageProcessor implements MessageListener {
-
-	@Override
-	public void onMessage(String message) {
-		JSONObject jsonObject = new JSONObject(message);
-
-		String dataSourceId = jsonObject.getString("dataSourceId");
-
-		if (Objects.equals(jsonObject.getString("event"), "add")) {
-			_activeDataSourceIds.add(dataSourceId);
-
-			String channelId = jsonObject.optString("channelId");
-
-			if (StringUtils.isNotBlank(channelId)) {
-				_channelIds.put(dataSourceId, channelId);
-			}
-		}
-		else {
-			_activeDataSourceIds.remove(dataSourceId);
-			_channelIds.remove(dataSourceId);
-		}
-	}
+public class AnalyticsEventsMessageProcessor {
 
 	public void processQueuedMessages() throws Exception {
 		while (true) {
@@ -145,38 +120,6 @@ public class AnalyticsEventsMessageProcessor implements MessageListener {
 					JSONUtil.put("channelIds", channelIds));
 			}
 		}
-	}
-
-	private void _cacheActiveDataSourceIds() {
-		_activeDataSourceIds = new HashSet<>();
-
-		JSONArray jsonArray = _faroInfoElasticsearchInvoker.get(
-			"data-sources", QueryBuilders.matchAllQuery());
-
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			_activeDataSourceIds.add(jsonObject.getString("id"));
-		}
-	}
-
-	private void _cacheChannelIds() {
-		_channelIds = new HashMap<>();
-
-		JSONArray jsonArray = _faroInfoElasticsearchInvoker.get(
-			"data-sources", QueryBuilders.existsQuery("channelId"));
-
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			_channelIds.put(
-				jsonObject.getString("id"), jsonObject.getString("channelId"));
-		}
-	}
-
-	@PreDestroy
-	private void _destroy() {
-		_messageBus.unregisterMessageListener(this);
 	}
 
 	private JSONObject _getAnalyticsDataJSONObject(
@@ -243,7 +186,7 @@ public class AnalyticsEventsMessageProcessor implements MessageListener {
 			if (StringUtil.isNull(channelId) ||
 				StringUtils.isBlank(channelId)) {
 
-				channelId = _channelIds.get(dataSourceId);
+				channelId = _dataSourceCache.getChannelId(dataSourceId);
 
 				if (StringUtils.isBlank(channelId)) {
 					if (_log.isDebugEnabled()) {
@@ -348,11 +291,6 @@ public class AnalyticsEventsMessageProcessor implements MessageListener {
 		_faroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forFaroInfo();
 
-		_cacheActiveDataSourceIds();
-		_cacheChannelIds();
-
-		_messageBus.registerMessageListener(Channel.DATA_SOURCES, this);
-
 		StorageConfiguration.Builder builder = StorageConfiguration.builder(
 			_analyticsEventsStoragePath);
 
@@ -374,7 +312,7 @@ public class AnalyticsEventsMessageProcessor implements MessageListener {
 	private boolean _isDataSourceActive(
 		AnalyticsEventsMessage analyticsEventsMessage) {
 
-		if (_activeDataSourceIds.contains(
+		if (_dataSourceCache.isValidDataSourceId(
 				analyticsEventsMessage.getDataSourceId())) {
 
 			return true;
@@ -416,8 +354,6 @@ public class AnalyticsEventsMessageProcessor implements MessageListener {
 		}
 	};
 
-	private Set<String> _activeDataSourceIds;
-
 	@Value(
 		"${osb.asah.analytics.events.google.bucket:analytics-cloud-analytics-events}"
 	)
@@ -431,7 +367,8 @@ public class AnalyticsEventsMessageProcessor implements MessageListener {
 	)
 	private String _analyticsEventsStoragePath;
 
-	private Map<String, String> _channelIds;
+	@Autowired
+	private DataSourceCache _dataSourceCache;
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;

@@ -27,18 +27,14 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoSuppressionDog;
 import com.liferay.osb.asah.common.http.QueueHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.messaging.Channel;
-import com.liferay.osb.asah.common.messaging.MessageBus;
-import com.liferay.osb.asah.common.messaging.MessageListener;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
+import com.liferay.osb.asah.extractor.cache.DataSourceCache;
 
 import io.prometheus.client.Counter;
 import io.prometheus.client.Gauge;
 
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import javax.annotation.PostConstruct;
@@ -62,24 +58,7 @@ import org.springframework.stereotype.Component;
  * @author Rachael Koestartyo
  */
 @Component
-public class DXPEntitiesMessageProcessor implements MessageListener {
-
-	@Override
-	public void onMessage(String message) {
-		JSONObject jsonObject = new JSONObject(message);
-
-		String dataSourceId = jsonObject.getString("dataSourceId");
-
-		if (Objects.equals(jsonObject.getString("event"), "add")) {
-			_dataSources.put(
-				dataSourceId,
-				_faroInfoElasticsearchInvoker.get(
-					"data-sources", dataSourceId));
-		}
-		else {
-			_dataSources.remove(dataSourceId);
-		}
-	}
+public class DXPEntitiesMessageProcessor {
 
 	public void processQueuedMessages() {
 		while (true) {
@@ -145,19 +124,6 @@ public class DXPEntitiesMessageProcessor implements MessageListener {
 		}
 	}
 
-	private void _cacheDataSources() {
-		_dataSources = new HashMap<>();
-
-		JSONArray jsonArray = _faroInfoElasticsearchInvoker.get(
-			"data-sources", QueryBuilders.matchAllQuery());
-
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			_dataSources.put(jsonObject.getString("id"), jsonObject);
-		}
-	}
-
 	private String _getFieldType(String dataType, String displayType) {
 		if (displayType.equals("boolean")) {
 			return "Boolean";
@@ -211,10 +177,6 @@ public class DXPEntitiesMessageProcessor implements MessageListener {
 		_dxpRawElasticsearchInvoker = _elasticsearchInvokerFactory.forDXPRaw();
 		_faroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forFaroInfo();
-
-		_cacheDataSources();
-
-		_messageBus.registerMessageListener(Channel.DATA_SOURCES, this);
 	}
 
 	private void _processAssociationObject(
@@ -415,8 +377,9 @@ public class DXPEntitiesMessageProcessor implements MessageListener {
 			return;
 		}
 
-		JSONObject dataSourceJSONObject = _dataSources.get(
-			objectJSONObject.getString("osbAsahDataSourceId"));
+		JSONObject dataSourceJSONObject =
+			_dataSourceCache.getDataSourceJSONObject(
+				objectJSONObject.getString("osbAsahDataSourceId"));
 
 		if ((dataSourceJSONObject == null) ||
 			Objects.equals(
@@ -520,7 +483,9 @@ public class DXPEntitiesMessageProcessor implements MessageListener {
 			"extractor_dxp_entities_message_queue_size",
 			"The number of DXP entities messages queued to be extracted");
 
-	private Map<String, JSONObject> _dataSources;
+	@Autowired
+	private DataSourceCache _dataSourceCache;
+
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
 	@Autowired
@@ -545,9 +510,6 @@ public class DXPEntitiesMessageProcessor implements MessageListener {
 
 	@Autowired
 	private FaroInfoSuppressionDog _faroInfoSuppressionDog;
-
-	@Autowired
-	private MessageBus _messageBus;
 
 	@Autowired
 	private QueueHttp _queueHttp;
