@@ -1,6 +1,6 @@
 {
 	"mappings": {
-		"_default_": {
+		"Contact": {
 			"dynamic_templates": [
 				{
 					"template_string_properties": {

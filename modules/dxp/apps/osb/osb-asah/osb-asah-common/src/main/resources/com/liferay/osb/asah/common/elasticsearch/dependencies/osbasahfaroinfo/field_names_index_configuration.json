@@ -1,6 +1,6 @@
 {
 	"mappings": {
-		"_default_": {
+		"field-names": {
 			"date_detection": true,
 			"dynamic_templates": [
 				{
