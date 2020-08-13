@@ -42,6 +42,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 /**
  * @author André Miranda
  */
+@Ignore
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
 public class FinalizeSessionArmTest {
@@ -57,7 +58,6 @@ public class FinalizeSessionArmTest {
 		_finalizeSessionArm.init();
 	}
 
-	@Ignore
 	@Test
 	public void testCompleteReasonInactivity() throws Exception {
 		OffsetDateTime nowOffsetDateTime = OffsetDateTime.now(ZoneOffset.UTC);
