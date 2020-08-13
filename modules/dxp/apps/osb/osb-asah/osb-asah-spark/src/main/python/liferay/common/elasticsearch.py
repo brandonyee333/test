@@ -18,7 +18,8 @@ class ElasticsearchBridge:
 		    http_auth=(
 		        spark_application.configuration.get('es.net.http.auth.user'),
 		        spark_application.configuration.get('es.net.http.auth.pass')
-		    )
+		    ),
+		    send_get_body_as='POST'
 		)
 		self.spark_application = spark_application
 
