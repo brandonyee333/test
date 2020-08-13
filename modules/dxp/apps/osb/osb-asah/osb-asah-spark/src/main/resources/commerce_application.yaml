@@ -10,7 +10,7 @@ es:
     nodes: http://localhost:9200
 google:
   storage:
-    bucket: gs://analytics-cloud-analytic-events-uat
+    bucket: gs://analytics-cloud-analytics-events-uat
 product:
     content:
         recommendation:
