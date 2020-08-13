@@ -289,6 +289,14 @@ public class DateUtil {
 		return dateFormat.format(date);
 	}
 
+	public static String toString(String dateString) {
+		DateFormat dateFormat = _newSimpleDateFormat();
+
+		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+		return dateFormat.format(new Date(Long.parseLong(dateString)));
+	}
+
 	public static Date toUTCDate(String dateString) throws ParseException {
 		DateFormat dateFormat = _newSimpleDateFormat();
 

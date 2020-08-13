@@ -1,6 +1,7 @@
 {
 	"mappings": {
 		"individuals": {
+			"date_detection": false,
 			"properties": {
 				"accountPKs": {
 					"type": "keyword"

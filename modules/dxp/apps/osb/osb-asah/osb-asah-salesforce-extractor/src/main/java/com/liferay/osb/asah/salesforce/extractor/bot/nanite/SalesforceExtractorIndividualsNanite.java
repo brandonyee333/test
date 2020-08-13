@@ -33,6 +33,7 @@ import java.util.Objects;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -218,9 +219,16 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 
 			String emailAddress = jsonObject.optString("Email", null);
 
+			String birthDate = jsonObject.optString("Birthdate", null);
+
+			if (NumberUtils.isCreatable(birthDate) &&
+				(Long.parseLong(birthDate) < 0)) {
+
+				birthDate = DateUtil.toString(birthDate);
+			}
+
 			individualJSONObject = _buildIndividualJSONObject(
-				_getAccountPKsJSONArray(accountId, emailAddress),
-				jsonObject.optString("Birthdate", null),
+				_getAccountPKsJSONArray(accountId, emailAddress), birthDate,
 				jsonObject.optString("MailingCity", null),
 				accountJSONObject.optString("Name", null),
 				jsonObject.getString("id"),

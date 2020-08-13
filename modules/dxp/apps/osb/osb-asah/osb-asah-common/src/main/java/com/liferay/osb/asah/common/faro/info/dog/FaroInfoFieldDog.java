@@ -424,6 +424,10 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 			}
 			else if (fieldType.equals("Date")) {
 				if (NumberUtils.isCreatable(valueString)) {
+					if (Long.parseLong(valueString) < 0) {
+						return DateUtil.toString(valueString);
+					}
+
 					return DateUtil.toUTCString(
 						new Date(Long.parseLong(valueString)));
 				}

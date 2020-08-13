@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.salesforce.extractor.bot.nanite.test;
 
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
@@ -83,7 +82,7 @@ public class SalesforceExtractorIndividualsNaniteTest {
 		JSONObject contactJSONObject = JSONUtil.put(
 			"AccountId", "1"
 		).put(
-			"Birthdate", DateUtil.newDateString()
+			"Birthdate", "-1176968214861"
 		).put(
 			"Department", "IT"
 		).put(
