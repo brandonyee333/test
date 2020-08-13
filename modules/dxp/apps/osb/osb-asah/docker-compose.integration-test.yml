@@ -1,9 +1,8 @@
 services:
     test_elasticsearch:
         container_name: test_elasticsearch
-        environment:
-            - ES_JAVA_OPTS=-Xms512m -Xmx512m
-            - discovery.type=single-node
+        env_file:
+            - elasticsearch.env
         healthcheck:
             interval: 10s
             retries: 3

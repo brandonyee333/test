@@ -236,8 +236,7 @@ services:
     wedeploy-elasticsearch:
         container_name: wedeploy-elasticsearch
         env_file:
-            - common.env
-            - local.env
+            - elasticsearch.env
         healthcheck:
             interval: 10s
             retries: 3
