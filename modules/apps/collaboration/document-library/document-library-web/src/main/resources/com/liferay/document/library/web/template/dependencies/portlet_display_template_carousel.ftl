@@ -2,6 +2,7 @@
 	<style>
 		#<@portlet.namespace />carousel .carousel-item {
 			background-color: #000;
+			display: none;
 			height: 250px;
 			overflow: hidden;
 			text-align: center;
