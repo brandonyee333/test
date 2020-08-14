@@ -515,13 +515,13 @@ public class FinalizeSessionArm {
 		for (Map.Entry<Pair<String, Date>, List<Long>> entry :
 				viewDurations.entrySet()) {
 
-			List<Long> values = entry.getValue();
-
-			Stream<Long> valueStream = values.stream();
-
 			Pair<String, Date> pageEventDatePair = entry.getKey();
 
 			if (pageEventDateMap.containsKey(pageEventDatePair)) {
+				List<Long> values = entry.getValue();
+
+				Stream<Long> valueStream = values.stream();
+
 				elasticsearchBulkRequestBuilder.update(
 					"pages",
 					JSONUtil.put(
