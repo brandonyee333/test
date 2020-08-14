@@ -9,9 +9,8 @@
 # distribution rights of the Software.
 #
 
-from datetime import datetime
-
 from liferay.common.configuration import Configuration
+from liferay.common.util import new_utc_date_string
 
 class CommerceConfiguration(Configuration):
 	def __init__(self, configuration_path, job_manager):
@@ -100,7 +99,7 @@ class JobManager(object):
 		        'context': {
 		            attribute_name: attribute_value
 		        },
-		        'lastUpdatedDate': datetime.utcnow(),
+		        'lastUpdatedDate': new_utc_date_string(),
 		    }, self.job_run_id, 'osbasahfaroinfo'
 		)
 
@@ -108,7 +107,7 @@ class JobManager(object):
 		self.elasticsearch_bridge.update_document(
 		    'job-runs', {
 		        'status': status,
-		        'lastUpdatedDate': datetime.utcnow(),
+		        'lastUpdatedDate': new_utc_date_string(),
 		    }, self.job_run_id, 'osbasahfaroinfo'
 		)
 
