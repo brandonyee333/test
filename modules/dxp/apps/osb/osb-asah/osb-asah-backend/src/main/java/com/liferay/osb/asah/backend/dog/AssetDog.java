@@ -69,6 +69,9 @@ public class AssetDog {
 		if (StringUtils.isNotBlank(keywords)) {
 			boolQueryBuilder.filter(
 				BoolQueryBuilderUtil.should(
+					QueryBuilders.wildcardQuery(
+						"canonicalUrl", "*" + keywords + "*")
+				).should(
 					QueryBuilders.queryStringQuery(
 						String.format(
 							"name:*%1$s* OR description:*%1$s*",
