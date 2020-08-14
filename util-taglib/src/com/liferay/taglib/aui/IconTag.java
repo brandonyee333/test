@@ -16,7 +16,6 @@ package com.liferay.taglib.aui;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
@@ -28,11 +27,8 @@ import com.liferay.taglib.aui.base.BaseIconTag;
 import com.liferay.taglib.servlet.PipingServletResponse;
 import com.liferay.taglib.ui.MessageTag;
 import com.liferay.taglib.util.InlineUtil;
-import com.liferay.taglib.util.TagResourceBundleUtil;
 
 import java.io.IOException;
-
-import java.util.ResourceBundle;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -170,15 +166,15 @@ public class IconTag extends BaseIconTag {
 				jspWriter.write("><use data-href=\"");
 
 				String src = getSrc();
-				HttpServletRequest httpServletRequest =
-					(HttpServletRequest)pageContext.getRequest();
-
-				ThemeDisplay themeDisplay =
-					(ThemeDisplay)httpServletRequest.getAttribute(
-						WebKeys.THEME_DISPLAY);
-
 
 				if (src == null) {
+					HttpServletRequest httpServletRequest =
+						(HttpServletRequest)pageContext.getRequest();
+
+					ThemeDisplay themeDisplay =
+						(ThemeDisplay)httpServletRequest.getAttribute(
+							WebKeys.THEME_DISPLAY);
+
 					src =
 						themeDisplay.getPathThemeImages() +
 							"/lexicon/icons.svg";
