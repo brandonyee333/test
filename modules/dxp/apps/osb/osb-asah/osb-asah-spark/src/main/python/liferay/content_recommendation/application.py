@@ -11,6 +11,7 @@
 
 from liferay.common.elasticsearch import ElasticsearchBridge
 from liferay.common.spark import BaseSparkApplication, SparkJobPipeline
+from liferay.common.util import new_utc_date_string
 from liferay.content_recommendation.job import GenerateItemsSparkJob, \
 GenerateUserItemInteractionsSparkJob, PublishJobRunSparkJob, \
 ReadAnalyticsEventsSparkJob, ReadRecommendedItemsSparkJob, \
@@ -20,7 +21,6 @@ WriteUserItemInteractionsSparkJob
 from pyspark import SparkConf
 
 import argparse
-import datetime
 import sys
 
 class ContentRecommendationApplication(BaseSparkApplication):
@@ -113,11 +113,9 @@ class ContentRecommendationApplication(BaseSparkApplication):
 		)
 
 	def _update_job_run_status(self, status):
-		now = datetime.datetime.utcnow()
-
 		self.elasticsearch_bridge.update_document(
 		    'job-runs', {
-		        'lastUpdatedDate': now,
+		        'lastUpdatedDate': new_utc_date_string(),
 		        'status': status
 		    }, self.job_run.get('id'), 'osbasahfaroinfo'
 		)

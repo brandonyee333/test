@@ -10,11 +10,10 @@
 #
 
 from liferay.common.spark import BaseSparkJob
+from liferay.common.util import new_utc_date_string
 
 from pyspark.sql import Window
 from pyspark.sql.functions import col, count, current_date, datediff, expr, lit, unix_timestamp
-
-import datetime
 
 class GenerateItemsSparkJob(BaseSparkJob):
 	def _update_job_run_items_dataset_count(self, items_data_frame):
@@ -25,7 +24,7 @@ class GenerateItemsSparkJob(BaseSparkJob):
 		        'context': {
 		            'itemsDatasetCount': items_data_frame.count()
 		        },
-		        'lastUpdatedDate': datetime.datetime.utcnow(),
+		        'lastUpdatedDate': new_utc_date_string(),
 		    }, self.spark_application_args.job_run_id, 'osbasahfaroinfo'
 		)
 
@@ -51,7 +50,7 @@ class GenerateUserItemInteractionsSparkJob(BaseSparkJob):
 		                'userItemInteractionsDatasetCount':
 		                    user_item_interactions_data_frame.count()
 		            },
-		        'lastUpdatedDate': datetime.datetime.utcnow(),
+		        'lastUpdatedDate': new_utc_date_string(),
 		    }, self.spark_application_args.job_run_id, 'osbasahfaroinfo'
 		)
 
@@ -83,12 +82,12 @@ class PublishJobRunSparkJob(BaseSparkJob):
 
 		elasticsearch_bridge = self.spark_application.elasticsearch_bridge
 
-		now = datetime.datetime.utcnow()
+		date_string = new_utc_date_string()
 
 		elasticsearch_bridge.update_document(
 		    'job-runs', {
-		        'completedDate': now,
-		        'lastUpdatedDate': now,
+		        'completedDate': date_string,
+		        'lastUpdatedDate': date_string,
 		        'status': 'PUBLISHED'
 		    }, self.spark_application_args.job_run_id, 'osbasahfaroinfo'
 		)
@@ -120,10 +119,12 @@ class PublishJobRunSparkJob(BaseSparkJob):
 		    }, 'job-runs', 'osbasahfaroinfo'
 		)
 
+		date_string = new_utc_date_string()
+
 		for job_run in job_runs:
 			elasticsearch_bridge.update_document(
 			    'job-runs', {
-			        'lastUpdatedDate': datetime.datetime.utcnow(),
+			        'lastUpdatedDate': date_string,
 			        'status': 'COMPLETED'
 			    }, job_run.get('id'), 'osbasahfaroinfo'
 			)
@@ -246,7 +247,7 @@ class UpdateJobRunStepSparkJob(BaseSparkJob):
 
 		elasticsearch_bridge.update_document(
 		    'job-runs', {
-		        'lastUpdatedDate': datetime.datetime.utcnow(),
+		        'lastUpdatedDate': new_utc_date_string(),
 		        'step': 'DATA_SOLUTION'
 		    }, self.spark_application_args.job_run_id, 'osbasahfaroinfo'
 		)
