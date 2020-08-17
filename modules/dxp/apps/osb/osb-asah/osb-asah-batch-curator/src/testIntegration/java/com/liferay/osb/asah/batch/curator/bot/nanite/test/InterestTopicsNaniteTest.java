@@ -72,7 +72,7 @@ public class InterestTopicsNaniteTest extends BaseNaniteTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "blocked-keywords", resourcePath = "blocked-keywords.json",
+		name = "blocked-keywords", resourcePath = "blocked_keywords.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(

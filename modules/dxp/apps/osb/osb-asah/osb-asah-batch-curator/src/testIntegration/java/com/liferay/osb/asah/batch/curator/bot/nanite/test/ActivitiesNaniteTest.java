@@ -67,7 +67,7 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 	@Test
 	public void testCanonicalUrlSet() throws Exception {
 		String analyticsEventsJSON = ResourceUtil.readResourceToString(
-			"dependencies/analytics-events-1.json", this);
+			"dependencies/analytics_events_1.json", this);
 
 		JSONArray analyticsEventsJSONArray = new JSONArray(
 			analyticsEventsJSON.replace(
@@ -100,7 +100,7 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 	@Test
 	public void testCommentPostedActivityIsAdded() throws Exception {
 		String analyticsEventsJSON = ResourceUtil.readResourceToString(
-			"dependencies/analytics-events-1.json", this);
+			"dependencies/analytics_events_1.json", this);
 
 		JSONArray analyticsEventsJSONArray = new JSONArray(
 			analyticsEventsJSON.replace(
@@ -144,7 +144,7 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 	@Test
 	public void testFormSubmittedPropertiesAreAdded() throws Exception {
 		String analyticsEventsJSON = ResourceUtil.readResourceToString(
-			"dependencies/analytics-events-3.json", this);
+			"dependencies/analytics_events_3.json", this);
 
 		JSONArray analyticsEventsJSONArray = new JSONArray(
 			analyticsEventsJSON.replace(
@@ -176,7 +176,7 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 	@Test
 	public void testKeywordsLowercase() throws Exception {
 		String analyticsEventsJSON = ResourceUtil.readResourceToString(
-			"dependencies/analytics-events-1.json", this);
+			"dependencies/analytics_events_1.json", this);
 
 		JSONArray analyticsEventsJSONArray = new JSONArray(
 			analyticsEventsJSON.replace(

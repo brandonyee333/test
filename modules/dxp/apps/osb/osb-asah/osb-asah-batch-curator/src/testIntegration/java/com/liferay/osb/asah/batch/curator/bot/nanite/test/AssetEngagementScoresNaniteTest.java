@@ -67,7 +67,7 @@ public class AssetEngagementScoresNaniteTest extends BaseNaniteTestCase {
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
 
 		String analyticsEventsJSON = ResourceUtil.readResourceToString(
-			"dependencies/analytics-events-1.json", this);
+			"dependencies/analytics_events_1.json", this);
 
 		JSONArray analyticsEventsJSONArray = new JSONArray(
 			analyticsEventsJSON.replace(

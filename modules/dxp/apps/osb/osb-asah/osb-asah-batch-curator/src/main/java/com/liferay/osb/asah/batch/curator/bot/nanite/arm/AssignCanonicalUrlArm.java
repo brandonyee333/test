@@ -156,7 +156,7 @@ public class AssignCanonicalUrlArm {
 			_elasticsearchInvokerFactory.forFaroInfo();
 
 		_updateAssetCanonicalUrlsScriptSource = ScriptUtil.loadScriptSource(
-			getClass(), "update-asset-canonical-urls.painless");
+			getClass(), "update_asset_canonical_urls.painless");
 	}
 
 	private void _resolveURLs(

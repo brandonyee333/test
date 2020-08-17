@@ -46,23 +46,23 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class SalesforceAccountsNaniteTest extends BaseNaniteTestCase {
 
 	@ElasticsearchIndex(
-		name = "Account", resourcePath = "Account.json",
+		name = "Account", resourcePath = "account.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_SALESFORCE_RAW
 	)
 	@ElasticsearchIndex(
-		name = "audit-events", resourcePath = "audit-events.json",
+		name = "audit-events", resourcePath = "audit_events.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_SALESFORCE_RAW
 	)
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data-sources.json",
+		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "field-mappings", resourcePath = "field-mappings.json",
+		name = "field-mappings", resourcePath = "field_mappings.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "run-logs", resourcePath = "run-logs.json",
+		name = "run-logs", resourcePath = "run_logs.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_SALESFORCE_RAW
 	)
 	@Test

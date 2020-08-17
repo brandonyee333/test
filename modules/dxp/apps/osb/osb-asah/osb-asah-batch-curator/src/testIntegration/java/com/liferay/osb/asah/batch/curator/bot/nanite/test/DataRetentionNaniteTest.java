@@ -53,7 +53,7 @@ public class DataRetentionNaniteTest extends BaseNaniteTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "data-retention-blogs.json",
+		name = "blogs", resourcePath = "data_retention_blogs.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -67,7 +67,7 @@ public class DataRetentionNaniteTest extends BaseNaniteTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "data-retention-individuals.json",
+		name = "individuals", resourcePath = "data_retention_individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

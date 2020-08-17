@@ -46,14 +46,14 @@ public class IndividualDataExporterTest {
 			reportHttp.getIndividualsJSONObject(Matchers.eq("0"))
 		).thenReturn(
 			ResourceUtil.readResourceToJSONObject(
-				"individuals-report.json", this)
+				"individuals_report.json", this)
 		);
 
 		Mockito.when(
 			reportHttp.getIndividualsJSONObject(
 				Matchers.eq("379649990292756725"))
 		).thenReturn(
-			ResourceUtil.readResourceToJSONObject("empty-report.json", this)
+			ResourceUtil.readResourceToJSONObject("empty_report.json", this)
 		);
 
 		ByteArrayOutputStream byteArrayOutputStream =
@@ -71,7 +71,7 @@ public class IndividualDataExporterTest {
 		byteArrayOutputStream.close();
 
 		JSONArray jsonArray = ResourceUtil.readResourceToJSONArray(
-			"expected-individuals-export.json", this);
+			"expected_individuals_export.json", this);
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONAssert.assertEquals(

@@ -53,7 +53,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class PageDataExporterTest {
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages-info.json",
+		name = "pages", resourcePath = "pages_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -73,7 +73,7 @@ public class PageDataExporterTest {
 		byteArrayOutputStream.close();
 
 		JSONArray jsonArray = ResourceUtil.readResourceToJSONArray(
-			"dependencies/expected-pages-export.json", this);
+			"dependencies/expected_pages_export.json", this);
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONAssert.assertEquals(
