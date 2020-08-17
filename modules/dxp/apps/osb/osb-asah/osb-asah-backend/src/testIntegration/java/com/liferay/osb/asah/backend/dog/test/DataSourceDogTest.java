@@ -69,7 +69,7 @@ public class DataSourceDogTest {
 
 		Assert.assertNotNull(dataSource);
 		Assert.assertEquals("Liferay 1", dataSource.getName());
-		Assert.assertEquals("http://portal:8081", dataSource.getUrl());
+		Assert.assertEquals("http://portal:8081", dataSource.getURL());
 	}
 
 	@ElasticsearchIndex(
@@ -87,7 +87,7 @@ public class DataSourceDogTest {
 
 		Assert.assertEquals("400", dataSource.getId());
 		Assert.assertEquals("Liferay 3", dataSource.getName());
-		Assert.assertEquals("http://portal:8083", dataSource.getUrl());
+		Assert.assertEquals("http://portal:8083", dataSource.getURL());
 	}
 
 	@Autowired

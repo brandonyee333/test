@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.model;
 
+import com.liferay.osb.asah.backend.graphql.GraphQLProperty;
+
 /**
  * @author Rachael Koestartyo
  */
@@ -33,7 +35,8 @@ public class DataSource {
 		return _name;
 	}
 
-	public String getUrl() {
+	@GraphQLProperty("url")
+	public String getURL() {
 		return _url;
 	}
 
