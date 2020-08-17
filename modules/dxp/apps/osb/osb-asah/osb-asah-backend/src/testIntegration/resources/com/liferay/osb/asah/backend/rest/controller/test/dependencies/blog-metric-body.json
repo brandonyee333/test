@@ -2,11 +2,11 @@
 	"operationName": "BlogMetric",
 	"variables": {
 		"assetId": "1",
-		"canonicalUrl": "Any",
+		"canonicalUrl": null,
 		"channelId": "1",
 		"country": "Any",
 		"deviceType": "Any",
 		"rangeKey": 30,
-		"url": "Any"
+		"url": null
 	}
 }
