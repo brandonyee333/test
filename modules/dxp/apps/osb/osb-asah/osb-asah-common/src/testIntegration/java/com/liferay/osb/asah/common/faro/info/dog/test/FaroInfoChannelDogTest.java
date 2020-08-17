@@ -72,15 +72,15 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "accounts", resourcePath = "accounts-delete-channels.json",
+		name = "accounts", resourcePath = "accounts_delete_channels.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "assets", resourcePath = "assets-delete-channels.json",
+		name = "assets", resourcePath = "assets_delete_channels.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "blogs-delete-channels.json",
+		name = "blogs", resourcePath = "blogs_delete_channels.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
@@ -89,11 +89,11 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 	)
 	@ElasticsearchIndex(
 		name = "individual-segments",
-		resourcePath = "individual-segments-delete-channels.json",
+		resourcePath = "individual_segments_delete_channels.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals-delete-channels.json",
+		name = "individuals", resourcePath = "individuals_delete_channels.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

@@ -336,7 +336,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals-associations.json",
+		name = "individuals", resourcePath = "individuals_associations.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -366,7 +366,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals-associations.json",
+		name = "individuals", resourcePath = "individuals_associations.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -445,7 +445,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals-associations.json",
+		name = "individuals", resourcePath = "individuals_associations.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(

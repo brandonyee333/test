@@ -46,7 +46,7 @@ public class PutResponseTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "put-response-individuals.json",
+		name = "individuals", resourcePath = "put_response_individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

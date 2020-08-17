@@ -39,7 +39,7 @@ import org.springframework.test.context.ContextConfiguration;
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 @ElasticsearchIndex(
-	name = "user-sessions", resourcePath = "user-sessions.json",
+	name = "user-sessions", resourcePath = "user_sessions.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 )
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)

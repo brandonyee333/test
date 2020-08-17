@@ -57,7 +57,7 @@ public class CollectionGetResponseTest {
 			new JSONArray(
 				ResourceUtil.readResourceToString(
 					"dependencies/osbasahfaroinfo" +
-						"/collection-get-response-individuals.json",
+						"/collection_get_response_individuals.json",
 					this)));
 	}
 
@@ -161,7 +161,7 @@ public class CollectionGetResponseTest {
 		List<String> expectedValues = _getValues(
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies/osbasahfaroinfo" +
-					"/collection-get-response-individuals.json",
+					"/collection_get_response_individuals.json",
 				this),
 			path);
 

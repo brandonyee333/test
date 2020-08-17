@@ -22,6 +22,8 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.hamcrest.Matchers;
 
 import org.json.JSONArray;
@@ -50,8 +52,9 @@ public abstract class BaseFaroInfoFilterStringConverterHelperTestCase {
 				new JSONArray(
 					TestExecutionListenerUtil.replaceVariables(
 						ResourceUtil.readResourceToString(
-							"dependencies/osbasahfaroinfo/" + collectionName +
-								".json",
+							"dependencies/osbasahfaroinfo/" +
+								StringUtils.replace(collectionName, "-", "_") +
+									".json",
 							this))));
 		}
 	}

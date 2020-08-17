@@ -47,7 +47,7 @@ public class DeleteResponseTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "delete-response-individuals.json",
+		name = "individuals", resourcePath = "delete_response_individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

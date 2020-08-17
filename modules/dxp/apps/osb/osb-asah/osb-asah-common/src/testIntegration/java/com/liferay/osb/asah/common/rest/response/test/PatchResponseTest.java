@@ -46,7 +46,7 @@ public class PatchResponseTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "patch-response-individuals.json",
+		name = "individuals", resourcePath = "patch_response_individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

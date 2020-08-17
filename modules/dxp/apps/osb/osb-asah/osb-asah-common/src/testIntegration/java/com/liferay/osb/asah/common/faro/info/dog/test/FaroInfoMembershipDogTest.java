@@ -252,7 +252,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "individual-segments", resourcePath = "individual-segments.json",
+		name = "individual-segments", resourcePath = "individual_segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -260,7 +260,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "membership-changes", resourcePath = "membership-changes.json",
+		name = "membership-changes", resourcePath = "membership_changes.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -336,11 +336,11 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "individual-segments", resourcePath = "individual-segments.json",
+		name = "individual-segments", resourcePath = "individual_segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "membership-changes", resourcePath = "membership-changes.json",
+		name = "membership-changes", resourcePath = "membership_changes.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -408,7 +408,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "individual-segments", resourcePath = "individual-segments.json",
+		name = "individual-segments", resourcePath = "individual_segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -416,7 +416,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "membership-changes", resourcePath = "membership-changes.json",
+		name = "membership-changes", resourcePath = "membership_changes.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -513,7 +513,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "individual-segments", resourcePath = "individual-segments.json",
+		name = "individual-segments", resourcePath = "individual_segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -566,11 +566,11 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "individual-segments", resourcePath = "individual-segments.json",
+		name = "individual-segments", resourcePath = "individual_segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "membership-changes", resourcePath = "membership-changes.json",
+		name = "membership-changes", resourcePath = "membership_changes.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(

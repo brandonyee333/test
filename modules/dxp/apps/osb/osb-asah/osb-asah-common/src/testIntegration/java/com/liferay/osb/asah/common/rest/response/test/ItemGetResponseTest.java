@@ -46,7 +46,7 @@ public class ItemGetResponseTest {
 
 	@ElasticsearchIndex(
 		name = "individuals",
-		resourcePath = "item-get-response-individuals.json",
+		resourcePath = "item_get_response_individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
