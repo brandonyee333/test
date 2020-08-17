@@ -121,6 +121,7 @@ insert into ListType (listTypeId, name, type_) values (27064, 'websphere-9.0', '
 insert into ListType (listTypeId, name, type_) values (27065, 'wildfly-11.0', 'com.liferay.osb.model.AccountEnvironment.envAS');
 insert into ListType (listTypeId, name, type_) values (27066, 'websphere-8.5.5-fix-pack-11+', 'com.liferay.osb.model.AccountEnvironment.envAS');
 insert into ListType (listTypeId, name, type_) values (27067, 'wildfly-16.0', 'com.liferay.osb.model.AccountEnvironment.envAS');
+insert into ListType (listTypeId, name, type_) values (27068, 'jboss-eap-7.2', 'com.liferay.osb.model.AccountEnvironment.envAS');
 
 insert into ListType (listTypeId, name, type_) values (28000, 'db2-8.2', 'com.liferay.osb.model.AccountEnvironment.envDB');
 insert into ListType (listTypeId, name, type_) values (28002, 'hypersonic', 'com.liferay.osb.model.AccountEnvironment.envDB');
@@ -170,6 +171,7 @@ insert into ListType (listTypeId, name, type_) values (28045, 'mysql-8', 'com.li
 insert into ListType (listTypeId, name, type_) values (28046, 'sql-server-2017', 'com.liferay.osb.model.AccountEnvironment.envDB');
 insert into ListType (listTypeId, name, type_) values (28047, 'postgresql-11.2', 'com.liferay.osb.model.AccountEnvironment.envDB');
 insert into ListType (listTypeId, name, type_) values (28048, 'oracle-19c', 'com.liferay.osb.model.AccountEnvironment.envDB');
+insert into ListType (listTypeId, name, type_) values (28049, 'sql-server-2019', 'com.liferay.osb.model.AccountEnvironment.envDB');
 
 insert into ListType (listTypeId, name, type_) values (29000, 'oracle-jdk-5', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29001, 'oracle-jdk-6', 'com.liferay.osb.model.AccountEnvironment.envJVM');
@@ -240,6 +242,7 @@ insert into ListType (listTypeId, name, type_) values (30047, 'alpine-linux-3.8'
 insert into ListType (listTypeId, name, type_) values (30048, 'suse-enterprise-linux-15', 'com.liferay.osb.model.AccountEnvironment.envOS');
 insert into ListType (listTypeId, name, type_) values (30049, 'ubuntu-lts-18.04', 'com.liferay.osb.model.AccountEnvironment.envOS');
 insert into ListType (listTypeId, name, type_) values (30050, 'windows-server-2019', 'com.liferay.osb.model.AccountEnvironment.envOS');
+insert into ListType (listTypeId, name, type_) values (30051, 'red-hat-enterprise-8', 'com.liferay.osb.model.AccountEnvironment.envOS');
 
 insert into ListType (listTypeId, name, type_) values (34001, 'application-server', 'com.liferay.osb.model.AuditEntry.field');
 insert into ListType (listTypeId, name, type_) values (34004, 'database', 'com.liferay.osb.model.AuditEntry.field');

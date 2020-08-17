@@ -12,25 +12,26 @@
  *
  */
 
-package com.liferay.osb.hook.upgrade;
+package com.liferay.osb.hook.upgrade.v5_2_0;
 
-import com.liferay.osb.hook.upgrade.v5_2_0.UpgradeLicenseEntry;
-import com.liferay.osb.hook.upgrade.v5_2_0.UpgradeListType;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
  * @author Jenny Chen
  */
-public class UpgradeProcess_5_2_0 extends BaseUpgradeProcess {
-
-	@Override
-	public int getThreshold() {
-		return 520;
-	}
+public class UpgradeListType extends BaseUpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		upgrade(UpgradeLicenseEntry.class);
-		upgrade(UpgradeListType.class);
+		insertListType(
+			27068, "jboss-eap-7.2",
+			"com.liferay.osb.model.AccountEnvironment.envAS");
+		insertListType(
+			28049, "sql-server-2019",
+			"com.liferay.osb.model.AccountEnvironment.envDB");
+		insertListType(
+			30051, "red-hat-enterprise-8",
+			"com.liferay.osb.model.AccountEnvironment.envOS");
 	}
 
 }
