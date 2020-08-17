@@ -1,7 +1,0 @@
-if (ctx._source.assetType == 'Page') {
-	def keywords = ctx._source.keywords;
-
-	for (int i = 0; i < keywords.length; i++) {
-		keywords[i].keyword = keywords[i].keyword.toLowerCase();
-	}
-}

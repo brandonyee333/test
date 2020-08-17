@@ -1,1 +1,0 @@
-ctx._source.channelIds.remove(ctx._source.channelIds.indexOf(params.channelId));
