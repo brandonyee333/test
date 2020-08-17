@@ -42,9 +42,10 @@ public class AsyncZendeskAttachmentWebService
 		throws PortalException {
 
 		String endpoint = StringBundler.concat(
-			ZendeskRESTEndpoints.URL_API_V2, "tickets/", zendeskTicketId,
-			"/comments/", zendeskTicketCommentId, "/attachments/",
-			zendeskAttachmentId, "/redact.json");
+			ZendeskRESTEndpoints.URL_API_V2, "tickets/",
+			String.valueOf(zendeskTicketId), "/comments/",
+			String.valueOf(zendeskTicketCommentId), "/attachments/",
+			String.valueOf(zendeskAttachmentId), "/redact.json");
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
