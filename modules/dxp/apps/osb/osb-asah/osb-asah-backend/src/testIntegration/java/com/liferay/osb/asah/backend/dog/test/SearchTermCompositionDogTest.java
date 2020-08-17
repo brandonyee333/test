@@ -36,7 +36,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author Rachael Koestartyo
  */
 @ElasticsearchIndex(
-	name = "pages", resourcePath = "pages-info.json",
+	name = "pages", resourcePath = "pages_info.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 )
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)

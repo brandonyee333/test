@@ -51,7 +51,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class SiteVisitorHeatMapDogTest {
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "visitor-heat-map-page-info.json",
+		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -87,7 +87,7 @@ public class SiteVisitorHeatMapDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "visitor-heat-map-page-info.json",
+		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -104,7 +104,7 @@ public class SiteVisitorHeatMapDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "visitor-heat-map-page-info.json",
+		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -133,7 +133,7 @@ public class SiteVisitorHeatMapDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "visitor-heat-map-page-info.json",
+		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -162,7 +162,7 @@ public class SiteVisitorHeatMapDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "visitor-heat-map-page-info.json",
+		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -197,7 +197,7 @@ public class SiteVisitorHeatMapDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "visitor-heat-map-page-info.json",
+		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -235,7 +235,7 @@ public class SiteVisitorHeatMapDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "visitor-heat-map-page-info.json",
+		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -274,7 +274,7 @@ public class SiteVisitorHeatMapDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "visitor-heat-map-page-info.json",
+		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Ignore
@@ -330,7 +330,7 @@ public class SiteVisitorHeatMapDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "visitor-heat-map-page-info.json",
+		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test

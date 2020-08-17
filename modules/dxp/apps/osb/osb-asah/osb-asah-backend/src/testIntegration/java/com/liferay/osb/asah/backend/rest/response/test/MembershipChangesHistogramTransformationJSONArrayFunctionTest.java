@@ -53,7 +53,7 @@ public class MembershipChangesHistogramTransformationJSONArrayFunctionTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "membership-changes", resourcePath = "membership-changes.json",
+		name = "membership-changes", resourcePath = "membership_changes.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

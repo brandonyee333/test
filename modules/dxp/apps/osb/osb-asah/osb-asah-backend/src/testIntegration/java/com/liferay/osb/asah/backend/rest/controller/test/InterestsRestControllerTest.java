@@ -114,7 +114,7 @@ public class InterestsRestControllerTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "interest-topics", resourcePath = "interest-topics.json",
+		name = "interest-topics", resourcePath = "interest_topics.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -145,7 +145,7 @@ public class InterestsRestControllerTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "interest-topics", resourcePath = "interest-topics.json",
+		name = "interest-topics", resourcePath = "interest_topics.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -171,7 +171,7 @@ public class InterestsRestControllerTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "interest-topics", resourcePath = "interest-topics.json",
+		name = "interest-topics", resourcePath = "interest_topics.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -184,7 +184,7 @@ public class InterestsRestControllerTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "interest-topics", resourcePath = "interest-topics.json",
+		name = "interest-topics", resourcePath = "interest_topics.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

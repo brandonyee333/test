@@ -46,11 +46,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class AccountDogTest {
 
 	@ElasticsearchIndex(
-		name = "field-mappings", resourcePath = "field-mappings-info.json",
+		name = "field-mappings", resourcePath = "field_mappings_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "accounts", resourcePath = "accounts-info.json",
+		name = "accounts", resourcePath = "accounts_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -71,11 +71,11 @@ public class AccountDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "field-mappings", resourcePath = "field-mappings-info.json",
+		name = "field-mappings", resourcePath = "field_mappings_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "accounts", resourcePath = "accounts-info.json",
+		name = "accounts", resourcePath = "accounts_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

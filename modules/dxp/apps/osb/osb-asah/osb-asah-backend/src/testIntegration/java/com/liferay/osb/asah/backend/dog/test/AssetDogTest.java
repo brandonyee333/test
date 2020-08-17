@@ -44,7 +44,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class AssetDogTest {
 
 	@ElasticsearchIndex(
-		name = "assets", resourcePath = "assets-info.json",
+		name = "assets", resourcePath = "assets_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -61,7 +61,7 @@ public class AssetDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "assets", resourcePath = "assets-info.json",
+		name = "assets", resourcePath = "assets_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -77,7 +77,7 @@ public class AssetDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "assets", resourcePath = "assets-info.json",
+		name = "assets", resourcePath = "assets_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -97,7 +97,7 @@ public class AssetDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "assets", resourcePath = "assets-info.json",
+		name = "assets", resourcePath = "assets_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

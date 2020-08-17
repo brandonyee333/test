@@ -46,7 +46,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class ActivityDogTest {
 
 	@ElasticsearchIndex(
-		name = "activities", resourcePath = "activities-info-1.json",
+		name = "activities", resourcePath = "activities_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -61,7 +61,7 @@ public class ActivityDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "activities", resourcePath = "activities-info-1.json",
+		name = "activities", resourcePath = "activities_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -72,7 +72,7 @@ public class ActivityDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "activities", resourcePath = "activities-info-1.json",
+		name = "activities", resourcePath = "activities_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -85,7 +85,7 @@ public class ActivityDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "activities", resourcePath = "activities-info-1.json",
+		name = "activities", resourcePath = "activities_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -98,7 +98,7 @@ public class ActivityDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "activities", resourcePath = "activities-info-1.json",
+		name = "activities", resourcePath = "activities_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -114,7 +114,7 @@ public class ActivityDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "activities", resourcePath = "activities-info-1.json",
+		name = "activities", resourcePath = "activities_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

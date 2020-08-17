@@ -38,7 +38,7 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @ElasticsearchIndex(
-	name = "individual-segments", resourcePath = "individual-segments.json",
+	name = "individual-segments", resourcePath = "individual_segments.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 @ElasticsearchIndex(

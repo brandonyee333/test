@@ -41,7 +41,7 @@ public class DashboardDogTest {
 
 	@ElasticsearchIndex(
 		name = "custom-asset-dashboards",
-		resourcePath = "custom-asset-dashboards-info.json",
+		resourcePath = "custom_asset_dashboards_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -53,7 +53,7 @@ public class DashboardDogTest {
 
 	@ElasticsearchIndex(
 		name = "custom-asset-dashboards",
-		resourcePath = "custom-asset-dashboards-info.json",
+		resourcePath = "custom_asset_dashboards_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -67,7 +67,7 @@ public class DashboardDogTest {
 
 	@ElasticsearchIndex(
 		name = "custom-asset-dashboards",
-		resourcePath = "custom-asset-dashboards-info.json",
+		resourcePath = "custom_asset_dashboards_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -85,7 +85,7 @@ public class DashboardDogTest {
 
 	@ElasticsearchIndex(
 		name = "custom-asset-dashboards",
-		resourcePath = "custom-asset-dashboards-info.json",
+		resourcePath = "custom_asset_dashboards_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -107,7 +107,7 @@ public class DashboardDogTest {
 
 	@ElasticsearchIndex(
 		name = "custom-asset-dashboards",
-		resourcePath = "custom-asset-dashboards-info.json",
+		resourcePath = "custom_asset_dashboards_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test

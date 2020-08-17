@@ -40,7 +40,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author Matthew Kong
  */
 @ElasticsearchIndex(
-	name = "data-sources", resourcePath = "data-sources.json",
+	name = "data-sources", resourcePath = "data_sources.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
@@ -120,7 +120,7 @@ public class DXPEntityDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "user-groups", resourcePath = "user-groups.json",
+		name = "user-groups", resourcePath = "user_groups.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
 	)
 	@Test

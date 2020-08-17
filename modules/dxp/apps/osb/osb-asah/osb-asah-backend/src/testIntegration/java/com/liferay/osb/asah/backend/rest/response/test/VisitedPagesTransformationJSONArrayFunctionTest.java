@@ -63,7 +63,7 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "visited-pages", resourcePath = "visited-pages.json",
+		name = "visited-pages", resourcePath = "visited_pages.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -86,7 +86,7 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "visited-pages", resourcePath = "visited-pages.json",
+		name = "visited-pages", resourcePath = "visited_pages.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -107,7 +107,7 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "visited-pages", resourcePath = "visited-pages.json",
+		name = "visited-pages", resourcePath = "visited_pages.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -166,7 +166,7 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "individual-segments", resourcePath = "individual-segments.json",
+		name = "individual-segments", resourcePath = "individual_segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -174,7 +174,7 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "visited-pages", resourcePath = "visited-pages.json",
+		name = "visited-pages", resourcePath = "visited_pages.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -219,7 +219,7 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "visited-pages", resourcePath = "visited-pages.json",
+		name = "visited-pages", resourcePath = "visited_pages.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -256,7 +256,7 @@ public class VisitedPagesTransformationJSONArrayFunctionTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "visited-pages", resourcePath = "visited-pages.json",
+		name = "visited-pages", resourcePath = "visited_pages.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

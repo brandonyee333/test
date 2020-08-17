@@ -43,7 +43,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class GeolocationDogTest {
 
 	@ElasticsearchIndex(
-		name = "journals", resourcePath = "geolocation-journal-info.json",
+		name = "journals", resourcePath = "geolocation_journal_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -61,7 +61,7 @@ public class GeolocationDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "forms", resourcePath = "forms-info.json",
+		name = "forms", resourcePath = "forms_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test

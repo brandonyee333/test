@@ -53,16 +53,16 @@ public class RecommendationRestControllerTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "job-runs", resourcePath = "job-runs-info.json",
+		name = "job-runs", resourcePath = "job_runs_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "jobs", resourcePath = "jobs-info.json",
+		name = "jobs", resourcePath = "jobs_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
 		name = "recommended-items",
-		resourcePath = "recommended-items-info.json",
+		resourcePath = "recommended_items_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

@@ -35,11 +35,11 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author Rachael Koestartyo
  */
 @ElasticsearchIndex(
-	name = "activities", resourcePath = "activities-info-2.json",
+	name = "activities", resourcePath = "activities_info_2.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 @ElasticsearchIndex(
-	name = "assets", resourcePath = "assets-info.json",
+	name = "assets", resourcePath = "assets_info.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)

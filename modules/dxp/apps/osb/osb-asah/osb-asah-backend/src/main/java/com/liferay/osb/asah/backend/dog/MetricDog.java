@@ -231,7 +231,7 @@ public class MetricDog {
 
 		cardinalityAggregationBuilder.script(
 			ScriptUtil.createScript(
-				getClass(), "primary-key-aggregation-script.painless",
+				getClass(), "primary_key_aggregation_script.painless",
 				Collections.singletonMap(
 					"assetIdFieldName", assetResolver.getAssetIdFieldName())));
 
@@ -373,7 +373,7 @@ public class MetricDog {
 
 		termsAggregationBuilder.script(
 			ScriptUtil.createScript(
-				getClass(), "primary-key-aggregation-script.painless",
+				getClass(), "primary_key_aggregation_script.painless",
 				Collections.singletonMap(
 					"assetIdFieldName", assetResolver.getAssetIdFieldName())));
 

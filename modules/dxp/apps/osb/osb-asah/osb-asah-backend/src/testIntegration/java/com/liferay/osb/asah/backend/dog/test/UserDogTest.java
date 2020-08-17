@@ -39,7 +39,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class UserDogTest {
 
 	@ElasticsearchIndex(
-		name = "journals", resourcePath = "user-journal-info.json",
+		name = "journals", resourcePath = "user_journal_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -51,7 +51,7 @@ public class UserDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "journals", resourcePath = "user-journal-info.json",
+		name = "journals", resourcePath = "user_journal_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -63,7 +63,7 @@ public class UserDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "journals", resourcePath = "user-journal-info.json",
+		name = "journals", resourcePath = "user_journal_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -76,7 +76,7 @@ public class UserDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "journals", resourcePath = "user-journal-info.json",
+		name = "journals", resourcePath = "user_journal_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test

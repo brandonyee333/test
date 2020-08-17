@@ -41,7 +41,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class ExperimentDataDogTest {
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages-info.json",
+		name = "pages", resourcePath = "pages_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test

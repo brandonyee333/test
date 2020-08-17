@@ -239,7 +239,7 @@ public abstract class BaseDogConfiguration implements DogConfiguration {
 	@PostConstruct
 	private void _init() {
 		_weightedAverageAggregationScript = ScriptUtil.createScript(
-			getClass(), "weighted-average-aggregation-script.painless");
+			getClass(), "weighted_average_aggregation_script.painless");
 	}
 
 	private Script _weightedAverageAggregationScript;

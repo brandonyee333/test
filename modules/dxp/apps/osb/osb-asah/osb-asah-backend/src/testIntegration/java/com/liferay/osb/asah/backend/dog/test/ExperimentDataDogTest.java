@@ -44,11 +44,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class ExperimentDataDogTest {
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments-info.json",
+		name = "experiments", resourcePath = "experiments_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "experiment-pages-info.json",
+		name = "pages", resourcePath = "experiment_pages_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -75,11 +75,11 @@ public class ExperimentDataDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments-info.json",
+		name = "experiments", resourcePath = "experiments_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "experiment-pages-info.json",
+		name = "pages", resourcePath = "experiment_pages_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -95,11 +95,11 @@ public class ExperimentDataDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments-info.json",
+		name = "experiments", resourcePath = "experiments_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "experiment-pages-info.json",
+		name = "pages", resourcePath = "experiment_pages_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -132,11 +132,11 @@ public class ExperimentDataDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments-info.json",
+		name = "experiments", resourcePath = "experiments_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "experiment-pages-info.json",
+		name = "pages", resourcePath = "experiment_pages_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test

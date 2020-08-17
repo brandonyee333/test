@@ -116,7 +116,7 @@ public class AdminRestController extends BaseRestController {
 		Class<?> clazz = getClass();
 
 		try (InputStream inputStream = clazz.getResourceAsStream(
-				"nanite-list-schema.json")) {
+				"nanite_list_schema.json")) {
 
 			_naniteListSchema = SchemaLoader.load(
 				new JSONObject(new JSONTokener(inputStream)));

@@ -56,7 +56,7 @@ public class BlockedKeywordsRestControllerTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "blocked-keywords", resourcePath = "blocked-keywords.json",
+		name = "blocked-keywords", resourcePath = "blocked_keywords.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -73,7 +73,7 @@ public class BlockedKeywordsRestControllerTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "blocked-keywords", resourcePath = "blocked-keywords.json",
+		name = "blocked-keywords", resourcePath = "blocked_keywords.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -89,11 +89,11 @@ public class BlockedKeywordsRestControllerTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "blocked-keywords", resourcePath = "blocked-keywords.json",
+		name = "blocked-keywords", resourcePath = "blocked_keywords.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data-sources.json",
+		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -107,11 +107,11 @@ public class BlockedKeywordsRestControllerTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "blocked-keywords", resourcePath = "blocked-keywords.json",
+		name = "blocked-keywords", resourcePath = "blocked_keywords.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data-sources.json",
+		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -139,11 +139,11 @@ public class BlockedKeywordsRestControllerTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "blocked-keywords", resourcePath = "blocked-keywords.json",
+		name = "blocked-keywords", resourcePath = "blocked_keywords.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data-sources.json",
+		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -161,11 +161,11 @@ public class BlockedKeywordsRestControllerTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "blocked-keywords", resourcePath = "blocked-keywords.json",
+		name = "blocked-keywords", resourcePath = "blocked_keywords.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data-sources.json",
+		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -221,7 +221,7 @@ public class BlockedKeywordsRestControllerTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "blocked-keywords", resourcePath = "blocked-keywords.json",
+		name = "blocked-keywords", resourcePath = "blocked_keywords.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

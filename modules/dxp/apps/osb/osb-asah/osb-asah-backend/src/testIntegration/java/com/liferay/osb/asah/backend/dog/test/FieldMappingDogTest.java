@@ -42,7 +42,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class FieldMappingDogTest {
 
 	@ElasticsearchIndex(
-		name = "field-mappings", resourcePath = "field-mappings-info.json",
+		name = "field-mappings", resourcePath = "field_mappings_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

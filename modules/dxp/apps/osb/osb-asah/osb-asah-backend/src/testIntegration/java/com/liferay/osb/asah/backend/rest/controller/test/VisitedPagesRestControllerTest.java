@@ -47,7 +47,7 @@ public class VisitedPagesRestControllerTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "visited-pages", resourcePath = "visited-pages.json",
+		name = "visited-pages", resourcePath = "visited_pages.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -69,7 +69,7 @@ public class VisitedPagesRestControllerTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "visited-pages", resourcePath = "visited-pages.json",
+		name = "visited-pages", resourcePath = "visited_pages.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

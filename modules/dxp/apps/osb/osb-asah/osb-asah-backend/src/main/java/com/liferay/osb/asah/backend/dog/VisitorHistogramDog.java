@@ -308,13 +308,13 @@ public class VisitorHistogramDog {
 	@PostConstruct
 	private void _init() {
 		_visitorHistogramCombineScript = ScriptUtil.createScript(
-			getClass(), "visitor-histogram-combine-script.painless");
+			getClass(), "visitor_histogram_combine_script.painless");
 		_visitorHistogramInitScript = ScriptUtil.createScript(
-			getClass(), "visitor-histogram-init-script.painless");
+			getClass(), "visitor_histogram_init_script.painless");
 		_visitorHistogramMapScript = ScriptUtil.createScript(
-			getClass(), "visitor-histogram-map-script.painless");
+			getClass(), "visitor_histogram_map_script.painless");
 		_visitorHistogramReduceScript = ScriptUtil.createScript(
-			getClass(), "visitor-histogram-reduce-script.painless");
+			getClass(), "visitor_histogram_reduce_script.painless");
 	}
 
 	@Autowired

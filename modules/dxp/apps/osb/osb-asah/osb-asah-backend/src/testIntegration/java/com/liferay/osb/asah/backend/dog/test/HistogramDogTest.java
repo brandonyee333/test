@@ -52,7 +52,7 @@ public class HistogramDogTest {
 
 	@ElasticsearchIndex(
 		name = "journals",
-		resourcePath = "histogram-journal-last-90-days-info.json",
+		resourcePath = "histogram_journal_last_90_days_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -74,7 +74,7 @@ public class HistogramDogTest {
 
 	@ElasticsearchIndex(
 		name = "journals",
-		resourcePath = "histogram-journal-last-7-days-info.json",
+		resourcePath = "histogram_journal_last_7_days_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -94,7 +94,7 @@ public class HistogramDogTest {
 
 	@ElasticsearchIndex(
 		name = "journals",
-		resourcePath = "histogram-journal-last-24-hours-info.json",
+		resourcePath = "histogram_journal_last_24_hours_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -117,7 +117,7 @@ public class HistogramDogTest {
 
 	@ElasticsearchIndex(
 		name = "journals",
-		resourcePath = "histogram-journal-last-28-days-info.json",
+		resourcePath = "histogram_journal_last_28_days_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -140,7 +140,7 @@ public class HistogramDogTest {
 
 	@ElasticsearchIndex(
 		name = "journals",
-		resourcePath = "histogram-journal-last-90-days-info.json",
+		resourcePath = "histogram_journal_last_90_days_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Ignore
@@ -158,7 +158,7 @@ public class HistogramDogTest {
 
 	@ElasticsearchIndex(
 		name = "journals",
-		resourcePath = "histogram-journal-last-7-days-info.json",
+		resourcePath = "histogram_journal_last_7_days_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -194,7 +194,7 @@ public class HistogramDogTest {
 
 	@ElasticsearchIndex(
 		name = "journals",
-		resourcePath = "histogram-journal-yesterday-info.json",
+		resourcePath = "histogram_journal_yesterday_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test

@@ -207,7 +207,7 @@ public class DashboardDog {
 		Class<?> clazz = getClass();
 
 		try (InputStream inputStream = clazz.getResourceAsStream(
-				"dashboard-definition-schema.json")) {
+				"dashboard_definition_schema.json")) {
 
 			_dashboardDefinitionSchema = SchemaLoader.load(
 				new JSONObject(new JSONTokener(inputStream)));

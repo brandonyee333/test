@@ -44,7 +44,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 public class ExperimentMetricDogTest {
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiment-metrics-info.json",
+		name = "experiments", resourcePath = "experiment_metrics_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -63,7 +63,7 @@ public class ExperimentMetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiment-metrics-info.json",
+		name = "experiments", resourcePath = "experiment_metrics_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -81,7 +81,7 @@ public class ExperimentMetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiment-metrics-info.json",
+		name = "experiments", resourcePath = "experiment_metrics_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

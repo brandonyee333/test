@@ -49,11 +49,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class IndividualDogTest {
 
 	@ElasticsearchIndex(
-		name = "field-mappings", resourcePath = "field-mappings-info.json",
+		name = "field-mappings", resourcePath = "field_mappings_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals-info.json",
+		name = "individuals", resourcePath = "individuals_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -73,11 +73,11 @@ public class IndividualDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "field-mappings", resourcePath = "field-mappings-info.json",
+		name = "field-mappings", resourcePath = "field_mappings_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals-info.json",
+		name = "individuals", resourcePath = "individuals_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -93,11 +93,11 @@ public class IndividualDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "segment-individuals-blogs-info.json",
+		name = "blogs", resourcePath = "segment_individuals_blogs_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "segment-individuals-info-1.json",
+		name = "individuals", resourcePath = "segment_individuals_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -128,11 +128,11 @@ public class IndividualDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "segment-individuals-blogs-info.json",
+		name = "blogs", resourcePath = "segment_individuals_blogs_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "segment-individuals-info-1.json",
+		name = "individuals", resourcePath = "segment_individuals_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -158,11 +158,11 @@ public class IndividualDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "segment-individuals-blogs-info.json",
+		name = "blogs", resourcePath = "segment_individuals_blogs_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "segment-individuals-info-2.json",
+		name = "individuals", resourcePath = "segment_individuals_info_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

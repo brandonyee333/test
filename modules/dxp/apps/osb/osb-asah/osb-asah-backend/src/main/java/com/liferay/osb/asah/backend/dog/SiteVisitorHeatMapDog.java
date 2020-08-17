@@ -154,7 +154,7 @@ public class SiteVisitorHeatMapDog {
 
 		termsAggregationBuilder.script(
 			ScriptUtil.createScript(
-				getClass(), "visitor-heat-map-aggregation-script.painless",
+				getClass(), "visitor_heat_map_aggregation_script.painless",
 				Collections.singletonMap("timeZoneId", timeZoneId)));
 		termsAggregationBuilder.size(24 * 7);
 		termsAggregationBuilder.subAggregation(

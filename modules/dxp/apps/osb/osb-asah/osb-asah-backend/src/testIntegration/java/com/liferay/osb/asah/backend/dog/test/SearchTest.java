@@ -42,7 +42,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class SearchTest {
 
 	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "search-blogs-info.json",
+		name = "blogs", resourcePath = "search_blogs_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -61,7 +61,7 @@ public class SearchTest {
 
 	@ElasticsearchIndex(
 		name = "custom-asset-dashboards",
-		resourcePath = "search-custom-asset-dashboards-info.json",
+		resourcePath = "search_custom_asset_dashboards_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -73,7 +73,7 @@ public class SearchTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "search-pages-info.json",
+		name = "pages", resourcePath = "search_pages_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test

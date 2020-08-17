@@ -47,7 +47,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class SegmentDogTest {
 
 	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "segment-blogs-info.json",
+		name = "blogs", resourcePath = "segment_blogs_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -67,7 +67,7 @@ public class SegmentDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "forms", resourcePath = "segment-forms-info.json",
+		name = "forms", resourcePath = "segment_forms_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -89,7 +89,7 @@ public class SegmentDogTest {
 
 	@ElasticsearchIndex(
 		name = "individual-segments",
-		resourcePath = "individual-segments-info.json",
+		resourcePath = "individual_segments_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -104,7 +104,7 @@ public class SegmentDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "journals", resourcePath = "segment-journal-info.json",
+		name = "journals", resourcePath = "segment_journal_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test

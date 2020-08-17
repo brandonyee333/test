@@ -42,7 +42,7 @@ public class RecommendationDogTest {
 
 	@ElasticsearchIndex(
 		name = "recommended-items",
-		resourcePath = "recommended-items-info.json",
+		resourcePath = "recommended_items_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -61,7 +61,7 @@ public class RecommendationDogTest {
 
 	@ElasticsearchIndex(
 		name = "recommended-items",
-		resourcePath = "recommended-items-info.json",
+		resourcePath = "recommended_items_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -83,7 +83,7 @@ public class RecommendationDogTest {
 
 	@ElasticsearchIndex(
 		name = "recommended-items",
-		resourcePath = "recommended-items-info.json",
+		resourcePath = "recommended_items_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

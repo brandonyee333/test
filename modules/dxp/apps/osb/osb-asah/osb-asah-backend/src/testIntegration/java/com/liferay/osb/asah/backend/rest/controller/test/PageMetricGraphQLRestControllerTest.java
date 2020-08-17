@@ -29,17 +29,17 @@ public class PageMetricGraphQLRestControllerTest
 
 	@Override
 	public String getBodyPath() {
-		return "page-metric-body.json";
+		return "page_metric_body.json";
 	}
 
 	@Override
 	public String getExpectedResultPath() {
-		return "page-metric-expected-result.json";
+		return "page_metric_expected_result.json";
 	}
 
 	@Override
 	public String getQueryPath() {
-		return "page-metric-query.graphql";
+		return "page_metric_query.graphql";
 	}
 
 }

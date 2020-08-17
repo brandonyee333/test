@@ -47,7 +47,7 @@ public class ActivityGroupsRestControllerTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "activity-groups", resourcePath = "activity-groups.json",
+		name = "activity-groups", resourcePath = "activity_groups.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -66,7 +66,7 @@ public class ActivityGroupsRestControllerTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "activity-groups", resourcePath = "activity-groups.json",
+		name = "activity-groups", resourcePath = "activity_groups.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -95,7 +95,7 @@ public class ActivityGroupsRestControllerTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "activity-groups", resourcePath = "activity-groups.json",
+		name = "activity-groups", resourcePath = "activity_groups.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

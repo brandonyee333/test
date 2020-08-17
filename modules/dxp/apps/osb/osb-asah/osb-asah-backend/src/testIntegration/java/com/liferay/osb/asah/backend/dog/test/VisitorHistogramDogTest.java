@@ -49,7 +49,7 @@ public class VisitorHistogramDogTest {
 
 	@ElasticsearchIndex(
 		name = "pages",
-		resourcePath = "visitor-histogram-page-last-7-days-info.json",
+		resourcePath = "visitor_histogram_page_last_7_days_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -69,7 +69,7 @@ public class VisitorHistogramDogTest {
 
 	@ElasticsearchIndex(
 		name = "pages",
-		resourcePath = "visitor-histogram-page-last-24-hours-info.json",
+		resourcePath = "visitor_histogram_page_last_24_hours_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -92,7 +92,7 @@ public class VisitorHistogramDogTest {
 
 	@ElasticsearchIndex(
 		name = "pages",
-		resourcePath = "visitor-histogram-page-last-28-days-info.json",
+		resourcePath = "visitor_histogram_page_last_28_days_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -114,7 +114,7 @@ public class VisitorHistogramDogTest {
 
 	@ElasticsearchIndex(
 		name = "pages",
-		resourcePath = "visitor-histogram-page-last-90-days-info.json",
+		resourcePath = "visitor_histogram_page_last_90_days_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Ignore

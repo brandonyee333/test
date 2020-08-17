@@ -33,17 +33,17 @@ public class SiteInterestGraphQLRestControllerTest
 
 	@Override
 	public String getBodyPath() {
-		return "site-interest-body.json";
+		return "site_interest_body.json";
 	}
 
 	@Override
 	public String getExpectedResultPath() {
-		return "site-interest-expected-result.json";
+		return "site_interest_expected_result.json";
 	}
 
 	@Override
 	public String getQueryPath() {
-		return "site-interest-query.graphql";
+		return "site_interest_query.graphql";
 	}
 
 }

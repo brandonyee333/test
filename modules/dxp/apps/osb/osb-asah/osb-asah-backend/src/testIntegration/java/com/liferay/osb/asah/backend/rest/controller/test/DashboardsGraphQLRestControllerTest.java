@@ -36,17 +36,17 @@ public class DashboardsGraphQLRestControllerTest
 
 	@Override
 	public String getBodyPath() {
-		return "dashboards-body.json";
+		return "dashboards_body.json";
 	}
 
 	@Override
 	public String getExpectedResultPath() {
-		return "dashboards-expected-result.json";
+		return "dashboards_expected_result.json";
 	}
 
 	@Override
 	public String getQueryPath() {
-		return "dashboards-query.graphql";
+		return "dashboards_query.graphql";
 	}
 
 	@Before

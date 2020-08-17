@@ -39,7 +39,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class DataSourceDogTest {
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data-sources-info.json",
+		name = "data-sources", resourcePath = "data_sources_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -48,7 +48,7 @@ public class DataSourceDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data-sources-info.json",
+		name = "data-sources", resourcePath = "data_sources_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -60,7 +60,7 @@ public class DataSourceDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data-sources-info.json",
+		name = "data-sources", resourcePath = "data_sources_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -73,7 +73,7 @@ public class DataSourceDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data-sources-info.json",
+		name = "data-sources", resourcePath = "data_sources_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

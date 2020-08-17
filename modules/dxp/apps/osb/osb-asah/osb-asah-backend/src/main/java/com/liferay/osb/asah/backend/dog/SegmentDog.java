@@ -301,7 +301,7 @@ public class SegmentDog {
 			_elasticsearchInvokerFactory.forFaroInfo();
 
 		_segmentScriptSource = ScriptUtil.loadScriptSource(
-			getClass(), "segment-script.painless");
+			getClass(), "segment_script.painless");
 	}
 
 	@Autowired

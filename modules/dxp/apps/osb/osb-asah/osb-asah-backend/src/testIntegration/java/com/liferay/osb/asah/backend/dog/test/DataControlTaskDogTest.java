@@ -61,7 +61,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author Matthew Kong
  */
 @ElasticsearchIndex(
-	name = "data-control-tasks", resourcePath = "data-control-tasks.json",
+	name = "data-control-tasks", resourcePath = "data_control_tasks.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)

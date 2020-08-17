@@ -39,7 +39,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class InterestDogTest {
 
 	@ElasticsearchIndex(
-		name = "interests", resourcePath = "interests-info.json",
+		name = "interests", resourcePath = "interests_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

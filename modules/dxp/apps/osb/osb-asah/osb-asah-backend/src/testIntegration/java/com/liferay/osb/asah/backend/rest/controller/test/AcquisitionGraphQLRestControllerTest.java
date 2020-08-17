@@ -29,17 +29,17 @@ public class AcquisitionGraphQLRestControllerTest
 
 	@Override
 	public String getBodyPath() {
-		return "acquisition-body.json";
+		return "acquisition_body.json";
 	}
 
 	@Override
 	public String getExpectedResultPath() {
-		return "acquisition-expected-result.json";
+		return "acquisition_expected_result.json";
 	}
 
 	@Override
 	public String getQueryPath() {
-		return "acquisition-query.graphql";
+		return "acquisition_query.graphql";
 	}
 
 }
