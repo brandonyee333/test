@@ -75,7 +75,7 @@ public class AnalyticsEventsRestControllerTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data-sources.json",
+		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -230,7 +230,7 @@ public class AnalyticsEventsRestControllerTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data-sources.json",
+		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -244,7 +244,7 @@ public class AnalyticsEventsRestControllerTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data-sources.json",
+		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
