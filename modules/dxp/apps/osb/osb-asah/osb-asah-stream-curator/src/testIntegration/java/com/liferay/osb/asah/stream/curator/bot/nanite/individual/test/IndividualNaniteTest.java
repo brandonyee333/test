@@ -56,7 +56,7 @@ public class IndividualNaniteTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data-sources.json",
+		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -127,7 +127,7 @@ public class IndividualNaniteTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data-sources.json",
+		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -200,7 +200,7 @@ public class IndividualNaniteTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data-sources.json",
+		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(

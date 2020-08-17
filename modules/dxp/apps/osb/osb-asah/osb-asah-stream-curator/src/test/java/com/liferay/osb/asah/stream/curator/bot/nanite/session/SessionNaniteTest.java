@@ -65,7 +65,7 @@ public class SessionNaniteTest extends BaseNaniteTestCase {
 		ReflectionTestUtils.setField(
 			nanite, "_sessionUpdateScriptSource",
 			ScriptUtil.loadScriptSource(
-				SessionNanite.class, "session-update-script.painless"));
+				SessionNanite.class, "session_update_script.painless"));
 	}
 
 	@Override

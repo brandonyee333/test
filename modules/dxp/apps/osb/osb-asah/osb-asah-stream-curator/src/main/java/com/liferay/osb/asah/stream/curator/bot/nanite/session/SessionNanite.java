@@ -91,7 +91,7 @@ public class SessionNanite implements Nanite {
 			_elasticsearchInvokerFactory.forFaroInfo();
 
 		_sessionUpdateScriptSource = ScriptUtil.loadScriptSource(
-			getClass(), "session-update-script.painless");
+			getClass(), "session_update_script.painless");
 	}
 
 	@Override
