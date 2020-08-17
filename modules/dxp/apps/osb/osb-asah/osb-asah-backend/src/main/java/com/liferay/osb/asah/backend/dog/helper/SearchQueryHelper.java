@@ -22,7 +22,6 @@ import com.liferay.osb.asah.backend.model.Geolocation;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.Technology;
 import com.liferay.osb.asah.backend.model.TimeRange;
-import com.liferay.osb.asah.backend.model.URL;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 
@@ -344,13 +343,12 @@ public class SearchQueryHelper {
 
 	private void _addCanonicalUrlFilter(
 		AssetType assetType, BoolQueryBuilder boolQueryBuilder,
-		URL canonicalUrl) {
+		String canonicalUrl) {
 
-		if (!canonicalUrl.equals(URL.any())) {
+		if (StringUtils.isNotBlank(canonicalUrl)) {
 			boolQueryBuilder.filter(
 				QueryBuilders.termQuery(
-					getCanonicalUrlFieldName(assetType),
-					canonicalUrl.getURL()));
+					getCanonicalUrlFieldName(assetType), canonicalUrl));
 		}
 	}
 
@@ -571,12 +569,11 @@ public class SearchQueryHelper {
 	}
 
 	private void _addURLFilter(
-		AssetType assetType, BoolQueryBuilder boolQueryBuilder, URL url) {
+		AssetType assetType, BoolQueryBuilder boolQueryBuilder, String url) {
 
-		if (!url.equals(URL.any())) {
+		if (StringUtils.isNotBlank(url)) {
 			boolQueryBuilder.filter(
-				QueryBuilders.termQuery(
-					getURLFieldName(assetType), url.getURL()));
+				QueryBuilders.termQuery(getURLFieldName(assetType), url));
 		}
 	}
 

@@ -19,7 +19,6 @@ import com.liferay.osb.asah.backend.model.Geolocation;
 import com.liferay.osb.asah.backend.model.Interval;
 import com.liferay.osb.asah.backend.model.Technology;
 import com.liferay.osb.asah.backend.model.TimeRange;
-import com.liferay.osb.asah.backend.model.URL;
 
 /**
  * @author Marcellus Tavares
@@ -46,7 +45,7 @@ public class SearchQueryContext {
 		return _assetType;
 	}
 
-	public URL getCanonicalUrl() {
+	public String getCanonicalUrl() {
 		return _canonicalUrl;
 	}
 
@@ -98,7 +97,7 @@ public class SearchQueryContext {
 		return _title;
 	}
 
-	public URL getURL() {
+	public String getURL() {
 		return _url;
 	}
 
@@ -131,7 +130,7 @@ public class SearchQueryContext {
 	}
 
 	public void setCanonicalUrl(String canonicalUrl) {
-		_canonicalUrl = URL.url(canonicalUrl);
+		_canonicalUrl = canonicalUrl;
 	}
 
 	public void setChannelId(String channelId) {
@@ -199,7 +198,7 @@ public class SearchQueryContext {
 	}
 
 	public void setURL(String url) {
-		_url = URL.url(url);
+		_url = url;
 	}
 
 	public void setVariantId(String variantId) {
@@ -209,7 +208,7 @@ public class SearchQueryContext {
 	private Boolean _active;
 	private String _assetId;
 	private AssetType _assetType = AssetType.PAGE;
-	private URL _canonicalUrl = URL.any();
+	private String _canonicalUrl;
 	private String _channelId;
 	private String _dataSourceId;
 	private String _experienceId;
@@ -224,7 +223,7 @@ public class SearchQueryContext {
 	private TimeRange _timeRange = TimeRange.LAST_30_DAYS;
 	private String _timeZoneId = "UTC";
 	private String _title;
-	private URL _url = URL.any();
+	private String _url;
 	private String _variantId;
 
 }

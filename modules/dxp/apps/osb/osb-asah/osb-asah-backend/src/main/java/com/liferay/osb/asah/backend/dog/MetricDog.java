@@ -23,7 +23,6 @@ import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
-import com.liferay.osb.asah.backend.model.URL;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.Sort;
@@ -109,17 +108,17 @@ public class MetricDog {
 			assetMetric.setAssetId(assetId);
 		}
 
-		URL canonicalUrl = searchQueryContext.getCanonicalUrl();
+		String canonicalUrl = searchQueryContext.getCanonicalUrl();
 
-		if (!canonicalUrl.equals(URL.any())) {
+		if (StringUtils.isNotBlank(canonicalUrl)) {
 			assetMetric.setCanonicalUrls(
-				Collections.singletonList(canonicalUrl.getURL()));
+				Collections.singletonList(canonicalUrl));
 		}
 
-		URL url = searchQueryContext.getURL();
+		String url = searchQueryContext.getURL();
 
-		if (!url.equals(URL.any())) {
-			assetMetric.setURLs(Collections.singletonList(url.getURL()));
+		if (StringUtils.isNotBlank(url)) {
+			assetMetric.setURLs(Collections.singletonList(url));
 		}
 
 		Set<MetricResolver> metricResolvers =
