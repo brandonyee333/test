@@ -1,7 +1,7 @@
 definition {
 
 	macro addPermission {
-		Variables.assertDefined(parameterList = "${actionId},${name},${roleTitle}");
+		Variables.assertDefined(parameterList = "${actionId},${name},${roleName}");
 
 		var groupId = JSONPermissionSetter.setGroupId(groupName = "${groupName}");
 
@@ -9,7 +9,7 @@ definition {
 
 		var primKey = JSONPermissionSetter.setPrimKey(roleType = "${roleType}");
 
-		var roleId = JSONPermissionSetter.setRoleId(roleTitle = "${roleTitle}");
+		var roleId = JSONPermissionSetter.setRoleId(roleTitle = "${roleName}");
 
 		var scope = JSONPermissionSetter.setScope(roleType = "${roleType}");
 
