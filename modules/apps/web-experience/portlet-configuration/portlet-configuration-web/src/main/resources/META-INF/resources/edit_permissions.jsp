@@ -202,9 +202,7 @@ RoleSearchTerms searchTerms = (RoleSearchTerms)roleSearchContainer.getSearchTerm
 								actions = new ArrayList<String>(actions);
 
 								actions.remove(ActionKeys.ASSIGN_MEMBERS);
-								actions.remove(ActionKeys.DEFINE_PERMISSIONS);
 								actions.remove(ActionKeys.DELETE);
-								actions.remove(ActionKeys.PERMISSIONS);
 								actions.remove(ActionKeys.UPDATE);
 							}
 
