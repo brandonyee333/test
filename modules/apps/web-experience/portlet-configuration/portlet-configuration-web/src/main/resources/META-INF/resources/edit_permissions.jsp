@@ -206,7 +206,6 @@ RoleSearchTerms searchTerms = (RoleSearchTerms)roleSearchContainer.getSearchTerm
 								actions.remove(ActionKeys.DELETE);
 								actions.remove(ActionKeys.PERMISSIONS);
 								actions.remove(ActionKeys.UPDATE);
-								actions.remove(ActionKeys.VIEW);
 							}
 
 							if ((modelResourceRole.getType() == RoleConstants.TYPE_ORGANIZATION) || (modelResourceRole.getType() == RoleConstants.TYPE_SITE)) {
