@@ -69,11 +69,11 @@ public class AccountEntrySearchDisplayContext {
 		StringBundler sb = new StringBundler(11);
 
 		if (Validator.isNotNull(keywords)) {
-			sb.append("(name eq '");
+			sb.append("(contains(name, '");
 			sb.append(keywords);
-			sb.append("' or code eq '");
+			sb.append("') or contains(code, '");
 			sb.append(keywords);
-			sb.append("')");
+			sb.append("'))");
 		}
 
 		if (!isLiferayContractorOrg() && !isLiferayIncOrg()) {
