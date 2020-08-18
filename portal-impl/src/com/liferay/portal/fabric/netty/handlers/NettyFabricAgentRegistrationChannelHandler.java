@@ -35,8 +35,6 @@ import io.netty.util.concurrent.EventExecutorGroup;
 
 import java.io.IOException;
 
-import java.net.SocketAddress;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -103,12 +101,11 @@ public class NettyFabricAgentRegistrationChannelHandler
 
 		Channel channel = channelHandlerContext.channel();
 
-		SocketAddress socketAddress = channel.localAddress();
-
 		Path repositoryPath = Paths.get(
 			_repositoryParentPath.toString(),
 			StringUtil.replace(
-				socketAddress.toString(), CharPool.COLON, CharPool.DASH));
+				String.valueOf(channel.localAddress()), CharPool.COLON,
+				CharPool.DASH));
 
 		Files.createDirectories(repositoryPath);
 
