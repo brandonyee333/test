@@ -517,6 +517,8 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 
 		if (type.equals("keyword")) {
 			return stream.map(
+				String::toLowerCase
+			).map(
 				keyword -> Pair.of(keyword, type)
 			).collect(
 				Collectors.toSet()
