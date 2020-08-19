@@ -945,6 +945,11 @@ public class DXPExtractorNanite implements Nanite {
 				_dxpRawElasticsearchInvoker.add(
 					"audit-events", newAuditEventsJSONArray);
 
+				if (newAuditEventsJSONArray.length() > 0) {
+					_updateOSBAsahMarker(
+						newAuditEventsJSONArray.getJSONObject(0));
+				}
+
 				processedCount += newAuditEventsJSONArray.length();
 
 				if (_log.isInfoEnabled()) {
@@ -1061,7 +1066,15 @@ public class DXPExtractorNanite implements Nanite {
 			}
 		}
 
-		_updateOSBAsahMarker(auditEventJSONObject);
+		_dxpRawElasticsearchInvoker.delete(
+			"audit-events",
+			BoolQueryBuilderUtil.filter(
+				_osbAsahDataSourceIdTermQueryBuilder
+			).filter(
+				QueryBuilders.termQuery(
+					"auditEventId",
+					auditEventJSONObject.getLong("auditEventId"))
+			));
 	}
 
 	private void _syncGroups() {
