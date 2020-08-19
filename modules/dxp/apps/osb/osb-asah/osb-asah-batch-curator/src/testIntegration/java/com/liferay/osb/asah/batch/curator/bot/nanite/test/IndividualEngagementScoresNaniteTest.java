@@ -94,30 +94,6 @@ public class IndividualEngagementScoresNaniteTest extends BaseNaniteTestCase {
 	}
 
 	@Test
-	public void testFilterActivitiesWithoutOwnerId() throws Exception {
-		JSONObject activityGroupJSONObject =
-			FaroInfoTestUtil.buildActivityGroupJSONObject(
-				_dataSourceJSONObject.getString("id"),
-				DateUtil.addDays(DateUtil.newDateString(), 0),
-				_individualJSONObject);
-
-		activityGroupJSONObject.remove("ownerId");
-
-		_addPageVisitActivities(
-			faroInfoElasticsearchInvoker.add(
-				"activity-groups", activityGroupJSONObject),
-			_pageAssetsJSONArray.getJSONObject(0), "100",
-			RandomTestUtil.randomUUID());
-
-		Assert.assertEquals(
-			0, _computeInteractionScore(DateUtil.newDayDateString()), _DELTA);
-		Assert.assertEquals(
-			0, _computeLoyaltyScore(DateUtil.newDayDateString()), _DELTA);
-		Assert.assertEquals(
-			0, _computeVarietyScore(DateUtil.newDayDateString()), _DELTA);
-	}
-
-	@Test
 	public void testFilterDuplicatePageViewActivities() throws Exception {
 		JSONObject activityGroupJSONObject = _addActivityGroup(0);
 		JSONObject assetJSONObject = _pageAssetsJSONArray.getJSONObject(0);

@@ -267,7 +267,7 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 
 		String eventDateString = DateUtil.toUTCString(
 			analyticsEvent.getEventDate());
-		String ownerId = activityGroupJSONObject.optString("ownerId");
+		String ownerId = activityGroupJSONObject.getString("ownerId");
 
 		JSONObject activityJSONObject = JSONUtil.put(
 			"activityKey", applicationId + "#" + eventId + "#" + assetId

@@ -445,10 +445,7 @@ public class IndividualEngagementScoresNanite
 								startDayDateString
 							).lte(
 								dayDateString
-							)
-						).filter(
-							QueryBuilders.existsQuery("ownerId")
-						);
+							));
 
 					if (eventQueryBuilder != null) {
 						boolQueryBuilder.filter(eventQueryBuilder);
@@ -548,10 +545,7 @@ public class IndividualEngagementScoresNanite
 				DateUtil.addDays(dayDateString, -_DAYS)
 			).lte(
 				dayDateString
-			)
-		).filter(
-			QueryBuilders.existsQuery("ownerId")
-		);
+			));
 
 		if (queryBuilder != null) {
 			boolQueryBuilder.filter(queryBuilder);

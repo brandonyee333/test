@@ -269,7 +269,7 @@ public class FaroInfoTestUtil {
 				"objectType", applicationId
 			)
 		).put(
-			"ownerId", activityGroupJSONObject.optString("ownerId")
+			"ownerId", activityGroupJSONObject.getString("ownerId")
 		).put(
 			"startTime", activityGroupJSONObject.getString("startTime")
 		).put(

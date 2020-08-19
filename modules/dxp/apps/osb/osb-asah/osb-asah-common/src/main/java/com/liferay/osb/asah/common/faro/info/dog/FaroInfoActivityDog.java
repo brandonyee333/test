@@ -45,34 +45,29 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		activityJSONObject = elasticsearchInvoker.add(
 			"activities", activityJSONObject);
 
-		String ownerId = activityJSONObject.optString("ownerId", null);
+		Set<String> referencedAssetIds =
+			_faroInfoIndividualSegmentDog.getReferencedAssetIds();
 
-		if (ownerId != null) {
-			Set<String> referencedAssetIds =
-				_faroInfoIndividualSegmentDog.getReferencedAssetIds();
+		JSONObject objectJSONObject = activityJSONObject.getJSONObject(
+			"object");
 
-			JSONObject objectJSONObject = activityJSONObject.getJSONObject(
-				"object");
-
-			if (!referencedAssetIds.contains(
-					objectJSONObject.getString("id"))) {
-
-				return activityJSONObject;
-			}
-
-			_faroInfoOSBAsahTaskDog.addOSBAsahTask(
-				"UpdateDynamicMembershipsNanite",
-				JSONUtil.put(
-					"dateModified", DateUtil.newDateString()
-				).put(
-					"filter",
-					"contains(filter, '" +
-						activityJSONObject.getString("activityKey") + "')"
-				).put(
-					"individualJSONObject",
-					elasticsearchInvoker.get("individuals", ownerId)
-				));
+		if (!referencedAssetIds.contains(objectJSONObject.getString("id"))) {
+			return activityJSONObject;
 		}
+
+		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+			"UpdateDynamicMembershipsNanite",
+			JSONUtil.put(
+				"dateModified", DateUtil.newDateString()
+			).put(
+				"filter",
+				"contains(filter, '" +
+					activityJSONObject.getString("activityKey") + "')"
+			).put(
+				"individualJSONObject",
+				elasticsearchInvoker.get(
+					"individuals", activityJSONObject.getString("ownerId"))
+			));
 
 		return activityJSONObject;
 	}
