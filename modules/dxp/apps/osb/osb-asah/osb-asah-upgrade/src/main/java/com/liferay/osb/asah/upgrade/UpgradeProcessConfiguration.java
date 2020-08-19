@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.upgrade.v2_7_1.IndividualsUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_7_3.ActivitiesUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -32,9 +33,14 @@ public class UpgradeProcessConfiguration {
 
 		upgradeProcess.addUpgradeSteps(
 			"2.7.0", "2.7.1", _individualsUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"2.7.1", "2.7.3", _activitiesUpgradeStep);
 
 		return upgradeProcess;
 	}
+
+	@Autowired
+	private ActivitiesUpgradeStep _activitiesUpgradeStep;
 
 	@Autowired
 	private IndividualsUpgradeStep _individualsUpgradeStep;
