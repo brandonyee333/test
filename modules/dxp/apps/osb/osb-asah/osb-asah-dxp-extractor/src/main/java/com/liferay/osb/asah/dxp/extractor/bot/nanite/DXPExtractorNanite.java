@@ -1002,8 +1002,7 @@ public class DXPExtractorNanite implements Nanite {
 				processedCount += auditEventsJSONArray.length();
 
 				if (_log.isInfoEnabled()) {
-					_log.info(
-						"Processed " + processedCount + " audit-events");
+					_log.info("Processed " + processedCount + " audit-events");
 				}
 			}
 
@@ -1230,7 +1229,7 @@ public class DXPExtractorNanite implements Nanite {
 			}
 
 			if (_faroInfoSuppressedUserDog.isSuppressed(
-				userJSONObject.optString("emailAddress"), null)) {
+					userJSONObject.optString("emailAddress"), null)) {
 
 				return;
 			}
