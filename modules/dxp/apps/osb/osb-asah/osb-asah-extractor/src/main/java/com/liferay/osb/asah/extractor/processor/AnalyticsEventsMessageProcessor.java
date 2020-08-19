@@ -41,6 +41,7 @@ import com.liferay.osb.asah.extractor.ip.geocoder.IPInfo;
 
 import io.prometheus.client.Counter;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -52,6 +53,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.search.join.ScoreMode;
 
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
@@ -85,7 +87,7 @@ public class AnalyticsEventsMessageProcessor {
 		}
 	}
 
-	private String _addIndividual(
+	private JSONObject _addIndividual(
 		AnalyticsEventsMessage analyticsEventsMessage, String channelId,
 		String dataSourceId) {
 
@@ -115,13 +117,13 @@ public class AnalyticsEventsMessageProcessor {
 				individualJSONObject.optJSONArray("channelIds"));
 
 			if (channelIds.add(channelId)) {
-				_faroInfoElasticsearchInvoker.update(
+				individualJSONObject = _faroInfoElasticsearchInvoker.update(
 					"individuals", individualJSONObject.getString("id"),
 					JSONUtil.put("channelIds", channelIds));
 			}
 		}
 
-		return individualJSONObject.getString("id");
+		return individualJSONObject;
 	}
 
 	private JSONObject _getAnalyticsDataJSONObject(
@@ -201,8 +203,12 @@ public class AnalyticsEventsMessageProcessor {
 				}
 			}
 
-			String individualId = _addIndividual(
+			JSONObject individualJSONObject = _addIndividual(
 				analyticsEventsMessage, channelId, dataSourceId);
+
+			boolean knownIndividual = _isKnownIndividual(individualJSONObject);
+			Set<String> segmentNames = _getSegmentNames(
+				channelId, individualJSONObject);
 
 			List<AnalyticsEventsMessage.Event> events =
 				analyticsEventsMessage.getEvents();
@@ -225,7 +231,10 @@ public class AnalyticsEventsMessageProcessor {
 
 				analyticsEvent.setEventProperties(eventProperties);
 
-				analyticsEvent.setIndividualId(individualId);
+				analyticsEvent.setIndividualId(
+					individualJSONObject.getString("id"));
+				analyticsEvent.setKnownIndividual(knownIndividual);
+				analyticsEvent.setSegmentNames(segmentNames);
 				analyticsEvent.setUserId(analyticsEventsMessage.getUserId());
 
 				for (Channel channel :
@@ -290,6 +299,36 @@ public class AnalyticsEventsMessageProcessor {
 		return context;
 	}
 
+	private Set<String> _getSegmentNames(
+		String channelId, JSONObject individualJSONObject) {
+
+		List<String> individualSegmentIds = JSONUtil.toStringList(
+			individualJSONObject.getJSONArray("individualSegmentIds"));
+
+		JSONArray individualSegmentsJSONArray =
+			_faroInfoElasticsearchInvoker.get(
+				"individual-segments",
+				QueryBuilders.termQuery("channelId", channelId));
+
+		individualSegmentIds.retainAll(
+			JSONUtil.toStringList(individualSegmentsJSONArray, "id"));
+
+		if (individualSegmentIds.isEmpty()) {
+			return Collections.emptySet();
+		}
+
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+			QueryBuilders.termsQuery("id", individualSegmentIds)
+		).filter(
+			QueryBuilders.termQuery("status", "ACTIVE")
+		);
+
+		return JSONUtil.toStringSet(
+			_faroInfoElasticsearchInvoker.get(
+				"individual-segments", boolQueryBuilder),
+			"name");
+	}
+
 	@PostConstruct
 	private void _init() {
 		_faroInfoElasticsearchInvoker =
@@ -318,6 +357,19 @@ public class AnalyticsEventsMessageProcessor {
 
 		if (_dataSourceCache.isValidDataSourceId(
 				analyticsEventsMessage.getDataSourceId())) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	private boolean _isKnownIndividual(JSONObject individualJSONObject) {
+		JSONObject demographicsJSONObject = individualJSONObject.optJSONObject(
+			"demographics");
+
+		if ((demographicsJSONObject != null) &&
+			demographicsJSONObject.has("email")) {
 
 			return true;
 		}

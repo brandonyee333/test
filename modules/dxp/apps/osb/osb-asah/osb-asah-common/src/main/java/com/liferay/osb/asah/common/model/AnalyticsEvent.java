@@ -30,9 +30,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Inácio Nery
@@ -166,6 +168,10 @@ public class AnalyticsEvent implements Serializable {
 		return eventCalendar.getTime();
 	}
 
+	public Set<String> getSegmentNames() {
+		return _segmentNames;
+	}
+
 	public String getUserId() {
 		return _userId;
 	}
@@ -175,6 +181,10 @@ public class AnalyticsEvent implements Serializable {
 		return Objects.hash(
 			_applicationId, _channelId, _clientIP, _id, _context, _createDate,
 			_dataSourceId, _eventDate, _eventId, _eventProperties, _userId);
+	}
+
+	public boolean isKnownIndividual() {
+		return _knownIndividual;
 	}
 
 	public void setApplicationId(String applicationId) {
@@ -227,6 +237,14 @@ public class AnalyticsEvent implements Serializable {
 		_individualId = individualId;
 	}
 
+	public void setKnownIndividual(boolean knownIndividual) {
+		_knownIndividual = knownIndividual;
+	}
+
+	public void setSegmentNames(Set<String> segmentNames) {
+		_segmentNames = segmentNames;
+	}
+
 	public void setUserId(String userId) {
 		_userId = userId;
 	}
@@ -264,6 +282,8 @@ public class AnalyticsEvent implements Serializable {
 	private Map<String, String> _eventProperties;
 	private String _id;
 	private String _individualId;
+	private boolean _knownIndividual;
+	private Set<String> _segmentNames = new HashSet<>();
 	private String _userId;
 
 }

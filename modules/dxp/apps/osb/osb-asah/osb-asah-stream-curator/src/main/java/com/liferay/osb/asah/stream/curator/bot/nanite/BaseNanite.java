@@ -15,10 +15,8 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
@@ -34,7 +32,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -46,13 +43,8 @@ import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
-import org.apache.lucene.search.join.ScoreMode;
 
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -72,8 +64,6 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	public void init() {
 		_cerebroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forCerebroInfo();
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
 	}
 
 	@Override
@@ -249,80 +239,20 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		model.setEventDate(analyticsEvent.getNormalizedEventDate());
 		model.setExperienceId(MapUtil.getString(context, "experienceId", ""));
 		model.setExperimentId(MapUtil.getString(context, "experimentId", ""));
+		model.setIndividualId(analyticsEvent.getIndividualId());
+		model.setKnownIndividual(analyticsEvent.isKnownIndividual());
 		model.setLastEventDate(analyticsEvent.getEventDate());
 		model.setModifiedDate(new Date());
+		model.setSegmentNames(analyticsEvent.getSegmentNames());
 		model.setUserId(analyticsEvent.getUserId());
 		model.setVariantId(MapUtil.getString(context, "variantId", ""));
 
-		Optional<JSONObject> individualJSONObjectOptional =
-			_fetchIndividualJSONObjectOptional(analyticsEvent);
-
-		if (individualJSONObjectOptional.isPresent()) {
-			_setModelIndividualId(individualJSONObjectOptional.get(), model);
-			_setModelKnownIndividual(individualJSONObjectOptional.get(), model);
-		}
-
 		_setModelLocation(analyticsEvent, model);
-
-		if (individualJSONObjectOptional.isPresent()) {
-			_setModelSegmentNames(individualJSONObjectOptional.get(), model);
-		}
-
 		_setModelTechnology(analyticsEvent, model);
 		_setModelTitle(analyticsEvent, model);
 		_setModelURL(analyticsEvent, model);
 
 		return model;
-	}
-
-	private Optional<JSONObject> _fetchIndividualJSONObjectOptional(
-		AnalyticsEvent analyticsEvent) {
-
-		if ((analyticsEvent.getDataSourceId() == null) ||
-			(analyticsEvent.getUserId() == null)) {
-
-			return Optional.ofNullable(null);
-		}
-
-		try {
-			JSONObject individualJSONObject =
-				_faroInfoElasticsearchInvoker.fetch(
-					"individuals",
-					QueryBuilders.nestedQuery(
-						"dataSourceIndividualPKs",
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.termQuery(
-								"dataSourceIndividualPKs.dataSourceId",
-								analyticsEvent.getDataSourceId())
-						).filter(
-							QueryBuilders.termsQuery(
-								"dataSourceIndividualPKs.individualPKs",
-								analyticsEvent.getUserId())
-						),
-						ScoreMode.None));
-
-			return Optional.ofNullable(individualJSONObject);
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private List<String> _getIndividualSegmentIds(
-		String channelId, JSONObject individualJSONObject) {
-
-		List<String> individualSegmentIds = JSONUtil.toStringList(
-			individualJSONObject.getJSONArray("individualSegmentIds"));
-
-		JSONArray individualSegmentsJSONArray =
-			_faroInfoElasticsearchInvoker.get(
-				"individual-segments",
-				QueryBuilders.termQuery("channelId", channelId));
-
-		individualSegmentIds.retainAll(
-			JSONUtil.toStringList(individualSegmentsJSONArray, "id"));
-
-		return individualSegmentIds;
 	}
 
 	private Function<AnalyticsEvent, T> _getMapperFunction() {
@@ -364,26 +294,6 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		}
 	}
 
-	private void _setModelIndividualId(
-		JSONObject individualJSONObject, T model) {
-
-		model.setIndividualId(individualJSONObject.getString("id"));
-	}
-
-	private void _setModelKnownIndividual(
-		JSONObject individualJSONObject, T model) {
-
-		JSONObject demographicsJSONObject = individualJSONObject.optJSONObject(
-			"demographics");
-
-		if (demographicsJSONObject == null) {
-			model.setKnownIndividual(false);
-		}
-		else {
-			model.setKnownIndividual(demographicsJSONObject.has("email"));
-		}
-	}
-
 	private void _setModelLocation(AnalyticsEvent analyticsEvent, T model) {
 		Map<String, Object> context = analyticsEvent.getContext();
 
@@ -399,34 +309,6 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		String primaryKey = primaryKeyGeneratorFunction.apply(model);
 
 		model.setPrimaryKey(primaryKey);
-	}
-
-	private void _setModelSegmentNames(
-		JSONObject individualJSONObject, T model) {
-
-		List<String> individualSegmentIds = _getIndividualSegmentIds(
-			model.getChannelId(), individualJSONObject);
-
-		if (individualSegmentIds.isEmpty()) {
-			return;
-		}
-
-		try {
-			BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-				QueryBuilders.termsQuery("id", individualSegmentIds)
-			).filter(
-				QueryBuilders.termQuery("status", "ACTIVE")
-			);
-
-			model.setSegmentNames(
-				JSONUtil.toStringSet(
-					_faroInfoElasticsearchInvoker.get(
-						"individual-segments", boolQueryBuilder),
-					"name"));
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 	private void _setModelTechnology(AnalyticsEvent analyticsEvent, T model) {
@@ -479,7 +361,5 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 }
