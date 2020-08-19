@@ -14,10 +14,13 @@
 
 package com.liferay.source.formatter.checkstyle.checks;
 
+import com.liferay.portal.kernel.util.Validator;
+
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Hugo Huijser
@@ -32,6 +35,10 @@ public class UnnecessaryAssignCheck extends BaseUnnecessaryStatementCheck {
 	@Override
 	protected void doVisitToken(DetailAST detailAST) {
 		DetailAST parentDetailAST = detailAST.getParent();
+
+		if (parentDetailAST.getType() == TokenTypes.VARIABLE_DEF) {
+			_checkCombineToString(parentDetailAST);
+		}
 
 		if (parentDetailAST.getType() != TokenTypes.EXPR) {
 			return;
@@ -68,6 +75,10 @@ public class UnnecessaryAssignCheck extends BaseUnnecessaryStatementCheck {
 
 		if (!_hasPrecedingAssignStatement(parentDetailAST, variableName) &&
 			!_isUsedInFinallyStatement(detailAST, variableName)) {
+
+			if (isJSPFile()) {
+				return;
+			}
 
 			checkUnnecessaryStatementBeforeReturn(
 				detailAST, semiDetailAST, variableName,
@@ -136,12 +147,98 @@ public class UnnecessaryAssignCheck extends BaseUnnecessaryStatementCheck {
 				detailAST, TokenTypes.LITERAL_FOR, TokenTypes.LITERAL_WHILE,
 				TokenTypes.OBJBLOCK);
 
+			if (isJSPFile()) {
+				return;
+			}
+
 			if (ancestorDetailAST.getLineNo() <=
 					variableDefinitionDetailAST.getLineNo()) {
 
 				log(detailAST, _MSG_UNNECESSARY_ASSIGN_UNUSED, variableName);
 			}
 		}
+	}
+
+	private void _checkCombineToString(DetailAST detailAST) {
+		DetailAST assignDetailAST = detailAST.findFirstToken(TokenTypes.ASSIGN);
+
+		List<DetailAST> methodCallDetailASTList = getMethodCalls(
+			assignDetailAST, "toString");
+
+		if (methodCallDetailASTList.size() != 1) {
+			return;
+		}
+
+		DetailAST methodCallDetailAST = methodCallDetailASTList.get(0);
+
+		DetailAST parentDetailAST = methodCallDetailAST.getParent();
+
+		parentDetailAST = parentDetailAST.getParent();
+
+		if (parentDetailAST.getType() != TokenTypes.ASSIGN) {
+			return;
+		}
+
+		DetailAST dotDetailAST = methodCallDetailAST.findFirstToken(
+			TokenTypes.DOT);
+
+		if (dotDetailAST == null) {
+			return;
+		}
+
+		DetailAST identDetailAST = dotDetailAST.findFirstToken(
+			TokenTypes.IDENT);
+
+		if (identDetailAST == null) {
+			return;
+		}
+
+		String variableName = identDetailAST.getText();
+
+		DetailAST typeDetailAST = getVariableTypeDetailAST(
+			methodCallDetailAST, variableName);
+
+		if (typeDetailAST == null) {
+			return;
+		}
+
+		if (!Validator.isVariableName(variableName)) {
+			return;
+		}
+
+		identDetailAST = identDetailAST.getNextSibling();
+
+		if (identDetailAST == null) {
+			return;
+		}
+
+		if (!Objects.equals(identDetailAST.getText(), "toString")) {
+			return;
+		}
+
+		parentDetailAST = typeDetailAST.getParent();
+
+		if (parentDetailAST.getType() != TokenTypes.VARIABLE_DEF) {
+			return;
+		}
+
+		int endLineNumber = getEndLineNumber(parentDetailAST);
+		int startLineNumber = getStartLineNumber(detailAST);
+
+		if (endLineNumber != (startLineNumber - 2)) {
+			return;
+		}
+
+		List<DetailAST> variableCallerDetailASTList =
+			getVariableCallerDetailASTList(detailAST, variableName);
+
+		if (variableCallerDetailASTList.size() != 1) {
+			return;
+		}
+
+		log(
+			detailAST, _MSG_UNNECESSARY_ASSIGN_COMBINE, endLineNumber,
+			startLineNumber);
 	}
 
 	private boolean _hasPrecedingAssignStatement(
@@ -212,6 +309,9 @@ public class UnnecessaryAssignCheck extends BaseUnnecessaryStatementCheck {
 
 	private static final String _MSG_UNNECESSARY_ASSIGN_BEFORE_RETURN =
 		"assign.unnecessary.before.return";
+
+	private static final String _MSG_UNNECESSARY_ASSIGN_COMBINE =
+		"assign.unnecessary.combine";
 
 	private static final String _MSG_UNNECESSARY_ASSIGN_UNUSED =
 		"assign.unnecessary.unused";
