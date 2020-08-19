@@ -249,34 +249,30 @@ public class SalesforceExtractorNanite implements Nanite {
 				_elasticsearchInvoker.exists(
 					tableName, _osbAsahDataSourceIdTermQueryBuilder)) {
 
-				new JSONArrayPaginator() {
+				while (true) {
+					JSONArray jsonArray = new JSONArray(
+						_elasticsearchInvoker.get(
+							tableName,
+							searchSourceBuilder -> {
+								searchSourceBuilder.query(
+									_osbAsahDataSourceIdTermQueryBuilder);
+								searchSourceBuilder.size(500);
+							}));
 
-					@Override
-					protected JSONArray paginate(int start, int end) {
-						JSONArray jsonArray = new JSONArray(
-							_elasticsearchInvoker.get(
-								tableName,
-								searchSourceBuilder -> {
-									searchSourceBuilder.from(start);
-									searchSourceBuilder.query(
-										_osbAsahDataSourceIdTermQueryBuilder);
-									searchSourceBuilder.size(end - start);
-								}));
-
-						for (int i = 0; i < jsonArray.length(); i++) {
-							JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-							_elasticsearchInvoker.delete(tableName, jsonObject);
-
-							_addAuditEvent(
-								"DELETE", jsonObject,
-								jsonObject.getString("id"), tableName);
-						}
-
-						return jsonArray;
+					if (jsonArray.length() == 0) {
+						break;
 					}
 
-				};
+					for (int i = 0; i < jsonArray.length(); i++) {
+						JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+						_elasticsearchInvoker.delete(tableName, jsonObject);
+
+						_addAuditEvent(
+							"DELETE", jsonObject,
+							jsonObject.getString("id"), tableName);
+					}
+				}
 
 				if (_log.isInfoEnabled()) {
 					String osbAsahDataSourceId =

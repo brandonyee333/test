@@ -462,7 +462,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		_elasticsearchInvoker.delete("audit-events", auditEventJSONObject);
 	}
 
-	private void _run() throws Exception {
+	private void _run() {
 		for (String typeName : new String[] {"Lead", "Contact"}) {
 			long time = System.currentTimeMillis();
 
@@ -470,44 +470,40 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 				_log.info("Curate " + typeName);
 			}
 
-			new JSONArrayPaginator() {
+			int processedCount = 0;
 
-				@Override
-				protected JSONArray paginate(int start, int end)
-					throws Exception {
+			while (true) {
+				JSONArray jsonArray = new JSONArray(
+					_elasticsearchInvoker.get(
+						"audit-events",
+						searchSourceBuilder -> {
+							searchSourceBuilder.query(
+								BoolQueryBuilderUtil.filter(
+									_osbAsahDataSourceIdTermQueryBuilder
+								).filter(
+									QueryBuilders.termQuery(
+										"typeName", typeName)
+								));
+							searchSourceBuilder.size(500);
+							searchSourceBuilder.sort("id");
+						}));
 
-					JSONArray jsonArray = new JSONArray(
-						_elasticsearchInvoker.get(
-							"audit-events",
-							searchSourceBuilder -> {
-								searchSourceBuilder.from(start);
-								searchSourceBuilder.query(
-									BoolQueryBuilderUtil.filter(
-										_osbAsahDataSourceIdTermQueryBuilder
-									).filter(
-										QueryBuilders.termQuery(
-											"typeName", typeName)
-									));
-								searchSourceBuilder.size(end - start);
-								searchSourceBuilder.sort("id");
-							}));
-
-					for (int i = 0; i < jsonArray.length(); i++) {
-						_process(jsonArray.getJSONObject(i));
-					}
-
-					processedCount += jsonArray.length();
-
-					if (_log.isInfoEnabled()) {
-						_log.info(
-							"Curated " + processedCount + " " + typeName +
-								" records");
-					}
-
-					return jsonArray;
+				if (jsonArray.length() == 0) {
+					break;
 				}
 
-			};
+				for (int i = 0; i < jsonArray.length(); i++) {
+					_process(jsonArray.getJSONObject(i));
+				}
+
+				processedCount += jsonArray.length();
+
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						"Curated " + processedCount + " " + typeName +
+							" records");
+				}
+			}
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
