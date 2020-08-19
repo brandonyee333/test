@@ -166,7 +166,7 @@ public class RootRestController {
 		JSONArray jsonArray = new JSONArray(
 			_http.exchange(
 				ServiceConstants.URL_BACKEND_INTERNAL,
-				"/api/1.0/pages/geolocations?canonicalUrl=" + url,
+				"/api/1.0/pages/geolocations?canonicalURL=" + url,
 				HttpMethod.GET, null));
 
 		for (int i = 0; (i < jsonArray.length()) && (i < _databasesLimit);

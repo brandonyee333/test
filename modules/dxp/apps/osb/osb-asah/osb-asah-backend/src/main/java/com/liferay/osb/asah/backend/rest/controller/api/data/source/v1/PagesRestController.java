@@ -45,10 +45,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class PagesRestController extends BaseRestController {
 
 	@GetMapping("/geolocations")
-	public String getGeolocations(@RequestParam String canonicalUrl) {
+	public String getGeolocations(@RequestParam String canonicalURL) {
 		SearchQueryContext searchQueryContext = new SearchQueryContext();
 
-		searchQueryContext.setCanonicalUrl(canonicalUrl);
+		searchQueryContext.setCanonicalUrl(canonicalURL);
 
 		return String.valueOf(
 			new JSONArray(
@@ -57,16 +57,16 @@ public class PagesRestController extends BaseRestController {
 	}
 
 	@GetMapping("/read-count")
-	public String getReadCount(@RequestParam String canonicalUrl) {
+	public String getReadCount(@RequestParam String canonicalURL) {
 		return String.valueOf(
 			_pageDog.getMetricValue(
-				Optional.of(canonicalUrl), Optional.empty(),
+				Optional.of(canonicalURL), Optional.empty(),
 				PageMetricType.READS, Optional.empty(), Optional.empty()));
 	}
 
 	@GetMapping("/read-counts")
 	public String getReadCounts(
-		@RequestParam String canonicalUrl,
+		@RequestParam String canonicalURL,
 		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 		@RequestParam(name = "endDate")
 			LocalDate endLocalDate,
@@ -76,21 +76,21 @@ public class PagesRestController extends BaseRestController {
 			LocalDate startLocalDate) {
 
 		return _getHistogramMetrics(
-			canonicalUrl, endLocalDate, interval, PageMetricType.READS,
+			canonicalURL, endLocalDate, interval, PageMetricType.READS,
 			startLocalDate);
 	}
 
 	@GetMapping("/view-count")
-	public String getViewCount(@RequestParam String canonicalUrl) {
+	public String getViewCount(@RequestParam String canonicalURL) {
 		return String.valueOf(
 			_pageDog.getMetricValue(
-				Optional.of(canonicalUrl), Optional.empty(),
+				Optional.of(canonicalURL), Optional.empty(),
 				PageMetricType.VIEWS, Optional.empty(), Optional.empty()));
 	}
 
 	@GetMapping("/view-counts")
 	public String getViewCounts(
-		@RequestParam String canonicalUrl,
+		@RequestParam String canonicalURL,
 		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 		@RequestParam(name = "endDate")
 			LocalDate endLocalDate,
@@ -100,7 +100,7 @@ public class PagesRestController extends BaseRestController {
 			LocalDate startLocalDate) {
 
 		return _getHistogramMetrics(
-			canonicalUrl, endLocalDate, interval, PageMetricType.VIEWS,
+			canonicalURL, endLocalDate, interval, PageMetricType.VIEWS,
 			startLocalDate);
 	}
 
