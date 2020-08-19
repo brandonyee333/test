@@ -44,41 +44,6 @@ public class BaseNaniteTest {
 		name = "default-base", resourcePath = "default_base_info_old.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "individual-segments",
-		resourcePath = "default_base_individual_segments.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "default_base_individuals.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "OSBAsahMarkers",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@MessageBusChannel(
-		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
-		resourcePath = "default_base_raw_segments.json"
-	)
-	@Test
-	public void testIndividualSegments() throws Exception {
-		_defaultBaseNanite.run();
-
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-
-		JSONAssert.assertEquals(
-			ResourceUtil.readResourceToJSONArray(
-				"default_base_info_new_segments.json", this),
-			elasticsearchInvoker.get("default-base"), false);
-	}
-
-	@ElasticsearchIndex(
-		configurationPath = "default_base_index_configuration.json",
-		name = "default-base", resourcePath = "default_base_info_old.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
 	@MessageBusChannel(
 		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
 		resourcePath = "default_base_raw_urls.json"

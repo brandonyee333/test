@@ -28,6 +28,8 @@ import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.elasticsearch.MessageBusChannel;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -50,6 +52,14 @@ public class AnalyticsEventsMessageProcessorTest {
 		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
+	@ElasticsearchIndex(
+		name = "individual-segments", resourcePath = "individual_segments.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "individuals", resourcePath = "individuals.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
 	@MessageBusChannel(
 		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
 		resourcePath = "analytics_events_message_channel_1.json"
@@ -69,6 +79,9 @@ public class AnalyticsEventsMessageProcessorTest {
 
 		Assert.assertEquals("Page", analyticsEvent.getApplicationId());
 		Assert.assertEquals("pageViewed", analyticsEvent.getEventId());
+		Assert.assertEquals(
+			analyticsEvent.getSegmentNames(),
+			new HashSet<>(Arrays.asList("Developer", "Support")));
 
 		Map<String, Object> context = analyticsEvent.getContext();
 
@@ -126,6 +139,8 @@ public class AnalyticsEventsMessageProcessorTest {
 				"channelId", "999"
 			).put(
 				"id", "990121114030678099"
+			).put(
+				"provider", JSONUtil.put("type", "LIFERAY")
 			));
 
 		_dataSourceCache.onMessage("");

@@ -74,15 +74,6 @@ public abstract class BaseNaniteTestCase {
 
 		ReflectionTestUtils.setField(
 			nanite, "_cerebroInfoElasticsearchInvoker", elasticsearchInvoker);
-		ReflectionTestUtils.setField(
-			nanite, "_faroInfoElasticsearchInvoker", elasticsearchInvoker);
-
-		Mockito.when(
-			elasticsearchInvoker.get(
-				Mockito.eq("individuals"), Mockito.any(QueryBuilder.class))
-		).thenReturn(
-			new JSONArray()
-		);
 
 		String fileName = getJSONFileName(clazz);
 

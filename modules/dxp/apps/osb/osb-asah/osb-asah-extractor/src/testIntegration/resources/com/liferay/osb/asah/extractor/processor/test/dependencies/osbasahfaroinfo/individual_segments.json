@@ -1,6 +1,6 @@
 [
 	{
-		"channelId": "1",
+		"channelId": "123",
 		"id": "10",
 		"name": "Developer",
 		"scope": "PROJECT",
@@ -9,7 +9,7 @@
 		"status": "ACTIVE"
 	},
 	{
-		"channelId": "1",
+		"channelId": "123",
 		"id": "11",
 		"name": "Support",
 		"scope": "PROJECT",
@@ -18,7 +18,7 @@
 		"status": "ACTIVE"
 	},
 	{
-		"channelId": "1",
+		"channelId": "123",
 		"id": "20",
 		"name": "CEO",
 		"scope": "PROJECT",

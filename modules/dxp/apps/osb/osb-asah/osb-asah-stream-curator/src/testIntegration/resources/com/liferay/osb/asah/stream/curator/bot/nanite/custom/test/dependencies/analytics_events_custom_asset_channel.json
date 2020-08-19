@@ -22,6 +22,11 @@
 			"title": "Asset Title"
 		},
 		"id": "1",
+		"individualId": "100",
+		"segmentNames": [
+			"Developer",
+			"Support"
+		],
 		"userId": "1"
 	},
 	{
@@ -46,6 +51,11 @@
 			"title": "Asset Title"
 		},
 		"id": "2",
+		"individualId": "100",
+		"segmentNames": [
+			"Developer",
+			"Support"
+		],
 		"userId": "1"
 	}
 ]
