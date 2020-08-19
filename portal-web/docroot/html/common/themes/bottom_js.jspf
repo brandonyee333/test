@@ -55,7 +55,11 @@
 				attributeName: 'data-href',
 				polyfill: true,
 				validate: function (src, svg, use) {
-					return !src || !src.startsWith('#');
+					if (src && src.startsWith('#')) {
+						return false;
+					}
+
+					return true;
 				}
 			}
 		);
