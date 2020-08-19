@@ -46,7 +46,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortOrder;
@@ -199,7 +198,7 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 			).put(
 				"endTime", dateString
 			).put(
-				"ownerId", _getOwnerId(dataSourceId, userId)
+				"ownerId", analyticsEvent.getIndividualId()
 			).put(
 				"startTime", dateString
 			).put(
@@ -544,33 +543,6 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 		}
 
 		return MapUtil.getString(analyticsEvent.getContext(), "title");
-	}
-
-	private String _getOwnerId(String dataSourceId, String userId) {
-		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
-			"individuals",
-			QueryBuilders.nestedQuery(
-				"dataSourceIndividualPKs",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"dataSourceIndividualPKs.dataSourceId", dataSourceId)
-				).filter(
-					QueryBuilders.termQuery(
-						"dataSourceIndividualPKs.individualPKs", userId)
-				),
-				ScoreMode.None));
-
-		if (individualJSONObject == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Unable to find individual with user ID " + userId +
-						" and data source ID " + dataSourceId);
-			}
-
-			return null;
-		}
-
-		return individualJSONObject.getString("id");
 	}
 
 	private String _getPageViewActivityId(AnalyticsEvent analyticsEvent) {

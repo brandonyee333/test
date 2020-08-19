@@ -150,6 +150,10 @@ public class AnalyticsEvent implements Serializable {
 		return _id;
 	}
 
+	public String getIndividualId() {
+		return _individualId;
+	}
+
 	public Date getNormalizedEventDate() {
 		Calendar eventCalendar = Calendar.getInstance();
 
@@ -219,6 +223,10 @@ public class AnalyticsEvent implements Serializable {
 		_id = id;
 	}
 
+	public void setIndividualId(String individualId) {
+		_individualId = individualId;
+	}
+
 	public void setUserId(String userId) {
 		_userId = userId;
 	}
@@ -255,6 +263,7 @@ public class AnalyticsEvent implements Serializable {
 	private String _eventId;
 	private Map<String, String> _eventProperties;
 	private String _id;
+	private String _individualId;
 	private String _userId;
 
 }

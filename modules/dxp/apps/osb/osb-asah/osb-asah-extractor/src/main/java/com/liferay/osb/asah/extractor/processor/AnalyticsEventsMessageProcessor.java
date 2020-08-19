@@ -85,7 +85,7 @@ public class AnalyticsEventsMessageProcessor {
 		}
 	}
 
-	private void _addIndividual(
+	private String _addIndividual(
 		AnalyticsEventsMessage analyticsEventsMessage, String channelId,
 		String dataSourceId) {
 
@@ -105,7 +105,7 @@ public class AnalyticsEventsMessageProcessor {
 				ScoreMode.None));
 
 		if (individualJSONObject == null) {
-			_faroInfoIndividualDog.addIndividual(
+			individualJSONObject = _faroInfoIndividualDog.addIndividual(
 				_getAnalyticsDataJSONObject(analyticsEventsMessage), channelId,
 				_faroInfoElasticsearchInvoker.get("data-sources", dataSourceId),
 				null, userId);
@@ -120,6 +120,8 @@ public class AnalyticsEventsMessageProcessor {
 					JSONUtil.put("channelIds", channelIds));
 			}
 		}
+
+		return individualJSONObject.getString("id");
 	}
 
 	private JSONObject _getAnalyticsDataJSONObject(
@@ -199,7 +201,8 @@ public class AnalyticsEventsMessageProcessor {
 				}
 			}
 
-			_addIndividual(analyticsEventsMessage, channelId, dataSourceId);
+			String individualId = _addIndividual(
+				analyticsEventsMessage, channelId, dataSourceId);
 
 			List<AnalyticsEventsMessage.Event> events =
 				analyticsEventsMessage.getEvents();
@@ -222,6 +225,7 @@ public class AnalyticsEventsMessageProcessor {
 
 				analyticsEvent.setEventProperties(eventProperties);
 
+				analyticsEvent.setIndividualId(individualId);
 				analyticsEvent.setUserId(analyticsEventsMessage.getUserId());
 
 				for (Channel channel :
