@@ -962,58 +962,45 @@ public class DXPExtractorNanite implements Nanite {
 			_dxpRawElasticsearchInvoker.count(
 				"audit-events", _osbAsahDataSourceIdTermQueryBuilder));
 
-		// AuditEventDogUtil returned audit events in descending order. We must
-		// now read and process audit events from WeDeploy in ascending order.
+		// AuditEventDog returned audit events in descending order. We must now
+		// read and process audit events in ascending order.
 
 		try {
-			new JSONArrayPaginator() {
+			int processedCount = 0;
 
-				@Override
-				protected JSONArray paginate(int start, int end)
-					throws Exception {
+			while (true) {
+				_throwNewInterruptBotException();
 
-					_throwNewInterruptBotException();
+				JSONArray auditEventsJSONArray = new JSONArray(
+					_dxpRawElasticsearchInvoker.get(
+						"audit-events",
+						searchSourceBuilder -> {
+							searchSourceBuilder.query(
+								BoolQueryBuilderUtil.filter(
+									_osbAsahDataSourceIdTermQueryBuilder));
+							searchSourceBuilder.size(500);
+							searchSourceBuilder.sort(
+								SortBuilderUtil.fieldSort("auditEventId"));
+						}));
 
-					JSONArray auditEventsJSONArray = new JSONArray(
-						_dxpRawElasticsearchInvoker.get(
-							"audit-events",
-							searchSourceBuilder -> {
-								searchSourceBuilder.from(start);
-
-								searchSourceBuilder.query(
-									BoolQueryBuilderUtil.filter(
-										_osbAsahDataSourceIdTermQueryBuilder
-									).filter(
-										QueryBuilders.rangeQuery(
-											"auditEventId"
-										).gt(
-											lastSuccessfulAuditEventId
-										)
-									));
-
-								searchSourceBuilder.size(end - start);
-								searchSourceBuilder.sort(
-									SortBuilderUtil.fieldSort("auditEventId"));
-							}));
-
-					for (int i = 0; i < auditEventsJSONArray.length(); i++) {
-						JSONObject auditEventsJSONObject =
-							auditEventsJSONArray.getJSONObject(i);
-
-						_syncAuditEvent(auditEventsJSONObject);
-					}
-
-					processedCount += auditEventsJSONArray.length();
-
-					if (_log.isInfoEnabled()) {
-						_log.info(
-							"Processed " + processedCount + " audit-events");
-					}
-
-					return auditEventsJSONArray;
+				if (auditEventsJSONArray.length() == 0) {
+					break;
 				}
 
-			};
+				for (int i = 0; i < auditEventsJSONArray.length(); i++) {
+					JSONObject auditEventsJSONObject =
+						auditEventsJSONArray.getJSONObject(i);
+
+					_syncAuditEvent(auditEventsJSONObject);
+				}
+
+				processedCount += auditEventsJSONArray.length();
+
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						"Processed " + processedCount + " audit-events");
+				}
+			}
 
 			_runLogger.log(
 				_dxpExtractorConfiguration.getDataSourceId(), this, "COMPLETED",
