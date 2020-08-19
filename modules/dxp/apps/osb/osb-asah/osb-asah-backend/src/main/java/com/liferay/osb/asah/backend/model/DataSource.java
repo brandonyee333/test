@@ -15,10 +15,12 @@
 package com.liferay.osb.asah.backend.model;
 
 import com.liferay.osb.asah.backend.graphql.GraphQLProperty;
+import com.liferay.osb.asah.backend.graphql.GraphQLType;
 
 /**
  * @author Rachael Koestartyo
  */
+@GraphQLType
 public class DataSource {
 
 	public DataSource(String id, String name, String url) {
