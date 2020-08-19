@@ -199,6 +199,8 @@ public class AnalyticsEventsMessageProcessor {
 				}
 			}
 
+			_addIndividual(analyticsEventsMessage, channelId, dataSourceId);
+
 			List<AnalyticsEventsMessage.Event> events =
 				analyticsEventsMessage.getEvents();
 
@@ -233,8 +235,6 @@ public class AnalyticsEventsMessageProcessor {
 				analyticsEventJSONArray.put(
 					new JSONObject(analyticsEvent.toJSON()));
 			}
-
-			_addIndividual(analyticsEventsMessage, channelId, dataSourceId);
 		}
 
 		return analyticsEventJSONArray;
