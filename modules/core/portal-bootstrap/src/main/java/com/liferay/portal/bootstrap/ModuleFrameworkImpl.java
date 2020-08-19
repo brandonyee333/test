@@ -1339,9 +1339,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 				file = file.getCanonicalFile();
 
-				URI uri = file.toURI();
-
-				String uriString = uri.toString();
+				String uriString = String.valueOf(file.toURI());
 
 				String location = uriString.concat("?protocol=jar&static=true");
 

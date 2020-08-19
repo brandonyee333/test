@@ -388,9 +388,7 @@ public class FileUtil {
 			return false;
 		}
 
-		Path fileNamePath = filePath.getFileName();
-
-		String fileName = fileNamePath.toString();
+		String fileName = String.valueOf(filePath.getFileName());
 
 		if (fileName.startsWith(".")) {
 			return true;
@@ -502,9 +500,8 @@ public class FileUtil {
 
 	public static boolean isRealFilePath(Path filePath) {
 		try {
-			Path realFilePath = filePath.toRealPath(LinkOption.NOFOLLOW_LINKS);
-
-			String realFilePathString = realFilePath.toString();
+			String realFilePathString = String.valueOf(
+				filePath.toRealPath(LinkOption.NOFOLLOW_LINKS));
 
 			return realFilePathString.equals(filePath.toString());
 		}

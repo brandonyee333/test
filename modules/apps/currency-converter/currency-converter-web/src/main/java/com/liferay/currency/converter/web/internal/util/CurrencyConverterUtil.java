@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.webcache.WebCacheItem;
 import com.liferay.portal.kernel.webcache.WebCachePoolUtil;
 
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -37,9 +36,7 @@ public class CurrencyConverterUtil {
 	public static Map<String, String> getAllSymbols(
 		HttpServletRequest request) {
 
-		Locale locale = request.getLocale();
-
-		String key = locale.toString();
+		String key = String.valueOf(request.getLocale());
 
 		Map<String, String> symbols = _symbolsPool.get(key);
 

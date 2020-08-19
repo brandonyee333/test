@@ -161,9 +161,7 @@ public class DocumentationArchiveImporter implements DocumentationImporter {
 			return false;
 		}
 
-		Path pathFileName = path.getFileName();
-
-		String fileName = pathFileName.toString();
+		String fileName = String.valueOf(path.getFileName());
 
 		if (fileName.endsWith(markdownImporterArticleIntro)) {
 			return true;

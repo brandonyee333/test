@@ -72,9 +72,8 @@ public class FileUtilTest {
 
 	@Test
 	public void testGetNextFilePathName() throws Exception {
-		Path filePath = Files.createTempFile("test", null);
-
-		String filePathName = filePath.toString();
+		String filePathName = String.valueOf(
+			Files.createTempFile("test", null));
 
 		String nextFilePathName = FileUtil.getNextFilePathName(filePathName);
 

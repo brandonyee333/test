@@ -168,9 +168,8 @@ public class MimeTypesImpl implements MimeTypes, MimeTypesReaderMetKeys {
 
 			metadata.set(Metadata.RESOURCE_NAME_KEY, fileName);
 
-			MediaType mediaType = _detector.detect(null, metadata);
-
-			String contentType = mediaType.toString();
+			String contentType = String.valueOf(
+				_detector.detect(null, metadata));
 
 			if (!contentType.contains("tika")) {
 				return contentType;
