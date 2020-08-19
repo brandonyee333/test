@@ -1,0 +1,16 @@
+[
+	{
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "990121114030678099",
+				"dataSourceType": "LIFERAY",
+				"individualPKs": [
+					"aedfa915-c7a1-4309-abcf-024e247d414c"
+				]
+			}
+		],
+		"dateCreated": "2019-02-08T22:40:44.412Z",
+		"dateModified": "2019-02-08T22:40:44.412Z",
+		"id": "337984659206412898"
+	}
+]

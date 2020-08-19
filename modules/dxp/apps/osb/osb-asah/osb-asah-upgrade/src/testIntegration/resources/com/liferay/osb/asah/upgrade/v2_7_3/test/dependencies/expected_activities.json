@@ -1,0 +1,52 @@
+[
+	{
+		"activityKey": "Page#pageViewed#352610350661254490",
+		"activityType": "BROWSE",
+		"applicationId": "Page",
+		"dataSourceId": "990121114030678099",
+		"day": "2019-04-06T00:00:00.000Z",
+		"endTime": "2019-04-06T22:20:10.843Z",
+		"eventId": "pageViewed",
+		"eventProperties": {
+			"page": "/web/guest/home",
+			"pageViewActivityId": "abcb521f-b35d-451d-b77f-e402ecefserw"
+		},
+		"groupId": "377595806765020231",
+		"id": "348853926240043270",
+		"object": {
+			"dataSourceAssetPK": "https://www.joaquin-dibbert.biz",
+			"id": "355525465840533643",
+			"name": "extend clicks-and-mortar e-tailers",
+			"objectType": "Page",
+			"url": "https://www.joaquin-dibbert.biz"
+		},
+		"ownerId": "337984659206412898",
+		"startTime": "2019-04-06T22:20:10.843Z",
+		"userId": "aedfa915-c7a1-4309-abcf-024e247d414c"
+	},
+	{
+		"activityKey": "Page#pageViewed#352610350661254490",
+		"activityType": "BROWSE",
+		"applicationId": "Page",
+		"dataSourceId": "990121114030678099",
+		"day": "2019-04-06T00:00:00.000Z",
+		"endTime": "2019-04-06T22:20:10.843Z",
+		"eventId": "pageViewed",
+		"eventProperties": {
+			"page": "/web/guest/home",
+			"pageViewActivityId": "abcb521f-b35d-451d-b77f-e402ecefserw"
+		},
+		"groupId": "377595806765020231",
+		"id": "348853926240043271",
+		"object": {
+			"dataSourceAssetPK": "https://www.joaquin-dibbert.biz",
+			"id": "355525465840533643",
+			"name": "extend clicks-and-mortar e-tailers",
+			"objectType": "Page",
+			"url": "https://www.joaquin-dibbert.biz"
+		},
+		"ownerId": "337984659206412898",
+		"startTime": "2019-04-06T22:20:10.843Z",
+		"userId": "aedfa915-c7a1-4309-abcf-024e247d414c"
+	}
+]
