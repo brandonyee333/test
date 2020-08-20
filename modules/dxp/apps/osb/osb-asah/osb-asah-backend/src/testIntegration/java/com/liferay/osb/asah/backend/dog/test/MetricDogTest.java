@@ -134,7 +134,7 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -184,7 +184,7 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -206,7 +206,7 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -228,7 +228,7 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -250,7 +250,7 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -272,7 +272,7 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -294,7 +294,7 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -316,7 +316,7 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -346,7 +346,7 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -368,7 +368,7 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -450,7 +450,7 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -481,7 +481,7 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -503,7 +503,7 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -525,7 +525,7 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -547,7 +547,7 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -569,7 +569,7 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -603,7 +603,7 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -626,7 +626,7 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -649,7 +649,7 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
