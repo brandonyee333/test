@@ -1,0 +1,55 @@
+[
+	{
+		"bounce": 1,
+		"browserName": "Chrome",
+		"canonicalUrl": "http://liferay.com/home",
+		"channelId": "1",
+		"city": null,
+		"country": null,
+		"ctaClicks": 0,
+		"dataSourceId": "438676646604695862",
+		"deviceType": "Desktop",
+		"directAccess": 1,
+		"directAccessDates": [
+			"${now-30d}"
+		],
+		"engagementScore": 0.09893977777777777,
+		"eventDate": "${now-30d}",
+		"experimentId": "",
+		"firstEventDate": "${now-30d}",
+		"formSubmissions": 0,
+		"id": "0",
+		"indirectAccess": 10,
+		"indirectAccessDates": [
+		],
+		"individualId": null,
+		"interactionDates": [
+			"${now-30d}",
+			"${now-30d}"
+		],
+		"knownIndividual": false,
+		"lastEventDate": "${now-30d}",
+		"modifiedDate": "${now-30d}",
+		"pageScrolls": [
+			{
+				"depth": 50,
+				"eventDate": "${now-30d}"
+			},
+			{
+				"depth": 100,
+				"eventDate": "${now-30d}"
+			}
+		],
+		"platformName": "Unknown",
+		"region": null,
+		"segmentNames": [
+		],
+		"sessionId": "1",
+		"timeOnPage": 445229,
+		"title": "Page 1",
+		"url": "http://liferay.com/dxp_trial",
+		"userId": "1",
+		"variantId": "",
+		"views": 1
+	}
+]

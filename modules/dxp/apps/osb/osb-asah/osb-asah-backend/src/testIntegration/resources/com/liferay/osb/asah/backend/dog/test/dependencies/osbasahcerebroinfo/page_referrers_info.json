@@ -1,0 +1,50 @@
+[
+	{
+		"access": 5,
+		"browserName": "IE",
+		"canonicalUrl": "http://liferay.com/home",
+		"channelId": "1",
+		"country": "USA",
+		"dataSourceId": "438676646604695862",
+		"deviceType": "Desktop",
+		"eventDate": "${now-30d}",
+		"platformName": "Windows",
+		"primaryKey": "8311a0b8342a16f1e57582a36a1c15600132bf77b4121d1b1c02ce2a33ca81234",
+		"referrer": "http://liferay.com/increasing_web_traffic",
+		"region": "California",
+		"url": "http://liferay.com/dxp_trial",
+		"userId": "1"
+	},
+	{
+		"access": 3,
+		"browserName": "IE",
+		"canonicalUrl": "http://liferay.com/home",
+		"channelId": "1",
+		"country": "USA",
+		"dataSourceId": "438676646604695862",
+		"deviceType": "Desktop",
+		"eventDate": "${now-30d}",
+		"platformName": "Windows",
+		"primaryKey": "8311a0b8342a16f1e57582a36a1c15600132bf77b4121d1b1c02ce2a33ca8987",
+		"referrer": "http://liferay.com/increasing_web_traffic",
+		"region": "California",
+		"url": "http://liferay.com/dxp_trial",
+		"userId": "1"
+	},
+	{
+		"access": 2,
+		"browserName": "IE",
+		"canonicalUrl": "http://liferay.com/web",
+		"channelId": "1",
+		"country": "USA",
+		"dataSourceId": "438676646604695862",
+		"deviceType": "Desktop",
+		"eventDate": "${now-30d}",
+		"platformName": "Windows",
+		"primaryKey": "8311a0b8342a16f1e57582a36a1c15600132bf77b4121d1b1c02ce2a33ca85432",
+		"referrer": "http://liferay.com/increasing_web_traffic",
+		"region": "California",
+		"url": "http://liferay.com/dxp_trial",
+		"userId": "1"
+	}
+]
