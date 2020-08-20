@@ -48,7 +48,7 @@ public class PageReferrerDogTest {
 	)
 	@Test
 	public void testPageReferrerMetrics() {
-		List<PageReferrerMetric> pageReferrersMetrics =
+		List<PageReferrerMetric> pageReferrerMetrics =
 			_pageReferrerDog.getPageReferrerMetrics(
 				new SearchQueryContext() {
 					{
@@ -59,9 +59,9 @@ public class PageReferrerDogTest {
 				});
 
 		Assert.assertEquals(
-			pageReferrersMetrics.toString(), 2, pageReferrersMetrics.size());
+			pageReferrerMetrics.toString(), 2, pageReferrerMetrics.size());
 
-		PageReferrerMetric pageReferrerMetric = pageReferrersMetrics.get(0);
+		PageReferrerMetric pageReferrerMetric = pageReferrerMetrics.get(0);
 
 		DogTestUtil.assertMetric(8, pageReferrerMetric.getAccessMetric());
 	}
